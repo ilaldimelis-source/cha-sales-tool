@@ -5627,7 +5627,7 @@ function brFormatResults(results, query) {
   if (!results.length) {
     var expandedTerms = expandSearchSynonyms(query.toLowerCase());
     var synonymNote = expandedTerms.length > 1 ? '<br><small style="color:#B8ADA0">Also searched: ' + expandedTerms.slice(1,5).join(', ') + (expandedTerms.length>5?' + more':'') + '</small>' : '';
-    return '<span style="color:#9A8F7E">No results for <em>' + query.replace(/</g,'&lt;') + '</em>' + (brSearchAllPlans ? ' across all plans' : ' in ' + brActivePlan.name) + '.' + synonymNote + '<br>Try different keywords or tap "All Plans" to search everything.</span>' +
+    return '<span style="color:#9A8F7E">No results for <em>' + escHTML(query) + '</em>' + (brSearchAllPlans ? ' across all plans' : ' in ' + brActivePlan.name) + '.' + synonymNote + '<br>Try different keywords or tap "All Plans" to search everything.</span>' +
       '<div style="margin-top:8px;"><button onclick="brAskAI(decodeURIComponent(\'' + encodeURIComponent(query) + '\'))" style="background:#5175F1;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;">Ask AI for help</button></div>';
   }
 
@@ -5694,7 +5694,7 @@ function brSend() {
   inp.style.height = 'auto';
   document.getElementById('br-send').disabled = true;
 
-  brAddMsg('user', query.replace(/</g,'&lt;').replace(/>/g,'&gt;'));
+  brAddMsg('user', escHTML(query));
 
   // PRIMARY BEHAVIOR: Dashboard first → AI fallback → Safe fallback
   var plansToUse = brSearchAllPlans ? BR_PLANS : (brActivePlan ? [brActivePlan] : []);
