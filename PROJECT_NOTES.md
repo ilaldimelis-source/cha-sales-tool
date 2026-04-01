@@ -14,11 +14,11 @@ Single-page web app for Central Health Advisors insurance sales agents. Deployed
 ## Stack
 | Layer | Technology |
 |-------|-----------|
-| Structure | Single-file HTML (`index.html`, ~6200 lines) |
-| Styling | Inline CSS (3 `<style>` blocks within index.html) |
-| Logic | Inline JavaScript (`<script>` blocks within index.html) |
+| Structure | HTML shell (`index.html`, ~223 lines) + 12 JS files + 1 CSS file |
+| Styling | External CSS (`css/styles.css`) |
+| Logic | External JavaScript (12 files in `js/`) |
 | Fonts | Google Fonts — Inter (400, 500, 600, 700) |
-| Offline | Service Worker (`sw.js`) — stale-while-revalidate, v6 cache |
+| Offline | Service Worker (`sw.js`) — stale-while-revalidate, v7 cache |
 | Hosting | GitHub Pages (static, no Jekyll — `.nojekyll` present) |
 | Build | None — direct file editing |
 
@@ -27,31 +27,45 @@ Single-page web app for Central Health Advisors insurance sales agents. Deployed
 ## File Structure
 ```
 cha-sales-tool/
-├── index.html          # Entire app (~6200 lines)
-├── logo.png            # CHA logo (36KB PNG)
-├── sw.js               # Service worker (cache v6)
-├── .nojekyll           # Prevents Jekyll on GitHub Pages
-├── .gitignore          # Excludes node_modules, dev files
-├── CLAUDE.md           # AI agent instructions
-├── PROJECT_NOTES.md    # This file
+├── index.html              # HTML shell (~223 lines)
+├── css/
+│   └── styles.css          # All CSS combined
+├── js/
+│   ├── utils.js            # Icons, escHTML, search engine, shared utilities
+│   ├── data.js             # RECOVERY data (shared across tabs)
+│   ├── objections.js       # Objections tab
+│   ├── plans-benefits.js   # Plans & Benefits tab + Network Guide
+│   ├── call-playbook.js    # Call Playbook tab (Closes, Call Flow, Scripts)
+│   ├── live-assist.js      # Live Assist tab (Live, Recovery, QA Rebuttals)
+│   ├── ai-tools.js         # AI Tools tab (Psych, Compliance AI, Coaching)
+│   ├── training.js         # Training tab (Process, Product Vault, etc.)
+│   ├── compliance.js       # Compliance Hub tab
+│   ├── policy-docs.js      # Policy Reference tab (27 plan documents)
+│   ├── app.js              # Navigation, init, CLOSEABLE, My Space, SW
+│   └── chat.js             # Benefits Reference chat panel
+├── logo.png                # CHA logo (36KB PNG)
+├── sw.js                   # Service worker (cache v7)
+├── .nojekyll               # Prevents Jekyll on GitHub Pages
+├── .gitignore              # Excludes node_modules, dev files
+├── CLAUDE.md               # AI agent instructions
+├── PROJECT_NOTES.md        # This file
 └── tasks/
-    ├── todo.md         # Active task tracker
-    └── lessons.md      # Hard-won lessons, read every session
+    ├── todo.md             # Active task tracker
+    └── lessons.md          # Hard-won lessons, read every session
 ```
 
 ---
 
 ## CSS Architecture
-- **Line 20:** Main CSS block — `:root` variables, all component styles
-- **Lines 21–68:** Second `<style>` block — search overlay + responsive CSS
-- **Line ~5424:** Third `<style>` block — Benefits Reference chat panel CSS
+- **`css/styles.css`** — All CSS combined (main, search overlay, responsive, chat panel)
 - **Design system:** Light theme (`#FCFDFE` bg, `#5175F1` accent, `#FFFFFF` cards, Inter font)
 - **~84 CSS custom properties** in `:root`
 
 ---
 
 ## JavaScript Architecture
-All JS is inline in `<script>` blocks within `index.html`.
+12 external JS files loaded via `<script src>` tags in `index.html`.
+Load order matters — see comments in index.html for dependency chain.
 
 ### Key Data Structures
 | Variable | Description |

@@ -34,12 +34,24 @@
 
 ---
 
-## L006 — Single-file HTML architecture — all CSS/JS is inline
-**What:** This is a ~6200-line single-file HTML app. There are no separate .js or .css files. Three `<style>` blocks exist (lines ~20, ~21-68, ~5424). All JavaScript is inline `<script>` blocks.
-**Rule:** Never attempt to split into separate files. All edits are to `index.html` only. When searching for a function, use Grep on index.html directly.
+## L006 — Multi-file architecture — split by tab
+**What:** App was refactored from a single 6,200-line `index.html` into 12 JS files + 1 CSS file + HTML shell (~223 lines). Each sidebar tab has its own JS file.
+**Rule:** Edit the specific tab's JS file, not index.html. Script load order matters (see comments in index.html). When adding a new global variable, make sure it's not a `const` that duplicates a name in another file — `const` re-declarations crash silently in browsers.
 
 ---
 
 ## L007 — GitHub Pages requires `.nojekyll` and explicit Pages activation
 **What:** Pushing to GitHub alone doesn't publish the site. GitHub Pages must be manually enabled in Settings → Pages → Source: main / root. `.nojekyll` prevents Jekyll from interfering with the single-file app.
 **Rule:** Remind user to enable Pages after first push. Always include `.nojekyll` in the repo root.
+
+---
+
+## L008 — `const` re-declarations across files crash silently in browsers
+**What happened:** During the multi-file refactor, `ISA_SCRIPTS` was declared with `const` in both `call-playbook.js` and `training.js`. When both files loaded, the second `const` declaration caused a silent runtime error that prevented ALL code after it in `training.js` from executing — `MINDSET`, `renderProcess`, `renderCheatsheets` were all undefined.
+**Rule:** After splitting code into separate files, check ALL `const` declarations across every file for duplicates. A duplicate `const` in a later-loading file silently kills everything after it. Use `var` for globals that might appear in multiple files, or ensure each `const` name is unique across all files.
+
+---
+
+## L009 — Service worker caches old file versions during refactors
+**What happened:** After fixing the `const` duplicate in training.js, the browser still served the old cached version. Functions remained undefined until the SW cache was manually cleared.
+**Rule:** During multi-file refactors, always bump `CACHE_NAME` in `sw.js` AND clear caches before testing. After any structural change, run: `caches.keys().then(n => n.forEach(c => caches.delete(c)))` in the console.

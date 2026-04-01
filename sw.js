@@ -1,11 +1,24 @@
 // CHA Sales Command Center — Service Worker
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = 'cha-command-center-v6';
+var CACHE_NAME = 'cha-command-center-v7';
 var URLS_TO_CACHE = [
   './',
   './index.html',
   './logo.png',
+  './css/styles.css',
+  './js/utils.js',
+  './js/data.js',
+  './js/objections.js',
+  './js/plans-benefits.js',
+  './js/call-playbook.js',
+  './js/live-assist.js',
+  './js/ai-tools.js',
+  './js/training.js',
+  './js/compliance.js',
+  './js/policy-docs.js',
+  './js/app.js',
+  './js/chat.js',
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
 ];
 
