@@ -1882,7 +1882,7 @@ var SEARCH_SYNONYMS = {
   'x-ray':['x-ray','xray','radiology','radiograph','imaging','diagnostic','x ray'],
   'xray':['x-ray','xray','radiology','radiograph','imaging','diagnostic','x ray'],
   'x ray':['x-ray','xray','radiology','radiograph','imaging','diagnostic','x ray'],
-  'er':['emergency room','emergency','er visit','emergency department','ed visit','er '],
+  'er':['emergency room','emergency','er visit','emergency department','ed visit'],
   'emergency':['emergency room','emergency','er visit','er','emergency department'],
   'emergency room':['emergency room','emergency','er visit','er','emergency department'],
   'mri':['mri','imaging','magnetic resonance','radiology','diagnostic'],
@@ -1913,7 +1913,7 @@ var SEARCH_SYNONYMS = {
   'pre-existing':['pre-existing','preexisting','pre-ex','prior condition'],
   'copay':['copay','co-pay','copayment','co-payment'],
   'deductible':['deductible','ded','out of pocket','oop'],
-  'oop':['out of pocket','oop','out-of-pocket','maximum'],
+  'oop':['out of pocket','oop','out-of-pocket','out of pocket maximum','oop max'],
   'waiting period':['waiting period','waiting','sickness waiting','30-day','30 day'],
   'network':['network','first health','in-network','out of network','provider'],
   'cancer':['cancer','oncology','tumor','malignant'],
@@ -1970,15 +1970,18 @@ function expandSearchSynonyms(query) {
   Object.keys(SEARCH_SYNONYMS).forEach(function(key) {
     // Exact key match on full query already handled above
     if (key === q) return;
-    // Full query is a substring of the key, or key is substring of query
+    // FIX: For short queries (<=3 chars), only allow exact key match (already done above).
+    // Do NOT let "er" match inside "surgery", "cancer", "dermatology", etc.
+    if (q.length <= 3) return;
+    // Full query is a substring of the key — safe for longer queries
     if (key.includes(q)) {
       terms = terms.concat(SEARCH_SYNONYMS[key]);
-    } else if (q.includes(key)) {
+    } else if (q.includes(key) && key.length >= 3) {
       // Key must appear as a whole word in query (not inside another word)
       var keyRe = new RegExp('(?:^|\\s)' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:\\s|$)');
       if (keyRe.test(q)) terms = terms.concat(SEARCH_SYNONYMS[key]);
     }
-    // Fuzzy match on full query
+    // Fuzzy match on full query — only for 4+ char queries
     if (q.length >= 4 && fuzzyMatch(q, key)) {
       terms = terms.concat(SEARCH_SYNONYMS[key]);
       terms.push(key);
@@ -1992,7 +1995,10 @@ function expandSearchSynonyms(query) {
     }
   });
   var unique = [];
-  terms.forEach(function(t) { if (unique.indexOf(t) === -1) unique.push(t); });
+  terms.forEach(function(t) {
+    var trimmed = t.trim();
+    if (trimmed && unique.indexOf(trimmed) === -1) unique.push(trimmed);
+  });
   return unique;
 }
 
@@ -2017,10 +2023,27 @@ function fuzzyMatch(query, text) {
   return false;
 }
 
-function matchesExpanded(text, expandedTerms) {
+// ── WORD-BOUNDARY-SAFE MATCHING ─────────────────────────
+// Short terms (<=3 chars) and medical abbreviations use \b word boundaries
+// to prevent "ER" matching inside "covered", "OOP" inside random words, etc.
+var BR_ABBREVS = ['er','oop','pcp','rx','pt','ot','dme','snf','ltc','ems','mri','ct','iv','gi','or','ob','ed','uc','ded'];
+
+function brTermMatch(text, term) {
+  if (!term || term.length < 2) return false;
   var lower = text.toLowerCase();
+  // For short terms or known abbreviations, require word boundaries
+  if (term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) {
+    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp('\\b' + escaped + '\\b', 'i');
+    return re.test(text);
+  }
+  // For longer, specific terms, substring matching is safe
+  return lower.indexOf(term) !== -1;
+}
+
+function matchesExpanded(text, expandedTerms) {
   for (var i = 0; i < expandedTerms.length; i++) {
-    if (lower.includes(expandedTerms[i])) return true;
+    if (brTermMatch(text, expandedTerms[i])) return true;
   }
   return false;
 }
@@ -2139,7 +2162,10 @@ function hlSearch(text, terms) {
   var safe = escHTML(text);
   terms.forEach(function(term) {
     if (term.length < 2) return;
-    var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    // FIX: Use word boundaries for short terms to prevent highlighting inside words
+    var boundary = (term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) ? '\\b' : '';
+    var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
     safe = safe.replace(re, '<mark class="sr-hl">$1</mark>');
   });
   return safe;
@@ -2159,7 +2185,7 @@ function doSearch(val){
   SEARCH_INDEX.forEach(function(item){
     var matched = false;
     for (var i=0;i<expandedTerms.length;i++){
-      if(item.searchText.includes(expandedTerms[i])){matched=true;break;}
+      if(brTermMatch(item.searchText, expandedTerms[i])){matched=true;break;}
     }
     if(!matched && val.length>=4){
       matched = fuzzyMatch(val.toLowerCase(), item.searchText);
@@ -4971,7 +4997,7 @@ function renderPolicyResults() {
       p.limitations.join(' ') + ' ' + p.benefits.map(function(b){return b.category + ' ' + b.items.join(' ');}).join(' ') +
       ' ' + (p.preEx || '') + ' ' + (p.waitingPeriods || []).join(' ')).toLowerCase();
     for (var t = 0; t < expandedTerms.length; t++) {
-      if (searchable.includes(expandedTerms[t])) return true;
+      if (brTermMatch(searchable, expandedTerms[t])) return true;
     }
     return false;
   });
@@ -5642,9 +5668,10 @@ function brSearch(query) {
       var text = entry.text.toLowerCase();
       var cat = entry.category.toLowerCase();
       var score = 0;
+      // FIX: Use word-boundary-safe matching instead of naive .includes()
       expandedTerms.forEach(function(term) {
-        if (text.includes(term)) score += 2;
-        if (cat.includes(term)) score += 1;
+        if (brTermMatch(entry.text, term)) score += 2;
+        if (brTermMatch(entry.category, term)) score += 1;
       });
       if (score > 0) results.push({ entry: entry, score: score, planName: plan.name, planId: plan.id });
     });
@@ -5665,11 +5692,14 @@ function brFormatResults(results, query) {
 
   var expandedTerms = expandSearchSynonyms(query.toLowerCase());
 
+  // FIX: Word-boundary-safe highlighting — prevents "ER" highlighting inside "covered"
   function highlight(text) {
     var safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     expandedTerms.forEach(function(term) {
       if (term.length < 2) return;
-      var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+      var escaped = term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      var boundary = (term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) ? '\\b' : '';
+      var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
       safe = safe.replace(re, '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>');
     });
     return safe;
@@ -5807,11 +5837,11 @@ function brStructuredAnswer(query, plans) {
     var hasMatch = false;
 
     plan.entries.forEach(function(entry) {
-      var text = entry.text.toLowerCase();
-      var cat = entry.category.toLowerCase();
       var matched = false;
+      var cat = entry.category.toLowerCase();
+      // FIX: Use brTermMatch for word-boundary-safe matching
       for (var i = 0; i < searchTerms.length; i++) {
-        if (text.includes(searchTerms[i]) || cat.includes(searchTerms[i])) { matched = true; break; }
+        if (brTermMatch(entry.text, searchTerms[i]) || brTermMatch(entry.category, searchTerms[i])) { matched = true; break; }
       }
       if (!matched) return;
       hasMatch = true;
@@ -5998,13 +6028,10 @@ function brSmartAnswer(query, plans) {
     var hasDirectMatch = false; // Track if ANY specific term actually matched
 
     plan.entries.forEach(function(entry) {
-      var text = entry.text.toLowerCase();
-      var cat = entry.category.toLowerCase();
-
-      // STRICT matching: only use specific terms, not broad category terms
+      // FIX: Use brTermMatch for word-boundary-safe matching
       var matched = false;
       for (var i=0; i<specificTerms.length; i++) {
-        if (text.includes(specificTerms[i]) || cat.includes(specificTerms[i])) { matched=true; hasDirectMatch=true; break; }
+        if (brTermMatch(entry.text, specificTerms[i]) || brTermMatch(entry.category, specificTerms[i])) { matched=true; hasDirectMatch=true; break; }
       }
       if (!matched) return;
 
@@ -6088,11 +6115,14 @@ function brSmartAnswer(query, plans) {
   return html;
 }
 
+// FIX: Word-boundary-safe highlighting for short terms / medical abbreviations
 function brHl(text, terms) {
   var safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   terms.forEach(function(term) {
     if (term.length < 2) return;
-    var re = new RegExp('(' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
+    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    var boundary = (term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) ? '\\b' : '';
+    var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
     safe = safe.replace(re, '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>');
   });
   return safe;
