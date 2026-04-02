@@ -384,7 +384,7 @@ var PLAN_SCRIPTS = [
       {
         title: "Post Close",
         content:
-          "Congratulations [Customer Name], your application is complete. Do you have a pen and paper? Our customer service number is 855-736-1590, available Monday through Friday, 9:00 a.m. to 9:00 p.m. Eastern.\nYour confirmation number is CHA561337—please keep that for your records.\nNow go ahead and write down FIRST HEALTH NETWORK.\nThe website you can visit to search providers is: providerlocator.firsthealth.com\nThe Plan Administrator / Claims Administrator: Merchants Benefit Administration (MBA). Your monthly billing is handled through FirstEnroll.\nI do want to clarify that this is a private, limited-benefit plan, not an ACA or major medical plan, and it does not provide coverage for maternity, substance abuse, or psychiatric services.\nI also want to explain the 12 and 12 pre-existing condition clause — anything diagnosed in the last 12 months would have a 12-month waiting period. There is a standard 30-day waiting period for any hospital, sickness and scheduled doctor visits.\nAlright [Customer Name], you've been an absolute pleasure. Now do you have any questions before we disconnect?",
+          "Congratulations [Customer Name], your application is complete. Do you have a pen and paper? Our customer service number is 855-736-1590, available Monday through Friday, 9:00 a.m. to 9:00 p.m. Eastern.\nYour confirmation number is CHA561337—please keep that for your records.\nNow go ahead and write down FIRST HEALTH NETWORK.\nThe website you can visit to search providers is: providerlocator.firsthealth.com\nThe Plan Administrator / Claims Administrator: Merchants Benefit Administrators (MBA). Your monthly billing is handled through FirstEnroll.\nI do want to clarify that this is a private, limited-benefit plan, not an ACA or major medical plan, and it does not provide coverage for maternity, substance abuse, or psychiatric services.\nI also want to explain the 12 and 12 pre-existing condition clause — anything diagnosed in the last 12 months would have a 12-month waiting period. There is a standard 30-day waiting period for any hospital, sickness and scheduled doctor visits.\nAlright [Customer Name], you've been an absolute pleasure. Now do you have any questions before we disconnect?",
       },
     ],
   },
@@ -415,7 +415,7 @@ var PLAN_SCRIPTS = [
       {
         title: "Post Close",
         content:
-          "Congratulations [Customer Name], your application is complete. Our customer service number is 855-736-1590, Monday–Friday 9am–9pm Eastern.\nYour confirmation number is CHA561337.\nFirst Health Network — providerlocator.firsthealth.com\nPlan Administrator / Claims Administrator: Merchants Benefit Administration (MBA). Monthly billing through FirstEnroll.\nThis is a private, limited-benefit plan — NOT ACA or major medical. Does not cover maternity, substance abuse, or psychiatric services.\n12/12 pre-existing condition clause. 30-day waiting period for hospital, sickness and scheduled doctor visits.\nAlright [Customer Name], you've been an absolute pleasure. Any questions before we disconnect?",
+          "Congratulations [Customer Name], your application is complete. Our customer service number is 855-736-1590, Monday–Friday 9am–9pm Eastern.\nYour confirmation number is CHA561337.\nFirst Health Network — providerlocator.firsthealth.com\nPlan Administrator / Claims Administrator: Merchants Benefit Administrators (MBA). Monthly billing through FirstEnroll.\nThis is a private, limited-benefit plan — NOT ACA or major medical. Does not cover maternity, substance abuse, or psychiatric services.\n12/12 pre-existing condition clause. 30-day waiting period for hospital, sickness and scheduled doctor visits.\nAlright [Customer Name], you've been an absolute pleasure. Any questions before we disconnect?",
       },
     ],
   },
@@ -566,7 +566,7 @@ var PLAN_SCRIPTS = [
       {
         title: "Opening & Medical Underwriting",
         content:
-          "NEO Pinnacle STM Traditional\n✖ ( DO NOT ASK IF THEY ARE STILL THERE )\nAlright [Customer Name], I have some excellent news for you. AWA Americas Workers Association — Multiplan PHCS Network. Coverage for doctor visits, blood and lab work, urgent care, medical, surgical, hospital, and emergency room. Requires medical underwriting. Deductible: $__________.\nIn order to determine eligibility I will read you a list of 15 conditions. Please confirm if you currently have or if you've ever been diagnosed with the following:\nHeart Disorder, Stroke, Chron's Disease, Ulcerative Colitis, Liver or Kidney Disorder, Emphysema, COPD, Cancer or Tumor, Alcohol or Drug Abuse, HIV or AIDS, Multiple Sclerosis, Tuberculosis, Autism, Schizophrenia, Lupus, Bariatric or Weight Loss Surgery, Pregnancy?\n▶ ( Wait for Answer )\nMonthly rate: $___. AWA association fee: $___. First month: $___. Monthly after: $___. Affordable today?\n▶ ( Wait for answer )\nPCP/urgent care co-pay: $____. Specialist co-pay: $____. Not subject to deductible.\nFor hospitalization/surgery: $_____ deductible + additional $500.00, plus 80/20 or 50/50 coinsurance. Max out-of-pocket: $2000. Cap: $_______.\nHow is this sounding so far?\n✖ ( DO NOT WAIT - GO TO RX )",
+          "NEO Pinnacle STM Traditional\n✖ ( DO NOT ASK IF THEY ARE STILL THERE )\nAlright [Customer Name], I have some excellent news for you. AWA American Workers Association — Multiplan PHCS Network. Coverage for doctor visits, blood and lab work, urgent care, medical, surgical, hospital, and emergency room. Requires medical underwriting. Deductible: $__________.\nIn order to determine eligibility I will read you a list of 15 conditions. Please confirm if you currently have or if you've ever been diagnosed with the following:\nHeart Disorder, Stroke, Chron's Disease, Ulcerative Colitis, Liver or Kidney Disorder, Emphysema, COPD, Cancer or Tumor, Alcohol or Drug Abuse, HIV or AIDS, Multiple Sclerosis, Tuberculosis, Autism, Schizophrenia, Lupus, Bariatric or Weight Loss Surgery, Pregnancy?\n▶ ( Wait for Answer )\nMonthly rate: $___. AFRP association fee: $___. First month: $___. Monthly after: $___. Affordable today?\n▶ ( Wait for answer )\nPCP/urgent care co-pay: $____. Specialist co-pay: $____. Not subject to deductible.\nFor hospitalization/surgery: $_____ deductible + additional $500.00, plus 80/20 or 50/50 coinsurance. Max out-of-pocket: $2000. Cap: $_______.\nHow is this sounding so far?\n✖ ( DO NOT WAIT - GO TO RX )",
       },
       {
         title: "Prescription, Closing & Verification",
@@ -576,7 +576,7 @@ var PLAN_SCRIPTS = [
       {
         title: "Post Close",
         content:
-          "Customer service: 855-736-1590. Confirmation: CHA561337.\nMultiplan PHCS Network — providersearch.multiplan.com\nUnderwritten by Everest Reinsurance Company, offered through AWA Americas Workers Association. Billing through Neo Health Solutions.\nThis is a private, SHORT TERM health plan — NOT ACA or major medical. No maternity, substance abuse, or psychiatric coverage.\n12/12 pre-ex clause. 30-day waiting period.\nDependent changes can be done on plan's annual anniversary.\nAlright [Customer Name], any questions before we disconnect?",
+          "Customer service: 855-736-1590. Confirmation: CHA561337.\nMultiplan PHCS Network — providersearch.multiplan.com\nUnderwritten by Everest Reinsurance Company, offered through AWA American Workers Association. Billing through Neo Health Solutions.\nThis is a private, SHORT TERM health plan — NOT ACA or major medical. No maternity, substance abuse, or psychiatric coverage.\n12/12 pre-ex clause. 30-day waiting period.\nDependent changes can be done on plan's annual anniversary.\nAlright [Customer Name], any questions before we disconnect?",
       },
     ],
   },
@@ -587,7 +587,7 @@ var PLAN_SCRIPTS = [
       {
         title: "Opening & Medical Underwriting",
         content:
-          "AFRP Galena STM (Elite / Standard / Economy)\n✖ ( DO NOT ASK IF THEY ARE STILL THERE )\nAlright [Customer Name], I have some excellent news for you. SGIC — Multiplan PHCS Network. Coverage for doctor visits, blood and lab work, urgent care, medical, surgical, hospital, and emergency room. Medical underwriting required. Deductible: $__________.\nEligibility conditions list (read all 17):\nHeart Disorder, Stroke, Chron's Disease, Ulcerative Colitis, Liver or Kidney Disorder, Emphysema, COPD, Cancer or Tumor, Alcohol or Drug Abuse, HIV or AIDS, Multiple Sclerosis, Tuberculosis, Autism, Schizophrenia, Lupus, Bariatric or Weight Loss Surgery, Pregnancy?\n▶ ( Wait for Answer )\nMonthly rate: $___. AWA association fee: $___. First month: $___. Monthly after: $___. Affordable today?\n▶ ( Wait for answer )\nPCP co-pay: $40.00. Specialist co-pay: $60.00. Not subject to deductible.\nFor hospitalization/surgery: $_____ deductible + 80/20, 70/30 or 50/50 coinsurance. Max OOP: $5,000 or $10,000.\nEconomy plan note: Doctor visits ARE subject to deductible.\nHow is this sounding so far?\n✖ ( DO NOT WAIT - GO TO RX )",
+          "AFRP Galena STM (Elite / Standard / Economy)\n✖ ( DO NOT ASK IF THEY ARE STILL THERE )\nAlright [Customer Name], I have some excellent news for you. SGIC — Multiplan PHCS Network. Coverage for doctor visits, blood and lab work, urgent care, medical, surgical, hospital, and emergency room. Medical underwriting required. Deductible: $__________.\nEligibility conditions list (read all 17):\nHeart Disorder, Stroke, Chron's Disease, Ulcerative Colitis, Liver or Kidney Disorder, Emphysema, COPD, Cancer or Tumor, Alcohol or Drug Abuse, HIV or AIDS, Multiple Sclerosis, Tuberculosis, Autism, Schizophrenia, Lupus, Bariatric or Weight Loss Surgery, Pregnancy?\n▶ ( Wait for Answer )\nMonthly rate: $___. AFRP association fee: $___. First month: $___. Monthly after: $___. Affordable today?\n▶ ( Wait for answer )\nPCP co-pay: $40.00. Specialist co-pay: $60.00. Not subject to deductible.\nFor hospitalization/surgery: $_____ deductible + 80/20, 70/30 or 50/50 coinsurance. Max OOP: $5,000 or $10,000.\nEconomy plan note: Doctor visits ARE subject to deductible.\nHow is this sounding so far?\n✖ ( DO NOT WAIT - GO TO RX )",
       },
       {
         title: "Prescription, Closing & Verification",
@@ -597,7 +597,7 @@ var PLAN_SCRIPTS = [
       {
         title: "Post Close",
         content:
-          "Customer service: 855-736-1590. Confirmation: CHA561337.\nMultiplan Network — providersearch.multiplan.com\nUnderwritten by SGIC (Southern Guarantee Insurance Company), offered through Association for Responsible Partners. Billing through Neo Health Solutions.\nThis is a private, SHORT TERM health plan — NOT ACA or major medical. No maternity, substance abuse, or psychiatric coverage.\n12/12 pre-ex clause. 30-day waiting period.\nDependent changes on annual anniversary.\nAlright [Customer Name], any questions before we disconnect?",
+          "Customer service: 855-736-1590. Confirmation: CHA561337.\nMultiplan Network — providersearch.multiplan.com\nUnderwritten by SGIC (Southern Guarantee Insurance Company), offered through Association for Responsible Planners. Billing through Neo Health Solutions.\nThis is a private, SHORT TERM health plan — NOT ACA or major medical. No maternity, substance abuse, or psychiatric coverage.\n12/12 pre-ex clause. 30-day waiting period.\nDependent changes on annual anniversary.\nAlright [Customer Name], any questions before we disconnect?",
       },
     ],
   },
@@ -644,7 +644,7 @@ var PLAN_SCRIPTS = [
       {
         title: "Post Close",
         content:
-          "Customer service: 855-736-1590. Confirmation: CHA561337.\nMultiplan PHCS Network — providersearch.multiplan.com\nUnderwritten by Everest Reinsurance Company, offered through AWA Americas Workers Association. Billing through Neo Health Solutions.\nNOT ACA or major medical. No maternity, substance abuse, or psychiatric coverage.\n12/12 pre-ex clause. 30-day waiting period.\nAlright [Customer Name], any questions before we disconnect?",
+          "Customer service: 855-736-1590. Confirmation: CHA561337.\nMultiplan PHCS Network — providersearch.multiplan.com\nUnderwritten by Everest Reinsurance Company, offered through AWA American Workers Association. Billing through Neo Health Solutions.\nNOT ACA or major medical. No maternity, substance abuse, or psychiatric coverage.\n12/12 pre-ex clause. 30-day waiting period.\nAlright [Customer Name], any questions before we disconnect?",
       },
     ],
   },
