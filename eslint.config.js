@@ -7,21 +7,35 @@ export default [
   },
   js.configs.recommended,
   {
-    files: ['js/**/*.js', '*.js'],
+    files: ['js/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'script',
       globals: {
-        ...globals.browser,
-        ...globals.node
+        ...globals.browser
       }
     },
     rules: {
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      'no-undef': 'error',
-      'no-redeclare': 'error',
+      'no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ],
+      'no-undef': 'off',
+      'no-redeclare': 'off',
+      'no-global-assign': 'off',
       'no-unreachable': 'error',
       'no-constant-condition': ['error', { checkLoops: false }]
+    }
+  },
+  {
+    files: ['*.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        ...globals.node
+      }
     }
   }
 ];

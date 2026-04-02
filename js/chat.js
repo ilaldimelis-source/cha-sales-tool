@@ -19,7 +19,7 @@ var LI = {
   mic: '<svg style="width:12px;height:12px;vertical-align:middle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg>',
   clipboard:
     '<svg style="width:14px;height:14px;vertical-align:middle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/></svg>',
-  dot: '<svg style="width:5px;height:5px;vertical-align:middle;margin-right:4px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>',
+  dot: '<svg style="width:5px;height:5px;vertical-align:middle;margin-right:4px" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>'
 };
 // Smart engine — no API key needed
 
@@ -31,22 +31,22 @@ function brBuildSOB(p) {
     });
   });
   p.limitations.forEach(function (l) {
-    entries.push({ category: "Exclusions / Limitations", text: l });
+    entries.push({ category: 'Exclusions / Limitations', text: l });
   });
   entries.push({
-    category: "Waiting Periods",
-    text: p.waitingPeriods.join(" | "),
+    category: 'Waiting Periods',
+    text: p.waitingPeriods.join(' | ')
   });
-  entries.push({ category: "Pre-Existing Conditions", text: p.preEx });
-  entries.push({ category: "Agent Note", text: p.planNotes });
+  entries.push({ category: 'Pre-Existing Conditions', text: p.preEx });
+  entries.push({ category: 'Agent Note', text: p.planNotes });
   return entries;
 }
 
-var brActiveFilter = "all";
+var brActiveFilter = 'all';
 
 function brInit() {
-  if (typeof POLICY_DOCS === "undefined" || !POLICY_DOCS.length) return;
-  if (!document.getElementById("br-plan-bar")) return;
+  if (typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return;
+  if (!document.getElementById('br-plan-bar')) return;
 
   BR_PLANS = POLICY_DOCS.map(function (p) {
     return {
@@ -54,31 +54,31 @@ function brInit() {
       name: p.name,
       group: p.group,
       type: p.type,
-      entries: brBuildSOB(p),
+      entries: brBuildSOB(p)
     };
   });
   if (!BR_PLANS.length) return;
   brActivePlan = BR_PLANS[0];
 
   // Build filter bar: All Plans | MEC | STM | Limited
-  var filterBar = document.getElementById("br-filter-bar");
+  var filterBar = document.getElementById('br-filter-bar');
   var filters = [
-    { key: "all", label: "All Plans" },
-    { key: "MEC", label: "MEC" },
-    { key: "STM", label: "STM" },
-    { key: "Limited", label: "Limited" },
+    { key: 'all', label: 'All Plans' },
+    { key: 'MEC', label: 'MEC' },
+    { key: 'STM', label: 'STM' },
+    { key: 'Limited', label: 'Limited' }
   ];
   filters.forEach(function (f) {
-    var btn = document.createElement("button");
-    btn.className = "br-filter-btn" + (f.key === "all" ? " active" : "");
+    var btn = document.createElement('button');
+    btn.className = 'br-filter-btn' + (f.key === 'all' ? ' active' : '');
     btn.textContent = f.label;
     btn.dataset.filter = f.key;
     btn.onclick = function () {
       brActiveFilter = f.key;
-      document.querySelectorAll(".br-filter-btn").forEach(function (b) {
-        b.classList.toggle("active", b.dataset.filter === f.key);
+      document.querySelectorAll('.br-filter-btn').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.filter === f.key);
       });
-      if (f.key === "all") {
+      if (f.key === 'all') {
         brSearchAllPlans = true;
         brRenderPlanButtons(null);
       } else {
@@ -90,12 +90,12 @@ function brInit() {
         });
         if (firstInGroup) {
           brActivePlan = firstInGroup;
-          document.querySelectorAll(".br-plan-btn").forEach(function (b) {
-            b.classList.toggle("active", b.dataset.id === firstInGroup.id);
+          document.querySelectorAll('.br-plan-btn').forEach(function (b) {
+            b.classList.toggle('active', b.dataset.id === firstInGroup.id);
           });
         }
       }
-      document.getElementById("br-msgs").innerHTML = "";
+      document.getElementById('br-msgs').innerHTML = '';
       brShowWelcome();
     };
     filterBar.appendChild(btn);
@@ -110,8 +110,8 @@ function brInit() {
 }
 
 function brRenderPlanButtons(groupFilter) {
-  var planBar = document.getElementById("br-plan-bar");
-  planBar.innerHTML = "";
+  var planBar = document.getElementById('br-plan-bar');
+  planBar.innerHTML = '';
 
   var plans = groupFilter
     ? BR_PLANS.filter(function (p) {
@@ -120,25 +120,25 @@ function brRenderPlanButtons(groupFilter) {
     : BR_PLANS;
 
   plans.forEach(function (p) {
-    var btn = document.createElement("button");
+    var btn = document.createElement('button');
     btn.className =
-      "br-plan-btn" +
-      (p.id === brActivePlan.id && !brSearchAllPlans ? " active" : "");
+      'br-plan-btn' +
+      (p.id === brActivePlan.id && !brSearchAllPlans ? ' active' : '');
     btn.textContent = p.name;
     btn.dataset.id = p.id;
     btn.onclick = function () {
       brSearchAllPlans = false;
       brActiveFilter = p.group;
-      document.querySelectorAll(".br-filter-btn").forEach(function (b) {
-        b.classList.toggle("active", b.dataset.filter === p.group);
+      document.querySelectorAll('.br-filter-btn').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.filter === p.group);
       });
       brActivePlan = BR_PLANS.find(function (x) {
         return x.id === p.id;
       });
-      document.querySelectorAll(".br-plan-btn").forEach(function (b) {
-        b.classList.toggle("active", b.dataset.id === p.id);
+      document.querySelectorAll('.br-plan-btn').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.id === p.id);
       });
-      document.getElementById("br-msgs").innerHTML = "";
+      document.getElementById('br-msgs').innerHTML = '';
       brShowWelcome();
     };
     planBar.appendChild(btn);
@@ -147,75 +147,75 @@ function brRenderPlanButtons(groupFilter) {
 
 function brShowWelcome() {
   var name = brSearchAllPlans
-    ? "All Plans"
+    ? 'All Plans'
     : brActivePlan
       ? brActivePlan.name
-      : "a plan";
+      : 'a plan';
   brAddMsg(
-    "ai",
+    'ai',
     LI.clipboard +
-      " <strong>" +
+      ' <strong>' +
       name +
-      '</strong> loaded — type any keyword to search benefits, even abbreviations like x-ray, ER, MRI, rx, chiro.<br><small style="color:#9A8F7E">Synonym matching is ON — "x-ray" also finds radiology, imaging, diagnostic, etc.</small>',
+      '</strong> loaded — type any keyword to search benefits, even abbreviations like x-ray, ER, MRI, rx, chiro.<br><small style="color:#9A8F7E">Synonym matching is ON — "x-ray" also finds radiology, imaging, diagnostic, etc.</small>'
   );
 }
 
-document.getElementById("br-toggle").addEventListener("click", function () {
+document.getElementById('br-toggle').addEventListener('click', function () {
   brOpen = !brOpen;
-  document.getElementById("br-panel").classList.toggle("open", brOpen);
-  document.getElementById("br-toggle").classList.toggle("open", brOpen);
+  document.getElementById('br-panel').classList.toggle('open', brOpen);
+  document.getElementById('br-toggle').classList.toggle('open', brOpen);
   if (brOpen) {
-    document.getElementById("br-input").focus();
+    document.getElementById('br-input').focus();
     brScroll();
   }
 });
 
-document.getElementById("br-input").addEventListener("input", function () {
-  this.style.height = "auto";
-  this.style.height = Math.min(this.scrollHeight, 110) + "px";
-  document.getElementById("br-send").disabled = !this.value.trim();
+document.getElementById('br-input').addEventListener('input', function () {
+  this.style.height = 'auto';
+  this.style.height = Math.min(this.scrollHeight, 110) + 'px';
+  document.getElementById('br-send').disabled = !this.value.trim();
 });
 
-document.getElementById("br-input").addEventListener("keydown", function (e) {
-  if (e.key === "Enter" && !e.shiftKey) {
+document.getElementById('br-input').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
     brSend();
   }
 });
 
-document.getElementById("br-send").disabled = true;
+document.getElementById('br-send').disabled = true;
 
 function brQuick(text) {
-  document.getElementById("br-input").value = text;
-  document.getElementById("br-input").dispatchEvent(new Event("input"));
+  document.getElementById('br-input').value = text;
+  document.getElementById('br-input').dispatchEvent(new Event('input'));
   brSend();
 }
 
 function brClear() {
-  document.getElementById("br-msgs").innerHTML = "";
+  document.getElementById('br-msgs').innerHTML = '';
   brShowWelcome();
 }
 
 function brAddMsg(role, html) {
-  var msgs = document.getElementById("br-msgs");
-  var d = document.createElement("div");
-  d.className = "br-msg " + role;
+  var msgs = document.getElementById('br-msgs');
+  var d = document.createElement('div');
+  d.className = 'br-msg ' + role;
   d.innerHTML =
     '<div class="br-lbl">' +
-    (role === "user"
-      ? "You"
-      : role === "ai-thinking"
-        ? "AI Thinking..."
-        : "Results") +
+    (role === 'user'
+      ? 'You'
+      : role === 'ai-thinking'
+        ? 'AI Thinking...'
+        : 'Results') +
     '</div><div class="br-bub">' +
     html +
-    "</div>";
+    '</div>';
   msgs.appendChild(d);
   brScroll();
 }
 
 function brScroll() {
-  var msgs = document.getElementById("br-msgs");
+  var msgs = document.getElementById('br-msgs');
   setTimeout(function () {
     msgs.scrollTop = msgs.scrollHeight;
   }, 40);
@@ -246,7 +246,7 @@ function brSearch(query) {
           entry: entry,
           score: score,
           planName: plan.name,
-          planId: plan.id,
+          planId: plan.id
         });
     });
     allResults = allResults.concat(results);
@@ -264,16 +264,16 @@ function brFormatResults(results, query) {
     var synonymNote =
       expandedTerms.length > 1
         ? '<br><small style="color:#B8ADA0">Also searched: ' +
-          expandedTerms.slice(1, 5).join(", ") +
-          (expandedTerms.length > 5 ? " + more" : "") +
-          "</small>"
-        : "";
+          expandedTerms.slice(1, 5).join(', ') +
+          (expandedTerms.length > 5 ? ' + more' : '') +
+          '</small>'
+        : '';
     return (
       '<span style="color:#9A8F7E">No results for <em>' +
       escHTML(query) +
-      "</em>" +
-      (brSearchAllPlans ? " across all plans" : " in " + brActivePlan.name) +
-      "." +
+      '</em>' +
+      (brSearchAllPlans ? ' across all plans' : ' in ' + brActivePlan.name) +
+      '.' +
       synonymNote +
       '<br>Try different keywords or tap "All Plans" to search everything.</span>' +
       '<div style="margin-top:8px;"><button onclick="brAskAI(decodeURIComponent(\'' +
@@ -287,20 +287,20 @@ function brFormatResults(results, query) {
   // FIX: Word-boundary-safe highlighting — prevents "ER" highlighting inside "covered"
   function highlight(text) {
     var safe = text
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
     expandedTerms.forEach(function (term) {
       if (term.length < 2) return;
-      var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
       var boundary =
         term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1
-          ? "\\b"
-          : "";
-      var re = new RegExp("(" + boundary + escaped + boundary + ")", "gi");
+          ? '\\b'
+          : '';
+      var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
       safe = safe.replace(
         re,
-        '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>',
+        '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>'
       );
     });
     return safe;
@@ -309,7 +309,7 @@ function brFormatResults(results, query) {
   // Group by plan, then by category
   var byPlan = {};
   results.forEach(function (r) {
-    var key = r.planName || "Unknown";
+    var key = r.planName || 'Unknown';
     if (!byPlan[key]) byPlan[key] = {};
     var cat = r.entry.category;
     if (!byPlan[key][cat]) byPlan[key][cat] = [];
@@ -319,35 +319,35 @@ function brFormatResults(results, query) {
   var html =
     '<div style="font-size:11px;color:#9A8F7E;margin-bottom:8px">' +
     results.length +
-    " result(s)" +
+    ' result(s)' +
     (brSearchAllPlans
-      ? " across all plans"
-      : " in <strong>" + brActivePlan.name + "</strong>") +
-    "</div>";
+      ? ' across all plans'
+      : ' in <strong>' + brActivePlan.name + '</strong>') +
+    '</div>';
 
   var catColors = {
-    "Exclusions / Limitations": "#FFFFFF",
-    "Waiting Periods": "#FFFFFF",
-    "Pre-Existing Conditions": "#FFFFFF",
-    "Agent Note": "#F8FAFF",
+    'Exclusions / Limitations': '#FFFFFF',
+    'Waiting Periods': '#FFFFFF',
+    'Pre-Existing Conditions': '#FFFFFF',
+    'Agent Note': '#F8FAFF'
   };
   var catBorders = {
-    "Exclusions / Limitations": "#E8EBF5",
-    "Waiting Periods": "#E8EBF5",
-    "Pre-Existing Conditions": "#E8EBF5",
-    "Agent Note": "#E8EBF5",
+    'Exclusions / Limitations': '#E8EBF5',
+    'Waiting Periods': '#E8EBF5',
+    'Pre-Existing Conditions': '#E8EBF5',
+    'Agent Note': '#E8EBF5'
   };
   var catLeftBorders = {
-    "Exclusions / Limitations": "#DC2626",
-    "Waiting Periods": "#F59E0B",
-    "Pre-Existing Conditions": "#F59E0B",
-    "Agent Note": "#5175F1",
+    'Exclusions / Limitations': '#DC2626',
+    'Waiting Periods': '#F59E0B',
+    'Pre-Existing Conditions': '#F59E0B',
+    'Agent Note': '#5175F1'
   };
   var catIcons = {
-    "Exclusions / Limitations": LI.ban,
-    "Waiting Periods": LI.clock,
-    "Pre-Existing Conditions": LI.warn,
-    "Agent Note": LI.bulb,
+    'Exclusions / Limitations': LI.ban,
+    'Waiting Periods': LI.clock,
+    'Pre-Existing Conditions': LI.warn,
+    'Agent Note': LI.bulb
   };
 
   Object.keys(byPlan).forEach(function (planName) {
@@ -355,39 +355,39 @@ function brFormatResults(results, query) {
       html +=
         '<div style="font-size:11px;font-weight:800;color:#5175F1;margin:8px 0 4px;letter-spacing:0.04em;text-transform:uppercase;">' +
         LI.file +
-        " " +
+        ' ' +
         planName +
-        "</div>";
+        '</div>';
     }
     var grouped = byPlan[planName];
     Object.keys(grouped).forEach(function (cat) {
-      var bg = catColors[cat] || "#FFFFFF";
-      var border = catBorders[cat] || "#E8EBF5";
-      var leftBorder = catLeftBorders[cat] || "#29A26A";
+      var bg = catColors[cat] || '#FFFFFF';
+      var border = catBorders[cat] || '#E8EBF5';
+      var leftBorder = catLeftBorders[cat] || '#29A26A';
       var icon = catIcons[cat] || LI.check;
       html +=
         '<div style="background:' +
         bg +
-        ";border:1px solid " +
+        ';border:1px solid ' +
         border +
-        ";border-left:3px solid " +
+        ';border-left:3px solid ' +
         leftBorder +
         ';border-radius:8px;padding:9px 12px;margin-bottom:7px;">';
       html +=
         '<div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;color:#374151">' +
         icon +
-        " " +
+        ' ' +
         cat +
-        "</div>";
+        '</div>';
       grouped[cat].forEach(function (text) {
         html +=
           '<div style="font-size:12.5px;line-height:1.55;margin-bottom:4px;color:#1C2035;padding-left:8px;border-left:2px solid #E8EBF5">' +
           LI.dot +
-          " " +
+          ' ' +
           highlight(text) +
-          "</div>";
+          '</div>';
       });
-      html += "</div>";
+      html += '</div>';
     });
   });
 
@@ -397,21 +397,21 @@ function brFormatResults(results, query) {
     encodeURIComponent(query) +
     '\'))" style="background:#5175F1;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:11px;font-weight:700;cursor:pointer;opacity:0.85;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.85">' +
     LI.brain +
-    " Deep Analysis</button></div>";
+    ' Deep Analysis</button></div>';
 
   return html;
 }
 
 function brSend() {
-  var inp = document.getElementById("br-input");
+  var inp = document.getElementById('br-input');
   var query = inp.value.trim();
   if (!query) return;
 
-  inp.value = "";
-  inp.style.height = "auto";
-  document.getElementById("br-send").disabled = true;
+  inp.value = '';
+  inp.style.height = 'auto';
+  document.getElementById('br-send').disabled = true;
 
-  brAddMsg("user", escHTML(query));
+  brAddMsg('user', escHTML(query));
 
   // PRIMARY BEHAVIOR: Dashboard first → AI fallback → Safe fallback
   var plansToUse = brSearchAllPlans
@@ -420,10 +420,10 @@ function brSend() {
       ? [brActivePlan]
       : [];
   var structured = brStructuredAnswer(query, plansToUse);
-  brAddMsg("ai", structured);
+  brAddMsg('ai', structured);
 
-  document.getElementById("br-send").disabled = false;
-  document.getElementById("br-input").focus();
+  document.getElementById('br-send').disabled = false;
+  document.getElementById('br-input').focus();
 }
 
 // ── STRUCTURED ANSWER ENGINE ──────────────────────────────────────────
@@ -438,37 +438,37 @@ var REBUTTALS = {
     "Fair question. That's excluded from this plan. But most of my clients pick this plan because it covers what hits their wallet the hardest — ER visits, hospital stays, prescriptions — without the premium going through the roof. Does that line up with what you're looking for?",
     "Not on this one, I'll be upfront about that. But the reason people choose this plan is the value — you're getting real coverage for the things that actually come up, and you're not paying extra for benefits you'll never touch. Let me show you what I mean.",
     "That's not included — and I'd rather tell you now than have you find out later. But here's what I want you to see: look at everything this plan DOES cover. Most people are surprised how much they're getting for this premium.",
-    "It's not covered under this plan. But before you write it off — can I show you what IS included? Because nine times out of ten, when people see the full picture, they realize this plan handles the stuff they'd actually need.",
+    "It's not covered under this plan. But before you write it off — can I show you what IS included? Because nine times out of ten, when people see the full picture, they realize this plan handles the stuff they'd actually need."
   ],
   covered: [
     "You're covered for that — it's built right into the plan. No surprises.",
     "Good news — that's included. Let me show you exactly how it works so you know what to expect.",
     "You're all set on that one. It's part of your core benefits.",
     "That's covered. And the best part — you don't have to jump through hoops to use it.",
-    "Yes, that's in there. This is one of the reasons people like this plan — it covers the things that actually matter.",
+    "Yes, that's in there. This is one of the reasons people like this plan — it covers the things that actually matter."
   ],
   partial: [
-    "You do have coverage for that, but there are some limits I want you to know about upfront — no surprises down the road.",
+    'You do have coverage for that, but there are some limits I want you to know about upfront — no surprises down the road.',
     "It's covered, but with a cap. Let me walk you through exactly what the plan pays so you know what to expect.",
     "There is a benefit for that — it's not unlimited, but it's there. Let me break down the numbers so you can see if it works for your situation.",
-    "You're partially covered. I'd rather explain the details now so you feel confident about what you're getting.",
+    "You're partially covered. I'd rather explain the details now so you feel confident about what you're getting."
   ],
   verify: [
     "That's a great detail question — let me pull up the exact language so I give you the right answer, not a guess.",
-    "I want to get you the precise answer on that, not a ballpark. Give me one second to look it up.",
-    "Good question — rather than wing it, let me check the specifics so you have the real numbers.",
-    "I could give you a general answer, but you deserve the exact details. Let me confirm that real quick.",
+    'I want to get you the precise answer on that, not a ballpark. Give me one second to look it up.',
+    'Good question — rather than wing it, let me check the specifics so you have the real numbers.',
+    'I could give you a general answer, but you deserve the exact details. Let me confirm that real quick.'
   ],
   waiting: [
     "You're covered for that — but there is a waiting period before it kicks in. For accidents, you're covered from Day 1. For sickness, it's 30 days. After that, you're good to go.",
     "That benefit does have a waiting period, and I want to be upfront about that. The good news is once it's met, you're fully covered. Let me explain the timeline.",
-    "There's a short waiting period on that one — it's standard across the industry. But once you clear it, the coverage is there when you need it.",
+    "There's a short waiting period on that one — it's standard across the industry. But once you clear it, the coverage is there when you need it."
   ],
   preex: [
     "If that's something you've been treated for in the last 12 months, there is a waiting period on it — I want to be transparent. After 12 months, you're covered just like anything else. And everything that's NOT pre-existing? Covered right away.",
     "Pre-existing conditions do have a 12-month exclusion period — that's industry standard. But here's the thing: after that year, it's covered. And in the meantime, all your other benefits are active from day one.",
-    "I want to be honest with you — if it's pre-existing, there's a 12-month wait. But don't let that be the only thing you see. Everything else on this plan is working for you right away, and after 12 months, that condition is covered too.",
-  ],
+    "I want to be honest with you — if it's pre-existing, there's a 12-month wait. But don't let that be the only thing you see. Everything else on this plan is working for you right away, and after 12 months, that condition is covered too."
+  ]
 };
 
 function pickRebuttal(type) {
@@ -487,116 +487,116 @@ function brStructuredAnswer(query, plans) {
   });
   // Also add query words individually for partial matching (skip stop words + short words)
   var STOP_WORDS = [
-    "the",
-    "this",
-    "that",
-    "what",
-    "does",
-    "they",
-    "them",
-    "their",
-    "have",
-    "has",
-    "had",
-    "been",
-    "being",
-    "will",
-    "would",
-    "could",
-    "should",
-    "about",
-    "from",
-    "with",
-    "just",
-    "like",
-    "more",
-    "some",
-    "than",
-    "were",
-    "there",
-    "here",
-    "when",
-    "where",
-    "which",
-    "into",
-    "also",
-    "each",
-    "other",
-    "only",
-    "very",
-    "much",
-    "such",
-    "over",
-    "most",
-    "same",
-    "make",
-    "after",
-    "before",
-    "back",
-    "even",
-    "take",
-    "come",
-    "give",
-    "look",
-    "find",
-    "know",
-    "want",
-    "tell",
-    "work",
-    "keep",
-    "help",
-    "show",
-    "turn",
-    "move",
-    "live",
-    "long",
-    "got",
-    "get",
-    "getting",
-    "any",
-    "can",
-    "are",
-    "for",
-    "but",
-    "all",
-    "how",
-    "who",
-    "its",
-    "our",
-    "you",
-    "your",
-    "his",
-    "her",
-    "him",
-    "she",
-    "really",
-    "still",
-    "cover",
-    "covered",
-    "coverage",
-    "include",
-    "included",
-    "includes",
-    "plan",
-    "plans",
-    "process",
-    "service",
-    "services",
-    "cost",
-    "costs",
-    "need",
-    "needs",
-    "going",
-    "much",
-    "many",
-    "also",
-    "right",
-    "good",
-    "best",
-    "info",
-    "information",
-    "question",
-    "answer",
+    'the',
+    'this',
+    'that',
+    'what',
+    'does',
+    'they',
+    'them',
+    'their',
+    'have',
+    'has',
+    'had',
+    'been',
+    'being',
+    'will',
+    'would',
+    'could',
+    'should',
+    'about',
+    'from',
+    'with',
+    'just',
+    'like',
+    'more',
+    'some',
+    'than',
+    'were',
+    'there',
+    'here',
+    'when',
+    'where',
+    'which',
+    'into',
+    'also',
+    'each',
+    'other',
+    'only',
+    'very',
+    'much',
+    'such',
+    'over',
+    'most',
+    'same',
+    'make',
+    'after',
+    'before',
+    'back',
+    'even',
+    'take',
+    'come',
+    'give',
+    'look',
+    'find',
+    'know',
+    'want',
+    'tell',
+    'work',
+    'keep',
+    'help',
+    'show',
+    'turn',
+    'move',
+    'live',
+    'long',
+    'got',
+    'get',
+    'getting',
+    'any',
+    'can',
+    'are',
+    'for',
+    'but',
+    'all',
+    'how',
+    'who',
+    'its',
+    'our',
+    'you',
+    'your',
+    'his',
+    'her',
+    'him',
+    'she',
+    'really',
+    'still',
+    'cover',
+    'covered',
+    'coverage',
+    'include',
+    'included',
+    'includes',
+    'plan',
+    'plans',
+    'process',
+    'service',
+    'services',
+    'cost',
+    'costs',
+    'need',
+    'needs',
+    'going',
+    'much',
+    'many',
+    'also',
+    'right',
+    'good',
+    'best',
+    'info',
+    'information',
+    'question',
+    'answer'
   ];
   q.split(/\s+/).forEach(function (w) {
     if (
@@ -637,10 +637,10 @@ function brStructuredAnswer(query, plans) {
       if (!matched) return;
       hasMatch = true;
 
-      if (cat.includes("exclusion") || cat.includes("limitation"))
+      if (cat.includes('exclusion') || cat.includes('limitation'))
         exclusions.push(entry.text);
-      else if (cat.includes("waiting")) waiting.push(entry.text);
-      else if (cat.includes("pre-existing")) preex.push(entry.text);
+      else if (cat.includes('waiting')) waiting.push(entry.text);
+      else if (cat.includes('pre-existing')) preex.push(entry.text);
       else benefits.push(entry.text);
     });
 
@@ -650,7 +650,7 @@ function brStructuredAnswer(query, plans) {
         benefits: benefits,
         exclusions: exclusions,
         waiting: waiting,
-        preex: preex,
+        preex: preex
       });
       allBenefits = allBenefits.concat(benefits);
       allExclusions = allExclusions.concat(exclusions);
@@ -670,27 +670,27 @@ function brStructuredAnswer(query, plans) {
 
   if (totalMatches === 0) {
     // No dashboard match → not in the plan = not covered
-    status = "Not Covered";
+    status = 'Not Covered';
     internalAnswer =
       '"' +
       query +
       "\" is not listed in the Schedule of Benefits for this plan. If it's not listed, it's not covered.";
-    rebuttalType = "notCovered";
-    sourceType = "Dashboard";
+    rebuttalType = 'notCovered';
+    sourceType = 'Dashboard';
   } else if (allBenefits.length > 0 && allExclusions.length === 0) {
-    status = "Covered";
-    internalAnswer = allBenefits.slice(0, 3).join(" | ");
+    status = 'Covered';
+    internalAnswer = allBenefits.slice(0, 3).join(' | ');
     rebuttalType = allWaiting.length
-      ? "waiting"
+      ? 'waiting'
       : allPreex.length
-        ? "preex"
-        : "covered";
-    sourceType = "Dashboard";
+        ? 'preex'
+        : 'covered';
+    sourceType = 'Dashboard';
   } else if (allExclusions.length > 0 && allBenefits.length === 0) {
-    status = "Not Covered";
-    internalAnswer = allExclusions.slice(0, 3).join(" | ");
-    rebuttalType = "notCovered";
-    sourceType = "Dashboard";
+    status = 'Not Covered';
+    internalAnswer = allExclusions.slice(0, 3).join(' | ');
+    rebuttalType = 'notCovered';
+    sourceType = 'Dashboard';
   } else if (allBenefits.length > 0 && allExclusions.length > 0) {
     // Check if exclusions clearly say NOT/NO covered
     var clearNoExclusions = allExclusions.filter(function (e) {
@@ -699,65 +699,65 @@ function brStructuredAnswer(query, plans) {
     var clearNo = clearNoExclusions.length > 0;
     if (clearNo && allBenefits.length <= 2) {
       // Few benefits + clear exclusion → Not Covered (e.g. "NO mental health" with tangential matches)
-      status = "Not Covered";
+      status = 'Not Covered';
       internalAnswer =
         clearNoExclusions[0] +
-        (allBenefits.length ? " (Note: " + allBenefits[0] + ")" : "");
-      rebuttalType = "notCovered";
+        (allBenefits.length ? ' (Note: ' + allBenefits[0] + ')' : '');
+      rebuttalType = 'notCovered';
     } else if (clearNo && allBenefits.length > 2) {
       // Many benefits + some qualified exclusions → Covered with limitation note
-      status = "Covered";
-      internalAnswer = allBenefits[0] + " — Note: " + clearNoExclusions[0];
-      rebuttalType = "partial";
+      status = 'Covered';
+      internalAnswer = allBenefits[0] + ' — Note: ' + clearNoExclusions[0];
+      rebuttalType = 'partial';
     } else {
-      status = "Covered";
+      status = 'Covered';
       internalAnswer =
-        "Benefit: " + allBenefits[0] + " — BUT: " + allExclusions[0];
-      rebuttalType = "partial";
+        'Benefit: ' + allBenefits[0] + ' — BUT: ' + allExclusions[0];
+      rebuttalType = 'partial';
     }
-    sourceType = "Dashboard";
+    sourceType = 'Dashboard';
   } else if (allWaiting.length > 0 || allPreex.length > 0) {
-    status = "Covered";
+    status = 'Covered';
     internalAnswer =
-      (allWaiting[0] || "") +
-      (allPreex.length ? " | Pre-ex: " + allPreex[0] : "");
-    rebuttalType = allPreex.length ? "preex" : "waiting";
-    sourceType = "Dashboard";
+      (allWaiting[0] || '') +
+      (allPreex.length ? ' | Pre-ex: ' + allPreex[0] : '');
+    rebuttalType = allPreex.length ? 'preex' : 'waiting';
+    sourceType = 'Dashboard';
   } else {
-    status = "Not Covered";
+    status = 'Not Covered';
     internalAnswer = 'No clear benefit found for "' + query + '" in this plan.';
-    rebuttalType = "notCovered";
-    sourceType = "Dashboard";
+    rebuttalType = 'notCovered';
+    sourceType = 'Dashboard';
   }
 
   var rebuttal = pickRebuttal(rebuttalType);
 
   // Build structured HTML output
   var statusColor =
-    status === "Covered"
-      ? "#15803D"
-      : status === "Not Covered"
-        ? "#DC2626"
-        : "#D97706";
+    status === 'Covered'
+      ? '#15803D'
+      : status === 'Not Covered'
+        ? '#DC2626'
+        : '#D97706';
   var statusBg =
-    status === "Covered"
-      ? "#E3F6ED"
-      : status === "Not Covered"
-        ? "rgba(220,38,38,0.06)"
-        : "#FFFBEB";
+    status === 'Covered'
+      ? '#E3F6ED'
+      : status === 'Not Covered'
+        ? 'rgba(220,38,38,0.06)'
+        : '#FFFBEB';
   var statusBorder =
-    status === "Covered"
-      ? "#C6F0D8"
-      : status === "Not Covered"
-        ? "rgba(220,38,38,0.15)"
-        : "#FEF3C7";
+    status === 'Covered'
+      ? '#C6F0D8'
+      : status === 'Not Covered'
+        ? 'rgba(220,38,38,0.15)'
+        : '#FEF3C7';
   var statusIcon =
-    status === "Covered"
+    status === 'Covered'
       ? LI.check
-      : status === "Not Covered"
+      : status === 'Not Covered'
         ? LI.ban
         : LI.warn;
-  var sourceIcon = sourceType === "Dashboard" ? LI.clipboard : LI.brain;
+  var sourceIcon = sourceType === 'Dashboard' ? LI.clipboard : LI.brain;
 
   var html =
     '<div style="border-radius:12px;overflow:hidden;border:1.5px solid ' +
@@ -768,7 +768,7 @@ function brStructuredAnswer(query, plans) {
   html +=
     '<div style="background:' +
     statusBg +
-    ";padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid " +
+    ';padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid ' +
     statusBorder +
     ';">';
   html +=
@@ -778,16 +778,16 @@ function brStructuredAnswer(query, plans) {
     statusColor +
     ';">' +
     status.toUpperCase() +
-    "</span></div>";
+    '</span></div>';
   html +=
     '<span style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:' +
     statusColor +
     ';color:#fff;">' +
     sourceIcon +
-    " " +
+    ' ' +
     sourceType +
-    "</span>";
-  html += "</div>";
+    '</span>';
+  html += '</div>';
 
   // Internal answer
   html +=
@@ -797,35 +797,35 @@ function brStructuredAnswer(query, plans) {
   html +=
     '<div style="font-size:12.5px;color:#1C2035;line-height:1.55;">' +
     brHl(internalAnswer, specificTerms) +
-    "</div>";
-  html += "</div>";
+    '</div>';
+  html += '</div>';
 
   // Client rebuttal
   html += '<div style="padding:10px 14px;background:#F8FAFF;">';
   html +=
     '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">' +
     LI.mic +
-    " Say This to Client</div>";
+    ' Say This to Client</div>';
   html +=
     '<div style="font-size:12.5px;color:#1C2035;line-height:1.55;font-style:italic;">"' +
     rebuttal +
     '"</div>';
-  html += "</div>";
+  html += '</div>';
 
-  html += "</div>";
+  html += '</div>';
 
   // If multiple plans matched, show per-plan detail below
   if (matchedPlans.length > 1) {
     html +=
       '<div style="margin-top:8px;font-size:10px;color:#9A8F7E;">' +
       matchedPlans.length +
-      " plans matched — showing combined result</div>";
+      ' plans matched — showing combined result</div>';
   }
   if (matchedPlans.length === 1 && plans.length > 1) {
     html +=
       '<div style="margin-top:6px;font-size:10px;color:#9A8F7E;">Found in: <strong>' +
       matchedPlans[0].name +
-      "</strong></div>";
+      '</strong></div>';
   }
 
   // Expandable detail (keep existing deep analysis available)
@@ -833,47 +833,47 @@ function brStructuredAnswer(query, plans) {
     html +=
       '<details style="margin-top:8px;"><summary style="font-size:11px;color:#5175F1;cursor:pointer;font-weight:600;">View full benefit details (' +
       totalMatches +
-      " matches)</summary>";
+      ' matches)</summary>';
     html += '<div style="margin-top:6px;">';
     matchedPlans.forEach(function (pm) {
       html +=
         '<div style="font-size:11px;font-weight:700;color:#1C2035;margin:6px 0 4px;">' +
         pm.name +
-        "</div>";
+        '</div>';
       pm.benefits.forEach(function (b) {
         html +=
           '<div style="font-size:11px;color:#15803D;padding-left:8px;margin-bottom:2px;">' +
           LI.check +
-          " " +
+          ' ' +
           brHl(b, specificTerms) +
-          "</div>";
+          '</div>';
       });
       pm.exclusions.forEach(function (e) {
         html +=
           '<div style="font-size:11px;color:#DC2626;padding-left:8px;margin-bottom:2px;">' +
           LI.ban +
-          " " +
+          ' ' +
           brHl(e, specificTerms) +
-          "</div>";
+          '</div>';
       });
       pm.waiting.forEach(function (w) {
         html +=
           '<div style="font-size:11px;color:#C2410C;padding-left:8px;margin-bottom:2px;">' +
           LI.clock +
-          " " +
+          ' ' +
           brHl(w, specificTerms) +
-          "</div>";
+          '</div>';
       });
       pm.preex.forEach(function (p) {
         html +=
           '<div style="font-size:11px;color:#C2410C;padding-left:8px;margin-bottom:2px;">' +
           LI.warn +
-          " " +
+          ' ' +
           brHl(p, specificTerms) +
-          "</div>";
+          '</div>';
       });
     });
-    html += "</div></details>";
+    html += '</div></details>';
   }
 
   return html;
@@ -887,33 +887,33 @@ function brAskAI(query) {
       ? [brActivePlan]
       : [];
   var answer = brSmartAnswer(query, plansToUse);
-  brAddMsg("ai", answer);
+  brAddMsg('ai', answer);
 }
 
 // Broad category terms that should NOT be used alone for matching in Smart Analysis
 // These cause false positives (e.g. "diagnostic" matching "preventive health services")
 var BROAD_CATEGORY_TERMS = [
-  "diagnostic",
-  "imaging",
-  "screening",
-  "preventive",
-  "outpatient",
-  "inpatient",
-  "ambulatory",
-  "pathology",
-  "surgical",
-  "medical",
-  "health",
-  "care",
-  "service",
-  "services",
-  "treatment",
-  "benefit",
-  "benefits",
-  "covered",
-  "coverage",
-  "plan",
-  "visit",
+  'diagnostic',
+  'imaging',
+  'screening',
+  'preventive',
+  'outpatient',
+  'inpatient',
+  'ambulatory',
+  'pathology',
+  'surgical',
+  'medical',
+  'health',
+  'care',
+  'service',
+  'services',
+  'treatment',
+  'benefit',
+  'benefits',
+  'covered',
+  'coverage',
+  'plan',
+  'visit'
 ];
 
 function getSpecificTerms(query) {
@@ -953,18 +953,18 @@ function brSmartAnswer(query, plans) {
   // Detect question type
   var isCovered =
     /cover|include|have|offer|provide|get|eligible|does it|is .+ covered|can i/i.test(
-      q,
+      q
     );
   var isNotCovered =
     /not cover|exclud|exclu|what.+not|isn.t cover|doesn.t cover|no coverage/i.test(
-      q,
+      q
     );
   var isCopay = /copay|co-pay|cost|how much|price|pay|charge|fee/i.test(q);
   var isWaiting =
     /wait|waiting period|when .+ start|how long|day 1|effective/i.test(q);
   var isPreEx =
     /pre-existing|preexisting|pre ex|prior condition|existing condition/i.test(
-      q,
+      q
     );
 
   var html =
@@ -972,7 +972,7 @@ function brSmartAnswer(query, plans) {
   html +=
     '<div style="font-size:10px;font-weight:800;color:#5175F1;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;">' +
     LI.brain +
-    " Smart Analysis</div>";
+    ' Smart Analysis</div>';
 
   var foundAnything = false;
 
@@ -982,7 +982,7 @@ function brSmartAnswer(query, plans) {
       exclusions: [],
       waiting: [],
       preex: [],
-      notes: [],
+      notes: []
     };
     var hasDirectMatch = false; // Track if ANY specific term actually matched
 
@@ -1001,11 +1001,11 @@ function brSmartAnswer(query, plans) {
       }
       if (!matched) return;
 
-      if (cat.includes("exclusion") || cat.includes("limitation"))
+      if (cat.includes('exclusion') || cat.includes('limitation'))
         planMatches.exclusions.push(entry.text);
-      else if (cat.includes("waiting")) planMatches.waiting.push(entry.text);
-      else if (cat.includes("pre-existing")) planMatches.preex.push(entry.text);
-      else if (cat.includes("agent note")) planMatches.notes.push(entry.text);
+      else if (cat.includes('waiting')) planMatches.waiting.push(entry.text);
+      else if (cat.includes('pre-existing')) planMatches.preex.push(entry.text);
+      else if (cat.includes('agent note')) planMatches.notes.push(entry.text);
       else planMatches.benefits.push(entry.text);
     });
 
@@ -1021,9 +1021,9 @@ function brSmartAnswer(query, plans) {
     html +=
       '<div style="font-size:12px;font-weight:800;color:#1C2035;margin-bottom:6px;">' +
       LI.file +
-      " " +
+      ' ' +
       plan.name +
-      "</div>";
+      '</div>';
 
     if (planMatches.benefits.length) {
       html +=
@@ -1031,16 +1031,16 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:10px;font-weight:800;color:#15803D;margin-bottom:4px;">' +
         LI.check +
-        " COVERED</div>";
+        ' COVERED</div>';
       planMatches.benefits.forEach(function (b) {
         html +=
           '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;padding-left:8px;border-left:2px solid #29A26A;">' +
           LI.dot +
-          " " +
+          ' ' +
           brHl(b, specificTerms) +
-          "</div>";
+          '</div>';
       });
-      html += "</div>";
+      html += '</div>';
     }
 
     if (planMatches.exclusions.length) {
@@ -1049,16 +1049,16 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:10px;font-weight:800;color:#DC2626;margin-bottom:4px;">' +
         LI.ban +
-        " NOT COVERED / LIMITED</div>";
+        ' NOT COVERED / LIMITED</div>';
       planMatches.exclusions.forEach(function (e) {
         html +=
           '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;padding-left:8px;border-left:2px solid #DC2626;">' +
           LI.dot +
-          " " +
+          ' ' +
           brHl(e, specificTerms) +
-          "</div>";
+          '</div>';
       });
-      html += "</div>";
+      html += '</div>';
     }
 
     if (isWaiting && planMatches.waiting.length) {
@@ -1067,16 +1067,16 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:10px;font-weight:800;color:#C2410C;margin-bottom:4px;">' +
         LI.clock +
-        " WAITING PERIODS</div>";
+        ' WAITING PERIODS</div>';
       planMatches.waiting.forEach(function (w) {
         html +=
           '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;">' +
           LI.dot +
-          " " +
+          ' ' +
           brHl(w, specificTerms) +
-          "</div>";
+          '</div>';
       });
-      html += "</div>";
+      html += '</div>';
     }
 
     if (isPreEx && planMatches.preex.length) {
@@ -1085,16 +1085,16 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:10px;font-weight:800;color:#C2410C;margin-bottom:4px;">' +
         LI.warn +
-        " PRE-EXISTING CONDITIONS</div>";
+        ' PRE-EXISTING CONDITIONS</div>';
       planMatches.preex.forEach(function (p) {
         html +=
           '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;">' +
           LI.dot +
-          " " +
+          ' ' +
           brHl(p, specificTerms) +
-          "</div>";
+          '</div>';
       });
-      html += "</div>";
+      html += '</div>';
     }
 
     // Smart verdict — only give definitive COVERED if specific terms matched benefit entries
@@ -1106,9 +1106,9 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:11px;color:#DC2626;font-weight:700;margin-top:4px;">' +
         LI.warn +
-        " This does not appear to be covered under " +
+        ' This does not appear to be covered under ' +
         plan.name +
-        "</div>";
+        '</div>';
     } else if (
       planMatches.benefits.length &&
       !planMatches.exclusions.length &&
@@ -1117,9 +1117,9 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:11px;color:#15803D;font-weight:700;margin-top:4px;">' +
         LI.check +
-        " Yes, this appears to be covered under " +
+        ' Yes, this appears to be covered under ' +
         plan.name +
-        "</div>";
+        '</div>';
     } else if (
       planMatches.benefits.length &&
       planMatches.exclusions.length &&
@@ -1128,14 +1128,14 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:11px;color:#D97706;font-weight:700;margin-top:4px;">' +
         LI.warn +
-        " Partial coverage — see benefits AND exclusions above for " +
+        ' Partial coverage — see benefits AND exclusions above for ' +
         plan.name +
-        "</div>";
+        '</div>';
     }
     html +=
       '<div style="font-size:10px;color:#6B7280;font-style:italic;margin-top:6px;padding-top:4px;border-top:1px dashed rgba(0,0,0,0.08);">⚠️ Always verify against the full Schedule of Benefits before confirming coverage to the prospect.</div>';
 
-    html += "</div>";
+    html += '</div>';
   });
 
   if (!foundAnything) {
@@ -1145,10 +1145,10 @@ function brSmartAnswer(query, plans) {
     html +=
       '<div style="font-size:10px;font-weight:800;color:#DC2626;margin-bottom:4px;">' +
       LI.ban +
-      " NOT SPECIFICALLY LISTED</div>";
+      ' NOT SPECIFICALLY LISTED</div>';
     html +=
       '<strong>"' +
-      query.replace(/</g, "&lt;") +
+      query.replace(/</g, '&lt;') +
       '"</strong> is not specifically listed in the Schedule of Benefits.</div>';
     html += '<div style="font-size:11px;color:#6B7280;line-height:1.6;">';
     html +=
@@ -1156,51 +1156,51 @@ function brSmartAnswer(query, plans) {
       ' Plans state: <em>"does not cover any service NOT listed in Schedule of Benefits"</em><br>';
     html +=
       LI.dot +
-      " If the member needs this service, check if it falls under a broader covered category<br>";
+      ' If the member needs this service, check if it falls under a broader covered category<br>';
     html +=
       LI.dot +
-      " Try broader terms: hospital, outpatient, surgery, office visit<br>";
+      ' Try broader terms: hospital, outpatient, surgery, office visit<br>';
     html += LI.dot + ' Tap "All Plans" to compare across every plan';
-    html += "</div></div>";
+    html += '</div></div>';
   }
 
   if (specificTerms.length > 1) {
     html +=
       '<div style="font-size:10px;color:#9CA3AF;margin-top:6px;border-top:1px solid rgba(0,0,0,0.06);padding-top:6px;">Searched: ' +
-      specificTerms.slice(0, 8).join(", ") +
-      (specificTerms.length > 8 ? " + more" : "") +
-      "</div>";
+      specificTerms.slice(0, 8).join(', ') +
+      (specificTerms.length > 8 ? ' + more' : '') +
+      '</div>';
   }
 
-  html += "</div>";
+  html += '</div>';
   return html;
 }
 
 // FIX: Word-boundary-safe highlighting for short terms / medical abbreviations
 function brHl(text, terms) {
   var safe = text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
   terms.forEach(function (term) {
     if (term.length < 2) return;
-    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     var boundary =
       term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1
-        ? "\\b"
-        : "";
-    var re = new RegExp("(" + boundary + escaped + boundary + ")", "gi");
+        ? '\\b'
+        : '';
+    var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
     safe = safe.replace(
       re,
-      '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>',
+      '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>'
     );
   });
   return safe;
 }
 
 // ── INIT: Build search index & start chat panel ──────
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", function () {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function () {
     buildSearchIndex();
     brInit();
   });

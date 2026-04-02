@@ -42,7 +42,7 @@
     <script>
       (function () {
         // Give the <link> a moment, then check. If it failed (0 rules), inject via XHR.
-        var link = document.getElementById("mainCSS");
+        var link = document.getElementById('mainCSS');
         function check() {
           try {
             if (
@@ -56,10 +56,10 @@
           }
           // Fallback: fetch CSS as text and inject as <style>
           var x = new XMLHttpRequest();
-          x.open("GET", "css/styles.css", false);
+          x.open('GET', 'css/styles.css', false);
           x.send();
           if (x.status === 200) {
-            var s = document.createElement("style");
+            var s = document.createElement('style');
             s.textContent = x.responseText;
             document.head.appendChild(s);
           }
@@ -587,7 +587,7 @@
           class="br-chip cop"
           onclick="
             brQuick(
-              'What are the copays for doctor visits, urgent care, and ER?',
+              'What are the copays for doctor visits, urgent care, and ER?'
             )
           "
           ><svg
@@ -660,7 +660,7 @@
           class="br-chip net"
           onclick="
             brQuick(
-              'What is the network type? Are there out-of-network benefits?',
+              'What is the network type? Are there out-of-network benefits?'
             )
           "
           ><svg
@@ -689,7 +689,7 @@
           class="br-chip wai"
           onclick="
             brQuick(
-              'What are the waiting periods and pre-existing condition rules?',
+              'What are the waiting periods and pre-existing condition rules?'
             )
           "
           ><svg

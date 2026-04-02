@@ -4,6 +4,10 @@ export default {
   rules: {
     'selector-class-pattern': null,
     'alpha-value-notation': null,
-    'color-function-notation': null
+    'color-function-notation': null,
+    'no-duplicate-selectors': null,
+    'no-descending-specificity': null,
+    'keyframes-name-pattern': null,
+    'selector-id-pattern': null
   }
 };

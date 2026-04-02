@@ -2,11 +2,11 @@
 
 function escHTML(s) {
   return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }
 
 // ── ICON HELPERS ──────────────────────────────────────
@@ -14,21 +14,21 @@ function mkIcon(p) {
   return (
     '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
     p +
-    "</svg>"
+    '</svg>'
   );
 }
 function iconBox(p) {
   return (
     '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:rgba(26,29,38,0.07);border-radius:8px;color:#5C6878;flex-shrink:0;">' +
     mkIcon(p) +
-    "</span>"
+    '</span>'
   );
 }
 function iconLg(p) {
   return (
     '<span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(92,104,120,0.08);border-radius:10px;color:var(--charcoal);">' +
     mkIcon(p) +
-    "</span>"
+    '</span>'
   );
 }
 var P = {
@@ -96,433 +96,433 @@ var P = {
   hourglass: '<path d="M5 3H19M5 21H19M7 3v5l5 4-5 4v5M17 3v5l-5 4 5 4v5"/>',
   globe:
     '<circle cx="12" cy="12" r="9"/><path d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9"/><path d="M3 12h18"/>',
-  plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+  plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'
 };
 
 // ══════════════════════════════════════════════════════
 function toggleXcard(id) {
   var el = document.getElementById(id);
-  var body = el.querySelector(".xcard-body");
-  el.classList.toggle("open");
-  body.style.display = el.classList.contains("open") ? "block" : "none";
+  var body = el.querySelector('.xcard-body');
+  el.classList.toggle('open');
+  body.style.display = el.classList.contains('open') ? 'block' : 'none';
 }
 
 // ══════════════════════════════════════════════════════
 // SEARCH SYNONYM ENGINE + PRE-BUILT INDEX
 // ══════════════════════════════════════════════════════
 var SEARCH_SYNONYMS = {
-  "x-ray": [
-    "x-ray",
-    "xray",
-    "radiology",
-    "radiograph",
-    "imaging",
-    "diagnostic",
-    "x ray",
+  'x-ray': [
+    'x-ray',
+    'xray',
+    'radiology',
+    'radiograph',
+    'imaging',
+    'diagnostic',
+    'x ray'
   ],
   xray: [
-    "x-ray",
-    "xray",
-    "radiology",
-    "radiograph",
-    "imaging",
-    "diagnostic",
-    "x ray",
+    'x-ray',
+    'xray',
+    'radiology',
+    'radiograph',
+    'imaging',
+    'diagnostic',
+    'x ray'
   ],
-  "x ray": [
-    "x-ray",
-    "xray",
-    "radiology",
-    "radiograph",
-    "imaging",
-    "diagnostic",
-    "x ray",
+  'x ray': [
+    'x-ray',
+    'xray',
+    'radiology',
+    'radiograph',
+    'imaging',
+    'diagnostic',
+    'x ray'
   ],
   er: [
-    "emergency room",
-    "emergency",
-    "er visit",
-    "emergency department",
-    "ed visit",
+    'emergency room',
+    'emergency',
+    'er visit',
+    'emergency department',
+    'ed visit'
   ],
   emergency: [
-    "emergency room",
-    "emergency",
-    "er visit",
-    "er",
-    "emergency department",
+    'emergency room',
+    'emergency',
+    'er visit',
+    'er',
+    'emergency department'
   ],
-  "emergency room": [
-    "emergency room",
-    "emergency",
-    "er visit",
-    "er",
-    "emergency department",
+  'emergency room': [
+    'emergency room',
+    'emergency',
+    'er visit',
+    'er',
+    'emergency department'
   ],
-  mri: ["mri", "imaging", "magnetic resonance", "radiology", "diagnostic"],
-  "ct scan": [
-    "ct scan",
-    "ct",
-    "imaging",
-    "radiology",
-    "diagnostic",
-    "cat scan",
+  mri: ['mri', 'imaging', 'magnetic resonance', 'radiology', 'diagnostic'],
+  'ct scan': [
+    'ct scan',
+    'ct',
+    'imaging',
+    'radiology',
+    'diagnostic',
+    'cat scan'
   ],
-  "cat scan": [
-    "ct scan",
-    "ct",
-    "imaging",
-    "radiology",
-    "diagnostic",
-    "cat scan",
+  'cat scan': [
+    'ct scan',
+    'ct',
+    'imaging',
+    'radiology',
+    'diagnostic',
+    'cat scan'
   ],
   lab: [
-    "lab",
-    "laboratory",
-    "labs",
-    "blood work",
-    "blood test",
-    "pathology",
-    "diagnostic",
+    'lab',
+    'laboratory',
+    'labs',
+    'blood work',
+    'blood test',
+    'pathology',
+    'diagnostic'
   ],
   labs: [
-    "lab",
-    "laboratory",
-    "labs",
-    "blood work",
-    "blood test",
-    "pathology",
-    "diagnostic",
+    'lab',
+    'laboratory',
+    'labs',
+    'blood work',
+    'blood test',
+    'pathology',
+    'diagnostic'
   ],
-  "blood work": [
-    "lab",
-    "laboratory",
-    "labs",
-    "blood work",
-    "blood test",
-    "pathology",
+  'blood work': [
+    'lab',
+    'laboratory',
+    'labs',
+    'blood work',
+    'blood test',
+    'pathology'
   ],
-  "blood test": [
-    "lab",
-    "laboratory",
-    "labs",
-    "blood work",
-    "blood test",
-    "pathology",
+  'blood test': [
+    'lab',
+    'laboratory',
+    'labs',
+    'blood work',
+    'blood test',
+    'pathology'
   ],
   rx: [
-    "rx",
-    "prescription",
-    "prescriptions",
-    "drug",
-    "drugs",
-    "medication",
-    "pharmacy",
-    "formulary",
+    'rx',
+    'prescription',
+    'prescriptions',
+    'drug',
+    'drugs',
+    'medication',
+    'pharmacy',
+    'formulary'
   ],
   prescription: [
-    "rx",
-    "prescription",
-    "prescriptions",
-    "drug",
-    "drugs",
-    "medication",
-    "pharmacy",
+    'rx',
+    'prescription',
+    'prescriptions',
+    'drug',
+    'drugs',
+    'medication',
+    'pharmacy'
   ],
   meds: [
-    "rx",
-    "prescription",
-    "prescriptions",
-    "drug",
-    "drugs",
-    "medication",
-    "pharmacy",
-    "medicine",
+    'rx',
+    'prescription',
+    'prescriptions',
+    'drug',
+    'drugs',
+    'medication',
+    'pharmacy',
+    'medicine'
   ],
   medication: [
-    "rx",
-    "prescription",
-    "prescriptions",
-    "drug",
-    "drugs",
-    "medication",
-    "pharmacy",
+    'rx',
+    'prescription',
+    'prescriptions',
+    'drug',
+    'drugs',
+    'medication',
+    'pharmacy'
   ],
   doctor: [
-    "doctor",
-    "physician",
-    "pcp",
-    "primary care",
-    "office visit",
-    "doctor visit",
+    'doctor',
+    'physician',
+    'pcp',
+    'primary care',
+    'office visit',
+    'doctor visit'
   ],
   pcp: [
-    "doctor",
-    "physician",
-    "pcp",
-    "primary care",
-    "office visit",
-    "doctor visit",
+    'doctor',
+    'physician',
+    'pcp',
+    'primary care',
+    'office visit',
+    'doctor visit'
   ],
-  specialist: ["specialist", "specialist visit", "referral"],
-  "urgent care": ["urgent care", "urgentcare", "walk-in", "walk in"],
+  specialist: ['specialist', 'specialist visit', 'referral'],
+  'urgent care': ['urgent care', 'urgentcare', 'walk-in', 'walk in'],
   telehealth: [
-    "telehealth",
-    "telemedicine",
-    "virtual visit",
-    "virtual care",
-    "telemed",
+    'telehealth',
+    'telemedicine',
+    'virtual visit',
+    'virtual care',
+    'telemed'
   ],
   telemedicine: [
-    "telehealth",
-    "telemedicine",
-    "virtual visit",
-    "virtual care",
-    "telemed",
+    'telehealth',
+    'telemedicine',
+    'virtual visit',
+    'virtual care',
+    'telemed'
   ],
-  dental: ["dental", "dentist", "teeth", "oral"],
-  vision: ["vision", "eye", "eyes", "eyeglasses", "contacts", "optical"],
-  "mental health": [
-    "mental health",
-    "behavioral health",
-    "counseling",
-    "therapy",
-    "psychiatr",
+  dental: ['dental', 'dentist', 'teeth', 'oral'],
+  vision: ['vision', 'eye', 'eyes', 'eyeglasses', 'contacts', 'optical'],
+  'mental health': [
+    'mental health',
+    'behavioral health',
+    'counseling',
+    'therapy',
+    'psychiatr'
   ],
   therapy: [
-    "mental health",
-    "behavioral health",
-    "counseling",
-    "therapy",
-    "physical therapy",
+    'mental health',
+    'behavioral health',
+    'counseling',
+    'therapy',
+    'physical therapy'
   ],
   surgery: [
-    "surgery",
-    "surgical",
-    "operation",
-    "outpatient surgery",
-    "inpatient",
+    'surgery',
+    'surgical',
+    'operation',
+    'outpatient surgery',
+    'inpatient'
   ],
   hospital: [
-    "hospital",
-    "hospitalization",
-    "inpatient",
-    "admission",
-    "admitted",
-    "hospital indemnity",
+    'hospital',
+    'hospitalization',
+    'inpatient',
+    'admission',
+    'admitted',
+    'hospital indemnity'
   ],
-  maternity: ["maternity", "pregnancy", "prenatal", "obstetric"],
-  pregnancy: ["maternity", "pregnancy", "prenatal", "obstetric"],
-  "pre-existing": ["pre-existing", "preexisting", "pre-ex", "prior condition"],
-  copay: ["copay", "co-pay", "copayment", "co-payment"],
-  deductible: ["deductible", "ded", "out of pocket", "oop"],
+  maternity: ['maternity', 'pregnancy', 'prenatal', 'obstetric'],
+  pregnancy: ['maternity', 'pregnancy', 'prenatal', 'obstetric'],
+  'pre-existing': ['pre-existing', 'preexisting', 'pre-ex', 'prior condition'],
+  copay: ['copay', 'co-pay', 'copayment', 'co-payment'],
+  deductible: ['deductible', 'ded', 'out of pocket', 'oop'],
   oop: [
-    "out of pocket",
-    "oop",
-    "out-of-pocket",
-    "out of pocket maximum",
-    "oop max",
+    'out of pocket',
+    'oop',
+    'out-of-pocket',
+    'out of pocket maximum',
+    'oop max'
   ],
-  "waiting period": [
-    "waiting period",
-    "waiting",
-    "sickness waiting",
-    "30-day",
-    "30 day",
+  'waiting period': [
+    'waiting period',
+    'waiting',
+    'sickness waiting',
+    '30-day',
+    '30 day'
   ],
   network: [
-    "network",
-    "first health",
-    "in-network",
-    "out of network",
-    "provider",
+    'network',
+    'first health',
+    'in-network',
+    'out of network',
+    'provider'
   ],
-  cancer: ["cancer", "oncology", "tumor", "malignant"],
-  heart: ["heart", "cardiac", "cardiovascular", "cardiology"],
-  diabetes: ["diabetes", "diabetic", "insulin", "a1c"],
-  ambulance: ["ambulance", "emergency transport", "ems"],
+  cancer: ['cancer', 'oncology', 'tumor', 'malignant'],
+  heart: ['heart', 'cardiac', 'cardiovascular', 'cardiology'],
+  diabetes: ['diabetes', 'diabetic', 'insulin', 'a1c'],
+  ambulance: ['ambulance', 'emergency transport', 'ems'],
   rehab: [
-    "rehabilitation",
-    "rehab",
-    "physical therapy",
-    "occupational therapy",
+    'rehabilitation',
+    'rehab',
+    'physical therapy',
+    'occupational therapy'
   ],
-  chiropractic: ["chiropractic", "chiropractor", "spinal", "spine", "chiro"],
-  chiro: ["chiropractic", "chiropractor", "spinal", "spine", "chiro"],
+  chiropractic: ['chiropractic', 'chiropractor', 'spinal', 'spine', 'chiro'],
+  chiro: ['chiropractic', 'chiropractor', 'spinal', 'spine', 'chiro'],
   aca: [
-    "aca",
-    "affordable care act",
-    "obamacare",
-    "marketplace",
-    "major medical",
+    'aca',
+    'affordable care act',
+    'obamacare',
+    'marketplace',
+    'major medical'
   ],
-  stm: ["stm", "short-term", "short term medical", "temporary"],
-  mec: ["mec", "minimum essential coverage", "preventive"],
-  "physical therapy": [
-    "physical therapy",
-    "pt",
-    "rehab",
-    "rehabilitation",
-    "physiotherapy",
+  stm: ['stm', 'short-term', 'short term medical', 'temporary'],
+  mec: ['mec', 'minimum essential coverage', 'preventive'],
+  'physical therapy': [
+    'physical therapy',
+    'pt',
+    'rehab',
+    'rehabilitation',
+    'physiotherapy'
   ],
-  pt: ["physical therapy", "pt", "rehab", "rehabilitation", "physiotherapy"],
-  ultrasound: ["ultrasound", "imaging", "diagnostic", "sonogram"],
+  pt: ['physical therapy', 'pt', 'rehab', 'rehabilitation', 'physiotherapy'],
+  ultrasound: ['ultrasound', 'imaging', 'diagnostic', 'sonogram'],
   wellness: [
-    "wellness",
-    "preventive",
-    "annual physical",
-    "physical exam",
-    "screening",
+    'wellness',
+    'preventive',
+    'annual physical',
+    'physical exam',
+    'screening'
   ],
   screening: [
-    "screening",
-    "preventive",
-    "wellness",
-    "mammogram",
-    "colonoscopy",
-    "diagnostic",
+    'screening',
+    'preventive',
+    'wellness',
+    'mammogram',
+    'colonoscopy',
+    'diagnostic'
   ],
   immunization: [
-    "immunization",
-    "vaccine",
-    "vaccination",
-    "immunizations",
-    "shot",
+    'immunization',
+    'vaccine',
+    'vaccination',
+    'immunizations',
+    'shot'
   ],
-  vaccine: ["vaccine", "vaccination", "immunization", "immunizations", "shot"],
+  vaccine: ['vaccine', 'vaccination', 'immunization', 'immunizations', 'shot'],
   inpatient: [
-    "inpatient",
-    "hospital",
-    "hospitalization",
-    "admission",
-    "admitted",
+    'inpatient',
+    'hospital',
+    'hospitalization',
+    'admission',
+    'admitted'
   ],
-  outpatient: ["outpatient", "outpatient surgery", "ambulatory", "same day"],
-  transplant: ["transplant", "organ", "tissue"],
-  "pre-auth": [
-    "pre-auth",
-    "preauthorization",
-    "pre-authorization",
-    "prior authorization",
-    "precertification",
+  outpatient: ['outpatient', 'outpatient surgery', 'ambulatory', 'same day'],
+  transplant: ['transplant', 'organ', 'tissue'],
+  'pre-auth': [
+    'pre-auth',
+    'preauthorization',
+    'pre-authorization',
+    'prior authorization',
+    'precertification'
   ],
   mammogram: [
-    "mammogram",
-    "mammography",
-    "breast screening",
-    "breast cancer screening",
-    "screening",
-    "preventive",
-    "diagnostic imaging",
+    'mammogram',
+    'mammography',
+    'breast screening',
+    'breast cancer screening',
+    'screening',
+    'preventive',
+    'diagnostic imaging'
   ],
   mammography: [
-    "mammogram",
-    "mammography",
-    "breast screening",
-    "breast cancer screening",
-    "screening",
-    "preventive",
+    'mammogram',
+    'mammography',
+    'breast screening',
+    'breast cancer screening',
+    'screening',
+    'preventive'
   ],
   colonoscopy: [
-    "colonoscopy",
-    "colon screening",
-    "colon cancer screening",
-    "screening",
-    "preventive",
-    "diagnostic",
+    'colonoscopy',
+    'colon screening',
+    'colon cancer screening',
+    'screening',
+    'preventive',
+    'diagnostic'
   ],
   endoscopy: [
-    "endoscopy",
-    "colonoscopy",
-    "upper gi",
-    "diagnostic",
-    "procedure",
+    'endoscopy',
+    'colonoscopy',
+    'upper gi',
+    'diagnostic',
+    'procedure'
   ],
-  biopsy: ["biopsy", "pathology", "diagnostic", "lab", "tissue"],
-  dialysis: ["dialysis", "kidney", "renal", "end stage"],
+  biopsy: ['biopsy', 'pathology', 'diagnostic', 'lab', 'tissue'],
+  dialysis: ['dialysis', 'kidney', 'renal', 'end stage'],
   prosthetic: [
-    "prosthetic",
-    "prosthetics",
-    "durable medical equipment",
-    "dme",
-    "artificial limb",
+    'prosthetic',
+    'prosthetics',
+    'durable medical equipment',
+    'dme',
+    'artificial limb'
   ],
   dme: [
-    "durable medical equipment",
-    "dme",
-    "prosthetic",
-    "wheelchair",
-    "walker",
-    "oxygen",
+    'durable medical equipment',
+    'dme',
+    'prosthetic',
+    'wheelchair',
+    'walker',
+    'oxygen'
   ],
-  hearing: ["hearing", "hearing aid", "audiology", "audiologist", "ear"],
-  allergy: ["allergy", "allergist", "allergy testing", "immunotherapy"],
-  dermatology: ["dermatology", "dermatologist", "skin", "rash"],
-  "sleep study": ["sleep study", "sleep apnea", "polysomnography", "cpap"],
+  hearing: ['hearing', 'hearing aid', 'audiology', 'audiologist', 'ear'],
+  allergy: ['allergy', 'allergist', 'allergy testing', 'immunotherapy'],
+  dermatology: ['dermatology', 'dermatologist', 'skin', 'rash'],
+  'sleep study': ['sleep study', 'sleep apnea', 'polysomnography', 'cpap'],
   infusion: [
-    "infusion",
-    "infusion therapy",
-    "iv therapy",
-    "chemotherapy",
-    "injection",
+    'infusion',
+    'infusion therapy',
+    'iv therapy',
+    'chemotherapy',
+    'injection'
   ],
-  hospice: ["hospice", "palliative", "end of life", "terminal"],
-  "skilled nursing": [
-    "skilled nursing",
-    "snf",
-    "nursing facility",
-    "long term care",
-    "ltc",
+  hospice: ['hospice', 'palliative', 'end of life', 'terminal'],
+  'skilled nursing': [
+    'skilled nursing',
+    'snf',
+    'nursing facility',
+    'long term care',
+    'ltc'
   ],
-  "home health": ["home health", "home care", "home nursing", "visiting nurse"],
-  "occupational therapy": [
-    "occupational therapy",
-    "ot",
-    "rehab",
-    "rehabilitation",
+  'home health': ['home health', 'home care', 'home nursing', 'visiting nurse'],
+  'occupational therapy': [
+    'occupational therapy',
+    'ot',
+    'rehab',
+    'rehabilitation'
   ],
-  "speech therapy": [
-    "speech therapy",
-    "speech language",
-    "slp",
-    "speech pathologist",
+  'speech therapy': [
+    'speech therapy',
+    'speech language',
+    'slp',
+    'speech pathologist'
   ],
   preventive: [
-    "preventive",
-    "preventative",
-    "wellness",
-    "annual physical",
-    "screening",
-    "check-up",
-    "checkup",
+    'preventive',
+    'preventative',
+    'wellness',
+    'annual physical',
+    'screening',
+    'check-up',
+    'checkup'
   ],
   generic: [
-    "generic",
-    "brand",
-    "formulary",
-    "rx",
-    "prescription",
-    "drug",
-    "tier",
+    'generic',
+    'brand',
+    'formulary',
+    'rx',
+    'prescription',
+    'drug',
+    'tier'
   ],
   brand: [
-    "brand",
-    "generic",
-    "formulary",
-    "rx",
-    "prescription",
-    "drug",
-    "tier",
-    "name brand",
+    'brand',
+    'generic',
+    'formulary',
+    'rx',
+    'prescription',
+    'drug',
+    'tier',
+    'name brand'
   ],
-  "prior authorization": [
-    "prior authorization",
-    "pre-auth",
-    "preauthorization",
-    "pre-authorization",
-    "precertification",
-    "pre-cert",
-  ],
+  'prior authorization': [
+    'prior authorization',
+    'pre-auth',
+    'preauthorization',
+    'pre-authorization',
+    'precertification',
+    'pre-cert'
+  ]
 };
 
 function expandSearchSynonyms(query) {
@@ -545,7 +545,7 @@ function expandSearchSynonyms(query) {
     } else if (q.includes(key) && key.length >= 3) {
       // Key must appear as a whole word in query (not inside another word)
       var keyRe = new RegExp(
-        "(?:^|\\s)" + key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(?:\\s|$)",
+        '(?:^|\\s)' + key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(?:\\s|$)'
       );
       if (keyRe.test(q)) terms = terms.concat(SEARCH_SYNONYMS[key]);
     }
@@ -601,25 +601,25 @@ function fuzzyMatch(query, text) {
 // Short terms (<=3 chars) and medical abbreviations use \b word boundaries
 // to prevent "ER" matching inside "covered", "OOP" inside random words, etc.
 var BR_ABBREVS = [
-  "er",
-  "oop",
-  "pcp",
-  "rx",
-  "pt",
-  "ot",
-  "dme",
-  "snf",
-  "ltc",
-  "ems",
-  "mri",
-  "ct",
-  "iv",
-  "gi",
-  "or",
-  "ob",
-  "ed",
-  "uc",
-  "ded",
+  'er',
+  'oop',
+  'pcp',
+  'rx',
+  'pt',
+  'ot',
+  'dme',
+  'snf',
+  'ltc',
+  'ems',
+  'mri',
+  'ct',
+  'iv',
+  'gi',
+  'or',
+  'ob',
+  'ed',
+  'uc',
+  'ded'
 ];
 
 function brTermMatch(text, term) {
@@ -627,8 +627,8 @@ function brTermMatch(text, term) {
   var lower = text.toLowerCase();
   // For short terms or known abbreviations, require word boundaries
   if (term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) {
-    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    var re = new RegExp("\\b" + escaped + "\\b", "i");
+    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var re = new RegExp('\\b' + escaped + '\\b', 'i');
     return re.test(text);
   }
   // For longer, specific terms, substring matching is safe
@@ -652,153 +652,153 @@ function buildSearchIndex() {
   SEARCH_INDEX = [];
 
   // Index OBJECTIONS
-  if (typeof OBJECTIONS !== "undefined") {
+  if (typeof OBJECTIONS !== 'undefined') {
     OBJECTIONS.forEach(function (o, i) {
       SEARCH_INDEX.push({
-        type: "Objection Handler",
+        type: 'Objection Handler',
         title: '"' + o.obj + '"',
         preview: o.real.slice(0, 100),
         searchText: (
           o.obj +
-          " " +
+          ' ' +
           o.best +
-          " " +
+          ' ' +
           o.real +
-          " " +
+          ' ' +
           o.cat
         ).toLowerCase(),
         action: function () {
           closeSearch();
-          showPage("objections");
+          showPage('objections');
           setTimeout(function () {
-            var el = document.getElementById("ox" + i);
+            var el = document.getElementById('ox' + i);
             if (el) {
-              el.classList.add("open");
-              el.querySelector(".xcard-body").style.display = "block";
-              el.scrollIntoView({ behavior: "smooth", block: "center" });
+              el.classList.add('open');
+              el.querySelector('.xcard-body').style.display = 'block';
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
           }, 200);
-        },
+        }
       });
     });
   }
 
   // Index BENEFITS
-  if (typeof BENEFITS !== "undefined") {
+  if (typeof BENEFITS !== 'undefined') {
     BENEFITS.forEach(function (b, i) {
       SEARCH_INDEX.push({
-        type: "Benefit Explainer",
+        type: 'Benefit Explainer',
         title: b.name,
         preview: b.simple.slice(0, 100),
         searchText: (
           b.name +
-          " " +
+          ' ' +
           b.simple +
-          " " +
+          ' ' +
           b.official +
-          " " +
+          ' ' +
           b.frame +
-          " " +
-          (b.misunderstand || "") +
-          " " +
-          (b.followup || "") +
-          " " +
-          (b.bridge || "")
+          ' ' +
+          (b.misunderstand || '') +
+          ' ' +
+          (b.followup || '') +
+          ' ' +
+          (b.bridge || '')
         ).toLowerCase(),
         action: function () {
           closeSearch();
-          showPage("benefits");
+          showPage('benefits');
           setTimeout(function () {
-            var el = document.getElementById("bx" + i);
+            var el = document.getElementById('bx' + i);
             if (el) {
-              el.classList.add("open");
-              el.querySelector(".xcard-body").style.display = "block";
-              el.scrollIntoView({ behavior: "smooth", block: "center" });
+              el.classList.add('open');
+              el.querySelector('.xcard-body').style.display = 'block';
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
           }, 200);
-        },
+        }
       });
     });
   }
 
   // Index PLANS
-  if (typeof PLANS !== "undefined") {
+  if (typeof PLANS !== 'undefined') {
     PLANS.forEach(function (p, i) {
       SEARCH_INDEX.push({
-        type: "Plan Vault",
+        type: 'Plan Vault',
         title: p.name,
-        preview: (p.bestFor || p.tagline || "").slice(0, 100),
+        preview: (p.bestFor || p.tagline || '').slice(0, 100),
         searchText: (
           p.name +
-          " " +
+          ' ' +
           p.bestFor +
-          " " +
+          ' ' +
           p.type +
-          " " +
-          (p.tagline || "") +
-          " " +
-          (p.network || "") +
-          " " +
-          (p.topPoints || []).join(" ") +
-          " " +
-          (p.limitations || []).join(" ") +
-          " " +
-          (p.objections || []).join(" ") +
-          " " +
-          (p.compliance || "") +
-          " " +
-          (p.framing || "") +
-          " " +
-          (p.idealClient || "") +
-          " " +
-          (p.notGood || "")
+          ' ' +
+          (p.tagline || '') +
+          ' ' +
+          (p.network || '') +
+          ' ' +
+          (p.topPoints || []).join(' ') +
+          ' ' +
+          (p.limitations || []).join(' ') +
+          ' ' +
+          (p.objections || []).join(' ') +
+          ' ' +
+          (p.compliance || '') +
+          ' ' +
+          (p.framing || '') +
+          ' ' +
+          (p.idealClient || '') +
+          ' ' +
+          (p.notGood || '')
         ).toLowerCase(),
         action: function () {
           closeSearch();
-          showPage("plans");
+          showPage('plans');
           setTimeout(function () {
-            var el = document.getElementById("pc" + i);
+            var el = document.getElementById('pc' + i);
             if (el) {
-              el.classList.add("open");
-              el.querySelector(".plan-body").style.display = "block";
-              el.scrollIntoView({ behavior: "smooth", block: "center" });
+              el.classList.add('open');
+              el.querySelector('.plan-body').style.display = 'block';
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
           }, 200);
-        },
+        }
       });
     });
   }
 
   // Index POLICY_DOCS with per-benefit granularity
-  if (typeof POLICY_DOCS !== "undefined") {
+  if (typeof POLICY_DOCS !== 'undefined') {
     POLICY_DOCS.forEach(function (p) {
       var allBenText = p.benefits
         .map(function (b) {
-          return b.category + " " + b.items.join(" ");
+          return b.category + ' ' + b.items.join(' ');
         })
-        .join(" ");
-      var allLimText = (p.limitations || []).join(" ");
+        .join(' ');
+      var allLimText = (p.limitations || []).join(' ');
       SEARCH_INDEX.push({
-        type: "Policy Reference",
+        type: 'Policy Reference',
         title: p.name,
         preview: p.type,
         searchText: (
           p.name +
-          " " +
+          ' ' +
           p.type +
-          " " +
+          ' ' +
           p.carrier +
-          " " +
+          ' ' +
           p.network +
-          " " +
-          (p.planNotes || "") +
-          " " +
+          ' ' +
+          (p.planNotes || '') +
+          ' ' +
           allLimText +
-          " " +
-          (p.preEx || "") +
-          " " +
-          (p.waitingPeriods || []).join(" ") +
-          " " +
+          ' ' +
+          (p.preEx || '') +
+          ' ' +
+          (p.waitingPeriods || []).join(' ') +
+          ' ' +
           allBenText
         ).toLowerCase(),
         planId: p.id,
@@ -807,77 +807,77 @@ function buildSearchIndex() {
         action: function () {
           var pid = p.id;
           closeSearch();
-          showPage("policydocs");
+          showPage('policydocs');
           setTimeout(function () {
             policyDocOpen = pid;
-            var container = document.getElementById("pdResultsContainer");
+            var container = document.getElementById('pdResultsContainer');
             if (container) container.innerHTML = renderPolicyResults();
             setTimeout(function () {
-              var el = document.getElementById("pd-" + pid);
-              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+              var el = document.getElementById('pd-' + pid);
+              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }, 100);
           }, 200);
-        },
+        }
       });
     });
   }
 
   // Index CLOSES
-  if (typeof CLOSES !== "undefined") {
+  if (typeof CLOSES !== 'undefined') {
     CLOSES.forEach(function (c, i) {
       SEARCH_INDEX.push({
-        type: "Closing Lines",
-        title: (c.type || "Close") + " — " + (c.line || "").slice(0, 50),
-        preview: (c.when || "").slice(0, 100),
+        type: 'Closing Lines',
+        title: (c.type || 'Close') + ' — ' + (c.line || '').slice(0, 50),
+        preview: (c.when || '').slice(0, 100),
         searchText: (
-          (c.line || "") +
-          " " +
-          (c.type || "") +
-          " " +
-          (c.when || "") +
-          " " +
-          (c.tone || "") +
-          " " +
-          (c.bridge || "") +
-          " " +
-          (c.hesitate || "")
+          (c.line || '') +
+          ' ' +
+          (c.type || '') +
+          ' ' +
+          (c.when || '') +
+          ' ' +
+          (c.tone || '') +
+          ' ' +
+          (c.bridge || '') +
+          ' ' +
+          (c.hesitate || '')
         ).toLowerCase(),
         action: function () {
           closeSearch();
-          showPage("closes");
-        },
+          showPage('closes');
+        }
       });
     });
   }
 
   // Index RECOVERY
-  if (typeof RECOVERY !== "undefined") {
+  if (typeof RECOVERY !== 'undefined') {
     RECOVERY.forEach(function (r, i) {
       SEARCH_INDEX.push({
-        type: "Recovery Scripts",
-        title: r.label || "Recovery",
-        preview: (r.situation || "").slice(0, 100),
+        type: 'Recovery Scripts',
+        title: r.label || 'Recovery',
+        preview: (r.situation || '').slice(0, 100),
         searchText: (
-          (r.label || "") +
-          " " +
-          (r.situation || "") +
-          " " +
-          (r.goal || "") +
-          " " +
-          (r.script || "") +
-          " " +
-          (r.soft || "") +
-          " " +
-          (r.strong || "") +
-          " " +
-          (r.bridge || "") +
-          " " +
-          (r.acknowledge || "")
+          (r.label || '') +
+          ' ' +
+          (r.situation || '') +
+          ' ' +
+          (r.goal || '') +
+          ' ' +
+          (r.script || '') +
+          ' ' +
+          (r.soft || '') +
+          ' ' +
+          (r.strong || '') +
+          ' ' +
+          (r.bridge || '') +
+          ' ' +
+          (r.acknowledge || '')
         ).toLowerCase(),
         action: function () {
           closeSearch();
-          showPage("recovery");
-        },
+          showPage('recovery');
+        }
       });
     });
   }
@@ -893,8 +893,8 @@ function debouncedSearch(val) {
   clearTimeout(_searchTimer);
   _searchTimer = setTimeout(function () {
     if (val.trim().length > 0) {
-      document.getElementById("srOverlay").classList.add("show");
-      var srInput = document.getElementById("srInput");
+      document.getElementById('srOverlay').classList.add('show');
+      var srInput = document.getElementById('srInput');
       if (srInput) {
         srInput.value = val;
         srInput.focus();
@@ -912,27 +912,27 @@ function debouncedOverlaySearch(val) {
 
 function getBadgeClass(type) {
   var t = type.toLowerCase();
-  if (t.includes("objection")) return "sr-badge-objection";
-  if (t.includes("plan vault") || t.includes("plan ")) return "sr-badge-plan";
-  if (t.includes("policy")) return "sr-badge-policy";
-  if (t.includes("benefit")) return "sr-badge-benefit";
-  if (t.includes("clos")) return "sr-badge-close";
-  if (t.includes("recovery")) return "sr-badge-recovery";
-  if (t.includes("training")) return "sr-badge-training";
-  return "sr-badge-default";
+  if (t.includes('objection')) return 'sr-badge-objection';
+  if (t.includes('plan vault') || t.includes('plan ')) return 'sr-badge-plan';
+  if (t.includes('policy')) return 'sr-badge-policy';
+  if (t.includes('benefit')) return 'sr-badge-benefit';
+  if (t.includes('clos')) return 'sr-badge-close';
+  if (t.includes('recovery')) return 'sr-badge-recovery';
+  if (t.includes('training')) return 'sr-badge-training';
+  return 'sr-badge-default';
 }
 
 function hlSearch(text, terms) {
   var safe = escHTML(text);
   terms.forEach(function (term) {
     if (term.length < 2) return;
-    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     // FIX: Use word boundaries for short terms to prevent highlighting inside words
     var boundary =
       term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1
-        ? "\\b"
-        : "";
-    var re = new RegExp("(" + boundary + escaped + boundary + ")", "gi");
+        ? '\\b'
+        : '';
+    var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
     safe = safe.replace(re, '<mark class="sr-hl">$1</mark>');
   });
   return safe;
@@ -940,11 +940,11 @@ function hlSearch(text, terms) {
 
 function doSearch(val) {
   buildSearchIndex();
-  document.getElementById("scBtn").style.display =
-    val.length > 0 ? "block" : "none";
+  document.getElementById('scBtn').style.display =
+    val.length > 0 ? 'block' : 'none';
   if (!val.trim()) {
-    document.getElementById("srList").innerHTML = "";
-    document.getElementById("srMatchCount").textContent = "";
+    document.getElementById('srList').innerHTML = '';
+    document.getElementById('srMatchCount').textContent = '';
     return;
   }
   var expandedTerms = expandSearchSynonyms(val.toLowerCase());
@@ -963,7 +963,7 @@ function doSearch(val) {
     }
     if (!matched) return;
 
-    if (item.type === "Policy Reference" && item.benefits) {
+    if (item.type === 'Policy Reference' && item.benefits) {
       var matchedBens = [],
         matchedLims = [];
       item.benefits.forEach(function (bcat) {
@@ -978,46 +978,46 @@ function doSearch(val) {
       (item.limitations || []).forEach(function (lim) {
         if (matchesExpanded(lim, expandedTerms)) matchedLims.push(lim);
       });
-      var prev = "";
+      var prev = '';
       if (matchedBens.length) prev = matchedBens[0];
       else if (matchedLims.length) prev = matchedLims[0];
       else prev = item.preview;
       res.push({
-        sec: "Policy Reference — " + item.title,
+        sec: 'Policy Reference — ' + item.title,
         txt:
           (matchedBens.length
-            ? "Benefit: "
+            ? 'Benefit: '
             : matchedLims.length
-              ? "Exclusion: "
-              : "") + prev.slice(0, 120),
+              ? 'Exclusion: '
+              : '') + prev.slice(0, 120),
         prev:
           (matchedBens.length
-            ? matchedBens.length + " benefit match(es)"
-            : "") +
+            ? matchedBens.length + ' benefit match(es)'
+            : '') +
           (matchedLims.length
-            ? (matchedBens.length ? " · " : "") +
+            ? (matchedBens.length ? ' · ' : '') +
               matchedLims.length +
-              " exclusion match(es)"
-            : ""),
+              ' exclusion match(es)'
+            : ''),
         action: item.action,
-        type: item.type,
+        type: item.type
       });
     } else {
       res.push({
         sec: item.type,
         txt: item.title,
-        prev: item.preview + "...",
+        prev: item.preview + '...',
         action: item.action,
-        type: item.type,
+        type: item.type
       });
     }
   });
 
   // Match count
-  document.getElementById("srMatchCount").textContent =
+  document.getElementById('srMatchCount').textContent =
     res.length +
-    " result" +
-    (res.length !== 1 ? "s" : "") +
+    ' result' +
+    (res.length !== 1 ? 's' : '') +
     ' for "' +
     val +
     '"';
@@ -1025,7 +1025,7 @@ function doSearch(val) {
   window.srActions = res.map(function (r) {
     return r.action;
   });
-  document.getElementById("srList").innerHTML = res.length
+  document.getElementById('srList').innerHTML = res.length
     ? res
         .map(function (r, i) {
           return (
@@ -1036,35 +1036,35 @@ function doSearch(val) {
             getBadgeClass(r.sec) +
             '">' +
             escHTML(r.sec) +
-            "</span>" +
+            '</span>' +
             '<div class="sr-item-title">' +
             hlSearch(r.txt, expandedTerms) +
-            "</div>" +
+            '</div>' +
             '<div class="sr-item-preview">' +
             hlSearch(r.prev, expandedTerms) +
-            "</div>" +
-            (r.prev && r.prev.includes("match(es)")
-              ? '<div class="sr-item-detail">' + escHTML(r.prev) + "</div>"
-              : "") +
-            "</div>"
+            '</div>' +
+            (r.prev && r.prev.includes('match(es)')
+              ? '<div class="sr-item-detail">' + escHTML(r.prev) + '</div>'
+              : '') +
+            '</div>'
           );
         })
-        .join("")
+        .join('')
     : '<div class="sr-empty"><div class="sr-empty-icon">🔍</div><div class="sr-empty-title">No results for "' +
       escHTML(val) +
       '"</div><div class="sr-empty-suggestions"><b>Common terms:</b> x-ray, ER, hospital, surgery, prescription, copay<br><b>Plan types:</b> MEC, ACA, STM<br><b>Screenings:</b> mammogram, colonoscopy, ultrasound<br><b>Therapy:</b> physical therapy, mental health, chiropractic</div></div>';
 
-  if (!document.getElementById("srOverlay").classList.contains("show")) {
-    document.getElementById("srOverlay").classList.add("show");
-    var srInput = document.getElementById("srInput");
+  if (!document.getElementById('srOverlay').classList.contains('show')) {
+    document.getElementById('srOverlay').classList.add('show');
+    var srInput = document.getElementById('srInput');
     if (srInput && !srInput.value) srInput.value = val;
   }
 }
 
 function closeSearch() {
-  document.getElementById("srOverlay").classList.remove("show");
-  document.getElementById("gs").value = "";
-  document.getElementById("scBtn").style.display = "none";
-  var srInput = document.getElementById("srInput");
-  if (srInput) srInput.value = "";
+  document.getElementById('srOverlay').classList.remove('show');
+  document.getElementById('gs').value = '';
+  document.getElementById('scBtn').style.display = 'none';
+  var srInput = document.getElementById('srInput');
+  if (srInput) srInput.value = '';
 }
