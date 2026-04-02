@@ -1,45 +1,41 @@
+import js from '@eslint/js';
+import globals from 'globals';
+
 export default [
   {
-    files: ["js/**/*.js"],
+    ignores: ['node_modules/**', 'playwright-report/**', 'test-results/**']
+  },
+  js.configs.recommended,
+  {
+    files: ['js/**/*.js'],
     languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: "script",
+      ecmaVersion: 'latest',
+      sourceType: 'script',
       globals: {
-        window: "readonly",
-        document: "readonly",
-        console: "readonly",
-        localStorage: "readonly",
-        sessionStorage: "readonly",
-        fetch: "readonly",
-        navigator: "readonly",
-        setTimeout: "readonly",
-        setInterval: "readonly",
-        clearTimeout: "readonly",
-        clearInterval: "readonly",
-        alert: "readonly",
-        confirm: "readonly",
-        HTMLElement: "readonly",
-        Event: "readonly",
-        CustomEvent: "readonly",
-        URL: "readonly",
-        AbortController: "readonly",
-        Headers: "readonly",
-        Request: "readonly",
-        Response: "readonly",
-        location: "readonly",
-        history: "readonly",
-        performance: "readonly",
-        requestAnimationFrame: "readonly",
-        MutationObserver: "readonly",
-        IntersectionObserver: "readonly",
-      },
+        ...globals.browser
+      }
     },
     rules: {
-      "no-unused-vars": "off",
-      "no-undef": "off",
-      "no-redeclare": "warn",
-      eqeqeq: "warn",
-      "no-debugger": "error",
-    },
+      'no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ],
+      'no-undef': 'off',
+      'no-redeclare': 'off',
+      'no-global-assign': 'off',
+      'no-unreachable': 'error',
+      'no-constant-condition': ['error', { checkLoops: false }]
+    }
   },
+  {
+    files: ['*.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.browser,
+        ...globals.node
+      }
+    }
+  }
 ];

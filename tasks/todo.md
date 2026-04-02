@@ -5,6 +5,7 @@
 ---
 
 ## Current Status
+
 All launch tasks complete. Site live at:
 **https://ilaldimelis-source.github.io/cha-sales-tool/**
 

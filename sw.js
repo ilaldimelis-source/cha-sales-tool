@@ -1,40 +1,40 @@
 // CHA Sales Command Center — Service Worker
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = "cha-command-center-v7";
+var CACHE_NAME = 'cha-command-center-v7';
 var URLS_TO_CACHE = [
-  "./",
-  "./index.html",
-  "./logo.png",
-  "./css/styles.css",
-  "./js/utils.js",
-  "./js/data.js",
-  "./js/objections.js",
-  "./js/plans-benefits.js",
-  "./js/call-playbook.js",
-  "./js/live-assist.js",
-  "./js/ai-tools.js",
-  "./js/training.js",
-  "./js/compliance.js",
-  "./js/policy-docs.js",
-  "./js/app.js",
-  "./js/chat.js",
-  "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+  './',
+  './index.html',
+  './logo.png',
+  './css/styles.css',
+  './js/utils.js',
+  './js/data.js',
+  './js/objections.js',
+  './js/plans-benefits.js',
+  './js/call-playbook.js',
+  './js/live-assist.js',
+  './js/ai-tools.js',
+  './js/training.js',
+  './js/compliance.js',
+  './js/policy-docs.js',
+  './js/app.js',
+  './js/chat.js',
+  'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
 ];
 
 // Install: cache the app files
-self.addEventListener("install", function (event) {
+self.addEventListener('install', function (event) {
   event.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       return cache.addAll(URLS_TO_CACHE);
-    }),
+    })
   );
   // Activate immediately — don't wait for old tabs to close
   self.skipWaiting();
 });
 
 // Activate: clean up old caches when a new version is deployed
-self.addEventListener("activate", function (event) {
+self.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.keys().then(function (cacheNames) {
       return Promise.all(
@@ -44,9 +44,9 @@ self.addEventListener("activate", function (event) {
           })
           .map(function (name) {
             return caches.delete(name);
-          }),
+          })
       );
-    }),
+    })
   );
   // Take control of all open tabs immediately
   self.clients.claim();
@@ -54,7 +54,7 @@ self.addEventListener("activate", function (event) {
 
 // Fetch: serve from cache first, fall back to network
 // This means the app works even with zero signal
-self.addEventListener("fetch", function (event) {
+self.addEventListener('fetch', function (event) {
   event.respondWith(
     caches.match(event.request).then(function (cachedResponse) {
       if (cachedResponse) {
@@ -86,10 +86,10 @@ self.addEventListener("fetch", function (event) {
         })
         .catch(function () {
           // Offline and not cached — return a simple fallback
-          if (event.request.destination === "document") {
-            return caches.match("./index.html");
+          if (event.request.destination === 'document') {
+            return caches.match('./index.html');
           }
         });
-    }),
+    })
   );
 });
