@@ -1,222 +1,744 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CHA Sales Command Center</title>
-<meta name="description" content="Central Health Advisors Agent Sales Command Center">
-<meta name="robots" content="noindex,nofollow">
-<meta property="og:title" content="CHA Sales Command Center">
-<meta property="og:description" content="Central Health Advisors Agent Sales Command Center — live coverage lookup, rebuttals, compliance, and call tools.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://via.placeholder.com/1200x630/5175F1/FFFFFF?text=CHA+Sales+Command+Center">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; worker-src 'self';">
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://fonts.gstatic.com">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23635BFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2'/></svg>">
-<!-- CSS: external file for GitHub Pages, with inline fallback for local dev servers
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>CHA Sales Command Center</title>
+    <meta
+      name="description"
+      content="Central Health Advisors Agent Sales Command Center"
+    />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta property="og:title" content="CHA Sales Command Center" />
+    <meta
+      property="og:description"
+      content="Central Health Advisors Agent Sales Command Center — live coverage lookup, rebuttals, compliance, and call tools."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://via.placeholder.com/1200x630/5175F1/FFFFFF?text=CHA+Sales+Command+Center"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; worker-src 'self';"
+    />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23635BFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2'/></svg>"
+    />
+    <!-- CSS: external file for GitHub Pages, with inline fallback for local dev servers
      that serve .css as text/plain (which browsers reject). The sync XHR runs only
      if the <link> stylesheet has 0 rules after loading. -->
-<link rel="stylesheet" href="css/styles.css" id="mainCSS">
-<script>
-(function(){
-  // Give the <link> a moment, then check. If it failed (0 rules), inject via XHR.
-  var link = document.getElementById('mainCSS');
-  function check(){
-    try{
-      if(link.sheet && link.sheet.cssRules && link.sheet.cssRules.length > 0) return; // CSS loaded fine
-    }catch(e){/* cross-origin or not ready */}
-    // Fallback: fetch CSS as text and inject as <style>
-    var x = new XMLHttpRequest();
-    x.open('GET','css/styles.css',false);
-    x.send();
-    if(x.status===200){
-      var s = document.createElement('style');
-      s.textContent = x.responseText;
-      document.head.appendChild(s);
-    }
-  }
-  // Check after link fires load event (or immediately if already loaded)
-  if(link.sheet){ check(); } else { link.onload = check; link.onerror = check; }
-})();
-</script>
-</head>
-<body>
-<a href="#main-content" style="position:absolute;top:-100px;left:0;background:#5175F1;color:#fff;padding:8px 16px;border-radius:0 0 8px 0;font-family:Inter,sans-serif;font-weight:700;font-size:14px;z-index:99999;text-decoration:none;transition:top 0.2s" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to main content</a>
+    <link rel="stylesheet" href="css/styles.css" id="mainCSS" />
+    <script>
+      (function () {
+        // Give the <link> a moment, then check. If it failed (0 rules), inject via XHR.
+        var link = document.getElementById("mainCSS");
+        function check() {
+          try {
+            if (
+              link.sheet &&
+              link.sheet.cssRules &&
+              link.sheet.cssRules.length > 0
+            )
+              return; // CSS loaded fine
+          } catch (e) {
+            /* cross-origin or not ready */
+          }
+          // Fallback: fetch CSS as text and inject as <style>
+          var x = new XMLHttpRequest();
+          x.open("GET", "css/styles.css", false);
+          x.send();
+          if (x.status === 200) {
+            var s = document.createElement("style");
+            s.textContent = x.responseText;
+            document.head.appendChild(s);
+          }
+        }
+        // Check after link fires load event (or immediately if already loaded)
+        if (link.sheet) {
+          check();
+        } else {
+          link.onload = check;
+          link.onerror = check;
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <a
+      href="#main-content"
+      style="
+        position: absolute;
+        top: -100px;
+        left: 0;
+        background: #5175f1;
+        color: #fff;
+        padding: 8px 16px;
+        border-radius: 0 0 8px 0;
+        font-family: Inter, sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        z-index: 99999;
+        text-decoration: none;
+        transition: top 0.2s;
+      "
+      onfocus="this.style.top = '0'"
+      onblur="this.style.top = '-100px'"
+      >Skip to main content</a
+    >
 
-<nav class="sidebar" role="navigation" aria-label="Main navigation">
-  <div class="logo">
-    <img src="./logo.png" alt="Central Health Advisors" class="logo-img">
-    <div class="logo-sub">Agent Studio</div>
-  </div>
-  <div class="nav">
-    <div class="nlbl">LIVE CALL</div>
-    <button class="nb active" onclick="showPage('liveassist')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/></svg></span> Live Assist</button>
-    <button class="nb" onclick="showPage('objections')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> Objections</button>
-    <div class="nlbl">KNOWLEDGE</div>
-    <button class="nb" onclick="showPage('plansbenefit')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg></span> Plans & Benefits</button>
-    <button class="nb" onclick="showPage('callplaybook')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> Call Playbook</button>
-    <button class="nb" onclick="showPage('aitools')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></span> AI Tools</button>
-    <button class="nb" onclick="showPage('training')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span> Training</button>
-    <button class="nb" onclick="showPage('reference')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9"/><path d="M3 12h18"/></svg></span> Network Guide</button>
-    <button class="nb" onclick="showPage('policydocs')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span> Policy Reference</button>
-    <div class="nlbl">COMPLIANCE</div>
-    <button class="nb" onclick="showPage('compliance')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span> Compliance Hub</button>
-    <div class="nlbl">PERSONAL</div>
-    <button class="nb" onclick="showPage('myspace')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/></svg></span> My Space</button>
-  </div>
-</nav>
-
-<div class="main">
-  <header class="topbar" role="banner">
-    <div class="t-brand" style="color:var(--accent);display:flex;align-items:center;gap:0.55rem;">
-      <div style="width:9px;height:9px;border-radius:50%;background:var(--accent-mid);animation:pulse 2s infinite"></div>
-      COMMAND CENTER
-    </div>
-    <button id="mobMenu" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle navigation menu" style="display:none;background:none;border:none;font-size:24px;cursor:pointer;padding:10px 14px;color:var(--charcoal);"><svg style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
-    <div class="sw">
-      <span class="si"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-      <input type="text" id="gs" placeholder="Search objections, plans, closes, benefits..." oninput="debouncedSearch(this.value)" aria-label="Search the command center">
-    </div>
-    <button id="scBtn" style="display:none;background:rgba(81,117,241,0.10);color:#5175F1;border:1px solid rgba(81,117,241,0.20);border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:.76rem;font-weight:600;cursor:pointer;" onclick="closeSearch()">✕ Clear</button>
-    <div class="livebadge"><span class="ldot"></span>LIVE</div>
-  </header>
-
-  <main aria-live="polite" class="content" id="main-content" role="main">
-    <div id="page-liveassist" class="combo-page active">
-      <div class="page-subtabs" id="subtabs-liveassist"></div>
-      <div id="subcontent-liveassist"></div>
-      <div id="page-live" class="page" style="display:none"></div>
-      <div id="page-recovery" class="page" style="display:none"></div>
-      <div id="page-qarebuttals" class="page" style="display:none"></div>
-    </div>
-    <div id="page-objections" class="page"></div>
-    <div id="page-plansbenefit" class="combo-page">
-      <div class="page-subtabs" id="subtabs-plansbenefit"></div>
-      <div id="subcontent-plansbenefit"></div>
-      <div id="page-plans" class="page" style="display:none"></div>
-      <div id="page-compare" class="page" style="display:none"></div>
-      <div id="page-benefits" class="page" style="display:none"></div>
-    </div>
-    <div id="page-callplaybook" class="combo-page">
-      <div class="page-subtabs" id="subtabs-callplaybook"></div>
-      <div id="subcontent-callplaybook"></div>
-      <div id="page-callflow" class="page" style="display:none"></div>
-      <div id="page-closes" class="page" style="display:none"></div>
-      <div id="page-scripts" class="page" style="display:none"></div>
-      <div id="page-planscripts" class="page" style="display:none"></div>
-    </div>
-    <div id="page-aitools" class="combo-page">
-      <div class="page-subtabs" id="subtabs-aitools"></div>
-      <div id="subcontent-aitools"></div>
-      <div id="page-psychprofile" class="page" style="display:none"></div>
-      <div id="page-complianceai" class="page" style="display:none"></div>
-      <div id="page-coachingai" class="page" style="display:none"></div>
-    </div>
-    <div id="page-training" class="combo-page">
-      <div class="page-subtabs" id="subtabs-training"></div>
-      <div id="subcontent-training"></div>
-      <div id="page-process" class="page" style="display:none"></div>
-      <div id="page-productvault" class="page" style="display:none"></div>
-      <div id="page-simplifier" class="page" style="display:none"></div>
-      <div id="page-redflags" class="page" style="display:none"></div>
-      <div id="page-roleplay" class="page" style="display:none"></div>
-      <div id="page-discovery" class="page" style="display:none"></div>
-      <div id="page-closingengine" class="page" style="display:none"></div>
-      <div id="page-closinglab" class="page" style="display:none"></div>
-      <div id="page-cheatsheets" class="page" style="display:none"></div>
-    </div>
-    <div id="page-reference" class="combo-page">
-      <div class="page-subtabs" id="subtabs-reference"></div>
-      <div id="subcontent-reference"></div>
-      <div id="page-networkexplainer" class="page" style="display:none"></div>
-    </div>
-    <div id="page-compliance" class="combo-page">
-      <div class="page-subtabs" id="subtabs-compliance"></div>
-      <div id="subcontent-compliance"></div>
-      <div id="page-compliancecenter" class="page" style="display:none"></div>
-      <div id="page-calldisclosures" class="page" style="display:none"></div>
-      <div id="page-complianceflags" class="page" style="display:none"></div>
-      <div id="page-callaudit" class="page" style="display:none"></div>
-    </div>
-    <div id="page-myspace" class="combo-page">
-      <div class="page-subtabs" id="subtabs-myspace"></div>
-      <div id="subcontent-myspace"></div>
-      <div id="page-mindset" class="page" style="display:none"></div>
-      <div id="page-notes" class="page" style="display:none"></div>
-    </div>
-    <div id="page-policydocs" class="page"></div>
-  </main>
-
-<div id="srOverlay" class="sr-overlay" role="dialog" aria-modal="true" aria-label="Search" onclick="if(event.target===this)closeSearch()">
-  <div class="sr-container">
-    <div class="sr-searchbox">
-      <div class="sr-input-wrap">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="srInput" placeholder="Search plans, objections, benefits, closes..." oninput="debouncedOverlaySearch(this.value)" autofocus>
-        <button class="sr-input-clear" onclick="closeSearch()" title="Close search (Esc)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <nav class="sidebar" role="navigation" aria-label="Main navigation">
+      <div class="logo">
+        <img src="./logo.png" alt="Central Health Advisors" class="logo-img" />
+        <div class="logo-sub">Agent Studio</div>
+      </div>
+      <div class="nav">
+        <div class="nlbl">LIVE CALL</div>
+        <button class="nb active" onclick="showPage('liveassist')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z" /></svg
+          ></span>
+          Live Assist
+        </button>
+        <button class="nb" onclick="showPage('objections')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg
+          ></span>
+          Objections
+        </button>
+        <div class="nlbl">KNOWLEDGE</div>
+        <button class="nb" onclick="showPage('plansbenefit')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="8" y="2" width="8" height="4" rx="1" />
+              <rect x="3" y="6" width="18" height="16" rx="2" />
+              <path d="M8 10h8M8 14h5" /></svg
+          ></span>
+          Plans & Benefits
+        </button>
+        <button class="nb" onclick="showPage('callplaybook')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              /></svg
+          ></span>
+          Call Playbook
+        </button>
+        <button class="nb" onclick="showPage('aitools')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="19" cy="12" r="1" />
+              <circle cx="5" cy="12" r="1" /></svg
+          ></span>
+          AI Tools
+        </button>
+        <button class="nb" onclick="showPage('training')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path
+                d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"
+              /></svg
+          ></span>
+          Training
+        </button>
+        <button class="nb" onclick="showPage('reference')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9" />
+              <path d="M3 12h18" /></svg
+          ></span>
+          Network Guide
+        </button>
+        <button class="nb" onclick="showPage('policydocs')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+              />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" /></svg
+          ></span>
+          Policy Reference
+        </button>
+        <div class="nlbl">COMPLIANCE</div>
+        <button class="nb" onclick="showPage('compliance')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="M9 12l2 2 4-4" /></svg
+          ></span>
+          Compliance Hub
+        </button>
+        <div class="nlbl">PERSONAL</div>
+        <button class="nb" onclick="showPage('myspace')">
+          <span class="nb-icon"
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z" /></svg
+          ></span>
+          My Space
         </button>
       </div>
-      <div class="sr-meta">
-        <div class="sr-match-count" id="srMatchCount"></div>
-        <div class="sr-esc-hint"><kbd>Esc</kbd> to close</div>
+    </nav>
+
+    <div class="main">
+      <header class="topbar" role="banner">
+        <div
+          class="t-brand"
+          style="
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+          "
+        >
+          <div
+            style="
+              width: 9px;
+              height: 9px;
+              border-radius: 50%;
+              background: var(--accent-mid);
+              animation: pulse 2s infinite;
+            "
+          ></div>
+          COMMAND CENTER
+        </div>
+        <button
+          id="mobMenu"
+          onclick="document.querySelector('.sidebar').classList.toggle('open')"
+          aria-label="Toggle navigation menu"
+          style="
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px 14px;
+            color: var(--charcoal);
+          "
+        >
+          <svg
+            style="width: 24px; height: 24px"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="18" x2="20" y2="18" />
+          </svg>
+        </button>
+        <div class="sw">
+          <span class="si"
+            ><svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" /></svg
+          ></span>
+          <input
+            type="text"
+            id="gs"
+            placeholder="Search objections, plans, closes, benefits..."
+            oninput="debouncedSearch(this.value)"
+            aria-label="Search the command center"
+          />
+        </div>
+        <button
+          id="scBtn"
+          style="
+            display: none;
+            background: rgba(81, 117, 241, 0.1);
+            color: #5175f1;
+            border: 1px solid rgba(81, 117, 241, 0.2);
+            border-radius: 999px;
+            padding: 5px 14px;
+            font-family: var(--font-ui);
+            font-size: 0.76rem;
+            font-weight: 600;
+            cursor: pointer;
+          "
+          onclick="closeSearch()"
+        >
+          ✕ Clear
+        </button>
+        <div class="livebadge"><span class="ldot"></span>LIVE</div>
+      </header>
+
+      <main aria-live="polite" class="content" id="main-content" role="main">
+        <div id="page-liveassist" class="combo-page active">
+          <div class="page-subtabs" id="subtabs-liveassist"></div>
+          <div id="subcontent-liveassist"></div>
+          <div id="page-live" class="page" style="display: none"></div>
+          <div id="page-recovery" class="page" style="display: none"></div>
+          <div id="page-qarebuttals" class="page" style="display: none"></div>
+        </div>
+        <div id="page-objections" class="page"></div>
+        <div id="page-plansbenefit" class="combo-page">
+          <div class="page-subtabs" id="subtabs-plansbenefit"></div>
+          <div id="subcontent-plansbenefit"></div>
+          <div id="page-plans" class="page" style="display: none"></div>
+          <div id="page-compare" class="page" style="display: none"></div>
+          <div id="page-benefits" class="page" style="display: none"></div>
+        </div>
+        <div id="page-callplaybook" class="combo-page">
+          <div class="page-subtabs" id="subtabs-callplaybook"></div>
+          <div id="subcontent-callplaybook"></div>
+          <div id="page-callflow" class="page" style="display: none"></div>
+          <div id="page-closes" class="page" style="display: none"></div>
+          <div id="page-scripts" class="page" style="display: none"></div>
+          <div id="page-planscripts" class="page" style="display: none"></div>
+        </div>
+        <div id="page-aitools" class="combo-page">
+          <div class="page-subtabs" id="subtabs-aitools"></div>
+          <div id="subcontent-aitools"></div>
+          <div id="page-psychprofile" class="page" style="display: none"></div>
+          <div id="page-complianceai" class="page" style="display: none"></div>
+          <div id="page-coachingai" class="page" style="display: none"></div>
+        </div>
+        <div id="page-training" class="combo-page">
+          <div class="page-subtabs" id="subtabs-training"></div>
+          <div id="subcontent-training"></div>
+          <div id="page-process" class="page" style="display: none"></div>
+          <div id="page-productvault" class="page" style="display: none"></div>
+          <div id="page-simplifier" class="page" style="display: none"></div>
+          <div id="page-redflags" class="page" style="display: none"></div>
+          <div id="page-roleplay" class="page" style="display: none"></div>
+          <div id="page-discovery" class="page" style="display: none"></div>
+          <div id="page-closingengine" class="page" style="display: none"></div>
+          <div id="page-closinglab" class="page" style="display: none"></div>
+          <div id="page-cheatsheets" class="page" style="display: none"></div>
+        </div>
+        <div id="page-reference" class="combo-page">
+          <div class="page-subtabs" id="subtabs-reference"></div>
+          <div id="subcontent-reference"></div>
+          <div
+            id="page-networkexplainer"
+            class="page"
+            style="display: none"
+          ></div>
+        </div>
+        <div id="page-compliance" class="combo-page">
+          <div class="page-subtabs" id="subtabs-compliance"></div>
+          <div id="subcontent-compliance"></div>
+          <div
+            id="page-compliancecenter"
+            class="page"
+            style="display: none"
+          ></div>
+          <div
+            id="page-calldisclosures"
+            class="page"
+            style="display: none"
+          ></div>
+          <div
+            id="page-complianceflags"
+            class="page"
+            style="display: none"
+          ></div>
+          <div id="page-callaudit" class="page" style="display: none"></div>
+        </div>
+        <div id="page-myspace" class="combo-page">
+          <div class="page-subtabs" id="subtabs-myspace"></div>
+          <div id="subcontent-myspace"></div>
+          <div id="page-mindset" class="page" style="display: none"></div>
+          <div id="page-notes" class="page" style="display: none"></div>
+        </div>
+        <div id="page-policydocs" class="page"></div>
+      </main>
+
+      <div
+        id="srOverlay"
+        class="sr-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search"
+        onclick="if (event.target === this) closeSearch();"
+      >
+        <div class="sr-container">
+          <div class="sr-searchbox">
+            <div class="sr-input-wrap">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                id="srInput"
+                placeholder="Search plans, objections, benefits, closes..."
+                oninput="debouncedOverlaySearch(this.value)"
+                autofocus
+              />
+              <button
+                class="sr-input-clear"
+                onclick="closeSearch()"
+                title="Close search (Esc)"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div class="sr-meta">
+              <div class="sr-match-count" id="srMatchCount"></div>
+              <div class="sr-esc-hint"><kbd>Esc</kbd> to close</div>
+            </div>
+          </div>
+          <div class="sr-results" id="srList"></div>
+        </div>
       </div>
     </div>
-    <div class="sr-results" id="srList"></div>
-  </div>
-</div>
+    <!-- /main wrapper -->
 
-</div><!-- /main wrapper -->
-
-<!-- Benefits Reference Chat Panel -->
-<button id="br-toggle" aria-label="Policy Benefits AI">
-  <svg class="ic-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5F0E8" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  <svg class="ic-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F0E8" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-</button>
-
-<div id="br-panel">
-  <div class="br-head">
-    <div class="br-head-icon"><svg style="width:17px;height:17px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/></svg></div>
-    <div style="flex:1">
-      <div class="br-head-name">Benefits Reference</div>
-      <div class="br-head-sub"><span class="br-dot"></span>Mid-Call AI &middot; SOB Lookup</div>
-    </div>
-    <button class="br-clear" onclick="brClear()">Clear</button>
-  </div>
-  <div class="br-filter-bar" id="br-filter-bar"></div>
-  <div class="br-plan-bar" id="br-plan-bar"></div>
-  <div class="br-chips">
-    <span class="br-chip ded" onclick="brQuick('What is the deductible and out-of-pocket maximum?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Deductible &amp; OOP</span>
-    <span class="br-chip cop" onclick="brQuick('What are the copays for doctor visits, urgent care, and ER?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg> Copays</span>
-    <span class="br-chip exc" onclick="brQuick('What is NOT covered? List all major exclusions.')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Exclusions</span>
-    <span class="br-chip drg" onclick="brQuick('What is the prescription drug coverage?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg> Rx Coverage</span>
-    <span class="br-chip net" onclick="brQuick('What is the network type? Are there out-of-network benefits?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Network</span>
-    <span class="br-chip wai" onclick="brQuick('What are the waiting periods and pre-existing condition rules?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Wait / Pre-Ex</span>
-  </div>
-  <div class="br-msgs" id="br-msgs"></div>
-  <div class="br-input-bar">
-    <textarea id="br-input" rows="1" aria-label="Search plan benefits" placeholder="Ask anything mid-call… e.g. Is chiropractic covered?"></textarea>
-    <button id="br-send" onclick="brSend()" aria-label="Search benefits">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#F5F0E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    <!-- Benefits Reference Chat Panel -->
+    <button id="br-toggle" aria-label="Policy Benefits AI">
+      <svg
+        class="ic-chat"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#F5F0E8"
+        stroke-width="1.9"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+        />
+      </svg>
+      <svg
+        class="ic-close"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#F5F0E8"
+        stroke-width="2.2"
+        stroke-linecap="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
     </button>
-  </div>
-</div>
 
-<!-- ══════════════════════════════════════════════════════
+    <div id="br-panel">
+      <div class="br-head">
+        <div class="br-head-icon">
+          <svg
+            style="width: 17px; height: 17px"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="8" y="2" width="8" height="4" rx="1" />
+            <rect x="3" y="6" width="18" height="16" rx="2" />
+          </svg>
+        </div>
+        <div style="flex: 1">
+          <div class="br-head-name">Benefits Reference</div>
+          <div class="br-head-sub">
+            <span class="br-dot"></span>Mid-Call AI &middot; SOB Lookup
+          </div>
+        </div>
+        <button class="br-clear" onclick="brClear()">Clear</button>
+      </div>
+      <div class="br-filter-bar" id="br-filter-bar"></div>
+      <div class="br-plan-bar" id="br-plan-bar"></div>
+      <div class="br-chips">
+        <span
+          class="br-chip ded"
+          onclick="brQuick('What is the deductible and out-of-pocket maximum?')"
+          ><svg
+            style="
+              width: 12px;
+              height: 12px;
+              vertical-align: middle;
+              margin-right: 2px;
+            "
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="12" y1="1" x2="12" y2="23" />
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+          </svg>
+          Deductible &amp; OOP</span
+        >
+        <span
+          class="br-chip cop"
+          onclick="
+            brQuick(
+              'What are the copays for doctor visits, urgent care, and ER?',
+            )
+          "
+          ><svg
+            style="
+              width: 12px;
+              height: 12px;
+              vertical-align: middle;
+              margin-right: 2px;
+            "
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="8" y="2" width="8" height="4" rx="1" />
+            <rect x="3" y="6" width="18" height="16" rx="2" />
+            <path d="M8 10h8M8 14h5" />
+          </svg>
+          Copays</span
+        >
+        <span
+          class="br-chip exc"
+          onclick="brQuick('What is NOT covered? List all major exclusions.')"
+          ><svg
+            style="
+              width: 12px;
+              height: 12px;
+              vertical-align: middle;
+              margin-right: 2px;
+            "
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+          </svg>
+          Exclusions</span
+        >
+        <span
+          class="br-chip drg"
+          onclick="brQuick('What is the prescription drug coverage?')"
+          ><svg
+            style="
+              width: 12px;
+              height: 12px;
+              vertical-align: middle;
+              margin-right: 2px;
+            "
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"
+            />
+            <path d="m8.5 8.5 7 7" />
+          </svg>
+          Rx Coverage</span
+        >
+        <span
+          class="br-chip net"
+          onclick="
+            brQuick(
+              'What is the network type? Are there out-of-network benefits?',
+            )
+          "
+          ><svg
+            style="
+              width: 12px;
+              height: 12px;
+              vertical-align: middle;
+              margin-right: 2px;
+            "
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            />
+          </svg>
+          Network</span
+        >
+        <span
+          class="br-chip wai"
+          onclick="
+            brQuick(
+              'What are the waiting periods and pre-existing condition rules?',
+            )
+          "
+          ><svg
+            style="
+              width: 12px;
+              height: 12px;
+              vertical-align: middle;
+              margin-right: 2px;
+            "
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <polyline points="12 6 12 12 16 14" />
+          </svg>
+          Wait / Pre-Ex</span
+        >
+      </div>
+      <div class="br-msgs" id="br-msgs"></div>
+      <div class="br-input-bar">
+        <textarea
+          id="br-input"
+          rows="1"
+          aria-label="Search plan benefits"
+          placeholder="Ask anything mid-call… e.g. Is chiropractic covered?"
+        ></textarea>
+        <button id="br-send" onclick="brSend()" aria-label="Search benefits">
+          <svg
+            width="17"
+            height="17"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#F5F0E8"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
      SCRIPTS — Load order matters!
      1. utils.js     — icons, escHTML, search engine (no dependencies)
      2. data.js      — RECOVERY data (no dependencies)
@@ -231,18 +753,17 @@
      11. app.js       — PAGE_CONFIG, showPage, initApp, CLOSEABLE, SW
      12. chat.js      — Benefits Reference panel (uses POLICY_DOCS)
      ══════════════════════════════════════════════════════ -->
-<script src="js/utils.js"></script>
-<script src="js/data.js"></script>
-<script src="js/objections.js"></script>
-<script src="js/plans-benefits.js"></script>
-<script src="js/call-playbook.js"></script>
-<script src="js/live-assist.js"></script>
-<script src="js/ai-tools.js"></script>
-<script src="js/training.js"></script>
-<script src="js/compliance.js"></script>
-<script src="js/policy-docs.js"></script>
-<script src="js/app.js"></script>
-<script src="js/chat.js"></script>
-
-</body>
+    <script src="js/utils.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/objections.js"></script>
+    <script src="js/plans-benefits.js"></script>
+    <script src="js/call-playbook.js"></script>
+    <script src="js/live-assist.js"></script>
+    <script src="js/ai-tools.js"></script>
+    <script src="js/training.js"></script>
+    <script src="js/compliance.js"></script>
+    <script src="js/policy-docs.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/chat.js"></script>
+  </body>
 </html>

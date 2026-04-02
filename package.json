@@ -1,0 +1,17 @@
+{
+  "name": "cha-sales-tool",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "CHA Sales Command Center",
+  "scripts": {
+    "format:check": "prettier --check \"**/*.{html,css,js,json}\" --ignore-path .gitignore",
+    "format": "prettier --write \"**/*.{html,css,js,json}\" --ignore-path .gitignore",
+    "lint": "eslint \"js/**/*.js\"",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0"
+  }
+}
