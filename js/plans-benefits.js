@@ -99,7 +99,7 @@ const PLANS = [
   // GROUP 1: MEC PLANS
   // ══════════════════════════════
   {group:"MEC",name:"MedFirst 1–5",type:"MEC — Minimum Essential Coverage",tagline:"Preventive-first base plan with First Health network",
-   network:"First Health",admin:"Merchants Benefit Administrators (MBA)",assoc:"VP Limited Partnership / The Vitamin Patch (TVP)",
+   network:"First Health",admin:"Merchants Benefit Administration (MBA)",assoc:"VP Limited Partnership / The Vitamin Patch (TVP)",
    bestFor:"Self-employed, gig workers, 1099 contractors, part-time employees who need affordable preventive coverage",
    notGood:"Anyone with active chronic conditions, ongoing specialist care, or specialty Rx needs above $150/month",
    idealClient:"Healthy 25–50, rarely sees doctors, wants preventive care + safety net, budget-conscious",
@@ -112,7 +112,7 @@ const PLANS = [
    fitNo:["Active specialist needs","Takes specialty medications","Recent serious health history","Expecting surgery or hospitalization soon","Wants ACA-equivalent coverage"]},
 
   {group:"MEC",name:"TrueHealth 1–3",type:"MEC — Minimum Essential Coverage",tagline:"Simplified MEC tiers with First Health network",
-   network:"First Health",admin:"Merchants Benefit Administrators (MBA)",assoc:"VP Limited Partnership / The Vitamin Patch (TVP)",
+   network:"First Health",admin:"Merchants Benefit Administration (MBA)",assoc:"VP Limited Partnership / The Vitamin Patch (TVP)",
    bestFor:"Same profile as MedFirst — healthy, budget-conscious, needs preventive base coverage",
    notGood:"Same exclusions as MedFirst — not for chronic conditions, specialty Rx, or active health needs",
    idealClient:"Similar to MedFirst buyer; simpler tier structure may appeal to prospects who want fewer choices",
@@ -125,7 +125,7 @@ const PLANS = [
    fitNo:["Has ongoing health conditions","Wants comprehensive major medical","Needs specialist access regularly"]},
 
   {group:"MEC",name:"GoodHealth 1–5",type:"MEC — Minimum Essential Coverage",tagline:"MEC base plan via Good Health Distribution Partners",
-   network:"First Health",admin:"Merchants Benefit Administrators (MBA)",assoc:"Good Health Distribution Partners",
+   network:"First Health",admin:"Merchants Benefit Administration (MBA)",assoc:"Good Health Distribution Partners",
    bestFor:"Self-employed, gig workers, individuals needing affordable preventive-focused coverage",
    notGood:"Not for active health conditions, specialty medications, or anyone expecting significant medical utilization",
    idealClient:"Healthy adult, self-employed or freelance, needs affordable base coverage with doctor visit and hospital benefit access",
@@ -138,7 +138,7 @@ const PLANS = [
    fitNo:["Active health conditions","Specialty medications","Expecting hospitalization","Wants ACA-level coverage"]},
 
   {group:"MEC",name:"TDK 1–5",type:"MEC — Limited Health & Wellness",tagline:"Detego Health MEC with concierge and pharmacy services",
-   network:"First Health",admin:"Detego Health",assoc:"Health Care Data Analytics",
+   network:"First Health",admin:"Detego Health",assoc:"Healthcare Data Analytics",
    bestFor:"Budget-conscious individuals who want MEC base coverage with added concierge and pharmacy assistance",
    notGood:"Not for complex health needs; designed as affordable preventive and wellness plan",
    idealClient:"Cost-sensitive buyer who values telemedicine, pharmacy discounts, and preventive care in one affordable package",
