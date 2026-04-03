@@ -9,14 +9,14 @@
 <meta property="og:title" content="CHA Sales Command Center">
 <meta property="og:description" content="Central Health Advisors Agent Sales Command Center — live coverage lookup, rebuttals, compliance, and call tools.">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://via.placeholder.com/1200x630/5175F1/FFFFFF?text=CHA+Sales+Command+Center">
+<meta property="og:image" content="https://via.placeholder.com/1200x630/5B8DEF/FFFFFF?text=CHA+Sales+Command+Center">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; worker-src 'self';">
 <link rel="dns-prefetch" href="https://fonts.googleapis.com">
 <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23635BFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B8DEF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2'/></svg>">
 <!-- CSS: external file for GitHub Pages, with inline fallback for local dev servers
      that serve .css as text/plain (which browsers reject). The sync XHR runs only
      if the <link> stylesheet has 0 rules after loading. -->
@@ -45,7 +45,7 @@
 </script>
 </head>
 <body>
-<a href="#main-content" style="position:absolute;top:-100px;left:0;background:#5175F1;color:#fff;padding:8px 16px;border-radius:0 0 8px 0;font-family:Inter,sans-serif;font-weight:700;font-size:14px;z-index:99999;text-decoration:none;transition:top 0.2s" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to main content</a>
+<a href="#main-content" style="position:absolute;top:-100px;left:0;background:#5B8DEF;color:#fff;padding:8px 16px;border-radius:0 0 8px 0;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;z-index:99999;text-decoration:none;transition:top 0.2s" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to main content</a>
 
 <nav class="sidebar" role="navigation" aria-label="Main navigation">
   <div class="logo">
@@ -82,16 +82,13 @@
 
 <div class="main">
   <header class="topbar" role="banner">
-    <div class="t-brand" style="color:var(--accent);display:flex;align-items:center;gap:0.55rem;">
-      <div style="width:9px;height:9px;border-radius:50%;background:var(--accent-mid);animation:pulse 2s infinite"></div>
-      COMMAND CENTER
-    </div>
-    <button id="mobMenu" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle navigation menu" style="display:none;background:none;border:none;font-size:24px;cursor:pointer;padding:10px 14px;color:var(--charcoal);"><svg style="width:24px;height:24px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
+    <div class="t-brand">COMMAND CENTER</div>
+    <button id="mobMenu" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle navigation menu" style="display:none;"><svg style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
     <div class="sw">
       <span class="si"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
       <input type="text" id="gs" placeholder="Search objections, plans, closes, benefits..." oninput="debouncedSearch(this.value)" aria-label="Search the command center">
     </div>
-    <button id="scBtn" style="display:none;background:rgba(81,117,241,0.10);color:#5175F1;border:1px solid rgba(81,117,241,0.20);border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:.76rem;font-weight:600;cursor:pointer;" onclick="closeSearch()">✕ Clear</button>
+    <button id="scBtn" style="display:none;background:rgba(91,141,239,0.10);color:#5B8DEF;border:1px solid rgba(91,141,239,0.20);border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:.76rem;font-weight:600;cursor:pointer;" onclick="closeSearch()">Clear</button>
     <div class="livebadge"><span class="ldot"></span>LIVE</div>
   </header>
 
@@ -184,8 +181,8 @@
 
 <!-- Benefits Reference Chat Panel -->
 <button id="br-toggle" aria-label="Policy Benefits AI">
-  <svg class="ic-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5F0E8" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  <svg class="ic-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F0E8" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  <svg class="ic-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  <svg class="ic-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 </button>
 
 <div id="br-panel">
@@ -211,7 +208,7 @@
   <div class="br-input-bar">
     <textarea id="br-input" rows="1" aria-label="Search plan benefits" placeholder="Ask anything mid-call… e.g. Is chiropractic covered?"></textarea>
     <button id="br-send" onclick="brSend()" aria-label="Search benefits">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#F5F0E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     </button>
   </div>
 </div>
