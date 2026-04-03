@@ -55,3 +55,9 @@
 ## L009 — Service worker caches old file versions during refactors
 **What happened:** After fixing the `const` duplicate in training.js, the browser still served the old cached version. Functions remained undefined until the SW cache was manually cleared.
 **Rule:** During multi-file refactors, always bump `CACHE_NAME` in `sw.js` AND clear caches before testing. After any structural change, run: `caches.keys().then(n => n.forEach(c => caches.delete(c)))` in the console.
+
+---
+
+## L010 — Splitting large files requires updating sw.js and index.html
+**What happened:** When splitting `policy-docs.js` into `policy-data.js` + `policy-render.js`, had to update three places: index.html script tags (correct load order), sw.js URLS_TO_CACHE array (replace old filename with both new filenames), and bump CACHE_NAME version.
+**Rule:** When splitting or renaming any JS file, always update: (1) `index.html` script tags with correct order, (2) `sw.js` URLS_TO_CACHE with new filenames, (3) bump `CACHE_NAME` version. Forgetting any of these breaks offline caching or page load.
