@@ -279,15 +279,5 @@ function renderObjList() {
 }
 
 function switchObjTab(e, prefix, tab) {
-  e.stopPropagation();
-  var card = e.target.closest('.xcard');
-  card.querySelectorAll('.rtab').forEach(function (t) {
-    t.classList.remove('active');
-  });
-  card.querySelectorAll('.rpanel').forEach(function (p) {
-    p.classList.remove('active');
-  });
-  e.target.classList.add('active');
-  var el = document.getElementById(prefix + '-' + tab);
-  if (el) el.classList.add('active');
+  switchTab(e, prefix, tab);
 }

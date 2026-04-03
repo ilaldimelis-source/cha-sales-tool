@@ -1,55 +1,4 @@
-// training.js — Training tab (Process, Product Vault, Simplifier, Red Flags, Roleplay, Closing Lab, Cheat Sheets)
-
-const MINDSET = [
-  {
-    n: '01',
-    c: 'var(--charcoal)',
-    r: 'You are not selling. You are qualifying.',
-    d: 'Your job is to find people who need what you have and match them properly. Stop trying to convince people. Start trying to understand them. The right match sells itself.'
-  },
-  {
-    n: '02',
-    c: '#7a5f00',
-    r: 'Talk less. Ask more.',
-    d: "Every time you resist the urge to pitch and ask one more question instead, your close rate goes up. The prospect's words are more persuasive than yours."
-  },
-  {
-    n: '03',
-    c: '#29A26A',
-    r: 'Silence after a close is power.',
-    d: 'After a closing question, stop talking. Not pausing — stopping. The next person who speaks loses leverage. Most agents lose deals by filling the silence with more selling.'
-  },
-  {
-    n: '04',
-    c: 'var(--charcoal2)',
-    r: 'Never create confusion with too many details.',
-    d: 'Three benefits that solve their problem beat ten features that sound impressive. Simplicity creates confidence. Complexity creates hesitation. Always ask: what are the three things that matter for THIS person?'
-  },
-  {
-    n: '05',
-    c: 'var(--charcoal)',
-    r: 'Validate before you redirect.',
-    d: "Never dismiss what a prospect says. Cushion it first — 'That makes complete sense' — then pivot. Feeling heard is what opens the door to being influenced."
-  },
-  {
-    n: '06',
-    c: '#7a5f00',
-    r: 'The stated objection is rarely the real one.',
-    d: "'It's too expensive' usually means 'I don't see the value yet.' 'I need to think' usually means 'I have one concern I didn't say.' Always ask: 'Is it the cost itself, or something else?'"
-  },
-  {
-    n: '07',
-    c: '#29A26A',
-    r: 'Sell the fit. Not the features.',
-    d: "Nobody cares about benefits in the abstract. They care about whether this solves their specific problem. 'The plan has telemedicine' is a feature. 'You can talk to a doctor at 2am when your kid has a fever — for free' is a fit."
-  },
-  {
-    n: '08',
-    c: 'var(--charcoal2)',
-    r: "Keep momentum. Don't let the call die.",
-    d: 'Momentum is fragile. Every time you pause too long, every time you let them lead you off-topic without a bridge back — you lose control. Control through questions, not monologues.'
-  }
-];
+// training.js — Training tab (Process, Product Vault, Simplifier, Red Flags, Roleplay, Closing Lab, Cheat Sheets, Discovery, Closing Engine)
 
 const TRAINING = [
   {
@@ -1698,4 +1647,355 @@ function renderCheatsheets() {
   html += '</div>';
   html += '</div>';
   document.getElementById('page-cheatsheets').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER: DISCOVERY QUESTION GENERATOR
+// ══════════════════════════════════════════════════════
+function renderDiscovery() {
+  var categories = [
+    {
+      type: 'S',
+      label: 'Situation',
+      color: 'var(--charcoal)',
+      icon: '',
+      desc: 'Establish context. Keep brief — move to Problem quickly.',
+      questions: [
+        'What are you currently doing for coverage?',
+        'How long have you been without coverage?',
+        'Are you looking for coverage for just yourself or your family too?',
+        'Are you self-employed, between jobs, or did your employer coverage recently end?',
+        'What coverage did you have before this?'
+      ]
+    },
+    {
+      type: 'P',
+      label: 'Problem',
+      color: '#7a5f00',
+      icon: '',
+      desc: 'Surface the gap. Get them to say the problem in their own words.',
+      questions: [
+        'What worries you most about being uninsured right now?',
+        'Has going without coverage ever cost you money out of pocket?',
+        'What happens if you need to see a doctor — what does that look like for you today?',
+        'What is the biggest risk of staying without a plan right now?',
+        'What has kept you from getting coverage up until now?'
+      ]
+    },
+    {
+      type: 'I',
+      label: 'Implication',
+      color: 'var(--charcoal2)',
+      icon: '',
+      desc: 'Make the problem bigger. Connect the gap to real financial consequences.',
+      questions: [
+        'What would happen financially if you ended up in the hospital without coverage?',
+        'If you got into an accident tomorrow, what would that cost you out of pocket?',
+        'How much would one ER visit set you back right now?',
+        'Has not having coverage ever made you hesitate to go to the doctor when you probably should have?',
+        'If something happened and you had a $15,000 hospital bill — how would that change your financial situation?'
+      ]
+    },
+    {
+      type: 'N',
+      label: 'Need-Payoff',
+      color: '#29A26A',
+      icon: '',
+      desc: 'Let them sell themselves. Ask what it would feel like to have this solved.',
+      questions: [
+        'So having something in place would give you peace of mind?',
+        'If you had a plan that covered your doctor visits and gave you telemedicine at no cost — how would that change things?',
+        'How important is it to get this handled now rather than waiting?',
+        'Would it help to know that if something happened, you had coverage in place?',
+        'If we could get you covered starting tomorrow, would that solve the problem you described?'
+      ]
+    }
+  ];
+
+  var html =
+    '<div class="ph"><div class="pt">Discovery <span>Questions</span></div>';
+  html +=
+    '<div class="pd">SPIN-based question bank. Tap any question to copy it. Use Situation first, then Problem, then Implication, then Need-Payoff before presenting.</div></div>';
+
+  html +=
+    '<div style="background:rgba(81,117,241,0.04);border:1px solid rgba(220,170,180,0.2);border-radius:12px;padding:14px 16px;margin-bottom:20px;font-size:13px;color:var(--charcoal);line-height:1.6;">';
+  html +=
+    '<strong style="color:var(--charcoal3);">The SPIN Rule:</strong> Never present before you diagnose. Run at least one Problem and one Implication question before showing any plan. The prospect\'s pain must be real to them — not just to you.';
+  html += '</div>';
+
+  categories.forEach(function (cat, ci) {
+    var did = 'disc-' + ci;
+    html += '<div class="xcard" id="' + did + '" style="margin-bottom:10px;">';
+    // Header — clickable toggle
+    html +=
+      '<div class="xcard-hd" onclick="toggleDisc(\'' +
+      did +
+      '\')" style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;">';
+    html +=
+      '<div style="width:34px;height:34px;border-radius:50%;background:rgba(26,29,38,0.08);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:.9rem;color:#5C6878;flex-shrink:0;">' +
+      cat.type +
+      '</div>';
+    html +=
+      '<div class="u-flex1"><div class="xcard-label">' +
+      cat.label +
+      ' Questions</div>';
+    html += '<div class="xcard-sub">' + cat.desc + '</div></div>';
+    html += '<div style="display:flex;align-items:center;gap:8px;">';
+    html +=
+      '<span style="font-family:var(--font-ui);font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(26,29,38,0.06);color:var(--txt-muted);">' +
+      cat.questions.length +
+      ' questions</span>';
+    html += '<span class="xcard-chev" id="' + did + '-chev">▼</span></div>';
+    html += '</div>';
+    // Body — hidden by default
+    html +=
+      '<div id="' +
+      did +
+      '-body" style="display:none;padding:4px 18px 16px;border-top:1px solid var(--rule);">';
+    cat.questions.forEach(function (q) {
+      html +=
+        '<div onclick="copyDiscovery(this)" data-q="' +
+        q.replace(/"/g, '&quot;') +
+        '" ';
+      html +=
+        'style="padding:11px 14px;background:var(--bg-card2);border:1px solid var(--rule);border-radius:8px;margin-top:8px;cursor:pointer;font-family:var(--font-body);font-size:.8rem;color:var(--txt-head);line-height:1.55;transition:all 0.15s;" ';
+      html +=
+        "onmouseover=\"this.style.borderColor='rgba(92,104,120,0.28)';this.style.background='var(--bg-card3)'\" ";
+      html +=
+        "onmouseout=\"this.style.borderColor='var(--rule)';this.style.background='var(--bg-card2)'\">";
+      html += '\u201c' + q + '\u201d';
+      html +=
+        '<span style="display:block;font-family:var(--font-ui);font-size:.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-muted);margin-top:5px;">Tap to copy</span>';
+      html += '</div>';
+    });
+    html += '</div></div>';
+  });
+
+  html +=
+    '<div id="discoveryCopied" style="display:none;position:fixed;bottom:30px;right:30px;background:#29A26A;color:#fff;border-radius:12px;padding:12px 20px;font-weight:700;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">Copied to clipboard ✓</div>';
+
+  var _page_discovery = document.getElementById('page-discovery');
+  if (_page_discovery) _page_discovery.innerHTML = html;
+}
+
+function toggleDisc(id) {
+  var body = document.getElementById(id + '-body');
+  var chev = document.getElementById(id + '-chev');
+  var card = document.getElementById(id);
+  var isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (chev) chev.style.transform = isOpen ? '' : 'rotate(180deg)';
+  card.classList.toggle('open', !isOpen);
+}
+
+function copyDiscovery(el) {
+  var q = el.getAttribute('data-q');
+  if (navigator.clipboard) navigator.clipboard.writeText(q);
+  var toast = document.getElementById('discoveryCopied');
+  if (toast) {
+    toast.style.display = 'block';
+    setTimeout(function () {
+      toast.style.display = 'none';
+    }, 2000);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER: CLOSING ENGINE
+// ══════════════════════════════════════════════════════
+function renderClosingengine() {
+  var situations = [
+    {
+      situation: 'Prospect seems ready — engaged, no major objections',
+      closes: [
+        {
+          type: 'Assumptive',
+          line: '"Let\'s go ahead and get this activated so you\'re covered."'
+        },
+        {
+          type: 'Assumptive',
+          line: '"Based on everything we covered, let\'s get this started. I\'ll pull up the application now."'
+        },
+        {
+          type: 'Assumptive',
+          line: '"Great — I\'ll go ahead and lock in that start date for you."'
+        }
+      ]
+    },
+    {
+      situation: 'Prospect is hesitant about timing',
+      closes: [
+        {
+          type: 'Soft',
+          line: '"Would you prefer coverage starting tomorrow or the first of next month?"'
+        },
+        {
+          type: 'Soft',
+          line: '"Do you want to get this in place today or would the 1st work better for your budget?"'
+        },
+        {
+          type: 'Soft',
+          line: '"Should we start you on the basic plan and adjust from there, or go with the full coverage now?"'
+        }
+      ]
+    },
+    {
+      situation: "Prospect is engaged but hasn't committed",
+      closes: [
+        {
+          type: 'Direct',
+          line: '"Let\'s take care of the application while we\'re on the phone."'
+        },
+        {
+          type: 'Direct',
+          line: '"Everything sounds good on my end — let\'s just get this submitted."'
+        },
+        {
+          type: 'Direct',
+          line: '"The next step is simple — I just need a few details to get you enrolled."'
+        }
+      ]
+    },
+    {
+      situation: "Prospect is stalling — mentions they'll think about it",
+      closes: [
+        {
+          type: 'Urgency',
+          line: '"The rate I quoted you is based on today — I can\'t guarantee it holds if we reconnect next week."'
+        },
+        {
+          type: 'Urgency',
+          line: '"Every day without coverage is a day you\'re exposed. This takes four minutes to activate."'
+        },
+        {
+          type: 'Urgency',
+          line: '"The longer we wait, the longer you\'re unprotected. There\'s no reason to delay something that starts working tomorrow."'
+        }
+      ]
+    },
+    {
+      situation:
+        'Prospect agreed with your points — wants confirmation before deciding',
+      closes: [
+        {
+          type: 'Tie-Down',
+          line: '"So having coverage for doctor visits and telemedicine is important to you, right? That\'s exactly what this does."'
+        },
+        {
+          type: 'Tie-Down',
+          line: '"You said your biggest concern was an unexpected emergency — this addresses that starting day one, correct?"'
+        },
+        {
+          type: 'Tie-Down',
+          line: '"It sounds like cost and real coverage were your two priorities — this plan hits both. Does that feel right?"'
+        }
+      ]
+    },
+    {
+      situation:
+        'Prospect says they are interested but wants to talk to someone',
+      closes: [
+        {
+          type: 'Agreement',
+          line: '"Totally — is your [spouse/partner] available right now? I can walk you both through it in five minutes."'
+        },
+        {
+          type: 'Agreement',
+          line: '"I completely respect that. What time tomorrow can all three of us connect so nobody has to play telephone?"'
+        },
+        {
+          type: 'Agreement',
+          line: '"That makes sense. If they have questions, what are they typically worried about? I can address that now so you have the full picture."'
+        }
+      ]
+    }
+  ];
+
+  var typeColors = {
+    Assumptive: 'var(--charcoal3)',
+    Soft: '#29A26A',
+    Direct: '#7a5f00',
+    Urgency: 'var(--sec)',
+    'Tie-Down': '#904020',
+    Agreement: '#2A5A90'
+  };
+  var typeBg = {
+    Assumptive: 'rgba(212,96,122,0.1)',
+    Soft: 'rgba(41,162,106,0.1)',
+    Direct: 'rgba(184,134,11,0.1)',
+    Urgency: 'rgba(123,104,184,0.1)',
+    'Tie-Down': 'rgba(200,110,60,0.1)',
+    Agreement: 'rgba(42,90,144,0.1)'
+  };
+
+  var html =
+    '<div class="ph"><div class="pt">Closing <span>Engine</span></div>';
+  html +=
+    '<div class="pd">Find the right close for your exact situation. Tap a line to copy it.</div></div>';
+
+  html +=
+    '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">';
+  Object.keys(typeColors).forEach(function (t) {
+    html +=
+      '<span style="background:' +
+      typeBg[t] +
+      ';color:' +
+      typeColors[t] +
+      ';border-radius:12px;padding:5px 14px;font-size:12px;font-weight:800;">' +
+      t +
+      '</span>';
+  });
+  html += '</div>';
+
+  situations.forEach(function (s) {
+    html +=
+      '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;margin-bottom:12px;overflow:hidden;">';
+    html +=
+      '<div style="background:#F8FAFF;padding:14px 18px;border-bottom:1px solid #E8EBF5;">';
+    html +=
+      '<div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--warmgray3);margin-bottom:4px;">SITUATION</div>';
+    html +=
+      '<div style="font-size:13px;font-weight:700;color:var(--charcoal3);">' +
+      s.situation +
+      '</div></div>';
+    html += '<div style="padding:14px 18px;">';
+    s.closes.forEach(function (c) {
+      var col = typeColors[c.type] || 'var(--charcoal3)';
+      var bg = typeBg[c.type] || 'rgba(212,96,122,0.1)';
+      html +=
+        '<div onclick="copyClose(this)" data-line="' +
+        c.line.replace(/"/g, '&quot;') +
+        '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--milk);border:1px solid rgba(220,170,180,0.2);border-radius:12px;margin-bottom:8px;cursor:pointer;" onmouseover="this.style.background=\'var(--milk)\'" onmouseout="this.style.background=\'var(--milk)\'">';
+      html +=
+        '<span style="background:' +
+        bg +
+        ';color:' +
+        col +
+        ';border-radius:12px;padding:3px 10px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0;">' +
+        c.type +
+        '</span>';
+      html +=
+        '<div style="font-size:13px;color:var(--charcoal3);line-height:1.5;">' +
+        c.line +
+        '</div></div>';
+    });
+    html += '</div></div>';
+  });
+
+  html +=
+    '<div id="closeCopied" style="display:none;position:fixed;bottom:30px;right:30px;background:#29A26A;color:#fff;border-radius:12px;padding:12px 20px;font-weight:700;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">Copied ✓</div>';
+  var _page_closingengine = document.getElementById('page-closingengine');
+  if (_page_closingengine) _page_closingengine.innerHTML = html;
+}
+
+function copyClose(el) {
+  var line = el.getAttribute('data-line');
+  if (navigator.clipboard) navigator.clipboard.writeText(line);
+  var toast = document.getElementById('closeCopied');
+  if (toast) {
+    toast.style.display = 'block';
+    setTimeout(function () {
+      toast.style.display = 'none';
+    }, 2000);
+  }
 }

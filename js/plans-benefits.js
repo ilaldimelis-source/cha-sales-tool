@@ -1183,10 +1183,7 @@ function renderPlanGroups() {
 }
 
 function togglePlan(i) {
-  var card = document.getElementById('pc' + i);
-  var body = card.querySelector('.plan-body');
-  card.classList.toggle('open');
-  body.style.display = card.classList.contains('open') ? 'block' : 'none';
+  toggleCard('pc' + i, 'plan-body');
 }
 
 function switchPlanTab(e, i, tab) {

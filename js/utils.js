@@ -107,6 +107,31 @@ function toggleXcard(id) {
   body.style.display = el.classList.contains('open') ? 'block' : 'none';
 }
 
+function toggleCard(id, bodyClass) {
+  var el = document.getElementById(id);
+  var body = el.querySelector('.' + bodyClass);
+  el.classList.toggle('open');
+  body.style.display = el.classList.contains('open') ? 'block' : 'none';
+}
+
+function switchTab(e, prefix, tab) {
+  e.stopPropagation();
+  var card =
+    e.target.closest('.xcard') ||
+    e.target.closest('.rec-card') ||
+    e.target.closest('.lrp') ||
+    document.getElementById('liveResult');
+  card.querySelectorAll('.rtab').forEach(function (t) {
+    t.classList.remove('active');
+  });
+  card.querySelectorAll('.rpanel').forEach(function (p) {
+    p.classList.remove('active');
+  });
+  e.target.classList.add('active');
+  var el = document.getElementById(prefix + '-' + tab);
+  if (el) el.classList.add('active');
+}
+
 // ══════════════════════════════════════════════════════
 // SEARCH SYNONYM ENGINE + PRE-BUILT INDEX
 // ══════════════════════════════════════════════════════

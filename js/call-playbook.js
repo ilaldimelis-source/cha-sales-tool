@@ -852,10 +852,7 @@ function renderCloses() {
 }
 
 function toggleClose(id) {
-  var el = document.getElementById(id);
-  var detail = el.querySelector('.close-detail');
-  el.classList.toggle('open');
-  detail.style.display = el.classList.contains('open') ? 'block' : 'none';
+  toggleCard(id, 'close-detail');
 }
 
 // ══════════════════════════════════════════════════════
@@ -915,10 +912,7 @@ function renderCallFlow() {
 }
 
 function toggleCF(i) {
-  var el = document.getElementById('cf' + i);
-  var body = el.querySelector('.cf-body');
-  el.classList.toggle('open');
-  body.style.display = el.classList.contains('open') ? 'block' : 'none';
+  toggleCard('cf' + i, 'cf-body');
 }
 
 var planScriptFilter = 'All';

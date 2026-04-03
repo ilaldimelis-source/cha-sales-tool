@@ -160,17 +160,7 @@ function showLiveObj(i) {
 }
 
 function switchLivTab(e, prefix, tab) {
-  e.stopPropagation();
-  var par = e.target.closest('.lrp') || document.getElementById('liveResult');
-  par.querySelectorAll('.rtab').forEach(function (t) {
-    t.classList.remove('active');
-  });
-  par.querySelectorAll('.rpanel').forEach(function (p) {
-    p.classList.remove('active');
-  });
-  e.target.classList.add('active');
-  var el = document.getElementById(prefix + '-' + tab);
-  if (el) el.classList.add('active');
+  switchTab(e, prefix, tab);
 }
 
 // ══════════════════════════════════════════════════════
@@ -327,24 +317,11 @@ function renderRecovery() {
 }
 
 function switchRecTab(e, prefix, tab) {
-  e.stopPropagation();
-  var card = document.getElementById(prefix);
-  card.querySelectorAll('.rtab').forEach(function (t) {
-    t.classList.remove('active');
-  });
-  card.querySelectorAll('.rpanel').forEach(function (p) {
-    p.classList.remove('active');
-  });
-  e.target.classList.add('active');
-  var el = document.getElementById(prefix + '-' + tab);
-  if (el) el.classList.add('active');
+  switchTab(e, prefix, tab);
 }
 
 function toggleRec(i) {
-  var card = document.getElementById('rec' + i);
-  var body = card.querySelector('.rec-body');
-  card.classList.toggle('open');
-  body.style.display = card.classList.contains('open') ? 'block' : 'none';
+  toggleCard('rec' + i, 'rec-body');
 }
 
 function renderQaRebuttals() {
