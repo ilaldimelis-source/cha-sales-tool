@@ -206,19 +206,6 @@ function brFormatResults(results, query) {
 
   var expandedTerms = expandSearchSynonyms(query.toLowerCase());
 
-  // FIX: Word-boundary-safe highlighting — prevents "ER" highlighting inside "covered"
-  function highlight(text) {
-    var safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    expandedTerms.forEach(function(term) {
-      if (term.length < 2) return;
-      var escaped = term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-      var boundary = (term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) ? '\\b' : '';
-      var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
-      safe = safe.replace(re, '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>');
-    });
-    return safe;
-  }
-
   // Group by plan, then by category
   var byPlan = {};
   results.forEach(function(r) {
@@ -249,7 +236,7 @@ function brFormatResults(results, query) {
       html += '<div style="background:' + bg + ';border:1px solid ' + border + ';border-left:3px solid ' + leftBorder + ';border-radius:8px;padding:9px 12px;margin-bottom:7px;">';
       html += '<div style="font-size:10px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;color:#374151">' + icon + ' ' + cat + '</div>';
       grouped[cat].forEach(function(text) {
-        html += '<div style="font-size:12.5px;line-height:1.55;margin-bottom:4px;color:#1C2035;padding-left:8px;border-left:2px solid #E8EBF5">' + LI.dot + ' ' + highlight(text) + '</div>';
+        html += '<div style="font-size:12.5px;line-height:1.55;margin-bottom:4px;color:#1C2035;padding-left:8px;border-left:2px solid #E8EBF5">' + LI.dot + ' ' + brHl(text, expandedTerms) + '</div>';
       });
       html += '</div>';
     });
@@ -629,7 +616,7 @@ function brSmartAnswer(query, plans) {
   return html;
 }
 
-// FIX: Word-boundary-safe highlighting for short terms / medical abbreviations
+// NOTE: Word-boundary-safe highlighting for short terms / medical abbreviations
 function brHl(text, terms) {
   var safe = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   terms.forEach(function(term) {

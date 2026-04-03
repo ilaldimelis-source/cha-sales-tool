@@ -1,5 +1,14 @@
 // call-playbook.js — Call Playbook tab (Call Flow, Closes, Scripts, Plan Scripts)
 
+// ── CONSTANTS ────────────────────────────────────────
+var CHA_PHONE = '855-736-1590';
+var CHA_PHONE_HOURS = 'Monday through Friday, 9:00 a.m. to 9:00 p.m. Eastern';
+var CHA_CONFIRMATION = 'CHA561337';
+var PROVIDER_URLS = {
+  firsthealth: 'providerlocator.firsthealth.com',
+  multiplan: 'providersearch.multiplan.com'
+};
+
 const CLOSES = [
   {line:"Based on everything you told me, this fits your situation well. The best thing to do right now is get this submitted so your coverage starts [date]. I just need to confirm a few quick details.",type:"assumptive",when:"After smooth presentation with no major unresolved resistance. Assumes the sale is happening — because it is.",tone:"Confident and matter-of-fact. No question mark in your voice.",before:"Full discovery complete, benefits presented, no major open objections.",bridge:"'Does that feel like it addresses what you were dealing with?' → pause → then move directly into this.",hesitate:"'What's the one thing that's making you hesitate right now?'"},
   {line:"It sounds like you're about 90% there. What's the 10% that's holding you back?",type:"soft",when:"They seem interested but hesitating without a clear objection.",tone:"Genuinely curious. You're helping them identify their own concern.",before:"After presenting. When temperature is warm but not fully committed.",bridge:"'I want to make sure you feel completely good about this.' → this close.",hesitate:"Let the silence sit. They'll fill it. Their answer is your next objection."},

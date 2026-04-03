@@ -3,7 +3,7 @@
 ## Project Reference
 - Full architecture, stack, routes, models, components: see `PROJECT_NOTES.md`. If it doesn't exist, create one.
 - Always read `tasks/lessons.md` at the start of every session before doing anything
-- Key stack: Needs to be defined
+- Key stack: Vanilla HTML5 + CSS3 + JavaScript (ES6), GitHub Pages, Service Worker for offline
 
 ## Core Principles
 - **Simplicity first:** Minimal code impact. Only touch what's necessary.

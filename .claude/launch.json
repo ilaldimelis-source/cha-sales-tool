@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "cha-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["http-server", "C:\\Users\\Owner\\Downloads\\cha-sales-tool", "-p", "3000", "-c-1", "--silent"],
+      "port": 3000
+    }
+  ]
+}

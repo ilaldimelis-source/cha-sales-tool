@@ -157,7 +157,7 @@ function expandSearchSynonyms(query) {
   Object.keys(SEARCH_SYNONYMS).forEach(function(key) {
     // Exact key match on full query already handled above
     if (key === q) return;
-    // FIX: For short queries (<=3 chars), only allow exact key match (already done above).
+    // NOTE: For short queries (<=3 chars), only allow exact key match (already done above).
     // Do NOT let "er" match inside "surgery", "cancer", "dermatology", etc.
     if (q.length <= 3) return;
     // Full query is a substring of the key — safe for longer queries
@@ -350,7 +350,7 @@ function hlSearch(text, terms) {
   terms.forEach(function(term) {
     if (term.length < 2) return;
     var escaped = term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-    // FIX: Use word boundaries for short terms to prevent highlighting inside words
+    // NOTE: Use word boundaries for short terms to prevent highlighting inside words
     var boundary = (term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) ? '\\b' : '';
     var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
     safe = safe.replace(re, '<mark class="sr-hl">$1</mark>');

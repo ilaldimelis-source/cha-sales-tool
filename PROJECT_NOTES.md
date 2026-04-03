@@ -14,11 +14,11 @@ Single-page web app for Central Health Advisors insurance sales agents. Deployed
 ## Stack
 | Layer | Technology |
 |-------|-----------|
-| Structure | HTML shell (`index.html`, ~223 lines) + 12 JS files + 1 CSS file |
+| Structure | HTML shell (`index.html`, ~223 lines) + 13 JS files + 1 CSS file |
 | Styling | External CSS (`css/styles.css`) |
 | Logic | External JavaScript (12 files in `js/`) |
 | Fonts | Google Fonts — Inter (400, 500, 600, 700) |
-| Offline | Service Worker (`sw.js`) — stale-while-revalidate, v7 cache |
+| Offline | Service Worker (`sw.js`) — stale-while-revalidate, v8 cache |
 | Hosting | GitHub Pages (static, no Jekyll — `.nojekyll` present) |
 | Build | None — direct file editing |
 
@@ -40,7 +40,8 @@ cha-sales-tool/
 │   ├── ai-tools.js         # AI Tools tab (Psych, Compliance AI, Coaching)
 │   ├── training.js         # Training tab (Process, Product Vault, etc.)
 │   ├── compliance.js       # Compliance Hub tab
-│   ├── policy-docs.js      # Policy Reference tab (27 plan documents)
+│   ├── policy-data.js      # Policy Reference data (27 plan documents)
+│   ├── policy-render.js    # Policy Reference render/filter/toggle
 │   ├── app.js              # Navigation, init, CLOSEABLE, My Space, SW
 │   └── chat.js             # Benefits Reference chat panel
 ├── logo.png                # CHA logo (36KB PNG)
@@ -64,13 +65,13 @@ cha-sales-tool/
 ---
 
 ## JavaScript Architecture
-12 external JS files loaded via `<script src>` tags in `index.html`.
+13 external JS files loaded via `<script src>` tags in `index.html`.
 Load order matters — see comments in index.html for dependency chain.
 
 ### Key Data Structures
 | Variable | Description |
 |----------|-------------|
-| `POLICY_DOCS[]` | 27 insurance plans with benefits, exclusions, waiting periods (~line 3358) |
+| `POLICY_DOCS[]` | 27 insurance plans with benefits, exclusions, waiting periods (policy-data.js) |
 | `PLANS[]` | Plan vault data for sales framing |
 | `OBJECTIONS[]` | Objection handlers with scripts |
 | `BENEFITS[]` | Benefit explainer entries |

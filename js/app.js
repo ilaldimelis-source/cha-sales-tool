@@ -21,7 +21,7 @@ function renderMindset() {
 // ══════════════════════════════════════════════════════
 function renderNotes() {
   var saved = getSavedScripts();
-  var notesVal = localStorage.getItem('scc_notes') || '';
+  var notesVal = ''; try { notesVal = localStorage.getItem('scc_notes') || ''; } catch(e) {}
   var html = '<div class="ph"><div class="pt">My <span>Notes</span></div><div class="pd">Write your own scripts, custom phrasing, and reminders. Everything saves automatically.</div></div>';
   html += '<textarea class="notes-ta" id="notesTA" aria-label="Agent notes" placeholder="Write your notes here...">' + escHTML(notesVal) + '</textarea>';
   html += '<div style="display:flex;gap:8px;margin-top:8px;align-items:center;">';
@@ -44,11 +44,11 @@ function renderNotes() {
   }
 }
 
-function saveNotes(){localStorage.setItem('scc_notes',document.getElementById('notesTA').value);var m=document.getElementById('saveMsg');if(m){m.style.opacity='1';setTimeout(function(){m.style.opacity='0';},1800);}}
+function saveNotes(){try{localStorage.setItem('scc_notes',document.getElementById('notesTA').value);}catch(e){}var m=document.getElementById('saveMsg');if(m){m.style.opacity='1';setTimeout(function(){m.style.opacity='0';},1800);}}
 function clearNotes(){if(confirm('Clear notes?')){document.getElementById('notesTA').value='';saveNotes();}}
-function getSavedScripts(){try{return JSON.parse(localStorage.getItem('scc_scripts')||'[]');}catch(e){return[];}}
-function saveScript(){var v=document.getElementById('scriptInput').value.trim();if(!v)return;var s=getSavedScripts();s.unshift(v);localStorage.setItem('scc_scripts',JSON.stringify(s.slice(0,30)));document.getElementById('scriptInput').value='';renderSavedScripts();}
-function deleteScript(i){var s=getSavedScripts();s.splice(i,1);localStorage.setItem('scc_scripts',JSON.stringify(s));renderSavedScripts();}
+function getSavedScripts(){try{return JSON.parse(localStorage.getItem('scc_scripts')||'[]');}catch(e){return [];}}
+function saveScript(){var v=document.getElementById('scriptInput').value.trim();if(!v)return;var s=getSavedScripts();s.unshift(v);try{localStorage.setItem('scc_scripts',JSON.stringify(s.slice(0,30)));}catch(e){}document.getElementById('scriptInput').value='';renderSavedScripts();}
+function deleteScript(i){var s=getSavedScripts();s.splice(i,1);try{localStorage.setItem('scc_scripts',JSON.stringify(s));}catch(e){}renderSavedScripts();}
 function renderSavedScripts(){
   var s=getSavedScripts();
   var el=document.getElementById('savedList');
