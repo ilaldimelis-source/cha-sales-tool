@@ -1,247 +1,348 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CHA Sales Command Center</title>
-<meta name="description" content="Central Health Advisors Agent Sales Command Center">
-<meta name="robots" content="noindex,nofollow">
-<meta property="og:title" content="CHA Sales Command Center">
-<meta property="og:description" content="Central Health Advisors Agent Sales Command Center — live coverage lookup, rebuttals, compliance, and call tools.">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://via.placeholder.com/1200x630/5B8DEF/FFFFFF?text=CHA+Sales+Command+Center">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; worker-src 'self';">
-<link rel="dns-prefetch" href="https://fonts.googleapis.com">
-<link rel="dns-prefetch" href="https://fonts.gstatic.com">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235B8DEF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2'/></svg>">
-<!-- CSS: external file for GitHub Pages, with inline fallback for local dev servers
-     that serve .css as text/plain (which browsers reject). The sync XHR runs only
-     if the <link> stylesheet has 0 rules after loading. -->
-<link rel="stylesheet" href="css/styles.css" id="mainCSS">
-<script>
-(function(){
-  // Give the <link> a moment, then check. If it failed (0 rules), inject via XHR.
-  var link = document.getElementById('mainCSS');
-  function check(){
-    try{
-      if(link.sheet && link.sheet.cssRules && link.sheet.cssRules.length > 0) return; // CSS loaded fine
-    }catch(e){/* cross-origin or not ready */}
-    // Fallback: fetch CSS as text and inject as <style>
-    var x = new XMLHttpRequest();
-    x.open('GET','css/styles.css',false);
-    x.send();
-    if(x.status===200){
-      var s = document.createElement('style');
-      s.textContent = x.responseText;
-      document.head.appendChild(s);
-    }
-  }
-  // Check after link fires load event (or immediately if already loaded)
-  if(link.sheet){ check(); } else { link.onload = check; link.onerror = check; }
-})();
-</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHA Sales Command Center</title>
+    <meta name="description" content="CHA Sales Command Center - Financial Dashboard">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237cb0f9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2'/></svg>">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f1f4f9;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+        
+        /* Mobile menu */
+        @media (max-width: 1024px) {
+            .sidebar-cards {
+                display: none;
+            }
+            .sidebar-cards.open {
+                display: flex;
+                position: fixed;
+                left: 88px;
+                top: 0;
+                bottom: 0;
+                z-index: 25;
+            }
+        }
+        @media (max-width: 768px) {
+            .icon-sidebar {
+                display: none;
+            }
+            .icon-sidebar.open {
+                display: flex;
+                position: fixed;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                z-index: 30;
+            }
+            .sidebar-cards.open {
+                left: 0;
+            }
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            .main-content {
+                flex-direction: column;
+            }
+            .stats-section {
+                flex: none !important;
+            }
+            .history-section {
+                flex: none !important;
+                border-left: none !important;
+                border-top: 1px solid #e5e7eb;
+            }
+        }
+    </style>
 </head>
-<body>
-<a href="#main-content" style="position:absolute;top:-100px;left:0;background:#5B8DEF;color:#fff;padding:8px 16px;border-radius:0 0 8px 0;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:14px;z-index:99999;text-decoration:none;transition:top 0.2s" onfocus="this.style.top='0'" onblur="this.style.top='-100px'">Skip to main content</a>
+<body class="w-full h-screen flex overflow-hidden text-[#1e1e1e]">
 
-<nav class="sidebar" role="navigation" aria-label="Main navigation">
-  <div class="logo">
-    <img src="./logo.png" alt="Central Health Advisors" class="logo-img">
-    <div class="logo-sub">Agent Studio</div>
-  </div>
-  <div class="nav">
-    <div class="nlbl">LIVE CALL</div>
-    <button class="nb active" onclick="showPage('liveassist')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/></svg></span> Live Assist</button>
-    <button class="nb" onclick="showPage('objections')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> Objections</button>
-    <div class="nlbl">KNOWLEDGE</div>
-    <button class="nb" onclick="showPage('plansbenefit')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg></span> Plans & Benefits</button>
-    <button class="nb" onclick="showPage('callplaybook')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span> Call Playbook</button>
-    <button class="nb" onclick="showPage('aitools')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></span> AI Tools</button>
-    <button class="nb" onclick="showPage('training')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span> Training</button>
-    <button class="nb" onclick="showPage('reference')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3c2.5 2.5 4 5.5 4 9s-1.5 6.5-4 9"/><path d="M3 12h18"/></svg></span> Network Guide</button>
-    <button class="nb" onclick="showPage('policydocs')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg></span> Policy Reference</button>
-    <div class="nlbl">COMPLIANCE</div>
-    <button class="nb" onclick="showPage('compliance')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span> Compliance Hub</button>
-    <div class="nlbl">PERSONAL</div>
-    <button class="nb" onclick="showPage('myspace')">
-      <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/></svg></span> My Space</button>
-  </div>
-</nav>
-
-<div class="main">
-  <header class="topbar" role="banner">
-    <div class="t-brand">COMMAND CENTER</div>
-    <button id="mobMenu" onclick="document.querySelector('.sidebar').classList.toggle('open')" aria-label="Toggle navigation menu" style="display:none;"><svg style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg></button>
-    <div class="sw">
-      <span class="si"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
-      <input type="text" id="gs" placeholder="Search objections, plans, closes, benefits..." oninput="debouncedSearch(this.value)" aria-label="Search the command center">
-    </div>
-    <button id="scBtn" style="display:none;background:rgba(91,141,239,0.10);color:#5B8DEF;border:1px solid rgba(91,141,239,0.20);border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:.76rem;font-weight:600;cursor:pointer;" onclick="closeSearch()">Clear</button>
-    <div class="livebadge"><span class="ldot"></span>LIVE</div>
-  </header>
-
-  <main aria-live="polite" class="content" id="main-content" role="main">
-    <div id="page-liveassist" class="combo-page active">
-      <div class="page-subtabs" id="subtabs-liveassist"></div>
-      <div id="subcontent-liveassist"></div>
-      <div id="page-live" class="page" style="display:none"></div>
-      <div id="page-recovery" class="page" style="display:none"></div>
-      <div id="page-qarebuttals" class="page" style="display:none"></div>
-    </div>
-    <div id="page-objections" class="page"></div>
-    <div id="page-plansbenefit" class="combo-page">
-      <div class="page-subtabs" id="subtabs-plansbenefit"></div>
-      <div id="subcontent-plansbenefit"></div>
-      <div id="page-plans" class="page" style="display:none"></div>
-      <div id="page-compare" class="page" style="display:none"></div>
-      <div id="page-benefits" class="page" style="display:none"></div>
-    </div>
-    <div id="page-callplaybook" class="combo-page">
-      <div class="page-subtabs" id="subtabs-callplaybook"></div>
-      <div id="subcontent-callplaybook"></div>
-      <div id="page-callflow" class="page" style="display:none"></div>
-      <div id="page-closes" class="page" style="display:none"></div>
-      <div id="page-scripts" class="page" style="display:none"></div>
-      <div id="page-planscripts" class="page" style="display:none"></div>
-    </div>
-    <div id="page-aitools" class="combo-page">
-      <div class="page-subtabs" id="subtabs-aitools"></div>
-      <div id="subcontent-aitools"></div>
-      <div id="page-psychprofile" class="page" style="display:none"></div>
-      <div id="page-complianceai" class="page" style="display:none"></div>
-      <div id="page-coachingai" class="page" style="display:none"></div>
-    </div>
-    <div id="page-training" class="combo-page">
-      <div class="page-subtabs" id="subtabs-training"></div>
-      <div id="subcontent-training"></div>
-      <div id="page-process" class="page" style="display:none"></div>
-      <div id="page-productvault" class="page" style="display:none"></div>
-      <div id="page-simplifier" class="page" style="display:none"></div>
-      <div id="page-redflags" class="page" style="display:none"></div>
-      <div id="page-roleplay" class="page" style="display:none"></div>
-      <div id="page-discovery" class="page" style="display:none"></div>
-      <div id="page-closingengine" class="page" style="display:none"></div>
-      <div id="page-closinglab" class="page" style="display:none"></div>
-      <div id="page-cheatsheets" class="page" style="display:none"></div>
-    </div>
-    <div id="page-reference" class="combo-page">
-      <div class="page-subtabs" id="subtabs-reference"></div>
-      <div id="subcontent-reference"></div>
-      <div id="page-networkexplainer" class="page" style="display:none"></div>
-    </div>
-    <div id="page-compliance" class="combo-page">
-      <div class="page-subtabs" id="subtabs-compliance"></div>
-      <div id="subcontent-compliance"></div>
-      <div id="page-compliancecenter" class="page" style="display:none"></div>
-      <div id="page-calldisclosures" class="page" style="display:none"></div>
-      <div id="page-complianceflags" class="page" style="display:none"></div>
-      <div id="page-callaudit" class="page" style="display:none"></div>
-    </div>
-    <div id="page-myspace" class="combo-page">
-      <div class="page-subtabs" id="subtabs-myspace"></div>
-      <div id="subcontent-myspace"></div>
-      <div id="page-mindset" class="page" style="display:none"></div>
-      <div id="page-notes" class="page" style="display:none"></div>
-    </div>
-    <div id="page-policydocs" class="page"></div>
-  </main>
-
-<div id="srOverlay" class="sr-overlay" role="dialog" aria-modal="true" aria-label="Search" onclick="if(event.target===this)closeSearch()">
-  <div class="sr-container">
-    <div class="sr-searchbox">
-      <div class="sr-input-wrap">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="srInput" placeholder="Search plans, objections, benefits, closes..." oninput="debouncedOverlaySearch(this.value)" autofocus>
-        <button class="sr-input-clear" onclick="closeSearch()" title="Close search (Esc)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <!-- Icon Sidebar -->
+    <aside class="icon-sidebar w-[88px] h-full bg-[#242529] flex flex-col items-center py-8 justify-between shrink-0 rounded-r-[2rem] z-30 relative">
+        <div class="flex flex-col items-center gap-10 w-full">
+            <div class="text-white text-3xl font-bold italic tracking-tighter">N</div>
+            <nav class="flex flex-col items-center gap-6 w-full relative">
+                <div class="absolute left-0 top-0 h-10 w-1 bg-white rounded-r-full transition-all duration-300" id="nav-indicator"></div>
+                <button class="nav-btn active bg-white text-[#242529] p-2.5 rounded-xl shadow-sm hover:scale-105 transition-transform" data-index="0">
+                    <i class="ph-fill ph-squares-four text-xl"></i>
+                </button>
+                <button class="nav-btn text-gray-400 hover:text-white p-2.5 transition-colors" data-index="1">
+                    <i class="ph ph-globe-hemisphere-west text-xl"></i>
+                </button>
+                <button class="nav-btn text-gray-400 hover:text-white p-2.5 transition-colors" data-index="2">
+                    <i class="ph ph-credit-card text-xl"></i>
+                </button>
+                <button class="nav-btn text-gray-400 hover:text-white p-2.5 transition-colors" data-index="3">
+                    <i class="ph ph-chart-bar text-xl"></i>
+                </button>
+                <button class="nav-btn text-gray-400 hover:text-white p-2.5 transition-colors" data-index="4">
+                    <i class="ph ph-gear text-xl"></i>
+                </button>
+            </nav>
+        </div>
+        <button class="text-gray-400 hover:text-white p-2.5 transition-colors">
+            <i class="ph ph-sign-out text-2xl"></i>
         </button>
-      </div>
-      <div class="sr-meta">
-        <div class="sr-match-count" id="srMatchCount"></div>
-        <div class="sr-esc-hint"><kbd>Esc</kbd> to close</div>
-      </div>
-    </div>
-    <div class="sr-results" id="srList"></div>
-  </div>
-</div>
+    </aside>
 
-</div><!-- /main wrapper -->
+    <!-- Cards Sidebar -->
+    <aside class="sidebar-cards w-[300px] h-full bg-white/40 backdrop-blur-md border-r border-gray-200 flex flex-col p-6 shrink-0 z-20 overflow-y-auto">
+        <div class="flex items-center justify-between mb-8">
+            <h2 class="text-lg font-bold">My Cards</h2>
+            <button class="text-gray-400 hover:text-gray-600 transition-colors"><i class="ph ph-plus-circle text-2xl"></i></button>
+        </div>
 
-<!-- Benefits Reference Chat Panel -->
-<button id="br-toggle" aria-label="Policy Benefits AI">
-  <svg class="ic-chat" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-  <svg class="ic-close" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-</button>
+        <div class="flex flex-col gap-6">
+            <!-- Dark Card -->
+            <div class="bg-[#242529] rounded-3xl p-5 text-white relative overflow-hidden shadow-lg h-[160px] flex flex-col justify-between shrink-0">
+                <div class="absolute right-0 top-0 w-32 h-32 bg-white opacity-5 rounded-full blur-2xl -mr-8 -mt-8"></div>
+                <div class="flex justify-between items-start relative z-10">
+                    <div class="text-xl font-semibold tracking-tight">$ 15,780.0</div>
+                    <div class="text-lg font-bold italic opacity-60">VISA</div>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 text-xs text-gray-300 font-medium mb-1">
+                        <span class="tracking-widest">****</span>
+                        <span>1810</span>
+                    </div>
+                    <div class="text-[10px] text-gray-400 font-medium uppercase">Exp 10/24</div>
+                </div>
+            </div>
 
-<div id="br-panel">
-  <div class="br-head">
-    <div class="br-head-icon"><svg style="width:17px;height:17px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/></svg></div>
-    <div style="flex:1">
-      <div class="br-head-name">Benefits Reference</div>
-      <div class="br-head-sub"><span class="br-dot"></span>Mid-Call AI &middot; SOB Lookup</div>
-    </div>
-    <button class="br-clear" onclick="brClear()">Clear</button>
-  </div>
-  <div class="br-filter-bar" id="br-filter-bar"></div>
-  <div class="br-plan-bar" id="br-plan-bar"></div>
-  <div class="br-chips">
-    <span class="br-chip ded" onclick="brQuick('What is the deductible and out-of-pocket maximum?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Deductible &amp; OOP</span>
-    <span class="br-chip cop" onclick="brQuick('What are the copays for doctor visits, urgent care, and ER?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg> Copays</span>
-    <span class="br-chip exc" onclick="brQuick('What is NOT covered? List all major exclusions.')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg> Exclusions</span>
-    <span class="br-chip drg" onclick="brQuick('What is the prescription drug coverage?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg> Rx Coverage</span>
-    <span class="br-chip net" onclick="brQuick('What is the network type? Are there out-of-network benefits?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> Network</span>
-    <span class="br-chip wai" onclick="brQuick('What are the waiting periods and pre-existing condition rules?')"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:2px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Wait / Pre-Ex</span>
-  </div>
-  <div class="br-msgs" id="br-msgs"></div>
-  <div class="br-input-bar">
-    <textarea id="br-input" rows="1" aria-label="Search plan benefits" placeholder="Ask anything mid-call… e.g. Is chiropractic covered?"></textarea>
-    <button id="br-send" onclick="brSend()" aria-label="Search benefits">
-      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    </button>
-  </div>
-</div>
+            <!-- Light Card -->
+            <div class="bg-white rounded-3xl p-5 text-[#1e1e1e] relative overflow-hidden shadow-sm border border-gray-100 h-[160px] flex flex-col justify-between shrink-0">
+                <div class="flex justify-between items-start relative z-10">
+                    <div class="text-xl font-semibold tracking-tight">₴ 123,424.0</div>
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full bg-[#1a1a1a] opacity-90 z-10"></div>
+                        <div class="w-6 h-6 rounded-full bg-[#a0a0a0] opacity-80 -ml-3 mix-blend-multiply"></div>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 text-xs text-gray-600 font-medium mb-1">
+                        <span class="tracking-widest">****</span>
+                        <span>1423</span>
+                    </div>
+                    <div class="text-[10px] text-gray-400 font-medium uppercase">Exp 10/24</div>
+                </div>
+            </div>
+        </div>
 
-<!-- ══════════════════════════════════════════════════════
-     SCRIPTS — Load order matters!
-     1. utils.js     — icons, escHTML, search engine (no dependencies)
-     2. data.js      — RECOVERY data (no dependencies)
-     3. objections   — OBJ_CATS, OBJECTIONS (uses icons from utils)
-     4. plans-benefits — PLANS, BENEFITS, Network Guide
-     5. call-playbook — CLOSES, CF_STEPS, PLAN_SCRIPTS
-     6. live-assist   — uses RECOVERY, OBJECTIONS
-     7. ai-tools      — AI tools tab
-     8. training      — ISA data + training renders
-     9. compliance    — Compliance Hub tab
-     10. policy-data  — POLICY_DOCS data (27 plans)
-     11. policy-render — Policy Reference render/filter/toggle
-     12. app.js       — PAGE_CONFIG, showPage, initApp, CLOSEABLE, SW
-     13. chat.js      — Benefits Reference panel (uses POLICY_DOCS)
-     ══════════════════════════════════════════════════════ -->
-<script src="js/utils.js"></script>
-<script src="js/data.js"></script>
-<script src="js/objections.js"></script>
-<script src="js/plans-benefits.js"></script>
-<script src="js/call-playbook.js"></script>
-<script src="js/live-assist.js"></script>
-<script src="js/ai-tools.js"></script>
-<script src="js/training.js"></script>
-<script src="js/compliance.js"></script>
-<script src="js/policy-data.js"></script>
-<script src="js/policy-render.js"></script>
-<script src="js/app.js"></script>
-<script src="js/chat.js"></script>
+        <div class="mt-auto pt-8 flex flex-col gap-3">
+            <button class="flex items-center gap-3 bg-[#7cb0f9] text-white p-3.5 rounded-2xl font-medium shadow-sm shadow-blue-100 hover:bg-blue-500 transition-colors">
+                <i class="ph ph-arrows-left-right"></i> Transfer Money
+            </button>
+            <button class="flex items-center gap-3 bg-gray-100 text-[#1e1e1e] p-3.5 rounded-2xl font-medium hover:bg-gray-200 transition-colors">
+                <i class="ph ph-receipt"></i> Pay Utility
+            </button>
+        </div>
+    </aside>
 
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden relative">
+        <!-- Header -->
+        <header class="px-10 py-6 flex items-center justify-between border-b border-gray-100 bg-white/50 backdrop-blur-sm z-10">
+            <button class="mobile-menu-btn hidden items-center justify-center w-10 h-10 rounded-xl bg-gray-100 text-gray-600 mr-4" onclick="toggleMobileMenu()">
+                <i class="ph ph-list text-xl"></i>
+            </button>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-[#fdecdb] flex items-center justify-center text-lg border border-white">👦</div>
+                <div>
+                    <h1 class="text-base font-bold">Greetings! 👋</h1>
+                    <p class="text-[10px] text-gray-500 font-medium">Dashboard Overview</p>
+                </div>
+            </div>
+            <div class="flex items-center bg-gray-200/50 rounded-full px-4 py-2 w-[300px] border border-gray-100 max-md:hidden">
+                <i class="ph ph-magnifying-glass text-gray-400"></i>
+                <input type="text" placeholder="Search transactions..." class="bg-transparent border-none outline-none ml-2 text-sm w-full placeholder-gray-400">
+            </div>
+            <button class="flex items-center gap-2 bg-[#2a2b2f] text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-[#3a3b3f] transition-colors">
+                <i class="ph-fill ph-user"></i> My account
+            </button>
+        </header>
+
+        <div class="main-content flex-1 flex overflow-hidden">
+            <!-- Statistics Section -->
+            <section class="stats-section flex-[1.5] p-10 overflow-y-auto">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="text-2xl font-bold">Statistic Overview</h2>
+                    <div class="flex gap-2">
+                        <button class="px-4 py-1.5 rounded-full bg-white border border-gray-100 text-xs font-semibold shadow-sm hover:bg-gray-50 transition-colors">This week</button>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-gray-50 flex items-center gap-12 mb-10 max-lg:flex-col max-lg:items-start">
+                    <div class="relative w-64 h-64 shrink-0 max-lg:mx-auto">
+                        <svg viewBox="0 0 100 100" class="w-full h-full transform -rotate-90 drop-shadow-lg">
+                            <circle cx="50" cy="50" r="38" fill="none" stroke="#2c2d32" stroke-width="12" stroke-dasharray="80 238.76" stroke-dashoffset="-140" stroke-linecap="round"></circle>
+                            <circle cx="50" cy="50" r="38" fill="none" stroke="#7cb0f9" stroke-width="12" stroke-dasharray="130 238.76" stroke-dashoffset="0" stroke-linecap="round"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-xs text-gray-400 font-medium">Total Balance</span>
+                            <span class="text-3xl font-bold text-[#1e1e1e]">$14,810</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-6 flex-1 w-full">
+                        <div class="p-6 rounded-3xl bg-blue-50 border border-blue-100/50">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-3 h-3 bg-[#7cb0f9] rounded-full"></div>
+                                <span class="text-xs font-bold text-blue-800 uppercase tracking-wider">Store Payments</span>
+                            </div>
+                            <div class="text-2xl font-bold text-[#1e1e1e]">$9,560.00</div>
+                        </div>
+                        <div class="p-6 rounded-3xl bg-gray-50 border border-gray-100">
+                            <div class="flex items-center gap-2 mb-2">
+                                <div class="w-3 h-3 bg-[#2c2d32] rounded-full"></div>
+                                <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Money Transactions</span>
+                            </div>
+                            <div class="text-2xl font-bold text-[#1e1e1e]">$5,250.00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-lg font-bold px-2">Transactions</h3>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="flex items-center justify-between bg-white p-4 rounded-3xl shadow-sm border border-gray-50 hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-[#7cb0f9] text-white flex items-center justify-center text-2xl"><i class="ph-fill ph-spotify-logo"></i></div>
+                                <div><div class="font-bold">Spotify Premium</div><div class="text-xs text-gray-400">Subscription • 11m ago</div></div>
+                            </div>
+                            <div class="text-lg font-bold text-red-500">-$321</div>
+                        </div>
+                        <div class="flex items-center justify-between bg-white p-4 rounded-3xl shadow-sm border border-gray-50 hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-2xl bg-[#2a2b2f] text-white flex items-center justify-center text-2xl"><i class="ph ph-currency-btc"></i></div>
+                                <div><div class="font-bold">Bitcoin Buy</div><div class="text-xs text-gray-400">Crypto Wallet • 1h ago</div></div>
+                            </div>
+                            <div class="text-lg font-bold text-red-500">-$123</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sales History Section -->
+            <section class="history-section flex-1 bg-white/30 backdrop-blur-sm border-l border-gray-200 p-8 overflow-y-auto">
+                <h2 class="text-lg font-bold mb-8">Recent Sales History</h2>
+                
+                <div class="relative timeline-line flex flex-col gap-10">
+                    <!-- James Smith -->
+                    <div class="relative pl-12">
+                        <div class="absolute left-0 top-1 w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm border-4 border-[#f1f4f9] z-10">JS</div>
+                        <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-50 hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-bold text-sm">James Smith</span>
+                                <span class="text-[10px] bg-green-100 text-green-600 px-2 py-0.5 rounded-full font-bold uppercase">Success</span>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <div class="text-[11px] text-gray-400 font-medium">Mar 18, 2023</div>
+                                <div class="font-bold">-$1,980.0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- George Holoster -->
+                    <div class="relative pl-12">
+                        <div class="absolute left-0 top-1 w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold text-sm border-4 border-[#f1f4f9] z-10">GH</div>
+                        <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-50 hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-bold text-sm">George Holoster</span>
+                                <span class="text-[10px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-bold uppercase">Processing</span>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <div class="text-[11px] text-gray-400 font-medium">Mar 10, 2023</div>
+                                <div class="font-bold">-$880.0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daniela Gordienko -->
+                    <div class="relative pl-12">
+                        <div class="absolute left-0 top-1 w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-sm border-4 border-[#f1f4f9] z-10">DG</div>
+                        <div class="bg-white p-5 rounded-[1.5rem] shadow-sm border border-gray-50 hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start mb-2">
+                                <span class="font-bold text-sm">Daniela Gordienko</span>
+                                <span class="text-[10px] bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-bold uppercase">Failed</span>
+                            </div>
+                            <div class="flex justify-between items-end">
+                                <div class="text-[11px] text-gray-400 font-medium">Mar 21, 2023</div>
+                                <div class="font-bold">-$1,240.0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // Navigation indicator
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.nav-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-white', 'text-[#242529]');
+                    b.classList.add('text-gray-400');
+                });
+                this.classList.add('active', 'bg-white', 'text-[#242529]');
+                this.classList.remove('text-gray-400');
+                
+                const index = parseInt(this.dataset.index);
+                const indicator = document.getElementById('nav-indicator');
+                indicator.style.top = `${index * 52}px`;
+            });
+        });
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            document.querySelector('.icon-sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-cards').classList.toggle('open');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                const sidebar = document.querySelector('.icon-sidebar');
+                const cardsSidebar = document.querySelector('.sidebar-cards');
+                const menuBtn = document.querySelector('.mobile-menu-btn');
+                
+                if (!sidebar.contains(e.target) && !cardsSidebar.contains(e.target) && !menuBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                    cardsSidebar.classList.remove('open');
+                }
+            }
+        });
+    </script>
 </body>
 </html>
