@@ -1223,7 +1223,7 @@ function renderProcess() {
       body += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;margin-bottom:4px;padding-left:10px;border-left:2px solid #B91C1C;">' + m + '</div>';
     });
     body += '</div><div><div class="trn-sec-label" style="color:#15803D;">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#15803D;font-weight:700;background:#F0FDF4;border-radius:8px;padding:10px;">' + s.tone + '</div></div></div>';
-    html += _trnCard('proc' + i, s.title, body);
+    html += _trnOpenCard(s.title, body);
   });
   var _page_process = document.getElementById('page-process');
   if (_page_process) _page_process.innerHTML = html;
@@ -1333,7 +1333,7 @@ function renderProductvault() {
     body += '<div style="height:12px;"></div>';
     body += _trnTwoCols('RIGHT FIT', p.rightfit, 'WRONG FIT', p.wrongfit);
     body += '<div style="margin-top:12px;padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Compliance:</strong> ' + p.compliance + '</div>';
-    html += _trnCard('pv' + i, p.title, body);
+    html += _trnOpenCard(p.title, body);
   });
   document.getElementById('page-productvault').innerHTML = html;
 }
@@ -1348,7 +1348,7 @@ function renderSimplifier() {
     body += '<div><div class="trn-sec-label" style="color:#15803D;">SAY IT THIS WAY</div><div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' + item.plain + '</div></div>';
     body += '</div>';
     body += '<div style="padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Never say:</strong> ' + item.dontsay + '</div>';
-    html += _trnCard('term' + i, item.term, body);
+    html += _trnOpenCard(item.term, body);
   });
   document.getElementById('page-simplifier').innerHTML = html;
 }
@@ -1407,7 +1407,7 @@ function renderRoleplay() {
     body += '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">WEAK RESPONSE</div><div class="trn-col-text">' + sc.weak + '</div></div>';
     body += '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">ELITE RESPONSE</div><div class="trn-col-text">' + sc.response + '</div></div>';
     body += '</div>';
-    html += _trnCard('rp' + i, sc.profile, body);
+    html += _trnOpenCard(sc.profile, body);
   });
   document.getElementById('page-roleplay').innerHTML = html;
 }
@@ -1441,28 +1441,28 @@ function renderCheatsheets() {
   [' Mental health — EXCLUDED. Say it every call.',' Maternity — EXCLUDED. Say it every call.',' Substance abuse rehab — EXCLUDED. Say it every call.',' 30-day waiting period for illness — DISCLOSE.',' 12/12 pre-ex clause — DISCLOSE.',' Not ACA-compliant — DISCLOSE.',' Not major medical — DISCLOSE.'].forEach(function(item) {
     compBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
   });
-  html += _trnCard('cs0', 'Compliance Non-Negotiables', compBody);
+  html += _trnOpenCard('Compliance Non-Negotiables', compBody);
 
   // Price Anchor card
   var priceBody = '';
   ['1. Acknowledge: "I hear you on the price."','2. Anchor to risk: "What does no coverage cost if..."','3. ER without coverage: $3,000–$30,000','4. Hospitalization without coverage: $10,000–$100,000+','5. Bridge: "So the question is whether $X/month is worth..."','6. Never apologize for or discount the price first'].forEach(function(item) {
     priceBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
   });
-  html += _trnCard('cs1', 'Price Anchor Framework', priceBody);
+  html += _trnOpenCard('Price Anchor Framework', priceBody);
 
   // Call Structure card
   var callBody = '';
   ['1. Reset mentally before dialing','2. Warm open + permission ask','3. Discovery — budget, situation, fear','4. Validate what they said','5. Position as expert','6. Present plan tied to their words','7. Future pace (picture it working)','8. Assumptive close','9. Handle objection if needed','10. Disclose compliance','11. Confirm + wrap up clean'].forEach(function(step) {
     callBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + step + '</div>';
   });
-  html += _trnCard('cs2', 'Call Structure — Quick Sequence', callBody);
+  html += _trnOpenCard('Call Structure — Quick Sequence', callBody);
 
   // Silence Rule card
   var silBody = '';
   ['After close: SAY NOTHING. Wait.','People buy emotionally, justify logically','Heard = open. Not heard = resistant.','Fit sells. Features don\'t.','Never fight an objection — align + redirect','Future pacing closes faster than facts','Confidence is your #1 competitive advantage'].forEach(function(item) {
     silBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
   });
-  html += _trnCard('cs3', 'Silence Rule + Psychology', silBody);
+  html += _trnOpenCard('Silence Rule + Psychology', silBody);
 
   // Plan Reference Table card
   var tableBody = '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid #C8CEDD;min-width:600px;">';
@@ -1476,7 +1476,7 @@ function renderCheatsheets() {
     });
   }
   tableBody += '</tbody></table></div>';
-  html += _trnCard('cs4', 'Plan Reference Table', tableBody);
+  html += _trnOpenCard('Plan Reference Table', tableBody);
 
   document.getElementById('page-cheatsheets').innerHTML = html;
 }
@@ -1565,7 +1565,7 @@ function renderDiscovery() {
       body += '<span style="display:block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;margin-top:5px;">Tap to copy</span>';
       body += '</div>';
     });
-    html += _trnCard('disc' + ci, cat.type + ' — ' + cat.label + ' (' + cat.questions.length + ' questions)', body);
+    html += _trnOpenCard(cat.type + ' — ' + cat.label + ' (' + cat.questions.length + ' questions)', body);
   });
 
   html +=
@@ -1775,6 +1775,37 @@ function copyClose(el) {
 }
 
 // ══════════════════════════════════════════════════════
+// RENDER: CLOSING TOOLS (merged Closing Engine + Closing Lab)
+// ══════════════════════════════════════════════════════
+function renderClosingtools() {
+  var pg = document.getElementById('page-closingtools');
+  if (!pg) return;
+
+  // Render Closing Engine into a temp container
+  var tempCE = document.createElement('div');
+  tempCE.id = 'page-closingengine';
+  document.body.appendChild(tempCE);
+  renderClosingengine();
+  var ceContent = tempCE.innerHTML;
+  document.body.removeChild(tempCE);
+
+  // Render Closing Lab into a temp container
+  var tempCL = document.createElement('div');
+  tempCL.id = 'page-closinglab';
+  document.body.appendChild(tempCL);
+  renderClosinglab();
+  var clContent = tempCL.innerHTML;
+  document.body.removeChild(tempCL);
+
+  var html = ceContent;
+  html += '<div class="trn-section-divider"></div>';
+  html += clContent;
+  html += '<div id="closeCopied" style="display:none;position:fixed;bottom:30px;right:30px;background:#29A26A;color:#fff;border-radius:12px;padding:12px 20px;font-weight:700;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">Copied ✓</div>';
+
+  pg.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════════════
 // TRAINING HOME PAGE + SECTION VIEW SYSTEM
 // ══════════════════════════════════════════════════════
 
@@ -1785,8 +1816,7 @@ var TRAINING_SECTIONS = [
     group: 'LIVE CALL TOOLS',
     items: [
       { id: 'cheatsheets', title: 'Cheat Sheets', desc: 'Quick reference for plans, networks, and underwriters', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>', render: renderCheatsheets },
-      { id: 'closingengine', title: 'Closing Engine', desc: 'Generate closes for any situation', icon: '<circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>', render: renderClosingengine },
-      { id: 'closinglab', title: 'Closing Lab', desc: 'Practice and refine your closes', icon: '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/>', render: renderClosinglab },
+      { id: 'closingtools', title: 'Closing Tools', desc: 'Closing generators, techniques, and practice lab', icon: '<circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>', render: renderClosingtools },
       { id: 'roleplay', title: 'Roleplay', desc: 'Mock call practice and objection drills', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>', render: renderRoleplay }
     ]
   },
@@ -1882,6 +1912,18 @@ function _trnCard(id, title, bodyHtml) {
   html += '<span class="trn-card-chev" id="' + id + '-chev" aria-hidden="true">&#9660;</span>';
   html += '</div>';
   html += '<div class="trn-card-body" id="' + id + '-body" style="display:none;">';
+  html += bodyHtml;
+  html += '</div></div>';
+  return html;
+}
+
+// Helper: wrap content in an always-open card (no collapse)
+function _trnOpenCard(title, bodyHtml) {
+  var html = '<div class="trn-card">';
+  html += '<div class="trn-card-hd trn-card-hd-static">';
+  html += '<div class="trn-card-title">' + title + '</div>';
+  html += '</div>';
+  html += '<div class="trn-card-body" style="display:block;">';
   html += bodyHtml;
   html += '</div></div>';
   return html;

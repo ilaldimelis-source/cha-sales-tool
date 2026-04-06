@@ -1339,15 +1339,18 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
   background: #F8F9FE;
   border: 2px solid #C8CEDD;
   border-radius: 16px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   overflow: hidden;
 }
 .trn-card-hd {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 20px;
+  padding: 20px 24px;
   cursor: pointer;
+}
+.trn-card-hd-static {
+  cursor: default;
 }
 .trn-card-title {
   font-family: var(--font-ui);
@@ -1362,13 +1365,14 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
   flex-shrink: 0;
 }
 .trn-card-body {
-  padding: 0 20px 20px;
+  padding: 4px 24px 24px;
   border-top: 1px solid #E5E7EB;
+  font-weight: 500;
 }
 .trn-sec-label {
   font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: #6B7280;
@@ -1377,24 +1381,24 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 .trn-two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 16px;
 }
 .trn-col-green {
   border-left: 3px solid #15803D;
   background: #F0FDF4;
   border-radius: 12px;
-  padding: 14px;
+  padding: 16px 18px;
 }
 .trn-col-red {
   border-left: 3px solid #B91C1C;
   background: #FEF2F2;
   border-radius: 12px;
-  padding: 14px;
+  padding: 16px 18px;
 }
 .trn-col-label {
   font-family: var(--font-ui);
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 6px;
@@ -1402,8 +1406,15 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 .trn-col-text {
   font-family: var(--font-body);
   font-size: 14px;
+  font-weight: 500;
   color: #374151;
   line-height: 1.7;
+}
+.trn-section-divider {
+  height: 2px;
+  background: #C8CEDD;
+  margin: 32px 0;
+  border-radius: 1px;
 }
 @media (max-width: 700px) {
   .trn-home-grid { grid-template-columns: 1fr; }
