@@ -1,28 +1,26 @@
 /* ═══════════════════════════════════════
-   CHA SALES TOOL — Complete Visual Redesign
-   Dark Finance Dashboard Theme
+   CHA SALES TOOL — v0 Theme
+   Charcoal sidebar, rounded cards, blue primary
    ═══════════════════════════════════════ */
 
 :root {
+  /* ── Backgrounds ── */
   --bg-page: #F0F2F7;
   --bg-card: #FFFFFF;
   --bg-card2: #F8F9FE;
   --bg-card3: #F0F2F7;
   --bg-surface: #F8F9FE;
-  --bg-sidebar: #1A1C23;
-  --bg-topbar: #FFFFFF;
+
+  /* ── Sidebar ── */
   --sidebar-bg: #1A1C23;
   --sidebar-w: 72px;
   --sidebar-icon: #6B7280;
-  --sidebar-icon-hover: #FFFFFF;
-  --sidebar-active-bg: #5B8DEF;
-  --sidebar-active-text: #FFFFFF;
-  --sidebar-label-color: #6B7280;
   --sidebar-border: #2D3038;
+
+  /* ── Colors ── */
   --accent: #5B8DEF;
   --accent-mid: #7BA7F5;
   --accent-light: #EEF3FF;
-  --accent-dark: #1D4ED8;
   --green: #22C55E;
   --green-light: #F0FDF4;
   --green-text: #15803D;
@@ -32,93 +30,57 @@
   --amber: #F59E0B;
   --amber-light: #FFFBEB;
   --amber-text: #92400E;
+
+  /* ── Text ── */
   --text-primary: #111827;
   --text-secondary: #6B7280;
   --text-muted: #9CA3AF;
+
+  /* ── Borders ── */
   --border: rgba(0,0,0,0.07);
   --border-med: rgba(0,0,0,0.12);
+
+  /* ── Shadows (flat design — card/sm are none) ── */
   --shadow-sm: none;
   --shadow-card: none;
   --shadow-hover: 0 2px 12px rgba(91,141,239,0.10);
   --shadow-float: 0 20px 56px rgba(0,0,0,0.10);
-  --shadow-topbar: none;
+
+  /* ── Radii ── */
   --r-sidebar: 24px;
   --r-card: 20px;
   --r-btn: 12px;
   --r-badge: 999px;
   --r-input: 10px;
-  --r-tab: 10px;
   --r-sm: 8px;
   --r-md: 12px;
-  --r-lg: 20px;
-  --r-xl: 20px;
-  --r-2xl: 20px;
-  --r-pill: 999px;
+
+  /* ── Fonts ── */
   --font-ui: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'DM Sans', sans-serif;
   --font-display: 'Plus Jakarta Sans', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-  /* Legacy aliases so nothing in JS breaks */
+
+  /* ── JS-referenced aliases (used by inline styles and JS logic) ── */
   --charcoal: #111827;
   --charcoal2: #111827;
   --charcoal3: #111827;
-  --surface: #FFFFFF;
-  --txt: #111827;
-  --txt2: #6B7280;
-  --txt3: #9CA3AF;
   --txt-hero: #111827;
   --txt-head: #111827;
   --txt-body: #6B7280;
   --txt-muted: #9CA3AF;
-  --txt-butter: #5B8DEF;
-  --warmgray: #6B7280;
-  --warmgray2: #9CA3AF;
   --warmgray3: #6B7280;
-  --muted: #9CA3AF;
-  --muted2: #D1D5DB;
   --error: #EF4444;
   --error-light: #FEF2F2;
-  --error-text: #B91C1C;
   --rule: rgba(0,0,0,0.07);
   --rule2: rgba(0,0,0,0.12);
-  --rule-anchor: rgba(0,0,0,0.07);
-  --bdr: rgba(0,0,0,0.07);
-  --bdr2: rgba(0,0,0,0.12);
   --milk: #F8F9FE;
   --milk2: #F0F2F7;
-  --milk3: #FFFFFF;
-  --bg: #F0F2F7;
-  --s0: #F8F9FE;
-  --s1: #F0F2F7;
-  --s2: rgba(0,0,0,0.07);
-  --s3: #FFFFFF;
-  --ghost-but: #F0F2F7;
-  --ghost-milk: #F8F9FE;
   --butter: #EEF3FF;
   --butter2: #5B8DEF;
-  --butter3: #4A7CE0;
   --pastel-blue: #EEF3FF;
   --pastel-blue2: #5B8DEF;
-  --rose: #5B8DEF;
-  --rose-d: #EEF3FF;
-  --rose-g: #F0F2F7;
-  --gold: #F59E0B;
-  --gold-d: #FFFBEB;
-  --mint: #22C55E;
-  --mint-d: #F0FDF4;
-  --lav: #EEF3FF;
-  --lav-d: #F0F2F7;
-  --grn: #22C55E;
-  --grn-d: #F0FDF4;
-  --amber-d: #FFFBEB;
-  --red-d: #FEF2F2;
-  --peach: #F0F2F7;
-  --peach-d: #F8F9FE;
-  --acc: #5B8DEF;
-  --acc-d: #EEF3FF;
-  --acc-d2: #F0F2F7;
-  --acc-d3: #F8F9FE;
   --sec: #5B8DEF;
+  --r-pill: 999px;
 }
 
 /* ── RESET ── */
@@ -1222,10 +1184,6 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 .saved-item {
   padding: 12px 14px;
   margin-bottom: 6px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-card);
-  box-shadow: var(--shadow-card);
 }
 .saved-text { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-secondary); }
 
