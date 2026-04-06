@@ -162,9 +162,35 @@ function showPage(id) {
   }
   var renderMap = {
     objections: renderObjections,
-    policydocs: renderPolicydocs
+    policydocs: renderPolicydocs,
+    dashboard: renderDashboard
   };
   if (renderMap[id]) renderMap[id]();
+}
+
+function renderDashboard() {
+  var pg = document.getElementById('page-dashboard');
+  if (!pg || pg.innerHTML.trim()) return;
+  var ic = function(d) { return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
+  var cards = [
+    { page:'liveassist', title:'Live Assist', desc:'Objections, closes, and scripts for active calls', icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>') },
+    { page:'plansbenefit', title:'Plans & Benefits', desc:'Every plan, benefit details, and comparisons', icon: ic('<rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/>') },
+    { page:'callplaybook', title:'Call Playbook', desc:'Call flow, closing techniques, and scripts', icon: ic('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>') },
+    { page:'compliance', title:'Compliance Hub', desc:'Disclosures, red flags, and audit tools', icon: ic('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>') },
+    { page:'policydocs', title:'Policy Reference', desc:'Full SOB lookup for every plan', icon: ic('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>') },
+    { page:'training', title:'Training', desc:'Roleplay, discovery, closing lab, and cheat sheets', icon: ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>') }
+  ];
+  var html = '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
+  html += '<div class="dash-grid">';
+  cards.forEach(function(c) {
+    html += '<div class="dash-card" onclick="showPage(\'' + c.page + '\')">';
+    html += '<div class="dash-icon">' + c.icon + '</div>';
+    html += '<div class="dash-title">' + c.title + '</div>';
+    html += '<div class="dash-desc">' + c.desc + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+  pg.innerHTML = html;
 }
 
 function _showComboPage(parentId, subId) {
@@ -223,7 +249,7 @@ function renderSubTabs(parentId, activeSubId) {
 
 // ── INIT ──────────────────────────────────────────────
 function initApp() {
-  showPage('liveassist');
+  showPage('dashboard');
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);

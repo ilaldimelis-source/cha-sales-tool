@@ -1228,6 +1228,69 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 }
 .sec-label::after { content: none; }
 
+/* ── DASHBOARD ── */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.dash-card {
+  background: #FFFFFF;
+  border: 2px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 24px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.dash-card:hover {
+  border-color: #5B8DEF;
+  background: #EEF3FF;
+}
+.dash-icon {
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+.dash-title {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.dash-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+@media (max-width: 768px) {
+  .dash-grid { grid-template-columns: 1fr; }
+}
+
+/* ── WAITING PERIOD / PRE-EX BOXES (inside plan cards) ── */
+.plan-body [style*="border-left:3px solid var(--pastel-blue2)"],
+.plan-body [style*="border-left: 3px solid var(--pastel-blue2)"] {
+  border-radius: 12px !important;
+  border: 2px solid #E5E7EB !important;
+  background: #F8F9FE !important;
+  padding: 14px 16px !important;
+}
+.plan-body [style*="grid-template-columns:1fr 1fr"][style*="font-size"] {
+  gap: 12px;
+}
+.plan-body [style*="color:#2E7D52"][style*="letter-spacing"] {
+  color: #15803D !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+}
+.plan-body [style*="color:#DC2626"][style*="letter-spacing"] {
+  color: #B91C1C !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+}
+
 /* ── BENEFIT FILTER CARDS ── */
 .benefit-filter-card:hover {
   border-color: #5B8DEF !important;
