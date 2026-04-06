@@ -832,7 +832,7 @@ function buildSearchIndex() {
         action: function () {
           var pid = p.id;
           closeSearch();
-          showPage('policydocs');
+          showPage('allplans');
           setTimeout(function () {
             policyDocOpen = pid;
             var container = document.getElementById('pdResultsContainer');

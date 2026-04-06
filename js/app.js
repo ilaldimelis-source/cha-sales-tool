@@ -5,47 +5,34 @@
 // ══════════════════════════════════════════════════════
 
 var PAGE_CONFIG = {
-  liveassist: {
-    label: 'Live Assist',
+  livecall: {
+    label: 'Live Call',
     subs: [
       { id: 'live', label: 'Live Assist', render: renderLive },
-      { id: 'qarebuttals', label: 'Q&A Rebuttals', render: renderQaRebuttals }
-    ]
-  },
-  plansbenefit: {
-    label: 'Plans & Benefits',
-    subs: [
-      { id: 'plans', label: 'Plan Vault', render: renderPlans },
-      { id: 'compare', label: 'Compare', render: renderCompare },
-      { id: 'benefits', label: 'Benefits', render: renderBenefits }
-    ]
-  },
-  callplaybook: {
-    label: 'All Plan Scripts',
-    subs: [
-      { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
-      { id: 'scripts', label: 'Scripts', render: renderScripts },
-      {
-        id: 'planscripts',
-        label: 'ALL Plan Scripts',
-        render: renderPlanScripts
-      }
-    ]
-  },
-  aitools: {
-    label: 'AI Tools',
-    subs: [
-      {
-        id: 'psychprofile',
-        label: 'Client Profiler',
-        render: renderPsychprofile
-      },
-      {
-        id: 'complianceai',
-        label: 'Compliance AI',
-        render: renderComplianceai
-      },
+      { id: 'objections', label: 'Objections', render: renderObjections },
+      { id: 'qarebuttals', label: 'Q&A Rebuttals', render: renderQaRebuttals },
+      { id: 'psychprofile', label: 'Client Profiler', render: renderPsychprofile },
+      { id: 'complianceai', label: 'Compliance AI', render: renderComplianceai },
       { id: 'coachingai', label: 'Call Coach', render: renderCoachingai }
+    ]
+  },
+  plans: {
+    label: 'Plans',
+    subs: [
+      { id: 'allplans', label: 'All Plans', render: renderAllPlans },
+      { id: 'compare', label: 'Compare', render: renderCompare },
+      { id: 'benefits', label: 'Benefits', render: renderBenefits },
+      { id: 'networkexplainer', label: 'Network Guide', render: renderNetworkexplainer }
+    ]
+  },
+  scripts: {
+    label: 'Scripts',
+    subs: [
+      { id: 'closes', label: 'Closing Lines', render: renderCloses },
+      { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
+      { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
+      { id: 'recovery', label: 'Recovery', render: renderRecovery },
+      { id: 'allscripts', label: 'All Scripts', render: renderScripts }
     ]
   },
   training: {
@@ -54,24 +41,10 @@ var PAGE_CONFIG = {
       { id: 'traininghome', label: 'Training', render: renderTrainingHome }
     ]
   },
-  reference: {
-    label: 'Network Guide',
-    subs: [
-      {
-        id: 'networkexplainer',
-        label: 'Network Guide',
-        render: renderNetworkexplainer
-      }
-    ]
-  },
   compliance: {
-    label: 'Compliance Hub',
+    label: 'Compliance',
     subs: [
-      {
-        id: 'compliancecenter',
-        label: 'Compliance Center',
-        render: renderComplianceCenter
-      },
+      { id: 'compliancecenter', label: 'Compliance Center', render: renderComplianceCenter },
       { id: 'callaudit', label: 'Call Audit', render: renderCallAudit }
     ]
   },
@@ -142,8 +115,6 @@ function showPage(id) {
     btn.setAttribute('aria-current', 'page');
   }
   var renderMap = {
-    objections: renderObjections,
-    policydocs: renderPolicydocs,
     dashboard: renderDashboard
   };
   if (renderMap[id]) renderMap[id]();
@@ -154,12 +125,12 @@ function renderDashboard() {
   if (!pg || pg.innerHTML.trim()) return;
   var ic = function(d) { return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
   var cards = [
-    { page:'liveassist', title:'Live Assist', desc:'Objections, closes, and scripts for active calls', icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>') },
-    { page:'plansbenefit', title:'Plans & Benefits', desc:'Every plan, benefit details, and comparisons', icon: ic('<rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/>') },
-    { page:'callplaybook', title:'All Plan Scripts', desc:'Call flow, closing techniques, and scripts', icon: ic('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>') },
-    { page:'compliance', title:'Compliance Hub', desc:'Disclosures, red flags, and audit tools', icon: ic('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>') },
-    { page:'policydocs', title:'Policy Reference', desc:'Full SOB lookup for every plan', icon: ic('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>') },
-    { page:'training', title:'Training', desc:'Roleplay, discovery, closing lab, and cheat sheets', icon: ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>') }
+    { page:'livecall', title:'Live Call', desc:'Mid-call tools, objections, and AI assist', icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>') },
+    { page:'plans', title:'Plans', desc:'Every plan, sell it view and full details', icon: ic('<rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/>') },
+    { page:'scripts', title:'Scripts', desc:'Every script for every situation', icon: ic('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>') },
+    { page:'training', title:'Training', desc:'Learn, study, and practice', icon: ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>') },
+    { page:'compliance', title:'Compliance', desc:'Disclosures, audit, and compliance rules', icon: ic('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>') },
+    { page:'myspace', title:'My Space', desc:'Notes and saved favorites', icon: ic('<path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/>') }
   ];
   var html = '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
   html += '<div class="dash-grid">';
@@ -172,7 +143,7 @@ function renderDashboard() {
   });
   html += '</div>';
   // Cheat Sheets full-width card
-  html += '<div class="dash-card dash-card-full" onclick="openTrainingSection(\'cheatsheets\');showPage(\'training\')" style="margin-top:12px;border-left:3px solid #5B8DEF;display:flex;align-items:center;gap:16px;">';
+  html += '<div class="dash-card dash-card-full" onclick="showPage(\'training\');setTimeout(function(){openTrainingSection(\'cheatsheets\');},50)" style="margin-top:12px;border-left:3px solid #5B8DEF;display:flex;align-items:center;gap:16px;">';
   html += '<div class="dash-icon">' + ic('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>') + '</div>';
   html += '<div><div class="dash-title">Cheat Sheets</div>';
   html += '<div class="dash-desc">Plan names, networks, underwriters, and associations at a glance</div></div>';
@@ -185,7 +156,7 @@ function renderDashboard() {
       labelMap[pid] = PAGE_CONFIG[pid].label;
       PAGE_CONFIG[pid].subs.forEach(function(s) { labelMap[s.id] = s.label; });
     });
-    labelMap.objections = 'Objections'; labelMap.policydocs = 'Policy Reference'; labelMap.dashboard = 'Dashboard';
+    labelMap.dashboard = 'Dashboard';
     html += '<div class="dash-recent-strip"><div class="dash-recent-label">Recently Visited</div><div class="dash-recent-pills">';
     recent.forEach(function(rid) {
       var lbl = labelMap[rid] || rid;
@@ -202,13 +173,12 @@ function renderDashboard() {
   // Keyboard shortcut hint
   html += '<div class="dash-kb-strip"><div class="dash-kb-title">Keyboard Shortcuts</div><div class="dash-kb-list">';
   html += '<span class="dash-kb"><kbd>H</kbd> Home</span>';
-  html += '<span class="dash-kb"><kbd>L</kbd> Live Assist</span>';
+  html += '<span class="dash-kb"><kbd>L</kbd> Live Call</span>';
   html += '<span class="dash-kb"><kbd>P</kbd> Plans</span>';
   html += '<span class="dash-kb"><kbd>S</kbd> Scripts</span>';
   html += '<span class="dash-kb"><kbd>T</kbd> Training</span>';
   html += '<span class="dash-kb"><kbd>C</kbd> Compliance</span>';
-  html += '<span class="dash-kb"><kbd>O</kbd> Objections</span>';
-  html += '<span class="dash-kb"><kbd>R</kbd> Reference</span>';
+  html += '<span class="dash-kb"><kbd>M</kbd> My Space</span>';
   html += '<span class="dash-kb"><kbd>/</kbd> Search</span>';
   html += '<span class="dash-kb"><kbd>Esc</kbd> Close</span>';
   html += '</div></div>';
@@ -477,9 +447,9 @@ function initApp() {
     fab.id = 'fab-bar';
     fab.className = 'fab-bar';
     fab.innerHTML = '<button class="fab-btn" onclick="showPage(\'dashboard\')" title="Home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>'
-      + '<button class="fab-btn" onclick="showPage(\'liveassist\')" title="Live Assist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/></svg></button>'
-      + '<button class="fab-btn" onclick="var gs=document.getElementById(\'gs\');if(gs)gs.focus();" title="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>'
-      + '<button class="fab-btn" onclick="openTrainingSection(\'cheatsheets\');showPage(\'training\')" title="Cheat Sheets"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/></svg></button>';
+      + '<button class="fab-btn" onclick="showPage(\'livecall\')" title="Live Call"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/></svg></button>'
+      + '<button class="fab-btn" onclick="showPage(\'scripts\')" title="Scripts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>'
+      + '<button class="fab-btn" onclick="showPage(\'plans\')" title="Plans"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg></button>';
     document.body.appendChild(fab);
   }
 }
@@ -583,7 +553,7 @@ document.addEventListener('keydown', function(e) {
   if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   var key = e.key.toLowerCase();
-  var map = { h:'dashboard', l:'liveassist', p:'plansbenefit', s:'callplaybook', t:'training', c:'compliance', o:'objections', r:'reference', d:'policydocs' };
+  var map = { h:'dashboard', l:'livecall', p:'plans', s:'scripts', t:'training', c:'compliance', m:'myspace' };
   if (map[key]) { e.preventDefault(); showPage(map[key]); return; }
   if (key === '/') { e.preventDefault(); var gs = document.getElementById('gs'); if (gs) gs.focus(); }
 });

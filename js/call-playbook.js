@@ -1135,7 +1135,7 @@ function renderScripts() {
       '</button>';
   });
   html += '</div><div id="isa-script-content"></div>';
-  var _page_scripts = document.getElementById('page-scripts');
+  var _page_scripts = document.getElementById('page-allscripts') || document.getElementById('page-scripts');
   if (_page_scripts) _page_scripts.innerHTML = html;
   renderIsaScriptContent();
 }

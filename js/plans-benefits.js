@@ -988,6 +988,16 @@ var PLAN_GROUPS = [
 ];
 var activePlanGroup = 'All';
 
+// ── Combined All Plans view (Plan Vault + Policy Reference) ──
+function renderAllPlans() {
+  var pg = document.getElementById('page-allplans');
+  if (!pg) return;
+  // Inject unique containers — avoid clashing with combo-page id="page-plans"
+  pg.innerHTML = '<div id="allplans-vault"></div><div id="allplans-policydocs" style="margin-top:32px;"></div>';
+  renderPlans();
+  if (typeof renderPolicydocs === 'function') renderPolicydocs();
+}
+
 function renderPlans() {
   var html =
     '<div class="ph"><div class="pt">Plan <span>Vault</span></div><div class="pd">Every plan from official policy documents. Tap any card for full coverage details.</div></div>';
@@ -1024,7 +1034,7 @@ function renderPlans() {
       '</button>';
   });
   html += '</div><div id="planGroupsWrap"></div>';
-  var _page_plans = document.getElementById('page-plans');
+  var _page_plans = document.getElementById('allplans-vault') || document.getElementById('page-plans');
   if (_page_plans) _page_plans.innerHTML = html;
   renderPlanGroups();
 }

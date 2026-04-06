@@ -1774,10 +1774,8 @@ function renderTrainingHome() {
   var pg = document.getElementById('page-traininghome');
   if (!pg) return;
 
-  if (_trainingView !== 'home') {
-    _renderTrainingSection(_trainingView);
-    return;
-  }
+  // Always reset to home when tab is navigated to
+  _trainingView = 'home';
 
   var arrow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8CEDD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
   var html = '<div class="ph"><div class="pt">Training <span>Center</span></div><div class="pd">Build your skills. Choose a section below.</div></div>';
@@ -1822,11 +1820,28 @@ function _renderTrainingSection(sectionId) {
   });
   if (!sectionConfig) return;
 
-  // Build page with back button + container for the section render
-  pg.innerHTML = '<button class="trn-back-btn" onclick="backToTrainingHome()">&larr; Training</button><div id="page-' + sectionId + '"></div>';
+  // Build page with back button + container for the section render + bottom pill strip
+  pg.innerHTML = '<button class="trn-back-btn" onclick="backToTrainingHome()">&larr; Training</button><div id="page-' + sectionId + '"></div>' + _trnBottomStrip(sectionId);
 
   // Now call the original render function — the target container exists in the DOM
   sectionConfig.render();
+}
+
+function _trnBottomStrip(activeId) {
+  var allItems = [];
+  TRAINING_SECTIONS.forEach(function(group) {
+    group.items.forEach(function(item) { allItems.push(item); });
+  });
+  var html = '<div style="position:sticky;bottom:0;background:#FFFFFF;border-top:2px solid #E5E7EB;padding:10px 20px;display:flex;flex-wrap:wrap;gap:8px;z-index:50;margin-top:24px;">';
+  allItems.forEach(function(item) {
+    var isActive = item.id === activeId;
+    var bg = isActive ? '#5B8DEF' : '#F4F6FB';
+    var color = isActive ? '#FFFFFF' : '#374151';
+    var border = isActive ? '1.5px solid #5B8DEF' : '1.5px solid #E5E7EB';
+    html += '<button onclick="openTrainingSection(\'' + item.id + '\')" style="background:' + bg + ';color:' + color + ';border:' + border + ';border-radius:999px;padding:6px 16px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.15s;">' + item.title + '</button>';
+  });
+  html += '</div>';
+  return html;
 }
 
 // ══════════════════════════════════════════════════════

@@ -2049,7 +2049,7 @@ function renderPolicydocs() {
   html += renderPolicyResults();
   html += '</div>';
 
-  var _page_policydocs = document.getElementById('page-policydocs');
+  var _page_policydocs = document.getElementById('allplans-policydocs') || document.getElementById('page-policydocs');
   if (_page_policydocs) _page_policydocs.innerHTML = html;
 }
 
