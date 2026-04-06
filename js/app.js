@@ -333,6 +333,46 @@ if (document.readyState === 'loading') {
   });
 })();
 
+// ── Keyboard Shortcut: Ctrl+K → focus search ────────
+document.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+    e.preventDefault();
+    var gs = document.getElementById('gs');
+    if (gs) gs.focus();
+  }
+  if (e.key === 'Escape') {
+    var srOverlay = document.getElementById('srOverlay');
+    if (srOverlay && srOverlay.classList.contains('show') && typeof closeSearch === 'function') closeSearch();
+  }
+});
+
+// ── Copy Compliance Text ─────────────────────────────
+function copyCompliance(btn) {
+  var banner = btn.closest('.comp-banner');
+  if (!banner) return;
+  var text = banner.textContent.replace('Copy', '').replace('Copied!', '').trim();
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+// ── Auto-inject copy buttons into compliance banners ──
+(function() {
+  var observer = new MutationObserver(function() {
+    document.querySelectorAll('.comp-banner').forEach(function(banner) {
+      if (banner.querySelector('.comp-copy-btn')) return;
+      var btn = document.createElement('button');
+      btn.className = 'comp-copy-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('onclick', 'copyCompliance(this)');
+      banner.appendChild(btn);
+    });
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
+
 // ── Service Worker ───────────────────────────────────
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('./sw.js');

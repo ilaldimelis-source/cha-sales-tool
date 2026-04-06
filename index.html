@@ -102,7 +102,7 @@
         <img src="./logo.png" alt="Central Health Advisors" class="logo-img" />
         <div class="logo-text">
           <span class="logo-text-top">CENTRAL HEALTH</span>
-          <span class="logo-text-bottom">Advisors</span>
+          <span class="logo-text-bottom">ADVISORS</span>
         </div>
       </div>
       <div class="nav">
@@ -343,6 +343,7 @@
             oninput="debouncedSearch(this.value)"
             aria-label="Search the command center"
           />
+          <span class="kb-hint">Ctrl+K</span>
         </div>
         <button
           id="scBtn"
@@ -362,6 +363,7 @@
         >
           ✕ Clear
         </button>
+        <button onclick="showPage('dashboard')" style="background:none;border:1px solid #E5E7EB;border-radius:8px;padding:4px 8px;display:flex;align-items:center;cursor:pointer;color:var(--text-secondary);transition:all 0.15s;" onmouseover="this.style.borderColor='#5B8DEF';this.style.color='#5B8DEF'" onmouseout="this.style.borderColor='#E5E7EB';this.style.color='var(--text-secondary)'" aria-label="Go to dashboard"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
         <div class="livebadge"><span class="ldot"></span>LIVE</div>
       </header>
 

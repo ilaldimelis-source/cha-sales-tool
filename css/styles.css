@@ -130,15 +130,15 @@ svg { vertical-align: middle; flex-shrink: 0; }
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-bottom: 20px;
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--sidebar-border);
+  padding-bottom: 16px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   flex-shrink: 0;
 }
 .logo-img {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -148,17 +148,17 @@ svg { vertical-align: middle; flex-shrink: 0; }
 }
 .logo-text-top {
   font-family: var(--font-ui);
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 11px;
+  font-weight: 700;
   color: #FFFFFF;
   line-height: 1.2;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
 }
 .logo-text-bottom {
   font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.45);
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -878,7 +878,7 @@ svg { vertical-align: middle; flex-shrink: 0; }
   margin-bottom: 12px;
   overflow: hidden;
   background: var(--bg-card);
-  border: 2px solid #1A1C23;
+  border: 2px solid #C8CEDD;
   border-radius: var(--r-card);
   box-shadow: none;
 }
@@ -1394,7 +1394,7 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 
 /* ── POLICY DOCS GRID ── */
 #page-policydocs [style*="grid-template-columns"] > div {
-  border: 2px solid #1A1C23 !important;
+  border: 2px solid #C8CEDD !important;
 }
 #page-policydocs [style*="grid-template-columns"] > div:hover {
   border-color: #5B8DEF !important;
@@ -1771,6 +1771,44 @@ a[href="#main-content"] {
   transition: top 0.2s;
 }
 a[href="#main-content"]:focus { top: 0; }
+
+/* ── COPY BUTTON (compliance banners) ── */
+.comp-banner {
+  position: relative;
+}
+.comp-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  opacity: 0;
+}
+.comp-banner:hover .comp-copy-btn { opacity: 1; }
+.comp-copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.comp-copy-btn.copied { background: #22C55E; color: #fff; border-color: #22C55E; opacity: 1; }
+
+/* ── KEYBOARD SHORTCUT HINT ── */
+.sw .kb-hint {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 4px;
+  padding: 1px 5px;
+  flex-shrink: 0;
+  pointer-events: none;
+}
 
 /* ── MOBILE RESPONSIVE ── */
 @media (max-width: 768px) {
