@@ -1601,112 +1601,44 @@ function copyDiscovery(el) {
 // RENDER: CLOSING ENGINE
 // ══════════════════════════════════════════════════════
 function renderClosingengine() {
-  var situations = [
-    {
-      situation: 'Prospect seems ready — engaged, no major objections',
-      closes: [
-        {
-          type: 'Assumptive',
-          line: '"Let\'s go ahead and get this activated so you\'re covered."'
-        },
-        {
-          type: 'Assumptive',
-          line: '"Based on everything we covered, let\'s get this started. I\'ll pull up the application now."'
-        },
-        {
-          type: 'Assumptive',
-          line: '"Great — I\'ll go ahead and lock in that start date for you."'
-        }
-      ]
-    },
-    {
-      situation: 'Prospect is hesitant about timing',
-      closes: [
-        {
-          type: 'Soft',
-          line: '"Would you prefer coverage starting tomorrow or the first of next month?"'
-        },
-        {
-          type: 'Soft',
-          line: '"Do you want to get this in place today or would the 1st work better for your budget?"'
-        },
-        {
-          type: 'Soft',
-          line: '"Should we start you on the basic plan and adjust from there, or go with the full coverage now?"'
-        }
-      ]
-    },
-    {
-      situation: "Prospect is engaged but hasn't committed",
-      closes: [
-        {
-          type: 'Direct',
-          line: '"Let\'s take care of the application while we\'re on the phone."'
-        },
-        {
-          type: 'Direct',
-          line: '"Everything sounds good on my end — let\'s just get this submitted."'
-        },
-        {
-          type: 'Direct',
-          line: '"The next step is simple — I just need a few details to get you enrolled."'
-        }
-      ]
-    },
-    {
-      situation: "Prospect is stalling — mentions they'll think about it",
-      closes: [
-        {
-          type: 'Urgency',
-          line: '"The rate I quoted you is based on today — I can\'t guarantee it holds if we reconnect next week."'
-        },
-        {
-          type: 'Urgency',
-          line: '"Every day without coverage is a day you\'re exposed. This takes four minutes to activate."'
-        },
-        {
-          type: 'Urgency',
-          line: '"The longer we wait, the longer you\'re unprotected. There\'s no reason to delay something that starts working tomorrow."'
-        }
-      ]
-    },
-    {
-      situation:
-        'Prospect agreed with your points — wants confirmation before deciding',
-      closes: [
-        {
-          type: 'Tie-Down',
-          line: '"So having coverage for doctor visits and telemedicine is important to you, right? That\'s exactly what this does."'
-        },
-        {
-          type: 'Tie-Down',
-          line: '"You said your biggest concern was an unexpected emergency — this addresses that starting day one, correct?"'
-        },
-        {
-          type: 'Tie-Down',
-          line: '"It sounds like cost and real coverage were your two priorities — this plan hits both. Does that feel right?"'
-        }
-      ]
-    },
-    {
-      situation:
-        'Prospect says they are interested but wants to talk to someone',
-      closes: [
-        {
-          type: 'Agreement',
-          line: '"Totally — is your [spouse/partner] available right now? I can walk you both through it in five minutes."'
-        },
-        {
-          type: 'Agreement',
-          line: '"I completely respect that. What time tomorrow can all three of us connect so nobody has to play telephone?"'
-        },
-        {
-          type: 'Agreement',
-          line: '"That makes sense. If they have questions, what are they typically worried about? I can address that now so you have the full picture."'
-        }
-      ]
-    }
-  ];
+  var closingLines = {
+    Assumptive: [
+      '"Let me go ahead and get that started — I just need your date of birth."',
+      '"I\'ll get your ID card sent out today. What\'s the best email for you?"',
+      '"Perfect — I\'ve got your address. Let me pull up your effective date."',
+      '"You\'re going to love having this in place. Let\'s get you activated."'
+    ],
+    Soft: [
+      '"Based on everything you told me, this really makes sense for your situation. Want to go ahead?"',
+      '"I don\'t want to pressure you — but I do want to make sure you\'re protected. Can we lock this in?"',
+      '"A lot of people feel the same way before they enroll and they\'re always glad they did. Should we move forward?"',
+      '"There\'s no risk in getting covered today. Want me to walk you through the last step?"'
+    ],
+    Direct: [
+      '"Let\'s get you enrolled today."',
+      '"I need your date of birth and we\'re done."',
+      '"You\'re approved. Let\'s activate your coverage now."',
+      '"This is the right plan for you. Let\'s lock it in."'
+    ],
+    Urgency: [
+      '"Rates are based on your age today — the longer we wait the more it costs."',
+      '"I can only hold this rate until end of business today."',
+      '"Your effective date is based on when we enroll — every day we wait is a day you\'re unprotected."',
+      '"This is the lowest rate you\'ll qualify for. It only goes up from here."'
+    ],
+    'Tie-Down': [
+      '"That makes sense, right?"',
+      '"You can see how that would help your family, can\'t you?"',
+      '"Having a doctor visit covered for $25 instead of $200 — that\'s a no-brainer, wouldn\'t you say?"',
+      '"So you do want to make sure you\'re covered if something happens — correct?"'
+    ],
+    Agreement: [
+      '"You said you wanted something affordable — this fits that. You said you wanted doctor visits covered — this does that. So let\'s get it done."',
+      '"We already agreed the price works. We already agreed the coverage makes sense. The only thing left is to activate it."',
+      '"You told me you don\'t want to be unprotected. This solves that. Let\'s move forward."',
+      '"Everything you said you needed this plan covers. You ready to get started?"'
+    ]
+  };
 
   var typeColors = {
     Assumptive: 'var(--charcoal3)',
@@ -1725,35 +1657,32 @@ function renderClosingengine() {
     Agreement: 'rgba(42,90,144,0.1)'
   };
 
+  var typeNames = Object.keys(closingLines);
+
   var html =
     '<div class="ph"><div class="pt">Closing <span>Engine</span></div>';
   html +=
     '<div class="pd">Find the right close for your exact situation. Tap a line to copy it.</div></div>';
 
-  html +=
-    '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">';
-  Object.keys(typeColors).forEach(function (t) {
-    html +=
-      '<span style="background:' +
-      typeBg[t] +
-      ';color:' +
-      typeColors[t] +
-      ';border-radius:12px;padding:5px 14px;font-size:12px;font-weight:800;">' +
-      t +
-      '</span>';
+  // Tab buttons
+  html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">';
+  typeNames.forEach(function (t, ti) {
+    var isActive = ti === 0 ? ' ce-tab-active' : '';
+    html += '<button class="ce-tab' + isActive + '" style="background:' + (ti === 0 ? typeBg[t] : 'transparent') + ';color:' + typeColors[t] + ';border:1px solid ' + (ti === 0 ? typeColors[t] : '#C8CEDD') + ';border-radius:12px;padding:7px 16px;font-size:12px;font-weight:800;cursor:pointer;transition:all 0.15s;font-family:var(--font-ui);" onclick="switchCeTab(\'' + t + '\')" data-ce-type="' + t + '">' + t + '</button>';
   });
   html += '</div>';
 
-  situations.forEach(function (s, si) {
-    var body = '';
-    s.closes.forEach(function (c) {
-      var col = typeColors[c.type] || 'var(--charcoal3)';
-      var bg = typeBg[c.type] || 'rgba(212,96,122,0.1)';
-      body += '<div onclick="copyClose(this)" data-line="' + c.line.replace(/"/g, '&quot;') + '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
-      body += '<span style="background:' + bg + ';color:' + col + ';border-radius:12px;padding:3px 10px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0;">' + c.type + '</span>';
-      body += '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;">' + c.line + '</div></div>';
+  // Tab panels
+  typeNames.forEach(function (t, ti) {
+    var col = typeColors[t] || 'var(--charcoal3)';
+    var bg = typeBg[t] || 'rgba(212,96,122,0.1)';
+    html += '<div class="ce-panel" id="ce-panel-' + t.replace(/[^a-zA-Z]/g, '') + '" style="display:' + (ti === 0 ? 'block' : 'none') + ';">';
+    closingLines[t].forEach(function (line) {
+      html += '<div onclick="copyClose(this)" data-line="' + line.replace(/"/g, '&quot;') + '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
+      html += '<span style="background:' + bg + ';color:' + col + ';border-radius:12px;padding:3px 10px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0;">' + t + '</span>';
+      html += '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;">' + line + '</div></div>';
     });
-    html += _trnCard('ce' + si, s.situation, body);
+    html += '</div>';
   });
 
   html +=
@@ -1772,6 +1701,37 @@ function copyClose(el) {
       toast.style.display = 'none';
     }, 2000);
   }
+}
+
+function switchCeTab(type) {
+  var typeColors = {
+    Assumptive: 'var(--charcoal3)', Soft: '#29A26A', Direct: '#7a5f00',
+    Urgency: 'var(--sec)', 'Tie-Down': '#904020', Agreement: '#2A5A90'
+  };
+  var typeBg = {
+    Assumptive: 'rgba(212,96,122,0.1)', Soft: 'rgba(41,162,106,0.1)',
+    Direct: 'rgba(184,134,11,0.1)', Urgency: 'rgba(123,104,184,0.1)',
+    'Tie-Down': 'rgba(200,110,60,0.1)', Agreement: 'rgba(42,90,144,0.1)'
+  };
+  // Hide all panels
+  document.querySelectorAll('.ce-panel').forEach(function(p) { p.style.display = 'none'; });
+  // Show selected panel
+  var panelId = 'ce-panel-' + type.replace(/[^a-zA-Z]/g, '');
+  var panel = document.getElementById(panelId);
+  if (panel) panel.style.display = 'block';
+  // Update tab styles
+  document.querySelectorAll('.ce-tab').forEach(function(btn) {
+    var t = btn.getAttribute('data-ce-type');
+    if (t === type) {
+      btn.style.background = typeBg[t] || 'transparent';
+      btn.style.borderColor = typeColors[t] || '#C8CEDD';
+      btn.classList.add('ce-tab-active');
+    } else {
+      btn.style.background = 'transparent';
+      btn.style.borderColor = '#C8CEDD';
+      btn.classList.remove('ce-tab-active');
+    }
+  });
 }
 
 // ══════════════════════════════════════════════════════

@@ -64,20 +64,109 @@ var QA_REBUTTALS = [
   }
 ];
 
+function openLaPanel(type) {
+  var overlay = document.getElementById('la-panel-overlay');
+  var panel = document.getElementById('la-panel');
+  var title = document.getElementById('la-panel-title');
+  var body = document.getElementById('la-panel-body');
+  if (!overlay || !panel || !title || !body) return;
+
+  var html = '';
+  if (type === 'closes') {
+    title.textContent = 'Closing Lines';
+    if (typeof CLOSES !== 'undefined') {
+      var groups = { assumptive: 'Assumptive', soft: 'Soft', direct: 'Direct', urgency: 'Urgency', tiedown: 'Tie-Down', agreement: 'Agreement' };
+      Object.keys(groups).forEach(function(t) {
+        var items = CLOSES.filter(function(c) { return c.type === t; });
+        if (!items.length) return;
+        html += '<div style="font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B7280;margin:16px 0 8px;">' + groups[t] + '</div>';
+        items.forEach(function(c) {
+          html += '<div style="padding:12px 14px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:8px;font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.7;cursor:pointer;" onclick="copyClose(this)" data-line=\'"' + c.line + '\'" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">"' + c.line + '"</div>';
+        });
+      });
+    }
+  } else if (type === 'recovery') {
+    title.textContent = 'Regain Control';
+    if (typeof RECOVERY !== 'undefined') {
+      RECOVERY.forEach(function(r, i) {
+        html += '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:16px;padding:16px 18px;margin-bottom:12px;">';
+        html += '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">' + r.label + '</div>';
+        html += '<div style="font-family:var(--font-body);font-size:13px;color:#6B7280;margin-bottom:10px;">' + r.situation + '</div>';
+        html += '<div style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">ACKNOWLEDGE</div>';
+        html += '<div style="font-family:var(--font-body);font-size:13px;font-style:italic;color:#374151;line-height:1.6;margin-bottom:8px;">' + r.acknowledge + '</div>';
+        html += '<div style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">BRIDGE</div>';
+        html += '<div style="font-family:var(--font-body);font-size:13px;font-style:italic;color:#374151;line-height:1.6;margin-bottom:8px;">' + r.bridge + '</div>';
+        html += '<div style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">SCRIPT</div>';
+        html += '<div style="font-family:var(--font-body);font-size:13px;font-style:italic;color:#374151;line-height:1.6;">' + r.script + '</div>';
+        html += '</div>';
+      });
+    }
+  } else if (type === 'benefits') {
+    title.textContent = 'Benefit Explainer';
+    if (typeof BENEFITS !== 'undefined') {
+      var top5 = BENEFITS.slice(0, 5);
+      top5.forEach(function(b) {
+        html += '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:16px;padding:16px 18px;margin-bottom:12px;">';
+        html += '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">' + b.name + '</div>';
+        html += '<div style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">SIMPLE EXPLANATION</div>';
+        html += '<div style="font-family:var(--font-body);font-size:13px;color:#374151;line-height:1.6;margin-bottom:8px;">' + b.simple + '</div>';
+        html += '<div style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">COMMON MISUNDERSTANDING</div>';
+        html += '<div style="font-family:var(--font-body);font-size:13px;color:#374151;line-height:1.6;margin-bottom:8px;">' + b.misunderstand + '</div>';
+        html += '<div style="padding:8px 12px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:8px;font-family:var(--font-body);font-size:12px;color:#374151;line-height:1.5;"><strong style="color:#B91C1C;">Never say:</strong> ' + b.notsay + '</div>';
+        html += '</div>';
+      });
+    }
+  } else if (type === 'planvault') {
+    title.textContent = 'Plan Vault';
+    if (typeof POLICY_DOCS !== 'undefined') {
+      var groupColors = { MEC: '#5B8DEF', STM: '#d97706', Limited: '#dc2626' };
+      POLICY_DOCS.forEach(function(p) {
+        var gColor = groupColors[p.group] || '#6B7280';
+        html += '<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;" onclick="closeLaPanel();showPage(\'policydocs\')" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
+        html += '<span style="background:' + gColor + ';color:#fff;border-radius:8px;padding:3px 8px;font-family:var(--font-ui);font-size:9px;font-weight:700;letter-spacing:0.06em;">' + p.group + '</span>';
+        html += '<div style="font-family:var(--font-ui);font-size:14px;font-weight:600;color:#111827;">' + p.name + '</div>';
+        html += '</div>';
+      });
+    }
+  }
+
+  body.innerHTML = html;
+  overlay.classList.add('show');
+  panel.classList.add('show');
+}
+
+function closeLaPanel() {
+  var overlay = document.getElementById('la-panel-overlay');
+  var panel = document.getElementById('la-panel');
+  if (overlay) overlay.classList.remove('show');
+  if (panel) panel.classList.remove('show');
+}
+
 function renderLive() {
   var arrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.4;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
   var html =
     '<div class="ph"><div class="pt">Live <span>Assist</span></div><div class="pd">Your mid-call tactical panel. Search anything or tap a quick shortcut below.</div></div>';
   html += '<div id="liveResult" class="lrp"></div>';
-  // Nav cards — 2x2 grid
+  // Nav cards — 2x2 grid (open slide-in panels)
   html += '<div class="la-nav-grid">';
-  html += '<div class="la-nav-card" onclick="showPage(\'closes\')"><div class="la-nav-inner"><div class="la-nav-title">Closing Lines</div><div class="la-nav-desc">Assumptive, soft, direct, urgency closes</div></div>' + arrow + '</div>';
-  html += '<div class="la-nav-card" onclick="showPage(\'recovery\')"><div class="la-nav-inner"><div class="la-nav-title">Regain Control</div><div class="la-nav-desc">Recovery scripts for any situation</div></div>' + arrow + '</div>';
-  html += '<div class="la-nav-card" onclick="showPage(\'benefits\')"><div class="la-nav-inner"><div class="la-nav-title">Benefit Explainer</div><div class="la-nav-desc">Plain-English for any benefit question</div></div>' + arrow + '</div>';
-  html += '<div class="la-nav-card" onclick="showPage(\'plans\')"><div class="la-nav-inner"><div class="la-nav-title">Plan Vault</div><div class="la-nav-desc">Framing, fit, and compliance for every plan</div></div>' + arrow + '</div>';
+  html += '<div class="la-nav-card" onclick="openLaPanel(\'closes\')"><div class="la-nav-inner"><div class="la-nav-title">Closing Lines</div><div class="la-nav-desc">Assumptive, soft, direct, urgency closes</div></div>' + arrow + '</div>';
+  html += '<div class="la-nav-card" onclick="openLaPanel(\'recovery\')"><div class="la-nav-inner"><div class="la-nav-title">Regain Control</div><div class="la-nav-desc">Recovery scripts for any situation</div></div>' + arrow + '</div>';
+  html += '<div class="la-nav-card" onclick="openLaPanel(\'benefits\')"><div class="la-nav-inner"><div class="la-nav-title">Benefit Explainer</div><div class="la-nav-desc">Plain-English for any benefit question</div></div>' + arrow + '</div>';
+  html += '<div class="la-nav-card" onclick="openLaPanel(\'planvault\')"><div class="la-nav-inner"><div class="la-nav-title">Plan Vault</div><div class="la-nav-desc">Framing, fit, and compliance for every plan</div></div>' + arrow + '</div>';
+  html += '</div>';
+  // SOA sticky strip with Cheat Sheets button
+  html += '<div style="display:flex;align-items:center;gap:10px;background:#EEF3FF;border-left:3px solid #5B8DEF;border-radius:10px;padding:10px 14px;margin-bottom:16px;">';
+  html += '<div style="flex:1;font-family:var(--font-body);font-size:12px;color:#374151;line-height:1.5;"><strong style="color:#111827;">SOA:</strong> Disclose plan type &middot; pre-ex &middot; waiting periods &middot; fixed benefits &middot; NOT ACA major medical</div>';
+  html += '<button onclick="openTrainingSection(\'cheatsheets\');showPage(\'training\')" style="background:#5B8DEF;color:#fff;border:none;border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">Cheat Sheets &rarr;</button>';
   html += '</div>';
   // Section label
   html += '<div class="la-section-label">Common Objections</div>';
+  // Slide-in panel overlay + panel (injected once)
+  html += '<div id="la-panel-overlay" class="la-panel-overlay" onclick="closeLaPanel()"></div>';
+  html += '<div id="la-panel" class="la-panel">';
+  html += '<div class="la-panel-header"><div id="la-panel-title" class="la-panel-title"></div><button class="la-panel-close" onclick="closeLaPanel()">&times;</button></div>';
+  html += '<div id="la-panel-body" class="la-panel-body"></div>';
+  html += '</div>';
   // Objection cards
   html += '<div class="la-obj-list">';
   for (var i = 0; i < Math.min(6, OBJECTIONS.length); i++) {

@@ -174,6 +174,12 @@ function renderDashboard() {
     html += '</div>';
   });
   html += '</div>';
+  // Cheat Sheets full-width card
+  html += '<div class="dash-card dash-card-full" onclick="openTrainingSection(\'cheatsheets\');showPage(\'training\')" style="margin-top:12px;border-left:3px solid #5B8DEF;display:flex;align-items:center;gap:16px;">';
+  html += '<div class="dash-icon">' + ic('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>') + '</div>';
+  html += '<div><div class="dash-title">Cheat Sheets</div>';
+  html += '<div class="dash-desc">Plan names, networks, underwriters, and associations at a glance</div></div>';
+  html += '</div>';
   // Agent quick reference strip
   html += '<div class="dash-ref-strip">';
   html += '<div class="dash-ref-card"><div class="dash-ref-title">Say Every Call</div><div class="dash-ref-text">Disclose plan type &middot; Pre-ex exclusion &middot; Waiting periods &middot; Fixed benefit amounts &middot; NOT ACA major medical</div></div>';
