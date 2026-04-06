@@ -1228,6 +1228,12 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 }
 .sec-label::after { content: none; }
 
+/* ── BENEFIT FILTER CARDS ── */
+.benefit-filter-card:hover {
+  border-color: #5B8DEF !important;
+  background: #EEF3FF !important;
+}
+
 /* ── LIVE ASSIST PAGE ── */
 .la-nav-grid {
   display: grid;

@@ -993,19 +993,20 @@ function renderPlans() {
     '<div class="ph"><div class="pt">Plan <span>Vault</span></div><div class="pd">Every plan, organized by type. Tap a card for full details, fit guide, sales framing, and compliance.</div></div>';
   html +=
     '<div class="comp-banner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg> <strong>Core compliance — say every time:</strong> Disclose plan type, pre-existing exclusion, waiting periods, fixed/limited benefit amounts, and when a plan is NOT ACA major medical.</div>';
-  // Benefits highlight cards
+  // Benefits highlight cards — clickable filters
+  var _bsvg = function(d) { return '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
   html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:20px;">';
   var highlights = [
-    {icon:'🏥', label:'Doctor Visits', desc:'Fixed cash benefit per visit'},
-    {icon:'💊', label:'Prescriptions', desc:'Rx discount or fixed benefit'},
-    {icon:'🚑', label:'Emergency', desc:'ER benefit up to plan max'},
-    {icon:'🩺', label:'Preventive', desc:'Wellness visits covered'},
-    {icon:'🦷', label:'Dental/Vision', desc:'Add-on available'},
-    {icon:'⚕️', label:'Telehealth', desc:'$0 virtual visits on most plans'}
+    {svg: _bsvg('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/>'), label:'Doctor Visits', desc:'Fixed cash benefit per visit', filter:'doctor|pcp|copay|office visit'},
+    {svg: _bsvg('<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>'), label:'Prescriptions', desc:'Rx discount or fixed benefit', filter:'rx|prescription|drug'},
+    {svg: _bsvg('<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'), label:'Emergency', desc:'ER benefit up to plan max', filter:'emergency|er |ambulance'},
+    {svg: _bsvg('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'), label:'Preventive', desc:'Wellness visits covered', filter:'preventive|wellness|physical|screening'},
+    {svg: _bsvg('<path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V17H8v-2.3A7 7 0 0 1 5 9a7 7 0 0 1 7-7z"/><path d="M9 18h6M10 22h4"/>'), label:'Dental/Vision', desc:'Add-on available', filter:'dental|vision|eye|teeth'},
+    {svg: _bsvg('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'), label:'Telehealth', desc:'$0 virtual visits on most plans', filter:'telehealth|telemedicine|virtual'}
   ];
-  highlights.forEach(function(h) {
-    html += '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:14px;padding:14px 16px;text-align:center;">';
-    html += '<div style="font-size:24px;margin-bottom:6px;">' + h.icon + '</div>';
+  highlights.forEach(function(h, idx) {
+    html += '<div class="benefit-filter-card" data-filter="' + h.filter + '" onclick="filterPlansByBenefit(this)" style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:14px;padding:14px 16px;text-align:center;cursor:pointer;transition:border-color 0.15s, background 0.15s;">';
+    html += '<div style="margin-bottom:6px;color:var(--accent);">' + h.svg + '</div>';
     html += '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:2px;">' + h.label + '</div>';
     html += '<div style="font-family:var(--font-body);font-size:12px;color:var(--text-secondary);">' + h.desc + '</div>';
     html += '</div>';
@@ -1026,6 +1027,42 @@ function renderPlans() {
   var _page_plans = document.getElementById('page-plans');
   if (_page_plans) _page_plans.innerHTML = html;
   renderPlanGroups();
+}
+
+var _activeBenefitFilter = null;
+function filterPlansByBenefit(el) {
+  var filter = el.getAttribute('data-filter');
+  // Toggle off if same filter clicked again
+  if (_activeBenefitFilter === filter) {
+    _activeBenefitFilter = null;
+    document.querySelectorAll('.benefit-filter-card').forEach(function(c) {
+      c.style.borderColor = '#C8CEDD';
+      c.style.background = '#FFFFFF';
+    });
+    renderPlanGroups();
+    return;
+  }
+  _activeBenefitFilter = filter;
+  // Highlight active card
+  document.querySelectorAll('.benefit-filter-card').forEach(function(c) {
+    c.style.borderColor = '#C8CEDD';
+    c.style.background = '#FFFFFF';
+  });
+  el.style.borderColor = '#5B8DEF';
+  el.style.background = '#EEF3FF';
+  // Filter plans
+  var terms = filter.split('|');
+  var wrap = document.getElementById('planGroupsWrap');
+  if (!wrap) return;
+  var cards = wrap.querySelectorAll('.plan-card');
+  cards.forEach(function(card) {
+    var text = card.textContent.toLowerCase();
+    var match = false;
+    for (var i = 0; i < terms.length; i++) {
+      if (text.indexOf(terms[i].trim()) !== -1) { match = true; break; }
+    }
+    card.style.display = match ? '' : 'none';
+  });
 }
 
 function setPlanGroup(g) {
