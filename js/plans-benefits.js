@@ -1032,6 +1032,8 @@ function renderPlans() {
 var _activeBenefitFilter = null;
 function filterPlansByBenefit(el) {
   var filter = el.getAttribute('data-filter');
+  var expandId = 'benefitExpand';
+  var existing = document.getElementById(expandId);
   // Toggle off if same filter clicked again
   if (_activeBenefitFilter === filter) {
     _activeBenefitFilter = null;
@@ -1039,6 +1041,7 @@ function filterPlansByBenefit(el) {
       c.style.borderColor = '#C8CEDD';
       c.style.background = '#FFFFFF';
     });
+    if (existing) existing.remove();
     renderPlanGroups();
     return;
   }
@@ -1050,8 +1053,61 @@ function filterPlansByBenefit(el) {
   });
   el.style.borderColor = '#5B8DEF';
   el.style.background = '#EEF3FF';
-  // Filter plans
+
+  // Build expanded section from POLICY_DOCS
   var terms = filter.split('|');
+  var label = el.querySelector('div[style*="font-weight:700"]');
+  var categoryName = label ? label.textContent : 'Benefit';
+  var matches = [];
+  POLICY_DOCS.forEach(function(doc) {
+    var found = [];
+    doc.benefits.forEach(function(bcat) {
+      var catLower = bcat.category.toLowerCase();
+      var itemsText = bcat.items.join(' ').toLowerCase();
+      var hit = false;
+      for (var i = 0; i < terms.length; i++) {
+        var t = terms[i].trim().toLowerCase();
+        if (catLower.indexOf(t) !== -1 || itemsText.indexOf(t) !== -1) { hit = true; break; }
+      }
+      if (hit) {
+        bcat.items.forEach(function(item) { found.push(item); });
+      }
+    });
+    if (found.length) {
+      matches.push({ name: doc.name, group: doc.group, network: doc.network, items: found });
+    }
+  });
+
+  var html = '<div id="' + expandId + '" style="background:#F8F9FE;border:2px solid #5B8DEF;border-radius:14px;padding:18px 20px;margin-bottom:20px;animation:fadeIn 0.2s ease;">';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">';
+  html += '<div style="font-family:var(--font-ui);font-size:16px;font-weight:700;color:var(--text-primary);">' + categoryName + ' Coverage by Plan</div>';
+  html += '<span style="font-size:12px;color:var(--text-secondary);">' + matches.length + ' plans</span></div>';
+  if (!matches.length) {
+    html += '<div style="font-size:14px;color:var(--text-secondary);padding:10px 0;">No plans have this benefit in policy documents.</div>';
+  } else {
+    matches.forEach(function(m) {
+      var badgeBg = m.group === 'MEC' ? 'rgba(91,141,239,0.10)' : m.group === 'STM' ? 'rgba(245,158,11,0.10)' : 'rgba(239,68,68,0.08)';
+      var badgeColor = m.group === 'MEC' ? '#5B8DEF' : m.group === 'STM' ? '#d97706' : '#dc2626';
+      html += '<div style="background:#FFFFFF;border:1.5px solid #E5E7EB;border-radius:10px;padding:12px 14px;margin-bottom:8px;">';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+      html += '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);">' + m.name + '</span>';
+      html += '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px;border-radius:999px;background:' + badgeBg + ';color:' + badgeColor + ';">' + m.group + '</span>';
+      html += '<span style="font-size:12px;color:var(--text-secondary);margin-left:auto;">' + m.network + '</span></div>';
+      m.items.forEach(function(item) {
+        html += '<div style="font-size:13px;color:var(--text-secondary);padding-left:10px;margin-bottom:2px;line-height:1.5;">&#8226; ' + item + '</div>';
+      });
+      html += '<div style="margin-top:6px;"><a href="javascript:void(0)" onclick="event.stopPropagation();showPage(\'policydocs\')" style="font-size:12px;color:#5B8DEF;text-decoration:none;font-weight:600;">See full plan &rarr;</a></div>';
+      html += '</div>';
+    });
+  }
+  html += '</div>';
+
+  // Insert expansion below the filter card grid
+  if (existing) existing.remove();
+  var filterGrid = el.parentElement;
+  if (filterGrid) filterGrid.insertAdjacentHTML('afterend', html);
+
+  // Also filter plan cards below
   var wrap = document.getElementById('planGroupsWrap');
   if (!wrap) return;
   var cards = wrap.querySelectorAll('.plan-card');

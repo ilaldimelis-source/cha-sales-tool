@@ -2154,8 +2154,9 @@ function renderPolicyResults() {
         plan.id +
         '\')">';
 
-      // Card face — plan name, type badge, one-line summary
-      html += '<div style="padding:16px 18px;">';
+      // Card face — plan name, type badge, network, carrier, chevron
+      html += '<div style="padding:16px 18px;display:flex;align-items:flex-start;gap:10px;">';
+      html += '<div style="flex:1;">';
       html +=
         '<span style="display:inline-block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:' +
         (grp.key === 'MEC' ? 'rgba(91,141,239,0.10);color:#5B8DEF' : grp.key === 'STM' ? 'rgba(245,158,11,0.10);color:#d97706' : 'rgba(239,68,68,0.08);color:#dc2626') +
@@ -2170,6 +2171,8 @@ function renderPolicyResults() {
         ' &middot; ' +
         plan.carrier +
         '</div>';
+      html += '</div>';
+      html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + (isOpen ? grp.color : '#999') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:4px;transition:transform 0.2s;' + (isOpen ? 'transform:rotate(180deg);' : '') + '"><polyline points="6 9 12 15 18 9"/></svg>';
       html += '</div>';
 
       html += '</div>'; // close card
