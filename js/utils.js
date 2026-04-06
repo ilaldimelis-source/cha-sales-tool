@@ -946,6 +946,16 @@ function getBadgeClass(type) {
   if (t.includes('training')) return 'sr-badge-training';
   return 'sr-badge-default';
 }
+function getSourceLabel(sec) {
+  var t = sec.toLowerCase();
+  if (t.includes('objection') || t.includes('recovery')) return 'Live Assist';
+  if (t.includes('plan vault') || t.includes('plan ') || t.includes('benefit')) return 'Plans & Benefits';
+  if (t.includes('policy')) return 'Policy Docs';
+  if (t.includes('clos') || t.includes('script')) return 'All Plan Scripts';
+  if (t.includes('training')) return 'Training';
+  if (t.includes('compliance') || t.includes('disclosure')) return 'Compliance';
+  return '';
+}
 
 function hlSearch(text, terms) {
   var safe = escHTML(text);
@@ -1062,6 +1072,7 @@ function doSearch(val) {
             '">' +
             escHTML(r.sec) +
             '</span>' +
+            (getSourceLabel(r.sec) ? '<span class="sr-source-pill">' + getSourceLabel(r.sec) + '</span>' : '') +
             '<div class="sr-item-title">' +
             hlSearch(r.txt, expandedTerms) +
             '</div>' +

@@ -1,5 +1,31 @@
 // live-assist.js — Live Assist tab (Live, Recovery, QA Rebuttals)
 
+// ── SOA One-Tap Copy ──
+var SOA_TEXT = 'This is a supplemental fixed indemnity health plan — not major medical insurance. It is not minimum essential coverage under the ACA. Pre-existing conditions are excluded for the first 12 months. Benefits are fixed dollar amounts, not full coverage. This plan is NOT ACA-compliant major medical insurance.';
+function copySOA(el) {
+  navigator.clipboard.writeText(SOA_TEXT).then(function() {
+    el.style.background = '#D1FAE5';
+    var hint = el.querySelector('.soa-copy-hint');
+    if (hint) hint.textContent = 'Copied!';
+    setTimeout(function() {
+      el.style.background = '#EEF3FF';
+      if (hint) hint.textContent = 'Tap to copy';
+    }, 1500);
+  });
+}
+
+// ── Copy Script Block ──
+function copyScript(btn) {
+  var block = btn.closest('.sbox') || btn.closest('.comp-script-block') || btn.closest('.la-sec-text') || btn.parentElement;
+  if (!block) return;
+  var text = block.textContent.replace(/Copy|Copied!/g, '').trim();
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
 var QA_REBUTTALS = [
   {
     q: 'So how much will the doctor visit cost me?',
@@ -154,10 +180,10 @@ function renderLive() {
   html += '<div class="la-nav-card" onclick="openLaPanel(\'benefits\')"><div class="la-nav-inner"><div class="la-nav-title">Benefit Explainer</div><div class="la-nav-desc">Plain-English for any benefit question</div></div>' + arrow + '</div>';
   html += '<div class="la-nav-card" onclick="openLaPanel(\'planvault\')"><div class="la-nav-inner"><div class="la-nav-title">Plan Vault</div><div class="la-nav-desc">Framing, fit, and compliance for every plan</div></div>' + arrow + '</div>';
   html += '</div>';
-  // SOA sticky strip with Cheat Sheets button
-  html += '<div style="display:flex;align-items:center;gap:10px;background:#EEF3FF;border-left:3px solid #5B8DEF;border-radius:10px;padding:10px 14px;margin-bottom:16px;">';
-  html += '<div style="flex:1;font-family:var(--font-body);font-size:12px;color:#374151;line-height:1.5;"><strong style="color:#111827;">SOA:</strong> Disclose plan type &middot; pre-ex &middot; waiting periods &middot; fixed benefits &middot; NOT ACA major medical</div>';
-  html += '<button onclick="openTrainingSection(\'cheatsheets\');showPage(\'training\')" style="background:#5B8DEF;color:#fff;border:none;border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">Cheat Sheets &rarr;</button>';
+  // SOA one-tap copy strip with Cheat Sheets button
+  html += '<div class="soa-copy-strip" onclick="copySOA(this)" style="display:flex;align-items:center;gap:10px;background:#EEF3FF;border-left:3px solid #5B8DEF;border-radius:10px;padding:10px 14px;margin-bottom:16px;cursor:pointer;transition:background 0.2s;">';
+  html += '<div style="flex:1;font-family:var(--font-body);font-size:12px;color:#374151;line-height:1.5;"><strong style="color:#111827;">SOA:</strong> Disclose plan type &middot; pre-ex &middot; waiting periods &middot; fixed benefits &middot; NOT ACA major medical <span class="soa-copy-hint" style="font-size:10px;color:#5B8DEF;font-weight:600;margin-left:6px;">Tap to copy</span></div>';
+  html += '<button onclick="event.stopPropagation();openTrainingSection(\'cheatsheets\');showPage(\'training\')" style="background:#5B8DEF;color:#fff;border:none;border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">Cheat Sheets &rarr;</button>';
   html += '</div>';
   // Section label
   html += '<div class="la-section-label">Common Objections</div>';

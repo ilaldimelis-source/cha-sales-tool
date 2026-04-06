@@ -9,11 +9,6 @@ var PAGE_CONFIG = {
     label: 'Live Assist',
     subs: [
       { id: 'live', label: 'Live Assist', render: renderLive },
-      {
-        id: 'recovery',
-        label: 'Regain Control (Rebuttals)',
-        render: renderRecovery
-      },
       { id: 'qarebuttals', label: 'Q&A Rebuttals', render: renderQaRebuttals }
     ]
   },
@@ -29,7 +24,6 @@ var PAGE_CONFIG = {
     label: 'All Plan Scripts',
     subs: [
       { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
-      { id: 'closes', label: 'Closes', render: renderCloses },
       { id: 'scripts', label: 'Scripts', render: renderScripts },
       {
         id: 'planscripts',
@@ -78,23 +72,12 @@ var PAGE_CONFIG = {
         label: 'Compliance Center',
         render: renderComplianceCenter
       },
-      {
-        id: 'calldisclosures',
-        label: 'Call Disclosures',
-        render: renderCallDisclosures
-      },
-      {
-        id: 'complianceflags',
-        label: 'Red Flags',
-        render: renderComplianceFlags
-      },
       { id: 'callaudit', label: 'Call Audit', render: renderCallAudit }
     ]
   },
   myspace: {
     label: 'My Space',
     subs: [
-      { id: 'mindset', label: 'Mindset', render: renderMindset },
       { id: 'notes', label: 'Notes', render: renderNotes }
     ]
   }
@@ -107,9 +90,23 @@ Object.keys(PAGE_CONFIG).forEach(function (parentId) {
   });
 });
 
+function trackRecentPage(id) {
+  try {
+    var recent = JSON.parse(localStorage.getItem('cha_recent') || '[]');
+    recent = recent.filter(function(r) { return r !== id; });
+    recent.unshift(id);
+    if (recent.length > 4) recent = recent.slice(0, 4);
+    localStorage.setItem('cha_recent', JSON.stringify(recent));
+  } catch(e) {}
+}
+function getRecentPages() {
+  try { return JSON.parse(localStorage.getItem('cha_recent') || '[]'); } catch(e) { return []; }
+}
+
 function showPage(id) {
   var searchOverlay = document.getElementById('srOverlay');
   if (searchOverlay && searchOverlay.classList.contains('show')) closeSearch();
+  if (id !== 'dashboard') trackRecentPage(id);
   // Safety: if target page doesn't exist yet, defer
   var target = document.getElementById('page-' + id);
   if (!target) {
@@ -180,12 +177,41 @@ function renderDashboard() {
   html += '<div><div class="dash-title">Cheat Sheets</div>';
   html += '<div class="dash-desc">Plan names, networks, underwriters, and associations at a glance</div></div>';
   html += '</div>';
+  // Recently visited strip
+  var recent = getRecentPages();
+  if (recent.length) {
+    var labelMap = {};
+    Object.keys(PAGE_CONFIG).forEach(function(pid) {
+      labelMap[pid] = PAGE_CONFIG[pid].label;
+      PAGE_CONFIG[pid].subs.forEach(function(s) { labelMap[s.id] = s.label; });
+    });
+    labelMap.objections = 'Objections'; labelMap.policydocs = 'Policy Reference'; labelMap.dashboard = 'Dashboard';
+    html += '<div class="dash-recent-strip"><div class="dash-recent-label">Recently Visited</div><div class="dash-recent-pills">';
+    recent.forEach(function(rid) {
+      var lbl = labelMap[rid] || rid;
+      html += '<button class="dash-recent-pill" onclick="showPage(\'' + rid + '\')">' + lbl + '</button>';
+    });
+    html += '</div></div>';
+  }
   // Agent quick reference strip
   html += '<div class="dash-ref-strip">';
   html += '<div class="dash-ref-card"><div class="dash-ref-title">Say Every Call</div><div class="dash-ref-text">Disclose plan type &middot; Pre-ex exclusion &middot; Waiting periods &middot; Fixed benefit amounts &middot; NOT ACA major medical</div></div>';
   html += '<div class="dash-ref-card"><div class="dash-ref-title">Pre-Existing Rule</div><div class="dash-ref-text">12/12 — conditions diagnosed or treated in prior 12 months excluded for first 12 months of coverage</div></div>';
   html += '<div class="dash-ref-card"><div class="dash-ref-title">Network</div><div class="dash-ref-text">Always confirm provider is IN NETWORK before the call ends. First Health network on most plans.</div></div>';
   html += '</div>';
+  // Keyboard shortcut hint
+  html += '<div class="dash-kb-strip"><div class="dash-kb-title">Keyboard Shortcuts</div><div class="dash-kb-list">';
+  html += '<span class="dash-kb"><kbd>H</kbd> Home</span>';
+  html += '<span class="dash-kb"><kbd>L</kbd> Live Assist</span>';
+  html += '<span class="dash-kb"><kbd>P</kbd> Plans</span>';
+  html += '<span class="dash-kb"><kbd>S</kbd> Scripts</span>';
+  html += '<span class="dash-kb"><kbd>T</kbd> Training</span>';
+  html += '<span class="dash-kb"><kbd>C</kbd> Compliance</span>';
+  html += '<span class="dash-kb"><kbd>O</kbd> Objections</span>';
+  html += '<span class="dash-kb"><kbd>R</kbd> Reference</span>';
+  html += '<span class="dash-kb"><kbd>/</kbd> Search</span>';
+  html += '<span class="dash-kb"><kbd>Esc</kbd> Close</span>';
+  html += '</div></div>';
   pg.innerHTML = html;
 }
 
@@ -246,6 +272,17 @@ function renderSubTabs(parentId, activeSubId) {
 // ── INIT ──────────────────────────────────────────────
 function initApp() {
   showPage('dashboard');
+  // Inject floating quick-action bar
+  if (!document.getElementById('fab-bar')) {
+    var fab = document.createElement('div');
+    fab.id = 'fab-bar';
+    fab.className = 'fab-bar';
+    fab.innerHTML = '<button class="fab-btn" onclick="showPage(\'dashboard\')" title="Home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>'
+      + '<button class="fab-btn" onclick="showPage(\'liveassist\')" title="Live Assist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/></svg></button>'
+      + '<button class="fab-btn" onclick="var gs=document.getElementById(\'gs\');if(gs)gs.focus();" title="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>'
+      + '<button class="fab-btn" onclick="openTrainingSection(\'cheatsheets\');showPage(\'training\')" title="Cheat Sheets"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/></svg></button>';
+    document.body.appendChild(fab);
+  }
 }
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
@@ -329,17 +366,27 @@ if (document.readyState === 'loading') {
   });
 })();
 
-// ── Keyboard Shortcut: Ctrl+K → focus search ────────
+// ── Keyboard Shortcuts ────────────────────────────────
 document.addEventListener('keydown', function(e) {
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
     var gs = document.getElementById('gs');
     if (gs) gs.focus();
+    return;
   }
   if (e.key === 'Escape') {
     var srOverlay = document.getElementById('srOverlay');
     if (srOverlay && srOverlay.classList.contains('show') && typeof closeSearch === 'function') closeSearch();
+    return;
   }
+  // Skip shortcuts when typing in input/textarea
+  var tag = (e.target.tagName || '').toLowerCase();
+  if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  var key = e.key.toLowerCase();
+  var map = { h:'dashboard', l:'liveassist', p:'plansbenefit', s:'callplaybook', t:'training', c:'compliance', o:'objections', r:'reference', d:'policydocs' };
+  if (map[key]) { e.preventDefault(); showPage(map[key]); return; }
+  if (key === '/') { e.preventDefault(); var gs = document.getElementById('gs'); if (gs) gs.focus(); }
 });
 
 // ── Copy Compliance Text ─────────────────────────────
@@ -354,7 +401,7 @@ function copyCompliance(btn) {
   });
 }
 
-// ── Auto-inject copy buttons into compliance banners ──
+// ── Auto-inject copy buttons into compliance banners + script blocks ──
 (function() {
   var observer = new MutationObserver(function() {
     document.querySelectorAll('.comp-banner').forEach(function(banner) {
@@ -364,6 +411,15 @@ function copyCompliance(btn) {
       btn.textContent = 'Copy';
       btn.setAttribute('onclick', 'copyCompliance(this)');
       banner.appendChild(btn);
+    });
+    // Inject copy pills into sbox script panels and comp-script-block
+    document.querySelectorAll('.sbox, .comp-script-block').forEach(function(block) {
+      if (block.querySelector('.script-copy-btn')) return;
+      var btn = document.createElement('button');
+      btn.className = 'script-copy-btn';
+      btn.textContent = 'Copy';
+      btn.setAttribute('onclick', 'copyScript(this)');
+      block.appendChild(btn);
     });
   });
   observer.observe(document.body, { childList: true, subtree: true });
