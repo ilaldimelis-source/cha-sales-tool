@@ -929,7 +929,7 @@ function renderBenefits() {
       '<div class="xcard-label">' +
       b.name +
       '</div></div>';
-    html += '<span class="xcard-chev">▼</span></div>';
+    html += '<span class="xcard-chev" aria-hidden="true">▼</span></div>';
     html += '<div class="xcard-body">';
     html +=
       '<div class="field"><div class="field-lbl" style="color:var(--charcoal2)">Official Meaning</div><div class="field-txt">' +
@@ -1210,7 +1210,7 @@ function renderPlanGroups() {
       });
       html += '</div>';
       // Chevron
-      html += '<svg class="pv-chev" id="pv-chev-' + doc.id + '" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:4px;transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>';
+      html += '<svg class="pv-chev" id="pv-chev-' + doc.id + '" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:4px;transition:transform 0.2s;" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
       html += '</div>';
 
       // ── EXPANDED VIEW ──

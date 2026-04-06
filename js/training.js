@@ -1276,7 +1276,7 @@ function renderIsaObjList() {
     html +=
       '<div style="font-weight:700;font-size:13px;flex:1;color:var(--charcoal3)">' +
       o.obj +
-      '</div><span style="color:var(--warmgray3)">▼</span></div>';
+      '</div><span style="color:var(--warmgray3)" aria-hidden="true">▼</span></div>';
     html += '<div id="io' + i + '" style="display:none;padding:0 18px 16px">';
     html +=
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">';
@@ -1442,27 +1442,6 @@ function renderCheatsheets() {
     compBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
   });
   html += _trnOpenCard('Compliance Non-Negotiables', compBody);
-
-  // Price Anchor card
-  var priceBody = '';
-  ['1. Acknowledge: "I hear you on the price."','2. Anchor to risk: "What does no coverage cost if..."','3. ER without coverage: $3,000–$30,000','4. Hospitalization without coverage: $10,000–$100,000+','5. Bridge: "So the question is whether $X/month is worth..."','6. Never apologize for or discount the price first'].forEach(function(item) {
-    priceBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
-  });
-  html += _trnOpenCard('Price Anchor Framework', priceBody);
-
-  // Call Structure card
-  var callBody = '';
-  ['1. Reset mentally before dialing','2. Warm open + permission ask','3. Discovery — budget, situation, fear','4. Validate what they said','5. Position as expert','6. Present plan tied to their words','7. Future pace (picture it working)','8. Assumptive close','9. Handle objection if needed','10. Disclose compliance','11. Confirm + wrap up clean'].forEach(function(step) {
-    callBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + step + '</div>';
-  });
-  html += _trnOpenCard('Call Structure — Quick Sequence', callBody);
-
-  // Silence Rule card
-  var silBody = '';
-  ['After close: SAY NOTHING. Wait.','People buy emotionally, justify logically','Heard = open. Not heard = resistant.','Fit sells. Features don\'t.','Never fight an objection — align + redirect','Future pacing closes faster than facts','Confidence is your #1 competitive advantage'].forEach(function(item) {
-    silBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
-  });
-  html += _trnOpenCard('Silence Rule + Psychology', silBody);
 
   // Plan Reference Table card
   var tableBody = '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid #C8CEDD;min-width:600px;">';

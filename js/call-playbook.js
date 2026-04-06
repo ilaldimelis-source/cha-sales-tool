@@ -876,7 +876,7 @@ function renderCallFlow() {
       s.title +
       '</div>';
     html +=
-      '<span style="color:var(--warmgray3);font-size:12px;">▼</span></div>';
+      '<span style="color:var(--warmgray3);font-size:12px;" aria-hidden="true">▼</span></div>';
     html +=
       '<div class="cf-body" style="display:none;padding:0 20px 16px 66px;">';
     html +=

@@ -2090,7 +2090,7 @@ function _pdSectionHead(label, color, collapsed) {
   var chevDir = collapsed ? '' : 'transform:rotate(180deg);';
   return '<div onclick="pdToggleSection(this)" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:10px 0;border-bottom:1px solid #E5E7EB;margin-bottom:8px;">' +
     '<span style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:' + color + ';text-transform:uppercase;letter-spacing:.06em;">' + label + '</span>' +
-    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transition:transform 0.2s;' + chevDir + '"><polyline points="6 9 12 15 18 9"/></svg></div>';
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transition:transform 0.2s;' + chevDir + '" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div>';
 }
 
 function pdToggleSection(header) {
@@ -2272,7 +2272,7 @@ function renderPolicyResults() {
       html += '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);line-height:1.3;margin-bottom:3px;">' + plan.name + '</div>';
       html += '<div style="font-size:12px;color:var(--text-secondary);line-height:1.4;">' + plan.network + ' &middot; ' + plan.carrier + '</div>';
       html += '</div>';
-      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + (isOpen ? grp.color : '#9CA3AF') + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:6px;transition:transform 0.2s;' + (isOpen ? 'transform:rotate(180deg);' : '') + '"><polyline points="6 9 12 15 18 9"/></svg>';
+      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + (isOpen ? grp.color : '#9CA3AF') + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:6px;transition:transform 0.2s;' + (isOpen ? 'transform:rotate(180deg);' : '') + '" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
       html += '</div></div>';
     });
     html += '</div>';

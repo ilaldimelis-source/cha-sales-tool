@@ -227,7 +227,7 @@ function renderObjList() {
       '<span style="display:inline-flex;align-items:center;font-family:var(--font-ui);font-size:.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(92,104,120,0.10);color:#5C6878;margin-top:4px;border:1px solid rgba(92,104,120,0.15);">' +
       o.cat +
       '</span></div>';
-    html += '<span class="xcard-chev">▼</span></div>';
+    html += '<span class="xcard-chev" aria-hidden="true">▼</span></div>';
     html += '<div class="xcard-body">';
     html +=
       '<div class="ibox ibox-diag"><span class="sbox-lbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg> Ask First</span><br>' +

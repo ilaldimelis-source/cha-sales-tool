@@ -912,7 +912,7 @@ svg { vertical-align: middle; flex-shrink: 0; }
   box-shadow: none;
 }
 .mindset-card .mr { font-family: var(--font-ui); font-size: 0.88rem; font-weight: 700; color: var(--text-primary); }
-.mindset-card .md { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-secondary); }
+.mindset-card .md { font-family: var(--font-body); font-size: 0.875rem; color: var(--text-secondary); }
 
 /* ── LIVE CARDS ── */
 .live-card {
@@ -1112,7 +1112,7 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
   border-radius: var(--r-card);
   padding: 16px 18px;
   font-family: var(--font-body);
-  font-size: 0.82rem;
+  font-size: 0.875rem;
   line-height: 1.75;
   color: var(--text-primary);
   white-space: pre-wrap;
@@ -1134,6 +1134,7 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 .comp-btn:hover { background: var(--bg-page); }
 .comp-btn.active, .comp-btn.sel { background: var(--accent); color: #fff; border-color: var(--accent); }
 .comp-banner {
+  position: relative;
   background: var(--red-light);
   border: 1px solid rgba(239,68,68,0.15);
   border-radius: var(--r-md);
@@ -1153,14 +1154,14 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
   letter-spacing: 0.14em; text-transform: uppercase;
   color: var(--text-muted); margin-bottom: 4px;
 }
-.field-txt { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-primary); line-height: 1.6; }
+.field-txt { font-family: var(--font-body); font-size: 0.875rem; color: var(--text-primary); line-height: 1.6; }
 
 /* ── SAVED ITEMS ── */
 .saved-item {
   padding: 16px 18px;
   margin-bottom: 8px;
 }
-.saved-text { font-family: var(--font-body); font-size: 0.82rem; color: var(--text-secondary); }
+.saved-text { font-family: var(--font-body); font-size: 0.875rem; color: var(--text-secondary); }
 
 /* ── SECTION LABEL ── */
 .slbl {
@@ -1206,7 +1207,7 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 }
 .dash-desc {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.45;
 }
@@ -1263,7 +1264,7 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 }
 .dash-ref-text {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   color: #111827;
   line-height: 1.55;
 }
@@ -1315,7 +1316,7 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 }
 .trn-home-desc {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   color: #6B7280;
   line-height: 1.5;
 }
@@ -1462,7 +1463,7 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 }
 .la-nav-desc {
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-muted);
   line-height: 1.4;
 }
@@ -1882,7 +1883,7 @@ textarea:focus-visible {
 .br-bub {
   padding: 9px 13px;
   border-radius: 15px;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.58;
   font-family: var(--font-body);
 }
@@ -1972,9 +1973,6 @@ a[href="#main-content"] {
 a[href="#main-content"]:focus { top: 0; }
 
 /* ── COPY BUTTON (compliance banners) ── */
-.comp-banner {
-  position: relative;
-}
 .comp-copy-btn {
   position: absolute;
   top: 8px;
@@ -2106,7 +2104,7 @@ a[href="#main-content"]:focus { top: 0; }
   color: #5B8DEF;
 }
 
-/* ── KEYBOARD SHORTCUT HINT ── */
+/* ── DASHBOARD KEYBOARD SHORTCUT HINT ── */
 .dash-kb-strip {
   margin-top: 20px;
   padding: 14px 18px;
@@ -2139,7 +2137,7 @@ a[href="#main-content"]:focus { top: 0; }
   font-size: 11px;
   font-weight: 700;
   background: #FFFFFF;
-  border: 1px solid #D1D5DB;
+  border: 1px solid #E5E7EB;
   border-radius: 4px;
   padding: 1px 6px;
   margin-right: 3px;

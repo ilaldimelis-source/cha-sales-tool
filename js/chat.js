@@ -800,16 +800,31 @@ function brStructuredAnswer(query, plans) {
     '</div>';
   html += '</div>';
 
-  // Client rebuttal
+  // Client rebuttal — enhanced for Not Covered
   html += '<div style="padding:10px 14px;background:#F8FAFF;">';
-  html +=
-    '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">' +
-    LI.mic +
-    ' Say This to Client</div>';
-  html +=
-    '<div style="font-size:12.5px;color:#1C2035;line-height:1.55;font-style:italic;">"' +
-    rebuttal +
-    '"</div>';
+  if (status === 'Not Covered') {
+    // Build plan-specific rebuttal from real data
+    var planName = (matchedPlans.length ? matchedPlans[0].name : (brActivePlan ? brActivePlan.name : 'This plan'));
+    var topBens = [];
+    var srcPlan = brActivePlan ? brActivePlan : (BR_PLANS.length ? BR_PLANS[0] : null);
+    if (srcPlan) {
+      srcPlan.entries.forEach(function(e) {
+        var c = e.category.toLowerCase();
+        if (c.includes('exclusion') || c.includes('limitation') || c.includes('waiting') || c.includes('pre-existing') || c.includes('agent note')) return;
+        if (topBens.length < 3) topBens.push(e.text.split(' — ')[0].split(':')[0].replace(/^\$\d+\s*copay\s*—?\s*/i,'').trim());
+      });
+    }
+    var benList = topBens.length ? topBens.join(', ') : 'doctor visits, telemedicine, and hospital coverage';
+    var topBen = topBens.length ? topBens[0] : 'doctor visits';
+    var specificRebuttal = planName + ' does not cover ' + query + '. Say this: "That benefit isn\'t included — what this plan does cover is ' + benList + '. Most people find ' + topBen + ' is what they use most. Does that work?"';
+    html += '<div class="comp-script-block" style="border-left:3px solid #15803D;background:#F0FDF4;border-radius:12px;padding:14px;margin-top:2px;">';
+    html += '<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#15803D;margin-bottom:6px;">SAY THIS →</div>';
+    html += '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' + specificRebuttal + '"</div>';
+    html += '</div>';
+  } else {
+    html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">' + LI.mic + ' Say This to Client</div>';
+    html += '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' + rebuttal + '"</div>';
+  }
   html += '</div>';
 
   html += '</div>';
