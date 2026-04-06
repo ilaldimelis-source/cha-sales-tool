@@ -1238,6 +1238,39 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
   letter-spacing: 0.08em !important;
 }
 
+/* ── DASHBOARD REFERENCE STRIP ── */
+.dash-ref-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+.dash-ref-card {
+  background: #F8F9FE;
+  border: 2px solid #C8CEDD;
+  border-left: 3px solid #5B8DEF;
+  border-radius: 20px;
+  padding: 14px 16px;
+}
+.dash-ref-title {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.dash-ref-text {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #111827;
+  line-height: 1.55;
+}
+@media (max-width: 700px) {
+  .dash-ref-strip { grid-template-columns: 1fr; }
+}
+
 /* ── BENEFIT FILTER CARDS ── */
 .benefit-filter-card:hover {
   border-color: #5B8DEF !important;
