@@ -65,39 +65,39 @@ var QA_REBUTTALS = [
 ];
 
 function renderLive() {
+  var arrow = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.4;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
   var html =
     '<div class="ph"><div class="pt">Live <span>Assist</span></div><div class="pd">Your mid-call tactical panel. Search anything or tap a quick shortcut below.</div></div>';
   html += '<div id="liveResult" class="lrp"></div>';
-  html +=
-    '<div class="quick-panel"><div class="qp-title">Common Objections — Quick Launch</div><div style="display:flex;flex-direction:column;gap:10px;">';
+  // Nav cards — 2x2 grid
+  html += '<div class="la-nav-grid">';
+  html += '<div class="la-nav-card" onclick="showPage(\'closes\')"><div class="la-nav-inner"><div class="la-nav-title">Closing Lines</div><div class="la-nav-desc">Assumptive, soft, direct, urgency closes</div></div>' + arrow + '</div>';
+  html += '<div class="la-nav-card" onclick="showPage(\'recovery\')"><div class="la-nav-inner"><div class="la-nav-title">Regain Control</div><div class="la-nav-desc">Recovery scripts for any situation</div></div>' + arrow + '</div>';
+  html += '<div class="la-nav-card" onclick="showPage(\'benefits\')"><div class="la-nav-inner"><div class="la-nav-title">Benefit Explainer</div><div class="la-nav-desc">Plain-English for any benefit question</div></div>' + arrow + '</div>';
+  html += '<div class="la-nav-card" onclick="showPage(\'plans\')"><div class="la-nav-inner"><div class="la-nav-title">Plan Vault</div><div class="la-nav-desc">Framing, fit, and compliance for every plan</div></div>' + arrow + '</div>';
+  html += '</div>';
+  // Section label
+  html += '<div class="la-section-label">Common Objections</div>';
+  // Objection cards
+  html += '<div class="la-obj-list">';
   for (var i = 0; i < Math.min(6, OBJECTIONS.length); i++) {
     var o = OBJECTIONS[i];
-    html += '<div class="xcard" id="liveobj' + i + '" style="border:2px solid #C8CEDD;">';
-    html += '<div class="xcard-hd" onclick="toggleLiveObj(' + i + ')" style="padding:16px 18px;cursor:pointer;">';
-    html += '<div class="xcard-hd-l"><div class="xcard-label" style="font-size:15px;">&ldquo;' + o.obj + '&rdquo;</div>';
-    html += '<div class="xcard-sub" style="font-size:13px;">' + o.cat + ' &middot; Tap for scripts + bridge</div></div>';
+    html += '<div class="xcard la-obj-card" id="liveobj' + i + '">';
+    html += '<div class="xcard-hd" onclick="toggleLiveObj(' + i + ')">';
+    html += '<div class="xcard-hd-l"><div class="xcard-label">&ldquo;' + o.obj + '&rdquo;</div>';
+    html += '<div class="la-obj-hint">' + o.cat + ' &middot; Tap for scripts + bridge</div></div>';
     html += '<span class="xcard-chev" id="liveobjchev' + i + '">▼</span></div>';
-    html += '<div class="xcard-body" id="liveobjbody' + i + '" style="display:none;padding:16px 18px;border-top:2px solid #C8CEDD;">';
-    html += '<div class="ibox ibox-diag" style="margin-bottom:10px;"><span class="sbox-lbl">Diagnostic Question First</span><br>' + o.diag + '</div>';
-    html += '<div class="ibox ibox-why" style="margin-bottom:10px;"><span class="sbox-lbl">What This Usually Means</span><br>' + o.real + '</div>';
-    html += '<div style="display:flex;gap:8px;margin:12px 0;"><button class="rtab active" onclick="switchLivTab(event,\'lo' + i + '\',\'best\')">Best Response</button><button class="rtab" onclick="switchLivTab(event,\'lo' + i + '\',\'soft\')">Softer</button><button class="rtab" onclick="switchLivTab(event,\'lo' + i + '\',\'strong\')">Stronger</button></div>';
+    html += '<div class="xcard-body la-obj-body" id="liveobjbody' + i + '" style="display:none;">';
+    html += '<div class="la-section"><span class="la-sec-lbl">Diagnostic Question First</span><div class="la-sec-text">' + o.diag + '</div></div>';
+    html += '<div class="la-section"><span class="la-sec-lbl">What This Usually Means</span><div class="la-sec-text">' + o.real + '</div></div>';
+    html += '<div style="display:flex;gap:8px;margin:14px 0 8px;"><button class="rtab active" onclick="switchLivTab(event,\'lo' + i + '\',\'best\')">Best Response</button><button class="rtab" onclick="switchLivTab(event,\'lo' + i + '\',\'soft\')">Softer</button><button class="rtab" onclick="switchLivTab(event,\'lo' + i + '\',\'strong\')">Stronger</button></div>';
     html += '<div id="lo' + i + '-best" class="rpanel active sbox">' + o.best + '</div>';
     html += '<div id="lo' + i + '-soft" class="rpanel sbox">' + o.soft + '</div>';
     html += '<div id="lo' + i + '-strong" class="rpanel sbox">' + o.strong + '</div>';
-    html += '<div class="ibox ibox-bridge u-mt10"><span class="sbox-lbl">Bridge Line</span><br>' + o.bridge + '</div>';
-    html += '<div class="ibox ibox-bridge" style="margin-top:8px;border-color:rgba(212,96,122,0.2);background:rgba(212,96,122,0.05);"><span class="sbox-lbl" style="color:var(--charcoal);">Close Line</span><br>' + o.close + '</div>';
+    html += '<div class="la-section" style="margin-top:12px;"><span class="la-sec-lbl">Bridge Line</span><div class="la-sec-text">' + o.bridge + '</div></div>';
+    html += '<div class="la-section la-section-close"><span class="la-sec-lbl">Close Line</span><div class="la-sec-text">' + o.close + '</div></div>';
     html += '</div></div>';
   }
-  html += '</div></div>';
-  html += '<div class="live-grid">';
-  html +=
-    '<div class="live-card" onclick="showPage(\'closes\')"><div class="live-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg></div><div class="live-card-title">Closing Lines</div><div class="live-card-desc">Assumptive, soft, direct, urgency closes</div></div>';
-  html +=
-    '<div class="live-card" onclick="showPage(\'recovery\')"><div class="live-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg></div><div class="live-card-title">Regain Control</div><div class="live-card-desc">Recovery scripts for any situation</div></div>';
-  html +=
-    '<div class="live-card" onclick="showPage(\'benefits\')"><div class="live-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l4-4h12l4 4-10 13L2 7z"/><path d="M2 7h20"/></svg></div><div class="live-card-title">Benefit Explainer</div><div class="live-card-desc">Plain-English for any benefit question</div></div>';
-  html +=
-    '<div class="live-card" onclick="showPage(\'plans\')"><div class="live-card-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/></svg></div><div class="live-card-title">Plan Vault</div><div class="live-card-desc">Framing, fit, and compliance for every plan</div></div>';
   html += '</div>';
   var _page_live = document.getElementById('page-live');
   if (_page_live) _page_live.innerHTML = html;

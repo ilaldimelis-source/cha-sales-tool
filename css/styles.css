@@ -1228,6 +1228,101 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
 }
 .sec-label::after { content: none; }
 
+/* ── LIVE ASSIST PAGE ── */
+.la-nav-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.la-nav-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 90px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 2px solid #C8CEDD;
+  border-radius: var(--r-card);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.la-nav-card:hover {
+  border-color: #5B8DEF;
+  background: #EEF3FF;
+}
+.la-nav-inner { flex: 1; min-width: 0; }
+.la-nav-title {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+.la-nav-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.la-section-label {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8A92A0;
+  margin: 20px 0 12px;
+}
+.la-obj-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.la-obj-card { border: 2px solid #C8CEDD; }
+.la-obj-card:hover { border-color: #5B8DEF; }
+.la-obj-hint {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.la-obj-body {
+  padding: 16px 20px;
+  border-top: 2px solid #C8CEDD;
+}
+.la-section {
+  border-left: 3px solid #C8CEDD;
+  padding: 10px 0 10px 14px;
+  margin-bottom: 12px;
+  background: none;
+  border-radius: 0;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+}
+.la-section-close {
+  border-left-color: rgba(212,96,122,0.4);
+}
+.la-sec-lbl {
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 4px;
+}
+.la-sec-text {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.65;
+}
+
 /* ── POLICY DOCS GRID ── */
 #page-policydocs [style*="grid-template-columns"] > div {
   border: 2px solid #1A1C23 !important;
