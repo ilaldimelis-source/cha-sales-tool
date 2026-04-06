@@ -86,11 +86,11 @@ function renderLive() {
     html += '<div class="xcard-hd" onclick="toggleLiveObj(' + i + ')">';
     html += '<div class="xcard-hd-l"><div class="xcard-label">&ldquo;' + o.obj + '&rdquo;</div>';
     html += '<div class="la-obj-hint">' + o.cat + ' &middot; Tap for scripts + bridge</div></div>';
-    html += '<span class="xcard-chev" id="liveobjchev' + i + '">▼</span></div>';
+    html += '<span class="xcard-chev" id="liveobjchev' + i + '" aria-hidden="true">▼</span></div>';
     html += '<div class="xcard-body la-obj-body" id="liveobjbody' + i + '" style="display:none;">';
     html += '<div class="la-section"><span class="la-sec-lbl">Diagnostic Question First</span><div class="la-sec-text">' + o.diag + '</div></div>';
     html += '<div class="la-section"><span class="la-sec-lbl">What This Usually Means</span><div class="la-sec-text">' + o.real + '</div></div>';
-    html += '<div style="display:flex;gap:8px;margin:14px 0 8px;"><button class="rtab active" onclick="switchLivTab(event,\'lo' + i + '\',\'best\')">Best Response</button><button class="rtab" onclick="switchLivTab(event,\'lo' + i + '\',\'soft\')">Softer</button><button class="rtab" onclick="switchLivTab(event,\'lo' + i + '\',\'strong\')">Stronger</button></div>';
+    html += '<div style="display:flex;gap:8px;margin:14px 0 8px;"><button class="rtab active" onclick="switchTab(event,\'lo' + i + '\',\'best\')">Best Response</button><button class="rtab" onclick="switchTab(event,\'lo' + i + '\',\'soft\')">Softer</button><button class="rtab" onclick="switchTab(event,\'lo' + i + '\',\'strong\')">Stronger</button></div>';
     html += '<div id="lo' + i + '-best" class="rpanel active sbox">' + o.best + '</div>';
     html += '<div id="lo' + i + '-soft" class="rpanel sbox">' + o.soft + '</div>';
     html += '<div id="lo' + i + '-strong" class="rpanel sbox">' + o.strong + '</div>';
@@ -117,19 +117,6 @@ function toggleLiveObj(i) {
   }
 }
 
-function openRecoveryFromLive(idx) {
-  showPage('recovery');
-  setTimeout(function () {
-    var body = document.getElementById('recbody' + idx);
-    var chev = document.getElementById('rechev' + idx);
-    if (body) {
-      body.style.display = 'block';
-      if (chev) chev.style.transform = 'rotate(180deg)';
-      var el = document.getElementById('rec' + idx);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, 200);
-}
 
 function showLiveObj(i) {
   var o = OBJECTIONS[i];
@@ -152,11 +139,11 @@ function showLiveObj(i) {
     o.real +
     '</div>';
   html +=
-    '<div style="display:flex;gap:8px;margin:12px 0;"><button class="rtab active" onclick="switchLivTab(event,\'lr' +
+    '<div style="display:flex;gap:8px;margin:12px 0;"><button class="rtab active" onclick="switchTab(event,\'lr' +
     i +
-    '\',\'best\')">Best Response</button><button class="rtab" onclick="switchLivTab(event,\'lr' +
+    '\',\'best\')">Best Response</button><button class="rtab" onclick="switchTab(event,\'lr' +
     i +
-    '\',\'soft\')">Softer</button><button class="rtab" onclick="switchLivTab(event,\'lr' +
+    '\',\'soft\')">Softer</button><button class="rtab" onclick="switchTab(event,\'lr' +
     i +
     "','strong')\">Stronger</button></div>";
   html +=
@@ -181,9 +168,6 @@ function showLiveObj(i) {
   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-function switchLivTab(e, prefix, tab) {
-  switchTab(e, prefix, tab);
-}
 
 // ══════════════════════════════════════════════════════
 // RENDER: RECOVERY
@@ -206,7 +190,7 @@ function renderRecovery() {
       r.situation +
       '</div></div>';
     html +=
-      '<span style="color:var(--txt-muted);font-size:11px;">▼</span></div>';
+      '<span style="color:var(--txt-muted);font-size:11px;" aria-hidden="true">▼</span></div>';
 
     // ── BODY ──
     html +=
@@ -254,15 +238,15 @@ function renderRecovery() {
     html += '<div class="slbl u-mb8">Full Script</div>';
     html += '<div style="display:flex;gap:6px;margin-bottom:8px;">';
     html +=
-      '<button class="rtab active" onclick="switchRecTab(event,\'rec' +
+      '<button class="rtab active" onclick="switchTab(event,\'rec' +
       i +
       "','script')\">Best</button>";
     html +=
-      '<button class="rtab" onclick="switchRecTab(event,\'rec' +
+      '<button class="rtab" onclick="switchTab(event,\'rec' +
       i +
       "','soft')\">Softer</button>";
     html +=
-      '<button class="rtab" onclick="switchRecTab(event,\'rec' +
+      '<button class="rtab" onclick="switchTab(event,\'rec' +
       i +
       "','strong')\">Stronger</button>";
     html += '</div>';
@@ -338,9 +322,6 @@ function renderRecovery() {
   if (_page_recovery) _page_recovery.innerHTML = html;
 }
 
-function switchRecTab(e, prefix, tab) {
-  switchTab(e, prefix, tab);
-}
 
 function toggleRec(i) {
   toggleCard('rec' + i, 'rec-body');
@@ -353,7 +334,7 @@ function renderQaRebuttals() {
   html += '<div style="display:flex;flex-direction:column;gap:12px;">';
   QA_REBUTTALS.forEach(function (item) {
     html +=
-      '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;padding:18px 22px;box-shadow:var(--shadow-card)">';
+      '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:20px;padding:18px 22px;box-shadow:var(--shadow-card)">';
     html +=
       '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">';
     html +=

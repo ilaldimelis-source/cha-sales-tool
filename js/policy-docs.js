@@ -2076,9 +2076,150 @@ function policyDocFilterChanged() {
   });
 }
 
+function _pdBadge(grp) {
+  var bg = grp === 'MEC' ? 'rgba(91,141,239,0.10)' : grp === 'STM' ? 'rgba(245,158,11,0.10)' : 'rgba(239,68,68,0.08)';
+  var col = grp === 'MEC' ? '#5B8DEF' : grp === 'STM' ? '#d97706' : '#dc2626';
+  return '<span style="display:inline-block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:' + bg + ';color:' + col + ';">' + grp + '</span>';
+}
+
+function _pdGrpColor(grp) {
+  return grp === 'MEC' ? '#5B8DEF' : grp === 'STM' ? '#d97706' : '#dc2626';
+}
+
+function _pdSectionHead(label, color, collapsed) {
+  var chevDir = collapsed ? '' : 'transform:rotate(180deg);';
+  return '<div onclick="pdToggleSection(this)" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:10px 0;border-bottom:1px solid #E5E7EB;margin-bottom:8px;">' +
+    '<span style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:' + color + ';text-transform:uppercase;letter-spacing:.06em;">' + label + '</span>' +
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transition:transform 0.2s;' + chevDir + '"><polyline points="6 9 12 15 18 9"/></svg></div>';
+}
+
+function pdToggleSection(header) {
+  var body = header.nextElementSibling;
+  var chev = header.querySelector('svg');
+  if (!body) return;
+  var hidden = body.style.display === 'none';
+  body.style.display = hidden ? '' : 'none';
+  if (chev) chev.style.transform = hidden ? 'rotate(180deg)' : '';
+}
+
+function _pdExpandedDetail(plan) {
+  var gc = _pdGrpColor(plan.group);
+  var html = '<div id="pd-detail-' + plan.id + '" style="background:#FFFFFF;border:2px solid ' + gc + ';border-radius:16px;margin-bottom:16px;overflow:hidden;animation:riseUp 0.18s ease both;">';
+
+  // ── Header bar ──
+  html += '<div style="padding:16px 20px;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;gap:12px;">';
+  html += '<div style="flex:1;min-width:0;">';
+  html += '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">' + _pdBadge(plan.group);
+  html += '<span style="font-family:var(--font-ui);font-size:17px;font-weight:700;color:var(--text-primary);">' + plan.name + '</span></div>';
+  html += '<div style="font-size:13px;color:var(--text-secondary);line-height:1.4;">' + plan.network + ' &middot; ' + plan.carrier + '</div>';
+  if (plan.assoc) html += '<div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' + plan.assoc + '</div>';
+  html += '</div>';
+  html += '<button onclick="policyDocToggle(\'' + plan.id + '\')" style="background:none;border:1px solid #E5E7EB;border-radius:8px;padding:6px;cursor:pointer;color:var(--text-secondary);flex-shrink:0;" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
+  html += '</div>';
+
+  // ── Content body ──
+  html += '<div style="padding:16px 20px;">';
+
+  // Quick Summary
+  if (plan.planNotes) {
+    html += '<div style="background:#F8F9FE;border-left:3px solid ' + gc + ';border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:16px;font-size:14px;color:var(--text-secondary);line-height:1.55;">' + plan.planNotes + '</div>';
+  }
+
+  // Waiting Periods + Pre-Existing — always prominent
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">';
+  html += '<div style="background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.2);border-radius:12px;padding:12px 14px;">';
+  html += '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:#15803D;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Waiting Periods</div>';
+  plan.waitingPeriods.forEach(function(w) { html += '<div style="font-size:14px;color:var(--text-primary);margin-bottom:3px;line-height:1.5;">' + w + '</div>'; });
+  html += '</div>';
+  html += '<div style="background:rgba(239,68,68,0.04);border:1.5px solid rgba(239,68,68,0.18);border-radius:12px;padding:12px 14px;">';
+  html += '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:#B91C1C;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Pre-Existing</div>';
+  html += '<div style="font-size:14px;color:var(--text-primary);line-height:1.5;">' + plan.preEx + '</div>';
+  html += '</div></div>';
+
+  // Benefits — grouped by category, separated into logical sections
+  var benefitCats = { coverage: [], rx: [], preventive: [], other: [] };
+  plan.benefits.forEach(function(bcat) {
+    var cl = bcat.category.toLowerCase();
+    if (cl.indexOf('prescription') !== -1 || cl.indexOf('rx') !== -1) benefitCats.rx.push(bcat);
+    else if (cl.indexOf('preventive') !== -1 || cl.indexOf('mec') !== -1) benefitCats.preventive.push(bcat);
+    else if (cl.indexOf('doctor') !== -1 || cl.indexOf('hospital') !== -1 || cl.indexOf('surgery') !== -1 || cl.indexOf('telemedicine') !== -1 || cl.indexOf('telehealth') !== -1 || cl.indexOf('emergency') !== -1 || cl.indexOf('ambulance') !== -1 || cl.indexOf('urgent') !== -1) benefitCats.coverage.push(bcat);
+    else benefitCats.other.push(bcat);
+  });
+
+  // Coverage section
+  if (benefitCats.coverage.length) {
+    html += _pdSectionHead('Benefits', '#5B8DEF', false);
+    html += '<div style="margin-bottom:16px;">';
+    benefitCats.coverage.forEach(function(bcat) {
+      html += '<div style="margin-bottom:10px;">';
+      html += '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' + bcat.category + '</div>';
+      bcat.items.forEach(function(item) {
+        html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:2px;line-height:1.55;">&#8226; ' + item + '</div>';
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Prescriptions / Rx
+  if (benefitCats.rx.length) {
+    html += _pdSectionHead('Prescriptions / Rx', '#7C3AED', false);
+    html += '<div style="margin-bottom:16px;">';
+    benefitCats.rx.forEach(function(bcat) {
+      bcat.items.forEach(function(item) {
+        html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:2px;line-height:1.55;">&#8226; ' + item + '</div>';
+      });
+    });
+    html += '</div>';
+  }
+
+  // Preventive / MEC
+  if (benefitCats.preventive.length) {
+    html += _pdSectionHead('Preventive / MEC', '#15803D', false);
+    html += '<div style="margin-bottom:16px;">';
+    benefitCats.preventive.forEach(function(bcat) {
+      bcat.items.forEach(function(item) {
+        html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:2px;line-height:1.55;">&#8226; ' + item + '</div>';
+      });
+    });
+    html += '</div>';
+  }
+
+  // Other benefit categories (Peer Support, Concierge, etc.)
+  if (benefitCats.other.length) {
+    html += _pdSectionHead('Other Benefits', '#6B7280', false);
+    html += '<div style="margin-bottom:16px;">';
+    benefitCats.other.forEach(function(bcat) {
+      html += '<div style="margin-bottom:8px;">';
+      html += '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' + bcat.category + '</div>';
+      bcat.items.forEach(function(item) {
+        html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:2px;line-height:1.55;">&#8226; ' + item + '</div>';
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Exclusions — collapsed by default
+  if (plan.limitations.length) {
+    html += _pdSectionHead('Exclusions (' + plan.limitations.length + ')', '#B91C1C', true);
+    html += '<div style="margin-bottom:16px;display:none;">';
+    plan.limitations.forEach(function(lim) {
+      html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:3px;line-height:1.55;"><span style="color:#DC2626;font-weight:600;">&#10005;</span> ' + lim + '</div>';
+    });
+    html += '</div>';
+  }
+
+  // Source
+  html += '<div style="padding-top:10px;border-top:1px solid #E5E7EB;font-size:12px;color:var(--text-muted);">Source: ' + plan.source + '</div>';
+
+  html += '</div>'; // close content body
+  html += '</div>'; // close detail card
+  return html;
+}
+
 function renderPolicyResults() {
   var html = '';
-  // Filter and search plans
   var filtered = POLICY_DOCS.filter(function (p) {
     var groupOk = policyDocFilter === 'All' || p.group === policyDocFilter;
     if (!groupOk) return false;
@@ -2086,27 +2227,10 @@ function renderPolicyResults() {
     var q = policyDocSearch.toLowerCase();
     var expandedTerms = expandSearchSynonyms(q);
     var searchable = (
-      p.name +
-      ' ' +
-      p.type +
-      ' ' +
-      p.carrier +
-      ' ' +
-      p.network +
-      ' ' +
-      p.planNotes +
-      ' ' +
-      p.limitations.join(' ') +
-      ' ' +
-      p.benefits
-        .map(function (b) {
-          return b.category + ' ' + b.items.join(' ');
-        })
-        .join(' ') +
-      ' ' +
-      (p.preEx || '') +
-      ' ' +
-      (p.waitingPeriods || []).join(' ')
+      p.name + ' ' + p.type + ' ' + p.carrier + ' ' + p.network + ' ' + p.planNotes + ' ' +
+      p.limitations.join(' ') + ' ' +
+      p.benefits.map(function (b) { return b.category + ' ' + b.items.join(' '); }).join(' ') + ' ' +
+      (p.preEx || '') + ' ' + (p.waitingPeriods || []).join(' ')
     ).toLowerCase();
     for (var t = 0; t < expandedTerms.length; t++) {
       if (brTermMatch(searchable, expandedTerms[t])) return true;
@@ -2115,97 +2239,49 @@ function renderPolicyResults() {
   });
 
   if (!filtered.length) {
-    html +=
-      '<div style="text-align:center;padding:40px;color:var(--txt-muted);font-size:.95rem;">No plans match your search.</div>';
-    return html;
+    return '<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:14px;">No plans match your search.</div>';
   }
 
-  // Group by type
   var groups = [
-    { key: 'MEC', label: 'MEC', color: '#5175F1' },
-    { key: 'STM', label: 'STM', color: '#F59E0B' },
-    { key: 'Limited', label: 'Limited', color: '#DC2626' }
+    { key: 'MEC', label: 'MEC Plans', color: '#5B8DEF' },
+    { key: 'STM', label: 'Short-Term Medical', color: '#d97706' },
+    { key: 'Limited', label: 'Limited Benefit', color: '#dc2626' }
   ];
+
   groups.forEach(function (grp) {
-    var plans = filtered.filter(function (p) {
-      return p.group === grp.key;
-    });
+    var plans = filtered.filter(function (p) { return p.group === grp.key; });
     if (!plans.length) return;
 
     // Group header
-    html +=
-      '<div style="margin:16px 0 8px;font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.08em;">' +
-      grp.label +
-      ' <span style="font-weight:400;">(' +
-      plans.length +
-      ')</span></div>';
+    html += '<div style="display:flex;align-items:center;gap:10px;margin:18px 0 10px;">';
+    html += '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:' + grp.color + ';text-transform:uppercase;letter-spacing:.06em;">' + grp.label + '</div>';
+    html += '<div style="flex:1;height:1px;background:#E5E7EB;"></div>';
+    html += '<span style="font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--text-muted);">' + plans.length + '</span></div>';
 
-    // Horizontal card grid
-    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px;">';
+    // Card grid
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:6px;">';
     plans.forEach(function (plan) {
       var isOpen = policyDocOpen === plan.id;
+      var borderColor = isOpen ? grp.color : '#C8CEDD';
+      var bgColor = isOpen ? (grp.key === 'MEC' ? 'rgba(91,141,239,0.04)' : grp.key === 'STM' ? 'rgba(245,158,11,0.04)' : 'rgba(239,68,68,0.03)') : '#FFFFFF';
 
-      html +=
-        '<div id="pd-' +
-        plan.id +
-        '" style="background:#FFFFFF;border:2px solid ' +
-        (isOpen ? grp.color : '#C8CEDD') +
-        ';border-radius:14px;overflow:hidden;cursor:pointer;" onclick="policyDocToggle(\'' +
-        plan.id +
-        '\')">';
-
-      // Card face — plan name, type badge, network, carrier, chevron
-      html += '<div style="padding:16px 18px;display:flex;align-items:flex-start;gap:10px;">';
-      html += '<div style="flex:1;">';
-      html +=
-        '<span style="display:inline-block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:' +
-        (grp.key === 'MEC' ? 'rgba(91,141,239,0.10);color:#5B8DEF' : grp.key === 'STM' ? 'rgba(245,158,11,0.10);color:#d97706' : 'rgba(239,68,68,0.08);color:#dc2626') +
-        ';margin-bottom:8px;">' + grp.key + '</span>';
-      html +=
-        '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:4px;line-height:1.3;">' +
-        plan.name +
-        '</div>';
-      html +=
-        '<div style="font-size:13px;color:var(--text-secondary);">' +
-        plan.network +
-        ' &middot; ' +
-        plan.carrier +
-        '</div>';
+      html += '<div id="pd-' + plan.id + '" style="background:' + bgColor + ';border:2px solid ' + borderColor + ';border-radius:14px;cursor:pointer;transition:border-color 0.15s, background 0.15s;" onclick="policyDocToggle(\'' + plan.id + '\')">';
+      html += '<div style="padding:14px 16px;display:flex;align-items:flex-start;gap:10px;">';
+      html += '<div style="flex:1;min-width:0;">';
+      html += '<div style="margin-bottom:6px;">' + _pdBadge(plan.group) + '</div>';
+      html += '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);line-height:1.3;margin-bottom:3px;">' + plan.name + '</div>';
+      html += '<div style="font-size:12px;color:var(--text-secondary);line-height:1.4;">' + plan.network + ' &middot; ' + plan.carrier + '</div>';
       html += '</div>';
-      html += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + (isOpen ? grp.color : '#999') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:4px;transition:transform 0.2s;' + (isOpen ? 'transform:rotate(180deg);' : '') + '"><polyline points="6 9 12 15 18 9"/></svg>';
-      html += '</div>';
-
-      html += '</div>'; // close card
+      html += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' + (isOpen ? grp.color : '#9CA3AF') + '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:6px;transition:transform 0.2s;' + (isOpen ? 'transform:rotate(180deg);' : '') + '"><polyline points="6 9 12 15 18 9"/></svg>';
+      html += '</div></div>';
     });
-    html += '</div>'; // close grid
+    html += '</div>';
 
-    // Render expanded detail below grid for the open plan
+    // Expanded detail for open plan in this group
     if (policyDocOpen) {
       var openPlan = plans.filter(function(p) { return p.id === policyDocOpen; })[0];
       if (openPlan) {
-        html += '<div id="pd-detail-' + openPlan.id + '" style="background:#FFFFFF;border:2px solid ' + grp.color + ';border-radius:14px;padding:18px 20px;margin-bottom:16px;">';
-        html += '<div style="font-family:var(--font-ui);font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:12px;">' + openPlan.name + '</div>';
-
-        html += '<div style="border-left:3px solid #5B8DEF;padding:8px 12px;margin-bottom:14px;font-size:14px;color:var(--text-secondary);line-height:1.55;">' + openPlan.planNotes + '</div>';
-
-        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;font-size:14px;line-height:1.5;">';
-        html += '<div><div style="font-size:13px;font-weight:700;color:#2E7D52;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Waiting Periods</div>';
-        openPlan.waitingPeriods.forEach(function (w) { html += '<div style="color:var(--text-secondary);margin-bottom:2px;">' + w + '</div>'; });
-        html += '</div><div><div style="font-size:13px;font-weight:700;color:#DC2626;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Pre-Existing</div>';
-        html += '<div style="color:var(--text-secondary);">' + openPlan.preEx + '</div></div></div>';
-
-        html += '<div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Benefits</div>';
-        openPlan.benefits.forEach(function (bcat) {
-          html += '<div style="margin-bottom:10px;"><div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' + bcat.category + '</div>';
-          bcat.items.forEach(function (item) { html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;">&#8226; ' + item + '</div>'; });
-          html += '</div>';
-        });
-
-        html += '<div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin:12px 0 8px;">Exclusions</div>';
-        openPlan.limitations.forEach(function (lim) { html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;"><span style="color:#DC2626;">&#10005;</span> ' + lim + '</div>'; });
-
-        html += '<div style="margin-top:10px;font-size:13px;color:var(--text-muted);">Source: ' + openPlan.source + '</div>';
-        html += '</div>';
+        html += _pdExpandedDetail(openPlan);
       }
     }
   });
@@ -2219,7 +2295,7 @@ function policyDocToggle(id) {
   if (container) container.innerHTML = renderPolicyResults();
   if (policyDocOpen) {
     setTimeout(function () {
-      var el = document.getElementById('pd-' + id);
+      var el = document.getElementById('pd-detail-' + id);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
   }

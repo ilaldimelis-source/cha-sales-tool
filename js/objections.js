@@ -239,15 +239,15 @@ function renderObjList() {
       '</div>';
     html += '<div style="display:flex;gap:8px;margin:10px 0;">';
     html +=
-      '<button class="rtab active" onclick="switchObjTab(event,\'ox' +
+      '<button class="rtab active" onclick="switchTab(event,\'ox' +
       gi +
       "','best')\">Best</button>";
     html +=
-      '<button class="rtab" onclick="switchObjTab(event,\'ox' +
+      '<button class="rtab" onclick="switchTab(event,\'ox' +
       gi +
       "','soft')\">Softer</button>";
     html +=
-      '<button class="rtab" onclick="switchObjTab(event,\'ox' +
+      '<button class="rtab" onclick="switchTab(event,\'ox' +
       gi +
       "','strong')\">Stronger</button></div>";
     html +=
@@ -278,6 +278,3 @@ function renderObjList() {
   if (_objList) _objList.innerHTML = html;
 }
 
-function switchObjTab(e, prefix, tab) {
-  switchTab(e, prefix, tab);
-}

@@ -970,19 +970,19 @@ var PLAN_GROUPS = [
   {
     key: 'MEC',
     label: 'MEC Plans',
-    color: '#29A26A',
+    color: '#5B8DEF',
     desc: 'Minimum Essential Coverage — preventive-first base plans'
   },
   {
     key: 'STM',
     label: 'Short-Term Medical',
-    color: '#7a5f00',
+    color: '#d97706',
     desc: 'Temporary bridge coverage — major-medical style'
   },
   {
     key: 'Limited',
     label: 'Limited Benefit Plans',
-    color: 'var(--charcoal2)',
+    color: '#dc2626',
     desc: 'Fixed indemnity plans — pay set amounts toward services'
   }
 ];

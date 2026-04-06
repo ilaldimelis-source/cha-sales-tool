@@ -7,7 +7,7 @@ function renderPsychprofile() {
     '<div class="pd">Answer 5 quick questions about how your prospect is talking. The AI identifies their personality style and tells you exactly how to sell to them.</div></div>';
 
   html +=
-    '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;padding:24px;margin-bottom:16px;">';
+    '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:20px;padding:24px;margin-bottom:16px;">';
   html +=
     '<div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--charcoal3);margin-bottom:16px;">What signals are you picking up on this call?</div>';
 
@@ -386,12 +386,12 @@ function renderComplianceai() {
     '<div class="pd">Type or paste any phrase you are considering saying. The AI flags it instantly and gives you the compliant version.</div></div>';
 
   html +=
-    '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;padding:20px;margin-bottom:20px;">';
+    '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:20px;padding:20px;margin-bottom:20px;">';
   html +=
     '<div style="font-weight:700;font-size:13px;color:var(--charcoal3);margin-bottom:10px;">Check a phrase before you say it:</div>';
   html += '<div style="display:flex;gap:8px;">';
   html +=
-    '<input id="complianceInput" type="text" aria-label="Type what you are about to say" placeholder="Type what you are about to say..." style="flex:1;background:var(--milk);border:1px solid #E8EBF5;border-radius:12px;padding:10px 16px;font-size:13px;color:var(--charcoal3);" onkeydown="if(event.key===\'Enter\')checkCompliance()">';
+    '<input id="complianceInput" type="text" aria-label="Type what you are about to say" placeholder="Type what you are about to say..." style="flex:1;background:var(--milk);border:2px solid #C8CEDD;border-radius:20px;padding:10px 16px;font-size:13px;color:var(--charcoal3);" onkeydown="if(event.key===\'Enter\')checkCompliance()">';
   html +=
     '<button onclick="checkCompliance()" style="background:rgba(212,96,122,0.13);color:var(--charcoal3);border:1px solid rgba(212,96,122,0.3);border-radius:12px;padding:10px 20px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;">Check It</button>';
   html += '</div>';
@@ -541,11 +541,11 @@ function renderCoachingai() {
     '<div class="pd">Paste in something you said on a call. The AI identifies confidence leaks, filler words, and weak language — then rewrites it stronger.</div></div>';
 
   html +=
-    '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;padding:20px;margin-bottom:16px;">';
+    '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:20px;padding:20px;margin-bottom:16px;">';
   html +=
     '<div style="font-weight:700;font-size:13px;color:var(--charcoal3);margin-bottom:8px;">Paste what you said on the call:</div>';
   html +=
-    '<textarea id="coachInput" placeholder="Example: Maybe this could work for you, I think it might help..." style="width:100%;height:80px;background:var(--milk);border:1px solid #E8EBF5;border-radius:12px;padding:12px;font-size:13px;color:var(--charcoal3);resize:none;box-sizing:border-box;"></textarea>';
+    '<textarea id="coachInput" placeholder="Example: Maybe this could work for you, I think it might help..." style="width:100%;height:80px;background:var(--milk);border:2px solid #C8CEDD;border-radius:20px;padding:12px;font-size:13px;color:var(--charcoal3);resize:none;box-sizing:border-box;"></textarea>';
   html +=
     '<button onclick="analyzeCall()" style="width:100%;background:rgba(212,96,122,0.13);color:var(--charcoal3);border:1px solid rgba(212,96,122,0.3);border-radius:12px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:10px;">Analyze My Language →</button>';
   html += '</div>';
@@ -609,7 +609,7 @@ function renderCoachingai() {
 
   leaks.forEach(function (l) {
     html +=
-      '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;margin-bottom:10px;overflow:hidden;">';
+      '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:20px;margin-bottom:10px;overflow:hidden;">';
     html +=
       '<div style="padding:12px 16px;background:rgba(200,60,80,0.04);border-bottom:1px solid rgba(200,60,80,0.1);">';
     html +=
@@ -745,7 +745,7 @@ function analyzeCall() {
       '<div style="font-size:13px;color:#3A7A6A;margin-top:4px;">Your language is strong and direct. Keep going.</div></div></div>';
   } else {
     html +=
-      '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;padding:20px;margin-bottom:16px;">';
+      '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:20px;padding:20px;margin-bottom:16px;">';
     html +=
       '<div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--charcoal3);margin-bottom:4px;">' +
       found.length +
