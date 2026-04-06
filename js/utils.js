@@ -650,8 +650,8 @@ var BR_ABBREVS = [
 function brTermMatch(text, term) {
   if (!term || term.length < 2) return false;
   var lower = text.toLowerCase();
-  // For short terms or known abbreviations, require word boundaries
-  if (term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) {
+  // For very short terms (2 chars) or known abbreviations, require word boundaries
+  if (term.length <= 2 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) {
     var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     var re = new RegExp('\\b' + escaped + '\\b', 'i');
     return re.test(text);

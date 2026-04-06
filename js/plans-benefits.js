@@ -993,6 +993,24 @@ function renderPlans() {
     '<div class="ph"><div class="pt">Plan <span>Vault</span></div><div class="pd">Every plan, organized by type. Tap a card for full details, fit guide, sales framing, and compliance.</div></div>';
   html +=
     '<div class="comp-banner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg> <strong>Core compliance — say every time:</strong> Disclose plan type, pre-existing exclusion, waiting periods, fixed/limited benefit amounts, and when a plan is NOT ACA major medical.</div>';
+  // Benefits highlight cards
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:20px;">';
+  var highlights = [
+    {icon:'🏥', label:'Doctor Visits', desc:'Fixed cash benefit per visit'},
+    {icon:'💊', label:'Prescriptions', desc:'Rx discount or fixed benefit'},
+    {icon:'🚑', label:'Emergency', desc:'ER benefit up to plan max'},
+    {icon:'🩺', label:'Preventive', desc:'Wellness visits covered'},
+    {icon:'🦷', label:'Dental/Vision', desc:'Add-on available'},
+    {icon:'⚕️', label:'Telehealth', desc:'$0 virtual visits on most plans'}
+  ];
+  highlights.forEach(function(h) {
+    html += '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:14px;padding:14px 16px;text-align:center;">';
+    html += '<div style="font-size:24px;margin-bottom:6px;">' + h.icon + '</div>';
+    html += '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:2px;">' + h.label + '</div>';
+    html += '<div style="font-family:var(--font-body);font-size:12px;color:var(--text-secondary);">' + h.desc + '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
   html += '<div class="stabs" style="margin-bottom:20px;">';
   ['All', 'MEC', 'STM', 'Limited'].forEach(function (g) {
     html +=

@@ -69,16 +69,24 @@ function renderLive() {
     '<div class="ph"><div class="pt">Live <span>Assist</span></div><div class="pd">Your mid-call tactical panel. Search anything or tap a quick shortcut below.</div></div>';
   html += '<div id="liveResult" class="lrp"></div>';
   html +=
-    '<div class="quick-panel"><div class="qp-title">Common Objections — Quick Launch</div><div class="qp-items">';
+    '<div class="quick-panel"><div class="qp-title">Common Objections — Quick Launch</div><div style="display:flex;flex-direction:column;gap:10px;">';
   for (var i = 0; i < Math.min(6, OBJECTIONS.length); i++) {
-    html +=
-      '<div class="qp-item" onclick="showLiveObj(' +
-      i +
-      ')"><div class="qp-item-q">"' +
-      OBJECTIONS[i].obj +
-      '"</div><div class="qp-item-hint">' +
-      OBJECTIONS[i].cat +
-      ' · Tap for scripts + bridge</div></div>';
+    var o = OBJECTIONS[i];
+    html += '<div class="xcard" id="liveobj' + i + '" style="border:2px solid #C8CEDD;">';
+    html += '<div class="xcard-hd" onclick="toggleLiveObj(' + i + ')" style="padding:16px 18px;cursor:pointer;">';
+    html += '<div class="xcard-hd-l"><div class="xcard-label" style="font-size:15px;">&ldquo;' + o.obj + '&rdquo;</div>';
+    html += '<div class="xcard-sub" style="font-size:13px;">' + o.cat + ' &middot; Tap for scripts + bridge</div></div>';
+    html += '<span class="xcard-chev" id="liveobjchev' + i + '">▼</span></div>';
+    html += '<div class="xcard-body" id="liveobjbody' + i + '" style="display:none;padding:16px 18px;border-top:2px solid #C8CEDD;">';
+    html += '<div class="ibox ibox-diag" style="margin-bottom:10px;"><span class="sbox-lbl">Diagnostic Question First</span><br>' + o.diag + '</div>';
+    html += '<div class="ibox ibox-why" style="margin-bottom:10px;"><span class="sbox-lbl">What This Usually Means</span><br>' + o.real + '</div>';
+    html += '<div style="display:flex;gap:8px;margin:12px 0;"><button class="rtab active" onclick="switchLivTab(event,\'lo' + i + '\',\'best\')">Best Response</button><button class="rtab" onclick="switchLivTab(event,\'lo' + i + '\',\'soft\')">Softer</button><button class="rtab" onclick="switchLivTab(event,\'lo' + i + '\',\'strong\')">Stronger</button></div>';
+    html += '<div id="lo' + i + '-best" class="rpanel active sbox">' + o.best + '</div>';
+    html += '<div id="lo' + i + '-soft" class="rpanel sbox">' + o.soft + '</div>';
+    html += '<div id="lo' + i + '-strong" class="rpanel sbox">' + o.strong + '</div>';
+    html += '<div class="ibox ibox-bridge u-mt10"><span class="sbox-lbl">Bridge Line</span><br>' + o.bridge + '</div>';
+    html += '<div class="ibox ibox-bridge" style="margin-top:8px;border-color:rgba(212,96,122,0.2);background:rgba(212,96,122,0.05);"><span class="sbox-lbl" style="color:var(--charcoal);">Close Line</span><br>' + o.close + '</div>';
+    html += '</div></div>';
   }
   html += '</div></div>';
   html += '<div class="live-grid">';
@@ -93,6 +101,20 @@ function renderLive() {
   html += '</div>';
   var _page_live = document.getElementById('page-live');
   if (_page_live) _page_live.innerHTML = html;
+}
+
+function toggleLiveObj(i) {
+  var body = document.getElementById('liveobjbody' + i);
+  var chev = document.getElementById('liveobjchev' + i);
+  var card = document.getElementById('liveobj' + i);
+  if (!body) return;
+  var open = body.style.display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  if (chev) chev.style.transform = open ? '' : 'rotate(180deg)';
+  if (card) {
+    if (open) { card.style.borderColor = '#C8CEDD'; }
+    else { card.style.borderColor = '#5B8DEF'; card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+  }
 }
 
 function openRecoveryFromLive(idx) {

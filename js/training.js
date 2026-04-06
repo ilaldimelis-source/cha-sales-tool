@@ -1646,6 +1646,19 @@ function renderCheatsheets() {
   });
   html += '</div>';
   html += '</div>';
+  // Plan Reference Table
+  html += '<div style="margin-top:24px;"><div class="slbl" style="margin-bottom:12px;">Plan Reference</div>';
+  html += '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid #C8CEDD;min-width:600px;">';
+  html += '<thead><tr><th style="font-size:13px;">Plan Name</th><th style="font-size:13px;">Network</th><th style="font-size:13px;">Underwriter / Admin</th><th style="font-size:13px;">Association</th></tr></thead><tbody>';
+  if (typeof PLANS !== 'undefined') {
+    PLANS.forEach(function(p) {
+      html += '<tr><td style="font-weight:700;font-size:14px;color:var(--text-primary);">' + p.name + '</td>';
+      html += '<td style="font-size:13px;">' + (p.network || '—') + '</td>';
+      html += '<td style="font-size:13px;">' + (p.admin || '—') + '</td>';
+      html += '<td style="font-size:13px;">' + (p.assoc || '—') + '</td></tr>';
+    });
+  }
+  html += '</tbody></table></div></div>';
   document.getElementById('page-cheatsheets').innerHTML = html;
 }
 

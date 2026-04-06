@@ -2132,115 +2132,79 @@ function renderPolicyResults() {
     });
     if (!plans.length) return;
 
-    // Group header — simple label + count
+    // Group header
     html +=
-      '<div style="margin:16px 0 6px;font-size:.8rem;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.08em;">' +
+      '<div style="margin:16px 0 8px;font-size:13px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.08em;">' +
       grp.label +
       ' <span style="font-weight:400;">(' +
       plans.length +
       ')</span></div>';
 
+    // Horizontal card grid
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px;">';
     plans.forEach(function (plan) {
       var isOpen = policyDocOpen === plan.id;
 
-      // Plan card — minimal border, no heavy shadow
       html +=
         '<div id="pd-' +
         plan.id +
-        '" style="background:#FFFFFF;border:1px solid ' +
-        (isOpen ? grp.color : 'var(--rule)') +
-        ';border-radius:8px;margin-bottom:6px;overflow:hidden;">';
-
-      // Header — plan name, network, carrier on one clean line
-      html +=
-        '<div onclick="policyDocToggle(\'' +
+        '" style="background:#FFFFFF;border:2px solid ' +
+        (isOpen ? grp.color : '#C8CEDD') +
+        ';border-radius:14px;overflow:hidden;cursor:pointer;" onclick="policyDocToggle(\'' +
         plan.id +
-        '\')" style="padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;">';
-      html += '<div style="flex:1;min-width:0;">';
+        '\')">';
+
+      // Card face — plan name, type badge, one-line summary
+      html += '<div style="padding:16px 18px;">';
       html +=
-        '<div style="font-size:1rem;font-weight:700;color:var(--txt-hero);">' +
+        '<span style="display:inline-block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:' +
+        (grp.key === 'MEC' ? 'rgba(91,141,239,0.10);color:#5B8DEF' : grp.key === 'STM' ? 'rgba(245,158,11,0.10);color:#d97706' : 'rgba(239,68,68,0.08);color:#dc2626') +
+        ';margin-bottom:8px;">' + grp.key + '</span>';
+      html +=
+        '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:4px;line-height:1.3;">' +
         plan.name +
         '</div>';
       html +=
-        '<div style="font-size:.82rem;color:var(--txt-muted);margin-top:2px;">' +
+        '<div style="font-size:13px;color:var(--text-secondary);">' +
         plan.network +
         ' &middot; ' +
         plan.carrier +
         '</div>';
       html += '</div>';
-      html +=
-        '<span style="color:var(--txt-muted);font-size:12px;flex-shrink:0;transform:' +
-        (isOpen ? 'rotate(180deg)' : 'rotate(0)') +
-        ';transition:transform 0.2s;">&#x25BC;</span>';
-      html += '</div>';
 
-      if (isOpen) {
-        html +=
-          '<div style="padding:0 14px 14px;border-top:1px solid var(--rule);">';
+      html += '</div>'; // close card
+    });
+    html += '</div>'; // close grid
 
-        // Agent note — simple left-border callout
-        html +=
-          '<div style="border-left:3px solid #5175F1;padding:8px 12px;margin:12px 0;font-size:.9rem;color:var(--txt-body);line-height:1.55;">' +
-          plan.planNotes +
-          '</div>';
+    // Render expanded detail below grid for the open plan
+    if (policyDocOpen) {
+      var openPlan = plans.filter(function(p) { return p.id === policyDocOpen; })[0];
+      if (openPlan) {
+        html += '<div id="pd-detail-' + openPlan.id + '" style="background:#FFFFFF;border:2px solid ' + grp.color + ';border-radius:14px;padding:18px 20px;margin-bottom:16px;">';
+        html += '<div style="font-family:var(--font-ui);font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:12px;">' + openPlan.name + '</div>';
 
-        // Waiting periods + pre-ex — simple two-column text
-        html +=
-          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;font-size:.88rem;line-height:1.5;">';
-        html += '<div>';
-        html +=
-          '<div style="font-size:.75rem;font-weight:700;color:#2E7D52;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Waiting Periods</div>';
-        plan.waitingPeriods.forEach(function (w) {
-          html +=
-            '<div style="color:var(--txt-body);margin-bottom:2px;">' +
-            w +
-            '</div>';
-        });
-        html += '</div>';
-        html += '<div>';
-        html +=
-          '<div style="font-size:.75rem;font-weight:700;color:#DC2626;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Pre-Existing</div>';
-        html += '<div style="color:var(--txt-body);">' + plan.preEx + '</div>';
-        html += '</div></div>';
+        html += '<div style="border-left:3px solid #5B8DEF;padding:8px 12px;margin-bottom:14px;font-size:14px;color:var(--text-secondary);line-height:1.55;">' + openPlan.planNotes + '</div>';
 
-        // Benefits — compact list, no card-in-card
-        html +=
-          '<div style="font-size:.75rem;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Benefits</div>';
-        plan.benefits.forEach(function (bcat) {
-          html += '<div style="margin-bottom:10px;">';
-          html +=
-            '<div style="font-size:.85rem;font-weight:700;color:var(--txt-head);margin-bottom:4px;">' +
-            bcat.category +
-            '</div>';
-          bcat.items.forEach(function (item) {
-            html +=
-              '<div style="font-size:.88rem;color:var(--txt-body);padding-left:12px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
-              item +
-              '</div>';
-          });
+        html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;font-size:14px;line-height:1.5;">';
+        html += '<div><div style="font-size:13px;font-weight:700;color:#2E7D52;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Waiting Periods</div>';
+        openPlan.waitingPeriods.forEach(function (w) { html += '<div style="color:var(--text-secondary);margin-bottom:2px;">' + w + '</div>'; });
+        html += '</div><div><div style="font-size:13px;font-weight:700;color:#DC2626;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Pre-Existing</div>';
+        html += '<div style="color:var(--text-secondary);">' + openPlan.preEx + '</div></div></div>';
+
+        html += '<div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Benefits</div>';
+        openPlan.benefits.forEach(function (bcat) {
+          html += '<div style="margin-bottom:10px;"><div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' + bcat.category + '</div>';
+          bcat.items.forEach(function (item) { html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;">&#8226; ' + item + '</div>'; });
           html += '</div>';
         });
 
-        // Limitations — simple bullet list, no red box
-        html +=
-          '<div style="font-size:.75rem;font-weight:700;color:var(--txt-muted);text-transform:uppercase;letter-spacing:.08em;margin:12px 0 8px;">Exclusions</div>';
-        plan.limitations.forEach(function (lim) {
-          html +=
-            '<div style="font-size:.88rem;color:var(--txt-body);padding-left:12px;margin-bottom:2px;line-height:1.5;"><span style="color:#DC2626;">&#10005;</span> ' +
-            lim +
-            '</div>';
-        });
+        html += '<div style="font-size:13px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.08em;margin:12px 0 8px;">Exclusions</div>';
+        openPlan.limitations.forEach(function (lim) { html += '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;"><span style="color:#DC2626;">&#10005;</span> ' + lim + '</div>'; });
 
-        // Source — one subtle line
-        html +=
-          '<div style="margin-top:10px;font-size:.78rem;color:var(--txt-muted);">Source: ' +
-          plan.source +
-          '</div>';
-
+        html += '<div style="margin-top:10px;font-size:13px;color:var(--text-muted);">Source: ' + openPlan.source + '</div>';
         html += '</div>';
       }
-      html += '</div>';
-    });
+    }
   });
 
   return html;
