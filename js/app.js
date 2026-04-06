@@ -269,9 +269,208 @@ function renderSubTabs(parentId, activeSubId) {
   container.innerHTML = html;
 }
 
+// ══════════════════════════════════════════════════════
+// STICKY PLAN CONTEXT
+// ══════════════════════════════════════════════════════
+window.activePlan = null;
+
+function setActivePlan(planId, planName, planType) {
+  window.activePlan = { id: planId, name: planName, type: (planType || '').toLowerCase() };
+  _renderPlanPill();
+}
+
+function clearActivePlan() {
+  window.activePlan = null;
+  var pill = document.getElementById('plan-pill');
+  if (pill) pill.remove();
+}
+
+function _renderPlanPill() {
+  var existing = document.getElementById('plan-pill');
+  if (existing) existing.remove();
+  if (!window.activePlan) return;
+  var p = window.activePlan;
+  var typeClass = p.type === 'mec' ? 'mec' : p.type === 'stm' ? 'stm' : 'limited';
+  var pill = document.createElement('span');
+  pill.id = 'plan-pill';
+  pill.className = 'plan-pill';
+  pill.innerHTML = '<span class="plan-pill-type ' + typeClass + '">' + escHTML(p.type.toUpperCase()) + '</span>' +
+    escHTML(p.name) +
+    '<button class="plan-pill-x" onclick="clearActivePlan()" title="Clear plan">&times;</button>';
+  var topbar = document.querySelector('.topbar');
+  var livebadge = topbar ? topbar.querySelector('.livebadge') : null;
+  if (livebadge) {
+    topbar.insertBefore(pill, livebadge);
+  } else if (topbar) {
+    topbar.appendChild(pill);
+  }
+}
+
+// ══════════════════════════════════════════════════════
+// FAVORITES SYSTEM
+// ══════════════════════════════════════════════════════
+function getFavorites() {
+  try { return JSON.parse(localStorage.getItem('cha_favorites') || '[]'); } catch(e) { return []; }
+}
+
+function isFavorite(type, id) {
+  return getFavorites().some(function(f) { return f.type === type && f.id === id; });
+}
+
+function toggleFavorite(type, id, title, preview, source) {
+  var favs = getFavorites();
+  var idx = -1;
+  for (var i = 0; i < favs.length; i++) {
+    if (favs[i].type === type && favs[i].id === id) { idx = i; break; }
+  }
+  if (idx >= 0) {
+    favs.splice(idx, 1);
+  } else {
+    favs.unshift({ type: type, id: id, title: title, preview: (preview || '').substring(0, 120), source: source || '' });
+    if (favs.length > 50) favs = favs.slice(0, 50);
+  }
+  localStorage.setItem('cha_favorites', JSON.stringify(favs));
+  // Update star state
+  document.querySelectorAll('.fav-star[data-fav-type="' + type + '"][data-fav-id="' + id + '"]').forEach(function(star) {
+    star.classList.toggle('active', isFavorite(type, id));
+  });
+}
+
+function favStarHTML(type, id, title, preview, source) {
+  var active = isFavorite(type, id) ? ' active' : '';
+  return '<button class="fav-star' + active + '" data-fav-type="' + escHTML(type) + '" data-fav-id="' + escHTML(id) + '" onclick="toggleFavorite(\'' + escHTML(type) + '\',\'' + escHTML(id) + '\',\'' + escHTML((title||'').replace(/'/g,'&#39;')) + '\',\'' + escHTML((preview||'').replace(/'/g,'&#39;').substring(0,120)) + '\',\'' + escHTML((source||'').replace(/'/g,'&#39;')) + '\')" title="Toggle favorite">' +
+    '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fav-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
+    '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fav-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
+    '</button>';
+}
+
+// ══════════════════════════════════════════════════════
+// ONBOARDING TOUR
+// ══════════════════════════════════════════════════════
+var _tourStep = 0;
+var TOUR_STEPS = [
+  {
+    target: '.sidebar',
+    title: 'Navigation Sidebar',
+    desc: 'All your tools in one place. Tap any section to jump straight to it.',
+    pos: 'right'
+  },
+  {
+    target: '.sw',
+    title: 'Smart Search',
+    desc: 'Search plans, objections, benefits, and closes instantly. Press / or Ctrl+K to open.',
+    pos: 'bottom'
+  },
+  {
+    target: '#br-toggle',
+    title: 'Benefits Chat',
+    desc: 'Mid-call AI lookup. Ask any coverage question and get instant answers from plan data.',
+    pos: 'left'
+  },
+  {
+    target: '#page-dashboard',
+    title: 'Command Center',
+    desc: 'Your home base. Quick links, cheat sheets, and keyboard shortcuts all in one view.',
+    pos: 'top'
+  }
+];
+
+function startTour() {
+  _tourStep = 0;
+  _showTourStep();
+}
+
+function _showTourStep() {
+  // Remove previous
+  var old = document.getElementById('tour-overlay');
+  if (old) old.remove();
+  var oldTip = document.getElementById('tour-tooltip');
+  if (oldTip) oldTip.remove();
+
+  if (_tourStep >= TOUR_STEPS.length) {
+    localStorage.setItem('cha_tour_done', '1');
+    return;
+  }
+
+  var step = TOUR_STEPS[_tourStep];
+  var el = document.querySelector(step.target);
+  if (!el) { _tourStep++; _showTourStep(); return; }
+
+  var rect = el.getBoundingClientRect();
+
+  // Overlay
+  var ov = document.createElement('div');
+  ov.id = 'tour-overlay';
+  ov.className = 'tour-overlay';
+  ov.onclick = function() { _endTour(); };
+  document.body.appendChild(ov);
+
+  // Spotlight
+  var spot = document.createElement('div');
+  spot.className = 'tour-spotlight';
+  spot.style.top = (rect.top - 6) + 'px';
+  spot.style.left = (rect.left - 6) + 'px';
+  spot.style.width = (rect.width + 12) + 'px';
+  spot.style.height = (rect.height + 12) + 'px';
+  ov.appendChild(spot);
+
+  // Tooltip
+  var tip = document.createElement('div');
+  tip.id = 'tour-tooltip';
+  tip.className = 'tour-tooltip';
+  var isLast = _tourStep === TOUR_STEPS.length - 1;
+  tip.innerHTML = '<div class="tour-step-count">Step ' + (_tourStep + 1) + ' of ' + TOUR_STEPS.length + '</div>' +
+    '<div class="tour-title">' + step.title + '</div>' +
+    '<div class="tour-desc">' + step.desc + '</div>' +
+    '<div class="tour-btns">' +
+    '<button class="tour-btn-skip" onclick="_endTour()">Skip</button>' +
+    '<button class="tour-btn-next" onclick="_nextTourStep()">' + (isLast ? 'Done' : 'Next') + '</button>' +
+    '</div>';
+
+  // Position tooltip
+  var top, left;
+  if (step.pos === 'right') {
+    top = rect.top;
+    left = rect.right + 16;
+  } else if (step.pos === 'bottom') {
+    top = rect.bottom + 12;
+    left = rect.left;
+  } else if (step.pos === 'left') {
+    top = rect.top;
+    left = rect.left - 336;
+  } else {
+    top = rect.bottom + 12;
+    left = rect.left;
+  }
+  // Clamp to viewport
+  if (left < 16) left = 16;
+  if (left + 320 > window.innerWidth) left = window.innerWidth - 336;
+  if (top < 16) top = 16;
+  tip.style.top = top + 'px';
+  tip.style.left = left + 'px';
+  document.body.appendChild(tip);
+}
+
+function _nextTourStep() {
+  _tourStep++;
+  _showTourStep();
+}
+
+function _endTour() {
+  localStorage.setItem('cha_tour_done', '1');
+  var ov = document.getElementById('tour-overlay');
+  if (ov) ov.remove();
+  var tip = document.getElementById('tour-tooltip');
+  if (tip) tip.remove();
+}
+
 // ── INIT ──────────────────────────────────────────────
 function initApp() {
   showPage('dashboard');
+  // Start onboarding tour for first-time users
+  if (!localStorage.getItem('cha_tour_done')) {
+    setTimeout(startTour, 600);
+  }
   // Inject floating quick-action bar
   if (!document.getElementById('fab-bar')) {
     var fab = document.createElement('div');

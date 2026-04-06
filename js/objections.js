@@ -222,7 +222,7 @@ function renderObjList() {
     html += '<div class="xcard" id="ox' + gi + '">';
     html += '<div class="xcard-hd" onclick="toggleXcard(\'ox' + gi + '\')">';
     html +=
-      '<div class="xcard-hd-l"><div class="xcard-label">"' + o.obj + '"</div>';
+      '<div class="xcard-hd-l"><div class="xcard-label" style="display:flex;align-items:center;gap:8px;">' + (typeof favStarHTML === 'function' ? favStarHTML('objection', 'obj-' + gi, o.obj, o.best, 'Objections') : '') + '"' + o.obj + '"</div>';
     html +=
       '<span style="display:inline-flex;align-items:center;font-family:var(--font-ui);font-size:.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(92,104,120,0.10);color:#5C6878;margin-top:4px;border:1px solid rgba(92,104,120,0.15);">' +
       o.cat +

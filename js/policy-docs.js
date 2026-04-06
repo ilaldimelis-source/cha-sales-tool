@@ -2294,6 +2294,11 @@ function policyDocToggle(id) {
   var container = document.getElementById('pdResultsContainer');
   if (container) container.innerHTML = renderPolicyResults();
   if (policyDocOpen) {
+    // Set sticky plan context
+    var plan = POLICY_DOCS.find(function(p) { return p.id === id; });
+    if (plan && typeof setActivePlan === 'function') {
+      setActivePlan(plan.id, plan.name, plan.group || plan.type || '');
+    }
     setTimeout(function () {
       var el = document.getElementById('pd-detail-' + id);
       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });

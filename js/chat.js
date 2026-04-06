@@ -135,6 +135,10 @@ function brRenderPlanButtons(groupFilter) {
       brActivePlan = BR_PLANS.find(function (x) {
         return x.id === p.id;
       });
+      // Sync sticky plan context
+      if (brActivePlan && typeof setActivePlan === 'function') {
+        setActivePlan(brActivePlan.id, brActivePlan.name, brActivePlan.group || '');
+      }
       document.querySelectorAll('.br-plan-btn').forEach(function (b) {
         b.classList.toggle('active', b.dataset.id === p.id);
       });

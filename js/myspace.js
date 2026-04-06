@@ -99,8 +99,26 @@ function renderNotes() {
   html += '<button class="btn btn-ghost" onclick="clearNotes()">Clear</button>';
   html +=
     '<span id="saveMsg" style="color:#29A26A;font-size:12px;opacity:0;transition:opacity 0.5s;">✓ Saved</span></div>';
+  // Favorites section
+  var favs = (typeof getFavorites === 'function') ? getFavorites() : [];
+  html += '<div style="margin-top:24px;"><div class="slbl">Favorites</div>';
+  if (favs.length === 0) {
+    html += '<div style="color:var(--warmgray3);font-size:13px;padding:12px 0;">No favorites yet. Tap the star icon on any script, objection, or plan card to save it here.</div>';
+  } else {
+    favs.forEach(function(f, idx) {
+      html += '<div class="fav-card">';
+      html += '<div class="fav-card-info">';
+      html += '<div class="fav-card-title">' + escHTML(f.title) + '</div>';
+      if (f.source) html += '<div class="fav-card-source">' + escHTML(f.source) + '</div>';
+      if (f.preview) html += '<div class="fav-card-preview">' + escHTML(f.preview) + '</div>';
+      html += '</div>';
+      html += '<button class="fav-remove" onclick="removeFavorite(' + idx + ')" title="Remove">&times;</button>';
+      html += '</div>';
+    });
+  }
+  html += '</div>';
   html +=
-    '<div style="margin-top:24px;"><div class="slbl">Saved Scripts & Favorites</div>';
+    '<div style="margin-top:24px;"><div class="slbl">Saved Scripts</div>';
   html += '<div style="display:flex;gap:8px;margin:10px 0;">';
   html +=
     '<textarea id="scriptInput" style="flex:1;background:#FFFFFF;border:1px solid #E8EBF5;border-radius:10px;padding:8px 12px;font-size:13px;color:var(--charcoal3);resize:none;height:60px;" placeholder="Paste a script or line to save..."></textarea>';
@@ -156,6 +174,14 @@ function deleteScript(i) {
   s.splice(i, 1);
   localStorage.setItem('scc_scripts', JSON.stringify(s));
   renderSavedScripts();
+}
+function removeFavorite(idx) {
+  var favs = (typeof getFavorites === 'function') ? getFavorites() : [];
+  if (idx >= 0 && idx < favs.length) {
+    favs.splice(idx, 1);
+    localStorage.setItem('cha_favorites', JSON.stringify(favs));
+    renderNotes();
+  }
 }
 function renderSavedScripts() {
   var s = getSavedScripts();

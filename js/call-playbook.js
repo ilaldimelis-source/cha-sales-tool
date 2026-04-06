@@ -824,6 +824,7 @@ function renderCloses() {
         id +
         '\')" style="padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;">';
       html += '<div class="close-line u-flex1">"' + c.line + '"</div>';
+      html += (typeof favStarHTML === 'function' ? favStarHTML('close', id, c.line.substring(0,60), c.line, 'Closes') : '');
       html += '<span class="ctype ' + type + '">' + type + '</span></div>';
       html +=
         '<div class="close-detail" style="display:none;padding:14px 18px;border-top:1px solid rgba(220,170,180,0.2);">';

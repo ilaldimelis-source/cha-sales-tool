@@ -1342,6 +1342,11 @@ function togglePlanVault(id) {
     if (chev) { chev.style.transform = 'rotate(180deg)'; chev.setAttribute('stroke', '#5B8DEF'); }
     if (card) card.style.borderColor = '#5B8DEF';
     _openPlanVault = id;
+    // Set sticky plan context
+    if (typeof POLICY_DOCS !== 'undefined' && typeof setActivePlan === 'function') {
+      var doc = POLICY_DOCS.find(function(p) { return p.id === id; });
+      if (doc) setActivePlan(doc.id, doc.name, doc.group || doc.type || '');
+    }
     setTimeout(function() { card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 50);
   }
 }
