@@ -1271,6 +1271,145 @@ textarea:focus, .ai-input:focus { border-color: var(--accent); box-shadow: 0 0 0
   .dash-ref-strip { grid-template-columns: 1fr; }
 }
 
+/* ── TRAINING HOME + SECTION VIEW ── */
+.trn-group-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6B7280;
+  margin-bottom: 12px;
+}
+.trn-home-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.trn-home-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #FFFFFF;
+  border: 2px solid #E5E7EB;
+  border-radius: 20px;
+  padding: 24px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.trn-home-card:hover {
+  border-color: #5B8DEF;
+  background: #EEF3FF;
+}
+.trn-home-icon {
+  flex-shrink: 0;
+  color: #5B8DEF;
+}
+.trn-home-info { flex: 1; }
+.trn-home-title {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+.trn-home-desc {
+  font-family: var(--font-body);
+  font-size: 13px;
+  color: #6B7280;
+  line-height: 1.5;
+}
+.trn-home-arrow {
+  flex-shrink: 0;
+  color: #C8CEDD;
+}
+.trn-back-btn {
+  background: none;
+  border: none;
+  color: #5B8DEF;
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+}
+.trn-back-btn:hover { text-decoration: underline; }
+.trn-card {
+  background: #F8F9FE;
+  border: 2px solid #C8CEDD;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.trn-card-hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  cursor: pointer;
+}
+.trn-card-title {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+.trn-card-chev {
+  color: #9CA3AF;
+  font-size: 11px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.trn-card-body {
+  padding: 0 20px 20px;
+  border-top: 1px solid #E5E7EB;
+}
+.trn-sec-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6B7280;
+  margin-bottom: 8px;
+}
+.trn-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.trn-col-green {
+  border-left: 3px solid #15803D;
+  background: #F0FDF4;
+  border-radius: 12px;
+  padding: 14px;
+}
+.trn-col-red {
+  border-left: 3px solid #B91C1C;
+  background: #FEF2F2;
+  border-radius: 12px;
+  padding: 14px;
+}
+.trn-col-label {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.trn-col-text {
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: #374151;
+  line-height: 1.7;
+}
+@media (max-width: 700px) {
+  .trn-home-grid { grid-template-columns: 1fr; }
+  .trn-two-col { grid-template-columns: 1fr; }
+}
+
 /* ── BENEFIT FILTER CARDS ── */
 .benefit-filter-card:hover {
   border-color: #5B8DEF !important;

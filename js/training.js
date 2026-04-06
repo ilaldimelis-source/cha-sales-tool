@@ -1210,46 +1210,20 @@ function renderProcess() {
   var html =
     '<div class="ph"><div class="pt">Sales <span>Process Trainer</span></div><div class="pd">Master every stage of a structured, compliant, confident call.</div></div>';
   ISA_PROCESS_STAGES.forEach(function (s, i) {
-    html +=
-      '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;margin-bottom:12px;overflow:hidden">';
-    html +=
-      "<div style=\"padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:12px\" onclick=\"this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'\">";
-    html +=
-      iconBox(P[s.icon] || P.circle) +
-      '<div style="flex:1"><div style="font-weight:800;font-size:14px;color:var(--charcoal3)">' +
-      s.title +
-      '</div><div style="font-size:11px;color:var(--warmgray3);margin-top:2px">' +
-      s.objective +
-      '</div></div><span style="color:var(--warmgray3);font-size:12px">▼</span></div>';
-    html += '<div style="display:none;padding:0 20px 20px">';
-    html +=
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">';
-    html +=
-      '<div><div style="font-size:10px;letter-spacing:2px;color:var(--charcoal);font-weight:700;text-transform:uppercase;margin-bottom:6px">KEY PHRASES</div>';
+    var body = '';
+    body += '<div class="trn-two-col" style="margin-bottom:12px;">';
+    body += '<div><div class="trn-sec-label">KEY PHRASES</div>';
     s.phrases.forEach(function (p) {
-      html +=
-        '<div class="sbox" style="font-size:11px;margin-bottom:6px">' +
-        p +
-        '</div>';
+      body += '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;margin-bottom:6px;padding:8px 12px;background:#F8F9FE;border-radius:8px;">' + p + '</div>';
     });
-    html +=
-      '</div><div><div style="font-size:10px;letter-spacing:2px;color:#7a5f00;font-weight:700;text-transform:uppercase;margin-bottom:6px">PSYCHOLOGY</div><div style="font-size:12px;color:var(--charcoal);line-height:1.6;background:var(--butter);border-radius:8px;padding:10px">' +
-      s.psychology +
-      '</div></div></div>';
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">';
-    html +=
-      '<div><div style="font-size:10px;letter-spacing:2px;color:var(--error);font-weight:700;text-transform:uppercase;margin-bottom:6px">MISTAKES TO AVOID</div>';
+    body += '</div><div><div class="trn-sec-label">PSYCHOLOGY</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' + s.psychology + '</div></div></div>';
+    body += '<div class="trn-two-col">';
+    body += '<div><div class="trn-sec-label" style="color:#B91C1C;">MISTAKES TO AVOID</div>';
     s.mistakes.forEach(function (m) {
-      html +=
-        '<div style="font-size:11px;color:var(--charcoal);margin-bottom:4px;padding-left:10px;border-left:2px solid var(--error)">' +
-        m +
-        '</div>';
+      body += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;margin-bottom:4px;padding-left:10px;border-left:2px solid #B91C1C;">' + m + '</div>';
     });
-    html +=
-      '</div><div><div style="font-size:10px;letter-spacing:2px;color:#29A26A;font-weight:700;text-transform:uppercase;margin-bottom:6px">TONE</div><div style="font-size:12px;color:#29A26A;font-weight:700;background:rgba(58,125,90,0.10);border-radius:8px;padding:10px">' +
-      s.tone +
-      '</div></div></div>';
-    html += '</div></div>';
+    body += '</div><div><div class="trn-sec-label" style="color:#15803D;">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#15803D;font-weight:700;background:#F0FDF4;border-radius:8px;padding:10px;">' + s.tone + '</div></div></div>';
+    html += _trnCard('proc' + i, s.title, body);
   });
   var _page_process = document.getElementById('page-process');
   if (_page_process) _page_process.innerHTML = html;
@@ -1349,57 +1323,17 @@ function toggleIsaObj(id) {
 function renderProductvault() {
   var html =
     '<div class="ph"><div class="pt">Product <span>Training Vault</span></div><div class="pd">Know what you\'re selling — and what you\'re not.</div></div>';
-  ISA_PRODUCT_TYPES.forEach(function (p) {
-    html +=
-      '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:20px;margin-bottom:12px">';
-    html += iconLg(P[p.icon] || P.circle);
-    html +=
-      '<div style="font-weight:800;font-size:15px;color:var(--charcoal3);margin-bottom:12px">' +
-      p.title +
-      '</div>';
-    html +=
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">';
-    html +=
-      '<div><div style="font-size:10px;font-weight:700;color:#29A26A;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">WHAT IT IS</div><div style="font-size:12px;color:var(--charcoal);line-height:1.6">' +
-      p.what +
-      '</div></div>';
-    html +=
-      '<div><div style="font-size:10px;font-weight:700;color:var(--error);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">WHAT IT\'S NOT</div><div style="font-size:12px;color:var(--charcoal);line-height:1.6">' +
-      p.whatnot +
-      '</div></div>';
-    html += '</div>';
-    html +=
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">';
-    html +=
-      '<div style="background:rgba(58,125,90,0.10);border-radius:8px;padding:12px"><div style="font-size:10px;font-weight:700;color:#29A26A;letter-spacing:1px;margin-bottom:4px">BEST FOR</div><div style="font-size:12px;color:var(--charcoal)">' +
-      p.bestfor +
-      '</div></div>';
-    html +=
-      '<div style="background:var(--error-light);border-radius:8px;padding:12px"><div style="font-size:10px;font-weight:700;color:var(--error);letter-spacing:1px;margin-bottom:4px">NOT FOR</div><div style="font-size:12px;color:var(--charcoal)">' +
-      p.notfor +
-      '</div></div>';
-    html += '</div>';
-    html +=
-      '<div style="font-size:10px;font-weight:700;color:#7a5f00;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px">HOW TO EXPLAIN IT ON A CALL</div>';
-    html +=
-      '<div class="sbox" style="margin-bottom:12px;font-size:12px">' +
-      p.explain +
-      '</div>';
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
-    html +=
-      '<div style="background:rgba(58,125,90,0.10);border-radius:8px;padding:12px"><div style="font-size:9px;font-weight:700;color:#29A26A;letter-spacing:1px;margin-bottom:4px">RIGHT FIT EXAMPLE</div><div style="font-size:11px;color:var(--charcoal)">' +
-      p.rightfit +
-      '</div></div>';
-    html +=
-      '<div style="background:var(--error-light);border-radius:8px;padding:12px"><div style="font-size:9px;font-weight:700;color:var(--error);letter-spacing:1px;margin-bottom:4px">WRONG FIT EXAMPLE</div><div style="font-size:11px;color:var(--charcoal)">' +
-      p.wrongfit +
-      '</div></div>';
-    html += '</div>';
-    html +=
-      '<div style="margin-top:10px;padding:10px;background:rgba(200,60,60,0.06);border-radius:8px;font-size:11px;color:var(--charcoal)"><strong style="color:var(--error)"> Compliance:</strong> ' +
-      p.compliance +
-      '</div>';
-    html += '</div>';
+  ISA_PRODUCT_TYPES.forEach(function (p, i) {
+    var body = '';
+    body += _trnTwoCols('WHAT IT IS', p.what, "WHAT IT'S NOT", p.whatnot);
+    body += '<div style="height:12px;"></div>';
+    body += _trnTwoCols('BEST FOR', p.bestfor, 'NOT FOR', p.notfor);
+    body += '<div style="margin-top:12px;"><div class="trn-sec-label">HOW TO EXPLAIN IT</div>';
+    body += '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' + p.explain + '</div></div>';
+    body += '<div style="height:12px;"></div>';
+    body += _trnTwoCols('RIGHT FIT', p.rightfit, 'WRONG FIT', p.wrongfit);
+    body += '<div style="margin-top:12px;padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Compliance:</strong> ' + p.compliance + '</div>';
+    html += _trnCard('pv' + i, p.title, body);
   });
   document.getElementById('page-productvault').innerHTML = html;
 }
@@ -1407,29 +1341,14 @@ function renderProductvault() {
 function renderSimplifier() {
   var html =
     '<div class="ph"><div class="pt">Term <span>Translator</span></div><div class="pd">Translate insurance terms into plain language — then use that language on calls.</div></div>';
-  ISA_SIMPLIFIER.forEach(function (item) {
-    html +=
-      '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin-bottom:10px">';
-    html +=
-      '<div style="font-weight:800;font-size:14px;color:var(--charcoal);margin-bottom:10px">' +
-      item.term +
-      '</div>';
-    html +=
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:8px">';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:var(--warmgray3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">Technical Definition</div><div style="font-size:12px;color:var(--charcoal);line-height:1.6">' +
-      item.tech +
-      '</div></div>';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:#29A26A;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px">Say It This Way</div><div class="sbox" style="font-size:12px">' +
-      item.plain +
-      '</div></div>';
-    html += '</div>';
-    html +=
-      '<div style="font-size:11px;color:var(--error);background:var(--error-light);border-radius:8px;padding:8px"><strong>Never say:</strong> ' +
-      item.dontsay +
-      '</div>';
-    html += '</div>';
+  ISA_SIMPLIFIER.forEach(function (item, i) {
+    var body = '';
+    body += '<div class="trn-two-col" style="margin-bottom:12px;">';
+    body += '<div><div class="trn-sec-label">TECHNICAL DEFINITION</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' + item.tech + '</div></div>';
+    body += '<div><div class="trn-sec-label" style="color:#15803D;">SAY IT THIS WAY</div><div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' + item.plain + '</div></div>';
+    body += '</div>';
+    body += '<div style="padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Never say:</strong> ' + item.dontsay + '</div>';
+    html += _trnCard('term' + i, item.term, body);
   });
   document.getElementById('page-simplifier').innerHTML = html;
 }
@@ -1480,42 +1399,15 @@ function renderRoleplay() {
   var html =
     '<div class="ph"><div class="pt">Roleplay <span>Simulator</span></div><div class="pd">Practice the hard conversations before they\'re real. Study what elite looks like.</div></div>';
   ISA_ROLEPLAY.forEach(function (sc, i) {
-    html +=
-      '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:20px;margin-bottom:12px">';
-    html +=
-      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
-    html +=
-      '<div style="background:var(--pastel-blue);color:var(--charcoal2);border-radius:8px;padding:4px 10px;font-size:10px;font-weight:700;letter-spacing:1px">' +
-      sc.profile.toUpperCase() +
-      '</div>';
-    html += '</div>';
-    html +=
-      '<div style="font-size:12px;color:var(--warmgray3);margin-bottom:10px">' +
-      sc.desc +
-      '</div>';
-    html +=
-      '<div style="background:var(--milk2);border-radius:8px;padding:12px;margin-bottom:10px">';
-    html +=
-      '<div style="font-size:9px;font-weight:700;color:var(--warmgray3);letter-spacing:1.5px;margin-bottom:4px">PROSPECT SAYS</div>';
-    html +=
-      '<div style="font-size:13px;font-weight:700;color:var(--charcoal3);font-style:italic">"' +
-      sc.says +
-      '"</div></div>';
-    html +=
-      '<div style="font-size:9px;font-weight:700;color:var(--error);letter-spacing:1px;margin-bottom:4px">WEAK RESPONSE</div>';
-    html +=
-      '<div style="font-size:11px;color:var(--charcoal);margin-bottom:10px;padding:8px;background:var(--error-light);border-radius:8px">' +
-      sc.weak +
-      '</div>';
-    html +=
-      '<div style="font-size:9px;font-weight:700;color:#29A26A;letter-spacing:1px;margin-bottom:4px">ELITE RESPONSE</div>';
-    html +=
-      '<button class="btn btn-ghost" style="font-size:11px;margin-bottom:6px" onclick="this.nextElementSibling.style.display=\'block\';this.style.display=\'none\'">Reveal Elite Response →</button>';
-    html +=
-      '<div class="sbox" style="font-size:12px;display:none">' +
-      sc.response +
-      '</div>';
-    html += '</div>';
+    var body = '';
+    body += '<div style="font-family:var(--font-body);font-size:14px;color:#6B7280;margin-bottom:12px;">' + sc.desc + '</div>';
+    body += '<div style="padding:14px;background:#F8F9FE;border-radius:12px;margin-bottom:12px;"><div class="trn-sec-label">PROSPECT SAYS</div>';
+    body += '<div style="font-family:var(--font-body);font-size:14px;font-weight:700;color:#111827;font-style:italic;line-height:1.8;">&ldquo;' + sc.says + '&rdquo;</div></div>';
+    body += '<div class="trn-two-col">';
+    body += '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">WEAK RESPONSE</div><div class="trn-col-text">' + sc.weak + '</div></div>';
+    body += '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">ELITE RESPONSE</div><div class="trn-col-text">' + sc.response + '</div></div>';
+    body += '</div>';
+    html += _trnCard('rp' + i, sc.profile, body);
   });
   document.getElementById('page-roleplay').innerHTML = html;
 }
@@ -1523,41 +1415,19 @@ function renderRoleplay() {
 function renderClosinglab() {
   var html =
     '<div class="ph"><div class="pt">Closing <span>Lab</span></div><div class="pd">Know your closes. Know when to use them. Know the difference between weak and elite.</div></div>';
-  html +=
-    '<div style="background:rgba(58,125,90,0.10);border:1px solid rgba(41,162,106,0.3);border-radius:12px;padding:14px 18px;margin-bottom:18px;font-size:13px;font-weight:700;color:#29A26A"> Silence Rule: After you close, whoever speaks first loses. Deliver the close. Stop talking. Wait.</div>';
-  ISA_CLOSES.forEach(function (cl) {
-    html +=
-      '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:18px 20px;margin-bottom:12px">';
-    html +=
-      '<div style="font-weight:800;font-size:14px;color:var(--charcoal3);margin-bottom:6px">' +
-      cl.name +
-      '</div>';
-    html +=
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:var(--warmgray3);letter-spacing:1px;margin-bottom:4px">WHEN TO USE</div><div style="font-size:11px;color:var(--charcoal)">' +
-      cl.when +
-      '</div></div>';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:var(--warmgray3);letter-spacing:1px;margin-bottom:4px">TONE</div><div style="font-size:11px;color:var(--charcoal)">' +
-      cl.tone +
-      '</div></div>';
-    html += '</div>';
-    html +=
-      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:var(--error);letter-spacing:1px;margin-bottom:4px">WEAK</div><div style="background:var(--error-light);border-radius:8px;padding:8px;font-size:11px;color:var(--charcoal)">' +
-      cl.weak +
-      '</div></div>';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:#7a5f00;letter-spacing:1px;margin-bottom:4px">BETTER</div><div style="background:var(--butter);border-radius:8px;padding:8px;font-size:11px;color:var(--charcoal)">' +
-      cl.better +
-      '</div></div>';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:#29A26A;letter-spacing:1px;margin-bottom:4px">ELITE</div><div class="sbox" style="font-size:11px">' +
-      cl.elite +
-      '</div></div>';
-    html += '</div></div>';
+  html += '<div style="background:#F0FDF4;border-left:3px solid #15803D;border-radius:12px;padding:14px 18px;margin-bottom:18px;font-family:var(--font-ui);font-size:14px;font-weight:700;color:#15803D;">Silence Rule: After you close, whoever speaks first loses. Deliver the close. Stop talking. Wait.</div>';
+  ISA_CLOSES.forEach(function (cl, i) {
+    var body = '';
+    body += '<div class="trn-two-col" style="margin-bottom:12px;">';
+    body += '<div><div class="trn-sec-label">WHEN TO USE</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' + cl.when + '</div></div>';
+    body += '<div><div class="trn-sec-label">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' + cl.tone + '</div></div>';
+    body += '</div>';
+    body += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">';
+    body += '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">WEAK</div><div class="trn-col-text" style="font-style:italic;">' + cl.weak + '</div></div>';
+    body += '<div style="border-left:3px solid #d97706;background:#FFFBEB;border-radius:12px;padding:14px;"><div class="trn-col-label" style="color:#d97706;">BETTER</div><div class="trn-col-text" style="font-style:italic;">' + cl.better + '</div></div>';
+    body += '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">ELITE</div><div class="trn-col-text" style="font-style:italic;">' + cl.elite + '</div></div>';
+    body += '</div>';
+    html += _trnCard('cl' + i, cl.name, body);
   });
   document.getElementById('page-closinglab').innerHTML = html;
 }
@@ -1565,100 +1435,49 @@ function renderClosinglab() {
 function renderCheatsheets() {
   var html =
     '<div class="ph"><div class="pt">Cheat <span>Sheets</span></div><div class="pd">Scan fast. Use immediately.</div></div>';
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">';
-  html +=
-    '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:18px">';
-  html +=
-    '<div style="font-size:10px;letter-spacing:2px;color:var(--charcoal);font-weight:700;margin-bottom:10px">COMPLIANCE NON-NEGOTIABLES</div>';
-  [
-    ' Mental health — EXCLUDED. Say it every call.',
-    ' Maternity — EXCLUDED. Say it every call.',
-    ' Substance abuse rehab — EXCLUDED. Say it every call.',
-    ' 30-day waiting period for illness — DISCLOSE.',
-    ' 12/12 pre-ex clause — DISCLOSE.',
-    ' Not ACA-compliant — DISCLOSE.',
-    ' Not major medical — DISCLOSE.'
-  ].forEach(function (item) {
-    html +=
-      '<div style="font-size:12px;color:var(--charcoal);padding:6px 0;border-bottom:1px solid var(--rule)">' +
-      item +
-      '</div>';
+
+  // Compliance card
+  var compBody = '';
+  [' Mental health — EXCLUDED. Say it every call.',' Maternity — EXCLUDED. Say it every call.',' Substance abuse rehab — EXCLUDED. Say it every call.',' 30-day waiting period for illness — DISCLOSE.',' 12/12 pre-ex clause — DISCLOSE.',' Not ACA-compliant — DISCLOSE.',' Not major medical — DISCLOSE.'].forEach(function(item) {
+    compBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
   });
-  html += '</div>';
-  html +=
-    '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:18px">';
-  html +=
-    '<div style="font-size:10px;letter-spacing:2px;color:#7a5f00;font-weight:700;margin-bottom:10px">PRICE ANCHOR FRAMEWORK</div>';
-  [
-    '1️⃣ Acknowledge: "I hear you on the price."',
-    '2️⃣ Anchor to risk: "What does no coverage cost if..."',
-    '3️⃣ ER without coverage: $3,000–$30,000',
-    '4️⃣ Hospitalization without coverage: $10,000–$100,000+',
-    '5️⃣ Bridge: "So the question is whether $X/month is worth..."',
-    '6️⃣ Never apologize for or discount the price first'
-  ].forEach(function (item) {
-    html +=
-      '<div style="font-size:12px;color:var(--charcoal);padding:6px 0;border-bottom:1px solid var(--rule)">' +
-      item +
-      '</div>';
+  html += _trnCard('cs0', 'Compliance Non-Negotiables', compBody);
+
+  // Price Anchor card
+  var priceBody = '';
+  ['1. Acknowledge: "I hear you on the price."','2. Anchor to risk: "What does no coverage cost if..."','3. ER without coverage: $3,000–$30,000','4. Hospitalization without coverage: $10,000–$100,000+','5. Bridge: "So the question is whether $X/month is worth..."','6. Never apologize for or discount the price first'].forEach(function(item) {
+    priceBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
   });
-  html += '</div>';
-  html +=
-    '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:18px">';
-  html +=
-    '<div style="font-size:10px;letter-spacing:2px;color:#29A26A;font-weight:700;margin-bottom:10px">CALL STRUCTURE — QUICK SEQUENCE</div>';
-  [
-    '1. Reset mentally before dialing',
-    '2. Warm open + permission ask',
-    '3. Discovery — budget, situation, fear',
-    '4. Validate what they said',
-    '5. Position as expert',
-    '6. Present plan tied to their words',
-    '7. Future pace (picture it working)',
-    '8. Assumptive close',
-    '9. Handle objection if needed',
-    '10. Disclose compliance',
-    '11. Confirm + wrap up clean'
-  ].forEach(function (step) {
-    html +=
-      '<div style="font-size:12px;color:var(--charcoal);padding:5px 0;border-bottom:1px solid var(--rule)">' +
-      step +
-      '</div>';
+  html += _trnCard('cs1', 'Price Anchor Framework', priceBody);
+
+  // Call Structure card
+  var callBody = '';
+  ['1. Reset mentally before dialing','2. Warm open + permission ask','3. Discovery — budget, situation, fear','4. Validate what they said','5. Position as expert','6. Present plan tied to their words','7. Future pace (picture it working)','8. Assumptive close','9. Handle objection if needed','10. Disclose compliance','11. Confirm + wrap up clean'].forEach(function(step) {
+    callBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + step + '</div>';
   });
-  html += '</div>';
-  html +=
-    '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:18px">';
-  html +=
-    '<div style="font-size:10px;letter-spacing:2px;color:var(--charcoal2);font-weight:700;margin-bottom:10px">SILENCE RULE + PSYCHOLOGY</div>';
-  [
-    ' After close: SAY NOTHING. Wait.',
-    ' People buy emotionally, justify logically',
-    ' Heard = open. Not heard = resistant.',
-    " Fit sells. Features don't.",
-    ' Never fight an objection — align + redirect',
-    ' Future pacing closes faster than facts',
-    ' Confidence is your #1 competitive advantage'
-  ].forEach(function (item) {
-    html +=
-      '<div style="font-size:12px;color:var(--charcoal);padding:6px 0;border-bottom:1px solid var(--rule)">' +
-      item +
-      '</div>';
+  html += _trnCard('cs2', 'Call Structure — Quick Sequence', callBody);
+
+  // Silence Rule card
+  var silBody = '';
+  ['After close: SAY NOTHING. Wait.','People buy emotionally, justify logically','Heard = open. Not heard = resistant.','Fit sells. Features don\'t.','Never fight an objection — align + redirect','Future pacing closes faster than facts','Confidence is your #1 competitive advantage'].forEach(function(item) {
+    silBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
   });
-  html += '</div>';
-  html += '</div>';
-  // Plan Reference Table
-  html += '<div style="margin-top:24px;"><div class="slbl" style="margin-bottom:12px;">Plan Reference</div>';
-  html += '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid #C8CEDD;min-width:600px;">';
-  html += '<thead><tr><th style="font-size:13px;">Plan Name</th><th style="font-size:13px;">Network</th><th style="font-size:13px;">Underwriter / Admin</th><th style="font-size:13px;">Association</th></tr></thead><tbody>';
+  html += _trnCard('cs3', 'Silence Rule + Psychology', silBody);
+
+  // Plan Reference Table card
+  var tableBody = '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid #C8CEDD;min-width:600px;">';
+  tableBody += '<thead><tr><th style="font-size:13px;">Plan Name</th><th style="font-size:13px;">Network</th><th style="font-size:13px;">Underwriter / Admin</th><th style="font-size:13px;">Association</th></tr></thead><tbody>';
   if (typeof PLANS !== 'undefined') {
     PLANS.forEach(function(p) {
-      html += '<tr><td style="font-weight:700;font-size:14px;color:var(--text-primary);">' + p.name + '</td>';
-      html += '<td style="font-size:13px;">' + (p.network || '—') + '</td>';
-      html += '<td style="font-size:13px;">' + (p.admin || '—') + '</td>';
-      html += '<td style="font-size:13px;">' + (p.assoc || '—') + '</td></tr>';
+      tableBody += '<tr><td style="font-weight:700;font-size:14px;color:var(--text-primary);">' + p.name + '</td>';
+      tableBody += '<td style="font-size:13px;">' + (p.network || '—') + '</td>';
+      tableBody += '<td style="font-size:13px;">' + (p.admin || '—') + '</td>';
+      tableBody += '<td style="font-size:13px;">' + (p.assoc || '—') + '</td></tr>';
     });
   }
-  html += '</tbody></table></div></div>';
+  tableBody += '</tbody></table></div>';
+  html += _trnCard('cs4', 'Plan Reference Table', tableBody);
+
   document.getElementById('page-cheatsheets').innerHTML = html;
 }
 
@@ -1737,51 +1556,16 @@ function renderDiscovery() {
   html += '</div>';
 
   categories.forEach(function (cat, ci) {
-    var did = 'disc-' + ci;
-    html += '<div class="xcard" id="' + did + '" style="margin-bottom:10px;">';
-    // Header — clickable toggle
-    html +=
-      '<div class="xcard-hd" onclick="toggleDisc(\'' +
-      did +
-      '\')" style="display:flex;align-items:center;gap:12px;padding:14px 18px;cursor:pointer;">';
-    html +=
-      '<div style="width:34px;height:34px;border-radius:50%;background:rgba(26,29,38,0.08);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:.9rem;color:#5C6878;flex-shrink:0;">' +
-      cat.type +
-      '</div>';
-    html +=
-      '<div class="u-flex1"><div class="xcard-label">' +
-      cat.label +
-      ' Questions</div>';
-    html += '<div class="xcard-sub">' + cat.desc + '</div></div>';
-    html += '<div style="display:flex;align-items:center;gap:8px;">';
-    html +=
-      '<span style="font-family:var(--font-ui);font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(26,29,38,0.06);color:var(--txt-muted);">' +
-      cat.questions.length +
-      ' questions</span>';
-    html += '<span class="xcard-chev" id="' + did + '-chev">▼</span></div>';
-    html += '</div>';
-    // Body — hidden by default
-    html +=
-      '<div id="' +
-      did +
-      '-body" style="display:none;padding:4px 18px 16px;border-top:1px solid var(--rule);">';
+    var body = '';
     cat.questions.forEach(function (q) {
-      html +=
-        '<div onclick="copyDiscovery(this)" data-q="' +
-        q.replace(/"/g, '&quot;') +
-        '" ';
-      html +=
-        'style="padding:11px 14px;background:var(--bg-card2);border:1px solid var(--rule);border-radius:8px;margin-top:8px;cursor:pointer;font-family:var(--font-body);font-size:.8rem;color:var(--txt-head);line-height:1.55;transition:all 0.15s;" ';
-      html +=
-        "onmouseover=\"this.style.borderColor='rgba(92,104,120,0.28)';this.style.background='var(--bg-card3)'\" ";
-      html +=
-        "onmouseout=\"this.style.borderColor='var(--rule)';this.style.background='var(--bg-card2)'\">";
-      html += '\u201c' + q + '\u201d';
-      html +=
-        '<span style="display:block;font-family:var(--font-ui);font-size:.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt-muted);margin-top:5px;">Tap to copy</span>';
-      html += '</div>';
+      body += '<div onclick="copyDiscovery(this)" data-q="' + q.replace(/"/g, '&quot;') + '" ';
+      body += 'style="padding:12px 14px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:8px;margin-bottom:8px;cursor:pointer;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;transition:all 0.15s;" ';
+      body += "onmouseover=\"this.style.borderColor='#5B8DEF'\" onmouseout=\"this.style.borderColor='#E5E7EB'\">";
+      body += '\u201c' + q + '\u201d';
+      body += '<span style="display:block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;margin-top:5px;">Tap to copy</span>';
+      body += '</div>';
     });
-    html += '</div></div>';
+    html += _trnCard('disc' + ci, cat.type + ' — ' + cat.label + ' (' + cat.questions.length + ' questions)', body);
   });
 
   html +=
@@ -1960,39 +1744,16 @@ function renderClosingengine() {
   });
   html += '</div>';
 
-  situations.forEach(function (s) {
-    html +=
-      '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;margin-bottom:12px;overflow:hidden;">';
-    html +=
-      '<div style="background:#F8FAFF;padding:14px 18px;border-bottom:1px solid #E8EBF5;">';
-    html +=
-      '<div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--warmgray3);margin-bottom:4px;">SITUATION</div>';
-    html +=
-      '<div style="font-size:13px;font-weight:700;color:var(--charcoal3);">' +
-      s.situation +
-      '</div></div>';
-    html += '<div style="padding:14px 18px;">';
+  situations.forEach(function (s, si) {
+    var body = '';
     s.closes.forEach(function (c) {
       var col = typeColors[c.type] || 'var(--charcoal3)';
       var bg = typeBg[c.type] || 'rgba(212,96,122,0.1)';
-      html +=
-        '<div onclick="copyClose(this)" data-line="' +
-        c.line.replace(/"/g, '&quot;') +
-        '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--milk);border:1px solid rgba(220,170,180,0.2);border-radius:12px;margin-bottom:8px;cursor:pointer;" onmouseover="this.style.background=\'var(--milk)\'" onmouseout="this.style.background=\'var(--milk)\'">';
-      html +=
-        '<span style="background:' +
-        bg +
-        ';color:' +
-        col +
-        ';border-radius:12px;padding:3px 10px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0;">' +
-        c.type +
-        '</span>';
-      html +=
-        '<div style="font-size:13px;color:var(--charcoal3);line-height:1.5;">' +
-        c.line +
-        '</div></div>';
+      body += '<div onclick="copyClose(this)" data-line="' + c.line.replace(/"/g, '&quot;') + '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
+      body += '<span style="background:' + bg + ';color:' + col + ';border-radius:12px;padding:3px 10px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0;">' + c.type + '</span>';
+      body += '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;">' + c.line + '</div></div>';
     });
-    html += '</div></div>';
+    html += _trnCard('ce' + si, s.situation, body);
   });
 
   html +=
@@ -2011,4 +1772,126 @@ function copyClose(el) {
       toast.style.display = 'none';
     }, 2000);
   }
+}
+
+// ══════════════════════════════════════════════════════
+// TRAINING HOME PAGE + SECTION VIEW SYSTEM
+// ══════════════════════════════════════════════════════
+
+var _trainingView = 'home'; // 'home' or section id
+
+var TRAINING_SECTIONS = [
+  {
+    group: 'LIVE CALL TOOLS',
+    items: [
+      { id: 'cheatsheets', title: 'Cheat Sheets', desc: 'Quick reference for plans, networks, and underwriters', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>', render: renderCheatsheets },
+      { id: 'closingengine', title: 'Closing Engine', desc: 'Generate closes for any situation', icon: '<circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>', render: renderClosingengine },
+      { id: 'closinglab', title: 'Closing Lab', desc: 'Practice and refine your closes', icon: '<path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15l2 2 4-4"/>', render: renderClosinglab },
+      { id: 'roleplay', title: 'Roleplay', desc: 'Mock call practice and objection drills', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>', render: renderRoleplay }
+    ]
+  },
+  {
+    group: 'LEARN & STUDY',
+    items: [
+      { id: 'productvault', title: 'Product Training Vault', desc: 'Know exactly what you\'re selling and what you\'re not', icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>', render: renderProductvault },
+      { id: 'process', title: 'Process', desc: 'Full call flow from open to close', icon: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>', render: renderProcess },
+      { id: 'simplifier', title: 'Terms', desc: 'Plain-English explanations for any insurance term', icon: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>', render: renderSimplifier },
+      { id: 'discovery', title: 'Discovery', desc: 'Questioning frameworks that uncover real pain', icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>', render: renderDiscovery }
+    ]
+  }
+];
+
+function renderTrainingHome() {
+  var pg = document.getElementById('page-traininghome');
+  if (!pg) return;
+
+  if (_trainingView !== 'home') {
+    _renderTrainingSection(_trainingView);
+    return;
+  }
+
+  var arrow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8CEDD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  var html = '<div class="ph"><div class="pt">Training <span>Center</span></div><div class="pd">Build your skills. Choose a section below.</div></div>';
+
+  TRAINING_SECTIONS.forEach(function(group, gi) {
+    if (gi > 0) html += '<div style="height:28px;"></div>';
+    html += '<div class="trn-group-label">' + group.group + '</div>';
+    html += '<div class="trn-home-grid">';
+    group.items.forEach(function(item) {
+      html += '<div class="trn-home-card" onclick="openTrainingSection(\'' + item.id + '\')">';
+      html += '<div class="trn-home-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + item.icon + '</svg></div>';
+      html += '<div class="trn-home-info"><div class="trn-home-title">' + item.title + '</div><div class="trn-home-desc">' + item.desc + '</div></div>';
+      html += '<div class="trn-home-arrow">' + arrow + '</div>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+
+  pg.innerHTML = html;
+}
+
+function openTrainingSection(id) {
+  _trainingView = id;
+  _renderTrainingSection(id);
+}
+
+function backToTrainingHome() {
+  _trainingView = 'home';
+  renderTrainingHome();
+}
+
+function _renderTrainingSection(sectionId) {
+  var pg = document.getElementById('page-traininghome');
+  if (!pg) return;
+
+  // Find the section config
+  var sectionConfig = null;
+  TRAINING_SECTIONS.forEach(function(group) {
+    group.items.forEach(function(item) {
+      if (item.id === sectionId) sectionConfig = item;
+    });
+  });
+  if (!sectionConfig) return;
+
+  // Build page with back button + container for the section render
+  pg.innerHTML = '<button class="trn-back-btn" onclick="backToTrainingHome()">&larr; Training</button><div id="page-' + sectionId + '"></div>';
+
+  // Now call the original render function — the target container exists in the DOM
+  sectionConfig.render();
+}
+
+// ══════════════════════════════════════════════════════
+// REWRITE RENDER FUNCTIONS — COLLAPSED CARDS, PLAN VAULT STYLE
+// ══════════════════════════════════════════════════════
+
+// Toggle for training section cards
+function toggleTrnCard(id) {
+  var body = document.getElementById(id + '-body');
+  var chev = document.getElementById(id + '-chev');
+  if (!body) return;
+  var isOpen = body.style.display !== 'none';
+  body.style.display = isOpen ? 'none' : 'block';
+  if (chev) chev.style.transform = isOpen ? '' : 'rotate(180deg)';
+}
+
+// Helper: wrap content in a collapsed card
+function _trnCard(id, title, bodyHtml) {
+  var html = '<div class="trn-card">';
+  html += '<div class="trn-card-hd" onclick="toggleTrnCard(\'' + id + '\')">';
+  html += '<div class="trn-card-title">' + title + '</div>';
+  html += '<span class="trn-card-chev" id="' + id + '-chev" aria-hidden="true">&#9660;</span>';
+  html += '</div>';
+  html += '<div class="trn-card-body" id="' + id + '-body" style="display:none;">';
+  html += bodyHtml;
+  html += '</div></div>';
+  return html;
+}
+
+// Helper: two column green/red box
+function _trnTwoCols(leftLabel, leftText, rightLabel, rightText) {
+  var html = '<div class="trn-two-col">';
+  html += '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">' + leftLabel + '</div><div class="trn-col-text">' + leftText + '</div></div>';
+  html += '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">' + rightLabel + '</div><div class="trn-col-text">' + rightText + '</div></div>';
+  html += '</div>';
+  return html;
 }

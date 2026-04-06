@@ -57,23 +57,7 @@ var PAGE_CONFIG = {
   training: {
     label: 'Training',
     subs: [
-      {
-        id: 'productvault',
-        label: 'Product Training Vault',
-        render: renderProductvault
-      },
-      { id: 'process', label: 'Process', render: renderProcess },
-      { id: 'simplifier', label: 'Terms', render: renderSimplifier },
-      { id: 'redflags', label: 'Red Flags', render: renderRedflags },
-      { id: 'roleplay', label: 'Roleplay', render: renderRoleplay },
-      { id: 'discovery', label: 'Discovery', render: renderDiscovery },
-      {
-        id: 'closingengine',
-        label: 'Closing Engine',
-        render: renderClosingengine
-      },
-      { id: 'closinglab', label: 'Closing Lab', render: renderClosinglab },
-      { id: 'cheatsheets', label: 'Cheat Sheets', render: renderCheatsheets }
+      { id: 'traininghome', label: 'Training', render: renderTrainingHome }
     ]
   },
   reference: {
