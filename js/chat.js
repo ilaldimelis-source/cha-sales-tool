@@ -787,7 +787,7 @@ function _brTopicOverride(query, plans) {
     if (isSC)
       return card(
         'Covered',
-        'Deductible is $2,500 individual / $5,000 family in-network per calendar year. Out-of-pocket maximum is $9,200 individual / $18,400 family. Out-of-network expenses are member responsibility.',
+        'Smart Choice offers multiple deductible options: $1,500, $2,500, $3,000, or $3,500 individual. Family deductible is 2x the individual amount. Out-of-pocket maximum is $9,200 individual / $18,400 family. Always confirm which deductible tier the member selected at enrollment.',
         'covered'
       );
     if (isSTM)

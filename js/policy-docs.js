@@ -3021,7 +3021,7 @@ var POLICY_DOCS = [
       {
         category: 'Additional Coverage',
         items: [
-          'Deductible: $2,500 individual / $5,000 family per calendar year — in-network only',
+          'Deductible options available: $1,500, $2,500, $3,000, or $3,500 individual (family deductible is 2x the individual amount chosen). The plan document on file covers the $2,500 option. Out-of-pocket maximum: $9,200 individual / $18,400 family. Confirm deductible tier selected at enrollment in NEO.',
           'Out-of-pocket maximum: $9,200 individual / $18,400 family — in-network only',
           'Out-of-network: Deductible and OOP not covered — all out-of-network expenses member responsibility',
           'Coinsurance: Plan pays percentage after deductible is met — confirm at enrollment',
