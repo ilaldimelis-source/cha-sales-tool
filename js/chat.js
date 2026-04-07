@@ -44,28 +44,15 @@ function brBuildSOB(p) {
         hasExplicitDiag = true;
     });
   });
-  // For plans on recognized networks without explicit diagnostic line items,
-  // add network discount entries so queries for x-ray, labs, imaging find real info
-  if (
-    !hasExplicitDiag &&
-    p.network &&
-    /First Health|PHCS|MultiPlan/i.test(p.network)
-  ) {
+  // Always inject network discount for diagnostic/labs on eligible networks
+  if (p.network && /First Health|PHCS|MultiPlan/i.test(p.network)) {
     entries.push({
       category: 'Network Discount Services',
-      text:
-        'Diagnostic X-Ray and Labs — if member stays in the ' +
-        p.network +
-        ' Network they will receive a discount. This is not a fixed benefit but a network discount through ' +
-        p.network +
-        '.'
+      text: 'Diagnostic X-Ray and Labs — If the member stays in the ' + p.network + ' Network they will receive a negotiated discount. This is not a fixed insurance benefit — it is a network discount through ' + p.network + '. Member pays discounted rate at participating facilities.'
     });
     entries.push({
       category: 'Network Discount Services',
-      text:
-        'Outpatient lab work, radiology, and imaging services — available at ' +
-        p.network +
-        ' negotiated discount rates at participating facilities.'
+      text: 'Lab work, blood tests, radiology, imaging (MRI, CT scan, X-ray) — available at ' + p.network + ' negotiated rates. Always use an in-network lab or facility to receive the discount.'
     });
   }
   p.limitations.forEach(function (l) {
@@ -81,6 +68,25 @@ function brBuildSOB(p) {
 }
 
 var brActiveFilter = 'all';
+
+// ── AI STATUS INDICATOR ─────────────────────────────────────────────────────
+function _brSetStatus(mode) {
+  var el = document.getElementById('br-ai-status');
+  var lbl = document.getElementById('br-ai-label');
+  if (!el || !lbl) return;
+  el.className = 'br-ai-status';
+  if (mode === 'ai') {
+    el.classList.add('br-ai-active');
+    lbl.textContent = 'Groq AI Active';
+  } else if (mode === 'thinking') {
+    el.classList.add('br-ai-thinking');
+    lbl.textContent = 'AI Thinking...';
+  } else {
+    el.classList.add('br-ai-local');
+    lbl.textContent = 'Plan Lookup';
+  }
+}
+
 
 function brInit() {
   if (_brInitDone) return;
@@ -147,6 +153,10 @@ function brInit() {
   // Build search index on init
   buildSearchIndex();
   brShowWelcome();
+
+  // Set initial AI status
+  var _initKey = localStorage.getItem('cha_groq_key');
+  _brSetStatus(_initKey && _initKey !== 'skip' && _initKey.length > 20 ? 'ai' : 'local');
 
   // Groq AI setup — office key is default, modal only via ⚙ button
   var _aiBtn = document.createElement('button');
@@ -459,6 +469,7 @@ function _brCollapseBullets(html) {
 
 // ── GROQ AI INTEGRATION (ES5 safe — no async/await) ──────────
 function brShowTyping() {
+  _brSetStatus('thinking');
   var msgs = document.getElementById('br-msgs');
   if (!msgs || document.getElementById('br-typing')) return;
   var div = document.createElement('div');
@@ -473,6 +484,9 @@ function brShowTyping() {
 function brHideTyping() {
   var t = document.getElementById('br-typing');
   if (t) t.remove();
+  // Reset status after AI responds
+  var key = localStorage.getItem('cha_groq_key');
+  _brSetStatus(key && key !== 'skip' && key.length > 20 ? 'ai' : 'local');
 }
 
 function brRenderAIAnswer(text, planName) {
@@ -641,6 +655,7 @@ function brLocalLookup(query, plan) {
 }
 
 function brRenderLocalResult(result, planName) {
+  _brSetStatus('local');
   var borderColor = '#22c55e';
   var bgColor = '#f0fdf4';
   var badgeColor = '#16a34a';
@@ -1190,6 +1205,41 @@ function _brSpecialCase(topic, planDoc) {
       source: planDoc.name
     };
   }
+  // X-ray / Labs / Imaging
+  if (/\bx.?ray\b|\blab\b|\blabs\b|\bblood work\b|\bimaging\b|\bmri\b|\bct scan\b|\bradiology\b|\bdiagnostic\b/.test(t)) {
+    var hasNetwork = !!(planDoc.network && /First Health|PHCS|MultiPlan/i.test(planDoc.network));
+    var networkNote = hasNetwork
+      ? 'Network discount available through ' + planDoc.network + ' — member pays negotiated rate at in-network facilities. Not a fixed insurance benefit.'
+      : null;
+
+    // Check if plan explicitly covers as a benefit
+    var diagBenefitItems = [];
+    planDoc.benefits.forEach(function(bcat) {
+      bcat.items.forEach(function(item) {
+        if (/x.?ray|lab|imaging|radiology|diagnostic|blood/i.test(item)) diagBenefitItems.push(item);
+      });
+    });
+
+    // Check if plan explicitly excludes it
+    var diagExcluded = false;
+    planDoc.limitations.forEach(function(lim) {
+      if (/x.?ray|lab|imaging|radiology|diagnostic/i.test(lim) && /not covered|excluded|no coverage/i.test(lim)) {
+        diagExcluded = true;
+      }
+    });
+
+    if (diagBenefitItems.length && !diagExcluded) {
+      return { status: 'Covered', label: 'Diagnostic X-Ray & Labs', items: diagBenefitItems.slice(0,3), sayThis: diagBenefitItems[0], networkDiscount: networkNote, source: planDoc.name };
+    }
+    if (diagExcluded) {
+      return { status: 'Not Covered', label: 'Diagnostic X-Ray & Labs', items: ['Diagnostic X-Ray and Labs are not listed as a covered benefit on this plan.'], sayThis: 'X-ray and lab work are not a covered benefit on this plan.', networkDiscount: networkNote, source: planDoc.name };
+    }
+    // Not explicitly covered or excluded — treat as not a fixed benefit
+    if (hasNetwork) {
+      return { status: 'Not Covered', label: 'Diagnostic X-Ray & Labs', items: ['Not a fixed covered benefit on this plan — no set dollar benefit for X-ray or labs.'], sayThis: 'X-ray and lab work are not a fixed covered benefit on this plan.', networkDiscount: networkNote, source: planDoc.name };
+    }
+    return { status: 'Verify', label: 'Diagnostic X-Ray & Labs', items: ['Not confirmed in plan documents — verify with carrier.'], source: planDoc.name };
+  }
   // Copays chip — pull all copay/visit cost data from benefits
   if (/\bcopay|\bco-pay|\bco pay|\bhow much|copays for/.test(t)) {
     var copayItems = [];
@@ -1524,6 +1574,13 @@ function brStructuredAnswer(query, plans) {
       html +=
         '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"That benefit isn\'t included on this plan — let me show you what IS covered."</div>';
       html += '</div>';
+    }
+    // Network discount callout — shown on ANY status if result has networkDiscount set
+    if (r.networkDiscount) {
+      html += '<div style="background:#ecfdf5;border:1.5px solid #6ee7b7;border-radius:8px;padding:9px 12px;margin-top:8px;display:flex;gap:8px;align-items:flex-start;">';
+      html += '<span style="font-size:14px;flex-shrink:0;">🔬</span>';
+      html += '<div><div style="font-size:10px;font-weight:800;color:#065f46;letter-spacing:.8px;margin-bottom:3px;">NETWORK DISCOUNT AVAILABLE</div>';
+      html += '<div style="font-size:12px;color:#065f46;font-weight:600;line-height:1.5;">' + r.networkDiscount + '</div></div></div>';
     }
     html += '</div>';
   });
