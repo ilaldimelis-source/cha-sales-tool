@@ -844,120 +844,120 @@ function brStructuredAnswer(query, plans) {
   else if (notCount > 0 && verCount === 0) overallStatus = 'Not Covered';
   else overallStatus = 'Verify';
 
-  // Build HTML output
-  var statusColor =
-    overallStatus === 'Covered'
-      ? '#15803D'
-      : overallStatus === 'Not Covered'
-        ? '#DC2626'
-        : overallStatus === 'Partial'
-          ? '#d97706'
-          : '#6B7280';
-  var statusBg =
-    overallStatus === 'Covered'
-      ? '#E3F6ED'
-      : overallStatus === 'Not Covered'
-        ? 'rgba(220,38,38,0.06)'
-        : overallStatus === 'Partial'
-          ? '#FFFBEB'
-          : '#F8F9FE';
-  var statusBorder =
-    overallStatus === 'Covered'
-      ? '#C6F0D8'
-      : overallStatus === 'Not Covered'
-        ? 'rgba(220,38,38,0.15)'
-        : overallStatus === 'Partial'
-          ? '#FEF3C7'
-          : '#E5E7EB';
+  // ── BUILD HTML OUTPUT ──
+  // Status config per type
+  var _sc = {
+    Covered: { border: '#bbf7d0', bg: '#f0fdf4', badge: '#16a34a', icon: '✓' },
+    'Not Covered': {
+      border: '#fecaca',
+      bg: '#fff1f2',
+      badge: '#dc2626',
+      icon: '✗'
+    },
+    Verify: { border: '#fde68a', bg: '#fffbeb', badge: '#d97706', icon: '⚠' },
+    Partial: { border: '#bfdbfe', bg: '#eff6ff', badge: '#2563eb', icon: '◐' }
+  };
+  var oc = _sc[overallStatus] || _sc.Verify;
 
-  var html =
-    '<div style="border-radius:12px;overflow:hidden;border:1.5px solid ' +
-    statusBorder +
-    ';">';
-  // Status bar
-  html +=
-    '<div style="background:' +
-    statusBg +
-    ';padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid ' +
-    statusBorder +
-    ';">';
-  html +=
-    '<span style="font-size:13px;font-weight:800;color:' +
-    statusColor +
-    ';">' +
-    overallStatus.toUpperCase() +
-    '</span>';
-  html +=
-    '<span style="font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:' +
-    statusColor +
-    ';color:#fff;">' +
-    planDoc.name +
-    '</span></div>';
+  var html = '';
 
-  // Per-item results
-  html += '<div style="padding:10px 14px;">';
+  // Multi-part summary badge
+  if (results.length > 1) {
+    var covL = results.filter(function (r) {
+      return r.status === 'Covered';
+    }).length;
+    var notL = results.filter(function (r) {
+      return r.status === 'Not Covered';
+    }).length;
+    var verL = results.filter(function (r) {
+      return r.status === 'Verify';
+    }).length;
+    var parts = [];
+    if (covL) parts.push(covL + ' covered');
+    if (notL) parts.push(notL + ' not covered');
+    if (verL) parts.push(verL + ' verify');
+    html +=
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
+    html +=
+      '<span style="font-size:11px;font-weight:600;color:#64748b;">' +
+      results.length +
+      ' items found</span>';
+    html +=
+      '<span style="font-size:10px;color:#94a3b8;">' +
+      parts.join(' · ') +
+      '</span>';
+    html += '</div>';
+  }
+
+  // Per-item result cards
   results.forEach(function (r) {
-    var icon =
-      r.status === 'Covered' ? '✓' : r.status === 'Not Covered' ? '✗' : '⚠';
-    var iColor =
-      r.status === 'Covered'
-        ? '#15803D'
-        : r.status === 'Not Covered'
-          ? '#DC2626'
-          : '#6B7280';
+    var c = _sc[r.status] || _sc.Verify;
     html +=
-      '<div style="margin-bottom:8px;padding:8px 10px;background:var(--bg-surface);border-radius:8px;border-left:3px solid ' +
-      iColor +
-      ';">';
+      '<div style="border:1px solid ' +
+      c.border +
+      ';background:' +
+      c.bg +
+      ';border-radius:12px;padding:14px 16px;margin-bottom:10px;">';
+    // Status row: badge + label
     html +=
-      '<div style="font-size:12px;font-weight:700;color:' +
-      iColor +
-      ';margin-bottom:4px;">' +
-      icon +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">';
+    html +=
+      '<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:' +
+      c.badge +
+      ';color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">' +
+      c.icon +
       ' ' +
-      r.label.toUpperCase() +
-      ' — ' +
-      r.status.toUpperCase() +
-      '</div>';
+      r.status +
+      '</span>';
+    html +=
+      '<span style="font-size:14px;font-weight:700;color:#1e293b;">' +
+      r.label.charAt(0).toUpperCase() +
+      r.label.slice(1) +
+      '</span>';
+    html += '</div>';
+    // Divider
+    html +=
+      '<div style="height:1px;background:rgba(0,0,0,0.06);margin-bottom:8px;"></div>';
+    // Data
     if (r.items.length) {
       r.items.forEach(function (item) {
         html +=
-          '<div style="font-size:12px;color:var(--text-primary);line-height:1.5;padding-left:4px;">• ' +
+          '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:2px;">• ' +
           item +
           '</div>';
       });
     } else {
       html +=
-        '<div style="font-size:12px;color:var(--text-secondary);padding-left:4px;">Verify in plan document before advising client.</div>';
+        '<div style="font-size:13px;color:#94a3b8;line-height:1.6;">Not confirmed in plan documents. Confirm with carrier before quoting.</div>';
+    }
+    // SAY THIS section (only for Covered/Not Covered with items)
+    if (r.status === 'Covered' && r.items.length) {
+      html +=
+        '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;margin-top:8px;">';
+      html +=
+        '<div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">SAY THIS →</div>';
+      html +=
+        '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;">"' +
+        r.items[0] +
+        '"</div>';
+      html += '</div>';
+    } else if (r.status === 'Not Covered' && r.items.length) {
+      html +=
+        '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;margin-top:8px;">';
+      html +=
+        '<div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">SAY THIS →</div>';
+      html +=
+        '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;">"That benefit isn\'t included on this plan tier — let me show you what IS covered."</div>';
+      html += '</div>';
     }
     html += '</div>';
   });
 
-  // Client-facing script
+  // Source
   html +=
-    '<div style="margin-top:6px;padding-top:8px;border-top:1px solid var(--border);">';
-  if (overallStatus === 'Verify') {
-    html +=
-      '<div style="font-size:11px;color:var(--text-secondary);font-style:italic;">"Let me confirm that in the plan document for you."</div>';
-  } else if (overallStatus === 'Covered' || overallStatus === 'Partial') {
-    var covered = results.filter(function (r) {
-      return r.status === 'Covered' && r.items.length;
-    });
-    if (covered.length) {
-      html +=
-        '<div style="font-size:10px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">SAY THIS →</div>';
-      html +=
-        '<div style="font-size:12px;color:var(--text-primary);font-style:italic;line-height:1.5;">"' +
-        covered[0].items[0] +
-        '"</div>';
-    }
-  } else {
-    html +=
-      '<div style="font-size:10px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">SAY THIS →</div>';
-    html +=
-      '<div style="font-size:12px;color:var(--text-primary);font-style:italic;line-height:1.5;">"That benefit isn\'t included in this plan — let me show you what IS covered."</div>';
-  }
-  html += '</div></div></div>';
+    '<div style="font-size:10px;color:#94a3b8;text-align:right;margin-top:2px;">Source: ' +
+    planDoc.name +
+    '</div>';
   return html;
 }
 
@@ -1304,8 +1304,10 @@ function brHl(text, terms) {
 // ── ROTATING PLACEHOLDER TEXT ─────────────────────────
 var _brPlaceholders = [
   'Ask about copays...',
-  "What's excluded?",
-  'Compare MEC vs STM...'
+  "What's excluded on this plan?",
+  'Compare MEC vs STM...',
+  'Is urgent care covered?',
+  'What are the waiting periods?'
 ];
 var _brPlaceholderIdx = 0;
 function _brRotatePlaceholder() {
@@ -1320,12 +1322,12 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', function () {
     buildSearchIndex();
     brInit();
-    setInterval(_brRotatePlaceholder, 3000);
+    setInterval(_brRotatePlaceholder, 4000);
   });
 } else {
   setTimeout(function () {
     buildSearchIndex();
     brInit();
-    setInterval(_brRotatePlaceholder, 3000);
+    setInterval(_brRotatePlaceholder, 4000);
   }, 0);
 }
