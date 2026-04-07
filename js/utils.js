@@ -24,13 +24,6 @@ function iconBox(p) {
     '</span>'
   );
 }
-function iconLg(p) {
-  return (
-    '<span style="display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:rgba(92,104,120,0.08);border-radius:10px;color:var(--charcoal);">' +
-    mkIcon(p) +
-    '</span>'
-  );
-}
 var P = {
   money:
     '<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',

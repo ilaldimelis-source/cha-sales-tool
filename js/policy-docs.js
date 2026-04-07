@@ -3247,23 +3247,6 @@ function _pdGrpColor(grp) {
   return grp === 'MEC' ? '#5B8DEF' : grp === 'STM' ? '#d97706' : '#dc2626';
 }
 
-function _pdSectionHead(label, color, collapsed) {
-  var chevDir = collapsed ? '' : 'transform:rotate(180deg);';
-  return (
-    '<div onclick="pdToggleSection(this)" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:10px 0;border-bottom:1px solid #E5E7EB;margin-bottom:8px;">' +
-    '<span style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:' +
-    color +
-    ';text-transform:uppercase;letter-spacing:.06em;">' +
-    label +
-    '</span>' +
-    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' +
-    color +
-    '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;transition:transform 0.2s;' +
-    chevDir +
-    '" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></div>'
-  );
-}
-
 function pdToggleSection(header) {
   var body = header.nextElementSibling;
   var chev = header.querySelector('svg');

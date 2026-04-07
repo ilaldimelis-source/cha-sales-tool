@@ -1768,24 +1768,18 @@ function switchPlanTab(e, i, tab) {
 var selPlans = [0, 5];
 function renderCompare() {
   var html =
-    '<div class="ph"><div class="pt">Compare <span>Plans</span></div><div class="pd">Select up to 3 plans to compare side by side. The best value in each row is highlighted in green.</div></div>';
+    '<div class="ph"><div class="pt">Compare <span>Plans</span></div><div class="pd">Select up to 3 plans to compare side by side.</div></div>';
   PLAN_GROUPS.forEach(function (grp) {
-    var grpColor =
-      grp.key === 'MEC' ? '#5B8DEF' : grp.key === 'STM' ? '#d97706' : '#dc2626';
     var plans = PLANS.filter(function (p) {
       return p.group === grp.key;
     });
     html +=
-      '<div style="margin-bottom:12px;">' +
-      '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">' +
-      '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
-      grpColor +
-      ';"></span>' +
-      '<span style="font-family:var(--font-ui);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:' +
-      grpColor +
-      ';font-weight:700;">' +
+      '<div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--r-card);padding:14px 18px;margin-bottom:10px;">';
+    html +=
+      '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">' +
       grp.label +
-      '</span></div><div class="comp-sel">';
+      '</div>';
+    html += '<div class="comp-sel">';
     plans.forEach(function (p) {
       var idx = PLANS.indexOf(p);
       html +=
@@ -1825,15 +1819,19 @@ function toggleComp(i) {
 }
 
 function _compGroupColor(group) {
-  return group === 'MEC' ? '#5B8DEF' : group === 'STM' ? '#d97706' : '#dc2626';
+  return group === 'MEC'
+    ? 'var(--accent)'
+    : group === 'STM'
+      ? '#d97706'
+      : '#7C3AED';
 }
 
 function _compGroupBg(group) {
   return group === 'MEC'
-    ? 'rgba(91,141,239,0.08)'
+    ? 'var(--bg-surface)'
     : group === 'STM'
-      ? 'rgba(245,158,11,0.08)'
-      : 'rgba(239,68,68,0.06)';
+      ? 'rgba(245,158,11,0.04)'
+      : 'rgba(124,58,237,0.04)';
 }
 
 function buildCompTable() {
