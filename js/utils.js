@@ -121,6 +121,7 @@ function switchTab(e, prefix, tab) {
     e.target.closest('.rec-card') ||
     e.target.closest('.lrp') ||
     document.getElementById('liveResult');
+  if (!card) return;
   card.querySelectorAll('.rtab').forEach(function (t) {
     t.classList.remove('active');
   });
@@ -1099,6 +1100,16 @@ function doSearch(val) {
     document.getElementById('srOverlay').classList.add('show');
     var srInput = document.getElementById('srInput');
     if (srInput && !srInput.value) srInput.value = val;
+  }
+}
+
+function openSearch() {
+  var overlay = document.getElementById('srOverlay');
+  if (overlay) overlay.classList.add('show');
+  var srInput = document.getElementById('srInput');
+  if (srInput) {
+    srInput.value = '';
+    srInput.focus();
   }
 }
 

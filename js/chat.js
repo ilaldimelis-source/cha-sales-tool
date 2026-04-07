@@ -145,6 +145,7 @@ function brInit() {
 
 function brRenderPlanButtons(groupFilter) {
   var planBar = document.getElementById('br-plan-bar');
+  if (!planBar) return;
   planBar.innerHTML = '';
 
   var plans = groupFilter
