@@ -666,7 +666,7 @@ function brRenderLocalResult(result, planName) {
     '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
     '<span style="background:' +
     badgeColor +
-    ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:999px;">' +
+    ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:999px;white-space:nowrap;word-break:keep-all;">' +
     icon +
     ' ' +
     label +
@@ -1218,6 +1218,48 @@ function _brSpecialCase(topic, planDoc) {
       source: planDoc.name
     };
   }
+  if (/\brx\b|\bprescription\b|\bmedication\b|\bdrug\b|\bmeds\b|\bpharmacy\b/.test(t)) {
+    // Find Rx info from benefits categories
+    var rxItems = [];
+    planDoc.benefits.forEach(function (bcat) {
+      if (/prescri|rx|pharm|medication|drug/i.test(bcat.category)) {
+        rxItems = rxItems.concat(bcat.items);
+      }
+    });
+    // Also grab Rx-related limitations
+    var rxLimits = [];
+    planDoc.limitations.forEach(function (lim) {
+      if (/prescri|rx|pharm|medication|drug/i.test(lim)) {
+        rxLimits.push(lim);
+      }
+    });
+    if (rxItems.length > 0) {
+      var isDiscount = rxItems.join(' ').toLowerCase().indexOf('discount') !== -1;
+      var rxSayThis;
+      if (planDoc.group === 'MEC') {
+        rxSayThis = 'You have access to the BestChoiceRx discount card which you can use at major pharmacies for savings on prescriptions.';
+      } else {
+        rxSayThis = rxItems[0];
+      }
+      var combined = rxItems.slice(0, 3);
+      if (rxLimits.length > 0) combined.push('⚠ ' + rxLimits[0]);
+      return {
+        status: isDiscount ? 'Discount' : 'Covered',
+        label: 'Prescriptions / Rx',
+        items: combined,
+        sayThis: rxSayThis,
+        source: planDoc.name
+      };
+    }
+    if (rxLimits.length > 0) {
+      return {
+        status: 'Not Covered',
+        label: 'Prescriptions / Rx',
+        items: rxLimits.slice(0, 2),
+        source: planDoc.name
+      };
+    }
+  }
   return null;
 }
 
@@ -1263,7 +1305,7 @@ function brStructuredAnswer(query, plans) {
     notCount = 0,
     verCount = 0;
   results.forEach(function (r) {
-    if (r.status === 'Covered') covCount++;
+    if (r.status === 'Covered' || r.status === 'Discount') covCount++;
     else if (r.status === 'Not Covered') notCount++;
     else verCount++;
   });
@@ -1303,6 +1345,13 @@ function brStructuredAnswer(query, plans) {
       badge: '#eff6ff',
       badgeText: '#3b82f6',
       icon: '◐'
+    },
+    Discount: {
+      border: '#e2e8f0',
+      bg: '#fff',
+      badge: '#f5f3ff',
+      badgeText: '#7c3aed',
+      icon: '%'
     }
   };
   var oc = _sc[overallStatus] || _sc.Verify;
@@ -1354,7 +1403,7 @@ function brStructuredAnswer(query, plans) {
       c.badge +
       ';color:' +
       c.badgeText +
-      ';font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">' +
+      ';font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;word-break:keep-all;">' +
       c.icon +
       ' ' +
       r.status +
@@ -1380,24 +1429,25 @@ function brStructuredAnswer(query, plans) {
       html +=
         '<div style="font-size:13px;color:#94a3b8;line-height:1.6;">Not confirmed in plan documents. Confirm with carrier before quoting.</div>';
     }
-    // SAY THIS section (only for Covered/Not Covered with items)
-    if (r.status === 'Covered' && r.items.length) {
+    // SAY THIS section (for Covered/Discount/Not Covered with items)
+    if ((r.status === 'Covered' || r.status === 'Discount') && r.items.length) {
+      var sayText = r.sayThis || r.items[0];
       html +=
         '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:8px;">';
       html +=
-        '<div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">SAY THIS →</div>';
+        '<div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;white-space:nowrap;">SAY THIS →</div>';
       html +=
-        '<div style="font-size:11px;color:#374151;font-style:italic;line-height:1.5;">"' +
-        r.items[0] +
+        '<div style="font-size:11px;color:#374151;font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"' +
+        sayText +
         '"</div>';
       html += '</div>';
     } else if (r.status === 'Not Covered' && r.items.length) {
       html +=
         '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:8px;">';
       html +=
-        '<div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">SAY THIS →</div>';
+        '<div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;white-space:nowrap;">SAY THIS →</div>';
       html +=
-        '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;">"That benefit isn\'t included on this plan tier — let me show you what IS covered."</div>';
+        '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"That benefit isn\'t included on this plan tier — let me show you what IS covered."</div>';
       html += '</div>';
     }
     html += '</div>';
