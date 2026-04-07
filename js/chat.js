@@ -716,23 +716,24 @@ function brAIAnswer(query, planId) {
   console.log('[CHA Groq] Calling AI for plan:', planId, 'query:', query);
   brShowTyping();
 
-  var planContext =
-    'PLAN: ' +
-    plan.name +
-    '\nTYPE: ' +
-    (plan.type || '') +
-    '\nNETWORK: ' +
-    (plan.network || '') +
-    '\nBENEFITS:\n' +
-    JSON.stringify(plan.benefits || [], null, 2) +
-    '\nLIMITATIONS:\n' +
-    JSON.stringify(plan.limitations || [], null, 2) +
-    '\nWAITING PERIODS:\n' +
-    JSON.stringify(plan.waitingPeriods || [], null, 2) +
-    '\nPRE-EX:\n' +
-    JSON.stringify(plan.preEx || '', null, 2) +
-    '\nNOTES:\n' +
-    (plan.planNotes || '');
+  var planContext = plan.rawText
+    ? 'FULL PLAN DOCUMENT:\n' + plan.rawText
+    : 'PLAN: ' +
+      plan.name +
+      '\nTYPE: ' +
+      (plan.type || '') +
+      '\nNETWORK: ' +
+      (plan.network || '') +
+      '\nBENEFITS:\n' +
+      JSON.stringify(plan.benefits || [], null, 2) +
+      '\nLIMITATIONS:\n' +
+      JSON.stringify(plan.limitations || [], null, 2) +
+      '\nWAITING PERIODS:\n' +
+      JSON.stringify(plan.waitingPeriods || [], null, 2) +
+      '\nPRE-EX:\n' +
+      JSON.stringify(plan.preEx || '', null, 2) +
+      '\nNOTES:\n' +
+      (plan.planNotes || '');
 
   var sysPrompt =
     'You are a health insurance benefits assistant for Central Health Advisors. Use ONLY the plan data provided. RULES: STATUS must be COVERED, NOT COVERED, VERIFY, or PARTIAL. Use COVERED when benefit exists in plan data. Use NOT COVERED ONLY when plan data explicitly says excluded or not covered. Use VERIFY when benefit is not mentioned. NEVER use NOT COVERED for missing data — use VERIFY. MEC plans have NO deductible — always COVERED for deductible questions. MedFirst 1 Rx = BestChoiceRx discount card — STATUS: COVERED. MEC copays: PCP $25 up to 3 visits/year, Specialist $50 up to 1 visit/year. Waiting period: 30 days sickness, Day 1 accidents. FORMAT RESPONSE EXACTLY LIKE THIS WITH NO VARIATIONS: STATUS: COVERED\nANSWER: one to three lines from plan data\nSAY THIS: exact words for agent to read\n\nPLAN DATA:\n' +
