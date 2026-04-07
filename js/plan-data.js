@@ -1,5 +1,5 @@
 // plan-data.js — POLICY_DOCS array (pure data, no functions)
-// policy-docs.js — Policy Reference tab (POLICY_DOCS data + render/filter/toggle)
+// Loaded before policy-docs.js which handles render/filter/toggle
 var POLICY_DOCS = [
   {
     group: 'MEC',
