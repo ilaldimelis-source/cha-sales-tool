@@ -6,7 +6,7 @@
   'use strict';
 
   var CLERK_PK = 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
-  var CLERK_CDN = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+  var CLERK_CDN = 'https://whole-viper-89.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
   var LOGIN_URL = '/login.html';
   var INACTIVITY_MS = 30 * 60 * 1000; // 30 minutes
   var _inactivityTimer = null;
