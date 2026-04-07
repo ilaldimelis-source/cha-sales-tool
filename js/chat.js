@@ -844,18 +844,36 @@ function brStructuredAnswer(query, plans) {
   else if (notCount > 0 && verCount === 0) overallStatus = 'Not Covered';
   else overallStatus = 'Verify';
 
-  // ── BUILD HTML OUTPUT ──
-  // Status config per type
+  // ── BUILD HTML OUTPUT (dark theme) ──
   var _sc = {
-    Covered: { border: '#bbf7d0', bg: '#f0fdf4', badge: '#16a34a', icon: '✓' },
+    Covered: {
+      border: 'rgba(34,197,94,0.2)',
+      bg: 'rgba(34,197,94,0.08)',
+      badge: 'rgba(34,197,94,0.15)',
+      badgeText: '#4ade80',
+      icon: '✓'
+    },
     'Not Covered': {
-      border: '#fecaca',
-      bg: '#fff1f2',
-      badge: '#dc2626',
+      border: 'rgba(239,68,68,0.2)',
+      bg: 'rgba(239,68,68,0.08)',
+      badge: 'rgba(239,68,68,0.15)',
+      badgeText: '#f87171',
       icon: '✗'
     },
-    Verify: { border: '#fde68a', bg: '#fffbeb', badge: '#d97706', icon: '⚠' },
-    Partial: { border: '#bfdbfe', bg: '#eff6ff', badge: '#2563eb', icon: '◐' }
+    Verify: {
+      border: 'rgba(245,158,11,0.2)',
+      bg: 'rgba(245,158,11,0.08)',
+      badge: 'rgba(245,158,11,0.15)',
+      badgeText: '#fbbf24',
+      icon: '⚠'
+    },
+    Partial: {
+      border: 'rgba(81,117,241,0.2)',
+      bg: 'rgba(81,117,241,0.08)',
+      badge: 'rgba(81,117,241,0.15)',
+      badgeText: '#93c5fd',
+      icon: '◐'
+    }
   };
   var oc = _sc[overallStatus] || _sc.Verify;
 
@@ -879,11 +897,11 @@ function brStructuredAnswer(query, plans) {
     html +=
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
     html +=
-      '<span style="font-size:11px;font-weight:600;color:#64748b;">' +
+      '<span style="font-size:11px;font-weight:600;color:rgba(245,240,232,0.5);">' +
       results.length +
       ' items found</span>';
     html +=
-      '<span style="font-size:10px;color:#94a3b8;">' +
+      '<span style="font-size:10px;color:rgba(245,240,232,0.35);">' +
       parts.join(' · ') +
       '</span>';
     html += '</div>';
@@ -904,25 +922,27 @@ function brStructuredAnswer(query, plans) {
     html +=
       '<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:' +
       c.badge +
-      ';color:#fff;font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">' +
+      ';color:' +
+      c.badgeText +
+      ';font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;">' +
       c.icon +
       ' ' +
       r.status +
       '</span>';
     html +=
-      '<span style="font-size:14px;font-weight:700;color:#1e293b;">' +
+      '<span style="font-size:12px;font-weight:500;color:#f5f0e8;">' +
       r.label.charAt(0).toUpperCase() +
       r.label.slice(1) +
       '</span>';
     html += '</div>';
     // Divider
     html +=
-      '<div style="height:1px;background:rgba(0,0,0,0.06);margin-bottom:8px;"></div>';
+      '<div style="height:1px;background:rgba(255,255,255,0.06);margin-bottom:8px;"></div>';
     // Data
     if (r.items.length) {
       r.items.forEach(function (item) {
         html +=
-          '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:2px;">• ' +
+          '<div style="font-size:12px;color:rgba(245,240,232,0.6);line-height:1.6;margin-bottom:2px;">• ' +
           item +
           '</div>';
       });
@@ -933,19 +953,19 @@ function brStructuredAnswer(query, plans) {
     // SAY THIS section (only for Covered/Not Covered with items)
     if (r.status === 'Covered' && r.items.length) {
       html +=
-        '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;margin-top:8px;">';
+        '<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;margin-top:8px;">';
       html +=
-        '<div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">SAY THIS →</div>';
+        '<div style="font-size:9px;font-weight:500;color:rgba(245,240,232,0.35);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">SAY THIS →</div>';
       html +=
-        '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;">"' +
+        '<div style="font-size:11px;color:#cbd5e1;font-style:italic;line-height:1.5;">"' +
         r.items[0] +
         '"</div>';
       html += '</div>';
     } else if (r.status === 'Not Covered' && r.items.length) {
       html +=
-        '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;margin-top:8px;">';
+        '<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 10px;margin-top:8px;">';
       html +=
-        '<div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">SAY THIS →</div>';
+        '<div style="font-size:9px;font-weight:500;color:rgba(245,240,232,0.35);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;">SAY THIS →</div>';
       html +=
         '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;">"That benefit isn\'t included on this plan tier — let me show you what IS covered."</div>';
       html += '</div>';
@@ -955,7 +975,7 @@ function brStructuredAnswer(query, plans) {
 
   // Source
   html +=
-    '<div style="font-size:10px;color:#94a3b8;text-align:right;margin-top:2px;">Source: ' +
+    '<div style="font-size:10px;color:rgba(245,240,232,0.25);text-align:right;margin-top:2px;">Source: ' +
     planDoc.name +
     '</div>';
   return html;
