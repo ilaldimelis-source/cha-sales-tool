@@ -2038,10 +2038,12 @@ function renderPolicydocs() {
 
   // Search box
   html += '<div style="position:relative;margin-bottom:14px;">';
+  html += '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
   html +=
     '<input type="text" id="pdSearchInput" placeholder="Search plans, benefits, exclusions..." value="' +
     escHTML(policyDocSearch) +
-    '" aria-label="Search plans, benefits, exclusions" oninput="policyDocSearchTyping(this.value)" style="width:100%;padding:10px 14px;border:1.5px solid var(--rule2);border-radius:var(--r-pill);font-family:var(--font-body);font-size:.9rem;background:#FFFFFF;color:var(--txt-head);outline:none;" onfocus="this.style.borderColor=\'#5175F1\'" onblur="this.style.borderColor=\'var(--rule2)\'">';
+    '" aria-label="Search plans, benefits, exclusions" oninput="policyDocSearchTyping(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'">';
+  html += '<button id="pdSearchClear" onclick="clearPdSearch()" style="display:' + (policyDocSearch ? 'block' : 'none') + ';position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
 
   // Results container
@@ -2055,11 +2057,23 @@ function renderPolicydocs() {
 
 function policyDocSearchTyping(val) {
   policyDocSearch = val;
+  var clearBtn = document.getElementById('pdSearchClear');
+  if (clearBtn) clearBtn.style.display = val ? 'block' : 'none';
   clearTimeout(_pdSearchTimer);
   _pdSearchTimer = setTimeout(function () {
     var container = document.getElementById('pdResultsContainer');
     if (container) container.innerHTML = renderPolicyResults();
-  }, 200);
+  }, 100);
+}
+
+function clearPdSearch() {
+  policyDocSearch = '';
+  var input = document.getElementById('pdSearchInput');
+  if (input) { input.value = ''; input.focus(); }
+  var clearBtn = document.getElementById('pdSearchClear');
+  if (clearBtn) clearBtn.style.display = 'none';
+  var container = document.getElementById('pdResultsContainer');
+  if (container) container.innerHTML = renderPolicyResults();
 }
 
 function policyDocFilterChanged() {

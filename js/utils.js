@@ -926,13 +926,13 @@ function debouncedSearch(val) {
       }
       doSearch(val);
     }
-  }, 80);
+  }, 150);
 }
 function debouncedOverlaySearch(val) {
   clearTimeout(_searchTimer);
   _searchTimer = setTimeout(function () {
     doSearch(val);
-  }, 80);
+  }, 150);
 }
 
 function getBadgeClass(type) {

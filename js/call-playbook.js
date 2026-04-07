@@ -934,10 +934,21 @@ function _filterPsCards(query) {
   var cards = document.querySelectorAll('.ps-card');
   var vis = 0;
   cards.forEach(function(c) {
-    var match = !q || (c.getAttribute('data-ps-search') || '').indexOf(q) !== -1;
+    var searchStr = (c.getAttribute('data-ps-search') || '') + ' ' + c.textContent.toLowerCase();
+    var match = !q || searchStr.indexOf(q) !== -1;
     c.style.display = match ? '' : 'none';
     if (match) vis++;
   });
+  // Show/hide no results message
+  var noMsg = document.getElementById('psNoResults');
+  if (!noMsg) {
+    var grid = document.getElementById('psCardGrid');
+    if (grid) {
+      grid.insertAdjacentHTML('afterend', '<div id="psNoResults" style="display:none;text-align:center;padding:24px 0;color:var(--text-secondary);font-size:14px;">No plans match your search.</div>');
+      noMsg = document.getElementById('psNoResults');
+    }
+  }
+  if (noMsg) noMsg.style.display = (q && vis === 0) ? 'block' : 'none';
 }
 
 function renderPlanScripts() {
@@ -971,8 +982,8 @@ function renderPlanScripts() {
   if (planScriptActive < 0 || planScriptActive >= filtered.length) {
     // Search bar
     html += '<div style="position:relative;margin-bottom:14px;">';
-    html += '<svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
-    html += '<input type="text" id="psSearchInput" placeholder="Search plans..." oninput="_filterPsCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 16px 0 40px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
+    html += '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+    html += '<input type="text" id="psSearchInput" placeholder="Search plans..." oninput="_filterPsCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
     html += '<button id="psSearchClear" onclick="var i=document.getElementById(\'psSearchInput\');if(i){i.value=\'\';_filterPsCards(\'\');i.focus();}" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
     html += '</div>';
     html += '<div id="psCardGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">';

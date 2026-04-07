@@ -1151,16 +1151,15 @@ function filterPlanSearch(query) {
   var visibleCount = 0;
   cards.forEach(function(card) {
     if (!q) { card.style.display = ''; visibleCount++; return; }
-    var text = card.textContent.toLowerCase();
-    var match = text.indexOf(q) !== -1;
+    // Search data-plan-search attribute first (name, type, network, carrier, assoc), fallback to textContent
+    var searchStr = (card.getAttribute('data-plan-search') || '') + ' ' + card.textContent.toLowerCase();
+    var match = searchStr.indexOf(q) !== -1;
     card.style.display = match ? '' : 'none';
     if (match) visibleCount++;
   });
   // Also show/hide group headers
   var groups = wrap.querySelectorAll('[data-plan-group]');
   groups.forEach(function(grp) {
-    var anyVisible = grp.querySelectorAll('.plan-card[style=""], .plan-card:not([style])');
-    // Just check children
     var vis = 0;
     grp.querySelectorAll('.plan-card').forEach(function(c) { if (c.style.display !== 'none') vis++; });
     grp.style.display = (q && vis === 0) ? 'none' : '';
@@ -1236,7 +1235,8 @@ function renderPlanGroups() {
       var badgeBg = grp.key === 'MEC' ? 'rgba(91,141,239,0.10)' : grp.key === 'STM' ? 'rgba(245,158,11,0.10)' : 'rgba(239,68,68,0.08)';
       var badgeColor = grp.key === 'MEC' ? '#5B8DEF' : grp.key === 'STM' ? '#d97706' : '#dc2626';
 
-      html += '<div class="plan-card" id="pv-' + doc.id + '">';
+      var planSearchStr = (doc.name + ' ' + doc.type + ' ' + doc.network + ' ' + doc.carrier + ' ' + (doc.assoc || '') + ' ' + doc.group).toLowerCase();
+      html += '<div class="plan-card" data-plan-search="' + escHTML(planSearchStr) + '" id="pv-' + doc.id + '">';
 
       // ── COLLAPSED VIEW ──
       html += '<div onclick="togglePlanVault(\'' + doc.id + '\')" style="padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;">';
