@@ -1,6 +1,17 @@
 // app.js — Navigation, routing, PAGE_CONFIG, initApp
 
 // ══════════════════════════════════════════════════════
+// ERROR BOUNDARIES
+// ══════════════════════════════════════════════════════
+window.onerror = function (msg, src, line) {
+  console.error('CHA App Error:', msg, 'at', src, line);
+  return false;
+};
+window.onunhandledrejection = function (event) {
+  console.error('CHA Unhandled Promise:', event.reason);
+};
+
+// ══════════════════════════════════════════════════════
 // SAFE LOCALSTORAGE WRAPPER (incognito / quota guard)
 // ══════════════════════════════════════════════════════
 function safeGetItem(key) {
@@ -783,10 +794,25 @@ function initApp() {
     document.body.appendChild(fab);
   }
 }
+function _safeInitApp() {
+  try {
+    initApp();
+  } catch (e) {
+    console.error('initApp failed:', e);
+    var main = document.getElementById('main-content');
+    if (main) {
+      main.innerHTML =
+        '<div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:12px;color:#64748b;font-family:sans-serif;">' +
+        '<div style="font-size:18px;">Something went wrong</div>' +
+        '<div style="font-size:13px;">Please refresh the page</div>' +
+        '<button onclick="location.reload()" style="margin-top:8px;padding:8px 20px;background:#5175f1;color:#fff;border:none;border-radius:999px;cursor:pointer;font-size:13px;">Refresh</button></div>';
+    }
+  }
+}
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initApp);
+  document.addEventListener('DOMContentLoaded', _safeInitApp);
 } else {
-  initApp();
+  _safeInitApp();
 }
 
 /* ── Click-Outside-to-Close System ──────────────────────────

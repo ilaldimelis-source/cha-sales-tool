@@ -15,7 +15,8 @@
     "format:check": "prettier . --check",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
-    "validate": "npm run format:check && npm run lint && npm run test:e2e"
+    "validate": "npm run format:check && npm run lint && npm run test:e2e",
+    "version:bust": "node -e \"var f=require('fs');var t=Date.now();var h=f.readFileSync('index.html','utf8');h=h.replace(/\\?v=\\d+/g,'?v='+t);f.writeFileSync('index.html',h);console.log('Cache busted to v='+t);\""
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

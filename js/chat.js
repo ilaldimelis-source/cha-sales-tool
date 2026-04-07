@@ -306,6 +306,10 @@ document.getElementById('br-input').addEventListener('keydown', function (e) {
     e.preventDefault();
     brSend();
   }
+  if (e.ctrlKey && e.key === 'Enter') {
+    e.preventDefault();
+    brSend();
+  }
 });
 
 document.getElementById('br-send').disabled = true;
