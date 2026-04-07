@@ -1,4 +1,4 @@
-h// policy-docs.js — Policy Reference tab (POLICY_DOCS data + render/filter/toggle)
+// policy-docs.js — Policy Reference tab (POLICY_DOCS data + render/filter/toggle)
 var POLICY_DOCS = [
   {
     group: 'MEC',
