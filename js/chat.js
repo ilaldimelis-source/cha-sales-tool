@@ -203,6 +203,7 @@ document.getElementById('br-toggle').addEventListener('click', function () {
   brOpen = !brOpen;
   document.getElementById('br-panel').classList.toggle('open', brOpen);
   document.getElementById('br-toggle').classList.toggle('open', brOpen);
+  document.body.classList.toggle('br-open', brOpen);
   if (brOpen) {
     document.getElementById('br-input').focus();
     brScroll();
