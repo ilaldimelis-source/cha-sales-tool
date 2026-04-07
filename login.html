@@ -215,7 +215,7 @@
       btn.disabled = true;
       btn.textContent = 'Signing in...';
 
-      var signInAPI = clerk.signIn || window.Clerk.signIn;
+      var signInAPI = (clerk.client && clerk.client.signIn) || clerk.signIn;
 
       signInAPI.create({ identifier: email, password: password })
         .then(function(result) {
@@ -314,7 +314,8 @@
       if (!email) { showResetErr('Please enter your email.'); return; }
       if (!clerk) { showResetErr('Service still loading. Please wait.'); return; }
 
-      clerk.signIn.create({ strategy: 'reset_password_email_code', identifier: email })
+      var resetAPI = (clerk.client && clerk.client.signIn) || clerk.signIn;
+      resetAPI.create({ strategy: 'reset_password_email_code', identifier: email })
         .then(function() {
           document.getElementById('forgot-view').innerHTML =
             '<div style="text-align:center;padding:20px 0;">' +
