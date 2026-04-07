@@ -2,70 +2,92 @@
 
 ## Project
 
-- Static SPA — vanilla HTML/CSS/JS, no framework, no build step
-- Hosted on GitHub Pages from main branch
-- Live URL: https://ilaldimelis-source.github.io/cha-sales-tool/
+Static SPA — vanilla HTML/CSS/JS, no framework, no build step.
+Hosted on GitHub Pages from main branch.
+Live URL: https://ilaldimelis-source.github.io/cha-sales-tool/
 
 ## File Structure
 
-- index.html — app shell, all HTML
+- index.html — app shell
 - css/styles.css — all styling
-- js/plan-data.js — POLICY_DOCS array (27 plan objects, pure data)
-- js/policy-docs.js — render functions for plan cards
-- js/plans-benefits.js — Plans tab, Compare tab, Benefits tab
+- js/plan-registry.js — MASTER PLAN LIST (edit this to add new plans)
+- js/plan-data.js — POLICY_DOCS array (27 plan benefit data objects)
+- js/policy-docs.js — plan card render functions
+- js/plans-benefits.js — Plans tab, Compare, Benefits
 - js/chat.js — Benefits Reference chatbot
-- js/utils.js — shared search engine, synonym expansion, fuzzy matching
+- js/utils.js — search engine, synonyms, fuzzy match
 - js/training.js — Training tab
-- js/call-playbook.js — Scripts tab, Call Flow, Plan Scripts
+- js/call-playbook.js — Scripts tab, Plan Scripts
 - js/ai-tools.js — AI Tools tab
 - js/live-assist.js — Live Assist tab
 - js/compliance.js — Compliance tab
-- js/recovery-data.js — recovery scenario data
+- js/recovery-data.js — recovery data
 - js/objections.js — objections tab
 - js/myspace.js — My Space tab
-- js/app.js — routing, navigation, initApp — loads LAST
+- js/app.js — routing, navigation, initApp (LOADS LAST)
+
+## Script Load Order in index.html (NEVER CHANGE)
+
+1. js/plan-registry.js (FIRST)
+2. js/utils.js
+3. js/recovery-data.js
+4. js/objections.js
+5. js/plan-data.js
+6. js/policy-docs.js
+7. js/plans-benefits.js
+8. js/call-playbook.js
+9. js/live-assist.js
+10. js/ai-tools.js
+11. js/training.js
+12. js/compliance.js
+13. js/myspace.js
+14. js/app.js (LAST — no exceptions)
+15. js/chat.js (after app.js)
 
 ## Color System
 
 - Sidebar: #243b55
 - Chat header: #1E2D3D
-- Accent blue: #5175f1
-- MEC green: #22c55e
-- STM blue: #3b82f6
-- Limited purple: #a78bfa
+- Accent: #5175f1
+- MEC: #22c55e
+- STM: #3b82f6
+- Limited: #a78bfa
 - Text primary: #1e293b
 - Text body: #374151
 - Text muted: #94a3b8
 - Border: #e2e8f0
-- Background light: #f8fafc
+- Background: #f8fafc
 
-## CSS Conventions
+## HARD RULES — NEVER VIOLATE
 
-- Pills: border-radius 999px
-- Cards: border-radius 12-16px
-- Inputs: border-radius 8-10px
-- Borders: 1px solid #e2e8f0
-- Transitions: 0.15s ease
-- Shadows: 0 2px 8px rgba(0,0,0,0.04)
+- NO defer on any script tag
+- NO async/await anywhere — use .then().catch() only
+- app.js MUST be the last script loaded (before chat.js)
+- plan-registry.js MUST be the first script loaded
+- NEVER change script load order without testing
+- NEVER commit without running: npm run check
+- NEVER change script text in js/call-playbook.js
+- NEVER change answer logic in js/chat.js
+- NEVER change POLICY_DOCS data values in js/plan-data.js
 
-## Hard Rules — NEVER change these
+## If Site Goes Blank After a Commit
 
-- Script text content in js/call-playbook.js — not one word
-- Answer logic functions in js/chat.js (brStructuredAnswer, brLookupBenefit, brExtractItems, brFixTypos, brExpandTerm)
-- POLICY_DOCS array data values in js/plan-data.js
-- PLANS array data values in js/plans-benefits.js
-- Any compliance disclosure text
+Run immediately: npm run revert
 
-## Active Branch
+## Adding a New Plan
 
-- main only — all other branches deleted
+1. Add entry to js/plan-registry.js CHA_PLAN_REGISTRY array
+2. Add data object to POLICY_DOCS in js/plan-data.js
+3. Add script to js/call-playbook.js if needed
+4. Upload PDF to project files
+5. Run npm run check
+6. Commit and push
 
-## Cache Busting
+## Before EVERY Commit — Mandatory Checklist
 
-- Scripts load with ?v=TIMESTAMP — run npm run version:bust to update
-
-## PWA
-
-- sw.js handles cache-first strategy
-- manifest.json — short_name "CHA Sales"
-- logo.png — real CHA circular blue logo
+1. npm run check — syntax check all JS files
+2. Verify NO defer on script tags in index.html
+3. Verify app.js is second-to-last script in index.html
+4. Verify plan-registry.js is first script in index.html
+5. Bump sw.js cache version by 1
+6. Verify NO async/await in any JS file

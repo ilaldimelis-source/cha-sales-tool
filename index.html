@@ -835,19 +835,48 @@
      12. app.js       — PAGE_CONFIG, showPage, initApp, CLOSEABLE, SW
      13. chat.js      — Benefits Reference panel (uses POLICY_DOCS)
      ══════════════════════════════════════════════════════ -->
-    <script src="js/utils.js?v=36"></script>
-    <script src="js/recovery-data.js?v=36"></script>
-    <script src="js/objections.js?v=36"></script>
-    <script src="js/plans-benefits.js?v=36"></script>
-    <script src="js/call-playbook.js?v=36"></script>
-    <script src="js/live-assist.js?v=36"></script>
-    <script src="js/ai-tools.js?v=36"></script>
-    <script src="js/training.js?v=36"></script>
-    <script src="js/compliance.js?v=36"></script>
-    <script src="js/plan-data.js?v=36"></script>
-    <script src="js/policy-docs.js?v=36"></script>
-    <script src="js/myspace.js?v=36"></script>
-    <script src="js/app.js?v=36"></script>
-    <script src="js/chat.js?v=36"></script>
+    <script src="js/plan-registry.js?v=37"></script>
+    <script src="js/utils.js?v=37"></script>
+    <script src="js/recovery-data.js?v=37"></script>
+    <script src="js/objections.js?v=37"></script>
+    <script src="js/plan-data.js?v=37"></script>
+    <script src="js/policy-docs.js?v=37"></script>
+    <script src="js/plans-benefits.js?v=37"></script>
+    <script src="js/call-playbook.js?v=37"></script>
+    <script src="js/live-assist.js?v=37"></script>
+    <script src="js/ai-tools.js?v=37"></script>
+    <script src="js/training.js?v=37"></script>
+    <script src="js/compliance.js?v=37"></script>
+    <script src="js/myspace.js?v=37"></script>
+    <script src="js/app.js?v=37"></script>
+    <script src="js/chat.js?v=37"></script>
+    <script>
+      (function () {
+        var required = [
+          'POLICY_DOCS',
+          'CHA_PLAN_REGISTRY',
+          'brInit',
+          'renderPolicydocs',
+          'showPage'
+        ];
+        var missing = [];
+        for (var i = 0; i < required.length; i++) {
+          if (typeof window[required[i]] === 'undefined')
+            missing.push(required[i]);
+        }
+        if (missing.length > 0) {
+          console.error('[CHA] Missing globals:', missing);
+          document.body.innerHTML =
+            '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#f8fafc;font-family:sans-serif;gap:16px;">' +
+            '<img src="logo.png" style="width:60px;height:60px;border-radius:50%;" />' +
+            '<div style="font-size:18px;font-weight:600;color:#1e293b;">CHA Command Center</div>' +
+            '<div style="font-size:13px;color:#ef4444;background:#fef2f2;padding:10px 16px;border-radius:8px;border:1px solid #fecaca;">Some files failed to load. Please refresh.</div>' +
+            '<button onclick="location.reload()" style="padding:10px 24px;background:#5175f1;color:white;border:none;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;">Refresh Now</button>' +
+            '<div style="font-size:11px;color:#94a3b8;">Missing: ' +
+            missing.join(', ') +
+            '</div></div>';
+        }
+      })();
+    </script>
   </body>
 </html>

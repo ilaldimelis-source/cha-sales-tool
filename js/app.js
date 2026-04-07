@@ -1,14 +1,34 @@
 // app.js — Navigation, routing, PAGE_CONFIG, initApp
 
 // ══════════════════════════════════════════════════════
-// ERROR BOUNDARIES
+// CRASH PROTECTION
 // ══════════════════════════════════════════════════════
+window._chaAppStarted = false;
+window._chaErrors = [];
+
 window.onerror = function (msg, src, line) {
-  console.error('CHA App Error:', msg, 'at', src, line);
+  window._chaErrors.push({
+    msg: msg,
+    src: src,
+    line: line,
+    time: new Date().toISOString()
+  });
+  console.error('[CHA] JS Error:', msg, 'in', src, 'line', line);
+  if (!window._chaAppStarted) {
+    document.body.innerHTML =
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#f8fafc;font-family:sans-serif;gap:16px;">' +
+      '<img src="logo.png" style="width:60px;height:60px;border-radius:50%;" />' +
+      '<div style="font-size:18px;font-weight:600;color:#1e293b;">CHA Command Center</div>' +
+      '<div style="font-size:13px;color:#ef4444;background:#fef2f2;padding:10px 16px;border-radius:8px;border:1px solid #fecaca;">A script error occurred. Please refresh the page.</div>' +
+      '<button onclick="location.reload()" style="padding:10px 24px;background:#5175f1;color:white;border:none;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;">Refresh Now</button>' +
+      '<div style="font-size:11px;color:#94a3b8;">Error: ' +
+      msg +
+      '</div></div>';
+  }
   return false;
 };
 window.onunhandledrejection = function (event) {
-  console.error('CHA Unhandled Promise:', event.reason);
+  console.error('[CHA] Unhandled Promise:', event.reason);
 };
 
 // ══════════════════════════════════════════════════════
@@ -797,16 +817,10 @@ function initApp() {
 function _safeInitApp() {
   try {
     initApp();
+    window._chaAppStarted = true;
   } catch (e) {
-    console.error('initApp failed:', e);
-    var main = document.getElementById('main-content');
-    if (main) {
-      main.innerHTML =
-        '<div style="display:flex;align-items:center;justify-content:center;height:100%;flex-direction:column;gap:12px;color:#64748b;font-family:sans-serif;">' +
-        '<div style="font-size:18px;">Something went wrong</div>' +
-        '<div style="font-size:13px;">Please refresh the page</div>' +
-        '<button onclick="location.reload()" style="margin-top:8px;padding:8px 20px;background:#5175f1;color:#fff;border:none;border-radius:999px;cursor:pointer;font-size:13px;">Refresh</button></div>';
-    }
+    console.error('[CHA] initApp failed:', e);
+    window.onerror(e.message, 'app.js', 0, 0, e);
   }
 }
 if (document.readyState === 'loading') {

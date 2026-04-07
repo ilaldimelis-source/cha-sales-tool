@@ -1,13 +1,14 @@
 // CHA Sales Command Center — Service Worker
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = 'cha-command-center-v36';
+var CACHE_NAME = 'cha-command-center-v37';
 var URLS_TO_CACHE = [
   './',
   './index.html',
   './logo.png',
   './manifest.json',
   './css/styles.css',
+  './js/plan-registry.js',
   './js/utils.js',
   './js/recovery-data.js',
   './js/objections.js',
@@ -55,62 +56,25 @@ self.addEventListener('activate', function (event) {
   self.clients.claim();
 });
 
-// Fetch: network-first for JS/HTML, cache-first for everything else
+// Fetch: stale-while-revalidate — serve cache fast, update in background
 self.addEventListener('fetch', function (event) {
-  var url = event.request.url;
-  // JS and HTML files — always try network first so updates show immediately
-  if (url.endsWith('.js') || url.endsWith('.html') || url.endsWith('/')) {
-    event.respondWith(
-      fetch(event.request)
-        .then(function (networkResponse) {
-          if (networkResponse && networkResponse.status === 200) {
-            var clone = networkResponse.clone();
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    caches.match(event.request).then(function (cached) {
+      var fetchPromise = fetch(event.request)
+        .then(function (response) {
+          if (response && response.status === 200) {
+            var clone = response.clone();
             caches.open(CACHE_NAME).then(function (cache) {
               cache.put(event.request, clone);
             });
           }
-          return networkResponse;
+          return response;
         })
         .catch(function () {
-          return caches.match(event.request);
-        })
-    );
-    return;
-  }
-  // Everything else (CSS, fonts, images) — cache-first
-  event.respondWith(
-    caches.match(event.request).then(function (cachedResponse) {
-      if (cachedResponse) {
-        fetch(event.request)
-          .then(function (networkResponse) {
-            if (networkResponse && networkResponse.status === 200) {
-              caches.open(CACHE_NAME).then(function (cache) {
-                cache.put(event.request, networkResponse);
-              });
-            }
-          })
-          .catch(function () {
-            /* offline — that's fine */
-          });
-        return cachedResponse;
-      }
-      // Not in cache — try network, then cache the result
-      return fetch(event.request)
-        .then(function (networkResponse) {
-          if (networkResponse && networkResponse.status === 200) {
-            var responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then(function (cache) {
-              cache.put(event.request, responseClone);
-            });
-          }
-          return networkResponse;
-        })
-        .catch(function () {
-          // Offline and not cached — return a simple fallback
-          if (event.request.destination === 'document') {
-            return caches.match('./index.html');
-          }
+          return cached;
         });
+      return cached || fetchPromise;
     })
   );
 });
