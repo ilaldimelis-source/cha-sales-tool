@@ -143,10 +143,12 @@
     // ── CONFIG ──────────────────────────────────────────────────────────────
     var clerk = null;
 
-    // ── WAIT FOR CLERK SDK (loaded via static script tag in head) ────────────
+    // ── WAIT FOR CLERK SDK (auto-loads via static script tag in head) ──────
+    // Clerk @5 auto-initializes when data-clerk-publishable-key is on the tag.
+    // Do NOT call .load() again — just wait for loaded === true.
     function waitForClerk(cb, attempts) {
       if (!attempts) attempts = 0;
-      if (window.Clerk && typeof window.Clerk.load === 'function') {
+      if (window.Clerk && window.Clerk.loaded) {
         cb();
       } else if (attempts < 50) {
         setTimeout(function() { waitForClerk(cb, attempts + 1); }, 200);
@@ -156,15 +158,10 @@
     }
 
     waitForClerk(function() {
-      window.Clerk.load().then(function() {
-        clerk = window.Clerk;
-        if (clerk.user) {
-          window.location.replace('/');
-        }
-      }).catch(function(e) {
-        console.error('[CHA] Clerk.load error:', e);
-        clerk = window.Clerk;
-      });
+      clerk = window.Clerk;
+      if (clerk.user) {
+        window.location.replace('/');
+      }
     });
 
     // ── SIGN IN ──────────────────────────────────────────────────────────────
@@ -180,7 +177,7 @@
       btn.disabled = true;
       btn.textContent = 'Signing in...';
 
-      (clerk.signIn || window.Clerk.signIn).create({ identifier: email, password: password })
+      clerk.client.signIn.create({ identifier: email, password: password })
         .then(function(result) {
           if (result.status === 'complete') {
             window.location.replace('/');
@@ -211,7 +208,7 @@
       if (!email) { showResetErr('Please enter your email.'); return; }
       if (!clerk) { showResetErr('Service still loading. Please wait.'); return; }
 
-      clerk.signIn.create({ strategy: 'reset_password_email_code', identifier: email })
+      clerk.client.signIn.create({ strategy: 'reset_password_email_code', identifier: email })
         .then(function() {
           document.getElementById('forgot-view').innerHTML =
             '<div style="text-align:center;padding:20px 0;">' +
