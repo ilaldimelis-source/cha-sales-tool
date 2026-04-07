@@ -2784,22 +2784,23 @@ textarea:focus-visible {
 }
 
 .br-clear {
-  margin-left: auto;
   background: transparent;
-  border: none;
+  border: 1px solid rgba(255,255,255,0.15);
   color: #94a3b8;
   font-family: var(--font-ui);
   font-size: 11px;
   font-weight: 600;
-  padding: 4px 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
   cursor: pointer;
-  letter-spacing: 0.04em;
   transition: 0.15s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .br-clear:hover {
-  color: #f87171;
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
 }
 
 .br-close-btn {
@@ -2845,19 +2846,19 @@ textarea:focus-visible {
 }
 
 .br-filter-btn {
-  padding: 5px 14px;
+  padding: 5px 16px;
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   cursor: pointer;
-  border: 1px solid #e2e8f0;
+  border: 1.5px solid #e2e8f0;
   transition: all 0.15s;
   font-family: var(--font-ui);
   background: #fff;
   color: #64748b;
   white-space: nowrap;
   flex-shrink: 0;
-  overflow: visible;
+  letter-spacing: 0.03em;
 }
 
 .br-filter-btn.active {
@@ -2909,9 +2910,10 @@ textarea:focus-visible {
 }
 
 .br-plan-btn.active {
-  background: #5175f1;
+  background: #1e293b;
   color: #fff;
-  border-color: #5175f1;
+  border-color: #1e293b;
+  font-weight: 700;
 }
 
 .br-plan-btn:hover:not(.active) {
@@ -2968,13 +2970,14 @@ textarea:focus-visible {
 .br-msgs {
   flex: 1;
   overflow-y: auto;
-  padding: 12px 12px 6px;
+  padding: 10px 12px 6px;
   display: flex;
   flex-direction: column;
   gap: 8px;
   min-height: 0;
   scrollbar-width: thin;
   scrollbar-color: #e2e8f0 transparent;
+  background: #f8fafc;
 }
 
 .br-msgs::-webkit-scrollbar {

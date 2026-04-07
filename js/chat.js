@@ -214,73 +214,33 @@ function brRenderPlanButtons(groupFilter) {
 }
 
 function brShowWelcome() {
-  var html =
-    "Hey! I'm your Benefits AI. Pick a plan or ask me anything about coverage, copays, exclusions, or waiting periods.";
+  var planName = brActivePlan ? brActivePlan.name : 'a plan';
+  var planGroup = brActivePlan ? brActivePlan.group : '';
+  var groupDot = { MEC: '#22c55e', STM: '#5B8DEF', Limited: '#7C3AED' };
+  var dot = groupDot[planGroup] || '#94a3b8';
 
-  // Plan type cards
-  var groupColors = {
-    MEC: {
-      dot: '#22c55e',
-      bg: 'rgba(34,197,94,0.06)',
-      border: 'rgba(34,197,94,0.2)',
-      pill: 'rgba(34,197,94,0.1)',
-      pillColor: '#22c55e'
-    },
-    STM: {
-      dot: '#5B8DEF',
-      bg: 'rgba(91,141,239,0.06)',
-      border: 'rgba(91,141,239,0.2)',
-      pill: 'rgba(91,141,239,0.1)',
-      pillColor: '#5B8DEF'
-    },
-    Limited: {
-      dot: '#7C3AED',
-      bg: 'rgba(124,58,237,0.06)',
-      border: 'rgba(124,58,237,0.2)',
-      pill: 'rgba(124,58,237,0.1)',
-      pillColor: '#7C3AED'
-    }
-  };
-  if (BR_PLANS.length) {
-    html += '<div class="br-welcome-cards">';
-    BR_PLANS.forEach(function (p) {
-      var gc = groupColors[p.group] || groupColors.MEC;
-      html +=
-        '<div class="br-welcome-card" style="border-color:#e2e8f0;background:#fff;" onclick="brWelcomePick(\'' +
-        escHTML(p.id) +
-        '\')">' +
-        '<span class="bwc-dot" style="background:' +
-        gc.dot +
-        ';"></span>' +
-        '<span class="bwc-name">' +
-        p.name +
-        '</span>' +
-        '<span class="bwc-type" style="background:' +
-        gc.pill +
-        ';color:' +
-        gc.pillColor +
-        ';">' +
-        p.group +
-        '</span></div>';
-    });
+  var html = '<div style="text-align:center;padding:16px 8px 8px;">';
+  // Active plan badge
+  if (brActivePlan) {
+    html += '<div style="display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;margin-bottom:12px;">';
+    html += '<span style="width:7px;height:7px;border-radius:50%;background:' + dot + ';display:inline-block;"></span>';
+    html += '<span style="font-size:12px;font-weight:700;color:#1e293b;">' + escHTML(planName) + '</span>';
+    html += '<span style="font-size:10px;font-weight:600;color:#64748b;">' + escHTML(planGroup) + '</span>';
     html += '</div>';
   }
+  html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:14px;">Use the chips above or type any question below — copays, exclusions, waiting periods, x-ray, Rx, and more.</div>';
+  html += '</div>';
 
-  // Quick suggestions
-  html += '<div class="br-quick-suggestions">';
+  // Quick suggestion buttons — 2 per row, simple
   var suggestions = [
-    "What's covered?",
-    "What's excluded?",
-    'Waiting periods?',
-    'Copays?'
+    { label: 'What are the copays?', q: 'What are the copays?' },
+    { label: "What's NOT covered?", q: 'What is NOT covered? List all exclusions.' },
+    { label: 'Waiting periods?', q: 'What are the waiting periods and pre-existing condition rules?' },
+    { label: 'X-Ray & Labs?', q: 'Is x-ray and lab work covered?' }
   ];
-  suggestions.forEach(function (s) {
-    html +=
-      '<button class="br-quick-sug" onclick="brQuick(\'' +
-      escHTML(s) +
-      '\')">' +
-      s +
-      '</button>';
+  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 4px 8px;">';
+  suggestions.forEach(function(s) {
+    html += '<button onclick="brQuick(\'' + escHTML(s.q) + '\')" style="padding:9px 10px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;font-size:12px;font-weight:600;color:#374151;cursor:pointer;text-align:left;line-height:1.4;">' + escHTML(s.label) + '</button>';
   });
   html += '</div>';
 
