@@ -1855,28 +1855,6 @@ function brSmartAnswer(query, plans) {
   return html;
 }
 
-// FIX: Word-boundary-safe highlighting for short terms / medical abbreviations
-function brHl(text, terms) {
-  var safe = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-  terms.forEach(function (term) {
-    if (term.length < 2) return;
-    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    var boundary =
-      term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1
-        ? '\\b'
-        : '';
-    var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
-    safe = safe.replace(
-      re,
-      '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>'
-    );
-  });
-  return safe;
-}
-
 // ── ROTATING PLACEHOLDER TEXT ─────────────────────────
 var _brPlaceholders = [
   'Ask about copays...',
