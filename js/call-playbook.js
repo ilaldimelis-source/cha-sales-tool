@@ -1036,9 +1036,7 @@ function renderPlanScripts() {
         (p.name + ' ' + p.planType).toLowerCase() +
         '" onclick="planScriptActive=' +
         idx +
-        ';planScriptSection=0;renderPlanScripts()" style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:16px;padding:16px 18px;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;" onmouseover="this.style.borderColor=\'' +
-        tc +
-        "';this.style.boxShadow='0 2px 12px rgba(91,141,239,0.10)'\" onmouseout=\"this.style.borderColor='#C8CEDD';this.style.boxShadow='none'\">";
+        ";planScriptSection=0;renderPlanScripts()\" style=\"background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px 18px;cursor:pointer;transition:all 0.15s ease;min-height:90px;display:flex;flex-direction:column;justify-content:space-between;\" onmouseover=\"this.style.borderColor='#5175f1';this.style.boxShadow='0 0 0 2px rgba(81,117,241,0.15)';this.style.transform='translateY(-1px)'\" onmouseout=\"this.style.borderColor='#e2e8f0';this.style.boxShadow='none';this.style.transform='none'\">";
       html +=
         '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
       html +=
@@ -1050,7 +1048,8 @@ function renderPlanScripts() {
         p.name +
         '</span>';
       html += '</div>';
-      html += '<div style="display:flex;align-items:center;gap:6px;">';
+      html +=
+        '<div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;">';
       html +=
         '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:' +
         bg +
@@ -1059,10 +1058,23 @@ function renderPlanScripts() {
         ';">' +
         p.planType +
         '</span>';
-      html +=
-        '<span style="font-size:12px;color:var(--text-secondary);">' +
-        p.sections.length +
-        ' sections</span>';
+      html += '</div>';
+      html += '<div style="display:flex;flex-wrap:wrap;gap:3px;">';
+      var pillLabels = [
+        'Opening',
+        'RX',
+        'Closing',
+        'Verify',
+        'Post-Close',
+        'Benefits'
+      ];
+      p.sections.forEach(function (s, si) {
+        var pl = pillLabels[si] || s.title;
+        html +=
+          '<span style="font-size:9px;padding:2px 6px;border-radius:999px;background:#f1f5f9;color:#64748b;">' +
+          pl +
+          '</span>';
+      });
       html += '</div></div>';
     });
     html += '</div>';
@@ -1185,18 +1197,44 @@ function renderPlanScripts() {
       /(▶[^<]*)/g,
       '<span style="color:#F59E0B;font-style:italic">$1</span>'
     );
-    c = c.replace(
-      /(\( *Wait for [Aa]nswer *\)?)/g,
-      '<span style="color:#94a3b8;font-style:italic">$1</span>'
-    );
-    c = c.replace(
-      /(\( *DO NOT [^)]+\))/g,
-      '<span style="color:#DC2626;font-weight:700;font-size:12px">$1</span>'
-    );
-    c = c.replace(
-      /(THIS IS THE SIZZLE[^<]*)/g,
-      '<span style="color:#DC2626;font-weight:800">$1</span>'
-    );
+    // Enhanced text parsing — line by line
+    var lines = c.split('<br>');
+    var parsedLines = [];
+    lines.forEach(function (line) {
+      var trimLine = line.trim();
+      if (!trimLine) {
+        parsedLines.push('<div style="height:8px;"></div>');
+        return;
+      }
+      if (/\( *DO NOT|\( *do not|✖/.test(trimLine)) {
+        parsedLines.push(
+          '<div style="background:#fff1f2;border-left:3px solid #dc2626;border-radius:0 6px 6px 0;padding:7px 14px;margin:4px 0;font-size:12px;font-weight:700;color:#dc2626;">✖ ' +
+            trimLine +
+            '</div>'
+        );
+      } else if (/\( *[Ww]ait for/.test(trimLine)) {
+        parsedLines.push(
+          '<div style="background:#fffbeb;border-left:3px solid #f59e0b;border-radius:0 6px 6px 0;padding:7px 14px;margin:4px 0;font-size:12px;font-style:italic;color:#92400e;">▶ ' +
+            trimLine +
+            '</div>'
+        );
+      } else {
+        // Highlight fill-in blanks and customer name
+        var parsed = trimLine;
+        parsed = parsed.replace(
+          /(_{3,}|\$___)/g,
+          '<span style="background:#fef08a;padding:0 4px;border-radius:3px;font-weight:600;">$1</span>'
+        );
+        parsed = parsed.replace(
+          /\[Customer Name\]/gi,
+          '<span style="background:#dbeafe;color:#1d4ed8;padding:0 4px;border-radius:3px;font-weight:600;">[Customer Name]</span>'
+        );
+        parsedLines.push(
+          '<div style="margin-bottom:4px;">' + parsed + '</div>'
+        );
+      }
+    });
+    c = parsedLines.join('');
 
     var bs = bubbleStyles[Math.min(si, bubbleStyles.length - 1)];
     var secId = 'ps-sec-' + si;
@@ -1204,30 +1242,26 @@ function renderPlanScripts() {
     html +=
       '<div id="' +
       secId +
-      '" style="background:' +
-      bs.bg +
-      ';border:1px solid ' +
+      '" style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid ' +
       bs.border +
-      ';border-radius:14px;padding:20px;margin-bottom:12px;position:relative;">';
+      ';border-radius:14px;padding:20px 24px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:relative;">';
     // Header with label + copy button
     html +=
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
     html +=
-      '<span style="font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' +
+      '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:' +
       bs.color +
       ';">' +
       bs.label +
       '</span>';
     html +=
-      '<button onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid ' +
-      bs.border +
-      ';background:#fff;color:' +
-      bs.color +
-      ';cursor:pointer;">Copy Section</button>';
+      '<button onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;">Copy</button>';
     html += '</div>';
+    html +=
+      '<div style="height:1px;background:#f1f5f9;margin-bottom:12px;"></div>';
     // Script text
     html +=
-      '<div class="ps-bubble-text" style="font-size:14px;line-height:1.7;color:#1e293b;font-family:var(--font-body);">' +
+      '<div class="ps-bubble-text" style="font-size:15px;line-height:1.8;color:#1e293b;font-family:var(--font-body);">' +
       c +
       '</div>';
     html += '</div>';
