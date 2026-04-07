@@ -1074,197 +1074,170 @@ function renderPlanScripts() {
   // ── SELECTED PLAN VIEW ──
   var activePlan = filtered[planScriptActive];
   var typeColor = _psTypeColor(activePlan.planType);
-  var typeBg = _psTypeBg(activePlan.planType);
 
   // Back button
   html +=
-    '<div style="margin-bottom:14px;"><button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1.5px solid #E5E7EB;background:#FFFFFF;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\';this.style.color=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.color=\'var(--text-secondary)\'">\u2190 All Plans</button></div>';
-  // Plan selector pills
+    '<div style="margin-bottom:14px;"><button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1.5px solid #E5E7EB;background:#fff;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">\u2190 All Plans</button></div>';
+
+  // Plan card wrapper
   html +=
-    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">';
-  filtered.forEach(function (p, idx) {
-    var isActive = idx === planScriptActive;
-    var tc = _psTypeColor(p.planType);
-    var bg = _psTypeBg(p.planType);
-    html +=
-      '<button onclick="planScriptActive=' +
-      idx +
-      ';planScriptSection=0;renderPlanScripts()" style="padding:8px 14px;border-radius:10px;border:1.5px solid ' +
-      (isActive ? tc : 'var(--rule2)') +
-      ';background:' +
-      (isActive ? bg : '#FFFFFF') +
-      ';cursor:pointer;font-family:var(--font-ui);font-size:.76rem;font-weight:' +
-      (isActive ? '700' : '500') +
-      ';color:' +
-      (isActive ? tc : 'var(--txt-body)') +
-      ';transition:all 0.15s">';
-    html +=
-      '<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:' +
-      tc +
-      ';margin-right:6px;vertical-align:middle"></span>' +
-      p.name +
-      '</button>';
-  });
-  html += '</div>';
+    '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">';
+
+  // Sticky plan name header
   html +=
-    '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;padding:20px 24px;margin-bottom:16px;box-shadow:var(--shadow-card)">';
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">';
   html +=
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">';
-  html +=
-    '<span style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--txt-hero)">' +
+    '<span style="font-family:var(--font-ui);font-size:18px;font-weight:700;color:#1e293b;">' +
     activePlan.name +
     '</span>';
   html +=
-    '<span style="padding:2px 10px;border-radius:999px;font-size:.6rem;font-weight:700;letter-spacing:0.06em;background:' +
+    '<span style="padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.06em;background:' +
     typeColor +
-    ';color:#fff">' +
+    ';color:#fff;">' +
     activePlan.planType +
-    '</span>';
+    '</span></div>';
   html +=
-    '</div><div style="font-size:.75rem;color:var(--txt-muted)">' +
+    '<div style="font-size:12px;color:#94a3b8;margin-bottom:16px;">' +
     activePlan.sections.length +
-    ' sections — follow in order during the call</div></div>';
-  if (activePlan.sections.length > 1) {
+    ' sections — follow in order during the call</div>';
+
+  // Progress tracker dots
+  var secLabels = [
+    'Opening',
+    'Benefits',
+    'Rx',
+    'Closing',
+    'Verification',
+    'Post-Close'
+  ];
+  html +=
+    '<div style="display:flex;align-items:center;gap:0;margin-bottom:20px;padding:10px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;">';
+  activePlan.sections.forEach(function (sec, si) {
+    var isCurrent = si === planScriptSection;
+    var dotLabel = secLabels[si] || sec.title;
+    html += '<div style="display:flex;align-items:center;flex:1;min-width:0;">';
     html +=
-      '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;">';
-    activePlan.sections.forEach(function (sec, si) {
-      var isCurrent = si === planScriptSection;
+      '<button onclick="planScriptSection=' +
+      si +
+      ';renderPlanScripts()" style="display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;min-width:0;flex-shrink:0;">';
+    html +=
+      '<div style="width:12px;height:12px;border-radius:50%;background:' +
+      (isCurrent ? '#5B8DEF' : si < planScriptSection ? '#BBF7D0' : '#e2e8f0') +
+      ';border:2px solid ' +
+      (isCurrent ? '#5B8DEF' : si < planScriptSection ? '#15803D' : '#cbd5e1') +
+      ';"></div>';
+    html +=
+      '<span style="font-size:9px;font-weight:' +
+      (isCurrent ? '700' : '500') +
+      ';color:' +
+      (isCurrent ? '#5B8DEF' : '#94a3b8') +
+      ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60px;">' +
+      dotLabel +
+      '</span>';
+    html += '</button>';
+    if (si < activePlan.sections.length - 1)
       html +=
-        '<button onclick="planScriptSection=' +
-        si +
-        ';renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1.5px solid ' +
-        (isCurrent ? '#5175F1' : 'var(--rule2)') +
-        ';background:' +
-        (isCurrent ? '#5175F1' : '#FFFFFF') +
-        ';color:' +
-        (isCurrent ? '#fff' : 'var(--txt-body)') +
-        ';cursor:pointer;font-family:var(--font-ui);font-size:.74rem;font-weight:600;transition:all 0.15s">';
-      html += si + 1 + '. ' + sec.title + '</button>';
-    });
+        '<div style="flex:1;height:2px;background:' +
+        (si < planScriptSection ? '#BBF7D0' : '#e2e8f0') +
+        ';margin:0 2px;margin-bottom:16px;"></div>';
     html += '</div>';
-  }
-  if (planScriptSection >= activePlan.sections.length) planScriptSection = 0;
-  var sec = activePlan.sections[planScriptSection];
-  var c = sec.content || '';
-  c = c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  c = c.replace(/\n/g, '<br>');
-  c = c.replace(
-    /(✖[^<]*)/g,
-    '<span style="color:#DC2626;font-weight:700">$1</span>'
-  );
-  c = c.replace(
-    /(✔[^<]*)/g,
-    '<span style="color:#29A26A;font-weight:700">$1</span>'
-  );
-  c = c.replace(
-    /(▶[^<]*)/g,
-    '<span style="color:#F59E0B;font-style:italic">$1</span>'
-  );
-  c = c.replace(
-    /(\( *Wait for [Aa]nswer *\)?)/g,
-    '<span style="color:#F59E0B;font-style:italic">$1</span>'
-  );
-  c = c.replace(
-    /(\( *DO NOT [^)]+\))/g,
-    '<span style="color:#DC2626;font-weight:700;font-size:.75rem">$1</span>'
-  );
-  c = c.replace(
-    /(THIS IS THE SIZZLE[^<]*)/g,
-    '<span style="color:#DC2626;font-weight:800;font-size:.85rem">$1</span>'
-  );
-  // Split content into paragraphs and assign to section types
-  var paragraphs = c.split(/<br>\s*<br>/);
-  var sectionStyles = [
-    {
-      label: 'OPENING',
-      bg: 'rgba(91,141,239,0.06)',
-      border: 'rgba(91,141,239,0.2)',
-      color: '#5B8DEF'
-    },
-    {
-      label: 'BENEFITS',
-      bg: 'rgba(34,197,94,0.06)',
-      border: 'rgba(34,197,94,0.2)',
-      color: '#15803D'
-    },
+  });
+  html += '</div>';
+
+  // Render ALL sections as colored bubbles
+  var bubbleStyles = [
+    { label: 'OPENING', bg: '#EFF6FF', border: '#BFDBFE', color: '#1D4ED8' },
+    { label: 'BENEFITS', bg: '#F0FDF4', border: '#BBF7D0', color: '#15803D' },
     {
       label: 'PRESCRIPTIONS / RX',
-      bg: 'rgba(124,58,237,0.06)',
-      border: 'rgba(124,58,237,0.2)',
+      bg: '#FAF5FF',
+      border: '#E9D5FF',
       color: '#7C3AED'
     },
     {
       label: 'CLOSING STATEMENT',
-      bg: 'rgba(245,158,11,0.06)',
-      border: 'rgba(245,158,11,0.25)',
-      color: '#d97706'
+      bg: '#FFFBEB',
+      border: '#FDE68A',
+      color: '#B45309'
     },
     {
       label: 'VERIFICATION',
-      bg: 'rgba(239,68,68,0.05)',
-      border: 'rgba(239,68,68,0.18)',
-      color: '#DC2626'
+      bg: '#FFF1F2',
+      border: '#FECDD3',
+      color: '#BE123C'
     },
-    {
-      label: 'POST-CLOSE',
-      bg: 'rgba(107,114,128,0.06)',
-      border: 'rgba(107,114,128,0.2)',
-      color: '#6B7280'
-    }
+    { label: 'POST-CLOSE', bg: '#F8FAFC', border: '#E2E8F0', color: '#475569' }
   ];
-  html +=
-    '<div style="font-family:var(--font-display);font-weight:700;font-size:1rem;color:var(--text-primary);margin-bottom:14px;">' +
-    (planScriptSection + 1) +
-    '. ' +
-    sec.title +
-    '</div>';
-  var validParas = paragraphs.filter(function (p) {
-    return p.replace(/^(<br>)+|(<br>)+$/g, '').trim();
-  });
-  validParas.forEach(function (para, pi) {
-    var trimmed = para.replace(/^(<br>)+|(<br>)+$/g, '').trim();
-    if (!trimmed) return;
-    var style = sectionStyles[Math.min(pi, sectionStyles.length - 1)];
-    var copyId = 'ps-copy-' + planScriptSection + '-' + pi;
+
+  activePlan.sections.forEach(function (sec, si) {
+    var c = sec.content || '';
+    c = c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    c = c.replace(/\n/g, '<br>');
+    c = c.replace(
+      /(✖[^<]*)/g,
+      '<span style="color:#DC2626;font-weight:700">$1</span>'
+    );
+    c = c.replace(
+      /(✔[^<]*)/g,
+      '<span style="color:#29A26A;font-weight:700">$1</span>'
+    );
+    c = c.replace(
+      /(▶[^<]*)/g,
+      '<span style="color:#F59E0B;font-style:italic">$1</span>'
+    );
+    c = c.replace(
+      /(\( *Wait for [Aa]nswer *\)?)/g,
+      '<span style="color:#94a3b8;font-style:italic">$1</span>'
+    );
+    c = c.replace(
+      /(\( *DO NOT [^)]+\))/g,
+      '<span style="color:#DC2626;font-weight:700;font-size:12px">$1</span>'
+    );
+    c = c.replace(
+      /(THIS IS THE SIZZLE[^<]*)/g,
+      '<span style="color:#DC2626;font-weight:800">$1</span>'
+    );
+
+    var bs = bubbleStyles[Math.min(si, bubbleStyles.length - 1)];
+    var secId = 'ps-sec-' + si;
+
     html +=
-      '<div style="background:' +
-      style.bg +
+      '<div id="' +
+      secId +
+      '" style="background:' +
+      bs.bg +
       ';border:1px solid ' +
-      style.border +
-      ';border-radius:16px;padding:16px 18px;margin-bottom:12px;position:relative;">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
-      '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' +
-      style.color +
+      bs.border +
+      ';border-radius:14px;padding:20px;margin-bottom:12px;position:relative;">';
+    // Header with label + copy button
+    html +=
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
+    html +=
+      '<span style="font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' +
+      bs.color +
       ';">' +
-      style.label +
-      '</span>' +
-      '<button id="' +
-      copyId +
-      '" onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:3px 10px;border-radius:6px;border:1px solid ' +
-      style.border +
+      bs.label +
+      '</span>';
+    html +=
+      '<button onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:4px 10px;border-radius:6px;border:1px solid ' +
+      bs.border +
       ';background:#fff;color:' +
-      style.color +
-      ';cursor:pointer;">Copy</button>' +
-      '</div>' +
-      '<div class="ps-bubble-text" style="line-height:1.7;font-size:13px;color:var(--text-primary);font-family:var(--font-body)">' +
-      trimmed +
-      '</div>' +
+      bs.color +
+      ';cursor:pointer;">Copy Section</button>';
+    html += '</div>';
+    // Script text
+    html +=
+      '<div class="ps-bubble-text" style="font-size:14px;line-height:1.7;color:#1e293b;font-family:var(--font-body);">' +
+      c +
       '</div>';
+    html += '</div>';
   });
+
+  // Navigation buttons
+  html += '</div>'; // close plan card wrapper
+  html += '<div style="display:flex;justify-content:center;margin-top:16px;">';
   html +=
-    '<div style="display:flex;justify-content:space-between;margin-top:16px;">';
-  if (planScriptSection > 0) {
-    html +=
-      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:8px 20px;border-radius:999px;border:1.5px solid var(--rule2);background:#FFFFFF;color:var(--txt-body);cursor:pointer;font-family:var(--font-ui);font-size:.75rem;font-weight:600">← Previous</button>';
-  } else {
-    html += '<div></div>';
-  }
-  if (planScriptSection < activePlan.sections.length - 1) {
-    html +=
-      '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:8px 20px;border-radius:999px;border:none;background:#5175F1;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:.75rem;font-weight:600;box-shadow:0 2px 8px rgba(81,117,241,0.25)">Next Step →</button>';
-  } else {
-    html += '<div></div>';
-  }
+    '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:8px 20px;border-radius:999px;border:1.5px solid #e2e8f0;background:#fff;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← Back to All Plans</button>';
   html += '</div>';
   var _page_planscripts = document.getElementById('page-planscripts');
   if (_page_planscripts) _page_planscripts.innerHTML = html;
