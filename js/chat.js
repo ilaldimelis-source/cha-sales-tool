@@ -561,11 +561,13 @@ function brAIAnswer(query, planId) {
     brAddMsg('ai', 'Please select a plan first.');
     return;
   }
-  if (!apiKey || apiKey === 'skip') {
+  if (!apiKey || apiKey === 'skip' || apiKey === '' || apiKey.length < 20) {
+    console.log('[CHA Groq] No valid API key found, using local lookup');
     var plansToUse = brActivePlan ? [brActivePlan] : [];
     brAddMsg('ai', brStructuredAnswer(query, plansToUse));
     return;
   }
+  console.log('[CHA Groq] API key found, length:', apiKey.length);
   brShowTyping();
   var planContext = JSON.stringify({
     name: plan.name,
@@ -600,6 +602,7 @@ function brAIAnswer(query, planId) {
     .then(function (response) {
       console.log('[CHA Groq] Response status:', response.status);
       if (!response.ok) throw new Error('API error ' + response.status);
+      console.log('[CHA Groq] Success - status:', response.status);
       return response.json();
     })
     .then(function (data) {
@@ -608,7 +611,19 @@ function brAIAnswer(query, planId) {
     })
     .catch(function (err) {
       brHideTyping();
-      console.error('[CHA Groq] Fetch failed:', err.message);
+      console.error('[CHA Groq] Error:', err.message);
+      var msgs = document.getElementById('br-msgs');
+      if (msgs) {
+        var errDiv = document.createElement('div');
+        errDiv.style.cssText =
+          'background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:12px;color:#dc2626;margin-bottom:8px;';
+        errDiv.textContent =
+          'AI connection failed: ' +
+          err.message +
+          '. Using local lookup instead.';
+        msgs.appendChild(errDiv);
+        brScroll();
+      }
       var plansToUse = brActivePlan ? [brActivePlan] : [];
       brAddMsg('ai', brStructuredAnswer(query, plansToUse));
     });
@@ -645,6 +660,7 @@ function brShowSetupModal() {
     '<button onclick="brSaveApiKey()" style="flex:1;padding:10px;background:#5175f1;color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;">Save Key</button>' +
     '<button onclick="brSkipSetup()" style="padding:10px 16px;background:white;color:#64748b;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;cursor:pointer;">Skip</button>' +
     '</div>' +
+    '<button onclick="brTestConnection()" style="width:100%;margin-top:8px;padding:10px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:8px;font-size:13px;cursor:pointer;">Test Connection</button>' +
     (hasKey
       ? '<button onclick="brResetApiKey()" style="width:100%;margin-top:8px;padding:8px;background:white;color:#ef4444;border:1px solid #fecaca;border-radius:8px;font-size:12px;cursor:pointer;">Reset AI Key</button>'
       : '') +
@@ -656,6 +672,50 @@ function brResetApiKey() {
   var modal = document.getElementById('br-setup-modal');
   if (modal) modal.remove();
   brShowSetupModal();
+}
+function brTestConnection() {
+  var apiKey = localStorage.getItem('cha_groq_key');
+  if (!apiKey || apiKey === 'skip') {
+    alert('No API key saved. Please enter your Groq key first.');
+    return;
+  }
+  var testBtn = document.querySelector('[onclick="brTestConnection()"]');
+  if (testBtn) testBtn.textContent = 'Testing...';
+  fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      max_tokens: 10,
+      messages: [{ role: 'user', content: 'Say OK' }]
+    })
+  })
+    .then(function (r) {
+      return r.json();
+    })
+    .then(function (data) {
+      if (data.choices && data.choices[0]) {
+        if (testBtn) testBtn.textContent = 'Connection OK ✓';
+        if (testBtn) testBtn.style.background = '#dcfce7';
+        alert('Groq AI connected successfully! AI answers are now active.');
+      } else {
+        if (testBtn) testBtn.textContent = 'Test Failed';
+        alert('Connected but got unexpected response: ' + JSON.stringify(data));
+      }
+    })
+    .catch(function (err) {
+      if (testBtn) testBtn.textContent = 'Connection Failed';
+      if (testBtn) testBtn.style.background = '#fef2f2';
+      if (testBtn) testBtn.style.color = '#dc2626';
+      alert(
+        'Connection failed: ' +
+          err.message +
+          '. Check your API key or browser console.'
+      );
+    });
 }
 function brSaveApiKey() {
   var input = document.getElementById('br-api-input');
