@@ -286,6 +286,86 @@ function renderDashboard() {
       '</svg>'
     );
   };
+
+  // ── GREETING CARD (Task 1) ──────────────────────────────────────────────
+  var _greetHtml = '';
+  try {
+    var _u = window.CHA_USER;
+    if (_u) {
+      var _h = new Date().getHours();
+      var _greet = _h < 12 ? 'Good morning' : _h < 17 ? 'Good afternoon' : 'Good evening';
+      var _fname = _u.name || 'Agent';
+      var _role = _u.role || 'agent';
+      var _isM = _role === 'manager';
+      var _today = new Date();
+      var _days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      var _months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+      var _dateStr = _days[_today.getDay()] + ', ' + _months[_today.getMonth()] + ' ' + _today.getDate() + ', ' + _today.getFullYear();
+      _greetHtml =
+        '<div style="background:linear-gradient(135deg,#1e293b 0%,#243b55 100%);border-radius:16px;padding:20px 24px;margin-bottom:16px;color:#fff;">' +
+          '<div style="font-size:22px;font-weight:800;margin-bottom:4px;">' + _greet + ', ' + escHTML(_fname) + '</div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
+            '<span style="display:inline-block;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;' +
+            (_isM ? 'background:#166534;color:#4ade80;' : 'background:#1e3a5f;color:#93c5fd;') + '">' +
+            (_isM ? '★ Manager' : 'Agent') + '</span>' +
+          '</div>' +
+          '<div style="font-size:13px;color:#94a3b8;">' + _dateStr + '</div>' +
+        '</div>';
+    }
+  } catch (_ge) { /* skip greeting gracefully */ }
+
+  // ── SMART DASHBOARD WIDGETS (Task 4) ────────────────────────────────────
+  var _widgetHtml = '';
+  try {
+    // Plan of the Day
+    _widgetHtml +=
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:16px;">';
+    _widgetHtml +=
+      '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:16px 18px;">' +
+        '<div style="font-size:11px;font-weight:700;color:#166534;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Plan of the Day</div>' +
+        '<div style="font-size:17px;font-weight:800;color:#1e293b;margin-bottom:4px;">MedFirst 3</div>' +
+        '<div style="font-size:12px;color:#374151;line-height:1.5;">Best value MEC for healthy self-employed adults — lead with this today.</div>' +
+      '</div>';
+
+    // Enrollment Goal Counter
+    var _goalToday = new Date().toISOString().slice(0, 10);
+    var _goalKey = 'cha_goal_' + _goalToday;
+    var _goalCount = parseInt(safeGetItem(_goalKey), 10) || 0;
+    _widgetHtml +=
+      '<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:16px 18px;">' +
+        '<div style="font-size:11px;font-weight:700;color:#1e40af;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Today\'s Enrollments</div>' +
+        '<div style="display:flex;align-items:center;gap:12px;">' +
+          '<span id="cha-goal-count" style="font-size:32px;font-weight:900;color:#1e293b;">' + _goalCount + '</span>' +
+          '<button onclick="chaIncrementGoal()" style="width:36px;height:36px;border-radius:999px;border:2px solid #3b82f6;background:#fff;color:#3b82f6;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;" title="Add enrollment">+</button>' +
+        '</div>' +
+        '<div style="font-size:11px;color:#64748b;margin-top:4px;">Tap + after each enrollment</div>' +
+      '</div>';
+
+    // Motivational Quote
+    var _quotes = [
+      'Every call is a chance to change someone\'s life.',
+      'Confidence comes from preparation, not perfection.',
+      'The best closers listen twice as much as they talk.',
+      'You don\'t need every sale — just the right ones.',
+      'Discipline today, freedom tomorrow.',
+      'Be so good at follow-up they think you\'re psychic.',
+      'Objections aren\'t stop signs, they\'re green lights.',
+      'Your energy sets the tone for the entire call.',
+      'Small daily improvements lead to stunning results.',
+      'The money follows the value. Always lead with value.'
+    ];
+    var _qIdx = new Date().getDate() % _quotes.length;
+    _widgetHtml +=
+      '<div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:14px;padding:16px 18px;display:flex;align-items:flex-start;gap:10px;">' +
+        '<div style="font-size:22px;flex-shrink:0;margin-top:2px;">💡</div>' +
+        '<div>' +
+          '<div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">Daily Spark</div>' +
+          '<div style="font-size:13px;color:#374151;line-height:1.5;font-style:italic;">' + _quotes[_qIdx] + '</div>' +
+        '</div>' +
+      '</div>';
+    _widgetHtml += '</div>';
+  } catch (_we) { /* skip widgets gracefully */ }
+
   var cards = [
     {
       page: 'livecall',
@@ -342,6 +422,8 @@ function renderDashboard() {
   ];
   var html =
     '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
+  html += _greetHtml;
+  html += _widgetHtml;
   html += '<div class="dash-grid">';
   cards.forEach(function (c) {
     html += '<div class="dash-card" onclick="showPage(\'' + c.page + '\')">';
@@ -413,6 +495,16 @@ function renderDashboard() {
   html += '<span class="dash-kb"><kbd>Esc</kbd> Close</span>';
   html += '</div></div>';
   pg.innerHTML = html;
+}
+
+// ── Enrollment goal increment (Task 4) ──
+function chaIncrementGoal() {
+  var _d = new Date().toISOString().slice(0, 10);
+  var _k = 'cha_goal_' + _d;
+  var _c = (parseInt(safeGetItem(_k), 10) || 0) + 1;
+  safeSetItem(_k, String(_c));
+  var _el = document.getElementById('cha-goal-count');
+  if (_el) _el.textContent = _c;
 }
 
 function _showComboPage(parentId, subId) {

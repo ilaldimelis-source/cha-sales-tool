@@ -86,7 +86,7 @@ function renderMindset() {
 // ══════════════════════════════════════════════════════
 function renderNotes() {
   var saved = getSavedScripts();
-  var notesVal = safeGetItem('cha_notes') || '';
+  var notesVal = safeGetItem('cha_notes_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared')) || '';
   var html =
     '<div class="ph"><div class="pt">My <span>Notes</span></div><div class="pd">Write your own scripts, custom phrasing, and reminders. Everything saves automatically.</div></div>';
   html +=
@@ -144,7 +144,7 @@ function renderNotes() {
 }
 
 function saveNotes() {
-  safeSetItem('cha_notes', document.getElementById('notesTA').value);
+  safeSetItem('cha_notes_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'), document.getElementById('notesTA').value);
   var m = document.getElementById('saveMsg');
   if (m) {
     m.style.opacity = '1';
@@ -161,7 +161,7 @@ function clearNotes() {
 }
 function getSavedScripts() {
   try {
-    return JSON.parse(safeGetItem('cha_scripts') || '[]');
+    return JSON.parse(safeGetItem('cha_scripts_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared')) || '[]');
   } catch (e) {
     return [];
   }
@@ -171,14 +171,14 @@ function saveScript() {
   if (!v) return;
   var s = getSavedScripts();
   s.unshift(v);
-  safeSetItem('cha_scripts', JSON.stringify(s.slice(0, 30)));
+  safeSetItem('cha_scripts_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'), JSON.stringify(s.slice(0, 30)));
   document.getElementById('scriptInput').value = '';
   renderSavedScripts();
 }
 function deleteScript(i) {
   var s = getSavedScripts();
   s.splice(i, 1);
-  safeSetItem('cha_scripts', JSON.stringify(s));
+  safeSetItem('cha_scripts_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'), JSON.stringify(s));
   renderSavedScripts();
 }
 function removeFavorite(idx) {
