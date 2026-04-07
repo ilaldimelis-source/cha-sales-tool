@@ -1,0 +1,21 @@
+{
+  "name": "CHA Sales Command Center",
+  "short_name": "CHA Sales",
+  "description": "Central Health Advisors Agent Sales Command Center",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f0f1a",
+  "theme_color": "#635BFF",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
