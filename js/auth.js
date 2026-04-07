@@ -35,16 +35,17 @@
   // ── LOAD CLERK SDK ───────────────────────────────────────────────────────────
   function loadClerk(callback) {
     // Already loaded
-    if (window.Clerk && typeof window.Clerk === 'function') {
+    if (window.Clerk && typeof window.Clerk === 'object') {
       callback();
       return;
     }
     var s = document.createElement('script');
     s.src = CLERK_CDN;
+    s.setAttribute('data-clerk-publishable-key', CLERK_PK);
     s.crossOrigin = 'anonymous';
     s.onload = function() {
-      if (typeof window.Clerk !== 'function') {
-        console.error('[CHA Auth] Clerk loaded but not a constructor');
+      if (!window.Clerk) {
+        console.error('[CHA Auth] Clerk loaded but window.Clerk missing');
         goToLogin();
         return;
       }
@@ -65,11 +66,10 @@
   // ── SESSION CHECK ────────────────────────────────────────────────────────────
   function checkSession() {
     try {
-      // Clerk @5 CDN: use window.Clerk.load() with publishableKey
-      window.Clerk.load({ publishableKey: CLERK_PK })
-        .then(function(cl) {
-          _clerkInstance = cl || window.Clerk;
-          window.Clerk = _clerkInstance;
+      // Clerk @5 CDN: key is on the script tag, just call load()
+      window.Clerk.load()
+        .then(function() {
+          _clerkInstance = window.Clerk;
           var user = _clerkInstance.user;
           if (!user) {
             goToLogin();
