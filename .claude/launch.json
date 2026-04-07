@@ -1,11 +1,1 @@
-{
-  "version": "0.0.1",
-  "configurations": [
-    {
-      "name": "dev",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["http-server", ".", "-p", "8080", "-c-1"],
-      "port": 8080
-    }
-  ]
-}
+{"version":"0.0.1","configurations":[{"name":"cha-sales","runtimeExecutable":"npx","runtimeArgs":["http-server",".","-p","8080","-c-1"],"port":8080}]}

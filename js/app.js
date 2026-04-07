@@ -87,18 +87,23 @@ var PAGE_CONFIG = {
     subs: [
       { id: 'allplans', label: 'All Plans', render: renderAllPlans },
       { id: 'compare', label: 'Compare', render: renderCompare },
-      { id: 'benefits', label: 'Benefits', render: renderBenefits },
-      { id: 'networkexplainer', label: 'Network Guide', render: renderNetworkexplainer }
+      { id: 'benefits', label: 'Benefits', render: renderBenefits }
     ]
   },
   scripts: {
     label: 'Scripts',
     subs: [
+      { id: 'allscripts', label: 'All Scripts', render: renderScripts },
       { id: 'closes', label: 'Closing Lines', render: renderCloses },
       { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
       { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
-      { id: 'recovery', label: 'Recovery', render: renderRecovery },
-      { id: 'allscripts', label: 'All Scripts', render: renderScripts }
+      { id: 'recovery', label: 'Recovery', render: renderRecovery }
+    ]
+  },
+  networkguide: {
+    label: 'Network Guide',
+    subs: [
+      { id: 'networkexplainer', label: 'Network Guide', render: renderNetworkexplainer }
     ]
   },
   training: {
@@ -117,6 +122,7 @@ var PAGE_CONFIG = {
   myspace: {
     label: 'My Space',
     subs: [
+      { id: 'mindset', label: 'Mindset', render: renderMindset },
       { id: 'notes', label: 'Notes', render: renderNotes }
     ]
   }
@@ -199,6 +205,7 @@ function renderDashboard() {
     { page:'livecall', title:'Live Call', desc:'Mid-call tools, objections, and AI assist', icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>') },
     { page:'plans', title:'Plans', desc:'Every plan, sell it view and full details', icon: ic('<rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/>') },
     { page:'scripts', title:'Scripts', desc:'Every script for every situation', icon: ic('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>') },
+    { page:'networkguide', title:'Network Guide', desc:'Provider networks, lookup tools, and coverage rules', icon: ic('<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>') },
     { page:'training', title:'Training', desc:'Learn, study, and practice', icon: ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>') },
     { page:'compliance', title:'Compliance', desc:'Disclosures, audit, and compliance rules', icon: ic('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>') },
     { page:'myspace', title:'My Space', desc:'Notes and saved favorites', icon: ic('<path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/>') }
@@ -247,6 +254,7 @@ function renderDashboard() {
   html += '<span class="dash-kb"><kbd>L</kbd> Live Call</span>';
   html += '<span class="dash-kb"><kbd>P</kbd> Plans</span>';
   html += '<span class="dash-kb"><kbd>S</kbd> Scripts</span>';
+  html += '<span class="dash-kb"><kbd>N</kbd> Network Guide</span>';
   html += '<span class="dash-kb"><kbd>T</kbd> Training</span>';
   html += '<span class="dash-kb"><kbd>C</kbd> Compliance</span>';
   html += '<span class="dash-kb"><kbd>M</kbd> My Space</span>';
@@ -630,7 +638,7 @@ document.addEventListener('keydown', function(e) {
   if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   var key = e.key.toLowerCase();
-  var map = { h:'dashboard', l:'livecall', p:'plans', s:'scripts', t:'training', c:'compliance', m:'myspace' };
+  var map = { h:'dashboard', l:'livecall', p:'plans', s:'scripts', n:'networkguide', t:'training', c:'compliance', m:'myspace' };
   if (map[key]) { e.preventDefault(); showPage(map[key]); return; }
   if (key === '/') { e.preventDefault(); var gs = document.getElementById('gs'); if (gs) gs.focus(); }
 });

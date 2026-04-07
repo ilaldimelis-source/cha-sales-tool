@@ -1033,7 +1033,15 @@ function renderPlans() {
       (g === 'All' ? 'All Plans' : g) +
       '</button>';
   });
-  html += '</div><div id="planGroupsWrap"></div>';
+  html += '</div>';
+  // Plan search bar
+  html += '<div id="planSearchWrap" style="position:relative;margin-bottom:16px;">';
+  html += '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+  html += '<input type="text" id="planSearchInput" placeholder="Search plans by name, type, or network..." oninput="filterPlanSearch(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
+  html += '<button id="planSearchClear" onclick="clearPlanSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
+  html += '</div>';
+  html += '<div id="planNoResults" style="display:none;text-align:center;padding:24px 0;color:var(--text-secondary);font-size:14px;">No plans match your search.</div>';
+  html += '<div id="planGroupsWrap"></div>';
   var _page_plans = document.getElementById('allplans-vault') || document.getElementById('page-plans');
   if (_page_plans) _page_plans.innerHTML = html;
   renderPlanGroups();
@@ -1131,6 +1139,40 @@ function filterPlansByBenefit(el) {
   });
 }
 
+// ── Plan Search ──
+function filterPlanSearch(query) {
+  var q = (query || '').toLowerCase().trim();
+  var clearBtn = document.getElementById('planSearchClear');
+  var noResults = document.getElementById('planNoResults');
+  if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+  var wrap = document.getElementById('planGroupsWrap');
+  if (!wrap) return;
+  var cards = wrap.querySelectorAll('.plan-card');
+  var visibleCount = 0;
+  cards.forEach(function(card) {
+    if (!q) { card.style.display = ''; visibleCount++; return; }
+    var text = card.textContent.toLowerCase();
+    var match = text.indexOf(q) !== -1;
+    card.style.display = match ? '' : 'none';
+    if (match) visibleCount++;
+  });
+  // Also show/hide group headers
+  var groups = wrap.querySelectorAll('[data-plan-group]');
+  groups.forEach(function(grp) {
+    var anyVisible = grp.querySelectorAll('.plan-card[style=""], .plan-card:not([style])');
+    // Just check children
+    var vis = 0;
+    grp.querySelectorAll('.plan-card').forEach(function(c) { if (c.style.display !== 'none') vis++; });
+    grp.style.display = (q && vis === 0) ? 'none' : '';
+  });
+  if (noResults) noResults.style.display = (q && visibleCount === 0) ? 'block' : 'none';
+}
+
+function clearPlanSearch() {
+  var input = document.getElementById('planSearchInput');
+  if (input) { input.value = ''; filterPlanSearch(''); input.focus(); }
+}
+
 function setPlanGroup(g) {
   activePlanGroup = g;
   document.querySelectorAll('#page-plans .stab').forEach(function (b) {
@@ -1157,7 +1199,7 @@ function renderPlanGroups() {
     var docs = POLICY_DOCS.filter(function (p) { return p.group === grp.key; });
     if (!docs.length) return;
 
-    html += '<div style="margin-bottom:28px;">';
+    html += '<div style="margin-bottom:28px;" data-plan-group="' + grp.key + '">';
     html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">';
     html += '<div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--charcoal3);">' + grp.label + '</div>';
     html += '<div style="flex:1;height:1px;background:rgba(200,206,221,0.5);"></div>';

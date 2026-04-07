@@ -118,6 +118,10 @@
           <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
           Scripts
         </button>
+        <button class="nb" onclick="showPage('networkguide')">
+          <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+          Network Guide
+        </button>
         <button class="nb" onclick="showPage('training')">
           <span class="nb-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
           Training
@@ -249,14 +253,13 @@
           <div id="page-coachingai" class="page" style="display: none"></div>
         </div>
 
-        <!-- PLANS — All Plans, Compare, Benefits, Network Guide -->
+        <!-- PLANS — All Plans, Compare, Benefits -->
         <div id="page-plans" class="combo-page">
           <div class="page-subtabs" id="subtabs-plans"></div>
           <div id="subcontent-plans"></div>
           <div id="page-allplans" class="page" style="display: none"></div>
           <div id="page-compare" class="page" style="display: none"></div>
           <div id="page-benefits" class="page" style="display: none"></div>
-          <div id="page-networkexplainer" class="page" style="display: none"></div>
         </div>
 
         <!-- SCRIPTS — Closes, Call Flow, Plan Scripts, Recovery, All Scripts -->
@@ -268,6 +271,13 @@
           <div id="page-planscripts" class="page" style="display: none"></div>
           <div id="page-recovery" class="page" style="display: none"></div>
           <div id="page-allscripts" class="page" style="display: none"></div>
+        </div>
+
+        <!-- NETWORK GUIDE -->
+        <div id="page-networkguide" class="combo-page">
+          <div class="page-subtabs" id="subtabs-networkguide"></div>
+          <div id="subcontent-networkguide"></div>
+          <div id="page-networkexplainer" class="page" style="display: none"></div>
         </div>
 
         <!-- TRAINING -->
