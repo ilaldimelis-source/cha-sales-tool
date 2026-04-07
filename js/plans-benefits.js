@@ -1000,27 +1000,97 @@ function renderAllPlans() {
 }
 
 function renderPlans() {
+  // ── Page Header ──
   var html =
-    '<div class="ph"><div class="pt">Plan <span>Vault</span></div><div class="pd">Every plan from official policy documents. Tap any card for full coverage details.</div></div>';
+    '<div class="ph">' +
+    '<div class="pt">Plan <span>Vault</span></div>' +
+    '<div class="pd">Find the right plan for every client. Tap any card below to explore full coverage details, sales framing, and compliance notes.</div>' +
+    '</div>';
+
+  // ── Compliance Banner ──
   html +=
     '<div class="comp-banner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg> <strong>Core compliance — say every time:</strong> Disclose plan type, pre-existing exclusion, waiting periods, fixed/limited benefit amounts, and when a plan is NOT ACA major medical.</div>';
-  // Benefits highlight cards — clickable filters
+
+  // ── Plan Type Legend ──
+  html +=
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:22px;">';
+  var legendItems = [
+    {
+      color: '#5B8DEF',
+      bg: 'rgba(91,141,239,0.08)',
+      border: 'rgba(91,141,239,0.2)',
+      label: 'MEC',
+      full: 'Minimum Essential Coverage',
+      desc: 'Preventive-first plans with wellness visits, telemedicine, and basic doctor copays.'
+    },
+    {
+      color: '#d97706',
+      bg: 'rgba(245,158,11,0.08)',
+      border: 'rgba(245,158,11,0.2)',
+      label: 'STM',
+      full: 'Short-Term Medical',
+      desc: 'Temporary bridge coverage with deductible-based major medical structure.'
+    },
+    {
+      color: '#dc2626',
+      bg: 'rgba(239,68,68,0.06)',
+      border: 'rgba(239,68,68,0.18)',
+      label: 'Limited',
+      full: 'Limited Benefit',
+      desc: 'Fixed indemnity plans that pay set dollar amounts toward covered services.'
+    }
+  ];
+  legendItems.forEach(function (item) {
+    html +=
+      '<div style="background:' +
+      item.bg +
+      ';border:1.5px solid ' +
+      item.border +
+      ';border-radius:12px;padding:14px 16px;">';
+    html +=
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+    html +=
+      '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' +
+      item.color +
+      ';flex-shrink:0;"></span>';
+    html +=
+      '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:' +
+      item.color +
+      ';">' +
+      item.label +
+      '</span>';
+    html +=
+      '<span style="font-family:var(--font-ui);font-size:11px;color:var(--text-secondary);font-weight:500;">&mdash; ' +
+      item.full +
+      '</span>';
+    html += '</div>';
+    html +=
+      '<div style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
+      item.desc +
+      '</div>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // ── Benefit Filter Cards ──
+  html +=
+    '<div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Filter by Benefit</div>';
   var _bsvg = function (d) {
     return (
-      '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+      '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
       d +
       '</svg>'
     );
   };
   html +=
-    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:20px;">';
+    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:24px;">';
   var highlights = [
     {
       svg: _bsvg(
         '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/>'
       ),
       label: 'Doctor Visits',
-      desc: 'Fixed cash benefit per visit',
+      desc: 'PCP & specialist copays',
       filter: 'doctor|pcp|copay|office visit'
     },
     {
@@ -1028,7 +1098,7 @@ function renderPlans() {
         '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>'
       ),
       label: 'Prescriptions',
-      desc: 'Rx discount or fixed benefit',
+      desc: 'Rx discount or formulary',
       filter: 'rx|prescription|drug'
     },
     {
@@ -1036,7 +1106,7 @@ function renderPlans() {
         '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'
       ),
       label: 'Emergency',
-      desc: 'ER benefit up to plan max',
+      desc: 'ER & ambulance benefits',
       filter: 'emergency|er |ambulance'
     },
     {
@@ -1044,15 +1114,15 @@ function renderPlans() {
         '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'
       ),
       label: 'Preventive',
-      desc: 'Wellness visits covered',
+      desc: 'Wellness & annual physicals',
       filter: 'preventive|wellness|physical|screening'
     },
     {
       svg: _bsvg(
         '<path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V17H8v-2.3A7 7 0 0 1 5 9a7 7 0 0 1 7-7z"/><path d="M9 18h6M10 22h4"/>'
       ),
-      label: 'Dental/Vision',
-      desc: 'Add-on available',
+      label: 'Dental / Vision',
+      desc: 'Optional add-on coverage',
       filter: 'dental|vision|eye|teeth'
     },
     {
@@ -1060,47 +1130,106 @@ function renderPlans() {
         '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
       ),
       label: 'Telehealth',
-      desc: '$0 virtual visits on most plans',
+      desc: '$0 virtual doctor visits',
       filter: 'telehealth|telemedicine|virtual'
     }
   ];
-  highlights.forEach(function (h, idx) {
+  highlights.forEach(function (h) {
     html +=
       '<div class="benefit-filter-card" data-filter="' +
       h.filter +
-      '" onclick="filterPlansByBenefit(this)" style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:14px;padding:14px 16px;text-align:center;cursor:pointer;transition:border-color 0.15s, background 0.15s;">';
+      '" onclick="filterPlansByBenefit(this)" style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;transition:border-color 0.15s, background 0.15s;">';
     html +=
-      '<div style="margin-bottom:6px;color:var(--accent);">' + h.svg + '</div>';
+      '<div style="margin-bottom:8px;color:var(--accent);display:flex;justify-content:center;">' +
+      h.svg +
+      '</div>';
     html +=
-      '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:2px;">' +
+      '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' +
       h.label +
       '</div>';
     html +=
-      '<div style="font-family:var(--font-body);font-size:12px;color:var(--text-secondary);">' +
+      '<div style="font-family:var(--font-body);font-size:12px;color:var(--text-secondary);line-height:1.4;">' +
       h.desc +
       '</div>';
     html += '</div>';
   });
   html += '</div>';
-  html += '<div class="stabs" style="margin-bottom:20px;">';
-  ['All', 'MEC', 'STM', 'Limited'].forEach(function (g) {
+
+  // ── Plan Type Tabs ──
+  html +=
+    '<div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Browse by Plan Type</div>';
+  var tabDefs = [
+    {
+      key: 'All',
+      label: 'All Plans',
+      sub: 'Every plan we offer',
+      color: 'var(--text-primary)',
+      dot: 'var(--text-secondary)'
+    },
+    {
+      key: 'MEC',
+      label: 'MEC',
+      sub: 'Preventive & Wellness',
+      color: '#5B8DEF',
+      dot: '#5B8DEF'
+    },
+    {
+      key: 'STM',
+      label: 'STM',
+      sub: 'Bridge Coverage',
+      color: '#d97706',
+      dot: '#d97706'
+    },
+    {
+      key: 'Limited',
+      label: 'Limited',
+      sub: 'Fixed Indemnity',
+      color: '#dc2626',
+      dot: '#dc2626'
+    }
+  ];
+  html +=
+    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:22px;">';
+  tabDefs.forEach(function (t) {
+    var isActive = t.key === activePlanGroup;
+    var activeBg = isActive ? 'rgba(91,141,239,0.08)' : '#FFFFFF';
+    var activeBorder = isActive ? t.color : '#E5E7EB';
     html +=
-      '<button class="stab ' +
-      (g === activePlanGroup ? 'active' : '') +
-      '" onclick="setPlanGroup(\'' +
-      g +
-      '\')">' +
-      (g === 'All' ? 'All Plans' : g) +
-      '</button>';
+      '<button onclick="setPlanGroup(\'' +
+      t.key +
+      '\')" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 12px;background:' +
+      activeBg +
+      ';border:2px solid ' +
+      activeBorder +
+      ';border-radius:12px;cursor:pointer;transition:all 0.15s;font-family:var(--font-ui);">';
+    html += '<div style="display:flex;align-items:center;gap:6px;">';
+    if (t.key !== 'All') {
+      html +=
+        '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
+        t.dot +
+        ';"></span>';
+    }
+    html +=
+      '<span style="font-size:15px;font-weight:700;color:' +
+      (isActive ? t.color : 'var(--text-primary)') +
+      ';">' +
+      t.label +
+      '</span></div>';
+    html +=
+      '<span style="font-size:11px;color:var(--text-secondary);font-weight:500;">' +
+      t.sub +
+      '</span>';
+    html += '</button>';
   });
   html += '</div>';
-  // Plan search bar
+
+  // ── Search Bar ──
   html +=
     '<div id="planSearchWrap" style="position:relative;margin-bottom:16px;">';
   html +=
     '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
   html +=
-    '<input type="text" id="planSearchInput" placeholder="Search plans by name, type, or network..." oninput="filterPlanSearch(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
+    '<input type="text" id="planSearchInput" placeholder="Search by plan name, benefit, or coverage type..." oninput="filterPlanSearch(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
   html +=
     '<button id="planSearchClear" onclick="clearPlanSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
@@ -1308,11 +1437,7 @@ function clearPlanSearch() {
 
 function setPlanGroup(g) {
   activePlanGroup = g;
-  document.querySelectorAll('#page-plans .stab').forEach(function (b) {
-    var txt = b.textContent === 'All Plans' ? 'All' : b.textContent;
-    b.classList.toggle('active', txt === g);
-  });
-  renderPlanGroups();
+  renderPlans();
 }
 
 function renderPlanGroups() {
