@@ -1,7 +1,7 @@
 // CHA Sales Command Center — Service Worker
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = 'cha-command-center-v55';
+var CACHE_NAME = 'cha-command-center-v57';
 var URLS_TO_CACHE = [
   './',
   './index.html',
@@ -56,9 +56,37 @@ self.addEventListener('activate', function (event) {
   self.clients.claim();
 });
 
-// Fetch: stale-while-revalidate — serve cache fast, update in background
+// Fetch: smart caching — never cache auth files, cache everything else
 self.addEventListener('fetch', function (event) {
   if (event.request.method !== 'GET') return;
+
+  var url = event.request.url;
+
+  // NEVER cache these — always fetch fresh from network
+  var noCachePatterns = [
+    '/login.html',
+    '/login',
+    '/js/auth.js',
+    '/index.html',
+    'clerk.accounts.dev',
+    'clerk.com',
+    'api.groq.com',
+    'api.anthropic.com'
+  ];
+  var skipCache = noCachePatterns.some(function(p) { return url.indexOf(p) !== -1; });
+
+  if (skipCache) {
+    // Network only — no caching
+    event.respondWith(
+      fetch(event.request).catch(function() {
+        // If network fails for login page, user sees browser error (correct behavior)
+        return new Response('Network error', { status: 503 });
+      })
+    );
+    return;
+  }
+
+  // Everything else: stale-while-revalidate
   event.respondWith(
     caches.match(event.request).then(function (cached) {
       var fetchPromise = fetch(event.request)

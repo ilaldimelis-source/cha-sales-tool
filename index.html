@@ -17,7 +17,7 @@
     <meta property="og:type" content="website" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; script-src 'self' 'unsafe-inline'; worker-src 'self'; connect-src 'self' https://api.groq.com https://api.anthropic.com;"
+      content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://*.clerk.accounts.dev; worker-src 'self'; connect-src 'self' https://api.groq.com https://api.anthropic.com https://*.clerk.accounts.dev https://clerk.com https://*.clerk.com https://api.clerk.com;"
     />
     <link rel="manifest" href="manifest.json" />
     <meta name="apple-mobile-web-app-capable" content="yes" />

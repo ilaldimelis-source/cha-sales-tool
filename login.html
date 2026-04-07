@@ -9,14 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- Clerk SDK — replace CLERK_PUBLISHABLE_KEY with your real key after setup -->
-  <script
-    async
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA"
-    src="https://whole-viper-89.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
-    type="text/javascript"
-  ></script>
+  <!-- Clerk SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" type="text/javascript"></script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -270,39 +264,30 @@
 
   <script>
     // ── CLERK AUTH LOGIC ─────────────────────────────────────────────────
+    var PK = 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
     var clerk;
 
     window.addEventListener('load', function() {
-      // Wait for Clerk to initialize
-      var checkClerk = setInterval(function() {
-        if (window.Clerk) {
-          clearInterval(checkClerk);
-          initClerk();
-        }
-      }, 100);
-
-      // Timeout fallback after 8 seconds
-      setTimeout(function() {
-        clearInterval(checkClerk);
+      if (!window.Clerk) {
         document.getElementById('auth-loading').classList.remove('show');
-        showError('Could not connect to auth server. Check your internet connection.');
-      }, 8000);
-    });
-
-    function initClerk() {
-      clerk = window.Clerk;
+        showError('Could not load auth. Please refresh the page.');
+        return;
+      }
+      clerk = new window.Clerk(PK);
       clerk.load().then(function() {
-        // Already signed in → go straight to app
         if (clerk.user) {
           window.location.replace('/');
           return;
         }
-        // Not signed in → show the login form
         document.getElementById('auth-loading').classList.remove('show');
-      }).catch(function() {
+      }).catch(function(err) {
         document.getElementById('auth-loading').classList.remove('show');
-        showError('Auth service unavailable. Please try again.');
+        showError('Auth error: ' + (err && err.message ? err.message : 'Please refresh.'));
       });
+    });
+
+    function initClerk() {
+      // legacy — no longer used
     }
 
     function doSignIn() {
@@ -329,7 +314,14 @@
         .catch(function(err) {
           btn.disabled    = false;
           btn.textContent = 'Sign In →';
-          var msg = err.errors && err.errors[0] ? err.errors[0].message : 'Invalid email or password.';
+          var msg = 'Invalid email or password. Please try again.';
+          if (err.errors && err.errors[0]) {
+            var code = err.errors[0].code || '';
+            if (code === 'form_password_incorrect') msg = 'Incorrect password. Please try again.';
+            else if (code === 'form_identifier_not_found') msg = 'No account found with that email. Contact your manager.';
+            else if (code === 'too_many_requests') msg = 'Too many attempts. Please wait a few minutes and try again.';
+            else msg = err.errors[0].long_message || err.errors[0].message || msg;
+          }
           showError(msg);
         });
     }
