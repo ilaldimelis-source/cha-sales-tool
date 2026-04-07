@@ -86,7 +86,7 @@ function renderMindset() {
 // ══════════════════════════════════════════════════════
 function renderNotes() {
   var saved = getSavedScripts();
-  var notesVal = localStorage.getItem('scc_notes') || '';
+  var notesVal = safeGetItem('cha_notes') || '';
   var html =
     '<div class="ph"><div class="pt">My <span>Notes</span></div><div class="pd">Write your own scripts, custom phrasing, and reminders. Everything saves automatically.</div></div>';
   html +=
@@ -138,7 +138,7 @@ function renderNotes() {
 }
 
 function saveNotes() {
-  localStorage.setItem('scc_notes', document.getElementById('notesTA').value);
+  safeSetItem('cha_notes', document.getElementById('notesTA').value);
   var m = document.getElementById('saveMsg');
   if (m) {
     m.style.opacity = '1';
@@ -155,7 +155,7 @@ function clearNotes() {
 }
 function getSavedScripts() {
   try {
-    return JSON.parse(localStorage.getItem('scc_scripts') || '[]');
+    return JSON.parse(safeGetItem('cha_scripts') || '[]');
   } catch (e) {
     return [];
   }
@@ -165,21 +165,21 @@ function saveScript() {
   if (!v) return;
   var s = getSavedScripts();
   s.unshift(v);
-  localStorage.setItem('scc_scripts', JSON.stringify(s.slice(0, 30)));
+  safeSetItem('cha_scripts', JSON.stringify(s.slice(0, 30)));
   document.getElementById('scriptInput').value = '';
   renderSavedScripts();
 }
 function deleteScript(i) {
   var s = getSavedScripts();
   s.splice(i, 1);
-  localStorage.setItem('scc_scripts', JSON.stringify(s));
+  safeSetItem('cha_scripts', JSON.stringify(s));
   renderSavedScripts();
 }
 function removeFavorite(idx) {
   var favs = (typeof getFavorites === 'function') ? getFavorites() : [];
   if (idx >= 0 && idx < favs.length) {
     favs.splice(idx, 1);
-    localStorage.setItem('cha_favorites', JSON.stringify(favs));
+    safeSetItem('cha_favorites', JSON.stringify(favs));
     renderNotes();
   }
 }

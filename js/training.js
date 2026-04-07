@@ -1566,7 +1566,7 @@ function toggleDisc(id) {
 
 function copyDiscovery(el) {
   var q = el.getAttribute('data-q');
-  if (navigator.clipboard) navigator.clipboard.writeText(q);
+  safeCopy(q);
   var toast = document.getElementById('discoveryCopied');
   if (toast) {
     toast.style.display = 'block';
@@ -1672,7 +1672,7 @@ function renderClosingengine() {
 
 function copyClose(el) {
   var line = el.getAttribute('data-line');
-  if (navigator.clipboard) navigator.clipboard.writeText(line);
+  safeCopy(line);
   var toast = document.getElementById('closeCopied');
   if (toast) {
     toast.style.display = 'block';

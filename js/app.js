@@ -1,6 +1,72 @@
 // app.js — Navigation, routing, PAGE_CONFIG, initApp
 
 // ══════════════════════════════════════════════════════
+// SAFE LOCALSTORAGE WRAPPER (incognito / quota guard)
+// ══════════════════════════════════════════════════════
+function safeGetItem(key) {
+  try { return localStorage.getItem(key); } catch(e) { return null; }
+}
+function safeSetItem(key, val) {
+  try { localStorage.setItem(key, val); } catch(e) {}
+}
+
+// ══════════════════════════════════════════════════════
+// FONT SIZE TOGGLE (S / M / L)
+// ══════════════════════════════════════════════════════
+function setFontSize(size) {
+  var html = document.documentElement;
+  html.classList.remove('font-s', 'font-m', 'font-l');
+  html.classList.add('font-' + size);
+  safeSetItem('cha_font_size', size);
+  var btns = document.querySelectorAll('.font-toggle-btn');
+  btns.forEach(function(b) {
+    b.classList.toggle('active', b.textContent.trim().toLowerCase() === size);
+  });
+}
+function _initFontSize() {
+  var saved = safeGetItem('cha_font_size') || 'm';
+  setFontSize(saved);
+}
+
+// ══════════════════════════════════════════════════════
+// CLIPBOARD FALLBACK (Safari / older browsers)
+// ══════════════════════════════════════════════════════
+function safeCopy(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+  // Fallback: textarea + execCommand
+  return new Promise(function(resolve) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    resolve();
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// LOCALSTORAGE PREFIX MIGRATION (scc_ → cha_)
+// ══════════════════════════════════════════════════════
+(function _migrateLsKeys() {
+  try {
+    var migrations = [['scc_notes','cha_notes'],['scc_scripts','cha_scripts']];
+    migrations.forEach(function(pair) {
+      var old = localStorage.getItem(pair[0]);
+      if (old !== null && localStorage.getItem(pair[1]) === null) {
+        localStorage.setItem(pair[1], old);
+        localStorage.removeItem(pair[0]);
+      } else if (old !== null) {
+        localStorage.removeItem(pair[0]);
+      }
+    });
+  } catch(e) {}
+})();
+
+// ══════════════════════════════════════════════════════
 // PAGE CONSOLIDATION CONFIG & NAVIGATION
 // ══════════════════════════════════════════════════════
 
@@ -65,15 +131,15 @@ Object.keys(PAGE_CONFIG).forEach(function (parentId) {
 
 function trackRecentPage(id) {
   try {
-    var recent = JSON.parse(localStorage.getItem('cha_recent') || '[]');
+    var recent = JSON.parse(safeGetItem('cha_recent') || '[]');
     recent = recent.filter(function(r) { return r !== id; });
     recent.unshift(id);
     if (recent.length > 4) recent = recent.slice(0, 4);
-    localStorage.setItem('cha_recent', JSON.stringify(recent));
+    safeSetItem('cha_recent', JSON.stringify(recent));
   } catch(e) {}
 }
 function getRecentPages() {
-  try { return JSON.parse(localStorage.getItem('cha_recent') || '[]'); } catch(e) { return []; }
+  try { return JSON.parse(safeGetItem('cha_recent') || '[]'); } catch(e) { return []; }
 }
 
 function showPage(id) {
@@ -117,7 +183,12 @@ function showPage(id) {
   var renderMap = {
     dashboard: renderDashboard
   };
-  if (renderMap[id]) renderMap[id]();
+  if (renderMap[id]) {
+    try { renderMap[id](); } catch(e) {
+      var errPg = document.getElementById('page-' + id);
+      if (errPg) errPg.innerHTML = '<div style="padding:24px;color:#B91C1C;">Something went wrong. Please try again.</div>';
+    }
+  }
 }
 
 function renderDashboard() {
@@ -207,7 +278,12 @@ function _showComboPage(parentId, subId) {
   });
   for (var i = 0; i < subs.length; i++) {
     if (subs[i].id === subId) {
-      if (subs[i].render) subs[i].render();
+      if (subs[i].render) {
+        try { subs[i].render(); } catch(e) {
+          var errPage = document.getElementById('page-' + subId);
+          if (errPage) errPage.innerHTML = '<div style="padding:24px;color:#B91C1C;">Something went wrong loading this tab. Please try again.</div>';
+        }
+      }
       break;
     }
   }
@@ -280,7 +356,7 @@ function _renderPlanPill() {
 // FAVORITES SYSTEM
 // ══════════════════════════════════════════════════════
 function getFavorites() {
-  try { return JSON.parse(localStorage.getItem('cha_favorites') || '[]'); } catch(e) { return []; }
+  try { return JSON.parse(safeGetItem('cha_favorites') || '[]'); } catch(e) { return []; }
 }
 
 function isFavorite(type, id) {
@@ -299,7 +375,7 @@ function toggleFavorite(type, id, title, preview, source) {
     favs.unshift({ type: type, id: id, title: title, preview: (preview || '').substring(0, 120), source: source || '' });
     if (favs.length > 50) favs = favs.slice(0, 50);
   }
-  localStorage.setItem('cha_favorites', JSON.stringify(favs));
+  safeSetItem('cha_favorites', JSON.stringify(favs));
   // Update star state
   document.querySelectorAll('.fav-star[data-fav-type="' + type + '"][data-fav-id="' + id + '"]').forEach(function(star) {
     star.classList.toggle('active', isFavorite(type, id));
@@ -358,7 +434,7 @@ function _showTourStep() {
   if (oldTip) oldTip.remove();
 
   if (_tourStep >= TOUR_STEPS.length) {
-    localStorage.setItem('cha_tour_done', '1');
+    safeSetItem('cha_tour_done', '1');
     return;
   }
 
@@ -427,7 +503,7 @@ function _nextTourStep() {
 }
 
 function _endTour() {
-  localStorage.setItem('cha_tour_done', '1');
+  safeSetItem('cha_tour_done', '1');
   var ov = document.getElementById('tour-overlay');
   if (ov) ov.remove();
   var tip = document.getElementById('tour-tooltip');
@@ -436,9 +512,10 @@ function _endTour() {
 
 // ── INIT ──────────────────────────────────────────────
 function initApp() {
+  _initFontSize();
   showPage('dashboard');
   // Start onboarding tour for first-time users
-  if (!localStorage.getItem('cha_tour_done')) {
+  if (!safeGetItem('cha_tour_done')) {
     setTimeout(startTour, 600);
   }
   // Inject floating quick-action bar
@@ -563,7 +640,7 @@ function copyCompliance(btn) {
   var banner = btn.closest('.comp-banner');
   if (!banner) return;
   var text = banner.textContent.replace('Copy', '').replace('Copied!', '').trim();
-  navigator.clipboard.writeText(text).then(function() {
+  safeCopy(text).then(function() {
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
     setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);

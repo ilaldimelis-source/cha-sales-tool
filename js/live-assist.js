@@ -3,7 +3,7 @@
 // ── SOA One-Tap Copy ──
 var SOA_TEXT = 'This is a supplemental fixed indemnity health plan — not major medical insurance. It is not minimum essential coverage under the ACA. Pre-existing conditions are excluded for the first 12 months. Benefits are fixed dollar amounts, not full coverage. This plan is NOT ACA-compliant major medical insurance.';
 function copySOA(el) {
-  navigator.clipboard.writeText(SOA_TEXT).then(function() {
+  safeCopy(SOA_TEXT).then(function() {
     el.style.background = '#D1FAE5';
     var hint = el.querySelector('.soa-copy-hint');
     if (hint) hint.textContent = 'Copied!';
@@ -19,7 +19,7 @@ function copyScript(btn) {
   var block = btn.closest('.sbox') || btn.closest('.comp-script-block') || btn.closest('.la-sec-text') || btn.parentElement;
   if (!block) return;
   var text = block.textContent.replace(/Copy|Copied!/g, '').trim();
-  navigator.clipboard.writeText(text).then(function() {
+  safeCopy(text).then(function() {
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
     setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
