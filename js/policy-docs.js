@@ -3095,11 +3095,23 @@ var policyDocSearch = '';
 var policyDocOpen = null;
 var _pdSearchTimer;
 
+function _pdFindSalesPlan(doc) {
+  if (typeof PLANS === 'undefined') return null;
+  for (var i = 0; i < PLANS.length; i++) {
+    if (
+      doc.name.indexOf(PLANS[i].name.split(' ')[0]) !== -1 ||
+      PLANS[i].name.indexOf(doc.name.split(' ')[0]) !== -1
+    ) {
+      if (PLANS[i].group === doc.group) return PLANS[i];
+    }
+  }
+  return null;
+}
+
 function renderPolicydocs() {
-  var html =
-    '<div class="ph"><div class="pt">Policy <span>Reference</span></div>';
+  var html = '<div class="ph"><div class="pt">Plan <span>Vault</span></div>';
   html +=
-    '<div class="pd">Sourced from official plan documents. Verify rates with your carrier before enrollment.</div></div>';
+    '<div class="pd">Find the right plan for every client. Tap any card for full details.</div></div>';
 
   // Filter tabs
   html += '<div class="stabs" style="margin-bottom:12px;">';
@@ -3134,9 +3146,7 @@ function renderPolicydocs() {
   html += renderPolicyResults();
   html += '</div>';
 
-  var _page_policydocs =
-    document.getElementById('allplans-policydocs') ||
-    document.getElementById('page-policydocs');
+  var _page_policydocs = document.getElementById('page-policydocs');
   if (_page_policydocs) _page_policydocs.innerHTML = html;
 }
 
@@ -3229,12 +3239,13 @@ function pdToggleSection(header) {
 
 function _pdExpandedDetail(plan) {
   var gc = _pdGrpColor(plan.group);
+  var salesPlan = _pdFindSalesPlan(plan);
   var html =
     '<div id="pd-detail-' +
     plan.id +
     '" style="background:#FFFFFF;border:2px solid ' +
     gc +
-    ';border-radius:16px;margin-bottom:16px;overflow:hidden;animation:riseUp 0.18s ease both;">';
+    ';border-radius:16px;margin-bottom:16px;overflow:hidden;animation:cha-fade-in 0.18s ease both;">';
 
   // ── Header bar ──
   html +=
@@ -3265,157 +3276,106 @@ function _pdExpandedDetail(plan) {
     '\')" style="background:none;border:1px solid #E5E7EB;border-radius:8px;padding:6px;cursor:pointer;color:var(--text-secondary);flex-shrink:0;" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
   html += '</div>';
 
-  // ── Content body ──
+  // ── Flat sections ──
   html += '<div style="padding:16px 20px;">';
 
-  // Quick Summary
-  if (plan.planNotes) {
-    html +=
-      '<div style="background:#F8F9FE;border-left:3px solid ' +
-      gc +
-      ';border-radius:0 10px 10px 0;padding:10px 14px;margin-bottom:16px;font-size:14px;color:var(--text-secondary);line-height:1.55;">' +
-      plan.planNotes +
-      '</div>';
+  // Section divider helper
+  var _div = function (label) {
+    return (
+      '<div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;padding-top:12px;border-top:1px solid #E5E7EB;">' +
+      label +
+      '</div>'
+    );
+  };
+
+  // Coverage highlights — top 5 from benefits
+  var topBullets = [];
+  plan.benefits.forEach(function (bcat) {
+    bcat.items.forEach(function (item) {
+      if (topBullets.length < 5 && !/NOT covered/i.test(item))
+        topBullets.push(item);
+    });
+  });
+  if (topBullets.length) {
+    html += _div('Coverage Highlights');
+    topBullets.forEach(function (b) {
+      html +=
+        '<div style="font-size:13px;color:var(--text-secondary);padding-left:8px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
+        b +
+        '</div>';
+    });
   }
 
-  // Waiting Periods + Pre-Existing — always prominent
-  html +=
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">';
-  html +=
-    '<div style="background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.2);border-radius:12px;padding:12px 14px;">';
-  html +=
-    '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:#15803D;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Waiting Periods</div>';
+  // Rx Coverage
+  var rxItems = [];
+  plan.benefits.forEach(function (bcat) {
+    if (/prescription|rx/i.test(bcat.category)) {
+      bcat.items.forEach(function (item) {
+        rxItems.push(item);
+      });
+    }
+  });
+  if (rxItems.length) {
+    html += _div('Rx Coverage');
+    rxItems.forEach(function (item) {
+      html +=
+        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
+        item +
+        '</div>';
+    });
+  }
+
+  // Waiting Periods
+  html += _div('Waiting Periods');
   plan.waitingPeriods.forEach(function (w) {
     html +=
-      '<div style="font-size:14px;color:var(--text-primary);margin-bottom:3px;line-height:1.5;">' +
+      '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
       w +
       '</div>';
   });
-  html += '</div>';
+
+  // Pre-Ex Rules
+  html += _div('Pre-Ex Rules');
   html +=
-    '<div style="background:rgba(239,68,68,0.04);border:1.5px solid rgba(239,68,68,0.18);border-radius:12px;padding:12px 14px;">';
-  html +=
-    '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:#B91C1C;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Pre-Existing</div>';
-  html +=
-    '<div style="font-size:14px;color:var(--text-primary);line-height:1.5;">' +
+    '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
     plan.preEx +
     '</div>';
-  html += '</div></div>';
 
-  // Benefits — grouped by category, separated into logical sections
-  var benefitCats = { coverage: [], rx: [], preventive: [], other: [] };
-  plan.benefits.forEach(function (bcat) {
-    var cl = bcat.category.toLowerCase();
-    if (cl.indexOf('prescription') !== -1 || cl.indexOf('rx') !== -1)
-      benefitCats.rx.push(bcat);
-    else if (cl.indexOf('preventive') !== -1 || cl.indexOf('mec') !== -1)
-      benefitCats.preventive.push(bcat);
-    else if (
-      cl.indexOf('doctor') !== -1 ||
-      cl.indexOf('hospital') !== -1 ||
-      cl.indexOf('surgery') !== -1 ||
-      cl.indexOf('telemedicine') !== -1 ||
-      cl.indexOf('telehealth') !== -1 ||
-      cl.indexOf('emergency') !== -1 ||
-      cl.indexOf('ambulance') !== -1 ||
-      cl.indexOf('urgent') !== -1
-    )
-      benefitCats.coverage.push(bcat);
-    else benefitCats.other.push(bcat);
-  });
-
-  // Coverage section
-  if (benefitCats.coverage.length) {
-    html += _pdSectionHead('Benefits', '#5B8DEF', false);
-    html += '<div style="margin-bottom:16px;">';
-    benefitCats.coverage.forEach(function (bcat) {
-      html += '<div style="margin-bottom:10px;">';
-      html +=
-        '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' +
-        bcat.category +
-        '</div>';
-      bcat.items.forEach(function (item) {
-        html +=
-          '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:2px;line-height:1.55;">&#8226; ' +
-          item +
-          '</div>';
-      });
-      html += '</div>';
-    });
-    html += '</div>';
-  }
-
-  // Prescriptions / Rx
-  if (benefitCats.rx.length) {
-    html += _pdSectionHead('Prescriptions / Rx', '#7C3AED', false);
-    html += '<div style="margin-bottom:16px;">';
-    benefitCats.rx.forEach(function (bcat) {
-      bcat.items.forEach(function (item) {
-        html +=
-          '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:2px;line-height:1.55;">&#8226; ' +
-          item +
-          '</div>';
-      });
-    });
-    html += '</div>';
-  }
-
-  // Preventive / MEC
-  if (benefitCats.preventive.length) {
-    html += _pdSectionHead('Preventive / MEC', '#15803D', false);
-    html += '<div style="margin-bottom:16px;">';
-    benefitCats.preventive.forEach(function (bcat) {
-      bcat.items.forEach(function (item) {
-        html +=
-          '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:2px;line-height:1.55;">&#8226; ' +
-          item +
-          '</div>';
-      });
-    });
-    html += '</div>';
-  }
-
-  // Other benefit categories (Peer Support, Concierge, etc.)
-  if (benefitCats.other.length) {
-    html += _pdSectionHead('Other Benefits', '#6B7280', false);
-    html += '<div style="margin-bottom:16px;">';
-    benefitCats.other.forEach(function (bcat) {
-      html += '<div style="margin-bottom:8px;">';
-      html +=
-        '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' +
-        bcat.category +
-        '</div>';
-      bcat.items.forEach(function (item) {
-        html +=
-          '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:2px;line-height:1.55;">&#8226; ' +
-          item +
-          '</div>';
-      });
-      html += '</div>';
-    });
-    html += '</div>';
-  }
-
-  // Exclusions — collapsed by default
+  // Exclusions — flat list
   if (plan.limitations.length) {
-    html += _pdSectionHead(
-      'Exclusions (' + plan.limitations.length + ')',
-      '#B91C1C',
-      true
-    );
-    html += '<div style="margin-bottom:16px;display:none;">';
+    html += _div('Exclusions');
     plan.limitations.forEach(function (lim) {
       html +=
-        '<div style="font-size:14px;color:var(--text-secondary);padding-left:14px;margin-bottom:3px;line-height:1.55;"><span style="color:#DC2626;font-weight:600;">&#10005;</span> ' +
+        '<div style="font-size:13px;color:var(--text-secondary);padding-left:8px;margin-bottom:2px;line-height:1.5;"><span style="color:#DC2626;">&#10005;</span> ' +
         lim +
         '</div>';
     });
+  }
+
+  // Sales Notes — from PLANS array
+  if (salesPlan) {
+    html += _div('Sales Notes');
+    html +=
+      '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;">' +
+      salesPlan.framing +
+      '</div>';
+
+    // Compliance Note — amber callout
+    html +=
+      '<div style="background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.3);border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;">';
+    html +=
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+    html +=
+      '<div><div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Compliance Note</div>' +
+      '<div style="font-size:13px;color:#92400E;line-height:1.5;">' +
+      salesPlan.compliance +
+      '</div></div>';
     html += '</div>';
   }
 
   // Source
   html +=
-    '<div style="padding-top:10px;border-top:1px solid #E5E7EB;font-size:12px;color:var(--text-muted);">Source: ' +
+    '<div style="font-size:11px;color:var(--text-muted);margin-top:12px;padding-top:8px;border-top:1px solid #E5E7EB;">Source: ' +
     plan.source +
     '</div>';
 
@@ -3531,6 +3491,13 @@ function renderPolicyResults() {
         ' &middot; ' +
         plan.carrier +
         '</div>';
+      var _sp = _pdFindSalesPlan(plan);
+      if (_sp && _sp.bestFor) {
+        html +=
+          '<div style="font-size:11px;color:var(--text-muted);margin-top:3px;line-height:1.4;">Best for: ' +
+          _sp.bestFor +
+          '</div>';
+      }
       html += '</div>';
       html +=
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' +

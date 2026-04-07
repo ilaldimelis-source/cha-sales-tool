@@ -106,7 +106,7 @@ var PAGE_CONFIG = {
   plans: {
     label: 'Plans',
     subs: [
-      { id: 'allplans', label: 'All Plans', render: renderAllPlans },
+      { id: 'policydocs', label: 'Plans', render: renderPolicydocs },
       { id: 'compare', label: 'Compare', render: renderCompare },
       { id: 'benefits', label: 'Benefits', render: renderBenefits }
     ]
