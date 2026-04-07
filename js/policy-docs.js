@@ -1,14 +1,14 @@
-// policy-docs.js — Policy Reference tab (POLICY_DOCS data + render/filter/toggle)
+h// policy-docs.js — Policy Reference tab (POLICY_DOCS data + render/filter/toggle)
 var POLICY_DOCS = [
   {
     group: 'MEC',
     id: 'medf1',
     name: 'MedFirst 1',
     type: 'MEC — Minimum Essential Coverage',
-    carrier: 'Merchants Benefit Administration (MBA)',
+    carrier: 'Merchants Benefit Administration (MhBA)',
     assoc: 'VP Limited Partnership / The Vitamin Patch (TVP)',
     network: 'First Health',
-    source: 'MEC_MedFirst1_SPD_Jan25.pdf',
+    source: 'MEC_MedFirst1_SPDh_Jan25.pdf',
     benefits: [
       {
         category: 'Doctor Visits',
@@ -1712,8 +1712,8 @@ var POLICY_DOCS = [
         category: 'Deductible & Coinsurance',
         items: [
           'Deductible options: $500 / $1,000 / $2,000 / $2,500 / $5,000 / $7,500 / $10,000',
-          'Coinsurance: 80/20 (plan pays 80%, you pay 20%)',
-          'Coinsurance limit: $2,000 or $4,000 out-of-pocket max'
+          'Coinsurance: 50/50 or 80/20 (options vary — plan pays 50% or 80%)',
+          'Out-of-pocket maximum: $5,000'
         ]
       },
       {
@@ -2114,7 +2114,7 @@ var POLICY_DOCS = [
           'Ambulance: Covered — subject to deductible and coinsurance',
           'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses — subject to deductible and coinsurance',
           'MRI and CT scans: Covered — subject to deductible and coinsurance',
-          'Network: PHCS Practitioner Plus Ancillary Network — members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
+          'Network: First Health + MultiPlan — members can see any doctor but in-network avoids balance billing. Find providers at myfirsthealth.com or multiplan.com',
           'Complications of pregnancy: Covered — standard maternity/childbirth NOT covered'
         ]
       }
@@ -2135,7 +2135,7 @@ var POLICY_DOCS = [
       'Maternity, standard childbirth, prenatal care, delivery services: Not covered — complications of pregnancy only',
       'Mental health and substance abuse: Not covered or very limited — check specific plan schedule',
       'Dental and vision: Not covered',
-      'Prescription drugs (Pinnacle STM): Not covered as insurance — Rx Savers discount card included',
+      'Prescription drugs: Not covered as insurance — ReviveHealth pharmacy membership included',
       'Cosmetic surgery: Not covered',
       'Weight loss and bariatric surgery: Not covered',
       'Infertility treatment: Not covered',
@@ -2191,7 +2191,7 @@ var POLICY_DOCS = [
       {
         category: 'Emergency Room',
         items: [
-          'ER benefit (100 tier+): $50/day — max 1 day/yr',
+          'ER benefit (100 tier and above — NOT available on 100A): $50/day — max 1 day/yr',
           '1000 tier: $100/day — max 1 day/yr'
         ]
       },
@@ -2495,7 +2495,7 @@ var POLICY_DOCS = [
           'Critical illness: $1,000 on tiers 200+',
           'Surgery benefit (tiers 200+ only): 50%-100% per day up to 3 days',
           'Hospital ICU benefit (tier 1000+ only): $1,000/day up to 15 days',
-          'Additional hospital admission benefit (tier 1000+ only): $1,000 per admission up to 5 days'
+          'Additional hospital admission benefit (tier 1000+ only): $1,000 per admission — up to 5 admissions'
         ]
       }
     ],
@@ -2550,6 +2550,16 @@ var POLICY_DOCS = [
           'Plan 200+: $200/day — same limits',
           'Plan 300: $300/day — same limits',
           'Plan 500: $500/day; Plan 1000: $1,000/day; Plan 1000+: $1,000/day'
+        ]
+      },
+      {
+        category: 'ICU Confinement',
+        items: [
+          'Plan 100: $100/day — 30 days/confinement, 90 days/cert year',
+          'Plan 200: $200/day — 30 days/confinement, 90 days/cert year',
+          'Plan 200+: $200/day — same limits',
+          'Plan 300: $300/day — same limits',
+          'Plan 500: $500/day; Plan 750: $750/day; Plan 1000: $1,000/day; Plan 1000+: $1,000/day'
         ]
       },
       {
@@ -2627,7 +2637,7 @@ var POLICY_DOCS = [
       'Benefits are FIXED DOLLAR AMOUNTS — not bill payment',
       '12/12 pre-existing condition limitation applies to ALL plans',
       '30-day waiting period for sickness',
-      'No ICU additional benefit on most plans (ICU only on 1000+ tier)',
+      'ICU Confinement benefit available on ALL plans: Plans 100/200/200+/300 ($100/$200/$200/$300 per day) — Plans 500/750/1000/1000+ ($500/$750/$1,000/$1,000 per day) — 30 days per confinement, 90 days per cert year',
       'Hospital admission benefit only on 1000+ plan',
       'No surgery benefit on Plan 100',
       'Balance billing risk',
