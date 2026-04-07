@@ -1114,13 +1114,12 @@ var activePlanGroup = 'All';
 
 // ── Combined All Plans view (Plan Vault + Policy Reference) ──
 function renderAllPlans() {
-  var pg = document.getElementById('page-allplans');
-  if (!pg) return;
-  // Inject unique containers — avoid clashing with combo-page id="page-plans"
-  pg.innerHTML =
-    '<div id="allplans-vault"></div><div id="allplans-policydocs" style="margin-top:32px;"></div>';
-  renderPlans();
-  if (typeof renderPolicydocs === 'function') renderPolicydocs();
+  // Delegate to renderPolicydocs — Plans tab now uses the unified view
+  if (typeof renderPolicydocs === 'function') {
+    var pg = document.getElementById('page-allplans');
+    if (pg) pg.innerHTML = '';
+    renderPolicydocs();
+  }
 }
 
 function renderPlans() {

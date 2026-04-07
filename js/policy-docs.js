@@ -3146,7 +3146,9 @@ function renderPolicydocs() {
   html += renderPolicyResults();
   html += '</div>';
 
-  var _page_policydocs = document.getElementById('page-policydocs');
+  var _page_policydocs =
+    document.getElementById('page-policydocs') ||
+    document.getElementById('page-allplans');
   if (_page_policydocs) _page_policydocs.innerHTML = html;
 }
 
