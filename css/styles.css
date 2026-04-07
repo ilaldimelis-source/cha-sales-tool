@@ -3248,7 +3248,7 @@ a[href='#main-content']:focus {
   }
 
   body.br-open #br-toggle {
-    display: none;
+    display: none !important;
   }
 
   .content {
@@ -3775,7 +3775,7 @@ body.br-open .main {
 }
 
 body.br-open #br-toggle {
-  display: none;
+  display: none !important;
 }
 
 /* ── COLLAPSIBLE SIDEBAR ── */
