@@ -32,10 +32,10 @@
   }
 
   // ── WAIT FOR CLERK SDK (loaded via static script tag in index.html head) ────
-  // Wait for Clerk SDK script to be available, then call .load()
+  // Wait for Clerk v4 constructor to be available
   function waitForClerk(callback, attempts) {
     if (!attempts) attempts = 0;
-    if (window.Clerk && typeof window.Clerk.load === 'function') {
+    if (window.Clerk) {
       callback();
     } else if (attempts < 50) {
       setTimeout(function() { waitForClerk(callback, attempts + 1); }, 200);
@@ -52,13 +52,10 @@
 
   // ── SESSION CHECK ────────────────────────────────────────────────────────────
   function checkSession() {
-    // Clerk v5 CDN bug: isReady missing on browser build — patch it
-    if (!window.Clerk.isReady) {
-      window.Clerk.isReady = function() { return window.Clerk.loaded === true; };
-    }
-    window.Clerk.load()
-      .then(function() {
-        _clerkInstance = window.Clerk;
+    // Clerk v4: use constructor API
+    var clerkInstance = new window.Clerk(CLERK_PK);
+    clerkInstance.load().then(function() {
+        _clerkInstance = clerkInstance;
         var user = _clerkInstance.user;
 
         // If no user but there's an active session on the client, activate it
