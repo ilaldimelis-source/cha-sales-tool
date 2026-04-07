@@ -612,13 +612,21 @@ function brLocalLookup(query, plan) {
 
   if (matched.length > 0) {
     result.confident = true;
+    // Only count NOT COVERED if the MAJORITY of matches say so — prevents one
+    // unrelated exclusion line from poisoning a query that IS covered
+    var notCoveredCount = 0;
+    var coveredCount = 0;
+    matched.slice(0, 5).forEach(function (m) {
+      var ml = String(m).toLowerCase();
+      if (ml.indexOf('not covered') !== -1 || ml.indexOf('excluded') !== -1 || ml.indexOf('no coverage') !== -1) {
+        notCoveredCount++;
+      } else {
+        coveredCount++;
+      }
+    });
     result.data = matched.slice(0, 5).join('\n');
     var mt = result.data.toLowerCase();
-    if (
-      mt.indexOf('not covered') !== -1 ||
-      mt.indexOf('excluded') !== -1 ||
-      mt.indexOf('no coverage') !== -1
-    ) {
+    if (notCoveredCount > coveredCount) {
       result.status = 'NOT COVERED';
     } else if (
       mt.indexOf('discount') !== -1 &&
@@ -1011,7 +1019,10 @@ var BR_SYNONYM_MAP = {
   telemedicine: ['telehealth', 'virtual visit', 'virtual doctor', 'tele'],
   surgery: ['surgical', 'operation', 'procedure'],
   ambulance: ['transport', 'ems'],
-  copay: ['copays', 'co-pay', 'co pay', 'copay amount'],
+  copay: ['copays', 'co-pay', 'co pay', 'copay amount', 'cost', 'how much', 'fee', 'charge', 'office cost'],
+  specialist: ['specialty', 'specialist visit', 'specialist care', 'special doctor'],
+  surgery: ['surgical', 'operation', 'procedure', 'outpatient surgery', 'inpatient surgery'],
+  'primary care': ['pcp', 'doctor visit', 'office visit', 'physician visit', 'gp'],
   network: ['in network', 'in-network', 'provider network', 'providers'],
   cancer: ['chemo', 'chemotherapy', 'radiation', 'oncology'],
   dialysis: ['kidney', 'renal'],
@@ -1167,6 +1178,46 @@ function _brLookupBenefit(planDoc, topic) {
 function _brSpecialCase(topic, planDoc) {
   if (!planDoc) return null;
   var t = topic.toLowerCase();
+  // Exclusions chip — show all plan limitations directly
+  if (/\bexclusion|\bnot covered|\bwhat.+not\b|\bno coverage/.test(t)) {
+    var excItems = (planDoc.limitations || []).slice(0, 8);
+    if (!excItems.length) excItems = ['No specific exclusions listed — verify with carrier.'];
+    return {
+      status: 'Not Covered',
+      label: 'Exclusions & Limitations',
+      items: excItems,
+      sayThis: 'That benefit isn\'t included on this plan — let me show you what IS covered.',
+      source: planDoc.name
+    };
+  }
+  // Copays chip — pull all copay/visit cost data from benefits
+  if (/\bcopay|\bco-pay|\bco pay|\bhow much|copays for/.test(t)) {
+    var copayItems = [];
+    planDoc.benefits.forEach(function (bcat) {
+      bcat.items.forEach(function (item) {
+        if (/copay|\$\d+\s*(copay|per visit|\/visit)|visit.*\$|copay.*visit/i.test(item)) {
+          copayItems.push(item);
+        }
+      });
+    });
+    if (!copayItems.length) {
+      // fallback — grab all physician/visit benefit lines
+      planDoc.benefits.forEach(function (bcat) {
+        if (/physician|doctor|visit|office|urgent|specialist/i.test(bcat.category)) {
+          copayItems = copayItems.concat(bcat.items.slice(0, 3));
+        }
+      });
+    }
+    if (copayItems.length) {
+      return {
+        status: 'Covered',
+        label: 'Copays',
+        items: copayItems.slice(0, 6),
+        sayThis: copayItems[0],
+        source: planDoc.name
+      };
+    }
+  }
   if (/deductible|out.of.pocket|\boop\b/.test(t)) {
     if (planDoc.group === 'MEC' || planDoc.group === 'Limited') {
       return {
@@ -1203,6 +1254,27 @@ function _brSpecialCase(topic, planDoc) {
       source: planDoc.name
     };
   }
+  if (/\btelemedicine\b|\btelehealth\b|\bvirtual\b/.test(t)) {
+    var teleItems = [];
+    planDoc.benefits.forEach(function (bcat) {
+      if (/tele|virtual/i.test(bcat.category)) teleItems = teleItems.concat(bcat.items.slice(0, 3));
+    });
+    if (!teleItems.length) teleItems = ['Telemedicine included — $0 consultation fee. Available 24/7. Can prescribe most common medications.'];
+    return { status: 'Covered', label: 'Telemedicine', items: teleItems, sayThis: '$0 telemedicine — available 24/7, they can prescribe most common medications right over the phone.', source: planDoc.name };
+  }
+  if (/\bmaternity\b|\bpregnancy\b|\bpregnant\b|\bprenatal\b/.test(t)) {
+    return { status: 'Not Covered', label: 'Maternity / Pregnancy', items: ['Maternity, pregnancy, and prenatal care are NOT covered under this plan.'], sayThis: 'Maternity and pregnancy are not covered on this plan — that\'s an important disclosure I want to make sure is clear.', source: planDoc.name };
+  }
+  if (/\bmental health\b|\btherapy\b|\bcounseling\b|\bpsychiatry\b/.test(t)) {
+    var mhItems = [];
+    planDoc.benefits.forEach(function (bcat) {
+      if (/mental|behavioral|therapy|counseling/i.test(bcat.category)) mhItems = mhItems.concat(bcat.items.slice(0, 3));
+    });
+    var mhExcluded = planDoc.limitations && planDoc.limitations.some(function(l){ return /mental|behavioral/i.test(l); });
+    if (mhItems.length) return { status: 'Covered', label: 'Mental Health', items: mhItems, source: planDoc.name };
+    if (mhExcluded) return { status: 'Not Covered', label: 'Mental Health', items: ['Mental health and behavioral health services are not covered on this plan.'], sayThis: 'Mental health coverage is not included on this plan — that\'s a disclosure I always share upfront.', source: planDoc.name };
+    return { status: 'Verify', label: 'Mental Health', items: ['Mental health coverage varies by plan tier — verify with carrier before advising.'], source: planDoc.name };
+  }
   if (/waiting.period|\bhow.soon\b|\bwhen.does\b/.test(t)) {
     return {
       status: 'Covered',
@@ -1212,10 +1284,12 @@ function _brSpecialCase(topic, planDoc) {
     };
   }
   if (/pre.existing|\bpre.ex\b|\bpreex\b/.test(t)) {
+    var preExText = planDoc.preEx || '12-month exclusion for conditions diagnosed/treated in prior 12 months';
     return {
-      status: planDoc.group === 'STM' ? 'Not Covered' : 'Covered',
+      status: 'Covered',
       label: 'Pre-Existing Conditions',
-      items: [planDoc.preEx],
+      items: [preExText],
+      sayThis: '12-month exclusion for conditions diagnosed or treated in the prior 12 months.',
       source: planDoc.name
     };
   }
@@ -1448,7 +1522,7 @@ function brStructuredAnswer(query, plans) {
       html +=
         '<div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;white-space:nowrap;">SAY THIS →</div>';
       html +=
-        '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"That benefit isn\'t included on this plan tier — let me show you what IS covered."</div>';
+        '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"That benefit isn\'t included on this plan — let me show you what IS covered."</div>';
       html += '</div>';
     }
     html += '</div>';
@@ -1605,6 +1679,7 @@ function brSmartAnswer(query, plans) {
       }
       if (!matched) return;
 
+      var cat = (entry.category || '').toLowerCase();
       if (cat.includes('exclusion') || cat.includes('limitation'))
         planMatches.exclusions.push(entry.text);
       else if (cat.includes('waiting')) planMatches.waiting.push(entry.text);
