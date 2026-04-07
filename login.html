@@ -143,12 +143,10 @@
     // ── CONFIG ──────────────────────────────────────────────────────────────
     var clerk = null;
 
-    // ── WAIT FOR CLERK SDK (auto-loads via static script tag in head) ──────
-    // Clerk @5 auto-initializes when data-clerk-publishable-key is on the tag.
-    // Do NOT call .load() again — just wait for loaded === true.
+    // ── WAIT FOR CLERK SDK then call .load() ───────────────────────────────
     function waitForClerk(cb, attempts) {
       if (!attempts) attempts = 0;
-      if (window.Clerk && window.Clerk.loaded) {
+      if (window.Clerk && typeof window.Clerk.load === 'function') {
         cb();
       } else if (attempts < 50) {
         setTimeout(function() { waitForClerk(cb, attempts + 1); }, 200);
@@ -158,10 +156,19 @@
     }
 
     waitForClerk(function() {
-      clerk = window.Clerk;
-      if (clerk.user) {
-        window.location.replace('/');
+      // Clerk v5 CDN bug: isReady missing on browser build — patch it
+      if (!window.Clerk.isReady) {
+        window.Clerk.isReady = function() { return window.Clerk.loaded === true; };
       }
+      window.Clerk.load().then(function() {
+        clerk = window.Clerk;
+        if (clerk.user) {
+          window.location.replace('/');
+        }
+      }).catch(function(e) {
+        console.error('[CHA] Clerk.load error:', e);
+        clerk = window.Clerk;
+      });
     });
 
     // ── SIGN IN ──────────────────────────────────────────────────────────────

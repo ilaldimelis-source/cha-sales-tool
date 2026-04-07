@@ -32,11 +32,10 @@
   }
 
   // ── WAIT FOR CLERK SDK (loaded via static script tag in index.html head) ────
-  // Clerk @5 auto-loads via static script tag with data-clerk-publishable-key.
-  // Do NOT call .load() again — just wait for .loaded === true.
+  // Wait for Clerk SDK script to be available, then call .load()
   function waitForClerk(callback, attempts) {
     if (!attempts) attempts = 0;
-    if (window.Clerk && window.Clerk.loaded) {
+    if (window.Clerk && typeof window.Clerk.load === 'function') {
       callback();
     } else if (attempts < 50) {
       setTimeout(function() { waitForClerk(callback, attempts + 1); }, 200);
@@ -53,15 +52,26 @@
 
   // ── SESSION CHECK ────────────────────────────────────────────────────────────
   function checkSession() {
-    _clerkInstance = window.Clerk;
-    var user = _clerkInstance.user;
-    if (!user) {
-      goToLogin();
-      return;
+    // Clerk v5 CDN bug: isReady missing on browser build — patch it
+    if (!window.Clerk.isReady) {
+      window.Clerk.isReady = function() { return window.Clerk.loaded === true; };
     }
-    renderUserInfo(user);
-    hideOverlay();
-    startInactivityTimer();
+    window.Clerk.load()
+      .then(function() {
+        _clerkInstance = window.Clerk;
+        var user = _clerkInstance.user;
+        if (!user) {
+          goToLogin();
+          return;
+        }
+        renderUserInfo(user);
+        hideOverlay();
+        startInactivityTimer();
+      })
+      .catch(function(err) {
+        console.error('[CHA Auth] Session check failed:', err);
+        goToLogin();
+      });
   }
 
   // ── INACTIVITY TIMER ─────────────────────────────────────────────────────────
