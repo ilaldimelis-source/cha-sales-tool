@@ -5,6 +5,12 @@ var brSearchAllPlans = false;
 var brOpen = false;
 var BR_PLANS = [];
 var _brInitDone = false;
+// Office key from localStorage — set once via browser console: brSetOfficeKey('gsk_...')
+var CHA_OFFICE_GROQ_KEY = localStorage.getItem('cha_groq_key') || '';
+function brSetOfficeKey(key) {
+  localStorage.setItem('cha_groq_key', key);
+  CHA_OFFICE_GROQ_KEY = key;
+}
 // ── LUCIDE-STYLE SVG ICONS ──────────────────────────────────────────
 var LI = {
   check:
@@ -142,11 +148,7 @@ function brInit() {
   buildSearchIndex();
   brShowWelcome();
 
-  // Groq AI setup
-  var _storedKey = localStorage.getItem('cha_groq_key');
-  if (!_storedKey || _storedKey === 'skip' || _storedKey === '') {
-    setTimeout(brShowSetupModal, 1500);
-  }
+  // Groq AI setup — office key is default, modal only via ⚙ button
   var _aiBtn = document.createElement('button');
   _aiBtn.textContent = '\u2699 AI';
   _aiBtn.onclick = brShowSetupModal;
@@ -546,8 +548,129 @@ function brRenderAIAnswer(text, planName) {
   brAddMsg('ai', html);
 }
 
+// ── LOCAL LOOKUP — checks POLICY_DOCS before calling AI ──
+function brLocalLookup(query, plan) {
+  var q =
+    typeof _brFixTypos === 'function'
+      ? _brFixTypos(query.toLowerCase())
+      : query.toLowerCase();
+  var result = { confident: false, status: 'VERIFY', data: '', source: '' };
+  var allData = [];
+  if (plan.benefits) {
+    for (var b = 0; b < plan.benefits.length; b++) {
+      var cat = plan.benefits[b];
+      if (cat.items) {
+        for (var ci = 0; ci < cat.items.length; ci++)
+          allData.push(cat.items[ci]);
+      }
+      if (cat.category) allData.push(cat.category);
+    }
+  }
+  if (plan.limitations) allData = allData.concat(plan.limitations);
+  if (plan.waitingPeriods) allData = allData.concat(plan.waitingPeriods);
+  if (plan.preEx)
+    allData.push(
+      typeof plan.preEx === 'string' ? plan.preEx : JSON.stringify(plan.preEx)
+    );
+  if (plan.planNotes)
+    allData.push(
+      typeof plan.planNotes === 'string'
+        ? plan.planNotes
+        : JSON.stringify(plan.planNotes)
+    );
+
+  var terms = [q];
+  if (typeof _brExpandTerm === 'function') {
+    var expanded = _brExpandTerm(q);
+    for (var e = 0; e < expanded.length; e++) {
+      if (terms.indexOf(expanded[e]) === -1) terms.push(expanded[e]);
+    }
+  }
+
+  var matched = [];
+  for (var i = 0; i < allData.length; i++) {
+    var entry = String(allData[i]).toLowerCase();
+    for (var j = 0; j < terms.length; j++) {
+      if (entry.indexOf(terms[j]) !== -1) {
+        matched.push(allData[i]);
+        break;
+      }
+    }
+  }
+
+  if (matched.length > 0) {
+    result.confident = true;
+    result.data = matched.slice(0, 5).join('\n');
+    var mt = result.data.toLowerCase();
+    if (
+      mt.indexOf('not covered') !== -1 ||
+      mt.indexOf('excluded') !== -1 ||
+      mt.indexOf('no coverage') !== -1
+    ) {
+      result.status = 'NOT COVERED';
+    } else if (
+      mt.indexOf('discount') !== -1 &&
+      (mt.indexOf('not insurance') !== -1 || mt.indexOf('discount only') !== -1)
+    ) {
+      result.status = 'DISCOUNT';
+    } else {
+      result.status = 'COVERED';
+    }
+  }
+  return result;
+}
+
+function brRenderLocalResult(result, planName) {
+  var borderColor = '#22c55e';
+  var bgColor = '#f0fdf4';
+  var badgeColor = '#16a34a';
+  var icon = '✓';
+  var label = result.status;
+  if (result.status === 'NOT COVERED') {
+    borderColor = '#ef4444';
+    bgColor = '#fef2f2';
+    badgeColor = '#dc2626';
+    icon = '✗';
+  } else if (result.status === 'VERIFY') {
+    borderColor = '#f59e0b';
+    bgColor = '#fffbeb';
+    badgeColor = '#d97706';
+    icon = '⚠';
+  } else if (result.status === 'DISCOUNT') {
+    borderColor = '#8b5cf6';
+    bgColor = '#f5f3ff';
+    badgeColor = '#7c3aed';
+    icon = '%';
+    label = 'DISCOUNT ONLY';
+  }
+  var html =
+    '<div style="border-left:4px solid ' +
+    borderColor +
+    ';background:' +
+    bgColor +
+    ';border-radius:12px;padding:14px 16px;margin-bottom:10px;border:1px solid ' +
+    borderColor +
+    '30;">' +
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">' +
+    '<span style="background:' +
+    badgeColor +
+    ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:999px;">' +
+    icon +
+    ' ' +
+    label +
+    '</span>' +
+    '<span style="font-size:12px;font-weight:500;color:#1e293b;">' +
+    escHTML(planName) +
+    '</span>' +
+    '<span style="font-size:9px;color:#94a3b8;margin-left:auto;">From plan documents</span></div>' +
+    '<div style="font-size:13px;color:#374151;line-height:1.7;">' +
+    escHTML(result.data).replace(/\n/g, '<br>') +
+    '</div></div>';
+  brAddMsg('ai', html);
+}
+
 function brAIAnswer(query, planId) {
-  var apiKey = localStorage.getItem('cha_groq_key');
+  var apiKey = localStorage.getItem('cha_groq_key') || CHA_OFFICE_GROQ_KEY;
   var plan = null;
   if (typeof POLICY_DOCS !== 'undefined') {
     for (var i = 0; i < POLICY_DOCS.length; i++) {
@@ -561,28 +684,51 @@ function brAIAnswer(query, planId) {
     brAddMsg('ai', 'Please select a plan first.');
     return;
   }
+
+  // STEP 1: Try POLICY_DOCS lookup first
+  var localResult = brLocalLookup(query, plan);
+  if (localResult.confident) {
+    console.log('[CHA] Local lookup confident:', localResult.status);
+    brRenderLocalResult(localResult, plan.name);
+    return;
+  }
+
+  // STEP 2: No confident local answer — try AI
   if (!apiKey || apiKey === 'skip' || apiKey === '' || apiKey.length < 20) {
-    console.log('[CHA Groq] No valid API key found, using local lookup');
+    console.log('[CHA] No valid key, falling back to structured answer');
     var plansToUse = brActivePlan ? [brActivePlan] : [];
     brAddMsg('ai', brStructuredAnswer(query, plansToUse));
     return;
   }
-  console.log('[CHA Groq] API key found, length:', apiKey.length);
+
+  console.log('[CHA Groq] Calling AI for plan:', planId, 'query:', query);
   brShowTyping();
-  var planContext = JSON.stringify({
-    name: plan.name,
-    type: plan.type,
-    network: plan.network,
-    benefits: plan.benefits,
-    limitations: plan.limitations,
-    waitingPeriods: plan.waitingPeriods,
-    preEx: plan.preEx,
-    planNotes: plan.planNotes
-  });
+
+  var planContext =
+    'PLAN: ' +
+    plan.name +
+    '\nTYPE: ' +
+    (plan.type || '') +
+    '\nNETWORK: ' +
+    (plan.network || '') +
+    '\nBENEFITS:\n' +
+    JSON.stringify(plan.benefits || [], null, 2) +
+    '\nLIMITATIONS:\n' +
+    JSON.stringify(plan.limitations || [], null, 2) +
+    '\nWAITING PERIODS:\n' +
+    JSON.stringify(plan.waitingPeriods || [], null, 2) +
+    '\nPRE-EX:\n' +
+    JSON.stringify(plan.preEx || '', null, 2) +
+    '\nNOTES:\n' +
+    (plan.planNotes || '');
+
   var sysPrompt =
-    'You are a licensed health insurance benefits assistant for CHA. RULES: 1. Only use plan data provided. 2. If not listed say VERIFY. 3. Missing data = VERIFY not NOT COVERED. 4. Keep short. FORMAT: STATUS: COVERED/NOT COVERED/VERIFY/PARTIAL. ANSWER: 1-3 lines. SAY THIS: script line in quotes. PLAN DATA: ' +
+    'You are a licensed health insurance benefits assistant for CHA. ' +
+    'RULES: 1. ONLY use the plan data below. 2. If listed = COVERED. 3. If excluded = NOT COVERED. 4. If not mentioned = VERIFY. 5. Keep 2-3 lines max. 6. End with SAY THIS line. ' +
+    'For MEC plans: no deductible, no OOP max. MedFirst 1 Rx = BestChoiceRx discount only. ' +
+    'FORMAT: STATUS: COVERED/NOT COVERED/VERIFY/PARTIAL\nANSWER: [from plan data]\nSAY THIS: "[script]"\n\nPLAN DATA:\n' +
     planContext;
-  console.log('[CHA Groq] Sending request for plan:', planId, 'query:', query);
+
   fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -591,18 +737,17 @@ function brAIAnswer(query, planId) {
     },
     body: JSON.stringify({
       model: 'llama-3.1-8b-instant',
-      max_tokens: 300,
-      temperature: 0.1,
+      max_tokens: 400,
+      temperature: 0.0,
       messages: [
         { role: 'system', content: sysPrompt },
-        { role: 'user', content: query }
+        { role: 'user', content: 'Agent question: ' + query }
       ]
     })
   })
     .then(function (response) {
-      console.log('[CHA Groq] Response status:', response.status);
+      console.log('[CHA Groq] Status:', response.status);
       if (!response.ok) throw new Error('API error ' + response.status);
-      console.log('[CHA Groq] Success - status:', response.status);
       return response.json();
     })
     .then(function (data) {
@@ -618,9 +763,7 @@ function brAIAnswer(query, planId) {
         errDiv.style.cssText =
           'background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:12px;color:#dc2626;margin-bottom:8px;';
         errDiv.textContent =
-          'AI connection failed: ' +
-          err.message +
-          '. Using local lookup instead.';
+          'AI connection failed: ' + err.message + '. Using local lookup.';
         msgs.appendChild(errDiv);
         brScroll();
       }
