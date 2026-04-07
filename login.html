@@ -174,38 +174,49 @@
     // ── SIGN IN ──────────────────────────────────────────────────────────────
     function doSignIn() {
       var email = document.getElementById('email').value.trim();
-      var password = document.getElementById('password').value;
+      var pass = document.getElementById('password').value;
       var btn = document.getElementById('login-btn');
+      var errEl = document.getElementById('error-msg') || document.getElementById('err');
 
-      hideErr();
-      if (!email || !password) { showErr('Please enter your email and password.'); return; }
-      if (!clerk) { showErr('Login service still loading. Please wait a moment and try again.'); return; }
+      if (errEl) errEl.style.display = 'none';
+      if (!email || !pass) {
+        if (errEl) { errEl.textContent = 'Enter your email and password.'; errEl.style.display = 'block'; }
+        return;
+      }
 
       btn.disabled = true;
       btn.textContent = 'Signing in...';
 
-      clerk.client.signIn.create({ identifier: email, password: password })
+      var signInObj = window.Clerk.client && window.Clerk.client.signIn
+        ? window.Clerk.client.signIn
+        : window.Clerk.signIn;
+
+      signInObj.create({ identifier: email, password: pass })
         .then(function(result) {
+          console.log('[CHA] SignIn result status:', result.status);
           if (result.status === 'complete') {
-            window.location.replace('/');
+            window.Clerk.setActive({ session: result.createdSessionId })
+              .then(function() { window.location.replace('/'); })
+              .catch(function() { window.location.replace('/'); });
           } else {
             btn.disabled = false;
             btn.textContent = 'Sign In →';
-            showErr('Could not complete sign in. Please try again.');
+            if (errEl) { errEl.textContent = 'Sign in incomplete. Status: ' + result.status; errEl.style.display = 'block'; }
           }
         })
-        .catch(function(err) {
+        .catch(function(e) {
           btn.disabled = false;
           btn.textContent = 'Sign In →';
+          console.error('[CHA] SignIn error:', e);
           var msg = 'Invalid email or password.';
-          if (err.errors && err.errors[0]) {
-            var code = err.errors[0].code || '';
-            if (code === 'form_password_incorrect') msg = 'Incorrect password. Please try again.';
+          if (e.errors && e.errors[0]) {
+            var code = e.errors[0].code || '';
+            if (code === 'form_password_incorrect') msg = 'Wrong password. Try again.';
             else if (code === 'form_identifier_not_found') msg = 'No account found. Contact your manager.';
-            else if (code === 'too_many_requests') msg = 'Too many attempts. Wait a few minutes and try again.';
-            else msg = err.errors[0].long_message || err.errors[0].message || msg;
+            else if (code === 'too_many_requests') msg = 'Too many attempts. Wait a few minutes.';
+            else msg = e.errors[0].long_message || e.errors[0].message || msg;
           }
-          showErr(msg);
+          if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
         });
     }
 

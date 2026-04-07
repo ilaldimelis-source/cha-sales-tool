@@ -60,6 +60,23 @@
       .then(function() {
         _clerkInstance = window.Clerk;
         var user = _clerkInstance.user;
+
+        // If no user but there's an active session on the client, activate it
+        if (!user && _clerkInstance.client && _clerkInstance.client.lastActiveSessionId) {
+          _clerkInstance.setActive({ session: _clerkInstance.client.lastActiveSessionId })
+            .then(function() {
+              if (_clerkInstance.user) {
+                renderUserInfo(_clerkInstance.user);
+                hideOverlay();
+                startInactivityTimer();
+              } else {
+                goToLogin();
+              }
+            })
+            .catch(function() { goToLogin(); });
+          return;
+        }
+
         if (!user) {
           goToLogin();
           return;
