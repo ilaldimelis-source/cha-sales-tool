@@ -2904,11 +2904,12 @@ textarea:focus-visible {
   font-family: var(--font-ui);
   font-size: 12px;
   font-weight: 500;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border-radius: 10px;
   background: #fff;
   border: 1px solid #e2e8f0;
-  color: rgb(245, 240, 232, 0.5);
+  border-left: 3px solid #e2e8f0;
+  color: #374151;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
@@ -2916,31 +2917,35 @@ textarea:focus-visible {
 
 .br-chip:hover {
   background: #f8fafc;
-  color: #1e293b;
+  color: #374151;
+}
+
+.br-chip svg {
+  color: #64748b;
 }
 
 .br-chip.ded {
-  border-color: rgb(81, 117, 241, 0.3);
+  border-left-color: #5175f1;
 }
 
 .br-chip.cop {
-  border-color: rgb(34, 197, 94, 0.3);
+  border-left-color: #22c55e;
 }
 
 .br-chip.exc {
-  border-color: rgb(239, 68, 68, 0.3);
+  border-left-color: #ef4444;
 }
 
 .br-chip.drg {
-  border-color: rgb(167, 139, 250, 0.3);
+  border-left-color: #a78bfa;
 }
 
 .br-chip.net {
-  border-color: rgb(14, 165, 233, 0.3);
+  border-left-color: #0ea5e9;
 }
 
 .br-chip.wai {
-  border-color: rgb(245, 158, 11, 0.3);
+  border-left-color: #f59e0b;
 }
 
 .br-msgs {

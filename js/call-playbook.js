@@ -1185,19 +1185,7 @@ function renderPlanScripts() {
     var c = sec.content || '';
     c = c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     c = c.replace(/\n/g, '<br>');
-    c = c.replace(
-      /(✖[^<]*)/g,
-      '<span style="color:#DC2626;font-weight:700">$1</span>'
-    );
-    c = c.replace(
-      /(✔[^<]*)/g,
-      '<span style="color:#29A26A;font-weight:700">$1</span>'
-    );
-    c = c.replace(
-      /(▶[^<]*)/g,
-      '<span style="color:#F59E0B;font-style:italic">$1</span>'
-    );
-    // Enhanced text parsing — line by line
+    // Line-by-line parsing handles all symbols — no pre-wrapping needed
     var lines = c.split('<br>');
     var parsedLines = [];
     lines.forEach(function (line) {
@@ -1207,30 +1195,34 @@ function renderPlanScripts() {
         return;
       }
       if (/\( *DO NOT|\( *do not|✖/.test(trimLine)) {
+        // Strip existing ✖ prefix to avoid double
+        var cleanDo = trimLine.replace(/^✖\s*/, '');
         parsedLines.push(
-          '<div style="background:#fff1f2;border-left:3px solid #dc2626;border-radius:0 6px 6px 0;padding:7px 14px;margin:4px 0;font-size:12px;font-weight:700;color:#dc2626;">✖ ' +
-            trimLine +
+          '<div style="background:#fff1f2;border-left:3px solid #dc2626;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:12px;font-weight:700;color:#dc2626;letter-spacing:0.5px;">✖ ' +
+            cleanDo +
             '</div>'
         );
       } else if (/\( *[Ww]ait for/.test(trimLine)) {
+        // Strip existing ▶ prefix to avoid double
+        var cleanWait = trimLine.replace(/^▶\s*/, '');
         parsedLines.push(
-          '<div style="background:#fffbeb;border-left:3px solid #f59e0b;border-radius:0 6px 6px 0;padding:7px 14px;margin:4px 0;font-size:12px;font-style:italic;color:#92400e;">▶ ' +
-            trimLine +
+          '<div style="background:#fffbeb;border-left:3px solid #f59e0b;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:13px;font-style:italic;color:#92400e;">▶ ' +
+            cleanWait +
             '</div>'
         );
       } else {
-        // Highlight fill-in blanks and customer name
         var parsed = trimLine;
+        // Strip any stray ✔/✖/▶ that were in original data (handled by block detection above)
         parsed = parsed.replace(
           /(_{3,}|\$___)/g,
-          '<span style="background:#fef08a;padding:0 4px;border-radius:3px;font-weight:600;">$1</span>'
+          '<span style="background:#fef08a;padding:1px 6px;border-radius:6px;font-weight:600;color:#713f12;">$1</span>'
         );
         parsed = parsed.replace(
           /\[Customer Name\]/gi,
-          '<span style="background:#dbeafe;color:#1d4ed8;padding:0 4px;border-radius:3px;font-weight:600;">[Customer Name]</span>'
+          '<span style="background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:6px;font-weight:600;">[Customer Name]</span>'
         );
         parsedLines.push(
-          '<div style="margin-bottom:4px;">' + parsed + '</div>'
+          '<div style="margin-bottom:16px;">' + parsed + '</div>'
         );
       }
     });
@@ -1245,24 +1237,26 @@ function renderPlanScripts() {
       secId +
       '" style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid ' +
       bs.border +
-      ';border-radius:14px;padding:20px 24px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:relative;">';
+      ';border-radius:16px;padding:24px 28px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06);position:relative;">';
     // Header with label + copy button
     html +=
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
     html +=
-      '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:' +
+      '<span style="font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:' +
       bs.color +
       ';">' +
       secLabel +
       '</span>';
     html +=
-      '<button onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;">Copy</button>';
+      '<button onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:4px 12px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;">Copy</button>';
     html += '</div>';
+    html +=
+      '<div style="height:1px;background:#f1f5f9;margin-bottom:14px;"></div>';
     html +=
       '<div style="height:1px;background:#f1f5f9;margin-bottom:12px;"></div>';
     // Script text
     html +=
-      '<div class="ps-bubble-text" style="font-size:15px;line-height:1.8;color:#1e293b;font-family:var(--font-body);">' +
+      '<div class="ps-bubble-text" style="font-size:15px;line-height:1.9;color:#1e293b;font-family:var(--font-body);">' +
       c +
       '</div>';
     html += '</div>';
@@ -1271,7 +1265,7 @@ function renderPlanScripts() {
   html += '</div>'; // close plan card wrapper
   // Progress footer
   html +=
-    '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #e2e8f0;background:#fff;padding:12px 20px;margin-top:16px;border-radius:12px;">';
+    '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #e2e8f0;background:#fff;padding:14px 24px;margin-top:20px;border-radius:12px;">';
   if (planScriptSection > 0) {
     html +=
       '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#374151;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← Previous</button>';

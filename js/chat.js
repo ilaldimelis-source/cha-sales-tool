@@ -221,11 +221,7 @@ function brShowWelcome() {
     BR_PLANS.forEach(function (p) {
       var gc = groupColors[p.group] || groupColors.MEC;
       html +=
-        '<div class="br-welcome-card" style="border-color:' +
-        gc.border +
-        ';background:' +
-        gc.bg +
-        ';" onclick="brWelcomePick(\'' +
+        '<div class="br-welcome-card" style="border-color:#e2e8f0;background:#fff;" onclick="brWelcomePick(\'' +
         escHTML(p.id) +
         '\')">' +
         '<span class="bwc-dot" style="background:' +
