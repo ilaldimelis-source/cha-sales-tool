@@ -141,6 +141,19 @@ function brInit() {
   // Build search index on init
   buildSearchIndex();
   brShowWelcome();
+
+  // Groq AI setup
+  var _storedKey = localStorage.getItem('cha_groq_key');
+  if (_storedKey === null) {
+    setTimeout(brShowSetupModal, 1500);
+  }
+  var _aiBtn = document.createElement('button');
+  _aiBtn.textContent = '\u2699 AI';
+  _aiBtn.onclick = brShowSetupModal;
+  _aiBtn.style.cssText =
+    'font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;margin-left:8px;';
+  var _brHead = document.querySelector('.br-head');
+  if (_brHead) _brHead.appendChild(_aiBtn);
 }
 
 function brRenderPlanButtons(groupFilter) {
@@ -442,6 +455,199 @@ function _brCollapseBullets(html) {
   return out;
 }
 
+// ── GROQ AI INTEGRATION (ES5 safe — no async/await) ──────────
+function brShowTyping() {
+  var msgs = document.getElementById('br-msgs');
+  if (!msgs || document.getElementById('br-typing')) return;
+  var div = document.createElement('div');
+  div.id = 'br-typing';
+  div.style.cssText =
+    'display:flex;gap:4px;padding:12px 16px;align-items:center;';
+  div.innerHTML =
+    '<div class="br-ai-dot"></div><div class="br-ai-dot" style="animation-delay:0.2s"></div><div class="br-ai-dot" style="animation-delay:0.4s"></div>';
+  msgs.appendChild(div);
+  brScroll();
+}
+function brHideTyping() {
+  var t = document.getElementById('br-typing');
+  if (t) t.remove();
+}
+
+function brRenderAIAnswer(text, planName) {
+  var status = 'VERIFY';
+  var answer = text;
+  var sayThis = '';
+  var statusMatch = text.match(
+    /STATUS:\s*(COVERED|NOT COVERED|VERIFY|PARTIAL)/i
+  );
+  var answerMatch = text.match(/ANSWER:\s*([\s\S]*?)(?=SAY THIS:|$)/i);
+  var sayMatch = text.match(/SAY THIS:\s*"?([\s\S]*?)"?\s*$/i);
+  if (statusMatch) status = statusMatch[1].toUpperCase();
+  if (answerMatch) answer = answerMatch[1].trim();
+  if (sayMatch) sayThis = sayMatch[1].trim();
+  var borderColor = '#f59e0b';
+  var bgColor = '#fffbeb';
+  var badgeColor = '#d97706';
+  var icon = '⚠';
+  if (status === 'COVERED') {
+    borderColor = '#22c55e';
+    bgColor = '#f0fdf4';
+    badgeColor = '#16a34a';
+    icon = '✓';
+  } else if (status === 'NOT COVERED') {
+    borderColor = '#ef4444';
+    bgColor = '#fef2f2';
+    badgeColor = '#dc2626';
+    icon = '✗';
+  } else if (status === 'PARTIAL') {
+    borderColor = '#3b82f6';
+    bgColor = '#eff6ff';
+    badgeColor = '#2563eb';
+    icon = '◑';
+  }
+  var sayHtml = '';
+  if (sayThis) {
+    var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    sayHtml =
+      '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:10px;">' +
+      '<div style="font-size:9px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:4px;">SAY THIS</div>' +
+      '<div style="font-size:12px;font-style:italic;color:#374151;">' +
+      escHTML(sayThis) +
+      '</div>' +
+      '<button onclick="navigator.clipboard.writeText(\'' +
+      safeText +
+      "');this.textContent='Copied!';var b=this;setTimeout(function(){b.textContent='Copy';},2000);\" " +
+      'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;">Copy</button></div>';
+  }
+  var html =
+    '<div style="border-left:4px solid ' +
+    borderColor +
+    ';background:' +
+    bgColor +
+    ';border-radius:12px;padding:14px 16px;margin-bottom:10px;border:1px solid ' +
+    borderColor +
+    '30;">' +
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">' +
+    '<span style="background:' +
+    badgeColor +
+    ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:999px;">' +
+    icon +
+    ' ' +
+    status +
+    '</span>' +
+    '<span style="font-size:12px;font-weight:500;color:#1e293b;">' +
+    escHTML(planName) +
+    '</span></div>' +
+    '<div style="font-size:13px;color:#374151;line-height:1.7;">' +
+    answer.replace(/\n/g, '<br>') +
+    '</div>' +
+    sayHtml +
+    '</div>';
+  brAddMsg('ai', html);
+}
+
+function brAIAnswer(query, planId) {
+  var apiKey = localStorage.getItem('cha_groq_key');
+  var plan = null;
+  if (typeof POLICY_DOCS !== 'undefined') {
+    for (var i = 0; i < POLICY_DOCS.length; i++) {
+      if (POLICY_DOCS[i].id === planId) {
+        plan = POLICY_DOCS[i];
+        break;
+      }
+    }
+  }
+  if (!plan) {
+    brAddMsg('ai', 'Please select a plan first.');
+    return;
+  }
+  if (!apiKey || apiKey === 'skip') {
+    var plansToUse = brActivePlan ? [brActivePlan] : [];
+    brAddMsg('ai', brStructuredAnswer(query, plansToUse));
+    return;
+  }
+  brShowTyping();
+  var planContext = JSON.stringify({
+    name: plan.name,
+    type: plan.type,
+    network: plan.network,
+    benefits: plan.benefits,
+    limitations: plan.limitations,
+    waitingPeriods: plan.waitingPeriods,
+    preEx: plan.preEx,
+    planNotes: plan.planNotes
+  });
+  var sysPrompt =
+    'You are a licensed health insurance benefits assistant for CHA. RULES: 1. Only use plan data provided. 2. If not listed say VERIFY. 3. Missing data = VERIFY not NOT COVERED. 4. Keep short. FORMAT: STATUS: COVERED/NOT COVERED/VERIFY/PARTIAL. ANSWER: 1-3 lines. SAY THIS: script line in quotes. PLAN DATA: ' +
+    planContext;
+  fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      max_tokens: 300,
+      temperature: 0.1,
+      messages: [
+        { role: 'system', content: sysPrompt },
+        { role: 'user', content: query }
+      ]
+    })
+  })
+    .then(function (response) {
+      if (!response.ok) throw new Error('API error ' + response.status);
+      return response.json();
+    })
+    .then(function (data) {
+      brHideTyping();
+      brRenderAIAnswer(data.choices[0].message.content, plan.name);
+    })
+    .catch(function (err) {
+      brHideTyping();
+      console.error('[CHA Groq]', err);
+      var plansToUse = brActivePlan ? [brActivePlan] : [];
+      brAddMsg('ai', brStructuredAnswer(query, plansToUse));
+    });
+}
+
+function brShowSetupModal() {
+  var existing = document.getElementById('br-setup-modal');
+  if (existing) {
+    existing.style.display = 'flex';
+    return;
+  }
+  var modal = document.createElement('div');
+  modal.id = 'br-setup-modal';
+  modal.style.cssText =
+    'position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:99999;';
+  modal.innerHTML =
+    '<div style="background:white;border-radius:16px;padding:28px;width:320px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">' +
+    '<div style="font-size:16px;font-weight:600;color:#1e293b;margin-bottom:6px;">Enable AI Answers</div>' +
+    '<div style="font-size:12px;color:#64748b;margin-bottom:16px;line-height:1.6;">Enter your free Groq API key for AI-powered answers.<br>Get one at <a href="https://console.groq.com" target="_blank" style="color:#5175f1;">console.groq.com</a></div>' +
+    '<input id="br-api-input" type="password" placeholder="gsk_..." style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;margin-bottom:12px;box-sizing:border-box;" />' +
+    '<div style="display:flex;gap:8px;">' +
+    '<button onclick="brSaveApiKey()" style="flex:1;padding:10px;background:#5175f1;color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;">Save Key</button>' +
+    '<button onclick="brSkipSetup()" style="padding:10px 16px;background:white;color:#64748b;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;cursor:pointer;">Skip</button>' +
+    '</div>' +
+    '<div style="font-size:10px;color:#94a3b8;margin-top:10px;text-align:center;">Saved locally only</div></div>';
+  document.body.appendChild(modal);
+}
+function brSaveApiKey() {
+  var input = document.getElementById('br-api-input');
+  if (!input || !input.value.trim()) return;
+  localStorage.setItem('cha_groq_key', input.value.trim());
+  var modal = document.getElementById('br-setup-modal');
+  if (modal) modal.style.display = 'none';
+  brAddMsg('ai', 'AI mode enabled! Select a plan and ask anything.');
+}
+function brSkipSetup() {
+  localStorage.setItem('cha_groq_key', 'skip');
+  var modal = document.getElementById('br-setup-modal');
+  if (modal) modal.style.display = 'none';
+}
+
 var _brSendLock = false;
 function brSend() {
   if (_brSendLock) return;
@@ -459,30 +665,19 @@ function brSend() {
 
   brAddMsg('user', escHTML(query));
 
-  // PRIMARY BEHAVIOR: Dashboard first → AI fallback → Safe fallback
-  var plansToUse = brSearchAllPlans
-    ? BR_PLANS
-    : brActivePlan
-      ? [brActivePlan]
-      : [];
-  var structured = brStructuredAnswer(query, plansToUse);
-
-  // Extract status from the answer HTML for bottom-line
-  var statusMatch = structured.match(
-    /font-weight:800;color:#[0-9A-Fa-f]+;">([\w\s]+)<\/span>/
-  );
-  var status = statusMatch ? statusMatch[1].trim() : '';
-  var bottomLine =
-    '<div class="br-bottom-line">' + _brBottomLine(status, query) + '</div>';
-
-  // Remove "Based on the policy documents..." prefix if present
-  structured = structured.replace(
-    /Based on the policy documents[^<]*\.\s*/gi,
-    ''
-  );
-
-  var finalHtml = bottomLine + _brCollapseBullets(structured);
-  brAddMsg('ai', finalHtml);
+  // Route through AI if key exists, otherwise local
+  var _apiKey = localStorage.getItem('cha_groq_key');
+  if (_apiKey && _apiKey !== 'skip' && brActivePlan) {
+    brAIAnswer(query, brActivePlan.id);
+  } else {
+    var plansToUse = brSearchAllPlans
+      ? BR_PLANS
+      : brActivePlan
+        ? [brActivePlan]
+        : [];
+    var structured = brStructuredAnswer(query, plansToUse);
+    brAddMsg('ai', structured);
+  }
 
   document.getElementById('br-send').disabled = false;
   document.getElementById('br-input').focus();

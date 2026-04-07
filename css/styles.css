@@ -4155,3 +4155,25 @@ button:active {
 .comp-btn {
   font-size: 0.74rem;
 }
+
+/* ── AI Typing Dots ── */
+.br-ai-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94a3b8;
+  animation: brPulse 1s infinite;
+}
+
+@keyframes brPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
