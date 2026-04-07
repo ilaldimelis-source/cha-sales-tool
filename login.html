@@ -7,6 +7,10 @@
   <meta name="robots" content="noindex,nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script async crossorigin="anonymous"
+    data-clerk-publishable-key="pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA"
+    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js"
+    type="text/javascript"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -155,15 +159,19 @@
     var CLERK_PK = 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
     var clerk = null;
 
-    // ── LOAD CLERK SDK ───────────────────────────────────────────────────────
-    // Using @5 CDN — correct init is window.Clerk.load() not new window.Clerk()
-    var script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js';
-    script.onload = function() {
-      if (!window.Clerk) {
-        showErr('Auth service failed to load. Please refresh.');
-        return;
+    // ── WAIT FOR CLERK SDK (static script tag in head) ─────────────────────
+    function waitForClerk(cb, attempts) {
+      if (!attempts) attempts = 0;
+      if (window.Clerk) {
+        cb();
+      } else if (attempts < 50) {
+        setTimeout(function() { waitForClerk(cb, attempts + 1); }, 200);
+      } else {
+        showErr('Could not connect to auth service. Check your internet and refresh the page.');
       }
+    }
+
+    waitForClerk(function() {
       try {
         clerk = new window.Clerk(CLERK_PK);
         clerk.load().then(function() {
@@ -177,11 +185,7 @@
         console.error('[CHA] Clerk init error:', e);
         clerk = window.Clerk;
       }
-    };
-    script.onerror = function() {
-      showErr('Could not connect to auth service. Check your internet and refresh the page.');
-    };
-    document.head.appendChild(script);
+    });
 
     // ── SIGN IN ──────────────────────────────────────────────────────────────
     var _signInResult = null; // stored for 2FA step
