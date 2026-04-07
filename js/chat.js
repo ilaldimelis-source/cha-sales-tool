@@ -144,7 +144,7 @@ function brInit() {
 
   // Groq AI setup
   var _storedKey = localStorage.getItem('cha_groq_key');
-  if (_storedKey === null) {
+  if (!_storedKey || _storedKey === 'skip' || _storedKey === '') {
     setTimeout(brShowSetupModal, 1500);
   }
   var _aiBtn = document.createElement('button');
@@ -615,24 +615,45 @@ function brAIAnswer(query, planId) {
 function brShowSetupModal() {
   var existing = document.getElementById('br-setup-modal');
   if (existing) {
-    existing.style.display = 'flex';
-    return;
+    existing.remove();
   }
+  var currentKey = localStorage.getItem('cha_groq_key');
+  var hasKey = currentKey && currentKey !== 'skip' && currentKey !== '';
   var modal = document.createElement('div');
   modal.id = 'br-setup-modal';
   modal.style.cssText =
     'position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:99999;';
   modal.innerHTML =
     '<div style="background:white;border-radius:16px;padding:28px;width:320px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">' +
-    '<div style="font-size:16px;font-weight:600;color:#1e293b;margin-bottom:6px;">Enable AI Answers</div>' +
-    '<div style="font-size:12px;color:#64748b;margin-bottom:16px;line-height:1.6;">Enter your free Groq API key for AI-powered answers.<br>Get one at <a href="https://console.groq.com" target="_blank" style="color:#5175f1;">console.groq.com</a></div>' +
-    '<input id="br-api-input" type="password" placeholder="gsk_..." style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;margin-bottom:12px;box-sizing:border-box;" />' +
+    '<div style="font-size:16px;font-weight:600;color:#1e293b;margin-bottom:6px;">' +
+    (hasKey ? 'AI Settings' : 'Enable AI Answers') +
+    '</div>' +
+    (hasKey
+      ? '<div style="font-size:12px;color:#16a34a;margin-bottom:12px;">✓ AI is active</div>'
+      : '') +
+    '<div style="font-size:12px;color:#64748b;margin-bottom:16px;line-height:1.6;">' +
+    (hasKey
+      ? 'Update or reset your Groq API key.'
+      : 'Enter your free Groq API key for AI-powered answers.<br>Get one at <a href="https://console.groq.com" target="_blank" style="color:#5175f1;">console.groq.com</a>') +
+    '</div>' +
+    '<input id="br-api-input" type="password" placeholder="gsk_..." value="' +
+    (hasKey ? currentKey : '') +
+    '" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;margin-bottom:12px;box-sizing:border-box;" />' +
     '<div style="display:flex;gap:8px;">' +
     '<button onclick="brSaveApiKey()" style="flex:1;padding:10px;background:#5175f1;color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;">Save Key</button>' +
     '<button onclick="brSkipSetup()" style="padding:10px 16px;background:white;color:#64748b;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;cursor:pointer;">Skip</button>' +
     '</div>' +
+    (hasKey
+      ? '<button onclick="brResetApiKey()" style="width:100%;margin-top:8px;padding:8px;background:white;color:#ef4444;border:1px solid #fecaca;border-radius:8px;font-size:12px;cursor:pointer;">Reset AI Key</button>'
+      : '') +
     '<div style="font-size:10px;color:#94a3b8;margin-top:10px;text-align:center;">Saved locally only</div></div>';
   document.body.appendChild(modal);
+}
+function brResetApiKey() {
+  localStorage.removeItem('cha_groq_key');
+  var modal = document.getElementById('br-setup-modal');
+  if (modal) modal.remove();
+  brShowSetupModal();
 }
 function brSaveApiKey() {
   var input = document.getElementById('br-api-input');
