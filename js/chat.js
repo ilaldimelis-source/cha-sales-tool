@@ -746,32 +746,66 @@ function _brTopicOverride(query, plans) {
         ? '#15803D'
         : status === 'Not Covered'
           ? '#DC2626'
-          : '#D97706';
+          : status === 'Discount Available'
+            ? '#D97706'
+            : status === 'No Deductible'
+              ? '#5B8DEF'
+              : status === 'Excluded 12 Months'
+                ? '#DC2626'
+                : status === 'Waiting Period Applies'
+                  ? '#D97706'
+                  : '#6B7280';
     var statusBg =
       status === 'Covered'
         ? '#E3F6ED'
         : status === 'Not Covered'
           ? 'rgba(220,38,38,0.06)'
-          : '#FFFBEB';
+          : status === 'Discount Available'
+            ? '#FFFBEB'
+            : status === 'No Deductible'
+              ? 'rgba(91,141,239,0.06)'
+              : status === 'Excluded 12 Months'
+                ? 'rgba(220,38,38,0.06)'
+                : status === 'Waiting Period Applies'
+                  ? '#FFFBEB'
+                  : '#F8F9FE';
     var statusBorder =
       status === 'Covered'
         ? '#C6F0D8'
         : status === 'Not Covered'
           ? 'rgba(220,38,38,0.15)'
-          : '#FEF3C7';
+          : status === 'Discount Available'
+            ? '#FEF3C7'
+            : status === 'No Deductible'
+              ? 'rgba(91,141,239,0.2)'
+              : status === 'Excluded 12 Months'
+                ? 'rgba(220,38,38,0.15)'
+                : status === 'Waiting Period Applies'
+                  ? '#FEF3C7'
+                  : '#E5E7EB';
     var statusIcon =
       status === 'Covered'
         ? LI.check
         : status === 'Not Covered'
           ? LI.ban
-          : LI.warn;
+          : status === 'No Deductible'
+            ? LI.check
+            : status === 'Excluded 12 Months'
+              ? LI.ban
+              : status === 'Waiting Period Applies'
+                ? LI.clock
+                : LI.warn;
     var rebuttal = pickRebuttal(
       rebuttalType ||
         (status === 'Covered'
           ? 'covered'
-          : status === 'Not Covered'
+          : status === 'Not Covered' || status === 'Excluded 12 Months'
             ? 'notCovered'
-            : 'partial')
+            : status === 'Waiting Period Applies'
+              ? 'waiting'
+              : status === 'Discount Available'
+                ? 'discount'
+                : 'covered')
     );
 
     var html =
@@ -821,25 +855,25 @@ function _brTopicOverride(query, plans) {
     if (isSC)
       return card(
         'Covered',
-        'Smart Choice offers multiple deductible options: $1,500, $2,500, $3,000, or $3,500 individual. Family deductible is 2x the individual amount. Out-of-pocket maximum is $9,200 individual / $18,400 family. Always confirm which deductible tier the member selected at enrollment.',
+        'Smart Choice offers multiple deductible options: $1,500, $2,500, $3,000, or $3,500 individual. Family deductible is 2x the individual amount. Out-of-pocket maximum is $9,200 individual / $18,400 family. Copays do NOT count toward the deductible. Out-of-network has NO coverage — in-network only. Always confirm which deductible tier the member selected at enrollment in NEO.',
         'covered'
       );
     if (isSTM)
       return card(
         'Covered',
-        'Deductible options vary by plan chosen at enrollment ($500 to $10,000). After deductible is met, plan pays coinsurance percentage. Confirm deductible amount at enrollment.',
+        'STM deductible options: $500, $1,000, $2,000, $2,500, $5,000, $7,500, or $10,000. Coinsurance is 80/20 after deductible. Coinsurance out-of-pocket limit: $2,000 or $4,000. Confirm deductible amount chosen at enrollment. Deductibles and limits RESET each policy term.',
         'covered'
       );
     if (isMEC)
       return card(
-        'Covered',
-        'This plan has NO deductible and NO out-of-pocket maximum. It is a fixed dollar benefit plan that pays set amounts per service.',
+        'No Deductible',
+        'This MEC plan has NO deductible and NO out-of-pocket maximum. This is a fixed dollar benefit plan — it pays set amounts per service listed in the Schedule of Benefits. The plan does not work like major medical insurance. There is no deductible to meet before benefits begin. Benefits are subject to copay amounts, visit limits, and annual maximums per the schedule.',
         'covered'
       );
     if (isLimited)
       return card(
-        'Covered',
-        'This plan has NO deductible and NO out-of-pocket maximum. It pays fixed cash benefit amounts per service regardless of actual cost.',
+        'No Deductible',
+        'This Limited Benefit plan has NO deductible and NO out-of-pocket maximum. It is a fixed cash indemnity plan that pays set dollar amounts per service per day, regardless of the actual cost of care. The member is responsible for any amount above the plan benefit. Benefits are paid directly to the member, not to the provider.',
         'covered'
       );
   }
@@ -853,25 +887,25 @@ function _brTopicOverride(query, plans) {
     if (isSC)
       return card(
         'Not Covered',
-        'Maternity and newborn care are excluded from this plan per the plan document.',
+        'MATERNITY AND NEWBORN CARE ARE EXCLUDED per the Smart Choice plan document. This includes: pregnancy, childbirth, prenatal care, delivery, dependent child pregnancy, infertility diagnosis, and infertility treatment. The only exception: initial postpartum depression screening up to 1 year is covered at 100%. This plan is NOT ACA-compliant and does not include ACA essential maternity benefits.',
         'notCovered'
       );
     if (isSTM)
       return card(
         'Not Covered',
-        'Standard maternity and childbirth are not covered. Complications of pregnancy are covered as any other sickness, subject to waiting periods and deductible.',
+        'STANDARD MATERNITY AND CHILDBIRTH ARE NOT COVERED on STM plans. This includes: normal pregnancy, prenatal care, delivery, and newborn care. EXCEPTION: Complications of pregnancy (e.g., ectopic pregnancy, toxemia, cesarean section due to medical emergency) ARE covered as any other sickness, subject to the 5-day sickness waiting period, deductible, and coinsurance. Do NOT enroll someone expecting to use maternity benefits.',
         'notCovered'
       );
     if (isMEC)
       return card(
         'Not Covered',
-        'Maternity, pregnancy, childbirth, prenatal care, and delivery are not covered on this MEC plan. This is a non-ACA plan and does not include maternity benefits.',
+        'MATERNITY IS NOT COVERED on this MEC plan. Excluded services include: pregnancy, childbirth, prenatal care, delivery, newborn well-baby inpatient care, neonatal intensive care (NICU), and any pregnancy-related complications. This is a non-ACA plan — it does not include ACA essential maternity benefits. COMPLIANCE: You MUST disclose this exclusion on every enrollment call.',
         'notCovered'
       );
     if (isLimited)
       return card(
         'Not Covered',
-        'Maternity and pregnancy are not covered on this plan.',
+        'MATERNITY AND PREGNANCY ARE NOT COVERED on this Limited Benefit plan. Excluded services include: pregnancy, childbirth, prenatal care, delivery, and all pregnancy-related services. This plan is not ACA-compliant and does not include maternity benefits.',
         'notCovered'
       );
   }
@@ -884,20 +918,20 @@ function _brTopicOverride(query, plans) {
   ) {
     if (isSC)
       return card(
-        'Not Covered',
-        'Mental health and substance use disorder services have significant exclusions under this plan. Review plan exclusions section carefully.',
-        'notCovered'
+        'Covered',
+        'Smart Choice mental health coverage: Inpatient mental health — $250 copay after deductible, 8-day limit. Outpatient office — $50 copay after deductible, 8-visit limit. Telehealth mental health — $0 copay via preferred platform (no limit). Residential treatment covered with preauthorization. Covered providers: Licensed Psychiatrist, Psychologist, Clinical Social Worker, Professional Counselor, Marriage & Family Therapist. Substance use disorder has same benefits. NOTE: Visit limits are strict — 8 days inpatient, 8 visits outpatient per benefit period.',
+        'partial'
       );
     if (isMEC)
       return card(
         'Not Covered',
-        'Mental health and substance abuse treatment are not covered on this MEC plan. Telemedicine is available for general health consults at $0 through Opyn Live.',
+        'MENTAL HEALTH AND SUBSTANCE ABUSE ARE NOT COVERED on this MEC plan. This includes: inpatient mental health, outpatient therapy, counseling, psychiatry, substance abuse treatment, drug rehabilitation, and alcohol rehabilitation. Telemedicine through Opyn Live is available at $0 for general health consults but does NOT include mental health therapy. TDK plans include 4 virtual mental health visits/year through MyLiveDoc — but MedFirst, TrueHealth, and GoodHealth plans do NOT include any mental health benefit. COMPLIANCE: You MUST disclose this exclusion.',
         'notCovered'
       );
     if (isSTM)
       return card(
         'Not Covered',
-        'Mental health and substance abuse are not covered or very limited on STM plans. Verify specific plan schedule.',
+        'MENTAL HEALTH AND SUBSTANCE ABUSE ARE NOT COVERED OR VERY LIMITED on STM plans. Pinnacle STM: Limited inpatient mental health ($100/day, max 31 days) and outpatient ($50/day, max 10 visits). Substance abuse: same limited benefit. Access Health, Smart Health, Galena: Mental health coverage varies — check specific plan schedule at enrollment. Do NOT represent STM as having comprehensive mental health coverage.',
         'notCovered'
       );
     if (isLimited) {
@@ -1199,14 +1233,14 @@ function _brTopicOverride(query, plans) {
         );
       return card(
         'Covered',
-        'Emergency Room: $1,000 per incident if admitted — subject to 12/12 pre-existing condition rule. If not admitted, ER visit is not covered.',
+        'Emergency Room: $1,000 per incident — ONLY if admitted to the hospital. If the member goes to the ER and is NOT admitted, there is NO ER benefit. Subject to 12/12 pre-existing condition rule. Ambulance: $500 per incident, also only if admitted. COMPLIANCE: Always tell the member the ER benefit requires hospital admission.',
         'partial'
       );
     }
     if (isLimited)
       return card(
         'Covered',
-        'Emergency Room benefit: $50-$200 per day, 1 day maximum — fixed cash benefit only. Not available on tier 100A.',
+        'Emergency Room benefit: $50-$200 per day, maximum 1 day per year — this is a fixed cash benefit only, NOT full ER bill coverage. The plan pays the stated amount regardless of actual ER charges. Member is responsible for the difference. Not available on tier 100A. Check your specific tier for exact ER benefit amount.',
         'partial'
       );
   }
@@ -1418,26 +1452,26 @@ function _brTopicOverride(query, plans) {
   if (/waiting.period|when.does.coverage|how.soon|effective.date/i.test(q)) {
     if (isSC)
       return card(
-        'Covered',
-        'Coverage begins on effective date. Pre-existing condition exclusions may apply.',
-        'covered'
+        'Waiting Period Applies',
+        'Smart Choice coverage begins on the effective date. Copay-based benefits (PCP, specialist, urgent care) are available immediately with no deductible. Services subject to the deductible require the deductible to be met first. Preauthorization is required for inpatient stays, advanced imaging, and certain services — failure to preauthorize results in denial. Pre-existing condition rules may apply — review plan document.',
+        'waiting'
       );
     if (isMEC)
       return card(
-        'Covered',
-        'Injuries covered from Day 1. All sickness benefits subject to 30-day waiting period from effective date.',
+        'Waiting Period Applies',
+        'MEC WAITING PERIODS: Accidents/injuries — covered from Day 1, no waiting period. All sickness benefits — 30-day waiting period from effective date. No benefits for sickness during the first 30 days. Preventive care and telemedicine ($0 Opyn Live) are available from Day 1. 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months are excluded from hospital benefits for first 12 months.',
         'waiting'
       );
     if (isSTM)
       return card(
-        'Covered',
-        'Injuries covered from Day 1 (effective date). Sickness covered after 5-day waiting period. Cancer covered after 30-day waiting period.',
+        'Waiting Period Applies',
+        'STM WAITING PERIODS: Accidents/injuries — covered from Day 1 (effective date). Sickness — 5-day waiting period from effective date. Cancer — 30-day waiting period from effective date. No benefits for sickness during the first 5 days or cancer during the first 30 days. Pre-existing conditions are excluded for the entire coverage period if diagnosed/treated in the 12 months prior to effective date.',
         'waiting'
       );
     if (isLimited)
       return card(
-        'Covered',
-        'Injuries covered from Day 1. Sickness subject to 30-day waiting period from effective date.',
+        'Waiting Period Applies',
+        'LIMITED PLAN WAITING PERIODS: Accidents/injuries — covered from Day 1, no waiting period. All sickness benefits — 30-day waiting period from effective date. No sickness benefits during the first 30 days. Pre-existing conditions are excluded for the first 12 months from effective date (12/12 rule).',
         'waiting'
       );
   }
@@ -1446,26 +1480,26 @@ function _brTopicOverride(query, plans) {
   if (/pre.existing|prior.condition|existing.condition|history.of/i.test(q)) {
     if (isSC)
       return card(
-        'Covered',
-        'Pre-existing condition exclusions apply — review plan document.',
+        'Excluded 12 Months',
+        'Smart Choice pre-existing condition rules: Benefits are subject to Medical Necessity determination. No traditional 12/12 pre-existing exclusion is explicitly stated in the plan document, but coverage is limited to medically necessary services as determined by the plan. Always verify with carrier for any applicable pre-existing condition rules before enrollment.',
         'preex'
       );
     if (isMEC)
       return card(
-        'Covered',
-        'Pre-existing conditions: Hospitalization benefits not payable for conditions diagnosed or treated in prior 12 months for the first 12 months of coverage (12/12 rule). Doctor visit and outpatient benefits do not have a pre-ex exclusion.',
+        'Excluded 12 Months',
+        'PRE-EXISTING CONDITION RULE (12/12): Hospitalization benefits are NOT payable for any condition diagnosed or treated in the 12 months prior to the coverage effective date, for the first 12 months of coverage. After 12 months, the condition is covered like any other. Doctor visit copay benefits and outpatient benefits do NOT have a pre-existing exclusion — those are available regardless of health history. Telemedicine and preventive care are also not subject to pre-ex.',
         'preex'
       );
     if (isSTM)
       return card(
         'Not Covered',
-        'Pre-existing conditions are NOT covered. Any condition diagnosed or treated in the 12 months prior to effective date is excluded for the entire coverage period.',
+        'PRE-EXISTING CONDITIONS ARE EXCLUDED. Any condition diagnosed, treated, or symptomatic in the 12 months prior to the effective date is NOT covered for the ENTIRE coverage period. This is stricter than MEC plans — there is no 12-month lookthrough. If the member has a pre-existing condition, STM will NOT cover it. New conditions developed under the current term become pre-existing if the member renews to a new term.',
         'preex'
       );
     if (isLimited)
       return card(
-        'Not Covered',
-        'Pre-existing conditions not covered for the first 12 months from effective date.',
+        'Excluded 12 Months',
+        'PRE-EXISTING CONDITION RULE (12/12): Conditions diagnosed or treated in the 12 months prior to the effective date are excluded from ALL benefits for the first 12 months of coverage. After 12 months, the condition is covered. This applies to hospitalization, surgery, and all other plan benefits.',
         'preex'
       );
   }
@@ -1479,14 +1513,187 @@ function _brTopicOverride(query, plans) {
     if (isSC)
       return card(
         'Not Covered',
-        'Smart Choice 2500 is a limited medical plan and is NOT ACA-compliant major medical insurance.',
+        'SMART CHOICE IS NOT ACA-COMPLIANT MAJOR MEDICAL INSURANCE. It is a limited medical group health benefit plan administered by Detego Health LLC. It does not meet ACA minimum essential coverage requirements. It does not cover all 10 ACA essential health benefits. Members in states with individual mandates (CA, MA, NJ, DC, RI, VT) may face state tax penalties. COMPLIANCE: You MUST disclose this is NOT traditional insurance and NOT ACA-compliant on every enrollment.',
         'notCovered'
       );
     return card(
       'Not Covered',
-      'This plan is NOT ACA-compliant and does NOT qualify as minimum essential coverage. Members may be subject to tax penalties in states with individual mandates. This plan does not cover all ACA essential health benefits.',
+      'THIS PLAN IS NOT ACA-COMPLIANT. It does NOT qualify as minimum essential coverage under the Affordable Care Act. It does not cover all 10 ACA essential health benefits (maternity, mental health, substance abuse, pediatric dental/vision, etc. are excluded or limited). Members in states with individual mandates may face state tax penalties. This is NOT marketplace insurance and is NOT available through HealthCare.gov. COMPLIANCE: You MUST clearly disclose on every call that this is NOT ACA major medical insurance.',
       'notCovered'
     );
+  }
+
+  // ── COPAY / COST / HOW MUCH ──
+  if (
+    /\bcopay\b|co-pay|\bcost\b|how.much|\bprice\b|\bpay\b|\bcharge\b|\bfee\b|\bpremium\b/i.test(
+      q
+    )
+  ) {
+    if (isMEC) {
+      if (mecTier13)
+        return card(
+          'Covered',
+          'MEC TIER 1-3 COPAYS: Primary Care — $25 copay, 3-4 visits/year, $150 max/visit. Specialist/Urgent Care — $50 copay, 1-4 visits/year, $300 max/visit. Telemedicine — $0 copay, unlimited visits (Opyn Live). Hospital — $1,000/day, $5,000-$15,000/year max (varies by tier). No deductible. No surgery, ER, or ambulance on Tier 1-3. All sickness benefits subject to 30-day waiting period.',
+          'covered'
+        );
+      return card(
+        'Covered',
+        'MEC TIER 4-5 COPAYS: Wellness Exam — $25 copay, 1/year. Primary Care — $50 copay, 4-5 visits/year. Specialist/Urgent Care — $75 copay, 4-5 visits/year. Telemedicine — $0 (Opyn Live). Hospital — $1,000-$1,500/day. Surgery — $1,000-$1,500/day. ER (if admitted) — $1,000/incident. Ambulance (if admitted) — $500/incident. Rx — Generic $0, Preferred $5, Brand $40 retail (prior auth). No deductible.',
+        'covered'
+      );
+    }
+    if (isSTM)
+      return card(
+        'Covered',
+        'STM plans use deductible + coinsurance structure. Doctor visits: $25-$50 copay (not subject to deductible on some plans). Hospital, surgery, ER: subject to deductible then 80/20 coinsurance. Deductible options: $500-$10,000. Coinsurance limit: $2,000 or $4,000 out-of-pocket. Confirm specific copay/deductible chosen at enrollment.',
+        'covered'
+      );
+    if (isLimited)
+      return card(
+        'Covered',
+        'LIMITED PLAN BENEFITS: Fixed dollar amounts per service per day. Doctor visits — $50-$75/day. Hospital — $100-$1,000/day depending on tier (max 30 days). Surgery (tiers 200+) — $400-$1,500/day. ER (tiers 100+) — $50-$100/day, 1 day max. No deductible, no coinsurance. Plan pays stated amount — member pays the difference between benefit and actual bill.',
+        'covered'
+      );
+    if (isSC)
+      return card(
+        'Covered',
+        'SMART CHOICE COPAYS: PCP — $40 copay (10 visits/yr). Specialist — $50 copay (10 visits/yr). Urgent Care — $60 copay (3 visits/yr). Telehealth — $0. ER — $250 copay after deductible (3 visits). Outpatient hospital — $750 copay after deductible. Inpatient — $2,500 copay after deductible (1 admission, 5 days). Generic Rx — $12 copay. Deductible: $1,500-$3,500 options. OOP max: $9,200 individual.',
+        'covered'
+      );
+  }
+
+  // ── DOCTOR / PCP / SPECIALIST / OFFICE VISIT ──
+  if (
+    /\bdoctor\b|\bpcp\b|primary.care|specialist|office.visit|physician/i.test(q)
+  ) {
+    if (isMEC) {
+      if (mecTier13)
+        return card(
+          'Covered',
+          'DOCTOR VISITS (MEC TIER 1-3): Primary Care — $25 copay, 3-4 visits per year, $150 max per visit. Specialist or Urgent Care — $50 copay, 1-4 visits per year, $300 max per visit. In-network providers only (First Health PPO). All sickness visits subject to 30-day waiting period. Find providers at providersearch.multiplan.com.',
+          'covered'
+        );
+      return card(
+        'Covered',
+        'DOCTOR VISITS (MEC TIER 4-5): Wellness Exam — $25 copay, 1 visit/year, $150 max. Primary Care — $50 copay, 4-5 visits/year, $150 max. Specialist or Urgent Care — $75 copay, 4-5 visits/year, $300 max. In-network only (First Health PPO). Sickness visits subject to 30-day waiting period.',
+        'covered'
+      );
+    }
+    if (isSTM)
+      return card(
+        'Covered',
+        'DOCTOR VISITS (STM): PCP and specialist visits available — copay structure varies by plan. Pinnacle STM: $50 copay for office visit. Access Health Plan 2: $15 PCP / $25 specialist. Galena Elite: $30 PCP / $45 specialist. Some copays are not subject to deductible. Confirm your specific plan at enrollment.',
+        'covered'
+      );
+    if (isLimited)
+      return card(
+        'Covered',
+        'DOCTOR VISITS (LIMITED): Primary Care — $50/day, 3-5 days per year depending on tier. 1000 tier: $75/day. Specialty Care — $50/day, same visit limits. 1000 tier: $75/day specialist. These are fixed benefit amounts — the plan pays the stated amount per visit day, member pays any difference above the benefit.',
+        'covered'
+      );
+    if (isSC)
+      return card(
+        'Covered',
+        'DOCTOR VISITS (SMART CHOICE): PCP — $40 copay, 10 visits/year (not subject to deductible). Specialist — $50 copay, 10 visits/year. PCP includes: internal medicine, general medicine, OB/GYN, pediatrics, family practice, physician assistants. Physician office services (labs, x-ray, allergy testing during visit) — $40 copay. In-network only (First Health EPO).',
+        'covered'
+      );
+  }
+
+  // ── TELEMEDICINE / TELEHEALTH ──
+  if (
+    /telemedicine|telehealth|virtual.doctor|virtual.visit|opyn|mylive/i.test(q)
+  ) {
+    if (isMEC)
+      return card(
+        'Covered',
+        'TELEMEDICINE: $0 copay, unlimited visits through Opyn Live. Board-certified physicians available 24/7. Can prescribe most common medications. Available from Day 1 — no waiting period. TDK plans use MyLiveDoc instead of Opyn Live and include 4 virtual mental health visits/year per family member.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Telemedicine may be available depending on specific STM plan. Check plan documents for telehealth provider and copay details.',
+        'covered'
+      );
+    if (isLimited)
+      return card(
+        'Covered',
+        'Telemedicine is included on most limited benefit plans. Check your specific plan for telehealth provider details and copay amount.',
+        'covered'
+      );
+    if (isSC)
+      return card(
+        'Covered',
+        'TELEHEALTH (SMART CHOICE): $0 copay through preferred telehealth platform. Includes: Primary Care, Mental Health, and Urgent Care virtual visits. Web-based, video, or telephone visits with licensed physicians. No visit limit for telehealth.',
+        'covered'
+      );
+  }
+
+  // ── HOSPITAL / HOSPITALIZATION / INPATIENT ──
+  if (/\bhospital\b|hospitalization|inpatient|admitted|admission/i.test(q)) {
+    if (isMEC) {
+      if (mecTier13)
+        return card(
+          'Covered',
+          'HOSPITAL (MEC TIER 1-3): In-patient hospitalization — $1,000/day. Annual maximums: MedFirst 1/TrueHealth 1/GoodHealth 1 = $5,000/year. MedFirst 2/GoodHealth 2 = $10,000/year. MedFirst 3/GoodHealth 3 = $15,000/year. 12/12 pre-existing condition exclusion applies. Hospital benefits are NOT limited to in-network only. No surgery, ER, or ambulance on Tier 1-3. 30-day sickness waiting period applies.',
+          'covered'
+        );
+      return card(
+        'Covered',
+        'HOSPITAL (MEC TIER 4-5): In-patient — Tier 4: $1,000/day, $10,000/year max. Tier 5: $1,500/day, $15,000/year max. Surgery — Tier 4: $1,000/year, $2,000 max. Tier 5: $1,500/day, $4,500/year max. ER (if admitted) — $1,000/incident. Ambulance (if admitted) — $500/incident. All subject to 12/12 pre-ex rule. 30-day sickness waiting period.',
+        'covered'
+      );
+    }
+    if (isSTM)
+      return card(
+        'Covered',
+        'HOSPITAL (STM): Inpatient hospitalization covered subject to deductible and coinsurance (80/20). Room and board at average standard rate. ICU covered. Outpatient surgery covered. Preauthorization may be required. Confirm deductible amount at enrollment.',
+        'covered'
+      );
+    if (isLimited)
+      return card(
+        'Covered',
+        'HOSPITAL (LIMITED): Hospital confinement benefit pays fixed daily amount for each day admitted. Amounts by tier: 100A=$100/day, 200=$200/day, 300=$300/day, 500=$500/day, 750=$750/day, 1000=$1,000/day. Maximum 30 days per confinement. This is a FIXED BENEFIT — the plan pays the stated daily amount regardless of actual hospital charges. Member is responsible for any amount above the plan benefit.',
+        'covered'
+      );
+    if (isSC)
+      return card(
+        'Covered',
+        'HOSPITAL (SMART CHOICE): Inpatient — $2,500 copay after deductible, 1 admission per family per benefit period (up to 5 days). Outpatient facility — $750 copay after deductible, 3 per family. PREAUTHORIZATION REQUIRED for all inpatient admissions — failure to preauthorize = denial of benefits. Elective surgeries excluded from outpatient benefit. In-network only (First Health EPO).',
+        'covered'
+      );
+  }
+
+  // ── NETWORK / PROVIDER / IN-NETWORK ──
+  if (
+    /\bnetwork\b|provider|in.network|out.of.network|first.health|phcs|multiplan/i.test(
+      q
+    )
+  ) {
+    if (isMEC)
+      return card(
+        'Covered',
+        'NETWORK: First Health PPO. Outpatient physician and wellness benefits require in-network providers. Hospital indemnity benefits are NOT limited to in-network. Find providers at providersearch.multiplan.com or call MultiPlan. For services not covered as insurance, members can still access pre-negotiated discounted rates through First Health PPO in-network providers.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'NETWORK: PHCS Practitioner Plus Ancillary Network. Members can see any doctor, but using in-network providers avoids balance billing and provides negotiated rates. Facility charges: plan pays up to 150% of Medicare allowable. Find providers at providersearch.multiplan.com or call 888-371-7427.',
+        'covered'
+      );
+    if (isLimited)
+      return card(
+        'Covered',
+        'NETWORK: Most limited plans use First Health network. BWA Americare uses PHCS. Everest uses MultiPlan PPO. Using in-network providers ensures negotiated rates and reduces balance billing risk. Find providers at providersearch.multiplan.com.',
+        'covered'
+      );
+    if (isSC)
+      return card(
+        'Covered',
+        'NETWORK: First Health EPO — IN-NETWORK ONLY. This is an EPO plan — there is ZERO out-of-network coverage except for true medical emergencies (required by law). ALL providers MUST be verified in the First Health network BEFORE every appointment. Out-of-network services will NOT be covered and the member pays 100%. Find providers at providersearch.multiplan.com. COMPLIANCE: Always verify the provider is in-network before enrollment.',
+        'covered'
+      );
   }
 
   return null; // No topic match — fall through to general search
