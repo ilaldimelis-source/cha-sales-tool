@@ -25,11 +25,25 @@ var LI = {
 
 function brBuildSOB(p) {
   var entries = [];
+  var hasExplicitDiag = false;
   p.benefits.forEach(function (b) {
     b.items.forEach(function (item) {
       entries.push({ category: b.category, text: item });
+      if (/x-ray|radiology|imaging|diagnostic x|diagnostic test|lab work|laboratory|pathology|radiology/i.test(item)) hasExplicitDiag = true;
     });
   });
+  // For plans on recognized networks without explicit diagnostic line items,
+  // add network discount entries so queries for x-ray, labs, imaging find real info
+  if (!hasExplicitDiag && p.network && /First Health|PHCS|MultiPlan/i.test(p.network)) {
+    entries.push({
+      category: 'Network Discount Services',
+      text: 'Diagnostic X-Ray and Labs — if member stays in the ' + p.network + ' Network they will receive a discount. This is not a fixed benefit but a network discount through ' + p.network + '.'
+    });
+    entries.push({
+      category: 'Network Discount Services',
+      text: 'Outpatient lab work, radiology, and imaging services — available at ' + p.network + ' negotiated discount rates at participating facilities.'
+    });
+  }
   p.limitations.forEach(function (l) {
     entries.push({ category: 'Exclusions / Limitations', text: l });
   });
@@ -472,6 +486,12 @@ var REBUTTALS = {
     "If that's something you've been treated for in the last 12 months, there is a waiting period on it — I want to be transparent. After 12 months, you're covered just like anything else. And everything that's NOT pre-existing? Covered right away.",
     "Pre-existing conditions do have a 12-month exclusion period — that's industry standard. But here's the thing: after that year, it's covered. And in the meantime, all your other benefits are active from day one.",
     "I want to be honest with you — if it's pre-existing, there's a 12-month wait. But don't let that be the only thing you see. Everything else on this plan is working for you right away, and after 12 months, that condition is covered too."
+  ],
+  discount: [
+    "That's not a fixed copay benefit on this plan, but you DO get a discount through the network. If you stay in-network, you'll pay negotiated rates — which can save you a significant amount compared to retail pricing. Let me show you how that works.",
+    "There's no set copay for that, but here's what most people miss — your network gives you access to discounted rates. That means you're not paying full price. It's not the same as a copay, but it's real savings you can count on.",
+    "It's not covered as a fixed benefit, but you do have network discount access for that. In-network providers will bill at negotiated rates, which can mean significant savings compared to going without any plan at all.",
+    "That one works a little differently — instead of a copay, you get network pricing. Your plan gives you access to discounted rates through the network, so you're paying less than you would out of pocket. Let me walk you through it."
   ]
 };
 
@@ -641,10 +661,13 @@ function brStructuredAnswer(query, plans) {
       if (!matched) return;
       hasMatch = true;
 
+      // If benefit TEXT itself says "NOT covered", treat as exclusion — not a benefit
+      var textSaysNot = /\bNOT covered\b|\bNOT COVERED\b/i.test(entry.text) && !/discount|savings|negotiated/i.test(entry.text);
       if (cat.includes('exclusion') || cat.includes('limitation'))
         exclusions.push(entry.text);
       else if (cat.includes('waiting')) waiting.push(entry.text);
       else if (cat.includes('pre-existing')) preex.push(entry.text);
+      else if (textSaysNot) exclusions.push(entry.text);
       else benefits.push(entry.text);
     });
 
@@ -669,6 +692,12 @@ function brStructuredAnswer(query, plans) {
     allWaiting.length +
     allPreex.length;
 
+  // Detect discount/network-rate benefits
+  var discountBenefits = allBenefits.filter(function(b) {
+    return /discount|negotiated rate|network discount|network rate|savings/i.test(b);
+  });
+  var isDiscountOnly = discountBenefits.length > 0 && discountBenefits.length === allBenefits.length;
+
   // Determine coverage status and source
   var status, internalAnswer, rebuttalType, sourceType;
 
@@ -682,13 +711,19 @@ function brStructuredAnswer(query, plans) {
     rebuttalType = 'notCovered';
     sourceType = 'Dashboard';
   } else if (allBenefits.length > 0 && allExclusions.length === 0) {
-    status = 'Covered';
-    internalAnswer = allBenefits.slice(0, 3).join(' | ');
-    rebuttalType = allWaiting.length
-      ? 'waiting'
-      : allPreex.length
-        ? 'preex'
-        : 'covered';
+    if (isDiscountOnly) {
+      status = 'Discount Available';
+      internalAnswer = discountBenefits.slice(0, 3).join(' | ');
+      rebuttalType = 'discount';
+    } else {
+      status = 'Covered';
+      internalAnswer = allBenefits.slice(0, 3).join(' | ');
+      rebuttalType = allWaiting.length
+        ? 'waiting'
+        : allPreex.length
+          ? 'preex'
+          : 'covered';
+    }
     sourceType = 'Dashboard';
   } else if (allExclusions.length > 0 && allBenefits.length === 0) {
     status = 'Not Covered';
@@ -702,22 +737,29 @@ function brStructuredAnswer(query, plans) {
     });
     var clearNo = clearNoExclusions.length > 0;
     if (clearNo && allBenefits.length <= 2) {
-      // Few benefits + clear exclusion → Not Covered (e.g. "NO mental health" with tangential matches)
-      status = 'Not Covered';
-      internalAnswer =
-        clearNoExclusions[0] +
-        (allBenefits.length ? ' (Note: ' + allBenefits[0] + ')' : '');
-      rebuttalType = 'notCovered';
+      // Check if the benefits are discount/network type — show discount, not "not covered"
+      if (discountBenefits.length > 0) {
+        status = 'Discount Available';
+        internalAnswer = discountBenefits[0] + ' — Note: ' + clearNoExclusions[0];
+        rebuttalType = 'discount';
+      } else {
+        // Few benefits + clear exclusion → Not Covered (e.g. "NO mental health" with tangential matches)
+        status = 'Not Covered';
+        internalAnswer =
+          clearNoExclusions[0] +
+          (allBenefits.length ? ' (Note: ' + allBenefits[0] + ')' : '');
+        rebuttalType = 'notCovered';
+      }
     } else if (clearNo && allBenefits.length > 2) {
       // Many benefits + some qualified exclusions → Covered with limitation note
       status = 'Covered';
       internalAnswer = allBenefits[0] + ' — Note: ' + clearNoExclusions[0];
       rebuttalType = 'partial';
     } else {
-      status = 'Covered';
+      status = isDiscountOnly ? 'Discount Available' : 'Covered';
       internalAnswer =
         'Benefit: ' + allBenefits[0] + ' — BUT: ' + allExclusions[0];
-      rebuttalType = 'partial';
+      rebuttalType = isDiscountOnly ? 'discount' : 'partial';
     }
     sourceType = 'Dashboard';
   } else if (allWaiting.length > 0 || allPreex.length > 0) {
@@ -804,7 +846,7 @@ function brStructuredAnswer(query, plans) {
     '</div>';
   html += '</div>';
 
-  // Client rebuttal — enhanced for Not Covered
+  // Client rebuttal — enhanced for Not Covered and Discount Available
   html += '<div style="padding:10px 14px;background:#F8FAFF;">';
   if (status === 'Not Covered') {
     // Build plan-specific rebuttal from real data
@@ -814,7 +856,7 @@ function brStructuredAnswer(query, plans) {
     if (srcPlan) {
       srcPlan.entries.forEach(function(e) {
         var c = e.category.toLowerCase();
-        if (c.includes('exclusion') || c.includes('limitation') || c.includes('waiting') || c.includes('pre-existing') || c.includes('agent note')) return;
+        if (c.includes('exclusion') || c.includes('limitation') || c.includes('waiting') || c.includes('pre-existing') || c.includes('agent note') || c.includes('network discount')) return;
         if (topBens.length < 3) topBens.push(e.text.split(' — ')[0].split(':')[0].replace(/^\$\d+\s*copay\s*—?\s*/i,'').trim());
       });
     }
@@ -824,6 +866,11 @@ function brStructuredAnswer(query, plans) {
     html += '<div class="comp-script-block" style="border-left:3px solid #15803D;background:#F0FDF4;border-radius:12px;padding:14px;margin-top:2px;">';
     html += '<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#15803D;margin-bottom:6px;">SAY THIS →</div>';
     html += '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' + specificRebuttal + '"</div>';
+    html += '</div>';
+  } else if (status === 'Discount Available') {
+    html += '<div class="comp-script-block" style="border-left:3px solid #D97706;background:#FFFBEB;border-radius:12px;padding:14px;margin-top:2px;">';
+    html += '<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#D97706;margin-bottom:6px;">' + LI.mic + ' SAY THIS →</div>';
+    html += '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' + rebuttal + '"</div>';
     html += '</div>';
   } else {
     html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">' + LI.mic + ' Say This to Client</div>';
