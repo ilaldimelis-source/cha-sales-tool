@@ -81,7 +81,7 @@
         initials + '</div>' +
         '<div style="min-width:0;flex:1;">' +
           '<div style="font-size:12px;font-weight:700;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHTMLsafe(name) + '</div>' +
-          '<div style="font-size:10px;color:' + (isManager ? '#4ade80' : '#94a3b8') + ';font-weight:600;letter-spacing:.04em;">' +
+          '<div style="font-size:10px;color:' + (isManager ? '#16a34a' : '#94a3b8') + ';font-weight:600;letter-spacing:.04em;">' +
             (isManager ? '★ Manager' : 'Agent') +
           '</div>' +
         '</div>' +
