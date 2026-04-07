@@ -672,7 +672,797 @@ function pickRebuttal(type) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// ── TOPIC-SPECIFIC OVERRIDES ─────────────────────────────────
+// Returns a pre-built structured answer for known topics, or null to fall through
+function _brTopicOverride(query, plans) {
+  var q = query.toLowerCase().trim();
+  if (!plans.length) return null;
+
+  // Determine plan types present
+  var hasGroup = {};
+  plans.forEach(function (p) {
+    var pd =
+      typeof POLICY_DOCS !== 'undefined'
+        ? POLICY_DOCS.find(function (d) {
+            return d.id === p.id;
+          })
+        : null;
+    var g = pd ? pd.group : p.group || '';
+    hasGroup[g] = true;
+  });
+  var isMEC = hasGroup.MEC;
+  var isSTM = hasGroup.STM;
+  var isLimited = hasGroup.Limited;
+  var isSC = plans.some(function (p) {
+    return p.id === 'smartchoice2500';
+  });
+
+  // Check if a specific plan is tier 4-5
+  var mecTier45 = plans.some(function (p) {
+    return /medf[45]|ghdp[45]|tdk[45]/.test(p.id);
+  });
+  var mecTier13 = plans.some(function (p) {
+    return /medf[123]|trueh1|ghdp[123]|tdk[123]/.test(p.id);
+  });
+
+  // Build a quick card
+  function card(status, answer, rebuttalType) {
+    var statusColor =
+      status === 'Covered'
+        ? '#15803D'
+        : status === 'Not Covered'
+          ? '#DC2626'
+          : '#D97706';
+    var statusBg =
+      status === 'Covered'
+        ? '#E3F6ED'
+        : status === 'Not Covered'
+          ? 'rgba(220,38,38,0.06)'
+          : '#FFFBEB';
+    var statusBorder =
+      status === 'Covered'
+        ? '#C6F0D8'
+        : status === 'Not Covered'
+          ? 'rgba(220,38,38,0.15)'
+          : '#FEF3C7';
+    var statusIcon =
+      status === 'Covered'
+        ? LI.check
+        : status === 'Not Covered'
+          ? LI.ban
+          : LI.warn;
+    var rebuttal = pickRebuttal(
+      rebuttalType ||
+        (status === 'Covered'
+          ? 'covered'
+          : status === 'Not Covered'
+            ? 'notCovered'
+            : 'partial')
+    );
+
+    var html =
+      '<div style="border-radius:12px;overflow:hidden;border:1.5px solid ' +
+      statusBorder +
+      ';">';
+    html +=
+      '<div style="background:' +
+      statusBg +
+      ';padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid ' +
+      statusBorder +
+      ';">';
+    html +=
+      '<div style="display:flex;align-items:center;gap:6px;"><span style="font-size:14px;">' +
+      statusIcon +
+      '</span><span style="font-size:13px;font-weight:800;color:' +
+      statusColor +
+      ';">' +
+      status.toUpperCase() +
+      '</span></div>';
+    html +=
+      '<span style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:2px 8px;border-radius:99px;background:' +
+      statusColor +
+      ';color:#fff;">' +
+      LI.clipboard +
+      ' Dashboard</span></div>';
+    html +=
+      '<div style="padding:10px 14px;background:#F8FAFF;border-bottom:1px solid #E8EBF5;">';
+    html +=
+      '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">&#128203; Internal Answer</div>';
+    html +=
+      '<div style="font-size:12.5px;color:#1C2035;line-height:1.55;">' +
+      answer +
+      '</div></div>';
+    html += '<div style="padding:10px 14px;background:#F8FAFF;">';
+    html +=
+      '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">&#127908; Say This to Client</div>';
+    html +=
+      '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' +
+      rebuttal +
+      '"</div></div></div>';
+    return html;
+  }
+
+  // ── DEDUCTIBLE / OOP ──
+  if (/deductible|out.of.pocket|\boop\b|max.out/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Deductible is $2,500 individual / $5,000 family in-network per calendar year. Out-of-pocket maximum is $9,200 individual / $18,400 family. Out-of-network expenses are member responsibility.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Deductible options vary by plan chosen at enrollment ($500 to $10,000). After deductible is met, plan pays coinsurance percentage. Confirm deductible amount at enrollment.',
+        'covered'
+      );
+    if (isMEC)
+      return card(
+        'Covered',
+        'This plan has NO deductible and NO out-of-pocket maximum. It is a fixed dollar benefit plan that pays set amounts per service.',
+        'covered'
+      );
+    if (isLimited)
+      return card(
+        'Covered',
+        'This plan has NO deductible and NO out-of-pocket maximum. It pays fixed cash benefit amounts per service regardless of actual cost.',
+        'covered'
+      );
+  }
+
+  // ── MATERNITY / PREGNANCY ──
+  if (
+    /maternit|pregnan|childbirth|prenatal|deliver[yie]|\bbaby\b|\bnewborn\b/i.test(
+      q
+    )
+  ) {
+    if (isSC)
+      return card(
+        'Not Covered',
+        'Maternity and newborn care are excluded from this plan per the plan document.',
+        'notCovered'
+      );
+    if (isSTM)
+      return card(
+        'Not Covered',
+        'Standard maternity and childbirth are not covered. Complications of pregnancy are covered as any other sickness, subject to waiting periods and deductible.',
+        'notCovered'
+      );
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Maternity, pregnancy, childbirth, prenatal care, and delivery are not covered on this MEC plan. This is a non-ACA plan and does not include maternity benefits.',
+        'notCovered'
+      );
+    if (isLimited)
+      return card(
+        'Not Covered',
+        'Maternity and pregnancy are not covered on this plan.',
+        'notCovered'
+      );
+  }
+
+  // ── MENTAL HEALTH / SUBSTANCE ABUSE ──
+  if (
+    /mental.health|mental.illness|\btherapy\b|counseling|psychiatr|substance.abuse|\brehab\b|addiction/i.test(
+      q
+    )
+  ) {
+    if (isSC)
+      return card(
+        'Not Covered',
+        'Mental health and substance use disorder services have significant exclusions under this plan. Review plan exclusions section carefully.',
+        'notCovered'
+      );
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Mental health and substance abuse treatment are not covered on this MEC plan. Telemedicine is available for general health consults at $0 through Opyn Live.',
+        'notCovered'
+      );
+    if (isSTM)
+      return card(
+        'Not Covered',
+        'Mental health and substance abuse are not covered or very limited on STM plans. Verify specific plan schedule.',
+        'notCovered'
+      );
+    if (isLimited) {
+      var hasHC200 = plans.some(function (p) {
+        return /harmonycare|sigmacare/.test(p.id);
+      });
+      var hasNCS300 = plans.some(function (p) {
+        return p.id === 'healthchoicesilver';
+      });
+      if (hasHC200)
+        return card(
+          'Covered',
+          'Mental health inpatient benefit: $150-$500/day up to 60 days (tiers 200+ only). Mental health outpatient: $50/day up to 20 days. NOT available on tiers 100A and 100.',
+          'partial'
+        );
+      if (hasNCS300)
+        return card(
+          'Covered',
+          'Mental health inpatient benefit available on tier 300+ — $150-$500/day up to 60 days. Outpatient: $50/day up to 20 days. NOT available on tiers 100A, 100, 200.',
+          'partial'
+        );
+      return card(
+        'Not Covered',
+        'Mental illness and substance abuse are not covered on this plan.',
+        'notCovered'
+      );
+    }
+  }
+
+  // ── DENTAL / VISION ──
+  if (
+    /\bdental\b|\bteeth\b|\bdentist\b|\bvision\b|\beye\b|\bglasses\b|\bcontacts?\b|\boptometrist\b/i.test(
+      q
+    )
+  ) {
+    if (isSC)
+      return card(
+        'Not Covered',
+        'Dental and vision are not covered. Corrective lenses post-surgery may be covered in limited circumstances.',
+        'notCovered'
+      );
+    return card(
+      'Not Covered',
+      'Dental and vision are not included in this plan. A separate dental and vision policy is required. Some plans include discount programs for vision savings.',
+      'notCovered'
+    );
+  }
+
+  // ── PRESCRIPTION / RX ──
+  if (
+    /prescription|\brx\b|\bdrug\b|medication|pharmacy|\bgeneric\b|\bbrand\b/i.test(
+      q
+    )
+  ) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Prescription drugs covered with copays. Generic: $12 copay. See formulary for brand and specialty drug tiers.',
+        'covered'
+      );
+    if (isMEC) {
+      var tier1Rx = plans.some(function (p) {
+        return /medf1|trueh1|ghdp1/.test(p.id);
+      });
+      if (tier1Rx)
+        return card(
+          'Discount Available',
+          'This plan includes BestChoiceRx prescription DISCOUNT CARD only — not drug insurance. Members pay discounted rates at participating pharmacies. No drug insurance benefit.',
+          'discount'
+        );
+      if (mecTier45)
+        return card(
+          'Covered',
+          'Generic $0 copay. Preferred Generic $5. Non-Preferred Generic $5-$10 retail / $5-$20 mail order. Brand $40 retail / $80 mail order (prior auth required). $150/person/month benefit limit for non-preventive drugs. Specialty not covered.',
+          'covered'
+        );
+      return card(
+        'Covered',
+        'Generic $0 copay (acute/preventive). Preferred Generic $5 copay (200 maintenance drugs). Specialty drugs not covered — Prescription Assistance Program available. $150/month benefit limit for non-preventive maintenance drugs.',
+        'covered'
+      );
+    }
+    if (isSTM) {
+      var isPinnacle = plans.some(function (p) {
+        return p.id === 'pinnacle';
+      });
+      if (isPinnacle)
+        return card(
+          'Discount Available',
+          'Outpatient prescription drugs are NOT covered as insurance on Pinnacle STM. Rx Savers discount card is included.',
+          'discount'
+        );
+      return card(
+        'Covered',
+        'Prescription drugs covered subject to deductible and coinsurance — confirm formulary at enrollment.',
+        'covered'
+      );
+    }
+    if (isLimited)
+      return card(
+        'Not Covered',
+        'Prescription drugs are not covered as insurance on this plan. A prescription discount savings program is included.',
+        'notCovered'
+      );
+  }
+
+  // ── XRAY / IMAGING ──
+  if (
+    /x.?ray|imaging|\bmri\b|\bct.scan\b|\bpet.scan\b|radiology|ultrasound/i.test(
+      q
+    )
+  ) {
+    if (isSC)
+      return card(
+        'Covered',
+        'X-ray and lab covered. Advanced imaging (MRI/CT/PET) covered but REQUIRES PREAUTHORIZATION — fax to 855-613-4102 or visit guidecm.com before scheduling.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'X-ray, imaging, MRI, and CT scans are covered as outpatient medical expenses, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isMEC) {
+      if (mecTier45)
+        return card(
+          'Not Covered',
+          'X-ray and imaging are NOT covered as insurance on this plan. Surgery, ER, and ambulance ARE covered on this tier. For imaging use First Health PPO in-network providers at providersearch.multiplan.com for discounted rates.',
+          'notCovered'
+        );
+      return card(
+        'Not Covered',
+        'X-ray and imaging are NOT covered as insurance on this plan. Members can access pre-negotiated discounted rates through the First Health PPO network at providersearch.multiplan.com.',
+        'notCovered'
+      );
+    }
+    if (isLimited) {
+      var hasHCTier200 = plans.some(function (p) {
+        return /harmonycare|sigmacare|healthchoicesilver/.test(p.id);
+      });
+      if (hasHCTier200)
+        return card(
+          'Covered',
+          'Basic Pathology and Radiology benefit available — $50-$75/day for 1-3 days per year. Advanced imaging (MRI/CT) available at average 60% discount through Imaging Savings Program — this is a discount, not insurance.',
+          'partial'
+        );
+      return card(
+        'Not Covered',
+        'X-ray and imaging are not a standalone benefit. Chiropractic savings program includes discounted x-rays.',
+        'notCovered'
+      );
+    }
+  }
+
+  // ── BLOOD WORK / LAB ──
+  if (
+    /blood.?work|blood.?test|\blab\b|\blabs\b|laboratory|urinalysis|pathology/i.test(
+      q
+    )
+  ) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Blood work and lab tests are covered, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Blood work and lab tests are covered as outpatient medical expenses, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isMEC)
+      return card(
+        'Discount Available',
+        'Blood work and lab tests are NOT covered as insurance on this plan. Members can access discounted rates through the First Health PPO network at providersearch.multiplan.com.',
+        'discount'
+      );
+    if (isLimited) {
+      var isHC = plans.some(function (p) {
+        return p.id === 'harmonycare';
+      });
+      var isBWA = plans.some(function (p) {
+        return /bwapara|bwaamericare/.test(p.id);
+      });
+      if (isHC)
+        return card(
+          'Covered',
+          'Blood work covered through QuestSelect Unlimited Lab Program at $0 copay for 1,000+ outpatient lab tests including blood tests, urinalysis, pap smears, biopsies, and cultures. Present QuestSelect card at any Quest Diagnostics location. STAT/emergency labs and lab work ordered during hospitalization not included.',
+          'covered'
+        );
+      if (isBWA)
+        return card(
+          'Discount Available',
+          'Blood work available through DirectLabs at up to 80% off. No doctor visit needed. Access at directlabs.com/4members. NOT insurance — prepay out of pocket. Not available in NJ, NY, RI.',
+          'discount'
+        );
+      return card(
+        'Discount Available',
+        'Blood work available through Laboratory Savings Program at discounted rates — NOT insurance. Access at ncegapaffordplus.com. Not available in NY, NJ, RI.',
+        'discount'
+      );
+    }
+  }
+
+  // ── CHIROPRACTIC ──
+  if (/chiropractic|chiropractor|adjustment|spinal/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Chiropractic care is covered, subject to scope of practice regulations, deductible, and coinsurance.',
+        'covered'
+      );
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Chiropractic care is not covered on this MEC plan.',
+        'notCovered'
+      );
+    if (isSTM)
+      return card(
+        'Not Covered',
+        'Chiropractic care is generally not covered on STM plans — confirm specific plan schedule.',
+        'notCovered'
+      );
+    if (isLimited)
+      return card(
+        'Discount Available',
+        'Chiropractic care is not covered as insurance. A chiropractic savings program is included — free initial consultation, up to 50% off diagnostic services and x-rays, unlimited treatments at 30% savings from 12,000+ chiropractors nationwide.',
+        'discount'
+      );
+  }
+
+  // ── SURGERY ──
+  if (/\bsurger|surgical|operation|\bprocedure\b/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Surgery covered subject to deductible and coinsurance. Certain elective surgeries excluded.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Surgery covered subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isMEC) {
+      if (mecTier13)
+        return card(
+          'Not Covered',
+          'Surgery is not covered on this MEC Tier 1-3 plan. Upgrade to MedFirst/GoodHealth/TDK 4 or 5 for surgery benefits.',
+          'notCovered'
+        );
+      var isTier4 = plans.some(function (p) {
+        return /medf4|ghdp4|tdk4/.test(p.id);
+      });
+      if (isTier4)
+        return card(
+          'Covered',
+          'In/Outpatient Surgery: $1,000/year maximum $2,000/year — subject to 12/12 pre-existing condition rule.',
+          'covered'
+        );
+      return card(
+        'Covered',
+        'In/Outpatient Surgery: $1,500/day maximum $4,500/year — subject to 12/12 pre-existing condition rule.',
+        'covered'
+      );
+    }
+    if (isLimited)
+      return card(
+        'Covered',
+        'Surgery benefit available on tiers 200+ — $400-$1,500 per day up to 3 days depending on tier. Not available on tiers 100A/100.',
+        'partial'
+      );
+  }
+
+  // ── EMERGENCY ROOM ──
+  if (/emergency.room|\ber\b|emergency.care/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Emergency room covered, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Emergency Room covered — subject to deductible, coinsurance, and additional ER deductible. Additional ER deductible waived if admitted within 24 hours.',
+        'covered'
+      );
+    if (isMEC) {
+      if (mecTier13)
+        return card(
+          'Not Covered',
+          'Emergency Room is not covered on this MEC Tier 1-3 plan. Available on Tier 4 and 5 only.',
+          'notCovered'
+        );
+      return card(
+        'Covered',
+        'Emergency Room: $1,000 per incident if admitted — subject to 12/12 pre-existing condition rule. If not admitted, ER visit is not covered.',
+        'partial'
+      );
+    }
+    if (isLimited)
+      return card(
+        'Covered',
+        'Emergency Room benefit: $50-$200 per day, 1 day maximum — fixed cash benefit only. Not available on tier 100A.',
+        'partial'
+      );
+  }
+
+  // ── CANCER / CHEMO / RADIATION ──
+  if (/\bcancer\b|\bchemo\b|chemotherap|radiation|oncolog|\btumor\b/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Chemotherapy and radiation covered, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Cancer covered after 30-day waiting period from effective date. Chemotherapy and radiation covered as medically necessary treatment, subject to deductible and coinsurance.',
+        'waiting'
+      );
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Cancer treatment, chemotherapy, and radiation are not covered on this MEC plan.',
+        'notCovered'
+      );
+    if (isLimited)
+      return card(
+        'Not Covered',
+        'Cancer treatment, chemotherapy, and radiation are not covered as insurance on this limited benefit plan. Fixed hospital confinement benefit applies if admitted.',
+        'notCovered'
+      );
+  }
+
+  // ── DIALYSIS / KIDNEY ──
+  if (/dialysis|kidney|\brenal\b/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Dialysis covered, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Dialysis covered as medically necessary treatment, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Dialysis is not covered on this MEC plan.',
+        'notCovered'
+      );
+    if (isLimited)
+      return card(
+        'Not Covered',
+        'Dialysis not covered on this limited benefit plan.',
+        'notCovered'
+      );
+  }
+
+  // ── ORGAN TRANSPLANT ──
+  if (/transplant|\borgan\b/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Organ transplants covered for approved organ types — preauthorization required. Contact guidecm.com.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Organ transplants may be covered as major surgery, subject to deductible, coinsurance, and plan maximum. Confirm with carrier.',
+        'verify'
+      );
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Organ transplants are not covered on this MEC plan.',
+        'notCovered'
+      );
+    if (isLimited)
+      return card(
+        'Not Covered',
+        'Organ transplants are not covered on this limited benefit plan.',
+        'notCovered'
+      );
+  }
+
+  // ── ACUPUNCTURE ──
+  if (/acupuncture/i.test(q)) {
+    if (isSC)
+      return card('Not Covered', 'Acupuncture not covered.', 'notCovered');
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Acupuncture is not covered on this MEC plan.',
+        'notCovered'
+      );
+    if (isSTM)
+      return card(
+        'Not Covered',
+        'Acupuncture is not covered on STM plans.',
+        'notCovered'
+      );
+    if (isLimited)
+      return card(
+        'Discount Available',
+        'Acupuncture not covered as insurance. Alternative medicine savings program available through GapAfford Plus — save 25% at 8,000+ providers at ncegapaffordplus.com.',
+        'discount'
+      );
+  }
+
+  // ── PHYSICAL THERAPY / REHAB ──
+  if (
+    /physical.therap|\bpt\b|\brehab\b|rehabilitation|occupational.therap|speech.therap/i.test(
+      q
+    )
+  ) {
+    if (isSC)
+      return card(
+        'Not Covered',
+        'Physical therapy exclusions apply — check plan document.',
+        'notCovered'
+      );
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Physical therapy, occupational therapy, speech therapy, and rehabilitative therapy are not covered on this MEC plan.',
+        'notCovered'
+      );
+    if (isSTM)
+      return card(
+        'Not Covered',
+        'Physical therapy coverage is very limited on STM plans — confirm specific plan schedule.',
+        'notCovered'
+      );
+    if (isLimited)
+      return card(
+        'Not Covered',
+        'Physical therapy, speech therapy, and occupational therapy are not covered on this limited benefit plan.',
+        'notCovered'
+      );
+  }
+
+  // ── AMBULANCE ──
+  if (/ambulance|transport|air.ambulance/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Ambulance covered, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Ambulance covered, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isMEC) {
+      if (mecTier13)
+        return card(
+          'Not Covered',
+          'Ambulance is not covered on this MEC Tier 1-3 plan.',
+          'notCovered'
+        );
+      return card(
+        'Covered',
+        'Ambulance: $500 per incident if admitted — subject to 12/12 pre-existing condition rule. Only covered if patient is admitted to hospital.',
+        'partial'
+      );
+    }
+    if (isLimited)
+      return card(
+        'Covered',
+        'Ambulance benefit varies by tier — check plan schedule for amounts.',
+        'partial'
+      );
+  }
+
+  // ── DME / MEDICAL EQUIPMENT ──
+  if (/durable.medical|dme|wheelchair|walker|crutch|cpap|oxygen/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'DME covered when medically necessary and preauthorized. Rental preferred over purchase when cost-effective.',
+        'covered'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'DME covered as medically necessary, subject to deductible and coinsurance.',
+        'covered'
+      );
+    if (isMEC)
+      return card(
+        'Not Covered',
+        'Durable medical equipment and prosthetics are not covered on this MEC plan.',
+        'notCovered'
+      );
+    if (isLimited)
+      return card(
+        'Not Covered',
+        'DME not covered on this limited benefit plan.',
+        'notCovered'
+      );
+  }
+
+  // ── WAITING PERIOD ──
+  if (/waiting.period|when.does.coverage|how.soon|effective.date/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Coverage begins on effective date. Pre-existing condition exclusions may apply.',
+        'covered'
+      );
+    if (isMEC)
+      return card(
+        'Covered',
+        'Injuries covered from Day 1. All sickness benefits subject to 30-day waiting period from effective date.',
+        'waiting'
+      );
+    if (isSTM)
+      return card(
+        'Covered',
+        'Injuries covered from Day 1 (effective date). Sickness covered after 5-day waiting period. Cancer covered after 30-day waiting period.',
+        'waiting'
+      );
+    if (isLimited)
+      return card(
+        'Covered',
+        'Injuries covered from Day 1. Sickness subject to 30-day waiting period from effective date.',
+        'waiting'
+      );
+  }
+
+  // ── PRE-EXISTING CONDITIONS ──
+  if (/pre.existing|prior.condition|existing.condition|history.of/i.test(q)) {
+    if (isSC)
+      return card(
+        'Covered',
+        'Pre-existing condition exclusions apply — review plan document.',
+        'preex'
+      );
+    if (isMEC)
+      return card(
+        'Covered',
+        'Pre-existing conditions: Hospitalization benefits not payable for conditions diagnosed or treated in prior 12 months for the first 12 months of coverage (12/12 rule). Doctor visit and outpatient benefits do not have a pre-ex exclusion.',
+        'preex'
+      );
+    if (isSTM)
+      return card(
+        'Not Covered',
+        'Pre-existing conditions are NOT covered. Any condition diagnosed or treated in the 12 months prior to effective date is excluded for the entire coverage period.',
+        'preex'
+      );
+    if (isLimited)
+      return card(
+        'Not Covered',
+        'Pre-existing conditions not covered for the first 12 months from effective date.',
+        'preex'
+      );
+  }
+
+  // ── ACA / COMPLIANCE ──
+  if (
+    /\baca\b|obamacare|affordable.care|marketplace|minimum.essential|tax.penalty|open.enrollment/i.test(
+      q
+    )
+  ) {
+    if (isSC)
+      return card(
+        'Not Covered',
+        'Smart Choice 2500 is a limited medical plan and is NOT ACA-compliant major medical insurance.',
+        'notCovered'
+      );
+    return card(
+      'Not Covered',
+      'This plan is NOT ACA-compliant and does NOT qualify as minimum essential coverage. Members may be subject to tax penalties in states with individual mandates. This plan does not cover all ACA essential health benefits.',
+      'notCovered'
+    );
+  }
+
+  return null; // No topic match — fall through to general search
+}
+
 function brStructuredAnswer(query, plans) {
+  // Check topic-specific overrides first
+  var topicResult = _brTopicOverride(query, plans);
+  if (topicResult) return topicResult;
+
   var q = query.toLowerCase().trim();
   var expandedTerms = expandSearchSynonyms(q);
   var specificTerms = getSpecificTerms(q);

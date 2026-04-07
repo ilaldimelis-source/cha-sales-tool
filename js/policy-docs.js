@@ -1,6 +1,5 @@
 // policy-docs.js — Policy Reference tab (POLICY_DOCS data + render/filter/toggle)
 var POLICY_DOCS = [
-  // ─────────────────── MEC PLANS ───────────────────
   {
     group: 'MEC',
     id: 'medf1',
@@ -50,6 +49,17 @@ var POLICY_DOCS = [
           'Immunizations per CDC/ACIP recommendations',
           'USPSTF "A" and "B" rated screenings covered'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
       }
     ],
     limitations: [
@@ -70,7 +80,42 @@ var POLICY_DOCS = [
       'NO abortion services',
       'NO claims from non-medically necessary services',
       'NO Workers Compensation claims',
-      'Plan does not cover any service NOT listed in Schedule of Benefits'
+      'Plan does not cover any service NOT listed in Schedule of Benefits',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: [
       '30 days — all sickness benefits',
@@ -79,7 +124,7 @@ var POLICY_DOCS = [
     preEx:
       '12-month exclusion for conditions diagnosed/treated in prior 12 months',
     planNotes:
-      'Entry-level MEC. PCP and specialist visit limits are very low (3/yr and 1/yr). Hospital indemnity $5,000/yr max. Rx is discount-only.'
+      'Entry-level MEC. PCP and specialist visit limits are very low (3/yr and 1/yr). Hospital indemnity $5,000/yr max. Rx is discount-only. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -106,7 +151,10 @@ var POLICY_DOCS = [
           '12/12 pre-existing condition exclusion applies'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: [
@@ -123,6 +171,17 @@ var POLICY_DOCS = [
           'Full ACA-required preventive services covered',
           'Annual physical: 1 per plan year'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
       }
     ],
     limitations: [
@@ -137,12 +196,47 @@ var POLICY_DOCS = [
       'NO cosmetic surgery (unless medically necessary)',
       'NO experimental treatments',
       'NO services outside the United States',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion for prior 12-month diagnosed conditions',
     planNotes:
-      'Step up from MedFirst 1. Adds formulary Rx ($0 generic), doubles hospital max to $10,000, adds 1 more PCP and specialist visit.'
+      'Step up from MedFirst 1. Adds formulary Rx ($0 generic), doubles hospital max to $10,000, adds 1 more PCP and specialist visit. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -168,7 +262,10 @@ var POLICY_DOCS = [
           '12/12 pre-existing condition exclusion applies'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: [
@@ -184,6 +281,17 @@ var POLICY_DOCS = [
       {
         category: 'Preventive / MEC',
         items: ['Full ACA preventive services', 'Annual physical 1/yr']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
       }
     ],
     limitations: [
@@ -197,12 +305,47 @@ var POLICY_DOCS = [
       'Specialty drugs NOT covered',
       'NO dental, vision, hearing',
       'NO experimental treatments',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion for prior 12-month conditions',
     planNotes:
-      'Mid-tier MEC. Specialist visits jump to 4/yr. Hospital max $15,000. Full brand Rx with $150/mo cap. Good balance plan.'
+      'Mid-tier MEC. Specialist visits jump to 4/yr. Hospital max $15,000. Full brand Rx with $150/mo cap. Good balance plan. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -231,7 +374,10 @@ var POLICY_DOCS = [
           'Ambulance (if admitted): $500/per incident — 12/12 pre-ex'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: [
@@ -246,6 +392,17 @@ var POLICY_DOCS = [
       {
         category: 'Preventive / MEC',
         items: ['Full ACA preventive services', 'Annual physical 1/yr']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan',
+          'No out-of-pocket maximum',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Accidents: Covered from Day 1',
+          'Preventive care: ACA-required services at $0',
+          'Advocacy: Hospital Bill Reducer — MyHealthcare Ninja'
+        ]
       }
     ],
     limitations: [
@@ -259,12 +416,31 @@ var POLICY_DOCS = [
       'Ambulance only covered if admitted',
       '$150/month Rx cap for non-preventive medications',
       'Specialty drugs NOT covered',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — pre-negotiated discounted rates available through First Health PPO at providersearch.multiplan.com',
+      'MRI and CT scans: Not covered as insurance — discounted rates available in-network',
+      'Blood work and lab tests: Not a covered insurance benefit — discounted rates available through First Health PPO network',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Mental health and substance abuse: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Dental and vision: Not covered',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Specialty prescription drugs: Not covered — Prescription Assistance Program available',
+      'NICU neonatal intensive care: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'First MedFirst tier with surgery benefit, ER benefit (if admitted), and ambulance. Copays increase: $50 PCP / $75 specialist.'
+      'First MedFirst tier with surgery benefit, ER benefit (if admitted), and ambulance. Copays increase: $50 PCP / $75 specialist. | 30-day waiting period for all sickness benefits. Injuries Day 1. | 12/12 pre-existing condition rule applies to hospitalization, surgery, ER, and ambulance | Network: First Health PPO — outpatient physician and wellness in-network only. Find providers at providersearch.multiplan.com'
   },
   {
     group: 'MEC',
@@ -293,7 +469,10 @@ var POLICY_DOCS = [
           'Ambulance (if admitted): $500/per incident — 12/12 pre-ex'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: [
@@ -308,6 +487,17 @@ var POLICY_DOCS = [
       {
         category: 'Preventive / MEC',
         items: ['Full ACA preventive services', 'Annual physical 1/yr']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan',
+          'No out-of-pocket maximum',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Accidents: Covered from Day 1',
+          'Preventive care: ACA-required services at $0',
+          'Advocacy: Hospital Bill Reducer — MyHealthcare Ninja'
+        ]
       }
     ],
     limitations: [
@@ -321,12 +511,31 @@ var POLICY_DOCS = [
       'Ambulance covered only if admitted',
       '$150/month Rx cap for non-preventive medications',
       'Specialty drugs NOT covered',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — pre-negotiated discounted rates available through First Health PPO at providersearch.multiplan.com',
+      'MRI and CT scans: Not covered as insurance — discounted rates available in-network',
+      'Blood work and lab tests: Not a covered insurance benefit — discounted rates available through First Health PPO network',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Mental health and substance abuse: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Dental and vision: Not covered',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Specialty prescription drugs: Not covered — Prescription Assistance Program available',
+      'NICU neonatal intensive care: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'Top MedFirst tier. Hospital $1,500/day up to $15,000. Surgery $4,500/yr max. 5 PCP and specialist visits. Most comprehensive MEC option.'
+      'Top MedFirst tier. Hospital $1,500/day up to $15,000. Surgery $4,500/yr max. 5 PCP and specialist visits. Most comprehensive MEC option. | 30-day waiting period for all sickness benefits. Injuries Day 1. | 12/12 pre-existing condition rule applies to hospitalization, surgery, ER, and ambulance | Network: First Health PPO — outpatient physician and wellness in-network only. Find providers at providersearch.multiplan.com'
   },
   {
     group: 'MEC',
@@ -352,7 +561,10 @@ var POLICY_DOCS = [
           '12/12 pre-existing condition exclusion applies'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: ['Discount prescriptions only — participating pharmacies']
@@ -360,6 +572,17 @@ var POLICY_DOCS = [
       {
         category: 'Preventive / MEC',
         items: ['Full ACA preventive services', 'Annual physical 1/yr']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
       }
     ],
     limitations: [
@@ -371,12 +594,47 @@ var POLICY_DOCS = [
       '30-day sickness waiting period',
       'Rx is discount-only — no formulary coverage',
       'Benefits are FIXED AMOUNTS — not full bill coverage',
-      'Same exclusions as MedFirst 1 — see MedFirst 1 full exclusions list'
+      'Same exclusions as MedFirst 1 — see MedFirst 1 full exclusions list',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'Identical structure to MedFirst 1. Marketed under TrueHealth association. Good entry plan for healthy, budget-conscious prospects.'
+      'Identical structure to MedFirst 1. Marketed under TrueHealth association. Good entry plan for healthy, budget-conscious prospects. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -401,15 +659,32 @@ var POLICY_DOCS = [
           'In-Patient Hospitalization: $1,000/day — $5,000/year max — 12/12 pre-ex'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: ['Discount prescriptions only — participating pharmacies']
       },
-      { category: 'Preventive / MEC', items: ['Full ACA preventive services'] },
+      {
+        category: 'Preventive / MEC',
+        items: ['Full ACA preventive services']
+      },
       {
         category: 'Peer Support',
         items: ['Kindly Human — 24/7 peer support access (non-medical)']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
       }
     ],
     limitations: [
@@ -420,12 +695,47 @@ var POLICY_DOCS = [
       'Pre-existing conditions excluded first 12 months',
       '30-day sickness waiting period',
       'Rx is discount-only — no formulary coverage',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'Same structure as MedFirst 1 / TrueHealth 1 but under GoodHealth association. Includes Kindly Human peer support benefit.'
+      'Same structure as MedFirst 1 / TrueHealth 1 but under GoodHealth association. Includes Kindly Human peer support benefit. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -450,7 +760,10 @@ var POLICY_DOCS = [
           'In-Patient Hospitalization: $1,000/day — $10,000/year max — 12/12 pre-ex'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: [
@@ -460,7 +773,21 @@ var POLICY_DOCS = [
           'Specialty drugs NOT covered — PAP available'
         ]
       },
-      { category: 'Preventive / MEC', items: ['Full ACA preventive services'] }
+      {
+        category: 'Preventive / MEC',
+        items: ['Full ACA preventive services']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
+      }
     ],
     limitations: [
       'NOT ACA-compliant major medical insurance',
@@ -470,12 +797,47 @@ var POLICY_DOCS = [
       'Pre-existing conditions excluded first 12 months',
       '30-day sickness waiting period',
       'Specialty drugs NOT covered',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'GoodHealth equivalent of MedFirst 2. Adds formulary generic Rx. Hospital max $10,000.'
+      'GoodHealth equivalent of MedFirst 2. Adds formulary generic Rx. Hospital max $10,000. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -500,7 +862,10 @@ var POLICY_DOCS = [
           'In-Patient Hospitalization: $1,000/day — $15,000/year max — 12/12 pre-ex'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: [
@@ -512,7 +877,21 @@ var POLICY_DOCS = [
           'Specialty drugs NOT covered'
         ]
       },
-      { category: 'Preventive / MEC', items: ['Full ACA preventive services'] }
+      {
+        category: 'Preventive / MEC',
+        items: ['Full ACA preventive services']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
+      }
     ],
     limitations: [
       'NOT ACA-compliant major medical insurance',
@@ -523,12 +902,47 @@ var POLICY_DOCS = [
       '30-day sickness waiting period',
       '$150/month Rx cap for non-preventive',
       'Specialty drugs NOT covered',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'GoodHealth equivalent of MedFirst 3. Full brand Rx with $150/mo cap. Hospital max $15,000.'
+      'GoodHealth equivalent of MedFirst 3. Full brand Rx with $150/mo cap. Hospital max $15,000. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -557,7 +971,10 @@ var POLICY_DOCS = [
           'Ambulance (if admitted): $500/per incident — 12/12 pre-ex'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: [
@@ -568,7 +985,21 @@ var POLICY_DOCS = [
           'Specialty drugs NOT covered'
         ]
       },
-      { category: 'Preventive / MEC', items: ['Full ACA preventive services'] }
+      {
+        category: 'Preventive / MEC',
+        items: ['Full ACA preventive services']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan',
+          'No out-of-pocket maximum',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Accidents: Covered from Day 1',
+          'Preventive care: ACA-required services at $0',
+          'Advocacy: Hospital Bill Reducer — MyHealthcare Ninja'
+        ]
+      }
     ],
     limitations: [
       'NOT ACA-compliant major medical insurance',
@@ -581,12 +1012,31 @@ var POLICY_DOCS = [
       'Ambulance covered only if admitted',
       '$150/month Rx cap',
       'Specialty drugs NOT covered',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — pre-negotiated discounted rates available through First Health PPO at providersearch.multiplan.com',
+      'MRI and CT scans: Not covered as insurance — discounted rates available in-network',
+      'Blood work and lab tests: Not a covered insurance benefit — discounted rates available through First Health PPO network',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Mental health and substance abuse: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Dental and vision: Not covered',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Specialty prescription drugs: Not covered — Prescription Assistance Program available',
+      'NICU neonatal intensive care: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'GoodHealth equivalent of MedFirst 4. Adds surgery, ER (if admitted), ambulance.'
+      'GoodHealth equivalent of MedFirst 4. Adds surgery, ER (if admitted), ambulance. | 30-day waiting period for all sickness benefits. Injuries Day 1. | 12/12 pre-existing condition rule applies to hospitalization, surgery, ER, and ambulance | Network: First Health PPO — outpatient physician and wellness in-network only. Find providers at providersearch.multiplan.com'
   },
   {
     group: 'MEC',
@@ -615,7 +1065,10 @@ var POLICY_DOCS = [
           'Ambulance (if admitted): $500/per incident — 12/12 pre-ex'
         ]
       },
-      { category: 'Telemedicine', items: ['$0 consult fee — No maximum'] },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee — No maximum']
+      },
       {
         category: 'Prescriptions',
         items: [
@@ -627,7 +1080,21 @@ var POLICY_DOCS = [
           'Specialty drugs NOT covered'
         ]
       },
-      { category: 'Preventive / MEC', items: ['Full ACA preventive services'] }
+      {
+        category: 'Preventive / MEC',
+        items: ['Full ACA preventive services']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan',
+          'No out-of-pocket maximum',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Accidents: Covered from Day 1',
+          'Preventive care: ACA-required services at $0',
+          'Advocacy: Hospital Bill Reducer — MyHealthcare Ninja'
+        ]
+      }
     ],
     limitations: [
       'NOT ACA-compliant major medical insurance',
@@ -640,15 +1107,32 @@ var POLICY_DOCS = [
       'Ambulance covered only if admitted',
       '$150/month Rx cap',
       'Specialty drugs NOT covered',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — pre-negotiated discounted rates available through First Health PPO at providersearch.multiplan.com',
+      'MRI and CT scans: Not covered as insurance — discounted rates available in-network',
+      'Blood work and lab tests: Not a covered insurance benefit — discounted rates available through First Health PPO network',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Mental health and substance abuse: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Dental and vision: Not covered',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Specialty prescription drugs: Not covered — Prescription Assistance Program available',
+      'NICU neonatal intensive care: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'GoodHealth equivalent of MedFirst 5. Top tier — hospital $1,500/day, $15,000/yr. Surgery $4,500/yr. 5 PCP and specialist visits.'
+      'GoodHealth equivalent of MedFirst 5. Top tier — hospital $1,500/day, $15,000/yr. Surgery $4,500/yr. 5 PCP and specialist visits. | 30-day waiting period for all sickness benefits. Injuries Day 1. | 12/12 pre-existing condition rule applies to hospitalization, surgery, ER, and ambulance | Network: First Health PPO — outpatient physician and wellness in-network only. Find providers at providersearch.multiplan.com'
   },
-
-  // ─────────────────── TDK PLANS ───────────────────
   {
     group: 'MEC',
     id: 'tdk1',
@@ -702,6 +1186,17 @@ var POLICY_DOCS = [
           'Inpatient: NOT covered',
           'Outpatient: NOT covered (virtual available through MyLiveDoc)'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
       }
     ],
     limitations: [
@@ -714,12 +1209,47 @@ var POLICY_DOCS = [
       'Pre-existing conditions excluded first 12 months',
       '30-day sickness waiting period',
       'No out-of-pocket maximum',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'Entry-level TDK plan. Detego Health admin, First Health network, MyLiveDoc telemedicine. Basic PCP + specialist + hospital only. Good for healthy individuals who primarily need preventive + doctor visits.'
+      'Entry-level TDK plan. Detego Health admin, First Health network, MyLiveDoc telemedicine. Basic PCP + specialist + hospital only. Good for healthy individuals who primarily need preventive + doctor visits. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -774,6 +1304,17 @@ var POLICY_DOCS = [
           'Inpatient: NOT covered',
           'Outpatient: NOT covered (virtual available through MyLiveDoc)'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
       }
     ],
     limitations: [
@@ -785,12 +1326,47 @@ var POLICY_DOCS = [
       'Pre-existing conditions excluded first 12 months',
       '30-day sickness waiting period',
       'No out-of-pocket maximum',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'Mid-tier TDK plan. More visits (4 PCP, 2 specialist) and higher hospital cap ($10,000/yr). Same Detego Health admin, First Health network, MyLiveDoc telemedicine.'
+      'Mid-tier TDK plan. More visits (4 PCP, 2 specialist) and higher hospital cap ($10,000/yr). Same Detego Health admin, First Health network, MyLiveDoc telemedicine. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -845,6 +1421,17 @@ var POLICY_DOCS = [
           'Inpatient: NOT covered',
           'Outpatient: NOT covered (virtual available through MyLiveDoc)'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum — benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Advocacy: Hospital Bill Reducer included — MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
       }
     ],
     limitations: [
@@ -856,12 +1443,47 @@ var POLICY_DOCS = [
       'Pre-existing conditions excluded first 12 months',
       '30-day sickness waiting period',
       'No out-of-pocket maximum',
-      'Benefits are FIXED AMOUNTS — not full bill coverage'
+      'Benefits are FIXED AMOUNTS — not full bill coverage',
+      'Deductible: None — this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None — benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 — available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 — available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered — discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) — not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'Top of the basic TDK plans. 4 specialist visits (vs 1–2 on TDK 1–2), $15,000/yr hospital max. Still no ER/outpatient/surgery.'
+      'Top of the basic TDK plans. 4 specialist visits (vs 1–2 on TDK 1–2), $15,000/yr hospital max. Still no ER/outpatient/surgery. | MEC Plan — not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization — conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO — members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -916,6 +1538,17 @@ var POLICY_DOCS = [
           'Inpatient: NOT covered',
           'Outpatient: NOT covered (virtual available through MyLiveDoc)'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan',
+          'No out-of-pocket maximum',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Accidents: Covered from Day 1',
+          'Preventive care: ACA-required services at $0',
+          'Advocacy: Hospital Bill Reducer — MyHealthcare Ninja'
+        ]
       }
     ],
     limitations: [
@@ -928,12 +1561,31 @@ var POLICY_DOCS = [
       'No out-of-pocket maximum',
       'Benefits are FIXED AMOUNTS — not full bill coverage',
       'Higher copays than TDK 1–3 ($50 PCP, $75 specialist)',
-      'Ambulance covered only if admitted'
+      'Ambulance covered only if admitted',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — pre-negotiated discounted rates available through First Health PPO at providersearch.multiplan.com',
+      'MRI and CT scans: Not covered as insurance — discounted rates available in-network',
+      'Blood work and lab tests: Not a covered insurance benefit — discounted rates available through First Health PPO network',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Mental health and substance abuse: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Dental and vision: Not covered',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Specialty prescription drugs: Not covered — Prescription Assistance Program available',
+      'NICU neonatal intensive care: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'Enhanced TDK plan with ER + outpatient + ambulance. Higher copays ($50/$75) but adds hospital outpatient, ER ($1,000/incident), and ambulance ($500 if admitted). Same Detego Health admin.'
+      'Enhanced TDK plan with ER + outpatient + ambulance. Higher copays ($50/$75) but adds hospital outpatient, ER ($1,000/incident), and ambulance ($500 if admitted). Same Detego Health admin. | 30-day waiting period for all sickness benefits. Injuries Day 1. | 12/12 pre-existing condition rule applies to hospitalization, surgery, ER, and ambulance | Network: First Health PPO — outpatient physician and wellness in-network only. Find providers at providersearch.multiplan.com'
   },
   {
     group: 'MEC',
@@ -989,6 +1641,17 @@ var POLICY_DOCS = [
           'Inpatient: NOT covered',
           'Outpatient: NOT covered (virtual available through MyLiveDoc)'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed dollar benefit plan',
+          'No out-of-pocket maximum',
+          'Telemedicine: $0 consult fee, unlimited visits — Opyn Live',
+          'Accidents: Covered from Day 1',
+          'Preventive care: ACA-required services at $0',
+          'Advocacy: Hospital Bill Reducer — MyHealthcare Ninja'
+        ]
       }
     ],
     limitations: [
@@ -1001,15 +1664,32 @@ var POLICY_DOCS = [
       'No out-of-pocket maximum',
       'Benefits are FIXED AMOUNTS — not full bill coverage',
       'Higher copays ($50 PCP, $75 specialist)',
-      'Ambulance covered only if admitted'
+      'Ambulance covered only if admitted',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit — pre-negotiated discounted rates available through First Health PPO at providersearch.multiplan.com',
+      'MRI and CT scans: Not covered as insurance — discounted rates available in-network',
+      'Blood work and lab tests: Not a covered insurance benefit — discounted rates available through First Health PPO network',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Mental health and substance abuse: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Dental and vision: Not covered',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Specialty prescription drugs: Not covered — Prescription Assistance Program available',
+      'NICU neonatal intensive care: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — accidents'],
     preEx: '12-month exclusion',
     planNotes:
-      'Top-tier TDK plan. Highest benefits: $1,500/day hospital, $15,000/yr max. Adds outpatient surgery ($4,500/yr). 5 PCP and specialist visits. ER + ambulance included. Mirrors GoodHealth 5 structure.'
+      'Top-tier TDK plan. Highest benefits: $1,500/day hospital, $15,000/yr max. Adds outpatient surgery ($4,500/yr). 5 PCP and specialist visits. ER + ambulance included. Mirrors GoodHealth 5 structure. | 30-day waiting period for all sickness benefits. Injuries Day 1. | 12/12 pre-existing condition rule applies to hospitalization, surgery, ER, and ambulance | Network: First Health PPO — outpatient physician and wellness in-network only. Find providers at providersearch.multiplan.com'
   },
-
-  // ─────────────────── STM PLANS ───────────────────
   {
     group: 'STM',
     id: 'pinnacle',
@@ -1072,6 +1752,23 @@ var POLICY_DOCS = [
           'Next-day coverage effective date',
           'Benefits and deductibles RESET each policy block'
         ]
+      },
+      {
+        category: 'Coverage Summary',
+        items: [
+          'Accidents: Covered from Day 1 (effective date)',
+          'Sickness: Covered after 5-day waiting period from effective date',
+          'Cancer: Covered after 30-day waiting period from effective date',
+          'Doctor visits and urgent care: Covered — subject to deductible and coinsurance',
+          'Inpatient hospitalization: Covered — subject to deductible and coinsurance',
+          'Surgery (inpatient and outpatient): Covered — subject to deductible and coinsurance',
+          'Emergency room: Covered — subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
+          'Ambulance: Covered — subject to deductible and coinsurance',
+          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses — subject to deductible and coinsurance',
+          'MRI and CT scans: Covered — subject to deductible and coinsurance',
+          'Network: PHCS Practitioner Plus Ancillary Network — members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
+          'Complications of pregnancy: Covered — standard maternity/childbirth NOT covered'
+        ]
       }
     ],
     limitations: [
@@ -1093,7 +1790,23 @@ var POLICY_DOCS = [
       'AIDS/HIV: benefit-capped per schedule',
       'First 6 months: excluded — hysterectomy (unless cancer), tonsillectomy, adenoidectomy, hernia repair, gallbladder surgery, nasal/sinus surgery',
       'Plan terminates — NOT a qualifying life event for ACA enrollment',
-      'Deductibles and limits RESET under new policy — any condition developed becomes pre-existing'
+      'Deductibles and limits RESET under new policy — any condition developed becomes pre-existing',
+      'Pre-existing conditions: Not covered for conditions diagnosed or treated in the 12 months prior to effective date',
+      'Maternity, standard childbirth, prenatal care, delivery services: Not covered — complications of pregnancy only',
+      'Mental health and substance abuse: Not covered or very limited — check specific plan schedule',
+      'Dental and vision: Not covered',
+      'Prescription drugs (Pinnacle STM): Not covered as insurance — Rx Savers discount card included',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Non-emergency care outside US: Not covered',
+      'Workers compensation conditions: Not covered',
+      'Hazardous activity injuries: Not covered',
+      'This plan is NOT ACA minimum essential coverage — not compliant with ACA requirements',
+      'This plan cannot be renewed — member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
+      'Age limit: Coverage terminates at end of month member turns 65'
     ],
     waitingPeriods: [
       'Day 1 — injuries',
@@ -1103,7 +1816,7 @@ var POLICY_DOCS = [
     preEx:
       'Conditions treated in prior 60 months excluded for first 12 months of coverage',
     planNotes:
-      'True STM with deductible/coinsurance. Has limited mental health and substance abuse coverage. Next-day effective. PHCS network access. Policy terminates — NOT renewable as permanent coverage.'
+      'True STM with deductible/coinsurance. Has limited mental health and substance abuse coverage. Next-day effective. PHCS network access. Policy terminates — NOT renewable as permanent coverage. | STM plan — not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary — confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies — confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
   },
   {
     group: 'STM',
@@ -1160,6 +1873,23 @@ var POLICY_DOCS = [
           'Next-term waiting periods waived if consecutive enrollment',
           'Pre-ex waiver rider available to waive conditions from prior term'
         ]
+      },
+      {
+        category: 'Coverage Summary',
+        items: [
+          'Accidents: Covered from Day 1 (effective date)',
+          'Sickness: Covered after 5-day waiting period from effective date',
+          'Cancer: Covered after 30-day waiting period from effective date',
+          'Doctor visits and urgent care: Covered — subject to deductible and coinsurance',
+          'Inpatient hospitalization: Covered — subject to deductible and coinsurance',
+          'Surgery (inpatient and outpatient): Covered — subject to deductible and coinsurance',
+          'Emergency room: Covered — subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
+          'Ambulance: Covered — subject to deductible and coinsurance',
+          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses — subject to deductible and coinsurance',
+          'MRI and CT scans: Covered — subject to deductible and coinsurance',
+          'Network: PHCS Practitioner Plus Ancillary Network — members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
+          'Complications of pregnancy: Covered — standard maternity/childbirth NOT covered'
+        ]
       }
     ],
     limitations: [
@@ -1171,7 +1901,23 @@ var POLICY_DOCS = [
       'NO waiting period for injuries',
       'NOT renewable as permanent coverage',
       'Temporary plan only',
-      'State variations apply — not available in all states'
+      'State variations apply — not available in all states',
+      'Pre-existing conditions: Not covered for conditions diagnosed or treated in the 12 months prior to effective date',
+      'Maternity, standard childbirth, prenatal care, delivery services: Not covered — complications of pregnancy only',
+      'Mental health and substance abuse: Not covered or very limited — check specific plan schedule',
+      'Dental and vision: Not covered',
+      'Prescription drugs (Pinnacle STM): Not covered as insurance — Rx Savers discount card included',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Non-emergency care outside US: Not covered',
+      'Workers compensation conditions: Not covered',
+      'Hazardous activity injuries: Not covered',
+      'This plan is NOT ACA minimum essential coverage — not compliant with ACA requirements',
+      'This plan cannot be renewed — member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
+      'Age limit: Coverage terminates at end of month member turns 65'
     ],
     waitingPeriods: [
       'Day 1 — injuries',
@@ -1181,7 +1927,7 @@ var POLICY_DOCS = [
     preEx:
       '12/12 pre-existing exclusion (may be waived with consecutive enrollment rider)',
     planNotes:
-      'Three plan options. PHCS network access. Pre-ex waiver rider available for consecutive terms. Up to $1M policy max.'
+      'Three plan options. PHCS network access. Pre-ex waiver rider available for consecutive terms. Up to $1M policy max. | STM plan — not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary — confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies — confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
   },
   {
     group: 'STM',
@@ -1222,6 +1968,23 @@ var POLICY_DOCS = [
           'Next-day coverage available',
           'Up to 36 months coverage depending on state'
         ]
+      },
+      {
+        category: 'Coverage Summary',
+        items: [
+          'Accidents: Covered from Day 1 (effective date)',
+          'Sickness: Covered after 5-day waiting period from effective date',
+          'Cancer: Covered after 30-day waiting period from effective date',
+          'Doctor visits and urgent care: Covered — subject to deductible and coinsurance',
+          'Inpatient hospitalization: Covered — subject to deductible and coinsurance',
+          'Surgery (inpatient and outpatient): Covered — subject to deductible and coinsurance',
+          'Emergency room: Covered — subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
+          'Ambulance: Covered — subject to deductible and coinsurance',
+          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses — subject to deductible and coinsurance',
+          'MRI and CT scans: Covered — subject to deductible and coinsurance',
+          'Network: PHCS Practitioner Plus Ancillary Network — members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
+          'Complications of pregnancy: Covered — standard maternity/childbirth NOT covered'
+        ]
       }
     ],
     limitations: [
@@ -1232,7 +1995,23 @@ var POLICY_DOCS = [
       '30-day waiting period for cancer',
       'No waiting period for injuries',
       'NOT renewable as permanent coverage',
-      'Association discounts are NOT insurance — no coverage guarantee'
+      'Association discounts are NOT insurance — no coverage guarantee',
+      'Pre-existing conditions: Not covered for conditions diagnosed or treated in the 12 months prior to effective date',
+      'Maternity, standard childbirth, prenatal care, delivery services: Not covered — complications of pregnancy only',
+      'Mental health and substance abuse: Not covered or very limited — check specific plan schedule',
+      'Dental and vision: Not covered',
+      'Prescription drugs (Pinnacle STM): Not covered as insurance — Rx Savers discount card included',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Non-emergency care outside US: Not covered',
+      'Workers compensation conditions: Not covered',
+      'Hazardous activity injuries: Not covered',
+      'This plan is NOT ACA minimum essential coverage — not compliant with ACA requirements',
+      'This plan cannot be renewed — member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
+      'Age limit: Coverage terminates at end of month member turns 65'
     ],
     waitingPeriods: [
       'Day 1 — injuries',
@@ -1241,7 +2020,7 @@ var POLICY_DOCS = [
     ],
     preEx: '12-month exclusion for prior 12-month conditions',
     planNotes:
-      'PHCS network STM. Includes RightWay patient advocacy navigation. Very similar structure to Access Health STM.'
+      'PHCS network STM. Includes RightWay patient advocacy navigation. Very similar structure to Access Health STM. | STM plan — not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary — confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies — confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
   },
   {
     group: 'STM',
@@ -1321,6 +2100,23 @@ var POLICY_DOCS = [
           'Rx savings card: up to 80% off at local pharmacy',
           'Pharmacist consultation available'
         ]
+      },
+      {
+        category: 'Coverage Summary',
+        items: [
+          'Accidents: Covered from Day 1 (effective date)',
+          'Sickness: Covered after 5-day waiting period from effective date',
+          'Cancer: Covered after 30-day waiting period from effective date',
+          'Doctor visits and urgent care: Covered — subject to deductible and coinsurance',
+          'Inpatient hospitalization: Covered — subject to deductible and coinsurance',
+          'Surgery (inpatient and outpatient): Covered — subject to deductible and coinsurance',
+          'Emergency room: Covered — subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
+          'Ambulance: Covered — subject to deductible and coinsurance',
+          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses — subject to deductible and coinsurance',
+          'MRI and CT scans: Covered — subject to deductible and coinsurance',
+          'Network: PHCS Practitioner Plus Ancillary Network — members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
+          'Complications of pregnancy: Covered — standard maternity/childbirth NOT covered'
+        ]
       }
     ],
     limitations: [
@@ -1334,7 +2130,23 @@ var POLICY_DOCS = [
       'First Health Network access NOT available in New Mexico for certain plans',
       'Economy plan: doctor visits subject to deductible — no copay',
       'Mental health: limited — Elite only has inpatient 30 days / outpatient 10 days',
-      'ReviveHealth pharmacy is a membership service — NOT insurance'
+      'ReviveHealth pharmacy is a membership service — NOT insurance',
+      'Pre-existing conditions: Not covered for conditions diagnosed or treated in the 12 months prior to effective date',
+      'Maternity, standard childbirth, prenatal care, delivery services: Not covered — complications of pregnancy only',
+      'Mental health and substance abuse: Not covered or very limited — check specific plan schedule',
+      'Dental and vision: Not covered',
+      'Prescription drugs (Pinnacle STM): Not covered as insurance — Rx Savers discount card included',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Non-emergency care outside US: Not covered',
+      'Workers compensation conditions: Not covered',
+      'Hazardous activity injuries: Not covered',
+      'This plan is NOT ACA minimum essential coverage — not compliant with ACA requirements',
+      'This plan cannot be renewed — member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
+      'Age limit: Coverage terminates at end of month member turns 65'
     ],
     waitingPeriods: [
       'Day 1 — injuries',
@@ -1344,10 +2156,8 @@ var POLICY_DOCS = [
     preEx:
       '12-month exclusion for conditions existing within 12 months prior to effective date',
     planNotes:
-      'Most comprehensive STM available. Elite tier has $2M max, $30/$45 copays, $3,000/day hospital. ReviveHealth pharmacy is a major value-add. Closest to major medical of all STM options.'
+      'Most comprehensive STM available. Elite tier has $2M max, $30/$45 copays, $3,000/day hospital. ReviveHealth pharmacy is a major value-add. Closest to major medical of all STM options. | STM plan — not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary — confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies — confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
   },
-
-  // ─────────────────── LIMITED BENEFIT PLANS ───────────────────
   {
     group: 'Limited',
     id: 'harmonycare',
@@ -1423,6 +2233,31 @@ var POLICY_DOCS = [
           'No deductible — no coinsurance',
           'Guaranteed issue underwriting'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum — plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Sickness: 30-day waiting period applies',
+          'Pre-existing conditions: Not covered for first 12 months from effective date',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted — see plan tier for amount',
+          'Accidental death benefit: $10,000 maximum on all tiers'
+        ]
+      },
+      {
+        category: 'Additional Benefits & Savings Programs',
+        items: [
+          'Blood work and lab tests: QuestSelect Unlimited Lab Program — $0 copay for 1,000+ outpatient lab tests including blood tests, urinalysis, pap smears, biopsies, cultures. Use any Quest Diagnostics location nationwide. Present QuestSelect card at appointment.',
+          'Imaging savings: Average 60% off MRI and CT scans through Imaging Savings Program — discount only, not insurance',
+          'Chiropractic savings: Free initial consult, up to 50% off diagnostic services and x-rays, unlimited treatments at 30% savings — discount only',
+          'Mental health inpatient (tiers 200+ only): $150-$500/day up to 60 days — NOT available on tiers 100A and 100',
+          'Mental health outpatient (tiers 200+ only): $50/day up to 20 days — NOT available on tiers 100A and 100',
+          'Surgery benefit (tiers 200+ only): $400-$1,500 per day up to 3 days',
+          'Critical illness benefit: $1,000 on all tiers except 100A',
+          'Emergency room benefit (tiers 100+ only): $50-$100 per day, 1 day maximum — NOT available on tier 100A'
+        ]
       }
     ],
     limitations: [
@@ -1435,7 +2270,27 @@ var POLICY_DOCS = [
       'Limited tiers (100A, 100): no ER benefit, no surgery, no mental health',
       '750 and 1000 tiers: NO mental health, NO accident benefits, NO surgery',
       'Balance billing risk if charges exceed fixed benefit amounts',
-      'NOT intended to replace major medical coverage'
+      'NOT intended to replace major medical coverage',
+      'Maternity, pregnancy, childbirth, prenatal care: Not covered',
+      'Dental and vision: Not covered',
+      'Prescription drugs: Not covered as insurance — discount savings program included',
+      'Physical therapy, speech therapy, occupational therapy: Not covered',
+      'Home health care and hospice: Not covered',
+      'Custodial care: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Voluntary sterilization reversal: Not covered',
+      'Workers compensation conditions: Not covered',
+      'This plan is NOT ACA compliant and is NOT major medical insurance',
+      'Plan pays fixed cash benefit amounts — member is responsible for any amount above the plan benefit',
+      'Mental health and substance abuse (tiers 100A and 100): Not covered on these tiers — available on tier 200 and above',
+      'Lab work during hospitalization: Not covered under QuestSelect program',
+      'Emergency/STAT lab work: Not covered under QuestSelect',
+      'Fertility testing, bone marrow, spinal fluid tests: Not covered under QuestSelect',
+      'X-ray as standalone benefit: Not covered as insurance — chiropractic savings program includes discounted x-rays'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — injuries'],
     preEx:
@@ -1497,6 +2352,29 @@ var POLICY_DOCS = [
           'Critical Illness: $1,000 (200+ tiers)',
           'No deductible — guaranteed issue'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum — plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Sickness: 30-day waiting period applies',
+          'Pre-existing conditions: Not covered for first 12 months from effective date',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted — see plan tier for amount',
+          'Accidental death benefit: $10,000 maximum on all tiers'
+        ]
+      },
+      {
+        category: 'Additional Benefits & Savings Programs',
+        items: [
+          'Blood work and lab tests: Laboratory Savings Program — discounted rates at ncegapaffordplus.com. Not available in NY, NJ, RI.',
+          'Imaging savings: Average 60% off MRI and CT scans — discount only, not insurance',
+          'Mental health inpatient (tiers 200+ only): $150-$500/day up to 60 days',
+          'Mental health outpatient (tiers 200+ only): $50/day up to 20 days',
+          'Critical illness: $1,000 on tiers 200+',
+          'Surgery benefit (tiers 200+ only): $400-$1,000 per day up to 3 days'
+        ]
       }
     ],
     limitations: [
@@ -1506,7 +2384,22 @@ var POLICY_DOCS = [
       '12/12 pre-existing condition exclusion',
       '30-day waiting period for sickness (not applicable to injury)',
       'Balance billing risk for charges above fixed benefit',
-      'NOT a substitute for major medical coverage'
+      'NOT a substitute for major medical coverage',
+      'Maternity, pregnancy, childbirth, prenatal care: Not covered',
+      'Dental and vision: Not covered',
+      'Prescription drugs: Not covered as insurance — discount savings program included',
+      'Physical therapy, speech therapy, occupational therapy: Not covered',
+      'Home health care and hospice: Not covered',
+      'Custodial care: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Voluntary sterilization reversal: Not covered',
+      'Workers compensation conditions: Not covered',
+      'This plan is NOT ACA compliant and is NOT major medical insurance',
+      'Plan pays fixed cash benefit amounts — member is responsible for any amount above the plan benefit'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — injuries'],
     preEx: '12-month exclusion for prior 12-month conditions',
@@ -1578,6 +2471,32 @@ var POLICY_DOCS = [
           'Critical Illness: $1,000 (200+ tiers)',
           'No deductible — no coinsurance'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum — plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Sickness: 30-day waiting period applies',
+          'Pre-existing conditions: Not covered for first 12 months from effective date',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted — see plan tier for amount',
+          'Accidental death benefit: $10,000 maximum on all tiers'
+        ]
+      },
+      {
+        category: 'Additional Benefits & Savings Programs',
+        items: [
+          'Blood work and lab tests: Laboratory Savings Program — discounted rates at ncegapaffordplus.com. Not available in NY, NJ, RI.',
+          'Imaging savings: Average 60% off MRI and CT scans — discount only',
+          'Chiropractic savings: Free consult, up to 50% off x-rays, 30% off unlimited treatments',
+          'Mental health inpatient (tiers 300+ only): $150-$500/day up to 60 days',
+          'Mental health outpatient (tiers 300+ only): $50/day up to 20 days',
+          'Critical illness: $1,000 on tiers 200+',
+          'Surgery benefit (tiers 200+ only): 50%-100% per day up to 3 days',
+          'Hospital ICU benefit (tier 1000+ only): $1,000/day up to 15 days',
+          'Additional hospital admission benefit (tier 1000+ only): $1,000 per admission up to 5 days'
+        ]
       }
     ],
     limitations: [
@@ -1588,7 +2507,25 @@ var POLICY_DOCS = [
       '30-day waiting period for sickness (injury exempt)',
       'Balance billing risk',
       'NO Mental Health coverage below 300 tier',
-      'NOT a substitute for major medical'
+      'NOT a substitute for major medical',
+      'Maternity, pregnancy, childbirth, prenatal care: Not covered',
+      'Dental and vision: Not covered',
+      'Prescription drugs: Not covered as insurance — discount savings program included',
+      'Physical therapy, speech therapy, occupational therapy: Not covered',
+      'Home health care and hospice: Not covered',
+      'Custodial care: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Voluntary sterilization reversal: Not covered',
+      'Workers compensation conditions: Not covered',
+      'This plan is NOT ACA compliant and is NOT major medical insurance',
+      'Plan pays fixed cash benefit amounts — member is responsible for any amount above the plan benefit',
+      'Mental health (tiers 100A, 100, 200): Not covered — available on tier 300 and above',
+      'Substance abuse disorders: Not covered',
+      'Prescription drugs: Not covered'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — injuries'],
     preEx: '12-month exclusion for prior 12-month conditions',
@@ -1662,6 +2599,26 @@ var POLICY_DOCS = [
           'Multiplan PPO network access for negotiated rates',
           'Fast payment — simplified claims process'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum — plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Sickness: 30-day waiting period applies',
+          'Pre-existing conditions: Not covered for first 12 months from effective date',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted — see plan tier for amount',
+          'Accidental death benefit: $10,000 maximum on all tiers'
+        ]
+      },
+      {
+        category: 'Additional Benefits & Savings Programs',
+        items: [
+          'Blood work and lab tests: Laboratory Savings Program — discounted rates. Not available in NY, NJ, RI.',
+          'Chiropractic savings: Free consult, up to 50% off diagnostic services and x-rays, 30% off unlimited treatments',
+          'Imaging savings: Average 60% off MRI and CT scans — discount only'
+        ]
       }
     ],
     limitations: [
@@ -1674,7 +2631,32 @@ var POLICY_DOCS = [
       'Hospital admission benefit only on 1000+ plan',
       'No surgery benefit on Plan 100',
       'Balance billing risk',
-      'NOT a qualifying life event if coverage ends'
+      'NOT a qualifying life event if coverage ends',
+      'Maternity, pregnancy, childbirth, prenatal care: Not covered',
+      'Dental and vision: Not covered',
+      'Prescription drugs: Not covered as insurance — discount savings program included',
+      'Physical therapy, speech therapy, occupational therapy: Not covered',
+      'Home health care and hospice: Not covered',
+      'Custodial care: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Voluntary sterilization reversal: Not covered',
+      'Workers compensation conditions: Not covered',
+      'This plan is NOT ACA compliant and is NOT major medical insurance',
+      'Plan pays fixed cash benefit amounts — member is responsible for any amount above the plan benefit',
+      'Mental illness and substance abuse: Not covered',
+      'Maternity and standard childbirth: Not covered — complications of pregnancy covered as any other sickness',
+      'Chiropractic care: Not covered as insurance — savings program available',
+      'Acupuncture: Not covered',
+      'Gender transformation services: Not covered',
+      'Hazardous occupation injuries: Not covered',
+      'Intoxication-related injuries: Not covered',
+      'Narcotic-related losses (unless prescribed): Not covered',
+      'War and armed forces service: Not covered',
+      'Workers compensation: Not covered'
     ],
     waitingPeriods: [
       '30 days — sickness (30 days/confinement or 90 days/cert year)',
@@ -1721,6 +2703,25 @@ var POLICY_DOCS = [
           'DirectLabs: discounted blood tests at major labs — no doctor visit required',
           'Savings up to 80% on lab tests'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum — plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Sickness: 30-day waiting period applies',
+          'Pre-existing conditions: Not covered for first 12 months from effective date',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted — see plan tier for amount',
+          'Accidental death benefit: $10,000 maximum on all tiers'
+        ]
+      },
+      {
+        category: 'Additional Benefits & Savings Programs',
+        items: [
+          'Blood work and lab tests: DirectLabs program — up to 80% off blood tests, urine, saliva, hair and fecal tests. No doctor appointment needed. Access at directlabs.com/4members. Not available in NJ, NY, RI.',
+          'Prescription discount: Included — discount card for pharmacy savings'
+        ]
       }
     ],
     limitations: [
@@ -1734,7 +2735,24 @@ var POLICY_DOCS = [
       '30-day sickness waiting period',
       'NO substance abuse or psychiatric coverage',
       'NO maternity coverage',
-      'Managed Care network — verify provider availability'
+      'Managed Care network — verify provider availability',
+      'Maternity, pregnancy, childbirth, prenatal care: Not covered',
+      'Dental and vision: Not covered',
+      'Prescription drugs: Not covered as insurance — discount savings program included',
+      'Physical therapy, speech therapy, occupational therapy: Not covered',
+      'Home health care and hospice: Not covered',
+      'Custodial care: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Voluntary sterilization reversal: Not covered',
+      'Workers compensation conditions: Not covered',
+      'This plan is NOT ACA compliant and is NOT major medical insurance',
+      'Plan pays fixed cash benefit amounts — member is responsible for any amount above the plan benefit',
+      'DirectLabs is NOT insurance — members prepay for tests at discounted rates',
+      'Prescription drugs: Not covered as insurance — discount card included'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — injuries'],
     preEx: '12-month exclusion',
@@ -1775,6 +2793,25 @@ var POLICY_DOCS = [
           'PHCS network access — choose in-network for best savings',
           'MultiPlan: locate providers at 888-371-7427 or MultiPlan.com'
         ]
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible — fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum — plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 — no waiting period for injury',
+          'Sickness: 30-day waiting period applies',
+          'Pre-existing conditions: Not covered for first 12 months from effective date',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted — see plan tier for amount',
+          'Accidental death benefit: $10,000 maximum on all tiers'
+        ]
+      },
+      {
+        category: 'Additional Benefits & Savings Programs',
+        items: [
+          'Blood work and lab tests: DirectLabs program — up to 80% off blood tests, urine, saliva, hair and fecal tests. No doctor appointment needed. Access at directlabs.com/4members. Not available in NJ, NY, RI.',
+          'Prescription discount: Included — discount card for pharmacy savings'
+        ]
       }
     ],
     limitations: [
@@ -1788,7 +2825,24 @@ var POLICY_DOCS = [
       'NO maternity coverage',
       'NO substance abuse coverage',
       'NO psychiatric services coverage',
-      'Balance billing risk'
+      'Balance billing risk',
+      'Maternity, pregnancy, childbirth, prenatal care: Not covered',
+      'Dental and vision: Not covered',
+      'Prescription drugs: Not covered as insurance — discount savings program included',
+      'Physical therapy, speech therapy, occupational therapy: Not covered',
+      'Home health care and hospice: Not covered',
+      'Custodial care: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Voluntary sterilization reversal: Not covered',
+      'Workers compensation conditions: Not covered',
+      'This plan is NOT ACA compliant and is NOT major medical insurance',
+      'Plan pays fixed cash benefit amounts — member is responsible for any amount above the plan benefit',
+      'DirectLabs is NOT insurance — members prepay for tests at discounted rates',
+      'Prescription drugs: Not covered as insurance — discount card included'
     ],
     waitingPeriods: ['30 days — sickness', 'Day 1 — injuries'],
     preEx: '12-month exclusion',
@@ -1963,6 +3017,23 @@ var POLICY_DOCS = [
           'Claims mailed to: PO Box 211609, Eagan MN 55121 | Payor ID: 62599',
           'Claims must be filed within 15 months of date of service'
         ]
+      },
+      {
+        category: 'Additional Coverage',
+        items: [
+          'Deductible: $2,500 individual / $5,000 family per calendar year — in-network only',
+          'Out-of-pocket maximum: $9,200 individual / $18,400 family — in-network only',
+          'Out-of-network: Deductible and OOP not covered — all out-of-network expenses member responsibility',
+          'Coinsurance: Plan pays percentage after deductible is met — confirm at enrollment',
+          'Chiropractic care: Covered subject to scope of practice regulations',
+          'Dialysis: Covered',
+          'Chemotherapy: Covered',
+          'DME durable medical equipment: Covered when medically necessary and preauthorized',
+          'Organ transplants: Covered for approved organs — preauthorization required',
+          'Home health care: Covered — preauthorization required',
+          'Hospice: Covered — preauthorization required',
+          'Generic Rx: $12 copay'
+        ]
       }
     ],
     limitations: [
@@ -1996,7 +3067,15 @@ var POLICY_DOCS = [
       'Long-term rehabilitation programs: NOT COVERED',
       'Services outside United States: NOT COVERED (except emergency)',
       'Failure to preauthorize required services = denial of benefits',
-      'Charges in excess of Contracted Amount: NOT COVERED (member responsibility)'
+      'Charges in excess of Contracted Amount: NOT COVERED (member responsibility)',
+      'Maternity and newborn care: Not covered — excluded per plan document',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Dental and vision: Not covered (except post-surgery corrective lenses)',
+      'Failure to preauthorize required services results in denial of benefits',
+      'Out-of-network services: No benefits — all care must be in-network'
     ],
     waitingPeriods: [
       'No traditional sickness waiting period — deductible/copay structure applies from Day 1',
@@ -2006,7 +3085,7 @@ var POLICY_DOCS = [
     preEx:
       'No traditional 12/12 pre-existing condition exclusion stated in this plan document. Benefits subject to Medical Necessity determination. Verify with carrier for any applicable pre-ex rules.',
     planNotes:
-      'Smart Choice 2500 is a true EPO group health benefit plan — the most comprehensive plan in the CHA portfolio. Four deductible options: $1,500 / $2,500 / $3,000 / $3,500 individual with $9,200 OOP max. Includes real major services: inpatient hospital, outpatient surgery, ER, mental health, labs, imaging, transplants. KEY: EPO means ZERO out-of-network — always verify doctor is in First Health network before enrolling. Administered by Detego Health LLC. NOT traditional insurance. Preauthorization required for hospital, imaging, and many other services — failure to preauthorize = denied claim.'
+      'Smart Choice 2500 is a true EPO group health benefit plan — the most comprehensive plan in the CHA portfolio. Four deductible options: $1,500 / $2,500 / $3,000 / $3,500 individual with $9,200 OOP max. Includes real major services: inpatient hospital, outpatient surgery, ER, mental health, labs, imaging, transplants. KEY: EPO means ZERO out-of-network — always verify doctor is in First Health network before enrolling. Administered by Detego Health LLC. NOT traditional insurance. Preauthorization required for hospital, imaging, and many other services — failure to preauthorize = denied claim. | This is a limited medical plan — not ACA-compliant major medical | Preauthorization required for: inpatient stays, advanced imaging, DME, transplants, hospice, certain surgeries and drugs | In-network and out-of-network deductibles and OOP do not cross-accumulate | Copays do not apply toward deductible'
   }
 ];
 
