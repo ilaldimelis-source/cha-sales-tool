@@ -1450,19 +1450,22 @@ function renderPlanGroups() {
       key: 'MEC',
       label: 'MEC Plans',
       desc: 'Minimum Essential Coverage — preventive-first base plans',
-      color: '#5B8DEF'
+      color: '#5B8DEF',
+      borderColor: '#22c55e'
     },
     {
       key: 'STM',
       label: 'Short-Term Medical',
       desc: 'Temporary bridge coverage — major-medical style',
-      color: '#d97706'
+      color: '#d97706',
+      borderColor: '#5B8DEF'
     },
     {
       key: 'Limited',
       label: 'Limited Benefit Plans',
       desc: 'Fixed indemnity plans — pay set amounts toward services',
-      color: '#dc2626'
+      color: '#dc2626',
+      borderColor: '#7C3AED'
     }
   ];
   var showGroups =
@@ -1471,6 +1474,22 @@ function renderPlanGroups() {
       : groupDefs.filter(function (g) {
           return g.key === activePlanGroup;
         });
+
+  // Section divider helper
+  var _sectionDivider = function (label, color) {
+    return (
+      '<div style="display:flex;align-items:center;gap:10px;margin:18px 0 10px;border-top:1px solid #E5E7EB;padding-top:16px;">' +
+      '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:' +
+      color +
+      ';text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;">' +
+      label +
+      '</div>' +
+      '<div style="flex:1;height:1px;background:' +
+      color +
+      ';opacity:0.2;"></div>' +
+      '</div>'
+    );
+  };
 
   var html = '';
   showGroups.forEach(function (grp) {
@@ -1568,6 +1587,14 @@ function renderPlanGroups() {
             ? '#d97706'
             : '#dc2626';
 
+      // Best-for text from salesPlan fit data
+      var bestForText = '';
+      if (salesPlan && salesPlan.bestFor) {
+        bestForText = salesPlan.bestFor;
+      } else if (salesPlan && salesPlan.fitYes && salesPlan.fitYes.length) {
+        bestForText = salesPlan.fitYes.slice(0, 2).join('; ');
+      }
+
       var planSearchStr = (
         doc.name +
         ' ' +
@@ -1586,14 +1613,27 @@ function renderPlanGroups() {
         escHTML(planSearchStr) +
         '" id="pv-' +
         doc.id +
-        '">';
+        '" style="border-left:4px solid ' +
+        grp.borderColor +
+        ';">';
 
       // ── COLLAPSED VIEW ──
-      html +=
-        '<div onclick="togglePlanVault(\'' +
-        doc.id +
-        '\')" style="padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;">';
+      html += '<div style="padding:16px 20px;">';
       html += '<div style="flex:1;min-width:0;">';
+
+      // Best For badge — first thing agents see
+      if (bestForText) {
+        html +=
+          '<div style="display:flex;align-items:flex-start;gap:6px;background:rgba(91,141,239,0.06);border:1px solid rgba(91,141,239,0.15);border-radius:8px;padding:8px 12px;margin-bottom:10px;">';
+        html +=
+          '<span style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--accent);white-space:nowrap;padding-top:1px;">BEST FOR:</span>';
+        html +=
+          '<span style="font-size:13px;color:var(--text-primary);line-height:1.4;">' +
+          bestForText +
+          '</span>';
+        html += '</div>';
+      }
+
       // Name + badge
       html +=
         '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">';
@@ -1634,13 +1674,22 @@ function renderPlanGroups() {
           b +
           '</div>';
       });
-      html += '</div>';
-      // Chevron
+
+      // View Full Details button
       html +=
+        '<button id="pv-toggle-' +
+        doc.id +
+        '" onclick="togglePlanVault(\'' +
+        doc.id +
+        '\')" style="display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;background:rgba(91,141,239,0.08);border:1px solid rgba(91,141,239,0.2);border-radius:8px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;transition:all 0.15s;">' +
+        '<span class="pv-toggle-text">View Full Details</span>' +
         '<svg class="pv-chev" id="pv-chev-' +
         doc.id +
-        '" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:4px;transition:transform 0.2s;" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
-      html += '</div>';
+        '" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>' +
+        '</button>';
+
+      html += '</div>'; // close inner content
+      html += '</div>'; // close collapsed view
 
       // ── EXPANDED VIEW ──
       html +=
@@ -1650,7 +1699,7 @@ function renderPlanGroups() {
 
       // Meta strip
       html +=
-        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;">';
+        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">';
       html +=
         '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:rgba(46,125,82,0.08);color:#2E7D52;border:1px solid rgba(46,125,82,0.15);">' +
         doc.network +
@@ -1666,7 +1715,7 @@ function renderPlanGroups() {
           '</span>';
       html += '</div>';
 
-      // Section: Coverage (all benefit categories except Preventive and Rx)
+      // ── Section: Coverage ──
       var coverageCats = doc.benefits.filter(function (b) {
         var c = b.category.toLowerCase();
         return (
@@ -1676,12 +1725,10 @@ function renderPlanGroups() {
         );
       });
       if (coverageCats.length) {
-        html += '<div class="pv-section" style="margin-bottom:14px;">';
-        html +=
-          '<div style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Coverage</div>';
+        html += _sectionDivider('Coverage', 'var(--accent)');
         coverageCats.forEach(function (bcat) {
           html +=
-            '<div style="margin-bottom:8px;"><div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' +
+            '<div style="margin-bottom:10px;"><div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' +
             bcat.category +
             '</div>';
           bcat.items.forEach(function (item) {
@@ -1692,61 +1739,15 @@ function renderPlanGroups() {
           });
           html += '</div>';
         });
-        html += '</div>';
       }
 
-      // Section: Prescriptions / Rx
-      var rxCats = doc.benefits.filter(function (b) {
-        return b.category.toLowerCase().indexOf('prescription') !== -1;
-      });
-      if (rxCats.length) {
-        html += '<div class="pv-section" style="margin-bottom:14px;">';
-        html +=
-          '<div style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:#7C3AED;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Prescriptions / Rx</div>';
-        rxCats.forEach(function (bcat) {
-          bcat.items.forEach(function (item) {
-            html +=
-              '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
-              item +
-              '</div>';
-          });
-        });
-        html += '</div>';
-      }
-
-      // Section: Waiting Periods + Pre-Existing
-      html +=
-        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">';
-      html +=
-        '<div style="background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.2);border-radius:12px;padding:12px 14px;">';
-      html +=
-        '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:#15803D;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Waiting Periods</div>';
-      doc.waitingPeriods.forEach(function (w) {
-        html +=
-          '<div style="font-size:14px;color:var(--text-secondary);margin-bottom:2px;">' +
-          w +
-          '</div>';
-      });
-      html += '</div>';
-      html +=
-        '<div style="background:rgba(239,68,68,0.04);border:1.5px solid rgba(239,68,68,0.18);border-radius:12px;padding:12px 14px;">';
-      html +=
-        '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:#B91C1C;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Pre-Existing</div>';
-      html +=
-        '<div style="font-size:14px;color:var(--text-secondary);">' +
-        doc.preEx +
-        '</div>';
-      html += '</div></div>';
-
-      // Section: Preventive / MEC
+      // ── Section: Preventive / MEC ──
       var prevCats = doc.benefits.filter(function (b) {
         var c = b.category.toLowerCase();
         return c.indexOf('preventive') !== -1 || c.indexOf('mec') !== -1;
       });
       if (prevCats.length) {
-        html += '<div class="pv-section" style="margin-bottom:14px;">';
-        html +=
-          '<div style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:#15803D;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Preventive / MEC</div>';
+        html += _sectionDivider('Preventive / MEC', '#15803D');
         prevCats.forEach(function (bcat) {
           bcat.items.forEach(function (item) {
             html +=
@@ -1755,14 +1756,53 @@ function renderPlanGroups() {
               '</div>';
           });
         });
-        html += '</div>';
       }
 
-      // Section: Exclusions
-      if (doc.limitations.length) {
-        html += '<div class="pv-section" style="margin-bottom:14px;">';
+      // ── Section: Prescription Drugs ──
+      var rxCats = doc.benefits.filter(function (b) {
+        return b.category.toLowerCase().indexOf('prescription') !== -1;
+      });
+      if (rxCats.length) {
+        html += _sectionDivider('Prescription Drugs', '#7C3AED');
+        rxCats.forEach(function (bcat) {
+          bcat.items.forEach(function (item) {
+            html +=
+              '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
+              item +
+              '</div>';
+          });
+        });
+      }
+
+      // ── Section: Waiting Periods ──
+      html += _sectionDivider('Waiting Periods', '#15803D');
+      html +=
+        '<div style="background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.2);border-radius:12px;padding:12px 14px;margin-bottom:6px;">';
+      doc.waitingPeriods.forEach(function (w) {
         html +=
-          '<div onclick="togglePvSection(this)" style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:#B91C1C;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:6px;">Exclusions <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg></div>';
+          '<div style="font-size:14px;color:var(--text-secondary);margin-bottom:2px;line-height:1.5;">' +
+          w +
+          '</div>';
+      });
+      html += '</div>';
+
+      // ── Section: Pre-Ex Rules ──
+      html += _sectionDivider('Pre-Existing Condition Rules', '#B91C1C');
+      html +=
+        '<div style="background:rgba(239,68,68,0.04);border:1.5px solid rgba(239,68,68,0.18);border-radius:12px;padding:12px 14px;margin-bottom:6px;">';
+      html +=
+        '<div style="font-size:14px;color:var(--text-secondary);line-height:1.5;">' +
+        doc.preEx +
+        '</div>';
+      html += '</div>';
+
+      // ── Section: Exclusions ──
+      if (doc.limitations.length) {
+        html += _sectionDivider('Exclusions', '#B91C1C');
+        html +=
+          '<div onclick="togglePvSection(this)" style="font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:8px;">Show ' +
+          doc.limitations.length +
+          ' exclusions <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg></div>';
         html += '<div class="pv-section-body">';
         doc.limitations.forEach(function (lim) {
           html +=
@@ -1770,19 +1810,32 @@ function renderPlanGroups() {
             lim +
             '</div>';
         });
-        html += '</div></div>';
+        html += '</div>';
       }
 
-      // Section: Sales Info (from PLANS data if matched)
+      // ── Section: Sales Notes ──
       if (salesPlan) {
-        html += '<div class="pv-section" style="margin-bottom:14px;">';
+        html += _sectionDivider('Sales Notes', 'var(--accent)');
+
+        // Compliance Note callout — amber box
         html +=
-          '<div onclick="togglePvSection(this)" style="font-family:var(--font-ui);font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;cursor:pointer;display:flex;align-items:center;gap:6px;">Sales Framing & Fit Guide <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg></div>';
-        html += '<div class="pv-section-body">';
+          '<div style="background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.3);border-radius:10px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;">';
         html +=
-          '<div class="sbox" style="margin-bottom:10px;font-size:14px;">' +
+          '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+        html +=
+          '<div><div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Compliance Note</div>' +
+          '<div style="font-size:13px;color:#92400E;line-height:1.5;">' +
+          salesPlan.compliance +
+          '</div></div>';
+        html += '</div>';
+
+        // Sales framing
+        html +=
+          '<div class="sbox" style="margin-bottom:12px;font-size:14px;">' +
           salesPlan.framing +
           '</div>';
+
+        // Fit guide — best fit / not a fit
         html +=
           '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">';
         html +=
@@ -1803,16 +1856,11 @@ function renderPlanGroups() {
             '</div>';
         });
         html += '</div></div>';
-        html +=
-          '<div class="comp-banner" style="font-size:13px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg> ' +
-          salesPlan.compliance +
-          '</div>';
-        html += '</div></div>';
       }
 
       // Source
       html +=
-        '<div style="font-size:12px;color:var(--text-muted);margin-top:6px;">Source: ' +
+        '<div style="font-size:12px;color:var(--text-muted);margin-top:14px;padding-top:10px;border-top:1px solid #E5E7EB;">Source: ' +
         doc.source +
         '</div>';
       html += '</div>'; // close pv-detail
@@ -1824,6 +1872,12 @@ function renderPlanGroups() {
 }
 
 var _openPlanVault = null;
+function _updateToggleBtn(id, open) {
+  var btn = document.getElementById('pv-toggle-' + id);
+  if (!btn) return;
+  var textEl = btn.querySelector('.pv-toggle-text');
+  if (textEl) textEl.textContent = open ? 'Hide Details' : 'View Full Details';
+}
 function togglePlanVault(id) {
   var detail = document.getElementById('pv-detail-' + id);
   var chev = document.getElementById('pv-chev-' + id);
@@ -1834,29 +1888,25 @@ function togglePlanVault(id) {
   if (_openPlanVault && _openPlanVault !== id) {
     var prev = document.getElementById('pv-detail-' + _openPlanVault);
     var prevChev = document.getElementById('pv-chev-' + _openPlanVault);
-    var prevCard = document.getElementById('pv-' + _openPlanVault);
     if (prev) prev.style.display = 'none';
     if (prevChev) {
       prevChev.style.transform = '';
-      prevChev.setAttribute('stroke', '#999');
     }
-    if (prevCard) prevCard.style.borderColor = '#C8CEDD';
+    _updateToggleBtn(_openPlanVault, false);
   }
   if (isOpen) {
     detail.style.display = 'none';
     if (chev) {
       chev.style.transform = '';
-      chev.setAttribute('stroke', '#999');
     }
-    if (card) card.style.borderColor = '#C8CEDD';
+    _updateToggleBtn(id, false);
     _openPlanVault = null;
   } else {
     detail.style.display = 'block';
     if (chev) {
       chev.style.transform = 'rotate(180deg)';
-      chev.setAttribute('stroke', '#5B8DEF');
     }
-    if (card) card.style.borderColor = '#5B8DEF';
+    _updateToggleBtn(id, true);
     _openPlanVault = id;
     // Set sticky plan context
     if (
