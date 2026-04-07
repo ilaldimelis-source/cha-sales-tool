@@ -1156,15 +1156,22 @@ function renderPlanScripts() {
     /(THIS IS THE SIZZLE[^<]*)/g,
     '<span style="color:#DC2626;font-weight:800;font-size:.85rem">$1</span>'
   );
+  // Split content into paragraphs and render as separate bubble cards
+  var paragraphs = c.split(/<br>\s*<br>/);
   html +=
-    '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;padding:24px 28px;box-shadow:var(--shadow-card);line-height:1.8;font-size:.82rem;color:var(--txt-body);font-family:var(--font-body)">';
-  html +=
-    '<div style="font-family:var(--font-display);font-weight:700;font-size:1rem;color:var(--txt-hero);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--accent-light)">' +
+    '<div style="font-family:var(--font-display);font-weight:700;font-size:1rem;color:var(--text-primary);margin-bottom:14px;">' +
     (planScriptSection + 1) +
     '. ' +
     sec.title +
     '</div>';
-  html += c + '</div>';
+  paragraphs.forEach(function (para) {
+    var trimmed = para.replace(/^(<br>)+|(<br>)+$/g, '').trim();
+    if (!trimmed) return;
+    html +=
+      '<div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--r-card);padding:14px 18px;margin-bottom:8px;line-height:1.7;font-size:13px;color:var(--text-primary);font-family:var(--font-body)">' +
+      trimmed +
+      '</div>';
+  });
   html +=
     '<div style="display:flex;justify-content:space-between;margin-top:16px;">';
   if (planScriptSection > 0) {

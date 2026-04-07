@@ -3545,13 +3545,6 @@ function renderPolicyResults() {
         ' &middot; ' +
         plan.carrier +
         '</div>';
-      var _sp = _pdFindSalesPlan(plan);
-      if (_sp && _sp.bestFor) {
-        html +=
-          '<div style="font-size:11px;color:var(--text-muted);margin-top:3px;line-height:1.4;">Best for: ' +
-          _sp.bestFor +
-          '</div>';
-      }
       html += '</div>';
       html +=
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' +

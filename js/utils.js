@@ -130,6 +130,33 @@ function switchTab(e, prefix, tab) {
 // SEARCH SYNONYM ENGINE + PRE-BUILT INDEX
 // ══════════════════════════════════════════════════════
 var SEARCH_SYNONYMS = {
+  // ── Common typos ──
+  copya: ['copay'],
+  copyas: ['copay', 'copays'],
+  coypay: ['copay'],
+  docter: ['doctor', 'physician', 'pcp'],
+  docotr: ['doctor', 'physician', 'pcp'],
+  urgn: ['urgent care'],
+  urgnt: ['urgent care'],
+  coverd: ['covered'],
+  prescripton: ['prescription'],
+  perscription: ['prescription'],
+  hosptial: ['hospital'],
+  hopsital: ['hospital'],
+  specalist: ['specialist'],
+  specilist: ['specialist'],
+  emergancy: ['emergency'],
+  emrgency: ['emergency'],
+  deductable: ['deductible'],
+  dedcutible: ['deductible'],
+  maturnity: ['maternity'],
+  pregancy: ['pregnancy'],
+  chripractor: ['chiropractic'],
+  chiropractor: ['chiropractic'],
+  acupuncture: ['acupuncture'],
+  theropy: ['therapy'],
+  theraphy: ['therapy'],
+  // ── Standard synonyms ──
   'x-ray': [
     'x-ray',
     'xray',

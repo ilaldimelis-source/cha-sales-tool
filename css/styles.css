@@ -186,16 +186,21 @@ svg {
 
 .font-toggle-btn {
   font-family: var(--font-ui);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 3px 10px;
+  padding: 5px 12px;
   border: none;
   border-radius: 999px;
   background: transparent;
   color: #6b7280;
   cursor: pointer;
-  transition: all 0.15s;
-  line-height: 1.4;
+  transition: all 0.12s;
+  line-height: 1;
+  min-width: 28px;
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .font-toggle-btn.active {
