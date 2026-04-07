@@ -6,7 +6,6 @@
   'use strict';
 
   var CLERK_PK = 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
-  var CLERK_CDN = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
   var LOGIN_URL = '/login.html';
   var INACTIVITY_MS = 30 * 60 * 1000; // 30 minutes
   var _inactivityTimer = null;
@@ -32,30 +31,17 @@
     }, 300);
   }
 
-  // ── LOAD CLERK SDK ───────────────────────────────────────────────────────────
-  function loadClerk(callback) {
-    // Already loaded
-    if (window.Clerk && typeof window.Clerk === 'object') {
+  // ── WAIT FOR CLERK SDK (loaded via static script tag in index.html head) ────
+  function waitForClerk(callback, attempts) {
+    if (!attempts) attempts = 0;
+    if (window.Clerk && typeof window.Clerk.load === 'function') {
       callback();
-      return;
-    }
-    var s = document.createElement('script');
-    s.src = CLERK_CDN;
-    s.setAttribute('data-clerk-publishable-key', CLERK_PK);
-    s.crossOrigin = 'anonymous';
-    s.onload = function() {
-      if (!window.Clerk) {
-        console.error('[CHA Auth] Clerk loaded but window.Clerk missing');
-        goToLogin();
-        return;
-      }
-      callback();
-    };
-    s.onerror = function() {
-      console.error('[CHA Auth] Failed to load Clerk SDK');
+    } else if (attempts < 50) {
+      setTimeout(function() { waitForClerk(callback, attempts + 1); }, 200);
+    } else {
+      console.error('[CHA Auth] Clerk SDK never loaded');
       goToLogin();
-    };
-    document.head.appendChild(s);
+    }
   }
 
   // ── REDIRECT TO LOGIN ────────────────────────────────────────────────────────
@@ -204,7 +190,7 @@
   // ── BOOT ─────────────────────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', function() {
     showOverlay();
-    loadClerk(checkSession);
+    waitForClerk(checkSession);
   });
 
 })();
