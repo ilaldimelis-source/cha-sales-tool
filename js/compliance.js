@@ -498,6 +498,71 @@ function renderCallAudit() {
     html += '</div>';
   });
   html +=
-    '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-left:3px solid #29A26A;border-radius:12px;padding:16px;margin-top:12px;"><div style="font-size:13px;font-weight:800;color:#166534;margin-bottom:6px;">Audit Standard</div><div style="font-size:12px;color:#4F566B;line-height:1.7;">Every item on this checklist reflects a compliance or sales quality requirement. Any item left unchecked during a call review indicates a gap that must be addressed before the next call. Use this checklist consistently across all call reviews to maintain audit readiness.</div></div>';
+    '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-left:3px solid #29A26A;border-radius:12px;padding:16px;margin-top:12px;"><div style="font-size:13px;font-weight:800;color:#166534;margin-bottom:6px;">Audit Standard</div><div style="font-size:12px;color:#4F566B;line-height:1.7;">Every item on this checklist reflects a compliance or sales quality requirement. Any item left unchecked during a call review indicates a gap that must be addressed before the next call.</div></div>';
+
+  // AI Transcript Scorer section
+  html += '<div style="margin-top:24px;background:#fff;border:2px solid #e2e8f0;border-radius:16px;padding:20px;">';
+  html += '<div style="font-size:16px;font-weight:700;color:#1e293b;margin-bottom:4px;">✦ AI Call Scorer</div>';
+  html += '<div style="font-size:13px;color:#64748b;margin-bottom:14px;">Paste a call transcript or a few sentences from a call. AI scores compliance 1-10 and flags every issue with fixes.</div>';
+  html += '<textarea id="auditTranscript" rows="5" placeholder="Paste call transcript here..." style="width:100%;background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:12px;font-size:13px;color:#374151;resize:vertical;box-sizing:border-box;font-family:inherit;"></textarea>';
+  html += '<button id="auditBtn" onclick="runCallAudit()" style="margin-top:10px;width:100%;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call ✦ AI</button>';
+  html += '<div id="auditResult" style="margin-top:14px;display:none;"></div>';
+  html += '</div>';
+
   document.getElementById('page-callaudit').innerHTML = html;
+}
+
+function runCallAudit() {
+  var transcript = document.getElementById('auditTranscript').value.trim();
+  if (!transcript) return;
+  var result = document.getElementById('auditResult');
+  result.style.display = 'block';
+  result.innerHTML = '<div style="color:#64748b;font-size:13px;padding:10px;">AI is scoring this call...</div>';
+  var btn = document.getElementById('auditBtn');
+  if (btn) { btn._orig = btn.textContent; btn.textContent = 'Scoring...'; btn.disabled = true; }
+
+  var sys = 'You are a compliance auditor for Central Health Advisors (CHA), a health insurance telesales agency. Agents sell MEC, STM, and limited benefit plans — NOT ACA/major medical insurance.\n\nScore this call transcript for compliance and sales quality.\n\nCOMPLIANCE RULES:\n- Must disclose: NOT ACA-compliant, not major medical\n- Must disclose: pre-existing conditions excluded 12 months\n- Must disclose: 30-day sickness waiting period, Day 1 accidents only\n- Must disclose: maternity/pregnancy NOT covered\n- Mental health NOT covered on MEC/limited plans\n- Network required — cannot say "any doctor"\n- Hospital pays FIXED benefit, not full bill\n- Never compare to Obamacare/ACA/regular insurance\n- Never say "full coverage" or "covers everything"\n\nRespond in EXACTLY this format:\nSCORE: [1-10]\nGRADE: [A/B/C/D/F]\nSTRONG: [what the agent did well, 1-2 sentences]\nFLAGS: [numbered list of compliance/quality issues, or "None found"]\nFIX: [top 1-2 specific improvements the agent should make next call]';
+
+  if (typeof _aiGroq === 'function') {
+    _aiGroq(sys, 'CALL TRANSCRIPT:\n' + transcript,
+      function(text) {
+        if (btn) { btn.textContent = btn._orig; btn.disabled = false; }
+        var lines = text.split('\n');
+        var score='', grade='', strong='', flagsText='', fix='';
+        lines.forEach(function(l){
+          if(l.indexOf('SCORE:')===0) score=l.replace('SCORE:','').trim();
+          if(l.indexOf('GRADE:')===0) grade=l.replace('GRADE:','').trim();
+          if(l.indexOf('STRONG:')===0) strong=l.replace('STRONG:','').trim();
+          if(l.indexOf('FLAGS:')===0) flagsText=l.replace('FLAGS:','').trim();
+          if(l.indexOf('FIX:')===0) fix=l.replace('FIX:','').trim();
+        });
+        var sc = parseInt(score) || 5;
+        var gc = sc >= 9 ? '#16a34a' : sc >= 7 ? '#2563eb' : sc >= 5 ? '#d97706' : '#dc2626';
+        var noFlags = flagsText === 'None found' || flagsText === '' || flagsText === 'None';
+        var html = '<div style="background:#fff;border:2px solid #e2e8f0;border-radius:14px;padding:20px;">';
+        html += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">';
+        html += '<div style="background:' + gc + '15;border:3px solid ' + gc + ';border-radius:14px;width:70px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;">';
+        html += '<div style="font-size:26px;font-weight:900;color:' + gc + ';line-height:1;">' + sc + '</div>';
+        html += '<div style="font-size:9px;font-weight:700;color:' + gc + ';letter-spacing:1px;">/ 10</div></div>';
+        html += '<div><div style="font-size:22px;font-weight:900;color:' + gc + ';">Grade: ' + grade + '</div>';
+        html += '<div style="font-size:13px;color:#64748b;margin-top:2px;">' + (noFlags ? 'No compliance issues found' : 'Issues flagged — review below') + '</div></div></div>';
+        if (strong) html += '<div style="background:#f0fdf4;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#15803d;"><strong>✓ Strong:</strong> ' + escHTML(strong) + '</div>';
+        if (!noFlags) html += '<div style="background:#fef2f2;border-radius:8px;padding:12px 14px;margin-bottom:12px;"><div style="font-size:10px;font-weight:800;color:#dc2626;letter-spacing:1px;margin-bottom:6px;">FLAGS</div><div style="font-size:13px;color:#374151;white-space:pre-line;">' + escHTML(flagsText) + '</div></div>';
+        if (fix) html += '<div style="background:#eff6ff;border-radius:8px;padding:12px 14px;"><div style="font-size:10px;font-weight:800;color:#2563eb;letter-spacing:1px;margin-bottom:6px;">IMPROVE NEXT CALL</div><div style="font-size:13px;color:#1e40af;">' + escHTML(fix) + '</div></div>';
+        html += '</div>';
+        result.innerHTML = html;
+      },
+      function(err) {
+        if (btn) { btn.textContent = btn._orig; btn.disabled = false; }
+        if (err === 'no-key') {
+          result.innerHTML = '<div style="background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:14px;font-size:13px;color:#713f12;">⚠ No Groq API key. Click <strong>⚙ AI</strong> in the Benefits panel to add your free key from <a href=\"https://console.groq.com\" target=\"_blank\" style=\"color:#5175f1;\">console.groq.com</a></div>';
+          return;
+        }
+        result.innerHTML = '<div style="color:#dc2626;font-size:13px;padding:10px;">AI error: ' + escHTML(err) + '</div>';
+      }
+    );
+  } else {
+    if (btn) { btn.textContent = btn._orig; btn.disabled = false; }
+    result.innerHTML = '<div style="color:#dc2626;font-size:13px;padding:10px;">AI engine not loaded. Refresh the page.</div>';
+  }
 }

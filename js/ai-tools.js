@@ -1,5 +1,23 @@
 // ai-tools.js — AI Tools tab (Psych Profile, Compliance AI, Coaching AI, Discovery, Closing Engine)
 
+// ── SHARED GROQ HELPER ───────────────────────────────────────────────────────
+function _aiGroq(systemPrompt, userMsg, onSuccess, onError) {
+  var key = localStorage.getItem('cha_groq_key') || '';
+  if (!key || key === 'skip' || key.length < 20) { if (onError) onError('no-key'); return; }
+  fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+    body: JSON.stringify({ model: 'llama-3.1-8b-instant', max_tokens: 600, temperature: 0.3,
+      messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userMsg }] })
+  })
+  .then(function(r){ if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(function(d){ onSuccess(d.choices[0].message.content.trim()); })
+  .catch(function(e){ if(onError) onError(e.message); });
+}
+function _aiLoadingBtn(btnId,msg){var b=document.getElementById(btnId);if(b){b._orig=b.textContent;b.textContent=msg||'Analyzing...';b.disabled=true;}}
+function _aiResetBtn(btnId){var b=document.getElementById(btnId);if(b&&b._orig){b.textContent=b._orig;b.disabled=false;}}
+function _aiNoKeyMsg(elId){var el=document.getElementById(elId);if(el){el.innerHTML='<div style="background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:14px 16px;font-size:13px;color:#713f12;">⚠ No Groq API key. Click <strong>⚙ AI</strong> in the Benefits panel to add your free key from <a href="https://console.groq.com" target="_blank" style="color:#5175f1;">console.groq.com</a></div>';el.style.display='block';}}
+
 function renderPsychprofile() {
   var html =
     '<div class="ph"><div class="pt">Client <span>Profiler</span></div>';
@@ -312,6 +330,22 @@ function analyzePsych() {
   el.innerHTML = html;
   el.style.display = 'block';
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  // AI-powered live scripts for this personality
+  var aiDiv = document.createElement('div');
+  aiDiv.id = 'psychAiScripts';
+  aiDiv.style.cssText = 'margin-top:12px;padding:14px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;font-size:13px;color:#64748b;';
+  aiDiv.textContent = '✦ AI generating personalized scripts for this prospect...';
+  el.appendChild(aiDiv);
+
+  var sys = 'You are an elite health insurance sales coach at Central Health Advisors. Generate 3 ultra-specific, conversational scripts for a ' + top + ' personality prospect. Scripts must be for selling private health benefit plans (MEC/STM/limited benefit — NOT ACA). Each script: max 2 sentences, ready to say verbatim, no placeholders. Format: 1. [script] 2. [script] 3. [script]';
+  _aiGroq(sys, 'Generate 3 live call scripts for a ' + top + ' type prospect who is considering enrolling in a private health benefit plan today.',
+    function(text) {
+      aiDiv.innerHTML = '<div style="font-size:10px;font-weight:800;color:#5175f1;letter-spacing:1px;margin-bottom:8px;">✦ AI SCRIPTS FOR THIS PROSPECT</div>' +
+        '<div style="font-size:13px;color:#374151;line-height:1.8;white-space:pre-line;">' + escHTML(text) + '</div>';
+    },
+    function() { aiDiv.textContent = ''; }
+  );
 }
 
 // ══════════════════════════════════════════════════════
@@ -393,7 +427,7 @@ function renderComplianceai() {
   html +=
     '<input id="complianceInput" type="text" aria-label="Type what you are about to say" placeholder="Type what you are about to say..." style="flex:1;background:var(--milk);border:2px solid #C8CEDD;border-radius:20px;padding:10px 16px;font-size:13px;color:var(--charcoal3);" onkeydown="if(event.key===\'Enter\')checkCompliance()">';
   html +=
-    '<button onclick="checkCompliance()" style="background:rgba(212,96,122,0.13);color:var(--charcoal3);border:1px solid rgba(212,96,122,0.3);border-radius:12px;padding:10px 20px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;">Check It</button>';
+    '<button id="complianceBtn" onclick="checkCompliance()" style="background:rgba(212,96,122,0.13);color:var(--charcoal3);border:1px solid rgba(212,96,122,0.3);border-radius:12px;padding:10px 20px;font-weight:800;font-size:13px;cursor:pointer;white-space:nowrap;">Check It ✦ AI</button>';
   html += '</div>';
   html +=
     '<div id="complianceResult" style="margin-top:14px;display:none;"></div></div>';
@@ -427,11 +461,50 @@ function renderComplianceai() {
 }
 
 function checkCompliance() {
-  var input = document
-    .getElementById('complianceInput')
-    .value.toLowerCase()
-    .trim();
-  if (!input) return;
+  var raw = document.getElementById('complianceInput').value.trim();
+  if (!raw) return;
+  var result = document.getElementById('complianceResult');
+  result.style.display = 'block';
+  result.innerHTML = '<div style="color:#64748b;font-size:13px;padding:10px;">Checking with AI...</div>';
+  _aiLoadingBtn('complianceBtn', 'Checking...');
+
+  var sys = 'You are a compliance auditor for CHA (Central Health Advisors), a health insurance telesales agency. Agents sell MEC, STM, and limited benefit plans — NOT ACA/major medical. Review the agent phrase for compliance risks.\n\nKEY RULES:\n- Plans are NOT ACA-compliant — never compare to Obamacare/marketplace\n- Pre-existing conditions excluded 12 months on ALL plans\n- Maternity/pregnancy NOT covered on any CHA plan\n- Mental health NOT covered on MEC/limited plans\n- Network required — cannot say "any doctor"\n- Hospital indemnity pays FIXED benefit, not the actual bill\n- Sickness has 30-day waiting period; accidents Day 1 only\n- Never say "full coverage", "covers everything", "real insurance"\n\nRespond in this exact format (no extra text):\nSTATUS: FLAGGED or CLEAR\nISSUE: (one line summary, or "None")\nRISK: HIGH or MEDIUM or LOW or NONE\nFIX: (exact compliant replacement phrase to say instead, or "Phrase is compliant.")';
+
+  _aiGroq(sys, 'Agent said: "' + raw + '"',
+    function(text) {
+      _aiResetBtn('complianceBtn');
+      var lines = text.split('\n');
+      var status = '', issue = '', risk = '', fix = '';
+      lines.forEach(function(l) {
+        if (l.indexOf('STATUS:') === 0) status = l.replace('STATUS:','').trim();
+        if (l.indexOf('ISSUE:') === 0) issue = l.replace('ISSUE:','').trim();
+        if (l.indexOf('RISK:') === 0) risk = l.replace('RISK:','').trim();
+        if (l.indexOf('FIX:') === 0) fix = l.replace('FIX:','').trim();
+      });
+      var isFlagged = status.indexOf('FLAG') !== -1;
+      var riskColor = risk === 'HIGH' ? '#dc2626' : risk === 'MEDIUM' ? '#d97706' : '#16a34a';
+      if (isFlagged) {
+        result.innerHTML =
+          '<div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;padding:16px;">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">' +
+          '<span style="background:' + riskColor + ';color:#fff;font-size:10px;font-weight:800;padding:2px 10px;border-radius:999px;">' + risk + ' RISK</span>' +
+          '<span style="font-weight:700;font-size:14px;color:#1e293b;">Compliance Flag Detected</span></div>' +
+          '<div style="font-size:13px;color:#374151;margin-bottom:12px;">' + escHTML(issue) + '</div>' +
+          '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:12px;">' +
+          '<div style="font-size:10px;font-weight:800;color:#16a34a;letter-spacing:1px;margin-bottom:6px;">SAY THIS INSTEAD</div>' +
+          '<div style="font-size:13px;color:#15803d;font-weight:600;">' + escHTML(fix) + '</div></div></div>';
+      } else {
+        result.innerHTML =
+          '<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:14px;display:flex;gap:10px;align-items:center;">' +
+          '<span style="font-size:20px;">✅</span><div style="font-size:13px;color:#15803d;font-weight:700;">No compliance issues detected. Phrase is clear.</div></div>';
+      }
+    },
+    function(err) {
+      _aiResetBtn('complianceBtn');
+      if (err === 'no-key') { _aiNoKeyMsg('complianceResult'); return; }
+      result.innerHTML = '<div style="color:#dc2626;font-size:13px;padding:10px;">AI error: ' + escHTML(err) + '. Check your Groq key.</div>';
+    }
+  );
   var flags = [
     {
       trigger: ['covers everything', 'full coverage', 'covered for everything'],
@@ -547,7 +620,7 @@ function renderCoachingai() {
   html +=
     '<textarea id="coachInput" placeholder="Example: Maybe this could work for you, I think it might help..." style="width:100%;height:80px;background:var(--milk);border:2px solid #C8CEDD;border-radius:20px;padding:12px;font-size:13px;color:var(--charcoal3);resize:none;box-sizing:border-box;"></textarea>';
   html +=
-    '<button onclick="analyzeCall()" style="width:100%;background:rgba(212,96,122,0.13);color:var(--charcoal3);border:1px solid rgba(212,96,122,0.3);border-radius:12px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:10px;">Analyze My Language →</button>';
+    '<button id="coachBtn" onclick="analyzeCall()" style="width:100%;background:rgba(212,96,122,0.13);color:var(--charcoal3);border:1px solid rgba(212,96,122,0.3);border-radius:12px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;margin-top:10px;">Analyze My Language ✦ AI →</button>';
   html += '</div>';
   html += '<div id="coachResult" class="u-hide"></div>';
 
@@ -635,8 +708,51 @@ function renderCoachingai() {
 function analyzeCall() {
   var input = document.getElementById('coachInput').value.trim();
   if (!input) return;
-  var lower = input.toLowerCase();
+  var el = document.getElementById('coachResult');
+  el.style.display = 'block';
+  el.innerHTML = '<div style="color:#64748b;font-size:13px;padding:10px;">AI is analyzing your language...</div>';
+  _aiLoadingBtn('coachBtn', 'Analyzing...');
 
+  var sys = 'You are an elite sales language coach for health insurance telesales agents at Central Health Advisors. Analyze the agent language sample for confidence leaks, weak words, filler language, compliance risks, and missed opportunity phrases.\n\nFlag these patterns: maybe/might/could (uncertainty), I think/I believe (hedging), sorry/apologize (apologetic), umm/uh/basically (fillers), if you are interested (assumptive failure), not expensive/pretty cheap (weak value), does that make sense (competence signal), kind of like regular insurance (compliance risk), I am not sure (knowledge gap).\n\nRespond in this EXACT format:\nSCORE: [1-10 confidence score]\nFLAGS: [comma-separated list of issues found, or "None"]\nANALYSIS: [2 sentences max on what is weak and why]\nREWRITE: [stronger version of the exact phrase — keep same intent, remove all weak language]';
+
+  _aiGroq(sys, 'Agent said: "' + input + '"',
+    function(text) {
+      _aiResetBtn('coachBtn');
+      var lines = text.split('\n');
+      var score = '', flags = '', analysis = '', rewrite = '';
+      lines.forEach(function(l){
+        if(l.indexOf('SCORE:')===0) score=l.replace('SCORE:','').trim();
+        if(l.indexOf('FLAGS:')===0) flags=l.replace('FLAGS:','').trim();
+        if(l.indexOf('ANALYSIS:')===0) analysis=l.replace('ANALYSIS:','').trim();
+        if(l.indexOf('REWRITE:')===0) rewrite=l.replace('REWRITE:','').trim();
+      });
+      var sc = parseInt(score) || 5;
+      var scoreColor = sc >= 8 ? '#16a34a' : sc >= 5 ? '#d97706' : '#dc2626';
+      var noFlags = flags === 'None' || flags === '';
+      var html = '<div style="background:#fff;border:2px solid #e2e8f0;border-radius:16px;padding:20px;margin-bottom:12px;">';
+      html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">';
+      html += '<div style="background:' + scoreColor + '15;border:2px solid ' + scoreColor + '44;border-radius:12px;padding:8px 16px;text-align:center;">';
+      html += '<div style="font-size:24px;font-weight:800;color:' + scoreColor + ';">' + sc + '/10</div>';
+      html += '<div style="font-size:9px;font-weight:700;color:' + scoreColor + ';letter-spacing:1px;">CONFIDENCE</div></div>';
+      html += '<div><div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:4px;">' + (noFlags ? 'Strong language — no issues found' : 'Issues detected') + '</div>';
+      if (!noFlags) html += '<div style="font-size:12px;color:#64748b;">' + escHTML(flags) + '</div>';
+      html += '</div></div>';
+      if (analysis) html += '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px;padding:10px;background:#f8fafc;border-radius:8px;">' + escHTML(analysis) + '</div>';
+      if (rewrite && !noFlags) {
+        html += '<div style="background:#f0fdf4;border-left:3px solid #22c55e;border-radius:8px;padding:12px 14px;">';
+        html += '<div style="font-size:10px;font-weight:800;color:#16a34a;letter-spacing:1px;margin-bottom:6px;">STRONGER VERSION</div>';
+        html += '<div style="font-size:13px;color:#15803d;font-weight:600;line-height:1.6;">"' + escHTML(rewrite) + '"</div></div>';
+      }
+      html += '</div>';
+      el.innerHTML = html;
+    },
+    function(err) {
+      _aiResetBtn('coachBtn');
+      if (err === 'no-key') { _aiNoKeyMsg('coachResult'); return; }
+      el.innerHTML = '<div style="color:#dc2626;font-size:13px;padding:10px;">AI error: ' + escHTML(err) + '</div>';
+    }
+  );
+  var lower = input.toLowerCase();
   var flags = [
     {
       triggers: ['maybe', 'might', 'could work', 'might help', 'possibly'],

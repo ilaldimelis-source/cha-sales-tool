@@ -2703,24 +2703,23 @@ textarea:focus-visible {
 .br-head {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
-  border-bottom: 1px solid rgb(255, 255, 255, 0.08);
+  gap: 10px;
+  padding: 12px 14px;
   flex-shrink: 0;
   background: #162436;
+  min-height: 54px;
 }
 
 .br-head-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
   background: #5175f1;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 15px;
 }
 
 .br-head-name {
@@ -2729,15 +2728,48 @@ textarea:focus-visible {
   font-size: 13px;
   color: #f5f0e8;
   line-height: 1.1;
+  white-space: nowrap;
 }
 
 .br-head-sub {
-  font-size: 11px;
-  color: #374151;
+  font-size: 10px;
+  color: #64748b;
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-top: 1px;
+  margin-top: 2px;
+}
+
+/* AI status pill */
+.br-ai-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-top: 3px;
+  transition: all 0.3s;
+}
+.br-ai-local {
+  background: rgba(100,116,139,0.2);
+  color: #94a3b8;
+}
+.br-ai-active {
+  background: rgba(81,117,241,0.2);
+  color: #818cf8;
+}
+.br-ai-thinking {
+  background: rgba(245,158,11,0.15);
+  color: #fbbf24;
+}
+
+/* Combined filter + plan nav */
+.br-nav-section {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
 }
 
 .br-dot {
@@ -2889,64 +2921,49 @@ textarea:focus-visible {
 
 .br-chips {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  padding: 8px 12px;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 5px;
+  padding: 8px 10px;
   border-bottom: 1px solid #e2e8f0;
   flex-shrink: 0;
-  background: #fff;
+  background: #f8fafc;
 }
 
 .br-chip {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 4px;
   font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
-  padding: 10px 14px;
-  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 8px 6px;
+  border-radius: 8px;
   background: #fff;
   border: 1px solid #e2e8f0;
-  border-left: 3px solid #e2e8f0;
+  border-top: 3px solid #e2e8f0;
   color: #374151;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  text-align: center;
 }
 
 .br-chip:hover {
-  background: #f8fafc;
-  color: #374151;
+  background: #f1f5f9;
+  transform: translateY(-1px);
 }
 
 .br-chip svg {
   color: #64748b;
 }
 
-.br-chip.ded {
-  border-left-color: #5175f1;
-}
-
-.br-chip.cop {
-  border-left-color: #22c55e;
-}
-
-.br-chip.exc {
-  border-left-color: #ef4444;
-}
-
-.br-chip.drg {
-  border-left-color: #a78bfa;
-}
-
-.br-chip.net {
-  border-left-color: #0ea5e9;
-}
-
-.br-chip.wai {
-  border-left-color: #f59e0b;
-}
+.br-chip.cop  { border-top-color: #22c55e; }
+.br-chip.exc  { border-top-color: #ef4444; }
+.br-chip.drg  { border-top-color: #a78bfa; }
+.br-chip.net  { border-top-color: #0ea5e9; }
+.br-chip.wai  { border-top-color: #f59e0b; }
+.br-chip.xry  { border-top-color: #06b6d4; }
 
 .br-msgs {
   flex: 1;

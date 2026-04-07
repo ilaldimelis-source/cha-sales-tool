@@ -608,212 +608,46 @@
     </button>
 
     <div id="br-panel">
+      <!-- HEADER -->
       <div class="br-head">
         <div class="br-head-icon">
-          <svg
-            style="width: 17px; height: 17px"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect x="8" y="2" width="8" height="4" rx="1" />
-            <rect x="3" y="6" width="18" height="16" rx="2" />
+          <svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/>
           </svg>
         </div>
-        <div style="flex: 1">
+        <div style="flex:1;min-width:0;">
           <div class="br-head-name">Benefits Reference</div>
-          <div class="br-head-sub">
-            <span class="br-dot"></span>Mid-Call AI &middot; SOB Lookup
+          <div id="br-ai-status" class="br-ai-status br-ai-local">
+            <span class="br-dot"></span><span id="br-ai-label">Plan Lookup</span>
           </div>
         </div>
-        <button class="br-clear" onclick="brClear()">Clear</button>
-        <button
-          class="br-close-btn"
-          onclick="_closeBenefitsSidebar()"
-          aria-label="Close Benefits panel"
-          title="Close"
-        >
-          &times;
-        </button>
+        <button class="br-clear" onclick="brClear()" title="Clear chat">↺ Clear</button>
+        <button class="br-close-btn" onclick="_closeBenefitsSidebar()" aria-label="Close" title="Close">&times;</button>
       </div>
-      <div class="br-filter-bar" id="br-filter-bar"></div>
-      <div class="br-plan-bar" id="br-plan-bar"></div>
+
+      <!-- FILTER + PLAN BAR (one section) -->
+      <div class="br-nav-section">
+        <div class="br-filter-bar" id="br-filter-bar"></div>
+        <div class="br-plan-bar" id="br-plan-bar"></div>
+      </div>
+
+      <!-- QUICK CHIPS (3 per row, cleaner) -->
       <div class="br-chips">
-        <span
-          class="br-chip ded"
-          onclick="brQuick('What is the deductible and out-of-pocket maximum?')"
-          ><svg
-            style="
-              width: 12px;
-              height: 12px;
-              vertical-align: middle;
-              margin-right: 2px;
-            "
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line x1="12" y1="1" x2="12" y2="23" />
-            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-          </svg>
-          Deductible &amp; OOP</span
-        >
-        <span
-          class="br-chip cop"
-          onclick="
-            brQuick(
-              'What are the copays for doctor visits, urgent care, and ER?'
-            )
-          "
-          ><svg
-            style="
-              width: 12px;
-              height: 12px;
-              vertical-align: middle;
-              margin-right: 2px;
-            "
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect x="8" y="2" width="8" height="4" rx="1" />
-            <rect x="3" y="6" width="18" height="16" rx="2" />
-            <path d="M8 10h8M8 14h5" />
-          </svg>
-          Copays</span
-        >
-        <span
-          class="br-chip exc"
-          onclick="brQuick('What is NOT covered? List all major exclusions.')"
-          ><svg
-            style="
-              width: 12px;
-              height: 12px;
-              vertical-align: middle;
-              margin-right: 2px;
-            "
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
-          </svg>
-          Exclusions</span
-        >
-        <span
-          class="br-chip drg"
-          onclick="brQuick('What is the prescription drug coverage?')"
-          ><svg
-            style="
-              width: 12px;
-              height: 12px;
-              vertical-align: middle;
-              margin-right: 2px;
-            "
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"
-            />
-            <path d="m8.5 8.5 7 7" />
-          </svg>
-          Rx Coverage</span
-        >
-        <span
-          class="br-chip net"
-          onclick="
-            brQuick(
-              'What is the network type? Are there out-of-network benefits?'
-            )
-          "
-          ><svg
-            style="
-              width: 12px;
-              height: 12px;
-              vertical-align: middle;
-              margin-right: 2px;
-            "
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <line x1="2" y1="12" x2="22" y2="12" />
-            <path
-              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
-            />
-          </svg>
-          Network</span
-        >
-        <span
-          class="br-chip wai"
-          onclick="
-            brQuick(
-              'What are the waiting periods and pre-existing condition rules?'
-            )
-          "
-          ><svg
-            style="
-              width: 12px;
-              height: 12px;
-              vertical-align: middle;
-              margin-right: 2px;
-            "
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <polyline points="12 6 12 12 16 14" />
-          </svg>
-          Wait / Pre-Ex</span
-        >
+        <span class="br-chip cop" onclick="brQuick('What are the copays?')">💊 Copays</span>
+        <span class="br-chip exc" onclick="brQuick('What is NOT covered? List all exclusions.')">✗ Exclusions</span>
+        <span class="br-chip drg" onclick="brQuick('What is the prescription drug coverage?')">Rx Drug</span>
+        <span class="br-chip net" onclick="brQuick('What is the network? Out-of-network benefits?')">🌐 Network</span>
+        <span class="br-chip wai" onclick="brQuick('What are the waiting periods and pre-existing condition rules?')">⏱ Pre-Ex</span>
+        <span class="br-chip xry" onclick="brQuick('Is x-ray and lab work covered?')">🔬 X-Ray / Labs</span>
       </div>
+
       <div class="br-msgs" id="br-msgs"></div>
+
       <div class="br-input-bar">
-        <textarea
-          id="br-input"
-          rows="1"
-          aria-label="Search plan benefits"
-          placeholder="Ask anything mid-call… e.g. Is chiropractic covered?"
-        ></textarea>
-        <button id="br-send" onclick="brSend()" aria-label="Search benefits">
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#F5F0E8"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line x1="22" y1="2" x2="11" y2="13" />
-            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+        <textarea id="br-input" rows="1" aria-label="Search plan benefits" placeholder="Ask anything… copays, exclusions, waiting periods"></textarea>
+        <button id="br-send" onclick="brSend()" aria-label="Send">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F5F0E8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
           </svg>
         </button>
       </div>
