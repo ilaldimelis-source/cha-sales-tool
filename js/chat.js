@@ -580,6 +580,7 @@ function brAIAnswer(query, planId) {
   var sysPrompt =
     'You are a licensed health insurance benefits assistant for CHA. RULES: 1. Only use plan data provided. 2. If not listed say VERIFY. 3. Missing data = VERIFY not NOT COVERED. 4. Keep short. FORMAT: STATUS: COVERED/NOT COVERED/VERIFY/PARTIAL. ANSWER: 1-3 lines. SAY THIS: script line in quotes. PLAN DATA: ' +
     planContext;
+  console.log('[CHA Groq] Sending request for plan:', planId, 'query:', query);
   fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -597,6 +598,7 @@ function brAIAnswer(query, planId) {
     })
   })
     .then(function (response) {
+      console.log('[CHA Groq] Response status:', response.status);
       if (!response.ok) throw new Error('API error ' + response.status);
       return response.json();
     })
@@ -606,7 +608,7 @@ function brAIAnswer(query, planId) {
     })
     .catch(function (err) {
       brHideTyping();
-      console.error('[CHA Groq]', err);
+      console.error('[CHA Groq] Fetch failed:', err.message);
       var plansToUse = brActivePlan ? [brActivePlan] : [];
       brAddMsg('ai', brStructuredAnswer(query, plansToUse));
     });
