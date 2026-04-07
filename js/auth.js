@@ -81,7 +81,7 @@
         initials + '</div>' +
         '<div style="min-width:0;flex:1;">' +
           '<div style="font-size:12px;font-weight:700;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHTMLsafe(name) + '</div>' +
-          '<div style="font-size:10px;color:' + (isManager ? '#16a34a' : '#94a3b8') + ';font-weight:600;letter-spacing:.04em;">' +
+          '<div style="font-size:10px;color:' + (isManager ? '#4ade80' : '#94a3b8') + ';font-weight:600;letter-spacing:.04em;">' +
             (isManager ? '★ Manager' : 'Agent') +
           '</div>' +
         '</div>' +
@@ -108,53 +108,9 @@
 
       // Store role globally for other JS files to use
       window.CHA_USER = { name: name, role: role, isManager: isManager, email: user.emailAddresses[0].emailAddress };
-
-      // ── AUTO-LOGOUT: 30-min inactivity timer (Task 3) ──
-      startInactivityTimer();
     }
 
     inject();
-  }
-
-  // ── INACTIVITY AUTO-LOGOUT (30 min) ────────────────────────────────────────
-  var _inactivityTimer = null;
-  var INACTIVITY_MS = 30 * 60 * 1000; // 30 minutes
-
-  function startInactivityTimer() {
-    function resetTimer() {
-      if (_inactivityTimer) clearTimeout(_inactivityTimer);
-      _inactivityTimer = setTimeout(onInactivityTimeout, INACTIVITY_MS);
-    }
-    ['mousemove', 'keydown', 'click'].forEach(function (evt) {
-      document.addEventListener(evt, resetTimer, { passive: true });
-    });
-    resetTimer();
-  }
-
-  function onInactivityTimeout() {
-    try {
-      var ov = document.createElement('div');
-      ov.style.cssText = [
-        'position:fixed', 'inset:0', 'background:rgba(15,23,42,0.92)', 'z-index:999999',
-        'display:flex', 'align-items:center', 'justify-content:center', 'flex-direction:column', 'gap:12px'
-      ].join(';');
-      ov.innerHTML =
-        '<div style="font-family:sans-serif;font-size:16px;font-weight:700;color:#f1f5f9;">Session timed out for security</div>' +
-        '<div style="font-family:sans-serif;font-size:13px;color:#94a3b8;">Redirecting to login...</div>';
-      document.body.appendChild(ov);
-    } catch (_e) { /* overlay failed, still sign out */ }
-
-    setTimeout(function () {
-      if (window.Clerk && window.Clerk.signOut) {
-        window.Clerk.signOut().then(function () {
-          window.location.replace('/login.html');
-        }).catch(function () {
-          window.location.replace('/login.html');
-        });
-      } else {
-        window.location.replace('/login.html');
-      }
-    }, 2000);
   }
 
   // ── LOGOUT ──────────────────────────────────────────────────────────────────
