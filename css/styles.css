@@ -92,12 +92,24 @@ html.font-s {
   --fs-base: 13px;
 }
 
+body.font-s {
+  font-size: 13px !important;
+}
+
 html.font-m {
-  --fs-base: 14px;
+  --fs-base: 15px;
+}
+
+body.font-m {
+  font-size: 15px !important;
 }
 
 html.font-l {
-  --fs-base: 16px;
+  --fs-base: 17px;
+}
+
+body.font-l {
+  font-size: 17px !important;
 }
 
 /* ── RESET ── */

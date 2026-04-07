@@ -22,13 +22,20 @@ function safeSetItem(key, val) {
 // FONT SIZE TOGGLE (S / M / L)
 // ══════════════════════════════════════════════════════
 function setFontSize(size) {
+  var b = document.body;
+  b.classList.remove('font-s', 'font-m', 'font-l');
+  b.classList.add('font-' + size);
+  // Also set on html for CSS var fallback
   var html = document.documentElement;
   html.classList.remove('font-s', 'font-m', 'font-l');
   html.classList.add('font-' + size);
   safeSetItem('cha_font_size', size);
   var btns = document.querySelectorAll('.font-toggle-btn');
-  btns.forEach(function (b) {
-    b.classList.toggle('active', b.textContent.trim().toLowerCase() === size);
+  btns.forEach(function (btn) {
+    btn.classList.toggle(
+      'active',
+      btn.textContent.trim().toLowerCase() === size
+    );
   });
 }
 function _initFontSize() {

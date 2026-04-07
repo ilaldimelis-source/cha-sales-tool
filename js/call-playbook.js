@@ -1,5 +1,21 @@
 // call-playbook.js — Call Playbook tab (Call Flow, Closes, Scripts, Plan Scripts)
 
+function copyScriptBubble(btn) {
+  var bubble = btn.closest('div[style*="border-radius:16px"]');
+  if (!bubble) return;
+  var textEl = bubble.querySelector('.ps-bubble-text');
+  if (!textEl) return;
+  var text = textEl.textContent || textEl.innerText;
+  if (typeof safeCopy === 'function') {
+    safeCopy(text).then(function () {
+      btn.textContent = 'Copied!';
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+      }, 1500);
+    });
+  }
+}
+
 const CLOSES = [
   {
     line: 'Based on everything you told me, this fits your situation well. The best thing to do right now is get this submitted so your coverage starts [date]. I just need to confirm a few quick details.',
@@ -1156,20 +1172,83 @@ function renderPlanScripts() {
     /(THIS IS THE SIZZLE[^<]*)/g,
     '<span style="color:#DC2626;font-weight:800;font-size:.85rem">$1</span>'
   );
-  // Split content into paragraphs and render as separate bubble cards
+  // Split content into paragraphs and assign to section types
   var paragraphs = c.split(/<br>\s*<br>/);
+  var sectionStyles = [
+    {
+      label: 'OPENING',
+      bg: 'rgba(91,141,239,0.06)',
+      border: 'rgba(91,141,239,0.2)',
+      color: '#5B8DEF'
+    },
+    {
+      label: 'BENEFITS',
+      bg: 'rgba(34,197,94,0.06)',
+      border: 'rgba(34,197,94,0.2)',
+      color: '#15803D'
+    },
+    {
+      label: 'PRESCRIPTIONS / RX',
+      bg: 'rgba(124,58,237,0.06)',
+      border: 'rgba(124,58,237,0.2)',
+      color: '#7C3AED'
+    },
+    {
+      label: 'CLOSING STATEMENT',
+      bg: 'rgba(245,158,11,0.06)',
+      border: 'rgba(245,158,11,0.25)',
+      color: '#d97706'
+    },
+    {
+      label: 'VERIFICATION',
+      bg: 'rgba(239,68,68,0.05)',
+      border: 'rgba(239,68,68,0.18)',
+      color: '#DC2626'
+    },
+    {
+      label: 'POST-CLOSE',
+      bg: 'rgba(107,114,128,0.06)',
+      border: 'rgba(107,114,128,0.2)',
+      color: '#6B7280'
+    }
+  ];
   html +=
     '<div style="font-family:var(--font-display);font-weight:700;font-size:1rem;color:var(--text-primary);margin-bottom:14px;">' +
     (planScriptSection + 1) +
     '. ' +
     sec.title +
     '</div>';
-  paragraphs.forEach(function (para) {
+  var validParas = paragraphs.filter(function (p) {
+    return p.replace(/^(<br>)+|(<br>)+$/g, '').trim();
+  });
+  validParas.forEach(function (para, pi) {
     var trimmed = para.replace(/^(<br>)+|(<br>)+$/g, '').trim();
     if (!trimmed) return;
+    var style = sectionStyles[Math.min(pi, sectionStyles.length - 1)];
+    var copyId = 'ps-copy-' + planScriptSection + '-' + pi;
     html +=
-      '<div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--r-card);padding:14px 18px;margin-bottom:8px;line-height:1.7;font-size:13px;color:var(--text-primary);font-family:var(--font-body)">' +
+      '<div style="background:' +
+      style.bg +
+      ';border:1px solid ' +
+      style.border +
+      ';border-radius:16px;padding:16px 18px;margin-bottom:12px;position:relative;">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+      '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:' +
+      style.color +
+      ';">' +
+      style.label +
+      '</span>' +
+      '<button id="' +
+      copyId +
+      '" onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:3px 10px;border-radius:6px;border:1px solid ' +
+      style.border +
+      ';background:#fff;color:' +
+      style.color +
+      ';cursor:pointer;">Copy</button>' +
+      '</div>' +
+      '<div class="ps-bubble-text" style="line-height:1.7;font-size:13px;color:var(--text-primary);font-family:var(--font-body)">' +
       trimmed +
+      '</div>' +
       '</div>';
   });
   html +=

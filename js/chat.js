@@ -315,8 +315,20 @@ document.getElementById('br-input').addEventListener('keydown', function (e) {
 document.getElementById('br-send').disabled = true;
 
 function brQuick(text) {
-  document.getElementById('br-input').value = text;
-  document.getElementById('br-input').dispatchEvent(new Event('input'));
+  var inp = document.getElementById('br-input');
+  if (!inp) return;
+  // Check if a plan is selected
+  if (!brActivePlan && !brSearchAllPlans) {
+    brAddMsg(
+      'ai',
+      '<div style="color:var(--text-secondary);font-size:13px;">Please select a plan first, then try again.</div>'
+    );
+    return;
+  }
+  inp.value = text;
+  inp.dispatchEvent(new Event('input'));
+  // Reset send lock in case it's stuck
+  _brSendLock = false;
   brSend();
 }
 
