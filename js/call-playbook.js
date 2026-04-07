@@ -1126,7 +1126,7 @@ function renderPlanScripts() {
     '<div style="display:flex;align-items:center;gap:0;margin-bottom:20px;padding:10px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;">';
   activePlan.sections.forEach(function (sec, si) {
     var isCurrent = si === planScriptSection;
-    var dotLabel = secLabels[si] || sec.title;
+    var dotLabel = sec.title || secLabels[si] || 'Section ' + (si + 1);
     html += '<div style="display:flex;align-items:center;flex:1;min-width:0;">';
     html +=
       '<button onclick="planScriptSection=' +
@@ -1237,6 +1237,7 @@ function renderPlanScripts() {
     c = parsedLines.join('');
 
     var bs = bubbleStyles[Math.min(si, bubbleStyles.length - 1)];
+    var secLabel = sec.title || bs.label;
     var secId = 'ps-sec-' + si;
 
     html +=
@@ -1252,7 +1253,7 @@ function renderPlanScripts() {
       '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:' +
       bs.color +
       ';">' +
-      bs.label +
+      secLabel +
       '</span>';
     html +=
       '<button onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:4px 10px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;">Copy</button>';
@@ -1267,11 +1268,30 @@ function renderPlanScripts() {
     html += '</div>';
   });
 
-  // Navigation buttons
   html += '</div>'; // close plan card wrapper
-  html += '<div style="display:flex;justify-content:center;margin-top:16px;">';
+  // Progress footer
   html +=
-    '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:8px 20px;border-radius:999px;border:1.5px solid #e2e8f0;background:#fff;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← Back to All Plans</button>';
+    '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #e2e8f0;background:#fff;padding:12px 20px;margin-top:16px;border-radius:12px;">';
+  if (planScriptSection > 0) {
+    html +=
+      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#374151;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← Previous</button>';
+  } else {
+    html +=
+      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← All Plans</button>';
+  }
+  html +=
+    '<span style="font-size:11px;color:#94a3b8;">Section ' +
+    (planScriptSection + 1) +
+    ' of ' +
+    activePlan.sections.length +
+    '</span>';
+  if (planScriptSection < activePlan.sections.length - 1) {
+    html +=
+      '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:none;background:#5175f1;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">Next Step →</button>';
+  } else {
+    html +=
+      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:none;background:#16a34a;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">Finish ✓</button>';
+  }
   html += '</div>';
   var _page_planscripts = document.getElementById('page-planscripts');
   if (_page_planscripts) _page_planscripts.innerHTML = html;
