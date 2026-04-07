@@ -4100,4 +4100,40 @@ button:active {
   .xcard-body {
     padding: 12px 14px;
   }
+
+  .plan-card {
+    margin-bottom: 8px;
+  }
+
+  .br-filter-btn,
+  .br-plan-btn {
+    min-height: 44px;
+    font-size: 12px;
+  }
+
+  .page-subtabs .stab {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+}
+
+/* ── Overflow safety on nowrap elements ── */
+.nb,
+.t-brand,
+.livebadge,
+.br-clear,
+.br-filter-btn,
+.br-plan-btn,
+.br-chip {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Consistent button font sizes ── */
+.btn,
+.stab,
+.rtab,
+.plan-tab,
+.comp-btn {
+  font-size: 0.74rem;
 }
