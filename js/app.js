@@ -362,15 +362,16 @@ function renderDashboard() {
   // Keyboard shortcut hint
   html +=
     '<div class="dash-kb-strip"><div class="dash-kb-title">Keyboard Shortcuts</div><div class="dash-kb-list">';
-  html += '<span class="dash-kb"><kbd>H</kbd> Home</span>';
-  html += '<span class="dash-kb"><kbd>L</kbd> Live Call</span>';
-  html += '<span class="dash-kb"><kbd>P</kbd> Plans</span>';
-  html += '<span class="dash-kb"><kbd>S</kbd> Scripts</span>';
-  html += '<span class="dash-kb"><kbd>N</kbd> Network Guide</span>';
-  html += '<span class="dash-kb"><kbd>T</kbd> Training</span>';
-  html += '<span class="dash-kb"><kbd>C</kbd> Compliance</span>';
-  html += '<span class="dash-kb"><kbd>M</kbd> My Space</span>';
-  html += '<span class="dash-kb"><kbd>/</kbd> Search</span>';
+  html += '<span class="dash-kb"><kbd>1</kbd> Home</span>';
+  html += '<span class="dash-kb"><kbd>2</kbd> Live Call</span>';
+  html += '<span class="dash-kb"><kbd>3</kbd> Plans</span>';
+  html += '<span class="dash-kb"><kbd>4</kbd> Scripts</span>';
+  html += '<span class="dash-kb"><kbd>5</kbd> Network</span>';
+  html += '<span class="dash-kb"><kbd>6</kbd> Training</span>';
+  html += '<span class="dash-kb"><kbd>7</kbd> Compliance</span>';
+  html += '<span class="dash-kb"><kbd>8</kbd> My Space</span>';
+  html += '<span class="dash-kb"><kbd>Ctrl+K</kbd> Search</span>';
+  html += '<span class="dash-kb"><kbd>Ctrl+B</kbd> Benefits</span>';
   html += '<span class="dash-kb"><kbd>Esc</kbd> Close</span>';
   html += '</div></div>';
   pg.innerHTML = html;
@@ -385,11 +386,15 @@ function _showComboPage(parentId, subId) {
   if (comboPage) comboPage.classList.add('active');
   document.querySelectorAll('.nb').forEach(function (b) {
     b.classList.remove('active');
+    b.removeAttribute('aria-current');
   });
   var btn = document.querySelector(
     '.nb[onclick="showPage(\'' + parentId + '\')"]'
   );
-  if (btn) btn.classList.add('active');
+  if (btn) {
+    btn.classList.add('active');
+    btn.setAttribute('aria-current', 'page');
+  }
   renderSubTabs(parentId, subId);
   var subs = PAGE_CONFIG[parentId].subs;
   subs.forEach(function (s) {
@@ -698,9 +703,54 @@ function _endTour() {
   if (tip) tip.remove();
 }
 
+// ── COLLAPSIBLE SIDEBAR ──────────────────────────────
+function toggleSidebar() {
+  var sidebar = document.querySelector('.sidebar');
+  if (!sidebar) return;
+  sidebar.classList.toggle('sidebar-collapsed');
+  var collapsed = sidebar.classList.contains('sidebar-collapsed');
+  safeSetItem('cha-sidebar-collapsed', collapsed ? '1' : '0');
+}
+
+function _initSidebar() {
+  var saved = safeGetItem('cha-sidebar-collapsed');
+  if (saved === '1') {
+    var sidebar = document.querySelector('.sidebar');
+    if (sidebar) sidebar.classList.add('sidebar-collapsed');
+  }
+}
+
+// ── BENEFITS SIDEBAR HELPERS ─────────────────────────
+function _toggleBenefitsSidebar() {
+  if (typeof brOpen !== 'undefined') {
+    brOpen = !brOpen;
+  }
+  var panel = document.getElementById('br-panel');
+  var toggle = document.getElementById('br-toggle');
+  if (panel) panel.classList.toggle('open');
+  if (toggle) toggle.classList.toggle('open');
+  document.body.classList.toggle('br-open');
+  if (panel && panel.classList.contains('open')) {
+    var input = document.getElementById('br-input');
+    if (input) input.focus();
+  }
+}
+
+function _closeBenefitsSidebar() {
+  if (typeof brOpen !== 'undefined') {
+    brOpen = false;
+  }
+  var panel = document.getElementById('br-panel');
+  var toggle = document.getElementById('br-toggle');
+  if (panel) panel.classList.remove('open');
+  if (toggle) toggle.classList.remove('open');
+  document.body.classList.remove('br-open');
+}
+
 // ── INIT ──────────────────────────────────────────────
 function initApp() {
   _initFontSize();
+  _initSidebar();
   showPage('dashboard');
   // Start onboarding tour for first-time users
   if (!safeGetItem('cha_tour_done')) {
@@ -761,9 +811,7 @@ if (document.readyState === 'loading') {
         return e.classList.contains('open');
       },
       close: function () {
-        brOpen = false;
-        document.getElementById('br-panel').classList.remove('open');
-        document.getElementById('br-toggle').classList.remove('open');
+        _closeBenefitsSidebar();
       },
       ignore: ['#br-toggle']
     },
@@ -803,12 +851,24 @@ if (document.readyState === 'loading') {
 
 // ── Keyboard Shortcuts ────────────────────────────────
 document.addEventListener('keydown', function (e) {
+  // Ctrl+K — open search overlay
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
-    var gs = document.getElementById('gs');
-    if (gs) gs.focus();
+    if (typeof openSearch === 'function') {
+      openSearch();
+    } else {
+      var gs = document.getElementById('gs');
+      if (gs) gs.focus();
+    }
     return;
   }
+  // Ctrl+B — toggle benefits sidebar
+  if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+    e.preventDefault();
+    _toggleBenefitsSidebar();
+    return;
+  }
+  // Escape — close search AND benefits sidebar
   if (e.key === 'Escape') {
     var srOverlay = document.getElementById('srOverlay');
     if (
@@ -817,6 +877,10 @@ document.addEventListener('keydown', function (e) {
       typeof closeSearch === 'function'
     )
       closeSearch();
+    var brPanel = document.getElementById('br-panel');
+    if (brPanel && brPanel.classList.contains('open')) {
+      _closeBenefitsSidebar();
+    }
     return;
   }
   // Skip shortcuts when typing in input/textarea
@@ -829,7 +893,24 @@ document.addEventListener('keydown', function (e) {
   )
     return;
   if (e.ctrlKey || e.metaKey || e.altKey) return;
-  var key = e.key.toLowerCase();
+  var key = e.key;
+  // Number keys 1-8 for page navigation
+  var numMap = {
+    1: 'dashboard',
+    2: 'livecall',
+    3: 'plans',
+    4: 'scripts',
+    5: 'networkguide',
+    6: 'training',
+    7: 'compliance',
+    8: 'myspace'
+  };
+  if (numMap[key]) {
+    e.preventDefault();
+    showPage(numMap[key]);
+    return;
+  }
+  var letterKey = key.toLowerCase();
   var map = {
     h: 'dashboard',
     l: 'livecall',
@@ -840,15 +921,19 @@ document.addEventListener('keydown', function (e) {
     c: 'compliance',
     m: 'myspace'
   };
-  if (map[key]) {
+  if (map[letterKey]) {
     e.preventDefault();
-    showPage(map[key]);
+    showPage(map[letterKey]);
     return;
   }
-  if (key === '/') {
+  if (letterKey === '/') {
     e.preventDefault();
-    var gs = document.getElementById('gs');
-    if (gs) gs.focus();
+    if (typeof openSearch === 'function') {
+      openSearch();
+    } else {
+      var gs2 = document.getElementById('gs');
+      if (gs2) gs2.focus();
+    }
   }
 });
 
