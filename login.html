@@ -164,19 +164,19 @@
         showErr('Auth service failed to load. Please refresh.');
         return;
       }
-      // Clerk @4 CDN: use constructor API
-      var clerkInstance = new window.Clerk(CLERK_PK);
-      clerkInstance.load().then(function() {
-        clerk = clerkInstance;
+      try {
+        clerk = new window.Clerk(CLERK_PK);
+        clerk.load().then(function() {
           if (clerk.user) {
             window.location.replace('/');
           }
-        })
-        .catch(function(e) {
-          console.error('[CHA] Clerk.load error:', e);
-          // Clerk may still work for sign-in even if load() errors
-          clerk = window.Clerk;
+        }).catch(function(e) {
+          console.error('[CHA] clerk.load error:', e);
         });
+      } catch(e) {
+        console.error('[CHA] Clerk init error:', e);
+        clerk = window.Clerk;
+      }
     };
     script.onerror = function() {
       showErr('Could not connect to auth service. Check your internet and refresh the page.');
@@ -204,12 +204,19 @@
 
       hideErr();
       if (!email || !password) { showErr('Please enter your email and password.'); return; }
-      if (!clerk && !window.Clerk) { showErr('Login service still loading. Wait a moment and try again.'); return; }
+      if (!clerk) {
+        if (window.Clerk) {
+          clerk = window.Clerk;
+        } else {
+          showErr('Login service still loading. Wait a moment and try again.');
+          return;
+        }
+      }
 
       btn.disabled = true;
       btn.textContent = 'Signing in...';
 
-      var signInAPI = (clerk && clerk.signIn) || (window.Clerk && window.Clerk.signIn);
+      var signInAPI = clerk.signIn || window.Clerk.signIn;
 
       signInAPI.create({ identifier: email, password: password })
         .then(function(result) {
