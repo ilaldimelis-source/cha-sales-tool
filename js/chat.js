@@ -832,13 +832,29 @@ function _brTopicOverride(query, plans) {
       ';color:#fff;">' +
       LI.clipboard +
       ' Dashboard</span></div>';
+    // Auto-bold dollar amounts, key terms, and plan names in the answer
+    var fmtAnswer = answer
+      .replace(
+        /(\$[\d,]+(?:\/\w+)?(?:\s*(?:copay|deductible|maximum|max|per|day|year|visit|incident|month))?)/gi,
+        '<strong>$1</strong>'
+      )
+      .replace(
+        /\b(NOT COVERED|NOT covered|NO\b [A-Z][a-z]+|EXCLUDED|NOT ACA|ZERO|REQUIRES PREAUTHORIZATION|COMPLIANCE|12\/12|Day 1)\b/g,
+        '<strong style="color:#DC2626">$1</strong>'
+      )
+      .replace(/\b(COVERED|INCLUDED|available)\b/gi, function (m) {
+        return m === m.toUpperCase()
+          ? '<strong style="color:#15803D">' + m + '</strong>'
+          : m;
+      });
+
     html +=
       '<div style="padding:10px 14px;background:#F8FAFF;border-bottom:1px solid #E8EBF5;">';
     html +=
       '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">&#128203; Internal Answer</div>';
     html +=
       '<div style="font-size:12.5px;color:#1C2035;line-height:1.55;">' +
-      answer +
+      fmtAnswer +
       '</div></div>';
     html += '<div style="padding:10px 14px;background:#F8FAFF;">';
     html +=
