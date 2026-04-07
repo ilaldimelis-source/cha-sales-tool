@@ -185,18 +185,103 @@ function brRenderPlanButtons(groupFilter) {
 }
 
 function brShowWelcome() {
-  var name = brSearchAllPlans
-    ? 'All Plans'
-    : brActivePlan
-      ? brActivePlan.name
-      : 'a plan';
-  brAddMsg(
-    'ai',
-    LI.clipboard +
-      ' <strong>' +
-      name +
-      '</strong> loaded — type any keyword to search benefits, even abbreviations like x-ray, ER, MRI, rx, chiro.<br><small style="color:#9A8F7E">Synonym matching is ON — "x-ray" also finds radiology, imaging, diagnostic, etc.</small>'
-  );
+  var html =
+    "Hey! I'm your Benefits AI. Pick a plan or ask me anything about coverage, copays, exclusions, or waiting periods.";
+
+  // Plan type cards
+  var groupColors = {
+    MEC: {
+      dot: '#22c55e',
+      bg: 'rgba(34,197,94,0.06)',
+      border: 'rgba(34,197,94,0.2)',
+      pill: 'rgba(34,197,94,0.1)',
+      pillColor: '#22c55e'
+    },
+    STM: {
+      dot: '#5B8DEF',
+      bg: 'rgba(91,141,239,0.06)',
+      border: 'rgba(91,141,239,0.2)',
+      pill: 'rgba(91,141,239,0.1)',
+      pillColor: '#5B8DEF'
+    },
+    Limited: {
+      dot: '#7C3AED',
+      bg: 'rgba(124,58,237,0.06)',
+      border: 'rgba(124,58,237,0.2)',
+      pill: 'rgba(124,58,237,0.1)',
+      pillColor: '#7C3AED'
+    }
+  };
+  if (BR_PLANS.length) {
+    html += '<div class="br-welcome-cards">';
+    BR_PLANS.forEach(function (p) {
+      var gc = groupColors[p.group] || groupColors.MEC;
+      html +=
+        '<div class="br-welcome-card" style="border-color:' +
+        gc.border +
+        ';background:' +
+        gc.bg +
+        ';" onclick="brWelcomePick(\'' +
+        escHTML(p.id) +
+        '\')">' +
+        '<span class="bwc-dot" style="background:' +
+        gc.dot +
+        ';"></span>' +
+        '<span class="bwc-name">' +
+        p.name +
+        '</span>' +
+        '<span class="bwc-type" style="background:' +
+        gc.pill +
+        ';color:' +
+        gc.pillColor +
+        ';">' +
+        p.group +
+        '</span></div>';
+    });
+    html += '</div>';
+  }
+
+  // Quick suggestions
+  html += '<div class="br-quick-suggestions">';
+  var suggestions = [
+    "What's covered?",
+    "What's excluded?",
+    'Waiting periods?',
+    'Best for self-employed?'
+  ];
+  suggestions.forEach(function (s) {
+    html +=
+      '<button class="br-quick-sug" onclick="brQuick(\'' +
+      escHTML(s) +
+      '\')">' +
+      s +
+      '</button>';
+  });
+  html += '</div>';
+
+  brAddMsg('ai', html);
+}
+
+function brWelcomePick(planId) {
+  var plan = BR_PLANS.find(function (p) {
+    return p.id === planId;
+  });
+  if (!plan) return;
+  brSearchAllPlans = false;
+  brActiveFilter = plan.group;
+  brActivePlan = plan;
+  document.querySelectorAll('.br-filter-btn').forEach(function (b) {
+    b.classList.toggle('active', b.dataset.filter === plan.group);
+  });
+  document.querySelectorAll('.br-plan-btn').forEach(function (b) {
+    b.classList.toggle('active', b.dataset.id === planId);
+  });
+  if (typeof setActivePlan === 'function') {
+    setActivePlan(plan.id, plan.name, plan.group || '');
+  }
+  document.getElementById('br-input').value = 'Tell me about ' + plan.name;
+  document.getElementById('br-input').dispatchEvent(new Event('input'));
+  brSend();
 }
 
 document.getElementById('br-toggle').addEventListener('click', function () {
@@ -238,15 +323,34 @@ function brClear() {
 
 function brAddMsg(role, html) {
   var msgs = document.getElementById('br-msgs');
+  if (role === 'ai') {
+    // Show typing indicator, then reveal answer after 600ms
+    var typing = document.createElement('div');
+    typing.className = 'br-typing';
+    typing.id = 'br-typing-ind';
+    typing.innerHTML =
+      '<span class="br-tdot"></span><span class="br-tdot"></span><span class="br-tdot"></span>';
+    msgs.appendChild(typing);
+    brScroll();
+    setTimeout(function () {
+      var t = document.getElementById('br-typing-ind');
+      if (t) t.remove();
+      var d = document.createElement('div');
+      d.className = 'br-msg ai';
+      d.innerHTML =
+        '<div class="br-lbl">Results</div><div class="br-bub">' +
+        html +
+        '</div>';
+      msgs.appendChild(d);
+      brScroll();
+    }, 600);
+    return;
+  }
   var d = document.createElement('div');
   d.className = 'br-msg ' + role;
   d.innerHTML =
     '<div class="br-lbl">' +
-    (role === 'user'
-      ? 'You'
-      : role === 'ai-thinking'
-        ? 'AI Thinking...'
-        : 'Results') +
+    (role === 'user' ? 'You' : 'Results') +
     '</div><div class="br-bub">' +
     html +
     '</div>';
@@ -442,6 +546,36 @@ function brFormatResults(results, query) {
   return html;
 }
 
+function _brBottomLine(status, query) {
+  var q = query.toLowerCase();
+  if (status === 'Covered')
+    return 'Yes — ' + query + ' is covered under this plan.';
+  if (status === 'Not Covered')
+    return 'No — ' + query + ' is not covered by this plan.';
+  if (status === 'Discount Available')
+    return 'Network discount available, not a fixed benefit.';
+  return 'See details below for ' + query + '.';
+}
+
+function _brCollapseBullets(html) {
+  // If more than 6 bullet-style divs in a section, collapse extras
+  var marker = 'margin-bottom:2px;line-height:1.5;">';
+  var parts = html.split(marker);
+  if (parts.length <= 7) return html;
+  var out = '';
+  for (var i = 0; i < parts.length; i++) {
+    if (i === 6) {
+      out += '<div class="br-collapsed-extra" style="display:none;">';
+    }
+    out += parts[i];
+    if (i < parts.length - 1) out += marker;
+  }
+  out += '</div>';
+  out +=
+    "<button class=\"br-show-more\" onclick=\"var ex=this.previousElementSibling;var vis=ex.style.display!=='none';ex.style.display=vis?'none':'';this.textContent=vis?'Show more...':'Show less';\">Show more...</button>";
+  return out;
+}
+
 function brSend() {
   var inp = document.getElementById('br-input');
   var query = inp.value.trim();
@@ -460,7 +594,23 @@ function brSend() {
       ? [brActivePlan]
       : [];
   var structured = brStructuredAnswer(query, plansToUse);
-  brAddMsg('ai', structured);
+
+  // Extract status from the answer HTML for bottom-line
+  var statusMatch = structured.match(
+    /font-weight:800;color:#[0-9A-Fa-f]+;">([\w\s]+)<\/span>/
+  );
+  var status = statusMatch ? statusMatch[1].trim() : '';
+  var bottomLine =
+    '<div class="br-bottom-line">' + _brBottomLine(status, query) + '</div>';
+
+  // Remove "Based on the policy documents..." prefix if present
+  structured = structured.replace(
+    /Based on the policy documents[^<]*\.\s*/gi,
+    ''
+  );
+
+  var finalHtml = bottomLine + _brCollapseBullets(structured);
+  brAddMsg('ai', finalHtml);
 
   document.getElementById('br-send').disabled = false;
   document.getElementById('br-input').focus();
@@ -868,7 +1018,7 @@ function brStructuredAnswer(query, plans) {
   html +=
     '<div style="padding:10px 14px;background:#F8FAFF;border-bottom:1px solid #E8EBF5;">';
   html +=
-    '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">Internal Answer</div>';
+    '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">&#128203; Internal Answer</div>';
   html +=
     '<div style="font-size:12.5px;color:#1C2035;line-height:1.55;">' +
     brHl(internalAnswer, specificTerms) +
@@ -950,7 +1100,7 @@ function brStructuredAnswer(query, plans) {
     html +=
       '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">' +
       LI.mic +
-      ' Say This to Client</div>';
+      ' &#127908; Say This to Client</div>';
     html +=
       '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' +
       rebuttal +
@@ -1177,7 +1327,7 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:10px;font-weight:800;color:#15803D;margin-bottom:4px;">' +
         LI.check +
-        ' COVERED</div>';
+        ' &#9989; COVERED</div>';
       planMatches.benefits.forEach(function (b) {
         html +=
           '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;padding-left:8px;border-left:2px solid #29A26A;">' +
@@ -1195,7 +1345,7 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:10px;font-weight:800;color:#DC2626;margin-bottom:4px;">' +
         LI.ban +
-        ' NOT COVERED / LIMITED</div>';
+        ' &#10060; NOT COVERED / LIMITED</div>';
       planMatches.exclusions.forEach(function (e) {
         html +=
           '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;padding-left:8px;border-left:2px solid #DC2626;">' +
@@ -1213,7 +1363,7 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:10px;font-weight:800;color:#C2410C;margin-bottom:4px;">' +
         LI.clock +
-        ' WAITING PERIODS</div>';
+        ' &#9203; WAITING PERIODS</div>';
       planMatches.waiting.forEach(function (w) {
         html +=
           '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;">' +
@@ -1231,7 +1381,7 @@ function brSmartAnswer(query, plans) {
       html +=
         '<div style="font-size:10px;font-weight:800;color:#C2410C;margin-bottom:4px;">' +
         LI.warn +
-        ' PRE-EXISTING CONDITIONS</div>';
+        ' &#9888;&#65039; PRE-EXISTING CONDITIONS</div>';
       planMatches.preex.forEach(function (p) {
         html +=
           '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;">' +
@@ -1344,15 +1494,31 @@ function brHl(text, terms) {
   return safe;
 }
 
+// ── ROTATING PLACEHOLDER TEXT ─────────────────────────
+var _brPlaceholders = [
+  'Ask about copays...',
+  "What's excluded?",
+  'Compare MEC vs STM...'
+];
+var _brPlaceholderIdx = 0;
+function _brRotatePlaceholder() {
+  var inp = document.getElementById('br-input');
+  if (!inp || inp === document.activeElement || inp.value.trim()) return;
+  _brPlaceholderIdx = (_brPlaceholderIdx + 1) % _brPlaceholders.length;
+  inp.placeholder = _brPlaceholders[_brPlaceholderIdx];
+}
+
 // ── INIT: Build search index & start chat panel ──────
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', function () {
     buildSearchIndex();
     brInit();
+    setInterval(_brRotatePlaceholder, 3000);
   });
 } else {
   setTimeout(function () {
     buildSearchIndex();
     brInit();
+    setInterval(_brRotatePlaceholder, 3000);
   }, 0);
 }
