@@ -39,6 +39,7 @@
 
   // ── STEP 3: On page load, check session using Clerk global ──────────────────
   window.addEventListener('load', function () {
+    console.log('[CHA] load fired, Clerk type:', typeof Clerk);
     showOverlay();
     if (typeof Clerk === 'undefined') {
       console.error('[CHA] Clerk not loaded');
@@ -47,6 +48,7 @@
     }
     Clerk.load()
       .then(function () {
+        console.log('[CHA] Clerk loaded, user:', Clerk.user ? 'EXISTS' : 'NULL');
         if (!Clerk.user) {
           window.location.replace(LOGIN_URL);
           return;
