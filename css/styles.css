@@ -4197,3 +4197,51 @@ button:active {
     transform: scale(1);
   }
 }
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .main {
+    margin-left: 0 !important;
+    width: 100vw;
+    padding: 12px;
+  }
+  #br-panel {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+  .dash-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .nb {
+    min-height: 48px;
+  }
+  .br-chip {
+    font-size: 13px;
+    padding: 10px 8px;
+  }
+  .login-card {
+    padding: 24px 20px;
+    margin: 16px;
+    width: auto;
+  }
+  .ps-card {
+    min-height: unset;
+  }
+  #whisper-box {
+    border-radius: 10px;
+  }
+}

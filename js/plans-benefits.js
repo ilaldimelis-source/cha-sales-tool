@@ -1607,8 +1607,85 @@ function switchPlanTab(e, i, tab) {
 // RENDER: COMPARE
 // ══════════════════════════════════════════════════════
 var selPlans = [0, 5];
+function buildQuickCompare() {
+  var selA = document.getElementById('qc-plan-a');
+  var selB = document.getElementById('qc-plan-b');
+  var out = document.getElementById('qc-result');
+  if (!selA || !selB || !out) return;
+  var idxA = parseInt(selA.value, 10);
+  var idxB = parseInt(selB.value, 10);
+  if (isNaN(idxA) || isNaN(idxB)) { out.innerHTML = '<div style="color:#94a3b8;font-size:13px;padding:12px;">Select two plans above.</div>'; return; }
+  var pA = PLANS[idxA];
+  var pB = PLANS[idxB];
+  if (!pA || !pB) return;
+
+  var topics = ['Copays', 'Emergency Room', 'Pre-Existing', 'Network', 'Plan Type'];
+  var keywords = [/copay/i, /emergency|er\b/i, /pre.?exist/i, /network/i, /type/i];
+
+  function getStatus(plan, kw, topic) {
+    var topStr = (plan.topPoints || []).join(' ');
+    var limStr = (plan.limitations || []).join(' ');
+    if (topic === 'Network') return { text: plan.network || 'N/A', green: true };
+    if (topic === 'Plan Type') return { text: plan.type || 'N/A', green: true };
+    var inTop = kw.test(topStr);
+    var inLim = kw.test(limStr);
+    if (inTop) {
+      var match = '';
+      (plan.topPoints || []).forEach(function (tp) { if (kw.test(tp)) match = tp; });
+      return { text: match || 'Included', green: true };
+    }
+    if (inLim) {
+      var lMatch = '';
+      (plan.limitations || []).forEach(function (l) { if (kw.test(l)) lMatch = l; });
+      return { text: lMatch || 'Limited/Excluded', green: false };
+    }
+    return { text: 'Not specified', green: false };
+  }
+
+  var tbl = '<table style="width:100%;border-collapse:collapse;font-size:13px;">';
+  tbl += '<thead><tr style="background:#f1f5f9;"><th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">Topic</th>';
+  tbl += '<th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">' + escHTML(pA.name) + '</th>';
+  tbl += '<th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">' + escHTML(pB.name) + '</th></tr></thead><tbody>';
+
+  for (var t = 0; t < topics.length; t++) {
+    var sA = getStatus(pA, keywords[t], topics[t]);
+    var sB = getStatus(pB, keywords[t], topics[t]);
+    tbl += '<tr>';
+    tbl += '<td style="padding:10px 12px;font-weight:600;color:#1e293b;border-bottom:1px solid #f1f5f9;">' + topics[t] + '</td>';
+    tbl += '<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;color:' + (sA.green ? '#166534' : '#991b1b') + ';background:' + (sA.green ? '#f0fdf4' : '#fef2f2') + ';">' + escHTML(sA.text) + '</td>';
+    tbl += '<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;color:' + (sB.green ? '#166534' : '#991b1b') + ';background:' + (sB.green ? '#f0fdf4' : '#fef2f2') + ';">' + escHTML(sB.text) + '</td>';
+    tbl += '</tr>';
+  }
+  tbl += '</tbody></table>';
+  out.innerHTML = tbl;
+}
+
 function renderCompare() {
-  var html =
+  // ── Quick Compare Card ──
+  var qcHtml = '<div style="background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:16px;">';
+  qcHtml += '<div style="font-size:15px;font-weight:800;color:#1e293b;margin-bottom:12px;">Quick Compare</div>';
+  qcHtml += '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px;">';
+  qcHtml += '<div style="flex:1;min-width:140px;"><label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Plan A</label>';
+  qcHtml += '<select id="qc-plan-a" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#1e293b;background:#f8fafc;">';
+  qcHtml += '<option value="">Select...</option>';
+  for (var qi = 0; qi < PLANS.length; qi++) {
+    qcHtml += '<option value="' + qi + '">' + escHTML(PLANS[qi].name) + '</option>';
+  }
+  qcHtml += '</select></div>';
+  qcHtml += '<div style="flex:1;min-width:140px;"><label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Plan B</label>';
+  qcHtml += '<select id="qc-plan-b" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#1e293b;background:#f8fafc;">';
+  qcHtml += '<option value="">Select...</option>';
+  for (var qj = 0; qj < PLANS.length; qj++) {
+    qcHtml += '<option value="' + qj + '">' + escHTML(PLANS[qj].name) + '</option>';
+  }
+  qcHtml += '</select></div>';
+  qcHtml += '<button onclick="buildQuickCompare()" style="padding:8px 18px;background:#5175f1;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;">Compare Now</button>';
+  qcHtml += '</div>';
+  qcHtml += '<div id="qc-result" style="min-height:40px;"><div style="color:#94a3b8;font-size:13px;">Select two plans and tap Compare Now.</div></div>';
+  qcHtml += '</div>';
+
+  var html = qcHtml;
+  html +=
     '<div class="ph"><div class="pt">Compare <span>Plans</span></div><div class="pd">Select up to 3 plans to compare side by side.</div></div>';
   PLAN_GROUPS.forEach(function (grp) {
     var plans = PLANS.filter(function (p) {

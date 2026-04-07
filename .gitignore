@@ -5,3 +5,6 @@ preview-b.html
 readall.js
 readpdf.js
 serve.js
+.vercel
+.env
+agents.txt
