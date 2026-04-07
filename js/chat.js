@@ -576,13 +576,19 @@ function brFormatResults(results, query) {
 }
 
 function _brBottomLine(status, query) {
-  var q = query.toLowerCase();
   if (status === 'Covered')
     return 'Yes — ' + query + ' is covered under this plan.';
   if (status === 'Not Covered')
     return 'No — ' + query + ' is not covered by this plan.';
   if (status === 'Discount Available')
     return 'Network discount available, not a fixed benefit.';
+  if (status === 'Verify')
+    return 'Verify — not clearly listed. Check plan document before advising.';
+  if (status === 'No Deductible') return 'No deductible on this plan.';
+  if (status === 'Excluded 12 Months')
+    return 'Pre-existing conditions excluded for 12 months.';
+  if (status === 'Waiting Period Applies')
+    return 'Waiting period applies — see details.';
   return 'See details below for ' + query + '.';
 }
 
@@ -1881,16 +1887,48 @@ function brStructuredAnswer(query, plans) {
       if (!matched) return;
       hasMatch = true;
 
-      // If benefit TEXT itself says "NOT covered", treat as exclusion — not a benefit
+      // Determine if the matched text is ABOUT the queried topic or just mentions it in passing
+      // An exclusion entry that incidentally mentions a search term is not the same as
+      // the queried benefit being excluded
+      var isExclusionCategory =
+        cat.includes('exclusion') || cat.includes('limitation');
       var textSaysNot =
         /\bNOT covered\b|\bNOT COVERED\b/i.test(entry.text) &&
         !/discount|savings|negotiated/i.test(entry.text);
-      if (cat.includes('exclusion') || cat.includes('limitation'))
+
+      // For exclusion-category entries: only treat as a real exclusion for this query
+      // if the entry is ABOUT the topic (starts with NO/NOT + topic) rather than just
+      // mentioning the search term incidentally
+      if (isExclusionCategory) {
+        var isDirectExclusion = false;
+        for (var ei = 0; ei < searchTerms.length; ei++) {
+          var t = searchTerms[ei];
+          // Check if this exclusion directly targets the queried topic
+          var directPattern = new RegExp(
+            '\\b(NO|NOT|no|not)\\b.{0,20}\\b' +
+              t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
+              '\\b',
+            'i'
+          );
+          if (directPattern.test(entry.text)) {
+            isDirectExclusion = true;
+            break;
+          }
+        }
+        if (isDirectExclusion) {
+          exclusions.push(entry.text);
+        }
+        // If not a direct exclusion of the queried topic, skip it —
+        // don't let incidental mentions poison the result
+      } else if (cat.includes('waiting')) {
+        waiting.push(entry.text);
+      } else if (cat.includes('pre-existing')) {
+        preex.push(entry.text);
+      } else if (textSaysNot) {
         exclusions.push(entry.text);
-      else if (cat.includes('waiting')) waiting.push(entry.text);
-      else if (cat.includes('pre-existing')) preex.push(entry.text);
-      else if (textSaysNot) exclusions.push(entry.text);
-      else benefits.push(entry.text);
+      } else {
+        benefits.push(entry.text);
+      }
     });
 
     if (hasMatch) {
@@ -1928,13 +1966,15 @@ function brStructuredAnswer(query, plans) {
   var status, internalAnswer, rebuttalType, sourceType;
 
   if (totalMatches === 0) {
-    // No dashboard match → not in the plan = not covered
-    status = 'Not Covered';
+    // No matches found in search index — could mean not covered OR just not
+    // found under the searched terms. Use "Verify" instead of a definitive "Not Covered"
+    // to avoid false negatives that mislead agents.
+    status = 'Verify';
     internalAnswer =
       '"' +
       query +
-      "\" is not listed in the Schedule of Benefits for this plan. If it's not listed, it's not covered.";
-    rebuttalType = 'notCovered';
+      '" was not found in the Schedule of Benefits for this plan under the terms searched. This does not guarantee it is excluded — verify with the full plan document or ask your manager before telling the client it is not covered.';
+    rebuttalType = 'verify';
     sourceType = 'Dashboard';
   } else if (allBenefits.length > 0 && allExclusions.length === 0) {
     if (isDiscountOnly) {
@@ -1957,36 +1997,29 @@ function brStructuredAnswer(query, plans) {
     rebuttalType = 'notCovered';
     sourceType = 'Dashboard';
   } else if (allBenefits.length > 0 && allExclusions.length > 0) {
-    // Check if exclusions clearly say NOT/NO covered
-    var clearNoExclusions = allExclusions.filter(function (e) {
-      return /\bNO\b|\bNOT\b|\bnot cover|\bno cover/i.test(e);
-    });
-    var clearNo = clearNoExclusions.length > 0;
-    if (clearNo && allBenefits.length <= 2) {
-      // Check if the benefits are discount/network type — show discount, not "not covered"
-      if (discountBenefits.length > 0) {
-        status = 'Discount Available';
-        internalAnswer =
-          discountBenefits[0] + ' — Note: ' + clearNoExclusions[0];
-        rebuttalType = 'discount';
-      } else {
-        // Few benefits + clear exclusion → Not Covered (e.g. "NO mental health" with tangential matches)
-        status = 'Not Covered';
-        internalAnswer =
-          clearNoExclusions[0] +
-          (allBenefits.length ? ' (Note: ' + allBenefits[0] + ')' : '');
-        rebuttalType = 'notCovered';
-      }
-    } else if (clearNo && allBenefits.length > 2) {
-      // Many benefits + some qualified exclusions → Covered with limitation note
+    // Both benefits and exclusions matched. Benefits should generally win
+    // because the exclusion classifier now only includes DIRECT exclusions
+    // of the queried topic (not incidental mentions).
+    if (isDiscountOnly) {
+      status = 'Discount Available';
+      internalAnswer = discountBenefits[0] + ' — Note: ' + allExclusions[0];
+      rebuttalType = 'discount';
+    } else if (allBenefits.length >= allExclusions.length) {
+      // More benefits than exclusions → Covered with limitation note
       status = 'Covered';
-      internalAnswer = allBenefits[0] + ' — Note: ' + clearNoExclusions[0];
+      internalAnswer =
+        allBenefits[0] +
+        (allExclusions.length ? ' — Limitation: ' + allExclusions[0] : '');
       rebuttalType = 'partial';
     } else {
-      status = isDiscountOnly ? 'Discount Available' : 'Covered';
+      // More exclusions than benefits → likely not covered but show both
+      status = 'Not Covered';
       internalAnswer =
-        'Benefit: ' + allBenefits[0] + ' — BUT: ' + allExclusions[0];
-      rebuttalType = isDiscountOnly ? 'discount' : 'partial';
+        allExclusions[0] +
+        (allBenefits.length
+          ? ' (Related benefit: ' + allBenefits[0] + ')'
+          : '');
+      rebuttalType = 'notCovered';
     }
     sourceType = 'Dashboard';
   } else if (allWaiting.length > 0 || allPreex.length > 0) {
@@ -1997,9 +2030,12 @@ function brStructuredAnswer(query, plans) {
     rebuttalType = allPreex.length ? 'preex' : 'waiting';
     sourceType = 'Dashboard';
   } else {
-    status = 'Not Covered';
-    internalAnswer = 'No clear benefit found for "' + query + '" in this plan.';
-    rebuttalType = 'notCovered';
+    status = 'Verify';
+    internalAnswer =
+      'No clear benefit or exclusion found for "' +
+      query +
+      '" in this plan. Verify with the full plan document before advising the client.';
+    rebuttalType = 'verify';
     sourceType = 'Dashboard';
   }
 
@@ -2011,25 +2047,33 @@ function brStructuredAnswer(query, plans) {
       ? '#15803D'
       : status === 'Not Covered'
         ? '#DC2626'
-        : '#D97706';
+        : status === 'Verify'
+          ? '#6B7280'
+          : '#D97706';
   var statusBg =
     status === 'Covered'
       ? '#E3F6ED'
       : status === 'Not Covered'
         ? 'rgba(220,38,38,0.06)'
-        : '#FFFBEB';
+        : status === 'Verify'
+          ? '#F8F9FE'
+          : '#FFFBEB';
   var statusBorder =
     status === 'Covered'
       ? '#C6F0D8'
       : status === 'Not Covered'
         ? 'rgba(220,38,38,0.15)'
-        : '#FEF3C7';
+        : status === 'Verify'
+          ? '#E5E7EB'
+          : '#FEF3C7';
   var statusIcon =
     status === 'Covered'
       ? LI.check
       : status === 'Not Covered'
         ? LI.ban
-        : LI.warn;
+        : status === 'Verify'
+          ? LI.bulb
+          : LI.warn;
   var sourceIcon = sourceType === 'Dashboard' ? LI.clipboard : LI.brain;
 
   var html =
