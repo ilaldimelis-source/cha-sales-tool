@@ -7,12 +7,10 @@
   <meta name="robots" content="noindex,nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <!-- Clerk SDK — instance URL, same version as auth.js -->
   <script
-    crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA"
     src="https://whole-viper-89.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js"
-    type="text/javascript"
+    data-clerk-publishable-key="pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA"
+    crossorigin="anonymous"
   ></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,15 +72,25 @@
   <div class="footer">🔒 CHA Internal Only · Contact your manager to get access</div>
 
   <script>
-    window.addEventListener('load', async function () {
-      await Clerk.load();
-      if (Clerk.isSignedIn) {
-        window.location.replace('/');
+    function mountLogin() {
+      if (typeof Clerk === 'undefined' || !Clerk.load) {
+        setTimeout(mountLogin, 100);
         return;
       }
-      document.getElementById('app').innerHTML = '<div id="sign-in"></div>';
-      Clerk.mountSignIn(document.getElementById('sign-in'));
-    });
+      Clerk.load().then(function() {
+        if (Clerk.isSignedIn) {
+          window.location.replace('/');
+          return;
+        }
+        document.getElementById('app').innerHTML = '<div id="sign-in"></div>';
+        Clerk.mountSignIn(document.getElementById('sign-in'));
+      }).catch(function(e) {
+        console.error('[CHA]', e);
+        document.getElementById('app').innerHTML =
+          '<div style="color:#f87171;text-align:center;padding:20px;font-size:13px;">Login failed. Please refresh.</div>';
+      });
+    }
+    mountLogin();
   </script>
 </body>
 </html>
