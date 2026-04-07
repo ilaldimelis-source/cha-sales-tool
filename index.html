@@ -45,6 +45,23 @@
      if the <link> stylesheet has 0 rules after loading. -->
     <link rel="stylesheet" href="css/styles.css" id="mainCSS" />
     <script>
+      // Force-bust old service worker and caches on first load
+      (function () {
+        if ('serviceWorker' in navigator) {
+          caches.keys().then(function (names) {
+            names.forEach(function (n) {
+              if (n !== 'cha-command-center-v27') caches.delete(n);
+            });
+          });
+          navigator.serviceWorker.getRegistrations().then(function (regs) {
+            regs.forEach(function (r) {
+              r.update();
+            });
+          });
+        }
+      })();
+    </script>
+    <script>
       (function () {
         // Give the <link> a moment, then check. If it failed (0 rules), inject via XHR.
         var link = document.getElementById('mainCSS');
