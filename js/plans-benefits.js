@@ -916,51 +916,175 @@ const PLANS = [
 ];
 
 function renderBenefits() {
-  var html =
-    '<div class="ph"><div class="pt">Benefit <span>Explainer</span></div><div class="pd">Plain English + sales framing for every benefit. With follow-up handling and bridge lines.</div></div>';
-  html +=
-    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;">';
-  BENEFITS.forEach(function (b, i) {
-    html += '<div class="xcard" id="bx' + i + '">';
-    html += '<div class="xcard-hd" onclick="toggleXcard(\'bx' + i + '\')">';
-    html +=
-      '<div class="xcard-hd-l" style="display:flex;align-items:center;gap:10px;">' +
-      iconBox(P[b.icon] || P.circle) +
-      '<div class="xcard-label">' +
-      b.name +
-      '</div></div>';
-    html += '<span class="xcard-chev" aria-hidden="true">▼</span></div>';
-    html += '<div class="xcard-body">';
-    html +=
-      '<div class="field"><div class="field-lbl" style="color:var(--charcoal2)">Official Meaning</div><div class="field-txt">' +
-      b.official +
-      '</div></div>';
-    html +=
-      '<div class="field"><div class="field-lbl" style="color:#7a5f00">Simple Explanation</div><div class="field-txt">' +
-      b.simple +
-      '</div></div>';
+  // Categorize benefits by index into the BENEFITS array
+  var categories = [
+    {
+      label: 'Core Benefits',
+      desc: 'The main coverage features agents explain on every call',
+      color: 'var(--accent)',
+      indices: [0, 1, 2, 3, 8]
+    },
+    {
+      label: 'Rx & Pharmacy',
+      desc: 'Prescription drug coverage and discount programs',
+      color: '#7C3AED',
+      indices: [4]
+    },
+    {
+      label: 'Rules & Limitations',
+      desc: 'Pre-existing conditions, waiting periods, and network rules every agent must disclose',
+      color: '#d97706',
+      indices: [5, 6, 7]
+    }
+  ];
 
-    html +=
-      '<div class="field"><div class="field-lbl" style="color:var(--warmgray3)">Common Misunderstanding</div><div class="field-txt" style="color:var(--warmgray3)">' +
-      b.misunderstand +
-      '</div></div>';
-    html +=
-      '<div class="ibox ibox-avoid u-mt10"><span class="sbox-lbl" style="color:var(--error)">Never Say</span><br>' +
-      b.notsay +
-      '</div>';
-    html +=
-      '<div class="ibox ibox-bridge"><span class="sbox-lbl" style="color:#29A26A">Common Follow-Up</span><br>' +
-      b.followup +
-      '</div>';
-    html +=
-      '<div class="ibox ibox-bridge" style="border-color:rgba(212,96,122,0.2);background:rgba(212,96,122,0.05);"><span class="sbox-lbl" style="color:var(--charcoal)">Bridge Back</span><br>' +
-      b.bridge +
-      '</div>';
-    html += '</div></div>';
-  });
+  var html =
+    '<div class="ph"><div class="pt">Benefit <span>Explainer</span></div><div class="pd">Plain English + sales framing for every benefit. Search or browse by category to learn what each benefit means, how to explain it, and what never to say.</div></div>';
+
+  // Search bar
+  html += '<div style="position:relative;margin-bottom:22px;">';
+  html +=
+    '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+  html +=
+    '<input type="text" id="benefitSearchInput" placeholder="Search benefits — e.g. copay, pre-existing, telemedicine..." oninput="_filterBenefitCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
+  html +=
+    '<button id="benefitSearchClear" onclick="_clearBenefitSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
+  html +=
+    '<div id="benefitNoResults" style="display:none;text-align:center;padding:24px 0;color:var(--text-secondary);font-size:14px;">No benefits match your search.</div>';
+
+  // Render each category
+  categories.forEach(function (cat) {
+    html += '<div class="benefit-cat-section" style="margin-bottom:28px;">';
+    // Section header
+    html +=
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">';
+    html +=
+      '<div style="width:4px;height:22px;border-radius:2px;background:' +
+      cat.color +
+      ';flex-shrink:0;"></div>';
+    html +=
+      '<div><div style="font-family:var(--font-ui);font-size:16px;font-weight:700;color:var(--text-primary);">' +
+      cat.label +
+      '</div>';
+    html +=
+      '<div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">' +
+      cat.desc +
+      '</div></div>';
+    html += '</div>';
+
+    // Cards grid
+    html +=
+      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;">';
+    cat.indices.forEach(function (i) {
+      var b = BENEFITS[i];
+      html +=
+        '<div class="xcard benefit-card-item" id="bx' +
+        i +
+        '" data-benefit-search="' +
+        escHTML((b.name + ' ' + b.simple + ' ' + b.official).toLowerCase()) +
+        '" style="border-left:3px solid ' +
+        cat.color +
+        ';">';
+      // Header
+      html +=
+        '<div class="xcard-hd" onclick="toggleXcard(\'bx' +
+        i +
+        '\')" style="padding:16px 18px;">';
+      html +=
+        '<div class="xcard-hd-l" style="display:flex;align-items:center;gap:10px;">' +
+        iconBox(P[b.icon] || P.circle) +
+        '<div class="xcard-label" style="font-size:15px;">' +
+        b.name +
+        '</div></div>';
+      html +=
+        '<span class="xcard-chev" aria-hidden="true">&#9660;</span></div>';
+
+      // Why it matters tip — visible on collapsed card
+      html +=
+        '<div style="padding:0 18px 14px;font-size:13px;color:var(--text-secondary);line-height:1.5;border-bottom:1px solid #F0F2F7;">';
+      html +=
+        '<span style="font-family:var(--font-ui);font-weight:600;color:var(--text-primary);font-size:12px;">Why it matters: </span>' +
+        b.frame;
+      html += '</div>';
+
+      // Expandable body
+      html += '<div class="xcard-body" style="padding:16px 18px;">';
+      html +=
+        '<div class="field" style="margin-bottom:14px;"><div class="field-lbl" style="color:var(--charcoal2)">Official Meaning</div><div class="field-txt">' +
+        b.official +
+        '</div></div>';
+      html +=
+        '<div class="field" style="margin-bottom:14px;"><div class="field-lbl" style="color:#7a5f00">Simple Explanation</div><div class="field-txt">' +
+        b.simple +
+        '</div></div>';
+      html +=
+        '<div class="field" style="margin-bottom:14px;"><div class="field-lbl" style="color:var(--warmgray3)">Common Misunderstanding</div><div class="field-txt" style="color:var(--warmgray3)">' +
+        b.misunderstand +
+        '</div></div>';
+      html +=
+        '<div class="ibox ibox-avoid u-mt10" style="margin-bottom:12px;"><span class="sbox-lbl" style="color:var(--error)">Never Say</span><br>' +
+        b.notsay +
+        '</div>';
+      html +=
+        '<div class="ibox ibox-bridge" style="margin-bottom:12px;"><span class="sbox-lbl" style="color:#29A26A">Common Follow-Up</span><br>' +
+        b.followup +
+        '</div>';
+      html +=
+        '<div class="ibox ibox-bridge" style="border-color:rgba(212,96,122,0.2);background:rgba(212,96,122,0.05);"><span class="sbox-lbl" style="color:var(--charcoal)">Bridge Back</span><br>' +
+        b.bridge +
+        '</div>';
+      html += '</div>'; // close xcard-body
+      html += '</div>'; // close xcard
+    });
+    html += '</div>'; // close grid
+    html += '</div>'; // close category section
+  });
+
   var _page_benefits = document.getElementById('page-benefits');
   if (_page_benefits) _page_benefits.innerHTML = html;
+}
+
+function _filterBenefitCards(query) {
+  var q = (query || '').toLowerCase().trim();
+  var clearBtn = document.getElementById('benefitSearchClear');
+  var noResults = document.getElementById('benefitNoResults');
+  if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
+  var cards = document.querySelectorAll('.benefit-card-item');
+  var visibleCount = 0;
+  cards.forEach(function (card) {
+    if (!q) {
+      card.style.display = '';
+      visibleCount++;
+      return;
+    }
+    var searchStr =
+      (card.getAttribute('data-benefit-search') || '') +
+      ' ' +
+      card.textContent.toLowerCase();
+    var match = searchStr.indexOf(q) !== -1;
+    card.style.display = match ? '' : 'none';
+    if (match) visibleCount++;
+  });
+  // Show/hide category sections that have no visible cards
+  document.querySelectorAll('.benefit-cat-section').forEach(function (sec) {
+    var vis = 0;
+    sec.querySelectorAll('.benefit-card-item').forEach(function (c) {
+      if (c.style.display !== 'none') vis++;
+    });
+    sec.style.display = q && vis === 0 ? 'none' : '';
+  });
+  if (noResults)
+    noResults.style.display = q && visibleCount === 0 ? 'block' : 'none';
+}
+
+function _clearBenefitSearch() {
+  var input = document.getElementById('benefitSearchInput');
+  if (input) {
+    input.value = '';
+    _filterBenefitCards('');
+    input.focus();
+  }
 }
 
 // ══════════════════════════════════════════════════════
