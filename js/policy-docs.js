@@ -3242,35 +3242,61 @@ function pdToggleSection(header) {
 function _pdExpandedDetail(plan) {
   var gc = _pdGrpColor(plan.group);
   var salesPlan = _pdFindSalesPlan(plan);
+
+  // ── Card helper: bordered rounded box ──
+  var _card = function (borderColor, content) {
+    return (
+      '<div style="background:var(--bg-card);border:1.5px solid #E5E7EB;border-left:3px solid ' +
+      borderColor +
+      ';border-radius:var(--r-card);padding:14px 16px;margin-bottom:10px;">' +
+      content +
+      '</div>'
+    );
+  };
+  var _label = function (text, color) {
+    return (
+      '<div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:' +
+      color +
+      ';text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">' +
+      text +
+      '</div>'
+    );
+  };
+  var _pill = function (text, bg, color) {
+    return (
+      '<span style="display:inline-block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:999px;background:' +
+      bg +
+      ';color:' +
+      color +
+      ';margin-right:4px;margin-bottom:4px;">' +
+      text +
+      '</span>'
+    );
+  };
+
   var html =
     '<div id="pd-detail-' +
     plan.id +
-    '" style="background:#FFFFFF;border:2px solid ' +
+    '" style="background:var(--bg-card);border:2px solid ' +
     gc +
-    ';border-radius:16px;margin-bottom:16px;overflow:hidden;animation:cha-fade-in 0.18s ease both;">';
+    ';border-radius:var(--r-card);margin-bottom:16px;overflow:hidden;animation:cha-fade-in 0.18s ease both;">';
 
-  // ── Header bar ──
+  // ── Header ──
   html +=
     '<div style="padding:16px 20px;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;gap:12px;">';
   html += '<div style="flex:1;min-width:0;">';
   html +=
-    '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;">' +
-    _pdBadge(plan.group);
-  html +=
+    '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">' +
+    _pdBadge(plan.group) +
     '<span style="font-family:var(--font-ui);font-size:17px;font-weight:700;color:var(--text-primary);">' +
     plan.name +
     '</span></div>';
-  html +=
-    '<div style="font-size:13px;color:var(--text-secondary);line-height:1.4;">' +
-    plan.network +
-    ' &middot; ' +
-    plan.carrier +
-    '</div>';
-  if (plan.assoc)
-    html +=
-      '<div style="font-size:12px;color:var(--text-muted);margin-top:2px;">' +
-      plan.assoc +
-      '</div>';
+  // Meta pills
+  html += '<div style="display:flex;flex-wrap:wrap;gap:0;margin-top:4px;">';
+  html += _pill(plan.network, 'rgba(34,197,94,0.08)', '#15803D');
+  html += _pill(plan.carrier, 'rgba(91,141,239,0.08)', '#5B8DEF');
+  if (plan.assoc) html += _pill(plan.assoc, 'rgba(245,158,11,0.08)', '#d97706');
+  html += '</div>';
   html += '</div>';
   html +=
     '<button onclick="policyDocToggle(\'' +
@@ -3278,19 +3304,10 @@ function _pdExpandedDetail(plan) {
     '\')" style="background:none;border:1px solid #E5E7EB;border-radius:8px;padding:6px;cursor:pointer;color:var(--text-secondary);flex-shrink:0;" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
   html += '</div>';
 
-  // ── Flat sections ──
+  // ── Body ──
   html += '<div style="padding:16px 20px;">';
 
-  // Section divider helper
-  var _div = function (label) {
-    return (
-      '<div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;padding-top:12px;border-top:1px solid #E5E7EB;">' +
-      label +
-      '</div>'
-    );
-  };
-
-  // Coverage highlights — top 5 from benefits
+  // Coverage highlights — top 5
   var topBullets = [];
   plan.benefits.forEach(function (bcat) {
     bcat.items.forEach(function (item) {
@@ -3299,13 +3316,14 @@ function _pdExpandedDetail(plan) {
     });
   });
   if (topBullets.length) {
-    html += _div('Coverage Highlights');
+    var covHtml = _label('Coverage Highlights', 'var(--accent)');
     topBullets.forEach(function (b) {
-      html +=
-        '<div style="font-size:13px;color:var(--text-secondary);padding-left:8px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
+      covHtml +=
+        '<div style="font-size:13px;color:var(--text-secondary);padding-left:8px;margin-bottom:3px;line-height:1.5;">&#8226; ' +
         b +
         '</div>';
     });
+    html += _card('var(--accent)', covHtml);
   }
 
   // Rx Coverage
@@ -3318,71 +3336,88 @@ function _pdExpandedDetail(plan) {
     }
   });
   if (rxItems.length) {
-    html += _div('Rx Coverage');
-    rxItems.forEach(function (item) {
-      html +=
-        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
+    var rxHtml = _label('Rx Coverage', '#7C3AED');
+    rxItems.slice(0, 3).forEach(function (item) {
+      rxHtml +=
+        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">&#8226; ' +
         item +
         '</div>';
     });
+    html += _card('#7C3AED', rxHtml);
   }
 
-  // Waiting Periods
-  html += _div('Waiting Periods');
+  // Waiting Periods + Pre-Ex side by side
+  var wpHtml = _label('Waiting Periods', '#15803D');
   plan.waitingPeriods.forEach(function (w) {
-    html +=
+    wpHtml +=
       '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
       w +
       '</div>';
   });
-
-  // Pre-Ex Rules
-  html += _div('Pre-Ex Rules');
-  html +=
+  var peHtml = _label('Pre-Ex Rules', '#B91C1C');
+  peHtml +=
     '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
     plan.preEx +
     '</div>';
+  html +=
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
+    _card('#15803D', wpHtml) +
+    _card('#B91C1C', peHtml) +
+    '</div>';
 
-  // Exclusions — flat list
+  // Key exclusions — only top 5 most important, no full dump
   if (plan.limitations.length) {
-    html += _div('Exclusions');
-    plan.limitations.forEach(function (lim) {
-      html +=
-        '<div style="font-size:13px;color:var(--text-secondary);padding-left:8px;margin-bottom:2px;line-height:1.5;"><span style="color:#DC2626;">&#10005;</span> ' +
+    var keyExclusions = plan.limitations
+      .filter(function (l) {
+        return /\bNO\b|\bNOT\b|not cover|excluded/i.test(l);
+      })
+      .slice(0, 5);
+    if (!keyExclusions.length) keyExclusions = plan.limitations.slice(0, 5);
+    var exHtml = _label('Key Exclusions', '#B91C1C');
+    keyExclusions.forEach(function (lim) {
+      exHtml +=
+        '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:3px;line-height:1.5;"><span style="color:#DC2626;font-weight:600;">&#10005;</span> ' +
         lim +
         '</div>';
     });
+    if (plan.limitations.length > 5) {
+      exHtml +=
+        '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">' +
+        (plan.limitations.length - 5) +
+        ' more exclusions — ask Benefits AI for details</div>';
+    }
+    html += _card('#B91C1C', exHtml);
   }
 
-  // Sales Notes — from PLANS array
+  // Sales Notes + Compliance — from PLANS array
   if (salesPlan) {
-    html += _div('Sales Notes');
-    html +=
-      '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:10px;">' +
+    var salesHtml = _label('Sales Framing', 'var(--accent)');
+    salesHtml +=
+      '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">' +
       salesPlan.framing +
       '</div>';
+    html += _card('var(--accent)', salesHtml);
 
-    // Compliance Note — amber callout
+    // Compliance callout
     html +=
-      '<div style="background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.3);border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;">';
+      '<div style="background:rgba(245,158,11,0.06);border:1.5px solid rgba(245,158,11,0.25);border-radius:var(--r-card);padding:12px 14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;">';
     html +=
-      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
     html +=
-      '<div><div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Compliance Note</div>' +
-      '<div style="font-size:13px;color:#92400E;line-height:1.5;">' +
+      '<div style="font-size:12px;color:#92400E;line-height:1.5;">' +
+      '<strong style="text-transform:uppercase;letter-spacing:.04em;">Compliance:</strong> ' +
       salesPlan.compliance +
       '</div></div>';
-    html += '</div>';
   }
 
   // Source
   html +=
-    '<div style="font-size:11px;color:var(--text-muted);margin-top:12px;padding-top:8px;border-top:1px solid #E5E7EB;">Source: ' +
+    '<div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Source: ' +
     plan.source +
     '</div>';
 
-  html += '</div>'; // close content body
-  html += '</div>'; // close detail card
+  html += '</div>'; // body
+  html += '</div>'; // card
   return html;
 }
 
