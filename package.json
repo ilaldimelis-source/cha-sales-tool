@@ -21,7 +21,7 @@
     "revert": "git revert HEAD --no-edit && git push origin main"
   },
   "devDependencies": {
-    "@eslint/js": "^9.36.0",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.55.0",
     "eslint": "^9.36.0",
     "globals": "^16.4.0",
