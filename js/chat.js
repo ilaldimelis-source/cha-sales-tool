@@ -4,6 +4,7 @@ var brActivePlan = null;
 var brSearchAllPlans = false;
 var brOpen = false;
 var BR_PLANS = [];
+var _brInitDone = false;
 // ── LUCIDE-STYLE SVG ICONS ──────────────────────────────────────────
 var LI = {
   check:
@@ -76,8 +77,10 @@ function brBuildSOB(p) {
 var brActiveFilter = 'all';
 
 function brInit() {
+  if (_brInitDone) return;
   if (typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return;
   if (!document.getElementById('br-plan-bar')) return;
+  _brInitDone = true;
 
   BR_PLANS = POLICY_DOCS.map(function (p) {
     return {
@@ -318,11 +321,31 @@ function brQuick(text) {
 
 function brClear() {
   document.getElementById('br-msgs').innerHTML = '';
+  var inp = document.getElementById('br-input');
+  if (inp) {
+    inp.value = '';
+    inp.style.height = 'auto';
+  }
+  document.getElementById('br-send').disabled = true;
+  // Reset to all-plans mode
+  brSearchAllPlans = false;
+  brActiveFilter = 'all';
+  if (BR_PLANS.length) brActivePlan = BR_PLANS[0];
+  document.querySelectorAll('.br-filter-btn').forEach(function (b) {
+    b.classList.toggle('active', b.dataset.filter === 'all');
+  });
+  brRenderPlanButtons(null);
+  // Clear any stuck typing indicator
+  var typing = document.getElementById('br-typing-ind');
+  if (typing) typing.remove();
   brShowWelcome();
 }
 
 function brAddMsg(role, html) {
   var msgs = document.getElementById('br-msgs');
+  // Always clear any leftover typing indicator first
+  var stale = document.getElementById('br-typing-ind');
+  if (stale) stale.remove();
   if (role === 'ai') {
     // Show typing indicator, then reveal answer after 600ms
     var typing = document.createElement('div');
@@ -332,6 +355,11 @@ function brAddMsg(role, html) {
       '<span class="br-tdot"></span><span class="br-tdot"></span><span class="br-tdot"></span>';
     msgs.appendChild(typing);
     brScroll();
+    // Safety: force-clear after 3s in case setTimeout fails
+    setTimeout(function () {
+      var stuck = document.getElementById('br-typing-ind');
+      if (stuck) stuck.remove();
+    }, 3000);
     setTimeout(function () {
       var t = document.getElementById('br-typing-ind');
       if (t) t.remove();
@@ -576,10 +604,16 @@ function _brCollapseBullets(html) {
   return out;
 }
 
+var _brSendLock = false;
 function brSend() {
+  if (_brSendLock) return;
   var inp = document.getElementById('br-input');
   var query = inp.value.trim();
   if (!query) return;
+  _brSendLock = true;
+  setTimeout(function () {
+    _brSendLock = false;
+  }, 300);
 
   inp.value = '';
   inp.style.height = 'auto';

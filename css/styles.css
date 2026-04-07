@@ -2663,7 +2663,9 @@ textarea:focus-visible {
   right: -440px;
   z-index: 1100;
   width: 420px;
+  max-width: 100vw;
   height: 85vh;
+  max-height: 100vh;
   background: #fff;
   border-radius: 0;
   border-left: 1px solid rgb(99, 91, 255, 0.2);
@@ -2749,6 +2751,33 @@ textarea:focus-visible {
   background: var(--red-light);
   color: var(--red-text);
   border-color: transparent;
+}
+
+.br-close-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: rgb(255, 255, 255, 0.6);
+  font-size: 22px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition:
+    color 0.15s,
+    background 0.15s;
+  flex-shrink: 0;
+  margin-left: 4px;
+  line-height: 1;
+}
+
+.br-close-btn:hover {
+  color: #fff;
+  background: rgb(255, 255, 255, 0.1);
 }
 
 .br-filter-bar {
@@ -3219,7 +3248,7 @@ a[href='#main-content']:focus {
   }
 
   body.br-open #br-toggle {
-    right: 100vw;
+    display: none;
   }
 
   .content {
@@ -3746,7 +3775,7 @@ body.br-open .main {
 }
 
 body.br-open #br-toggle {
-  right: 420px;
+  display: none;
 }
 
 /* ── COLLAPSIBLE SIDEBAR ── */
