@@ -477,16 +477,28 @@ function brHideTyping() {
 
 function brRenderAIAnswer(text, planName) {
   var status = 'VERIFY';
-  var answer = text;
+  var answer = '';
   var sayThis = '';
-  var statusMatch = text.match(
-    /STATUS:\s*(COVERED|NOT COVERED|VERIFY|PARTIAL)/i
-  );
-  var answerMatch = text.match(/ANSWER:\s*([\s\S]*?)(?=SAY THIS:|$)/i);
-  var sayMatch = text.match(/SAY THIS:\s*"?([\s\S]*?)"?\s*$/i);
-  if (statusMatch) status = statusMatch[1].toUpperCase();
-  if (answerMatch) answer = answerMatch[1].trim();
-  if (sayMatch) sayThis = sayMatch[1].trim();
+  var lines = text.split('\n');
+  for (var li = 0; li < lines.length; li++) {
+    var line = lines[li].trim();
+    if (line.toUpperCase().indexOf('STATUS:') === 0) {
+      var sv = line.substring(7).trim().toUpperCase();
+      if (sv.indexOf('NOT COVERED') !== -1) status = 'NOT COVERED';
+      else if (sv.indexOf('PARTIAL') !== -1) status = 'PARTIAL';
+      else if (sv.indexOf('COVERED') !== -1) status = 'COVERED';
+      else status = 'VERIFY';
+    } else if (line.toUpperCase().indexOf('ANSWER:') === 0) {
+      answer = line.substring(7).trim();
+    } else if (line.toUpperCase().indexOf('SAY THIS:') === 0) {
+      sayThis = line.substring(9).trim().replace(/^"|"$/g, '');
+    }
+  }
+  if (!answer)
+    answer = text
+      .replace(/STATUS:.*\n?/i, '')
+      .replace(/SAY THIS:.*\n?/i, '')
+      .trim();
   var borderColor = '#f59e0b';
   var bgColor = '#fffbeb';
   var badgeColor = '#d97706';
@@ -723,10 +735,7 @@ function brAIAnswer(query, planId) {
     (plan.planNotes || '');
 
   var sysPrompt =
-    'You are a licensed health insurance benefits assistant for CHA. ' +
-    'RULES: 1. ONLY use the plan data below. 2. If listed = COVERED. 3. If excluded = NOT COVERED. 4. If not mentioned = VERIFY. 5. Keep 2-3 lines max. 6. End with SAY THIS line. ' +
-    'For MEC plans: no deductible, no OOP max. MedFirst 1 Rx = BestChoiceRx discount only. ' +
-    'FORMAT: STATUS: COVERED/NOT COVERED/VERIFY/PARTIAL\nANSWER: [from plan data]\nSAY THIS: "[script]"\n\nPLAN DATA:\n' +
+    'You are a health insurance benefits assistant for Central Health Advisors. Use ONLY the plan data provided. RULES: STATUS must be COVERED, NOT COVERED, VERIFY, or PARTIAL. Use COVERED when benefit exists in plan data. Use NOT COVERED ONLY when plan data explicitly says excluded or not covered. Use VERIFY when benefit is not mentioned. NEVER use NOT COVERED for missing data — use VERIFY. MEC plans have NO deductible — always COVERED for deductible questions. MedFirst 1 Rx = BestChoiceRx discount card — STATUS: COVERED. MEC copays: PCP $25 up to 3 visits/year, Specialist $50 up to 1 visit/year. Waiting period: 30 days sickness, Day 1 accidents. FORMAT RESPONSE EXACTLY LIKE THIS WITH NO VARIATIONS: STATUS: COVERED\nANSWER: one to three lines from plan data\nSAY THIS: exact words for agent to read\n\nPLAN DATA:\n' +
     planContext;
 
   fetch('https://api.groq.com/openai/v1/chat/completions', {
