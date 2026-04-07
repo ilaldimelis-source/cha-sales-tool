@@ -1,18 +1,24 @@
-// auth.js — CHA Session Guard v2 — Production Ready
-// Loaded FIRST in index.html — guards every page load
-// Handles: session check, user display, logout, inactivity timer, manager tab
+// auth.js — CHA Session Guard
+// Uses same Clerk pattern as login.html — data-clerk-publishable-key + Clerk.load()
 
 (function () {
   'use strict';
 
-  var CLERK_PK = 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
   var LOGIN_URL = '/login.html';
-  var INACTIVITY_MS = 30 * 60 * 1000; // 30 minutes
+  var INACTIVITY_MS = 30 * 60 * 1000;
   var _inactivityTimer = null;
-  var _clerkInstance = null;
 
-  // ── LOADING OVERLAY ─────────────────────────────────────────────────────────
+  // ── STEP 1: Inject Clerk SDK using official pattern (same as login.html) ────
+  var clerkScript = document.createElement('script');
+  clerkScript.setAttribute('data-clerk-publishable-key', 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA');
+  clerkScript.src = 'https://whole-viper-89.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+  clerkScript.crossOrigin = 'anonymous';
+  clerkScript.async = true;
+  document.head.appendChild(clerkScript);
+
+  // ── STEP 2: Show loading overlay immediately ─────────────────────────────────
   function showOverlay() {
+    if (document.getElementById('auth-overlay')) return;
     var overlay = document.createElement('div');
     overlay.id = 'auth-overlay';
     overlay.style.cssText = 'position:fixed;inset:0;background:#0f172a;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;';
@@ -25,133 +31,87 @@
   }
 
   function hideOverlay() {
-    setTimeout(function() {
+    setTimeout(function () {
       var ov = document.getElementById('auth-overlay');
       if (ov) ov.remove();
-    }, 300);
+    }, 200);
   }
 
-  // ── WAIT FOR CLERK SDK (loaded via static script tag in index.html head) ────
-  // Wait for Clerk v4 constructor to be available
-  function waitForClerk(callback, attempts) {
-    if (!attempts) attempts = 0;
-    if (window.Clerk) {
-      callback();
-    } else if (attempts < 50) {
-      setTimeout(function() { waitForClerk(callback, attempts + 1); }, 200);
-    } else {
-      console.error('[CHA Auth] Clerk SDK never loaded');
-      goToLogin();
+  // ── STEP 3: On page load, check session using Clerk global ──────────────────
+  window.addEventListener('load', function () {
+    showOverlay();
+    if (typeof Clerk === 'undefined') {
+      console.error('[CHA] Clerk not loaded');
+      window.location.replace(LOGIN_URL);
+      return;
     }
-  }
-
-  // ── REDIRECT TO LOGIN ────────────────────────────────────────────────────────
-  function goToLogin() {
-    window.location.replace(LOGIN_URL);
-  }
-
-  // ── SESSION CHECK ────────────────────────────────────────────────────────────
-  function checkSession() {
-    // Clerk v4: static script auto-initializes window.Clerk as an object
-    window.Clerk.load().then(function() {
-        _clerkInstance = window.Clerk;
-        var user = _clerkInstance.user;
-
-        // If no user but there's an active session on the client, activate it
-        if (!user && _clerkInstance.client && _clerkInstance.client.lastActiveSessionId) {
-          _clerkInstance.setActive({ session: _clerkInstance.client.lastActiveSessionId })
-            .then(function() {
-              if (_clerkInstance.user) {
-                renderUserInfo(_clerkInstance.user);
-                hideOverlay();
-                startInactivityTimer();
-              } else {
-                goToLogin();
-              }
-            })
-            .catch(function() { goToLogin(); });
+    Clerk.load()
+      .then(function () {
+        if (!Clerk.user) {
+          window.location.replace(LOGIN_URL);
           return;
         }
-
-        if (!user) {
-          goToLogin();
-          return;
-        }
-        renderUserInfo(user);
+        window.Clerk = Clerk;
+        renderUserInfo(Clerk.user);
         hideOverlay();
         startInactivityTimer();
       })
-      .catch(function(err) {
-        console.error('[CHA Auth] Session check failed:', err);
-        goToLogin();
+      .catch(function (err) {
+        console.error('[CHA] Clerk.load error:', err);
+        window.location.replace(LOGIN_URL);
       });
-  }
+  });
 
   // ── INACTIVITY TIMER ─────────────────────────────────────────────────────────
   function startInactivityTimer() {
     function reset() {
       clearTimeout(_inactivityTimer);
-      _inactivityTimer = setTimeout(function() {
-        showTimeoutOverlay();
+      _inactivityTimer = setTimeout(function () {
+        var overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,0.97);z-index:999999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;';
+        overlay.innerHTML =
+          '<div style="font-family:sans-serif;font-size:18px;font-weight:700;color:#fff;">Session timed out</div>' +
+          '<div style="font-family:sans-serif;font-size:13px;color:#94a3b8;">Signing you out for security...</div>';
+        document.body.appendChild(overlay);
+        setTimeout(doLogout, 2000);
       }, INACTIVITY_MS);
     }
-    ['mousemove','keydown','click','touchstart','scroll'].forEach(function(ev) {
+    ['mousemove', 'keydown', 'click', 'touchstart', 'scroll'].forEach(function (ev) {
       document.addEventListener(ev, reset, { passive: true });
     });
     reset();
   }
 
-  function showTimeoutOverlay() {
-    var overlay = document.createElement('div');
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,0.97);z-index:999999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;';
-    overlay.innerHTML =
-      '<div style="font-family:sans-serif;font-size:18px;font-weight:700;color:#fff;">Session timed out</div>' +
-      '<div style="font-family:sans-serif;font-size:13px;color:#94a3b8;">Signing you out for security...</div>';
-    document.body.appendChild(overlay);
-    setTimeout(function() {
-      doLogout();
-    }, 2000);
-  }
-
   // ── LOGOUT ───────────────────────────────────────────────────────────────────
   function doLogout() {
     clearTimeout(_inactivityTimer);
-    var clerk = window.Clerk || _clerkInstance;
-    if (clerk && typeof clerk.signOut === 'function') {
-      clerk.signOut()
-        .then(function() { goToLogin(); })
-        .catch(function() { goToLogin(); });
+    if (Clerk && typeof Clerk.signOut === 'function') {
+      Clerk.signOut()
+        .then(function () { window.location.replace(LOGIN_URL); })
+        .catch(function () { window.location.replace(LOGIN_URL); });
     } else {
-      goToLogin();
+      window.location.replace(LOGIN_URL);
     }
   }
   window.chaLogout = doLogout;
 
-  // ── RENDER USER IN SIDEBAR ───────────────────────────────────────────────────
+  // ── RENDER USER CARD IN SIDEBAR ──────────────────────────────────────────────
   function renderUserInfo(user) {
     var role = 'agent';
-    try { role = (user.publicMetadata && user.publicMetadata.role) || 'agent'; } catch(e) {}
+    try { role = (user.publicMetadata && user.publicMetadata.role) || 'agent'; } catch (e) {}
     var firstName = '';
-    try { firstName = user.firstName || ''; } catch(e) {}
+    try { firstName = user.firstName || ''; } catch (e) {}
     var email = '';
-    try { email = user.emailAddresses[0].emailAddress; } catch(e) {}
+    try { email = user.emailAddresses[0].emailAddress; } catch (e) {}
     var name = firstName || (email ? email.split('@')[0] : 'Agent');
-    var initials = name.slice(0,2).toUpperCase();
+    var initials = name.slice(0, 2).toUpperCase();
     var isManager = role === 'manager';
 
-    // Store globally — used by dashboard greeting, notes, etc.
-    window.CHA_USER = {
-      name: name,
-      firstName: firstName,
-      role: role,
-      isManager: isManager,
-      email: email
-    };
+    window.CHA_USER = { name: name, firstName: firstName, role: role, isManager: isManager, email: email };
 
     function inject() {
       var nav = document.querySelector('.nav');
       if (!nav) { setTimeout(inject, 150); return; }
-      // Avoid duplicate injection
       if (document.getElementById('auth-user-card')) return;
 
       var card = document.createElement('div');
@@ -169,9 +129,7 @@
         '</button>';
 
       nav.parentNode.insertBefore(card, nav.nextSibling);
-
       document.getElementById('logout-btn').addEventListener('click', doLogout);
-
       if (isManager) addManagerTab(nav);
     }
     inject();
@@ -192,17 +150,8 @@
     nav.appendChild(btn);
   }
 
-  // ── SAFE HTML ESCAPE ─────────────────────────────────────────────────────────
   function escSafe(s) {
-    return String(s || '')
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
-
-  // ── BOOT ─────────────────────────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', function() {
-    showOverlay();
-    waitForClerk(checkSession);
-  });
 
 })();
