@@ -407,10 +407,17 @@ function _showComboPage(parentId, subId) {
         try {
           subs[i].render();
         } catch (e) {
+          // Log error for debugging, show helpful recovery message
+          if (typeof console !== 'undefined')
+            console.error('Tab render error [' + subId + ']:', e);
           var errPage = document.getElementById('page-' + subId);
           if (errPage)
             errPage.innerHTML =
-              '<div style="padding:24px;color:#B91C1C;">Something went wrong loading this tab. Please try again.</div>';
+              '<div style="padding:24px;text-align:center;">' +
+              '<div style="color:#B91C1C;font-weight:700;margin-bottom:8px;">This tab failed to load.</div>' +
+              '<div style="color:var(--text-secondary);font-size:13px;margin-bottom:12px;">Try refreshing with Ctrl+Shift+R to clear the cache.</div>' +
+              '<button onclick="location.reload(true)" style="padding:8px 20px;border-radius:8px;background:var(--accent);color:#fff;border:none;font-family:var(--font-ui);font-weight:600;cursor:pointer;">Refresh Now</button>' +
+              '</div>';
         }
       }
       break;

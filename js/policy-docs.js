@@ -3124,6 +3124,18 @@ function _pdFindSalesPlan(doc) {
 }
 
 function renderPolicydocs() {
+  try {
+    return _renderPolicydocsInner();
+  } catch (e) {
+    var pg =
+      document.getElementById('page-policydocs') ||
+      document.getElementById('page-allplans');
+    if (pg)
+      pg.innerHTML =
+        '<div style="padding:24px;color:#B91C1C;">Plans failed to load. Please refresh the page (Ctrl+Shift+R).</div>';
+  }
+}
+function _renderPolicydocsInner() {
   var html = '<div class="ph"><div class="pt">Plan <span>Vault</span></div>';
   html +=
     '<div class="pd">Find the right plan for every client. Tap any card for full details.</div></div>';
