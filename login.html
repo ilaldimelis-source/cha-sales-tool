@@ -172,19 +172,14 @@
     }
 
     waitForClerk(function() {
-      try {
-        clerk = new window.Clerk(CLERK_PK);
-        clerk.load().then(function() {
-          if (clerk.user) {
-            window.location.replace('/');
-          }
-        }).catch(function(e) {
-          console.error('[CHA] clerk.load error:', e);
-        });
-      } catch(e) {
-        console.error('[CHA] Clerk init error:', e);
-        clerk = window.Clerk;
-      }
+      clerk = window.Clerk;
+      clerk.load().then(function() {
+        if (clerk.user) {
+          window.location.replace('/');
+        }
+      }).catch(function(e) {
+        console.error('[CHA] clerk.load error:', e);
+      });
     });
 
     // ── SIGN IN ──────────────────────────────────────────────────────────────

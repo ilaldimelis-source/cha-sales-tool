@@ -52,10 +52,9 @@
 
   // ── SESSION CHECK ────────────────────────────────────────────────────────────
   function checkSession() {
-    // Clerk v4: use constructor API
-    var clerkInstance = new window.Clerk(CLERK_PK);
-    clerkInstance.load().then(function() {
-        _clerkInstance = clerkInstance;
+    // Clerk v4: static script auto-initializes window.Clerk as an object
+    window.Clerk.load().then(function() {
+        _clerkInstance = window.Clerk;
         var user = _clerkInstance.user;
 
         // If no user but there's an active session on the client, activate it
