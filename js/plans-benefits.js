@@ -1124,226 +1124,34 @@ function renderAllPlans() {
 }
 
 function renderPlans() {
-  // ── Page Header ──
   var html =
     '<div class="ph">' +
     '<div class="pt">Plan <span>Vault</span></div>' +
-    '<div class="pd">Find the right plan for every client. Tap any card below to explore full coverage details, sales framing, and compliance notes.</div>' +
+    '<div class="pd">Find the right plan for every client.</div>' +
     '</div>';
 
-  // ── Compliance Banner ──
-  html +=
-    '<div class="comp-banner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg> <strong>Core compliance — say every time:</strong> Disclose plan type, pre-existing exclusion, waiting periods, fixed/limited benefit amounts, and when a plan is NOT ACA major medical.</div>';
-
-  // ── Plan Type Legend ──
-  html +=
-    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-bottom:22px;">';
-  var legendItems = [
-    {
-      color: '#5B8DEF',
-      bg: 'rgba(91,141,239,0.08)',
-      border: 'rgba(91,141,239,0.2)',
-      label: 'MEC',
-      full: 'Minimum Essential Coverage',
-      desc: 'Preventive-first plans with wellness visits, telemedicine, and basic doctor copays.'
-    },
-    {
-      color: '#d97706',
-      bg: 'rgba(245,158,11,0.08)',
-      border: 'rgba(245,158,11,0.2)',
-      label: 'STM',
-      full: 'Short-Term Medical',
-      desc: 'Temporary bridge coverage with deductible-based major medical structure.'
-    },
-    {
-      color: '#dc2626',
-      bg: 'rgba(239,68,68,0.06)',
-      border: 'rgba(239,68,68,0.18)',
-      label: 'Limited',
-      full: 'Limited Benefit',
-      desc: 'Fixed indemnity plans that pay set dollar amounts toward covered services.'
-    }
-  ];
-  legendItems.forEach(function (item) {
-    html +=
-      '<div style="background:' +
-      item.bg +
-      ';border:1.5px solid ' +
-      item.border +
-      ';border-radius:12px;padding:14px 16px;">';
-    html +=
-      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
-    html +=
-      '<span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' +
-      item.color +
-      ';flex-shrink:0;"></span>';
-    html +=
-      '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:' +
-      item.color +
-      ';">' +
-      item.label +
-      '</span>';
-    html +=
-      '<span style="font-family:var(--font-ui);font-size:11px;color:var(--text-secondary);font-weight:500;">&mdash; ' +
-      item.full +
-      '</span>';
-    html += '</div>';
-    html +=
-      '<div style="font-family:var(--font-body);font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
-      item.desc +
-      '</div>';
-    html += '</div>';
-  });
-  html += '</div>';
-
-  // ── Benefit Filter Cards ──
-  html +=
-    '<div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Filter by Benefit</div>';
-  var _bsvg = function (d) {
-    return (
-      '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
-      d +
-      '</svg>'
-    );
-  };
-  html +=
-    '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:24px;">';
-  var highlights = [
-    {
-      svg: _bsvg(
-        '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/>'
-      ),
-      label: 'Doctor Visits',
-      desc: 'PCP & specialist copays',
-      filter: 'doctor|pcp|copay|office visit'
-    },
-    {
-      svg: _bsvg(
-        '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>'
-      ),
-      label: 'Prescriptions',
-      desc: 'Rx discount or formulary',
-      filter: 'rx|prescription|drug'
-    },
-    {
-      svg: _bsvg(
-        '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>'
-      ),
-      label: 'Emergency',
-      desc: 'ER & ambulance benefits',
-      filter: 'emergency|er |ambulance'
-    },
-    {
-      svg: _bsvg(
-        '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'
-      ),
-      label: 'Preventive',
-      desc: 'Wellness & annual physicals',
-      filter: 'preventive|wellness|physical|screening'
-    },
-    {
-      svg: _bsvg(
-        '<path d="M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V17H8v-2.3A7 7 0 0 1 5 9a7 7 0 0 1 7-7z"/><path d="M9 18h6M10 22h4"/>'
-      ),
-      label: 'Dental / Vision',
-      desc: 'Optional add-on coverage',
-      filter: 'dental|vision|eye|teeth'
-    },
-    {
-      svg: _bsvg(
-        '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
-      ),
-      label: 'Telehealth',
-      desc: '$0 virtual doctor visits',
-      filter: 'telehealth|telemedicine|virtual'
-    }
-  ];
-  highlights.forEach(function (h) {
-    html +=
-      '<div class="benefit-filter-card" data-filter="' +
-      h.filter +
-      '" onclick="filterPlansByBenefit(this)" style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:14px;padding:18px 14px;text-align:center;cursor:pointer;transition:border-color 0.15s, background 0.15s;">';
-    html +=
-      '<div style="margin-bottom:8px;color:var(--accent);display:flex;justify-content:center;">' +
-      h.svg +
-      '</div>';
-    html +=
-      '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' +
-      h.label +
-      '</div>';
-    html +=
-      '<div style="font-family:var(--font-body);font-size:12px;color:var(--text-secondary);line-height:1.4;">' +
-      h.desc +
-      '</div>';
-    html += '</div>';
-  });
-  html += '</div>';
-
-  // ── Plan Type Tabs ──
-  html +=
-    '<div style="font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Browse by Plan Type</div>';
+  // ── Pill Tabs ──
   var tabDefs = [
-    {
-      key: 'All',
-      label: 'All Plans',
-      sub: 'Every plan we offer',
-      color: 'var(--text-primary)',
-      dot: 'var(--text-secondary)'
-    },
-    {
-      key: 'MEC',
-      label: 'MEC',
-      sub: 'Preventive & Wellness',
-      color: '#5B8DEF',
-      dot: '#5B8DEF'
-    },
-    {
-      key: 'STM',
-      label: 'STM',
-      sub: 'Bridge Coverage',
-      color: '#d97706',
-      dot: '#d97706'
-    },
-    {
-      key: 'Limited',
-      label: 'Limited',
-      sub: 'Fixed Indemnity',
-      color: '#dc2626',
-      dot: '#dc2626'
-    }
+    { key: 'All', label: 'All', color: 'var(--text-primary)' },
+    { key: 'MEC', label: 'MEC', color: '#22c55e' },
+    { key: 'STM', label: 'STM', color: '#5B8DEF' },
+    { key: 'Limited', label: 'Limited', color: '#7C3AED' }
   ];
-  html +=
-    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:22px;">';
+  html += '<div style="display:flex;gap:8px;margin-bottom:16px;">';
   tabDefs.forEach(function (t) {
     var isActive = t.key === activePlanGroup;
-    var activeBg = isActive ? 'rgba(91,141,239,0.08)' : '#FFFFFF';
-    var activeBorder = isActive ? t.color : '#E5E7EB';
     html +=
       '<button onclick="setPlanGroup(\'' +
       t.key +
-      '\')" style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 12px;background:' +
-      activeBg +
-      ';border:2px solid ' +
-      activeBorder +
-      ';border-radius:12px;cursor:pointer;transition:all 0.15s;font-family:var(--font-ui);">';
-    html += '<div style="display:flex;align-items:center;gap:6px;">';
-    if (t.key !== 'All') {
-      html +=
-        '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
-        t.dot +
-        ';"></span>';
-    }
-    html +=
-      '<span style="font-size:15px;font-weight:700;color:' +
-      (isActive ? t.color : 'var(--text-primary)') +
+      '\')" style="padding:9px 22px;border-radius:999px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;border:2px solid ' +
+      (isActive ? t.color : '#E5E7EB') +
+      ';background:' +
+      (isActive ? t.color : '#fff') +
+      ';color:' +
+      (isActive ? '#fff' : 'var(--text-secondary)') +
       ';">' +
       t.label +
-      '</span></div>';
-    html +=
-      '<span style="font-size:11px;color:var(--text-secondary);font-weight:500;">' +
-      t.sub +
-      '</span>';
-    html += '</button>';
+      '</button>';
   });
   html += '</div>';
 
@@ -1568,27 +1376,23 @@ function renderPlanGroups() {
   var wrap = document.getElementById('planGroupsWrap');
   if (!wrap) return;
 
-  // Build from POLICY_DOCS for real benefit data
   var groupDefs = [
     {
       key: 'MEC',
       label: 'MEC Plans',
-      desc: 'Minimum Essential Coverage — preventive-first base plans',
-      color: '#5B8DEF',
+      desc: 'Minimum Essential Coverage',
       borderColor: '#22c55e'
     },
     {
       key: 'STM',
       label: 'Short-Term Medical',
-      desc: 'Temporary bridge coverage — major-medical style',
-      color: '#d97706',
+      desc: 'Temporary bridge coverage',
       borderColor: '#5B8DEF'
     },
     {
       key: 'Limited',
       label: 'Limited Benefit Plans',
-      desc: 'Fixed indemnity plans — pay set amounts toward services',
-      color: '#dc2626',
+      desc: 'Fixed indemnity',
       borderColor: '#7C3AED'
     }
   ];
@@ -1599,18 +1403,11 @@ function renderPlanGroups() {
           return g.key === activePlanGroup;
         });
 
-  // Section divider helper
-  var _sectionDivider = function (label, color) {
+  // Simple divider
+  var _divider = function (label) {
     return (
-      '<div style="display:flex;align-items:center;gap:10px;margin:18px 0 10px;border-top:1px solid #E5E7EB;padding-top:16px;">' +
-      '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:' +
-      color +
-      ';text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;">' +
+      '<div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.08em;margin:14px 0 8px;padding-top:12px;border-top:1px solid #E5E7EB;">' +
       label +
-      '</div>' +
-      '<div style="flex:1;height:1px;background:' +
-      color +
-      ';opacity:0.2;"></div>' +
       '</div>'
     );
   };
@@ -1623,26 +1420,19 @@ function renderPlanGroups() {
     if (!docs.length) return;
 
     html +=
-      '<div style="margin-bottom:28px;" data-plan-group="' + grp.key + '">';
+      '<div style="margin-bottom:24px;" data-plan-group="' + grp.key + '">';
     html +=
-      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">';
-    html +=
-      '<div style="font-family:var(--font-display);font-size:18px;font-weight:700;color:var(--charcoal3);">' +
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">' +
+      '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);">' +
       grp.label +
-      '</div>';
-    html +=
-      '<div style="flex:1;height:1px;background:rgba(200,206,221,0.5);"></div>';
-    html +=
-      '<span class="tag" style="background:rgba(91,141,239,0.1);color:#5B8DEF;">' +
+      '</div>' +
+      '<div style="flex:1;height:1px;background:#E5E7EB;"></div>' +
+      '<span style="font-size:12px;color:var(--text-secondary);">' +
       docs.length +
       ' plans</span></div>';
-    html +=
-      '<div style="font-size:12px;color:var(--warmgray3);margin-bottom:12px;">' +
-      grp.desc +
-      '</div>';
 
     docs.forEach(function (doc) {
-      // Find matching PLANS entry for sales framing data
+      // Find matching PLANS entry
       var salesPlan = null;
       for (var si = 0; si < PLANS.length; si++) {
         if (
@@ -1655,63 +1445,20 @@ function renderPlanGroups() {
           }
         }
       }
-      // Build quick-read flags
-      var flags = [];
-      var limText = doc.limitations.join(' ').toLowerCase();
-      var benText = doc.benefits
-        .map(function (b) {
-          return b.items.join(' ');
-        })
-        .join(' ')
-        .toLowerCase();
-      if (
-        limText.indexOf('in-network') !== -1 ||
-        limText.indexOf('epo') !== -1 ||
-        doc.network.indexOf('EPO') !== -1
-      )
-        flags.push('IN-NETWORK ONLY');
-      if (
-        limText.indexOf('not aca') !== -1 ||
-        limText.indexOf('not major medical') !== -1
-      )
-        flags.push('NOT MAJOR MEDICAL');
-      if (
-        limText.indexOf('fixed amounts') !== -1 ||
-        limText.indexOf('fixed indemnity') !== -1 ||
-        limText.indexOf('set amounts') !== -1
-      )
-        flags.push('FIXED BENEFIT AMOUNTS');
-      if (limText.indexOf('no maternity') !== -1) flags.push('NO MATERNITY');
-      if (doc.preEx) flags.push('PRE-EX EXCLUSION');
-      if (flags.length > 4) flags = flags.slice(0, 4);
-
-      // Get top 3-5 benefit bullets
-      var topBullets = [];
-      doc.benefits.forEach(function (bcat) {
-        bcat.items.forEach(function (item) {
-          if (
-            topBullets.length < 5 &&
-            item.indexOf('NOT covered') === -1 &&
-            item.indexOf('not covered') === -1
-          )
-            topBullets.push(item);
-        });
-      });
 
       var badgeBg =
         grp.key === 'MEC'
-          ? 'rgba(91,141,239,0.10)'
+          ? 'rgba(34,197,94,0.10)'
           : grp.key === 'STM'
-            ? 'rgba(245,158,11,0.10)'
-            : 'rgba(239,68,68,0.08)';
+            ? 'rgba(91,141,239,0.10)'
+            : 'rgba(124,58,237,0.10)';
       var badgeColor =
         grp.key === 'MEC'
-          ? '#5B8DEF'
+          ? '#22c55e'
           : grp.key === 'STM'
-            ? '#d97706'
-            : '#dc2626';
+            ? '#5B8DEF'
+            : '#7C3AED';
 
-      // Best-for text from salesPlan fit data
       var bestForText = '';
       if (salesPlan && salesPlan.bestFor) {
         bestForText = salesPlan.bestFor;
@@ -1732,6 +1479,7 @@ function renderPlanGroups() {
         ' ' +
         doc.group
       ).toLowerCase();
+
       html +=
         '<div class="plan-card" data-plan-search="' +
         escHTML(planSearchStr) +
@@ -1739,211 +1487,175 @@ function renderPlanGroups() {
         doc.id +
         '" style="border-left:4px solid ' +
         grp.borderColor +
-        ';">';
+        ';margin-bottom:8px;">';
 
-      // ── COLLAPSED VIEW ──
-      html += '<div style="padding:16px 20px;">';
-      html += '<div style="flex:1;min-width:0;">';
-
-      // Best For badge — first thing agents see
+      // ── COLLAPSED: header row only ──
+      html +=
+        '<div style="padding:14px 18px;display:flex;align-items:center;gap:10px;">';
+      // Name
+      html +=
+        '<div style="flex:1;min-width:0;">' +
+        '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);line-height:1.3;">' +
+        doc.name +
+        '</div>';
+      // Best For line
       if (bestForText) {
         html +=
-          '<div style="display:flex;align-items:flex-start;gap:6px;background:rgba(91,141,239,0.06);border:1px solid rgba(91,141,239,0.15);border-radius:8px;padding:8px 12px;margin-bottom:10px;">';
-        html +=
-          '<span style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--accent);white-space:nowrap;padding-top:1px;">BEST FOR:</span>';
-        html +=
-          '<span style="font-size:13px;color:var(--text-primary);line-height:1.4;">' +
+          '<div style="font-size:12px;color:var(--text-secondary);margin-top:3px;line-height:1.4;">Best for: ' +
           bestForText +
-          '</span>';
-        html += '</div>';
+          '</div>';
       }
-
-      // Name + badge
+      html += '</div>';
+      // Type pill
       html +=
-        '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">';
-      html +=
-        '<span style="font-family:var(--font-ui);font-size:16px;font-weight:700;color:var(--text-primary);line-height:1.3;">' +
-        doc.name +
-        '</span>';
-      html +=
-        '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:' +
+        '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:' +
         badgeBg +
         ';color:' +
         badgeColor +
-        ';">' +
+        ';white-space:nowrap;flex-shrink:0;">' +
         grp.key +
         '</span>';
-      html += '</div>';
-      // Summary line
-      html +=
-        '<div style="font-size:14px;color:var(--text-secondary);margin-bottom:8px;">' +
-        doc.planNotes +
-        '</div>';
-      // Quick-read strip
-      if (flags.length) {
-        html +=
-          '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px;">';
-        flags.forEach(function (f) {
-          html +=
-            '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 8px;border-radius:999px;background:rgba(239,68,68,0.06);color:#B91C1C;border:1px solid rgba(239,68,68,0.15);">' +
-            f +
-            '</span>';
-        });
-        html += '</div>';
-      }
-      // Top bullets
-      topBullets.forEach(function (b) {
-        html +=
-          '<div style="font-size:13px;color:var(--text-secondary);padding-left:10px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
-          b +
-          '</div>';
-      });
-
-      // View Full Details button
+      // View Details button
       html +=
         '<button id="pv-toggle-' +
         doc.id +
         '" onclick="togglePlanVault(\'' +
         doc.id +
-        '\')" style="display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;background:rgba(91,141,239,0.08);border:1px solid rgba(91,141,239,0.2);border-radius:8px;font-family:var(--font-ui);font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;transition:all 0.15s;">' +
-        '<span class="pv-toggle-text">View Full Details</span>' +
+        '\')" style="padding:6px 14px;border-radius:8px;font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--accent);background:rgba(91,141,239,0.08);border:1px solid rgba(91,141,239,0.2);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0;">' +
+        '<span class="pv-toggle-text">View Details</span>' +
         '<svg class="pv-chev" id="pv-chev-' +
         doc.id +
-        '" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>' +
+        '" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>' +
         '</button>';
+      html += '</div>';
 
-      html += '</div>'; // close inner content
-      html += '</div>'; // close collapsed view
-
-      // ── EXPANDED VIEW ──
+      // ── EXPANDED: flat sections ──
       html +=
         '<div class="pv-detail" id="pv-detail-' +
         doc.id +
-        '" style="display:none;border-top:1.5px solid #E5E7EB;padding:16px 20px;">';
+        '" style="display:none;border-top:1px solid #E5E7EB;padding:14px 18px;">';
 
-      // Meta strip
+      // Meta badges
       html +=
-        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;">';
+        '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">';
       html +=
-        '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:rgba(46,125,82,0.08);color:#2E7D52;border:1px solid rgba(46,125,82,0.15);">' +
+        '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:rgba(46,125,82,0.08);color:#2E7D52;border:1px solid rgba(46,125,82,0.15);">' +
         doc.network +
         '</span>';
       html +=
-        '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:rgba(92,104,120,0.07);color:#5C6878;border:1px solid rgba(92,104,120,0.14);">' +
+        '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:rgba(92,104,120,0.07);color:#5C6878;border:1px solid rgba(92,104,120,0.14);">' +
         doc.carrier +
         '</span>';
       if (doc.assoc)
         html +=
-          '<span style="display:inline-flex;align-items:center;gap:4px;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 9px;border-radius:999px;background:rgba(196,150,10,0.08);color:#A07A06;border:1px solid rgba(196,150,10,0.15);">' +
+          '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:rgba(196,150,10,0.08);color:#A07A06;border:1px solid rgba(196,150,10,0.15);">' +
           doc.assoc +
           '</span>';
       html += '</div>';
 
-      // ── Section: Coverage ──
-      var coverageCats = doc.benefits.filter(function (b) {
-        var c = b.category.toLowerCase();
-        return (
-          c.indexOf('prescription') === -1 &&
-          c.indexOf('preventive') === -1 &&
-          c.indexOf('mec') === -1
-        );
+      // Coverage highlights (max 5)
+      var topBullets = [];
+      doc.benefits.forEach(function (bcat) {
+        bcat.items.forEach(function (item) {
+          if (
+            topBullets.length < 5 &&
+            item.indexOf('NOT covered') === -1 &&
+            item.indexOf('not covered') === -1
+          )
+            topBullets.push(item);
+        });
       });
-      if (coverageCats.length) {
-        html += _sectionDivider('Coverage', 'var(--accent)');
-        coverageCats.forEach(function (bcat) {
+      if (topBullets.length) {
+        html += _divider('Coverage Highlights');
+        topBullets.forEach(function (b) {
           html +=
-            '<div style="margin-bottom:10px;"><div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">' +
-            bcat.category +
+            '<div style="font-size:13px;color:var(--text-secondary);padding-left:8px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
+            b +
             '</div>';
-          bcat.items.forEach(function (item) {
-            html +=
-              '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
-              item +
-              '</div>';
-          });
-          html += '</div>';
         });
       }
 
-      // ── Section: Preventive / MEC ──
-      var prevCats = doc.benefits.filter(function (b) {
-        var c = b.category.toLowerCase();
-        return c.indexOf('preventive') !== -1 || c.indexOf('mec') !== -1;
+      // Rx Coverage
+      var rxItems = [];
+      doc.benefits.forEach(function (bcat) {
+        if (bcat.category.toLowerCase().indexOf('prescription') !== -1) {
+          bcat.items.forEach(function (item) {
+            rxItems.push(item);
+          });
+        }
       });
-      if (prevCats.length) {
-        html += _sectionDivider('Preventive / MEC', '#15803D');
-        prevCats.forEach(function (bcat) {
-          bcat.items.forEach(function (item) {
-            html +=
-              '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
-              item +
-              '</div>';
-          });
+      if (rxItems.length) {
+        html += _divider('Rx Coverage');
+        rxItems.forEach(function (item) {
+          html +=
+            '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
+            item +
+            '</div>';
         });
       }
 
-      // ── Section: Prescription Drugs ──
-      var rxCats = doc.benefits.filter(function (b) {
-        return b.category.toLowerCase().indexOf('prescription') !== -1;
-      });
-      if (rxCats.length) {
-        html += _sectionDivider('Prescription Drugs', '#7C3AED');
-        rxCats.forEach(function (bcat) {
-          bcat.items.forEach(function (item) {
-            html +=
-              '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;">&#8226; ' +
-              item +
-              '</div>';
-          });
-        });
-      }
-
-      // ── Section: Waiting Periods ──
-      html += _sectionDivider('Waiting Periods', '#15803D');
-      html +=
-        '<div style="background:rgba(34,197,94,0.05);border:1.5px solid rgba(34,197,94,0.2);border-radius:12px;padding:12px 14px;margin-bottom:6px;">';
+      // Waiting Periods
+      html += _divider('Waiting Periods');
       doc.waitingPeriods.forEach(function (w) {
         html +=
-          '<div style="font-size:14px;color:var(--text-secondary);margin-bottom:2px;line-height:1.5;">' +
+          '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
           w +
           '</div>';
       });
-      html += '</div>';
 
-      // ── Section: Pre-Ex Rules ──
-      html += _sectionDivider('Pre-Existing Condition Rules', '#B91C1C');
+      // Pre-Ex Rules
+      html += _divider('Pre-Ex Rules');
       html +=
-        '<div style="background:rgba(239,68,68,0.04);border:1.5px solid rgba(239,68,68,0.18);border-radius:12px;padding:12px 14px;margin-bottom:6px;">';
-      html +=
-        '<div style="font-size:14px;color:var(--text-secondary);line-height:1.5;">' +
+        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
         doc.preEx +
         '</div>';
-      html += '</div>';
 
-      // ── Section: Exclusions ──
+      // Exclusions — flat list, no collapsible
       if (doc.limitations.length) {
-        html += _sectionDivider('Exclusions', '#B91C1C');
-        html +=
-          '<div onclick="togglePvSection(this)" style="font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:8px;">Show ' +
-          doc.limitations.length +
-          ' exclusions <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg></div>';
-        html += '<div class="pv-section-body">';
+        html += _divider('Exclusions');
         doc.limitations.forEach(function (lim) {
           html +=
-            '<div style="font-size:14px;color:var(--text-secondary);padding-left:12px;margin-bottom:2px;line-height:1.5;"><span style="color:#DC2626;">&#10005;</span> ' +
+            '<div style="font-size:13px;color:var(--text-secondary);padding-left:8px;margin-bottom:2px;line-height:1.5;"><span style="color:#DC2626;">&#10005;</span> ' +
             lim +
             '</div>';
         });
-        html += '</div>';
       }
 
-      // ── Section: Sales Notes ──
+      // Sales Notes
       if (salesPlan) {
-        html += _sectionDivider('Sales Notes', 'var(--accent)');
-
-        // Compliance Note callout — amber box
+        html += _divider('Sales Notes');
         html +=
-          '<div style="background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.3);border-radius:10px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;">';
+          '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:12px;">' +
+          salesPlan.framing +
+          '</div>';
+
+        // Fit guide
+        html +=
+          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">';
+        html +=
+          '<div style="background:rgba(41,162,106,0.05);border:1px solid rgba(41,162,106,0.2);border-radius:10px;padding:10px 12px;">' +
+          '<div style="color:#29A26A;font-weight:700;font-size:10px;margin-bottom:4px;">BEST FIT</div>';
+        salesPlan.fitYes.forEach(function (f) {
+          html +=
+            '<div style="font-size:12px;color:var(--text-primary);margin-bottom:2px;">&#10003; ' +
+            f +
+            '</div>';
+        });
+        html += '</div>';
+        html +=
+          '<div style="background:rgba(200,60,80,0.05);border:1px solid rgba(200,60,80,0.15);border-radius:10px;padding:10px 12px;">' +
+          '<div style="color:#B91C1C;font-weight:700;font-size:10px;margin-bottom:4px;">NOT A FIT</div>';
+        salesPlan.fitNo.forEach(function (f) {
+          html +=
+            '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:2px;">&#10005; ' +
+            f +
+            '</div>';
+        });
+        html += '</div></div>';
+
+        // Compliance Note — amber box (kept exactly as is)
+        html +=
+          '<div style="background:rgba(245,158,11,0.08);border:1.5px solid rgba(245,158,11,0.3);border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;">';
         html +=
           '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>';
         html +=
@@ -1952,39 +1664,11 @@ function renderPlanGroups() {
           salesPlan.compliance +
           '</div></div>';
         html += '</div>';
-
-        // Sales framing
-        html +=
-          '<div class="sbox" style="margin-bottom:12px;font-size:14px;">' +
-          salesPlan.framing +
-          '</div>';
-
-        // Fit guide — best fit / not a fit
-        html +=
-          '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">';
-        html +=
-          '<div style="background:rgba(41,162,106,0.05);border:1px solid rgba(41,162,106,0.2);border-radius:12px;padding:12px;"><div style="color:#29A26A;font-weight:700;font-size:11px;margin-bottom:6px;">BEST FIT WHEN...</div>';
-        salesPlan.fitYes.forEach(function (f) {
-          html +=
-            '<div style="font-size:13px;color:var(--charcoal);margin-bottom:3px;">&#10003; ' +
-            f +
-            '</div>';
-        });
-        html += '</div>';
-        html +=
-          '<div style="background:rgba(200,60,80,0.05);border:1px solid rgba(200,60,80,0.15);border-radius:12px;padding:12px;"><div style="color:#B91C1C;font-weight:700;font-size:11px;margin-bottom:6px;">NOT A FIT WHEN...</div>';
-        salesPlan.fitNo.forEach(function (f) {
-          html +=
-            '<div style="font-size:13px;color:var(--charcoal3);margin-bottom:3px;">&#10005; ' +
-            f +
-            '</div>';
-        });
-        html += '</div></div>';
       }
 
       // Source
       html +=
-        '<div style="font-size:12px;color:var(--text-muted);margin-top:14px;padding-top:10px;border-top:1px solid #E5E7EB;">Source: ' +
+        '<div style="font-size:11px;color:var(--text-muted);margin-top:12px;padding-top:8px;border-top:1px solid #E5E7EB;">Source: ' +
         doc.source +
         '</div>';
       html += '</div>'; // close pv-detail
@@ -2000,7 +1684,7 @@ function _updateToggleBtn(id, open) {
   var btn = document.getElementById('pv-toggle-' + id);
   if (!btn) return;
   var textEl = btn.querySelector('.pv-toggle-text');
-  if (textEl) textEl.textContent = open ? 'Hide Details' : 'View Full Details';
+  if (textEl) textEl.textContent = open ? 'Hide Details' : 'View Details';
 }
 function togglePlanVault(id) {
   var detail = document.getElementById('pv-detail-' + id);
