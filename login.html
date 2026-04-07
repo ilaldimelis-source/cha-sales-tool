@@ -124,6 +124,18 @@
       <button class="forgot" onclick="showForgot()">Forgot password?</button>
     </div>
 
+    <div id="mfa-view" style="display:none;">
+      <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:6px;">Two-Factor Authentication</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:14px;">Enter the 6-digit code from your authenticator app or SMS.</div>
+      <div class="group">
+        <label for="mfa-code">Verification Code</label>
+        <input type="text" id="mfa-code" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code" style="text-align:center;font-size:20px;letter-spacing:8px;font-weight:700;" />
+      </div>
+      <button class="btn" id="mfa-btn" onclick="doMfaVerify()">Verify →</button>
+      <div class="error" id="mfa-error"></div>
+      <button class="forgot" onclick="showSignIn()">← Back to sign in</button>
+    </div>
+
     <div id="forgot-view" style="display:none;">
       <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:6px;">Reset Password</div>
       <div style="font-size:13px;color:#64748b;margin-bottom:14px;">Enter your email and we will send a reset link.</div>
@@ -198,6 +210,26 @@
             window.Clerk.setActive({ session: result.createdSessionId })
               .then(function() { window.location.replace('/'); })
               .catch(function() { window.location.replace('/'); });
+          } else if (result.status === 'needs_second_factor') {
+            // Store result for MFA verification
+            window._chaSignInResult = result;
+            // Detect which 2FA strategy is available
+            var supported = result.supportedSecondFactors || [];
+            window._chaMfaStrategy = 'totp';
+            for (var i = 0; i < supported.length; i++) {
+              if (supported[i].strategy === 'phone_code') {
+                window._chaMfaStrategy = 'phone_code';
+                // Trigger sending the SMS code
+                result.prepareSecondFactor({ strategy: 'phone_code' }).catch(function() {});
+                break;
+              }
+            }
+            // Show MFA view
+            document.getElementById('sign-in-view').style.display = 'none';
+            document.getElementById('mfa-view').style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Sign In →';
+            setTimeout(function() { document.getElementById('mfa-code').focus(); }, 100);
           } else {
             btn.disabled = false;
             btn.textContent = 'Sign In →';
@@ -217,6 +249,53 @@
             else msg = e.errors[0].long_message || e.errors[0].message || msg;
           }
           if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
+        });
+    }
+
+    // ── MFA VERIFY ────────────────────────────────────────────────────────
+    function doMfaVerify() {
+      var code = document.getElementById('mfa-code').value.trim();
+      var btn = document.getElementById('mfa-btn');
+      var errEl = document.getElementById('mfa-error');
+      var result = window._chaSignInResult;
+
+      if (errEl) errEl.style.display = 'none';
+      if (!code || code.length < 6) {
+        if (errEl) { errEl.textContent = 'Enter the full 6-digit code.'; errEl.style.display = 'block'; }
+        return;
+      }
+      if (!result) {
+        if (errEl) { errEl.textContent = 'Session expired. Please sign in again.'; errEl.style.display = 'block'; }
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Verifying...';
+
+      result.attemptSecondFactor({ strategy: window._chaMfaStrategy || 'totp', code: code })
+        .then(function(mfaResult) {
+          console.log('[CHA] MFA result status:', mfaResult.status);
+          if (mfaResult.status === 'complete') {
+            window.Clerk.setActive({ session: mfaResult.createdSessionId })
+              .then(function() { window.location.replace('/'); })
+              .catch(function() { window.location.replace('/'); });
+          } else {
+            btn.disabled = false;
+            btn.textContent = 'Verify →';
+            if (errEl) { errEl.textContent = 'Verification incomplete. Status: ' + mfaResult.status; errEl.style.display = 'block'; }
+          }
+        })
+        .catch(function(e) {
+          btn.disabled = false;
+          btn.textContent = 'Verify →';
+          console.error('[CHA] MFA error:', e);
+          var msg = 'Invalid code. Try again.';
+          if (e.errors && e.errors[0]) {
+            msg = e.errors[0].long_message || e.errors[0].message || msg;
+          }
+          if (errEl) { errEl.textContent = msg; errEl.style.display = 'block'; }
+          document.getElementById('mfa-code').value = '';
+          document.getElementById('mfa-code').focus();
         });
     }
 
@@ -249,7 +328,9 @@
     }
     function showSignIn() {
       document.getElementById('forgot-view').style.display = 'none';
+      document.getElementById('mfa-view').style.display = 'none';
       document.getElementById('sign-in-view').style.display = 'block';
+      window._chaSignInResult = null;
     }
     function showErr(msg) {
       var el = document.getElementById('error-msg');
@@ -266,9 +347,9 @@
     // Enter key submits
     document.addEventListener('keydown', function(e) {
       if (e.key !== 'Enter') return;
-      if (document.getElementById('sign-in-view').style.display !== 'none' ||
-          !document.getElementById('forgot-view').style.display ||
-          document.getElementById('forgot-view').style.display === 'none') {
+      if (document.getElementById('mfa-view').style.display === 'block') {
+        doMfaVerify();
+      } else if (document.getElementById('sign-in-view').style.display !== 'none') {
         doSignIn();
       }
     });
