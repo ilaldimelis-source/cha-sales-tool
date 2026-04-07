@@ -988,7 +988,9 @@ function copyCompliance(btn) {
   observer.observe(document.body, { childList: true, subtree: true });
 })();
 
-// ── Service Worker ───────────────────────────────────
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js');
-}
+// ── Service Worker — DISABLED to prevent stale cache issues ──
+// SW was caching old JS files and preventing updates from reaching users.
+// Uncomment to re-enable after cache issues are resolved.
+// if ('serviceWorker' in navigator) {
+//   navigator.serviceWorker.register('./sw.js');
+// }

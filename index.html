@@ -43,19 +43,21 @@
     <!-- CSS: external file for GitHub Pages, with inline fallback for local dev servers
      that serve .css as text/plain (which browsers reject). The sync XHR runs only
      if the <link> stylesheet has 0 rules after loading. -->
-    <link rel="stylesheet" href="css/styles.css" id="mainCSS" />
+    <link rel="stylesheet" href="css/styles.css?v=34" id="mainCSS" />
     <script>
-      // Force-bust old service worker and caches on first load
+      // Nuclear cache bust — unregister ALL service workers and delete ALL caches
       (function () {
         if ('serviceWorker' in navigator) {
+          // Delete every single cache
           caches.keys().then(function (names) {
             names.forEach(function (n) {
-              if (n !== 'cha-command-center-v31') caches.delete(n);
+              caches.delete(n);
             });
           });
+          // Unregister all service workers completely
           navigator.serviceWorker.getRegistrations().then(function (regs) {
             regs.forEach(function (r) {
-              r.update();
+              r.unregister();
             });
           });
         }
@@ -833,18 +835,18 @@
      12. app.js       — PAGE_CONFIG, showPage, initApp, CLOSEABLE, SW
      13. chat.js      — Benefits Reference panel (uses POLICY_DOCS)
      ══════════════════════════════════════════════════════ -->
-    <script src="js/utils.js"></script>
-    <script src="js/recovery-data.js"></script>
-    <script src="js/objections.js"></script>
-    <script src="js/plans-benefits.js"></script>
-    <script src="js/call-playbook.js"></script>
-    <script src="js/live-assist.js"></script>
-    <script src="js/ai-tools.js"></script>
-    <script src="js/training.js"></script>
-    <script src="js/compliance.js"></script>
-    <script src="js/policy-docs.js"></script>
-    <script src="js/myspace.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/chat.js"></script>
+    <script src="js/utils.js?v=34"></script>
+    <script src="js/recovery-data.js?v=34"></script>
+    <script src="js/objections.js?v=34"></script>
+    <script src="js/plans-benefits.js?v=34"></script>
+    <script src="js/call-playbook.js?v=34"></script>
+    <script src="js/live-assist.js?v=34"></script>
+    <script src="js/ai-tools.js?v=34"></script>
+    <script src="js/training.js?v=34"></script>
+    <script src="js/compliance.js?v=34"></script>
+    <script src="js/policy-docs.js?v=34"></script>
+    <script src="js/myspace.js?v=34"></script>
+    <script src="js/app.js?v=34"></script>
+    <script src="js/chat.js?v=34"></script>
   </body>
 </html>
