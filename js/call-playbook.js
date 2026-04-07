@@ -917,8 +917,15 @@ function toggleCF(i) {
 }
 
 var planScriptFilter = 'All';
-var planScriptActive = 0;
+var planScriptActive = -1;
 var planScriptSection = 0;
+
+function _psTypeColor(t) {
+  return t === 'MEC' ? '#5175F1' : t === 'STM' ? '#F59E0B' : t === 'Limited' ? '#DC2626' : '#29A26A';
+}
+function _psTypeBg(t) {
+  return t === 'MEC' ? 'rgba(81,117,241,0.08)' : t === 'STM' ? 'rgba(245,166,35,0.08)' : t === 'Limited' ? 'rgba(237,95,116,0.08)' : 'rgba(62,207,142,0.08)';
+}
 
 function renderPlanScripts() {
   var html = '<div class="ph"><div class="pt">Plan <span>Scripts</span></div>';
@@ -931,7 +938,7 @@ function renderPlanScripts() {
       (f === planScriptFilter ? ' active' : '') +
       '" onclick="planScriptFilter=\'' +
       f +
-      '\';planScriptActive=0;planScriptSection=0;renderPlanScripts()">' +
+      '\';planScriptActive=-1;planScriptSection=0;renderPlanScripts()">' +
       f +
       '</button>';
   });
@@ -947,44 +954,42 @@ function renderPlanScripts() {
     if (_page_planscripts) _page_planscripts.innerHTML = html;
     return;
   }
-  if (planScriptActive >= filtered.length) planScriptActive = 0;
+  // ── DEFAULT VIEW: all plans as clickable cards ──
+  if (planScriptActive < 0 || planScriptActive >= filtered.length) {
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">';
+    filtered.forEach(function (p, idx) {
+      var tc = _psTypeColor(p.planType);
+      var bg = _psTypeBg(p.planType);
+      html += '<div onclick="planScriptActive=' + idx + ';planScriptSection=0;renderPlanScripts()" style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:16px;padding:16px 18px;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;" onmouseover="this.style.borderColor=\'' + tc + '\';this.style.boxShadow=\'0 2px 12px rgba(91,141,239,0.10)\'" onmouseout="this.style.borderColor=\'#C8CEDD\';this.style.boxShadow=\'none\'">';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+      html += '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + tc + ';flex-shrink:0;"></span>';
+      html += '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.3;">' + p.name + '</span>';
+      html += '</div>';
+      html += '<div style="display:flex;align-items:center;gap:6px;">';
+      html += '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:' + bg + ';color:' + tc + ';">' + p.planType + '</span>';
+      html += '<span style="font-size:12px;color:var(--text-secondary);">' + p.sections.length + ' sections</span>';
+      html += '</div></div>';
+    });
+    html += '</div>';
+    var _page_planscripts = document.getElementById('page-planscripts');
+    if (_page_planscripts) _page_planscripts.innerHTML = html;
+    return;
+  }
+
+  // ── SELECTED PLAN VIEW ──
   var activePlan = filtered[planScriptActive];
-  var typeColor =
-    activePlan.planType === 'MEC'
-      ? '#5175F1'
-      : activePlan.planType === 'STM'
-        ? '#F59E0B'
-        : activePlan.planType === 'Limited'
-          ? '#DC2626'
-          : '#29A26A';
-  var typeBg =
-    activePlan.planType === 'MEC'
-      ? 'rgba(81,117,241,0.08)'
-      : activePlan.planType === 'STM'
-        ? 'rgba(245,166,35,0.08)'
-        : activePlan.planType === 'Limited'
-          ? 'rgba(237,95,116,0.08)'
-          : 'rgba(62,207,142,0.08)';
+  var typeColor = _psTypeColor(activePlan.planType);
+  var typeBg = _psTypeBg(activePlan.planType);
+
+  // Back button
+  html += '<div style="margin-bottom:14px;"><button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1.5px solid #E5E7EB;background:#FFFFFF;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\';this.style.color=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.color=\'var(--text-secondary)\'">\u2190 All Plans</button></div>';
+  // Plan selector pills
   html +=
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">';
   filtered.forEach(function (p, idx) {
     var isActive = idx === planScriptActive;
-    var tc =
-      p.planType === 'MEC'
-        ? '#5175F1'
-        : p.planType === 'STM'
-          ? '#F59E0B'
-          : p.planType === 'Limited'
-            ? '#DC2626'
-            : '#29A26A';
-    var bg =
-      p.planType === 'MEC'
-        ? 'rgba(81,117,241,0.08)'
-        : p.planType === 'STM'
-          ? 'rgba(245,166,35,0.08)'
-          : p.planType === 'Limited'
-            ? 'rgba(237,95,116,0.08)'
-            : 'rgba(62,207,142,0.08)';
+    var tc = _psTypeColor(p.planType);
+    var bg = _psTypeBg(p.planType);
     html +=
       '<button onclick="planScriptActive=' +
       idx +
