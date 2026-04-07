@@ -824,7 +824,10 @@ function renderCloses() {
         id +
         '\')" style="padding:14px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;">';
       html += '<div class="close-line u-flex1">"' + c.line + '"</div>';
-      html += (typeof favStarHTML === 'function' ? favStarHTML('close', id, c.line.substring(0,60), c.line, 'Closes') : '');
+      html +=
+        typeof favStarHTML === 'function'
+          ? favStarHTML('close', id, c.line.substring(0, 60), c.line, 'Closes')
+          : '';
       html += '<span class="ctype ' + type + '">' + type + '</span></div>';
       html +=
         '<div class="close-detail" style="display:none;padding:14px 18px;border-top:1px solid rgba(220,170,180,0.2);">';
@@ -921,10 +924,22 @@ var planScriptActive = -1;
 var planScriptSection = 0;
 
 function _psTypeColor(t) {
-  return t === 'MEC' ? '#5175F1' : t === 'STM' ? '#F59E0B' : t === 'Limited' ? '#DC2626' : '#29A26A';
+  return t === 'MEC'
+    ? '#5175F1'
+    : t === 'STM'
+      ? '#F59E0B'
+      : t === 'Limited'
+        ? '#DC2626'
+        : '#29A26A';
 }
 function _psTypeBg(t) {
-  return t === 'MEC' ? 'rgba(81,117,241,0.08)' : t === 'STM' ? 'rgba(245,166,35,0.08)' : t === 'Limited' ? 'rgba(237,95,116,0.08)' : 'rgba(62,207,142,0.08)';
+  return t === 'MEC'
+    ? 'rgba(81,117,241,0.08)'
+    : t === 'STM'
+      ? 'rgba(245,166,35,0.08)'
+      : t === 'Limited'
+        ? 'rgba(237,95,116,0.08)'
+        : 'rgba(62,207,142,0.08)';
 }
 
 function _filterPsCards(query) {
@@ -933,8 +948,11 @@ function _filterPsCards(query) {
   if (clearBtn) clearBtn.style.display = q ? 'block' : 'none';
   var cards = document.querySelectorAll('.ps-card');
   var vis = 0;
-  cards.forEach(function(c) {
-    var searchStr = (c.getAttribute('data-ps-search') || '') + ' ' + c.textContent.toLowerCase();
+  cards.forEach(function (c) {
+    var searchStr =
+      (c.getAttribute('data-ps-search') || '') +
+      ' ' +
+      c.textContent.toLowerCase();
     var match = !q || searchStr.indexOf(q) !== -1;
     c.style.display = match ? '' : 'none';
     if (match) vis++;
@@ -944,11 +962,14 @@ function _filterPsCards(query) {
   if (!noMsg) {
     var grid = document.getElementById('psCardGrid');
     if (grid) {
-      grid.insertAdjacentHTML('afterend', '<div id="psNoResults" style="display:none;text-align:center;padding:24px 0;color:var(--text-secondary);font-size:14px;">No plans match your search.</div>');
+      grid.insertAdjacentHTML(
+        'afterend',
+        '<div id="psNoResults" style="display:none;text-align:center;padding:24px 0;color:var(--text-secondary);font-size:14px;">No plans match your search.</div>'
+      );
       noMsg = document.getElementById('psNoResults');
     }
   }
-  if (noMsg) noMsg.style.display = (q && vis === 0) ? 'block' : 'none';
+  if (noMsg) noMsg.style.display = q && vis === 0 ? 'block' : 'none';
 }
 
 function renderPlanScripts() {
@@ -982,22 +1003,50 @@ function renderPlanScripts() {
   if (planScriptActive < 0 || planScriptActive >= filtered.length) {
     // Search bar
     html += '<div style="position:relative;margin-bottom:14px;">';
-    html += '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
-    html += '<input type="text" id="psSearchInput" placeholder="Search plans..." oninput="_filterPsCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
-    html += '<button id="psSearchClear" onclick="var i=document.getElementById(\'psSearchInput\');if(i){i.value=\'\';_filterPsCards(\'\');i.focus();}" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
+    html +=
+      '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
+    html +=
+      '<input type="text" id="psSearchInput" placeholder="Search plans..." oninput="_filterPsCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
+    html +=
+      '<button id="psSearchClear" onclick="var i=document.getElementById(\'psSearchInput\');if(i){i.value=\'\';_filterPsCards(\'\');i.focus();}" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
     html += '</div>';
-    html += '<div id="psCardGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">';
+    html +=
+      '<div id="psCardGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">';
     filtered.forEach(function (p, idx) {
       var tc = _psTypeColor(p.planType);
       var bg = _psTypeBg(p.planType);
-      html += '<div class="ps-card" data-ps-search="' + (p.name + ' ' + p.planType).toLowerCase() + '" onclick="planScriptActive=' + idx + ';planScriptSection=0;renderPlanScripts()" style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:16px;padding:16px 18px;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;" onmouseover="this.style.borderColor=\'' + tc + '\';this.style.boxShadow=\'0 2px 12px rgba(91,141,239,0.10)\'" onmouseout="this.style.borderColor=\'#C8CEDD\';this.style.boxShadow=\'none\'">';
-      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
-      html += '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + tc + ';flex-shrink:0;"></span>';
-      html += '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.3;">' + p.name + '</span>';
+      html +=
+        '<div class="ps-card" data-ps-search="' +
+        (p.name + ' ' + p.planType).toLowerCase() +
+        '" onclick="planScriptActive=' +
+        idx +
+        ';planScriptSection=0;renderPlanScripts()" style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:16px;padding:16px 18px;cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;" onmouseover="this.style.borderColor=\'' +
+        tc +
+        "';this.style.boxShadow='0 2px 12px rgba(91,141,239,0.10)'\" onmouseout=\"this.style.borderColor='#C8CEDD';this.style.boxShadow='none'\">";
+      html +=
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
+      html +=
+        '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
+        tc +
+        ';flex-shrink:0;"></span>';
+      html +=
+        '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.3;">' +
+        p.name +
+        '</span>';
       html += '</div>';
       html += '<div style="display:flex;align-items:center;gap:6px;">';
-      html += '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:' + bg + ';color:' + tc + ';">' + p.planType + '</span>';
-      html += '<span style="font-size:12px;color:var(--text-secondary);">' + p.sections.length + ' sections</span>';
+      html +=
+        '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:' +
+        bg +
+        ';color:' +
+        tc +
+        ';">' +
+        p.planType +
+        '</span>';
+      html +=
+        '<span style="font-size:12px;color:var(--text-secondary);">' +
+        p.sections.length +
+        ' sections</span>';
       html += '</div></div>';
     });
     html += '</div>';
@@ -1012,7 +1061,8 @@ function renderPlanScripts() {
   var typeBg = _psTypeBg(activePlan.planType);
 
   // Back button
-  html += '<div style="margin-bottom:14px;"><button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1.5px solid #E5E7EB;background:#FFFFFF;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\';this.style.color=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.color=\'var(--text-secondary)\'">\u2190 All Plans</button></div>';
+  html +=
+    '<div style="margin-bottom:14px;"><button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1.5px solid #E5E7EB;background:#FFFFFF;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\';this.style.color=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\';this.style.color=\'var(--text-secondary)\'">\u2190 All Plans</button></div>';
   // Plan selector pills
   html +=
     '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">';
@@ -1170,7 +1220,9 @@ function renderScripts() {
       '</button>';
   });
   html += '</div><div id="isa-script-content"></div>';
-  var _page_scripts = document.getElementById('page-allscripts') || document.getElementById('page-scripts');
+  var _page_scripts =
+    document.getElementById('page-allscripts') ||
+    document.getElementById('page-scripts');
   if (_page_scripts) _page_scripts.innerHTML = html;
   renderIsaScriptContent();
 }

@@ -29,19 +29,36 @@ function brBuildSOB(p) {
   p.benefits.forEach(function (b) {
     b.items.forEach(function (item) {
       entries.push({ category: b.category, text: item });
-      if (/x-ray|radiology|imaging|diagnostic x|diagnostic test|lab work|laboratory|pathology|radiology/i.test(item)) hasExplicitDiag = true;
+      if (
+        /x-ray|radiology|imaging|diagnostic x|diagnostic test|lab work|laboratory|pathology|radiology/i.test(
+          item
+        )
+      )
+        hasExplicitDiag = true;
     });
   });
   // For plans on recognized networks without explicit diagnostic line items,
   // add network discount entries so queries for x-ray, labs, imaging find real info
-  if (!hasExplicitDiag && p.network && /First Health|PHCS|MultiPlan/i.test(p.network)) {
+  if (
+    !hasExplicitDiag &&
+    p.network &&
+    /First Health|PHCS|MultiPlan/i.test(p.network)
+  ) {
     entries.push({
       category: 'Network Discount Services',
-      text: 'Diagnostic X-Ray and Labs — if member stays in the ' + p.network + ' Network they will receive a discount. This is not a fixed benefit but a network discount through ' + p.network + '.'
+      text:
+        'Diagnostic X-Ray and Labs — if member stays in the ' +
+        p.network +
+        ' Network they will receive a discount. This is not a fixed benefit but a network discount through ' +
+        p.network +
+        '.'
     });
     entries.push({
       category: 'Network Discount Services',
-      text: 'Outpatient lab work, radiology, and imaging services — available at ' + p.network + ' negotiated discount rates at participating facilities.'
+      text:
+        'Outpatient lab work, radiology, and imaging services — available at ' +
+        p.network +
+        ' negotiated discount rates at participating facilities.'
     });
   }
   p.limitations.forEach(function (l) {
@@ -151,7 +168,11 @@ function brRenderPlanButtons(groupFilter) {
       });
       // Sync sticky plan context
       if (brActivePlan && typeof setActivePlan === 'function') {
-        setActivePlan(brActivePlan.id, brActivePlan.name, brActivePlan.group || '');
+        setActivePlan(
+          brActivePlan.id,
+          brActivePlan.name,
+          brActivePlan.group || ''
+        );
       }
       document.querySelectorAll('.br-plan-btn').forEach(function (b) {
         b.classList.toggle('active', b.dataset.id === p.id);
@@ -662,7 +683,9 @@ function brStructuredAnswer(query, plans) {
       hasMatch = true;
 
       // If benefit TEXT itself says "NOT covered", treat as exclusion — not a benefit
-      var textSaysNot = /\bNOT covered\b|\bNOT COVERED\b/i.test(entry.text) && !/discount|savings|negotiated/i.test(entry.text);
+      var textSaysNot =
+        /\bNOT covered\b|\bNOT COVERED\b/i.test(entry.text) &&
+        !/discount|savings|negotiated/i.test(entry.text);
       if (cat.includes('exclusion') || cat.includes('limitation'))
         exclusions.push(entry.text);
       else if (cat.includes('waiting')) waiting.push(entry.text);
@@ -693,10 +716,14 @@ function brStructuredAnswer(query, plans) {
     allPreex.length;
 
   // Detect discount/network-rate benefits
-  var discountBenefits = allBenefits.filter(function(b) {
-    return /discount|negotiated rate|network discount|network rate|savings/i.test(b);
+  var discountBenefits = allBenefits.filter(function (b) {
+    return /discount|negotiated rate|network discount|network rate|savings/i.test(
+      b
+    );
   });
-  var isDiscountOnly = discountBenefits.length > 0 && discountBenefits.length === allBenefits.length;
+  var isDiscountOnly =
+    discountBenefits.length > 0 &&
+    discountBenefits.length === allBenefits.length;
 
   // Determine coverage status and source
   var status, internalAnswer, rebuttalType, sourceType;
@@ -740,7 +767,8 @@ function brStructuredAnswer(query, plans) {
       // Check if the benefits are discount/network type — show discount, not "not covered"
       if (discountBenefits.length > 0) {
         status = 'Discount Available';
-        internalAnswer = discountBenefits[0] + ' — Note: ' + clearNoExclusions[0];
+        internalAnswer =
+          discountBenefits[0] + ' — Note: ' + clearNoExclusions[0];
         rebuttalType = 'discount';
       } else {
         // Few benefits + clear exclusion → Not Covered (e.g. "NO mental health" with tangential matches)
@@ -850,31 +878,82 @@ function brStructuredAnswer(query, plans) {
   html += '<div style="padding:10px 14px;background:#F8FAFF;">';
   if (status === 'Not Covered') {
     // Build plan-specific rebuttal from real data
-    var planName = (matchedPlans.length ? matchedPlans[0].name : (brActivePlan ? brActivePlan.name : 'This plan'));
+    var planName = matchedPlans.length
+      ? matchedPlans[0].name
+      : brActivePlan
+        ? brActivePlan.name
+        : 'This plan';
     var topBens = [];
-    var srcPlan = brActivePlan ? brActivePlan : (BR_PLANS.length ? BR_PLANS[0] : null);
+    var srcPlan = brActivePlan
+      ? brActivePlan
+      : BR_PLANS.length
+        ? BR_PLANS[0]
+        : null;
     if (srcPlan) {
-      srcPlan.entries.forEach(function(e) {
+      srcPlan.entries.forEach(function (e) {
         var c = e.category.toLowerCase();
-        if (c.includes('exclusion') || c.includes('limitation') || c.includes('waiting') || c.includes('pre-existing') || c.includes('agent note') || c.includes('network discount')) return;
-        if (topBens.length < 3) topBens.push(e.text.split(' — ')[0].split(':')[0].replace(/^\$\d+\s*copay\s*—?\s*/i,'').trim());
+        if (
+          c.includes('exclusion') ||
+          c.includes('limitation') ||
+          c.includes('waiting') ||
+          c.includes('pre-existing') ||
+          c.includes('agent note') ||
+          c.includes('network discount')
+        )
+          return;
+        if (topBens.length < 3)
+          topBens.push(
+            e.text
+              .split(' — ')[0]
+              .split(':')[0]
+              .replace(/^\$\d+\s*copay\s*—?\s*/i, '')
+              .trim()
+          );
       });
     }
-    var benList = topBens.length ? topBens.join(', ') : 'doctor visits, telemedicine, and hospital coverage';
+    var benList = topBens.length
+      ? topBens.join(', ')
+      : 'doctor visits, telemedicine, and hospital coverage';
     var topBen = topBens.length ? topBens[0] : 'doctor visits';
-    var specificRebuttal = planName + ' does not cover ' + query + '. Say this: "That benefit isn\'t included — what this plan does cover is ' + benList + '. Most people find ' + topBen + ' is what they use most. Does that work?"';
-    html += '<div class="comp-script-block" style="border-left:3px solid #15803D;background:#F0FDF4;border-radius:12px;padding:14px;margin-top:2px;">';
-    html += '<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#15803D;margin-bottom:6px;">SAY THIS →</div>';
-    html += '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' + specificRebuttal + '"</div>';
+    var specificRebuttal =
+      planName +
+      ' does not cover ' +
+      query +
+      '. Say this: "That benefit isn\'t included — what this plan does cover is ' +
+      benList +
+      '. Most people find ' +
+      topBen +
+      ' is what they use most. Does that work?"';
+    html +=
+      '<div class="comp-script-block" style="border-left:3px solid #15803D;background:#F0FDF4;border-radius:12px;padding:14px;margin-top:2px;">';
+    html +=
+      '<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#15803D;margin-bottom:6px;">SAY THIS →</div>';
+    html +=
+      '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' +
+      specificRebuttal +
+      '"</div>';
     html += '</div>';
   } else if (status === 'Discount Available') {
-    html += '<div class="comp-script-block" style="border-left:3px solid #D97706;background:#FFFBEB;border-radius:12px;padding:14px;margin-top:2px;">';
-    html += '<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#D97706;margin-bottom:6px;">' + LI.mic + ' SAY THIS →</div>';
-    html += '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' + rebuttal + '"</div>';
+    html +=
+      '<div class="comp-script-block" style="border-left:3px solid #D97706;background:#FFFBEB;border-radius:12px;padding:14px;margin-top:2px;">';
+    html +=
+      '<div style="font-size:10px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#D97706;margin-bottom:6px;">' +
+      LI.mic +
+      ' SAY THIS →</div>';
+    html +=
+      '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' +
+      rebuttal +
+      '"</div>';
     html += '</div>';
   } else {
-    html += '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">' + LI.mic + ' Say This to Client</div>';
-    html += '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' + rebuttal + '"</div>';
+    html +=
+      '<div style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#6B7280;margin-bottom:4px;">' +
+      LI.mic +
+      ' Say This to Client</div>';
+    html +=
+      '<div style="font-size:13px;color:#1C2035;line-height:1.55;font-style:italic;">"' +
+      rebuttal +
+      '"</div>';
   }
   html += '</div>';
 

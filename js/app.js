@@ -4,10 +4,18 @@
 // SAFE LOCALSTORAGE WRAPPER (incognito / quota guard)
 // ══════════════════════════════════════════════════════
 function safeGetItem(key) {
-  try { return localStorage.getItem(key); } catch(e) { return null; }
+  try {
+    return localStorage.getItem(key);
+  } catch (e) {
+    return null;
+  }
 }
 function safeSetItem(key, val) {
-  try { localStorage.setItem(key, val); } catch(e) {}
+  try {
+    localStorage.setItem(key, val);
+  } catch (_e) {
+    /* ignore storage errors */
+  }
 }
 
 // ══════════════════════════════════════════════════════
@@ -19,7 +27,7 @@ function setFontSize(size) {
   html.classList.add('font-' + size);
   safeSetItem('cha_font_size', size);
   var btns = document.querySelectorAll('.font-toggle-btn');
-  btns.forEach(function(b) {
+  btns.forEach(function (b) {
     b.classList.toggle('active', b.textContent.trim().toLowerCase() === size);
   });
 }
@@ -36,7 +44,7 @@ function safeCopy(text) {
     return navigator.clipboard.writeText(text);
   }
   // Fallback: textarea + execCommand
-  return new Promise(function(resolve) {
+  return new Promise(function (resolve) {
     var ta = document.createElement('textarea');
     ta.value = text;
     ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
@@ -53,8 +61,11 @@ function safeCopy(text) {
 // ══════════════════════════════════════════════════════
 (function _migrateLsKeys() {
   try {
-    var migrations = [['scc_notes','cha_notes'],['scc_scripts','cha_scripts']];
-    migrations.forEach(function(pair) {
+    var migrations = [
+      ['scc_notes', 'cha_notes'],
+      ['scc_scripts', 'cha_scripts']
+    ];
+    migrations.forEach(function (pair) {
       var old = localStorage.getItem(pair[0]);
       if (old !== null && localStorage.getItem(pair[1]) === null) {
         localStorage.setItem(pair[1], old);
@@ -63,7 +74,9 @@ function safeCopy(text) {
         localStorage.removeItem(pair[0]);
       }
     });
-  } catch(e) {}
+  } catch (_e) {
+    /* ignore migration errors */
+  }
 })();
 
 // ══════════════════════════════════════════════════════
@@ -77,8 +90,16 @@ var PAGE_CONFIG = {
       { id: 'live', label: 'Live Assist', render: renderLive },
       { id: 'objections', label: 'Objections', render: renderObjections },
       { id: 'qarebuttals', label: 'Q&A Rebuttals', render: renderQaRebuttals },
-      { id: 'psychprofile', label: 'Client Profiler', render: renderPsychprofile },
-      { id: 'complianceai', label: 'Compliance AI', render: renderComplianceai },
+      {
+        id: 'psychprofile',
+        label: 'Client Profiler',
+        render: renderPsychprofile
+      },
+      {
+        id: 'complianceai',
+        label: 'Compliance AI',
+        render: renderComplianceai
+      },
       { id: 'coachingai', label: 'Call Coach', render: renderCoachingai }
     ]
   },
@@ -103,7 +124,11 @@ var PAGE_CONFIG = {
   networkguide: {
     label: 'Network Guide',
     subs: [
-      { id: 'networkexplainer', label: 'Network Guide', render: renderNetworkexplainer }
+      {
+        id: 'networkexplainer',
+        label: 'Network Guide',
+        render: renderNetworkexplainer
+      }
     ]
   },
   training: {
@@ -115,7 +140,11 @@ var PAGE_CONFIG = {
   compliance: {
     label: 'Compliance',
     subs: [
-      { id: 'compliancecenter', label: 'Compliance Center', render: renderComplianceCenter },
+      {
+        id: 'compliancecenter',
+        label: 'Compliance Center',
+        render: renderComplianceCenter
+      },
       { id: 'callaudit', label: 'Call Audit', render: renderCallAudit }
     ]
   },
@@ -138,14 +167,22 @@ Object.keys(PAGE_CONFIG).forEach(function (parentId) {
 function trackRecentPage(id) {
   try {
     var recent = JSON.parse(safeGetItem('cha_recent') || '[]');
-    recent = recent.filter(function(r) { return r !== id; });
+    recent = recent.filter(function (r) {
+      return r !== id;
+    });
     recent.unshift(id);
     if (recent.length > 4) recent = recent.slice(0, 4);
     safeSetItem('cha_recent', JSON.stringify(recent));
-  } catch(e) {}
+  } catch (_e) {
+    /* ignore storage errors */
+  }
 }
 function getRecentPages() {
-  try { return JSON.parse(safeGetItem('cha_recent') || '[]'); } catch(e) { return []; }
+  try {
+    return JSON.parse(safeGetItem('cha_recent') || '[]');
+  } catch (e) {
+    return [];
+  }
 }
 
 function showPage(id) {
@@ -190,9 +227,13 @@ function showPage(id) {
     dashboard: renderDashboard
   };
   if (renderMap[id]) {
-    try { renderMap[id](); } catch(e) {
+    try {
+      renderMap[id]();
+    } catch (e) {
       var errPg = document.getElementById('page-' + id);
-      if (errPg) errPg.innerHTML = '<div style="padding:24px;color:#B91C1C;">Something went wrong. Please try again.</div>';
+      if (errPg)
+        errPg.innerHTML =
+          '<div style="padding:24px;color:#B91C1C;">Something went wrong. Please try again.</div>';
     }
   }
 }
@@ -200,19 +241,71 @@ function showPage(id) {
 function renderDashboard() {
   var pg = document.getElementById('page-dashboard');
   if (!pg || pg.innerHTML.trim()) return;
-  var ic = function(d) { return '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
+  var ic = function (d) {
+    return (
+      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+      d +
+      '</svg>'
+    );
+  };
   var cards = [
-    { page:'livecall', title:'Live Call', desc:'Mid-call tools, objections, and AI assist', icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>') },
-    { page:'plans', title:'Plans', desc:'Every plan, sell it view and full details', icon: ic('<rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/>') },
-    { page:'scripts', title:'Scripts', desc:'Every script for every situation', icon: ic('<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>') },
-    { page:'networkguide', title:'Network Guide', desc:'Provider networks, lookup tools, and coverage rules', icon: ic('<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>') },
-    { page:'training', title:'Training', desc:'Learn, study, and practice', icon: ic('<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>') },
-    { page:'compliance', title:'Compliance', desc:'Disclosures, audit, and compliance rules', icon: ic('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>') },
-    { page:'myspace', title:'My Space', desc:'Notes and saved favorites', icon: ic('<path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/>') }
+    {
+      page: 'livecall',
+      title: 'Live Call',
+      desc: 'Mid-call tools, objections, and AI assist',
+      icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>')
+    },
+    {
+      page: 'plans',
+      title: 'Plans',
+      desc: 'Every plan, sell it view and full details',
+      icon: ic(
+        '<rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/>'
+      )
+    },
+    {
+      page: 'scripts',
+      title: 'Scripts',
+      desc: 'Every script for every situation',
+      icon: ic(
+        '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
+      )
+    },
+    {
+      page: 'networkguide',
+      title: 'Network Guide',
+      desc: 'Provider networks, lookup tools, and coverage rules',
+      icon: ic(
+        '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
+      )
+    },
+    {
+      page: 'training',
+      title: 'Training',
+      desc: 'Learn, study, and practice',
+      icon: ic(
+        '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'
+      )
+    },
+    {
+      page: 'compliance',
+      title: 'Compliance',
+      desc: 'Disclosures, audit, and compliance rules',
+      icon: ic(
+        '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'
+      )
+    },
+    {
+      page: 'myspace',
+      title: 'My Space',
+      desc: 'Notes and saved favorites',
+      icon: ic('<path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/>')
+    }
   ];
-  var html = '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
+  var html =
+    '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
   html += '<div class="dash-grid">';
-  cards.forEach(function(c) {
+  cards.forEach(function (c) {
     html += '<div class="dash-card" onclick="showPage(\'' + c.page + '\')">';
     html += '<div class="dash-icon">' + c.icon + '</div>';
     html += '<div class="dash-title">' + c.title + '</div>';
@@ -221,35 +314,54 @@ function renderDashboard() {
   });
   html += '</div>';
   // Cheat Sheets full-width card
-  html += '<div class="dash-card dash-card-full" onclick="showPage(\'training\');setTimeout(function(){openTrainingSection(\'cheatsheets\');},50)" style="margin-top:12px;border-left:3px solid #5B8DEF;display:flex;align-items:center;gap:16px;">';
-  html += '<div class="dash-icon">' + ic('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>') + '</div>';
+  html +=
+    '<div class="dash-card dash-card-full" onclick="showPage(\'training\');setTimeout(function(){openTrainingSection(\'cheatsheets\');},50)" style="margin-top:12px;border-left:3px solid #5B8DEF;display:flex;align-items:center;gap:16px;">';
+  html +=
+    '<div class="dash-icon">' +
+    ic(
+      '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>'
+    ) +
+    '</div>';
   html += '<div><div class="dash-title">Cheat Sheets</div>';
-  html += '<div class="dash-desc">Plan names, networks, underwriters, and associations at a glance</div></div>';
+  html +=
+    '<div class="dash-desc">Plan names, networks, underwriters, and associations at a glance</div></div>';
   html += '</div>';
   // Recently visited strip
   var recent = getRecentPages();
   if (recent.length) {
     var labelMap = {};
-    Object.keys(PAGE_CONFIG).forEach(function(pid) {
+    Object.keys(PAGE_CONFIG).forEach(function (pid) {
       labelMap[pid] = PAGE_CONFIG[pid].label;
-      PAGE_CONFIG[pid].subs.forEach(function(s) { labelMap[s.id] = s.label; });
+      PAGE_CONFIG[pid].subs.forEach(function (s) {
+        labelMap[s.id] = s.label;
+      });
     });
     labelMap.dashboard = 'Dashboard';
-    html += '<div class="dash-recent-strip"><div class="dash-recent-label">Recently Visited</div><div class="dash-recent-pills">';
-    recent.forEach(function(rid) {
+    html +=
+      '<div class="dash-recent-strip"><div class="dash-recent-label">Recently Visited</div><div class="dash-recent-pills">';
+    recent.forEach(function (rid) {
       var lbl = labelMap[rid] || rid;
-      html += '<button class="dash-recent-pill" onclick="showPage(\'' + rid + '\')">' + lbl + '</button>';
+      html +=
+        '<button class="dash-recent-pill" onclick="showPage(\'' +
+        rid +
+        '\')">' +
+        lbl +
+        '</button>';
     });
     html += '</div></div>';
   }
   // Agent quick reference strip
   html += '<div class="dash-ref-strip">';
-  html += '<div class="dash-ref-card"><div class="dash-ref-title">Say Every Call</div><div class="dash-ref-text">Disclose plan type &middot; Pre-ex exclusion &middot; Waiting periods &middot; Fixed benefit amounts &middot; NOT ACA major medical</div></div>';
-  html += '<div class="dash-ref-card"><div class="dash-ref-title">Pre-Existing Rule</div><div class="dash-ref-text">12/12 — conditions diagnosed or treated in prior 12 months excluded for first 12 months of coverage</div></div>';
-  html += '<div class="dash-ref-card"><div class="dash-ref-title">Network</div><div class="dash-ref-text">Always confirm provider is IN NETWORK before the call ends. First Health network on most plans.</div></div>';
+  html +=
+    '<div class="dash-ref-card"><div class="dash-ref-title">Say Every Call</div><div class="dash-ref-text">Disclose plan type &middot; Pre-ex exclusion &middot; Waiting periods &middot; Fixed benefit amounts &middot; NOT ACA major medical</div></div>';
+  html +=
+    '<div class="dash-ref-card"><div class="dash-ref-title">Pre-Existing Rule</div><div class="dash-ref-text">12/12 — conditions diagnosed or treated in prior 12 months excluded for first 12 months of coverage</div></div>';
+  html +=
+    '<div class="dash-ref-card"><div class="dash-ref-title">Network</div><div class="dash-ref-text">Always confirm provider is IN NETWORK before the call ends. First Health network on most plans.</div></div>';
   html += '</div>';
   // Keyboard shortcut hint
-  html += '<div class="dash-kb-strip"><div class="dash-kb-title">Keyboard Shortcuts</div><div class="dash-kb-list">';
+  html +=
+    '<div class="dash-kb-strip"><div class="dash-kb-title">Keyboard Shortcuts</div><div class="dash-kb-list">';
   html += '<span class="dash-kb"><kbd>H</kbd> Home</span>';
   html += '<span class="dash-kb"><kbd>L</kbd> Live Call</span>';
   html += '<span class="dash-kb"><kbd>P</kbd> Plans</span>';
@@ -287,9 +399,13 @@ function _showComboPage(parentId, subId) {
   for (var i = 0; i < subs.length; i++) {
     if (subs[i].id === subId) {
       if (subs[i].render) {
-        try { subs[i].render(); } catch(e) {
+        try {
+          subs[i].render();
+        } catch (e) {
           var errPage = document.getElementById('page-' + subId);
-          if (errPage) errPage.innerHTML = '<div style="padding:24px;color:#B91C1C;">Something went wrong loading this tab. Please try again.</div>';
+          if (errPage)
+            errPage.innerHTML =
+              '<div style="padding:24px;color:#B91C1C;">Something went wrong loading this tab. Please try again.</div>';
         }
       }
       break;
@@ -329,7 +445,11 @@ function renderSubTabs(parentId, activeSubId) {
 window.activePlan = null;
 
 function setActivePlan(planId, planName, planType) {
-  window.activePlan = { id: planId, name: planName, type: (planType || '').toLowerCase() };
+  window.activePlan = {
+    id: planId,
+    name: planName,
+    type: (planType || '').toLowerCase()
+  };
   _renderPlanPill();
 }
 
@@ -344,11 +464,17 @@ function _renderPlanPill() {
   if (existing) existing.remove();
   if (!window.activePlan) return;
   var p = window.activePlan;
-  var typeClass = p.type === 'mec' ? 'mec' : p.type === 'stm' ? 'stm' : 'limited';
+  var typeClass =
+    p.type === 'mec' ? 'mec' : p.type === 'stm' ? 'stm' : 'limited';
   var pill = document.createElement('span');
   pill.id = 'plan-pill';
   pill.className = 'plan-pill';
-  pill.innerHTML = '<span class="plan-pill-type ' + typeClass + '">' + escHTML(p.type.toUpperCase()) + '</span>' +
+  pill.innerHTML =
+    '<span class="plan-pill-type ' +
+    typeClass +
+    '">' +
+    escHTML(p.type.toUpperCase()) +
+    '</span>' +
     escHTML(p.name) +
     '<button class="plan-pill-x" onclick="clearActivePlan()" title="Clear plan">&times;</button>';
   var topbar = document.querySelector('.topbar');
@@ -364,38 +490,75 @@ function _renderPlanPill() {
 // FAVORITES SYSTEM
 // ══════════════════════════════════════════════════════
 function getFavorites() {
-  try { return JSON.parse(safeGetItem('cha_favorites') || '[]'); } catch(e) { return []; }
+  try {
+    return JSON.parse(safeGetItem('cha_favorites') || '[]');
+  } catch (e) {
+    return [];
+  }
 }
 
 function isFavorite(type, id) {
-  return getFavorites().some(function(f) { return f.type === type && f.id === id; });
+  return getFavorites().some(function (f) {
+    return f.type === type && f.id === id;
+  });
 }
 
 function toggleFavorite(type, id, title, preview, source) {
   var favs = getFavorites();
   var idx = -1;
   for (var i = 0; i < favs.length; i++) {
-    if (favs[i].type === type && favs[i].id === id) { idx = i; break; }
+    if (favs[i].type === type && favs[i].id === id) {
+      idx = i;
+      break;
+    }
   }
   if (idx >= 0) {
     favs.splice(idx, 1);
   } else {
-    favs.unshift({ type: type, id: id, title: title, preview: (preview || '').substring(0, 120), source: source || '' });
+    favs.unshift({
+      type: type,
+      id: id,
+      title: title,
+      preview: (preview || '').substring(0, 120),
+      source: source || ''
+    });
     if (favs.length > 50) favs = favs.slice(0, 50);
   }
   safeSetItem('cha_favorites', JSON.stringify(favs));
   // Update star state
-  document.querySelectorAll('.fav-star[data-fav-type="' + type + '"][data-fav-id="' + id + '"]').forEach(function(star) {
-    star.classList.toggle('active', isFavorite(type, id));
-  });
+  document
+    .querySelectorAll(
+      '.fav-star[data-fav-type="' + type + '"][data-fav-id="' + id + '"]'
+    )
+    .forEach(function (star) {
+      star.classList.toggle('active', isFavorite(type, id));
+    });
 }
 
 function favStarHTML(type, id, title, preview, source) {
   var active = isFavorite(type, id) ? ' active' : '';
-  return '<button class="fav-star' + active + '" data-fav-type="' + escHTML(type) + '" data-fav-id="' + escHTML(id) + '" onclick="toggleFavorite(\'' + escHTML(type) + '\',\'' + escHTML(id) + '\',\'' + escHTML((title||'').replace(/'/g,'&#39;')) + '\',\'' + escHTML((preview||'').replace(/'/g,'&#39;').substring(0,120)) + '\',\'' + escHTML((source||'').replace(/'/g,'&#39;')) + '\')" title="Toggle favorite">' +
+  return (
+    '<button class="fav-star' +
+    active +
+    '" data-fav-type="' +
+    escHTML(type) +
+    '" data-fav-id="' +
+    escHTML(id) +
+    '" onclick="toggleFavorite(\'' +
+    escHTML(type) +
+    "','" +
+    escHTML(id) +
+    "','" +
+    escHTML((title || '').replace(/'/g, '&#39;')) +
+    "','" +
+    escHTML((preview || '').replace(/'/g, '&#39;').substring(0, 120)) +
+    "','" +
+    escHTML((source || '').replace(/'/g, '&#39;')) +
+    '\')" title="Toggle favorite">' +
     '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fav-empty"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
     '<svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="fav-filled"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>' +
-    '</button>';
+    '</button>'
+  );
 }
 
 // ══════════════════════════════════════════════════════
@@ -448,7 +611,11 @@ function _showTourStep() {
 
   var step = TOUR_STEPS[_tourStep];
   var el = document.querySelector(step.target);
-  if (!el) { _tourStep++; _showTourStep(); return; }
+  if (!el) {
+    _tourStep++;
+    _showTourStep();
+    return;
+  }
 
   var rect = el.getBoundingClientRect();
 
@@ -456,16 +623,18 @@ function _showTourStep() {
   var ov = document.createElement('div');
   ov.id = 'tour-overlay';
   ov.className = 'tour-overlay';
-  ov.onclick = function() { _endTour(); };
+  ov.onclick = function () {
+    _endTour();
+  };
   document.body.appendChild(ov);
 
   // Spotlight
   var spot = document.createElement('div');
   spot.className = 'tour-spotlight';
-  spot.style.top = (rect.top - 6) + 'px';
-  spot.style.left = (rect.left - 6) + 'px';
-  spot.style.width = (rect.width + 12) + 'px';
-  spot.style.height = (rect.height + 12) + 'px';
+  spot.style.top = rect.top - 6 + 'px';
+  spot.style.left = rect.left - 6 + 'px';
+  spot.style.width = rect.width + 12 + 'px';
+  spot.style.height = rect.height + 12 + 'px';
   ov.appendChild(spot);
 
   // Tooltip
@@ -473,12 +642,23 @@ function _showTourStep() {
   tip.id = 'tour-tooltip';
   tip.className = 'tour-tooltip';
   var isLast = _tourStep === TOUR_STEPS.length - 1;
-  tip.innerHTML = '<div class="tour-step-count">Step ' + (_tourStep + 1) + ' of ' + TOUR_STEPS.length + '</div>' +
-    '<div class="tour-title">' + step.title + '</div>' +
-    '<div class="tour-desc">' + step.desc + '</div>' +
+  tip.innerHTML =
+    '<div class="tour-step-count">Step ' +
+    (_tourStep + 1) +
+    ' of ' +
+    TOUR_STEPS.length +
+    '</div>' +
+    '<div class="tour-title">' +
+    step.title +
+    '</div>' +
+    '<div class="tour-desc">' +
+    step.desc +
+    '</div>' +
     '<div class="tour-btns">' +
     '<button class="tour-btn-skip" onclick="_endTour()">Skip</button>' +
-    '<button class="tour-btn-next" onclick="_nextTourStep()">' + (isLast ? 'Done' : 'Next') + '</button>' +
+    '<button class="tour-btn-next" onclick="_nextTourStep()">' +
+    (isLast ? 'Done' : 'Next') +
+    '</button>' +
     '</div>';
 
   // Position tooltip
@@ -531,10 +711,11 @@ function initApp() {
     var fab = document.createElement('div');
     fab.id = 'fab-bar';
     fab.className = 'fab-bar';
-    fab.innerHTML = '<button class="fab-btn" onclick="showPage(\'dashboard\')" title="Home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>'
-      + '<button class="fab-btn" onclick="showPage(\'livecall\')" title="Live Call"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/></svg></button>'
-      + '<button class="fab-btn" onclick="showPage(\'scripts\')" title="Scripts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>'
-      + '<button class="fab-btn" onclick="showPage(\'plans\')" title="Plans"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg></button>';
+    fab.innerHTML =
+      '<button class="fab-btn" onclick="showPage(\'dashboard\')" title="Home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>' +
+      '<button class="fab-btn" onclick="showPage(\'livecall\')" title="Live Call"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/></svg></button>' +
+      '<button class="fab-btn" onclick="showPage(\'scripts\')" title="Scripts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>' +
+      '<button class="fab-btn" onclick="showPage(\'plans\')" title="Plans"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg></button>';
     document.body.appendChild(fab);
   }
 }
@@ -621,7 +802,7 @@ if (document.readyState === 'loading') {
 })();
 
 // ── Keyboard Shortcuts ────────────────────────────────
-document.addEventListener('keydown', function(e) {
+document.addEventListener('keydown', function (e) {
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
     var gs = document.getElementById('gs');
@@ -630,35 +811,69 @@ document.addEventListener('keydown', function(e) {
   }
   if (e.key === 'Escape') {
     var srOverlay = document.getElementById('srOverlay');
-    if (srOverlay && srOverlay.classList.contains('show') && typeof closeSearch === 'function') closeSearch();
+    if (
+      srOverlay &&
+      srOverlay.classList.contains('show') &&
+      typeof closeSearch === 'function'
+    )
+      closeSearch();
     return;
   }
   // Skip shortcuts when typing in input/textarea
   var tag = (e.target.tagName || '').toLowerCase();
-  if (tag === 'input' || tag === 'textarea' || tag === 'select' || e.target.isContentEditable) return;
+  if (
+    tag === 'input' ||
+    tag === 'textarea' ||
+    tag === 'select' ||
+    e.target.isContentEditable
+  )
+    return;
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   var key = e.key.toLowerCase();
-  var map = { h:'dashboard', l:'livecall', p:'plans', s:'scripts', n:'networkguide', t:'training', c:'compliance', m:'myspace' };
-  if (map[key]) { e.preventDefault(); showPage(map[key]); return; }
-  if (key === '/') { e.preventDefault(); var gs = document.getElementById('gs'); if (gs) gs.focus(); }
+  var map = {
+    h: 'dashboard',
+    l: 'livecall',
+    p: 'plans',
+    s: 'scripts',
+    n: 'networkguide',
+    t: 'training',
+    c: 'compliance',
+    m: 'myspace'
+  };
+  if (map[key]) {
+    e.preventDefault();
+    showPage(map[key]);
+    return;
+  }
+  if (key === '/') {
+    e.preventDefault();
+    var gs = document.getElementById('gs');
+    if (gs) gs.focus();
+  }
 });
 
 // ── Copy Compliance Text ─────────────────────────────
 function copyCompliance(btn) {
   var banner = btn.closest('.comp-banner');
   if (!banner) return;
-  var text = banner.textContent.replace('Copy', '').replace('Copied!', '').trim();
-  safeCopy(text).then(function() {
+  var text = banner.textContent
+    .replace('Copy', '')
+    .replace('Copied!', '')
+    .trim();
+  safeCopy(text).then(function () {
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
-    setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+    setTimeout(function () {
+      btn.textContent = 'Copy';
+      btn.classList.remove('copied');
+    }, 1500);
   });
 }
 
 // ── Auto-inject copy buttons into compliance banners + script blocks ──
-(function() {
-  var observer = new MutationObserver(function() {
-    document.querySelectorAll('.comp-banner').forEach(function(banner) {
+(function () {
+  var observer = new MutationObserver(function () {
+    document.querySelectorAll('.comp-banner').forEach(function (banner) {
       if (banner.querySelector('.comp-copy-btn')) return;
       var btn = document.createElement('button');
       btn.className = 'comp-copy-btn';
@@ -667,14 +882,16 @@ function copyCompliance(btn) {
       banner.appendChild(btn);
     });
     // Inject copy pills into sbox script panels and comp-script-block
-    document.querySelectorAll('.sbox, .comp-script-block').forEach(function(block) {
-      if (block.querySelector('.script-copy-btn')) return;
-      var btn = document.createElement('button');
-      btn.className = 'script-copy-btn';
-      btn.textContent = 'Copy';
-      btn.setAttribute('onclick', 'copyScript(this)');
-      block.appendChild(btn);
-    });
+    document
+      .querySelectorAll('.sbox, .comp-script-block')
+      .forEach(function (block) {
+        if (block.querySelector('.script-copy-btn')) return;
+        var btn = document.createElement('button');
+        btn.className = 'script-copy-btn';
+        btn.textContent = 'Copy';
+        btn.setAttribute('onclick', 'copyScript(this)');
+        block.appendChild(btn);
+      });
   });
   observer.observe(document.body, { childList: true, subtree: true });
 })();

@@ -1214,15 +1214,28 @@ function renderProcess() {
     body += '<div class="trn-two-col" style="margin-bottom:12px;">';
     body += '<div><div class="trn-sec-label">KEY PHRASES</div>';
     s.phrases.forEach(function (p) {
-      body += '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;margin-bottom:6px;padding:8px 12px;background:#F8F9FE;border-radius:8px;">' + p + '</div>';
+      body +=
+        '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;margin-bottom:6px;padding:8px 12px;background:#F8F9FE;border-radius:8px;">' +
+        p +
+        '</div>';
     });
-    body += '</div><div><div class="trn-sec-label">PSYCHOLOGY</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' + s.psychology + '</div></div></div>';
+    body +=
+      '</div><div><div class="trn-sec-label">PSYCHOLOGY</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' +
+      s.psychology +
+      '</div></div></div>';
     body += '<div class="trn-two-col">';
-    body += '<div><div class="trn-sec-label" style="color:#B91C1C;">MISTAKES TO AVOID</div>';
+    body +=
+      '<div><div class="trn-sec-label" style="color:#B91C1C;">MISTAKES TO AVOID</div>';
     s.mistakes.forEach(function (m) {
-      body += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;margin-bottom:4px;padding-left:10px;border-left:2px solid #B91C1C;">' + m + '</div>';
+      body +=
+        '<div style="font-family:var(--font-body);font-size:14px;color:#374151;margin-bottom:4px;padding-left:10px;border-left:2px solid #B91C1C;">' +
+        m +
+        '</div>';
     });
-    body += '</div><div><div class="trn-sec-label" style="color:#15803D;">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#15803D;font-weight:700;background:#F0FDF4;border-radius:8px;padding:10px;">' + s.tone + '</div></div></div>';
+    body +=
+      '</div><div><div class="trn-sec-label" style="color:#15803D;">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#15803D;font-weight:700;background:#F0FDF4;border-radius:8px;padding:10px;">' +
+      s.tone +
+      '</div></div></div>';
     html += _trnOpenCard(s.title, body);
   });
   var _page_process = document.getElementById('page-process');
@@ -1328,11 +1341,18 @@ function renderProductvault() {
     body += _trnTwoCols('WHAT IT IS', p.what, "WHAT IT'S NOT", p.whatnot);
     body += '<div style="height:12px;"></div>';
     body += _trnTwoCols('BEST FOR', p.bestfor, 'NOT FOR', p.notfor);
-    body += '<div style="margin-top:12px;"><div class="trn-sec-label">HOW TO EXPLAIN IT</div>';
-    body += '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' + p.explain + '</div></div>';
+    body +=
+      '<div style="margin-top:12px;"><div class="trn-sec-label">HOW TO EXPLAIN IT</div>';
+    body +=
+      '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' +
+      p.explain +
+      '</div></div>';
     body += '<div style="height:12px;"></div>';
     body += _trnTwoCols('RIGHT FIT', p.rightfit, 'WRONG FIT', p.wrongfit);
-    body += '<div style="margin-top:12px;padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Compliance:</strong> ' + p.compliance + '</div>';
+    body +=
+      '<div style="margin-top:12px;padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Compliance:</strong> ' +
+      p.compliance +
+      '</div>';
     html += _trnOpenCard(p.title, body);
   });
   document.getElementById('page-productvault').innerHTML = html;
@@ -1344,10 +1364,19 @@ function renderSimplifier() {
   ISA_SIMPLIFIER.forEach(function (item, i) {
     var body = '';
     body += '<div class="trn-two-col" style="margin-bottom:12px;">';
-    body += '<div><div class="trn-sec-label">TECHNICAL DEFINITION</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' + item.tech + '</div></div>';
-    body += '<div><div class="trn-sec-label" style="color:#15803D;">SAY IT THIS WAY</div><div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' + item.plain + '</div></div>';
+    body +=
+      '<div><div class="trn-sec-label">TECHNICAL DEFINITION</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' +
+      item.tech +
+      '</div></div>';
+    body +=
+      '<div><div class="trn-sec-label" style="color:#15803D;">SAY IT THIS WAY</div><div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' +
+      item.plain +
+      '</div></div>';
     body += '</div>';
-    body += '<div style="padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Never say:</strong> ' + item.dontsay + '</div>';
+    body +=
+      '<div style="padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Never say:</strong> ' +
+      item.dontsay +
+      '</div>';
     html += _trnOpenCard(item.term, body);
   });
   document.getElementById('page-simplifier').innerHTML = html;
@@ -1400,12 +1429,25 @@ function renderRoleplay() {
     '<div class="ph"><div class="pt">Roleplay <span>Simulator</span></div><div class="pd">Practice the hard conversations before they\'re real. Study what elite looks like.</div></div>';
   ISA_ROLEPLAY.forEach(function (sc, i) {
     var body = '';
-    body += '<div style="font-family:var(--font-body);font-size:14px;color:#6B7280;margin-bottom:12px;">' + sc.desc + '</div>';
-    body += '<div style="padding:14px;background:#F8F9FE;border-radius:12px;margin-bottom:12px;"><div class="trn-sec-label">PROSPECT SAYS</div>';
-    body += '<div style="font-family:var(--font-body);font-size:14px;font-weight:700;color:#111827;font-style:italic;line-height:1.8;">&ldquo;' + sc.says + '&rdquo;</div></div>';
+    body +=
+      '<div style="font-family:var(--font-body);font-size:14px;color:#6B7280;margin-bottom:12px;">' +
+      sc.desc +
+      '</div>';
+    body +=
+      '<div style="padding:14px;background:#F8F9FE;border-radius:12px;margin-bottom:12px;"><div class="trn-sec-label">PROSPECT SAYS</div>';
+    body +=
+      '<div style="font-family:var(--font-body);font-size:14px;font-weight:700;color:#111827;font-style:italic;line-height:1.8;">&ldquo;' +
+      sc.says +
+      '&rdquo;</div></div>';
     body += '<div class="trn-two-col">';
-    body += '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">WEAK RESPONSE</div><div class="trn-col-text">' + sc.weak + '</div></div>';
-    body += '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">ELITE RESPONSE</div><div class="trn-col-text">' + sc.response + '</div></div>';
+    body +=
+      '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">WEAK RESPONSE</div><div class="trn-col-text">' +
+      sc.weak +
+      '</div></div>';
+    body +=
+      '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">ELITE RESPONSE</div><div class="trn-col-text">' +
+      sc.response +
+      '</div></div>';
     body += '</div>';
     html += _trnOpenCard(sc.profile, body);
   });
@@ -1415,17 +1457,34 @@ function renderRoleplay() {
 function renderClosinglab() {
   var html =
     '<div class="ph"><div class="pt">Closing <span>Lab</span></div><div class="pd">Know your closes. Know when to use them. Know the difference between weak and elite.</div></div>';
-  html += '<div style="background:#F0FDF4;border-left:3px solid #15803D;border-radius:12px;padding:14px 18px;margin-bottom:18px;font-family:var(--font-ui);font-size:14px;font-weight:700;color:#15803D;">Silence Rule: After you close, whoever speaks first loses. Deliver the close. Stop talking. Wait.</div>';
+  html +=
+    '<div style="background:#F0FDF4;border-left:3px solid #15803D;border-radius:12px;padding:14px 18px;margin-bottom:18px;font-family:var(--font-ui);font-size:14px;font-weight:700;color:#15803D;">Silence Rule: After you close, whoever speaks first loses. Deliver the close. Stop talking. Wait.</div>';
   ISA_CLOSES.forEach(function (cl, i) {
     var body = '';
     body += '<div class="trn-two-col" style="margin-bottom:12px;">';
-    body += '<div><div class="trn-sec-label">WHEN TO USE</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' + cl.when + '</div></div>';
-    body += '<div><div class="trn-sec-label">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' + cl.tone + '</div></div>';
+    body +=
+      '<div><div class="trn-sec-label">WHEN TO USE</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' +
+      cl.when +
+      '</div></div>';
+    body +=
+      '<div><div class="trn-sec-label">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' +
+      cl.tone +
+      '</div></div>';
     body += '</div>';
-    body += '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">';
-    body += '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">WEAK</div><div class="trn-col-text" style="font-style:italic;">' + cl.weak + '</div></div>';
-    body += '<div style="border-left:3px solid #d97706;background:#FFFBEB;border-radius:12px;padding:14px;"><div class="trn-col-label" style="color:#d97706;">BETTER</div><div class="trn-col-text" style="font-style:italic;">' + cl.better + '</div></div>';
-    body += '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">ELITE</div><div class="trn-col-text" style="font-style:italic;">' + cl.elite + '</div></div>';
+    body +=
+      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">';
+    body +=
+      '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">WEAK</div><div class="trn-col-text" style="font-style:italic;">' +
+      cl.weak +
+      '</div></div>';
+    body +=
+      '<div style="border-left:3px solid #d97706;background:#FFFBEB;border-radius:12px;padding:14px;"><div class="trn-col-label" style="color:#d97706;">BETTER</div><div class="trn-col-text" style="font-style:italic;">' +
+      cl.better +
+      '</div></div>';
+    body +=
+      '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">ELITE</div><div class="trn-col-text" style="font-style:italic;">' +
+      cl.elite +
+      '</div></div>';
     body += '</div>';
     html += _trnCard('cl' + i, cl.name, body);
   });
@@ -1438,20 +1497,38 @@ function renderCheatsheets() {
 
   // Compliance card
   var compBody = '';
-  [' Mental health — EXCLUDED. Say it every call.',' Maternity — EXCLUDED. Say it every call.',' Substance abuse rehab — EXCLUDED. Say it every call.',' 30-day waiting period for illness — DISCLOSE.',' 12/12 pre-ex clause — DISCLOSE.',' Not ACA-compliant — DISCLOSE.',' Not major medical — DISCLOSE.'].forEach(function(item) {
-    compBody += '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' + item + '</div>';
+  [
+    ' Mental health — EXCLUDED. Say it every call.',
+    ' Maternity — EXCLUDED. Say it every call.',
+    ' Substance abuse rehab — EXCLUDED. Say it every call.',
+    ' 30-day waiting period for illness — DISCLOSE.',
+    ' 12/12 pre-ex clause — DISCLOSE.',
+    ' Not ACA-compliant — DISCLOSE.',
+    ' Not major medical — DISCLOSE.'
+  ].forEach(function (item) {
+    compBody +=
+      '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' +
+      item +
+      '</div>';
   });
   html += _trnOpenCard('Compliance Non-Negotiables', compBody);
 
   // Plan Reference Table card
-  var tableBody = '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid #C8CEDD;min-width:600px;">';
-  tableBody += '<thead><tr><th style="font-size:13px;">Plan Name</th><th style="font-size:13px;">Network</th><th style="font-size:13px;">Underwriter / Admin</th><th style="font-size:13px;">Association</th></tr></thead><tbody>';
+  var tableBody =
+    '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid #C8CEDD;min-width:600px;">';
+  tableBody +=
+    '<thead><tr><th style="font-size:13px;">Plan Name</th><th style="font-size:13px;">Network</th><th style="font-size:13px;">Underwriter / Admin</th><th style="font-size:13px;">Association</th></tr></thead><tbody>';
   if (typeof PLANS !== 'undefined') {
-    PLANS.forEach(function(p) {
-      tableBody += '<tr><td style="font-weight:700;font-size:14px;color:var(--text-primary);">' + p.name + '</td>';
-      tableBody += '<td style="font-size:13px;">' + (p.network || '—') + '</td>';
+    PLANS.forEach(function (p) {
+      tableBody +=
+        '<tr><td style="font-weight:700;font-size:14px;color:var(--text-primary);">' +
+        p.name +
+        '</td>';
+      tableBody +=
+        '<td style="font-size:13px;">' + (p.network || '—') + '</td>';
       tableBody += '<td style="font-size:13px;">' + (p.admin || '—') + '</td>';
-      tableBody += '<td style="font-size:13px;">' + (p.assoc || '—') + '</td></tr>';
+      tableBody +=
+        '<td style="font-size:13px;">' + (p.assoc || '—') + '</td></tr>';
     });
   }
   tableBody += '</tbody></table></div>';
@@ -1537,14 +1614,28 @@ function renderDiscovery() {
   categories.forEach(function (cat, ci) {
     var body = '';
     cat.questions.forEach(function (q) {
-      body += '<div onclick="copyDiscovery(this)" data-q="' + q.replace(/"/g, '&quot;') + '" ';
-      body += 'style="padding:12px 14px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:8px;margin-bottom:8px;cursor:pointer;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;transition:all 0.15s;" ';
-      body += "onmouseover=\"this.style.borderColor='#5B8DEF'\" onmouseout=\"this.style.borderColor='#E5E7EB'\">";
+      body +=
+        '<div onclick="copyDiscovery(this)" data-q="' +
+        q.replace(/"/g, '&quot;') +
+        '" ';
+      body +=
+        'style="padding:12px 14px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:8px;margin-bottom:8px;cursor:pointer;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;transition:all 0.15s;" ';
+      body +=
+        'onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
       body += '\u201c' + q + '\u201d';
-      body += '<span style="display:block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;margin-top:5px;">Tap to copy</span>';
+      body +=
+        '<span style="display:block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;margin-top:5px;">Tap to copy</span>';
       body += '</div>';
     });
-    html += _trnOpenCard(cat.type + ' — ' + cat.label + ' (' + cat.questions.length + ' questions)', body);
+    html += _trnOpenCard(
+      cat.type +
+        ' — ' +
+        cat.label +
+        ' (' +
+        cat.questions.length +
+        ' questions)',
+      body
+    );
   });
 
   html +=
@@ -1644,10 +1735,26 @@ function renderClosingengine() {
     '<div class="pd">Find the right close for your exact situation. Tap a line to copy it.</div></div>';
 
   // Tab buttons
-  html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">';
+  html +=
+    '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">';
   typeNames.forEach(function (t, ti) {
     var isActive = ti === 0 ? ' ce-tab-active' : '';
-    html += '<button class="ce-tab' + isActive + '" style="background:' + (ti === 0 ? typeBg[t] : 'transparent') + ';color:' + typeColors[t] + ';border:1px solid ' + (ti === 0 ? typeColors[t] : '#C8CEDD') + ';border-radius:12px;padding:7px 16px;font-size:12px;font-weight:800;cursor:pointer;transition:all 0.15s;font-family:var(--font-ui);" onclick="switchCeTab(\'' + t + '\')" data-ce-type="' + t + '">' + t + '</button>';
+    html +=
+      '<button class="ce-tab' +
+      isActive +
+      '" style="background:' +
+      (ti === 0 ? typeBg[t] : 'transparent') +
+      ';color:' +
+      typeColors[t] +
+      ';border:1px solid ' +
+      (ti === 0 ? typeColors[t] : '#C8CEDD') +
+      ';border-radius:12px;padding:7px 16px;font-size:12px;font-weight:800;cursor:pointer;transition:all 0.15s;font-family:var(--font-ui);" onclick="switchCeTab(\'' +
+      t +
+      '\')" data-ce-type="' +
+      t +
+      '">' +
+      t +
+      '</button>';
   });
   html += '</div>';
 
@@ -1655,11 +1762,29 @@ function renderClosingengine() {
   typeNames.forEach(function (t, ti) {
     var col = typeColors[t] || 'var(--charcoal3)';
     var bg = typeBg[t] || 'rgba(212,96,122,0.1)';
-    html += '<div class="ce-panel" id="ce-panel-' + t.replace(/[^a-zA-Z]/g, '') + '" style="display:' + (ti === 0 ? 'block' : 'none') + ';">';
+    html +=
+      '<div class="ce-panel" id="ce-panel-' +
+      t.replace(/[^a-zA-Z]/g, '') +
+      '" style="display:' +
+      (ti === 0 ? 'block' : 'none') +
+      ';">';
     closingLines[t].forEach(function (line) {
-      html += '<div onclick="copyClose(this)" data-line="' + line.replace(/"/g, '&quot;') + '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
-      html += '<span style="background:' + bg + ';color:' + col + ';border-radius:12px;padding:3px 10px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0;">' + t + '</span>';
-      html += '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;">' + line + '</div></div>';
+      html +=
+        '<div onclick="copyClose(this)" data-line="' +
+        line.replace(/"/g, '&quot;') +
+        '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
+      html +=
+        '<span style="background:' +
+        bg +
+        ';color:' +
+        col +
+        ';border-radius:12px;padding:3px 10px;font-size:10px;font-weight:800;white-space:nowrap;flex-shrink:0;">' +
+        t +
+        '</span>';
+      html +=
+        '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;">' +
+        line +
+        '</div></div>';
     });
     html += '</div>';
   });
@@ -1684,22 +1809,31 @@ function copyClose(el) {
 
 function switchCeTab(type) {
   var typeColors = {
-    Assumptive: 'var(--charcoal3)', Soft: '#29A26A', Direct: '#7a5f00',
-    Urgency: 'var(--sec)', 'Tie-Down': '#904020', Agreement: '#2A5A90'
+    Assumptive: 'var(--charcoal3)',
+    Soft: '#29A26A',
+    Direct: '#7a5f00',
+    Urgency: 'var(--sec)',
+    'Tie-Down': '#904020',
+    Agreement: '#2A5A90'
   };
   var typeBg = {
-    Assumptive: 'rgba(212,96,122,0.1)', Soft: 'rgba(41,162,106,0.1)',
-    Direct: 'rgba(184,134,11,0.1)', Urgency: 'rgba(123,104,184,0.1)',
-    'Tie-Down': 'rgba(200,110,60,0.1)', Agreement: 'rgba(42,90,144,0.1)'
+    Assumptive: 'rgba(212,96,122,0.1)',
+    Soft: 'rgba(41,162,106,0.1)',
+    Direct: 'rgba(184,134,11,0.1)',
+    Urgency: 'rgba(123,104,184,0.1)',
+    'Tie-Down': 'rgba(200,110,60,0.1)',
+    Agreement: 'rgba(42,90,144,0.1)'
   };
   // Hide all panels
-  document.querySelectorAll('.ce-panel').forEach(function(p) { p.style.display = 'none'; });
+  document.querySelectorAll('.ce-panel').forEach(function (p) {
+    p.style.display = 'none';
+  });
   // Show selected panel
   var panelId = 'ce-panel-' + type.replace(/[^a-zA-Z]/g, '');
   var panel = document.getElementById(panelId);
   if (panel) panel.style.display = 'block';
   // Update tab styles
-  document.querySelectorAll('.ce-tab').forEach(function(btn) {
+  document.querySelectorAll('.ce-tab').forEach(function (btn) {
     var t = btn.getAttribute('data-ce-type');
     if (t === type) {
       btn.style.background = typeBg[t] || 'transparent';
@@ -1739,7 +1873,8 @@ function renderClosingtools() {
   var html = ceContent;
   html += '<div class="trn-section-divider"></div>';
   html += clContent;
-  html += '<div id="closeCopied" style="display:none;position:fixed;bottom:30px;right:30px;background:#29A26A;color:#fff;border-radius:12px;padding:12px 20px;font-weight:700;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">Copied ✓</div>';
+  html +=
+    '<div id="closeCopied" style="display:none;position:fixed;bottom:30px;right:30px;background:#29A26A;color:#fff;border-radius:12px;padding:12px 20px;font-weight:700;font-size:13px;box-shadow:0 4px 20px rgba(0,0,0,0.15);">Copied ✓</div>';
 
   pg.innerHTML = html;
 }
@@ -1754,18 +1889,60 @@ var TRAINING_SECTIONS = [
   {
     group: 'LIVE CALL TOOLS',
     items: [
-      { id: 'cheatsheets', title: 'Cheat Sheets', desc: 'Quick reference for plans, networks, and underwriters', icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>', render: renderCheatsheets },
-      { id: 'closingtools', title: 'Closing Tools', desc: 'Closing generators, techniques, and practice lab', icon: '<circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>', render: renderClosingtools },
-      { id: 'roleplay', title: 'Roleplay', desc: 'Mock call practice and objection drills', icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>', render: renderRoleplay }
+      {
+        id: 'cheatsheets',
+        title: 'Cheat Sheets',
+        desc: 'Quick reference for plans, networks, and underwriters',
+        icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>',
+        render: renderCheatsheets
+      },
+      {
+        id: 'closingtools',
+        title: 'Closing Tools',
+        desc: 'Closing generators, techniques, and practice lab',
+        icon: '<circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>',
+        render: renderClosingtools
+      },
+      {
+        id: 'roleplay',
+        title: 'Roleplay',
+        desc: 'Mock call practice and objection drills',
+        icon: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+        render: renderRoleplay
+      }
     ]
   },
   {
     group: 'LEARN & STUDY',
     items: [
-      { id: 'productvault', title: 'Product Training Vault', desc: 'Know exactly what you\'re selling and what you\'re not', icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>', render: renderProductvault },
-      { id: 'process', title: 'Process', desc: 'Full call flow from open to close', icon: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>', render: renderProcess },
-      { id: 'simplifier', title: 'Terms', desc: 'Plain-English explanations for any insurance term', icon: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>', render: renderSimplifier },
-      { id: 'discovery', title: 'Discovery', desc: 'Questioning frameworks that uncover real pain', icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>', render: renderDiscovery }
+      {
+        id: 'productvault',
+        title: 'Product Training Vault',
+        desc: "Know exactly what you're selling and what you're not",
+        icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+        render: renderProductvault
+      },
+      {
+        id: 'process',
+        title: 'Process',
+        desc: 'Full call flow from open to close',
+        icon: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
+        render: renderProcess
+      },
+      {
+        id: 'simplifier',
+        title: 'Terms',
+        desc: 'Plain-English explanations for any insurance term',
+        icon: '<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>',
+        render: renderSimplifier
+      },
+      {
+        id: 'discovery',
+        title: 'Discovery',
+        desc: 'Questioning frameworks that uncover real pain',
+        icon: '<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>',
+        render: renderDiscovery
+      }
     ]
   }
 ];
@@ -1777,17 +1954,30 @@ function renderTrainingHome() {
   // Always reset to home when tab is navigated to
   _trainingView = 'home';
 
-  var arrow = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8CEDD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-  var html = '<div class="ph"><div class="pt">Training <span>Center</span></div><div class="pd">Build your skills. Choose a section below.</div></div>';
+  var arrow =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8CEDD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+  var html =
+    '<div class="ph"><div class="pt">Training <span>Center</span></div><div class="pd">Build your skills. Choose a section below.</div></div>';
 
-  TRAINING_SECTIONS.forEach(function(group, gi) {
+  TRAINING_SECTIONS.forEach(function (group, gi) {
     if (gi > 0) html += '<div style="height:28px;"></div>';
     html += '<div class="trn-group-label">' + group.group + '</div>';
     html += '<div class="trn-home-grid">';
-    group.items.forEach(function(item) {
-      html += '<div class="trn-home-card" onclick="openTrainingSection(\'' + item.id + '\')">';
-      html += '<div class="trn-home-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + item.icon + '</svg></div>';
-      html += '<div class="trn-home-info"><div class="trn-home-title">' + item.title + '</div><div class="trn-home-desc">' + item.desc + '</div></div>';
+    group.items.forEach(function (item) {
+      html +=
+        '<div class="trn-home-card" onclick="openTrainingSection(\'' +
+        item.id +
+        '\')">';
+      html +=
+        '<div class="trn-home-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
+        item.icon +
+        '</svg></div>';
+      html +=
+        '<div class="trn-home-info"><div class="trn-home-title">' +
+        item.title +
+        '</div><div class="trn-home-desc">' +
+        item.desc +
+        '</div></div>';
       html += '<div class="trn-home-arrow">' + arrow + '</div>';
       html += '</div>';
     });
@@ -1813,15 +2003,19 @@ function _renderTrainingSection(sectionId) {
 
   // Find the section config
   var sectionConfig = null;
-  TRAINING_SECTIONS.forEach(function(group) {
-    group.items.forEach(function(item) {
+  TRAINING_SECTIONS.forEach(function (group) {
+    group.items.forEach(function (item) {
       if (item.id === sectionId) sectionConfig = item;
     });
   });
   if (!sectionConfig) return;
 
   // Build page with back button + container for the section render + bottom pill strip
-  pg.innerHTML = '<button class="trn-back-btn" onclick="backToTrainingHome()">&larr; Training</button><div id="page-' + sectionId + '"></div>' + _trnBottomStrip(sectionId);
+  pg.innerHTML =
+    '<button class="trn-back-btn" onclick="backToTrainingHome()">&larr; Training</button><div id="page-' +
+    sectionId +
+    '"></div>' +
+    _trnBottomStrip(sectionId);
 
   // Now call the original render function — the target container exists in the DOM
   sectionConfig.render();
@@ -1829,16 +2023,30 @@ function _renderTrainingSection(sectionId) {
 
 function _trnBottomStrip(activeId) {
   var allItems = [];
-  TRAINING_SECTIONS.forEach(function(group) {
-    group.items.forEach(function(item) { allItems.push(item); });
+  TRAINING_SECTIONS.forEach(function (group) {
+    group.items.forEach(function (item) {
+      allItems.push(item);
+    });
   });
-  var html = '<div style="position:sticky;bottom:0;background:#FFFFFF;border-top:2px solid #E5E7EB;padding:10px 20px;display:flex;flex-wrap:wrap;gap:8px;z-index:50;margin-top:24px;">';
-  allItems.forEach(function(item) {
+  var html =
+    '<div style="position:sticky;bottom:0;background:#FFFFFF;border-top:2px solid #E5E7EB;padding:10px 20px;display:flex;flex-wrap:wrap;gap:8px;z-index:50;margin-top:24px;">';
+  allItems.forEach(function (item) {
     var isActive = item.id === activeId;
     var bg = isActive ? '#5B8DEF' : '#F4F6FB';
     var color = isActive ? '#FFFFFF' : '#374151';
     var border = isActive ? '1.5px solid #5B8DEF' : '1.5px solid #E5E7EB';
-    html += '<button onclick="openTrainingSection(\'' + item.id + '\')" style="background:' + bg + ';color:' + color + ';border:' + border + ';border-radius:999px;padding:6px 16px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.15s;">' + item.title + '</button>';
+    html +=
+      '<button onclick="openTrainingSection(\'' +
+      item.id +
+      '\')" style="background:' +
+      bg +
+      ';color:' +
+      color +
+      ';border:' +
+      border +
+      ';border-radius:999px;padding:6px 16px;font-family:var(--font-ui);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all 0.15s;">' +
+      item.title +
+      '</button>';
   });
   html += '</div>';
   return html;
@@ -1863,9 +2071,13 @@ function _trnCard(id, title, bodyHtml) {
   var html = '<div class="trn-card">';
   html += '<div class="trn-card-hd" onclick="toggleTrnCard(\'' + id + '\')">';
   html += '<div class="trn-card-title">' + title + '</div>';
-  html += '<span class="trn-card-chev" id="' + id + '-chev" aria-hidden="true">&#9660;</span>';
+  html +=
+    '<span class="trn-card-chev" id="' +
+    id +
+    '-chev" aria-hidden="true">&#9660;</span>';
   html += '</div>';
-  html += '<div class="trn-card-body" id="' + id + '-body" style="display:none;">';
+  html +=
+    '<div class="trn-card-body" id="' + id + '-body" style="display:none;">';
   html += bodyHtml;
   html += '</div></div>';
   return html;
@@ -1886,8 +2098,18 @@ function _trnOpenCard(title, bodyHtml) {
 // Helper: two column green/red box
 function _trnTwoCols(leftLabel, leftText, rightLabel, rightText) {
   var html = '<div class="trn-two-col">';
-  html += '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">' + leftLabel + '</div><div class="trn-col-text">' + leftText + '</div></div>';
-  html += '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">' + rightLabel + '</div><div class="trn-col-text">' + rightText + '</div></div>';
+  html +=
+    '<div class="trn-col-green"><div class="trn-col-label" style="color:#15803D;">' +
+    leftLabel +
+    '</div><div class="trn-col-text">' +
+    leftText +
+    '</div></div>';
+  html +=
+    '<div class="trn-col-red"><div class="trn-col-label" style="color:#B91C1C;">' +
+    rightLabel +
+    '</div><div class="trn-col-text">' +
+    rightText +
+    '</div></div>';
   html += '</div>';
   return html;
 }
