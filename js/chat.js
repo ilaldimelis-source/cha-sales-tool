@@ -700,20 +700,17 @@ function brAIAnswer(query, planId) {
   // STEP 1: Try POLICY_DOCS lookup first
   var localResult = brLocalLookup(query, plan);
   if (localResult.confident) {
-    console.log('[CHA] Local lookup confident:', localResult.status);
     brRenderLocalResult(localResult, plan.name);
     return;
   }
 
   // STEP 2: No confident local answer — try AI
   if (!apiKey || apiKey === 'skip' || apiKey === '' || apiKey.length < 20) {
-    console.log('[CHA] No valid key, falling back to structured answer');
     var plansToUse = brActivePlan ? [brActivePlan] : [];
     brAddMsg('ai', brStructuredAnswer(query, plansToUse));
     return;
   }
 
-  console.log('[CHA Groq] Calling AI for plan:', planId, 'query:', query);
   brShowTyping();
 
   var planContext =
@@ -755,7 +752,6 @@ function brAIAnswer(query, planId) {
     })
   })
     .then(function (response) {
-      console.log('[CHA Groq] Status:', response.status);
       if (!response.ok) throw new Error('API error ' + response.status);
       return response.json();
     })
@@ -1727,28 +1723,6 @@ function brSmartAnswer(query, plans) {
 
   html += '</div>';
   return html;
-}
-
-// FIX: Word-boundary-safe highlighting for short terms / medical abbreviations
-function brHl(text, terms) {
-  var safe = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-  terms.forEach(function (term) {
-    if (term.length < 2) return;
-    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    var boundary =
-      term.length <= 3 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1
-        ? '\\b'
-        : '';
-    var re = new RegExp('(' + boundary + escaped + boundary + ')', 'gi');
-    safe = safe.replace(
-      re,
-      '<mark style="background:#FFF3CD;padding:0 2px;border-radius:2px;font-weight:700">$1</mark>'
-    );
-  });
-  return safe;
 }
 
 // ── ROTATING PLACEHOLDER TEXT ─────────────────────────

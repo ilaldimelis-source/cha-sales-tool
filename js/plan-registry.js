@@ -386,10 +386,6 @@ function chaValidateRegistry() {
   }
   if (errors.length > 0) {
     console.warn('[CHA Registry] Validation errors:', errors);
-  } else {
-    console.log(
-      '[CHA Registry] ' + CHA_PLAN_REGISTRY.length + ' plans loaded OK'
-    );
   }
 }
 
