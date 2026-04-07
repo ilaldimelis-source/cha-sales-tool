@@ -643,15 +643,12 @@ var BR_ABBREVS = [
 
 function brTermMatch(text, term) {
   if (!term || term.length < 2) return false;
-  var lower = text.toLowerCase();
-  // For very short terms (2 chars) or known abbreviations, require word boundaries
-  if (term.length <= 2 || BR_ABBREVS.indexOf(term.toLowerCase()) !== -1) {
-    var escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    var re = new RegExp('\\b' + escaped + '\\b', 'i');
-    return re.test(text);
-  }
-  // For longer, specific terms, substring matching is safe
-  return lower.indexOf(term) !== -1;
+  var tl = term.toLowerCase();
+  // Use word-boundary matching for ALL terms to prevent false substring matches
+  // (e.g., "er visit" matching inside "per visit")
+  var escaped = tl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  var re = new RegExp('\\b' + escaped + '\\b', 'i');
+  return re.test(text);
 }
 
 function matchesExpanded(text, expandedTerms) {

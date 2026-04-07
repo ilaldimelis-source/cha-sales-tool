@@ -1753,159 +1753,327 @@ function _brTopicOverride(query, plans) {
   return null; // No topic match — fall through to general search
 }
 
-function brStructuredAnswer(query, plans) {
-  // Check topic-specific overrides first
-  var topicResult = _brTopicOverride(query, plans);
-  if (topicResult) return topicResult;
+// ══════════════════════════════════════════════════════
+// TOPIC EXTRACTION — parses query into individual benefit topics
+// ══════════════════════════════════════════════════════
+var _BR_TOPIC_MAP = [
+  {
+    key: 'doctor',
+    label: 'Doctor Visits / PCP',
+    patterns: [
+      'doctor',
+      'pcp',
+      'primary care',
+      'office visit',
+      'physician',
+      'docter',
+      'dr visit'
+    ]
+  },
+  {
+    key: 'specialist',
+    label: 'Specialist',
+    patterns: ['specialist', 'spec', 'specialty']
+  },
+  {
+    key: 'urgent',
+    label: 'Urgent Care',
+    patterns: [
+      'urgent care',
+      'urgentcare',
+      'urgent visit',
+      'urgn',
+      'walk-in',
+      'walk in'
+    ]
+  },
+  {
+    key: 'er',
+    label: 'Emergency Room',
+    patterns: [
+      'emergency room',
+      'emergency',
+      'er visit',
+      ' er ',
+      ' er?',
+      ' er.',
+      '^er$',
+      '^er '
+    ]
+  },
+  {
+    key: 'hospital',
+    label: 'Hospital / Inpatient',
+    patterns: [
+      'hospital',
+      'hospitalization',
+      'inpatient',
+      'admitted',
+      'admission'
+    ]
+  },
+  {
+    key: 'surgery',
+    label: 'Surgery',
+    patterns: ['surgery', 'surgical', 'operation']
+  },
+  {
+    key: 'rx',
+    label: 'Prescriptions / Rx',
+    patterns: [
+      'prescription',
+      'rx',
+      'medication',
+      'pharmacy',
+      'generic',
+      'brand',
+      'drug'
+    ]
+  },
+  {
+    key: 'telehealth',
+    label: 'Telemedicine',
+    patterns: [
+      'telemedicine',
+      'telehealth',
+      'virtual doctor',
+      'virtual visit',
+      'opyn',
+      'mylive'
+    ]
+  },
+  {
+    key: 'lab',
+    label: 'Lab / Blood Work',
+    patterns: [
+      'lab',
+      'labs',
+      'blood work',
+      'bloodwork',
+      'blood test',
+      'laboratory',
+      'urinalysis',
+      'pathology'
+    ]
+  },
+  {
+    key: 'imaging',
+    label: 'X-Ray / Imaging',
+    patterns: [
+      'x-ray',
+      'xray',
+      'x ray',
+      'imaging',
+      'mri',
+      'ct scan',
+      'pet scan',
+      'radiology',
+      'ultrasound'
+    ]
+  },
+  {
+    key: 'ambulance',
+    label: 'Ambulance',
+    patterns: ['ambulance', 'transport', 'air ambulance']
+  },
+  {
+    key: 'deductible',
+    label: 'Deductible / OOP',
+    patterns: ['deductible', 'out of pocket', 'oop', 'max out']
+  },
+  { key: 'copay', label: 'Copays', patterns: ['copay', 'co-pay', 'copays'] },
+  {
+    key: 'waiting',
+    label: 'Waiting Periods',
+    patterns: [
+      'waiting period',
+      'when does coverage',
+      'how soon',
+      'effective date'
+    ]
+  },
+  {
+    key: 'preex',
+    label: 'Pre-Existing Conditions',
+    patterns: [
+      'pre-existing',
+      'pre existing',
+      'preexisting',
+      'prior condition',
+      'existing condition'
+    ]
+  },
+  {
+    key: 'preventive',
+    label: 'Preventive Care',
+    patterns: [
+      'preventive',
+      'wellness',
+      'physical exam',
+      'screening',
+      'annual exam'
+    ]
+  },
+  {
+    key: 'maternity',
+    label: 'Maternity',
+    patterns: [
+      'maternity',
+      'pregnancy',
+      'pregnant',
+      'childbirth',
+      'prenatal',
+      'baby',
+      'newborn'
+    ]
+  },
+  {
+    key: 'mental',
+    label: 'Mental Health',
+    patterns: [
+      'mental health',
+      'mental illness',
+      'therapy',
+      'counseling',
+      'psychiatr',
+      'substance abuse',
+      'rehab',
+      'addiction'
+    ]
+  },
+  {
+    key: 'dental',
+    label: 'Dental / Vision',
+    patterns: [
+      'dental',
+      'teeth',
+      'dentist',
+      'vision',
+      'eye',
+      'glasses',
+      'contacts',
+      'optometrist'
+    ]
+  },
+  {
+    key: 'chiro',
+    label: 'Chiropractic',
+    patterns: ['chiropractic', 'chiropractor', 'adjustment', 'spinal']
+  },
+  {
+    key: 'cancer',
+    label: 'Cancer / Chemo',
+    patterns: [
+      'cancer',
+      'chemo',
+      'chemotherapy',
+      'radiation',
+      'oncology',
+      'tumor'
+    ]
+  },
+  {
+    key: 'dme',
+    label: 'DME / Equipment',
+    patterns: [
+      'durable medical',
+      'dme',
+      'wheelchair',
+      'walker',
+      'crutch',
+      'cpap',
+      'oxygen'
+    ]
+  },
+  {
+    key: 'network',
+    label: 'Network / Providers',
+    patterns: [
+      'network',
+      'provider',
+      'in-network',
+      'out of network',
+      'first health',
+      'phcs',
+      'multiplan'
+    ]
+  },
+  {
+    key: 'dialysis',
+    label: 'Dialysis',
+    patterns: ['dialysis', 'kidney', 'renal']
+  },
+  {
+    key: 'transplant',
+    label: 'Organ Transplant',
+    patterns: ['transplant', 'organ']
+  },
+  {
+    key: 'pt',
+    label: 'Physical Therapy',
+    patterns: [
+      'physical therapy',
+      'occupational therapy',
+      'speech therapy',
+      'rehabilitation'
+    ]
+  },
+  { key: 'acupuncture', label: 'Acupuncture', patterns: ['acupuncture'] },
+  {
+    key: 'aca',
+    label: 'ACA Compliance',
+    patterns: [
+      'aca',
+      'obamacare',
+      'affordable care',
+      'marketplace',
+      'minimum essential'
+    ]
+  }
+];
 
-  var q = query.toLowerCase().trim();
-  var expandedTerms = expandSearchSynonyms(q);
-  var specificTerms = getSpecificTerms(q);
-  // Combine both for matching — use expanded for finding, specific for highlighting
-  var searchTerms = expandedTerms.slice();
-  specificTerms.forEach(function (t) {
-    if (searchTerms.indexOf(t) === -1) searchTerms.push(t);
+function _brExtractTopics(query) {
+  var q = ' ' + query.toLowerCase().trim() + ' ';
+  var found = [];
+  _BR_TOPIC_MAP.forEach(function (topic) {
+    for (var i = 0; i < topic.patterns.length; i++) {
+      var p = topic.patterns[i];
+      if (p.charAt(0) === '^') {
+        if (q.trim().indexOf(p.substring(1)) === 0) {
+          found.push(topic);
+          return;
+        }
+      } else if (q.indexOf(p) !== -1) {
+        found.push(topic);
+        return;
+      }
+    }
   });
-  // Also add query words individually for partial matching (skip stop words + short words)
-  var STOP_WORDS = [
-    'the',
-    'this',
-    'that',
-    'what',
-    'does',
-    'they',
-    'them',
-    'their',
-    'have',
-    'has',
-    'had',
-    'been',
-    'being',
-    'will',
-    'would',
-    'could',
-    'should',
-    'about',
-    'from',
-    'with',
-    'just',
-    'like',
-    'more',
-    'some',
-    'than',
-    'were',
-    'there',
-    'here',
-    'when',
-    'where',
-    'which',
-    'into',
-    'also',
-    'each',
-    'other',
-    'only',
-    'very',
-    'much',
-    'such',
-    'over',
-    'most',
-    'same',
-    'make',
-    'after',
-    'before',
-    'back',
-    'even',
-    'take',
-    'come',
-    'give',
-    'look',
-    'find',
-    'know',
-    'want',
-    'tell',
-    'work',
-    'keep',
-    'help',
-    'show',
-    'turn',
-    'move',
-    'live',
-    'long',
-    'got',
-    'get',
-    'getting',
-    'any',
-    'can',
-    'are',
-    'for',
-    'but',
-    'all',
-    'how',
-    'who',
-    'its',
-    'our',
-    'you',
-    'your',
-    'his',
-    'her',
-    'him',
-    'she',
-    'really',
-    'still',
-    'cover',
-    'covered',
-    'coverage',
-    'include',
-    'included',
-    'includes',
-    'plan',
-    'plans',
-    'process',
-    'service',
-    'services',
-    'cost',
-    'costs',
-    'need',
-    'needs',
-    'going',
-    'much',
-    'many',
-    'also',
-    'right',
-    'good',
-    'best',
-    'info',
-    'information',
-    'question',
-    'answer'
-  ];
-  q.split(/\s+/).forEach(function (w) {
-    if (
-      w.length >= 4 &&
-      STOP_WORDS.indexOf(w) === -1 &&
-      searchTerms.indexOf(w) === -1
-    )
-      searchTerms.push(w);
+  return found.length
+    ? found
+    : [{ key: '_raw', label: query, patterns: [query.toLowerCase()] }];
+}
+
+// ══════════════════════════════════════════════════════
+// PER-TOPIC SEARCH — searches plan entries for ONE topic
+// ══════════════════════════════════════════════════════
+function _brSearchTopic(topic, plans) {
+  var searchTerms = [];
+  topic.patterns.forEach(function (p) {
+    if (p.charAt(0) !== '^') searchTerms.push(p);
+    var expanded = expandSearchSynonyms(p);
+    expanded.forEach(function (e) {
+      if (searchTerms.indexOf(e) === -1) searchTerms.push(e);
+    });
   });
 
-  // Search dashboard content
-  var allBenefits = [],
-    allExclusions = [],
-    allWaiting = [],
-    allPreex = [];
-  var matchedPlans = [];
+  var benefits = [],
+    exclusions = [];
 
   plans.forEach(function (plan) {
-    var benefits = [],
-      exclusions = [],
-      waiting = [],
-      preex = [];
-    var hasMatch = false;
-
     plan.entries.forEach(function (entry) {
-      var matched = false;
       var cat = entry.category.toLowerCase();
-      // FIX: Use brTermMatch for word-boundary-safe matching
+      var matched = false;
       for (var i = 0; i < searchTerms.length; i++) {
         if (
           brTermMatch(entry.text, searchTerms[i]) ||
@@ -1916,176 +2084,178 @@ function brStructuredAnswer(query, plans) {
         }
       }
       if (!matched) return;
-      hasMatch = true;
 
-      // Determine if the matched text is ABOUT the queried topic or just mentions it in passing
-      // An exclusion entry that incidentally mentions a search term is not the same as
-      // the queried benefit being excluded
-      var isExclusionCategory =
-        cat.includes('exclusion') || cat.includes('limitation');
+      var isExcCat = cat.includes('exclusion') || cat.includes('limitation');
       var textSaysNot =
         /\bNOT covered\b|\bNOT COVERED\b/i.test(entry.text) &&
         !/discount|savings|negotiated/i.test(entry.text);
 
-      // For exclusion-category entries: only treat as a real exclusion for this query
-      // if the entry is ABOUT the topic (starts with NO/NOT + topic) rather than just
-      // mentioning the search term incidentally
-      if (isExclusionCategory) {
+      if (isExcCat) {
+        // Only count as exclusion if the entry is about this topic AND says not covered
+        // Check both directions: "NOT ... term" and "term ... Not covered"
         var isDirectExclusion = false;
-        for (var ei = 0; ei < searchTerms.length; ei++) {
-          var t = searchTerms[ei];
-          // Check if this exclusion directly targets the queried topic
-          var directPattern = new RegExp(
-            '\\b(NO|NOT|no|not)\\b.{0,20}\\b' +
-              t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') +
-              '\\b',
-            'i'
-          );
-          if (directPattern.test(entry.text)) {
-            isDirectExclusion = true;
-            break;
+        var entryLower = entry.text.toLowerCase();
+        if (/\bnot\b|\bno\b|\bexcluded\b|\bnot covered\b/i.test(entry.text)) {
+          for (var ei = 0; ei < searchTerms.length; ei++) {
+            var t = searchTerms[ei];
+            if (brTermMatch(entry.text, t)) {
+              isDirectExclusion = true;
+              break;
+            }
           }
         }
-        if (isDirectExclusion) {
-          exclusions.push(entry.text);
-        }
-        // If not a direct exclusion of the queried topic, skip it —
-        // don't let incidental mentions poison the result
-      } else if (cat.includes('waiting')) {
-        waiting.push(entry.text);
-      } else if (cat.includes('pre-existing')) {
-        preex.push(entry.text);
+        if (isDirectExclusion) exclusions.push(entry.text);
       } else if (textSaysNot) {
         exclusions.push(entry.text);
-      } else {
+      } else if (
+        !cat.includes('waiting') &&
+        !cat.includes('pre-existing') &&
+        !cat.includes('agent note')
+      ) {
         benefits.push(entry.text);
       }
     });
-
-    if (hasMatch) {
-      matchedPlans.push({
-        name: plan.name,
-        benefits: benefits,
-        exclusions: exclusions,
-        waiting: waiting,
-        preex: preex
-      });
-      allBenefits = allBenefits.concat(benefits);
-      allExclusions = allExclusions.concat(exclusions);
-      allWaiting = allWaiting.concat(waiting);
-      allPreex = allPreex.concat(preex);
-    }
   });
 
-  var totalMatches =
-    allBenefits.length +
-    allExclusions.length +
-    allWaiting.length +
-    allPreex.length;
-
-  // Detect discount/network-rate benefits
-  var discountBenefits = allBenefits.filter(function (b) {
-    return /discount|negotiated rate|network discount|network rate|savings/i.test(
-      b
-    );
-  });
-  var isDiscountOnly =
-    discountBenefits.length > 0 &&
-    discountBenefits.length === allBenefits.length;
-
-  // ══════════════════════════════════════════════════════
-  // COVERAGE STATUS DETERMINATION — SOURCE-GROUNDED
-  // GUARDRAIL: "Not Covered" ONLY when explicit exclusion targets the query.
-  // Missing/unclear data = "Verify", NEVER "Not Covered".
-  // ══════════════════════════════════════════════════════
-  var status, internalAnswer, rebuttalType, sourceType;
-  sourceType = 'Dashboard';
-
-  if (totalMatches === 0) {
-    // Zero matches — NOT the same as excluded. Search terms may not match SOB wording.
-    status = 'Verify';
-    internalAnswer =
-      '"' +
-      query +
-      '" was not found in the Schedule of Benefits under the terms searched. ' +
-      'This does NOT mean it is excluded — verify with the full plan document before advising the client.';
-    rebuttalType = 'verify';
-  } else if (allBenefits.length > 0 && allExclusions.length === 0) {
-    // Only benefits matched, zero exclusions — clean Covered
-    if (isDiscountOnly) {
-      status = 'Discount Available';
-      internalAnswer = discountBenefits
-        .slice(0, 3)
-        .map(function (b) {
-          return '&#8226; ' + b;
-        })
-        .join('<br>');
-      rebuttalType = 'discount';
-    } else {
-      status = 'Covered';
-      internalAnswer = allBenefits
-        .slice(0, 5)
-        .map(function (b) {
-          return '&#8226; ' + b;
-        })
-        .join('<br>');
-      rebuttalType = allWaiting.length
-        ? 'waiting'
-        : allPreex.length
-          ? 'preex'
-          : 'covered';
-    }
-  } else if (allExclusions.length > 0 && allBenefits.length === 0) {
-    // ONLY direct exclusions matched, zero benefits — real Not Covered
+  // Determine status for this single topic
+  var status, items;
+  if (benefits.length > 0 && exclusions.length === 0) {
+    var isDiscount = benefits.every(function (b) {
+      return /discount|negotiated|savings/i.test(b);
+    });
+    status = isDiscount ? 'Discount' : 'Covered';
+    items = benefits.slice(0, 3);
+  } else if (exclusions.length > 0 && benefits.length === 0) {
     status = 'Not Covered';
-    internalAnswer = allExclusions
-      .slice(0, 3)
-      .map(function (e) {
-        return '&#10005; ' + e;
-      })
-      .join('<br>');
-    rebuttalType = 'notCovered';
-  } else if (allBenefits.length > 0 && allExclusions.length > 0) {
-    // Both found — show BOTH separately. Status = Covered with limitations.
-    // NEVER collapse to "Not Covered" when benefits exist.
+    items = exclusions.slice(0, 2);
+  } else if (benefits.length > 0 && exclusions.length > 0) {
     status = 'Covered';
-    internalAnswer = '<strong>Benefits found:</strong><br>';
-    internalAnswer += allBenefits
-      .slice(0, 4)
-      .map(function (b) {
-        return '&#8226; ' + b;
-      })
-      .join('<br>');
-    internalAnswer += '<br><br><strong>Limitations noted:</strong><br>';
-    internalAnswer += allExclusions
-      .slice(0, 3)
-      .map(function (e) {
-        return '&#10005; ' + e;
-      })
-      .join('<br>');
-    rebuttalType = 'partial';
-  } else if (allWaiting.length > 0 || allPreex.length > 0) {
-    status = 'Waiting Period Applies';
-    internalAnswer = '';
-    if (allWaiting.length)
-      internalAnswer += allWaiting
-        .map(function (w) {
-          return '&#8226; ' + w;
-        })
-        .join('<br>');
-    if (allPreex.length)
-      internalAnswer +=
-        (internalAnswer ? '<br>' : '') + '&#8226; Pre-ex: ' + allPreex[0];
-    rebuttalType = allPreex.length ? 'preex' : 'waiting';
+    items = benefits.slice(0, 2);
   } else {
-    // Catch-all — always Verify, never Not Covered
     status = 'Verify';
-    internalAnswer =
-      'No clear benefit or exclusion found for "' +
-      query +
-      '". Verify with the full plan document.';
-    rebuttalType = 'verify';
+    items = [];
   }
+
+  return {
+    topic: topic,
+    status: status,
+    items: items,
+    benefitCount: benefits.length,
+    exclusionCount: exclusions.length
+  };
+}
+
+// ══════════════════════════════════════════════════════
+// MAIN ENTRY — replaces old brStructuredAnswer
+// ══════════════════════════════════════════════════════
+function brStructuredAnswer(query, plans) {
+  // Check single-topic overrides first (only for simple queries)
+  var topicResult = _brTopicOverride(query, plans);
+  if (topicResult) return topicResult;
+
+  // ══════════════════════════════════════════════════════
+  // PER-TOPIC SEARCH ENGINE
+  // Extract topics from query, search each independently,
+  // build combined answer with per-topic status
+  // ══════════════════════════════════════════════════════
+  var topics = _brExtractTopics(query);
+  var topicResults = topics.map(function (t) {
+    return _brSearchTopic(t, plans);
+  });
+
+  // Determine overall status from per-topic results
+  var coveredCount = 0,
+    notCoveredCount = 0,
+    verifyCount = 0,
+    discountCount = 0;
+  topicResults.forEach(function (r) {
+    if (r.status === 'Covered') coveredCount++;
+    else if (r.status === 'Not Covered') notCoveredCount++;
+    else if (r.status === 'Discount') discountCount++;
+    else verifyCount++;
+  });
+
+  var status, rebuttalType;
+  if (topicResults.length === 1) {
+    status =
+      topicResults[0].status === 'Discount'
+        ? 'Discount Available'
+        : topicResults[0].status;
+  } else if (coveredCount > 0 && notCoveredCount > 0) {
+    status = 'Partial';
+  } else if (coveredCount > 0) {
+    status = 'Covered';
+  } else if (notCoveredCount > 0 && coveredCount === 0 && verifyCount === 0) {
+    status = 'Not Covered';
+  } else if (discountCount > 0) {
+    status = 'Discount Available';
+  } else {
+    status = 'Verify';
+  }
+
+  if (status === 'Covered') rebuttalType = 'covered';
+  else if (status === 'Not Covered') rebuttalType = 'notCovered';
+  else if (status === 'Discount Available') rebuttalType = 'discount';
+  else if (status === 'Partial') rebuttalType = 'partial';
+  else rebuttalType = 'verify';
+
+  // Build per-topic internal answer
+  var internalAnswer = '';
+  var planName = plans.length === 1 ? plans[0].name || '' : 'Selected plans';
+
+  topicResults.forEach(function (r) {
+    var icon =
+      r.status === 'Covered'
+        ? '&#9989;'
+        : r.status === 'Not Covered'
+          ? '&#10060;'
+          : r.status === 'Discount'
+            ? '&#128178;'
+            : '&#10067;';
+    var stColor =
+      r.status === 'Covered'
+        ? '#15803D'
+        : r.status === 'Not Covered'
+          ? '#DC2626'
+          : r.status === 'Discount'
+            ? '#d97706'
+            : '#6B7280';
+    internalAnswer +=
+      '<div style="margin-bottom:8px;padding:8px 10px;background:var(--bg-surface);border-radius:8px;border-left:3px solid ' +
+      stColor +
+      ';">';
+    internalAnswer +=
+      '<div style="font-size:12px;font-weight:700;color:' +
+      stColor +
+      ';margin-bottom:4px;">' +
+      icon +
+      ' ' +
+      r.topic.label +
+      ' — ' +
+      r.status.toUpperCase() +
+      '</div>';
+    if (r.items.length) {
+      r.items.forEach(function (item) {
+        internalAnswer +=
+          '<div style="font-size:12px;color:var(--text-primary);line-height:1.5;padding-left:6px;">&#8226; ' +
+          item +
+          '</div>';
+      });
+    } else {
+      internalAnswer +=
+        '<div style="font-size:12px;color:var(--text-secondary);padding-left:6px;">Verify in plan document</div>';
+    }
+    internalAnswer += '</div>';
+  });
+
+  internalAnswer +=
+    '<div style="font-size:10px;color:var(--text-muted);margin-top:4px;">Source: ' +
+    planName +
+    '</div>';
+
+  var sourceType = 'Dashboard';
+  var matchedPlans = [];
+  var specificTerms = [query.toLowerCase()];
 
   var rebuttal = pickRebuttal(rebuttalType);
 
