@@ -221,12 +221,14 @@
         .then(function(result) {
           btn.disabled = false;
           btn.textContent = 'Sign In →';
+          console.log('[CHA] SignIn result status:', result.status, JSON.stringify(result));
           if (result.status === 'complete') {
             completeSignIn(result);
           } else if (result.status === 'needs_second_factor') {
             // 2FA required — show code input screen
             _signInResult = result;
             document.getElementById('sign-in-view').style.display = 'none';
+            console.log('[CHA] Showing MFA screen for status:', result.status);
             document.getElementById('mfa-view').style.display = 'block';
             setTimeout(function() {
               var inp = document.getElementById('mfa-code');
