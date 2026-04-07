@@ -6,18 +6,15 @@
   <title>CHA — Agent Login</title>
   <meta name="robots" content="noindex,nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <script async crossorigin="anonymous"
-    data-clerk-publishable-key="pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA"
-    src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js"
-    type="text/javascript"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       background: #0f172a;
       min-height: 100vh;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -29,341 +26,73 @@
       background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(81,117,241,0.15), transparent);
       pointer-events: none;
     }
-    .card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 40px 36px 36px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 24px 80px rgba(0,0,0,0.4);
-      position: relative;
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      z-index: 1;
     }
-    .header { text-align: center; margin-bottom: 28px; }
-    .logo {
-      width: 56px; height: 56px; border-radius: 14px;
-      margin: 0 auto 14px; display: block;
-      background: #162436; padding: 6px; object-fit: contain;
+    .brand img {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #162436;
+      padding: 5px;
+      object-fit: contain;
     }
-    .title { font-size: 22px; font-weight: 800; color: #0f172a; }
-    .sub { font-size: 13px; color: #64748b; margin-top: 4px; }
-    .badges {
-      display: flex; align-items: center; justify-content: center;
-      gap: 6px; margin-bottom: 20px;
+    .brand-name { font-size: 16px; font-weight: 800; color: #fff; line-height: 1.2; }
+    .brand-sub { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+    #clerk-sign-in { z-index: 1; width: 100%; max-width: 400px; }
+    .footer {
+      margin-top: 20px;
+      font-size: 11px;
+      color: #475569;
+      text-align: center;
+      z-index: 1;
     }
-    .badge {
-      font-size: 10px; font-weight: 700; padding: 3px 10px;
-      border-radius: 999px; letter-spacing: .05em; text-transform: uppercase;
-    }
-    .badge-a { background: rgba(81,117,241,0.1); color: #5175f1; }
-    .badge-m { background: rgba(22,163,74,0.1); color: #16a34a; }
-    .badge-x { font-size: 10px; color: #94a3b8; font-weight: 600; }
-    .group { margin-bottom: 16px; }
-    label {
-      display: block; font-size: 12px; font-weight: 700;
-      color: #374151; letter-spacing: .04em; text-transform: uppercase;
-      margin-bottom: 6px;
-    }
-    input {
-      width: 100%; padding: 12px 14px;
-      border: 1.5px solid #e2e8f0; border-radius: 10px;
-      font-family: inherit; font-size: 14px; color: #0f172a;
-      background: #f8fafc; transition: border-color .15s, box-shadow .15s; outline: none;
-    }
-    input:focus { border-color: #5175f1; box-shadow: 0 0 0 3px rgba(81,117,241,.12); background: #fff; }
-    .btn {
-      width: 100%; padding: 13px; background: #5175f1; color: #fff;
-      border: none; border-radius: 10px; font-family: inherit;
-      font-size: 15px; font-weight: 700; cursor: pointer;
-      margin-top: 8px; transition: background .15s;
-    }
-    .btn:hover { background: #3d5fd4; }
-    .btn:disabled { background: #94a3b8; cursor: not-allowed; }
-    .error {
-      background: #fef2f2; border: 1px solid #fecaca;
-      border-radius: 8px; padding: 10px 14px;
-      font-size: 13px; color: #dc2626;
-      margin-top: 12px; display: none;
-    }
-    .forgot {
-      display: block; text-align: center; margin-top: 16px;
-      font-size: 12px; color: #64748b; cursor: pointer;
-      background: none; border: none; font-family: inherit; width: 100%;
-      text-decoration: underline;
-    }
-    .forgot:hover { color: #5175f1; }
-    .footer { text-align: center; margin-top: 24px; font-size: 11px; color: #94a3b8; line-height: 1.6; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <div class="header">
-      <img src="./logo.png" alt="CHA" class="logo" />
-      <div class="title">Central Health Advisors</div>
-      <div class="sub">Sales Command Center</div>
-    </div>
 
-    <div class="badges">
-      <span class="badge badge-a">Agent</span>
-      <span class="badge-x">·</span>
-      <span class="badge badge-m">Manager</span>
-      <span class="badge-x">·</span>
-      <span class="badge-x">Authorized Access Only</span>
+  <div class="brand">
+    <img src="./logo.png" alt="CHA" />
+    <div>
+      <div class="brand-name">Central Health Advisors</div>
+      <div class="brand-sub">Sales Command Center · Authorized Access Only</div>
     </div>
-
-    <div id="sign-in-view">
-      <div class="group">
-        <label for="email">Email Address</label>
-        <input type="email" id="email" placeholder="you@siabenefits.com" autocomplete="email" />
-      </div>
-      <div class="group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
-      </div>
-      <button class="btn" id="login-btn" onclick="doSignIn()">Sign In →</button>
-      <div class="error" id="error-msg"></div>
-      <button class="forgot" onclick="showForgot()">Forgot password?</button>
-    </div>
-
-    <div id="forgot-view" style="display:none;">
-      <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:6px;">Reset Password</div>
-      <div style="font-size:13px;color:#64748b;margin-bottom:14px;">Enter your email and we will send a reset link.</div>
-      <div class="group">
-        <label for="reset-email">Email Address</label>
-        <input type="email" id="reset-email" placeholder="you@siabenefits.com" />
-      </div>
-      <button class="btn" onclick="doReset()">Send Reset Link</button>
-      <div class="error" id="reset-error"></div>
-      <button class="forgot" onclick="showSignIn()">← Back to sign in</button>
-    </div>
-
-    <!-- 2FA View -->
-    <div id="mfa-view" style="display:none;">
-      <div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:6px;">Two-Factor Verification</div>
-      <div style="font-size:13px;color:#64748b;margin-bottom:16px;">Enter the 6-digit code from your authenticator app or SMS.</div>
-      <div class="group">
-        <label for="mfa-code">6-Digit Code</label>
-        <input type="text" id="mfa-code" placeholder="000000" maxlength="6" autocomplete="one-time-code"
-          style="letter-spacing:8px;font-size:20px;text-align:center;font-weight:700;"
-          oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
-      </div>
-      <button class="btn" id="mfa-btn" onclick="doMFA()">Verify →</button>
-      <div class="error" id="mfa-error"></div>
-      <button class="forgot" onclick="showSignIn()">← Back to sign in</button>
-    </div>
-
-    <div class="footer">🔒 Secure login · CHA Internal Only<br/>Contact your manager to get access.</div>
   </div>
 
+  <div id="clerk-sign-in"></div>
+
+  <div class="footer">🔒 CHA Internal Only · Contact your manager to get access</div>
+
   <script>
-    // ── CONFIG ──────────────────────────────────────────────────────────────
     var CLERK_PK = 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
-    var clerk = null;
-
-    // ── WAIT FOR CLERK SDK (static script tag in head) ─────────────────────
-    function waitForClerk(cb, attempts) {
-      if (!attempts) attempts = 0;
-      if (window.Clerk) {
-        cb();
-      } else if (attempts < 50) {
-        setTimeout(function() { waitForClerk(cb, attempts + 1); }, 200);
-      } else {
-        showErr('Could not connect to auth service. Check your internet and refresh the page.');
-      }
-    }
-
-    waitForClerk(function() {
-      clerk = window.Clerk;
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js';
+    s.onload = function() {
+      var clerk = new window.Clerk(CLERK_PK);
       clerk.load().then(function() {
         if (clerk.user) {
           window.location.replace('/');
-        }
-      }).catch(function(e) {
-        console.error('[CHA] clerk.load error:', e);
-      });
-    });
-
-    // ── SIGN IN ──────────────────────────────────────────────────────────────
-    var _signInResult = null; // stored for 2FA step
-
-    function completeSignIn(result) {
-      var c = clerk || window.Clerk;
-      if (typeof c.setActive === 'function') {
-        c.setActive({ session: result.createdSessionId })
-          .then(function() { window.location.replace('/'); })
-          .catch(function() { window.location.replace('/'); });
-      } else {
-        window.location.replace('/');
-      }
-    }
-
-    function doSignIn() {
-      var email = document.getElementById('email').value.trim();
-      var password = document.getElementById('password').value;
-      var btn = document.getElementById('login-btn');
-
-      hideErr();
-      if (!email || !password) { showErr('Please enter your email and password.'); return; }
-      if (!clerk) {
-        if (window.Clerk) {
-          clerk = window.Clerk;
-        } else {
-          showErr('Login service still loading. Wait a moment and try again.');
           return;
         }
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Signing in...';
-
-      var signInAPI = (clerk.client && clerk.client.signIn) || clerk.signIn;
-
-      signInAPI.create({ identifier: email, password: password })
-        .then(function(result) {
-          btn.disabled = false;
-          btn.textContent = 'Sign In →';
-          console.log('[CHA] SignIn result status:', result.status, JSON.stringify(result));
-          if (result.status === 'complete') {
-            completeSignIn(result);
-          } else if (result.status === 'needs_second_factor') {
-            // 2FA required — show code input screen
-            _signInResult = result;
-            document.getElementById('sign-in-view').style.display = 'none';
-            console.log('[CHA] Showing MFA screen for status:', result.status);
-            document.getElementById('mfa-view').style.display = 'block';
-            setTimeout(function() {
-              var inp = document.getElementById('mfa-code');
-              if (inp) inp.focus();
-            }, 100);
-          } else {
-            showErr('Sign in incomplete (status: ' + result.status + '). Contact your manager.');
-          }
-        })
-        .catch(function(err) {
-          btn.disabled = false;
-          btn.textContent = 'Sign In →';
-          var msg = 'Invalid email or password.';
-          if (err.errors && err.errors[0]) {
-            var code = err.errors[0].code || '';
-            if (code === 'form_password_incorrect') msg = 'Wrong password. Try again.';
-            else if (code === 'form_identifier_not_found') msg = 'No account found. Contact your manager.';
-            else if (code === 'too_many_requests') msg = 'Too many attempts. Wait a few minutes.';
-            else msg = err.errors[0].long_message || err.errors[0].message || msg;
-          }
-          showErr(msg);
+        clerk.mountSignIn(document.getElementById('clerk-sign-in'), {
+          afterSignInUrl: '/',
+          redirectUrl: '/'
         });
-    }
-
-    function doMFA() {
-      var code = document.getElementById('mfa-code').value.trim();
-      var btn = document.getElementById('mfa-btn');
-      var errEl = document.getElementById('mfa-error');
-      errEl.style.display = 'none';
-
-      if (!code || code.length < 6) {
-        errEl.textContent = 'Enter the 6-digit code.';
-        errEl.style.display = 'block';
-        return;
-      }
-      if (!_signInResult) {
-        showSignIn();
-        return;
-      }
-
-      btn.disabled = true;
-      btn.textContent = 'Verifying...';
-
-      // Try TOTP first, fall back to phone_code
-      _signInResult.attemptSecondFactor({ strategy: 'totp', code: code })
-        .then(function(result) {
-          btn.disabled = false;
-          btn.textContent = 'Verify →';
-          if (result.status === 'complete') {
-            completeSignIn(result);
-          } else {
-            errEl.textContent = 'Verification incomplete. Try again.';
-            errEl.style.display = 'block';
-          }
-        })
-        .catch(function() {
-          // TOTP failed - try phone/SMS code
-          _signInResult.attemptSecondFactor({ strategy: 'phone_code', code: code })
-            .then(function(result) {
-              btn.disabled = false;
-              btn.textContent = 'Verify →';
-              if (result.status === 'complete') {
-                completeSignIn(result);
-              } else {
-                errEl.textContent = 'Verification incomplete. Try again.';
-                errEl.style.display = 'block';
-              }
-            })
-            .catch(function(err) {
-              btn.disabled = false;
-              btn.textContent = 'Verify →';
-              var msg = 'Invalid code. Try again.';
-              if (err.errors && err.errors[0]) {
-                msg = err.errors[0].long_message || err.errors[0].message || msg;
-              }
-              errEl.textContent = msg;
-              errEl.style.display = 'block';
-            });
-        });
-    }
-
-    // ── FORGOT PASSWORD ──────────────────────────────────────────────────────
-    function doReset() {
-      var email = document.getElementById('reset-email').value.trim();
-      if (!email) { showResetErr('Please enter your email.'); return; }
-      if (!clerk) { showResetErr('Service still loading. Please wait.'); return; }
-
-      var resetAPI = (clerk.client && clerk.client.signIn) || clerk.signIn;
-      resetAPI.create({ strategy: 'reset_password_email_code', identifier: email })
-        .then(function() {
-          document.getElementById('forgot-view').innerHTML =
-            '<div style="text-align:center;padding:20px 0;">' +
-            '<div style="font-size:32px;margin-bottom:12px;">📧</div>' +
-            '<div style="font-size:15px;font-weight:700;color:#1e293b;margin-bottom:8px;">Check your email</div>' +
-            '<div style="font-size:13px;color:#64748b;">Reset link sent to <strong>' + email + '</strong></div>' +
-            '<button class="forgot" onclick="showSignIn()" style="margin-top:16px;">← Back to sign in</button>' +
-            '</div>';
-        })
-        .catch(function(err) {
-          var msg = err.errors && err.errors[0] ? err.errors[0].message : 'Could not send reset email.';
-          showResetErr(msg);
-        });
-    }
-
-    // ── HELPERS ──────────────────────────────────────────────────────────────
-    function showForgot() {
-      document.getElementById('sign-in-view').style.display = 'none';
-      document.getElementById('forgot-view').style.display = 'block';
-    }
-    function showSignIn() {
-      document.getElementById('forgot-view').style.display = 'none';
-      document.getElementById('sign-in-view').style.display = 'block';
-    }
-    function showErr(msg) {
-      var el = document.getElementById('error-msg');
-      el.textContent = msg; el.style.display = 'block';
-    }
-    function hideErr() {
-      document.getElementById('error-msg').style.display = 'none';
-    }
-    function showResetErr(msg) {
-      var el = document.getElementById('reset-error');
-      el.textContent = msg; el.style.display = 'block';
-    }
-
-    // Enter key submits on whichever view is active
-    document.addEventListener('keydown', function(e) {
-      if (e.key !== 'Enter') return;
-      var mfaView = document.getElementById('mfa-view');
-      if (mfaView && mfaView.style.display !== 'none') {
-        doMFA();
-      } else {
-        doSignIn();
-      }
-    });
+      }).catch(function(e) {
+        console.error('[CHA] Clerk error:', e);
+        document.getElementById('clerk-sign-in').innerHTML =
+          '<div style="color:#f87171;background:#1e293b;border-radius:12px;padding:20px;font-size:13px;text-align:center;font-family:sans-serif;">Could not load login. Please refresh the page.</div>';
+      });
+    };
+    s.onerror = function() {
+      document.getElementById('clerk-sign-in').innerHTML =
+        '<div style="color:#f87171;background:#1e293b;border-radius:12px;padding:20px;font-size:13px;text-align:center;font-family:sans-serif;">Cannot connect. Check internet and refresh.</div>';
+    };
+    document.head.appendChild(s);
   </script>
 </body>
 </html>
