@@ -138,33 +138,33 @@
   <script>
     // ── CONFIG ──────────────────────────────────────────────────────────────
     var CLERK_PK = 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
-    var CLERK_JS_URL = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
     var clerk = null;
-    var clerkReady = false;
 
-    // ── LOAD CLERK ON PAGE LOAD ──────────────────────────────────────────────
+    // ── LOAD CLERK SDK ───────────────────────────────────────────────────────
+    // Using @5 CDN — correct init is window.Clerk.load() not new window.Clerk()
     var script = document.createElement('script');
-    script.src = CLERK_JS_URL;
+    script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@5/dist/clerk.browser.js';
     script.onload = function() {
-      try {
-        clerk = new window.Clerk(CLERK_PK);
-        clerk.load().then(function() {
-          clerkReady = true;
+      if (!window.Clerk) {
+        showErr('Auth service failed to load. Please refresh.');
+        return;
+      }
+      // Clerk @5 CDN: initialize with publishableKey option, not constructor
+      window.Clerk.load({ publishableKey: CLERK_PK })
+        .then(function(cl) {
+          clerk = cl || window.Clerk;
           if (clerk.user) {
             window.location.replace('/');
           }
-        }).catch(function(e) {
-          console.error('Clerk load error:', e);
-          // Still allow sign in attempt
-          clerkReady = true;
+        })
+        .catch(function(e) {
+          console.error('[CHA] Clerk.load error:', e);
+          // Clerk may still work for sign-in even if load() errors
+          clerk = window.Clerk;
         });
-      } catch(e) {
-        console.error('Clerk init error:', e);
-        showErr('Login service error. Please refresh the page.');
-      }
     };
     script.onerror = function() {
-      showErr('Could not connect to login service. Check your internet and refresh.');
+      showErr('Could not connect to auth service. Check your internet and refresh the page.');
     };
     document.head.appendChild(script);
 
@@ -181,7 +181,7 @@
       btn.disabled = true;
       btn.textContent = 'Signing in...';
 
-      clerk.signIn.create({ identifier: email, password: password })
+      (clerk.signIn || window.Clerk.signIn).create({ identifier: email, password: password })
         .then(function(result) {
           if (result.status === 'complete') {
             window.location.replace('/');

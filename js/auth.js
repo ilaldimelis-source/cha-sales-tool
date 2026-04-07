@@ -65,9 +65,10 @@
   // ── SESSION CHECK ────────────────────────────────────────────────────────────
   function checkSession() {
     try {
-      _clerkInstance = new window.Clerk(CLERK_PK);
-      _clerkInstance.load({ afterSignInUrl: '/', afterSignUpUrl: '/' })
-        .then(function() {
+      // Clerk @5 CDN: use window.Clerk.load() with publishableKey
+      window.Clerk.load({ publishableKey: CLERK_PK })
+        .then(function(cl) {
+          _clerkInstance = cl || window.Clerk;
           window.Clerk = _clerkInstance;
           var user = _clerkInstance.user;
           if (!user) {
