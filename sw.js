@@ -1,7 +1,7 @@
 // CHA Sales Command Center — Service Worker
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = 'cha-command-center-v25';
+var CACHE_NAME = 'cha-command-center-v26';
 var URLS_TO_CACHE = [
   './',
   './index.html',
@@ -53,14 +53,32 @@ self.addEventListener('activate', function (event) {
   self.clients.claim();
 });
 
-// Fetch: serve from cache first, fall back to network
-// This means the app works even with zero signal
+// Fetch: network-first for JS/HTML, cache-first for everything else
 self.addEventListener('fetch', function (event) {
+  var url = event.request.url;
+  // JS and HTML files — always try network first so updates show immediately
+  if (url.endsWith('.js') || url.endsWith('.html') || url.endsWith('/')) {
+    event.respondWith(
+      fetch(event.request)
+        .then(function (networkResponse) {
+          if (networkResponse && networkResponse.status === 200) {
+            var clone = networkResponse.clone();
+            caches.open(CACHE_NAME).then(function (cache) {
+              cache.put(event.request, clone);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(function () {
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+  // Everything else (CSS, fonts, images) — cache-first
   event.respondWith(
     caches.match(event.request).then(function (cachedResponse) {
       if (cachedResponse) {
-        // Serve from cache immediately (fast!)
-        // Also update the cache in the background for next time
         fetch(event.request)
           .then(function (networkResponse) {
             if (networkResponse && networkResponse.status === 200) {
