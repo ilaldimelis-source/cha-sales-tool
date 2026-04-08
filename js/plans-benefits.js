@@ -2114,3 +2114,32 @@ function renderNetworkexplainer() {
   var _page_networkexplainer = document.getElementById('page-networkexplainer');
   if (_page_networkexplainer) _page_networkexplainer.innerHTML = html;
 }
+
+// ══════════════════════════════════════════════════════
+// AUTO-CLEAR SEARCH INPUTS WHEN AGENT SELECTS A PLAN
+// When the agent clicks a plan button in the Benefits Reference
+// panel's .br-plan-bar, clear every search/input box so the next
+// action starts fresh. Uses event delegation on document so it
+// works for dynamically-created plan buttons (chat.js creates them)
+// without ever modifying chat.js itself. Runs after chat.js's own
+// onclick handler (bubbling phase), so it cannot interfere with
+// plan selection logic.
+// ══════════════════════════════════════════════════════
+document.addEventListener('click', function (e) {
+  var t = e.target;
+  if (!t || typeof t.closest !== 'function') return;
+  var btn = t.closest('.br-plan-btn');
+  if (!btn) return;
+  // Benefits Reference chat textarea
+  var chatInput = document.getElementById('br-input');
+  if (chatInput) chatInput.value = '';
+  // Benefits Reference in-panel plan search
+  var brPlanSearch = document.getElementById('br-plan-search');
+  if (brPlanSearch) brPlanSearch.value = '';
+  // Plans tab search (if that page is also open)
+  var planSearch = document.getElementById('planSearchInput');
+  if (planSearch) {
+    planSearch.value = '';
+    if (typeof filterPlanSearch === 'function') filterPlanSearch('');
+  }
+});
