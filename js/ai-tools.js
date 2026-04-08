@@ -7,7 +7,7 @@ function _aiGroq(systemPrompt, userMsg, onSuccess, onError) {
     if (onError) onError('no-key');
     return;
   }
-  fetch('https://api.groq.com/openai/v1/chat/completions', {
+  fetch(CHA_GROQ_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

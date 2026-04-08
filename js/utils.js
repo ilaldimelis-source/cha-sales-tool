@@ -1,5 +1,8 @@
 // utils.js — Icons, escHTML, search engine, shared utilities
 
+// ── SHARED CONFIG ────────────────────────────────────────────
+var CHA_GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
+
 function escHTML(s) {
   return s
     .replace(/&/g, '&amp;')
