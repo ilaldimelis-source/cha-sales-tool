@@ -1,7 +1,7 @@
 // CHA Sales Command Center — Service Worker
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = 'cha-command-center-v73';
+var CACHE_NAME = 'cha-command-center-v74';
 var URLS_TO_CACHE = [
   './',
   './index.html',
@@ -86,7 +86,29 @@ self.addEventListener('fetch', function (event) {
     return;
   }
 
-  // Everything else: stale-while-revalidate
+  // /js/* (except js/auth.js, handled above): network-first.
+  // Always try fresh JS from network so deploys reach users immediately.
+  // Fall back to cache only if network fails (offline).
+  if (url.indexOf('/js/') !== -1) {
+    event.respondWith(
+      fetch(event.request)
+        .then(function (response) {
+          if (response && response.status === 200) {
+            var clone = response.clone();
+            caches.open(CACHE_NAME).then(function (cache) {
+              cache.put(event.request, clone);
+            });
+          }
+          return response;
+        })
+        .catch(function () {
+          return caches.match(event.request);
+        })
+    );
+    return;
+  }
+
+  // Everything else (CSS, images, fonts): stale-while-revalidate
   event.respondWith(
     caches.match(event.request).then(function (cached) {
       var fetchPromise = fetch(event.request)
