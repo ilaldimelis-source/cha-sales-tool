@@ -50,6 +50,43 @@ function safeSetItem(key, val) {
 }
 
 // ══════════════════════════════════════════════════════
+// AUTO-POPULATE GROQ API KEY FROM /api/groq-key
+// Fetches the shared office key from the Vercel serverless function
+// on page load and saves it to localStorage — but only when nothing
+// is already saved. This means:
+//   • Agents who have entered their own personal key: untouched.
+//   • Agents who have previously clicked "skip": untouched.
+//   • Agents with no key at all: get the shared key automatically
+//     so chat.js picks it up at runtime without ever prompting.
+// Uses the safe wrappers above so incognito / quota errors don't crash.
+// Cache-buster on the URL prevents the service worker's
+// stale-while-revalidate path from caching the key response.
+// ══════════════════════════════════════════════════════
+(function _chaAutoPopulateGroqKey() {
+  var existing = safeGetItem('cha_groq_key');
+  // Only auto-populate when there is literally no value saved.
+  // Any non-empty value (real key or 'skip' sentinel) is preserved.
+  if (existing) return;
+  fetch('/api/groq-key?t=' + Date.now())
+    .then(function (r) {
+      if (!r.ok) return null;
+      return r.json();
+    })
+    .then(function (d) {
+      if (!d || !d.key) return;
+      // Re-check right before writing, in case something else populated
+      // it between the fetch starting and this handler resolving.
+      if (!safeGetItem('cha_groq_key')) {
+        safeSetItem('cha_groq_key', d.key);
+      }
+    })
+    .catch(function () {
+      // Network failure or 500 — silently leave localStorage empty.
+      // The existing manual-entry prompt in chat.js still works as a fallback.
+    });
+})();
+
+// ══════════════════════════════════════════════════════
 // FONT SIZE TOGGLE (S / M / L)
 // ══════════════════════════════════════════════════════
 function setFontSize(size) {
