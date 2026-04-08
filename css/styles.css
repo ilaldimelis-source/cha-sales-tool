@@ -731,13 +731,13 @@ svg {
 
 /* ── SCRIPT BOX ── */
 .sbox {
-  background: #f4f6fb;
+  background: #ffffff;
   border-radius: 14px;
   padding: 16px 18px;
   font-family: var(--font-body);
   font-size: 14px;
   line-height: 1.6;
-  color: #6b7280;
+  color: #1e293b;
   font-style: italic;
   border: 2px solid #c8cedd;
   margin-bottom: 12px;
@@ -4295,4 +4295,9 @@ input, textarea, select { font-size: 15px; }
 }
 .skip-link:focus {
   top: 0;
+}
+
+.script-card-body, .sbox, .ibox, .ps-card, .xcard-body, .cf-step, .close-item {
+  background: #ffffff !important;
+  color: #1e293b !important;
 }

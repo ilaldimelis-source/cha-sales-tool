@@ -1259,7 +1259,7 @@ function renderPlanScripts() {
       '" style="max-width:720px;margin:0 auto 24px;position:relative;">';
     // Large bold section header
     html +=
-      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#1e293b,#334155);padding:14px 24px;border-radius:14px 14px 0 0;">' +
+      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1e293b;background:#ffffff;border:1px solid #e2e8f0;border-bottom:none;padding:14px 24px;border-radius:14px 14px 0 0;">' +
       secLabel +
       '</div>';
     // Script card body
@@ -1359,7 +1359,7 @@ function renderIsaScriptContent() {
     html +=
       '<div style="max-width:720px;margin:0 auto 16px;">';
     html +=
-      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#1e293b,#334155);padding:14px 24px;border-radius:14px 14px 0 0;">' +
+      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1e293b;background:#ffffff;border:1px solid #e2e8f0;border-bottom:none;padding:14px 24px;border-radius:14px 14px 0 0;">' +
       item.label +
       '</div>';
     html +=
