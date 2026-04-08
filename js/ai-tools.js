@@ -1,9 +1,37 @@
 // ai-tools.js — AI Tools tab (Psych Profile, Compliance AI, Coaching AI, Discovery, Closing Engine)
 
 // ── SHARED GROQ HELPER ───────────────────────────────────────────────────────
+
+// Env-provided shared Groq key, fetched once on init from /api/groq-key
+// (a Vercel serverless function that reads process.env.GROQ_API_KEY).
+// localStorage 'cha_groq_key' always wins; this is used only as a fallback
+// when an agent has not entered their own personal key.
+// The ?t= cache-buster prevents the service worker's stale-while-revalidate
+// path from caching the response (sw.js does not have /api/ in its
+// noCachePatterns list and we cannot modify sw.js beyond its version bump).
+var _aiGroqFallbackKey = '';
+fetch('/api/groq-key?t=' + Date.now())
+  .then(function (r) {
+    if (!r.ok) return null;
+    return r.json();
+  })
+  .then(function (d) {
+    if (d && d.key) {
+      _aiGroqFallbackKey = d.key;
+    }
+  })
+  .catch(function () {
+    // Network failure or 500 — silently leave fallback empty.
+    // ai-tools will continue to require a user-entered key as before.
+  });
+
 function _aiGroq(systemPrompt, userMsg, onSuccess, onError) {
   var key = localStorage.getItem('cha_groq_key') || '';
+  // No usable user key — fall back to the env-provided shared key.
   if (!key || key === 'skip' || key.length < 20) {
+    key = _aiGroqFallbackKey;
+  }
+  if (!key || key.length < 20) {
     if (onError) onError('no-key');
     return;
   }
