@@ -2285,6 +2285,7 @@ textarea:focus-visible {
   padding: 8px 12px;
   border-bottom: 1px solid #e2e8f0;
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
   flex-shrink: 0;
   overflow-x: auto;
