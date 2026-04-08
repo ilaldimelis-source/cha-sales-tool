@@ -73,12 +73,14 @@ self.addEventListener('fetch', function (event) {
     'api.groq.com',
     'api.anthropic.com'
   ];
-  var skipCache = noCachePatterns.some(function(p) { return url.indexOf(p) !== -1; });
+  var skipCache = noCachePatterns.some(function (p) {
+    return url.indexOf(p) !== -1;
+  });
 
   if (skipCache) {
     // Network only — no caching
     event.respondWith(
-      fetch(event.request).catch(function() {
+      fetch(event.request).catch(function () {
         // If network fails for login page, user sees browser error (correct behavior)
         return new Response('Network error', { status: 503 });
       })
