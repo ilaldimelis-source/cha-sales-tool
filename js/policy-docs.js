@@ -137,15 +137,6 @@ function _pdGrpColor(grp) {
   return grp === 'MEC' ? '#5B8DEF' : grp === 'STM' ? '#d97706' : '#dc2626';
 }
 
-function pdToggleSection(header) {
-  var body = header.nextElementSibling;
-  var chev = header.querySelector('svg');
-  if (!body) return;
-  var hidden = body.style.display === 'none';
-  body.style.display = hidden ? '' : 'none';
-  if (chev) chev.style.transform = hidden ? 'rotate(180deg)' : '';
-}
-
 function _pdExpandedDetail(plan) {
   var gc = _pdGrpColor(plan.group);
   var salesPlan = _pdFindSalesPlan(plan);
