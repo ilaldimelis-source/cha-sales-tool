@@ -31,28 +31,39 @@ if (!CLERK_SECRET || !CLERK_SECRET.startsWith('sk_')) {
   process.exit(1);
 }
 
-function delay(ms) { return new Promise(function(r){ setTimeout(r,ms); }); }
+function delay(ms) {
+  return new Promise(function (r) {
+    setTimeout(r, ms);
+  });
+}
 
 async function runInvites() {
   console.log('Inviting ' + emails.length + ' agents...\n');
-  var success = [], failed = [];
+  var success = [],
+    failed = [];
   for (var i = 0; i < emails.length; i++) {
     var email = emails[i].trim().toLowerCase();
     try {
       var res = await fetch('https://api.clerk.com/v1/invitations', {
         method: 'POST',
         headers: {
-          'Authorization': 'Bearer ' + CLERK_SECRET,
+          Authorization: 'Bearer ' + CLERK_SECRET,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email_address: email, redirect_url: REDIRECT_URL })
+        body: JSON.stringify({
+          email_address: email,
+          redirect_url: REDIRECT_URL
+        })
       });
       var data = await res.json();
       if (res.ok) {
         console.log('✅ ' + email);
         success.push(email);
       } else {
-        var msg = data.errors && data.errors[0] ? data.errors[0].message : JSON.stringify(data);
+        var msg =
+          data.errors && data.errors[0]
+            ? data.errors[0].message
+            : JSON.stringify(data);
         if (msg.toLowerCase().indexOf('already') !== -1) {
           console.log('⏭  Already invited: ' + email);
         } else {
@@ -60,14 +71,21 @@ async function runInvites() {
           failed.push(email);
         }
       }
-    } catch(e) {
+    } catch (e) {
       console.log('❌ ' + email + ' — ' + e.message);
       failed.push(email);
     }
     await delay(500);
   }
-  console.log('\n✅ Invited: ' + success.length + '  ❌ Failed: ' + failed.length);
-  if (failed.length) { console.log('Failed:'); failed.forEach(function(e){ console.log('  • ' + e); }); }
+  console.log(
+    '\n✅ Invited: ' + success.length + '  ❌ Failed: ' + failed.length
+  );
+  if (failed.length) {
+    console.log('Failed:');
+    failed.forEach(function (e) {
+      console.log('  • ' + e);
+    });
+  }
 }
 
 runInvites();
