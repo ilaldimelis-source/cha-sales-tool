@@ -106,6 +106,139 @@ function brInit() {
   if (!BR_PLANS.length) return;
   brActivePlan = BR_PLANS[0];
 
+  // ── SMART PLAN SEARCH BAR ──────────────────────────────────────
+  var searchWrap = document.createElement('div');
+  searchWrap.style.cssText = 'padding:8px 12px 0;background:#fff;';
+  var searchInput = document.createElement('input');
+  searchInput.type = 'text';
+  searchInput.id = 'br-plan-search';
+  searchInput.placeholder = 'Search plans... (e.g. "MedFirst", "Everest", "STM")';
+  searchInput.style.cssText = 'width:100%;font-size:13px;padding:9px 14px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;color:#1e293b;box-sizing:border-box;outline:none;';
+  searchInput.addEventListener('focus', function () {
+    searchInput.style.borderColor = '#5175f1';
+  });
+  searchInput.addEventListener('blur', function () {
+    searchInput.style.borderColor = '#e2e8f0';
+  });
+  searchWrap.appendChild(searchInput);
+
+  var noMatchMsg = document.createElement('div');
+  noMatchMsg.id = 'br-search-no-match';
+  noMatchMsg.style.cssText = 'display:none;font-size:12px;color:#94a3b8;padding:6px 14px 0;';
+  noMatchMsg.textContent = 'No plans found \u2014 try a different term';
+  searchWrap.appendChild(noMatchMsg);
+
+  var navSection = document.getElementById('br-filter-bar').parentNode;
+  navSection.insertBefore(searchWrap, navSection.firstChild);
+
+  // Synonym map for plan search
+  var PLAN_SEARCH_SYNONYMS = {
+    'mec': 'MEC', 'minimum essential': 'MEC',
+    'stm': 'STM', 'short term': 'STM', 'short-term': 'STM',
+    'limited': 'Limited', 'indemnity': 'Limited',
+    'detego': 'GHDP', 'ghdp': 'GHDP',
+    'medfirst': 'MedFirst', 'med first': 'MedFirst',
+    'everest': 'Everest',
+    'smart choice': 'Smart Choice', 'smartchoice': 'Smart Choice',
+    'pinnacle': 'Pinnacle',
+    'harmony': 'HarmonyCare', 'harmonycare': 'HarmonyCare',
+    'access': 'Access Health',
+    'bcs': 'BCS',
+    'afslic': 'AFSLIC', 'american fidelity': 'AFSLIC',
+    'tdk': 'TDK',
+    'neo': 'NEO', 'smart health': 'Smart Health',
+    'goodhealth': 'GoodHealth', 'good health': 'GoodHealth',
+    'truehealth': 'TrueHealth', 'true health': 'TrueHealth',
+    'galena': 'Galena',
+    'sigmacare': 'SigmaCare', 'sigma': 'SigmaCare',
+    'nce': 'NCE', 'health choice': 'NCE',
+    'bwa': 'BWA', 'paramount': 'Paramount', 'americare': 'Americare'
+  };
+
+  // Fuzzy match: check if 80% of chars in needle appear in haystack in order
+  function _brFuzzyMatch(needle, haystack) {
+    needle = needle.toLowerCase();
+    haystack = haystack.toLowerCase();
+    if (haystack.indexOf(needle) !== -1) return true;
+    var hi = 0;
+    var matched = 0;
+    for (var ni = 0; ni < needle.length; ni++) {
+      for (var j = hi; j < haystack.length; j++) {
+        if (needle[ni] === haystack[j]) {
+          matched++;
+          hi = j + 1;
+          break;
+        }
+      }
+    }
+    return matched >= Math.ceil(needle.length * 0.8);
+  }
+
+  // Filter plan buttons by search term
+  function _brFilterPlansBySearch(term) {
+    var planBar = document.getElementById('br-plan-bar');
+    if (!planBar) return;
+    var noMatch = document.getElementById('br-search-no-match');
+    var btns = planBar.querySelectorAll('.br-plan-btn');
+    if (!term) {
+      // Show all
+      for (var i = 0; i < btns.length; i++) btns[i].style.display = '';
+      if (noMatch) noMatch.style.display = 'none';
+      return;
+    }
+    var lowerTerm = term.toLowerCase().trim();
+    // Check synonym map first
+    var synonymTarget = null;
+    var synonymKeys = Object.keys(PLAN_SEARCH_SYNONYMS);
+    for (var s = 0; s < synonymKeys.length; s++) {
+      if (lowerTerm === synonymKeys[s] || lowerTerm.indexOf(synonymKeys[s]) !== -1) {
+        synonymTarget = PLAN_SEARCH_SYNONYMS[synonymKeys[s]];
+        break;
+      }
+    }
+    // Also check if a synonym key starts with the search term
+    if (!synonymTarget) {
+      for (var sk = 0; sk < synonymKeys.length; sk++) {
+        if (synonymKeys[sk].indexOf(lowerTerm) === 0) {
+          synonymTarget = PLAN_SEARCH_SYNONYMS[synonymKeys[sk]];
+          break;
+        }
+      }
+    }
+    // Check group-level synonyms (MEC/STM/Limited)
+    var groupTarget = null;
+    if (synonymTarget === 'MEC' || synonymTarget === 'STM' || synonymTarget === 'Limited') {
+      groupTarget = synonymTarget;
+      synonymTarget = null;
+    }
+    var visibleCount = 0;
+    for (var b = 0; b < btns.length; b++) {
+      var btnName = btns[b].textContent;
+      var btnNameLower = btnName.toLowerCase();
+      var show = false;
+      // Group filter
+      if (groupTarget) {
+        var planObj = BR_PLANS.find(function (p) { return p.name === btnName; });
+        if (planObj && planObj.group === groupTarget) show = true;
+      }
+      // Synonym target match
+      if (synonymTarget && btnNameLower.indexOf(synonymTarget.toLowerCase()) !== -1) show = true;
+      // Exact/partial match
+      if (btnNameLower.indexOf(lowerTerm) !== -1) show = true;
+      // Fuzzy/typo tolerance
+      if (!show && lowerTerm.length >= 3) {
+        show = _brFuzzyMatch(lowerTerm, btnName);
+      }
+      btns[b].style.display = show ? '' : 'none';
+      if (show) visibleCount++;
+    }
+    if (noMatch) noMatch.style.display = visibleCount === 0 ? '' : 'none';
+  }
+
+  searchInput.addEventListener('keyup', function () {
+    _brFilterPlansBySearch(searchInput.value);
+  });
+
   // Build filter bar: All Plans | MEC | STM | Limited
   var filterBar = document.getElementById('br-filter-bar');
   var filters = [
@@ -121,6 +254,11 @@ function brInit() {
     btn.dataset.filter = f.key;
     btn.onclick = function () {
       brActiveFilter = f.key;
+      // Clear search bar when filter is clicked
+      var _si = document.getElementById('br-plan-search');
+      if (_si) _si.value = '';
+      var _nm = document.getElementById('br-search-no-match');
+      if (_nm) _nm.style.display = 'none';
       document.querySelectorAll('.br-filter-btn').forEach(function (b) {
         b.classList.toggle('active', b.dataset.filter === f.key);
       });
@@ -324,6 +462,11 @@ function brClear() {
     inp.value = '';
     inp.style.height = 'auto';
   }
+  // Clear search bar
+  var _si = document.getElementById('br-plan-search');
+  if (_si) _si.value = '';
+  var _nm = document.getElementById('br-search-no-match');
+  if (_nm) _nm.style.display = 'none';
   document.getElementById('br-send').disabled = true;
   // Reset to all-plans mode
   brSearchAllPlans = false;
@@ -963,7 +1106,7 @@ var BR_SYNONYM_MAP = {
     'office visit'
   ],
   'urgent care': ['urgent visit', 'walk in', 'walk-in'],
-  specialist: ['specialty', 'specialist visit'],
+  specialist: ['specialty', 'specialist visit', 'specialist care', 'special doctor'],
   rx: [
     'prescription',
     'medication',
@@ -992,11 +1135,9 @@ var BR_SYNONYM_MAP = {
   dental: ['teeth', 'dentist', 'tooth'],
   vision: ['eye', 'eyes', 'glasses', 'contacts', 'optometrist'],
   telemedicine: ['telehealth', 'virtual visit', 'virtual doctor', 'tele'],
-  surgery: ['surgical', 'operation', 'procedure'],
+  surgery: ['surgical', 'operation', 'procedure', 'outpatient surgery', 'inpatient surgery'],
   ambulance: ['transport', 'ems'],
   copay: ['copays', 'co-pay', 'co pay', 'copay amount', 'cost', 'how much', 'fee', 'charge', 'office cost'],
-  specialist: ['specialty', 'specialist visit', 'specialist care', 'special doctor'],
-  surgery: ['surgical', 'operation', 'procedure', 'outpatient surgery', 'inpatient surgery'],
   'primary care': ['pcp', 'doctor visit', 'office visit', 'physician visit', 'gp'],
   network: ['in network', 'in-network', 'provider network', 'providers'],
   cancer: ['chemo', 'chemotherapy', 'radiation', 'oncology'],
