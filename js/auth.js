@@ -10,8 +10,12 @@
 
   // ── STEP 1: Inject Clerk SDK using official pattern (same as login.html) ────
   var clerkScript = document.createElement('script');
-  clerkScript.setAttribute('data-clerk-publishable-key', 'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA');
-  clerkScript.src = 'https://whole-viper-89.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+  clerkScript.setAttribute(
+    'data-clerk-publishable-key',
+    'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA'
+  );
+  clerkScript.src =
+    'https://whole-viper-89.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
   clerkScript.crossOrigin = 'anonymous';
   clerkScript.async = true;
   document.head.appendChild(clerkScript);
@@ -21,7 +25,8 @@
     if (document.getElementById('auth-overlay')) return;
     var overlay = document.createElement('div');
     overlay.id = 'auth-overlay';
-    overlay.style.cssText = 'position:fixed;inset:0;background:#0f172a;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;';
+    overlay.style.cssText =
+      'position:fixed;inset:0;background:#0f172a;z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;';
     overlay.innerHTML =
       '<img src="/logo.png" style="width:48px;height:48px;border-radius:12px;background:#162436;padding:6px;" />' +
       '<div style="width:32px;height:32px;border:3px solid rgba(255,255,255,0.1);border-top-color:#5175f1;border-radius:50%;animation:authspin 0.7s linear infinite;"></div>' +
@@ -68,7 +73,8 @@
       clearTimeout(_inactivityTimer);
       _inactivityTimer = setTimeout(function () {
         var overlay = document.createElement('div');
-        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(15,23,42,0.97);z-index:999999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;';
+        overlay.style.cssText =
+          'position:fixed;inset:0;background:rgba(15,23,42,0.97);z-index:999999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;';
         overlay.innerHTML =
           '<div style="font-family:sans-serif;font-size:18px;font-weight:700;color:#fff;">Session timed out</div>' +
           '<div style="font-family:sans-serif;font-size:13px;color:#94a3b8;">Signing you out for security...</div>';
@@ -76,9 +82,11 @@
         setTimeout(doLogout, 2000);
       }, INACTIVITY_MS);
     }
-    ['mousemove', 'keydown', 'click', 'touchstart', 'scroll'].forEach(function (ev) {
-      document.addEventListener(ev, reset, { passive: true });
-    });
+    ['mousemove', 'keydown', 'click', 'touchstart', 'scroll'].forEach(
+      function (ev) {
+        document.addEventListener(ev, reset, { passive: true });
+      }
+    );
     reset();
   }
 
@@ -87,8 +95,12 @@
     clearTimeout(_inactivityTimer);
     if (Clerk && typeof Clerk.signOut === 'function') {
       Clerk.signOut()
-        .then(function () { window.location.replace(LOGIN_URL); })
-        .catch(function () { window.location.replace(LOGIN_URL); });
+        .then(function () {
+          window.location.replace(LOGIN_URL);
+        })
+        .catch(function () {
+          window.location.replace(LOGIN_URL);
+        });
     } else {
       window.location.replace(LOGIN_URL);
     }
@@ -98,34 +110,64 @@
   // ── RENDER USER CARD IN SIDEBAR ──────────────────────────────────────────────
   function renderUserInfo(user) {
     var role = 'agent';
-    try { role = (user.publicMetadata && user.publicMetadata.role) || 'agent'; } catch (e) { /* ignore */ }
+    try {
+      role = (user.publicMetadata && user.publicMetadata.role) || 'agent';
+    } catch (e) {
+      /* ignore */
+    }
     var firstName = '';
-    try { firstName = user.firstName || ''; } catch (e) { /* ignore */ }
+    try {
+      firstName = user.firstName || '';
+    } catch (e) {
+      /* ignore */
+    }
     var email = '';
-    try { email = user.emailAddresses[0].emailAddress; } catch (e) { /* ignore */ }
+    try {
+      email = user.emailAddresses[0].emailAddress;
+    } catch (e) {
+      /* ignore */
+    }
     var name = firstName || (email ? email.split('@')[0] : 'Agent');
     var initials = name.slice(0, 2).toUpperCase();
     var isManager = role === 'manager';
 
-    window.CHA_USER = { name: name, firstName: firstName, role: role, isManager: isManager, email: email };
+    window.CHA_USER = {
+      name: name,
+      firstName: firstName,
+      role: role,
+      isManager: isManager,
+      email: email
+    };
 
     function inject() {
       var nav = document.querySelector('.nav');
-      if (!nav) { setTimeout(inject, 150); return; }
+      if (!nav) {
+        setTimeout(inject, 150);
+        return;
+      }
       if (document.getElementById('auth-user-card')) return;
 
       var card = document.createElement('div');
       card.id = 'auth-user-card';
-      card.style.cssText = 'margin-top:auto;padding:10px 12px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:9px;';
+      card.style.cssText =
+        'margin-top:auto;padding:10px 12px;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:9px;';
       card.innerHTML =
-        '<div style="width:32px;height:32px;border-radius:999px;background:#5175f1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">' + escSafe(initials) + '</div>' +
+        '<div style="width:32px;height:32px;border-radius:999px;background:#5175f1;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;">' +
+        escSafe(initials) +
+        '</div>' +
         '<div style="min-width:0;flex:1;">' +
-          '<div style="font-size:12px;font-weight:700;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escSafe(name) + '</div>' +
-          '<div style="font-size:10px;font-weight:600;letter-spacing:.04em;color:' + (isManager ? '#16a34a' : '#94a3b8') + ';">' + (isManager ? '★ Manager' : 'Agent') + '</div>' +
+        '<div style="font-size:12px;font-weight:700;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+        escSafe(name) +
+        '</div>' +
+        '<div style="font-size:10px;font-weight:600;letter-spacing:.04em;color:' +
+        (isManager ? '#16a34a' : '#94a3b8') +
+        ';">' +
+        (isManager ? '★ Manager' : 'Agent') +
+        '</div>' +
         '</div>' +
         '<button id="logout-btn" title="Sign out" style="background:transparent;border:none;color:#64748b;cursor:pointer;padding:4px;border-radius:6px;flex-shrink:0;">' +
-          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-          '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>' +
         '</button>';
 
       nav.parentNode.insertBefore(card, nav.nextSibling);
@@ -151,7 +193,10 @@
   }
 
   function escSafe(s) {
-    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    return String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
   }
-
 })();

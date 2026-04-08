@@ -1,6 +1,7 @@
 # CHA Auth Setup — Claude Code Instructions
 
 ## What's already built (do NOT recreate these)
+
 - `login.html` — CHA branded login page
 - `js/auth.js` — session guard, logout, user display
 - `vercel.json` — Vercel routing config
@@ -18,30 +19,36 @@
 ## Step 2 — Update auth.js and login.html with real Clerk keys
 
 In `js/auth.js`, replace TWO placeholders:
+
 - Line with `var CLERK_PK = 'CLERK_PUBLISHABLE_KEY'` → replace with real key
 - Line with `s.src = 'https://[your-clerk-frontend-api]...'` → replace with real Frontend API URL
 
 In `login.html`, replace TWO placeholders (same values):
+
 - `data-clerk-publishable-key="CLERK_PUBLISHABLE_KEY"` → real key
 - `src="https://[your-clerk-frontend-api]..."` → real URL
 
 ## Step 3 — Deploy to Vercel (free)
 
 Run in the repo root:
+
 ```
 npm install -g vercel
 vercel --prod
 ```
+
 Follow prompts — link to GitHub account, select the cha-sales-tool repo.
 Vercel will give you a URL like `cha-sales-tool.vercel.app`
 
 ## Step 4 — Add Agents in Clerk Dashboard
 
 In Clerk dashboard → Users → Add user:
+
 - Enter agent email + set a temporary password
 - Agent logs in and sets their own password
 
 To make someone a Manager:
+
 - Clerk dashboard → Users → click agent → Metadata → Public metadata
 - Add: `{ "role": "manager" }`
 
@@ -61,12 +68,14 @@ git push origin main
 ```
 
 ## Cost Summary
+
 - Clerk: FREE (up to 10,000 monthly active users)
 - Vercel: FREE (hobby tier — unlimited static sites)
 - GitHub private repo: FREE
 - Total: $0/month
 
 ## Notes
+
 - Do NOT add defer or async to auth.js script tag
 - Do NOT move auth.js — it must be first script loaded
 - The CLERK_PUBLISHABLE_KEY is safe to expose in frontend code (it's designed for this)
