@@ -616,6 +616,18 @@ function brRenderAIAnswer(text, planName) {
       .replace(/STATUS:.*\n?/i, '')
       .replace(/SAY THIS:.*\n?/i, '')
       .trim();
+  // Override COVERED → NOT COVERED when response text contradicts the badge
+  if (status === 'COVERED') {
+    var _checkText = (answer + ' ' + sayThis + ' ' + text).toLowerCase();
+    if (
+      _checkText.indexOf('not covered') !== -1 ||
+      _checkText.indexOf('no coverage') !== -1 ||
+      _checkText.indexOf('not a covered') !== -1 ||
+      _checkText.indexOf('no reimbursement') !== -1
+    ) {
+      status = 'NOT COVERED';
+    }
+  }
   var borderColor = '#f59e0b';
   var bgColor = '#fffbeb';
   var badgeColor = '#d97706';

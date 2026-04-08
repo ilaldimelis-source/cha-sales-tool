@@ -314,36 +314,6 @@ function renderDashboard() {
     }
   } catch (_ge) { /* skip greeting gracefully */ }
 
-  // ── SMART DASHBOARD WIDGETS (Task 4) ────────────────────────────────────
-  var _widgetHtml = '';
-  try {
-    // Plan of the Day
-    _widgetHtml +=
-      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:16px;">';
-    _widgetHtml +=
-      '<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:14px;padding:16px 18px;">' +
-        '<div style="font-size:11px;font-weight:700;color:#166534;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Plan of the Day</div>' +
-        '<div style="font-size:17px;font-weight:800;color:#1e293b;margin-bottom:4px;">MedFirst 3</div>' +
-        '<div style="font-size:12px;color:#374151;line-height:1.5;">Best value MEC for healthy self-employed adults — lead with this today.</div>' +
-      '</div>';
-
-    // Enrollment Goal Counter
-    var _goalToday = new Date().toISOString().slice(0, 10);
-    var _goalKey = 'cha_goal_' + _goalToday;
-    var _goalCount = parseInt(safeGetItem(_goalKey), 10) || 0;
-    _widgetHtml +=
-      '<div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:16px 18px;">' +
-        '<div style="font-size:11px;font-weight:700;color:#1e40af;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Today\'s Enrollments</div>' +
-        '<div style="display:flex;align-items:center;gap:12px;">' +
-          '<span id="cha-goal-count" style="font-size:32px;font-weight:900;color:#1e293b;">' + _goalCount + '</span>' +
-          '<button onclick="chaIncrementGoal()" style="width:36px;height:36px;border-radius:999px;border:2px solid #3b82f6;background:#fff;color:#3b82f6;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;" title="Add enrollment">+</button>' +
-        '</div>' +
-        '<div style="font-size:11px;color:#64748b;margin-top:4px;">Tap + after each enrollment</div>' +
-      '</div>';
-
-    _widgetHtml += '</div>';
-  } catch (_we) { /* skip widgets gracefully */ }
-
   var cards = [
     {
       page: 'livecall',
@@ -401,7 +371,6 @@ function renderDashboard() {
   var html =
     '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
   html += _greetHtml;
-  html += _widgetHtml;
   html += '<div class="dash-grid">';
   cards.forEach(function (c) {
     html += '<div class="dash-card" onclick="showPage(\'' + c.page + '\')">';
@@ -473,16 +442,6 @@ function renderDashboard() {
   html += '<span class="dash-kb"><kbd>Esc</kbd> Close</span>';
   html += '</div></div>';
   pg.innerHTML = html;
-}
-
-// ── Enrollment goal increment (Task 4) ──
-function chaIncrementGoal() {
-  var _d = new Date().toISOString().slice(0, 10);
-  var _k = 'cha_goal_' + _d;
-  var _c = (parseInt(safeGetItem(_k), 10) || 0) + 1;
-  safeSetItem(_k, String(_c));
-  var _el = document.getElementById('cha-goal-count');
-  if (_el) _el.textContent = _c;
 }
 
 function _showComboPage(parentId, subId) {

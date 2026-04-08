@@ -1087,9 +1087,29 @@ function renderPlanScripts() {
   var activePlan = filtered[planScriptActive];
   var typeColor = _psTypeColor(activePlan.planType);
 
-  // Back button
+  // Back button + quick plan switcher dropdown
   html +=
-    '<div style="margin-bottom:14px;"><button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1.5px solid #E5E7EB;background:#fff;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">\u2190 All Plans</button></div>';
+    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;">';
+  html +=
+    '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1.5px solid #E5E7EB;background:#fff;color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">\u2190 All Plans</button>';
+  html +=
+    '<label style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:#64748b;letter-spacing:.06em;text-transform:uppercase;">Plan:</label>';
+  html +=
+    '<select onchange="planScriptActive=parseInt(this.value,10);planScriptSection=0;renderPlanScripts()" style="flex:1;min-width:200px;max-width:360px;padding:7px 12px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;color:#1e293b;font-family:var(--font-ui);font-size:13px;font-weight:600;cursor:pointer;outline:none;">';
+  filtered.forEach(function (p, idx) {
+    html +=
+      '<option value="' +
+      idx +
+      '"' +
+      (idx === planScriptActive ? ' selected' : '') +
+      '>' +
+      p.name +
+      ' (' +
+      p.planType +
+      ')</option>';
+  });
+  html += '</select>';
+  html += '</div>';
 
   // Plan card wrapper
   html +=
@@ -1182,6 +1202,7 @@ function renderPlanScripts() {
   ];
 
   activePlan.sections.forEach(function (sec, si) {
+    if (si !== planScriptSection) return;
     var c = sec.content || '';
     c = c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     c = c.replace(/\n/g, '<br>');
@@ -1243,10 +1264,10 @@ function renderPlanScripts() {
       '</div>';
     // Script card body
     html +=
-      '<div style="background:#1e293b;border-radius:0 0 14px 14px;padding:28px;">';
+      '<div style="background:#ffffff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:28px;">';
     // Script text
     html +=
-      '<div class="ps-bubble-text" style="font-size:17px;line-height:1.9;color:#e2e8f0;font-family:var(--font-body);">' +
+      '<div class="ps-bubble-text" style="font-size:17px;line-height:1.9;color:#1e293b;font-family:var(--font-body);">' +
       c +
       '</div>';
     html += '</div>';
@@ -1262,20 +1283,20 @@ function renderPlanScripts() {
     '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #e2e8f0;background:#fff;padding:14px 24px;margin-top:20px;border-radius:12px;">';
   if (planScriptSection > 0) {
     html +=
-      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#374151;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← Previous</button>';
+      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#374151;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← Back</button>';
   } else {
     html +=
       '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← All Plans</button>';
   }
   html +=
-    '<span style="font-size:11px;color:#94a3b8;">Section ' +
+    '<span style="font-size:12px;font-weight:700;color:#1e293b;">Section ' +
     (planScriptSection + 1) +
     ' of ' +
     activePlan.sections.length +
     '</span>';
   if (planScriptSection < activePlan.sections.length - 1) {
     html +=
-      '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:none;background:#5175f1;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">Next Step →</button>';
+      '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:none;background:#5175f1;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">Next →</button>';
   } else {
     html +=
       '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:none;background:#16a34a;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">Finish ✓</button>';
@@ -1342,8 +1363,8 @@ function renderIsaScriptContent() {
       item.label +
       '</div>';
     html +=
-      '<div style="background:#1e293b;border-radius:0 0 14px 14px;padding:28px;">' +
-      '<div class="sbox" style="font-size:17px;line-height:1.9;color:#e2e8f0;">' + item.line + '</div></div></div>';
+      '<div style="background:#ffffff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:28px;">' +
+      '<div class="sbox" style="font-size:17px;line-height:1.9;color:#1e293b;">' + item.line + '</div></div></div>';
   });
   var el = document.getElementById('isa-script-content');
   if (el) el.innerHTML = html;

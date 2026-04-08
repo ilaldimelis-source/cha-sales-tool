@@ -1457,8 +1457,6 @@ function renderRoleplay() {
 function renderClosinglab() {
   var html =
     '<div class="ph"><div class="pt">Closing <span>Lab</span></div><div class="pd">Know your closes. Know when to use them. Know the difference between weak and elite.</div></div>';
-  html +=
-    '<div style="background:#F0FDF4;border-left:3px solid #15803D;border-radius:12px;padding:14px 18px;margin-bottom:18px;font-family:var(--font-ui);font-size:14px;font-weight:700;color:#15803D;">Silence Rule: After you close, whoever speaks first loses. Deliver the close. Stop talking. Wait.</div>';
   ISA_CLOSES.forEach(function (cl, i) {
     var body = '';
     body += '<div class="trn-two-col" style="margin-bottom:12px;">';
