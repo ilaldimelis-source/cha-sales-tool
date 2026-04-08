@@ -675,9 +675,11 @@ var SEARCH_SYNONYMS = {
     'therapy',
     'behavioral health'
   ],
-  // Skin / dermatology
+  // Skin / dermatology (dermatology itself already defined earlier
+  // at line ~537 with the more complete ['dermatology','dermatologist',
+  // 'skin','rash'] value — do not redefine it here; JS object literals
+  // silently drop earlier keys when duplicated.)
   skin: ['skin', 'dermatology', 'dermatologist', 'rash'],
-  dermatology: ['dermatology', 'dermatologist', 'skin'],
   rash: ['rash', 'skin', 'dermatology'],
   acne: ['acne', 'skin', 'dermatology'],
   // GI / stomach
