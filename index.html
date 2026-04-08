@@ -44,25 +44,6 @@
      if the <link> stylesheet has 0 rules after loading. -->
     <link rel="stylesheet" href="css/styles.css?v=1775582443698" id="mainCSS" />
     <script>
-      // Nuclear cache bust — unregister ALL service workers and delete ALL caches
-      (function () {
-        if ('serviceWorker' in navigator) {
-          // Delete every single cache
-          caches.keys().then(function (names) {
-            names.forEach(function (n) {
-              caches.delete(n);
-            });
-          });
-          // Unregister all service workers completely
-          navigator.serviceWorker.getRegistrations().then(function (regs) {
-            regs.forEach(function (r) {
-              r.unregister();
-            });
-          });
-        }
-      })();
-    </script>
-    <script>
       (function () {
         // Give the <link> a moment, then check. If it failed (0 rules), inject via XHR.
         var link = document.getElementById('mainCSS');
@@ -696,6 +677,13 @@
             '</div></div>';
         }
       })();
+    </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js');
+        });
+      }
     </script>
   </body>
 </html>
