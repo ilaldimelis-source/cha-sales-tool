@@ -148,11 +148,32 @@ function brInit() {
     'tdk': 'TDK',
     'neo': 'NEO', 'smart health': 'Smart Health',
     'goodhealth': 'GoodHealth', 'good health': 'GoodHealth',
-    'truehealth': 'TrueHealth', 'true health': 'TrueHealth',
+    'truehealth': 'trueh', 'true health': 'trueh',
     'galena': 'Galena',
     'sigmacare': 'SigmaCare', 'sigma': 'SigmaCare',
     'nce': 'NCE', 'health choice': 'NCE',
-    'bwa': 'BWA', 'paramount': 'Paramount', 'americare': 'Americare'
+    'bwa': 'BWA', 'paramount': 'Paramount', 'americare': 'Americare',
+    // ── Extended plan synonyms (batch 2) ──
+    // Pinnacle Protect (4 plans)
+    'pinnacle protect': 'pinnacleprotect',
+    'pinnacleprotect': 'pinnacle protect',
+    'protect plan': 'pinnacleprotect',
+    // Pinnacle Critical Care (4 plans)
+    'critical care': 'pinnaclecriticalcare',
+    'criticalcare': 'critical care',
+    'pinnacle critical': 'pinnaclecriticalcare',
+    // Allstate STM / Limited (4 plans)
+    'allstate': 'allstateenhancedstm',
+    'allstate enhanced': 'allstateenhancedstm',
+    'allstate copay': 'allstatecopayenhancedstm',
+    'copay enhanced': 'allstatecopayenhancedstm',
+    'allstate essentials': 'allstateessentialsstm',
+    'essentials stm': 'allstateessentialsstm',
+    'health access': 'allstatehealthaccess',
+    'allstate access': 'health access',
+    // MyChoice (3 plans)
+    'mychoice': 'mychoice',
+    'my choice': 'mychoice'
   };
 
   // Fuzzy match: check if 80% of chars in needle appear in haystack in order
