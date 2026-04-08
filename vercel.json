@@ -5,7 +5,7 @@
       "destination": "/login.html"
     },
     {
-      "source": "/((?!login\\.html|login|logo|css|js|manifest|sw|favicon|\\.env).*)",
+      "source": "/((?!api|login\\.html|login|logo|css|js|manifest|sw|favicon|\\.env).*)",
       "destination": "/index.html"
     }
   ],
