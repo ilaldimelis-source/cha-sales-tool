@@ -322,7 +322,7 @@ svg {
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 9px 12px;
+  padding: 10px 14px;
   background: transparent;
   border: none;
   border-radius: 10px;
@@ -4244,4 +4244,26 @@ button:active {
   #whisper-box {
     border-radius: 10px;
   }
+}
+
+/* ── Global UI Improvements ── */
+html { scroll-behavior: smooth; }
+
+.main-content { font-size: 15px; }
+
+.card h2, .card h3 { font-size: 18px; font-weight: 700; }
+
+input, textarea, select { font-size: 15px; }
+
+.stab {
+  font-size: 13px;
+  padding: 9px 16px;
+}
+.stab.active {
+  border-bottom: 2px solid #5175f1;
+}
+
+/* Plan Scripts mobile */
+@media (max-width: 768px) {
+  .ps-bubble-text { font-size: 18px !important; padding: 20px !important; }
 }

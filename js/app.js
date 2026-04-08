@@ -341,28 +341,6 @@ function renderDashboard() {
         '<div style="font-size:11px;color:#64748b;margin-top:4px;">Tap + after each enrollment</div>' +
       '</div>';
 
-    // Motivational Quote
-    var _quotes = [
-      'Every call is a chance to change someone\'s life.',
-      'Confidence comes from preparation, not perfection.',
-      'The best closers listen twice as much as they talk.',
-      'You don\'t need every sale — just the right ones.',
-      'Discipline today, freedom tomorrow.',
-      'Be so good at follow-up they think you\'re psychic.',
-      'Objections aren\'t stop signs, they\'re green lights.',
-      'Your energy sets the tone for the entire call.',
-      'Small daily improvements lead to stunning results.',
-      'The money follows the value. Always lead with value.'
-    ];
-    var _qIdx = new Date().getDate() % _quotes.length;
-    _widgetHtml +=
-      '<div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:14px;padding:16px 18px;display:flex;align-items:flex-start;gap:10px;">' +
-        '<div style="font-size:22px;flex-shrink:0;margin-top:2px;">💡</div>' +
-        '<div>' +
-          '<div style="font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px;">Daily Spark</div>' +
-          '<div style="font-size:13px;color:#374151;line-height:1.5;font-style:italic;">' + _quotes[_qIdx] + '</div>' +
-        '</div>' +
-      '</div>';
     _widgetHtml += '</div>';
   } catch (_we) { /* skip widgets gracefully */ }
 

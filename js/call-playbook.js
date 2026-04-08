@@ -1235,30 +1235,24 @@ function renderPlanScripts() {
     html +=
       '<div id="' +
       secId +
-      '" style="background:#fff;border:1px solid #e2e8f0;border-left:4px solid ' +
-      bs.border +
-      ';border-radius:16px;padding:24px 28px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06);position:relative;">';
-    // Header with label + copy button
+      '" style="max-width:720px;margin:0 auto 24px;position:relative;">';
+    // Large bold section header
     html +=
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">';
-    html +=
-      '<span style="font-family:var(--font-ui);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:' +
-      bs.color +
-      ';">' +
+      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#1e293b,#334155);padding:14px 24px;border-radius:14px 14px 0 0;">' +
       secLabel +
-      '</span>';
+      '</div>';
+    // Script card body
     html +=
-      '<button onclick="copyScriptBubble(this)" style="font-family:var(--font-ui);font-size:10px;font-weight:600;padding:4px 12px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;">Copy</button>';
-    html += '</div>';
-    html +=
-      '<div style="height:1px;background:#f1f5f9;margin-bottom:14px;"></div>';
-    html +=
-      '<div style="height:1px;background:#f1f5f9;margin-bottom:12px;"></div>';
+      '<div style="background:#1e293b;border-radius:0 0 14px 14px;padding:28px;">';
     // Script text
     html +=
-      '<div class="ps-bubble-text" style="font-size:15px;line-height:1.9;color:#1e293b;font-family:var(--font-body);">' +
+      '<div class="ps-bubble-text" style="font-size:17px;line-height:1.9;color:#e2e8f0;font-family:var(--font-body);">' +
       c +
       '</div>';
+    html += '</div>';
+    // Tap to Copy button
+    html +=
+      '<button onclick="copyScriptBubble(this)" style="display:block;width:100%;max-width:720px;margin:8px auto 0;font-family:var(--font-ui);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:10px 20px;border-radius:10px;border:1.5px solid #5175f1;background:rgba(81,117,241,0.08);color:#5175f1;cursor:pointer;transition:background .15s;">TAP TO COPY</button>';
     html += '</div>';
   });
 
@@ -1342,13 +1336,14 @@ function renderIsaScriptContent() {
   var html = '';
   items.forEach(function (item) {
     html +=
-      '<div style="background:var(--milk);border:1px solid var(--rule);border-radius:12px;padding:16px 20px;margin-bottom:10px">';
+      '<div style="max-width:720px;margin:0 auto 16px;">';
     html +=
-      '<div style="font-size:10px;letter-spacing:2px;color:var(--charcoal);font-weight:700;text-transform:uppercase;margin-bottom:8px">' +
+      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,#1e293b,#334155);padding:14px 24px;border-radius:14px 14px 0 0;">' +
       item.label +
       '</div>';
     html +=
-      '<div class="sbox" style="font-size:13px">' + item.line + '</div></div>';
+      '<div style="background:#1e293b;border-radius:0 0 14px 14px;padding:28px;">' +
+      '<div class="sbox" style="font-size:17px;line-height:1.9;color:#e2e8f0;">' + item.line + '</div></div></div>';
   });
   var el = document.getElementById('isa-script-content');
   if (el) el.innerHTML = html;
