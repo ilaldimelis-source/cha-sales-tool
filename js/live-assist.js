@@ -364,56 +364,6 @@ function toggleLiveObj(i) {
   }
 }
 
-function showLiveObj(i) {
-  var o = OBJECTIONS[i];
-  var el = document.getElementById('liveResult');
-  var html =
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">';
-  html +=
-    '<div><span style="display:inline-flex;align-items:center;font-family:var(--font-ui);font-size:.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(92,104,120,0.08);color:#5C6878;">Objection · ' +
-    o.cat +
-    '</span></div>';
-  html +=
-    '<button class="lrp-close" onclick="document.getElementById(\'liveResult\').classList.remove(\'show\')">✕</button></div>';
-  html += '<div class="lrp-obj">"' + o.obj + '"</div>';
-  html +=
-    '<div class="ibox ibox-diag"><span class="sbox-lbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg> Diagnostic Question First</span><br>' +
-    o.diag +
-    '</div>';
-  html +=
-    '<div class="ibox ibox-why"><span class="sbox-lbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 7 7c0 2.4-1.2 4.5-3 5.7V17H8v-2.3A7 7 0 0 1 5 9a7 7 0 0 1 7-7z"/></svg> What This Usually Means</span><br>' +
-    o.real +
-    '</div>';
-  html +=
-    '<div style="display:flex;gap:8px;margin:12px 0;"><button class="rtab active" onclick="switchTab(event,\'lr' +
-    i +
-    '\',\'best\')">Best Response</button><button class="rtab" onclick="switchTab(event,\'lr' +
-    i +
-    '\',\'soft\')">Softer</button><button class="rtab" onclick="switchTab(event,\'lr' +
-    i +
-    "','strong')\">Stronger</button></div>";
-  html +=
-    '<div id="lr' +
-    i +
-    '-best" class="rpanel active sbox">' +
-    o.best +
-    '</div>';
-  html += '<div id="lr' + i + '-soft" class="rpanel sbox">' + o.soft + '</div>';
-  html +=
-    '<div id="lr' + i + '-strong" class="rpanel sbox">' + o.strong + '</div>';
-  html +=
-    '<div class="ibox ibox-bridge u-mt10"><span class="sbox-lbl"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg> Bridge Line</span><br>' +
-    o.bridge +
-    '</div>';
-  html +=
-    '<div class="ibox ibox-bridge" style="border-color:rgba(212,96,122,0.2);background:rgba(212,96,122,0.05);"><span class="sbox-lbl" style="color:var(--charcoal);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/></svg> Close Line</span><br>' +
-    o.close +
-    '</div>';
-  el.innerHTML = html;
-  el.classList.add('show');
-  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
 // ══════════════════════════════════════════════════════
 // RENDER: RECOVERY
 // ══════════════════════════════════════════════════════

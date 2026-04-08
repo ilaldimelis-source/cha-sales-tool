@@ -1382,48 +1382,6 @@ function renderSimplifier() {
   document.getElementById('page-simplifier').innerHTML = html;
 }
 
-function renderRedflags() {
-  var html =
-    '<div class="ph"><div class="pt">Red Flag <span>Detector</span></div><div class="pd">Spot misalignment early. Protect your client. Protect yourself.</div></div>';
-  ISA_RED_FLAGS.forEach(function (rf, i) {
-    html +=
-      '<div style="background:var(--milk);border:1px solid rgba(200,60,60,0.2);border-radius:12px;padding:18px 20px;margin-bottom:10px">';
-    html +=
-      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">';
-    html += '<span style="font-size:18px"></span>';
-    html +=
-      '<div style="font-weight:800;font-size:13px;color:var(--error)">Prospect says: "' +
-      rf.says +
-      '"</div></div>';
-    html +=
-      '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px">';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:var(--warmgray3);letter-spacing:1px;margin-bottom:4px">WHAT IT MEANS</div><div style="font-size:11px;color:var(--charcoal)">' +
-      rf.means +
-      '</div></div>';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:var(--warmgray3);letter-spacing:1px;margin-bottom:4px">WHY IT MATTERS</div><div style="font-size:11px;color:var(--charcoal)">' +
-      rf.matters +
-      '</div></div>';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:var(--warmgray3);letter-spacing:1px;margin-bottom:4px">ASK THIS</div><div style="font-size:11px;color:var(--charcoal);font-style:italic">' +
-      rf.ask +
-      '</div></div>';
-    html += '</div>';
-    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
-    html +=
-      '<div><div style="font-size:9px;font-weight:700;color:#29A26A;letter-spacing:1px;margin-bottom:4px">CORRECT APPROACH</div><div style="font-size:11px;color:var(--charcoal)">' +
-      rf.correct +
-      '</div></div>';
-    html +=
-      '<div style="background:var(--error-light);border-radius:8px;padding:10px"><div style="font-size:9px;font-weight:700;color:var(--error);letter-spacing:1px;margin-bottom:4px">STOP IF:</div><div style="font-size:11px;color:var(--charcoal)">' +
-      rf.stop +
-      '</div></div>';
-    html += '</div></div>';
-  });
-  document.getElementById('page-redflags').innerHTML = html;
-}
-
 function renderRoleplay() {
   var html =
     '<div class="ph"><div class="pt">Roleplay <span>Simulator</span></div><div class="pd">Practice the hard conversations before they\'re real. Study what elite looks like.</div></div>';
@@ -1641,16 +1599,6 @@ function renderDiscovery() {
 
   var _page_discovery = document.getElementById('page-discovery');
   if (_page_discovery) _page_discovery.innerHTML = html;
-}
-
-function toggleDisc(id) {
-  var body = document.getElementById(id + '-body');
-  var chev = document.getElementById(id + '-chev');
-  var card = document.getElementById(id);
-  var isOpen = body.style.display !== 'none';
-  body.style.display = isOpen ? 'none' : 'block';
-  if (chev) chev.style.transform = isOpen ? '' : 'rotate(180deg)';
-  card.classList.toggle('open', !isOpen);
 }
 
 function copyDiscovery(el) {

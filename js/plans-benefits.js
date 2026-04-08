@@ -1112,16 +1112,6 @@ var PLAN_GROUPS = [
 ];
 var activePlanGroup = 'All';
 
-// ── Combined All Plans view (Plan Vault + Policy Reference) ──
-function renderAllPlans() {
-  // Delegate to renderPolicydocs — Plans tab now uses the unified view
-  if (typeof renderPolicydocs === 'function') {
-    var pg = document.getElementById('page-allplans');
-    if (pg) pg.innerHTML = '';
-    renderPolicydocs();
-  }
-}
-
 function renderPlans() {
   var html =
     '<div class="ph">' +
@@ -1569,37 +1559,6 @@ function togglePlanVault(id) {
     setTimeout(function () {
       card.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 50);
-  }
-}
-
-function togglePvSection(header) {
-  var body = header.nextElementSibling;
-  var chev = header.querySelector('svg');
-  if (!body) return;
-  var isHidden = body.style.display === 'none';
-  body.style.display = isHidden ? '' : 'none';
-  if (chev) chev.style.transform = isHidden ? 'rotate(180deg)' : '';
-}
-
-function togglePlan(i) {
-  toggleCard('pc' + i, 'plan-body');
-}
-
-function switchPlanTab(e, i, tab) {
-  e.stopPropagation();
-  var card = document.getElementById('pc' + i);
-  card.querySelectorAll('.plan-tab').forEach(function (t) {
-    t.classList.remove('active');
-  });
-  card.querySelectorAll('.plan-section').forEach(function (s) {
-    s.style.display = 'none';
-    s.classList.remove('active');
-  });
-  e.target.classList.add('active');
-  var sec = document.getElementById('pt' + i + '-' + tab);
-  if (sec) {
-    sec.style.display = 'block';
-    sec.classList.add('active');
   }
 }
 
