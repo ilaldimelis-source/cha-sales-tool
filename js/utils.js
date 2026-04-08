@@ -1051,7 +1051,7 @@ function doSearch(val) {
       (item.limitations || []).forEach(function (lim) {
         if (matchesExpanded(lim, expandedTerms)) matchedLims.push(lim);
       });
-      var prev = '';
+      var prev;
       if (matchedBens.length) prev = matchedBens[0];
       else if (matchedLims.length) prev = matchedLims[0];
       else prev = item.preview;
