@@ -696,7 +696,6 @@ svg {
 .rec-card,
 .mindset-card,
 .close-item,
-.quiz-q,
 .saved-item {
   background: var(--bg-card);
   border: 2px solid #c8cedd;
