@@ -412,6 +412,11 @@ document.getElementById('br-toggle').addEventListener('click', function () {
   document.getElementById('br-panel').classList.toggle('open', brOpen);
   document.getElementById('br-toggle').classList.toggle('open', brOpen);
   document.body.classList.toggle('br-open', brOpen);
+  var btn = document.getElementById('br-toggle');
+  if (btn) {
+    var expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !expanded);
+  }
   if (brOpen) {
     document.getElementById('br-input').focus();
     brScroll();
