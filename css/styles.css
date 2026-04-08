@@ -794,116 +794,6 @@ svg {
   color: var(--text-secondary);
 }
 
-/* ── TAGS / PILLS ── */
-.tag,
-.pill {
-  display: inline-flex;
-  align-items: center;
-  font-family: var(--font-ui);
-  font-size: 0.6rem;
-  padding: 3px 10px;
-  border-radius: var(--r-badge);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.pill {
-  padding: 0.17rem 0.68rem;
-}
-
-.tag-acc,
-.tag-rose,
-.tag-lav {
-  background: var(--accent-light);
-  color: var(--accent);
-}
-
-.tag-grn,
-.tag-mint {
-  background: var(--green-light);
-  color: var(--green-text);
-}
-
-.tag-amber,
-.tag-gold {
-  background: var(--amber-light);
-  color: var(--amber-text);
-}
-
-.tag-red {
-  background: var(--red-light);
-  color: var(--red-text);
-}
-
-.tag-slate,
-.tag-peach {
-  background: var(--bg-page);
-  color: var(--text-secondary);
-}
-
-.pill-warm {
-  background: var(--amber-light);
-  color: var(--amber-text);
-}
-
-.pill-dark {
-  background: var(--text-primary);
-  color: #fff;
-}
-
-.pill-blue {
-  background: var(--accent-light);
-  color: var(--accent);
-}
-
-.pill-butter {
-  background: var(--amber-light);
-  color: var(--amber-text);
-}
-
-.pill-ghost {
-  background: var(--bg-page);
-  color: var(--text-secondary);
-}
-
-.pill-done {
-  background: var(--green-light);
-  color: var(--green-text);
-}
-
-/* ── KPI CARDS ── */
-.kpi {
-  border-radius: var(--r-card);
-  padding: 1.15rem 1.25rem;
-  transition: transform 0.22s cubic-bezier(0.34, 1.4, 0.64, 1);
-}
-
-.kpi:hover {
-  transform: translateY(-5px) scale(1.01);
-  box-shadow: var(--shadow-hover);
-}
-
-.kpi-butter {
-  background: var(--amber-light);
-  color: var(--amber-text);
-}
-
-.kpi-milk {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-}
-
-.kpi-blue {
-  background: var(--accent-light);
-  color: var(--accent);
-}
-
-.kpi-anchor {
-  background: var(--accent);
-  color: #fff;
-}
-
 /* ── PROGRESS BARS ── */
 .prog-track {
   height: 7px;
@@ -916,56 +806,6 @@ svg {
   height: 100%;
   border-radius: var(--r-badge);
   transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.pf-dark {
-  background: var(--text-primary);
-}
-
-.pf-blue {
-  background: var(--accent);
-}
-
-.pf-butter {
-  background: var(--amber);
-}
-
-.pf-error {
-  background: var(--red);
-}
-
-/* ── AVATARS ── */
-.av {
-  width: 34px;
-  height: 34px;
-  border-radius: var(--r-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-ui);
-  font-size: 0.76rem;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.av-dark {
-  background: var(--text-primary);
-  color: #fff;
-}
-
-.av-but {
-  background: var(--accent-light);
-  color: var(--accent);
-}
-
-.av-warm {
-  background: var(--bg-page);
-  color: var(--text-secondary);
-}
-
-.av-warn {
-  background: var(--red-light);
-  color: var(--red-text);
 }
 
 /* ── BUTTONS ── */
@@ -984,23 +824,6 @@ svg {
   gap: 6px;
 }
 
-.btn-rose,
-.btn-acc,
-.btn-primary {
-  background: var(--accent);
-  border: 1px solid var(--accent);
-  color: #fff;
-  box-shadow: 0 4px 12px rgb(91, 141, 239, 0.2);
-}
-
-.btn-rose:hover,
-.btn-acc:hover,
-.btn-primary:hover {
-  background: #4a7ce0;
-  transform: translateY(-1px);
-  opacity: 0.88;
-}
-
 .btn-ghost {
   background: transparent;
   color: var(--text-secondary);
@@ -1011,27 +834,6 @@ svg {
 .btn-ghost:hover {
   background: var(--bg-page);
   opacity: 0.88;
-}
-
-.btn-mint,
-.btn-grn {
-  background: var(--green-light);
-  color: var(--green-text);
-  border: 1px solid rgb(34, 197, 94, 0.25);
-}
-
-.btn-gold,
-.btn-amber {
-  background: var(--amber-light);
-  color: var(--amber-text);
-  border: 1px solid rgb(245, 158, 11, 0.25);
-}
-
-.btn-danger,
-.btn-red {
-  background: var(--red-light);
-  color: var(--red-text);
-  border: 1px solid rgb(239, 68, 68, 0.15);
 }
 
 /* ── TABS ── */
@@ -2485,28 +2287,6 @@ textarea:focus,
   flex: 1;
 }
 
-.u-br20 {
-  border-radius: 20px;
-}
-
-.u-tag-gray {
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
-
-.u-tag-err {
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--red-text);
-  letter-spacing: 1px;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-}
-
 .u-tag-ok {
   font-size: 9px;
   font-weight: 700;
@@ -2514,16 +2294,6 @@ textarea:focus,
   letter-spacing: 1px;
   margin-bottom: 4px;
   text-transform: uppercase;
-}
-
-.u-body-sm {
-  font-size: 11px;
-  color: var(--text-primary);
-}
-
-.u-body-xs {
-  font-size: 9px;
-  color: var(--text-muted);
 }
 
 /* ── FOCUS STYLES ── */
