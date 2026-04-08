@@ -4,15 +4,17 @@
 var SOA_TEXT =
   'This is a supplemental fixed indemnity health plan — not major medical insurance. It is not minimum essential coverage under the ACA. Pre-existing conditions are excluded for the first 12 months. Benefits are fixed dollar amounts, not full coverage. This plan is NOT ACA-compliant major medical insurance.';
 function copySOA(el) {
-  safeCopy(SOA_TEXT).then(function () {
-    el.style.background = '#D1FAE5';
-    var hint = el.querySelector('.soa-copy-hint');
-    if (hint) hint.textContent = 'Copied!';
-    setTimeout(function () {
-      el.style.background = '#EEF3FF';
-      if (hint) hint.textContent = 'Tap to copy';
-    }, 1500);
-  });
+  safeCopy(SOA_TEXT)
+    .then(function () {
+      el.style.background = '#D1FAE5';
+      var hint = el.querySelector('.soa-copy-hint');
+      if (hint) hint.textContent = 'Copied!';
+      setTimeout(function () {
+        el.style.background = '#EEF3FF';
+        if (hint) hint.textContent = 'Tap to copy';
+      }, 1500);
+    })
+    .catch(function () {});
 }
 
 // ── Copy Script Block ──
@@ -24,14 +26,16 @@ function copyScript(btn) {
     btn.parentElement;
   if (!block) return;
   var text = block.textContent.replace(/Copy|Copied!/g, '').trim();
-  safeCopy(text).then(function () {
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(function () {
-      btn.textContent = 'Copy';
-      btn.classList.remove('copied');
-    }, 1500);
-  });
+  safeCopy(text)
+    .then(function () {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1500);
+    })
+    .catch(function () {});
 }
 
 var QA_REBUTTALS = [

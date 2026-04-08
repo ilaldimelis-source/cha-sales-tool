@@ -7,12 +7,14 @@ function copyScriptBubble(btn) {
   if (!textEl) return;
   var text = textEl.textContent || textEl.innerText;
   if (typeof safeCopy === 'function') {
-    safeCopy(text).then(function () {
-      btn.textContent = 'Copied!';
-      setTimeout(function () {
-        btn.textContent = 'Copy';
-      }, 1500);
-    });
+    safeCopy(text)
+      .then(function () {
+        btn.textContent = 'Copied!';
+        setTimeout(function () {
+          btn.textContent = 'Copy';
+        }, 1500);
+      })
+      .catch(function () {});
   }
 }
 
@@ -1356,15 +1358,16 @@ function renderIsaScriptContent() {
   var items = ISA_SCRIPTS[isaScriptTab] || [];
   var html = '';
   items.forEach(function (item) {
-    html +=
-      '<div style="max-width:720px;margin:0 auto 16px;">';
+    html += '<div style="max-width:720px;margin:0 auto 16px;">';
     html +=
       '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1e293b;background:#ffffff;border:1px solid #e2e8f0;border-bottom:none;padding:14px 24px;border-radius:14px 14px 0 0;">' +
       item.label +
       '</div>';
     html +=
       '<div style="background:#ffffff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:28px;">' +
-      '<div class="sbox" style="font-size:17px;line-height:1.9;color:#1e293b;">' + item.line + '</div></div></div>';
+      '<div class="sbox" style="font-size:17px;line-height:1.9;color:#1e293b;">' +
+      item.line +
+      '</div></div></div>';
   });
   var el = document.getElementById('isa-script-content');
   if (el) el.innerHTML = html;

@@ -293,26 +293,67 @@ function renderDashboard() {
     var _u = window.CHA_USER;
     if (_u) {
       var _h = new Date().getHours();
-      var _greet = _h < 12 ? 'Good morning' : _h < 17 ? 'Good afternoon' : 'Good evening';
+      var _greet =
+        _h < 12 ? 'Good morning' : _h < 17 ? 'Good afternoon' : 'Good evening';
       var _fname = _u.name || 'Agent';
       var _role = _u.role || 'agent';
       var _isM = _role === 'manager';
       var _today = new Date();
-      var _days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-      var _months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-      var _dateStr = _days[_today.getDay()] + ', ' + _months[_today.getMonth()] + ' ' + _today.getDate() + ', ' + _today.getFullYear();
+      var _days = [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ];
+      var _months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December'
+      ];
+      var _dateStr =
+        _days[_today.getDay()] +
+        ', ' +
+        _months[_today.getMonth()] +
+        ' ' +
+        _today.getDate() +
+        ', ' +
+        _today.getFullYear();
       _greetHtml =
         '<div style="background:linear-gradient(135deg,#1e293b 0%,#243b55 100%);border-radius:16px;padding:20px 24px;margin-bottom:16px;color:#fff;">' +
-          '<div style="font-size:22px;font-weight:800;margin-bottom:4px;">' + _greet + ', ' + escHTML(_fname) + '</div>' +
-          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
-            '<span style="display:inline-block;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;' +
-            (_isM ? 'background:#166534;color:#4ade80;' : 'background:#1e3a5f;color:#93c5fd;') + '">' +
-            (_isM ? '★ Manager' : 'Agent') + '</span>' +
-          '</div>' +
-          '<div style="font-size:13px;color:#94a3b8;">' + _dateStr + '</div>' +
+        '<div style="font-size:22px;font-weight:800;margin-bottom:4px;">' +
+        _greet +
+        ', ' +
+        escHTML(_fname) +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
+        '<span style="display:inline-block;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;' +
+        (_isM
+          ? 'background:#166534;color:#4ade80;'
+          : 'background:#1e3a5f;color:#93c5fd;') +
+        '">' +
+        (_isM ? '★ Manager' : 'Agent') +
+        '</span>' +
+        '</div>' +
+        '<div style="font-size:13px;color:#94a3b8;">' +
+        _dateStr +
+        '</div>' +
         '</div>';
     }
-  } catch (_ge) { /* skip greeting gracefully */ }
+  } catch (_ge) {
+    /* skip greeting gracefully */
+  }
 
   var cards = [
     {
@@ -1028,14 +1069,16 @@ function copyCompliance(btn) {
     .replace('Copy', '')
     .replace('Copied!', '')
     .trim();
-  safeCopy(text).then(function () {
-    btn.textContent = 'Copied!';
-    btn.classList.add('copied');
-    setTimeout(function () {
-      btn.textContent = 'Copy';
-      btn.classList.remove('copied');
-    }, 1500);
-  });
+  safeCopy(text)
+    .then(function () {
+      btn.textContent = 'Copied!';
+      btn.classList.add('copied');
+      setTimeout(function () {
+        btn.textContent = 'Copy';
+        btn.classList.remove('copied');
+      }, 1500);
+    })
+    .catch(function () {});
 }
 
 // ── Auto-inject copy buttons into compliance banners + script blocks ──
