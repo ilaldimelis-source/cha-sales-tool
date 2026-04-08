@@ -1,3 +1,5 @@
 node_modules
 coverage
 playwright-report
+js/chat.js
+js/plan-data.js
