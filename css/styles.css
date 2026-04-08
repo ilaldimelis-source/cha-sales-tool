@@ -2325,19 +2325,34 @@ textarea:focus-visible {
 
 .br-plan-bar {
   background: #fff;
-  padding: 8px 12px;
+  padding: 8px 12px 10px;
   border-bottom: 1px solid #e2e8f0;
   display: flex;
   gap: 6px;
   flex-shrink: 0;
   flex-wrap: nowrap;
   overflow: auto hidden;
-  scrollbar-width: none;
+  /* Visible thin scrollbar so agents know they can scroll to see all plans */
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
   -webkit-overflow-scrolling: touch;
 }
 
 .br-plan-bar::-webkit-scrollbar {
-  display: none;
+  height: 5px;
+}
+
+.br-plan-bar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.br-plan-bar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.br-plan-bar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 .br-plan-btn {
@@ -2358,6 +2373,33 @@ textarea:focus-visible {
   max-width: none;
   overflow: visible;
   text-overflow: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Color-coded plan type badge: small dot before the plan name.
+   data-group is added by app.js MutationObserver reading from BR_PLANS. */
+.br-plan-btn[data-group]::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #94a3b8;
+}
+
+.br-plan-btn[data-group='MEC']::before {
+  background: #22c55e;
+}
+
+.br-plan-btn[data-group='STM']::before {
+  background: #5b8def;
+}
+
+.br-plan-btn[data-group='Limited']::before {
+  background: #f59e0b;
 }
 
 .br-plan-btn.active {

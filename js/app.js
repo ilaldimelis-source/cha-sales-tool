@@ -873,6 +873,22 @@ function _initSidebar() {
 }
 
 // ── BENEFITS SIDEBAR HELPERS ─────────────────────────
+// Ensure at least one plan button is visually selected whenever the
+// Benefits Reference panel opens. chat.js already sets the first plan
+// as the active one at init, but after the agent clicks "All Plans"
+// (which clears every .active class) and then closes + reopens the
+// panel, no button is highlighted. This wrapper fixes that case
+// without touching chat.js: if no .br-plan-btn has .active, trigger
+// a click on the first visible plan button, which re-runs chat.js's
+// own selection logic end-to-end.
+function _chaEnsureFirstPlanSelected() {
+  var bar = document.getElementById('br-plan-bar');
+  if (!bar) return;
+  if (bar.querySelector('.br-plan-btn.active')) return;
+  var first = bar.querySelector('.br-plan-btn');
+  if (first && typeof first.click === 'function') first.click();
+}
+
 function _toggleBenefitsSidebar() {
   if (typeof brOpen !== 'undefined') {
     brOpen = !brOpen;
@@ -885,8 +901,61 @@ function _toggleBenefitsSidebar() {
   if (panel && panel.classList.contains('open')) {
     var input = document.getElementById('br-input');
     if (input) input.focus();
+    _chaEnsureFirstPlanSelected();
   }
 }
+
+// ══════════════════════════════════════════════════════
+// COLOR-CODED PLAN TYPE BADGES ON .br-plan-btn
+// chat.js creates the plan buttons with only a data-id attribute.
+// We observe the .br-plan-bar for DOM mutations and, for each plan
+// button, look up its group (MEC/STM/Limited) from the BR_PLANS
+// global (populated by chat.js's brInit) and add data-group so
+// CSS can color-code the badge per group. Done from app.js with a
+// MutationObserver so chat.js remains untouched.
+// ══════════════════════════════════════════════════════
+(function _chaSetupPlanBadgeObserver() {
+  function applyGroupAttrs() {
+    var bar = document.getElementById('br-plan-bar');
+    if (!bar) return;
+    if (typeof BR_PLANS === 'undefined' || !BR_PLANS || !BR_PLANS.length) {
+      return;
+    }
+    var btns = bar.querySelectorAll('.br-plan-btn');
+    for (var i = 0; i < btns.length; i++) {
+      var btn = btns[i];
+      if (btn.getAttribute('data-group')) continue;
+      var id = btn.dataset.id;
+      if (!id) continue;
+      var plan = null;
+      for (var j = 0; j < BR_PLANS.length; j++) {
+        if (BR_PLANS[j].id === id) {
+          plan = BR_PLANS[j];
+          break;
+        }
+      }
+      if (plan && plan.group) {
+        btn.setAttribute('data-group', plan.group);
+      }
+    }
+  }
+  function tryInit() {
+    var bar = document.getElementById('br-plan-bar');
+    if (!bar) {
+      setTimeout(tryInit, 400);
+      return;
+    }
+    var obs = new MutationObserver(applyGroupAttrs);
+    obs.observe(bar, { childList: true });
+    // Apply to anything already rendered
+    applyGroupAttrs();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryInit);
+  } else {
+    tryInit();
+  }
+})();
 
 function _closeBenefitsSidebar() {
   if (typeof brOpen !== 'undefined') {

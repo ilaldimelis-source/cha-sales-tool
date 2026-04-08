@@ -383,7 +383,16 @@ var SEARCH_SYNONYMS = {
   maternity: ['maternity', 'pregnancy', 'prenatal', 'obstetric'],
   pregnancy: ['maternity', 'pregnancy', 'prenatal', 'obstetric'],
   'pre-existing': ['pre-existing', 'preexisting', 'pre-ex', 'prior condition'],
-  copay: ['copay', 'co-pay', 'copayment', 'co-payment'],
+  copay: [
+    'copay',
+    'co-pay',
+    'copayment',
+    'co-payment',
+    'cost',
+    'fee',
+    'price',
+    'charge'
+  ],
   deductible: ['deductible', 'ded', 'out of pocket', 'oop'],
   oop: [
     'out of pocket',
@@ -590,6 +599,121 @@ var SEARCH_SYNONYMS = {
     'pre-authorization',
     'precertification',
     'pre-cert'
+  ],
+
+  // ── BATCH 2: Common patient phrasing, cost terms, symptoms ──
+  // Cost / financial
+  cost: ['cost', 'copay', 'co-pay', 'fee', 'price', 'charge', 'how much'],
+  fee: ['fee', 'cost', 'copay', 'charge', 'price'],
+  price: ['price', 'cost', 'copay', 'fee', 'charge'],
+  charge: ['charge', 'cost', 'copay', 'fee', 'price'],
+  'how much': ['how much', 'cost', 'copay', 'fee', 'price'],
+  premium: [
+    'premium',
+    'monthly',
+    'monthly cost',
+    'monthly payment',
+    'monthly premium'
+  ],
+  coinsurance: ['coinsurance', 'co-insurance', 'percentage', 'cost share'],
+  limit: ['limit', 'maximum', 'cap', 'max benefit', 'annual limit'],
+  maximum: ['maximum', 'max', 'limit', 'cap', 'oop max'],
+  cap: ['cap', 'limit', 'maximum', 'max'],
+  tier: ['tier', 'tier 1', 'tier 2', 'tier 3', 'formulary tier'],
+  formulary: ['formulary', 'drug list', 'covered drugs', 'tier'],
+  // Women's health
+  gyn: ['gyn', 'gynecology', 'obgyn', 'ob-gyn', 'women'],
+  gynecology: ['gynecology', 'gyn', 'obgyn', 'ob-gyn'],
+  obgyn: ['obgyn', 'ob-gyn', 'ob gyn', 'gynecology', 'obstetrics'],
+  'pap smear': [
+    'pap smear',
+    'pap test',
+    'cervical cancer screening',
+    'gynecology'
+  ],
+  contraception: [
+    'contraception',
+    'birth control',
+    'contraceptive',
+    'family planning'
+  ],
+  'birth control': [
+    'birth control',
+    'contraception',
+    'contraceptive',
+    'family planning'
+  ],
+  // Men's health
+  prostate: ['prostate', 'psa', 'prostate screening', 'men'],
+  psa: ['psa', 'prostate', 'prostate screening'],
+  // Pediatric
+  kids: ['kids', 'kid', 'child', 'children', 'pediatric', 'baby'],
+  kid: ['kid', 'kids', 'child', 'children', 'pediatric'],
+  child: ['child', 'children', 'kids', 'pediatric'],
+  children: ['children', 'child', 'kids', 'pediatric'],
+  pediatric: ['pediatric', 'pediatrics', 'child', 'children', 'kids', 'baby'],
+  baby: ['baby', 'infant', 'newborn', 'pediatric'],
+  infant: ['infant', 'baby', 'newborn', 'pediatric'],
+  // Common symptoms / conditions
+  pain: ['pain', 'ache', 'discomfort', 'hurt'],
+  headache: ['headache', 'migraine', 'head pain'],
+  migraine: ['migraine', 'headache', 'head pain'],
+  flu: ['flu', 'influenza', 'sick', 'fever', 'cough'],
+  cold: ['cold', 'flu', 'sick', 'fever', 'congestion'],
+  covid: ['covid', 'covid-19', 'coronavirus', 'sars-cov-2'],
+  anxiety: [
+    'anxiety',
+    'mental health',
+    'counseling',
+    'therapy',
+    'behavioral health'
+  ],
+  depression: [
+    'depression',
+    'mental health',
+    'counseling',
+    'therapy',
+    'behavioral health'
+  ],
+  // Skin / dermatology
+  skin: ['skin', 'dermatology', 'dermatologist', 'rash'],
+  dermatology: ['dermatology', 'dermatologist', 'skin'],
+  rash: ['rash', 'skin', 'dermatology'],
+  acne: ['acne', 'skin', 'dermatology'],
+  // GI / stomach
+  stomach: ['stomach', 'gi', 'gastroenterology', 'digestive', 'abdominal'],
+  gi: ['gi', 'gastroenterology', 'digestive', 'stomach'],
+  // Injury
+  injury: ['injury', 'accident', 'trauma', 'hurt'],
+  accident: ['accident', 'injury', 'trauma'],
+  fracture: ['fracture', 'broken bone', 'break'],
+  // Sleep
+  sleep: ['sleep', 'sleep study', 'cpap', 'sleep apnea'],
+  'sleep apnea': ['sleep apnea', 'cpap', 'sleep study'],
+  // Network-specific
+  'in network': [
+    'in network',
+    'in-network',
+    'participating',
+    'preferred provider'
+  ],
+  'in-network': [
+    'in-network',
+    'in network',
+    'participating',
+    'preferred provider'
+  ],
+  'out of network': [
+    'out of network',
+    'out-of-network',
+    'non-participating',
+    'non-preferred'
+  ],
+  'out-of-network': [
+    'out-of-network',
+    'out of network',
+    'non-participating',
+    'non-preferred'
   ]
 };
 
