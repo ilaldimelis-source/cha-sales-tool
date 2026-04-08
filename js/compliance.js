@@ -555,7 +555,7 @@ function runCallAudit() {
       function(err) {
         if (btn) { btn.textContent = btn._orig; btn.disabled = false; }
         if (err === 'no-key') {
-          result.innerHTML = '<div style="background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:14px;font-size:13px;color:#713f12;">⚠ No Groq API key. Click <strong>⚙ AI</strong> in the Benefits panel to add your free key from <a href=\"https://console.groq.com\" target=\"_blank\" style=\"color:#5175f1;\">console.groq.com</a></div>';
+          result.innerHTML = '<div style="background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:14px;font-size:13px;color:#713f12;">⚠ No Groq API key. Click <strong>⚙ AI</strong> in the Benefits panel to add your free key from <a href="https://console.groq.com" target="_blank" style="color:#5175f1;">console.groq.com</a></div>';
           return;
         }
         result.innerHTML = '<div style="color:#dc2626;font-size:13px;padding:10px;">AI error: ' + escHTML(err) + '</div>';

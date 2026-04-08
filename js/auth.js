@@ -98,11 +98,11 @@
   // ── RENDER USER CARD IN SIDEBAR ──────────────────────────────────────────────
   function renderUserInfo(user) {
     var role = 'agent';
-    try { role = (user.publicMetadata && user.publicMetadata.role) || 'agent'; } catch (e) {}
+    try { role = (user.publicMetadata && user.publicMetadata.role) || 'agent'; } catch (e) { /* ignore */ }
     var firstName = '';
-    try { firstName = user.firstName || ''; } catch (e) {}
+    try { firstName = user.firstName || ''; } catch (e) { /* ignore */ }
     var email = '';
-    try { email = user.emailAddresses[0].emailAddress; } catch (e) {}
+    try { email = user.emailAddresses[0].emailAddress; } catch (e) { /* ignore */ }
     var name = firstName || (email ? email.split('@')[0] : 'Agent');
     var initials = name.slice(0, 2).toUpperCase();
     var isManager = role === 'manager';
