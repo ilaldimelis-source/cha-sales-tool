@@ -209,6 +209,20 @@ function setObjCat(c) {
   renderObjections();
 }
 
+// P2 Task 9: Map objection category -> CSS modifier class for colored badge.
+function _objCatClass(cat) {
+  var known = {
+    Price: 'obj-cat-price',
+    Delay: 'obj-cat-delay',
+    Spouse: 'obj-cat-spouse',
+    Trust: 'obj-cat-trust',
+    Timing: 'obj-cat-timing',
+    Coverage: 'obj-cat-coverage',
+    Hospital: 'obj-cat-hospital'
+  };
+  return known[cat] || 'obj-cat-default';
+}
+
 function renderObjList() {
   var filtered =
     objCat === 'All'
@@ -230,7 +244,7 @@ function renderObjList() {
       o.obj +
       '"</div>';
     html +=
-      '<span style="display:inline-flex;align-items:center;font-family:var(--font-ui);font-size:.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:3px 10px;border-radius:999px;background:rgba(92,104,120,0.10);color:#5C6878;margin-top:4px;border:1px solid rgba(92,104,120,0.15);">' +
+      '<span class="obj-cat-badge ' + _objCatClass(o.cat) + '">' +
       o.cat +
       '</span></div>';
     html += '<span class="xcard-chev" aria-hidden="true">▼</span></div>';

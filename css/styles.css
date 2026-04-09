@@ -4829,3 +4829,352 @@ td,
   box-shadow: none;
 }
 
+/* ── UX SAFE FIXES (ux/safe-fixes branch) ── */
+
+/* P0 Task 1: Hide floating quick-action dock on desktop.
+   The .fab-bar is useful on mobile but adds clutter on desktop
+   where the sidebar already provides navigation. */
+@media (min-width: 1024px) {
+  .fab-bar {
+    display: none;
+  }
+}
+
+/* P0 Task 2: Hide floating Benefits Reference chat bubble on desktop.
+   Desktop users have full access via the Plans/Benefits sidebar nav,
+   so the floating bubble is unnecessary clutter on large screens.
+   Mobile still keeps it since the sidebar is collapsed on small viewports. */
+@media (min-width: 1024px) {
+  #br-toggle {
+    display: none;
+  }
+}
+
+/* P1 Task 5: Home dashboard grid — 4 columns x 2 rows on desktop
+   (8 cards total now that Cheat Sheets is inside the grid).
+   Medium screens fall back to 2 columns, phones to 1. */
+@media (min-width: 1024px) {
+  .dash-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .dash-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* P1 Task 6: Click-to-edit greeting in the topbar.
+   The greeting is keyboard-focusable and shows a pointer cursor so users
+   know it is interactive. Clicking swaps in an inline input that matches
+   the chip's shape. */
+.topbar-welcome {
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.topbar-welcome:hover {
+  border-color: var(--accent);
+}
+.topbar-welcome:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.25);
+}
+.topbar-welcome-input {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  width: 160px;
+  max-width: 100%;
+}
+.topbar-welcome-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* P1 Task 7: S/M/L font toggle — accessibility polish.
+   - Visible focus ring for keyboard users (focus-visible only, so
+     mouse clicks don't show an outline)
+   - Ensure the grouped label wrapper has decent hit area */
+.font-toggle-btn:focus {
+  outline: none;
+}
+.font-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* P2 Task 8: Sticky SOA disclosure strip on Live Call.
+   Keeps the SOA reminder visible while the agent scrolls through
+   rebuttals and objection cards. The strip's own opaque background
+   (#EEF3FF from its inline style) prevents content bleed-through.
+   z-index sits below the floating panels (#br-panel = 1100) and
+   below the sidebar mobile menu (1200) but above normal content. */
+.soa-copy-strip {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* P2 Task 9: Rebuttal category color coding.
+   Every objection card's category pill gets a distinct color so
+   agents can scan by category at a glance. The base .obj-cat-badge
+   provides the shape/size; modifier classes apply the palette. */
+.obj-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-top: 4px;
+  border: 1px solid transparent;
+}
+.obj-cat-badge.obj-cat-price {
+  background: rgba(234, 88, 12, 0.1);
+  color: #c2410c;
+  border-color: rgba(234, 88, 12, 0.22);
+}
+.obj-cat-badge.obj-cat-delay {
+  background: rgba(202, 138, 4, 0.1);
+  color: #a16207;
+  border-color: rgba(202, 138, 4, 0.22);
+}
+.obj-cat-badge.obj-cat-spouse {
+  background: rgba(219, 39, 119, 0.1);
+  color: #be185d;
+  border-color: rgba(219, 39, 119, 0.22);
+}
+.obj-cat-badge.obj-cat-trust {
+  background: rgba(124, 58, 237, 0.1);
+  color: #6d28d9;
+  border-color: rgba(124, 58, 237, 0.22);
+}
+.obj-cat-badge.obj-cat-timing {
+  background: rgba(8, 145, 178, 0.1);
+  color: #0e7490;
+  border-color: rgba(8, 145, 178, 0.22);
+}
+.obj-cat-badge.obj-cat-coverage {
+  background: rgba(22, 163, 74, 0.1);
+  color: #15803d;
+  border-color: rgba(22, 163, 74, 0.22);
+}
+.obj-cat-badge.obj-cat-hospital {
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.22);
+}
+.obj-cat-badge.obj-cat-default {
+  background: rgba(92, 104, 120, 0.1);
+  color: #5c6878;
+  border-color: rgba(92, 104, 120, 0.15);
+}
+
+/* P3 Task 10: Sticky plan filter bar (tab pills + search input).
+   Keeps the filters visible while scrolling the plan list. The
+   opaque background matches the page background to prevent bleed. */
+.plans-filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg-page, #f8fafc);
+  padding-top: 8px;
+  padding-bottom: 4px;
+  margin-left: -4px;
+  margin-right: -4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/* P3 Task 11: Plan detail drawer — slide-in panel from the right.
+   Replaces the old inline pv-detail expand. The pv-detail element
+   is already hidden via its inline style="display:none;..." default,
+   and togglePlanVault() is no longer wired to the View Details button,
+   so no additional hide rule is needed — the drawer is the only
+   presentation path now. */
+
+.plan-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 1150;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.plan-drawer-overlay.open {
+  display: block;
+  opacity: 1;
+}
+.plan-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 520px;
+  max-width: 100vw;
+  height: 100vh;
+  background: var(--bg-card, #ffffff);
+  box-shadow: -12px 0 40px rgba(15, 23, 42, 0.18);
+  z-index: 1151;
+  transform: translateX(100%);
+  transition: transform 0.24s cubic-bezier(0.22, 0.61, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+}
+.plan-drawer.open {
+  transform: translateX(0);
+}
+.plan-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  flex-shrink: 0;
+  background: var(--bg-card, #ffffff);
+}
+.plan-drawer-title {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  flex: 1;
+  min-width: 0;
+  padding-right: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.plan-drawer-close {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--border, #e5e7eb);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+}
+.plan-drawer-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.plan-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 20px;
+}
+body.plan-drawer-lock {
+  overflow: hidden;
+}
+@media (max-width: 640px) {
+  .plan-drawer {
+    width: 100vw;
+  }
+}
+
+/* P4 Task 12: "NEXT" badge for the first incomplete onboarding item.
+   Uses the accent blue to stand out from the red Required badge. */
+.onb-tag-next {
+  background: rgba(91, 141, 239, 0.15);
+  color: #1d4ed8;
+}
+
+/* P4 Task 13: Circular progress ring for renderNewHireOnboarding().
+   Replaces the old thin .onb-progress-bar. Sits in .onb-header-right
+   alongside a small "{done}/{total} tasks - Day N of 5" label block. */
+.onb-ring-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.onb-ring {
+  display: block;
+}
+.onb-ring-track {
+  stroke: rgba(255, 255, 255, 0.15);
+}
+.onb-ring-fill {
+  stroke: #5b8def;
+  transition: stroke-dashoffset 0.35s ease;
+}
+.onb-ring-text {
+  fill: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+}
+.onb-ring-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+.onb-ring-meta-top {
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+}
+.onb-ring-meta-bot {
+  color: #94a3b8;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* P4 Task 16: Training Center grid — 3 columns at >=1024px so the
+   8 (or any multiple-of-3-near) tiles fill cleanly without a single
+   orphan on its own row. Medium screens keep 2 columns, mobile 1. */
+@media (min-width: 1024px) {
+  .trn-home-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* P5 Task 17: Card/tile title typography — 18px / 600.
+   Unified across the main card surfaces in the app (Dashboard,
+   Training home, Live Assist nav, Favorites, Dashboard reference
+   strip). Bumped from 15-16px/700 to 18px/600 for a calmer, more
+   readable type rhythm. CSS-only, append to bottom of styles.css. */
+.dash-title,
+.trn-home-title,
+.la-nav-title,
+.fav-card-title,
+.dash-ref-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* P5 Task 18: Subtitle/description contrast.
+   The previous muted grays (#6B7280, #94A3B8 via var(--text-muted))
+   are below WCAG AA contrast on white backgrounds. Darken to
+   #475569 on the matching description classes — targeted overrides
+   only, so we don't shift unrelated --text-muted usages app-wide. */
+.dash-desc,
+.trn-home-desc,
+.la-nav-desc,
+.fav-card-desc,
+.dash-ref-text {
+  color: #475569;
+}
+

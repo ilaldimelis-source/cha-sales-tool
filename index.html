@@ -352,25 +352,39 @@
         >
           ✕ Clear
         </button>
-        <div class="font-toggle" id="fontToggle" aria-label="Font size">
+        <div
+          class="font-toggle"
+          id="fontToggle"
+          role="group"
+          aria-label="Font size"
+        >
           <button
+            type="button"
             class="font-toggle-btn"
             onclick="setFontSize('s')"
             title="Small text"
+            aria-label="Small text size"
+            aria-pressed="false"
           >
             S
           </button>
           <button
+            type="button"
             class="font-toggle-btn active"
             onclick="setFontSize('m')"
             title="Medium text"
+            aria-label="Medium text size"
+            aria-pressed="true"
           >
             M
           </button>
           <button
+            type="button"
             class="font-toggle-btn"
             onclick="setFontSize('l')"
             title="Large text"
+            aria-label="Large text size"
+            aria-pressed="false"
           >
             L
           </button>
