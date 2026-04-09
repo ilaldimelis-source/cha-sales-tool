@@ -5151,3 +5151,30 @@ body.plan-drawer-lock {
   }
 }
 
+/* P5 Task 17: Card/tile title typography — 18px / 600.
+   Unified across the main card surfaces in the app (Dashboard,
+   Training home, Live Assist nav, Favorites, Dashboard reference
+   strip). Bumped from 15-16px/700 to 18px/600 for a calmer, more
+   readable type rhythm. CSS-only, append to bottom of styles.css. */
+.dash-title,
+.trn-home-title,
+.la-nav-title,
+.fav-card-title,
+.dash-ref-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* P5 Task 18: Subtitle/description contrast.
+   The previous muted grays (#6B7280, #94A3B8 via var(--text-muted))
+   are below WCAG AA contrast on white backgrounds. Darken to
+   #475569 on the matching description classes — targeted overrides
+   only, so we don't shift unrelated --text-muted usages app-wide. */
+.dash-desc,
+.trn-home-desc,
+.la-nav-desc,
+.fav-card-desc,
+.dash-ref-text {
+  color: #475569;
+}
+
