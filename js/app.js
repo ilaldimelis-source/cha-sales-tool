@@ -112,6 +112,106 @@ function _initFontSize() {
 }
 
 // ══════════════════════════════════════════════════════
+// DARK MODE TOGGLE
+// Persists under cha_theme ('light' | 'dark'). Applied as
+// body.dark-mode — CSS variables in styles.css provide the
+// actual color overrides.
+// ══════════════════════════════════════════════════════
+function setTheme(theme) {
+  var t = theme === 'dark' ? 'dark' : 'light';
+  var b = document.body;
+  if (t === 'dark') {
+    b.classList.add('dark-mode');
+  } else {
+    b.classList.remove('dark-mode');
+  }
+  safeSetItem('cha_theme', t);
+  var btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.setAttribute('data-theme', t);
+    btn.setAttribute(
+      'aria-label',
+      t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+    );
+    btn.setAttribute(
+      'title',
+      t === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+    );
+    btn.innerHTML =
+      t === 'dark'
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  }
+}
+
+function toggleTheme() {
+  var cur = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+  setTheme(cur === 'dark' ? 'light' : 'dark');
+}
+
+function _initTheme() {
+  var saved = safeGetItem('cha_theme') || 'light';
+  setTheme(saved);
+}
+
+// ══════════════════════════════════════════════════════
+// TOPBAR WELCOME GREETING
+// Reads window.CHA_USER (set by js/auth.js after Clerk
+// loads) and renders a minimal "Good morning, FirstName"
+// chip inside the topbar. Also injects the theme toggle
+// next to the S/M/L font controls. Both are idempotent.
+// ══════════════════════════════════════════════════════
+function _initTopbarExtras() {
+  try {
+    var topbar = document.querySelector('.topbar');
+    if (!topbar) return;
+
+    // Theme toggle — insert just before the S/M/L font toggle
+    if (!document.getElementById('themeToggle')) {
+      var tbtn = document.createElement('button');
+      tbtn.id = 'themeToggle';
+      tbtn.type = 'button';
+      tbtn.className = 'theme-toggle';
+      tbtn.onclick = toggleTheme;
+      var ft = document.getElementById('fontToggle');
+      if (ft && ft.parentNode) {
+        ft.parentNode.insertBefore(tbtn, ft);
+      } else {
+        topbar.appendChild(tbtn);
+      }
+      // Re-apply so the icon + aria-label render correctly
+      _initTheme();
+    }
+
+    // Welcome greeting — insert just before the theme toggle
+    if (!document.getElementById('topbarWelcome')) {
+      var w = document.createElement('div');
+      w.id = 'topbarWelcome';
+      w.className = 'topbar-welcome';
+      var hr = new Date().getHours();
+      var gr =
+        hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+      var first = 'Agent';
+      try {
+        var u = window.CHA_USER;
+        if (u) first = u.firstName || u.name || 'Agent';
+      } catch (_e) {
+        /* ignore */
+      }
+      w.textContent = gr + ', ' + first;
+      var tt = document.getElementById('themeToggle');
+      if (tt && tt.parentNode) {
+        tt.parentNode.insertBefore(w, tt);
+      } else {
+        topbar.appendChild(w);
+      }
+    }
+  } catch (e) {
+    console.error('[CHA] topbar extras failed:', e);
+  }
+}
+
+// ══════════════════════════════════════════════════════
 // CLIPBOARD FALLBACK (Safari / older browsers)
 // ══════════════════════════════════════════════════════
 function safeCopy(text) {
@@ -981,6 +1081,29 @@ function _closeBenefitsSidebar() {
 // ── INIT ──────────────────────────────────────────────
 function initApp() {
   _initFontSize();
+  _initTheme();
+  _initTopbarExtras();
+  // Clerk may set window.CHA_USER after initApp runs. Refresh
+  // the greeting once it's available (poll up to ~6 seconds).
+  var _ghTries = 0;
+  var _ghTimer = setInterval(function () {
+    _ghTries++;
+    if (window.CHA_USER || _ghTries > 30) {
+      clearInterval(_ghTimer);
+      var el = document.getElementById('topbarWelcome');
+      if (el && window.CHA_USER) {
+        var hr2 = new Date().getHours();
+        var gr2 =
+          hr2 < 12
+            ? 'Good morning'
+            : hr2 < 17
+              ? 'Good afternoon'
+              : 'Good evening';
+        var f2 = window.CHA_USER.firstName || window.CHA_USER.name || 'Agent';
+        el.textContent = gr2 + ', ' + f2;
+      }
+    }
+  }, 200);
   _initSidebar();
   showPage('dashboard');
   // Start onboarding tour for first-time users

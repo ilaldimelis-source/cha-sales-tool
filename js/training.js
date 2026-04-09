@@ -2061,13 +2061,236 @@ function _trnTwoCols(leftLabel, leftText, rightLabel, rightText) {
 }
 
 // ══════════════════════════════════════════════════════
-// NEW HIRE ONBOARDING (Training, first subtab)
-// 4 phases, 39 items total. Items marked critical:true
-// render with a "Required" badge. Per-item completion is
-// stored in localStorage under cha_onboarding as a flat
-// object: { 'p1i1': true, 'p1i2': true, ... }.
+// TRAINING LIBRARY (Training tab, first subtab)
+// Accordion-based knowledge center. Replaces the old
+// checklist onboarding. The page ID stays the same so
+// navigation, PAGE_CONFIG, and the service worker all
+// continue to work without any other changes.
+//
+// Structure: 5 top-level sections, each with multiple
+// articles. Expand/collapse state is stored in localStorage
+// under cha_training_open as a flat object: { 's1': true, ... }.
 // ══════════════════════════════════════════════════════
 
+var TRAINING_SECTIONS = [
+  {
+    id: 's1',
+    title: 'New Hire — Start Here',
+    subtitle: 'Core concepts every new agent must understand',
+    articles: [
+      {
+        title: 'What is Limited Benefit insurance?',
+        body: 'Limited benefit plans pay a fixed dollar amount for specific medical events (doctor visits, labs, hospital stays). They do not work like major medical — there is no huge unlimited coverage and no ACA protections. They are affordable, easy to qualify for, and perfect for healthy people who need help covering everyday medical costs without paying hundreds a month for unused coverage.'
+      },
+      {
+        title: 'What is a MEC plan?',
+        body: 'MEC stands for Minimum Essential Coverage. MEC plans satisfy the ACA preventive care requirement and pay 100% for in-network preventive services (annual physicals, vaccines, screenings). They typically pair with a limited benefit plan to create a complete package: MEC covers the "stay well" side; limited benefit covers the "get sick" side.'
+      },
+      {
+        title: 'What is STM (Short-Term Medical)?',
+        body: 'STM is real underwritten major medical for a short window (3-12 months depending on state). It has real deductibles, coinsurance, and high max benefits — but it is medically underwritten, excludes pre-existing conditions, and is not ACA-compliant. STM is best for healthy people between jobs, waiting for group coverage, or needing a bridge until open enrollment.'
+      },
+      {
+        title: 'Why do clients need supplemental coverage?',
+        body: 'Most clients we talk to are either uninsured, under-insured on an ACA plan with a $7,000+ deductible, or have lost employer coverage. Our job is to match the RIGHT combination to their situation. The goal is never just "sell a plan" — it is to solve their real problem: "I need to see a doctor without getting crushed by a bill."'
+      }
+    ]
+  },
+  {
+    id: 's2',
+    title: 'Product Basics',
+    subtitle: 'How our plans actually work',
+    articles: [
+      {
+        title: 'Plan type differences at a glance',
+        body: 'Limited benefit = fixed dollar pays per event. MEC = preventive care at 100%. STM = true major medical with deductibles. Hospital indemnity = lump sum per day of admission. Most sales are a limited benefit + MEC combination that gives the client both preventive AND day-to-day benefit coverage.'
+      },
+      {
+        title: 'Waiting periods by plan type',
+        body: 'MEC: usually no waiting period on preventive. Limited benefit: typically no waiting period on core benefits, but some plans have a short waiting period (14-30 days) on hospital or surgical benefits. STM: no waiting period once effective, but pre-existing conditions are excluded. Always confirm waiting periods on the specific plan card in the Benefits Reference before quoting.'
+      },
+      {
+        title: 'Pre-existing condition rules',
+        body: 'Limited benefit and MEC plans are guaranteed-issue — they do not exclude pre-existing conditions, but they also do not pay for them at a high rate. STM IS medically underwritten and WILL exclude pre-existing conditions for the full policy term. If a client has ongoing medical issues, STM is not the right fit.'
+      },
+      {
+        title: 'Networks — PHCS vs First Health',
+        body: 'PHCS is one of the largest PPO networks in the US. First Health is also very broad. Both include major hospital systems and most primary care physicians. When a client asks "is my doctor in-network?", use the network lookup tools — do not guess. Plans that use these networks let clients keep seeing most of the doctors they already use.'
+      },
+      {
+        title: 'Deductibles, copays, and how benefits apply',
+        body: 'Limited benefit plans generally have NO deductible — the fixed benefit pays from dollar one. STM has a real deductible (often $1,000-$10,000) that must be met before major medical pays. MEC has no deductible for preventive. When explaining benefits, lead with "the plan pays $X starting on day one" — that is what clients actually care about.'
+      },
+      {
+        title: 'Rx (prescription) coverage',
+        body: 'Most limited benefit plans include a basic generic Rx discount or a small fixed Rx benefit. MEC plans have no Rx unless bundled. STM has real Rx coverage with copays once the deductible is met. If the client is on brand-name medications, always check the specific plan card or route to Benefits Reference.'
+      },
+      {
+        title: 'Hospital & inpatient benefits',
+        body: 'Limited benefit plans pay a fixed dollar amount per day of hospital admission (e.g., $1,000/day up to X days). Hospital indemnity riders can add another lump sum. STM covers hospital like real major medical with deductible + coinsurance. Always quote the daily/per-confinement number — that is the most persuasive benefit on a limited benefit plan.'
+      }
+    ]
+  },
+  {
+    id: 's3',
+    title: 'Sales Basics',
+    subtitle: 'How to run a great call from open to close',
+    articles: [
+      {
+        title: 'Opening the call — build trust in 15 seconds',
+        body: 'Lead with a warm, confident greeting and state WHO you are and WHY you are calling. "Hi, this is [name] with Central Health Advisors — I am calling about the health coverage request you submitted." Be calm, professional, and never rushed. The client decides whether to trust you in the first few seconds.'
+      },
+      {
+        title: 'Discovery — ask before you pitch',
+        body: 'Never pitch a plan before you understand the problem. Ask: "What is going on with your current coverage?" "When was the last time you saw a doctor?" "Are you on any regular medications?" "What is your budget range?" The more you understand, the better the match — and the higher the close rate.'
+      },
+      {
+        title: 'Presenting the plan — simple and specific',
+        body: 'Three benefits that solve THIS client\'s problem beat ten features that sound impressive. "You can see any doctor for $25, the plan pays $1,000 a day if you are hospitalized, and preventive care is 100% covered." Simple, concrete, benefit-first.'
+      },
+      {
+        title: 'Explaining value — reframe the price',
+        body: 'Never say "it costs $X a month." Say "for less than the price of your phone bill, you can see a doctor for $25 instead of $200." Reframe the cost against what the client already spends and what a single ER visit would cost them. Value = benefit ÷ price, and the client needs your help to see it.'
+      },
+      {
+        title: 'Handling objections — validate then redirect',
+        body: 'Never dismiss what a client says. Cushion first — "That makes complete sense" — then pivot. The stated objection is rarely the real one. "Too expensive" usually means "I don\'t see the value yet." "I need to think" usually means "I have one concern I did not say out loud." Ask: "Is it the cost itself, or something else?"'
+      },
+      {
+        title: 'Closing — ask and stop talking',
+        body: 'After the pitch, ask a clear closing question and then STOP. Not pause — stop. The next person who speaks loses leverage. Most agents lose deals by filling the silence with more selling. Let the client answer. If they push back, validate and try a different angle — do not keep piling on features.'
+      },
+      {
+        title: 'Compliance basics you must know',
+        body: 'Always identify yourself and the company. Never misrepresent the plan as major medical or ACA-compliant when it is not. Never make medical or financial guarantees. Always verify the client understood what they bought BEFORE submitting the enrollment — a "tape confirmation" is not optional. If you are ever unsure, escalate to a manager.'
+      }
+    ]
+  },
+  {
+    id: 's4',
+    title: 'Plan Quick Reference',
+    subtitle: 'Top 10 plans agents need to know',
+    articles: [
+      {
+        title: 'SmartChoice 3000',
+        body: 'Popular limited benefit + MEC combination. Pays fixed dollar amounts for doctor visits, labs, and hospital days. Great for healthy individuals and families who want solid day-to-day coverage without a huge monthly premium. Preventive care covered 100% via the MEC component.'
+      },
+      {
+        title: 'MedFirst series',
+        body: 'Limited benefit family with tiered benefit levels. Good for budget-conscious clients. Look up the specific level in Benefits Reference before quoting — the higher tiers include much stronger hospital benefits.'
+      },
+      {
+        title: 'Prime Health Pass',
+        body: 'Discount add-on product that pairs with a core plan. Provides telemedicine, Rx discounts, and dental/vision savings. Low monthly cost. Common add-on to SmartChoice for an "all-in-one" package.'
+      },
+      {
+        title: 'AssistPro Discount',
+        body: 'Supplemental discount card covering dental, vision, Rx, and alternative care. Not insurance — a negotiated discount program. Works as a low-cost add-on when the client wants extras but does not want to pay for full dental/vision insurance.'
+      },
+      {
+        title: 'Short-Term Medical (STM)',
+        body: 'True underwritten major medical for a limited term. Real deductibles and coinsurance. For healthy clients needing bridge coverage. Always disclose: medically underwritten, excludes pre-existing, not ACA-compliant.'
+      },
+      {
+        title: 'Hospital Indemnity riders',
+        body: 'Pay a lump sum for each day of hospital admission. Stack on top of a limited benefit or MEC plan to beef up inpatient protection. Great pitch: "if you end up in the hospital, the plan writes YOU a check."'
+      },
+      {
+        title: 'Fixed Indemnity plans',
+        body: 'Pay a fixed dollar amount per service regardless of billed charge. Simple, predictable. Work best for clients who want to know exactly what they will receive if they use a service.'
+      },
+      {
+        title: 'MEC Preventive plans',
+        body: 'Low-cost plans that cover preventive care 100% and satisfy the "minimum essential coverage" requirement. Typically paired with a limited benefit plan to create a full package.'
+      },
+      {
+        title: 'Accident plans',
+        body: 'Pay lump sums for accident-related care (ER visits, fractures, lacerations, ambulance). Cheap, easy to add, and clients love them because accidents happen to everyone.'
+      },
+      {
+        title: 'Critical Illness riders',
+        body: 'Pay a large lump sum if the client is diagnosed with a covered critical illness (cancer, heart attack, stroke). Useful for older clients or those with family history. Check the plan card for the exact list of covered conditions.'
+      }
+    ]
+  },
+  {
+    id: 's5',
+    title: 'Daily Refreshers',
+    subtitle: 'Read before every call day',
+    articles: [
+      {
+        title: 'Pre-call checklist',
+        body: 'Headset on. Water nearby. Dashboard open. Benefits Reference ready. Top 3 plans pinned for quick access. Objection quick-reference visible. A clean notepad or Notes tab. Coffee. Go.'
+      },
+      {
+        title: 'Compliance reminder — every single call',
+        body: 'Identify yourself and the company. Never misrepresent the product. Never guarantee medical outcomes or savings. Always verify the client understood before submitting. Always do the tape confirmation. When in doubt, escalate.'
+      },
+      {
+        title: 'Objection quick-reference',
+        body: '"Too expensive" → validate, reframe against daily value, offer a lower tier. "I need to think" → ask what specific concern they have. "I need to talk to my spouse" → offer to do a 3-way call now. "I already have Medicare/Medicaid" → confirm eligibility and exit politely. "Not interested" → one attempt to discover why, then respect the answer.'
+      },
+      {
+        title: 'Verification / tape confirmation script reminder',
+        body: 'Before submitting: "I am going to read you the key details and you just confirm by saying yes." State the plan name, the monthly premium, the effective date, the fact that it is limited benefit (not major medical, not ACA-compliant), and that the client understands the benefits. Get a clear "yes" to each question. Never rush this part — it protects the client AND it protects you.'
+      }
+    ]
+  }
+];
+
+function _trnLoadOpen() {
+  try {
+    var raw =
+      (typeof safeGetItem === 'function'
+        ? safeGetItem('cha_training_open')
+        : localStorage.getItem('cha_training_open')) || '{}';
+    var parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (_e) {
+    return {};
+  }
+}
+
+function _trnSaveOpen(state) {
+  try {
+    var s = JSON.stringify(state || {});
+    if (typeof safeSetItem === 'function') {
+      safeSetItem('cha_training_open', s);
+    } else {
+      localStorage.setItem('cha_training_open', s);
+    }
+  } catch (_e) {
+    /* incognito / quota — silently ignore */
+  }
+}
+
+function _trnToggleSection(id) {
+  var state = _trnLoadOpen();
+  state[id] = !state[id];
+  _trnSaveOpen(state);
+  // Toggle classes in-place so the accordion doesn't lose scroll
+  var sec = document.getElementById('trn-sec-' + id);
+  if (sec) sec.classList.toggle('open', !!state[id]);
+}
+
+function _trnEscape(s) {
+  if (typeof escHTML === 'function') return escHTML(String(s == null ? '' : s));
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return map[c];
+  });
+}
+
+// Legacy alias preserved so the old onboarding state data does
+// not ever get re-interpreted as anything else. Unused now but
+// kept so readers searching for ONBOARDING_PHASES still find
+// the training library.
 var ONBOARDING_PHASES = [
   {
     id: 'phase1',
@@ -2242,6 +2465,11 @@ var ONBOARDING_PHASES = [
   }
 ];
 
+// ── Legacy onboarding state helpers ─────────────────────────
+// The ONBOARDING_PHASES data is still present in the file so
+// nothing searching for it breaks, but nothing reads these
+// helpers anymore. They are kept as harmless no-ops in case
+// any external code ever calls them.
 function _onbLoadState() {
   try {
     var raw =
@@ -2289,94 +2517,61 @@ function _onbEscape(s) {
   });
 }
 
+// Render the accordion Training Library. Page ID stays
+// 'page-newhireonboarding' so PAGE_CONFIG, navigation, and
+// the service worker continue to work unchanged.
 function renderNewHireOnboarding() {
   var page = document.getElementById('page-newhireonboarding');
   if (!page) return;
-
-  var state = _onbLoadState();
-
-  // Aggregate progress across all phases
-  var totalItems = 0;
-  var completedItems = 0;
-  var totalCritical = 0;
-  var completedCritical = 0;
-  for (var p = 0; p < ONBOARDING_PHASES.length; p++) {
-    var phase = ONBOARDING_PHASES[p];
-    for (var i = 0; i < phase.items.length; i++) {
-      var item = phase.items[i];
-      totalItems++;
-      if (state[item.id]) completedItems++;
-      if (item.critical) {
-        totalCritical++;
-        if (state[item.id]) completedCritical++;
-      }
-    }
-  }
-  var pct =
-    totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+  var open = _trnLoadOpen();
 
   var html = '';
   html +=
-    '<div class="ph"><div class="pt">New Hire <span>Onboarding</span></div>' +
-    '<div class="pd">Work through each phase. Required items must be completed before going live with customers. Your progress is saved on this device.</div></div>';
+    '<div class="ph"><div class="pt">Training <span>Library</span></div>' +
+    '<div class="pd">Your knowledge center. Start at the top if you are new. Expand any section to read. Everything here is quick-scan ready.</div></div>';
 
-  // Overall progress bar
-  html += '<div class="onb-overall">';
-  html += '<div class="onb-overall-label">Overall progress</div>';
-  html +=
-    '<div class="onb-overall-bar"><div class="onb-overall-fill" style="width:' +
-    pct +
-    '%"></div></div>';
-  html +=
-    '<div class="onb-overall-counts">' +
-    completedItems +
-    ' of ' +
-    totalItems +
-    ' complete &middot; ' +
-    completedCritical +
-    ' of ' +
-    totalCritical +
-    ' required items checked</div>';
-  html += '</div>';
-
-  // Per-phase sections
-  for (var pi = 0; pi < ONBOARDING_PHASES.length; pi++) {
-    var ph = ONBOARDING_PHASES[pi];
-    var phaseDone = 0;
-    for (var ii = 0; ii < ph.items.length; ii++) {
-      if (state[ph.items[ii].id]) phaseDone++;
-    }
-
-    html += '<div class="onb-phase">';
-    html += '<div class="onb-phase-head">';
-    html += '<div class="onb-phase-title">' + _onbEscape(ph.title) + '</div>';
+  for (var si = 0; si < TRAINING_SECTIONS.length; si++) {
+    var sec = TRAINING_SECTIONS[si];
+    var isOpen = !!open[sec.id];
     html +=
-      '<div class="onb-phase-count">' +
-      phaseDone +
-      ' / ' +
-      ph.items.length +
-      '</div>';
+      '<div class="trn-sec' +
+      (isOpen ? ' open' : '') +
+      '" id="trn-sec-' +
+      _trnEscape(sec.id) +
+      '">';
+    html +=
+      '<button type="button" class="trn-sec-head" onclick="_trnToggleSection(\'' +
+      _trnEscape(sec.id) +
+      '\')" aria-expanded="' +
+      (isOpen ? 'true' : 'false') +
+      '">';
+    html += '<div class="trn-sec-head-text">';
+    html += '<div class="trn-sec-title">' + _trnEscape(sec.title) + '</div>';
+    html +=
+      '<div class="trn-sec-subtitle">' + _trnEscape(sec.subtitle) + '</div>';
     html += '</div>';
+    html +=
+      '<span class="trn-sec-count">' +
+      sec.articles.length +
+      ' article' +
+      (sec.articles.length === 1 ? '' : 's') +
+      '</span>';
+    html +=
+      '<span class="trn-sec-chevron" aria-hidden="true">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<polyline points="6 9 12 15 18 9"/></svg>' +
+      '</span>';
+    html += '</button>';
 
-    html += '<div class="onb-items">';
-    for (var iii = 0; iii < ph.items.length; iii++) {
-      var it = ph.items[iii];
-      var isDone = !!state[it.id];
-      var checked = isDone ? ' checked' : '';
-      var doneCls = isDone ? ' done' : '';
-      var reqBadge = it.critical
-        ? '<span class="onb-required">Required</span>'
-        : '';
-      html += '<label class="onb-item' + doneCls + '">';
+    html += '<div class="trn-sec-body">';
+    for (var ai = 0; ai < sec.articles.length; ai++) {
+      var art = sec.articles[ai];
+      html += '<div class="trn-article">';
       html +=
-        '<input type="checkbox"' +
-        checked +
-        ' onchange="_onbToggle(\'' +
-        it.id +
-        '\')">';
-      html += '<span class="onb-item-text">' + _onbEscape(it.text) + '</span>';
-      html += reqBadge;
-      html += '</label>';
+        '<div class="trn-article-title">' + _trnEscape(art.title) + '</div>';
+      html +=
+        '<div class="trn-article-body">' + _trnEscape(art.body) + '</div>';
+      html += '</div>';
     }
     html += '</div>';
     html += '</div>';
