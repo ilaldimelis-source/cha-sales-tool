@@ -4982,3 +4982,112 @@ td,
   border-color: rgba(92, 104, 120, 0.15);
 }
 
+/* P3 Task 10: Sticky plan filter bar (tab pills + search input).
+   Keeps the filters visible while scrolling the plan list. The
+   opaque background matches the page background to prevent bleed. */
+.plans-filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--bg-page, #f8fafc);
+  padding-top: 8px;
+  padding-bottom: 4px;
+  margin-left: -4px;
+  margin-right: -4px;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+/* P3 Task 11: Plan detail drawer — slide-in panel from the right.
+   Replaces the old inline pv-detail expand. The pv-detail element
+   is already hidden via its inline style="display:none;..." default,
+   and togglePlanVault() is no longer wired to the View Details button,
+   so no additional hide rule is needed — the drawer is the only
+   presentation path now. */
+
+.plan-drawer-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 1150;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.plan-drawer-overlay.open {
+  display: block;
+  opacity: 1;
+}
+.plan-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 520px;
+  max-width: 100vw;
+  height: 100vh;
+  background: var(--bg-card, #ffffff);
+  box-shadow: -12px 0 40px rgba(15, 23, 42, 0.18);
+  z-index: 1151;
+  transform: translateX(100%);
+  transition: transform 0.24s cubic-bezier(0.22, 0.61, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+}
+.plan-drawer.open {
+  transform: translateX(0);
+}
+.plan-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border, #e5e7eb);
+  flex-shrink: 0;
+  background: var(--bg-card, #ffffff);
+}
+.plan-drawer-title {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  flex: 1;
+  min-width: 0;
+  padding-right: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.plan-drawer-close {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid var(--border, #e5e7eb);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+}
+.plan-drawer-close:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.plan-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 20px;
+}
+body.plan-drawer-lock {
+  overflow: hidden;
+}
+@media (max-width: 640px) {
+  .plan-drawer {
+    width: 100vw;
+  }
+}
+

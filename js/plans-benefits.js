@@ -1119,6 +1119,10 @@ function renderPlans() {
     '<div class="pd">Find the right plan for every client.</div>' +
     '</div>';
 
+  // P3 Task 10: Sticky filter bar — wraps the tab pills and search
+  // input so they stay visible while scrolling through plan cards.
+  html += '<div class="plans-filter-bar">';
+
   // ── Pill Tabs ──
   var tabDefs = [
     { key: 'All', label: 'All', color: 'var(--text-primary)' },
@@ -1154,9 +1158,24 @@ function renderPlans() {
   html +=
     '<button id="planSearchClear" onclick="clearPlanSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
+  html += '</div>'; // close .plans-filter-bar
   html +=
     '<div id="planNoResults" style="display:none;text-align:center;padding:24px 0;color:var(--text-secondary);font-size:14px;">No plans match your search.</div>';
   html += '<div id="planGroupsWrap"></div>';
+
+  // P3 Task 11: Plan detail drawer — slide-in panel replacing the
+  // old inline expand pattern. Skeleton is injected once per render;
+  // openPlanDrawer() populates it from the (hidden) inline pv-detail.
+  html +=
+    '<div id="plan-drawer-overlay" class="plan-drawer-overlay" onclick="closePlanDrawer()"></div>';
+  html +=
+    '<div id="plan-drawer" class="plan-drawer" role="dialog" aria-modal="true" aria-labelledby="plan-drawer-title" aria-hidden="true">' +
+    '<div class="plan-drawer-header">' +
+    '<div id="plan-drawer-title" class="plan-drawer-title"></div>' +
+    '<button type="button" class="plan-drawer-close" aria-label="Close plan details" onclick="closePlanDrawer()">&times;</button>' +
+    '</div>' +
+    '<div id="plan-drawer-body" class="plan-drawer-body"></div>' +
+    '</div>';
   var _page_plans =
     document.getElementById('allplans-vault') ||
     document.getElementById('page-plans');
@@ -1349,7 +1368,7 @@ function renderPlanGroups() {
       html +=
         '<button id="pv-toggle-' +
         doc.id +
-        '" onclick="togglePlanVault(\'' +
+        '" onclick="openPlanDrawer(\'' +
         doc.id +
         '\')" style="padding:6px 14px;border-radius:8px;font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--accent);background:rgba(91,141,239,0.08);border:1px solid rgba(91,141,239,0.2);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0;">' +
         '<span class="pv-toggle-text">View Details</span>' +
@@ -1507,6 +1526,82 @@ function renderPlanGroups() {
     html += '</div>';
   });
   wrap.innerHTML = html;
+}
+
+// P3 Task 11: Plan detail drawer — slide-in panel.
+// Pulls the plan's name + already-generated pv-detail HTML into the
+// drawer so we don't duplicate render logic. The inline pv-detail
+// stays hidden (CSS) and acts purely as a data source.
+function openPlanDrawer(id) {
+  var drawer = document.getElementById('plan-drawer');
+  var overlay = document.getElementById('plan-drawer-overlay');
+  var title = document.getElementById('plan-drawer-title');
+  var body = document.getElementById('plan-drawer-body');
+  var detail = document.getElementById('pv-detail-' + id);
+  if (!drawer || !overlay || !title || !body || !detail) return;
+
+  // Resolve the plan name from POLICY_DOCS (fallback: first h-line text).
+  var name = id;
+  try {
+    if (typeof POLICY_DOCS !== 'undefined') {
+      var doc = POLICY_DOCS.find(function (p) {
+        return p.id === id;
+      });
+      if (doc) name = doc.name;
+    }
+  } catch (_e) {
+    /* ignore */
+  }
+  title.textContent = name;
+  body.innerHTML = detail.innerHTML;
+  drawer.classList.add('open');
+  overlay.classList.add('open');
+  drawer.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('plan-drawer-lock');
+
+  // Set sticky plan context (matches old togglePlanVault behavior)
+  if (typeof setActivePlan === 'function') {
+    try {
+      var d2 =
+        typeof POLICY_DOCS !== 'undefined'
+          ? POLICY_DOCS.find(function (p) {
+              return p.id === id;
+            })
+          : null;
+      if (d2) setActivePlan(d2.id, d2.name, d2.group || d2.type || '');
+    } catch (_e) {
+      /* ignore */
+    }
+  }
+
+  // Scroll the drawer body to top so every open starts at the top.
+  try {
+    body.scrollTop = 0;
+  } catch (_e) {
+    /* ignore */
+  }
+}
+
+function closePlanDrawer() {
+  var drawer = document.getElementById('plan-drawer');
+  var overlay = document.getElementById('plan-drawer-overlay');
+  if (!drawer || !overlay) return;
+  drawer.classList.remove('open');
+  overlay.classList.remove('open');
+  drawer.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('plan-drawer-lock');
+}
+
+// Global Escape key handler for the drawer (registered once).
+if (typeof window !== 'undefined' && !window._planDrawerKeyBound) {
+  window._planDrawerKeyBound = true;
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var drawer = document.getElementById('plan-drawer');
+    if (drawer && drawer.classList.contains('open')) {
+      closePlanDrawer();
+    }
+  });
 }
 
 var _openPlanVault = null;
