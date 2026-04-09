@@ -938,8 +938,12 @@ function renderCallFlow() {
       '<div onclick="toggleCF(' +
       i +
       ')" style="display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;">';
+    var _cfBubbleBg =
+      s.num <= 4 ? '#5B8DEF' : s.num <= 8 ? '#10b981' : '#8b5cf6';
     html +=
-      '<div style="width:32px;height:32px;border-radius:50%;background:#5C6878;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:.82rem;color:#FFF1B5;flex-shrink:0;letter-spacing:0.01em;">' +
+      '<div style="width:32px;height:32px;border-radius:50%;background:' +
+      _cfBubbleBg +
+      ';display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:.82rem;color:#ffffff;flex-shrink:0;letter-spacing:0.01em;">' +
       s.num +
       '</div>';
     html +=
