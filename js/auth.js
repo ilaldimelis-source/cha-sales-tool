@@ -131,12 +131,19 @@
     var initials = name.slice(0, 2).toUpperCase();
     var isManager = role === 'manager';
 
+    // Time-aware greeting — set once at render time
+    var _hr = new Date().getHours();
+    var greeting =
+      _hr < 12 ? 'Good morning' : _hr < 17 ? 'Good afternoon' : 'Good evening';
+
     window.CHA_USER = {
+      id: (user && user.id) || '',
       name: name,
       firstName: firstName,
       role: role,
       isManager: isManager,
-      email: email
+      email: email,
+      greeting: greeting
     };
 
     function inject() {
@@ -156,10 +163,13 @@
         escSafe(initials) +
         '</div>' +
         '<div style="min-width:0;flex:1;">' +
-        '<div style="font-size:12px;font-weight:700;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' +
+        '<div style="font-size:10px;font-weight:600;color:#94a3b8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.1;">' +
+        escSafe(greeting) +
+        ',</div>' +
+        '<div style="font-size:12px;font-weight:700;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;">' +
         escSafe(name) +
         '</div>' +
-        '<div style="font-size:10px;font-weight:600;letter-spacing:.04em;color:' +
+        '<div style="font-size:9px;font-weight:600;letter-spacing:.04em;color:' +
         (isManager ? '#16a34a' : '#94a3b8') +
         ';">' +
         (isManager ? '★ Manager' : 'Agent') +
