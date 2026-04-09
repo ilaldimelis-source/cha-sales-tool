@@ -424,6 +424,411 @@ const TRAINING = [
   }
 ];
 
+const ISA_OBJECTIONS = [
+  {
+    cat: 'Price',
+    obj: "It's too expensive.",
+    means: "They haven't seen the value yet. Or they're comparing to $0.",
+    diag: "'Compared to what — what are you paying now?'",
+    mistake: 'Immediately discount or apologize for the price.',
+    response:
+      "'I hear you — and I want to put that in context. The average ER visit without coverage is $3,000 to $10,000. What we're really deciding is whether [price]/month is worth protecting against that. What's your current plan if something happens tomorrow?'",
+    soft: "'I understand the price matters — can I show you what this plan would actually save you if you had to use it even once?'",
+    strong:
+      "'Let me ask you something — what does no coverage cost you if you end up in the ER next month? Because that's the real number we should be comparing this to.'",
+    bridge:
+      "'If the price makes sense relative to the risk, is there anything else stopping you from getting protected today?'",
+    close:
+      "'At [price] a month, that's less than a copay for a single doctor visit. Let's get you covered — what's your start date preference?'",
+    compliance: "Don't promise it will save them a specific dollar amount."
+  },
+  {
+    cat: 'Price',
+    obj: "I can't afford anything right now.",
+    means: "Budget is real OR they don't see enough value to prioritize it.",
+    diag: "'Can I ask — what would you normally spend on something like this if the plan actually made sense for you?'",
+    mistake: 'Immediately move to the cheapest plan without confirming value.',
+    response:
+      "'I completely understand — and I'd rather not put you in something that doesn't fit. Can I ask: if the right plan was $X a month, would that be workable?'",
+    soft: "'There are options at different price points. Let me find the one that protects you most for the least.'",
+    strong:
+      "'What would one unplanned ER visit cost you right now without coverage? Because that's what we're protecting against.'",
+    bridge:
+      "'If I can find something in a range that works, can we move forward today?'",
+    close:
+      "'Let me show you the lowest-cost option that still gives you meaningful protection — if it makes sense, we can get it done in 5 minutes.'",
+    compliance:
+      "Don't misrepresent benefit levels to make a cheaper plan sound fuller than it is."
+  },
+  {
+    cat: 'Delay',
+    obj: 'I need to think about it.',
+    means:
+      'Something is unresolved — often trust, understanding, or they want an exit.',
+    diag: "'Of course — can I ask what specifically you're weighing? Because I want to make sure you have the right information before you decide.'",
+    mistake: "Saying 'sure, take your time' and hanging up.",
+    response:
+      "'Totally fair — and I want to help you think through it right now while you have the information fresh. Is it the price? The coverage? Something I didn't explain well?'",
+    soft: "'What would you need to feel confident moving forward? Let's get there now if we can.'",
+    strong:
+      "'I don't want to pressure you — but I also don't want you to hang up without coverage because there was something I could have answered. What's the specific thing?'",
+    bridge: "'If I address that, can we get you protected today?'",
+    close:
+      "'Great — so the only thing left is [resolved issue]. Based on that, let's get your effective date locked in.'",
+    compliance:
+      "Don't create false urgency around price increases or limited availability."
+  },
+  {
+    cat: 'Delay',
+    obj: 'Send me the information.',
+    means: 'They want a polite exit. Rarely followed up.',
+    diag: "'Absolutely — I can do that. Out of curiosity, what specifically would you be looking for in the information?'",
+    mistake:
+      'Agreeing without a plan to follow up, or sending a generic brochure.',
+    response:
+      "'I can absolutely do that — and I'll be honest with you: most people who ask for information to review end up not reviewing it. What I'd rather do is answer your specific questions right now while I have everything in front of me.'",
+    soft: "'What would the information need to say to make you comfortable moving forward?'",
+    strong:
+      "'The information I'd send is exactly what I've been walking you through. What specific part do you want to look at more closely?'",
+    bridge:
+      "'If I can answer that right now, would you be open to moving forward today?'",
+    close:
+      "'Great — then let's skip the email and get you enrolled. What's your start date preference?'",
+    compliance:
+      "Don't send materials with incorrect or inflated benefit descriptions."
+  },
+  {
+    cat: 'Trust',
+    obj: "I don't trust this.",
+    means: "They've been burned before, or this sounds too good to be cheap.",
+    diag: "'That's completely fair — what's making you skeptical? Is it the price, the plan, or something about this call?'",
+    mistake:
+      "Getting defensive. Trying to 'prove' legitimacy by over-explaining.",
+    response:
+      "'I respect that — and honestly, the fact that you're skeptical is a good sign. It means you're paying attention. Let me tell you exactly what this plan is, what it isn't, what it costs, and where you can verify every piece of information independently.'",
+    soft: "'What would I need to show you to make you feel more confident?'",
+    strong:
+      "'I'd rather you push back on me now than enroll in something you don't believe in. What specifically feels off?'",
+    bridge:
+      "'If we verify the specifics and everything checks out — is there anything else holding you back?'",
+    close:
+      "'Based on what you now know — does this make sense for your situation?'",
+    compliance:
+      "Never dismiss legitimate skepticism. Never say 'trust me' without verification options."
+  },
+  {
+    cat: 'Spouse',
+    obj: 'I need to talk to my spouse.',
+    means: 'Genuine spousal involvement OR using spouse as a delay tactic.',
+    diag: "'Of course — can I ask: is your spouse also uninsured, or do they have separate coverage?'",
+    mistake: 'Immediately backing off without understanding the real blocker.',
+    response:
+      "'Completely makes sense — I respect that. Let me ask you this: is there a specific concern your spouse would have that I can help you answer right now? Because I'd rather you go to them with a confident recommendation than just a question.'",
+    soft: "'Would it help if I walked you through the key points so you feel prepared to explain it to them?'",
+    strong:
+      "'What's the main thing your spouse would want to know? Let me address that now.'",
+    bridge:
+      "'If you had the answers to their main questions, would you be able to make this decision together tonight?'",
+    close:
+      "'Great — so the main thing they'd want to know is [X]. Here's the answer: [Y]. Based on that — does this make sense?'",
+    compliance:
+      "Don't pressure someone to enroll against their spouse's wishes."
+  },
+  {
+    cat: 'Coverage',
+    obj: 'I already have coverage.',
+    means:
+      'They may have minimal coverage and not realize it, or they want to compare.',
+    diag: "'Good — what do you have right now? Who's the carrier and what kind of plan is it?'",
+    mistake:
+      'Backing off immediately without understanding what they actually have.',
+    response:
+      "'Good — can I ask what type of plan it is and what it costs? Because a lot of people I talk to are paying more for less, or have coverage gaps they're not aware of. I'm not trying to replace something good — but I'd hate for you to find out there's a gap when you actually need it.'",
+    soft: "'I'm not here to replace something that's working — I just want to make sure what you have actually covers what you think it does.'",
+    strong:
+      "'What does it cover if you go to the ER? What's the deductible? What does it cost you?'",
+    bridge:
+      "'If it turns out there's a meaningful gap — would you be open to supplementing or switching?'",
+    close:
+      "'Based on what you just described — [gap]. This plan covers that directly. Can we get it set up?'",
+    compliance:
+      "Don't claim their current plan is worse than it is without factual basis."
+  },
+  {
+    cat: 'Coverage',
+    obj: "I'm healthy, I don't need it.",
+    means: "They're underestimating risk because they feel good right now.",
+    diag: "'That's actually when the best time to get coverage is — can I ask, when was the last time you had something unexpected health-wise?'",
+    mistake: 'Immediately jumping into scare tactics.',
+    response:
+      "'The healthiest people I talk to are the ones who never think they'll need it — right up until they do. The ER doesn't care how healthy you are when you break your arm or get a kidney stone. This plan costs [price] a month. One unexpected ER visit costs $3,000 minimum.'",
+    soft: "'Being healthy is great — this plan actually costs less because of it. You're locking in a low rate while you're healthy.'",
+    strong:
+      "'Can I ask — if you had a medical emergency tomorrow, what's your plan right now? Because that's the gap we're filling.'",
+    bridge:
+      "'If the price makes sense and it's just a safety net you hope to never use — is there any reason not to have it?'",
+    close:
+      "'At [price] a month, it's the cheapest it'll ever be for you right now. Let's lock it in while your health is good.'",
+    compliance: "Don't imply coverage is guaranteed regardless of health."
+  },
+  {
+    cat: 'Timing',
+    obj: "I'll wait for open enrollment.",
+    means:
+      "They think ACA marketplace is the right answer — or they don't understand what open enrollment is for.",
+    diag: "'Can I ask — do you currently have an employer plan or a qualifying life event coming up?'",
+    mistake:
+      'Agreeing that open enrollment is better without understanding their situation.',
+    response:
+      "'I want to make sure open enrollment is actually available to you — because if you don't have employer coverage or a qualifying life event, you may not be able to enroll in an ACA plan outside of open enrollment.'",
+    soft: "'Open enrollment makes sense if you have employer-sponsored coverage coming — do you?'",
+    strong:
+      "'When's your open enrollment? And what's your plan between now and then if something happens?'",
+    bridge:
+      "'If I could show you coverage at a significantly lower cost than an ACA plan — would you at least want to compare?'",
+    close:
+      "'The gap between now and open enrollment is when things happen. Let me get you covered in the meantime.'",
+    compliance:
+      "Never tell someone they can't get ACA coverage if they're actually eligible."
+  },
+  {
+    cat: 'Timing',
+    obj: 'I want ACA.',
+    means:
+      'They want comprehensive coverage OR they think ACA = the only real insurance.',
+    diag: "'What makes ACA the right fit for your situation? Do you qualify for a subsidy or have a specific health need?'",
+    mistake: 'Dismissing ACA or badmouthing it.',
+    response:
+      "'ACA is a great option for the right person — and I'm not trying to talk you out of it. I just want to make sure you've compared the real numbers. For most people without a subsidy, ACA runs $350 to $700 a month for an individual with a $3,000 to $8,000 deductible.'",
+    soft: "'If ACA is the right fit, I'll tell you. Can I ask what your budget is so we can compare honestly?'",
+    strong:
+      "'What specific coverage are you looking for from ACA? Because I want to see if what I have solves the same problem for less.'",
+    bridge:
+      "'If I could match the core protection you're looking for at a lower price — would that be worth considering?'",
+    close:
+      "'Let me show you exactly what this plan covers versus what you'd get from an ACA plan at double the price — give me 90 seconds.'",
+    compliance:
+      "Never say ACA is 'bad' or discourage someone from ACA if it genuinely fits them better."
+  }
+];
+const ISA_PRODUCT_TYPES = [
+  {
+    title: 'Limited Benefit Plan',
+    icon: 'circle',
+    what: 'A health plan that pays fixed dollar amounts per covered service — not based on actual cost. Benefits are scheduled: $X for a doctor visit, $Y for urgent care, $Z for ER, etc.',
+    whatnot:
+      "Not major medical. Not ACA-compliant. Won't cover everything. Benefit caps apply per service.",
+    bestfor:
+      'Self-employed, gig workers, part-time employees, early retirees between coverage.',
+    notfor:
+      'Anyone with serious chronic conditions, upcoming planned procedures, or high-frequency care needs.',
+    explain:
+      "You know exactly what you're getting and what it pays. If you go to urgent care, this plan pays $[amount]. No deductible, no surprise.",
+    compliance:
+      'Must disclose: this is a limited benefit plan, not ACA-compliant, not major medical.',
+    rightfit:
+      'Maria, 34, freelance graphic designer. No employer coverage, healthy, mainly needs urgent care and Rx.',
+    wrongfit:
+      'John, 52, with diabetes, upcoming knee surgery, and regular specialist visits.'
+  },
+  {
+    title: 'MEC / Preventive Plan',
+    icon: 'circle',
+    what: 'Minimum Essential Coverage plan covering preventive services only — annual wellness, immunizations, screenings. Not comprehensive coverage.',
+    whatnot:
+      'Does NOT cover sick visits, ER, hospital stays, surgery, or prescriptions (beyond preventive). Not major medical.',
+    bestfor:
+      'Very healthy individuals who want coverage for staying healthy, or those who need MEC-level compliance at the lowest cost.',
+    notfor:
+      'Anyone who wants coverage for illness, injury, or unexpected medical events.',
+    explain:
+      "This covers your preventive care — your annual physical, screenings, immunizations — at no deductible. It's not designed to cover you if you get sick. It's the foundation, not the whole structure.",
+    compliance:
+      'Must disclose: this is preventive-only coverage. It does not cover illness treatment. It is not major medical.',
+    rightfit:
+      'Alex, 27, healthy, employed part-time, mainly wants annual wellness covered.',
+    wrongfit:
+      'Someone with any chronic condition or who plans to use care beyond prevention.'
+  },
+  {
+    title: 'Short-Term Medical (STM)',
+    icon: 'circle',
+    what: 'A health insurance plan designed to cover major medical events — illness, injury, hospitalization — with a deductible, coinsurance, and out-of-pocket max structure.',
+    whatnot:
+      'Not ACA-compliant. Pre-existing condition exclusions apply (12/12 clause typical). Mental health, maternity, and substance abuse typically excluded. Waiting period for illness (usually 30 days).',
+    bestfor:
+      "People between jobs, waiting for employer benefits, aged off parents' plan, self-employed wanting major protection at a lower price than ACA.",
+    notfor:
+      'People with ongoing conditions, expecting pregnancy, needing mental health treatment, or high-frequency care.',
+    explain:
+      "Think of this as your protection against the expensive unexpected. ER, hospitalization, surgery, serious illness — that's what this handles. It won't cover therapy appointments or prenatal visits, but it will protect you from a $50,000 hospital bill.",
+    compliance:
+      'Must disclose: not ACA-compliant, pre-existing conditions excluded per 12/12 rule, maternity and mental health excluded, 30-day waiting period for illness.',
+    rightfit:
+      'Derek, 31, just left corporate job, self-employed, healthy, wants major event coverage.',
+    wrongfit: 'Lisa, 29, pregnant, with asthma and regular therapy visits.'
+  },
+  {
+    title: 'Fixed Indemnity / Hospital Indemnity',
+    icon: 'circle',
+    what: 'Pays a fixed cash benefit when a qualifying event occurs — typically hospitalization. Benefit is paid to you, not to the provider, regardless of actual cost.',
+    whatnot:
+      "Not major medical. Not ACA-compliant. Doesn't pay based on bills — pays based on events. Not a standalone coverage solution for most people.",
+    bestfor:
+      'As a supplement to existing coverage. Good for covering out-of-pocket costs when hospitalized. Also for gig workers who could lose income during a hospital stay.',
+    notfor:
+      "As someone's only health coverage unless they clearly understand the limitation.",
+    explain:
+      "If you're admitted to a hospital, this plan pays you [amount] cash per day or per admission — regardless of what the hospital charges. You can use it for your deductible, your rent, your bills.",
+    compliance:
+      'Must disclose: this is not major medical, pays fixed benefits regardless of actual expenses.',
+    rightfit:
+      'Sandra, 45, already has a high-deductible ACA plan. Wants something to cover the first $3,000 deductible if hospitalized.',
+    wrongfit:
+      'Someone who has no other insurance and thinks this is their only protection.'
+  }
+];
+const ISA_SIMPLIFIER = [
+  {
+    term: 'Deductible',
+    tech: 'The amount you pay out-of-pocket for covered services before your insurance begins to pay.',
+    plain:
+      'The bill you pay first before the plan kicks in. Think of it like a threshold: once you hit that number, the insurance starts helping.',
+    dontsay:
+      "Don't say: 'Once your deductible is met, the plan pays everything.' It doesn't — coinsurance still applies."
+  },
+  {
+    term: 'Coinsurance',
+    tech: 'The percentage of costs you share with the insurer after your deductible is met.',
+    plain:
+      "After your deductible, you and the plan split the cost. 80/20 means the plan pays 80%, you pay 20%. It's a shared bill.",
+    dontsay:
+      "Don't say 'after the deductible, you only pay 20%' without explaining the out-of-pocket maximum."
+  },
+  {
+    term: 'Copay',
+    tech: 'A fixed amount you pay for a covered service at the time of care.',
+    plain:
+      "A flat fee. You walk in, you pay $40, done. Doesn't count toward deductible in many plans.",
+    dontsay:
+      "Don't imply copays exist in all plan types — many limited benefit and STM plans don't work on copay structures."
+  },
+  {
+    term: 'Pre-Existing Condition Limitation',
+    tech: "Coverage exclusion or reduced benefits for conditions diagnosed or treated before the plan's effective date.",
+    plain:
+      "If you had it before the plan started, the plan may not cover it — at least for a certain time period. After the waiting period, you're typically covered going forward.",
+    dontsay:
+      "Don't say 'pre-existing conditions are covered' if a 12/12 clause applies. That's a compliance violation."
+  },
+  {
+    term: 'Waiting Period',
+    tech: 'A specified time after the policy effective date during which benefits are not payable for certain services.',
+    plain:
+      "A delay. If you get sick in the first 30 days, the plan won't cover it. After that, you're covered. Injuries are typically covered Day 1.",
+    dontsay:
+      "Don't forget to disclose the waiting period. Skipping this causes cancellations and complaints."
+  },
+  {
+    term: 'Fixed Benefit',
+    tech: 'A predetermined dollar amount paid per covered service regardless of actual cost.',
+    plain:
+      'The plan pays you a set amount — say $150 for urgent care — no matter what the bill is. If the visit costs $300, you cover the difference.',
+    dontsay: "Don't imply fixed benefits cover the full bill. They often don't."
+  },
+  {
+    term: 'Preventive-Only Coverage',
+    tech: 'Coverage limited to preventive care services with no benefits for sick or injury care.',
+    plain:
+      'This covers keeping you healthy — checkups, shots, screenings — but not treating illness or injury.',
+    dontsay:
+      'Never imply preventive-only plans cover sick visits or emergencies.'
+  },
+  {
+    term: 'Network Access',
+    tech: 'The list of providers, hospitals, and facilities that have contracted rates with the insurance plan.',
+    plain:
+      'Your plan has a list of approved doctors. Use those doctors and you pay less. Go outside the list and you pay more — or everything.',
+    dontsay:
+      "Don't tell prospects 'you can see any doctor' unless the plan specifically allows out-of-network at the same benefit level."
+  },
+  {
+    term: 'Not ACA-Compliant',
+    tech: 'The plan does not meet the requirements of the Affordable Care Act and does not provide essential health benefits.',
+    plain:
+      "This plan plays by different rules than marketplace plans. It can cost less — but it also doesn't cover everything ACA plans are required to cover.",
+    dontsay:
+      "Never downplay this. 'Not ACA-compliant' is a required disclosure, not an option."
+  },
+  {
+    term: 'Maximum Benefit',
+    tech: 'The highest dollar amount the plan will pay for a specific service or overall during a benefit period.',
+    plain:
+      "There's a ceiling on what the plan will pay. Once you hit it, you're responsible for the rest.",
+    dontsay:
+      "Don't gloss over maximums. If the hospital benefit cap is $10,000 and the surgery costs $40,000, that gap matters."
+  },
+  {
+    term: 'Short-Term Medical',
+    tech: 'A health plan designed to provide temporary coverage for major medical events with a limited contract duration.',
+    plain:
+      "Coverage for the unexpected — ER, hospitalization, surgery — while you're between jobs or waiting for employer coverage. Not forever, not comprehensive, but real protection.",
+    dontsay:
+      "Don't call it 'real health insurance' in a way that implies ACA-equivalency."
+  }
+];
+const ISA_CLOSES = [
+  {
+    name: 'Assumptive Close',
+    when: "You've completed discovery, positioned the plan, and the prospect has shown interest without a hard objection.",
+    tone: 'Natural. Confident. Like this is the obvious next step.',
+    weak: "'So... do you want to go ahead with this?'",
+    better:
+      "'Based on everything you told me, this plan fits perfectly. Let me pull up the enrollment.'",
+    elite:
+      "'Alright — this is the right fit for your situation. Let me grab your date of birth to confirm the rate and get your start date locked in. Are you thinking the 1st or the 15th?'"
+  },
+  {
+    name: 'Logistics Close',
+    when: 'Prospect is ready but needs direction to move forward.',
+    tone: 'Efficient. Helpful. Removing friction.',
+    weak: "'Okay so what's your information?'",
+    better:
+      "'Let's get you set up — I'll just need a couple of pieces of info to finalize this.'",
+    elite:
+      "'Perfect — let's get your coverage effective. Two quick things: your date of birth, and the best email for your confirmation. What's the date of birth?'"
+  },
+  {
+    name: 'Soft Close',
+    when: 'Prospect is hesitant. You want to lower the pressure and check alignment.',
+    tone: 'Warm. Non-threatening. Open.',
+    weak: "'I don't want to push you, so whatever you decide is fine.'",
+    better: "'Does this feel like the right fit for where you are right now?'",
+    elite:
+      "'I don't want to push you into anything — but I also don't want you to go another week without coverage if this is the right fit. Based on everything we talked about, does this solve what you need it to solve?'"
+  },
+  {
+    name: 'Direct Close',
+    when: 'All information has been given. Prospect understands the plan. No unresolved objection.',
+    tone: 'Clear. Confident. Respectful.',
+    weak: "'So should we do this?'",
+    better:
+      "'You've got all the information. The plan fits your situation. What do you want to do?'",
+    elite:
+      "'You know the price. You know what it covers. You know what happens if you don't have it. The only decision left is whether you want to be covered starting this month. What are we doing?'"
+  },
+  {
+    name: 'Compliance-Safe Confirmation Close',
+    when: 'After enrollment is complete. Confirm understanding of what was purchased.',
+    tone: 'Warm. Thorough. Professional.',
+    weak: "'Okay you're all set, bye!'",
+    better:
+      "'Before I let you go — do you have any questions about how the plan works?'",
+    elite:
+      "'You're all set. Effective date is [date], confirmation number is [X], customer service is [number]. This plan is a [plan type] — not ACA, not major medical. It covers [key benefits], and does not cover mental health, maternity, or substance abuse. Any questions about any of that?'"
+  }
+];
+
 const ISA_ROLEPLAY = [
   {
     profile: 'Skeptical Prospect',
@@ -474,6 +879,7 @@ const ISA_ROLEPLAY = [
       "Carlos, I want to be straight with you — we've talked a few times and every time we get close, something holds it back. That tells me something specific isn't resolved, and I'd rather find out what it is than keep calling you. What's the real hesitation? Is it the plan, the price, or something I haven't addressed?"
   }
 ];
+
 
 var isaObjCat = 'All';
 function renderObjobjections() {
