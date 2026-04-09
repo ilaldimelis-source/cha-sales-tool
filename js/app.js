@@ -391,6 +391,25 @@ function getRecentPages() {
   }
 }
 
+// P0 Task 3: Scroll-reset helper — ensures every page switch starts at top.
+// Resets both window scroll and the main content scroll container so users
+// never land mid-page when navigating between tabs.
+function _resetScrollTop() {
+  try {
+    var mc = document.getElementById('main-content');
+    if (mc && typeof mc.scrollTo === 'function') {
+      mc.scrollTo(0, 0);
+    } else if (mc) {
+      mc.scrollTop = 0;
+    }
+    if (typeof window.scrollTo === 'function') {
+      window.scrollTo(0, 0);
+    }
+  } catch (_e) {
+    /* ignore */
+  }
+}
+
 function showPage(id) {
   var searchOverlay = document.getElementById('srOverlay');
   if (searchOverlay && searchOverlay.classList.contains('show')) closeSearch();
@@ -442,6 +461,7 @@ function showPage(id) {
           '<div style="padding:24px;color:#B91C1C;">Something went wrong. Please try again.</div>';
     }
   }
+  _resetScrollTop();
 }
 
 function renderDashboard() {
@@ -699,6 +719,7 @@ function _showComboPage(parentId, subId) {
       break;
     }
   }
+  _resetScrollTop();
 }
 
 function renderSubTabs(parentId, activeSubId) {

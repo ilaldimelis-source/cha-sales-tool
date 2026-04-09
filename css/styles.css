@@ -4829,3 +4829,24 @@ td,
   box-shadow: none;
 }
 
+/* ── UX SAFE FIXES (ux/safe-fixes branch) ── */
+
+/* P0 Task 1: Hide floating quick-action dock on desktop.
+   The .fab-bar is useful on mobile but adds clutter on desktop
+   where the sidebar already provides navigation. */
+@media (min-width: 1024px) {
+  .fab-bar {
+    display: none;
+  }
+}
+
+/* P0 Task 2: Hide floating Benefits Reference chat bubble on desktop.
+   Desktop users have full access via the Plans/Benefits sidebar nav,
+   so the floating bubble is unnecessary clutter on large screens.
+   Mobile still keeps it since the sidebar is collapsed on small viewports. */
+@media (min-width: 1024px) {
+  #br-toggle {
+    display: none;
+  }
+}
+
