@@ -424,6 +424,57 @@ const TRAINING = [
   }
 ];
 
+const ISA_ROLEPLAY = [
+  {
+    profile: 'Skeptical Prospect',
+    desc: 'Mike, 41. Laid off 3 months ago. Has been burned by a plan that denied claims. Immediately suspicious.',
+    says: "Yeah, I've heard this before. Last plan I had denied everything. What makes this any different?",
+    weak: 'Telling them the plan is different without being specific. Being defensive.',
+    response:
+      "That's the most important thing you could have told me. Can you walk me through what happened — what was denied and why? Because I want to be straight with you: if this plan has the same issue, I'll say so. But if it doesn't, I want to show you specifically how this is different."
+  },
+  {
+    profile: 'Price Shopper',
+    desc: 'Diana, 27. Shopping 4 different carriers. Every question is about price. Never asks about benefits.',
+    says: "What's the cheapest you have?",
+    weak: 'Going straight to your cheapest plan without asking about their situation.',
+    response:
+      "I can absolutely show you the lowest price — and I want to make sure whatever it is actually protects you. Tell me: if something happened, what would be most important for the plan to cover? Because the cheapest plan that doesn't cover that doesn't help you."
+  },
+  {
+    profile: 'Burned by Past Insurance',
+    desc: 'Teresa, 48. Paid for a plan for two years. Had a hospital stay. Plan barely paid. Feels scammed.',
+    says: 'The last insurance I had for two years, I paid thousands of dollars, went to the hospital, and they barely covered anything.',
+    weak: "Comparing your plan to hers with generic 'we're better' language. Making promises.",
+    response:
+      "Teresa, I'm really sorry that happened — that's exactly what shouldn't happen. Can you tell me what type of plan it was? Because I want to understand the specific issue. And then I'll walk you through exactly how this plan works — including the parts where you'd still have out-of-pocket exposure — so you go in with your eyes open."
+  },
+  {
+    profile: 'Spouse Blocker',
+    desc: "Robert, 35. Likes the plan. Every close attempt gets 'I need to run it by my wife.'",
+    says: 'It sounds good, but I need to talk to my wife before I sign up for anything.',
+    weak: "Saying 'okay' and scheduling a callback. Losing the momentum entirely.",
+    response:
+      "Absolutely — I respect that completely. Can I ask: what would be her main question or concern about this? Because I'd rather you go back to her with a confident answer than just a question mark. What does she typically want to know before a decision like this?"
+  },
+  {
+    profile: 'Analytical Buyer',
+    desc: 'James, 44. Engineer. Wants to read every document. Asks very specific questions about every exclusion.',
+    says: 'Before I do anything, I need to understand the exact pre-existing condition exclusion language and how claims are processed.',
+    weak: 'Trying to close too fast. Giving vague answers. Getting frustrated with the detail level.',
+    response:
+      "Absolutely — that's the exact right question. So the pre-existing condition rule is a 12/12 look-back: anything diagnosed or treated in the 12 months before your start date is excluded for the first 12 months of coverage. After month 12, you're covered going forward. Claims go through [administrator] — here's how that process works step by step..."
+  },
+  {
+    profile: 'Delay/Stall Buyer',
+    desc: 'Carlos, 39. Has been calling back for 3 weeks. Always interested, never decides.',
+    says: "I'm just not ready yet. Let me think about it a little more.",
+    weak: 'Scheduling another callback. Not addressing the real blocker.',
+    response:
+      "Carlos, I want to be straight with you — we've talked a few times and every time we get close, something holds it back. That tells me something specific isn't resolved, and I'd rather find out what it is than keep calling you. What's the real hesitation? Is it the plan, the price, or something I haven't addressed?"
+  }
+];
+
 var isaObjCat = 'All';
 function renderObjobjections() {
   var cats = ['All', 'Price', 'Delay', 'Trust', 'Spouse', 'Coverage', 'Timing'];

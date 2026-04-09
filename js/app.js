@@ -290,7 +290,6 @@ var PAGE_CONFIG = {
     label: 'Scripts',
     subs: [
       { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
-      { id: 'allscripts', label: 'All Scripts', render: renderScripts },
       { id: 'closes', label: 'Closing Lines', render: renderCloses },
       { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
       { id: 'recovery', label: 'Recovery', render: renderRecovery }
