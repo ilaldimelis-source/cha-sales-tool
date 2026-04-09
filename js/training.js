@@ -2059,62 +2059,461 @@ function _onbEscape(s) {
 // Render the accordion Training Library. Page ID stays
 // 'page-newhireonboarding' so PAGE_CONFIG, navigation, and
 // the service worker continue to work unchanged.
-function renderNewHireOnboarding() {
-  var page = document.getElementById('page-newhireonboarding');
-  if (!page) return;
-  var open = _trnLoadOpen();
+// ══════════════════════════════════════════════════════
+// 5-DAY NEW HIRE ONBOARDING SYSTEM
+// ══════════════════════════════════════════════════════
 
-  var html = '';
-  html +=
-    '<div class="ph"><div class="pt">Training <span>Library</span></div>' +
-    '<div class="pd">Your knowledge center. Start at the top if you are new. Expand any section to read. Everything here is quick-scan ready.</div></div>';
+var ONB_STORAGE_KEY = "cha_onboarding_progress";
 
-  for (var si = 0; si < TRAINING_LIBRARY_SECTIONS.length; si++) {
-    var sec = TRAINING_LIBRARY_SECTIONS[si];
-    var isOpen = !!open[sec.id];
-    html +=
-      '<div class="trn-sec' +
-      (isOpen ? ' open' : '') +
-      '" id="trn-sec-' +
-      _trnEscape(sec.id) +
-      '">';
-    html +=
-      '<button type="button" class="trn-sec-head" onclick="_trnToggleSection(\'' +
-      _trnEscape(sec.id) +
-      '\')" aria-expanded="' +
-      (isOpen ? 'true' : 'false') +
-      '">';
-    html += '<div class="trn-sec-head-text">';
-    html += '<div class="trn-sec-title">' + _trnEscape(sec.title) + '</div>';
-    html +=
-      '<div class="trn-sec-subtitle">' + _trnEscape(sec.subtitle) + '</div>';
-    html += '</div>';
-    html +=
-      '<span class="trn-sec-count">' +
-      sec.articles.length +
-      ' article' +
-      (sec.articles.length === 1 ? '' : 's') +
-      '</span>';
-    html +=
-      '<span class="trn-sec-chevron" aria-hidden="true">' +
-      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
-      '<polyline points="6 9 12 15 18 9"/></svg>' +
-      '</span>';
-    html += '</button>';
+function _onbDefaultProgress() {
+  return {
+    currentDay: 1,
+    completedDays: [],
+    checkedItems: { day1: [], day2: [], day3: [], day4: [], day5: [] }
+  };
+}
 
-    html += '<div class="trn-sec-body">';
-    for (var ai = 0; ai < sec.articles.length; ai++) {
-      var art = sec.articles[ai];
-      html += '<div class="trn-article">';
-      html +=
-        '<div class="trn-article-title">' + _trnEscape(art.title) + '</div>';
-      html +=
-        '<div class="trn-article-body">' + _trnEscape(art.body) + '</div>';
-      html += '</div>';
+function _onbLoadProgress() {
+  try {
+    var raw = localStorage.getItem(ONB_STORAGE_KEY);
+    if (!raw) return _onbDefaultProgress();
+    var parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== "object") return _onbDefaultProgress();
+    if (typeof parsed.currentDay !== "number") parsed.currentDay = 1;
+    if (!Array.isArray(parsed.completedDays)) parsed.completedDays = [];
+    if (!parsed.checkedItems || typeof parsed.checkedItems !== "object") {
+      parsed.checkedItems = { day1: [], day2: [], day3: [], day4: [], day5: [] };
     }
+    ["day1","day2","day3","day4","day5"].forEach(function (k) {
+      if (!Array.isArray(parsed.checkedItems[k])) parsed.checkedItems[k] = [];
+    });
+    return parsed;
+  } catch (_e) {
+    return _onbDefaultProgress();
+  }
+}
+
+function _onbSaveProgress(p) {
+  try {
+    localStorage.setItem(ONB_STORAGE_KEY, JSON.stringify(p));
+  } catch (_e) {
+    /* ignore */
+  }
+}
+
+function _onbSetActiveDay(day) {
+  try {
+    var p = _onbLoadProgress();
+    if (!_onbIsDayUnlocked(p, day)) return;
+    p.currentDay = day;
+    _onbSaveProgress(p);
+    renderNewHireOnboarding();
+  } catch (_e) { /* ignore */ }
+}
+
+function _onbIsDayUnlocked(p, day) {
+  if (day === 1) return true;
+  return p.completedDays.indexOf(day - 1) !== -1;
+}
+
+function _onbToggleItem(dayKey, itemId, totalItems) {
+  try {
+    var p = _onbLoadProgress();
+    if (!p.checkedItems[dayKey]) p.checkedItems[dayKey] = [];
+    var idx = p.checkedItems[dayKey].indexOf(itemId);
+    if (idx === -1) p.checkedItems[dayKey].push(itemId);
+    else p.checkedItems[dayKey].splice(idx, 1);
+    var dayNum = parseInt(dayKey.replace("day",""), 10);
+    if (p.checkedItems[dayKey].length >= totalItems) {
+      if (p.completedDays.indexOf(dayNum) === -1) p.completedDays.push(dayNum);
+    } else {
+      var di = p.completedDays.indexOf(dayNum);
+      if (di !== -1) p.completedDays.splice(di, 1);
+    }
+    _onbSaveProgress(p);
+    renderNewHireOnboarding();
+  } catch (_e) { /* ignore */ }
+}
+
+function _onbDayData() {
+  return [
+    {
+      num: 1, key: "day1", accent: "#5B8DEF",
+      label: "Day 1 — What You Sell",
+      items: [
+        { id: "d1i1", title: "What is a Limited Benefit plan", sub: "The plan you will sell most", tag: "Up next" },
+        { id: "d1i2", title: "What is a MEC plan", sub: "Preventive care plus day-to-day coverage", tag: "Up next" },
+        { id: "d1i3", title: "What is STM and who it is for", sub: "Not for everyone, learn when to use it", tag: "Up next" },
+        { id: "d1i4", title: "Study the 3-plan comparison table", sub: "Limited vs MEC vs STM", tag: "Up next" },
+        { id: "d1i5", title: "What ACA and the Marketplace are", sub: "Know why clients need our plans instead", tag: "Up next" },
+        { id: "d1i6", title: "What Medicaid vs Medicare is", sub: "Recognize instantly and exit correctly", tag: "Up next" },
+        { id: "d1i7", title: "Who you do NOT sell to — hard stops", sub: "Cancer, tumor, active surgery — exit immediately", tag: "Required" }
+      ]
+    },
+    {
+      num: 2, key: "day2", accent: "#10b981",
+      label: "Day 2 — How Benefits Work",
+      items: [
+        { id: "d2i1", title: "How fixed benefits pay out", sub: "Most important concept to explain", tag: "Up next" },
+        { id: "d2i2", title: "The 12/12 pre-ex rule word for word", sub: "Say on every call", tag: "Required" },
+        { id: "d2i3", title: "Waiting periods 30-day sickness Day 1 accidents", sub: "Clients will ask", tag: "Up next" },
+        { id: "d2i4", title: "Networks PHCS vs First Health", sub: "Never guess if doctor is in-network", tag: "Up next" },
+        { id: "d2i5", title: "STM deductible vs no deductible on Limited", sub: "Two different structures", tag: "Up next" },
+        { id: "d2i6", title: "Practice 12/12 disclosure out loud 3 times", sub: "Must sound natural", tag: "Required" }
+      ]
+    },
+    {
+      num: 3, key: "day3", accent: "#f59e0b",
+      label: "Day 3 — The Call Flow",
+      items: [
+        { id: "d3i1", title: "Pre-Qualification full opening script", sub: "Every question has a purpose", tag: "Up next" },
+        { id: "d3i2", title: "Plan Presentation good news opener", sub: "Never ask if still there", tag: "Required" },
+        { id: "d3i3", title: "RX disclosure what to say when", sub: "Say it then straight to closing no pause", tag: "Required" },
+        { id: "d3i4", title: "Closing Statement collect info in order", sub: "Email name address phone SSN exact order", tag: "Required" },
+        { id: "d3i5", title: "Verification OneEnrollment link", sub: "Guide not rush", tag: "Up next" },
+        { id: "d3i6", title: "Post Close confirmation number network referral", sub: "Last impression make it count", tag: "Up next" },
+        { id: "d3i7", title: "Practice full call flow out loud", sub: "All 8 steps no skipping", tag: "Required" }
+      ]
+    },
+    {
+      num: 4, key: "day4", accent: "#ef4444",
+      label: "Day 4 — Compliance Rules",
+      items: [
+        { id: "d4i1", title: "Required plan type disclosure exact wording", sub: "Not optional missing it is a violation", tag: "Required" },
+        { id: "d4i2", title: "12/12 and 30-day disclosure at post close", sub: "Must be said verbatim", tag: "Required" },
+        { id: "d4i3", title: "What you can never say — do not say list", sub: "These phrases end careers", tag: "Required" },
+        { id: "d4i4", title: "Tape confirmation what it is exact script", sub: "Non-negotiable", tag: "Required" },
+        { id: "d4i5", title: "STM eligibility 15-condition list", sub: "Know it exists read from script during call", tag: "Up next" },
+        { id: "d4i6", title: "Practice both disclosures out loud back to back", sub: "No notes", tag: "Required" }
+      ]
+    },
+    {
+      num: 5, key: "day5", accent: "#5B8DEF",
+      label: "Day 5 — Objections + Practice",
+      items: [
+        { id: "d5i1", title: "Too expensive — reframe cost as exposure", sub: "Cost is the ER visit without coverage", tag: "Up next" },
+        { id: "d5i2", title: "Need to think about it — find real concern", sub: "Never the real objection", tag: "Up next" },
+        { id: "d5i3", title: "Need to talk to spouse — three-way call", sub: "Offer immediately do not accept callback", tag: "Up next" },
+        { id: "d5i4", title: "Just send info — redirect to active", sub: "Info sent without followup never read", tag: "Up next" },
+        { id: "d5i5", title: "Wait for open enrollment — gap exposure", sub: "Waiting leaves them exposed", tag: "Up next" },
+        { id: "d5i6", title: "Full mock call recorded pre-qual through post close", sub: "All 8 steps all disclosures", tag: "With manager" },
+        { id: "d5i7", title: "Manager sign-off approved to take live calls", sub: "Ready when manager says ready", tag: "With manager" }
+      ]
+    }
+  ];
+}
+
+function _onbFindObjection(objTitle) {
+  try {
+    if (typeof OBJECTIONS === "undefined" || !OBJECTIONS) return null;
+    for (var i = 0; i < OBJECTIONS.length; i++) {
+      var o = OBJECTIONS[i];
+      if (o && o.obj && o.obj.toLowerCase().indexOf(objTitle.toLowerCase()) !== -1) {
+        return o;
+      }
+    }
+  } catch (_e) { /* ignore */ }
+  return null;
+}
+
+function _onbCard(title, bodyHtml) {
+  return '<div class="onb-card"><div class="onb-card-title">' + _trnEscape(title) + '</div>' + bodyHtml + '</div>';
+}
+
+function _onbScriptBlock(label, text) {
+  return '<div class="onb-script-label">' + _trnEscape(label) + '</div>' +
+    '<div class="onb-script">' + _trnEscape(text) + '</div>';
+}
+
+function _onbDoDont(doText, dontText) {
+  var h = '<div class="onb-dd-wrap">';
+  h += '<div class="onb-do"><div class="onb-dd-lbl">DO</div><div class="onb-dd-txt">' + _trnEscape(doText) + '</div></div>';
+  h += '<div class="onb-dont"><div class="onb-dd-lbl">DON\'T</div><div class="onb-dd-txt">' + _trnEscape(dontText) + '</div></div>';
+  h += '</div>';
+  return h;
+}
+
+function _onbAlert(kind, text) {
+  return '<div class="onb-alert onb-alert-' + kind + '">' + _trnEscape(text) + '</div>';
+}
+
+function _onbRightColumn(dayNum) {
+  if (dayNum === 1) {
+    var body = "";
+    body += '<div class="onb-sub">3-Plan Comparison</div>';
+    body += '<div class="onb-table-wrap"><table class="onb-table">';
+    body += '<thead><tr><th>Plan</th><th>How It Works</th></tr></thead><tbody>';
+    body += '<tr><td><strong>Limited</strong></td><td>Fixed dollar per visit, no deductible</td></tr>';
+    body += '<tr><td><strong>MEC</strong></td><td>Preventive 100%, always paired with Limited</td></tr>';
+    body += '<tr><td><strong>STM</strong></td><td>Deductible and coinsurance, medically underwritten</td></tr>';
+    body += '</tbody></table></div>';
+    body += '<div class="onb-sub">What ACA Is</div>';
+    body += '<div class="onb-text">Federal law. Marketplace is healthcare.gov. Our plans are NOT ACA plans — they are private limited benefit plans that bridge gaps.</div>';
+    body += '<div class="onb-sub">Hard Stop Script</div>';
+    body += _onbScriptBlock("SAY VERBATIM", "Based on what you shared with me, I want to be upfront — the plans I work with may not be the right fit for your situation.");
+    body += _onbAlert("danger", "Never pitch to: active cancer, tumor, surgery scheduled, pregnant, active Medicaid or Medicare.");
+    return _onbCard("Day 1 Reference", body);
+  }
+  if (dayNum === 2) {
+    var body2 = "";
+    body2 += '<div class="onb-sub">Fixed Benefits Explained</div>';
+    body2 += '<div class="onb-text">The plan pays a set dollar amount per service — not the full bill. Agent must explain this clearly on every call.</div>';
+    body2 += '<div class="onb-sub">12/12 Pre-Ex Script (Verbatim)</div>';
+    body2 += _onbScriptBlock("SAY VERBATIM", "One thing I want to be upfront about — if you have been diagnosed or treated for anything in the last 12 months, that condition has a 12-month waiting period before the plan covers it. After that window, you are covered going forward. Everything new from your start date is covered from day one.");
+    body2 += _onbDoDont(
+      "That condition has a 12-month waiting period — after that you are covered going forward.",
+      "Your pre-existing conditions are covered right away."
+    );
+    return _onbCard("Day 2 Reference", body2);
+  }
+  if (dayNum === 3) {
+    var body3 = "";
+    var steps = [
+      { n: 1, title: "Opening", text: "Identify full name, license, agency. Individual or family. Pre-existing. Medications. DOB, zip, tobacco, income, budget, start date." },
+      { n: 2, title: "Plan Presentation", script: "Alright [Customer Name], I have some excellent news for you.", rule: "DO NOT ask if they are still there." },
+      { n: 3, title: "Price", text: "State rate, association fee, first month total, ongoing monthly.", script: "Now assuming this plan meets your medical needs, would the initial first-month amount be affordable for you today?" },
+      { n: 4, title: "Benefits Walk", text: "Doctor visit copays, no deductible framing. Go straight to RX no pause." },
+      { n: 5, title: "RX Disclosure", script: "The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You will not be needing coverage for those services, correct?", rule: "GO STRAIGHT TO CLOSING STATEMENT." },
+      { n: 6, title: "Closing", text: "Collect email, name, address, phone, SSN, payment.", rule: "After card number say nothing — whoever talks first loses." },
+      { n: 7, title: "Verification", script: "Click Accept and tell me what you see." },
+      { n: 8, title: "Post Close", text: "Give 855-736-1590, CHA561337, network name. Disclose: limited benefit, not ACA, not major medical, no maternity, no substance abuse, no psychiatric, 12/12 pre-ex, 30-day sickness waiting period. Ask for referrals." }
+    ];
+    body3 += '<div class="onb-steps">';
+    for (var si3 = 0; si3 < steps.length; si3++) {
+      var st = steps[si3];
+      body3 += '<div class="onb-step">';
+      body3 += '<div class="onb-step-head"><span class="onb-step-num">Step ' + st.n + '</span><span class="onb-step-title">' + _trnEscape(st.title) + '</span></div>';
+      if (st.text) body3 += '<div class="onb-text">' + _trnEscape(st.text) + '</div>';
+      if (st.script) body3 += _onbScriptBlock("SAY VERBATIM", st.script);
+      if (st.rule) body3 += _onbAlert("warning", "Rule: " + st.rule);
+      body3 += '</div>';
+    }
+    body3 += '</div>';
+    return _onbCard("Day 3 Reference — 8-Step Call Flow", body3);
+  }
+  if (dayNum === 4) {
+    var out = "";
+    var c1 = "";
+    c1 += '<div class="onb-sub">Plan Type</div>';
+    c1 += _onbScriptBlock("SAY VERBATIM", "I do want to clarify that this is a private, limited-benefit plan, not an ACA or major medical plan, and it does not provide coverage for maternity, substance abuse, or psychiatric services.");
+    c1 += '<div class="onb-sub">30-Day Waiting Period</div>';
+    c1 += _onbScriptBlock("SAY VERBATIM", "There is a standard 30-day waiting period for any hospital, sickness, and scheduled doctor visits.");
+    c1 += '<div class="onb-sub">12/12 Pre-Ex</div>';
+    c1 += _onbScriptBlock("SAY VERBATIM", "anything diagnosed in the last 12 months would have a 12-month waiting period");
+    c1 += '<div class="onb-sub">Tape Confirmation</div>';
+    c1 += _onbScriptBlock("SAY VERBATIM", "Before we complete the enrollment, I do need to verify a few items on this recorded line. Can you please confirm that you are a United States citizen or legal resident, and that all health information you provided today is accurate and complete to the best of your knowledge? Lastly, for identity verification purposes, please confirm your Social Security number.");
+    out += _onbCard("Required Disclosures", c1);
+
+    var never = [
+      "This is major medical insurance",
+      "This works just like Obamacare",
+      "Your pre-existing conditions are covered",
+      "The plan will cover your surgery",
+      "You are fully covered",
+      "This covers everything",
+      "I guarantee you will save money",
+      "The plan covers the hospital bill"
+    ];
+    var c2 = '<div class="onb-never-list">';
+    for (var ni = 0; ni < never.length; ni++) {
+      c2 += '<div class="onb-never-item">' + _trnEscape(never[ni]) + '</div>';
+    }
+    c2 += '</div>';
+    c2 += _onbAlert("danger", "These phrases end careers. Do not use them.");
+    out += _onbCard("Never Say List", c2);
+
+    var c3 = "";
+    c3 += _onbScriptBlock("SAY VERBATIM", "In order to determine eligibility, I will read you a list of conditions. Please confirm if you currently have or have ever been diagnosed with any of the following: Heart Disorder, Stroke, Crohn's Disease, Ulcerative Colitis, Liver or Kidney Disorder, Emphysema, COPD, Cancer or Tumor, Alcohol or Drug Abuse, HIV or AIDS, Multiple Sclerosis, Tuberculosis, Autism, Schizophrenia, Lupus, Bariatric or Weight Loss Surgery, Pregnancy.");
+    c3 += _onbAlert("warning", "Rule: If yes to ANY condition, route to ACA or exit call.");
+    out += _onbCard("STM 15-Condition Script", c3);
+
+    return out;
+  }
+  if (dayNum === 5) {
+    var d5 = "";
+    var objQueries = [
+      { key: "Too Expensive", label: "Too Expensive" },
+      { key: "Think About", label: "Need to Think About It" },
+      { key: "Spouse", label: "Need to Talk to Spouse" },
+      { key: "Send Me", label: "Just Send Info" },
+      { key: "Open Enrollment", label: "Wait for Open Enrollment" }
+    ];
+    var objBody = "";
+    for (var oi = 0; oi < objQueries.length; oi++) {
+      var q = objQueries[oi];
+      var found = _onbFindObjection(q.key);
+      objBody += '<div class="onb-obj"><div class="onb-obj-title">' + _trnEscape(q.label) + '</div>';
+      if (found && found.best) {
+        objBody += _onbScriptBlock("BEST RESPONSE", found.best);
+      } else {
+        objBody += '<div class="onb-text">See Rebuttals tab for best response.</div>';
+      }
+      objBody += '</div>';
+    }
+    d5 += _onbCard("Top 5 Objections — Best Responses", objBody);
+
+    var mock = [
+      "Opened with full name and company",
+      "Pre-qualification completed all questions in order",
+      "Plan presentation started without asking if they are still there",
+      "Price stated clearly rate fee first month ongoing",
+      "Benefits walked in order doctor visits then RX no pause",
+      "RX disclosure said correctly moved straight to closing",
+      "Closing statement complete understanding confirmed on recorded line",
+      "Info collected in correct order email name address phone SSN",
+      "Silence held after card number did not fill it",
+      "Verification link sent and walked through correctly",
+      "Post close complete confirmation number network both disclosures",
+      "Tape confirmation done verbatim before submission",
+      "Referral ask made at end of post close",
+      "Call closed warmly did not ask if they are still there"
+    ];
+    var mockBody = '<div class="onb-mock-list">';
+    for (var mi = 0; mi < mock.length; mi++) {
+      mockBody += '<div class="onb-mock-item"><span class="onb-mock-num">' + (mi + 1) + '</span><span class="onb-mock-txt">' + _trnEscape(mock[mi]) + '</span></div>';
+    }
+    mockBody += '</div>';
+    d5 += _onbCard("Mock Call Checklist — 14 Items", mockBody);
+    return d5;
+  }
+  return "";
+}
+
+function _onbPlanRefTable() {
+  var sections = [
+    {
+      title: "LIMITED",
+      rows: [
+        ["MedFirst 1-5", "First Health", "MBA", "VP Limited Partnership/TVP"],
+        ["TrueHealth 1-3", "First Health", "MBA", "VP Limited Partnership/TVP"],
+        ["GoodHealth 1-5", "First Health", "MBA", "Good Health Distribution Partners"],
+        ["TDK 1-5", "First Health", "Detego Health", "Health Care Data Analytics"],
+        ["HarmonyCare/SigmaCare/Everest", "First Health/MultiPlan", "Everest/AFSLIC", "NCE"],
+        ["Pinnacle Protect 1-4", "PHCS", "Everest", "AWA"],
+        ["BWA Americare 2-4", "PHCS", "American Public Life", "BWA"]
+      ]
+    },
+    {
+      title: "STM",
+      rows: [
+        ["Pinnacle STM", "PHCS", "Everest", "AWA"],
+        ["Access Health STM", "PHCS", "AFSLIC", "NCE"],
+        ["Smart Health STM", "PHCS", "Standard Life", "NCE"],
+        ["Galena STM", "MultiPlan", "Southern Guarantee", "AFRP"],
+        ["SmartChoice 1500/3000/3500", "First Health EPO", "Detego Health", "Population Science Management"]
+      ]
+    },
+    {
+      title: "MEC",
+      rows: [
+        ["MedFirst 1-5", "First Health", "MBA", "TVP"],
+        ["TrueHealth 1-3", "First Health", "MBA", "TVP"],
+        ["GoodHealth 1-5", "First Health", "MBA", "Good Health Distribution Partners"],
+        ["TDK 1-5", "First Health", "Detego Health", "Health Care Data Analytics"]
+      ]
+    }
+  ];
+  var html = '<div class="onb-card onb-ref-card"><div class="onb-card-title">Plan Reference Table</div>';
+  for (var s = 0; s < sections.length; s++) {
+    var sec = sections[s];
+    html += '<div class="onb-ref-sec-title">' + _trnEscape(sec.title) + '</div>';
+    html += '<div class="onb-table-wrap"><table class="onb-table onb-ref-table">';
+    html += '<thead><tr><th>Plan Name</th><th>Network</th><th>Underwriter/Admin</th><th>Association</th></tr></thead><tbody>';
+    for (var r = 0; r < sec.rows.length; r++) {
+      var row = sec.rows[r];
+      html += '<tr>';
+      for (var c = 0; c < row.length; c++) {
+        html += '<td>' + _trnEscape(row[c]) + '</td>';
+      }
+      html += '</tr>';
+    }
+    html += '</tbody></table></div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderNewHireOnboarding() {
+  var page = document.getElementById("page-newhireonboarding");
+  if (!page) return;
+
+  var progress = _onbLoadProgress();
+  var days = _onbDayData();
+  var pct = Math.round((progress.completedDays.length / 5) * 100);
+  var activeDay = progress.currentDay || 1;
+  if (!_onbIsDayUnlocked(progress, activeDay)) activeDay = 1;
+
+  var html = "";
+
+  // Progress header
+  html += '<div class="onb-header">';
+  html += '<div class="onb-header-left">';
+  html += '<div class="onb-avatar">NH</div>';
+  html += '<div class="onb-header-text">';
+  html += '<div class="onb-header-title">New Hire Onboarding</div>';
+  html += '<div class="onb-header-sub">5-day path to your first live call</div>';
+  html += '</div></div>';
+  html += '<div class="onb-header-right">';
+  html += '<div class="onb-progress-bar"><div class="onb-progress-fill" style="width:' + pct + '%"></div></div>';
+  html += '<div class="onb-progress-pct">' + pct + '%</div>';
+  html += '</div></div>';
+
+  // Day pills row
+  html += '<div class="onb-pills-scroll"><div class="onb-pills">';
+  for (var i = 0; i < days.length; i++) {
+    var d = days[i];
+    var done = progress.completedDays.indexOf(d.num) !== -1;
+    var unlocked = _onbIsDayUnlocked(progress, d.num);
+    var isActive = d.num === activeDay;
+    var cls = "onb-pill";
+    if (done) cls += " onb-pill-done";
+    else if (isActive) cls += " onb-pill-active";
+    if (!unlocked) cls += " onb-pill-locked";
+    var onclick = unlocked ? 'onclick="_onbSetActiveDay(' + d.num + ')"' : "";
+    html += '<button type="button" class="' + cls + '" ' + onclick + '>';
+    if (done) html += '<span class="onb-pill-check">&#10003;</span> ';
+    else if (!unlocked) html += '<span class="onb-pill-lock">&#128274;</span> ';
+    html += _trnEscape(d.label);
+    html += '</button>';
+  }
+  html += '</div></div>';
+
+  // Two-column grid
+  var activeDayData = days[activeDay - 1];
+  var checked = progress.checkedItems[activeDayData.key] || [];
+  html += '<div class="onb-grid">';
+
+  // Left: checklist
+  html += '<div class="onb-col-left">';
+  html += '<div class="onb-card onb-checklist-card">';
+  html += '<div class="onb-card-title" style="color:' + activeDayData.accent + '">' + _trnEscape(activeDayData.label) + '</div>';
+  for (var j = 0; j < activeDayData.items.length; j++) {
+    var it = activeDayData.items[j];
+    var isChecked = checked.indexOf(it.id) !== -1;
+    var tagClass = it.tag === "Required" ? "onb-tag-req" : (it.tag === "With manager" ? "onb-tag-mgr" : "onb-tag-up");
+    html += '<div class="onb-item' + (isChecked ? " onb-item-done" : "") + '" onclick="_onbToggleItem(\'' + activeDayData.key + '\',\'' + it.id + '\',' + activeDayData.items.length + ')">';
+    html += '<div class="onb-item-check" style="border-color:' + activeDayData.accent + (isChecked ? ";background:" + activeDayData.accent : "") + '">';
+    if (isChecked) html += '<span class="onb-check-mark">&#10003;</span>';
     html += '</div>';
+    html += '<div class="onb-item-body">';
+    html += '<div class="onb-item-title">' + _trnEscape(it.title) + '</div>';
+    html += '<div class="onb-item-sub">' + _trnEscape(it.sub) + '</div>';
+    html += '</div>';
+    html += '<div class="onb-item-tag ' + tagClass + '">' + _trnEscape(it.tag) + '</div>';
     html += '</div>';
   }
+  html += '</div>';
+  html += '</div>';
+
+  // Right: concept cards
+  html += '<div class="onb-col-right">';
+  html += _onbRightColumn(activeDay);
+  html += '</div>';
+
+  html += '</div>';
+
+  // Plan Reference Table (always visible)
+  html += _onbPlanRefTable();
 
   page.innerHTML = html;
 }
