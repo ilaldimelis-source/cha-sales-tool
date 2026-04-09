@@ -1566,6 +1566,167 @@ function togglePlanVault(id) {
 // RENDER: COMPARE
 // ══════════════════════════════════════════════════════
 var selPlans = [0, 5];
+
+// ══════════════════════════════════════════════════════
+// COMPARE — data lookup helpers
+// Quick Compare and Full Compare both use these so data,
+// fallback text, and cell styling stay consistent.
+// ══════════════════════════════════════════════════════
+
+// Explicit mapping: PLANS family name → POLICY_DOCS id array.
+// PLANS has 14 plan-family entries; POLICY_DOCS has 27 per-tier
+// entries. Many plans map to multiple tiers (e.g. MedFirst 1–5 →
+// medf1..medf5). Explicit map avoids fragile fuzzy name matching.
+var _COMPARE_PLAN_MAP = {
+  'MedFirst 1–5': ['medf1', 'medf2', 'medf3', 'medf4', 'medf5'],
+  'TrueHealth 1–3': ['trueh1'],
+  'GoodHealth 1–5': ['ghdp1', 'ghdp2', 'ghdp3', 'ghdp4', 'ghdp5'],
+  'TDK 1–5': ['tdk1', 'tdk2', 'tdk3', 'tdk4', 'tdk5'],
+  SmartChoice: ['smartchoice2500'],
+  'Pinnacle STM / Pinnacle Protect': ['pinnacle'],
+  'Access Health Traditional STM': ['accesshealth'],
+  'Smart Health STM Traditional': ['smarthealth'],
+  'Galena STM Elite': ['galena'],
+  'Everest Summit Plans': ['everest'],
+  'HarmonyCare / SigmaCare': ['harmonycare', 'sigmacare'],
+  'BWA Paramount': ['bwapara'],
+  'BWA Americare 2–4': ['bwaamericare'],
+  'HealthChoice Silver': ['healthchoicesilver']
+};
+
+// Resolve a PLANS entry to its POLICY_DOCS source documents.
+function _compFindDocs(planName) {
+  if (typeof POLICY_DOCS === 'undefined') return [];
+  var ids = _COMPARE_PLAN_MAP[planName] || [];
+  var out = [];
+  for (var i = 0; i < ids.length; i++) {
+    for (var j = 0; j < POLICY_DOCS.length; j++) {
+      if (POLICY_DOCS[j].id === ids[i]) {
+        out.push(POLICY_DOCS[j]);
+        break;
+      }
+    }
+  }
+  return out;
+}
+
+// Uniform cell styling per status — only 3 colors allowed:
+//   'covered'    → green  (explicitly covered benefit)
+//   'notcovered' → red    (explicitly excluded / limitation)
+//   'verify' / 'neutral' → gray (informational or unknown → VERIFY)
+function _compCellStyle(status) {
+  if (status === 'covered') {
+    return 'background:#f0fdf4;color:#166534;';
+  }
+  if (status === 'notcovered') {
+    return 'background:#fef2f2;color:#991b1b;';
+  }
+  return 'background:#f8fafc;color:#475569;';
+}
+
+// Trim long benefit strings so compare cells stay readable.
+function _compTruncate(s, max) {
+  s = String(s || '');
+  if (s.length <= max) return s;
+  return s.slice(0, max - 1) + '…';
+}
+
+// Look up a topic against POLICY_DOCS structured data, falling back
+// to PLANS topPoints / limitations, then to 'VERIFY'. Returns
+// {status, text}.
+function _compLookup(plan, topic) {
+  // Informational rows — read straight from PLANS, neutral styling.
+  if (topic === 'Network')
+    return { status: 'neutral', text: plan.network || 'VERIFY' };
+  if (topic === 'Plan Type')
+    return { status: 'neutral', text: plan.type || 'VERIFY' };
+
+  var tests = {
+    Copays: {
+      cats: /doctor|physician|urgent|specialist/i,
+      items: /copay|\$\d+\s*(pcp|primary|specialist|office|visit|urgent)/i,
+      limits: /no copay|copay.*not covered/i
+    },
+    'Emergency Room': {
+      cats: /emergency/i,
+      items: /emergency\s*room|\ber\b/i,
+      limits: /emergency\s*room|\ber\b.*not covered|no emergency/i
+    },
+    'Pre-Existing': {
+      cats: /pre.?exist/i,
+      items: /pre.?exist/i,
+      limits: /pre.?exist/i
+    }
+  };
+  var t = tests[topic];
+  if (!t) return { status: 'verify', text: 'VERIFY' };
+
+  var docs = _compFindDocs(plan.name);
+
+  // 1. Search POLICY_DOCS benefits[].items[]
+  for (var d = 0; d < docs.length; d++) {
+    var doc = docs[d];
+    var cats = doc.benefits || [];
+    for (var b = 0; b < cats.length; b++) {
+      var cat = cats[b];
+      var catHit = t.cats.test(cat.category || '');
+      var items = cat.items || [];
+      for (var k = 0; k < items.length; k++) {
+        if (catHit || t.items.test(items[k])) {
+          return {
+            status: 'covered',
+            text: _compTruncate(items[k], 90)
+          };
+        }
+      }
+    }
+  }
+
+  // 2. Pre-Existing: prefer the dedicated doc.preEx field
+  if (topic === 'Pre-Existing') {
+    for (var d2 = 0; d2 < docs.length; d2++) {
+      if (docs[d2].preEx) {
+        return {
+          status: 'notcovered',
+          text: _compTruncate(docs[d2].preEx, 90)
+        };
+      }
+    }
+  }
+
+  // 3. Search POLICY_DOCS limitations[]
+  for (var d3 = 0; d3 < docs.length; d3++) {
+    var limits = docs[d3].limitations || [];
+    for (var l = 0; l < limits.length; l++) {
+      if (t.limits.test(limits[l])) {
+        return {
+          status: 'notcovered',
+          text: _compTruncate(limits[l], 90)
+        };
+      }
+    }
+  }
+
+  // 4. Fall back to PLANS topPoints / limitations
+  var topPoints = plan.topPoints || [];
+  for (var p = 0; p < topPoints.length; p++) {
+    if (t.items.test(topPoints[p])) {
+      return { status: 'covered', text: _compTruncate(topPoints[p], 90) };
+    }
+  }
+  var planLimits = plan.limitations || [];
+  for (var pl = 0; pl < planLimits.length; pl++) {
+    if (t.limits.test(planLimits[pl])) {
+      return {
+        status: 'notcovered',
+        text: _compTruncate(planLimits[pl], 90)
+      };
+    }
+  }
+
+  return { status: 'verify', text: 'VERIFY' };
+}
+
 function buildQuickCompare() {
   var selA = document.getElementById('qc-plan-a');
   var selB = document.getElementById('qc-plan-b');
@@ -1583,80 +1744,43 @@ function buildQuickCompare() {
   if (!pA || !pB) return;
 
   var topics = [
+    'Plan Type',
+    'Network',
     'Copays',
     'Emergency Room',
-    'Pre-Existing',
-    'Network',
-    'Plan Type'
+    'Pre-Existing'
   ];
-  var keywords = [
-    /copay/i,
-    /emergency|er\b/i,
-    /pre.?exist/i,
-    /network/i,
-    /type/i
-  ];
-
-  function getStatus(plan, kw, topic) {
-    var topStr = (plan.topPoints || []).join(' ');
-    var limStr = (plan.limitations || []).join(' ');
-    if (topic === 'Network')
-      return { text: plan.network || 'N/A', green: true };
-    if (topic === 'Plan Type') return { text: plan.type || 'N/A', green: true };
-    var inTop = kw.test(topStr);
-    var inLim = kw.test(limStr);
-    if (inTop) {
-      var match = '';
-      (plan.topPoints || []).forEach(function (tp) {
-        if (kw.test(tp)) match = tp;
-      });
-      return { text: match || 'Included', green: true };
-    }
-    if (inLim) {
-      var lMatch = '';
-      (plan.limitations || []).forEach(function (l) {
-        if (kw.test(l)) lMatch = l;
-      });
-      return { text: lMatch || 'Limited/Excluded', green: false };
-    }
-    return { text: 'See plan details', green: false };
-  }
 
   var tbl =
     '<table style="width:100%;border-collapse:collapse;font-size:13px;">';
   tbl +=
-    '<thead><tr style="background:#f1f5f9;"><th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">Topic</th>';
-  tbl +=
+    '<thead><tr style="background:#f1f5f9;">' +
+    '<th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">Topic</th>' +
     '<th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">' +
     escHTML(pA.name) +
-    '</th>';
-  tbl +=
+    '</th>' +
     '<th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">' +
     escHTML(pB.name) +
     '</th></tr></thead><tbody>';
 
   for (var t = 0; t < topics.length; t++) {
-    var sA = getStatus(pA, keywords[t], topics[t]);
-    var sB = getStatus(pB, keywords[t], topics[t]);
+    var sA = _compLookup(pA, topics[t]);
+    var sB = _compLookup(pB, topics[t]);
     tbl += '<tr>';
     tbl +=
       '<td style="padding:10px 12px;font-weight:600;color:#1e293b;border-bottom:1px solid #f1f5f9;">' +
       topics[t] +
       '</td>';
     tbl +=
-      '<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;color:' +
-      (sA.green ? '#166534' : '#991b1b') +
-      ';background:' +
-      (sA.green ? '#f0fdf4' : '#fef2f2') +
-      ';">' +
+      '<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;' +
+      _compCellStyle(sA.status) +
+      '">' +
       escHTML(sA.text) +
       '</td>';
     tbl +=
-      '<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;color:' +
-      (sB.green ? '#166534' : '#991b1b') +
-      ';background:' +
-      (sB.green ? '#f0fdf4' : '#fef2f2') +
-      ';">' +
+      '<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;' +
+      _compCellStyle(sB.status) +
+      '">' +
       escHTML(sB.text) +
       '</td>';
     tbl += '</tr>';
@@ -1752,73 +1876,36 @@ function toggleComp(i) {
   buildCompTable();
 }
 
-function _compGroupColor(group) {
-  return group === 'MEC'
-    ? 'var(--accent)'
-    : group === 'STM'
-      ? '#d97706'
-      : '#7C3AED';
-}
-
-function _compGroupBg(group) {
-  return group === 'MEC'
-    ? 'var(--bg-surface)'
-    : group === 'STM'
-      ? 'rgba(245,158,11,0.04)'
-      : 'rgba(124,58,237,0.04)';
-}
-
 function buildCompTable() {
   var plans = selPlans.map(function (i) {
     return PLANS[i];
   });
   if (!plans.length) return;
 
-  // Helper: find the "best" column for countable rows (most topPoints, fewest limitations)
-  function bestIdx(arr, mode) {
-    if (arr.length < 2) return -1;
-    var bestI = 0;
-    for (var i = 1; i < arr.length; i++) {
-      if (mode === 'max' && arr[i] > arr[bestI]) bestI = i;
-      if (mode === 'min' && arr[i] < arr[bestI]) bestI = i;
-    }
-    // Only highlight if there's actually a difference
-    var allSame = arr.every(function (v) {
-      return v === arr[0];
-    });
-    return allSame ? -1 : bestI;
-  }
-
-  var greenBg = 'background:rgba(34,197,94,0.08);';
+  var neutralStyle = _compCellStyle('neutral');
+  var greenStyle = _compCellStyle('covered');
+  var redStyle = _compCellStyle('notcovered');
 
   // ── Table start with mobile scroll ──
   var html =
     '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:16px;border:1.5px solid #E5E7EB;border-radius:14px;">';
   html += '<table class="ctable" style="min-width:500px;">';
 
-  // ── Header row with plan names + type color coding ──
+  // ── Header row (neutral — no color accents per group) ──
   html += '<thead><tr><th style="min-width:120px;">Feature</th>';
   plans.forEach(function (p) {
-    var c = _compGroupColor(p.group);
-    var bg = _compGroupBg(p.group);
     html +=
-      '<th style="background:' +
-      bg +
-      ';border-bottom:3px solid ' +
-      c +
-      ';">' +
+      '<th>' +
       '<div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:2px;">' +
       p.name +
       '</div>' +
-      '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:' +
-      c +
-      ';">' +
+      '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary);">' +
       p.group +
       '</span></th>';
   });
   html += '</tr></thead><tbody>';
 
-  // ── Standard info rows ──
+  // ── Standard info rows (neutral gray cells) ──
   var rows = [
     { k: 'type', l: 'Plan Type' },
     { k: 'network', l: 'Network' },
@@ -1830,95 +1917,88 @@ function buildCompTable() {
   rows.forEach(function (r) {
     html += '<tr><td>' + r.l + '</td>';
     plans.forEach(function (p) {
-      html += '<td>' + (p[r.k] || '—') + '</td>';
+      html +=
+        '<td style="' + neutralStyle + '">' + (p[r.k] || 'VERIFY') + '</td>';
     });
     html += '</tr>';
   });
 
-  // ── Row: Top Benefits (highlight most) ──
-  var benefitCounts = plans.map(function (p) {
-    return p.topPoints.length;
-  });
-  var bestBenefitIdx = bestIdx(benefitCounts, 'max');
+  // ── Row: Top Benefits — uniform green (covered) ──
   html += '<tr><td>Top Benefits</td>';
-  plans.forEach(function (p, pi) {
-    var style =
-      'font-size:12px;line-height:1.6;' +
-      (pi === bestBenefitIdx ? greenBg : '');
-    html +=
-      '<td style="' +
-      style +
-      '">' +
-      p.topPoints
-        .slice(0, 5)
-        .map(function (t) {
-          return '&#10003; ' + t;
-        })
-        .join('<br>') +
-      '</td>';
-  });
-  html += '</tr>';
-
-  // ── Row: Main Limits (highlight fewest) ──
-  var limitCounts = plans.map(function (p) {
-    return p.limitations.length;
-  });
-  var bestLimitIdx = bestIdx(limitCounts, 'min');
-  html += '<tr><td>Main Limits</td>';
-  plans.forEach(function (p, pi) {
-    var style =
-      'font-size:12px;line-height:1.6;' + (pi === bestLimitIdx ? greenBg : '');
-    html +=
-      '<td style="' +
-      style +
-      '">' +
-      p.limitations
-        .slice(0, 4)
-        .map(function (t) {
-          return '&#10005; ' + t;
-        })
-        .join('<br>') +
-      '</td>';
-  });
-  html += '</tr>';
-
-  // ── Row: Best Fit ──
-  var fitYesCounts = plans.map(function (p) {
-    return p.fitYes.length;
-  });
-  var bestFitIdx = bestIdx(fitYesCounts, 'max');
-  html +=
-    '<tr><td style="color:#29A26A;font-weight:600;">Best Fit &#10003;</td>';
-  plans.forEach(function (p, pi) {
-    var style =
-      'font-size:12px;color:#29A26A;line-height:1.6;' +
-      (pi === bestFitIdx ? greenBg : '');
-    html +=
-      '<td style="' +
-      style +
-      '">' +
-      p.fitYes
-        .slice(0, 3)
-        .map(function (t) {
-          return '&#10003; ' + t;
-        })
-        .join('<br>') +
-      '</td>';
-  });
-  html += '</tr>';
-
-  // ── Row: Bad Fit ──
-  html +=
-    '<tr><td style="color:#B91C1C;font-weight:600;">Bad Fit &#10005;</td>';
   plans.forEach(function (p) {
+    var items = (p.topPoints || []).slice(0, 5);
+    var body = items.length
+      ? items
+          .map(function (t) {
+            return '&#10003; ' + t;
+          })
+          .join('<br>')
+      : 'VERIFY';
     html +=
-      '<td style="font-size:12px;color:var(--text-secondary);line-height:1.6;">' +
-      p.fitNo
-        .slice(0, 3)
-        .map(function (t) {
-          return '&#10005; ' + t;
-        })
-        .join('<br>') +
+      '<td style="font-size:12px;line-height:1.6;' +
+      greenStyle +
+      '">' +
+      body +
+      '</td>';
+  });
+  html += '</tr>';
+
+  // ── Row: Main Limits — uniform red (not covered) ──
+  html += '<tr><td>Main Limits</td>';
+  plans.forEach(function (p) {
+    var items = (p.limitations || []).slice(0, 4);
+    var body = items.length
+      ? items
+          .map(function (t) {
+            return '&#10005; ' + t;
+          })
+          .join('<br>')
+      : 'VERIFY';
+    html +=
+      '<td style="font-size:12px;line-height:1.6;' +
+      redStyle +
+      '">' +
+      body +
+      '</td>';
+  });
+  html += '</tr>';
+
+  // ── Row: Best Fit — neutral ──
+  html += '<tr><td>Best Fit</td>';
+  plans.forEach(function (p) {
+    var items = (p.fitYes || []).slice(0, 3);
+    var body = items.length
+      ? items
+          .map(function (t) {
+            return '&#10003; ' + t;
+          })
+          .join('<br>')
+      : 'VERIFY';
+    html +=
+      '<td style="font-size:12px;line-height:1.6;' +
+      neutralStyle +
+      '">' +
+      body +
+      '</td>';
+  });
+  html += '</tr>';
+
+  // ── Row: Bad Fit — neutral ──
+  html += '<tr><td>Bad Fit</td>';
+  plans.forEach(function (p) {
+    var items = (p.fitNo || []).slice(0, 3);
+    var body = items.length
+      ? items
+          .map(function (t) {
+            return '&#10005; ' + t;
+          })
+          .join('<br>')
+      : 'VERIFY';
+    html +=
+      '<td style="font-size:12px;line-height:1.6;' +
+      neutralStyle +
+      '">' +
+      body +
       '</td>';
   });
   html += '</tr>';
