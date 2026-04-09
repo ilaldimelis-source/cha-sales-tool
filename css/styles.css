@@ -2331,6 +2331,7 @@ textarea:focus-visible {
   flex-shrink: 0;
   flex-wrap: nowrap;
   overflow: auto hidden;
+
   /* Visible thin scrollbar so agents know they can scroll to see all plans */
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
