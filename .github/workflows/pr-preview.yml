@@ -1,0 +1,71 @@
+name: PR Preview
+
+# Runs on every pull request. Validates the branch AND publishes a
+# temporary preview of the site so reviewers can click through the
+# exact build that will ship if the PR is merged. Previews are
+# isolated to the gh-pages branch and never touch main, so the live
+# site cannot be broken by a bad PR.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+concurrency:
+  group: pr-preview-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  # Validate first — never publish a preview that fails safety checks.
+  validate:
+    runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run verify
+      - run: npm run check
+
+  # Deploy the PR to gh-pages/pr-preview/pr-<number>/ for review.
+  deploy-preview:
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.event.action != 'closed'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Deploy PR preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: .
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: deploy
+
+  # Clean up the preview when the PR is closed or merged.
+  cleanup-preview:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'closed'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Remove PR preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          preview-branch: gh-pages
+          umbrella-dir: pr-preview
+          action: remove

@@ -612,7 +612,7 @@ function renderDashboard() {
   html +=
     '<div class="dash-ref-card"><div class="dash-ref-title">Pre-Existing Rule</div><div class="dash-ref-text">12/12 — conditions diagnosed or treated in prior 12 months excluded for first 12 months of coverage</div></div>';
   html +=
-    '<div class="dash-ref-card"><div class="dash-ref-title">Network</div><div class="dash-ref-text">Always confirm provider is IN NETWORK before the call ends. First Health network on most plans.</div></div>';
+    '<div class="dash-ref-card"><div class="dash-ref-title">Network</div><div class="dash-ref-text">Always confirm provider is IN NETWORK before the call ends.</div></div>';
   html += '</div>';
   // Keyboard shortcut hint
   html +=

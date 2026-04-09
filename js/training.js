@@ -1206,42 +1206,6 @@ const ISA_CLOSES = [
   }
 ];
 
-function renderProcess() {
-  var html =
-    '<div class="ph"><div class="pt">Sales <span>Process Trainer</span></div><div class="pd">Master every stage of a structured, compliant, confident call.</div></div>';
-  ISA_PROCESS_STAGES.forEach(function (s, i) {
-    var body = '';
-    body += '<div class="trn-two-col" style="margin-bottom:12px;">';
-    body += '<div><div class="trn-sec-label">KEY PHRASES</div>';
-    s.phrases.forEach(function (p) {
-      body +=
-        '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;margin-bottom:6px;padding:8px 12px;background:#F8F9FE;border-radius:8px;">' +
-        p +
-        '</div>';
-    });
-    body +=
-      '</div><div><div class="trn-sec-label">PSYCHOLOGY</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' +
-      s.psychology +
-      '</div></div></div>';
-    body += '<div class="trn-two-col">';
-    body +=
-      '<div><div class="trn-sec-label" style="color:#B91C1C;">MISTAKES TO AVOID</div>';
-    s.mistakes.forEach(function (m) {
-      body +=
-        '<div style="font-family:var(--font-body);font-size:14px;color:#374151;margin-bottom:4px;padding-left:10px;border-left:2px solid #B91C1C;">' +
-        m +
-        '</div>';
-    });
-    body +=
-      '</div><div><div class="trn-sec-label" style="color:#15803D;">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#15803D;font-weight:700;background:#F0FDF4;border-radius:8px;padding:10px;">' +
-      s.tone +
-      '</div></div></div>';
-    html += _trnOpenCard(s.title, body);
-  });
-  var _page_process = document.getElementById('page-process');
-  if (_page_process) _page_process.innerHTML = html;
-}
-
 var isaObjCat = 'All';
 function renderObjobjections() {
   var cats = ['All', 'Price', 'Delay', 'Trust', 'Spouse', 'Coverage', 'Timing'];
@@ -1867,13 +1831,6 @@ var TRAINING_SECTIONS = [
         desc: "Know exactly what you're selling and what you're not",
         icon: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
         render: renderProductvault
-      },
-      {
-        id: 'process',
-        title: 'Process',
-        desc: 'Full call flow from open to close',
-        icon: '<line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>',
-        render: renderProcess
       },
       {
         id: 'simplifier',

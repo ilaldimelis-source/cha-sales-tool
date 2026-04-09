@@ -151,127 +151,326 @@ function runCallAudit() {
   if (!transcript) return;
   var result = document.getElementById('auditResult');
   result.style.display = 'block';
-  result.innerHTML =
-    '<div style="color:#64748b;font-size:13px;padding:10px;">AI is scoring this call...</div>';
-  var btn = document.getElementById('auditBtn');
-  if (btn) {
-    btn._orig = btn.textContent;
-    btn.textContent = 'Scoring...';
-    btn.disabled = true;
-  }
 
-  var sys =
-    'You are a compliance auditor for Central Health Advisors (CHA), a health insurance telesales agency. Agents sell MEC, STM, and limited benefit plans — NOT ACA/major medical insurance.\n\nScore this call transcript for compliance and sales quality.\n\nCOMPLIANCE RULES:\n- Must disclose: NOT ACA-compliant, not major medical\n- Must disclose: pre-existing conditions excluded 12 months\n- Must disclose: 30-day sickness waiting period, Day 1 accidents only\n- Must disclose: maternity/pregnancy NOT covered\n- Mental health NOT covered on MEC/limited plans\n- Network required — cannot say "any doctor"\n- Hospital pays FIXED benefit, not full bill\n- Never compare to Obamacare/ACA/regular insurance\n- Never say "full coverage" or "covers everything"\n\nRespond in EXACTLY this format:\nSCORE: [1-10]\nGRADE: [A/B/C/D/F]\nSTRONG: [what the agent did well, 1-2 sentences]\nFLAGS: [numbered list of compliance/quality issues, or "None found"]\nFIX: [top 1-2 specific improvements the agent should make next call]';
+  var t = transcript.toLowerCase();
+  var has = function (re) {
+    return re.test(t);
+  };
+  var absent = function (re) {
+    return !re.test(t);
+  };
 
-  if (typeof _aiGroq === 'function') {
-    _aiGroq(
-      sys,
-      'CALL TRANSCRIPT:\n' + transcript,
-      function (text) {
-        if (btn) {
-          btn.textContent = btn._orig;
-          btn.disabled = false;
+  var categories = [
+    {
+      name: 'Call Opening',
+      checks: [
+        {
+          label:
+            'Agent identified full name, license status, and agency within first 30 seconds',
+          pass:
+            has(/my name is|this is .+ (with|from|calling)|i['’]?m .+ with/) &&
+            has(/licens/) &&
+            has(/agency|advisor|central health/)
+        },
+        {
+          label: 'Call purpose stated clearly',
+          pass: has(
+            /reason (for|i['’]?m calling)|calling (about|regarding)|reach(ing)? out (about|regarding)|the reason/
+          )
+        },
+        {
+          label: 'Recording disclosure provided where required',
+          pass: has(/recorded|recording|for (quality|training)/)
         }
-        var lines = text.split('\n');
-        var score = '',
-          grade = '',
-          strong = '',
-          flagsText = '',
-          fix = '';
-        lines.forEach(function (l) {
-          if (l.indexOf('SCORE:') === 0) score = l.replace('SCORE:', '').trim();
-          if (l.indexOf('GRADE:') === 0) grade = l.replace('GRADE:', '').trim();
-          if (l.indexOf('STRONG:') === 0)
-            strong = l.replace('STRONG:', '').trim();
-          if (l.indexOf('FLAGS:') === 0)
-            flagsText = l.replace('FLAGS:', '').trim();
-          if (l.indexOf('FIX:') === 0) fix = l.replace('FIX:', '').trim();
-        });
-        var sc = parseInt(score) || 5;
-        var gc =
-          sc >= 9
-            ? '#16a34a'
-            : sc >= 7
-              ? '#2563eb'
-              : sc >= 5
-                ? '#d97706'
-                : '#dc2626';
-        var noFlags =
-          flagsText === 'None found' ||
-          flagsText === '' ||
-          flagsText === 'None';
-        var html =
-          '<div style="background:#fff;border:2px solid #e2e8f0;border-radius:14px;padding:20px;">';
-        html +=
-          '<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">';
-        html +=
-          '<div style="background:' +
-          gc +
-          '15;border:3px solid ' +
-          gc +
-          ';border-radius:14px;width:70px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;">';
-        html +=
-          '<div style="font-size:26px;font-weight:900;color:' +
-          gc +
-          ';line-height:1;">' +
-          sc +
-          '</div>';
-        html +=
-          '<div style="font-size:9px;font-weight:700;color:' +
-          gc +
-          ';letter-spacing:1px;">/ 10</div></div>';
-        html +=
-          '<div><div style="font-size:22px;font-weight:900;color:' +
-          gc +
-          ';">Grade: ' +
-          grade +
-          '</div>';
-        html +=
-          '<div style="font-size:13px;color:#64748b;margin-top:2px;">' +
-          (noFlags
-            ? 'No compliance issues found'
-            : 'Issues flagged — review below') +
-          '</div></div></div>';
-        if (strong)
-          html +=
-            '<div style="background:#f0fdf4;border-radius:8px;padding:10px 14px;margin-bottom:12px;font-size:13px;color:#15803d;"><strong>✓ Strong:</strong> ' +
-            escHTML(strong) +
-            '</div>';
-        if (!noFlags)
-          html +=
-            '<div style="background:#fef2f2;border-radius:8px;padding:12px 14px;margin-bottom:12px;"><div style="font-size:10px;font-weight:800;color:#dc2626;letter-spacing:1px;margin-bottom:6px;">FLAGS</div><div style="font-size:13px;color:#374151;white-space:pre-line;">' +
-            escHTML(flagsText) +
-            '</div></div>';
-        if (fix)
-          html +=
-            '<div style="background:#eff6ff;border-radius:8px;padding:12px 14px;"><div style="font-size:10px;font-weight:800;color:#2563eb;letter-spacing:1px;margin-bottom:6px;">IMPROVE NEXT CALL</div><div style="font-size:13px;color:#1e40af;">' +
-            escHTML(fix) +
-            '</div></div>';
-        html += '</div>';
-        result.innerHTML = html;
-      },
-      function (err) {
-        if (btn) {
-          btn.textContent = btn._orig;
-          btn.disabled = false;
+      ]
+    },
+    {
+      name: 'Plan Classification',
+      checks: [
+        {
+          label:
+            'Plan identified as limited benefit or fixed indemnity — not major medical',
+          pass: has(
+            /limited benefit|fixed indemnity|indemnity plan|not major medical/
+          )
+        },
+        {
+          label: 'Plan identified as non-ACA',
+          pass: has(
+            /not aca|non[-\s]?aca|not affordable care|not (a|an) aca|not obamacare/
+          )
+        },
+        {
+          label: '"PPO" not used to describe network access',
+          pass: absent(/\bppo\b/)
+        },
+        {
+          label: '"Full coverage" not used to describe capped benefits',
+          pass: absent(/full coverage|covers everything|everything is covered/)
+        },
+        {
+          label: '"Insurance" used correctly (not compared to major medical)',
+          pass: absent(
+            /regular insurance|like (real )?insurance|same as (insurance|obamacare|aca)/
+          )
         }
-        if (err === 'no-key') {
-          result.innerHTML =
-            '<div style="background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:14px;font-size:13px;color:#713f12;">⚠ No Groq API key. Click <strong>⚙ AI</strong> in the Benefits panel to add your free key from <a href="https://console.groq.com" target="_blank" style="color:#5175f1;">console.groq.com</a></div>';
-          return;
+      ]
+    },
+    {
+      name: 'Benefit Accuracy',
+      checks: [
+        {
+          label: 'Benefit amounts stated with correct caps',
+          pass: has(
+            /\$\s*\d[\d,]*\s*(per day|per visit|per incident|\/day|\/visit|max|maximum|cap|limit)/
+          )
+        },
+        {
+          label: 'Hospital benefits described as fixed daily indemnity',
+          pass:
+            has(
+              /hospital.*(fixed|indemnity|per day|\/day|daily benefit|daily amount)/
+            ) ||
+            has(
+              /(fixed|indemnity|per day|\/day|daily benefit|daily amount).*hospital/
+            )
+        },
+        {
+          label: 'Outpatient limitations disclosed',
+          pass: has(/outpatient.*(limit|only|cap|visit|\d)/)
+        },
+        {
+          label: 'Diagnostic and lab limits stated',
+          pass: has(
+            /(diagnostic|lab|labs|x[-\s]?ray|imaging|mri|ct scan).*(not covered|limit|discount|\$|cap)/
+          )
+        },
+        {
+          label:
+            'Prescription described correctly (discount vs drug insurance)',
+          pass: has(
+            /(prescription|\brx\b|drug).*(discount|copay|formulary|generic|\$|not (drug )?insurance)/
+          )
         }
-        result.innerHTML =
-          '<div style="color:#dc2626;font-size:13px;padding:10px;">AI error: ' +
-          escHTML(err) +
-          '</div>';
-      }
-    );
-  } else {
-    if (btn) {
-      btn.textContent = btn._orig;
-      btn.disabled = false;
+      ]
+    },
+    {
+      name: 'Waiting Periods & Pre-Existing',
+      checks: [
+        {
+          label: '30-day sickness waiting period clearly disclosed',
+          pass: has(/30[-\s]?day|thirty[-\s]?day/) && has(/sick|waiting period/)
+        },
+        {
+          label: 'Accident Day 1 not generalized to all services',
+          pass:
+            has(/accident.*(day 1|day one|from day one)/) &&
+            absent(/day 1.*everything|everything.*day 1|day one.*everything/)
+        },
+        {
+          label: '12-month pre-existing exclusion explained',
+          pass:
+            has(/12[-\s]?month|twelve[-\s]?month/) &&
+            has(/pre[-\s]?ex|pre[-\s]?exist/)
+        },
+        {
+          label:
+            'Definition of pre-existing stated (diagnosed or treated in prior 12 months)',
+          pass: has(
+            /(diagnosed|treated).*12 month|pre[-\s]?(existing|ex).*(diagnosed|treated)/
+          )
+        }
+      ]
+    },
+    {
+      name: 'Network & Access',
+      checks: [
+        {
+          label:
+            'Network described as negotiated rates, not guaranteed coverage',
+          pass: has(
+            /negotiated (rate|discount)|discounted rate|network (discount|rate|access)/
+          )
+        },
+        {
+          label: 'Out-of-network implications disclosed',
+          pass: has(/out[-\s]?of[-\s]?network|out of network|balance bill/)
+        },
+        {
+          label: 'No guarantee of specific provider availability',
+          pass: absent(
+            /guarantee.*(provider|doctor|hospital|specialist)|any doctor|any provider/
+          )
+        }
+      ]
+    },
+    {
+      name: 'Eligibility & Enrollment',
+      checks: [
+        {
+          label: '"Guaranteed issue" not presented as guaranteed coverage',
+          pass: absent(
+            /guaranteed (issue|coverage|approval).*(all|every|any condition|everything)/
+          )
+        },
+        {
+          label: 'Eligibility requirements explained',
+          pass: has(/eligibilit|qualif|requirement/)
+        },
+        {
+          label: 'Enrollment fee vs monthly premium broken down',
+          pass: has(/enrollment fee/) && has(/monthly|premium|per month/)
+        },
+        {
+          label: 'First payment stated separately from ongoing cost',
+          pass: has(
+            /(first|initial|today['’]?s) (payment|charge|draft|cost)|first (month|payment) (is|will be|comes to)/
+          )
+        }
+      ]
+    },
+    {
+      name: 'Required Disclosures',
+      checks: [
+        {
+          label:
+            'Plan is not major medical / not ACA-compliant — stated explicitly',
+          pass: has(
+            /not major medical|not aca|not affordable care|non[-\s]?aca/
+          )
+        },
+        {
+          label: 'Benefits are limited and subject to caps — stated explicitly',
+          pass: has(
+            /limited benefit|subject to (cap|limit)|maximum|capped|benefit cap/
+          )
+        },
+        {
+          label: 'Waiting periods apply — stated explicitly',
+          pass: has(/waiting period/)
+        },
+        {
+          label:
+            'Pre-existing excluded during exclusion period — stated explicitly',
+          pass: has(
+            /pre[-\s]?(existing|ex).*(exclud|not covered)|(exclud|not covered).*pre[-\s]?(existing|ex)/
+          )
+        }
+      ]
     }
-    result.innerHTML =
-      '<div style="color:#dc2626;font-size:13px;padding:10px;">AI engine not loaded. Refresh the page.</div>';
-  }
+  ];
+
+  // Compute score
+  var totalChecks = 0;
+  var passedChecks = 0;
+  categories.forEach(function (cat) {
+    cat.checks.forEach(function (chk) {
+      totalChecks++;
+      if (chk.pass) passedChecks++;
+    });
+  });
+  var pct = totalChecks ? passedChecks / totalChecks : 0;
+  var score = Math.max(1, Math.round(pct * 10));
+  var grade =
+    pct >= 0.9
+      ? 'A'
+      : pct >= 0.8
+        ? 'B'
+        : pct >= 0.7
+          ? 'C'
+          : pct >= 0.6
+            ? 'D'
+            : 'F';
+  var gc =
+    score >= 9
+      ? '#16a34a'
+      : score >= 7
+        ? '#2563eb'
+        : score >= 5
+          ? '#d97706'
+          : '#dc2626';
+
+  // Build HTML
+  var html =
+    '<div style="background:#fff;border:2px solid #e2e8f0;border-radius:14px;padding:20px;">';
+  html +=
+    '<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">';
+  html +=
+    '<div style="background:' +
+    gc +
+    '15;border:3px solid ' +
+    gc +
+    ';border-radius:14px;width:70px;height:70px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;">';
+  html +=
+    '<div style="font-size:26px;font-weight:900;color:' +
+    gc +
+    ';line-height:1;">' +
+    score +
+    '</div>';
+  html +=
+    '<div style="font-size:9px;font-weight:700;color:' +
+    gc +
+    ';letter-spacing:1px;">/ 10</div></div>';
+  html +=
+    '<div><div style="font-size:22px;font-weight:900;color:' +
+    gc +
+    ';">Grade: ' +
+    grade +
+    '</div>';
+  html +=
+    '<div style="font-size:13px;color:#64748b;margin-top:2px;">' +
+    passedChecks +
+    ' of ' +
+    totalChecks +
+    ' compliance checks passed</div></div></div>';
+
+  categories.forEach(function (cat) {
+    var catPass = 0;
+    var catTotal = cat.checks.length;
+    cat.checks.forEach(function (c) {
+      if (c.pass) catPass++;
+    });
+    var catColor =
+      catPass === catTotal ? '#16a34a' : catPass > 0 ? '#d97706' : '#dc2626';
+    html +=
+      '<div style="margin-bottom:12px;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">';
+    html +=
+      '<div style="background:#f8fafc;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;">';
+    html +=
+      '<div style="font-size:13px;font-weight:800;color:#1e293b;">' +
+      escHTML(cat.name) +
+      '</div>';
+    html +=
+      '<div style="font-size:11px;font-weight:700;color:' +
+      catColor +
+      ';">' +
+      catPass +
+      '/' +
+      catTotal +
+      '</div></div>';
+    cat.checks.forEach(function (c) {
+      var icon = c.pass ? '✓' : '✗';
+      var iconColor = c.pass ? '#16a34a' : '#dc2626';
+      var textColor = c.pass ? '#374151' : '#64748b';
+      html +=
+        '<div style="padding:8px 14px;border-top:1px solid #f1f5f9;display:flex;gap:10px;align-items:flex-start;">';
+      html +=
+        '<span style="color:' +
+        iconColor +
+        ';font-weight:800;font-size:14px;line-height:1.4;flex-shrink:0;">' +
+        icon +
+        '</span>';
+      html +=
+        '<span style="font-size:12px;color:' +
+        textColor +
+        ';line-height:1.5;">' +
+        escHTML(c.label) +
+        '</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+
+  html += '</div>';
+  result.innerHTML = html;
 }
