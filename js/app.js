@@ -289,9 +289,9 @@ var PAGE_CONFIG = {
   scripts: {
     label: 'Scripts',
     subs: [
+      { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
       { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
       { id: 'closes', label: 'Closing Lines', render: renderCloses },
-      { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
       { id: 'recovery', label: 'Recovery Scripts', render: renderRecovery }
     ]
   },

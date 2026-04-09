@@ -933,13 +933,24 @@ function renderCallFlow() {
   var html =
     '<div class="ph"><div class="pt">Call Flow <span>Blueprint</span></div><div class="pd">The anatomy of a perfect call. Tap each step to expand.</div></div>';
   CF_STEPS.forEach(function (s, i) {
+    // Mondly theme circle color by step number (1-3 blue, 4-6 green, 7-9 amber, 10-11 purple)
+    var cfCircleColor =
+      s.num <= 3
+        ? '#5B8DEF'
+        : s.num <= 6
+          ? '#10b981'
+          : s.num <= 9
+            ? '#f59e0b'
+            : '#8b5cf6';
     html += '<div class="cf-step" id="cf' + i + '">';
     html +=
       '<div onclick="toggleCF(' +
       i +
       ')" style="display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;">';
     html +=
-      '<div style="width:32px;height:32px;border-radius:50%;background:#5C6878;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:.82rem;color:#FFF1B5;flex-shrink:0;letter-spacing:0.01em;">' +
+      '<div style="width:32px;height:32px;border-radius:50%;background:' +
+      cfCircleColor +
+      ';display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:.82rem;color:#FFFFFF;flex-shrink:0;letter-spacing:0.01em;">' +
       s.num +
       '</div>';
     html +=

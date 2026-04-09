@@ -4132,3 +4132,136 @@ body.dark-mode .theme-toggle {
   padding: 9px 12px !important;
   font-size: 11px !important;
 }
+
+/* ===========================================================
+   DARK MODE — GLOBAL COVERAGE PATCH
+   Fills the gaps left by body.dark-mode root-variable overrides.
+   Targets components that use hardcoded #fff / light hexes and
+   do not inherit from the CSS variable system.
+   =========================================================== */
+
+/* Core surfaces — topbar, panels, cards, sboxes, subtabs */
+body.dark-mode .topbar {
+  background: var(--bg-card);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+body.dark-mode .page-subtabs .stab {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  border-color: var(--border);
+}
+
+body.dark-mode .page-subtabs .stab.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+body.dark-mode .sbox {
+  background: var(--bg-card2);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+body.dark-mode .dash-card {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+body.dark-mode .la-panel {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+/* Benefits Reference panel — full dark coverage */
+body.dark-mode #br-panel {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}
+
+body.dark-mode #br-panel .br-nav-section,
+body.dark-mode #br-panel .br-filter-bar,
+body.dark-mode #br-panel .br-plan-bar,
+body.dark-mode #br-panel .br-input-bar {
+  background: var(--bg-card2);
+  border-color: var(--border);
+}
+
+body.dark-mode #br-panel .br-filter-btn,
+body.dark-mode #br-panel .br-plan-btn,
+body.dark-mode #br-panel .br-chip {
+  background: var(--bg-card3);
+  color: var(--text-secondary);
+  border-color: var(--border);
+}
+
+body.dark-mode #br-panel .br-filter-btn.active,
+body.dark-mode #br-panel .br-plan-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+body.dark-mode #br-panel .br-msgs {
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+
+body.dark-mode #br-panel .br-bub {
+  background: var(--bg-card2);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+body.dark-mode #br-panel .br-msg {
+  color: var(--text-primary);
+}
+
+body.dark-mode #br-panel input,
+body.dark-mode #br-panel textarea {
+  background: var(--bg-card3);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+/* Live Assist panel text inside dark */
+body.dark-mode .la-panel-header,
+body.dark-mode .la-panel-title,
+body.dark-mode .la-panel-body,
+body.dark-mode .la-section-label {
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+/* Generic guard: any element with inline style="background:#fff" inside
+   a dark-mode page that we can reach via attribute selector */
+body.dark-mode [style*='background:#fff'],
+body.dark-mode [style*='background: #fff'],
+body.dark-mode [style*='background:#FFFFFF'],
+body.dark-mode [style*='background: #FFFFFF'] {
+  background: var(--bg-card2) !important;
+  color: var(--text-primary);
+}
+
+/* ===========================================================
+   FONT SCALE — GLOBAL S/M/L VIA CSS ZOOM
+   Existing body.font-* classes only scale body font-size, but
+   most rules in this file use hardcoded px, so children don't
+   inherit the scale. Zoom scales all typography and spacing
+   proportionally for a true global S/M/L effect. No rule
+   rewrites required.
+   =========================================================== */
+body.font-s {
+  zoom: 0.92;
+}
+
+body.font-m {
+  zoom: 1;
+}
+
+body.font-l {
+  zoom: 1.1;
+}
