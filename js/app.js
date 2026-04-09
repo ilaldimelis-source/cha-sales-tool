@@ -161,6 +161,32 @@ function _initTheme() {
 // chip inside the topbar. Also injects the theme toggle
 // next to the S/M/L font controls. Both are idempotent.
 // ══════════════════════════════════════════════════════
+function _buildGreetingText() {
+  var hr = new Date().getHours();
+  var gr =
+    hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  var custom = '';
+  try {
+    custom = (safeGetItem('cha_display_name') || '').trim();
+  } catch (_e) {
+    custom = '';
+  }
+  if (custom) return gr + ', ' + custom;
+  var first = 'Agent';
+  try {
+    var u = window.CHA_USER;
+    if (u) first = u.firstName || u.name || 'Agent';
+  } catch (_e) {
+    /* ignore */
+  }
+  return gr + ', ' + first;
+}
+
+function _refreshTopbarGreeting() {
+  var el = document.getElementById('topbarWelcome');
+  if (el) el.textContent = _buildGreetingText();
+}
+
 function _initTopbarExtras() {
   try {
     var topbar = document.querySelector('.topbar');
@@ -188,17 +214,7 @@ function _initTopbarExtras() {
       var w = document.createElement('div');
       w.id = 'topbarWelcome';
       w.className = 'topbar-welcome';
-      var hr = new Date().getHours();
-      var gr =
-        hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
-      var first = 'Agent';
-      try {
-        var u = window.CHA_USER;
-        if (u) first = u.firstName || u.name || 'Agent';
-      } catch (_e) {
-        /* ignore */
-      }
-      w.textContent = gr + ', ' + first;
+      w.textContent = _buildGreetingText();
       var tt = document.getElementById('themeToggle');
       if (tt && tt.parentNode) {
         tt.parentNode.insertBefore(w, tt);
@@ -1095,17 +1111,8 @@ function initApp() {
     _ghTries++;
     if (window.CHA_USER || _ghTries > 30) {
       clearInterval(_ghTimer);
-      var el = document.getElementById('topbarWelcome');
-      if (el && window.CHA_USER) {
-        var hr2 = new Date().getHours();
-        var gr2 =
-          hr2 < 12
-            ? 'Good morning'
-            : hr2 < 17
-              ? 'Good afternoon'
-              : 'Good evening';
-        var f2 = window.CHA_USER.firstName || window.CHA_USER.name || 'Agent';
-        el.textContent = gr2 + ', ' + f2;
+      if (window.CHA_USER) {
+        _refreshTopbarGreeting();
       }
     }
   }, 200);

@@ -92,6 +92,27 @@ function renderNotes() {
     ) || '';
   var html =
     '<div class="ph"><div class="pt">My <span>Notes</span></div><div class="pd">Write your own scripts, custom phrasing, and reminders. Everything saves automatically.</div></div>';
+
+  // Settings: Display Name
+  var savedName = '';
+  try {
+    savedName = safeGetItem('cha_display_name') || '';
+  } catch (_e) {
+    savedName = '';
+  }
+  html += '<div class="settings-block">';
+  html += '<div class="settings-block-title">Settings</div>';
+  html +=
+    '<label class="settings-block-label" for="displayNameInput">Display Name</label>';
+  html +=
+    '<input type="text" id="displayNameInput" class="settings-input" ' +
+    'placeholder="How should we greet you?" value="' +
+    escHTML(savedName) +
+    '" oninput="saveDisplayName(this.value)" />';
+  html +=
+    '<div class="settings-save-row"><span id="displayNameMsg" style="color:#29A26A;font-size:11px;opacity:0;transition:opacity 0.5s;">\u2713 Saved</span></div>';
+  html += '</div>';
+
   html +=
     '<textarea class="notes-ta" id="notesTA" aria-label="Agent notes" placeholder="Write your notes here...">' +
     escHTML(notesVal) +
@@ -143,6 +164,30 @@ function renderNotes() {
       clearTimeout(window._nt);
       window._nt = setTimeout(saveNotes, 1500);
     });
+  }
+}
+
+function saveDisplayName(val) {
+  try {
+    safeSetItem('cha_display_name', (val || '').trim());
+  } catch (_e) {
+    /* ignore */
+  }
+  var m = document.getElementById('displayNameMsg');
+  if (m) {
+    m.style.opacity = '1';
+    clearTimeout(window._dnmt);
+    window._dnmt = setTimeout(function () {
+      m.style.opacity = '0';
+    }, 1500);
+  }
+  // Refresh the topbar greeting immediately if present
+  try {
+    if (typeof _refreshTopbarGreeting === 'function') {
+      _refreshTopbarGreeting();
+    }
+  } catch (_e) {
+    /* ignore */
   }
 }
 

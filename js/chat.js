@@ -1391,15 +1391,63 @@ function _brLookupBenefit(planDoc, topic) {
 function _brSpecialCase(topic, planDoc) {
   if (!planDoc) return null;
   var t = topic.toLowerCase();
-  // Exclusions chip — show all plan limitations directly
+  // Exclusions chip — show the top 5 most relevant limitations
+  // from plan.limitations[], filter out generic / pre-ex-only entries,
+  // and append a short "here is what IS covered" rebuttal line.
   if (/\bexclusion|\bnot covered|\bwhat.+not\b|\bno coverage/.test(t)) {
-    var excItems = (planDoc.limitations || []).slice(0, 8);
-    if (!excItems.length) excItems = ['No specific exclusions listed — verify with carrier.'];
+    var rawLims = (planDoc.limitations || []).slice();
+    // Filter generic fluff and pre-ex-only lines
+    var filteredLims = rawLims.filter(function (l) {
+      if (!l || typeof l !== 'string') return false;
+      var ll = l.toLowerCase();
+      if (/does not cover services unless listed/.test(ll)) return false;
+      if (/^\s*pre.?existing|12\s*\/\s*12|12-month.*exclusion/.test(ll))
+        return false;
+      return true;
+    });
+    // Rank: prefer items that clearly state an exclusion
+    filteredLims.sort(function (a, b) {
+      var ax = /not covered|excluded|no coverage|not included/i.test(a) ? 0 : 1;
+      var bx = /not covered|excluded|no coverage|not included/i.test(b) ? 0 : 1;
+      return ax - bx;
+    });
+    var topLims = filteredLims.slice(0, 5);
+    // If nothing solid remains, return VERIFY instead of NOT COVERED
+    if (!topLims.length) {
+      return {
+        status: 'Verify',
+        label: 'Exclusions & Limitations',
+        items: [
+          'Plan limitations are not clearly spelled out in the reference data — verify with the carrier before quoting exclusions.'
+        ],
+        sayThis:
+          'I want to verify the exclusions directly with the carrier before I tell you something incorrect.',
+        source: planDoc.name
+      };
+    }
+    // Pick a top benefit to use in the rebuttal line
+    var topBenefitName = 'your core covered benefits';
+    try {
+      if (planDoc.benefits && planDoc.benefits.length) {
+        var firstCat = planDoc.benefits[0];
+        if (firstCat && firstCat.title) {
+          topBenefitName = firstCat.title.toLowerCase();
+        } else if (firstCat && firstCat.items && firstCat.items.length) {
+          topBenefitName = 'doctor visits and core benefits';
+        }
+      }
+    } catch (_e) {
+      /* ignore */
+    }
+    var rebuttal =
+      'This plan does cover ' +
+      topBenefitName +
+      '. Would you like me to walk you through what is included?';
     return {
       status: 'Not Covered',
       label: 'Exclusions & Limitations',
-      items: excItems,
-      sayThis: 'That benefit isn\'t included on this plan — let me show you what IS covered.',
+      items: topLims,
+      sayThis: rebuttal,
       source: planDoc.name
     };
   }
