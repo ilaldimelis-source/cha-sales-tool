@@ -133,84 +133,99 @@ const CF_STEPS = [
   {
     num: 1,
     color: 'var(--charcoal)',
-    title: 'Plan Presentation — The Good News Opener',
-    goal: 'Announce the plan find with confidence. DO NOT ASK IF THEY ARE STILL THERE. Go straight into the good news.',
+    title: 'Opening',
+    goal: 'Open the call with confidence. Set the frame and earn the next 60 seconds.',
     lines: [
-      'Alright, [Customer Name], I have some excellent news for you.',
-      'Based on the information you provided, I was able to locate a plan for you through the [FirstHealth / Multiplan PHCS / Managed Care] Network.',
-      'This plan offers fixed benefits for doctor visits, hospital care, and prescription savings.',
-      'You have the flexibility to see any provider within the network, and there is no requirement for referrals to visit a specialist.',
-      'Another key advantage is nationwide access — this coverage can be used anywhere the network is accepted.',
-      'And most importantly, there is no deductible. Does everything sound clear so far?'
+      "Hey [Name], this is [Your Name] calling about your health coverage inquiry. I've got a couple of questions for you before I recommend anything — is now okay?",
+      "[Name], this is [Your Name]. I'm looking at your inquiry right now — before I walk you through your options, tell me: what's your coverage situation like right now?"
     ],
-    listen: 'Wait for confirmation. Once they say yes, go straight to price.',
+    listen:
+      'Wait for their pace. Match their tone. Move into Discovery the moment they engage.',
     mistakes: [
-      'Asking if they are still there before presenting',
-      'Starting with disclaimers or limitations',
-      'Hesitating or sounding uncertain when delivering the good news'
+      'Launching into a pitch before earning permission',
+      'Sounding like a script instead of a human',
+      'Skipping past their first answer to rush into benefits'
     ]
   },
   {
     num: 2,
     color: '#7a5f00',
-    title: 'Price Presentation — Anchor the Investment',
-    goal: 'State the rate clearly, include the association fee, get affordability confirmation before walking benefits.',
+    title: 'Discovery',
+    goal: 'Surface the real situation: budget, gap, fear, stakes, and future picture. Listen more than you talk.',
     lines: [
-      'Great. Based on everything we have reviewed, the monthly rate for this plan comes out to $___.',
-      'There is a one-time standard group association fee of $___ to activate your membership within the plan.',
-      'That brings the total for the first month to $___, and then moving forward, your monthly cost is simply $___ thereafter.',
-      'Now, assuming this plan meets your medical needs, would the initial first-month amount of $___ be affordable for you today?'
+      'If you found something that actually made sense for your situation, what kind of range are you comfortable working with per month?',
+      "What's going on with your coverage right now? Are you between jobs, self-employed — what's the situation?",
+      "What's your biggest concern about not having any coverage right now?",
+      'If you had a medical situation tomorrow — ER, urgent care, something unexpected — what happens? Are you covered?',
+      'What would it mean for you to have something in place that covers the basics — doctor visits, prescriptions, emergencies?'
     ],
     listen:
-      'Wait for answer. If yes, confirm and move to benefits walk. If hesitant, go to Regain Control.',
+      'Write down the exact words they use for budget, gap, and fear. You will repeat them back during Positioning.',
     mistakes: [
-      'Rushing past the price without asking affordability',
-      'Not stating the association fee upfront',
-      'Moving to benefits before getting price confirmation'
+      'Talking over their answers',
+      'Asking yes/no questions instead of open ones',
+      'Moving to Positioning before you have a clear picture of the stakes'
     ]
   },
   {
     num: 3,
     color: '#29A26A',
-    title: 'Benefits Walk — Doctor Visits',
-    goal: 'Walk doctor visit benefits first. Confirm they understand before moving to Rx. Do NOT wait between doctor visits and Rx.',
+    title: 'Validation',
+    goal: 'Acknowledge what they just shared. Make them feel heard before you recommend anything.',
     lines: [
-      'Perfect. What I will do next is walk you through the full benefits of the program. If everything looks good to you, we will move forward with submitting the application. Sounds good?',
-      'You do not need referrals to see a specialist.',
-      'When you visit a primary physician you will have a $[25/50] copay. When you visit a specialist you will have a $[50/75] copay.',
-      'People like this plan because it is simple. Unlike traditional plans with deductibles and coinsurance, this plan has no deductible and pays defined benefit amounts toward covered services — so you know what the plan contributes and can plan your expenses more easily.',
-      '[FOR STM/Access Health only] For more serious care such as hospital stays or surgeries, the plan uses the deductible and coinsurance we reviewed. How is this sounding so far?'
+      "That makes complete sense — and honestly, that's exactly why I want to make sure I'm recommending the right thing for your specific situation, not just something generic.",
+      "That's the most important thing you've told me. A lot of people I work with have had that experience — and it changes how I'd approach this with you.",
+      "I appreciate you being honest about that. Then it's even more important that whatever we do, it's the right fit — I'm not going to put you in something that doesn't work for you."
     ],
     listen:
-      'Do NOT wait for a response after doctor visits. Go straight to Rx.',
+      'Tone shift. If they relax after you validate, you earned trust. If they stay guarded, slow down.',
     mistakes: [
-      'Pausing and waiting for a response between doctor visits and Rx',
-      'Over-explaining copay structure',
-      'Skipping the no-deductible framing'
+      'Skipping validation and jumping into the pitch',
+      'Sounding scripted instead of genuine',
+      "Validating and then immediately contradicting them"
     ]
   },
   {
     num: 4,
     color: 'var(--charcoal2)',
-    title: 'Rx + Required Disclosures — Say It, Then Close',
-    goal: 'State Rx benefit, then deliver the three required exclusion disclosures. Confirm receipt. Do NOT wait after — go straight to closing statement.',
+    title: 'Positioning',
+    goal: 'Recommend the plan type that matches what they told you. Tie the plan directly to their words.',
     lines: [
-      'You will also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful.',
-      'The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You will not be needing coverage for those services, correct?',
-      '[DO NOT WAIT — GO STRAIGHT TO CLOSING STATEMENT]'
+      "This plan pays set amounts for the services you actually use most — office visits, urgent care, ER. You know exactly what you're getting and exactly what you're spending. No surprises.",
+      "This covers your preventive care — annual wellness, screenings, immunizations — at no deductible. It's not full major medical, but it keeps you covered for staying healthy and it fits your budget.",
+      "This is a short-term medical plan — it covers you for the unexpected: hospital stays, surgery, serious illness or injury. It's real protection for what actually costs you money."
     ],
     listen:
-      'Do not pause after the disclosure question. Transition immediately into the closing statement.',
+      'Watch for head-nod cues: "that makes sense", "okay", "right". Those are buying signals — move to Rebuttals or Closing.',
     mistakes: [
-      'Waiting for a lengthy response after the disclosure question',
-      'Adding extra explanation to the exclusions',
-      'Softening or avoiding the mental health / substance abuse / pregnancy disclosure'
+      'Positioning a plan that does not match their stated needs',
+      'Over-explaining features instead of tying to their situation',
+      'Pitching more than one plan at once'
     ]
   },
   {
     num: 5,
     color: 'var(--charcoal)',
-    title: 'Closing Statement — Confirm Understanding Before Collecting Info',
+    title: 'Rebuttals',
+    goal: 'Handle the objection. Diagnose the real concern, acknowledge, reframe, bridge back to the close.',
+    lines: [
+      "I hear you — that's one of the most common concerns. Most people are already spending money unpredictably on healthcare… this just makes it controlled and actually protects you.",
+      "Of course — you should feel comfortable. Usually when someone says that, there's just one thing that isn't fully clear yet.",
+      "Of course — that's important. If you feel good about it, it's much easier to explain it to them.",
+      'I can definitely send it — I just want to make sure it actually makes sense when you read it.'
+    ],
+    listen:
+      'The first objection is rarely the real one. Diagnose with a soft question before you respond.',
+    mistakes: [
+      'Arguing instead of acknowledging',
+      'Lowering the price before establishing value',
+      "Accepting 'let me think about it' without asking what specifically"
+    ]
+  },
+  {
+    num: 6,
+    color: 'var(--charcoal)',
+    title: 'Closing Statement',
     goal: 'Summarize coverage, confirm understanding on a recorded line, then collect contact information in order.',
     lines: [
       'Your coverage is scheduled to start on ______, pending enrollment and verification.',
@@ -231,15 +246,11 @@ const CF_STEPS = [
     ]
   },
   {
-    num: 6,
+    num: 7,
     color: '#7a5f00',
-    title: 'Identity Verification + Payment — The Silence Rule',
-    goal: 'Verify citizenship and health info accuracy on recorded line. Collect SSN. Then collect payment. After asking for card number — SAY NOTHING. Whoever talks first loses.',
+    title: 'Collect Payment',
+    goal: 'Collect the initial payment cleanly. After asking for the card number — SAY NOTHING. Whoever talks first loses.',
     lines: [
-      'Before we complete the enrollment, I do need to verify a few items on this recorded line.',
-      'Can you please confirm that you are a United States citizen or legal resident, and that all health information you provided today is accurate and complete to the best of your knowledge?',
-      'Lastly, for identity verification purposes, please confirm your Social Security number.',
-      '[Wait for Answer]',
       'For the initial payment, which card type would you prefer to put on file?',
       '[Wait for Answer]',
       'OK go ahead with the card number. OR: I am ready for the card number when you are ready.',
@@ -249,14 +260,52 @@ const CF_STEPS = [
       'Complete silence after asking for card number. Do not fill the silence. Do not add anything. Wait.',
     mistakes: [
       'Talking after asking for the card number',
-      'Skipping the recorded citizenship/health info confirmation',
-      'Rushing SSN collection without giving them time to respond'
+      'Offering options or reassurance during the silence',
+      'Sounding nervous or apologetic about collecting payment'
     ]
   },
   {
-    num: 7,
+    num: 8,
     color: '#29A26A',
-    title: 'Verification Link — Walk Them Through the Document',
+    title: 'Compliance Lines',
+    goal: 'Deliver every required disclosure on a recorded line, clearly and without softening.',
+    lines: [
+      "I want to be upfront with you — this is not an ACA-compliant plan. It's a [limited benefit / short-term medical / MEC] plan, which is why the pricing is different. Let me tell you specifically what it does and doesn't cover.",
+      "One important thing to know: pre-existing conditions — meaning things you've been diagnosed or treated for in the last 12 months — aren't covered during the first 12 months of this plan. After that, you're covered going forward.",
+      "I do need to make sure you're aware: this plan does not cover mental health treatment, maternity, or substance abuse rehab. Those are excluded under this type of plan.",
+      "For illness — cold, flu, anything like that — there's a 30-day waiting period from your start date. Injuries are covered from day one."
+    ],
+    listen:
+      'Get a verbal acknowledgement after each disclosure. Do not move on until they confirm.',
+    mistakes: [
+      'Softening or glossing over the non-ACA disclosure',
+      'Skipping the pre-existing 12/12 clause',
+      'Rushing through exclusions so the prospect does not register them'
+    ]
+  },
+  {
+    num: 9,
+    color: 'var(--charcoal2)',
+    title: 'Verification',
+    goal: 'Verify citizenship, accuracy of health info, and SSN on the recorded line before issuing the DocuSign link.',
+    lines: [
+      'Before we complete the enrollment, I do need to verify a few items on this recorded line.',
+      'Can you please confirm that you are a United States citizen or legal resident, and that all health information you provided today is accurate and complete to the best of your knowledge?',
+      'Lastly, for identity verification purposes, please confirm your Social Security number.',
+      '[Wait for Answer]'
+    ],
+    listen:
+      'Listen for clear verbal confirmation on each item. No mumbles, no half-answers.',
+    mistakes: [
+      'Skipping the recorded citizenship/health info confirmation',
+      'Rushing SSN collection without giving them time to respond',
+      'Moving to the DocuSign link before verification is complete'
+    ]
+  },
+  {
+    num: 10,
+    color: '#29A26A',
+    title: 'Send DocuSign',
     goal: 'Send the OneEnrollment link, walk them through document review, get signature. Your job is to guide, not rush.',
     lines: [
       'This is the final step. I am sending you a text now from a 732 number labeled ONE ENROLLMENT. Please click the link once you receive it. Let me know when you see it.',
@@ -283,9 +332,9 @@ const CF_STEPS = [
     ]
   },
   {
-    num: 8,
+    num: 11,
     color: 'var(--butter2)',
-    title: 'Post Close — Recap, Network Info, Referral Ask',
+    title: 'Post Close',
     goal: 'Submit the application, give confirmation number, provide network website, recap carrier and admin details, deliver the pre-existing / waiting period disclosure, ask for referrals, and close warmly.',
     lines: [
       'Perfect — I have received your signature on my end. I am going to go ahead and submit your application to the insurance carrier now.',
