@@ -2059,3 +2059,328 @@ function _trnTwoCols(leftLabel, leftText, rightLabel, rightText) {
   html += '</div>';
   return html;
 }
+
+// ══════════════════════════════════════════════════════
+// NEW HIRE ONBOARDING (Training, first subtab)
+// 4 phases, 39 items total. Items marked critical:true
+// render with a "Required" badge. Per-item completion is
+// stored in localStorage under cha_onboarding as a flat
+// object: { 'p1i1': true, 'p1i2': true, ... }.
+// ══════════════════════════════════════════════════════
+
+var ONBOARDING_PHASES = [
+  {
+    id: 'phase1',
+    title: 'Phase 1: Essentials',
+    items: [
+      {
+        id: 'p1i1',
+        text: 'Understand what a limited benefit plan is',
+        critical: false
+      },
+      { id: 'p1i2', text: 'Understand what a MEC plan is', critical: false },
+      { id: 'p1i3', text: 'Understand what an STM plan is', critical: false },
+      {
+        id: 'p1i4',
+        text: 'Know the difference between fixed indemnity and major medical',
+        critical: false
+      },
+      {
+        id: 'p1i5',
+        text: 'Know what networks we use (PHCS, First Health)',
+        critical: false
+      },
+      {
+        id: 'p1i6',
+        text: 'Understand why clients need supplemental coverage',
+        critical: false
+      }
+    ]
+  },
+  {
+    id: 'phase2',
+    title: 'Phase 2: Product Basics',
+    items: [
+      { id: 'p2i1', text: 'Know our top 5 plans by name', critical: false },
+      {
+        id: 'p2i2',
+        text: 'Understand waiting periods for each plan type',
+        critical: false
+      },
+      {
+        id: 'p2i3',
+        text: 'Understand pre-existing condition rules',
+        critical: false
+      },
+      {
+        id: 'p2i4',
+        text: 'Know deductibles and copays for core plans',
+        critical: false
+      },
+      { id: 'p2i5', text: 'Know what is and is not covered', critical: false },
+      {
+        id: 'p2i6',
+        text: 'Understand how the network/provider lookup works',
+        critical: false
+      },
+      {
+        id: 'p2i7',
+        text: 'Know the difference between MEC and limited plans',
+        critical: false
+      },
+      {
+        id: 'p2i8',
+        text: 'Understand prescription drug coverage on each plan',
+        critical: false
+      },
+      {
+        id: 'p2i9',
+        text: 'Know hospital confinement benefits',
+        critical: false
+      },
+      {
+        id: 'p2i10',
+        text: 'Understand enrollment fees vs monthly premiums',
+        critical: false
+      }
+    ]
+  },
+  {
+    id: 'phase3',
+    title: 'Phase 3: Scripts + Compliance',
+    items: [
+      {
+        id: 'p3i1',
+        text: 'Complete the opening script word for word',
+        critical: true
+      },
+      {
+        id: 'p3i2',
+        text: 'Complete the benefits presentation script',
+        critical: true
+      },
+      {
+        id: 'p3i3',
+        text: 'Complete the closing script word for word',
+        critical: true
+      },
+      {
+        id: 'p3i4',
+        text: 'Know all required compliance disclosures',
+        critical: true
+      },
+      {
+        id: 'p3i5',
+        text: 'Know what to say about pre-existing conditions',
+        critical: false
+      },
+      {
+        id: 'p3i6',
+        text: 'Know how to handle the price objection',
+        critical: false
+      },
+      {
+        id: 'p3i7',
+        text: 'Know how to handle the coverage objection',
+        critical: false
+      },
+      { id: 'p3i8', text: 'Know the verification script', critical: false },
+      { id: 'p3i9', text: 'Know the post-close script', critical: false },
+      {
+        id: 'p3i10',
+        text: 'Never make promises not in the plan documents',
+        critical: true
+      },
+      {
+        id: 'p3i11',
+        text: 'Always read the plan type disclosure before enrolling',
+        critical: true
+      }
+    ]
+  },
+  {
+    id: 'phase4',
+    title: 'Phase 4: Call Readiness',
+    items: [
+      { id: 'p4i1', text: 'Dialer is set up and tested', critical: true },
+      { id: 'p4i2', text: 'CRM access confirmed', critical: true },
+      {
+        id: 'p4i3',
+        text: 'Enrollment platform access confirmed',
+        critical: true
+      },
+      { id: 'p4i4', text: 'Headset working and tested', critical: false },
+      { id: 'p4i5', text: 'Quiet workspace secured', critical: false },
+      {
+        id: 'p4i6',
+        text: 'All scripts reviewed and printed or on screen',
+        critical: false
+      },
+      { id: 'p4i7', text: 'Plan comparison chart available', critical: false },
+      {
+        id: 'p4i8',
+        text: 'Know how to look up a provider in network',
+        critical: false
+      },
+      {
+        id: 'p4i9',
+        text: 'Know how to submit an enrollment',
+        critical: false
+      },
+      {
+        id: 'p4i10',
+        text: 'Know who to call for help during a live call',
+        critical: true
+      },
+      {
+        id: 'p4i11',
+        text: 'Completed mock call with manager',
+        critical: true
+      },
+      { id: 'p4i12', text: 'Manager sign-off received', critical: true }
+    ]
+  }
+];
+
+function _onbLoadState() {
+  try {
+    var raw =
+      (typeof safeGetItem === 'function'
+        ? safeGetItem('cha_onboarding')
+        : localStorage.getItem('cha_onboarding')) || '{}';
+    var parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (_e) {
+    return {};
+  }
+}
+
+function _onbSaveState(state) {
+  try {
+    var s = JSON.stringify(state || {});
+    if (typeof safeSetItem === 'function') {
+      safeSetItem('cha_onboarding', s);
+    } else {
+      localStorage.setItem('cha_onboarding', s);
+    }
+  } catch (_e) {
+    /* incognito / quota — silently ignore */
+  }
+}
+
+function _onbToggle(id) {
+  var state = _onbLoadState();
+  state[id] = !state[id];
+  _onbSaveState(state);
+  renderNewHireOnboarding();
+}
+
+function _onbEscape(s) {
+  if (typeof escHTML === 'function') return escHTML(String(s == null ? '' : s));
+  return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    };
+    return map[c];
+  });
+}
+
+function renderNewHireOnboarding() {
+  var page = document.getElementById('page-newhireonboarding');
+  if (!page) return;
+
+  var state = _onbLoadState();
+
+  // Aggregate progress across all phases
+  var totalItems = 0;
+  var completedItems = 0;
+  var totalCritical = 0;
+  var completedCritical = 0;
+  for (var p = 0; p < ONBOARDING_PHASES.length; p++) {
+    var phase = ONBOARDING_PHASES[p];
+    for (var i = 0; i < phase.items.length; i++) {
+      var item = phase.items[i];
+      totalItems++;
+      if (state[item.id]) completedItems++;
+      if (item.critical) {
+        totalCritical++;
+        if (state[item.id]) completedCritical++;
+      }
+    }
+  }
+  var pct =
+    totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0;
+
+  var html = '';
+  html +=
+    '<div class="ph"><div class="pt">New Hire <span>Onboarding</span></div>' +
+    '<div class="pd">Work through each phase. Required items must be completed before going live with customers. Your progress is saved on this device.</div></div>';
+
+  // Overall progress bar
+  html += '<div class="onb-overall">';
+  html += '<div class="onb-overall-label">Overall progress</div>';
+  html +=
+    '<div class="onb-overall-bar"><div class="onb-overall-fill" style="width:' +
+    pct +
+    '%"></div></div>';
+  html +=
+    '<div class="onb-overall-counts">' +
+    completedItems +
+    ' of ' +
+    totalItems +
+    ' complete &middot; ' +
+    completedCritical +
+    ' of ' +
+    totalCritical +
+    ' required items checked</div>';
+  html += '</div>';
+
+  // Per-phase sections
+  for (var pi = 0; pi < ONBOARDING_PHASES.length; pi++) {
+    var ph = ONBOARDING_PHASES[pi];
+    var phaseDone = 0;
+    for (var ii = 0; ii < ph.items.length; ii++) {
+      if (state[ph.items[ii].id]) phaseDone++;
+    }
+
+    html += '<div class="onb-phase">';
+    html += '<div class="onb-phase-head">';
+    html += '<div class="onb-phase-title">' + _onbEscape(ph.title) + '</div>';
+    html +=
+      '<div class="onb-phase-count">' +
+      phaseDone +
+      ' / ' +
+      ph.items.length +
+      '</div>';
+    html += '</div>';
+
+    html += '<div class="onb-items">';
+    for (var iii = 0; iii < ph.items.length; iii++) {
+      var it = ph.items[iii];
+      var isDone = !!state[it.id];
+      var checked = isDone ? ' checked' : '';
+      var doneCls = isDone ? ' done' : '';
+      var reqBadge = it.critical
+        ? '<span class="onb-required">Required</span>'
+        : '';
+      html += '<label class="onb-item' + doneCls + '">';
+      html +=
+        '<input type="checkbox"' +
+        checked +
+        ' onchange="_onbToggle(\'' +
+        it.id +
+        '\')">';
+      html += '<span class="onb-item-text">' + _onbEscape(it.text) + '</span>';
+      html += reqBadge;
+      html += '</label>';
+    }
+    html += '</div>';
+    html += '</div>';
+  }
+
+  page.innerHTML = html;
+}
