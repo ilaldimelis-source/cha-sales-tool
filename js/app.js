@@ -683,7 +683,7 @@ function renderDashboard() {
       icon: ic('<path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/>')
     },
     {
-      page: 'cheatsheets',
+      page: 'cheatsheet',
       title: 'Cheat Sheets',
       desc: 'Plans, networks, underwriters at a glance',
       icon: ic(
