@@ -4850,3 +4850,65 @@ td,
   }
 }
 
+/* P1 Task 5: Home dashboard grid — 4 columns x 2 rows on desktop
+   (8 cards total now that Cheat Sheets is inside the grid).
+   Medium screens fall back to 2 columns, phones to 1. */
+@media (min-width: 1024px) {
+  .dash-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .dash-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* P1 Task 6: Click-to-edit greeting in the topbar.
+   The greeting is keyboard-focusable and shows a pointer cursor so users
+   know it is interactive. Clicking swaps in an inline input that matches
+   the chip's shape. */
+.topbar-welcome {
+  cursor: pointer;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+}
+.topbar-welcome:hover {
+  border-color: var(--accent);
+}
+.topbar-welcome:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.25);
+}
+.topbar-welcome-input {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  width: 160px;
+  max-width: 100%;
+}
+.topbar-welcome-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* P1 Task 7: S/M/L font toggle — accessibility polish.
+   - Visible focus ring for keyboard users (focus-visible only, so
+     mouse clicks don't show an outline)
+   - Ensure the grouped label wrapper has decent hit area */
+.font-toggle-btn:focus {
+  outline: none;
+}
+.font-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+

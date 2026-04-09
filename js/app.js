@@ -100,10 +100,11 @@ function setFontSize(size) {
   safeSetItem('cha_font_size', size);
   var btns = document.querySelectorAll('.font-toggle-btn');
   btns.forEach(function (btn) {
-    btn.classList.toggle(
-      'active',
-      btn.textContent.trim().toLowerCase() === size
-    );
+    var isActive = btn.textContent.trim().toLowerCase() === size;
+    btn.classList.toggle('active', isActive);
+    // P1 Task 7: a11y — mirror the visual active state on aria-pressed
+    // so screen readers announce the current font size choice.
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
   });
 }
 function _initFontSize() {
@@ -184,7 +185,80 @@ function _buildGreetingText() {
 
 function _refreshTopbarGreeting() {
   var el = document.getElementById('topbarWelcome');
-  if (el) el.textContent = _buildGreetingText();
+  if (!el) return;
+  // If the inline editor is open, leave it alone — don't clobber the input.
+  if (el.querySelector && el.querySelector('input')) return;
+  el.textContent = _buildGreetingText();
+}
+
+// P1 Task 6: Click-to-edit greeting in the topbar.
+// Clicking the welcome chip swaps it for an inline <input> prefilled
+// with the current custom name (from cha_display_name). Enter or blur
+// saves via saveDisplayName() (defined in js/myspace.js), which already
+// persists to localStorage and calls _refreshTopbarGreeting(). Escape
+// cancels without saving.
+function _openTopbarGreetingEditor() {
+  var el = document.getElementById('topbarWelcome');
+  if (!el) return;
+  if (el.querySelector && el.querySelector('input')) return;
+
+  var current = '';
+  try {
+    current = (safeGetItem('cha_display_name') || '').trim();
+  } catch (_e) {
+    current = '';
+  }
+
+  var input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'topbar-welcome-input';
+  input.value = current;
+  input.placeholder = 'Your name';
+  input.setAttribute('aria-label', 'Edit display name');
+  input.maxLength = 40;
+
+  var committed = false;
+  var commit = function () {
+    if (committed) return;
+    committed = true;
+    var val = (input.value || '').trim();
+    try {
+      if (typeof saveDisplayName === 'function') {
+        saveDisplayName(val);
+      } else {
+        safeSetItem('cha_display_name', val);
+      }
+    } catch (_e) {
+      /* ignore */
+    }
+    el.textContent = _buildGreetingText();
+  };
+  var cancel = function () {
+    if (committed) return;
+    committed = true;
+    el.textContent = _buildGreetingText();
+  };
+
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      commit();
+      input.blur();
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      cancel();
+    }
+  });
+  input.addEventListener('blur', commit);
+
+  el.textContent = '';
+  el.appendChild(input);
+  try {
+    input.focus();
+    input.select();
+  } catch (_e) {
+    /* ignore */
+  }
 }
 
 function _initTopbarExtras() {
@@ -209,12 +283,24 @@ function _initTopbarExtras() {
       _initTheme();
     }
 
-    // Welcome greeting — insert just before the theme toggle
+    // Welcome greeting — insert just before the theme toggle.
+    // Clicking the greeting opens an inline editor to change the display name.
     if (!document.getElementById('topbarWelcome')) {
       var w = document.createElement('div');
       w.id = 'topbarWelcome';
       w.className = 'topbar-welcome';
+      w.setAttribute('role', 'button');
+      w.setAttribute('tabindex', '0');
+      w.setAttribute('title', 'Click to edit your display name');
+      w.setAttribute('aria-label', 'Edit display name');
       w.textContent = _buildGreetingText();
+      w.addEventListener('click', _openTopbarGreetingEditor);
+      w.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          _openTopbarGreetingEditor();
+        }
+      });
       var tt = document.getElementById('themeToggle');
       if (tt && tt.parentNode) {
         tt.parentNode.insertBefore(w, tt);
@@ -595,6 +681,14 @@ function renderDashboard() {
       title: 'My Space',
       desc: 'Notes and saved favorites',
       icon: ic('<path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/>')
+    },
+    {
+      page: 'cheatsheets',
+      title: 'Cheat Sheets',
+      desc: 'Plans, networks, underwriters at a glance',
+      icon: ic(
+        '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>'
+      )
     }
   ];
   var html =
@@ -608,19 +702,6 @@ function renderDashboard() {
     html += '<div class="dash-desc">' + c.desc + '</div>';
     html += '</div>';
   });
-  html += '</div>';
-  // Cheat Sheets full-width card
-  html +=
-    '<div class="dash-card dash-card-full" onclick="showPage(\'cheatsheets\')" style="margin-top:12px;border-left:3px solid #5B8DEF;display:flex;align-items:center;gap:16px;">';
-  html +=
-    '<div class="dash-icon">' +
-    ic(
-      '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>'
-    ) +
-    '</div>';
-  html += '<div><div class="dash-title">Cheat Sheets</div>';
-  html +=
-    '<div class="dash-desc">Plan names, networks, underwriters, and associations at a glance</div></div>';
   html += '</div>';
   // Recently visited strip
   var recent = getRecentPages();
