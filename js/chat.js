@@ -1330,7 +1330,7 @@ function _brLookupBenefit(planDoc, topic) {
     status = 'Covered';
     items = benefitHits.slice(0, 2).concat(['⚠ ' + exclusionHits[0]]);
   } else if (waitingHits.length > 0) {
-    status = 'Covered';
+    status = 'Info';
     items = waitingHits.slice(0, 2);
   } else {
     status = 'Verify';
@@ -1579,14 +1579,17 @@ function brStructuredAnswer(query, plans) {
   // Determine overall status
   var covCount = 0,
     notCount = 0,
-    verCount = 0;
+    verCount = 0,
+    infoCount = 0;
   results.forEach(function (r) {
     if (r.status === 'Covered' || r.status === 'Discount') covCount++;
     else if (r.status === 'Not Covered') notCount++;
+    else if (r.status === 'Info') infoCount++;
     else verCount++;
   });
   var overallStatus;
   if (results.length === 1) overallStatus = results[0].status;
+  else if (infoCount === results.length) overallStatus = 'Info';
   else if (covCount > 0 && notCount > 0) overallStatus = 'Partial';
   else if (covCount > 0) overallStatus = 'Covered';
   else if (notCount > 0 && verCount === 0) overallStatus = 'Not Covered';
@@ -1628,6 +1631,13 @@ function brStructuredAnswer(query, plans) {
       badge: '#f5f3ff',
       badgeText: '#7c3aed',
       icon: '%'
+    },
+    Info: {
+      border: '#e2e8f0',
+      bg: '#fff',
+      badge: '#eff6ff',
+      badgeText: '#5175f1',
+      icon: 'ℹ'
     }
   };
   var oc = _sc[overallStatus] || _sc.Verify;
@@ -1671,24 +1681,34 @@ function brStructuredAnswer(query, plans) {
       ';background:' +
       c.bg +
       ';border-radius:12px;padding:14px 16px;margin-bottom:10px;">';
-    // Status row: badge + label
+    // Status row: neutral header for Info, badge for everything else
     html +=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">';
-    html +=
-      '<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:' +
-      c.badge +
-      ';color:' +
-      c.badgeText +
-      ';font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;word-break:keep-all;">' +
-      c.icon +
-      ' ' +
-      r.status +
-      '</span>';
-    html +=
-      '<span style="font-size:14px;font-weight:600;color:#1e293b;">' +
-      r.label.charAt(0).toUpperCase() +
-      r.label.slice(1) +
-      '</span>';
+    if (r.status === 'Info') {
+      html +=
+        '<span style="font-size:14px;font-weight:600;color:#5175f1;">' +
+        c.icon +
+        ' ' +
+        r.label.charAt(0).toUpperCase() +
+        r.label.slice(1) +
+        '</span>';
+    } else {
+      html +=
+        '<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:' +
+        c.badge +
+        ';color:' +
+        c.badgeText +
+        ';font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;word-break:keep-all;">' +
+        c.icon +
+        ' ' +
+        r.status +
+        '</span>';
+      html +=
+        '<span style="font-size:14px;font-weight:600;color:#1e293b;">' +
+        r.label.charAt(0).toUpperCase() +
+        r.label.slice(1) +
+        '</span>';
+    }
     html += '</div>';
     // Divider
     html +=
