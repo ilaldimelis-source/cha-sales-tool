@@ -4132,3 +4132,22 @@ body.dark-mode .theme-toggle {
   padding: 9px 12px !important;
   font-size: 11px !important;
 }
+
+/* ── TEXT WRAP SAFETY ── */
+p,
+li,
+span,
+td,
+.sbox,
+.ibox,
+.br-msg,
+.br-bub,
+.close-line,
+.cf-body,
+.la-body,
+.trn-article,
+.mindset-card {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}

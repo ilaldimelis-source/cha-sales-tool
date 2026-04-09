@@ -259,6 +259,12 @@ function safeCopy(text) {
 // ══════════════════════════════════════════════════════
 
 var PAGE_CONFIG = {
+  cheatsheets: {
+    label: 'Cheat Sheet',
+    subs: [
+      { id: 'cheatsheets', label: 'Cheat Sheet', render: renderCheatsheets }
+    ]
+  },
   livecall: {
     label: 'Live Call',
     subs: [
@@ -395,6 +401,7 @@ function showPage(id) {
   }
   document.querySelectorAll('.page, .combo-page').forEach(function (p) {
     p.classList.remove('active');
+    if (p.classList.contains('page')) p.style.display = '';
   });
   document.querySelectorAll('.nb').forEach(function (b) {
     b.classList.remove('active');
