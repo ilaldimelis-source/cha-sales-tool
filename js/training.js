@@ -1389,13 +1389,6 @@ var TRAINING_SECTIONS = [
     group: 'LIVE CALL TOOLS',
     items: [
       {
-        id: 'cheatsheets',
-        title: 'Cheat Sheets',
-        desc: 'Quick reference for plans, networks, and underwriters',
-        icon: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>',
-        render: renderCheatsheets
-      },
-      {
         id: 'closingtools',
         title: 'Closing Tools',
         desc: 'Closing generators, techniques, and practice lab',
