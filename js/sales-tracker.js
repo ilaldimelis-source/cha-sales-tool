@@ -294,7 +294,7 @@ function _stParseReceipt(text) {
 
   // ── Customer name (if any explicit field) ─────────────────
   var custMatch = raw.match(
-    /(?:customer|member|client|insured|name)\s*[:\-]\s*([^\n\r]+)/i
+    /(?:customer|member|client|insured|name)\s*[:-]\s*([^\n\r]+)/i
   );
   if (custMatch) out.customer = custMatch[1].trim().substring(0, 80);
 
@@ -321,7 +321,7 @@ function _stParseReceipt(text) {
     /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:per\s*month|\/\s*mo\b|monthly|a\s+month|\bmo\b)/i;
   var skipLineRe =
     /^(?:central health|confirmation|products?|summary|total|policy|active|effective|starts?|member\s+\d|payment|plan\s+type|type\b|address|phone|email|date|status|enrollment|one[-\s]?time)/i;
-  var policyRe = /policy\s*(?:number|#|:)?\s*[:\-]?\s*([A-Z0-9-]{4,})/i;
+  var policyRe = /policy\s*(?:number|#|:)?\s*[:-]?\s*([A-Z0-9-]{4,})/i;
 
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];

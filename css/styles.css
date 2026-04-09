@@ -4080,3 +4080,55 @@ body.dark-mode .topbar-welcome {
 body.dark-mode .theme-toggle {
   background: var(--bg-card);
 }
+
+/* ===========================================================
+   Network Guide — compact display tuning
+   Reduces font-size, padding, and vertical spacing by 10-15%
+   so agents scroll less during live calls. No colors or
+   structure changed — visual tuning only.
+   =========================================================== */
+#page-networkguide div[style*='font-size:16px'] {
+  font-size: 14px !important;
+}
+
+#page-networkguide div[style*='font-size:13px'] {
+  font-size: 12px !important;
+}
+
+#page-networkguide div[style*='font-size:12px'] {
+  font-size: 11px !important;
+}
+
+#page-networkguide div[style*='font-size:11px'] {
+  font-size: 10px !important;
+}
+
+#page-networkguide div[style*='padding:20px'] {
+  padding: 14px 16px !important;
+}
+
+#page-networkguide div[style*='padding:12px 16px'] {
+  padding: 9px 14px !important;
+}
+
+#page-networkguide div[style*='padding:12px 14px'] {
+  padding: 9px 12px !important;
+}
+
+#page-networkguide div[style*='margin-bottom:20px'] {
+  margin-bottom: 12px !important;
+}
+
+#page-networkguide div[style*='margin-bottom:14px'] {
+  margin-bottom: 10px !important;
+}
+
+#page-networkguide div[style*='margin-bottom:12px'] {
+  margin-bottom: 8px !important;
+}
+
+/* Important box — slightly smaller padding and text */
+#page-networkguide div[style*='rgba(200,60,80,0.05)'] {
+  padding: 9px 12px !important;
+  font-size: 11px !important;
+}

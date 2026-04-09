@@ -1619,7 +1619,7 @@ function buildQuickCompare() {
       });
       return { text: lMatch || 'Limited/Excluded', green: false };
     }
-    return { text: 'Not specified', green: false };
+    return { text: 'See plan details', green: false };
   }
 
   var tbl =
