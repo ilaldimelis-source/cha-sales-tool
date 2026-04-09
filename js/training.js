@@ -2072,7 +2072,7 @@ function _trnTwoCols(leftLabel, leftText, rightLabel, rightText) {
 // under cha_training_open as a flat object: { 's1': true, ... }.
 // ══════════════════════════════════════════════════════
 
-var TRAINING_SECTIONS = [
+var TRAINING_LIBRARY_SECTIONS = [
   {
     id: 's1',
     title: 'New Hire — Start Here',
@@ -2530,8 +2530,8 @@ function renderNewHireOnboarding() {
     '<div class="ph"><div class="pt">Training <span>Library</span></div>' +
     '<div class="pd">Your knowledge center. Start at the top if you are new. Expand any section to read. Everything here is quick-scan ready.</div></div>';
 
-  for (var si = 0; si < TRAINING_SECTIONS.length; si++) {
-    var sec = TRAINING_SECTIONS[si];
+  for (var si = 0; si < TRAINING_LIBRARY_SECTIONS.length; si++) {
+    var sec = TRAINING_LIBRARY_SECTIONS[si];
     var isOpen = !!open[sec.id];
     html +=
       '<div class="trn-sec' +
