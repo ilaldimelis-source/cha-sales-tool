@@ -4912,3 +4912,73 @@ td,
   outline-offset: 2px;
 }
 
+/* P2 Task 8: Sticky SOA disclosure strip on Live Call.
+   Keeps the SOA reminder visible while the agent scrolls through
+   rebuttals and objection cards. The strip's own opaque background
+   (#EEF3FF from its inline style) prevents content bleed-through.
+   z-index sits below the floating panels (#br-panel = 1100) and
+   below the sidebar mobile menu (1200) but above normal content. */
+.soa-copy-strip {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* P2 Task 9: Rebuttal category color coding.
+   Every objection card's category pill gets a distinct color so
+   agents can scan by category at a glance. The base .obj-cat-badge
+   provides the shape/size; modifier classes apply the palette. */
+.obj-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 999px;
+  margin-top: 4px;
+  border: 1px solid transparent;
+}
+.obj-cat-badge.obj-cat-price {
+  background: rgba(234, 88, 12, 0.1);
+  color: #c2410c;
+  border-color: rgba(234, 88, 12, 0.22);
+}
+.obj-cat-badge.obj-cat-delay {
+  background: rgba(202, 138, 4, 0.1);
+  color: #a16207;
+  border-color: rgba(202, 138, 4, 0.22);
+}
+.obj-cat-badge.obj-cat-spouse {
+  background: rgba(219, 39, 119, 0.1);
+  color: #be185d;
+  border-color: rgba(219, 39, 119, 0.22);
+}
+.obj-cat-badge.obj-cat-trust {
+  background: rgba(124, 58, 237, 0.1);
+  color: #6d28d9;
+  border-color: rgba(124, 58, 237, 0.22);
+}
+.obj-cat-badge.obj-cat-timing {
+  background: rgba(8, 145, 178, 0.1);
+  color: #0e7490;
+  border-color: rgba(8, 145, 178, 0.22);
+}
+.obj-cat-badge.obj-cat-coverage {
+  background: rgba(22, 163, 74, 0.1);
+  color: #15803d;
+  border-color: rgba(22, 163, 74, 0.22);
+}
+.obj-cat-badge.obj-cat-hospital {
+  background: rgba(37, 99, 235, 0.1);
+  color: #1d4ed8;
+  border-color: rgba(37, 99, 235, 0.22);
+}
+.obj-cat-badge.obj-cat-default {
+  background: rgba(92, 104, 120, 0.1);
+  color: #5c6878;
+  border-color: rgba(92, 104, 120, 0.15);
+}
+
