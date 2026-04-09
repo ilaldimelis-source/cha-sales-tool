@@ -5091,3 +5091,63 @@ body.plan-drawer-lock {
   }
 }
 
+/* P4 Task 12: "NEXT" badge for the first incomplete onboarding item.
+   Uses the accent blue to stand out from the red Required badge. */
+.onb-tag-next {
+  background: rgba(91, 141, 239, 0.15);
+  color: #1d4ed8;
+}
+
+/* P4 Task 13: Circular progress ring for renderNewHireOnboarding().
+   Replaces the old thin .onb-progress-bar. Sits in .onb-header-right
+   alongside a small "{done}/{total} tasks - Day N of 5" label block. */
+.onb-ring-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.onb-ring {
+  display: block;
+}
+.onb-ring-track {
+  stroke: rgba(255, 255, 255, 0.15);
+}
+.onb-ring-fill {
+  stroke: #5b8def;
+  transition: stroke-dashoffset 0.35s ease;
+}
+.onb-ring-text {
+  fill: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+}
+.onb-ring-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+.onb-ring-meta-top {
+  color: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+}
+.onb-ring-meta-bot {
+  color: #94a3b8;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* P4 Task 16: Training Center grid — 3 columns at >=1024px so the
+   8 (or any multiple-of-3-near) tiles fill cleanly without a single
+   orphan on its own row. Medium screens keep 2 columns, mobile 1. */
+@media (min-width: 1024px) {
+  .trn-home-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+

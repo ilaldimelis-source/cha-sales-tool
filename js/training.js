@@ -2439,9 +2439,26 @@ function renderNewHireOnboarding() {
 
   var progress = _onbLoadProgress();
   var days = _onbDayData();
-  var pct = Math.round((progress.completedDays.length / 5) * 100);
   var activeDay = progress.currentDay || 1;
   if (!_onbIsDayUnlocked(progress, activeDay)) activeDay = 1;
+
+  // P4 Task 13: Per-day task counts for the circular progress ring.
+  // The ring reflects progress on the ACTIVE day (done/total tasks),
+  // not the overall 5-day completion percent.
+  var _activeDayData = days[activeDay - 1];
+  var _activeChecked = progress.checkedItems[_activeDayData.key] || [];
+  var _totalTasks = _activeDayData.items.length;
+  var _doneTasks = 0;
+  for (var _ci = 0; _ci < _activeDayData.items.length; _ci++) {
+    if (_activeChecked.indexOf(_activeDayData.items[_ci].id) !== -1) {
+      _doneTasks++;
+    }
+  }
+  var _ringPct = _totalTasks ? _doneTasks / _totalTasks : 0;
+  // SVG ring geometry: r=22, circumference = 2*PI*r ~= 138.23
+  var _ringR = 22;
+  var _ringC = 2 * Math.PI * _ringR; // ~138.23
+  var _ringOffset = _ringC * (1 - _ringPct);
 
   var html = "";
 
@@ -2453,9 +2470,25 @@ function renderNewHireOnboarding() {
   html += '<div class="onb-header-title">New Hire Onboarding</div>';
   html += '<div class="onb-header-sub">5-day path to your first live call</div>';
   html += '</div></div>';
+
+  // P4 Task 13: Inline SVG circular progress ring (replaces thin bar).
+  // Uses stroke-dasharray technique: dash length = circumference,
+  // dash offset collapses to show the filled portion.
   html += '<div class="onb-header-right">';
-  html += '<div class="onb-progress-bar"><div class="onb-progress-fill" style="width:' + pct + '%"></div></div>';
-  html += '<div class="onb-progress-pct">' + pct + '%</div>';
+  html += '<div class="onb-ring-wrap">';
+  html += '<svg class="onb-ring" width="56" height="56" viewBox="0 0 56 56" aria-hidden="true">';
+  html += '<circle class="onb-ring-track" cx="28" cy="28" r="' + _ringR + '" fill="none" stroke-width="5"></circle>';
+  html += '<circle class="onb-ring-fill" cx="28" cy="28" r="' + _ringR + '" fill="none" stroke-width="5" ';
+  html += 'stroke-dasharray="' + _ringC.toFixed(2) + '" ';
+  html += 'stroke-dashoffset="' + _ringOffset.toFixed(2) + '" ';
+  html += 'stroke-linecap="round" transform="rotate(-90 28 28)"></circle>';
+  html += '<text class="onb-ring-text" x="28" y="32" text-anchor="middle">' + _doneTasks + '/' + _totalTasks + '</text>';
+  html += '</svg>';
+  html += '</div>';
+  html += '<div class="onb-ring-meta">';
+  html += '<div class="onb-ring-meta-top">' + _doneTasks + '/' + _totalTasks + ' tasks</div>';
+  html += '<div class="onb-ring-meta-bot">Day ' + activeDay + ' of 5</div>';
+  html += '</div>';
   html += '</div></div>';
 
   // Day pills row
@@ -2479,9 +2512,25 @@ function renderNewHireOnboarding() {
   html += '</div></div>';
 
   // Two-column grid
-  var activeDayData = days[activeDay - 1];
-  var checked = progress.checkedItems[activeDayData.key] || [];
+  var activeDayData = _activeDayData;
+  var checked = _activeChecked;
   html += '<div class="onb-grid">';
+
+  // P4 Task 12: Badge cleanup.
+  // - Completed items: no text badge (the green check mark in
+  //   .onb-item-check is the completion indicator)
+  // - First incomplete item in the day: "NEXT" badge (and only NEXT,
+  //   even if it also happens to be Required)
+  // - Otherwise, if item is critical (tag === "Required"): "Required"
+  //   badge
+  // - All other items: no badge
+  var _firstIncompleteIdx = -1;
+  for (var _fi = 0; _fi < activeDayData.items.length; _fi++) {
+    if (checked.indexOf(activeDayData.items[_fi].id) === -1) {
+      _firstIncompleteIdx = _fi;
+      break;
+    }
+  }
 
   // Left: checklist
   html += '<div class="onb-col-left">';
@@ -2490,7 +2539,15 @@ function renderNewHireOnboarding() {
   for (var j = 0; j < activeDayData.items.length; j++) {
     var it = activeDayData.items[j];
     var isChecked = checked.indexOf(it.id) !== -1;
-    var tagClass = it.tag === "Required" ? "onb-tag-req" : (it.tag === "With manager" ? "onb-tag-mgr" : "onb-tag-up");
+    var tagHtml = '';
+    if (isChecked) {
+      // No text badge — the checkmark in onb-item-check is the signal
+      tagHtml = '';
+    } else if (j === _firstIncompleteIdx) {
+      tagHtml = '<div class="onb-item-tag onb-tag-next">NEXT</div>';
+    } else if (it.tag === "Required") {
+      tagHtml = '<div class="onb-item-tag onb-tag-req">Required</div>';
+    }
     html += '<div class="onb-item" onclick="_onbToggleItem(\'' + activeDayData.key + '\',\'' + it.id + '\',' + activeDayData.items.length + ')">';
     html += '<div class="onb-item-check" style="border-color:' + activeDayData.accent + (isChecked ? ";background:" + activeDayData.accent : "") + '">';
     if (isChecked) html += '<span class="onb-check-mark">&#10003;</span>';
@@ -2499,7 +2556,7 @@ function renderNewHireOnboarding() {
     html += '<div class="onb-item-title" style="text-decoration:none;">' + _trnEscape(it.title) + '</div>';
     html += '<div class="onb-item-sub">' + _trnEscape(it.sub) + '</div>';
     html += '</div>';
-    html += '<div class="onb-item-tag ' + tagClass + '">' + _trnEscape(it.tag) + '</div>';
+    html += tagHtml;
     html += '</div>';
   }
   html += '</div>';
