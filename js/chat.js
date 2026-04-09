@@ -781,7 +781,20 @@ function brLocalLookup(query, plan) {
     });
     result.data = matched.slice(0, 5).join('\n');
     var mt = result.data.toLowerCase();
-    if (notCoveredCount > coveredCount) {
+    // Neutral info queries — waiting period (non-STM), pre-existing, network
+    // are informational facts, not coverage yes/no. Use VERIFY (neutral amber)
+    // instead of classifying as COVERED / NOT COVERED. STM plans keep the
+    // existing classification for waiting period because their waiting rules
+    // are a material yes/no sales point.
+    var _isSTM = plan && (plan.group === 'STM' || plan.type === 'STM');
+    var _isInfoQuery =
+      q.indexOf('pre-existing') !== -1 ||
+      q.indexOf('pre existing') !== -1 ||
+      q.indexOf('network') !== -1 ||
+      (!_isSTM && q.indexOf('waiting period') !== -1);
+    if (_isInfoQuery) {
+      result.status = 'VERIFY';
+    } else if (notCoveredCount > coveredCount) {
       result.status = 'NOT COVERED';
     } else if (
       mt.indexOf('discount') !== -1 &&
