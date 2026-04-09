@@ -230,3 +230,22 @@ function renderSavedScripts() {
   });
   el.innerHTML = html;
 }
+
+// ══════════════════════════════════════════════════════
+// SALES TRACKER (My Space, first subtab)
+// Thin shim — all logic lives in js/sales-tracker.js. This
+// global function exists so PAGE_CONFIG in app.js can
+// reference renderSalesTracker by name without depending on
+// the script load order between sales-tracker.js and app.js.
+// ══════════════════════════════════════════════════════
+function renderSalesTracker() {
+  if (typeof _stRender === 'function') {
+    _stRender();
+  } else {
+    var p = document.getElementById('page-salestracker');
+    if (p) {
+      p.innerHTML =
+        '<div style="padding:24px;text-align:center;color:var(--text-secondary);">Sales Tracker is loading…</div>';
+    }
+  }
+}

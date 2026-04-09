@@ -209,6 +209,11 @@ var PAGE_CONFIG = {
   training: {
     label: 'Training',
     subs: [
+      {
+        id: 'newhireonboarding',
+        label: 'New Hire Onboarding',
+        render: renderNewHireOnboarding
+      },
       { id: 'traininghome', label: 'Training', render: renderTrainingHome }
     ]
   },
@@ -226,6 +231,11 @@ var PAGE_CONFIG = {
   myspace: {
     label: 'My Space',
     subs: [
+      {
+        id: 'salestracker',
+        label: 'Sales Tracker',
+        render: renderSalesTracker
+      },
       { id: 'mindset', label: 'Mindset', render: renderMindset },
       { id: 'notes', label: 'Notes', render: renderNotes }
     ]
