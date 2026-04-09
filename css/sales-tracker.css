@@ -14,23 +14,335 @@
    ────────────────────────────────────────────────────────── */
 
 .st-welcome {
-  margin-bottom: 12px;
-  padding: 2px 2px 10px;
+  margin-bottom: 14px;
+  padding: 4px 2px 12px;
+  border-bottom: 1px solid var(--border, #e2e8f0);
 }
 
 .st-welcome-hi {
   font-family: var(--font-ui);
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--text-primary, #1e293b);
-  line-height: 1.2;
+  line-height: 1.15;
 }
 
 .st-welcome-sub {
   font-family: var(--font-body);
   font-size: 12px;
   color: var(--text-secondary, #64748b);
-  margin-top: 2px;
+  margin-top: 3px;
+}
+
+/* Daily breakdown (Mon–Fri) */
+.st-daily {
+  background: var(--bg-card, #fff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin-bottom: 12px;
+}
+
+.st-daily-title {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 8px;
+}
+
+.st-daily-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+
+.st-day-card {
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  padding: 8px 6px;
+  background: #fafbfc;
+  text-align: center;
+}
+
+.st-day-card.has-sales {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.st-day-name {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 2px;
+}
+
+.st-day-amount {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary, #1e293b);
+  line-height: 1.1;
+}
+
+.st-day-card.has-sales .st-day-amount {
+  color: #15803d;
+}
+
+.st-day-count {
+  font-family: var(--font-body);
+  font-size: 10px;
+  color: var(--text-secondary, #64748b);
+  margin-top: 1px;
+}
+
+/* Post-date input row */
+.st-postdate-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.st-postdate-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary, #1e293b);
+  cursor: pointer;
+  user-select: none;
+}
+
+.st-postdate-label input[type='checkbox'] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent, #5175f1);
+  cursor: pointer;
+}
+
+.st-postdate-date-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.st-postdate-date-label {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary, #64748b);
+}
+
+.st-postdate-date {
+  font-family: var(--font-body);
+  font-size: 12px;
+  padding: 5px 8px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--text-primary, #1e293b);
+  outline: none;
+}
+
+.st-postdate-date:focus {
+  border-color: var(--accent, #5175f1);
+}
+
+/* Post-date "due today" banner */
+.st-pd-banner {
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+
+.st-pd-banner-head {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: #9a3412;
+  margin-bottom: 8px;
+}
+
+.st-pd-banner-head strong {
+  font-weight: 800;
+}
+
+.st-pd-banner-head span {
+  font-weight: 500;
+  color: #b45309;
+}
+
+.st-pd-banner-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.st-pd-banner-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: #fff;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+
+.st-pd-banner-info {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-primary, #1e293b);
+}
+
+.st-pd-banner-plan {
+  font-weight: 700;
+}
+
+.st-pd-banner-amount {
+  margin-left: 8px;
+  color: var(--text-secondary, #64748b);
+}
+
+.st-pd-banner-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* Pending Post-Dates section */
+.st-pd-section {
+  background: var(--bg-card, #fff);
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-top: 12px;
+}
+
+.st-pd-title {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary, #1e293b);
+  margin-bottom: 10px;
+}
+
+.st-pd-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.st-pd-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  background: #fafbfc;
+  flex-wrap: wrap;
+}
+
+.st-pd-row-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--text-primary, #1e293b);
+}
+
+.st-pd-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #9a3412;
+  border: 1px solid #fdba74;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.st-pd-date {
+  font-weight: 700;
+  color: var(--text-primary, #1e293b);
+}
+
+.st-pd-plan {
+  font-weight: 600;
+}
+
+.st-pd-amount {
+  color: var(--text-secondary, #64748b);
+}
+
+.st-pd-customer {
+  color: var(--text-secondary, #64748b);
+  font-style: italic;
+}
+
+.st-pd-row-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.st-pd-confirm {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: none;
+  background: #22c55e;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.st-pd-confirm:hover {
+  background: #16a34a;
+}
+
+.st-pd-remove {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: #fff;
+  color: var(--text-secondary, #64748b);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.st-pd-remove:hover {
+  color: #b91c1c;
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+/* Bottom spacer so the floating nav toolbar never covers
+   the last row of the table or the post-dates section. */
+.st-bottom-spacer {
+  height: 120px;
 }
 
 .st-stats {
@@ -364,13 +676,15 @@
 }
 
 .st-delete {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: none;
-  border: none;
+  border: 1px solid transparent;
   color: var(--text-secondary, #94a3b8);
-  font-size: 18px;
   line-height: 1;
   cursor: pointer;
-  padding: 4px 8px;
+  padding: 5px 7px;
   border-radius: 6px;
   transition: all 0.15s;
 }
@@ -378,6 +692,7 @@
 .st-delete:hover {
   color: #dc2626;
   background: #fef2f2;
+  border-color: #fca5a5;
 }
 
 /* Mobile: stack stats 2x2 */
