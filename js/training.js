@@ -2491,12 +2491,12 @@ function renderNewHireOnboarding() {
     var it = activeDayData.items[j];
     var isChecked = checked.indexOf(it.id) !== -1;
     var tagClass = it.tag === "Required" ? "onb-tag-req" : (it.tag === "With manager" ? "onb-tag-mgr" : "onb-tag-up");
-    html += '<div class="onb-item' + (isChecked ? " onb-item-done" : "") + '" onclick="_onbToggleItem(\'' + activeDayData.key + '\',\'' + it.id + '\',' + activeDayData.items.length + ')">';
+    html += '<div class="onb-item" onclick="_onbToggleItem(\'' + activeDayData.key + '\',\'' + it.id + '\',' + activeDayData.items.length + ')">';
     html += '<div class="onb-item-check" style="border-color:' + activeDayData.accent + (isChecked ? ";background:" + activeDayData.accent : "") + '">';
     if (isChecked) html += '<span class="onb-check-mark">&#10003;</span>';
     html += '</div>';
     html += '<div class="onb-item-body">';
-    html += '<div class="onb-item-title">' + _trnEscape(it.title) + '</div>';
+    html += '<div class="onb-item-title" style="text-decoration:none;">' + _trnEscape(it.title) + '</div>';
     html += '<div class="onb-item-sub">' + _trnEscape(it.sub) + '</div>';
     html += '</div>';
     html += '<div class="onb-item-tag ' + tagClass + '">' + _trnEscape(it.tag) + '</div>';
