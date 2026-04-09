@@ -916,44 +916,43 @@ function brAIAnswer(query, planId) {
     'You are a health insurance benefits assistant for Central Health Advisors. Use ONLY the plan data provided. RULES: STATUS must be COVERED, NOT COVERED, VERIFY, or PARTIAL. Use COVERED when benefit exists in plan data. Use NOT COVERED ONLY when plan data explicitly says excluded or not covered. Use VERIFY when benefit is not mentioned. NEVER use NOT COVERED for missing data — use VERIFY. MEC plans have NO deductible — always COVERED for deductible questions. MedFirst 1 Rx = BestChoiceRx discount card — STATUS: COVERED. MEC copays: PCP $25 up to 3 visits/year, Specialist $50 up to 1 visit/year. Waiting period: 30 days sickness, Day 1 accidents. FORMAT RESPONSE EXACTLY LIKE THIS WITH NO VARIATIONS: STATUS: COVERED\nANSWER: one to three lines from plan data\nSAY THIS: exact words for agent to read\n\nPLAN DATA:\n' +
     planContext;
 
-  fetch('https://api.groq.com/openai/v1/chat/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + apiKey
-    },
-    body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
-      max_tokens: 400,
-      temperature: 0.0,
-      messages: [
-        { role: 'system', content: sysPrompt },
-        { role: 'user', content: 'Agent question: ' + query }
-      ]
-    })
-  })
-    .then(function (response) {
+  function _brGroqCall() {
+    return fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + apiKey
+      },
+      body: JSON.stringify({
+        model: 'llama-3.1-8b-instant',
+        max_tokens: 400,
+        temperature: 0.0,
+        messages: [
+          { role: 'system', content: sysPrompt },
+          { role: 'user', content: 'Agent question: ' + query }
+        ]
+      })
+    }).then(function (response) {
       console.log('[CHA Groq] Status:', response.status);
       if (!response.ok) throw new Error('API error ' + response.status);
       return response.json();
+    });
+  }
+
+  _brGroqCall()
+    .catch(function (err) {
+      // Silent retry once (handles transient 429 / network blips)
+      console.warn('[CHA Groq] First attempt failed, retrying once:', err.message);
+      return _brGroqCall();
     })
     .then(function (data) {
       brHideTyping();
       brRenderAIAnswer(data.choices[0].message.content, plan.name);
     })
     .catch(function (err) {
+      // Silent fallback to local lookup — no error shown to user
       brHideTyping();
-      console.error('[CHA Groq] Error:', err.message);
-      var msgs = document.getElementById('br-msgs');
-      if (msgs) {
-        var errDiv = document.createElement('div');
-        errDiv.style.cssText =
-          'background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;font-size:12px;color:#dc2626;margin-bottom:8px;';
-        errDiv.textContent =
-          'AI connection failed: ' + err.message + '. Using local lookup.';
-        msgs.appendChild(errDiv);
-        brScroll();
-      }
+      console.warn('[CHA Groq] Falling back to local lookup:', err.message);
       var plansToUse = brActivePlan ? [brActivePlan] : [];
       brAddMsg('ai', brStructuredAnswer(query, plansToUse));
     });

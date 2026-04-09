@@ -861,7 +861,7 @@ function renderCloses() {
         '<div class="field"><div class="field-lbl">Before You Say This</div><div class="field-txt">' +
         c.before +
         '</div></div>';
-      html += '<div class="sbox u-mt10">' + c.script + '</div>';
+      html += '<div class="sbox u-mt10">' + (c.script || '') + '</div>';
       html +=
         '<div class="ibox ibox-bridge" style="margin-top:8px;"><span class="sbox-lbl">If They Hesitate</span><br>' +
         c.hesitate +
