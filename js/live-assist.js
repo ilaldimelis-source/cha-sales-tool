@@ -141,7 +141,7 @@ function openLaPanel(type) {
       });
     }
   } else if (type === 'recovery') {
-    title.textContent = 'Regain Control';
+    title.textContent = 'Recovery Scripts';
     if (typeof RECOVERY !== 'undefined') {
       RECOVERY.forEach(function (r, i) {
         html +=
@@ -253,7 +253,7 @@ function renderLive() {
     arrow +
     '</div>';
   html +=
-    '<div class="la-nav-card" onclick="openLaPanel(\'recovery\')"><div class="la-nav-inner"><div class="la-nav-title">Regain Control</div><div class="la-nav-desc">Recovery scripts for any situation</div></div>' +
+    '<div class="la-nav-card" onclick="openLaPanel(\'recovery\')"><div class="la-nav-inner"><div class="la-nav-title">Recovery Scripts</div><div class="la-nav-desc">Recovery scripts for any situation</div></div>' +
     arrow +
     '</div>';
   html +=
@@ -274,7 +274,7 @@ function renderLive() {
     '<button onclick="event.stopPropagation();openTrainingSection(\'cheatsheets\');showPage(\'training\')" style="background:#5B8DEF;color:#fff;border:none;border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">Cheat Sheets &rarr;</button>';
   html += '</div>';
   // Section label
-  html += '<div class="la-section-label">Common Objections</div>';
+  html += '<div class="la-section-label">Rebuttals</div>';
   // Slide-in panel overlay + panel (injected once)
   html +=
     '<div id="la-panel-overlay" class="la-panel-overlay" onclick="closeLaPanel()"></div>';
@@ -369,7 +369,7 @@ function toggleLiveObj(i) {
 // ══════════════════════════════════════════════════════
 function renderRecovery() {
   var html =
-    '<div class="ph"><div class="pt">Regain <span>Control</span></div><div class="pd">Answer. Bridge. Close. Every situation handled.</div></div>';
+    '<div class="ph"><div class="pt">Recovery <span>Scripts</span></div><div class="pd">Answer. Bridge. Close. Every situation handled.</div></div>';
   RECOVERY.forEach(function (r, i) {
     html += '<div class="rec-card" id="rec' + i + '">';
 

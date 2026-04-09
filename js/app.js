@@ -263,7 +263,7 @@ var PAGE_CONFIG = {
     label: 'Live Call',
     subs: [
       { id: 'live', label: 'Live Assist', render: renderLive },
-      { id: 'objections', label: 'Objections', render: renderObjections },
+      { id: 'objections', label: 'Rebuttals', render: renderObjections },
       { id: 'qarebuttals', label: 'Q&A Rebuttals', render: renderQaRebuttals },
       {
         id: 'psychprofile',
@@ -289,10 +289,10 @@ var PAGE_CONFIG = {
   scripts: {
     label: 'Scripts',
     subs: [
-      { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
-      { id: 'closes', label: 'Closing Lines', render: renderCloses },
       { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
-      { id: 'recovery', label: 'Recovery', render: renderRecovery }
+      { id: 'closes', label: 'Closing Lines', render: renderCloses },
+      { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
+      { id: 'recovery', label: 'Recovery Scripts', render: renderRecovery }
     ]
   },
   networkguide: {
