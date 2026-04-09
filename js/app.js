@@ -305,6 +305,12 @@ var PAGE_CONFIG = {
       }
     ]
   },
+  cheatsheet: {
+    label: 'Cheat Sheet',
+    subs: [
+      { id: 'cheatsheets', label: 'Cheat Sheet', render: renderCheatsheets }
+    ]
+  },
   training: {
     label: 'Training',
     subs: [
@@ -569,7 +575,7 @@ function renderDashboard() {
   html += '</div>';
   // Cheat Sheets full-width card
   html +=
-    '<div class="dash-card dash-card-full" onclick="showPage(\'training\');setTimeout(function(){openTrainingSection(\'cheatsheets\');},50)" style="margin-top:12px;border-left:3px solid #5B8DEF;display:flex;align-items:center;gap:16px;">';
+    '<div class="dash-card dash-card-full" onclick="showPage(\'cheatsheets\')" style="margin-top:12px;border-left:3px solid #5B8DEF;display:flex;align-items:center;gap:16px;">';
   html +=
     '<div class="dash-icon">' +
     ic(
