@@ -1264,8 +1264,37 @@ function _brLookupBenefit(planDoc, topic) {
   var benefitHits = [];
   var exclusionHits = [];
 
+  // Rx queries: pull ALL items from the matching category for completeness
+  var _isRxQuery = /prescription|rx|\bdrug|pharmacy/i.test(topic);
+  var _rxCategoryPulled = false;
+
   // Search benefits
   planDoc.benefits.forEach(function (bcat) {
+    // For Rx queries, if the category itself matches, pull every item
+    if (_isRxQuery && !_rxCategoryPulled) {
+      var _catMatch = false;
+      for (var ci = 0; ci < searchTerms.length; ci++) {
+        var _cre = new RegExp(
+          '\\b' + searchTerms[ci].replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b',
+          'i'
+        );
+        if (_cre.test(bcat.category)) { _catMatch = true; break; }
+      }
+      if (_catMatch) {
+        _rxCategoryPulled = true;
+        bcat.items.forEach(function (item) {
+          if (
+            /\bNOT covered\b|\bNOT COVERED\b/i.test(item) &&
+            !/discount|savings|negotiated/i.test(item)
+          ) {
+            exclusionHits.push(item);
+          } else {
+            benefitHits.push(item);
+          }
+        });
+        return; // skip per-item matching for this category
+      }
+    }
     bcat.items.forEach(function (item) {
       for (var i = 0; i < searchTerms.length; i++) {
         var re = new RegExp(
@@ -1319,22 +1348,40 @@ function _brLookupBenefit(planDoc, topic) {
   });
 
   // Determine status
+  var _maxBenefits = _isRxQuery ? 10 : 3;
   var status, items;
   if (benefitHits.length > 0 && exclusionHits.length === 0) {
     status = 'Covered';
-    items = benefitHits.slice(0, 3);
+    items = benefitHits.slice(0, _maxBenefits);
   } else if (exclusionHits.length > 0 && benefitHits.length === 0) {
     status = 'Not Covered';
     items = exclusionHits.slice(0, 2);
   } else if (benefitHits.length > 0 && exclusionHits.length > 0) {
     status = 'Covered';
-    items = benefitHits.slice(0, 2).concat(['⚠ ' + exclusionHits[0]]);
+    items = benefitHits.slice(0, _maxBenefits).concat(['⚠ ' + exclusionHits[0]]);
   } else if (waitingHits.length > 0) {
-    status = 'Info';
-    items = waitingHits.slice(0, 2);
+    status = 'Verify';
+    items = waitingHits.slice(0, 4);
   } else {
     status = 'Verify';
     items = [];
+  }
+
+  // rawText fallback — only when structured data found nothing
+  if (status === 'Verify' && items.length === 0 && planDoc.rawText) {
+    var _rtSnippets = [];
+    searchTerms.forEach(function (t) {
+      var _ri = planDoc.rawText.toLowerCase().indexOf(t.toLowerCase());
+      while (_ri !== -1 && _rtSnippets.length < 3) {
+        var _start = Math.max(0, _ri - 40);
+        var _end = Math.min(planDoc.rawText.length, _ri + t.length + 120);
+        _rtSnippets.push('...' + planDoc.rawText.substring(_start, _end).replace(/\s+/g, ' ').trim() + '...');
+        _ri = planDoc.rawText.toLowerCase().indexOf(t.toLowerCase(), _ri + t.length);
+      }
+    });
+    if (_rtSnippets.length) {
+      items = _rtSnippets;
+    }
   }
 
   return { status: status, label: topic, items: items, source: planDoc.name };
@@ -1576,6 +1623,15 @@ function brStructuredAnswer(query, plans) {
     results.push(_brLookupBenefit(planDoc, item));
   });
 
+  // Neutral info topics — override to 'Info' so no COVERED badge renders
+  var _isInfoQuery =
+    /waiting\s*period|pre[\s-]?existing|pre[\s-]?ex|network/i.test(cleaned);
+  if (_isInfoQuery) {
+    results.forEach(function (r) {
+      if (r.status === 'Covered' || r.status === 'Verify') r.status = 'Info';
+    });
+  }
+
   // Determine overall status
   var covCount = 0,
     notCount = 0,
@@ -1681,7 +1737,7 @@ function brStructuredAnswer(query, plans) {
       ';background:' +
       c.bg +
       ';border-radius:12px;padding:14px 16px;margin-bottom:10px;">';
-    // Status row: neutral header for Info, badge for everything else
+    // Status row: plain header for Info, badge pill for everything else
     html +=
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">';
     if (r.status === 'Info') {
