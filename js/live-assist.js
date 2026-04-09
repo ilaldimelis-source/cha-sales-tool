@@ -271,7 +271,7 @@ function renderLive() {
   html +=
     '<div style="flex:1;font-family:var(--font-body);font-size:12px;color:#374151;line-height:1.5;"><strong style="color:#111827;">SOA:</strong> Disclose plan type &middot; pre-ex &middot; waiting periods &middot; fixed benefits &middot; NOT ACA major medical <span class="soa-copy-hint" style="font-size:10px;color:#5B8DEF;font-weight:600;margin-left:6px;">Tap to copy</span></div>';
   html +=
-    '<button onclick="event.stopPropagation();openTrainingSection(\'cheatsheets\');showPage(\'training\')" style="background:#5B8DEF;color:#fff;border:none;border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">Cheat Sheets &rarr;</button>';
+    '<button onclick="event.stopPropagation();showPage(\'cheatsheet\')" style="background:#5B8DEF;color:#fff;border:none;border-radius:999px;padding:5px 14px;font-family:var(--font-ui);font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;">Cheat Sheets &rarr;</button>';
   html += '</div>';
   // Section label
   html += '<div class="la-section-label">Rebuttals</div>';
