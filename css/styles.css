@@ -3905,3 +3905,178 @@ body.font-l .nb-label {
 body.font-l .t-brand {
   font-size: 0.88rem;
 }
+
+/* ══════════════════════════════════════════════════════
+   TOPBAR EXTRAS — welcome greeting + theme toggle
+   ══════════════════════════════════════════════════════ */
+
+.topbar-welcome {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--accent-light);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (width <= 700px) {
+  .topbar-welcome {
+    display: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════
+   DARK MODE
+   Applied via body.dark-mode. Overrides the CSS variables
+   defined in :root so every component that already uses
+   var(--bg-*, --text-*, --border) switches automatically.
+   Accent colors stay the same so the brand is consistent.
+   ══════════════════════════════════════════════════════ */
+
+body.dark-mode {
+  --bg-page: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card2: #263449;
+  --bg-card3: #1a2435;
+  --bg-surface: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --border: rgb(255, 255, 255, 0.08);
+  --border-med: rgb(255, 255, 255, 0.14);
+  --accent-light: rgb(91, 141, 239, 0.18);
+  --charcoal: #f1f5f9;
+  --charcoal2: #f1f5f9;
+  --charcoal3: #f1f5f9;
+  --txt-hero: #f1f5f9;
+  --txt-head: #f1f5f9;
+  --txt-body: #cbd5e1;
+  --txt-muted: #94a3b8;
+  --warmgray3: #cbd5e1;
+  --rule: rgb(255, 255, 255, 0.08);
+  --rule2: rgb(255, 255, 255, 0.14);
+  --milk: #1e293b;
+  --milk2: #0f172a;
+  --butter: rgb(91, 141, 239, 0.18);
+  --pastel-blue: rgb(91, 141, 239, 0.18);
+}
+
+body.dark-mode {
+  background: var(--bg-page);
+  color: var(--text-primary);
+}
+
+/* Inputs, textareas, selects — keep them readable in dark */
+body.dark-mode input[type='text'],
+body.dark-mode input[type='search'],
+body.dark-mode input[type='date'],
+body.dark-mode input[type='email'],
+body.dark-mode input[type='number'],
+body.dark-mode textarea,
+body.dark-mode select {
+  background: var(--bg-card2);
+  color: var(--text-primary);
+  border-color: var(--border-med);
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Table rows with inline white backgrounds */
+body.dark-mode .st-row-chargeback td {
+  background: rgb(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+
+/* Day cards with hard-coded neutral backgrounds */
+body.dark-mode .st-day-card {
+  background: var(--bg-card2);
+  border-color: var(--border);
+}
+
+body.dark-mode .st-day-card.has-sales {
+  background: rgb(34, 197, 94, 0.12);
+  border-color: rgb(34, 197, 94, 0.4);
+}
+
+/* Tier chip defaults */
+body.dark-mode .st-tier-chip {
+  background: var(--bg-card2);
+}
+
+body.dark-mode .st-tier-chip.achieved {
+  background: rgb(34, 197, 94, 0.15);
+  border-color: rgb(34, 197, 94, 0.4);
+}
+
+/* Flash messages */
+body.dark-mode .st-flash-ok {
+  background: rgb(34, 197, 94, 0.15);
+  color: #86efac;
+  border-color: rgb(34, 197, 94, 0.35);
+}
+
+body.dark-mode .st-flash-error {
+  background: rgb(239, 68, 68, 0.15);
+  color: #fca5a5;
+  border-color: rgb(239, 68, 68, 0.35);
+}
+
+/* Post-date banner keeps warm tones but inverts background */
+body.dark-mode .st-pd-banner {
+  background: rgb(245, 158, 11, 0.1);
+  border-color: rgb(245, 158, 11, 0.35);
+}
+
+body.dark-mode .st-pd-banner-head {
+  color: #fdba74;
+}
+
+body.dark-mode .st-pd-banner-head span {
+  color: #fbbf24;
+}
+
+body.dark-mode .st-pd-banner-item {
+  background: var(--bg-card);
+  border-color: rgb(245, 158, 11, 0.25);
+}
+
+/* Topbar welcome in dark */
+body.dark-mode .topbar-welcome {
+  background: var(--bg-card2);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
+
+body.dark-mode .theme-toggle {
+  background: var(--bg-card);
+}
