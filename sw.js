@@ -1,7 +1,7 @@
 // CHA Sales Command Center — Service Worker
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = 'cha-command-center-v88';
+var CACHE_NAME = 'cha-command-center-v89';
 var URLS_TO_CACHE = [
   './',
   './index.html',

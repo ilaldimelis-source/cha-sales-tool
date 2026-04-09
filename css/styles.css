@@ -3730,3 +3730,178 @@ select {
   background: #fff !important;
   color: #1e293b !important;
 }
+
+/* ════════════════════════════════════════════════════════════
+   SCRIPTS PAGE — compact layout (Phase 1)
+   Scoped to #page-scripts so other pages that use the same
+   shared card / box classes (Live Call, Plans, etc.) are
+   unchanged. Slightly smaller type, tighter padding and
+   margins, no color or theme changes.
+   ════════════════════════════════════════════════════════════ */
+#page-scripts .ph .pt {
+  font-size: 1.32rem;
+}
+
+#page-scripts .ph .pd {
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+#page-scripts .sbox {
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.55;
+  margin-bottom: 9px;
+}
+
+#page-scripts .sbox-lbl {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+#page-scripts .ibox {
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 9px;
+}
+
+#page-scripts .close-item,
+#page-scripts .rec-card,
+#page-scripts .cf-step,
+#page-scripts .ps-card {
+  margin-bottom: 9px;
+}
+
+#page-scripts .close-top,
+#page-scripts .close-detail {
+  padding: 13px 16px;
+  gap: 10px;
+}
+
+#page-scripts .close-line {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+#page-scripts .cf-title {
+  font-size: 0.86rem;
+}
+
+#page-scripts .ctype {
+  font-size: 0.66rem;
+  padding: 2px 9px;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FONT SIZE TOGGLE — make S/M/L visibly change text (Phase 2)
+   The existing body.font-s/m/l declarations at the top of this
+   file only set body font-size and a --fs-base CSS variable —
+   which has no visible effect because nearly every rule in the
+   project uses hard-coded px. These descendant rules give S
+   and L a visible size delta on the most common text / padding
+   targets. The JS to add the body class and persist to
+   localStorage already lives in app.js (setFontSize and
+   _initFontSize), so no JS changes are needed.
+
+   NOTE: inside the Scripts page, the Phase 1 rules above use
+   higher specificity (ID + class) and will win over these
+   (class + class), so the Scripts page stays at the Phase 1
+   compact size regardless of S/M/L. S/L still visibly affects
+   every other page (Dashboard, Plans, Live Call, Benefits
+   Reference chat, Training, Compliance, My Space, etc.).
+   ════════════════════════════════════════════════════════════ */
+
+/* ── S = compact (smaller text, tighter padding) ── */
+body.font-s .ph .pt {
+  font-size: 1.28rem;
+}
+
+body.font-s .ph .pd {
+  font-size: 12px;
+}
+
+body.font-s .sbox {
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+body.font-s .sbox-lbl {
+  font-size: 12.5px;
+}
+
+body.font-s .ibox {
+  padding: 12px 14px;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+body.font-s .close-line {
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+body.font-s .close-top,
+body.font-s .close-detail {
+  padding: 12px 16px;
+}
+
+body.font-s .cf-title {
+  font-size: 0.84rem;
+}
+
+body.font-s .nb-label {
+  font-size: 8.5px;
+}
+
+body.font-s .t-brand {
+  font-size: 0.72rem;
+}
+
+/* ── L = larger (bigger text, more breathing room) ── */
+body.font-l .ph .pt {
+  font-size: 1.8rem;
+}
+
+body.font-l .ph .pd {
+  font-size: 16px;
+}
+
+body.font-l .sbox {
+  padding: 18px 22px;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+body.font-l .sbox-lbl {
+  font-size: 16px;
+}
+
+body.font-l .ibox {
+  padding: 18px 22px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+body.font-l .close-line {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+body.font-l .close-top,
+body.font-l .close-detail {
+  padding: 18px 22px;
+}
+
+body.font-l .cf-title {
+  font-size: 1.05rem;
+}
+
+body.font-l .nb-label {
+  font-size: 10.5px;
+}
+
+body.font-l .t-brand {
+  font-size: 0.88rem;
+}
