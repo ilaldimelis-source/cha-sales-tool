@@ -83,6 +83,15 @@ Run immediately: npm run revert
 5. Run npm run check
 6. Commit and push
 
+## MERGE SAFETY RULES
+
+- Never open a new PR while another PR touching the same file is still open
+- Always run: git fetch origin && git rebase origin/main before pushing any branch
+- Never push directly to main
+- If a conflict appears, rebase do not merge
+- One PR at a time per file — wait for merge before starting next change to same file
+- sw.js CACHE_NAME must be bumped by 1 on every commit — check current main version first before bumping
+
 ## Before EVERY Commit — Mandatory Checklist
 
 1. npm run check — syntax check all JS files
