@@ -4735,3 +4735,97 @@ body.dark-mode .settings-block {
   background: var(--bg-card);
   border-color: var(--border);
 }
+
+/* ══════════════════════════════════════════════════════
+   UI POLISH — TEXT WRAP, TRAINING TYPOGRAPHY, GLOBAL
+   CSS-only fixes. No JS or content touched.
+   ══════════════════════════════════════════════════════ */
+
+/* TASK 1 — Benefits Reference chat box: force wrapping so long
+   plan names, URLs, and word chunks never overflow the bubble */
+#br-panel,
+#br-panel *,
+.br-msg,
+.br-bub,
+.br-answer,
+.br-card,
+.br-item,
+.br-text {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  white-space: normal;
+}
+
+/* TASK 2 — Training tab font cohesion with the rest of the app.
+   Matches the global 14px body default so Training doesn't feel
+   heavier or lighter than Dashboard / Plans / Live Call. */
+#page-traininghome,
+#page-newhireonboarding {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.trn-sec {
+  font-size: 14px;
+  line-height: 1.6;
+}
+.trn-sec-title {
+  font-size: 15px;
+  line-height: 1.35;
+}
+.trn-sec-subtitle {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.trn-sec-count {
+  font-size: 11px;
+}
+.trn-article-title {
+  font-size: 14px;
+  line-height: 1.4;
+}
+.trn-article-body {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* TASK 3 — Whole-site polish
+   Sharper text rendering, consistent line-height on common
+   copy containers, and a single cohesive card shadow to
+   replace any double borders or mixed shadow treatments. */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+p,
+li,
+td,
+.card-body {
+  line-height: 1.6;
+}
+
+/* Normalize card shadows and remove double borders where the
+   same element has both a border AND a ring/box-shadow. */
+.card,
+.dash-card,
+.dash-ref-card,
+.mindset-card,
+.fav-card,
+.trn-sec,
+.trn-article,
+.onb-card,
+.settings-block {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* If a card already has a 1px border, suppress any ring
+   shadow so borders don't stack visually as a "double line". */
+.card[style*='border:1px'],
+.dash-card[style*='border:1px'],
+.onb-card[style*='border:1px'] {
+  box-shadow: none;
+}
+
