@@ -43,6 +43,195 @@ var ST_BONUS_TIERS = [
   { deals: 25, addons: 25, bonus: 1000 }
 ];
 
+// ── PLAN NAME RECOGNITION ───────────────────────────────────
+// Comprehensive list of all core plans + add-ons CHA sells.
+// Used by the receipt parser for case-insensitive substring
+// matching, longest match wins. If no entry matches, the parser
+// keeps the raw product name from the receipt instead of
+// falling back to "Unknown Plan".
+var CHA_CORE_PLAN_NAMES = [
+  'MedFirst 1', 'MedFirst 2', 'MedFirst 3', 'MedFirst 4', 'MedFirst 5',
+  'TrueHealth 1', 'TrueHealth 2', 'TrueHealth 3',
+  'Good Health Distribution Partner 1', 'Good Health Distribution Partner 2',
+  'Good Health Distribution Partner 3', 'Good Health Distribution Partner 4',
+  'Good Health Distribution Partner 5',
+  'SmartChoice 1500', 'SmartChoice 2500', 'SmartChoice 3000', 'SmartChoice 3500',
+  'TDK 1', 'TDK 2', 'TDK 3', 'TDK 4', 'TDK 5',
+  'Pinnacle STM',
+  'Access Health Traditional STM', 'Access Health Lite STM',
+  'Smart Health STM Traditional', 'Smart Health STM Limited',
+  'Galena STM Elite', 'Galena STM Standard', 'Galena STM Economy',
+  'Allstate Enhanced STM PPO', 'Allstate Copay Enhanced STM PPO',
+  'Allstate Essentials STM PPO', 'Allstate Health Access',
+  'Harmony Care Plus 100', 'Harmony Care Plus 200', 'Harmony Care Plus 300',
+  'Harmony Care Plus 500', 'Harmony Care Plus 750', 'Harmony Care Plus 1000',
+  'Harmony Care 100', 'Harmony Care 200', 'Harmony Care 300',
+  'Harmony Care 500', 'Harmony Care 750', 'Harmony Care 1000',
+  'Sigma Care Plus 100', 'Sigma Care Plus 200', 'Sigma Care Plus 300',
+  'Sigma Care Plus 500', 'Sigma Care Plus 750', 'Sigma Care Plus 1000',
+  'Health Choice Silver', 'Everest Summit',
+  'Pinnacle Protect Plan 1', 'Pinnacle Protect Plan 2',
+  'Pinnacle Protect Plan 3', 'Pinnacle Protect Plan 4',
+  'BWA Americare Plan 2', 'BWA Americare Plan 3', 'BWA Americare Plan 4',
+  'BWA Paramount',
+  'MyChoice Plan Low', 'MyChoice Plan Mid', 'MyChoice Plan High'
+];
+
+var CHA_ADDON_PLAN_NAMES = [
+  'AWA Safeguard ADD/AME/CI',
+  'AWA Safe Guard Accident Hospital Plan $5000/$500',
+  'AWA Safe Guard Accident Hospital Plan $5000/$1000',
+  'AWA Safe Guard 100',
+  'NCE WellGuard AD&D $100,000', 'NCE WellGuard AD&D $250,000',
+  'NCE Fusion Dental Plan A', 'NCE Fusion Dental Plan B',
+  'New York Life $50,000 Term Life',
+  'Pinnacle Critical Care Plan 1', 'Pinnacle Critical Care Plan 2',
+  'Pinnacle Critical Care Plan 3', 'Pinnacle Critical Care Plan 4',
+  'Allstate Hospital Expense', 'Allstate Plan Enhancer',
+  'Allstate Dental PPO', 'Allstate Cancer and Heart Stroke',
+  'Prime Health Pass Discount', 'MDLive',
+  'GapSupport Discount', 'AssistPro Discount',
+  'Compass VAB Add-on', 'Compass Telemed Add-on',
+  'GHDP Dental 1500 Add-on', 'GHDP Dental 3000 Add-on', 'GHDP Dental 5000 Add-on',
+  'GHDP Dental-Vision 1500 Add-on', 'GHDP Dental-Vision 3000 Add-on',
+  'GHDP Dental-Vision 5000 Add-on',
+  'Ameritas Schedule Plan Add-on', 'Ameritas Coinsurance Plan Add-on',
+  'Health Essential Care DVH Plus Add-on',
+  'AME $500 Add-on', 'AME $1000 Add-on',
+  'AD&D $50k Add-on', 'AD&D $100K Add-on', 'AD&D $125K Add-on',
+  'AD&D $175K Add-on', 'AD&D $200K Add-on', 'AD&D $250K Add-on',
+  'American Financial Critical Illness $2500 Add-on',
+  'American Financial Critical Illness $5000 Add-on',
+  'American Financial Critical Illness $7500 Add-on',
+  'American Financial Critical Illness $10000 Add-on'
+];
+
+// Full list sorted by length descending so longest-match-wins
+// naturally when iterating. Built once at module load.
+var CHA_ALL_PLAN_NAMES = CHA_CORE_PLAN_NAMES.concat(CHA_ADDON_PLAN_NAMES)
+  .slice()
+  .sort(function (a, b) { return b.length - a.length; });
+
+// Case-insensitive substring match, longest wins. If nothing
+// matches, returns '' so the caller can keep the raw receipt
+// name.
+function _stMatchPlanName(rawText) {
+  if (!rawText) return '';
+  var hay = String(rawText).toLowerCase();
+  for (var i = 0; i < CHA_ALL_PLAN_NAMES.length; i++) {
+    var candidate = CHA_ALL_PLAN_NAMES[i];
+    if (hay.indexOf(candidate.toLowerCase()) !== -1) {
+      return candidate;
+    }
+  }
+  return '';
+}
+
+// ── COMMISSION RATE CONFIG ──────────────────────────────────
+// Plan commission is a stepped % based on the base plan's
+// monthly premium. Add-on commission is a % based on the
+// add-on category (detected from the plan name).
+//
+// Defaults live here. Agents can override both the plan tier
+// % and the add-on category % per-deal via the inline edit
+// button; overrides are stored on the sale object itself
+// (commissionRate / addonCommissionRate). Global defaults can
+// also be edited and are stored in localStorage under
+// cha_commission_rates.
+var CHA_DEFAULT_COMMISSION_RATES = {
+  planTiers: [
+    { min: 0,   max: 299.99, rate: 0.30 },
+    { min: 300, max: 499.99, rate: 0.35 },
+    { min: 500, max: Infinity, rate: 0.40 }
+  ],
+  addonTypes: {
+    standard: 0.25,
+    dvh: 0.35,        // dental / vision / health bundle
+    accident: 0.70,   // accident / AD&D / AME
+    rx: 0.20,         // prescription discount
+    gap: 0.60         // GAP products
+  },
+  enrollmentBonus: 20 // dollars per $125 enrollment
+};
+
+function _stLoadCommissionRates() {
+  try {
+    var raw = _stGet('cha_commission_rates');
+    if (!raw) return _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
+    var parsed = JSON.parse(raw);
+    // Shallow merge in case new keys were added
+    var base = _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
+    if (parsed && parsed.planTiers) base.planTiers = parsed.planTiers;
+    if (parsed && parsed.addonTypes) {
+      for (var k in parsed.addonTypes) {
+        if (parsed.addonTypes.hasOwnProperty(k)) {
+          base.addonTypes[k] = parsed.addonTypes[k];
+        }
+      }
+    }
+    if (parsed && typeof parsed.enrollmentBonus === 'number') {
+      base.enrollmentBonus = parsed.enrollmentBonus;
+    }
+    return base;
+  } catch (_e) {
+    return _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
+  }
+}
+
+function _stSaveCommissionRates(rates) {
+  _stSet('cha_commission_rates', JSON.stringify(rates || {}));
+}
+
+function _stResetCommissionRates() {
+  try { localStorage.removeItem('cha_commission_rates'); } catch (_e) {}
+}
+
+function _stCloneRates(r) {
+  return {
+    planTiers: r.planTiers.slice().map(function (t) {
+      return { min: t.min, max: t.max, rate: t.rate };
+    }),
+    addonTypes: {
+      standard: r.addonTypes.standard,
+      dvh: r.addonTypes.dvh,
+      accident: r.addonTypes.accident,
+      rx: r.addonTypes.rx,
+      gap: r.addonTypes.gap
+    },
+    enrollmentBonus: r.enrollmentBonus
+  };
+}
+
+// Classify an add-on plan name into one of the 5 commission
+// categories. Falls back to 'standard' if nothing matches.
+function _stClassifyAddon(name) {
+  if (!name) return 'standard';
+  var n = String(name).toLowerCase();
+  // Rx / prescription discounts
+  if (/\b(rx|prescription|prime health pass|assistpro|mdlive|telemed)\b/.test(n)) {
+    return 'rx';
+  }
+  // GAP support products
+  if (/\bgap(support)?\b/.test(n)) return 'gap';
+  // Dental / Vision / Health bundles
+  if (/\b(dental|vision|dvh|dental-vision|ameritas)\b/.test(n)) return 'dvh';
+  // Accident / AD&D / AME
+  if (/\b(accident|ad&?d|ad and d|ame|critical illness|critical care|hospital expense|cancer)\b/.test(n)) {
+    return 'accident';
+  }
+  return 'standard';
+}
+
+// Given a plan monthly amount, return the matching tier rate.
+function _stPlanTierRate(amount, rates) {
+  var amt = Number(amount) || 0;
+  var tiers = (rates && rates.planTiers) || CHA_DEFAULT_COMMISSION_RATES.planTiers;
+  for (var i = 0; i < tiers.length; i++) {
+    if (amt >= tiers[i].min && amt <= tiers[i].max) return tiers[i].rate;
+  }
+  return tiers[tiers.length - 1].rate;
+}
+
 // ── PER-USER STORAGE SCOPING ────────────────────────────────
 // Reads window.CHA_USER (set by js/auth.js after Clerk.load).
 // If no signed-in user is present (e.g. during dev), falls back
@@ -270,7 +459,8 @@ function _stParseReceipt(text) {
     receiptTotal: 0,
     enrollmentFee: 0,
     customer: '',
-    agent: ''
+    agent: '',
+    memberId: ''
   };
   if (!text) return out;
   var raw = String(text).replace(/\r\n/g, '\n');
@@ -294,9 +484,23 @@ function _stParseReceipt(text) {
 
   // ── Customer name (if any explicit field) ─────────────────
   var custMatch = raw.match(
-    /(?:customer|member|client|insured|name)\s*[:-]\s*([^\n\r]+)/i
+    /(?:customer|client|insured|name)\s*[:-]\s*([^\n\r]+)/i
   );
   if (custMatch) out.customer = custMatch[1].trim().substring(0, 80);
+
+  // ── Member ID (captured separately from customer name) ───
+  // Accepts "Member ID:", "Member #", "Member:", "MemberID",
+  // "Member Number" — alphanumeric + dashes, 4+ chars.
+  var memberIdMatch = raw.match(
+    /member(?:\s*(?:id|#|number|no\.?))?\s*[:#\-]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i
+  );
+  if (memberIdMatch) {
+    var midCandidate = memberIdMatch[1].trim();
+    // Avoid grabbing plain words
+    if (/[0-9]/.test(midCandidate)) {
+      out.memberId = midCandidate.substring(0, 40);
+    }
+  }
 
   // ── Enrollment fee ────────────────────────────────────────
   // One-time enrollment charges are tracked separately and
@@ -366,11 +570,18 @@ function _stParseReceipt(text) {
       }
     }
 
+    // Plan name recognition: run the raw receipt name through
+    // the CHA plan list. If a known plan matches (longest wins),
+    // use the canonical name. Otherwise keep the raw receipt
+    // name — we NEVER fall back to "Unknown Plan" here.
+    var matched = _stMatchPlanName(name);
+    var finalName = matched || name.substring(0, 120);
+
     // De-dup: skip if this exact name+price combo already added
     var dup = false;
     for (var di = 0; di < out.products.length; di++) {
       if (
-        out.products[di].name === name &&
+        out.products[di].name === finalName &&
         Math.abs(out.products[di].price - price) < 0.01
       ) {
         dup = true;
@@ -380,7 +591,7 @@ function _stParseReceipt(text) {
     if (dup) continue;
 
     out.products.push({
-      name: name.substring(0, 120),
+      name: finalName,
       price: price,
       policy: policy
     });
@@ -403,8 +614,12 @@ function _stParseReceipt(text) {
       }
     }
     if (fallbackPrice > 0) {
-      var guessedName = '';
-      if (typeof POLICY_DOCS !== 'undefined' && Array.isArray(POLICY_DOCS)) {
+      // Prefer the CHA plan list match. If nothing matches, try
+      // POLICY_DOCS as a secondary source. If still nothing, use
+      // the first meaningful line from the receipt as the raw
+      // product name instead of "Unknown Plan".
+      var guessedName = _stMatchPlanName(raw);
+      if (!guessedName && typeof POLICY_DOCS !== 'undefined' && Array.isArray(POLICY_DOCS)) {
         var lower = raw.toLowerCase();
         for (var k = 0; k < POLICY_DOCS.length; k++) {
           var pdName =
@@ -417,6 +632,19 @@ function _stParseReceipt(text) {
           }
         }
       }
+      if (!guessedName) {
+        // Last resort: first non-metadata, non-empty line of the
+        // receipt becomes the raw product name.
+        for (var fl = 0; fl < lines.length; fl++) {
+          var flRaw = lines[fl].trim();
+          if (!flRaw) continue;
+          if (skipLineRe.test(flRaw)) continue;
+          if (/^\$/.test(flRaw)) continue;
+          if (enrollmentRe.test(flRaw)) continue;
+          guessedName = flRaw.substring(0, 120);
+          break;
+        }
+      }
       out.products.push({
         name: guessedName || 'Unknown Plan',
         price: fallbackPrice,
@@ -426,6 +654,117 @@ function _stParseReceipt(text) {
   }
 
   return out;
+}
+
+// ── COMMISSION COMPUTATION ──────────────────────────────────
+// Given a single sale (deal or addon) and current rate config,
+// returns the commission dollar amount for that individual
+// line. Respects per-deal overrides stored on the sale as
+// `commissionRate` (for deals) or `addonCommissionRate` (for
+// add-ons). Status is applied:
+//   - 'cancel'     → 0
+//   - 'chargeback' → negated
+function _stComputeLineCommission(sale, rates) {
+  if (!sale) return 0;
+  var amt = Number(sale.amount) || 0;
+  var rate;
+  if (sale.type === 'addon') {
+    if (typeof sale.addonCommissionRate === 'number') {
+      rate = sale.addonCommissionRate;
+    } else {
+      var cat = _stClassifyAddon(sale.plan);
+      rate = rates.addonTypes[cat];
+      if (typeof rate !== 'number') rate = rates.addonTypes.standard;
+    }
+  } else {
+    rate = typeof sale.commissionRate === 'number'
+      ? sale.commissionRate
+      : _stPlanTierRate(amt, rates);
+  }
+  var commission = amt * rate;
+  if (sale.status === 'cancel') return 0;
+  if (sale.status === 'chargeback') return -Math.abs(commission);
+  return commission;
+}
+
+// Recompute and stamp all commission fields on a DEAL sale
+// object in place. Addons get their own line commission but
+// we roll the total up onto the parent deal (same receiptId).
+// Called at insert time and again whenever a sale's status or
+// override rate changes, so the stored fields stay accurate.
+function _stStampDealCommission(sales, dealIdx, rates) {
+  var deal = sales[dealIdx];
+  if (!deal) return;
+  if (deal.type !== 'deal') return;
+  var amt = Number(deal.amount) || 0;
+  var rate = typeof deal.commissionRate === 'number'
+    ? deal.commissionRate
+    : _stPlanTierRate(amt, rates);
+  deal.planCommissionRate = rate;
+  var planCommission = amt * rate;
+  if (deal.status === 'cancel') planCommission = 0;
+  else if (deal.status === 'chargeback') planCommission = -Math.abs(planCommission);
+  deal.planCommission = planCommission;
+
+  // Sum add-on commissions that belong to this receipt.
+  var totalAddon = 0;
+  if (deal.receiptId) {
+    for (var i = 0; i < sales.length; i++) {
+      var s = sales[i];
+      if (!s || s.type !== 'addon') continue;
+      if (s.receiptId !== deal.receiptId) continue;
+      totalAddon += _stComputeLineCommission(s, rates);
+      // Also stamp the add-on so its own fields stay in sync
+      s.addonCommissionRate = typeof s.addonCommissionRate === 'number'
+        ? s.addonCommissionRate
+        : (rates.addonTypes[_stClassifyAddon(s.plan)] || rates.addonTypes.standard);
+      var acR = s.addonCommissionRate;
+      var acAmt = (Number(s.amount) || 0) * acR;
+      if (s.status === 'cancel') acAmt = 0;
+      else if (s.status === 'chargeback') acAmt = -Math.abs(acAmt);
+      s.addonCommission = acAmt;
+    }
+  }
+  deal.totalAddonCommission = totalAddon;
+
+  // Enrollment bonus: only paid when enrollmentFee is exactly $125
+  var bonus = 0;
+  if (Number(deal.enrollmentFee) === 125) bonus = rates.enrollmentBonus;
+  if (deal.status === 'cancel') bonus = 0;
+  else if (deal.status === 'chargeback') bonus = -Math.abs(bonus);
+  deal.enrollmentBonus = bonus;
+
+  // Expected total = plan + add-ons + bonus (with status logic already applied)
+  var expected = planCommission + totalAddon + bonus;
+  if (deal.status === 'cancel') expected = 0;
+  deal.expectedDealTotal = expected;
+
+  // Preserve any existing audit fields; initialize if missing
+  if (typeof deal.payrollNetPaid !== 'number') deal.payrollNetPaid = 0;
+  if (typeof deal.auditStatus !== 'number') deal.auditStatus = 0;
+  if (!Array.isArray(deal.errorFlags)) deal.errorFlags = [];
+
+  // Auto-flag common audit issues on the deal itself
+  var flags = [];
+  if (!deal.memberId) flags.push('missing_member_id');
+  if (deal.status !== 'cancel' && deal.status !== 'chargeback') {
+    if (Number(deal.enrollmentFee) === 125 && bonus === 0) {
+      flags.push('missing_enrollment_bonus');
+    }
+  }
+  deal.errorFlags = flags;
+}
+
+// Recompute commission for EVERY deal in the sales array in
+// place. Used after a rate-config change so every row reflects
+// the new defaults immediately.
+function _stRestampAllCommissions(sales) {
+  var rates = _stLoadCommissionRates();
+  for (var i = 0; i < sales.length; i++) {
+    if (sales[i] && sales[i].type === 'deal') {
+      _stStampDealCommission(sales, i, rates);
+    }
+  }
 }
 
 // ── ADD / UPDATE / DELETE ───────────────────────────────────
@@ -495,22 +834,34 @@ function _stAutoDetectAndAdd() {
     _stSavePostDates(pds);
   } else {
     var sales = _stLoadSales();
+    var firstDealIdx = -1;
     for (var i = 0; i < parsed.products.length; i++) {
       var p = parsed.products[i];
-      sales.push({
+      var isDeal = i === 0;
+      var newSale = {
         id:
           'st_' + now + '_' + i + '_' + Math.random().toString(36).slice(2, 6),
         ts: now + i,
         customer: parsed.customer,
+        memberId: parsed.memberId || '',
         plan: p.name || 'Unknown Plan',
         amount: p.price,
-        type: i === 0 ? 'deal' : 'addon',
+        type: isDeal ? 'deal' : 'addon',
         status: 'valid',
         raw: text,
         notes: p.policy ? 'Policy: ' + p.policy : '',
         receiptId: receiptId,
-        receiptTotal: parsed.receiptTotal
-      });
+        receiptTotal: parsed.receiptTotal,
+        // Store the receipt-level enrollment fee on the DEAL only
+        // so the $125 enrollment counter never double-counts.
+        enrollmentFee: isDeal ? (parsed.enrollmentFee || 0) : 0
+      };
+      sales.push(newSale);
+      if (isDeal) firstDealIdx = sales.length - 1;
+    }
+    // Stamp commission fields on the new deal (and roll up its add-ons)
+    if (firstDealIdx !== -1) {
+      _stStampDealCommission(sales, firstDealIdx, _stLoadCommissionRates());
     }
     _stSaveSales(sales);
   }
@@ -568,19 +919,25 @@ function _stAddSale(saleType) {
     _stSavePostDates(pds);
   } else {
     var sales = _stLoadSales();
+    var isDealManual = saleType !== 'addon';
     sales.push({
       id: 'st_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
       ts: Date.now(),
       customer: parsed.customer,
+      memberId: parsed.memberId || '',
       plan: first.name || 'Unknown Plan',
       amount: first.price,
-      type: saleType === 'addon' ? 'addon' : 'deal',
+      type: isDealManual ? 'deal' : 'addon',
       status: 'valid',
       raw: text,
       notes: first.policy ? 'Policy: ' + first.policy : '',
       receiptId: '',
-      receiptTotal: parsed.receiptTotal
+      receiptTotal: parsed.receiptTotal,
+      enrollmentFee: isDealManual ? (parsed.enrollmentFee || 0) : 0
     });
+    if (isDealManual) {
+      _stStampDealCommission(sales, sales.length - 1, _stLoadCommissionRates());
+    }
     _stSaveSales(sales);
   }
 
@@ -635,19 +992,25 @@ function _stConfirmPostDate(id) {
   var billDateObj = _stIsoToDate(pd.billDate);
   var ts = billDateObj ? billDateObj.getTime() + 9 * 3600 * 1000 : Date.now();
   var sales = _stLoadSales();
+  var isDealPd = pd.type !== 'addon';
   sales.push({
     id: 'st_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
     ts: ts,
     customer: pd.customer || '',
+    memberId: pd.memberId || '',
     plan: pd.plan || 'Unknown Plan',
     amount: Number(pd.amount) || 0,
-    type: pd.type === 'addon' ? 'addon' : 'deal',
+    type: isDealPd ? 'deal' : 'addon',
     status: 'valid',
     raw: pd.raw || '',
     notes: pd.notes || '',
     receiptId: pd.receiptId || '',
-    receiptTotal: 0
+    receiptTotal: 0,
+    enrollmentFee: isDealPd ? (Number(pd.enrollmentFee) || 0) : 0
   });
+  if (isDealPd) {
+    _stStampDealCommission(sales, sales.length - 1, _stLoadCommissionRates());
+  }
   _stSaveSales(sales);
   pds.splice(idx, 1);
   _stSavePostDates(pds);
@@ -681,6 +1044,21 @@ function _stUpdateStatus(id, newStatus) {
   for (var i = 0; i < sales.length; i++) {
     if (sales[i].id === id) {
       sales[i].status = newStatus;
+      // Recompute commission for the affected deal (or the
+      // deal parent if this is an add-on) so expectedDealTotal
+      // reflects the new status.
+      var rates = _stLoadCommissionRates();
+      var affected = sales[i];
+      if (affected.type === 'deal') {
+        _stStampDealCommission(sales, i, rates);
+      } else if (affected.receiptId) {
+        for (var di = 0; di < sales.length; di++) {
+          if (sales[di].type === 'deal' && sales[di].receiptId === affected.receiptId) {
+            _stStampDealCommission(sales, di, rates);
+            break;
+          }
+        }
+      }
       _stSaveSales(sales);
       _stRender();
       return;
@@ -719,30 +1097,62 @@ function _stFlash(msg, kind) {
 // toward bonus or stats totals.
 function _stCalcStats(sales) {
   var now = new Date();
-  var weekStart = _stStartOfWeek(now).getTime();
+  var weekStartDate = _stStartOfWeek(now);
+  var weekStart = weekStartDate.getTime();
   var todayStart = _stStartOfDay(now).getTime();
-  // Day buckets: index 0=Mon, 1=Tue, …, 4=Fri, 5=Sat, 6=Sun
+  var rates = _stLoadCommissionRates();
+
+  // Day buckets: index 0=Mon, 1=Tue, …, 4=Fri, 5=Sat, 6=Sun.
+  // Each bucket includes its actual calendar Date so the daily
+  // breakdown can render "MON 4/7" style real dates.
   var dayBuckets = [];
   for (var b = 0; b < 7; b++) {
-    dayBuckets.push({ amount: 0, count: 0 });
+    var bd = new Date(weekStartDate);
+    bd.setDate(bd.getDate() + b);
+    dayBuckets.push({ amount: 0, count: 0, date: bd });
   }
   var stats = {
     todayCount: 0,
     weekCount: 0,
-    weekSales: 0,
-    enrollments: 0,
+    weekSales: 0,          // base plan + add-on amounts, NEVER enrollment fees
+    enrollments: 0,         // count of deals with enrollmentFee === 125 exactly
     weekDeals: 0,
     weekAddons: 0,
-    dayBuckets: dayBuckets
+    dayBuckets: dayBuckets,
+    weekStart: weekStart,
+    weekExpectedCommission: 0
   };
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
-    if (!s || s.status !== 'valid') continue;
+    if (!s) continue;
+
+    // Weekly expected commission includes cancelled (0) and
+    // chargeback (negative) rows per the audit spec. So roll
+    // up every DEAL this week regardless of status.
+    if (s.type === 'deal' && s.ts >= weekStart) {
+      if (typeof s.expectedDealTotal !== 'number') {
+        // Lazy-stamp: old rows inserted before this version
+        // won't have the fields yet.
+        _stStampDealCommission(sales, i, rates);
+      }
+      stats.weekExpectedCommission += Number(s.expectedDealTotal) || 0;
+    }
+
+    // Stats below only count VALID rows
+    if (s.status !== 'valid') continue;
     if (s.ts >= todayStart) stats.todayCount++;
     if (s.ts >= weekStart) {
       stats.weekCount++;
+      // Total Sales = plan premiums + add-on amounts. The parser
+      // already excludes enrollment fees from s.amount so this
+      // is correct by construction.
       stats.weekSales += Number(s.amount) || 0;
-      stats.enrollments++;
+      // $125 Enrollments: count deals whose receipt had exactly
+      // a $125 enrollment fee. Never count add-ons (the fee is
+      // stored on the deal only).
+      if (s.type === 'deal' && Number(s.enrollmentFee) === 125) {
+        stats.enrollments++;
+      }
       if (s.type === 'addon') stats.weekAddons++;
       else stats.weekDeals++;
       // Bucket by day-of-week (Mon = 0)
@@ -777,19 +1187,25 @@ function _stBuildWelcome() {
 // columns (Sat/Sun) are hidden by default since the business
 // week is Mon–Fri.
 function _stBuildDailyBreakdown(stats) {
-  var dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
   var html = '<div class="st-daily">';
   html += '<div class="st-daily-title">Daily Breakdown</div>';
   html += '<div class="st-daily-grid">';
   for (var i = 0; i < 5; i++) {
-    var b = stats.dayBuckets[i] || { amount: 0, count: 0 };
+    var b = stats.dayBuckets[i] || { amount: 0, count: 0, date: null };
     var hasSales = b.count > 0;
+    // Real calendar date for this weekday, e.g. "4/7"
+    var dateStr = '';
+    if (b.date) {
+      dateStr = (b.date.getMonth() + 1) + '/' + b.date.getDate();
+    }
     html +=
       '<div class="st-day-card' +
       (hasSales ? ' has-sales' : '') +
       '">' +
       '<div class="st-day-name">' +
       dayNames[i] +
+      (dateStr ? ' <span class="st-day-date">' + dateStr + '</span>' : '') +
       '</div>' +
       '<div class="st-day-amount">$' +
       Math.round(b.amount).toLocaleString() +
@@ -815,7 +1231,7 @@ function _stBuildStats(stats) {
     stats.weekDeals +
     '</div></div>';
   html +=
-    '<div class="st-stat-card"><div class="st-stat-label">Enrollments</div><div class="st-stat-value">' +
+    '<div class="st-stat-card"><div class="st-stat-label">$125 Enrollments</div><div class="st-stat-value">' +
     stats.enrollments +
     '</div></div>';
   html +=
@@ -1056,7 +1472,7 @@ function _stBuildTable(sales) {
   }
   html += '<div class="st-table-wrap"><table class="st-table">';
   html +=
-    '<thead><tr><th>Date</th><th>Customer</th><th>Plan</th><th>Amount</th><th>Type</th><th>Status</th><th></th></tr></thead><tbody>';
+    '<thead><tr><th>Date</th><th>Customer</th><th>Plan</th><th>Amount</th><th>Commission</th><th>Type</th><th>Status</th><th></th></tr></thead><tbody>';
   for (var i = 0; i < weekSales.length; i++) {
     var s = weekSales[i];
     var d = new Date(s.ts);
@@ -1071,14 +1487,55 @@ function _stBuildTable(sales) {
       String(d.getMinutes()).padStart(2, '0');
     var typeClass = s.type === 'addon' ? 'st-type-addon' : 'st-type-deal';
     var typeLabel = s.type === 'addon' ? 'Add-on' : 'Deal';
+
+    // Customer cell: name on top, memberId muted below
+    var customerCell = '<div class="st-customer-name">' + _stEscape(s.customer || '\u2014') + '</div>';
+    if (s.memberId) {
+      customerCell += '<div class="st-member-id">ID: ' + _stEscape(s.memberId) + '</div>';
+    }
+
+    // Commission cell: for deals show expected total + edit button.
+    // For addons show the line commission only.
+    var commissionCell = '';
+    if (s.type === 'deal') {
+      var expected = Number(s.expectedDealTotal) || 0;
+      var planComm = Number(s.planCommission) || 0;
+      var addonComm = Number(s.totalAddonCommission) || 0;
+      var bonus = Number(s.enrollmentBonus) || 0;
+      var rate = Number(s.planCommissionRate) || 0;
+      commissionCell =
+        '<div class="st-comm-cell">' +
+        '<div class="st-comm-total">$' + expected.toFixed(2) + '</div>' +
+        '<div class="st-comm-breakdown">' +
+        'plan $' + planComm.toFixed(2) + ' @ ' + Math.round(rate * 100) + '%' +
+        (addonComm !== 0 ? ' + addons $' + addonComm.toFixed(2) : '') +
+        (bonus !== 0 ? ' + bonus $' + bonus.toFixed(2) : '') +
+        '</div>' +
+        '<button type="button" class="st-comm-edit" title="Edit commission rates for this deal" onclick="_stOpenCommissionEditor(\'' + s.id + '\')">Edit</button>' +
+        '</div>';
+    } else {
+      var aRate = typeof s.addonCommissionRate === 'number'
+        ? s.addonCommissionRate
+        : (_stLoadCommissionRates().addonTypes[_stClassifyAddon(s.plan)] || 0.25);
+      var aComm = (Number(s.amount) || 0) * aRate;
+      if (s.status === 'cancel') aComm = 0;
+      else if (s.status === 'chargeback') aComm = -Math.abs(aComm);
+      commissionCell =
+        '<div class="st-comm-cell">' +
+        '<div class="st-comm-total">$' + aComm.toFixed(2) + '</div>' +
+        '<div class="st-comm-breakdown">' + Math.round(aRate * 100) + '% (' + _stClassifyAddon(s.plan) + ')</div>' +
+        '</div>';
+    }
+
     html += '<tr class="st-row st-row-' + s.status + '">';
     html += '<td>' + _stEscape(dateStr) + '</td>';
-    html += '<td>' + _stEscape(s.customer || '\u2014') + '</td>';
+    html += '<td>' + customerCell + '</td>';
     html += '<td>' + _stEscape(s.plan || 'Unknown Plan') + '</td>';
     html +=
       '<td>$' +
       (Math.round((Number(s.amount) || 0) * 100) / 100).toFixed(2) +
       '</td>';
+    html += '<td>' + commissionCell + '</td>';
     html += '<td><span class="' + typeClass + '">' + typeLabel + '</span></td>';
     html += '<td>';
     html +=
@@ -1117,6 +1574,195 @@ function _stBuildTable(sales) {
   return html;
 }
 
+// ── INLINE COMMISSION RATE EDITOR ───────────────────────────
+// Opens a small prompt-based inline editor for the given sale.
+// Uses window.prompt for a no-framework UX — keeps the editor
+// dead simple and requires zero extra DOM state. The entered
+// rate is persisted on the sale object and commission fields
+// are re-stamped immediately.
+function _stOpenCommissionEditor(saleId) {
+  var sales = _stLoadSales();
+  var idx = -1;
+  for (var i = 0; i < sales.length; i++) {
+    if (sales[i].id === saleId) { idx = i; break; }
+  }
+  if (idx === -1) return;
+  var deal = sales[idx];
+  if (deal.type !== 'deal') {
+    _stFlash('Commission editor opens from deals only.', 'error');
+    return;
+  }
+  var rates = _stLoadCommissionRates();
+  var currentPlan = typeof deal.commissionRate === 'number'
+    ? deal.commissionRate
+    : _stPlanTierRate(deal.amount, rates);
+  var inPlan = window.prompt(
+    'Plan commission rate for this deal (as a decimal, e.g. 0.30 for 30%):',
+    String(currentPlan)
+  );
+  if (inPlan === null) return;
+  var newPlan = parseFloat(inPlan);
+  if (isNaN(newPlan) || newPlan < 0 || newPlan > 1) {
+    _stFlash('Enter a decimal between 0 and 1 (e.g. 0.35).', 'error');
+    return;
+  }
+  deal.commissionRate = newPlan;
+  _stStampDealCommission(sales, idx, rates);
+  _stSaveSales(sales);
+  _stRender();
+  _stFlash('Commission rate updated for this deal.', 'ok');
+}
+
+// Reset the deal's commission rate back to the tier default.
+function _stResetDealCommission(saleId) {
+  var sales = _stLoadSales();
+  for (var i = 0; i < sales.length; i++) {
+    if (sales[i].id !== saleId) continue;
+    delete sales[i].commissionRate;
+    _stStampDealCommission(sales, i, _stLoadCommissionRates());
+    _stSaveSales(sales);
+    _stRender();
+    _stFlash('Commission rate reset to default.', 'ok');
+    return;
+  }
+}
+
+// Reset GLOBAL commission rate defaults.
+function _stResetGlobalCommissionRates() {
+  if (!confirm('Reset all commission rate defaults? Existing per-deal overrides will be kept.')) return;
+  _stResetCommissionRates();
+  var sales = _stLoadSales();
+  _stRestampAllCommissions(sales);
+  _stSaveSales(sales);
+  _stRender();
+  _stFlash('Commission defaults reset.', 'ok');
+}
+
+// ── WEEKLY PAYROLL AUDIT ────────────────────────────────────
+// One payroll entry per ISO week (Monday-dated). Stored under
+// cha_payroll__<userId> as { 'YYYY-MM-DD': netPaidDollars }.
+function _stWeekKey(weekStartMs) {
+  var d = new Date(weekStartMs);
+  var mm = String(d.getMonth() + 1).padStart(2, '0');
+  var dd = String(d.getDate()).padStart(2, '0');
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+
+function _stLoadPayrollMap() {
+  var raw = _stGet(_stKey('cha_payroll')) || '{}';
+  try {
+    var parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch (_e) {
+    return {};
+  }
+}
+
+function _stSavePayrollMap(map) {
+  _stSet(_stKey('cha_payroll'), JSON.stringify(map || {}));
+}
+
+function _stSavePayrollNetPaid() {
+  var input = document.getElementById('st-payroll-input');
+  if (!input) return;
+  var val = parseFloat(input.value);
+  if (isNaN(val)) {
+    _stFlash('Enter a dollar amount.', 'error');
+    return;
+  }
+  var weekStart = _stStartOfWeek(new Date()).getTime();
+  var key = _stWeekKey(weekStart);
+  var map = _stLoadPayrollMap();
+  map[key] = val;
+  _stSavePayrollMap(map);
+  _stRender();
+  _stFlash('Payroll saved for this week.', 'ok');
+}
+
+function _stBuildPayrollAudit(sales, stats) {
+  var weekKey = _stWeekKey(stats.weekStart);
+  var map = _stLoadPayrollMap();
+  var netPaid = typeof map[weekKey] === 'number' ? map[weekKey] : 0;
+  var expected = Number(stats.weekExpectedCommission) || 0;
+  var diff = netPaid - expected;
+  var auditLabel;
+  var auditClass;
+  if (netPaid === 0) {
+    auditLabel = 'No payroll entered';
+    auditClass = 'pending';
+  } else if (Math.abs(diff) < 0.005) {
+    auditLabel = 'OK';
+    auditClass = 'ok';
+  } else if (diff < 0) {
+    auditLabel = 'UNDERPAID';
+    auditClass = 'under';
+  } else {
+    auditLabel = 'OVERPAID';
+    auditClass = 'over';
+  }
+
+  // Collect flags from this week's deals
+  var weekStart = stats.weekStart;
+  var dealFlags = [];
+  for (var i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'deal' || s.ts < weekStart) continue;
+    if (s.errorFlags && s.errorFlags.length) {
+      for (var f = 0; f < s.errorFlags.length; f++) {
+        dealFlags.push({
+          id: s.id,
+          customer: s.customer || '(no customer)',
+          flag: s.errorFlags[f]
+        });
+      }
+    }
+  }
+
+  var html = '<div class="st-payroll-audit">';
+  html += '<div class="st-payroll-head">';
+  html += '<div class="st-payroll-title">Payroll Audit</div>';
+  html += '<button type="button" class="st-comm-reset" onclick="_stResetGlobalCommissionRates()">Reset commission defaults</button>';
+  html += '</div>';
+  html += '<div class="st-payroll-grid">';
+  html +=
+    '<div class="st-payroll-card"><div class="st-payroll-label">Expected Commission (this week)</div>' +
+    '<div class="st-payroll-value">$' + expected.toFixed(2) + '</div></div>';
+  html +=
+    '<div class="st-payroll-card"><div class="st-payroll-label">Payroll Net Paid</div>' +
+    '<div class="st-payroll-input-row">' +
+    '<input type="number" step="0.01" id="st-payroll-input" class="st-payroll-input" value="' +
+    (netPaid || '') + '" placeholder="0.00">' +
+    '<button type="button" class="st-payroll-save" onclick="_stSavePayrollNetPaid()">Save</button>' +
+    '</div></div>';
+  html +=
+    '<div class="st-payroll-card st-payroll-' + auditClass + '"><div class="st-payroll-label">Difference</div>' +
+    '<div class="st-payroll-value">$' + diff.toFixed(2) + '</div>' +
+    '<div class="st-payroll-status">' + auditLabel + '</div></div>';
+  html += '</div>';
+
+  if (dealFlags.length) {
+    html += '<div class="st-audit-flags">';
+    html += '<div class="st-audit-flags-title">Audit flags (' + dealFlags.length + ')</div>';
+    html += '<ul class="st-audit-flags-list">';
+    for (var j = 0; j < dealFlags.length; j++) {
+      var flagLabel;
+      switch (dealFlags[j].flag) {
+        case 'missing_member_id': flagLabel = 'Missing member ID'; break;
+        case 'missing_enrollment_bonus': flagLabel = 'Missing enrollment bonus ($125)'; break;
+        case 'wrong_commission_rate': flagLabel = 'Commission rate mismatch'; break;
+        case 'chargeback_mismatch': flagLabel = 'Chargeback mismatch'; break;
+        case 'payroll_mismatch': flagLabel = 'Payroll mismatch'; break;
+        default: flagLabel = dealFlags[j].flag;
+      }
+      html += '<li><strong>' + _stEscape(dealFlags[j].customer) + '</strong>: ' + _stEscape(flagLabel) + '</li>';
+    }
+    html += '</ul></div>';
+  }
+
+  html += '</div>';
+  return html;
+}
+
 // ── MAIN RENDER ─────────────────────────────────────────────
 function _stRender() {
   var page = document.getElementById('page-salestracker');
@@ -1138,6 +1784,7 @@ function _stRender() {
   html += _stBuildBonus(stats);
   html += _stBuildInput();
   html += _stBuildTable(sales);
+  html += _stBuildPayrollAudit(sales, stats);
   html += _stBuildPostDatesSection(postdates);
   // Spacer so the floating bottom toolbar never covers the last row
   html += '<div class="st-bottom-spacer" aria-hidden="true"></div>';
