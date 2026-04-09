@@ -2243,9 +2243,9 @@ function _onbRightColumn(dayNum) {
     body += '<div class="onb-sub">3-Plan Comparison</div>';
     body += '<div class="onb-table-wrap"><table class="onb-table">';
     body += '<thead><tr><th>Plan</th><th>How It Works</th></tr></thead><tbody>';
-    body += '<tr><td><strong>Limited</strong></td><td>Fixed dollar per visit, no deductible</td></tr>';
-    body += '<tr><td><strong>MEC</strong></td><td>Preventive 100%, always paired with Limited</td></tr>';
-    body += '<tr><td><strong>STM</strong></td><td>Deductible and coinsurance, medically underwritten</td></tr>';
+    body += '<tr><td><strong>Limited</strong></td><td>Fixed dollar benefits per service, no deductible; pays set amounts toward covered expenses</td></tr>';
+    body += '<tr><td><strong>MEC</strong></td><td>Covers preventive care at 100% (ACA minimum standard), limited coverage beyond preventive services</td></tr>';
+    body += '<tr><td><strong>STM</strong></td><td>Short-term medical coverage with deductible and coinsurance; medically underwritten and not ACA-compliant</td></tr>';
     body += '</tbody></table></div>';
     body += '<div class="onb-sub">What ACA Is</div>';
     body += '<div class="onb-text">Federal law. Marketplace is healthcare.gov. Our plans are NOT ACA plans — they are private limited benefit plans that bridge gaps.</div>';
