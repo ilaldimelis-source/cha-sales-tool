@@ -88,28 +88,20 @@ html {
   --fs-base: 14px;
 }
 
-html.font-s {
-  --fs-base: 13px;
-}
-
+/* S / M / L font toggle — zoom scales the whole app cohesively */
+html.font-s,
 body.font-s {
-  font-size: 13px !important;
+  zoom: 0.92;
 }
 
-html.font-m {
-  --fs-base: 15px;
-}
-
+html.font-m,
 body.font-m {
-  font-size: 15px !important;
+  zoom: 1;
 }
 
-html.font-l {
-  --fs-base: 17px;
-}
-
+html.font-l,
 body.font-l {
-  font-size: 17px !important;
+  zoom: 1.1;
 }
 
 /* ── RESET ── */
@@ -3793,118 +3785,10 @@ select {
   padding: 2px 9px;
 }
 
-/* ════════════════════════════════════════════════════════════
-   FONT SIZE TOGGLE — make S/M/L visibly change text (Phase 2)
-   The existing body.font-s/m/l declarations at the top of this
-   file only set body font-size and a --fs-base CSS variable —
-   which has no visible effect because nearly every rule in the
-   project uses hard-coded px. These descendant rules give S
-   and L a visible size delta on the most common text / padding
-   targets. The JS to add the body class and persist to
-   localStorage already lives in app.js (setFontSize and
-   _initFontSize), so no JS changes are needed.
-
-   NOTE: inside the Scripts page, the Phase 1 rules above use
-   higher specificity (ID + class) and will win over these
-   (class + class), so the Scripts page stays at the Phase 1
-   compact size regardless of S/M/L. S/L still visibly affects
-   every other page (Dashboard, Plans, Live Call, Benefits
-   Reference chat, Training, Compliance, My Space, etc.).
-   ════════════════════════════════════════════════════════════ */
-
-/* ── S = compact (smaller text, tighter padding) ── */
-body.font-s .ph .pt {
-  font-size: 1.28rem;
-}
-
-body.font-s .ph .pd {
-  font-size: 12px;
-}
-
-body.font-s .sbox {
-  padding: 12px 14px;
-  font-size: 12.5px;
-  line-height: 1.55;
-}
-
-body.font-s .sbox-lbl {
-  font-size: 12.5px;
-}
-
-body.font-s .ibox {
-  padding: 12px 14px;
-  font-size: 12.5px;
-  line-height: 1.6;
-}
-
-body.font-s .close-line {
-  font-size: 12.5px;
-  line-height: 1.55;
-}
-
-body.font-s .close-top,
-body.font-s .close-detail {
-  padding: 12px 16px;
-}
-
-body.font-s .cf-title {
-  font-size: 0.84rem;
-}
-
-body.font-s .nb-label {
-  font-size: 8.5px;
-}
-
-body.font-s .t-brand {
-  font-size: 0.72rem;
-}
-
-/* ── L = larger (bigger text, more breathing room) ── */
-body.font-l .ph .pt {
-  font-size: 1.8rem;
-}
-
-body.font-l .ph .pd {
-  font-size: 16px;
-}
-
-body.font-l .sbox {
-  padding: 18px 22px;
-  font-size: 16px;
-  line-height: 1.75;
-}
-
-body.font-l .sbox-lbl {
-  font-size: 16px;
-}
-
-body.font-l .ibox {
-  padding: 18px 22px;
-  font-size: 16px;
-  line-height: 1.8;
-}
-
-body.font-l .close-line {
-  font-size: 16px;
-  line-height: 1.8;
-}
-
-body.font-l .close-top,
-body.font-l .close-detail {
-  padding: 18px 22px;
-}
-
-body.font-l .cf-title {
-  font-size: 1.05rem;
-}
-
-body.font-l .nb-label {
-  font-size: 10.5px;
-}
-
-body.font-l .t-brand {
-  font-size: 0.88rem;
-}
+/* Font size S/M/L is now handled via zoom at the top of this
+   file. Previous descendant rules were removed because zoom
+   scales the entire app uniformly, including fonts, padding,
+   icons, and images — no per-element overrides needed. */
 
 /* ══════════════════════════════════════════════════════
    TOPBAR EXTRAS — welcome greeting + theme toggle
@@ -4607,4 +4491,247 @@ body.dark-mode .theme-toggle {
 }
 .onb-ref-table {
   min-width: 580px;
+}
+
+/* ══════════════════════════════════════════════════════
+   DARK MODE — GLOBAL COHESIVE OVERRIDES
+   Catches the components that use hard-coded light
+   backgrounds in inline styles or fixed hex values so
+   dark mode stays consistent across the whole app. Only
+   uses body.dark-mode + CSS variables from :root.
+   ══════════════════════════════════════════════════════ */
+
+/* Catch any element setting an inline white/near-white background
+   in one of the common formats used throughout the inline-styled
+   JS templates. These selectors override the inline style via !important
+   and use the existing CSS variables so no new color values are introduced. */
+body.dark-mode [style*='background:#fff'],
+body.dark-mode [style*='background: #fff'],
+body.dark-mode [style*='background:#FFF'],
+body.dark-mode [style*='background: #FFF'],
+body.dark-mode [style*='background:#ffffff'],
+body.dark-mode [style*='background: #ffffff'],
+body.dark-mode [style*='background:#FFFFFF'],
+body.dark-mode [style*='background: #FFFFFF'],
+body.dark-mode [style*='background:white'],
+body.dark-mode [style*='background: white'] {
+  background: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Inline background-color variants */
+body.dark-mode [style*='background-color:#fff'],
+body.dark-mode [style*='background-color: #fff'],
+body.dark-mode [style*='background-color:#ffffff'],
+body.dark-mode [style*='background-color: #ffffff'],
+body.dark-mode [style*='background-color:#FFFFFF'],
+body.dark-mode [style*='background-color: #FFFFFF'],
+body.dark-mode [style*='background-color:white'],
+body.dark-mode [style*='background-color: white'] {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Common very-light panel / surface shades */
+body.dark-mode [style*='background:#f8fafc'],
+body.dark-mode [style*='background: #f8fafc'],
+body.dark-mode [style*='background:#f8f9fe'],
+body.dark-mode [style*='background: #f8f9fe'],
+body.dark-mode [style*='background:#f0f2f7'],
+body.dark-mode [style*='background: #f0f2f7'],
+body.dark-mode [style*='background:#F8F9FE'],
+body.dark-mode [style*='background: #F8F9FE'],
+body.dark-mode [style*='background:#f8faff'],
+body.dark-mode [style*='background: #f8faff'] {
+  background: var(--bg-card2) !important;
+}
+
+/* Inline dark text on a now-dark background becomes unreadable — flip it */
+body.dark-mode [style*='color:#1e293b'],
+body.dark-mode [style*='color: #1e293b'],
+body.dark-mode [style*='color:#111827'],
+body.dark-mode [style*='color: #111827'],
+body.dark-mode [style*='color:#374151'],
+body.dark-mode [style*='color: #374151'] {
+  color: var(--text-primary) !important;
+}
+
+/* Inline medium-gray text — map to secondary */
+body.dark-mode [style*='color:#475569'],
+body.dark-mode [style*='color: #475569'],
+body.dark-mode [style*='color:#64748b'],
+body.dark-mode [style*='color: #64748b'],
+body.dark-mode [style*='color:#6b7280'],
+body.dark-mode [style*='color: #6b7280'] {
+  color: var(--text-secondary) !important;
+}
+
+/* Inline light borders — soften to variable border */
+body.dark-mode [style*='border:1px solid #e2e8f0'],
+body.dark-mode [style*='border: 1px solid #e2e8f0'],
+body.dark-mode [style*='border:2px solid #C8CEDD'],
+body.dark-mode [style*='border: 2px solid #C8CEDD'],
+body.dark-mode [style*='border:1px solid #E5E7EB'],
+body.dark-mode [style*='border: 1px solid #E5E7EB'] {
+  border-color: var(--border-med) !important;
+}
+
+/* Onboarding cards — the new 5-day onboarding uses hardcoded
+   white backgrounds. Flip them via the class selectors. */
+body.dark-mode .onb-card {
+  background: var(--bg-card);
+}
+body.dark-mode .onb-card-title,
+body.dark-mode .onb-item-title,
+body.dark-mode .onb-step-title,
+body.dark-mode .onb-obj-title {
+  color: var(--text-primary);
+}
+body.dark-mode .onb-text,
+body.dark-mode .onb-item-sub,
+body.dark-mode .onb-sub,
+body.dark-mode .onb-mock-item,
+body.dark-mode .onb-dd-txt,
+body.dark-mode .onb-table td {
+  color: var(--text-secondary);
+}
+body.dark-mode .onb-item {
+  border-bottom-color: var(--border);
+}
+body.dark-mode .onb-item:hover {
+  background: var(--bg-card2);
+}
+body.dark-mode .onb-script {
+  background: var(--bg-card2);
+  color: var(--text-primary);
+}
+body.dark-mode .onb-do,
+body.dark-mode .onb-dont {
+  background: var(--bg-card2);
+}
+body.dark-mode .onb-table th {
+  background: var(--bg-card2);
+  color: var(--text-primary);
+}
+body.dark-mode .onb-table th,
+body.dark-mode .onb-table td {
+  border-bottom-color: var(--border);
+}
+body.dark-mode .onb-step {
+  border-bottom-color: var(--border);
+}
+body.dark-mode .onb-never-item {
+  background: rgba(239, 68, 68, 0.12);
+  color: #fca5a5;
+}
+body.dark-mode .onb-pill {
+  background: var(--bg-card2);
+  color: var(--text-secondary);
+}
+body.dark-mode .onb-pill-active {
+  background: var(--bg-card3);
+  color: var(--text-primary);
+}
+body.dark-mode .onb-pill-locked {
+  background: var(--bg-page);
+  color: var(--text-muted);
+}
+
+/* Chat bubbles and benefits-reference UI */
+body.dark-mode .chat-msg,
+body.dark-mode .chat-body,
+body.dark-mode .chat-wrap,
+body.dark-mode .br-answer,
+body.dark-mode .br-card {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+body.dark-mode .chat-input {
+  background: var(--bg-card2);
+  color: var(--text-primary);
+  border-color: var(--border-med);
+}
+
+/* Cards / tiles that use hardcoded light backgrounds */
+body.dark-mode .mindset-card,
+body.dark-mode .fav-card,
+body.dark-mode .dash-card,
+body.dark-mode .dash-ref-card,
+body.dark-mode .trn-sec,
+body.dark-mode .trn-article,
+body.dark-mode .cf-step {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
+/* Buttons with hard-coded white backgrounds (e.g. "Back", ghost) */
+body.dark-mode button[style*='background:#fff'],
+body.dark-mode button[style*='background: #fff'],
+body.dark-mode button[style*='background:white'],
+body.dark-mode button[style*='background: white'] {
+  background: var(--bg-card2) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-med) !important;
+}
+
+/* Code pills / highlight chips in scripts — keep legible in dark */
+body.dark-mode [style*='background:#fef08a'],
+body.dark-mode [style*='background: #fef08a'] {
+  background: rgba(253, 224, 71, 0.2) !important;
+  color: #fde047 !important;
+}
+body.dark-mode [style*='background:#dbeafe'],
+body.dark-mode [style*='background: #dbeafe'] {
+  background: rgba(91, 141, 239, 0.2) !important;
+  color: #93c5fd !important;
+}
+
+/* Display name settings block */
+.settings-block {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+.settings-block-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+}
+.settings-block-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+  display: block;
+}
+.settings-input {
+  width: 100%;
+  padding: 9px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-med);
+  background: var(--bg-card2);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+.settings-input:focus {
+  border-color: #5b8def;
+}
+.settings-save-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 8px;
+}
+body.dark-mode .settings-block {
+  background: var(--bg-card);
+  border-color: var(--border);
 }
