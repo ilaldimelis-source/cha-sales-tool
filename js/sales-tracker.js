@@ -156,7 +156,7 @@ var CHA_DEFAULT_COMMISSION_RATES = {
 
 function _stLoadCommissionRates() {
   try {
-    var raw = _stGet('cha_commission_rates');
+    var raw = _stGet(_stKey('cha_commission_rates'));
     if (!raw) return _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
     var parsed = JSON.parse(raw);
     // Shallow merge in case new keys were added
@@ -179,11 +179,11 @@ function _stLoadCommissionRates() {
 }
 
 function _stSaveCommissionRates(rates) {
-  _stSet('cha_commission_rates', JSON.stringify(rates || {}));
+  _stSet(_stKey('cha_commission_rates'), JSON.stringify(rates || {}));
 }
 
 function _stResetCommissionRates() {
-  try { localStorage.removeItem('cha_commission_rates'); } catch (_e) {}
+  try { localStorage.removeItem(_stKey('cha_commission_rates')); } catch (_e) {}
 }
 
 function _stCloneRates(r) {

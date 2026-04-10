@@ -4840,16 +4840,6 @@ td,
   }
 }
 
-/* P0 Task 2: Hide floating Benefits Reference chat bubble on desktop.
-   Desktop users have full access via the Plans/Benefits sidebar nav,
-   so the floating bubble is unnecessary clutter on large screens.
-   Mobile still keeps it since the sidebar is collapsed on small viewports. */
-@media (min-width: 1024px) {
-  #br-toggle {
-    display: none;
-  }
-}
-
 /* P1 Task 5: Home dashboard grid — 4 columns x 2 rows on desktop
    (8 cards total now that Cheat Sheets is inside the grid).
    Medium screens fall back to 2 columns, phones to 1. */
