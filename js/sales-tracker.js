@@ -1114,14 +1114,39 @@ function _stCalcStats(sales) {
   var stats = {
     todayCount: 0,
     weekCount: 0,
-    weekSales: 0,          // base plan + add-on amounts, NEVER enrollment fees
-    enrollments: 0,         // count of deals with enrollmentFee === 125 exactly
+    // Total Sales (weekSales) is ALWAYS the sum of raw monthly
+    // premiums — base plan premium for deals plus add-on
+    // premiums — and NEVER includes enrollment fees, plan
+    // commission, add-on commission, enrollment bonus, or any
+    // other calculated/derived value. It reads s.amount only,
+    // which the parser sets to the per-month dollar figure and
+    // which _stStampDealCommission never mutates.
+    weekSales: 0,
+    enrollments: 0, // count of deals with enrollmentFee === 125 exactly
     weekDeals: 0,
     weekAddons: 0,
     dayBuckets: dayBuckets,
     weekStart: weekStart,
     weekExpectedCommission: 0
   };
+
+  // First pass: identify VALID DEALS this week so that when we
+  // sum add-on premiums in the second pass, we can drop any
+  // add-on whose parent deal is cancelled or charged back. A
+  // deal itself is "valid for sales total" when its status is
+  // 'valid'. Add-ons without a receiptId (rare — manual entry)
+  // are judged on their own status.
+  var validDealReceiptIds = {};
+  for (var di = 0; di < sales.length; di++) {
+    var ds = sales[di];
+    if (!ds) continue;
+    if (ds.type !== 'deal') continue;
+    if (ds.ts < weekStart) continue;
+    if (ds.status === 'valid' && ds.receiptId) {
+      validDealReceiptIds[ds.receiptId] = true;
+    }
+  }
+
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s) continue;
@@ -1141,21 +1166,44 @@ function _stCalcStats(sales) {
     // Stats below only count VALID rows
     if (s.status !== 'valid') continue;
     if (s.ts >= todayStart) stats.todayCount++;
-    if (s.ts >= weekStart) {
-      stats.weekCount++;
-      // Total Sales = plan premiums + add-on amounts. The parser
-      // already excludes enrollment fees from s.amount so this
-      // is correct by construction.
-      stats.weekSales += Number(s.amount) || 0;
-      // $125 Enrollments: count deals whose receipt had exactly
-      // a $125 enrollment fee. Never count add-ons (the fee is
-      // stored on the deal only).
-      if (s.type === 'deal' && Number(s.enrollmentFee) === 125) {
-        stats.enrollments++;
+    if (s.ts < weekStart) continue;
+
+    stats.weekCount++;
+
+    // ── Total Sales calculation ───────────────────────────
+    // Uses ONLY the raw monthly premium in s.amount. Never
+    // touches s.planCommission, s.expectedDealTotal,
+    // s.enrollmentFee, s.enrollmentBonus, etc. Any add-on
+    // whose parent deal is cancelled/charged back is dropped
+    // ("for valid deals only" per spec).
+    var includeInSales = false;
+    if (s.type === 'deal') {
+      includeInSales = true; // we already filtered to valid
+    } else if (s.type === 'addon') {
+      if (s.receiptId) {
+        includeInSales = validDealReceiptIds[s.receiptId] === true;
+      } else {
+        // Manual add-on without a receipt — judge on its own status
+        includeInSales = true;
       }
-      if (s.type === 'addon') stats.weekAddons++;
-      else stats.weekDeals++;
-      // Bucket by day-of-week (Mon = 0)
+    }
+    if (includeInSales) {
+      stats.weekSales += Number(s.amount) || 0;
+    }
+
+    // $125 Enrollments: count deals whose receipt had exactly
+    // a $125 enrollment fee. Never count add-ons (the fee is
+    // stored on the deal only).
+    if (s.type === 'deal' && Number(s.enrollmentFee) === 125) {
+      stats.enrollments++;
+    }
+    if (s.type === 'addon') stats.weekAddons++;
+    else stats.weekDeals++;
+
+    // Daily breakdown also uses raw amounts only, and respects
+    // the same "valid parent deal" rule so a cancelled deal
+    // doesn't leave its add-ons inflating a day's total.
+    if (includeInSales) {
       var dt = new Date(s.ts);
       var jsDay = dt.getDay(); // 0=Sun, 1=Mon, …
       var idx = jsDay === 0 ? 6 : jsDay - 1;
@@ -1531,6 +1579,9 @@ function _stBuildTable(sales) {
     html += '<td>' + _stEscape(dateStr) + '</td>';
     html += '<td>' + customerCell + '</td>';
     html += '<td>' + _stEscape(s.plan || 'Unknown Plan') + '</td>';
+    // Amount column: raw monthly premium (base plan or add-on
+    // price) straight from s.amount — NEVER a commission figure.
+    // Commission lives in the separate Commission column below.
     html +=
       '<td>$' +
       (Math.round((Number(s.amount) || 0) * 100) / 100).toFixed(2) +
