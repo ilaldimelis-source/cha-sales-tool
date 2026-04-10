@@ -522,7 +522,7 @@ function _stParseReceipt(text) {
   // Requires an explicit monthly marker — bare "$50.00" will
   // never match, and enrollment lines are skipped entirely.
   var priceRe =
-    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:per\s*month|\/\s*mo\b|monthly|a\s+month|\bmo\b)/i;
+    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)[^$\n]{0,60}?(?:per\s*month|\/\s*mo\b|monthly|a\s+month|\bmo\b)/i;
   var skipLineRe =
     /^(?:central health|confirmation|products?|summary|total|policy|active|effective|starts?|member\s+\d|payment|plan\s+type|type\b|address|phone|email|date|status|enrollment|one[-\s]?time)/i;
   var policyRe = /policy\s*(?:number|#|:)?\s*[:-]?\s*([A-Z0-9-]{4,})/i;
@@ -613,7 +613,7 @@ function _stParseReceipt(text) {
   // backward compatibility with receipts whose product names
   // are not in CHA_ALL_PLAN_NAMES (e.g. brand-new plans not
   // yet added to the registry). Same scan logic as before.
-  if (out.products.length === 0) {
+  {
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
       // Never treat an enrollment/one-time line as a plan price.
