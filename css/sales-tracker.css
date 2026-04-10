@@ -1043,143 +1043,20 @@
   background: #f1f5f9;
 }
 
-/* Payroll Audit section — sits below the weekly table */
-.st-payroll-audit {
-  margin-top: 18px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 16px 18px;
-}
-.st-payroll-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  gap: 12px;
-}
-.st-payroll-title {
-  font-family: var(--font-ui);
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--text-primary, #1e293b);
-}
-.st-payroll-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
-.st-payroll-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 12px 14px;
-}
-.st-payroll-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted, #94a3b8);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 4px;
-}
-.st-payroll-value {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--text-primary, #1e293b);
-  font-family: var(--font-ui);
-}
-.st-payroll-status {
-  margin-top: 4px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.st-payroll-input-row {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
-.st-payroll-input {
-  flex: 1 1 auto;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  padding: 6px 10px;
-  font-size: 14px;
-  font-family: var(--font-ui);
-  min-width: 0;
-}
-.st-payroll-input:focus {
-  outline: none;
-  border-color: #5175f1;
-  box-shadow: 0 0 0 2px rgba(81, 117, 241, 0.15);
-}
-.st-payroll-save {
-  background: #5175f1;
-  color: #ffffff;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 14px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.st-payroll-save:hover {
-  background: #4363d6;
-}
-
-/* Audit status color states */
-.st-payroll-ok .st-payroll-status {
-  color: #16a34a;
-}
-.st-payroll-ok {
-  border-color: #86efac;
-  background: #f0fdf4;
-}
-.st-payroll-under .st-payroll-status {
-  color: #dc2626;
-}
-.st-payroll-under {
-  border-color: #fca5a5;
-  background: #fef2f2;
-}
-.st-payroll-over .st-payroll-status {
-  color: #d97706;
-}
-.st-payroll-over {
-  border-color: #fcd34d;
-  background: #fffbeb;
-}
-.st-payroll-pending .st-payroll-status {
-  color: #64748b;
-}
-
-/* Audit flags list */
-.st-audit-flags {
-  margin-top: 14px;
-  padding: 12px 14px;
-  background: #fef2f2;
-  border: 1px solid #fca5a5;
-  border-radius: 8px;
-}
-.st-audit-flags-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: #b91c1c;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 6px;
-}
-.st-audit-flags-list {
-  margin: 0;
-  padding: 0 0 0 18px;
-  font-size: 13px;
-  color: #7f1d1d;
-}
-.st-audit-flags-list li {
-  margin-bottom: 3px;
-}
+/* Weekly Sales Summary — 5-card Mon-Fri grid shown below the weekly table */
+.st-weekly-summary { margin-top: 18px; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 18px; }
+.st-weekly-summary-title { font-family: var(--font-ui); font-weight: 700; font-size: 15px; color: var(--text-primary, #1e293b); margin-bottom: 14px; }
+.st-weekly-summary-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.st-wks-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 10px 12px; text-align: center; }
+.st-wks-card.st-wks-active { background: #eef2ff; border-color: #c7d2fe; }
+.st-wks-card.st-wks-today { border-color: #5175f1; background: #eef2ff; box-shadow: 0 0 0 2px rgba(81,117,241,0.15); }
+.st-wks-day { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted, #94a3b8); margin-bottom: 8px; }
+.st-wks-card.st-wks-today .st-wks-day { color: #5175f1; }
+.st-wks-date { font-size: 10px; font-weight: 400; opacity: 0.8; }
+.st-wks-amount { font-size: 20px; font-weight: 800; font-family: var(--font-ui); color: var(--text-primary, #1e293b); margin-bottom: 4px; }
+.st-wks-card.st-wks-active .st-wks-amount, .st-wks-card.st-wks-today .st-wks-amount { color: #3730a3; }
+.st-wks-deals { font-size: 12px; font-weight: 600; color: var(--text-muted, #94a3b8); }
+.st-wks-card.st-wks-active .st-wks-deals { color: #5175f1; }
 
 @media (max-width: 700px) {
   .st-payroll-grid {

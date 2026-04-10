@@ -1777,128 +1777,42 @@ function _stResetGlobalCommissionRates() {
   _stFlash('Commission defaults reset.', 'ok');
 }
 
-// ── WEEKLY PAYROLL AUDIT ────────────────────────────────────
-// One payroll entry per ISO week (Monday-dated). Stored under
-// cha_payroll__<userId> as { 'YYYY-MM-DD': netPaidDollars }.
-function _stWeekKey(weekStartMs) {
-  var d = new Date(weekStartMs);
-  var mm = String(d.getMonth() + 1).padStart(2, '0');
-  var dd = String(d.getDate()).padStart(2, '0');
-  return d.getFullYear() + '-' + mm + '-' + dd;
-}
-
-function _stLoadPayrollMap() {
-  var raw = _stGet(_stKey('cha_payroll')) || '{}';
-  try {
-    var parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? parsed : {};
-  } catch (_e) {
-    return {};
-  }
-}
-
-function _stSavePayrollMap(map) {
-  _stSet(_stKey('cha_payroll'), JSON.stringify(map || {}));
-}
-
-function _stSavePayrollNetPaid() {
-  var input = document.getElementById('st-payroll-input');
-  if (!input) return;
-  var val = parseFloat(input.value);
-  if (isNaN(val)) {
-    _stFlash('Enter a dollar amount.', 'error');
-    return;
-  }
-  var weekStart = _stStartOfWeek(new Date()).getTime();
-  var key = _stWeekKey(weekStart);
-  var map = _stLoadPayrollMap();
-  map[key] = val;
-  _stSavePayrollMap(map);
-  _stRender();
-  _stFlash('Payroll saved for this week.', 'ok');
-}
-
-function _stBuildPayrollAudit(sales, stats) {
-  var weekKey = _stWeekKey(stats.weekStart);
-  var map = _stLoadPayrollMap();
-  var netPaid = typeof map[weekKey] === 'number' ? map[weekKey] : 0;
-  var expected = Number(stats.weekExpectedCommission) || 0;
-  var diff = netPaid - expected;
-  var auditLabel;
-  var auditClass;
-  if (netPaid === 0) {
-    auditLabel = 'No payroll entered';
-    auditClass = 'pending';
-  } else if (Math.abs(diff) < 0.005) {
-    auditLabel = 'OK';
-    auditClass = 'ok';
-  } else if (diff < 0) {
-    auditLabel = 'UNDERPAID';
-    auditClass = 'under';
-  } else {
-    auditLabel = 'OVERPAID';
-    auditClass = 'over';
-  }
-
-  // Collect flags from this week's deals
+function _stBuildWeeklySalesSummary(stats) {
+  var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+  var today = new Date();
+  var todayDayIdx = today.getDay();
+  var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
+  var dealCounts = [0, 0, 0, 0, 0, 0, 0];
   var weekStart = stats.weekStart;
-  var dealFlags = [];
+  var sales = _stLoadSales();
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
-    if (!s || s.type !== 'deal' || s.ts < weekStart) continue;
-    if (s.errorFlags && s.errorFlags.length) {
-      for (var f = 0; f < s.errorFlags.length; f++) {
-        dealFlags.push({
-          id: s.id,
-          customer: s.customer || '(no customer)',
-          flag: s.errorFlags[f]
-        });
-      }
-    }
+    if (!s || s.status !== 'valid' || s.ts < weekStart) continue;
+    if (s.type !== 'deal') continue;
+    var dt = new Date(s.ts);
+    var jsDay = dt.getDay();
+    var bucketIdx = jsDay === 0 ? 6 : jsDay - 1;
+    if (bucketIdx < 7) dealCounts[bucketIdx]++;
   }
-
-  var html = '<div class="st-payroll-audit">';
-  html += '<div class="st-payroll-head">';
-  html += '<div class="st-payroll-title">Payroll Audit</div>';
-  html += '<button type="button" class="st-comm-reset" onclick="_stResetGlobalCommissionRates()">Reset commission defaults</button>';
-  html += '</div>';
-  html += '<div class="st-payroll-grid">';
-  html +=
-    '<div class="st-payroll-card"><div class="st-payroll-label">Expected Commission (this week)</div>' +
-    '<div class="st-payroll-value">$' + expected.toFixed(2) + '</div></div>';
-  html +=
-    '<div class="st-payroll-card"><div class="st-payroll-label">Payroll Net Paid</div>' +
-    '<div class="st-payroll-input-row">' +
-    '<input type="number" step="0.01" id="st-payroll-input" class="st-payroll-input" value="' +
-    (netPaid || '') + '" placeholder="0.00">' +
-    '<button type="button" class="st-payroll-save" onclick="_stSavePayrollNetPaid()">Save</button>' +
-    '</div></div>';
-  html +=
-    '<div class="st-payroll-card st-payroll-' + auditClass + '"><div class="st-payroll-label">Difference</div>' +
-    '<div class="st-payroll-value">$' + diff.toFixed(2) + '</div>' +
-    '<div class="st-payroll-status">' + auditLabel + '</div></div>';
-  html += '</div>';
-
-  if (dealFlags.length) {
-    html += '<div class="st-audit-flags">';
-    html += '<div class="st-audit-flags-title">Audit flags (' + dealFlags.length + ')</div>';
-    html += '<ul class="st-audit-flags-list">';
-    for (var j = 0; j < dealFlags.length; j++) {
-      var flagLabel;
-      switch (dealFlags[j].flag) {
-        case 'missing_member_id': flagLabel = 'Missing member ID'; break;
-        case 'missing_enrollment_bonus': flagLabel = 'Missing enrollment bonus ($125)'; break;
-        case 'wrong_commission_rate': flagLabel = 'Commission rate mismatch'; break;
-        case 'chargeback_mismatch': flagLabel = 'Chargeback mismatch'; break;
-        case 'payroll_mismatch': flagLabel = 'Payroll mismatch'; break;
-        default: flagLabel = dealFlags[j].flag;
-      }
-      html += '<li><strong>' + _stEscape(dealFlags[j].customer) + '</strong>: ' + _stEscape(flagLabel) + '</li>';
+  var html = '<div class="st-weekly-summary">';
+  html += '<div class="st-weekly-summary-title">This Week\'s Sales</div>';
+  html += '<div class="st-weekly-summary-grid">';
+  for (var d = 0; d < 5; d++) {
+    var bucket = stats.dayBuckets[d] || { amount: 0, count: 0, date: null };
+    var isToday = d === todayBucketIdx;
+    var hasSales = bucket.amount > 0;
+    var dateStr = '';
+    if (bucket.date) {
+      dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
     }
-    html += '</ul></div>';
+    var deals = dealCounts[d] || 0;
+    html += '<div class="st-wks-card' + (isToday ? ' st-wks-today' : '') + (hasSales ? ' st-wks-active' : '') + '">';
+    html += '<div class="st-wks-day">' + dayNames[d] + (dateStr ? '<span class="st-wks-date"> ' + dateStr + '</span>' : '') + '</div>';
+    html += '<div class="st-wks-amount">$' + Math.round(bucket.amount).toLocaleString() + '</div>';
+    html += '<div class="st-wks-deals">' + deals + (deals === 1 ? ' deal' : ' deals') + '</div>';
+    html += '</div>';
   }
-
-  html += '</div>';
+  html += '</div></div>';
   return html;
 }
 
@@ -1923,7 +1837,7 @@ function _stRender() {
   html += _stBuildBonus(stats);
   html += _stBuildInput();
   html += _stBuildTable(sales);
-  html += _stBuildPayrollAudit(sales, stats);
+  html += _stBuildWeeklySalesSummary(stats);
   html += _stBuildPostDatesSection(postdates);
   // Spacer so the floating bottom toolbar never covers the last row
   html += '<div class="st-bottom-spacer" aria-hidden="true"></div>';
