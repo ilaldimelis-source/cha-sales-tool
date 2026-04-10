@@ -82,28 +82,46 @@ var CHA_ADDON_PLAN_NAMES = [
   'AWA Safe Guard Accident Hospital Plan $5000/$500',
   'AWA Safe Guard Accident Hospital Plan $5000/$1000',
   'AWA Safe Guard 100',
-  'NCE WellGuard AD&D $100,000', 'NCE WellGuard AD&D $250,000',
-  'NCE Fusion Dental Plan A', 'NCE Fusion Dental Plan B',
+  'NCE WellGuard AD&D $100,000',
+  'NCE WellGuard AD&D $250,000',
+  'NCE Fusion Dental - Plan A',
+  'NCE Fusion Dental - Plan B',
   'New York Life $50,000 Term Life',
-  'Pinnacle Critical Care Plan 1', 'Pinnacle Critical Care Plan 2',
-  'Pinnacle Critical Care Plan 3', 'Pinnacle Critical Care Plan 4',
-  'Allstate Hospital Expense', 'Allstate Plan Enhancer',
-  'Allstate Dental PPO', 'Allstate Cancer and Heart Stroke',
-  'Prime Health Pass Discount', 'MDLive',
-  'GapSupport Discount', 'AssistPro Discount',
-  'Compass VAB Add-on', 'Compass Telemed Add-on',
-  'GHDP Dental 1500 Add-on', 'GHDP Dental 3000 Add-on', 'GHDP Dental 5000 Add-on',
-  'GHDP Dental-Vision 1500 Add-on', 'GHDP Dental-Vision 3000 Add-on',
+  'Pinnacle Critical Care Plan 1',
+  'Pinnacle Critical Care Plan 2',
+  'Pinnacle Critical Care Plan 3',
+  'Pinnacle Critical Care Plan 4',
+  'Allstate Hospital Expense',
+  'Allstate Plan Enhancer',
+  'Allstate Dental PPO',
+  'Allstate Cancer and Heart/Stroke',
+  'Prime Health Pass Discount',
+  'MDLive',
+  'GapSupport Discount',
+  'AssistPro Discount',
+  'Compass VAB Add-on',
+  'Compass Telemed - Add-on',
+  'GHDP Dental 1500 Add-on',
+  'GHDP Dental 3000 Add-on',
+  'GHDP Dental 5000 Add-on',
+  'GHDP Dental-Vision 1500 Add-on',
+  'GHDP Dental-Vision 3000 Add-on',
   'GHDP Dental-Vision 5000 Add-on',
-  'Ameritas Schedule Plan Add-on', 'Ameritas Coinsurance Plan Add-on',
+  'Ameritas Schedule Plan Add-on',
+  'Ameritas Coinsurance Plan Add-on',
   'Health Essential Care DVH Plus Add-on',
-  'AME $500 Add-on', 'AME $1000 Add-on',
-  'AD&D $50k Add-on', 'AD&D $100K Add-on', 'AD&D $125K Add-on',
-  'AD&D $175K Add-on', 'AD&D $200K Add-on', 'AD&D $250K Add-on',
-  'American Financial Critical Illness $2500 Add-on',
-  'American Financial Critical Illness $5000 Add-on',
-  'American Financial Critical Illness $7500 Add-on',
-  'American Financial Critical Illness $10000 Add-on'
+  'AME $500 Add-on',
+  'AME $1000 Add-on',
+  'AD&D $50k - Add-on',
+  'AD&D $100K - Add-on',
+  'AD&D $125K - Add-on',
+  'AD&D $175K - Add-on',
+  'AD&D $200K - Add-on',
+  'AD&D $250K - Add-on',
+  'American Financial - Critical Illness $2,500 - Add-on',
+  'American Financial - Critical Illness $5,000 - Add-on',
+  'American Financial - Critical Illness $7,500 - Add-on',
+  'American Financial - Critical Illness $10,000 - Add-on'
 ];
 
 // Full list sorted by length descending so longest-match-wins
@@ -550,6 +568,38 @@ function _stParseReceipt(text) {
   );
   if (custMatch) out.customer = custMatch[1].trim().substring(0, 80);
 
+  // ── Customer name from Member ID format ──────────────────
+  // After finding the 9-digit member ID, scan the next 10
+  // lines forward. Take the first line that:
+  //  - Trims to between 2 and 50 characters
+  //  - Only contains letters, spaces, hyphens, apostrophes
+  //  - Is not a known metadata header
+  // Only set as out.customer if still empty.
+  if (!out.customer) {
+    var cnNameRe = /^[A-Za-z][A-Za-z\s'\-]{1,49}$/;
+    var cnSkipRe =
+      /^\s*(member|id|sale|date|order|type|amount|notes|products|payment|method|settled|transaction|authorization|individual|enrollment|confirmation|central|health|advisors)/i;
+    for (var midI = 0; midI < lines.length; midI++) {
+      var midLine = lines[midI] || '';
+      var midM = midLine.match(/\b(\d{9})\b/);
+      if (!midM) continue;
+      for (
+        var midJ = midI + 1;
+        midJ < lines.length && midJ <= midI + 10;
+        midJ++
+      ) {
+        var midCand = (lines[midJ] || '').trim();
+        if (!midCand) continue;
+        if (midCand.length < 2 || midCand.length > 50) continue;
+        if (cnSkipRe.test(midCand)) continue;
+        if (!cnNameRe.test(midCand)) continue;
+        out.customer = midCand.substring(0, 80);
+        break;
+      }
+      if (out.customer) break;
+    }
+  }
+
   // ── Member ID (captured separately from customer name) ───
   // Accepts "Member ID:", "Member #", "Member:", "MemberID",
   // "Member Number" — alphanumeric + dashes, 4+ chars.
@@ -605,25 +655,33 @@ function _stParseReceipt(text) {
   // Signature: a line matching /^\s*product\s+\$\s*[0-9]/ — that
   // pattern is unique to this receipt layout.
   var productLineRe =
-    /^\s*product\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
+    /\bproduct\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
   var totalLineRe = /^\s*total\b/i;
+  var addOnRe = /\badd[-\s]?on\b/i;
   var memberIdFormat = false;
   for (var mfi = 0; mfi < lines.length; mfi++) {
+    if (enrollmentRe.test(lines[mfi])) continue;
+    if (totalLineRe.test(lines[mfi])) continue;
     if (productLineRe.test(lines[mfi])) {
       memberIdFormat = true;
       break;
     }
   }
+  var mfCores = [];
+  var mfAddons = [];
   if (memberIdFormat) {
     for (var plI = 0; plI < lines.length; plI++) {
       var plLine = lines[plI];
+      if (enrollmentRe.test(plLine)) continue;
+      if (totalLineRe.test(plLine)) continue;
       var plM = plLine.match(productLineRe);
       if (!plM) continue;
       var plPrice = parseFloat(plM[1].replace(/,/g, ''));
       if (isNaN(plPrice) || plPrice <= 0) continue;
       // Walk back up to 10 lines to find the nearest plan-name
       // candidate: non-empty, not metadata, not an enrollment
-      // line, not a Total line, not a $-led line.
+      // line, not a Total line, not a $-led line, not an
+      // "Individual - ID: ..." detail line.
       var mfName = '';
       for (
         var mfBack = plI - 1;
@@ -634,6 +692,7 @@ function _stParseReceipt(text) {
         if (!mfPrev) continue;
         if (skipLineRe.test(mfPrev)) continue;
         if (/^\$/.test(mfPrev)) continue;
+        if (/^individual\s*-/i.test(mfPrev)) continue;
         if (enrollmentRe.test(mfPrev)) continue;
         if (totalLineRe.test(mfPrev)) continue;
         mfName = mfPrev;
@@ -642,19 +701,32 @@ function _stParseReceipt(text) {
       if (!mfName) mfName = 'Unknown Plan';
       var mfMatched = _stMatchPlanName(mfName);
       var mfFinal = mfMatched || mfName.substring(0, 120);
-      // De-dup by name + price
+      var mfEntry = { name: mfFinal, price: plPrice, policy: '' };
+      if (addOnRe.test(mfName) || addOnRe.test(mfFinal)) {
+        mfAddons.push(mfEntry);
+      } else {
+        mfCores.push(mfEntry);
+      }
+    }
+  }
+  // Push cores first, then add-ons. De-dup against anything
+  // already in out.products by name + price.
+  if (mfCores.length || mfAddons.length) {
+    var mfAll = mfCores.concat(mfAddons);
+    for (var mx = 0; mx < mfAll.length; mx++) {
+      var mfCand = mfAll[mx];
       var mfDup = false;
       for (var mfDi = 0; mfDi < out.products.length; mfDi++) {
         if (
-          out.products[mfDi].name === mfFinal &&
-          Math.abs(out.products[mfDi].price - plPrice) < 0.01
+          out.products[mfDi].name === mfCand.name &&
+          Math.abs(out.products[mfDi].price - mfCand.price) < 0.01
         ) {
           mfDup = true;
           break;
         }
       }
       if (mfDup) continue;
-      out.products.push({ name: mfFinal, price: plPrice, policy: '' });
+      out.products.push(mfCand);
     }
   }
 
@@ -869,6 +941,114 @@ function _stParseReceipt(text) {
         price: fallbackPrice,
         policy: ''
       });
+    }
+  }
+
+  // ── GROQ FALLBACK ─────────────────────────────────────────
+  // Last-resort parser for receipt formats we've never seen.
+  // Only fires when every other pass above failed to extract
+  // a single product. Uses a synchronous XMLHttpRequest so the
+  // sync return contract of _stParseReceipt is preserved. The
+  // whole block is wrapped in try/catch — any failure at all
+  // leaves out.products empty and the caller renders its normal
+  // "could not detect any products" error.
+  if (
+    out.products.length === 0 &&
+    typeof _aiGroqFallbackKey !== 'undefined' &&
+    _aiGroqFallbackKey &&
+    _aiGroqFallbackKey.length >= 20 &&
+    typeof XMLHttpRequest !== 'undefined'
+  ) {
+    try {
+      var grqPrompt =
+        'Extract from this receipt: customer full name, 9-digit member ID, sale date (YYYY-MM-DD), and all products with their monthly prices. Return ONLY valid JSON in this exact format: {"customer":"","memberId":"","saleDate":"","products":[{"name":"","price":0,"type":"deal or addon"}]}. First product is always the deal, rest are addons.';
+      var grqXhr = new XMLHttpRequest();
+      grqXhr.open(
+        'POST',
+        'https://api.groq.com/openai/v1/chat/completions',
+        false
+      );
+      grqXhr.setRequestHeader('Content-Type', 'application/json');
+      grqXhr.setRequestHeader(
+        'Authorization',
+        'Bearer ' + _aiGroqFallbackKey
+      );
+      grqXhr.send(
+        JSON.stringify({
+          model: 'llama-3.1-8b-instant',
+          max_tokens: 800,
+          temperature: 0.1,
+          messages: [
+            { role: 'system', content: grqPrompt },
+            { role: 'user', content: raw }
+          ]
+        })
+      );
+      if (grqXhr.status === 200) {
+        var grqBody = JSON.parse(grqXhr.responseText);
+        var grqTxt =
+          grqBody &&
+          grqBody.choices &&
+          grqBody.choices[0] &&
+          grqBody.choices[0].message &&
+          grqBody.choices[0].message.content
+            ? String(grqBody.choices[0].message.content).trim()
+            : '';
+        // Strip any markdown code fences Groq may wrap the JSON in.
+        grqTxt = grqTxt.replace(/^```(?:json)?\s*/i, '').replace(/```$/, '').trim();
+        var grqJson = null;
+        try {
+          grqJson = JSON.parse(grqTxt);
+        } catch (grqJsonErr) {
+          // Try to pull the first {...} block out of the text.
+          var grqMatch = grqTxt.match(/\{[\s\S]*\}/);
+          if (grqMatch) {
+            try {
+              grqJson = JSON.parse(grqMatch[0]);
+            } catch (grqJsonErr2) {
+              grqJson = null;
+            }
+          }
+        }
+        if (
+          grqJson &&
+          grqJson.products &&
+          grqJson.products.length > 0
+        ) {
+          if (!out.customer && grqJson.customer) {
+            out.customer = String(grqJson.customer).substring(0, 80);
+          }
+          if (!out.memberId && grqJson.memberId) {
+            out.memberId = String(grqJson.memberId).substring(0, 40);
+          }
+          if (!out.saleDate && grqJson.saleDate) {
+            var grqDt = String(grqJson.saleDate);
+            var grqDm = grqDt.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+            if (grqDm) {
+              var grqY = parseInt(grqDm[1], 10);
+              var grqMo = parseInt(grqDm[2], 10);
+              var grqDd = parseInt(grqDm[3], 10);
+              if (!isNaN(grqY) && !isNaN(grqMo) && !isNaN(grqDd)) {
+                out.saleDate = new Date(grqY, grqMo - 1, grqDd, 9, 0, 0, 0);
+              }
+            }
+          }
+          for (var grqPi = 0; grqPi < grqJson.products.length; grqPi++) {
+            var grqP = grqJson.products[grqPi] || {};
+            var grqName = grqP.name ? String(grqP.name).substring(0, 120) : '';
+            var grqPrice = parseFloat(grqP.price);
+            if (!grqName || isNaN(grqPrice) || grqPrice <= 0) continue;
+            var grqMatched = _stMatchPlanName(grqName);
+            out.products.push({
+              name: grqMatched || grqName,
+              price: grqPrice,
+              policy: ''
+            });
+          }
+        }
+      }
+    } catch (grqErr) {
+      // Leave out.products empty so caller shows the normal error.
     }
   }
 
