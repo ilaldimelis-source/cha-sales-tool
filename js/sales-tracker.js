@@ -922,22 +922,59 @@ function _stGetSaleMode() {
   return el && el.value === 'post' ? 'post' : 'same';
 }
 
-// Primary action: parse the pasted receipt and insert one deal
-// + N add-ons automatically based on what the parser found.
+// Splits a blob of pasted text into individual receipt chunks.
+// A new receipt starts when either:
+//   (a) a line contains "Confirmation" and that same line OR the
+//       next line has a "Month DD, YYYY" style date pattern, OR
+//   (b) a line is exactly "Member" and the next line begins
+//       with "ID:" — a common two-line header layout.
+// The first chunk always starts at line 0; each subsequent
+// boundary closes the previous chunk and opens a new one.
+// Returns an array of trimmed receipt strings.
+function _stSplitReceipts(text) {
+  if (!text) return [];
+  var raw = String(text).replace(/\r\n/g, '\n');
+  var lines = raw.split('\n');
+  var monthRe =
+    /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\b\s+\d{1,2},?\s+\d{4}/i;
+  var confRe = /\bconfirmation\b/i;
+  var starts = [0];
+  for (var i = 1; i < lines.length; i++) {
+    var line = lines[i];
+    var next = i + 1 < lines.length ? lines[i + 1] : '';
+    var isConfStart =
+      confRe.test(line) && (monthRe.test(line) || monthRe.test(next));
+    var isMemberStart =
+      /^\s*member\s*$/i.test(line) && /^\s*id\s*:/i.test(next);
+    if (isConfStart || isMemberStart) {
+      if (starts[starts.length - 1] !== i) starts.push(i);
+    }
+  }
+  var chunks = [];
+  for (var j = 0; j < starts.length; j++) {
+    var s = starts[j];
+    var e = j + 1 < starts.length ? starts[j + 1] : lines.length;
+    var chunk = lines.slice(s, e).join('\n').trim();
+    if (chunk) chunks.push(chunk);
+  }
+  if (!chunks.length) {
+    var whole = raw.trim();
+    if (whole) chunks.push(whole);
+  }
+  return chunks;
+}
+
+// Primary action: parse the pasted text (which may contain ONE
+// or MANY receipts), split it into per-receipt chunks, and
+// insert one deal + N add-ons per chunk. All chunks share the
+// same selected Sale Mode (Same-Day / Post-Date) and, for
+// post-date mode, the same bill date.
 function _stAutoDetectAndAdd() {
   var input = document.getElementById('st-receipt-input');
   if (!input) return;
   var text = input.value.trim();
   if (!text) {
     _stFlash('Paste a receipt first.', 'error');
-    return;
-  }
-  var parsed = _stParseReceipt(text);
-  if (!parsed.products.length) {
-    _stFlash(
-      'Could not find any products in that receipt. Try "Add as Deal" instead.',
-      'error'
-    );
     return;
   }
 
@@ -947,77 +984,176 @@ function _stAutoDetectAndAdd() {
     return;
   }
 
-  var receiptId =
-    'rcpt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
-  // Use the agent-selected "Date Sold" field so the sale lands
-  // on the correct calendar day instead of "right now".
-  var now = _stReadDateSoldTs();
+  // Split the pasted blob into individual receipts and parse
+  // each one independently. Chunks with zero products are
+  // dropped silently (e.g. noise or a trailing footer).
+  var chunks = _stSplitReceipts(text);
+  var parsedChunks = [];
+  for (var ci = 0; ci < chunks.length; ci++) {
+    var chunk = chunks[ci];
+    var pc = _stParseReceipt(chunk);
+    if (!pc || !pc.products.length) continue;
+    parsedChunks.push({ parsed: pc, raw: chunk });
+  }
+  if (!parsedChunks.length) {
+    _stFlash(
+      'Could not find any products in that receipt. Try "Add as Deal" instead.',
+      'error'
+    );
+    return;
+  }
+
+  // Fallback ts (used only when a chunk has no parseable sale
+  // date): the agent-selected Date Sold field at 9am local.
+  var fallbackTs = _stReadDateSoldTs();
+
+  var totalDeals = 0;
+  var totalAddons = 0;
+  var receiptsProcessed = parsedChunks.length;
 
   if (billDate) {
+    // Post-date flow: every chunk lands in the Pending
+    // Post-Dates list with the shared billDate.
     var pds = _stLoadPostDates();
-    for (var pi = 0; pi < parsed.products.length; pi++) {
-      var pp = parsed.products[pi];
-      pds.push({
-        id:
-          'pd_' + now + '_' + pi + '_' + Math.random().toString(36).slice(2, 6),
-        createdTs: now + pi,
-        billDate: billDate,
-        customer: parsed.customer,
-        plan: pp.name || 'Unknown Plan',
-        amount: pp.price,
-        type: pi === 0 ? 'deal' : 'addon',
-        raw: text,
-        notes: pp.policy ? 'Policy: ' + pp.policy : '',
-        receiptId: receiptId
-      });
+    for (var rc = 0; rc < parsedChunks.length; rc++) {
+      var parsedA = parsedChunks[rc].parsed;
+      var rawA = parsedChunks[rc].raw;
+      var rcptIdA =
+        'rcpt_' +
+        Date.now() +
+        '_' +
+        rc +
+        '_' +
+        Math.random().toString(36).slice(2, 6);
+      var baseTsA = Date.now() + rc * 1000;
+      for (var pi = 0; pi < parsedA.products.length; pi++) {
+        var pp = parsedA.products[pi];
+        pds.push({
+          id:
+            'pd_' +
+            baseTsA +
+            '_' +
+            pi +
+            '_' +
+            Math.random().toString(36).slice(2, 6),
+          createdTs: baseTsA + pi,
+          billDate: billDate,
+          customer: parsedA.customer,
+          plan: pp.name || 'Unknown Plan',
+          amount: pp.price,
+          type: pi === 0 ? 'deal' : 'addon',
+          raw: rawA,
+          notes: pp.policy ? 'Policy: ' + pp.policy : '',
+          receiptId: rcptIdA
+        });
+        if (pi === 0) totalDeals++;
+        else totalAddons++;
+      }
     }
     _stSavePostDates(pds);
   } else {
+    // Same-Day flow: every chunk lands directly in sales with
+    // its own per-receipt ts (parsed saleDate, or fallback).
     var sales = _stLoadSales();
-    var firstDealIdx = -1;
-    for (var i = 0; i < parsed.products.length; i++) {
-      var p = parsed.products[i];
-      var isDeal = i === 0;
-      var newSale = {
-        id:
-          'st_' + now + '_' + i + '_' + Math.random().toString(36).slice(2, 6),
-        ts: now + i,
-        customer: parsed.customer,
-        memberId: parsed.memberId || '',
-        plan: p.name || 'Unknown Plan',
-        amount: p.price,
-        type: isDeal ? 'deal' : 'addon',
-        status: 'valid',
-        raw: text,
-        notes: p.policy ? 'Policy: ' + p.policy : '',
-        receiptId: receiptId,
-        receiptTotal: parsed.receiptTotal,
-        // Store the receipt-level enrollment fee on the DEAL only
-        // so the $125 enrollment counter never double-counts.
-        enrollmentFee: isDeal ? (parsed.enrollmentFee || 0) : 0
-      };
-      sales.push(newSale);
-      if (isDeal) firstDealIdx = sales.length - 1;
+    var newDealIdxs = [];
+    for (var rc2 = 0; rc2 < parsedChunks.length; rc2++) {
+      var parsedB = parsedChunks[rc2].parsed;
+      var rawB = parsedChunks[rc2].raw;
+      var rcptIdB =
+        'rcpt_' +
+        Date.now() +
+        '_' +
+        rc2 +
+        '_' +
+        Math.random().toString(36).slice(2, 6);
+      // Prefer the receipt's own saleDate at 9am local. If the
+      // parser couldn't find one, fall back to the Date Sold
+      // field with a small per-receipt offset so sort order
+      // stays stable within the batch.
+      var rcTs;
+      if (parsedB.saleDate && parsedB.saleDate instanceof Date) {
+        var sd = parsedB.saleDate;
+        var sdLocal = new Date(
+          sd.getFullYear(),
+          sd.getMonth(),
+          sd.getDate(),
+          9,
+          0,
+          0,
+          0
+        );
+        rcTs = sdLocal.getTime();
+      } else {
+        rcTs = fallbackTs + rc2 * 60000;
+      }
+      for (var pj = 0; pj < parsedB.products.length; pj++) {
+        var pp2 = parsedB.products[pj];
+        var isDeal2 = pj === 0;
+        sales.push({
+          id:
+            'st_' +
+            rcTs +
+            '_' +
+            rc2 +
+            '_' +
+            pj +
+            '_' +
+            Math.random().toString(36).slice(2, 6),
+          ts: rcTs + pj,
+          customer: parsedB.customer,
+          memberId: parsedB.memberId || '',
+          plan: pp2.name || 'Unknown Plan',
+          amount: pp2.price,
+          type: isDeal2 ? 'deal' : 'addon',
+          status: 'valid',
+          raw: rawB,
+          notes: pp2.policy ? 'Policy: ' + pp2.policy : '',
+          receiptId: rcptIdB,
+          receiptTotal: parsedB.receiptTotal,
+          // Store the receipt-level enrollment fee on the DEAL
+          // only so the $125 enrollment counter never
+          // double-counts.
+          enrollmentFee: isDeal2 ? parsedB.enrollmentFee || 0 : 0
+        });
+        if (isDeal2) {
+          newDealIdxs.push(sales.length - 1);
+          totalDeals++;
+        } else {
+          totalAddons++;
+        }
+      }
     }
-    // Stamp commission fields on the new deal (and roll up its add-ons)
-    if (firstDealIdx !== -1) {
-      _stStampDealCommission(sales, firstDealIdx, _stLoadCommissionRates());
+    // Stamp commission fields on every new deal (each one
+    // rolls up its own add-ons via receiptId).
+    if (newDealIdxs.length) {
+      var rates = _stLoadCommissionRates();
+      for (var di = 0; di < newDealIdxs.length; di++) {
+        _stStampDealCommission(sales, newDealIdxs[di], rates);
+      }
     }
     _stSaveSales(sales);
   }
 
   input.value = '';
   _stResetPostDateInputs();
-  var addonCount = parsed.products.length - 1;
   var label = billDate
     ? 'Post-dated ' + _stFormatBillDate(billDate) + ': '
     : '';
   var msg =
     label +
-    'Added 1 deal' +
-    (addonCount > 0
-      ? ' + ' + addonCount + ' add-on' + (addonCount === 1 ? '' : 's')
-      : '') +
+    'Added ' +
+    totalDeals +
+    ' deal' +
+    (totalDeals === 1 ? '' : 's');
+  if (totalAddons > 0) {
+    msg +=
+      ' + ' + totalAddons + ' add-on' + (totalAddons === 1 ? '' : 's');
+  }
+  msg +=
+    ' from ' +
+    receiptsProcessed +
+    ' receipt' +
+    (receiptsProcessed === 1 ? '' : 's') +
     '.';
   _stRender();
   _stFlash(msg, 'ok');
