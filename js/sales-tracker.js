@@ -550,33 +550,6 @@ function _stParseReceipt(text) {
   );
   if (custMatch) out.customer = custMatch[1].trim().substring(0, 80);
 
-  // ── Customer name from standalone "ID: <digits>" line ─────
-  // In "Member ID" format receipts (Good Health Distribution
-  // Partner, etc.) the customer full name appears on the line
-  // immediately after a standalone "ID: 686934779" line. The
-  // regex below requires the line to BE the ID — not the
-  // "Individual - ID: 40008 - Payment: 1 ..." product lines
-  // which have text BEFORE the "ID:" token.
-  if (!out.customer) {
-    for (var cni = 0; cni < lines.length; cni++) {
-      if (/^\s*id\s*:\s*\d+\s*$/i.test(lines[cni])) {
-        for (var cnj = cni + 1; cnj < lines.length; cnj++) {
-          var cnName = (lines[cnj] || '').trim();
-          if (!cnName) continue;
-          if (/^individual\s*-/i.test(cnName)) break;
-          if (/^sale\s+on\b/i.test(cnName)) break;
-          if (/^date\s*:/i.test(cnName)) break;
-          if (/^order\s*#/i.test(cnName)) break;
-          if (/^products?\s*$/i.test(cnName)) break;
-          if (/^total\b/i.test(cnName)) break;
-          out.customer = cnName.substring(0, 80);
-          break;
-        }
-        if (out.customer) break;
-      }
-    }
-  }
-
   // ── Member ID (captured separately from customer name) ───
   // Accepts "Member ID:", "Member #", "Member:", "MemberID",
   // "Member Number" — alphanumeric + dashes, 4+ chars.
@@ -629,17 +602,11 @@ function _stParseReceipt(text) {
   // The Total line at the bottom is the ORDER total and must
   // never be used as a plan price.
   //
-  // Signature: any line containing the "Product  $X.XX" token —
-  // either standalone ("Product  $291.00") OR embedded in an
-  // Individual-detail line like:
-  //   "Individual - ID: 40008 - Payment: 1  Product  $34.99"
-  // The `\bproduct\b` word boundary prevents matching the
-  // "Products" section header (plural), because `\s+\$` after
-  // "product" requires whitespace+$ which "Products" lacks.
+  // Signature: a line matching /^\s*product\s+\$\s*[0-9]/ — that
+  // pattern is unique to this receipt layout.
   var productLineRe =
-    /\bproduct\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
+    /^\s*product\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
   var totalLineRe = /^\s*total\b/i;
-  var addOnRe = /\badd[-\s]?on\b/i;
   var memberIdFormat = false;
   for (var mfi = 0; mfi < lines.length; mfi++) {
     if (productLineRe.test(lines[mfi])) {
@@ -648,28 +615,15 @@ function _stParseReceipt(text) {
     }
   }
   if (memberIdFormat) {
-    // Collect into two buckets so core plans land in
-    // out.products BEFORE add-ons. _stAutoDetectAndAdd treats
-    // products[0] as the deal and the rest as add-ons, so the
-    // core (non-add-on) plan must appear first even when it
-    // was listed second in the raw receipt text.
-    var mfCores = [];
-    var mfAddons = [];
     for (var plI = 0; plI < lines.length; plI++) {
       var plLine = lines[plI];
-      // Never treat enrollment lines as a product price — the
-      // "Enrollment  $125.00" one-time fee must be skipped even
-      // though the wider productLineRe might otherwise match.
-      if (enrollmentRe.test(plLine)) continue;
-      if (totalLineRe.test(plLine)) continue;
       var plM = plLine.match(productLineRe);
       if (!plM) continue;
       var plPrice = parseFloat(plM[1].replace(/,/g, ''));
       if (isNaN(plPrice) || plPrice <= 0) continue;
       // Walk back up to 10 lines to find the nearest plan-name
       // candidate: non-empty, not metadata, not an enrollment
-      // line, not a Total line, not a $-led line, not an
-      // "Individual - ID: ..." detail line.
+      // line, not a Total line, not a $-led line.
       var mfName = '';
       for (
         var mfBack = plI - 1;
@@ -680,7 +634,6 @@ function _stParseReceipt(text) {
         if (!mfPrev) continue;
         if (skipLineRe.test(mfPrev)) continue;
         if (/^\$/.test(mfPrev)) continue;
-        if (/^individual\s*-/i.test(mfPrev)) continue;
         if (enrollmentRe.test(mfPrev)) continue;
         if (totalLineRe.test(mfPrev)) continue;
         mfName = mfPrev;
@@ -689,29 +642,19 @@ function _stParseReceipt(text) {
       if (!mfName) mfName = 'Unknown Plan';
       var mfMatched = _stMatchPlanName(mfName);
       var mfFinal = mfMatched || mfName.substring(0, 120);
-      var mfEntry = { name: mfFinal, price: plPrice, policy: '' };
-      if (addOnRe.test(mfName) || addOnRe.test(mfFinal)) {
-        mfAddons.push(mfEntry);
-      } else {
-        mfCores.push(mfEntry);
-      }
-    }
-    // Push cores first, then add-ons. De-dup by name + price.
-    var mfAll = mfCores.concat(mfAddons);
-    for (var mfPi = 0; mfPi < mfAll.length; mfPi++) {
-      var mfCand = mfAll[mfPi];
+      // De-dup by name + price
       var mfDup = false;
       for (var mfDi = 0; mfDi < out.products.length; mfDi++) {
         if (
-          out.products[mfDi].name === mfCand.name &&
-          Math.abs(out.products[mfDi].price - mfCand.price) < 0.01
+          out.products[mfDi].name === mfFinal &&
+          Math.abs(out.products[mfDi].price - plPrice) < 0.01
         ) {
           mfDup = true;
           break;
         }
       }
       if (mfDup) continue;
-      out.products.push(mfCand);
+      out.products.push({ name: mfFinal, price: plPrice, policy: '' });
     }
   }
 
