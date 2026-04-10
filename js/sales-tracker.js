@@ -1131,7 +1131,21 @@ function _stAutoDetectAndAdd() {
         _stStampDealCommission(sales, newDealIdxs[di], rates);
       }
     }
+    // ── DEBUG: trace the save path to diagnose the
+    // persistence bug reported in the receipt-add flow.
+    var _dbgUser = _stGetCurrentUser();
+    console.log(
+      'Saving',
+      sales.length,
+      'sales for user',
+      _dbgUser ? _dbgUser.id : '(no user)'
+    );
     _stSaveSales(sales);
+    console.log(
+      'Verified saved:',
+      _stLoadSales().length,
+      'sales in storage'
+    );
   }
 
   input.value = '';
@@ -2073,6 +2087,15 @@ function _stRender() {
   var page = document.getElementById('page-salestracker');
   if (!page) return;
   var sales = _stLoadSales();
+  // ── DEBUG: trace how many sales _stRender sees at paint
+  // time to diagnose the persistence bug.
+  var _dbgRenderUser = _stGetCurrentUser();
+  console.log(
+    '_stRender loaded',
+    sales.length,
+    'sales for user',
+    _dbgRenderUser ? _dbgRenderUser.id : '(no user)'
+  );
   var postdates = _stLoadPostDates();
   var stats = _stCalcStats(sales);
 
