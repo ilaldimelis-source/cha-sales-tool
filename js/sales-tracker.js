@@ -935,31 +935,128 @@ function _stSplitReceipts(text) {
   if (!text) return [];
   var raw = String(text).replace(/\r\n/g, '\n');
   var lines = raw.split('\n');
+
   var monthRe =
     /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\b\s+\d{1,2},?\s+\d{4}/i;
   var confRe = /\bconfirmation\b/i;
-  var starts = [0];
-  for (var i = 1; i < lines.length; i++) {
+
+  // Slack / UI noise lines that appear between receipts.
+  var noiseLinkRe = /^link\s+central\s+health/i;
+  var noiseBackRe = /^back\s+to\s+home/i;
+  // Slack message timestamps like "4/1 11:27 AM"
+  var noiseSlackTsRe = /^\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s*(am|pm)?$/i;
+  // Slack day timestamps like "Friday 9:05 PM"
+  var noiseSlackDayRe =
+    /^(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\s+\d{1,2}:\d{2}/i;
+  // Stray person-name lines: 2-4 TitleCase words, no digits or
+  // special characters. Used to trim trailing Slack sender names
+  // that appear between receipts.
+  var nameRe = /^[A-Z][A-Za-z'\-]+(?:\s+[A-Z][A-Za-z'\-]+){1,3}$/;
+
+  // Pass 1: find every line index that opens a new receipt.
+  // A line opens a receipt when either:
+  //   (a) it contains "Confirmation" AND a Month DD, YYYY date
+  //       appears on that same line or within 2 lines after it,
+  //   (b) the line is exactly "Member" and the next line begins
+  //       with "ID:" (two-line member-header layout).
+  var starts = [];
+  for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
-    var next = i + 1 < lines.length ? lines[i + 1] : '';
-    var isConfStart =
-      confRe.test(line) && (monthRe.test(line) || monthRe.test(next));
-    var isMemberStart =
-      /^\s*member\s*$/i.test(line) && /^\s*id\s*:/i.test(next);
-    if (isConfStart || isMemberStart) {
-      if (starts[starts.length - 1] !== i) starts.push(i);
+    if (confRe.test(line)) {
+      var hasDate =
+        monthRe.test(line) ||
+        (i + 1 < lines.length && monthRe.test(lines[i + 1])) ||
+        (i + 2 < lines.length && monthRe.test(lines[i + 2]));
+      if (hasDate) {
+        starts.push(i);
+        continue;
+      }
+    }
+    if (
+      /^\s*member\s*$/i.test(line) &&
+      i + 1 < lines.length &&
+      /^\s*id\s*:/i.test(lines[i + 1])
+    ) {
+      starts.push(i);
     }
   }
+
+  // No boundaries at all → treat the whole blob as one chunk,
+  // still stripped of noise so the parser sees clean input.
+  if (!starts.length) {
+    var wholeCleaned = [];
+    for (var wi = 0; wi < lines.length; wi++) {
+      var wlRaw = lines[wi];
+      var wl = wlRaw.trim();
+      if (!wl) {
+        wholeCleaned.push(wlRaw);
+        continue;
+      }
+      if (noiseLinkRe.test(wl)) continue;
+      if (noiseBackRe.test(wl)) continue;
+      if (noiseSlackTsRe.test(wl)) continue;
+      if (noiseSlackDayRe.test(wl)) continue;
+      wholeCleaned.push(wlRaw);
+    }
+    var whole = wholeCleaned.join('\n').trim();
+    if (whole) {
+      console.log('Chunk 0:', whole.substring(0, 80));
+      return [whole];
+    }
+    return [];
+  }
+
+  // Pass 2: slice the blob on the discovered starts and clean
+  // each chunk. Anything before the first start is discarded.
   var chunks = [];
   for (var j = 0; j < starts.length; j++) {
     var s = starts[j];
     var e = j + 1 < starts.length ? starts[j + 1] : lines.length;
-    var chunk = lines.slice(s, e).join('\n').trim();
-    if (chunk) chunks.push(chunk);
-  }
-  if (!chunks.length) {
-    var whole = raw.trim();
-    if (whole) chunks.push(whole);
+    var chunkLines = lines.slice(s, e);
+
+    // Strip noise lines (Slack decoration + timestamps).
+    var cleaned = [];
+    for (var cl = 0; cl < chunkLines.length; cl++) {
+      var cRaw = chunkLines[cl];
+      var cTrim = cRaw.trim();
+      if (!cTrim) {
+        cleaned.push(cRaw);
+        continue;
+      }
+      if (noiseLinkRe.test(cTrim)) continue;
+      if (noiseBackRe.test(cTrim)) continue;
+      if (noiseSlackTsRe.test(cTrim)) continue;
+      if (noiseSlackDayRe.test(cTrim)) continue;
+      cleaned.push(cRaw);
+    }
+
+    // Trim trailing stray name lines — Slack drops sender names
+    // between messages, so any 2-4 word TitleCase lines sitting
+    // at the tail of the chunk are almost certainly noise from
+    // the NEXT receipt's sender and not part of this receipt's
+    // Products section.
+    while (cleaned.length) {
+      var lastRaw = cleaned[cleaned.length - 1];
+      var lastTrim = lastRaw.trim();
+      if (!lastTrim) {
+        cleaned.pop();
+        continue;
+      }
+      if (nameRe.test(lastTrim)) {
+        cleaned.pop();
+        continue;
+      }
+      break;
+    }
+
+    var chunkText = cleaned.join('\n').trim();
+    if (chunkText) {
+      chunks.push(chunkText);
+      console.log(
+        'Chunk ' + (chunks.length - 1) + ':',
+        chunkText.substring(0, 80)
+      );
+    }
   }
   return chunks;
 }
@@ -1803,11 +1900,103 @@ function _stBuildPostDatesSection(pds) {
 // re-executes from scratch.
 var _stTableFilter = 'week';
 
+// Bulk-delete selection state: { saleId: true }. Resets on
+// page reload and whenever the user flips out of 'all' mode.
+var _stSelectedIds = {};
+
 // Toggle handler: called from the This Week / All Sales
 // buttons at the top of the sales table.
 function _stSetTableFilter(mode) {
   _stTableFilter = mode === 'all' ? 'all' : 'week';
+  // Wipe bulk selection whenever the filter changes so a
+  // lingering selection from 'all' doesn't silently apply
+  // across filter flips.
+  _stSelectedIds = {};
   _stRender();
+}
+
+// Row checkbox handler (bulk delete).
+function _stToggleSaleSelection(id) {
+  if (_stSelectedIds[id]) {
+    delete _stSelectedIds[id];
+  } else {
+    _stSelectedIds[id] = true;
+  }
+  _stRender();
+}
+
+// Header "Select All" checkbox handler.
+function _stToggleAllSelection() {
+  var cb = document.getElementById('st-select-all');
+  var checked = !!(cb && cb.checked);
+  var sales = _stLoadSales();
+  _stSelectedIds = {};
+  if (checked) {
+    for (var i = 0; i < sales.length; i++) {
+      _stSelectedIds[sales[i].id] = true;
+    }
+  }
+  _stRender();
+}
+
+// Delete every currently-selected sale after confirmation.
+function _stBulkDeleteSelected() {
+  var ids = [];
+  for (var k in _stSelectedIds) {
+    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k]) ids.push(k);
+  }
+  if (!ids.length) {
+    _stFlash('No sales selected.', 'error');
+    return;
+  }
+  if (
+    !confirm(
+      'Permanently delete ' +
+        ids.length +
+        ' selected sale' +
+        (ids.length === 1 ? '' : 's') +
+        '? This cannot be undone.'
+    )
+  ) {
+    return;
+  }
+  var sales = _stLoadSales().filter(function (s) {
+    return !_stSelectedIds[s.id];
+  });
+  _stSaveSales(sales);
+  _stSelectedIds = {};
+  _stRender();
+  _stFlash(
+    'Deleted ' + ids.length + ' sale' + (ids.length === 1 ? '' : 's') + '.',
+    'ok'
+  );
+}
+
+// Delete every logged sale after two confirmations.
+function _stBulkDeleteAll() {
+  var sales = _stLoadSales();
+  if (!sales.length) {
+    _stFlash('No sales to delete.', 'error');
+    return;
+  }
+  if (
+    !confirm(
+      'Permanently delete ALL ' +
+        sales.length +
+        ' sales? This cannot be undone.'
+    )
+  ) {
+    return;
+  }
+  if (
+    !confirm('Are you absolutely sure? This will wipe every logged sale.')
+  ) {
+    return;
+  }
+  _stSaveSales([]);
+  _stSelectedIds = {};
+  _stRender();
+  _stFlash('All sales deleted.', 'ok');
 }
 
 function _stBuildTable(sales) {
@@ -1854,10 +2043,29 @@ function _stBuildTable(sales) {
   html += '</div>';
   html += '</div>';
 
+  var isAll = mode === 'all';
+
+  // Bulk-delete bar (All Sales view only) — shows Delete
+  // Selected (count) + Delete ALL Sales.
+  if (isAll) {
+    var selectedCount = 0;
+    for (var selC = 0; selC < rows.length; selC++) {
+      if (_stSelectedIds[rows[selC].id]) selectedCount++;
+    }
+    html += '<div class="st-bulk-bar">';
+    html +=
+      '<button type="button" class="st-bulk-delete" onclick="_stBulkDeleteSelected()">Delete Selected (<span class="st-bulk-count">' +
+      selectedCount +
+      '</span>)</button>';
+    html +=
+      '<button type="button" class="st-bulk-delete-all" onclick="_stBulkDeleteAll()">Delete ALL Sales</button>';
+    html += '</div>';
+  }
+
   if (rows.length === 0) {
     html +=
       '<div class="st-empty">' +
-      (mode === 'all'
+      (isAll
         ? 'No sales logged yet. Paste a receipt above to add one.'
         : 'No sales logged yet this week. Paste a receipt above to add one.') +
       '</div>';
@@ -1865,8 +2073,24 @@ function _stBuildTable(sales) {
     return html;
   }
   html += '<div class="st-table-wrap"><table class="st-table">';
+  // Header: add Select-All checkbox column as the first column
+  // when in All Sales mode.
+  html += '<thead><tr>';
+  if (isAll) {
+    var allChecked = rows.length > 0;
+    for (var hc = 0; hc < rows.length; hc++) {
+      if (!_stSelectedIds[rows[hc].id]) {
+        allChecked = false;
+        break;
+      }
+    }
+    html +=
+      '<th><input type="checkbox" id="st-select-all"' +
+      (allChecked ? ' checked' : '') +
+      ' onclick="_stToggleAllSelection()"></th>';
+  }
   html +=
-    '<thead><tr><th>Date</th><th>Customer</th><th>Plan</th><th>Amount</th><th>Commission</th><th>Type</th><th>Status</th><th></th></tr></thead><tbody>';
+    '<th>Date</th><th>Customer</th><th>Plan</th><th>Amount</th><th>Commission</th><th>Type</th><th>Status</th><th></th></tr></thead><tbody>';
   for (var i = 0; i < rows.length; i++) {
     var s = rows[i];
     var d = new Date(s.ts);
@@ -1922,6 +2146,14 @@ function _stBuildTable(sales) {
     }
 
     html += '<tr class="st-row st-row-' + s.status + '">';
+    if (isAll) {
+      html +=
+        '<td><input type="checkbox"' +
+        (_stSelectedIds[s.id] ? ' checked' : '') +
+        ' onclick="_stToggleSaleSelection(\'' +
+        s.id +
+        '\')"></td>';
+    }
     html += '<td>' + _stEscape(dateStr) + '</td>';
     html += '<td>' + customerCell + '</td>';
     html += '<td>' + _stEscape(s.plan || 'Unknown Plan') + '</td>';
