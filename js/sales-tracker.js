@@ -1784,30 +1784,77 @@ function _stBuildPostDatesSection(pds) {
   return html;
 }
 
+// Module-level table filter. Defaults to 'week' and is NOT
+// persisted — a page reload resets it because this script
+// re-executes from scratch.
+var _stTableFilter = 'week';
+
+// Toggle handler: called from the This Week / All Sales
+// buttons at the top of the sales table.
+function _stSetTableFilter(mode) {
+  _stTableFilter = mode === 'all' ? 'all' : 'week';
+  _stRender();
+}
+
 function _stBuildTable(sales) {
-  var weekStart = _stStartOfWeek(new Date()).getTime();
-  var weekSales = sales
-    .filter(function (s) {
-      return s && s.ts >= weekStart;
-    })
-    .sort(function (a, b) {
+  var mode = _stTableFilter === 'all' ? 'all' : 'week';
+  var rows;
+  var titleLabel;
+  if (mode === 'all') {
+    rows = sales.slice().sort(function (a, b) {
       return b.ts - a.ts;
     });
+    titleLabel = 'All Sales';
+  } else {
+    var weekStart = _stStartOfWeek(new Date()).getTime();
+    rows = sales
+      .filter(function (s) {
+        return s && s.ts >= weekStart;
+      })
+      .sort(function (a, b) {
+        return b.ts - a.ts;
+      });
+    titleLabel = 'This Week';
+  }
 
   var html = '<div class="st-table-section">';
+  // Header row: title on the left, This Week / All Sales
+  // toggle on the right. Reuses the existing .st-mode-toggle
+  // pill-button styles from the receipt input section.
+  html += '<div class="st-table-header">';
   html +=
-    '<div class="st-table-title">This Week (' + weekSales.length + ')</div>';
-  if (weekSales.length === 0) {
+    '<div class="st-table-title">' +
+    _stEscape(titleLabel) +
+    ' (' +
+    rows.length +
+    ')</div>';
+  html += '<div class="st-mode-toggle st-table-filter">';
+  html +=
+    '<button type="button" class="st-mode-btn' +
+    (mode === 'week' ? ' st-mode-active' : '') +
+    '" onclick="_stSetTableFilter(\'week\')">This Week</button>';
+  html +=
+    '<button type="button" class="st-mode-btn' +
+    (mode === 'all' ? ' st-mode-active' : '') +
+    '" onclick="_stSetTableFilter(\'all\')">All Sales</button>';
+  html += '</div>';
+  html += '</div>';
+
+  if (rows.length === 0) {
     html +=
-      '<div class="st-empty">No sales logged yet this week. Paste a receipt above to add one.</div>';
+      '<div class="st-empty">' +
+      (mode === 'all'
+        ? 'No sales logged yet. Paste a receipt above to add one.'
+        : 'No sales logged yet this week. Paste a receipt above to add one.') +
+      '</div>';
     html += '</div>';
     return html;
   }
   html += '<div class="st-table-wrap"><table class="st-table">';
   html +=
     '<thead><tr><th>Date</th><th>Customer</th><th>Plan</th><th>Amount</th><th>Commission</th><th>Type</th><th>Status</th><th></th></tr></thead><tbody>';
-  for (var i = 0; i < weekSales.length; i++) {
-    var s = weekSales[i];
+  for (var i = 0; i < rows.length; i++) {
+    var s = rows[i];
     var d = new Date(s.ts);
     var dateStr =
       d.getMonth() +
