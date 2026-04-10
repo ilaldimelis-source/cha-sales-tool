@@ -2273,7 +2273,7 @@ function _onbRightColumn(dayNum) {
       { n: 2, title: "Plan Presentation", script: "Alright [Customer Name], I have some excellent news for you.", rule: "DO NOT ask if they are still there." },
       { n: 3, title: "Price", text: "State rate, association fee, first month total, ongoing monthly.", script: "Now assuming this plan meets your medical needs, would the initial first-month amount be affordable for you today?" },
       { n: 4, title: "Benefits Walk", text: "Doctor visit copays, no deductible framing. Go straight to RX no pause." },
-      { n: 5, title: "RX Disclosure", script: "The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You will not be needing coverage for those services, correct?", rule: "GO STRAIGHT TO CLOSING STATEMENT." },
+      { n: 5, title: "RX — Plan includes a prescription discount program" },
       { n: 6, title: "Closing", text: "Collect email, name, address, phone, SSN, payment.", rule: "After card number say nothing — whoever talks first loses." },
       { n: 7, title: "Verification", script: "Click Accept and tell me what you see." },
       { n: 8, title: "Post Close", text: "Give 855-736-1590, CHA561337, network name. Disclose: limited benefit, not ACA, not major medical, no maternity, no substance abuse, no psychiatric, 12/12 pre-ex, 30-day sickness waiting period. Ask for referrals." }
