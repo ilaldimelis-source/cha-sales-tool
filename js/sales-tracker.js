@@ -460,7 +460,8 @@ function _stParseReceipt(text) {
     enrollmentFee: 0,
     customer: '',
     agent: '',
-    memberId: ''
+    memberId: '',
+    saleDate: null
   };
   if (!text) return out;
   var raw = String(text).replace(/\r\n/g, '\n');
@@ -482,6 +483,34 @@ function _stParseReceipt(text) {
   );
   if (agentMatch) out.agent = agentMatch[1].trim().substring(0, 80);
 
+  // ── Confirmation-line date + member ID ───────────────────
+  // Matches the header line format:
+  //   "April 9, 2026 at 8:04 PM - 686931541 - Ravi Choudhry"
+  // Captures the month name, day, year, and the 9-digit member
+  // number that sits between the first and second dash.
+  var confHeaderRe =
+    /([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})\s+at\s+\d{1,2}:\d{2}\s*(?:am|pm)?\s*-\s*(\d{9})\s*-/i;
+  var confMatch = raw.match(confHeaderRe);
+  if (confMatch) {
+    var monthMap = {
+      january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+      july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
+      jan: 0, feb: 1, mar: 2, apr: 3, jun: 5, jul: 6,
+      aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11
+    };
+    var mKey = String(confMatch[1]).toLowerCase();
+    var mIdx = monthMap[mKey];
+    var dNum = parseInt(confMatch[2], 10);
+    var yNum = parseInt(confMatch[3], 10);
+    if (typeof mIdx === 'number' && !isNaN(dNum) && !isNaN(yNum)) {
+      out.saleDate = new Date(yNum, mIdx, dNum, 9, 0, 0, 0);
+    }
+    // The 9-digit number from the confirmation line takes
+    // precedence over any "Member ID:" field found below —
+    // this is the receipt's canonical member number.
+    out.memberId = confMatch[4];
+  }
+
   // ── Customer name (if any explicit field) ─────────────────
   var custMatch = raw.match(
     /(?:customer|client|insured|name)\s*[:-]\s*([^\n\r]+)/i
@@ -491,14 +520,18 @@ function _stParseReceipt(text) {
   // ── Member ID (captured separately from customer name) ───
   // Accepts "Member ID:", "Member #", "Member:", "MemberID",
   // "Member Number" — alphanumeric + dashes, 4+ chars.
-  var memberIdMatch = raw.match(
-    /member(?:\s*(?:id|#|number|no\.?))?\s*[:#\-]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i
-  );
-  if (memberIdMatch) {
-    var midCandidate = memberIdMatch[1].trim();
-    // Avoid grabbing plain words
-    if (/[0-9]/.test(midCandidate)) {
-      out.memberId = midCandidate.substring(0, 40);
+  // Only use this fallback if the confirmation header above
+  // didn't already supply a 9-digit member number.
+  if (!out.memberId) {
+    var memberIdMatch = raw.match(
+      /member(?:\s*(?:id|#|number|no\.?))?\s*[:#\-]?\s*([A-Z0-9][A-Z0-9\-]{3,})/i
+    );
+    if (memberIdMatch) {
+      var midCandidate = memberIdMatch[1].trim();
+      // Avoid grabbing plain words
+      if (/[0-9]/.test(midCandidate)) {
+        out.memberId = midCandidate.substring(0, 40);
+      }
     }
   }
 
@@ -862,14 +895,31 @@ function _stRestampAllCommissions(sales) {
 // in the past, returns a sentinel 'INVALID' so the caller can
 // abort with an error message.
 function _stReadPostDate() {
-  var cb = document.getElementById('st-postdate-toggle');
-  if (!cb || !cb.checked) return null;
-  var picker = document.getElementById('st-postdate-date');
+  if (_stGetSaleMode() !== 'post') return null;
+  var picker = document.getElementById('st-postdate-billing');
   if (!picker || !picker.value) return 'INVALID';
   var picked = _stIsoToDate(picker.value);
   var today = _stStartOfDay(new Date());
   if (!picked || picked.getTime() < today.getTime()) return 'INVALID';
   return picker.value;
+}
+
+// Reads the "Date Sold" field and returns a timestamp at 9am
+// local time on that calendar day. Falls back to Date.now() if
+// the field is missing or empty.
+function _stReadDateSoldTs() {
+  var f = document.getElementById('st-date-sold');
+  if (!f || !f.value) return Date.now();
+  var d = _stIsoToDate(f.value);
+  if (!d) return Date.now();
+  d.setHours(9, 0, 0, 0);
+  return d.getTime();
+}
+
+// Current value of the Same-Day vs Post-Date toggle.
+function _stGetSaleMode() {
+  var el = document.getElementById('st-sale-mode');
+  return el && el.value === 'post' ? 'post' : 'same';
 }
 
 // Primary action: parse the pasted receipt and insert one deal
@@ -899,7 +949,9 @@ function _stAutoDetectAndAdd() {
 
   var receiptId =
     'rcpt_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
-  var now = Date.now();
+  // Use the agent-selected "Date Sold" field so the sale lands
+  // on the correct calendar day instead of "right now".
+  var now = _stReadDateSoldTs();
 
   if (billDate) {
     var pds = _stLoadPostDates();
@@ -1008,9 +1060,10 @@ function _stAddSale(saleType) {
   } else {
     var sales = _stLoadSales();
     var isDealManual = saleType !== 'addon';
+    var dateSoldTs = _stReadDateSoldTs();
     sales.push({
       id: 'st_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-      ts: Date.now(),
+      ts: dateSoldTs,
       customer: parsed.customer,
       memberId: parsed.memberId || '',
       plan: first.name || 'Unknown Plan',
@@ -1042,25 +1095,52 @@ function _stAddSale(saleType) {
 }
 
 function _stResetPostDateInputs() {
-  var cb = document.getElementById('st-postdate-toggle');
-  var pk = document.getElementById('st-postdate-date');
-  if (cb) cb.checked = false;
-  if (pk) pk.value = '';
-  var wrap = document.getElementById('st-postdate-date-wrap');
-  if (wrap) wrap.style.display = 'none';
+  _stSetSaleMode('same');
+  var billing = document.getElementById('st-postdate-billing');
+  if (billing) billing.value = '';
+  var sold = document.getElementById('st-date-sold');
+  if (sold) sold.value = _stTodayIso();
 }
 
-// Toggle handler for the Post-Date checkbox — shows/hides the
-// date picker. Wired via inline onchange from _stBuildInput.
-function _stTogglePostDate() {
-  var cb = document.getElementById('st-postdate-toggle');
-  var wrap = document.getElementById('st-postdate-date-wrap');
-  if (!cb || !wrap) return;
-  wrap.style.display = cb.checked ? 'inline-flex' : 'none';
-  if (cb.checked) {
-    var pk = document.getElementById('st-postdate-date');
-    if (pk && !pk.value) pk.min = _stTodayIso();
+// Switches the sale timing mode between Same-Day and Post-Date.
+// Updates the hidden mode input, button highlight classes, and
+// shows/hides the Post-Date Billing field.
+function _stSetSaleMode(mode) {
+  var target = mode === 'post' ? 'post' : 'same';
+  var hidden = document.getElementById('st-sale-mode');
+  if (hidden) hidden.value = target;
+  var sameBtn = document.getElementById('st-mode-same');
+  var postBtn = document.getElementById('st-mode-post');
+  if (sameBtn) {
+    sameBtn.className =
+      'st-mode-btn' + (target === 'same' ? ' st-mode-active' : '');
   }
+  if (postBtn) {
+    postBtn.className =
+      'st-mode-btn' + (target === 'post' ? ' st-mode-active' : '');
+  }
+  var pdWrap = document.getElementById('st-postdate-billing-wrap');
+  if (pdWrap) pdWrap.style.display = target === 'post' ? 'block' : 'none';
+}
+
+// oninput handler on the receipt textarea — re-parses on every
+// keystroke (cheap on short receipts) and, if the parser finds
+// a confirmation-line date, auto-fills the "Date Sold" field.
+// The agent can still manually override it afterwards.
+function _stReceiptInputChanged() {
+  var input = document.getElementById('st-receipt-input');
+  if (!input || !input.value) return;
+  var parsed = _stParseReceipt(input.value);
+  if (!parsed || !parsed.saleDate) return;
+  var f = document.getElementById('st-date-sold');
+  if (!f) return;
+  var sd = parsed.saleDate;
+  var yy = sd.getFullYear();
+  var mm = String(sd.getMonth() + 1);
+  if (mm.length < 2) mm = '0' + mm;
+  var dd = String(sd.getDate());
+  if (dd.length < 2) dd = '0' + dd;
+  f.value = yy + '-' + mm + '-' + dd;
 }
 
 // Confirm a post-date: move it out of the postdates list and
@@ -1460,22 +1540,37 @@ function _stBuildInput() {
     '<label class="st-input-label" for="st-receipt-input">Paste enrollment receipt</label>';
   html +=
     '<textarea id="st-receipt-input" class="st-textarea" rows="4" ' +
+    'oninput="_stReceiptInputChanged()" ' +
     'placeholder="Paste the full enrollment receipt here. The tracker will auto-detect the core plan and any add-ons, and log them all in one click."></textarea>';
   html += '<div id="st-flash" class="st-flash" style="opacity:0;"></div>';
-  // Post-date row
-  html += '<div class="st-postdate-row">';
+  // Sale timing: Same-Day vs Post-Date toggle buttons
+  html += '<input type="hidden" id="st-sale-mode" value="same">';
+  html += '<div class="st-mode-toggle">';
   html +=
-    '<label class="st-postdate-label">' +
-    '<input type="checkbox" id="st-postdate-toggle" onchange="_stTogglePostDate()">' +
-    '<span>Post-Date?</span>' +
-    '</label>';
+    '<button type="button" id="st-mode-same" class="st-mode-btn st-mode-active" onclick="_stSetSaleMode(\'same\')">Same-Day Sale</button>';
   html +=
-    '<span id="st-postdate-date-wrap" class="st-postdate-date-wrap" style="display:none;">' +
-    '<label for="st-postdate-date" class="st-postdate-date-label">Bill date:</label>' +
-    '<input type="date" id="st-postdate-date" class="st-postdate-date" min="' +
+    '<button type="button" id="st-mode-post" class="st-mode-btn" onclick="_stSetSaleMode(\'post\')">Post-Date Sale</button>';
+  html += '</div>';
+  // Date fields row — "Date Sold" always visible, "Post-Date
+  // Billing" only visible when Post-Date mode is selected.
+  html += '<div class="st-date-row">';
+  html += '<div class="st-date-field">';
+  html +=
+    '<label for="st-date-sold" class="st-date-label">Date Sold</label>';
+  html +=
+    '<input type="date" id="st-date-sold" class="st-date-input" value="' +
     _stEscape(today) +
-    '">' +
-    '</span>';
+    '">';
+  html += '</div>';
+  html +=
+    '<div id="st-postdate-billing-wrap" class="st-date-field" style="display:none;">';
+  html +=
+    '<label for="st-postdate-billing" class="st-date-label">Post-Date Billing</label>';
+  html +=
+    '<input type="date" id="st-postdate-billing" class="st-date-input" min="' +
+    _stEscape(today) +
+    '">';
+  html += '</div>';
   html += '</div>';
   html += '<div class="st-input-actions">';
   html +=
