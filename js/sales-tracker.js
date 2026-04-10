@@ -1226,6 +1226,9 @@ function _stSplitReceipts(text) {
   // Slack day timestamps like "Friday 9:05 PM"
   var noiseSlackDayRe =
     /^(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\s+\d{1,2}:\d{2}/i;
+  // Slack preview lines like "Member ID: 686934779 Cody Wagner ..."
+  // that appear BEFORE the actual receipt text.
+  var noiseMemberPreviewRe = /^\s*member\s+id\s*:.*\.{3}/i;
   // Stray person-name lines: 2-4 TitleCase words, no digits or
   // special characters. Used to trim trailing Slack sender names
   // that appear between receipts.
@@ -1250,11 +1253,21 @@ function _stSplitReceipts(text) {
         continue;
       }
     }
-    if (
+    // Two-line format: "Member" alone then "ID: XXXXXXXX"
+    var isTwoLineMember =
       /^\s*member\s*$/i.test(line) &&
       i + 1 < lines.length &&
-      /^\s*id\s*:/i.test(lines[i + 1])
-    ) {
+      /^\s*id\s*:/i.test(lines[i + 1]);
+
+    // One-line format: "Member ID: 686934779" or
+    // "Member ID: 686934779 Cody Wagner ..." — but NOT the
+    // Slack preview "Member ID: ... ..." ellipsis lines, which
+    // are stripped by the noiseMemberPreviewRe filter.
+    var isOneLineMember =
+      /^\s*member\s+id\s*:\s*\d{6,}/i.test(line) &&
+      !noiseMemberPreviewRe.test(line);
+
+    if (isTwoLineMember || isOneLineMember) {
       starts.push(i);
     }
   }
@@ -1274,6 +1287,7 @@ function _stSplitReceipts(text) {
       if (noiseBackRe.test(wl)) continue;
       if (noiseSlackTsRe.test(wl)) continue;
       if (noiseSlackDayRe.test(wl)) continue;
+      if (noiseMemberPreviewRe.test(wl)) continue;
       wholeCleaned.push(wlRaw);
     }
     var whole = wholeCleaned.join('\n').trim();
@@ -1305,6 +1319,7 @@ function _stSplitReceipts(text) {
       if (noiseBackRe.test(cTrim)) continue;
       if (noiseSlackTsRe.test(cTrim)) continue;
       if (noiseSlackDayRe.test(cTrim)) continue;
+      if (noiseMemberPreviewRe.test(cTrim)) continue;
       cleaned.push(cRaw);
     }
 
