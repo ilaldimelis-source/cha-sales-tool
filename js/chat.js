@@ -317,14 +317,9 @@ function brInit() {
   var _initKey = localStorage.getItem('cha_groq_key');
   _brSetStatus(_initKey && _initKey !== 'skip' && _initKey.length > 20 ? 'ai' : 'local');
 
-  // Groq AI setup — office key is default, modal only via ⚙ button
-  var _aiBtn = document.createElement('button');
-  _aiBtn.textContent = '\u2699 AI';
-  _aiBtn.onclick = brShowSetupModal;
-  _aiBtn.style.cssText =
-    'font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.1);color:#fff;cursor:pointer;margin-left:8px;';
-  var _brHead = document.querySelector('.br-head');
-  if (_brHead) _brHead.appendChild(_aiBtn);
+  // Groq AI is provided automatically via the shared company key
+  // fetched by ai-tools.js into _aiGroqFallbackKey. Agents do not
+  // manage their own keys, so no ⚙ AI settings button is rendered.
 }
 
 function brRenderPlanButtons(groupFilter) {
@@ -859,7 +854,12 @@ function brRenderLocalResult(result, planName) {
 }
 
 function brAIAnswer(query, planId) {
-  var apiKey = localStorage.getItem('cha_groq_key') || CHA_OFFICE_GROQ_KEY;
+  // Shared company key (fetched by ai-tools.js) always wins. Fall
+  // back to a local key only if the shared key failed to load.
+  var apiKey =
+    (typeof _aiGroqFallbackKey !== 'undefined' && _aiGroqFallbackKey) ||
+    localStorage.getItem('cha_groq_key') ||
+    CHA_OFFICE_GROQ_KEY;
   var plan = null;
   if (typeof POLICY_DOCS !== 'undefined') {
     for (var i = 0; i < POLICY_DOCS.length; i++) {

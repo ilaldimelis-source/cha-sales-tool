@@ -2,13 +2,12 @@
 
 // ── SHARED GROQ HELPER ───────────────────────────────────────────────────────
 
-// Env-provided shared Groq key, fetched once on init from /api/groq-key
-// (a Vercel serverless function that reads process.env.GROQ_API_KEY).
-// localStorage 'cha_groq_key' always wins; this is used only as a fallback
-// when an agent has not entered their own personal key.
-// The ?t= cache-buster prevents the service worker's stale-while-revalidate
-// path from caching the response (sw.js does not have /api/ in its
-// noCachePatterns list and we cannot modify sw.js beyond its version bump).
+// Env-provided shared company Groq key, fetched once at script load
+// from /api/groq-key (a Vercel serverless function that reads
+// process.env.GROQ_API_KEY). Agents never manage this key — it is
+// applied automatically for everyone the moment the app loads.
+// The ?t= cache-buster prevents the service worker's stale-while-
+// revalidate path from caching the response.
 var _aiGroqFallbackKey = '';
 fetch('/api/groq-key?t=' + Date.now())
   .then(function (r) {
@@ -22,14 +21,19 @@ fetch('/api/groq-key?t=' + Date.now())
   })
   .catch(function () {
     // Network failure or 500 — silently leave fallback empty.
-    // ai-tools will continue to require a user-entered key as before.
+    // _aiNoKeyMsg will then show the unavailable message.
   });
 
 function _aiGroq(systemPrompt, userMsg, onSuccess, onError) {
-  var key = localStorage.getItem('cha_groq_key') || '';
-  // No usable user key — fall back to the env-provided shared key.
-  if (!key || key === 'skip' || key.length < 20) {
-    key = _aiGroqFallbackKey;
+  // Company key from /api/groq-key always wins so agents do not have
+  // to do anything. localStorage is only consulted if the shared key
+  // failed to load (e.g. network blip during initial fetch).
+  var key = _aiGroqFallbackKey || '';
+  if (!key || key.length < 20) {
+    var lsKey = localStorage.getItem('cha_groq_key') || '';
+    if (lsKey && lsKey !== 'skip' && lsKey.length >= 20) {
+      key = lsKey;
+    }
   }
   if (!key || key.length < 20) {
     if (onError) onError('no-key');
@@ -81,7 +85,7 @@ function _aiNoKeyMsg(elId) {
   var el = document.getElementById(elId);
   if (el) {
     el.innerHTML =
-      '<div style="background:#fef9c3;border:1px solid #fde047;border-radius:10px;padding:14px 16px;font-size:13px;color:#713f12;">⚠ No Groq API key. Click <strong>⚙ AI</strong> in the Benefits panel to add your free key from <a href="https://console.groq.com" target="_blank" style="color:#5175f1;">console.groq.com</a></div>';
+      '<div style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;font-size:13px;color:#475569;">AI assistant is unavailable. Please contact your manager.</div>';
     el.style.display = 'block';
   }
 }
