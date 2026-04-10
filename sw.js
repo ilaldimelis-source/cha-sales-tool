@@ -1,7 +1,7 @@
 // CHA Sales Command Center — Service Worker
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = 'cha-command-center-v120';
+var CACHE_NAME = 'cha-command-center-v121';
 var URLS_TO_CACHE = [
   './',
   './index.html',
@@ -29,34 +29,61 @@ var URLS_TO_CACHE = [
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap'
 ];
 
-// Install: cache the app files
+// Install: force-refresh the cache for this version, then activate
+// immediately so old tabs do not keep running the previous worker.
 self.addEventListener('install', function (event) {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
-      return cache.addAll(URLS_TO_CACHE);
-    })
-  );
-  // Activate immediately — don't wait for old tabs to close
+  // skipWaiting() makes this new worker bypass the usual "wait for
+  // every old tab to close" step. Combined with clients.claim()
+  // below it guarantees the new version takes over within one page
+  // load for every agent.
   self.skipWaiting();
+  event.waitUntil(
+    // Nuke any existing cache under this exact name first, so even
+    // if an older deploy left partial/stale entries under the same
+    // key we start from zero before repopulating.
+    caches.delete(CACHE_NAME)
+      .then(function () { return caches.open(CACHE_NAME); })
+      .then(function (cache) { return cache.addAll(URLS_TO_CACHE); })
+  );
 });
 
-// Activate: clean up old caches when a new version is deployed
+// Activate: delete EVERY cache that is not the current version,
+// claim all open tabs, and force them to reload so they pick up
+// the fresh JS/CSS immediately.
 self.addEventListener('activate', function (event) {
   event.waitUntil(
-    caches.keys().then(function (cacheNames) {
-      return Promise.all(
-        cacheNames
-          .filter(function (name) {
-            return name !== CACHE_NAME;
-          })
-          .map(function (name) {
-            return caches.delete(name);
-          })
-      );
-    })
+    caches.keys()
+      .then(function (cacheNames) {
+        // Delete every cache except CACHE_NAME — this wipes old
+        // versioned caches AND any stray caches from earlier deploys,
+        // leaving only the current one behind.
+        return Promise.all(
+          cacheNames
+            .filter(function (name) { return name !== CACHE_NAME; })
+            .map(function (name) { return caches.delete(name); })
+        );
+      })
+      .then(function () {
+        // Take control of every open tab immediately.
+        return self.clients.claim();
+      })
+      .then(function () {
+        // Force every controlled tab to reload so it drops its
+        // in-memory old JS and loads the fresh files through this
+        // new worker. Without this step, already-open tabs would
+        // keep running the previous build until the user manually
+        // refreshed.
+        return self.clients.matchAll({ type: 'window' });
+      })
+      .then(function (clientList) {
+        for (var i = 0; i < clientList.length; i++) {
+          var client = clientList[i];
+          if (client && typeof client.navigate === 'function') {
+            try { client.navigate(client.url); } catch (_e) { /* ignore */ }
+          }
+        }
+      })
   );
-  // Take control of all open tabs immediately
-  self.clients.claim();
 });
 
 // Fetch: smart caching — never cache auth files, cache everything else
