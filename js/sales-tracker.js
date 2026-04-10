@@ -527,74 +527,162 @@ function _stParseReceipt(text) {
     /^(?:central health|confirmation|products?|summary|total|policy|active|effective|starts?|member\s+\d|payment|plan\s+type|type\b|address|phone|email|date|status|enrollment|one[-\s]?time)/i;
   var policyRe = /policy\s*(?:number|#|:)?\s*[:-]?\s*([A-Z0-9-]{4,})/i;
 
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
-    // Never treat an enrollment/one-time line as a plan price.
-    if (enrollmentRe.test(line)) continue;
-    var m = line.match(priceRe);
-    if (!m) continue;
-    var price = parseFloat(m[1].replace(/,/g, ''));
-    if (isNaN(price) || price <= 0) continue;
-
-    // Product name = nearest preceding non-metadata line (look
-    // back up to 8 lines). If nothing is found, try the text on
-    // the same line that precedes the "$".
-    var name = '';
-    for (var back = i - 1; back >= 0 && back >= i - 8; back--) {
-      var prev = lines[back].trim();
-      if (!prev) {
+  // ── BLOCK-BASED PARSE (primary) ───────────────────────────
+  // Identify product "blocks" by scanning for lines that
+  // contain a known CHA plan name (longest-match substring).
+  // Each such line opens a block; the block owns every line
+  // from its opener up to (but not including) the next
+  // opener. Within each block, the FIRST $X-per-month line
+  // is that block's monthly premium — and ONLY that block's.
+  //
+  // This fixes the old line-based approach where the parser
+  // could walk backward from one price to a neighbouring
+  // product's name and end up assigning the wrong dollar
+  // amount to the wrong plan (e.g. the add-on's $35 being
+  // attached to the core plan when both products shared a
+  // single-line "Name — $Amount per Month" format).
+  var blockStarts = [];
+  for (var bs = 0; bs < lines.length; bs++) {
+    var bsLine = lines[bs];
+    if (!bsLine || !bsLine.trim()) continue;
+    // Never open a block on an enrollment-fee line
+    if (enrollmentRe.test(bsLine)) continue;
+    var bsMatch = _stMatchPlanName(bsLine);
+    if (bsMatch) {
+      // Dedup consecutive duplicates (same plan name mentioned
+      // twice in neighbouring lines, e.g. a header row plus
+      // a details row).
+      var lastBs = blockStarts[blockStarts.length - 1];
+      if (lastBs && lastBs.matched === bsMatch && bs - lastBs.lineIdx <= 1) {
         continue;
       }
-      if (skipLineRe.test(prev)) continue;
-      if (/^\$/.test(prev)) continue;
-      if (/\d{4}\s*at\s*\d/.test(prev)) continue;
-      if (enrollmentRe.test(prev)) continue;
-      name = prev;
-      break;
+      blockStarts.push({ lineIdx: bs, matched: bsMatch, rawLine: bsLine });
     }
-    if (!name) {
-      var inline = line.split('$')[0].trim();
-      if (inline && !skipLineRe.test(inline)) name = inline;
-    }
-    if (!name) continue;
+  }
 
-    // Policy number — scan nearby lines
-    var policy = '';
-    var polStart = Math.max(0, i - 3);
-    var polEnd = Math.min(lines.length, i + 6);
-    for (var pi = polStart; pi < polEnd; pi++) {
-      var polMatch = lines[pi].match(policyRe);
-      if (polMatch) {
-        policy = polMatch[1];
+  if (blockStarts.length > 0) {
+    for (var bb = 0; bb < blockStarts.length; bb++) {
+      var blkStart = blockStarts[bb].lineIdx;
+      var blkEnd =
+        bb + 1 < blockStarts.length ? blockStarts[bb + 1].lineIdx : lines.length;
+      var blkPrice = 0;
+      var blkPolicy = '';
+      // Scan every line inside the block's range — INCLUDING
+      // the opener line, because the opener may itself carry
+      // the "$X per Month" figure inline.
+      for (var bl = blkStart; bl < blkEnd; bl++) {
+        var blLine = lines[bl];
+        if (!blLine) continue;
+        // Enrollment lines never contribute to a block price
+        if (enrollmentRe.test(blLine)) continue;
+        if (!blkPrice) {
+          var bpm = blLine.match(priceRe);
+          if (bpm) {
+            var bpp = parseFloat(bpm[1].replace(/,/g, ''));
+            if (!isNaN(bpp) && bpp > 0) blkPrice = bpp;
+          }
+        }
+        if (!blkPolicy) {
+          var bpol = blLine.match(policyRe);
+          if (bpol) blkPolicy = bpol[1];
+        }
+      }
+      if (blkPrice <= 0) continue; // block had no monthly amount — skip
+      // Dedup: same canonical plan + same price already in list
+      var bdup = false;
+      for (var bdi = 0; bdi < out.products.length; bdi++) {
+        if (
+          out.products[bdi].name === blockStarts[bb].matched &&
+          Math.abs(out.products[bdi].price - blkPrice) < 0.01
+        ) {
+          bdup = true;
+          break;
+        }
+      }
+      if (bdup) continue;
+      out.products.push({
+        name: blockStarts[bb].matched,
+        price: blkPrice,
+        policy: blkPolicy
+      });
+    }
+  }
+
+  // ── LINE-BASED PARSE (fallback) ───────────────────────────
+  // Only runs when the block-based pass found nothing. Keeps
+  // backward compatibility with receipts whose product names
+  // are not in CHA_ALL_PLAN_NAMES (e.g. brand-new plans not
+  // yet added to the registry). Same scan logic as before.
+  if (out.products.length === 0) {
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      // Never treat an enrollment/one-time line as a plan price.
+      if (enrollmentRe.test(line)) continue;
+      var m = line.match(priceRe);
+      if (!m) continue;
+      var price = parseFloat(m[1].replace(/,/g, ''));
+      if (isNaN(price) || price <= 0) continue;
+
+      // Product name = nearest preceding non-metadata line (look
+      // back up to 8 lines). If nothing is found, try the text on
+      // the same line that precedes the "$".
+      var name = '';
+      for (var back = i - 1; back >= 0 && back >= i - 8; back--) {
+        var prev = lines[back].trim();
+        if (!prev) {
+          continue;
+        }
+        if (skipLineRe.test(prev)) continue;
+        if (/^\$/.test(prev)) continue;
+        if (/\d{4}\s*at\s*\d/.test(prev)) continue;
+        if (enrollmentRe.test(prev)) continue;
+        name = prev;
         break;
       }
-    }
-
-    // Plan name recognition: run the raw receipt name through
-    // the CHA plan list. If a known plan matches (longest wins),
-    // use the canonical name. Otherwise keep the raw receipt
-    // name — we NEVER fall back to "Unknown Plan" here.
-    var matched = _stMatchPlanName(name);
-    var finalName = matched || name.substring(0, 120);
-
-    // De-dup: skip if this exact name+price combo already added
-    var dup = false;
-    for (var di = 0; di < out.products.length; di++) {
-      if (
-        out.products[di].name === finalName &&
-        Math.abs(out.products[di].price - price) < 0.01
-      ) {
-        dup = true;
-        break;
+      if (!name) {
+        var inline = line.split('$')[0].trim();
+        if (inline && !skipLineRe.test(inline)) name = inline;
       }
-    }
-    if (dup) continue;
+      if (!name) continue;
 
-    out.products.push({
-      name: finalName,
-      price: price,
-      policy: policy
-    });
+      // Policy number — scan nearby lines
+      var policy = '';
+      var polStart = Math.max(0, i - 3);
+      var polEnd = Math.min(lines.length, i + 6);
+      for (var pi = polStart; pi < polEnd; pi++) {
+        var polMatch = lines[pi].match(policyRe);
+        if (polMatch) {
+          policy = polMatch[1];
+          break;
+        }
+      }
+
+      // Plan name recognition: run the raw receipt name through
+      // the CHA plan list. If a known plan matches (longest wins),
+      // use the canonical name. Otherwise keep the raw receipt
+      // name — we NEVER fall back to "Unknown Plan" here.
+      var matched = _stMatchPlanName(name);
+      var finalName = matched || name.substring(0, 120);
+
+      // De-dup: skip if this exact name+price combo already added
+      var dup = false;
+      for (var di = 0; di < out.products.length; di++) {
+        if (
+          out.products[di].name === finalName &&
+          Math.abs(out.products[di].price - price) < 0.01
+        ) {
+          dup = true;
+          break;
+        }
+      }
+      if (dup) continue;
+
+      out.products.push({
+        name: finalName,
+        price: price,
+        policy: policy
+      });
+    }
   }
 
   // ── Fallback: no per-month lines found — try POLICY_DOCS
