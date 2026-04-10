@@ -2237,6 +2237,78 @@ function _onbAlert(kind, text) {
   return '<div class="onb-alert onb-alert-' + kind + '">' + _trnEscape(text) + '</div>';
 }
 
+// Tone & Energy reminder card — 3 short day-specific tone cues.
+// Renders above the day's two-column grid so it sits below the day
+// title (day pills row) and above the day reference content.
+function _onbToneCard(dayNum) {
+  var tonesByDay = {
+    1: [
+      "Match their energy before you pitch anything.",
+      "Speak slower than you think you need to.",
+      "Confidence sounds like certainty, not speed."
+    ],
+    2: [
+      "Pause after asking a question \u2014 let them fill the silence.",
+      "Your tone sets the trust level before your words do.",
+      "Sound curious, not scripted."
+    ],
+    3: [
+      "Slow down on pricing \u2014 rushing it kills deals.",
+      "If they hesitate, lower your voice slightly.",
+      "End every sentence like you expect a yes."
+    ],
+    4: [
+      "Don\u2019t react to objections \u2014 respond calmly.",
+      "A relaxed voice is more persuasive than a loud one.",
+      "Mirror their pace, then gradually slow it down."
+    ],
+    5: [
+      "You\u2019ve earned the close \u2014 own it with your tone.",
+      "Silence after presenting price is your best tool.",
+      "Sound certain. Certainty is contagious."
+    ]
+  };
+  var tones = tonesByDay[dayNum] || [];
+  if (!tones.length) return "";
+  var h = '<div class="onb-card" style="border-left:4px solid #5175f1;background:#f0f4ff;padding:12px 16px;margin-bottom:14px;">';
+  h += '<div class="onb-card-title" style="color:#5175f1;font-size:13px;margin-bottom:8px;">Tone &amp; Energy</div>';
+  h += '<ul style="margin:0;padding-left:18px;font-size:13px;color:#374151;line-height:1.55;">';
+  for (var ti = 0; ti < tones.length; ti++) {
+    h += '<li style="margin-bottom:3px;">' + _trnEscape(tones[ti]) + '</li>';
+  }
+  h += '</ul></div>';
+  return h;
+}
+
+// Compliance Checklist card — permanent, visible on every training
+// day. Renders below the day content and above the Plan Reference
+// Table. Red warning styling, checkbox-style list items.
+function _onbComplianceCard() {
+  var items = [
+    "Network \u2014 explain how the network works for this plan",
+    "Underwriter \u2014 state who underwrites the plan",
+    "Association \u2014 explain the association membership if applicable",
+    "Not ACA or major medical \u2014 no pregnancy, drug & alcohol, or mental health coverage",
+    "12 & 12 Clause \u2014 explain the 12 month / 12 visit limitation",
+    "Waiting period \u2014 verbally confirm the waiting period after client acknowledges DocuSign"
+  ];
+  var h = '<div class="onb-card" style="border-left:4px solid #dc2626;background:#fef2f2;padding:14px 16px;margin-top:16px;">';
+  h += '<div class="onb-card-title" style="color:#b91c1c;font-size:14px;margin-bottom:8px;">Compliance Checklist</div>';
+  h += '<div style="font-size:12px;color:#7f1d1d;margin-bottom:6px;"><strong>When to do this:</strong> After collecting payment \u2014 while client is on DocuSign or right before sending it.</div>';
+  h += '<div style="font-size:12px;color:#7f1d1d;margin-bottom:10px;">You MUST verbally cover all of the following before they sign:</div>';
+  h += '<ul style="margin:0;padding:0;list-style:none;">';
+  for (var ci = 0; ci < items.length; ci++) {
+    h += '<li style="display:flex;align-items:flex-start;gap:10px;padding:5px 0;font-size:13px;color:#374151;line-height:1.5;">';
+    h += '<span style="display:inline-block;width:14px;height:14px;border:1.5px solid #dc2626;border-radius:3px;flex-shrink:0;margin-top:2px;background:#fff;" aria-hidden="true"></span>';
+    h += '<span>' + _trnEscape(items[ci]) + '</span>';
+    h += '</li>';
+  }
+  h += '</ul>';
+  h += '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #fca5a5;font-size:12px;color:#7f1d1d;"><strong>Rule:</strong> Client must verbally confirm they understand each point before the call ends.</div>';
+  h += '</div>';
+  return h;
+}
+
 function _onbRightColumn(dayNum) {
   if (dayNum === 1) {
     var body = "";
@@ -2511,6 +2583,10 @@ function renderNewHireOnboarding() {
   }
   html += '</div></div>';
 
+  // Tone & Energy reminder — day-specific, sits above the two-column
+  // grid so it's the first thing an agent sees after the day pills.
+  html += _onbToneCard(activeDay);
+
   // Two-column grid
   var activeDayData = _activeDayData;
   var checked = _activeChecked;
@@ -2568,6 +2644,10 @@ function renderNewHireOnboarding() {
   html += '</div>';
 
   html += '</div>';
+
+  // Compliance Checklist — permanent card, same on every day, shown
+  // below the day grid and above the Plan Reference Table.
+  html += _onbComplianceCard();
 
   // Plan Reference Table (always visible)
   html += _onbPlanRefTable();
