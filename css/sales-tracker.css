@@ -1069,3 +1069,14 @@
     font-size: 9px;
   }
 }
+
+/* Same-Day / Post-Date toggle + Date Sold / Post-Date Billing fields */
+.st-mode-toggle { display: flex; gap: 0; margin-bottom: 12px; border-radius: 10px; overflow: hidden; border: 1.5px solid #e2e8f0; width: fit-content; }
+.st-mode-btn { padding: 9px 22px; font-size: 13px; font-weight: 600; font-family: var(--font-ui); border: none; background: #f8fafc; color: #64748b; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.st-mode-btn.st-mode-active { background: #5175f1; color: #ffffff; }
+.st-mode-btn:hover:not(.st-mode-active) { background: #eef2ff; color: #5175f1; }
+.st-date-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-end; }
+.st-date-field { display: flex; flex-direction: column; gap: 4px; }
+.st-date-field label { font-size: 12px; font-weight: 600; color: #64748b; }
+.st-date-field input[type="date"] { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 7px 12px; font-size: 13px; font-family: var(--font-ui); color: #1e293b; background: #f8fafc; }
+.st-date-field input[type="date"]:focus { outline: none; border-color: #5175f1; box-shadow: 0 0 0 2px rgba(81,117,241,0.15); }
