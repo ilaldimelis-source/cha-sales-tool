@@ -482,8 +482,37 @@ function _stParseReceipt(text) {
     saleDate: null
   };
   if (!text) return out;
-  var raw = String(text).replace(/\r\n/g, '\n');
+  var raw = String(text)
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n');
   var lines = raw.split('\n');
+  // Slack / browser sometimes collapses a receipt onto a single
+  // line (no \n at all). When that happens, reconstruct line
+  // breaks at known phrase boundaries that always appear in
+  // CHA receipts so the downstream line-based passes still work.
+  if (lines.length <= 1) {
+    raw = raw
+      .replace(/\s+(Confirmation\s)/g, '\nConfirmation ')
+      .replace(/\s+(MemberName:)/g, '\nMemberName:')
+      .replace(/\s+(Address:)/g, '\nAddress:')
+      .replace(/\s+(Phone:)/g, '\nPhone:')
+      .replace(/\s+(Email:)/g, '\nEmail:')
+      .replace(/\s+(Products\s)/g, '\nProducts\n')
+      .replace(/\s+(Policy:)/g, '\nPolicy:')
+      .replace(/\s+(Active:)/g, '\nActive:')
+      .replace(/\s+(Summary\$)/g, '\nSummary$')
+      .replace(/\s+(Back to home)/g, '\nBack to home')
+      .replace(/\s+(SALE on)/g, '\nSALE on')
+      .replace(/\s+(Date:\s)/g, '\nDate: ')
+      .replace(/\s+(Order\s#:)/g, '\nOrder #:')
+      .replace(/\s+(Total\s\$)/g, '\nTotal $')
+      .replace(/\s+(Member\s+ID:)/g, '\nMember ID:')
+      .replace(/\s+(Individual\s+-\s+ID:)/g, '\nIndividual - ID:')
+      .replace(/(\$[\d,.]+)\s+(Enrollment)/g, '$1\nEnrollment')
+      .replace(/(\$[\d,.]+)\s+(Product\s+per)/g, '$1\nProduct per')
+      .replace(/(\$[\d,.]+\s+per\s+Month[^\n]*)\s+([A-Z])/g, '$1\n$2');
+    lines = raw.split('\n');
+  }
 
   // ── Summary total ─────────────────────────────────────────
   var totalMatch =
@@ -1211,8 +1240,37 @@ function _stGetSaleMode() {
 // Returns an array of trimmed receipt strings.
 function _stSplitReceipts(text) {
   if (!text) return [];
-  var raw = String(text).replace(/\r\n/g, '\n');
+  var raw = String(text)
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n');
   var lines = raw.split('\n');
+  // Slack / browser sometimes collapses a receipt onto a single
+  // line (no \n at all). When that happens, reconstruct line
+  // breaks at known phrase boundaries that always appear in
+  // CHA receipts so the downstream line-based passes still work.
+  if (lines.length <= 1) {
+    raw = raw
+      .replace(/\s+(Confirmation\s)/g, '\nConfirmation ')
+      .replace(/\s+(MemberName:)/g, '\nMemberName:')
+      .replace(/\s+(Address:)/g, '\nAddress:')
+      .replace(/\s+(Phone:)/g, '\nPhone:')
+      .replace(/\s+(Email:)/g, '\nEmail:')
+      .replace(/\s+(Products\s)/g, '\nProducts\n')
+      .replace(/\s+(Policy:)/g, '\nPolicy:')
+      .replace(/\s+(Active:)/g, '\nActive:')
+      .replace(/\s+(Summary\$)/g, '\nSummary$')
+      .replace(/\s+(Back to home)/g, '\nBack to home')
+      .replace(/\s+(SALE on)/g, '\nSALE on')
+      .replace(/\s+(Date:\s)/g, '\nDate: ')
+      .replace(/\s+(Order\s#:)/g, '\nOrder #:')
+      .replace(/\s+(Total\s\$)/g, '\nTotal $')
+      .replace(/\s+(Member\s+ID:)/g, '\nMember ID:')
+      .replace(/\s+(Individual\s+-\s+ID:)/g, '\nIndividual - ID:')
+      .replace(/(\$[\d,.]+)\s+(Enrollment)/g, '$1\nEnrollment')
+      .replace(/(\$[\d,.]+)\s+(Product\s+per)/g, '$1\nProduct per')
+      .replace(/(\$[\d,.]+\s+per\s+Month[^\n]*)\s+([A-Z])/g, '$1\n$2');
+    lines = raw.split('\n');
+  }
 
   var monthRe =
     /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\b\s+\d{1,2},?\s+\d{4}/i;
