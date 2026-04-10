@@ -1402,40 +1402,6 @@ function _stBuildWelcome() {
 // total $ sold, and the number of plans that day. Weekend
 // columns (Sat/Sun) are hidden by default since the business
 // week is Mon–Fri.
-function _stBuildDailyBreakdown(stats) {
-  var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-  var html = '<div class="st-daily">';
-  html += '<div class="st-daily-title">Daily Breakdown</div>';
-  html += '<div class="st-daily-grid">';
-  for (var i = 0; i < 5; i++) {
-    var b = stats.dayBuckets[i] || { amount: 0, count: 0, date: null };
-    var hasSales = b.count > 0;
-    // Real calendar date for this weekday, e.g. "4/7"
-    var dateStr = '';
-    if (b.date) {
-      dateStr = (b.date.getMonth() + 1) + '/' + b.date.getDate();
-    }
-    html +=
-      '<div class="st-day-card' +
-      (hasSales ? ' has-sales' : '') +
-      '">' +
-      '<div class="st-day-name">' +
-      dayNames[i] +
-      (dateStr ? ' <span class="st-day-date">' + dateStr + '</span>' : '') +
-      '</div>' +
-      '<div class="st-day-amount">$' +
-      Math.round(b.amount).toLocaleString() +
-      '</div>' +
-      '<div class="st-day-count">' +
-      b.count +
-      (b.count === 1 ? ' plan' : ' plans') +
-      '</div>' +
-      '</div>';
-  }
-  html += '</div></div>';
-  return html;
-}
-
 function _stBuildStats(stats) {
   var html = '<div class="st-stats">';
   html +=
@@ -1877,6 +1843,10 @@ function _stBuildWeeklySalesSummary(stats) {
   var today = new Date();
   var todayDayIdx = today.getDay();
   var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
+  // Deal-only amounts + counts for each Mon-Sun bucket. Add-ons
+  // are intentionally excluded so the day cards represent core
+  // deal production, not total line-item revenue.
+  var dealAmounts = [0, 0, 0, 0, 0, 0, 0];
   var dealCounts = [0, 0, 0, 0, 0, 0, 0];
   var weekStart = stats.weekStart;
   var sales = _stLoadSales();
@@ -1887,23 +1857,27 @@ function _stBuildWeeklySalesSummary(stats) {
     var dt = new Date(s.ts);
     var jsDay = dt.getDay();
     var bucketIdx = jsDay === 0 ? 6 : jsDay - 1;
-    if (bucketIdx < 7) dealCounts[bucketIdx]++;
+    if (bucketIdx < 7) {
+      dealCounts[bucketIdx]++;
+      dealAmounts[bucketIdx] += Number(s.amount) || 0;
+    }
   }
   var html = '<div class="st-weekly-summary">';
   html += '<div class="st-weekly-summary-title">This Week\'s Sales</div>';
   html += '<div class="st-weekly-summary-grid">';
   for (var d = 0; d < 5; d++) {
-    var bucket = stats.dayBuckets[d] || { amount: 0, count: 0, date: null };
+    var bucket = stats.dayBuckets[d] || { date: null };
     var isToday = d === todayBucketIdx;
-    var hasSales = bucket.amount > 0;
+    var amt = dealAmounts[d] || 0;
+    var deals = dealCounts[d] || 0;
+    var hasSales = amt > 0 || deals > 0;
     var dateStr = '';
     if (bucket.date) {
       dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
     }
-    var deals = dealCounts[d] || 0;
     html += '<div class="st-wks-card' + (isToday ? ' st-wks-today' : '') + (hasSales ? ' st-wks-active' : '') + '">';
     html += '<div class="st-wks-day">' + dayNames[d] + (dateStr ? '<span class="st-wks-date"> ' + dateStr + '</span>' : '') + '</div>';
-    html += '<div class="st-wks-amount">$' + Math.round(bucket.amount).toLocaleString() + '</div>';
+    html += '<div class="st-wks-amount">$' + Math.round(amt).toLocaleString() + '</div>';
     html += '<div class="st-wks-deals">' + deals + (deals === 1 ? ' deal' : ' deals') + '</div>';
     html += '</div>';
   }
@@ -1920,21 +1894,27 @@ function _stRender() {
   var stats = _stCalcStats(sales);
 
   var html = '';
-  // Welcome greeting at the very top so it's visible immediately
+  // 1. Welcome greeting at the very top so it's visible immediately
   html += _stBuildWelcome();
-  // Alert banner for any post-dates billing today (above page header)
+  // 2. Alert banner for any post-dates billing today (above page header)
   html += _stBuildPostDateBanner(postdates);
+  // 3. Page header
   html +=
     '<div class="ph"><div class="pt">Sales <span>Tracker</span></div>' +
     '<div class="pd">Log enrollments, watch your weekly bonus progress, and see your numbers at a glance. Everything stays on your account.</div></div>';
-  html += _stBuildStats(stats);
-  html += _stBuildDailyBreakdown(stats);
-  html += _stBuildBonus(stats);
-  html += _stBuildInput();
-  html += _stBuildTable(sales);
+  // 4. This Week's Sales cards (Mon-Fri grid, deals only)
   html += _stBuildWeeklySalesSummary(stats);
+  // 5. Stats row
+  html += _stBuildStats(stats);
+  // 6. Weekly Bonus progress
+  html += _stBuildBonus(stats);
+  // 7. Receipt input section
+  html += _stBuildInput();
+  // 8. This Week's table
+  html += _stBuildTable(sales);
+  // 9. Pending Post-Dates
   html += _stBuildPostDatesSection(postdates);
-  // Spacer so the floating bottom toolbar never covers the last row
+  // 10. Bottom spacer so the floating bottom toolbar never covers the last row
   html += '<div class="st-bottom-spacer" aria-hidden="true"></div>';
 
   page.innerHTML = html;
