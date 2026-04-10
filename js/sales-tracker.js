@@ -483,11 +483,39 @@ function _stParseReceipt(text) {
   );
   if (agentMatch) out.agent = agentMatch[1].trim().substring(0, 80);
 
+  // ── "Member ID" format Date line ─────────────────────────
+  // Matches the line format:
+  //   "Date:  04/10/2026 at 2:49 PM  Type:  SALE"
+  // This format appears in Good Health Distribution Partner
+  // receipts. It runs BEFORE the confirmation-header check so
+  // it takes priority for these receipts — the confHeaderRe
+  // block below only fills saleDate when this one didn't.
+  var dateLineRe = /date\s*:\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/i;
+  var dateLineMatch = raw.match(dateLineRe);
+  if (dateLineMatch) {
+    var dlMonth = parseInt(dateLineMatch[1], 10);
+    var dlDay = parseInt(dateLineMatch[2], 10);
+    var dlYear = parseInt(dateLineMatch[3], 10);
+    if (
+      !isNaN(dlMonth) &&
+      !isNaN(dlDay) &&
+      !isNaN(dlYear) &&
+      dlMonth >= 1 &&
+      dlMonth <= 12 &&
+      dlDay >= 1 &&
+      dlDay <= 31
+    ) {
+      out.saleDate = new Date(dlYear, dlMonth - 1, dlDay, 9, 0, 0, 0);
+    }
+  }
+
   // ── Confirmation-line date + member ID ───────────────────
   // Matches the header line format:
   //   "April 9, 2026 at 8:04 PM - 686931541 - Ravi Choudhry"
   // Captures the month name, day, year, and the 9-digit member
-  // number that sits between the first and second dash.
+  // number that sits between the first and second dash. The
+  // saleDate assignment is guarded so the "Date: MM/DD/YYYY"
+  // line above wins when both are present (Member ID format).
   var confHeaderRe =
     /([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})\s+at\s+\d{1,2}:\d{2}\s*(?:am|pm)?\s*-\s*(\d{9})\s*-/i;
   var confMatch = raw.match(confHeaderRe);
@@ -502,7 +530,12 @@ function _stParseReceipt(text) {
     var mIdx = monthMap[mKey];
     var dNum = parseInt(confMatch[2], 10);
     var yNum = parseInt(confMatch[3], 10);
-    if (typeof mIdx === 'number' && !isNaN(dNum) && !isNaN(yNum)) {
+    if (
+      !out.saleDate &&
+      typeof mIdx === 'number' &&
+      !isNaN(dNum) &&
+      !isNaN(yNum)
+    ) {
       out.saleDate = new Date(yNum, mIdx, dNum, 9, 0, 0, 0);
     }
     // The 9-digit number from the confirmation line takes
@@ -559,6 +592,71 @@ function _stParseReceipt(text) {
   var skipLineRe =
     /^(?:central health|confirmation|products?|summary|total|policy|active|effective|starts?|member\s+\d|payment|plan\s+type|type\b|address|phone|email|date|status|enrollment|one[-\s]?time)/i;
   var policyRe = /policy\s*(?:number|#|:)?\s*[:-]?\s*([A-Z0-9-]{4,})/i;
+
+  // ── MEMBER ID FORMAT PARSE ────────────────────────────────
+  // The "Member ID" / Good Health Distribution Partner format
+  // lists its monthly premium on a dedicated "Product  $X.XX"
+  // line and the recurring enrollment on a "Enrollment  $Y.YY"
+  // line. There is NO "per Month" marker anywhere, so neither
+  // the block-based nor the line-based pass below will match.
+  // The Total line at the bottom is the ORDER total and must
+  // never be used as a plan price.
+  //
+  // Signature: a line matching /^\s*product\s+\$\s*[0-9]/ — that
+  // pattern is unique to this receipt layout.
+  var productLineRe =
+    /^\s*product\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
+  var totalLineRe = /^\s*total\b/i;
+  var memberIdFormat = false;
+  for (var mfi = 0; mfi < lines.length; mfi++) {
+    if (productLineRe.test(lines[mfi])) {
+      memberIdFormat = true;
+      break;
+    }
+  }
+  if (memberIdFormat) {
+    for (var plI = 0; plI < lines.length; plI++) {
+      var plLine = lines[plI];
+      var plM = plLine.match(productLineRe);
+      if (!plM) continue;
+      var plPrice = parseFloat(plM[1].replace(/,/g, ''));
+      if (isNaN(plPrice) || plPrice <= 0) continue;
+      // Walk back up to 10 lines to find the nearest plan-name
+      // candidate: non-empty, not metadata, not an enrollment
+      // line, not a Total line, not a $-led line.
+      var mfName = '';
+      for (
+        var mfBack = plI - 1;
+        mfBack >= 0 && mfBack >= plI - 10;
+        mfBack--
+      ) {
+        var mfPrev = lines[mfBack].trim();
+        if (!mfPrev) continue;
+        if (skipLineRe.test(mfPrev)) continue;
+        if (/^\$/.test(mfPrev)) continue;
+        if (enrollmentRe.test(mfPrev)) continue;
+        if (totalLineRe.test(mfPrev)) continue;
+        mfName = mfPrev;
+        break;
+      }
+      if (!mfName) mfName = 'Unknown Plan';
+      var mfMatched = _stMatchPlanName(mfName);
+      var mfFinal = mfMatched || mfName.substring(0, 120);
+      // De-dup by name + price
+      var mfDup = false;
+      for (var mfDi = 0; mfDi < out.products.length; mfDi++) {
+        if (
+          out.products[mfDi].name === mfFinal &&
+          Math.abs(out.products[mfDi].price - plPrice) < 0.01
+        ) {
+          mfDup = true;
+          break;
+        }
+      }
+      if (mfDup) continue;
+      out.products.push({ name: mfFinal, price: plPrice, policy: '' });
+    }
+  }
 
   // ── BLOCK-BASED PARSE (primary) ───────────────────────────
   // Identify product "blocks" by scanning for lines that
@@ -2274,21 +2372,29 @@ function _stBuildWeeklySalesSummary(stats) {
   var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
   // Deal-only amounts + counts for each Mon-Sun bucket. Add-ons
   // are intentionally excluded so the day cards represent core
-  // deal production, not total line-item revenue.
+  // deal production, not total line-item revenue. The filter is
+  // belt-and-suspenders: skip anything not strictly typed as a
+  // deal (type === 'addon', missing type, or any other value).
   var dealAmounts = [0, 0, 0, 0, 0, 0, 0];
   var dealCounts = [0, 0, 0, 0, 0, 0, 0];
   var weekStart = stats.weekStart;
   var sales = _stLoadSales();
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
-    if (!s || s.status !== 'valid' || s.ts < weekStart) continue;
+    if (!s) continue;
+    if (s.status !== 'valid') continue;
+    if (s.ts < weekStart) continue;
+    // Hard deal-only guard: reject add-ons and any non-'deal'.
+    if (s.type === 'addon') continue;
     if (s.type !== 'deal') continue;
+    var dealAmt = Number(s.amount) || 0;
+    if (dealAmt <= 0) continue;
     var dt = new Date(s.ts);
     var jsDay = dt.getDay();
     var bucketIdx = jsDay === 0 ? 6 : jsDay - 1;
-    if (bucketIdx < 7) {
+    if (bucketIdx >= 0 && bucketIdx < 7) {
       dealCounts[bucketIdx]++;
-      dealAmounts[bucketIdx] += Number(s.amount) || 0;
+      dealAmounts[bucketIdx] += dealAmt;
     }
   }
   var html = '<div class="st-weekly-summary">';
