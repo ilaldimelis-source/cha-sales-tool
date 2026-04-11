@@ -136,11 +136,18 @@ var CHA_ALL_PLAN_NAMES = CHA_CORE_PLAN_NAMES.concat(CHA_ADDON_PLAN_NAMES)
 function _stMatchPlanName(rawText) {
   if (!rawText) return '';
   var hay = String(rawText).toLowerCase();
+  // Loose haystack: collapse runs of non-alphanumeric (dashes,
+  // multiple spaces, punctuation) into a single space so receipts
+  // that print "BWA AmeriCare - Plan 4" still match the registry's
+  // "BWA Americare Plan 4" form. Keeps $ and & since some plan
+  // names rely on them ("AD&D $50k").
+  var hayLoose = hay.replace(/[^a-z0-9$&]+/g, ' ').replace(/\s+/g, ' ').trim();
   for (var i = 0; i < CHA_ALL_PLAN_NAMES.length; i++) {
     var candidate = CHA_ALL_PLAN_NAMES[i];
-    if (hay.indexOf(candidate.toLowerCase()) !== -1) {
-      return candidate;
-    }
+    var cLower = candidate.toLowerCase();
+    if (hay.indexOf(cLower) !== -1) return candidate;
+    var cLoose = cLower.replace(/[^a-z0-9$&]+/g, ' ').replace(/\s+/g, ' ').trim();
+    if (cLoose && hayLoose.indexOf(cLoose) !== -1) return candidate;
   }
   return '';
 }
@@ -971,6 +978,52 @@ function _stParseReceipt(text) {
         policy: ''
       });
     }
+  }
+
+  // ── DEAL DETECTION & REORDER ──────────────────────────────
+  // The caller treats out.products[0] as the DEAL and the rest
+  // as ADD-ONS, but the receipt may list things in any order:
+  //   - Format 1 lists the core plan first
+  //   - Format 2 sometimes lists the add-on first (Cody Wagner)
+  //   - The block-based pass returns plan-registry hits in
+  //     registry order, not receipt order, so an add-on can end
+  //     up at index 0 even when the core plan is also present
+  // Reorder so the real deal sits at index 0 regardless:
+  //   1. Any product whose name contains "Add-on" is an add-on
+  //      and stays at the back (preserves receipt order within
+  //      that group).
+  //   2. Among the remaining "core" products, the highest-priced
+  //      one is the DEAL — this matches every CHA receipt seen
+  //      because the core medical plan is always the most
+  //      expensive line and is the only line that carries the
+  //      $125 enrollment fee.
+  //   3. If every product is named "Add-on" the original order
+  //      is preserved (no reorder applied).
+  if (out.products && out.products.length > 1) {
+    var roAddOnRe = /\badd[-\s]?on\b/i;
+    var roCore = [];
+    var roAdd = [];
+    for (var roI = 0; roI < out.products.length; roI++) {
+      var roP = out.products[roI];
+      if (roAddOnRe.test(roP.name)) {
+        roAdd.push(roP);
+      } else {
+        roCore.push(roP);
+      }
+    }
+    if (roCore.length > 1) {
+      var roBestIdx = 0;
+      for (var roJ = 1; roJ < roCore.length; roJ++) {
+        if (roCore[roJ].price > roCore[roBestIdx].price) {
+          roBestIdx = roJ;
+        }
+      }
+      if (roBestIdx > 0) {
+        var roBest = roCore.splice(roBestIdx, 1)[0];
+        roCore.unshift(roBest);
+      }
+    }
+    out.products = roCore.concat(roAdd);
   }
 
   // ── GROQ FALLBACK ─────────────────────────────────────────
