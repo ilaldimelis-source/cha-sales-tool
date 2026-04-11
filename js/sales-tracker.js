@@ -2709,11 +2709,11 @@ function _stBuildWeeklySalesSummary(stats) {
   var today = new Date();
   var todayDayIdx = today.getDay();
   var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
-  // Deal-only amounts + counts for each Mon-Sun bucket. Add-ons
-  // are intentionally excluded so the day cards represent core
-  // deal production, not total line-item revenue. The filter is
-  // belt-and-suspenders: skip anything not strictly typed as a
-  // deal (type === 'addon', missing type, or any other value).
+  // Per-day totals for the Mon-Sun grid. The dollar amount sums
+  // ALL valid line items for the day (deals + add-ons) so the
+  // day card matches what an agent expects to see for total
+  // production. The "X deals" subtitle still counts core deals
+  // only (add-ons don't increment the deal counter).
   var dealAmounts = [0, 0, 0, 0, 0, 0, 0];
   var dealCounts = [0, 0, 0, 0, 0, 0, 0];
   var weekStart = stats.weekStart;
@@ -2723,18 +2723,14 @@ function _stBuildWeeklySalesSummary(stats) {
     if (!s) continue;
     if (s.status !== 'valid') continue;
     if (s.ts < weekStart) continue;
-    // Hard deal-only guard: reject add-ons and any non-'deal'.
-    if (s.type === 'addon') continue;
-    if (s.type !== 'deal') continue;
-    var dealAmt = Number(s.amount) || 0;
-    if (dealAmt <= 0) continue;
+    var lineAmt = Number(s.amount) || 0;
+    if (lineAmt <= 0) continue;
     var dt = new Date(s.ts);
     var jsDay = dt.getDay();
     var bucketIdx = jsDay === 0 ? 6 : jsDay - 1;
-    if (bucketIdx >= 0 && bucketIdx < 7) {
-      dealCounts[bucketIdx]++;
-      dealAmounts[bucketIdx] += dealAmt;
-    }
+    if (bucketIdx < 0 || bucketIdx >= 7) continue;
+    dealAmounts[bucketIdx] += lineAmt;
+    if (s.type === 'deal') dealCounts[bucketIdx]++;
   }
   var html = '<div class="st-weekly-summary">';
   html += '<div class="st-weekly-summary-title">This Week\'s Sales</div>';
@@ -2751,7 +2747,7 @@ function _stBuildWeeklySalesSummary(stats) {
     }
     html += '<div class="st-wks-card' + (isToday ? ' st-wks-today' : '') + (hasSales ? ' st-wks-active' : '') + '">';
     html += '<div class="st-wks-day">' + dayNames[d] + (dateStr ? '<span class="st-wks-date"> ' + dateStr + '</span>' : '') + '</div>';
-    html += '<div class="st-wks-amount">$' + Math.round(amt).toLocaleString() + '</div>';
+    html += '<div class="st-wks-amount">$' + amt.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</div>';
     html += '<div class="st-wks-deals">' + deals + (deals === 1 ? ' deal' : ' deals') + '</div>';
     html += '</div>';
   }
