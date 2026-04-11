@@ -515,9 +515,13 @@ function _stParseReceipt(text) {
       .replace(/\s+(Total\s\$)/g, '\nTotal $')
       .replace(/\s+(Member\s+ID:)/g, '\nMember ID:')
       .replace(/\s+(Individual\s+-\s+ID:)/g, '\nIndividual - ID:')
-      .replace(/(\$[\d,.]+)\s+(Enrollment)/g, '$1\nEnrollment')
-      .replace(/(\$[\d,.]+)\s+(Product\s+per)/g, '$1\nProduct per')
-      .replace(/(\$[\d,.]+\s+per\s+Month[^\n]*)\s+([A-Z])/g, '$1\n$2');
+      // Standard (CHA confirmation) format splits
+      .replace(/(\bone[-\s]?time)\s+(\$)/g, '$1\n$2')
+      .replace(/(\$\s*[\d,.]+\s+Product\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
+      .replace(/(\$\s*[\d,.]+\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
+      // Member ID format splits
+      .replace(/(\bProduct\s+\$\s*[\d,.]+)\s+([A-Z][A-Za-z])/g, '$1\n$2')
+      .replace(/(\bEnrollment\s+\$\s*[\d,.]+)\s+(\bProduct\s+\$)/g, '$1\n$2');
     lines = raw.split('\n');
   }
 
@@ -615,7 +619,27 @@ function _stParseReceipt(text) {
     var cnNameRe = /^[A-Za-z][A-Za-z\s'\-]{1,49}$/;
     var cnSkipRe =
       /^\s*(member|id|sale|date|order|type|amount|notes|products|payment|method|settled|transaction|authorization|individual|enrollment|confirmation|central|health|advisors)/i;
-    for (var midI = 0; midI < lines.length; midI++) {
+    // First, try to extract a name that appears ON THE SAME LINE
+    // as the 9-digit member id (Slack-collapsed Format 2 case:
+    // "Member ID: 686935650 William Glenn ...").
+    for (var midI2 = 0; midI2 < lines.length && !out.customer; midI2++) {
+      var midLine2 = lines[midI2] || '';
+      var midInlineM = midLine2.match(
+        /\b\d{9}\b\s+([A-Z][A-Za-z'\-]+(?:\s+[A-Z][A-Za-z'\-]+){1,3})\b/
+      );
+      if (midInlineM) {
+        var midInlineCand = midInlineM[1].trim();
+        if (
+          !cnSkipRe.test(midInlineCand) &&
+          !(typeof _stMatchPlanName === 'function' && _stMatchPlanName(midInlineCand))
+        ) {
+          out.customer = midInlineCand.substring(0, 80);
+        }
+      }
+    }
+    // Fallback: walk forward from the 9-digit line to subsequent
+    // lines (original behaviour for already-line-broken input).
+    for (var midI = 0; midI < lines.length && !out.customer; midI++) {
       var midLine = lines[midI] || '';
       var midM = midLine.match(/\b(\d{9})\b/);
       if (!midM) continue;
@@ -629,6 +653,11 @@ function _stParseReceipt(text) {
         if (midCand.length < 2 || midCand.length > 50) continue;
         if (cnSkipRe.test(midCand)) continue;
         if (!cnNameRe.test(midCand)) continue;
+        if (
+          typeof _stMatchPlanName === 'function' &&
+          _stMatchPlanName(midCand)
+        )
+          continue;
         out.customer = midCand.substring(0, 80);
         break;
       }
@@ -1319,9 +1348,13 @@ function _stSplitReceipts(text) {
       .replace(/\s+(Total\s\$)/g, '\nTotal $')
       .replace(/\s+(Member\s+ID:)/g, '\nMember ID:')
       .replace(/\s+(Individual\s+-\s+ID:)/g, '\nIndividual - ID:')
-      .replace(/(\$[\d,.]+)\s+(Enrollment)/g, '$1\nEnrollment')
-      .replace(/(\$[\d,.]+)\s+(Product\s+per)/g, '$1\nProduct per')
-      .replace(/(\$[\d,.]+\s+per\s+Month[^\n]*)\s+([A-Z])/g, '$1\n$2');
+      // Standard (CHA confirmation) format splits
+      .replace(/(\bone[-\s]?time)\s+(\$)/g, '$1\n$2')
+      .replace(/(\$\s*[\d,.]+\s+Product\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
+      .replace(/(\$\s*[\d,.]+\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
+      // Member ID format splits
+      .replace(/(\bProduct\s+\$\s*[\d,.]+)\s+([A-Z][A-Za-z])/g, '$1\n$2')
+      .replace(/(\bEnrollment\s+\$\s*[\d,.]+)\s+(\bProduct\s+\$)/g, '$1\n$2');
     lines = raw.split('\n');
   }
 
