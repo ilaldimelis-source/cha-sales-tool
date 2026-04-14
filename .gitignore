@@ -1,0 +1,10 @@
+node_modules/
+pdf_data.txt
+preview-a.html
+preview-b.html
+readall.js
+readpdf.js
+serve.js
+.vercel
+.env
+agents.txt
