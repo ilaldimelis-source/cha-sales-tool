@@ -37,6 +37,6 @@
   "dependencies": {
     "@vercel/speed-insights": "^2.0.0",
     "dotenv": "^17.4.1",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^3.3.2"
   }
 }
