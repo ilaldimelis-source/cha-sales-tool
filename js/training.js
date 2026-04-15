@@ -1508,6 +1508,69 @@ function _caToolboxHtml() {
 // ══════════════════════════════════════════════════════
 
 var _trainingView = 'home'; // 'home' or section id
+var TRAINING_SEARCH_QUERY = '';
+var CHA_REQUIRED_DISCLOSURES = [
+  'Network - explain how the network works for this plan',
+  'Underwriter - state who underwrites the plan',
+  'Association - explain the association membership if applicable',
+  'Not ACA or major medical - no pregnancy, drug & alcohol, or mental health coverage',
+  '12 & 12 Clause - explain the 12 month / 12 visit limitation',
+  'Waiting period - verbally confirm the waiting period after client acknowledges DocuSign'
+];
+
+function _trnIsVisible(el) {
+  return !!(el && el.style && el.style.display !== 'none');
+}
+
+function setTrainingSearchQuery(v) {
+  TRAINING_SEARCH_QUERY = String(v || '').trim().toLowerCase();
+  var onb = document.getElementById('page-newhireonboarding');
+  var lib = document.getElementById('page-traininghome');
+  if (_trnIsVisible(onb)) {
+    renderNewHireOnboarding();
+  } else if (_trnIsVisible(lib)) {
+    renderTrainingHome();
+  }
+}
+
+function setTrainingSearchTag(v) {
+  var q = String(v || '').trim();
+  setTrainingSearchQuery(q);
+  var onbInput = document.getElementById('onbSearchInput');
+  if (onbInput) onbInput.value = q;
+  var libInput = document.getElementById('caSearchInput');
+  if (libInput) libInput.value = q;
+}
+
+function _caApplySearch() {
+  var root = document.getElementById('ca-academy-root');
+  if (!root) return;
+  var q = TRAINING_SEARCH_QUERY;
+  var hits = root.querySelectorAll('.ca-search-hit');
+  for (var hi = 0; hi < hits.length; hi++) hits[hi].classList.remove('ca-search-hit');
+  if (!q) return;
+
+  var candidates = root.querySelectorAll(
+    'details.ca-level, details.ca-nest, .ca-tl-item, .ca-obj-card, .ca-compliance-list li, details.ca-tactics, details.ca-toolbox'
+  );
+  var firstHit = null;
+  for (var ci = 0; ci < candidates.length; ci++) {
+    var el = candidates[ci];
+    var txt = (el.textContent || '').toLowerCase();
+    if (txt.indexOf(q) !== -1) {
+      el.classList.add('ca-search-hit');
+      var p = el.parentElement;
+      while (p) {
+        if (p.tagName === 'DETAILS') p.open = true;
+        p = p.parentElement;
+      }
+      if (!firstHit) firstHit = el;
+    }
+  }
+  if (firstHit && typeof firstHit.scrollIntoView === 'function') {
+    firstHit.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
 
 var TRAINING_SECTIONS = [
   {
@@ -1568,6 +1631,10 @@ function renderTrainingHome() {
 
   html +=
     '<div class="ph ca-hero"><div class="pt">CHA <span>Academy</span></div><div class="pd">Structured learning path for new hires. Work Step 1 → 4 in order.</div></div>';
+  html +=
+    '<div class="ca-search-row"><input id="caSearchInput" class="ca-search-input" type="text" placeholder="Search library: compliance, pre-ex, objection..." value="' +
+    escHTML(TRAINING_SEARCH_QUERY) +
+    '" oninput="setTrainingSearchQuery(this.value)" /><div class="ca-search-tags"><button type="button" class="ca-search-tag" onclick="setTrainingSearchTag(\'compliance\')">Compliance</button><button type="button" class="ca-search-tag" onclick="setTrainingSearchTag(\'script\')">Script</button><button type="button" class="ca-search-tag" onclick="setTrainingSearchTag(\'objection\')">Objection</button><button type="button" class="ca-search-tag" onclick="setTrainingSearchTag(\'pre-existing\')">Pre-Ex</button></div></div>';
 
   html +=
     '<nav class="ca-path" aria-label="Learning path: four levels"><div class="ca-path-meter" aria-hidden="true"><div class="ca-path-meter-fill"></div></div><div class="ca-path-row">';
@@ -1652,7 +1719,7 @@ function renderTrainingHome() {
 
   // —— Level 2 ——
   html +=
-    '<details class="ca-level" data-ca-step="2" open><summary class="ca-level-sum"><span class="ca-level-badge">2</span><span class="ca-level-titles"><span class="ca-level-name">Level 2: The Sales Call</span><span class="ca-level-tag">Master each stage in order</span></span></summary><div class="ca-level-body ca-timeline">';
+    '<details class="ca-level" data-ca-step="2"><summary class="ca-level-sum"><span class="ca-level-badge">2</span><span class="ca-level-titles"><span class="ca-level-name">Level 2: The Sales Call</span><span class="ca-level-tag">Master each stage in order</span></span></summary><div class="ca-level-body ca-timeline">';
 
   var tieScript =
     "Is there a monthly price range you're hoping to stay within so I can narrow down the best options?";
@@ -1754,7 +1821,7 @@ function renderTrainingHome() {
 
   // —— Level 3 ——
   html +=
-    '<details class="ca-level" data-ca-step="3" open><summary class="ca-level-sum"><span class="ca-level-badge">3</span><span class="ca-level-titles"><span class="ca-level-name">Level 3: Battle Cards</span><span class="ca-level-tag">Practice the hardest moments</span></span></summary><div class="ca-level-body">';
+    '<details class="ca-level" data-ca-step="3"><summary class="ca-level-sum"><span class="ca-level-badge">3</span><span class="ca-level-titles"><span class="ca-level-name">Level 3: Battle Cards</span><span class="ca-level-tag">Practice the hardest moments</span></span></summary><div class="ca-level-body">';
 
   var thinkScript =
     "I understand you need to think about it but right now there is nothing to really think about yet because we didn't go over how the plan works, and secondly, we don't even know if you are approved yet, so what I normally do is...";
@@ -1839,14 +1906,9 @@ function renderTrainingHome() {
 
   // —— Level 4 ——
   html +=
-    '<details class="ca-level" data-ca-step="4" open><summary class="ca-level-sum"><span class="ca-level-badge">4</span><span class="ca-level-titles"><span class="ca-level-name">Level 4: Compliance Shield</span><span class="ca-level-tag">What you CANNOT mess up</span></span></summary><div class="ca-level-body">';
+    '<details class="ca-level" data-ca-step="4"><summary class="ca-level-sum"><span class="ca-level-badge">4</span><span class="ca-level-titles"><span class="ca-level-name">Level 4: Compliance Shield</span><span class="ca-level-tag">What you CANNOT mess up</span></span></summary><div class="ca-level-body">';
 
-  var must = [
-    'This plan does not include mental health, substance abuse, or pregnancy-related care',
-    'This is not ACA/marketplace coverage',
-    '12-month pre-existing condition clause',
-    '30-day waiting period for sickness'
-  ];
+  var must = CHA_REQUIRED_DISCLOSURES.slice();
   var never = [
     { show: '\u274c "Just like marketplace"', copy: '"Just like marketplace"' },
     { show: '\u274c "Covers everything"', copy: '"Covers everything"' },
@@ -1941,6 +2003,7 @@ function renderTrainingHome() {
 
   pg.innerHTML = html;
   chaAcademyInitProgress();
+  _caApplySearch();
 }
 
 function openTrainingSection(id) {
@@ -2535,6 +2598,25 @@ function _onbEscape(s) {
 // ══════════════════════════════════════════════════════
 
 var ONB_STORAGE_KEY = "cha_onboarding_progress";
+var ONB_VIEW_MODE_KEY = "cha_onboarding_view_mode";
+
+function _onbGetViewMode() {
+  try {
+    var mode = localStorage.getItem(ONB_VIEW_MODE_KEY);
+    return mode === "all" ? "all" : "must";
+  } catch (_e) {
+    return "must";
+  }
+}
+
+function _onbSetViewMode(mode) {
+  try {
+    localStorage.setItem(ONB_VIEW_MODE_KEY, mode === "all" ? "all" : "must");
+  } catch (_e) {
+    /* ignore */
+  }
+  renderNewHireOnboarding();
+}
 
 function _onbDefaultProgress() {
   return {
@@ -2612,13 +2694,13 @@ function _onbDayData() {
       num: 1, key: "day1", accent: "#5B8DEF",
       label: "Day 1 — What You Sell",
       items: [
-        { id: "d1i1", title: "What is a Limited Benefit plan", sub: "The plan you will sell most", tag: "Up next" },
-        { id: "d1i2", title: "What is a MEC plan", sub: "Preventive care plus day-to-day coverage", tag: "Up next" },
-        { id: "d1i3", title: "What is STM and who it is for", sub: "Not for everyone, learn when to use it", tag: "Up next" },
-        { id: "d1i4", title: "Study the 3-plan comparison table", sub: "Limited vs MEC vs STM", tag: "Up next" },
-        { id: "d1i5", title: "What ACA and the Marketplace are", sub: "Know why clients need our plans instead", tag: "Up next" },
-        { id: "d1i6", title: "What Medicaid vs Medicare is", sub: "Recognize instantly and exit correctly", tag: "Up next" },
-        { id: "d1i7", title: "Who you do NOT sell to — hard stops", sub: "Cancer, tumor, active surgery — exit immediately", tag: "Required" }
+        { id: "d1i1", title: "What is a Limited Benefit plan", sub: "The plan you will sell most", tag: "Up next", priority: "must" },
+        { id: "d1i2", title: "What is a MEC plan", sub: "Preventive care plus day-to-day coverage", tag: "Up next", priority: "must" },
+        { id: "d1i3", title: "What is STM and who it is for", sub: "Not for everyone, learn when to use it", tag: "Up next", priority: "must" },
+        { id: "d1i4", title: "Study the 3-plan comparison table", sub: "Limited vs MEC vs STM", tag: "Up next", priority: "must" },
+        { id: "d1i5", title: "What ACA and the Marketplace are", sub: "Know why clients need our plans instead", tag: "Up next", priority: "later" },
+        { id: "d1i6", title: "What Medicaid vs Medicare is", sub: "Recognize instantly and exit correctly", tag: "Up next", priority: "later" },
+        { id: "d1i7", title: "Who you do NOT sell to — hard stops", sub: "Cancer, tumor, active surgery — exit immediately", tag: "Required", priority: "must" }
       ]
     },
     {
@@ -2983,6 +3065,7 @@ function renderNewHireOnboarding() {
   var progress = _onbLoadProgress();
   var days = _onbDayData();
   var activeDay = progress.currentDay || 1;
+  var viewMode = _onbGetViewMode();
   if (!_onbIsDayUnlocked(progress, activeDay)) activeDay = 1;
 
   // P4 Task 13: Per-day task counts for the circular progress ring.
@@ -3054,6 +3137,18 @@ function renderNewHireOnboarding() {
   }
   html += '</div></div>';
 
+  html += '<div class="onb-view-toggle" role="group" aria-label="Onboarding view mode">';
+  html += '<button type="button" class="' + (viewMode === "must" ? 'onb-view-btn active' : 'onb-view-btn') + '" onclick="_onbSetViewMode(\'must\')">Must Know</button>';
+  html += '<button type="button" class="' + (viewMode === "all" ? 'onb-view-btn active' : 'onb-view-btn') + '" onclick="_onbSetViewMode(\'all\')">All</button>';
+  html += '</div>';
+
+  html += '<div class="onb-quick-actions">';
+  html += '<button type="button" onclick="document.getElementById(\'onb-required\').scrollIntoView({behavior:\'smooth\',block:\'start\'})">Before First Call</button>';
+  html += '<button type="button" onclick="document.getElementById(\'onb-livecall\').scrollIntoView({behavior:\'smooth\',block:\'start\'})">During Live Call</button>';
+  html += '<button type="button" onclick="document.getElementById(\'onb-postpay\').scrollIntoView({behavior:\'smooth\',block:\'start\'})">After Payment</button>';
+  html += '<button type="button" onclick="document.getElementById(\'onb-resources\').scrollIntoView({behavior:\'smooth\',block:\'start\'})">Reference</button>';
+  html += '</div>';
+
   // Tone & Energy reminder — day-specific, sits above the two-column
   // grid so it's the first thing an agent sees after the day pills.
   html += _onbToneCard(activeDay);
@@ -3061,6 +3156,13 @@ function renderNewHireOnboarding() {
   // Two-column grid
   var activeDayData = _activeDayData;
   var checked = _activeChecked;
+  var checklistItems = activeDayData.items;
+  if (activeDay === 1 && viewMode === "must") {
+    checklistItems = activeDayData.items.filter(function (item, idx) {
+      if (item.priority === "must" || item.tag === "Required") return true;
+      return idx < 4;
+    });
+  }
   html += '<div class="onb-grid">';
 
   // P4 Task 12: Badge cleanup.
@@ -3072,19 +3174,19 @@ function renderNewHireOnboarding() {
   //   badge
   // - All other items: no badge
   var _firstIncompleteIdx = -1;
-  for (var _fi = 0; _fi < activeDayData.items.length; _fi++) {
-    if (checked.indexOf(activeDayData.items[_fi].id) === -1) {
+  for (var _fi = 0; _fi < checklistItems.length; _fi++) {
+    if (checked.indexOf(checklistItems[_fi].id) === -1) {
       _firstIncompleteIdx = _fi;
       break;
     }
   }
 
   // Left: checklist
-  html += '<div class="onb-col-left">';
+  html += '<div class="onb-col-left" id="onb-required">';
   html += '<div class="onb-card onb-checklist-card">';
   html += '<div class="onb-card-title" style="color:' + activeDayData.accent + '">' + _trnEscape(activeDayData.label) + '</div>';
-  for (var j = 0; j < activeDayData.items.length; j++) {
-    var it = activeDayData.items[j];
+  for (var j = 0; j < checklistItems.length; j++) {
+    var it = checklistItems[j];
     var isChecked = checked.indexOf(it.id) !== -1;
     var tagHtml = '';
     if (isChecked) {
@@ -3110,18 +3212,21 @@ function renderNewHireOnboarding() {
   html += '</div>';
 
   // Right: concept cards
-  html += '<div class="onb-col-right">';
+  html += '<div class="onb-col-right" id="onb-livecall">';
   html += _onbRightColumn(activeDay);
   html += '</div>';
 
   html += '</div>';
 
-  // Compliance Checklist — permanent card, same on every day, shown
-  // below the day grid and above the Plan Reference Table.
+  // Compliance Checklist — collapsed by default to reduce scrolling.
+  html += '<details class="onb-drawer" id="onb-postpay"><summary>Required Compliance Checklist</summary>';
   html += _onbComplianceCard();
+  html += '</details>';
 
-  // Plan Reference Table (always visible)
+  // Plan Reference Table — collapsed by default to reduce scrolling.
+  html += '<details class="onb-drawer" id="onb-resources"><summary>Plan Reference Table</summary>';
   html += _onbPlanRefTable();
+  html += '</details>';
 
   page.innerHTML = html;
 }

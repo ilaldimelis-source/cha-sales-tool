@@ -421,10 +421,10 @@ var PAGE_CONFIG = {
     subs: [
       {
         id: 'newhireonboarding',
-        label: 'New Hire Onboarding',
+        label: 'Start Here',
         render: renderNewHireOnboarding
       },
-      { id: 'traininghome', label: 'CHA Academy', render: renderTrainingHome }
+      { id: 'traininghome', label: 'Library', render: renderTrainingHome }
     ]
   },
   compliance: {
