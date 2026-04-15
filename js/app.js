@@ -421,7 +421,7 @@ var PAGE_CONFIG = {
         label: 'New Hire Onboarding',
         render: renderNewHireOnboarding
       },
-      { id: 'traininghome', label: 'Training', render: renderTrainingHome }
+      { id: 'traininghome', label: 'CHA Academy', render: renderTrainingHome }
     ]
   },
   compliance: {
@@ -749,7 +749,7 @@ function renderDashboard() {
   html += '<span class="dash-kb"><kbd>3</kbd> Plans</span>';
   html += '<span class="dash-kb"><kbd>4</kbd> Scripts</span>';
   html += '<span class="dash-kb"><kbd>5</kbd> Network</span>';
-  html += '<span class="dash-kb"><kbd>6</kbd> Training</span>';
+  html += '<span class="dash-kb"><kbd>6</kbd> CHA Academy</span>';
   html += '<span class="dash-kb"><kbd>7</kbd> Compliance</span>';
   html += '<span class="dash-kb"><kbd>8</kbd> My Space</span>';
   html += '<span class="dash-kb"><kbd>Ctrl+K</kbd> Search</span>';

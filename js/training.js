@@ -1379,6 +1379,65 @@ function renderClosingtools() {
 }
 
 // ══════════════════════════════════════════════════════
+// CHA ACADEMY — structured learning path (Training tab)
+// ══════════════════════════════════════════════════════
+
+function _caB64Encode(str) {
+  try {
+    return btoa(unescape(encodeURIComponent(String(str))));
+  } catch (_e) {
+    return '';
+  }
+}
+
+function chaAcademyCopy(btn) {
+  var b = btn.getAttribute('data-b64');
+  if (!b) return;
+  var t = '';
+  try {
+    t = decodeURIComponent(escape(atob(b)));
+  } catch (_e) {
+    return;
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(t);
+  }
+  var orig = btn.getAttribute('data-lbl') || 'Copy';
+  btn.textContent = 'Copied';
+  var self = btn;
+  setTimeout(function () {
+    self.textContent = orig;
+  }, 1600);
+}
+
+function _caCopyBtn(text) {
+  var b = _caB64Encode(text);
+  return (
+    '<button type="button" class="ca-copy" data-b64="' +
+    b +
+    '" data-lbl="Copy" onclick="chaAcademyCopy(this)">Copy</button>'
+  );
+}
+
+function _caToolboxHtml() {
+  var html =
+    '<details class="ca-toolbox"><summary class="ca-toolbox-sum">More tools <span class="ca-toolbox-hint">vault, roleplay, closing…</span></summary><div class="ca-toolbox-body">';
+  TRAINING_SECTIONS.forEach(function (group) {
+    html += '<div class="ca-toolbox-group">' + escHTML(group.group) + '</div>';
+    group.items.forEach(function (item) {
+      html +=
+        '<button type="button" class="ca-toolbox-pill" onclick="openTrainingSection(\'' +
+        item.id +
+        "')\">" +
+        escHTML(item.title) +
+        '</button>';
+    });
+  });
+  html += '</div></details>';
+  return html;
+}
+
+// ══════════════════════════════════════════════════════
 // TRAINING HOME PAGE + SECTION VIEW SYSTEM
 // ══════════════════════════════════════════════════════
 
@@ -1436,38 +1495,259 @@ function renderTrainingHome() {
   var pg = document.getElementById('page-traininghome');
   if (!pg) return;
 
-  // Always reset to home when tab is navigated to
   _trainingView = 'home';
 
-  var arrow =
-    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C8CEDD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-  var html =
-    '<div class="ph"><div class="pt">Training <span>Center</span></div><div class="pd">Build your skills. Choose a section below.</div></div>';
+  var html = '<div class="ca-wrap">';
 
-  TRAINING_SECTIONS.forEach(function (group, gi) {
-    if (gi > 0) html += '<div style="height:28px;"></div>';
-    html += '<div class="trn-group-label">' + group.group + '</div>';
-    html += '<div class="trn-home-grid">';
-    group.items.forEach(function (item) {
-      html +=
-        '<div class="trn-home-card" onclick="openTrainingSection(\'' +
-        item.id +
-        '\')">';
-      html +=
-        '<div class="trn-home-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
-        item.icon +
-        '</svg></div>';
-      html +=
-        '<div class="trn-home-info"><div class="trn-home-title">' +
-        item.title +
-        '</div><div class="trn-home-desc">' +
-        item.desc +
-        '</div></div>';
-      html += '<div class="trn-home-arrow">' + arrow + '</div>';
-      html += '</div>';
-    });
-    html += '</div>';
-  });
+  html +=
+    '<div class="ph ca-hero"><div class="pt">CHA <span>Academy</span></div><div class="pd">Structured path: foundations → call flow → objections → compliance. Work top to bottom before you dial.</div></div>';
+
+  html += '<div class="ca-progress" aria-label="Learning path: four levels">';
+  html += '<div class="ca-progress-bar"><span class="ca-progress-fill"></span></div>';
+  html += '<div class="ca-progress-steps">';
+  html +=
+    '<span class="ca-step ca-step--active">Foundations</span><span class="ca-step-arrow" aria-hidden="true">→</span>';
+  html += '<span class="ca-step">Call Flow</span><span class="ca-step-arrow" aria-hidden="true">→</span>';
+  html += '<span class="ca-step">Objections</span><span class="ca-step-arrow" aria-hidden="true">→</span>';
+  html += '<span class="ca-step">Compliance</span>';
+  html += '</div></div>';
+
+  // —— Level 1 ——
+  html +=
+    '<details class="ca-level" open><summary class="ca-level-sum"><span class="ca-level-badge">1</span><span class="ca-level-titles"><span class="ca-level-name">Foundations</span><span class="ca-level-tag">Learn the basics before you dial</span></span></summary><div class="ca-level-body">';
+
+  function caFold(title, line1, line2) {
+    return (
+      '<details class="ca-nest"><summary class="ca-nest-sum">' +
+      escHTML(title) +
+      '</summary><div class="ca-nest-body"><p class="ca-nest-line">' +
+      escHTML(line1) +
+      '</p><p class="ca-nest-tip">' +
+      escHTML(line2) +
+      '</p><div class="ca-nest-actions">' +
+      _caCopyBtn(line1 + ' ' + line2) +
+      '</div></div></details>'
+    );
+  }
+
+  html += caFold(
+    'Premium',
+    'Monthly payment to keep coverage active.',
+    'This is what customers compare first.'
+  );
+  html += caFold(
+    'Deductible',
+    'Amount paid first before plan kicks in.',
+    'MEC and Indemnity have NO deductible.'
+  );
+  html += caFold(
+    'Copay',
+    'Fixed fee per visit (like $25).',
+    'Simple and predictable.'
+  );
+  html += caFold(
+    'Coinsurance',
+    'Percentage split after deductible.',
+    "STM uses this; MEC/Indemnity don't."
+  );
+  html += caFold(
+    'Network',
+    'List of contracted providers.',
+    'First Health and MultiPlan are our networks.'
+  );
+  html += caFold(
+    'Plan types',
+    'MEC = wellness + copays + hospital indemnity.',
+    'STM = deductible + coinsurance. Indemnity = network repricing + cash benefits.'
+  );
+
+  html += '</div></details>';
+
+  // —— Level 2 ——
+  html +=
+    '<details class="ca-level" open><summary class="ca-level-sum"><span class="ca-level-badge">2</span><span class="ca-level-titles"><span class="ca-level-name">Call flow</span><span class="ca-level-tag">Master each stage in order</span></span></summary><div class="ca-level-body ca-timeline">';
+
+  var stages = [
+    {
+      n: 1,
+      t: 'Opening',
+      b:
+        'Breaking rapport tone, slow pace, assume it is the customer on the other end.',
+      c: 'Breaking rapport tone, slow pace, assume it is the customer.'
+    },
+    {
+      n: 2,
+      t: 'Prequalify',
+      b: '50/50 conversational — gather info plus buying points.',
+      c: '50/50 conversational: gather info and buying points.'
+    },
+    {
+      n: 3,
+      t: 'Tie-down',
+      b: 'Get budget BEFORE pitching. Know your plan before hold.',
+      c: 'Get budget before pitching. Know your plan before hold.'
+    },
+    {
+      n: 4,
+      t: 'Hold',
+      b: 'Max 2 minutes — build urgency.',
+      c: 'Hold: max 2 minutes, build urgency.'
+    },
+    {
+      n: 5,
+      t: 'Teaser',
+      b: 'Higher energy — do not ask if they are still there.',
+      c: 'Teaser: higher energy, do not ask if still there.'
+    },
+    {
+      n: 6,
+      t: 'Benefits',
+      b: 'Read VERBATIM — 90% talking, less is more.',
+      c: 'Benefits: read verbatim; 90% talking, less is more.'
+    },
+    {
+      n: 7,
+      t: 'Close',
+      b: 'Assumptive close — whoever talks first loses.',
+      c: 'Close: assumptive; whoever talks first loses.'
+    },
+    {
+      n: 8,
+      t: 'Post-close',
+      b: 'CHA561337, 855-736-1590 — make sales stick.',
+      c: 'Post-close: CHA561337, 855-736-1590 — make sales stick.'
+    }
+  ];
+  for (var si = 0; si < stages.length; si++) {
+    var st = stages[si];
+    html +=
+      '<div class="ca-tl-item"><div class="ca-tl-dot">' +
+      st.n +
+      '</div><div class="ca-tl-card"><div class="ca-tl-title">' +
+      escHTML(st.t) +
+      '</div><p class="ca-tl-body">' +
+      escHTML(st.b) +
+      '</p><div class="ca-tl-actions">' +
+      _caCopyBtn(st.c) +
+      '</div></div></div>';
+  }
+  html +=
+    '<div class="ca-tl-actions ca-tl-actions--block">' +
+    _caCopyBtn('CHA561337') +
+    _caCopyBtn('855-736-1590') +
+    '</div>';
+  html += '</div></details>';
+
+  // —— Level 3 ——
+  html +=
+    '<details class="ca-level" open><summary class="ca-level-sum"><span class="ca-level-badge">3</span><span class="ca-level-titles"><span class="ca-level-name">Objections</span><span class="ca-level-tag">Battle cards for hard moments</span></span></summary><div class="ca-level-body">';
+
+  var objs = [
+    {
+      title: 'Price',
+      obj: '“This is too expensive.”',
+      a: 'Acknowledge: “I hear you — nobody wants to pay a dollar more than they have to.”',
+      r: 'Respond: “Let’s anchor what you’re comparing: fixed dollars per month versus one ER visit without coverage.”',
+      c: 'Continue: “If the premium fits the budget you gave me, does locking today beat risking another month bare?”'
+    },
+    {
+      title: 'Think about it',
+      obj: '“I need to think about it.”',
+      a: 'Acknowledge: “Totally — it’s a real decision.”',
+      r: 'Respond: “What’s the one piece you want to think through — price, network, or what’s covered?”',
+      c: 'Continue: “If I answer that now, can we pick a time today to finalize so you’re not deciding on guesses?”'
+    },
+    {
+      title: 'Spouse',
+      obj: '“I need to talk to my spouse.”',
+      a: 'Acknowledge: “Makes sense — they should be in the loop.”',
+      r: 'Respond: “What would they ask that I can answer for both of you in two minutes?”',
+      c: 'Continue: “When are you both free for a three-way so we don’t lose the rate window?”'
+    },
+    {
+      title: 'Send info',
+      obj: '“Just email me something.”',
+      a: 'Acknowledge: “Happy to get you something in writing.”',
+      r: 'Respond: “These plans read wrong on paper without context — two minutes on the phone saves the back-and-forth.”',
+      c: 'Continue: “What outcome do you need the paperwork to prove — budget, network, or waiting period?”'
+    },
+    {
+      title: 'Trust',
+      obj: '“I’ve never heard of your company.”',
+      a: 'Acknowledge: “Fair — there are a lot of voices in health coverage.”',
+      r: 'Respond: “You’re enrolling with the carrier; we’re Central Health Advisors on the front end. You’ll get confirmation numbers and carrier materials.”',
+      c: 'Continue: “What would you need to see on the enrollment confirmation to feel solid moving forward?”'
+    }
+  ];
+  for (var oi = 0; oi < objs.length; oi++) {
+    var o = objs[oi];
+    var arcFull = o.obj + ' ' + o.a + ' ' + o.r + ' ' + o.c;
+    html +=
+      '<div class="ca-obj-card"><div class="ca-obj-title">' +
+      escHTML(o.title) +
+      '</div><p class="ca-obj-line ca-obj-obj">' +
+      escHTML(o.obj) +
+      '</p><div class="ca-arc"><div class="ca-arc-row"><span class="ca-arc-lbl">A</span><div class="ca-arc-main"><p>' +
+      escHTML(o.a) +
+      '</p></div>' +
+      _caCopyBtn(o.a) +
+      '</div><div class="ca-arc-row"><span class="ca-arc-lbl">R</span><div class="ca-arc-main"><p>' +
+      escHTML(o.r) +
+      '</p></div>' +
+      _caCopyBtn(o.r) +
+      '</div><div class="ca-arc-row"><span class="ca-arc-lbl">C</span><div class="ca-arc-main"><p>' +
+      escHTML(o.c) +
+      '</p></div>' +
+      _caCopyBtn(o.c) +
+      '</div></div><div class="ca-obj-footer">' +
+      _caCopyBtn(arcFull) +
+      '<span class="ca-obj-foot-hint">Full ARC</span></div></div>';
+  }
+  html += '</div></details>';
+
+  // —— Level 4 ——
+  html +=
+    '<details class="ca-level" open><summary class="ca-level-sum"><span class="ca-level-badge">4</span><span class="ca-level-titles"><span class="ca-level-name">Compliance</span><span class="ca-level-tag">What you CANNOT mess up</span></span></summary><div class="ca-level-body">';
+
+  var must = [
+    'No mental health, substance abuse, pregnancy.',
+    'Not ACA coverage.',
+    '12/12 pre-ex, 30-day sickness waiting.'
+  ];
+  var never = [
+    '"Just like marketplace"',
+    '"Covers everything"',
+    '"No pre-existing issues"'
+  ];
+
+  html += '<div class="ca-compliance-block ca-compliance--must">';
+  html += '<div class="ca-compliance-hd">Must disclose</div><ul class="ca-compliance-list">';
+  for (var mi = 0; mi < must.length; mi++) {
+    html +=
+      '<li><span class="ca-li-txt">' +
+      escHTML(must[mi]) +
+      '</span>' +
+      _caCopyBtn(must[mi]) +
+      '</li>';
+  }
+  html += '</ul></div>';
+
+  html += '<div class="ca-compliance-block ca-compliance--never">';
+  html += '<div class="ca-compliance-hd">Never say</div><ul class="ca-compliance-list">';
+  for (var ni = 0; ni < never.length; ni++) {
+    html +=
+      '<li><span class="ca-li-txt ca-li-never">' +
+      escHTML(never[ni]) +
+      '</span>' +
+      _caCopyBtn('Never say: ' + never[ni]) +
+      '</li>';
+  }
+  html += '</ul></div>';
+
+  html += '</div></details>';
+
+  html += _caToolboxHtml();
+  html += '</div>';
 
   pg.innerHTML = html;
 }
@@ -1497,7 +1777,7 @@ function _renderTrainingSection(sectionId) {
 
   // Build page with back button + container for the section render + bottom pill strip
   pg.innerHTML =
-    '<button class="trn-back-btn" onclick="backToTrainingHome()">&larr; Training</button><div id="page-' +
+    '<button class="trn-back-btn" onclick="backToTrainingHome()">&larr; CHA Academy</button><div id="page-' +
     sectionId +
     '"></div>' +
     _trnBottomStrip(sectionId);
