@@ -1,0 +1,27 @@
+{
+  "planId": "mychoicehigh",
+  "planName": "MyChoice - Plan High",
+  "status": "excluded",
+  "documents": [
+    {
+      "fileName": "MyChoice_High_Brochure_1.pdf",
+      "sourceType": "brochure",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "MyChoice Plan High Limited benefit highest tier best benefits of MyChoice series. BWA FirstEnroll. Not comprehensive health insurance not substitute for major medical does not satisfy ACA MEC. See certificate for exact benefit amounts.",
+          "normalizedText": "mychoice plan high limited benefit highest tier best benefits of mychoice series bwa firstenroll not comprehensive health insurance not substitute for major medical does not satisfy aca mec see certificate for exact benefit amounts"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "mychoicehigh-c1",
+      "text": "MyChoice Plan High Limited benefit highest tier best benefits of MyChoice series. BWA FirstEnroll. Not comprehensive health insurance not substitute for major medical does not satisfy ACA MEC. See certificate for exact benefit amounts.",
+      "tokenEstimate": 59,
+      "pageRange": "1-1",
+      "normalizedText": "mychoice plan high limited benefit highest tier best benefits of mychoice series bwa firstenroll not comprehensive health insurance not substitute for major medical does not satisfy aca mec see certificate for exact benefit amounts"
+    }
+  ]
+}

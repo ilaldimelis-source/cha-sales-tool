@@ -2525,6 +2525,36 @@ function formatResponse(content, scope) {
   );
 }
 
+function _chaPlanListPreview(maxCount) {
+  var rt = window.CHA_PDF_KNOWLEDGE_RUNTIME;
+  if (!rt || typeof rt.listAvailablePlanNames !== 'function') return 'Plan index unavailable.';
+  var names = rt.listAvailablePlanNames();
+  var safeLimit = maxCount || 10;
+  if (!names.length) return 'No plan documents are currently available.';
+  if (names.length <= safeLimit) return names.join(', ');
+  return names.slice(0, safeLimit).join(', ') + ', and ' + (names.length - safeLimit) + ' more.';
+}
+
+function _chaBuildGroundedPrompt(planMeta, topChunks) {
+  var excerpts = [];
+  for (var i = 0; i < topChunks.length; i++) {
+    excerpts.push('[Excerpt ' + (i + 1) + '] ' + topChunks[i].text);
+  }
+  return [
+    'You are a CHA plan document assistant.',
+    'Use ONLY the provided plan excerpts to answer.',
+    'Do not use outside knowledge, assumptions, or prior context.',
+    'If the answer is not explicitly in the excerpts, respond exactly with:',
+    '"That specific detail is not in the ' + planMeta.planName + ' document."',
+    '',
+    'Plan Name: ' + planMeta.planName,
+    'Plan Files: ' + (planMeta.pdfFiles || []).join(', '),
+    '',
+    'EXCERPTS:',
+    excerpts.join('\n\n')
+  ].join('\n');
+}
+
 function _chaBrainScroll() {
   var chat = document.getElementById('chat-messages');
   if (chat) chat.scrollTop = chat.scrollHeight;
@@ -2557,41 +2587,124 @@ function handleChatMessage(userMessage) {
     _chaBrainScroll();
     return;
   }
+  var runtime = window.CHA_PDF_KNOWLEDGE_RUNTIME;
+  if (!runtime) {
+    chatContainer.innerHTML +=
+      '<div class="ai-message">' +
+      formatResponse('Plan PDF runtime is not loaded.', scope) +
+      '</div>';
+    _chaBrainScroll();
+    return;
+  }
 
-  fetch((window.GROQ_API_URL || CHA_GROQ_ENDPOINT), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + sharedKey
-    },
-    body: JSON.stringify({
-      model: 'llama-3.1-70b-versatile',
-      messages: [
-        { role: 'system', content: CHA_PDF_KNOWLEDGE_PROMPT },
-        {
-          role: 'user',
-          content: _chaGetPlanContext() + '\n\nAgent question: ' + clean
-        }
-      ],
-      max_tokens: 1000,
-      temperature: 0.3
+  var resolution = runtime.resolvePlan(clean, window.activePlan || null);
+  if (resolution.status === 'no_plan') {
+    var hasPlanLikeWords = /(plan|medfirst|truehealth|goodhealth|smart|harmony|everest|bwa|allstate|pinnacle|sigma|mychoice|galena|access)/i.test(clean);
+    chatContainer.innerHTML +=
+      '<div class="ai-message">' +
+      formatResponse(
+        hasPlanLikeWords
+          ? 'I do not have that plan. Available plans include: ' + _chaPlanListPreview(12)
+          : 'Which plan are you asking about?',
+        scope
+      ) +
+      '</div>';
+    _chaBrainScroll();
+    return;
+  }
+  if (resolution.status === 'ambiguous') {
+    chatContainer.innerHTML +=
+      '<div class="ai-message">' +
+      formatResponse(
+        'I found multiple matching plans. Please name one specific plan.',
+        scope
+      ) +
+      '</div>';
+    _chaBrainScroll();
+    return;
+  }
+
+  var planMeta = runtime.getPlanMeta(resolution.planId);
+  if (!planMeta) {
+    chatContainer.innerHTML +=
+      '<div class="ai-message">' +
+      formatResponse(
+        'I do not have that plan. Available plans include: ' + _chaPlanListPreview(12),
+        scope
+      ) +
+      '</div>';
+    _chaBrainScroll();
+    return;
+  }
+  if (planMeta.status === 'excluded' || planMeta.status === 'missing_pdf') {
+    chatContainer.innerHTML +=
+      '<div class="ai-message">' +
+      formatResponse(
+        'That plan document is not loaded yet for ' + planMeta.planName + '.',
+        scope
+      ) +
+      '</div>';
+    _chaBrainScroll();
+    return;
+  }
+
+  runtime
+    .loadPlanContent(planMeta.planId)
+    .then(function (planPayload) {
+      var topChunks = runtime.retrieveTopChunks(planPayload, clean, 8);
+      if (!topChunks.length) {
+        return {
+          fallback:
+            'That specific detail is not in the ' + planMeta.planName + ' document.'
+        };
+      }
+      var systemPrompt = _chaBuildGroundedPrompt(planMeta, topChunks);
+      return fetch((window.GROQ_API_URL || CHA_GROQ_ENDPOINT), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + sharedKey
+        },
+        body: JSON.stringify({
+          model: 'llama-3.1-70b-versatile',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: 'Agent question: ' + clean }
+          ],
+          max_tokens: 450,
+          temperature: 0
+        })
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error('API error ' + r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          return { data: data };
+        });
     })
-  })
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      // #region agent log
-      fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H4',location:'js/chat.js:handleChatMessage:apiSuccess',message:'Brain chat API response parsed',data:{hasChoices:!!(data&&data.choices&&data.choices.length)},timestamp:Date.now()})}).catch(function(){});
-      // #endregion
-      var msg = data && data.choices && data.choices[0] && data.choices[0].message
-        ? data.choices[0].message.content
-        : 'Sorry, I could not process that question. Please try again.';
-      chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(escHTML(msg), scope) + '</div>';
+    .then(function (result) {
+      var msg = '';
+      if (result && result.fallback) {
+        msg = result.fallback;
+      } else {
+        var data = result && result.data;
+        var rawMsg =
+          data && data.choices && data.choices[0] && data.choices[0].message
+            ? String(data.choices[0].message.content || '').trim()
+            : '';
+        if (!rawMsg) {
+          msg =
+            'That specific detail is not in the ' + planMeta.planName + ' document.';
+        } else {
+          msg = rawMsg;
+        }
+      }
+      chatContainer.innerHTML +=
+        '<div class="ai-message">' + formatResponse(escHTML(msg), scope) + '</div>';
       _chaBrainScroll();
     })
     .catch(function () {
-      // #region agent log
-      fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H4',location:'js/chat.js:handleChatMessage:apiCatch',message:'Brain chat API failed',data:{scope:scope},timestamp:Date.now()})}).catch(function(){});
-      // #endregion
       chatContainer.innerHTML +=
         '<div class="ai-message">' +
         formatResponse(

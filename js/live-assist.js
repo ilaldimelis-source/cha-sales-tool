@@ -183,16 +183,14 @@ function parseAndReview() {
   var input = document.getElementById('receipt-input');
   if (!input) return;
   var deals = parseReceipt(input.value || '');
+  // #region agent log
+  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H5',location:'js/live-assist.js:parseAndReview',message:'Receipt parse executed',data:{deals:deals.length,inputLen:String((input.value||'')).length},timestamp:Date.now()})}).catch(function(){});
+  // #endregion
   if (!deals.length) {
     showToast('No receipts found. Check your paste.', 'error');
     return;
   }
-  try {
-    var existing = JSON.parse(localStorage.getItem('trackerDeals') || '[]');
-    localStorage.setItem('trackerDeals', JSON.stringify(existing.concat(deals)));
-  } catch (_e) {}
-  updateTotals();
-  showToast('Parsed ' + deals.length + ' receipt line(s).', 'success');
+  showReviewModal(deals);
 }
 function updateTotals() {
   var deals = [];
@@ -220,6 +218,59 @@ function updateTotals() {
   var weeklyEl = document.getElementById('weekly-total');
   if (dailyEl) dailyEl.innerHTML = 'Today: $' + dailyTotal.toFixed(2) + ' <span style="color:#10B981;">| Commission: $' + dailyCom.toFixed(2) + '</span>';
   if (weeklyEl) weeklyEl.innerHTML = 'This Week: $' + weeklyTotal.toFixed(2) + ' <span style="color:#10B981;">| Commission: $' + weeklyCom.toFixed(2) + '</span>';
+}
+
+function showReviewModal(deals) {
+  var modal = document.getElementById('review-modal');
+  var tbody = document.getElementById('review-table-body');
+  if (!modal || !tbody) return;
+  var rows = [];
+  for (var i = 0; i < deals.length; i++) {
+    var d = deals[i];
+    rows.push(
+      '<tr>' +
+        '<td style="' + (d.dateAutoDefaulted ? 'background:#EF4444;color:white;' : '') + '">' +
+          (d.dateAutoDefaulted ? '⚠️ ' : '') + escHTML(d.date) +
+        '</td>' +
+        '<td>' + escHTML(d.member) + '</td>' +
+        '<td>' + escHTML(d.product) + '</td>' +
+        '<td>$' + Number(d.monthlyPremium || 0).toFixed(2) + '</td>' +
+        '<td style="color:#10B981;font-weight:600;">$' + Number(d.commission || 0).toFixed(2) + '</td>' +
+      '</tr>'
+    );
+  }
+  // #region agent log
+  var __chaWarnCount = 0;
+  for (var wi = 0; wi < deals.length; wi++) { if (deals[wi] && deals[wi].dateAutoDefaulted) __chaWarnCount++; }
+  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H5',location:'js/live-assist.js:showReviewModal',message:'Receipt review modal rendered',data:{rows:deals.length,defaultedDates:__chaWarnCount},timestamp:Date.now()})}).catch(function(){});
+  // #endregion
+  tbody.innerHTML = rows.join('');
+  modal.style.display = 'flex';
+  window.__chaPendingDeals = deals;
+}
+
+function closeReviewModal() {
+  var modal = document.getElementById('review-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function confirmReviewModal() {
+  var deals = window.__chaPendingDeals || [];
+  // #region agent log
+  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H5',location:'js/live-assist.js:confirmReviewModal',message:'Receipt review confirm triggered',data:{pendingDeals:deals.length},timestamp:Date.now()})}).catch(function(){});
+  // #endregion
+  if (!deals.length) {
+    closeReviewModal();
+    return;
+  }
+  try {
+    var existing = JSON.parse(localStorage.getItem('trackerDeals') || '[]');
+    localStorage.setItem('trackerDeals', JSON.stringify(existing.concat(deals)));
+  } catch (_e) {}
+  closeReviewModal();
+  updateTotals();
+  showToast('Parsed ' + deals.length + ' receipt line(s).', 'success');
+  window.__chaPendingDeals = [];
 }
 
 function _bindBentoKeys() {
@@ -466,7 +517,15 @@ function renderLive() {
   html += '<details><summary>📋 Module 2: Know Your Plans</summary><div class="plan-card"><strong>MEC</strong><p>No deductible, copays for doctors.</p></div><div class="plan-card"><strong>STM</strong><p>Deductible + coinsurance + max OOP.</p></div><button onclick="markComplete(2)">Mark Complete</button></details>';
   html += '<details><summary>🛡️ Module 3: Compliance Shield</summary><div class="compliance-row never-say"><span class="wrong">❌ "ACA compliant"</span> <span class="right">✓ "Private market plan"</span></div><button onclick="markComplete(3)">Mark Complete</button></details>';
   html += '<details><summary>🎯 Module 4: Objection Mastery</summary><div class="objection-card"><strong>"Spouse"</strong><div class="response-row"><span>"Let\'s see if you qualify so you have something real to show them."</span></div></div><button onclick="markComplete(4)">Mark Complete</button></details>';
-  html += '</div></div></div>';
+  html += '</div></div>';
+  html += '<div id="review-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;">';
+  html +=   '<div style="width:min(900px,95vw);max-height:85vh;overflow:auto;background:#111827;border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:16px;color:#E5E7EB;">';
+  html +=     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 style="margin:0;">Receipt Review</h3><button onclick="closeReviewModal()" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#E5E7EB;border-radius:8px;padding:6px 10px;">Close</button></div>';
+  html +=     '<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Date</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Member</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Product</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Premium</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Commission</th></tr></thead><tbody id="review-table-body"></tbody></table>';
+  html +=     '<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;"><button onclick="closeReviewModal()" style="background:#374151;border:none;color:#fff;border-radius:8px;padding:8px 12px;">Cancel</button><button onclick="confirmReviewModal()" style="background:#10B981;border:none;color:#fff;border-radius:8px;padding:8px 12px;">Confirm & Save</button></div>';
+  html +=   '</div>';
+  html += '</div>';
+  html += '</div>';
   html += '<div class="la-section-label la-sec-tight">Rebuttals</div>';
   // Slide-in panel overlay + panel (injected once)
   html +=
