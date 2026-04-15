@@ -43,6 +43,28 @@
       "tokenEstimate": 438,
       "pageRange": "1-1",
       "normalizedText": "our medication list contains over 95 of the top prescribed generic medications in the us for conditions such as high cholesterol diabetes mental health allergy thyroid asthma men s health women s health high blood pressure urgent care and more home delivery or urgent care home delivery or urgent care services are available with select plans please refer to your specific plan details to confirm coverage and availability of these services membership savings card concierge support services for any questions about your membership benefits mylivedoc 855 226 6567 600 1022 5 2025 population science management all rights reserved prescription access assistance scriptaide is the exclusive pharmaceutical advocate for detego health scriptaide provides pharmaceutical advocacy services reducing the financial burden our direct to member support services are staffed by pharmaceutical access coordinators specialized in helping members acquire prescribed medications using their pap and spip programs every patient has access to benefit consulting and comprehensive clinical support call us at 866 837 1515 patient assistance program pap is designed for members in the united states who require non covered medications and demonstrate qualifying financial need those who qualify will receive their medications for free with no co pays or shipping costs a valid prescription is required to participate self pay importation program spip is available to members in the united states who require non covered medications through this program individuals can import their prescribed medications at their own cost typically saving 40 45"
+    },
+    {
+      "chunkId": "tdk5-c5-structured",
+      "text": "TDK 5 benefit schedule: PCP $50 copay, 5 visits/year, max $150/visit. Specialist $75 copay, 5 visits/year, max $300/visit. Urgent Care Facility $75 copay, 5 visits/year, max $300/visit. Telehealth $0. ER Facility not covered. ER Professional $1,000/incident. Ambulance $500/incident if admitted. Outpatient Surgery $1,500/day, $15,000/year max. Inpatient Hospital $1,500/day, $15,000/year max. Preventive $0, 1 visit/year, max $150/visit. Mental Health not covered (available via MyLiveDoc). Rx available via MyLiveDoc. Brand/Specialty not covered.",
+      "tokenEstimate": 166,
+      "pageRange": "structured",
+      "normalizedText": "tdk 5 benefit schedule pcp 50 copay 5 visits year max 150 visit specialist 75 copay 5 visits year max 300 visit urgent care facility 75 copay 5 visits year max 300 visit telehealth 0 er facility not covered er professional 1000 incident ambulance 500 incident if admitted outpatient surgery 1500 day 15000 year max inpatient hospital 1500 day 15000 year max preventive 0 1 visit year max 150 visit mental health not covered available via mylivedoc rx available via mylivedoc brand specialty not covered"
     }
-  ]
+  ],
+  "structuredBenefits": {
+    "pcp": "$50 copay, 5 visits/year, max $150/visit",
+    "specialist": "$75 copay, 5 visits/year, max $300/visit",
+    "urgentCareFacility": "$75 copay, 5 visits/year, max $300/visit",
+    "telehealth": "$0",
+    "erFacility": "Not Covered",
+    "erProfessional": "$1,000/incident",
+    "ambulance": "$500/incident if admitted",
+    "outpatientSurgery": "$1,500/day, $15,000/year max",
+    "inpatientHospital": "$1,500/day, $15,000/year max",
+    "preventive": "$0, 1 visit/year, max $150/visit",
+    "mentalHealth": "Not Covered (available via MyLiveDoc)",
+    "rx": "Available via MyLiveDoc",
+    "rxBrandSpecialty": "Not Covered"
+  }
 }

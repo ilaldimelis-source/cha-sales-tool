@@ -1297,7 +1297,7 @@ var POLICY_DOCS = [
         items: [
           'Primary Care: $25 copay — 3 visits/yr — $150 max/visit',
           'Specialist: $50 copay — 1 visit/yr — $300 max/visit',
-          'Urgent Care: $50 copay — 1 visit/yr — $300 max/visit'
+          'Urgent Care Facility: $50 copay — 1 visit/yr — $300 max/visit'
         ]
       },
       {
@@ -1314,7 +1314,8 @@ var POLICY_DOCS = [
           'Inpatient: $1,000/day — $5,000/yr max',
           'Outpatient: NOT covered',
           'Emergency Room: NOT covered',
-          'Ambulance: NOT covered'
+          'Ambulance: NOT covered',
+          'Outpatient Surgery: NOT covered'
         ]
       },
       {
@@ -1324,9 +1325,8 @@ var POLICY_DOCS = [
       {
         category: 'Prescriptions',
         items: [
-          'Retail generic: available through MyLiveDoc pharmacy solution',
-          'Home delivery (chronic): available with select plans',
-          'Brand/specialty drugs: NOT covered — ScriptAide PAP/SPIP available'
+          'Rx: Available via MyLiveDoc',
+          'Brand/specialty drugs: NOT covered'
         ]
       },
       {
@@ -1416,7 +1416,7 @@ var POLICY_DOCS = [
         items: [
           'Primary Care: $25 copay — 4 visits/yr — $150 max/visit',
           'Specialist: $50 copay — 2 visits/yr — $300 max/visit',
-          'Urgent Care: $50 copay — 2 visits/yr — $300 max/visit'
+          'Urgent Care Facility: $50 copay — 2 visits/yr — $300 max/visit'
         ]
       },
       {
@@ -1433,7 +1433,8 @@ var POLICY_DOCS = [
           'Inpatient: $1,000/day — $10,000/yr max',
           'Outpatient: NOT covered',
           'Emergency Room: NOT covered',
-          'Ambulance: NOT covered'
+          'Ambulance: NOT covered',
+          'Outpatient Surgery: NOT covered'
         ]
       },
       {
@@ -1443,9 +1444,8 @@ var POLICY_DOCS = [
       {
         category: 'Prescriptions',
         items: [
-          'Retail generic: available through MyLiveDoc pharmacy solution',
-          'Home delivery (chronic): available with select plans',
-          'Brand/specialty drugs: NOT covered — ScriptAide PAP/SPIP available'
+          'Rx: Available via MyLiveDoc',
+          'Brand/specialty drugs: NOT covered'
         ]
       },
       {
@@ -1534,7 +1534,7 @@ var POLICY_DOCS = [
         items: [
           'Primary Care: $25 copay — 4 visits/yr — $150 max/visit',
           'Specialist: $50 copay — 4 visits/yr — $300 max/visit',
-          'Urgent Care: $50 copay — 4 visits/yr — $300 max/visit'
+          'Urgent Care Facility: $50 copay — 4 visits/yr — $300 max/visit'
         ]
       },
       {
@@ -1550,8 +1550,10 @@ var POLICY_DOCS = [
         items: [
           'Inpatient: $1,000/day — $15,000/yr max',
           'Outpatient: NOT covered',
-          'Emergency Room: NOT covered',
-          'Ambulance: NOT covered'
+          'ER Facility: $1,500/day — $4,500/yr max',
+          'ER Professional: NOT covered',
+          'Ambulance: NOT covered',
+          'Outpatient Surgery: NOT covered'
         ]
       },
       {
@@ -1561,9 +1563,8 @@ var POLICY_DOCS = [
       {
         category: 'Prescriptions',
         items: [
-          'Retail generic: available through MyLiveDoc pharmacy solution',
-          'Home delivery (chronic): available with select plans',
-          'Brand/specialty drugs: NOT covered — ScriptAide PAP/SPIP available'
+          'Rx: Available via MyLiveDoc',
+          'Brand/specialty drugs: NOT covered'
         ]
       },
       {
@@ -1652,7 +1653,7 @@ var POLICY_DOCS = [
         items: [
           'Primary Care: $50 copay — 4 visits/yr — $150 max/visit',
           'Specialist: $75 copay — 4 visits/yr — $300 max/visit',
-          'Urgent Care: $75 copay — 4 visits/yr — $300 max/visit'
+          'Urgent Care Facility: $75 copay — 4 visits/yr — $300 max/visit'
         ]
       },
       {
@@ -1667,8 +1668,9 @@ var POLICY_DOCS = [
         category: 'Hospital',
         items: [
           'Inpatient: $1,000/day — $10,000/yr max',
-          'Outpatient: $1,000/day — $10,000/yr max',
-          'Emergency Room: $1,000/incident',
+          'Outpatient Surgery: $1,000/day — $10,000/yr max',
+          'ER Facility: $1,000/day — $2,000/yr max',
+          'ER Professional: $1,000/incident',
           'Ambulance: $500/incident (if admitted)'
         ]
       },
@@ -1679,9 +1681,8 @@ var POLICY_DOCS = [
       {
         category: 'Prescriptions',
         items: [
-          'Retail generic: available through MyLiveDoc pharmacy solution',
-          'Home delivery (chronic): available through MyLiveDoc',
-          'Brand/specialty drugs: NOT covered — ScriptAide PAP/SPIP available'
+          'Rx: Available via MyLiveDoc',
+          'Brand/specialty drugs: NOT covered'
         ]
       },
       {
@@ -1755,7 +1756,7 @@ var POLICY_DOCS = [
         items: [
           'Primary Care: $50 copay — 5 visits/yr — $150 max/visit',
           'Specialist: $75 copay — 5 visits/yr — $300 max/visit',
-          'Urgent Care: $75 copay — 5 visits/yr — $300 max/visit'
+          'Urgent Care Facility: $75 copay — 5 visits/yr — $300 max/visit'
         ]
       },
       {
@@ -1770,9 +1771,9 @@ var POLICY_DOCS = [
         category: 'Hospital',
         items: [
           'Inpatient: $1,500/day — $15,000/yr max',
-          'Outpatient: $1,500/day — $15,000/yr max',
-          'In/Outpatient Surgery: $1,500/day — $4,500/yr max',
-          'Emergency Room: $1,000/incident — $2,000/yr max',
+          'Outpatient Surgery: $1,500/day — $15,000/yr max',
+          'ER Facility: NOT covered',
+          'ER Professional: $1,000/incident',
           'Ambulance: $500/incident (if admitted)'
         ]
       },
@@ -1783,9 +1784,8 @@ var POLICY_DOCS = [
       {
         category: 'Prescriptions',
         items: [
-          'Retail generic: available through MyLiveDoc pharmacy solution',
-          'Home delivery (chronic): available through MyLiveDoc',
-          'Brand/specialty drugs: NOT covered — ScriptAide PAP/SPIP available'
+          'Rx: Available via MyLiveDoc',
+          'Brand/specialty drugs: NOT covered'
         ]
       },
       {
