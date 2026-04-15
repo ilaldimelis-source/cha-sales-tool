@@ -306,6 +306,22 @@ module.exports = function handler(req, res) {
       });
     })
     .catch(function (err) {
+      var safeScope = scope || 'none';
+      var safeCitations = Array.isArray(chunks)
+        ? chunks.map(function (c) {
+            return {
+              plan_id: c.plan_id,
+              plan_name: c.plan_name,
+              source_pdf: c.source_pdf,
+              chunk_index: c.chunk_index,
+              similarity: c.similarity
+            };
+          })
+        : [];
+      var safeSource =
+        safeCitations.length && safeCitations[0].source_pdf
+          ? safeCitations[0].source_pdf
+          : 'Plan PDF / POLICY_DOCS';
       console.error(
         '[CHA RAG] Fallback triggered',
         JSON.stringify({
@@ -322,9 +338,9 @@ module.exports = function handler(req, res) {
         fact: '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]',
         sayThis:
           'Let me verify this in the plan document so I give you the exact compliant answer.',
-        source: 'Plan PDF / POLICY_DOCS',
-        scope: 'none',
-        citations: [],
+        source: safeSource,
+        scope: safeScope,
+        citations: safeCitations,
         fallbackReason: err && err.message ? err.message : 'Unknown error',
         debug: {
           stage: debug.stage,
