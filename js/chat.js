@@ -2325,6 +2325,123 @@ var CHA_BRAIN_PROMPT =
   'Use format: FACT: ... SAY THIS: ... ' +
   'If not found, use: DOCUMENTATION GAP: This detail is not in the official Summary of Benefits.';
 
+var CHA_PDF_KNOWLEDGE_PROMPT = [
+  'You are a CHA Sales assistant helping insurance agents. You have complete knowledge of all health insurance plans from the official plan documents.',
+  '',
+  'PLAN KNOWLEDGE (from official PDFs):',
+  '',
+  'TDK PLANS (MEC)',
+  'Network: First Health | Underwriter: Detego Health | Customer Service: (866) 815-6001',
+  'TDK 1: PCP $25 (3/yr), Specialist $50 (1/yr), Hospital $1,000/day ($5,000 max), ER: Not Covered, Telemedicine $0, Rx: MyLiveDoc formulary, No SSN required',
+  'TDK 2: PCP $25 (4/yr), Specialist $50 (2/yr), Hospital $1,000/day ($10,000 max), ER: Not Covered, Telemedicine $0, Rx: MyLiveDoc formulary, No SSN required',
+  'TDK 3: PCP $25 (4/yr), Specialist $50 (4/yr), Hospital $1,000/day ($15,000 max), ER: Not Covered, Telemedicine $0, Rx: MyLiveDoc formulary, No SSN required',
+  'TDK 4: PCP $50 (4/yr), Specialist $75 (4/yr), Hospital $1,000/day ($10,000 max), ER $1,000/day if admitted, Surgery $1,000/day ($2,000 max), Ambulance $500, SSN REQUIRED',
+  'TDK 5: PCP $50 (5/yr), Specialist $75 (5/yr), Hospital $1,500/day ($15,000 max), ER $1,500/day if admitted, Surgery $1,500/day ($4,500 max), Ambulance $500, SSN REQUIRED',
+  '',
+  'MEDFIRST PLANS (MEC)',
+  'Network: First Health | Underwriter: MBA | Billing: FirstEnroll',
+  'MedFirst 1: PCP $25 (3/yr), Specialist $50 (1/yr), Hospital $1,000/day ($5,000 max), ER: Not Covered, Rx: Discount only, No SSN',
+  'MedFirst 2: PCP $25 (4/yr), Specialist $50 (2/yr), Hospital $1,000/day ($10,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5, No SSN',
+  'MedFirst 3: PCP $25 (4/yr), Specialist $50 (4/yr), Hospital $1,000/day ($15,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5, Non-Pref $5-10, Brand $40, No SSN',
+  'MedFirst 4: Wellness $25, PCP $50 (4/yr), Specialist $75 (4/yr), Hospital $1,000/day ($10,000 max), ER $1,000 if admitted, Surgery $1,000 ($2,000 max), Ambulance $500, Rx: Full formulary, SSN REQUIRED',
+  'MedFirst 5: Wellness $25, PCP $50 (5/yr), Specialist $75 (5/yr), Hospital $1,500/day ($15,000 max), ER $1,500 if admitted, Surgery $1,500 ($4,500 max), Ambulance $500, Rx: Full formulary, SSN REQUIRED',
+  '',
+  'TRUEHEALTH PLANS (MEC)',
+  'Network: First Health | Underwriter: MBA',
+  'TrueHealth 1: PCP $25 (3/yr), Specialist $50 (1/yr), Hospital $1,000/day ($5,000 max), ER: Not Covered, Rx: Discount only',
+  'TrueHealth 2: PCP $25 (4/yr), Specialist $50 (2/yr), Hospital $1,000/day ($10,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5',
+  'TrueHealth 3: PCP $25 (4/yr), Specialist $50 (4/yr), Hospital $1,000/day ($15,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5, Non-Pref $5-10, Brand $40',
+  '',
+  'GOODHEALTH PLANS (MEC)',
+  'Network: First Health | Underwriter: MBA | Association: Good Health Partners',
+  'GoodHealth 1: PCP $25 (3/yr), Specialist $50 (1/yr), Hospital $1,000/day ($5,000 max), ER: Not Covered, Rx: Discount only',
+  'GoodHealth 2: PCP $25 (4/yr), Specialist $50 (2/yr), Hospital $1,000/day ($10,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5',
+  'GoodHealth 3: PCP $25 (4/yr), Specialist $50 (4/yr), Hospital $1,000/day ($15,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5, Non-Pref $5-10, Brand $40',
+  'GoodHealth 4: Wellness $25, PCP $50 (4/yr), Specialist $75 (4/yr), Hospital $1,000/day ($10,000 max), ER $1,000 if admitted, Surgery $1,000 ($2,000 max), Ambulance $500, SSN REQUIRED',
+  'GoodHealth 5: Wellness $25, PCP $50 (5/yr), Specialist $75 (5/yr), Hospital $1,500/day ($15,000 max), ER $1,500 if admitted, Surgery $1,500 ($4,500 max), Ambulance $500, SSN REQUIRED',
+  '',
+  'HARMONYCARE PLANS (Indemnity)',
+  'Network: GapAfford Plus | Underwriter: Everest | Association: NCE | Guaranteed Issue',
+  'HarmonyCare 500: PCP $50 (5/yr), Specialist $50 (5/yr), Hospital $500/day (30 days), ER $50 (1/yr), Surgery $1,000/day (3 days), Pathology/Radiology $50 (2/yr)',
+  'HarmonyCare 1000: PCP $75 (5/yr), Specialist $75 (5/yr), Hospital $1,000/day (30 days), ER $100 (1/yr), Surgery: Not Covered',
+  '',
+  'EVEREST PLANS (Indemnity)',
+  'Network: MultiPlan | Underwriter: AFSLIC | Guaranteed Issue',
+  'Everest 200+: Hospital $200/day, Surgery $250/day (3 days), Anesthesia 25%, ER $50 (2/yr), PCP $50 (3/yr)',
+  '',
+  'BWA AMERICARE PLANS (Indemnity)',
+  'Network: PHCS (MultiPlan) | Underwriter: American Public Life | Association: BWA | Guaranteed Issue',
+  'BWA Americare 2-4: PCP $25 pre-pay, Specialist $50 pre-pay, Urgent Care $25 pre-pay, Hospital: Network repricing via MBR, White Glove Advocacy included',
+  '',
+  'ACCESS HEALTH STM',
+  'Network: PHCS | Underwriter: AFSLIC | Association: NCE | Medical Underwriting Required',
+  'Deductible Options: $500, $1,000, $2,000, $2,500, $5,000, $7,500, $10,000',
+  'Coinsurance: 80/20, Limit: $2,000 or $4,000',
+  'Coverage Max: $250,000, $500,000, $1,000,000',
+  'Waiting Period: 5 days sickness, 30 days cancer',
+  'Pre-Ex: Not covered (waiver rider available)',
+  '',
+  'SMARTHEALTH STM',
+  'Network: PHCS | Underwriter: Standard Life and Casualty | Medical Underwriting Required',
+  'Deductible Options: $500, $1,000, $2,000, $2,500, $5,000, $7,500, $10,000',
+  'Coinsurance: 80/20',
+  'Facility Charges: 150% Medicare allowable',
+  '',
+  'PINNACLE STM',
+  'Network: PHCS | Underwriter: Everest | Association: AWA | Medical Underwriting Required',
+  'Deductible Options: $1,000, $2,500, $5,000, $7,500, $10,000',
+  'Coverage Max: $250,000, $500,000, $1,000,000, $2,000,000',
+  '',
+  'SMARTCHOICE PLANS (Limited Medical)',
+  'Network: First Health EPO | Underwriter: Detego Health | Medical Underwriting Required',
+  'SmartChoice 1500: Deductible $1,500/$3,000, Max OOP $9,200/$18,400',
+  'SmartChoice 2500: Deductible $2,500/$5,000, Max OOP $9,200/$18,400',
+  'SmartChoice 3000: Deductible $3,000/$6,000, Max OOP $9,200/$18,400',
+  'SmartChoice 3500: Deductible $3,500/$7,000, Max OOP $9,200/$18,400',
+  '',
+  'UNIVERSAL RULES (ALL PLANS)',
+  '- Pre-Existing Condition: 12/12 rule',
+  '- Waiting Period: 30 days for sickness, immediate for accidents',
+  '- NOT Covered: Maternity, Mental Health (most plans), Substance Abuse',
+  '- Telemedicine: $0 copay with MyLiveDoc or First Health',
+  '- Rx Card: GoodRx discount included',
+  '',
+  'PRESCRIPTION TIERS (MEC Plans with Rx)',
+  '- Generic: $0 copay',
+  '- Preferred Generic: $5 copay',
+  '- Non-Preferred Generic: $5-$10 copay (retail) / $5-$20 (mail)',
+  '- Brand (Prior Auth Required): $40 retail / $80 mail order',
+  '',
+  'COMMON SERVICES NOT COVERED',
+  '- Cancer treatment (covered after 30-day waiting period on STM only)',
+  '- Infusions (not typically covered on MEC/Indemnity)',
+  '- Chemotherapy (limited coverage on some Indemnity plans)',
+  '- Dialysis (not covered)',
+  '- Organ transplants (not covered)',
+  '',
+  'RESPONSE RULES:',
+  '1. Give SHORT, DIRECT answers',
+  '2. Always state the plan name first',
+  '3. Include copay amounts and visit limits',
+  '4. If something is NOT covered, say so clearly',
+  '5. If unsure, say: "I recommend checking the plan document for that specific detail."',
+  '6. Format with bold for plan names and key numbers'
+].join('\n');
+
+function _chaGetPlanContext() {
+  var p = window.activePlan;
+  if (!p || !p.name) {
+    return 'Active Plan Context: None selected. Answer across all known plans.';
+  }
+  return (
+    'Active Plan Context: ' +
+    p.name +
+    ' (' +
+    (p.type || 'unknown') +
+    '). Prioritize this plan first, then compare if asked.'
+  );
+}
+
 function detectScope(query) {
   var q = String(query || '').toLowerCase();
   var keys = Object.keys(CHA_BRAIN_KEYWORDS);
@@ -2395,72 +2512,70 @@ function handleChatMessage(userMessage) {
   if (!chatContainer) return;
   var clean = String(userMessage || '').trim();
   if (!clean) return;
+  // #region agent log
+  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H3',location:'js/chat.js:handleChatMessage',message:'Brain chat input received',data:{len:clean.length},timestamp:Date.now()})}).catch(function(){});
+  // #endregion
   chatContainer.innerHTML += '<div class="user-message">' + escHTML(clean) + '</div>';
 
-  var conceptual = checkConceptualRouter(clean);
-  if (conceptual) {
-    chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(escHTML(conceptual.answer), conceptual.scope) + '</div>';
-    _chaBrainScroll();
-    return;
-  }
-
-  var localResults = searchKnowledgeBase(clean);
-  var scope = detectScope(clean);
-  var context = '';
-  if (localResults.length > 0) {
-    var rows = [];
-    for (var i = 0; i < localResults.length; i++) {
-      rows.push(localResults[i].source + ': ' + JSON.stringify(localResults[i].data));
-    }
-    context = rows.join('\n');
-  }
+  var scope = 'plan documents';
+  chatContainer.innerHTML +=
+    '<div class="ai-message"><div class="response-content">Searching plan documents...</div></div>';
+  _chaBrainScroll();
 
   var sharedKey = (typeof _aiGroqFallbackKey !== 'undefined' && _aiGroqFallbackKey) || localStorage.getItem('cha_groq_key') || '';
   if (!sharedKey || sharedKey === 'skip' || sharedKey.length < 20) {
-    if (localResults.length > 0) {
-      var fallbackRows = [];
-      for (var f = 0; f < localResults.length && f < 3; f++) {
-        fallbackRows.push('<strong>' + escHTML(localResults[f].source) + ':</strong> ' + escHTML(JSON.stringify(localResults[f].data).substring(0, 220)));
-      }
-      chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(fallbackRows.join('<br>'), scope) + '</div>';
-    } else {
-      chatContainer.innerHTML += '<div class="ai-message">' + formatResponse('DOCUMENTATION GAP: Please check the carrier portal.', scope) + '</div>';
-    }
+    chatContainer.innerHTML +=
+      '<div class="ai-message">' +
+      formatResponse(
+        'Groq API key not found. Configure `window.GROQ_API_KEY` or set `GROQ_API_KEY` in Vercel for `/api/groq-key`.',
+        scope
+      ) +
+      '</div>';
     _chaBrainScroll();
     return;
   }
 
-  fetch('https://api.groq.com/openai/v1/chat/completions', {
+  fetch((window.GROQ_API_URL || CHA_GROQ_ENDPOINT), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + sharedKey
     },
     body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
+      model: 'llama-3.1-70b-versatile',
       messages: [
-        { role: 'system', content: CHA_BRAIN_PROMPT },
-        { role: 'user', content: 'Context:\n' + context + '\n\nQuestion: ' + clean }
+        { role: 'system', content: CHA_PDF_KNOWLEDGE_PROMPT },
+        {
+          role: 'user',
+          content: _chaGetPlanContext() + '\n\nAgent question: ' + clean
+        }
       ],
-      max_tokens: 150,
-      temperature: 0.2
+      max_tokens: 1000,
+      temperature: 0.3
     })
   })
     .then(function (r) { return r.json(); })
     .then(function (data) {
+      // #region agent log
+      fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H4',location:'js/chat.js:handleChatMessage:apiSuccess',message:'Brain chat API response parsed',data:{hasChoices:!!(data&&data.choices&&data.choices.length)},timestamp:Date.now()})}).catch(function(){});
+      // #endregion
       var msg = data && data.choices && data.choices[0] && data.choices[0].message
         ? data.choices[0].message.content
-        : 'DOCUMENTATION GAP: This detail is not in the official Summary of Benefits.';
+        : 'Sorry, I could not process that question. Please try again.';
       chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(escHTML(msg), scope) + '</div>';
       _chaBrainScroll();
     })
     .catch(function () {
-      if (localResults.length > 0) {
-        var fb = '<strong>' + escHTML(localResults[0].source) + ':</strong> ' + escHTML(JSON.stringify(localResults[0].data).substring(0, 220));
-        chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(fb, scope) + '</div>';
-      } else {
-        chatContainer.innerHTML += '<div class="ai-message">' + formatResponse('DOCUMENTATION GAP: Please check the carrier portal.', scope) + '</div>';
-      }
+      // #region agent log
+      fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H4',location:'js/chat.js:handleChatMessage:apiCatch',message:'Brain chat API failed',data:{scope:scope},timestamp:Date.now()})}).catch(function(){});
+      // #endregion
+      chatContainer.innerHTML +=
+        '<div class="ai-message">' +
+        formatResponse(
+          'Sorry, I could not process that question. Please try again.',
+          scope
+        ) +
+        '</div>';
       _chaBrainScroll();
     });
 }
