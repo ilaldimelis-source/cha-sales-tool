@@ -2516,10 +2516,35 @@ function searchKnowledgeBase(query) {
   return out;
 }
 
-function formatResponse(content, scope) {
+function _chaIsDebugBadgeEnabled() {
+  try {
+    var p = new URLSearchParams(window.location.search || '');
+    var q = (p.get('debug') || '').toLowerCase();
+    if (q === 'true' || q === '1' || q === 'yes') return true;
+    var stored = localStorage.getItem('cha_debug_chat_badge');
+    return stored === 'true' || stored === '1';
+  } catch (_e) {
+    return false;
+  }
+}
+
+function _chaDebugBadgeHtml(meta) {
+  if (!_chaIsDebugBadgeEnabled() || !meta) return '';
+  var planName = escHTML(meta.planName || 'Unknown plan');
+  var matchCount = Number(meta.matchCount || 0);
+  var sourceFile = escHTML(meta.sourceFile || 'Unknown source');
+  return (
+    '<div style="margin-top:6px;font-size:11px;color:#6b7280;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:3px 8px;display:inline-block;">' +
+    '📎 ' + planName + ' | ' + matchCount + ' matches | ' + sourceFile +
+    '</div>'
+  );
+}
+
+function formatResponse(content, scope, debugMeta) {
   return (
     '<div class="ai-response">' +
     '<div class="response-content">' + content + '</div>' +
+    _chaDebugBadgeHtml(debugMeta) +
     '<div class="source-tag">[Source: ' + scope + ' knowledge base]</div>' +
     '</div>'
   );
@@ -2655,7 +2680,8 @@ function handleChatMessage(userMessage) {
       if (!topChunks.length) {
         return {
           fallback:
-            'That specific detail is not in the ' + planMeta.planName + ' document.'
+            'That specific detail is not in the ' + planMeta.planName + ' document.',
+          topChunks: []
         };
       }
       var systemPrompt = _chaBuildGroundedPrompt(planMeta, topChunks);
@@ -2680,11 +2706,19 @@ function handleChatMessage(userMessage) {
           return r.json();
         })
         .then(function (data) {
-          return { data: data };
+          return { data: data, topChunks: topChunks };
         });
     })
     .then(function (result) {
       var msg = '';
+      var debugMeta = {
+        planName: planMeta.planName || '',
+        matchCount: 0,
+        sourceFile:
+          planMeta && planMeta.pdfFiles && planMeta.pdfFiles.length
+            ? planMeta.pdfFiles[0]
+            : ''
+      };
       if (result && result.fallback) {
         msg = result.fallback;
       } else {
@@ -2700,8 +2734,11 @@ function handleChatMessage(userMessage) {
           msg = rawMsg;
         }
       }
+      if (result && result.topChunks && result.topChunks.length) {
+        debugMeta.matchCount = result.topChunks.length;
+      }
       chatContainer.innerHTML +=
-        '<div class="ai-message">' + formatResponse(escHTML(msg), scope) + '</div>';
+        '<div class="ai-message">' + formatResponse(escHTML(msg), scope, debugMeta) + '</div>';
       _chaBrainScroll();
     })
     .catch(function () {
