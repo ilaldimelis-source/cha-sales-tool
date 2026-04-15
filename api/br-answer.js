@@ -173,27 +173,82 @@ module.exports = function handler(req, res) {
       }
       chunks = Array.isArray(rpc.data) ? rpc.data : [];
       scope = chunks.length ? String(chunks[0].scope || 'none') : 'none';
-      context = buildContext(chunks);
       if (!chunks.length) {
         console.warn(
-          '[CHA RAG] No chunks returned',
+          '[CHA RAG] No chunks returned from RPC, applying direct table fallback',
           JSON.stringify({
             requestId: requestId,
             function: debug.rpcFunction,
             args: debug.rpcArgs
           })
         );
-      } else {
-        console.log(
-          '[CHA RAG] Retrieved chunks',
-          JSON.stringify({
-            requestId: requestId,
-            count: chunks.length,
-            scope: scope,
-            firstPlanId: chunks[0] && chunks[0].plan_id
-          })
-        );
+
+        var fallbackPreferred = planId
+          ? supabase
+              .from('plan_chunks')
+              .select(
+                'id,plan_id,plan_name,source_pdf,chunk_index,chunk_text'
+              )
+              .eq('plan_id', planId)
+              .not('embedding', 'is', null)
+              .order('chunk_index', { ascending: true })
+              .limit(matchCount)
+          : Promise.resolve({ data: [], error: null });
+
+        return fallbackPreferred.then(function (prefRes) {
+          if (prefRes && prefRes.error) {
+            throw new Error(
+              'Preferred fallback query failed: ' + prefRes.error.message
+            );
+          }
+          if (prefRes && Array.isArray(prefRes.data) && prefRes.data.length) {
+            chunks = prefRes.data.map(function (row) {
+              row.similarity = null;
+              row.scope = 'preferred_plan';
+              return row;
+            });
+            scope = 'preferred_plan';
+            return null;
+          }
+
+          return supabase
+            .from('plan_chunks')
+            .select('id,plan_id,plan_name,source_pdf,chunk_index,chunk_text')
+            .not('embedding', 'is', null)
+            .order('plan_id', { ascending: true })
+            .order('chunk_index', { ascending: true })
+            .limit(matchCount)
+            .then(function (globalRes) {
+              if (globalRes && globalRes.error) {
+                throw new Error(
+                  'Global fallback query failed: ' + globalRes.error.message
+                );
+              }
+              chunks = (globalRes && globalRes.data ? globalRes.data : []).map(
+                function (row) {
+                  row.similarity = null;
+                  row.scope = 'fallback_global';
+                  return row;
+                }
+              );
+              scope = chunks.length ? 'fallback_global' : 'none';
+              return null;
+            });
+        });
       }
+      return null;
+    })
+    .then(function () {
+      context = buildContext(chunks);
+      console.log(
+        '[CHA RAG] Using context',
+        JSON.stringify({
+          requestId: requestId,
+          count: chunks.length,
+          scope: scope,
+          firstPlanId: chunks[0] && chunks[0].plan_id
+        })
+      );
 
       var sysPrompt =
         'You are a health insurance benefits assistant for Central Health Advisors.\n' +
