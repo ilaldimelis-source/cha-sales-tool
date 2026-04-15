@@ -13,12 +13,10 @@
       "accesshealth"
     ],
     "pdfFiles": [
-      "Access_Health_STM.pdf"
+      "AccessHealthBrochure2.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Access_Health_STM.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "allstatecopayenhancedstm",
@@ -31,12 +29,10 @@
       "allstatecopayenhancedstm"
     ],
     "pdfFiles": [
-      "Allstate_Copay_Enhanced_STM_PPO_Brochure.pdf"
+      "Allstate Copay Enhanced STM PPO Plan.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Allstate_Copay_Enhanced_STM_PPO_Brochure.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "allstateenhancedstm",
@@ -49,12 +45,10 @@
       "allstateenhancedstm"
     ],
     "pdfFiles": [
-      "Allstate_Enhanced_STM_PPO_Brochure.pdf"
+      "Allstate Enhanced STM PPO Plan.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Allstate_Enhanced_STM_PPO_Brochure.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "allstateessentialsstm",
@@ -67,12 +61,10 @@
       "allstateessentialsstm"
     ],
     "pdfFiles": [
-      "Allstate_Essentials_STM_PPO_Brochure.pdf"
+      "Allstate Essentials STM PPO Plan.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Allstate_Essentials_STM_PPO_Brochure.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "allstatehealthaccess",
@@ -85,12 +77,10 @@
       "allstatehealthaccess"
     ],
     "pdfFiles": [
-      "Allstate_Health_Access_Brochure.pdf"
+      "Allstate Health Access.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Allstate_Health_Access_Brochure.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "bwaamericare",
@@ -104,12 +94,10 @@
       "BWA Americare"
     ],
     "pdfFiles": [
-      "BWABrochurePlan2MBRAmericare2_REV.pdf"
+      "BWABrochurePlan2MBR-Americare2_REV.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "BWABrochurePlan2MBRAmericare2_REV.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "bwapara",
@@ -123,12 +111,10 @@
       "BWA Paramount"
     ],
     "pdfFiles": [
-      "BCS_Brochure_1.pdf"
+      "BCS_Brochure_1 (1).pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "BCS_Brochure_1.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "everest",
@@ -142,12 +128,10 @@
       "Everest Fixed Indemnity (100–1000+)"
     ],
     "pdfFiles": [
-      "Everest_Brochure_REV.pdf"
+      "Everest_Brochure_REV (1).pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Everest_Brochure_REV.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "galena",
@@ -160,12 +144,10 @@
       "galena"
     ],
     "pdfFiles": [
-      "NEOSGIC_AFRP_STM_LimitedElite_1.pdf"
+      "NEO-SGIC_AFRP STM Limited-Elite (1).pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "NEOSGIC_AFRP_STM_LimitedElite_1.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "ghdp1",
@@ -529,10 +511,9 @@
     "pdfFiles": [
       "Pinnacle_Protect_Plan1_Brochure.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Pinnacle_Protect_Plan1_Brochure.pdf"
-    ]
+    "status": "excluded",
+    "missingFiles": [],
+    "exclusionReason": "missing_pdf_by_scope_decision"
   },
   {
     "planId": "pinnacleprotect2",
@@ -549,10 +530,9 @@
     "pdfFiles": [
       "Pinnacle_Protect_Plan2_Brochure.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Pinnacle_Protect_Plan2_Brochure.pdf"
-    ]
+    "status": "excluded",
+    "missingFiles": [],
+    "exclusionReason": "missing_pdf_by_scope_decision"
   },
   {
     "planId": "pinnacleprotect3",
@@ -569,10 +549,9 @@
     "pdfFiles": [
       "Pinnacle_Protect_Plan3_Brochure.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Pinnacle_Protect_Plan3_Brochure.pdf"
-    ]
+    "status": "excluded",
+    "missingFiles": [],
+    "exclusionReason": "missing_pdf_by_scope_decision"
   },
   {
     "planId": "pinnacleprotect4",
@@ -589,10 +568,9 @@
     "pdfFiles": [
       "Pinnacle_Protect_Plan4_Brochure.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Pinnacle_Protect_Plan4_Brochure.pdf"
-    ]
+    "status": "excluded",
+    "missingFiles": [],
+    "exclusionReason": "missing_pdf_by_scope_decision"
   },
   {
     "planId": "pinnacle",
@@ -605,12 +583,10 @@
       "pinnacle"
     ],
     "pdfFiles": [
-      "Pinnacle_STM_Brochure.pdf"
+      "Pinnacle STM Brochure.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Pinnacle_STM_Brochure.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "sigmacare",
@@ -640,12 +616,10 @@
       "smartchoice2500"
     ],
     "pdfFiles": [
-      "Smart_Choice_2500_Plan_Doc_2025__.pdf"
+      "Smart Choice 2500 Plan Doc 2025  .pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Smart_Choice_2500_Plan_Doc_2025__.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "smartchoice1500",
@@ -660,12 +634,10 @@
       "smart choice1500"
     ],
     "pdfFiles": [
-      "Smart_Choice_1500_Plan_Doc_2025.pdf"
+      "Smart Choice 1500 Plan Doc 2025   .pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Smart_Choice_1500_Plan_Doc_2025.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "smartchoice3000",
@@ -680,12 +652,10 @@
       "smart choice3000"
     ],
     "pdfFiles": [
-      "Smart_Choice_3000_Plan_Doc_2025.pdf"
+      "Smart Choice 3000 Plan Doc 2025 .pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Smart_Choice_3000_Plan_Doc_2025.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "smartchoice3500",
@@ -700,12 +670,10 @@
       "smart choice3500"
     ],
     "pdfFiles": [
-      "Smart_Choice_3500_Plan_Doc_2025.pdf"
+      "Smart Choice 3500 Plan Doc 2025.pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "Smart_Choice_3500_Plan_Doc_2025.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "smarthealth",
@@ -718,12 +686,10 @@
       "smarthealth"
     ],
     "pdfFiles": [
-      "SmartHealth_v3.pdf"
+      "SmartHealth_v3 (2).pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "SmartHealth_v3.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "tdk1",
@@ -953,12 +919,10 @@
       "truehealth2"
     ],
     "pdfFiles": [
-      "MEC_TrueHealth2_SPD_Jan25.pdf"
+      "MEC_TrueHealth2_SPD_Jan25 (1).pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "MEC_TrueHealth2_SPD_Jan25.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   },
   {
     "planId": "trueh3",
@@ -973,12 +937,10 @@
       "truehealth3"
     ],
     "pdfFiles": [
-      "MEC_TrueHealth3_SPD_Jan25.pdf"
+      "MEC_TrueHealth3_SPD_Jan25 (1).pdf"
     ],
-    "status": "missing_pdf",
-    "missingFiles": [
-      "MEC_TrueHealth3_SPD_Jan25.pdf"
-    ]
+    "status": "ready",
+    "missingFiles": []
   }
 ];
   window.CHA_PLAN_ALIAS_INDEX = {
