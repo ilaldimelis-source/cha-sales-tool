@@ -1509,6 +1509,9 @@ function _caToolboxHtml() {
 
 var _trainingView = 'home'; // 'home' or section id
 var TRAINING_SEARCH_QUERY = '';
+var TRAINING_SEARCH_SCOPE = 'shared';
+var ONB_LAST_TAG_KEY = 'cha_onb_last_tag';
+var LIB_LAST_TAG_KEY = 'cha_lib_last_tag';
 var CHA_REQUIRED_DISCLOSURES = [
   'Network - explain how the network works for this plan',
   'Underwriter - state who underwrites the plan',
@@ -1520,6 +1523,40 @@ var CHA_REQUIRED_DISCLOSURES = [
 
 function _trnIsVisible(el) {
   return !!(el && el.style && el.style.display !== 'none');
+}
+
+function _trnGetScope() {
+  if (TRAINING_SEARCH_SCOPE === 'onboarding' || TRAINING_SEARCH_SCOPE === 'library') {
+    return TRAINING_SEARCH_SCOPE;
+  }
+  var onb = document.getElementById('page-newhireonboarding');
+  var lib = document.getElementById('page-traininghome');
+  if (_trnIsVisible(onb)) return 'onboarding';
+  if (_trnIsVisible(lib)) return 'library';
+  return 'shared';
+}
+
+function _trnSetStoredTag(scope, value) {
+  var key = scope === 'library' ? LIB_LAST_TAG_KEY : ONB_LAST_TAG_KEY;
+  try {
+    localStorage.setItem(key, String(value || '').trim().toLowerCase());
+  } catch (_e) {
+    /* ignore */
+  }
+}
+
+function _trnGetStoredTag(scope) {
+  var key = scope === 'library' ? LIB_LAST_TAG_KEY : ONB_LAST_TAG_KEY;
+  try {
+    return String(localStorage.getItem(key) || '').trim();
+  } catch (_e) {
+    return '';
+  }
+}
+
+function _trnActiveTagClass(scope, tag) {
+  var current = _trnGetStoredTag(scope);
+  return current === String(tag || '').trim().toLowerCase() ? ' is-active' : '';
 }
 
 function setTrainingSearchQuery(v) {
@@ -1534,12 +1571,32 @@ function setTrainingSearchQuery(v) {
 }
 
 function setTrainingSearchTag(v) {
-  var q = String(v || '').trim();
+  var q = String(v || '').trim().toLowerCase();
+  var scope = _trnGetScope();
+  _trnSetStoredTag(scope, q);
   setTrainingSearchQuery(q);
   var onbInput = document.getElementById('onbSearchInput');
   if (onbInput) onbInput.value = q;
   var libInput = document.getElementById('caSearchInput');
   if (libInput) libInput.value = q;
+}
+
+function clearTrainingSearch() {
+  var scope = _trnGetScope();
+  _trnSetStoredTag(scope, '');
+  setTrainingSearchQuery('');
+  var onbInput = document.getElementById('onbSearchInput');
+  if (onbInput) onbInput.value = '';
+  var libInput = document.getElementById('caSearchInput');
+  if (libInput) libInput.value = '';
+}
+
+function clearFocusedTrainingSearch(event) {
+  var e = event || window.event;
+  var key = e && (e.key || e.code || e.keyCode);
+  if (!(key === 'Escape' || key === 'Esc' || key === 27)) return;
+  clearTrainingSearch();
+  if (e && typeof e.preventDefault === 'function') e.preventDefault();
 }
 
 function _caApplySearch() {
@@ -1625,6 +1682,10 @@ function renderTrainingHome() {
   if (!pg) return;
 
   _trainingView = 'home';
+  TRAINING_SEARCH_SCOPE = 'library';
+  if (!TRAINING_SEARCH_QUERY) {
+    TRAINING_SEARCH_QUERY = _trnGetStoredTag('library');
+  }
 
   var html =
     '<div class="ca-wrap" id="ca-academy-root" data-ca-active-step="1">';
@@ -1632,9 +1693,17 @@ function renderTrainingHome() {
   html +=
     '<div class="ph ca-hero"><div class="pt">CHA <span>Academy</span></div><div class="pd">Structured learning path for new hires. Work Step 1 → 4 in order.</div></div>';
   html +=
-    '<div class="ca-search-row"><input id="caSearchInput" class="ca-search-input" type="text" placeholder="Search library: compliance, pre-ex, objection..." value="' +
+    '<div class="ca-search-row"><div class="ca-search-input-wrap"><input id="caSearchInput" class="ca-search-input" type="text" placeholder="Search library: compliance, pre-ex, objection..." value="' +
     escHTML(TRAINING_SEARCH_QUERY) +
-    '" oninput="setTrainingSearchQuery(this.value)" /><div class="ca-search-tags"><button type="button" class="ca-search-tag" onclick="setTrainingSearchTag(\'compliance\')">Compliance</button><button type="button" class="ca-search-tag" onclick="setTrainingSearchTag(\'script\')">Script</button><button type="button" class="ca-search-tag" onclick="setTrainingSearchTag(\'objection\')">Objection</button><button type="button" class="ca-search-tag" onclick="setTrainingSearchTag(\'pre-existing\')">Pre-Ex</button></div></div>';
+    '" oninput="setTrainingSearchQuery(this.value)" onkeydown="clearFocusedTrainingSearch(event)" /><button type="button" class="ca-search-clear" onclick="clearTrainingSearch()" aria-label="Clear library search">Clear</button></div><div class="ca-search-tags"><button type="button" class="ca-search-tag' +
+    _trnActiveTagClass('library', 'compliance') +
+    '" onclick="setTrainingSearchTag(\'compliance\')">Compliance</button><button type="button" class="ca-search-tag' +
+    _trnActiveTagClass('library', 'script') +
+    '" onclick="setTrainingSearchTag(\'script\')">Script</button><button type="button" class="ca-search-tag' +
+    _trnActiveTagClass('library', 'objection') +
+    '" onclick="setTrainingSearchTag(\'objection\')">Objection</button><button type="button" class="ca-search-tag' +
+    _trnActiveTagClass('library', 'pre-existing') +
+    '" onclick="setTrainingSearchTag(\'pre-existing\')">Pre-Ex</button></div></div>';
 
   html +=
     '<nav class="ca-path" aria-label="Learning path: four levels"><div class="ca-path-meter" aria-hidden="true"><div class="ca-path-meter-fill"></div></div><div class="ca-path-row">';
@@ -2837,14 +2906,7 @@ function _onbToneCard(dayNum) {
 // day. Renders below the day content and above the Plan Reference
 // Table. Red warning styling, checkbox-style list items.
 function _onbComplianceCard() {
-  var items = [
-    "Network \u2014 explain how the network works for this plan",
-    "Underwriter \u2014 state who underwrites the plan",
-    "Association \u2014 explain the association membership if applicable",
-    "Not ACA or major medical \u2014 no pregnancy, drug & alcohol, or mental health coverage",
-    "12 & 12 Clause \u2014 explain the 12 month / 12 visit limitation",
-    "Waiting period \u2014 verbally confirm the waiting period after client acknowledges DocuSign"
-  ];
+  var items = CHA_REQUIRED_DISCLOSURES.slice();
   var h = '<div class="onb-card" style="border-left:4px solid #dc2626;background:#fef2f2;padding:14px 16px;margin-top:16px;">';
   h += '<div class="onb-card-title" style="color:#b91c1c;font-size:14px;margin-bottom:8px;">Compliance Checklist</div>';
   h += '<div style="font-size:12px;color:#7f1d1d;margin-bottom:6px;"><strong>When to do this:</strong> After collecting payment \u2014 while client is on DocuSign or right before sending it.</div>';
@@ -3061,6 +3123,10 @@ function _onbPlanRefTable() {
 function renderNewHireOnboarding() {
   var page = document.getElementById("page-newhireonboarding");
   if (!page) return;
+  TRAINING_SEARCH_SCOPE = 'onboarding';
+  if (!TRAINING_SEARCH_QUERY) {
+    TRAINING_SEARCH_QUERY = _trnGetStoredTag('onboarding');
+  }
 
   var progress = _onbLoadProgress();
   var days = _onbDayData();
@@ -3148,6 +3214,7 @@ function renderNewHireOnboarding() {
   html += '<button type="button" onclick="document.getElementById(\'onb-postpay\').scrollIntoView({behavior:\'smooth\',block:\'start\'})">After Payment</button>';
   html += '<button type="button" onclick="document.getElementById(\'onb-resources\').scrollIntoView({behavior:\'smooth\',block:\'start\'})">Reference</button>';
   html += '</div>';
+  html += '<div class="onb-search-row"><div class="onb-search-input-wrap"><input id="onbSearchInput" class="onb-search-input" type="text" placeholder="Search day tasks: disclosure, pre-ex, script..." value="' + _trnEscape(TRAINING_SEARCH_QUERY) + '" oninput="setTrainingSearchQuery(this.value)" onkeydown="clearFocusedTrainingSearch(event)" /><button type="button" class="onb-search-clear" onclick="clearTrainingSearch()" aria-label="Clear onboarding search">Clear</button></div><div class="onb-search-tags"><button type="button" class="onb-search-tag' + _trnActiveTagClass('onboarding', 'disclosure') + '" onclick="setTrainingSearchTag(\'disclosure\')">Disclosure</button><button type="button" class="onb-search-tag' + _trnActiveTagClass('onboarding', 'script') + '" onclick="setTrainingSearchTag(\'script\')">Script</button><button type="button" class="onb-search-tag' + _trnActiveTagClass('onboarding', 'objection') + '" onclick="setTrainingSearchTag(\'objection\')">Objection</button><button type="button" class="onb-search-tag' + _trnActiveTagClass('onboarding', 'pre-ex') + '" onclick="setTrainingSearchTag(\'pre-ex\')">Pre-Ex</button></div></div>';
 
   // Tone & Energy reminder — day-specific, sits above the two-column
   // grid so it's the first thing an agent sees after the day pills.
@@ -3161,6 +3228,12 @@ function renderNewHireOnboarding() {
     checklistItems = activeDayData.items.filter(function (item, idx) {
       if (item.priority === "must" || item.tag === "Required") return true;
       return idx < 4;
+    });
+  }
+  if (TRAINING_SEARCH_QUERY) {
+    checklistItems = checklistItems.filter(function (item) {
+      var hay = (item.title + ' ' + item.sub + ' ' + (item.tag || '')).toLowerCase();
+      return hay.indexOf(TRAINING_SEARCH_QUERY) !== -1;
     });
   }
   html += '<div class="onb-grid">';
@@ -3185,6 +3258,9 @@ function renderNewHireOnboarding() {
   html += '<div class="onb-col-left" id="onb-required">';
   html += '<div class="onb-card onb-checklist-card">';
   html += '<div class="onb-card-title" style="color:' + activeDayData.accent + '">' + _trnEscape(activeDayData.label) + '</div>';
+  if (!checklistItems.length) {
+    html += '<div class="onb-text">No checklist tasks match this search. Try a shorter keyword.</div>';
+  }
   for (var j = 0; j < checklistItems.length; j++) {
     var it = checklistItems[j];
     var isChecked = checked.indexOf(it.id) !== -1;
