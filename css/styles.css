@@ -7086,6 +7086,12 @@ body.plan-drawer-lock {
 .intro-bubble{display:flex;gap:14px;background:#EFF6FF;border-radius:16px;padding:18px;margin-bottom:24px;border-left:4px solid #4A90D9}
 .intro-bubble svg{flex-shrink:0;margin-top:2px}
 .intro-bubble p{margin:0;color:#1E40AF;font-size:15px;line-height:1.6}
+.academy-tone-tip{background:#F8FAFC;border:1px solid #E2E8F0;border-radius:14px;padding:14px 16px;margin-bottom:20px}
+.academy-tone-tip strong{display:block;font-size:12px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:8px}
+.academy-tone-tip p{margin:0;font-size:14px;line-height:1.55;color:#334155}
+.academy-fixed-benefits-callout{display:flex;gap:14px;background:#FFFBEB;border-radius:16px;padding:16px 18px;margin-bottom:24px;border-left:4px solid #F59E0B}
+.academy-fixed-benefits-callout svg{flex-shrink:0;margin-top:2px}
+.academy-fixed-benefits-callout p{margin:0;color:#92400E;font-size:14px;line-height:1.55}
 .script-block{background:white;border-radius:18px;border:2px solid #E5E7EB;overflow:hidden;margin-bottom:20px}
 .script-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;background:#F9FAFB;border-bottom:1px solid #E5E7EB}
 .script-label{font-weight:600;color:#374151;display:flex;align-items:center;gap:8px}

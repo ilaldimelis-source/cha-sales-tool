@@ -419,12 +419,7 @@ var PAGE_CONFIG = {
   training: {
     label: 'Training',
     subs: [
-      {
-        id: 'newhireonboarding',
-        label: 'Start Here',
-        render: renderNewHireOnboarding
-      },
-      { id: 'traininghome', label: 'Library', render: renderTrainingHome }
+      { id: 'traininghome', label: 'CHA Academy', render: renderTrainingHome }
     ]
   },
   compliance: {
