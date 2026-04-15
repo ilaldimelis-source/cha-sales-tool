@@ -36,7 +36,7 @@ function callApi(baseUrl, tcase) {
       query: tcase.query,
       planId: tcase.planId,
       matchCount: 5,
-      matchThreshold: 0.65
+      matchThreshold: 0.3
     })
   }).then(function (response) {
     if (!response.ok) throw new Error('HTTP ' + response.status);

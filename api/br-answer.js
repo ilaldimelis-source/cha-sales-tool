@@ -58,6 +58,94 @@ function parseModelOutput(raw) {
   return out;
 }
 
+/**
+ * Server-side guard: force NOT COVERED when the model ignores RULE 1.
+ * We avoid broad "is not covered under the Plan" substring (appears for many unrelated benefits).
+ */
+function contextRequiresMandatoryNotCovered(planContextText, query) {
+  var t = String(planContextText || '').toLowerCase();
+  var q = String(query || '').toLowerCase();
+
+  if (t.indexOf('not a covered insurance benefit') !== -1) return true;
+
+  var labishQ = /blood|lab|labs|phlebotom|diagnostic|testing\b|laboratory/i.test(q);
+  if (labishQ && t.indexOf('will not be considered eligible') !== -1) {
+    if (t.indexOf('diagnostic testing') !== -1) return true;
+    if (
+      t.indexOf('diagnostic') !== -1 ||
+      t.indexOf('laboratory') !== -1 ||
+      t.indexOf('blood work') !== -1 ||
+      t.indexOf('lab test') !== -1 ||
+      t.indexOf('lab tests') !== -1
+    ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * Vector search often misses the exact exclusion line (e.g. "Diagnostic Testing will not be
+ * considered eligible"). Pull in plan rows that match high-signal substrings for lab questions.
+ */
+function supplementPlanChunksForLabQuery(supabase, planId, query, chunks) {
+  if (!planId || !Array.isArray(chunks)) return Promise.resolve(chunks || []);
+  if (!/blood|bloodwork|labs?\b|diagnostic|phlebotom|lab test/i.test(String(query || ''))) {
+    return Promise.resolve(chunks);
+  }
+  var seen = {};
+  chunks.forEach(function (c) {
+    var k = (c.plan_id || '') + ':' + String(c.chunk_index) + ':' + (c.source_pdf || '');
+    seen[k] = true;
+  });
+  return supabase
+    .from('plan_chunks')
+    .select('id,plan_id,plan_name,source_pdf,chunk_index,chunk_text')
+    .eq('plan_id', planId)
+    .or(
+      'chunk_text.ilike.%Diagnostic Testing%,chunk_text.ilike.%not a covered insurance benefit%,chunk_text.ilike.%Blood work%'
+    )
+    .limit(10)
+    .then(function (res) {
+      if (res.error) {
+        console.warn('[CHA RAG] supplementPlanChunksForLabQuery:', res.error.message);
+        return chunks;
+      }
+      var merged = chunks.slice();
+      (res.data || []).forEach(function (row) {
+        var k = (row.plan_id || '') + ':' + String(row.chunk_index) + ':' + (row.source_pdf || '');
+        if (seen[k]) return;
+        seen[k] = true;
+        row.similarity = row.similarity != null ? row.similarity : null;
+        row.scope = 'preferred_plan';
+        merged.push(row);
+      });
+      merged.sort(function (a, b) {
+        return (Number(a.chunk_index) || 0) - (Number(b.chunk_index) || 0);
+      });
+      return merged;
+    });
+}
+
+function enforceMandatoryNotCovered(parsed, planContextText, query) {
+  if (!contextRequiresMandatoryNotCovered(planContextText, query)) return parsed;
+  var prev = parsed.status;
+  parsed.status = 'NOT COVERED';
+  if (prev === 'COVERED' || prev === 'PARTIAL') {
+    parsed.fact =
+      'The plan excerpts include explicit language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible — discounts or network rates do not change that it is not covered as insurance.';
+    parsed.sayThis =
+      'NOT COVERED as an insurance benefit. If the plan mentions discounted or network rates, those are not insurance coverage — say: NOT COVERED as insurance benefit; pre-negotiated discounted rates may still be available through the network named in the plan.';
+  } else {
+    parsed.fact =
+      'The plan excerpts include language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible.';
+    parsed.sayThis =
+      String(parsed.sayThis || '').trim() ||
+      'NOT COVERED as an insurance benefit per the plan language in context. Discounted rates mentioned in the plan are not insurance coverage.';
+  }
+  return parsed;
+}
+
 function maskSecret(v) {
   var s = String(v || '');
   if (!s) return '[missing]';
@@ -75,8 +163,8 @@ module.exports = function handler(req, res) {
   var body = req.body || {};
   var query = String(body.query || '').trim();
   var planId = body.planId ? String(body.planId).trim() : null;
-  var matchCount = clamp(body.matchCount, 1, 8, 5);
-  var matchThreshold = clamp(body.matchThreshold, 0, 1, 0.65);
+  var matchCount = clamp(body.matchCount, 1, 12, 8);
+  var matchThreshold = clamp(body.matchThreshold, 0, 1, 0.3);
   var requestId = 'req_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
 
   if (!query) return res.status(400).json({ error: 'Missing query', requestId: requestId });
@@ -105,7 +193,8 @@ module.exports = function handler(req, res) {
     requestId: requestId,
     stage: 'init',
     rpcFunction: 'match_plan_chunks_prefer_plan',
-    rpcArgs: null
+    rpcArgs: null,
+    rpcRetry: null
   };
 
   // Lightweight sanity check to prove service-role access and table visibility.
@@ -150,34 +239,23 @@ module.exports = function handler(req, res) {
       // Supabase RPC works more reliably with pgvector text literal
       // than raw JS arrays in some runtime/driver paths.
       if (Array.isArray(emb)) embParam = '[' + emb.join(',') + ']';
-      debug.rpcArgs = {
-        query_embedding_len: Array.isArray(emb) ? emb.length : String(emb || '').length,
-        match_threshold: matchThreshold,
-        match_count: matchCount,
-        preferred_plan_id: planId || null
-      };
-      return supabase.rpc(debug.rpcFunction, {
-        query_embedding: embParam,
-        match_threshold: matchThreshold,
-        match_count: matchCount,
-        preferred_plan_id: planId || null
-      });
-    })
-    .then(function (rpc) {
-      if (rpc.error) {
-        throw new Error(
-          'Supabase RPC error: ' +
-            rpc.error.message +
-            ' [function=' +
-            debug.rpcFunction +
-            ', args=' +
-            JSON.stringify(debug.rpcArgs) +
-            ']'
-        );
+
+      function rpcCall(th) {
+        debug.rpcArgs = {
+          query_embedding_len: Array.isArray(emb) ? emb.length : String(emb || '').length,
+          match_threshold: th,
+          match_count: matchCount,
+          preferred_plan_id: planId || null
+        };
+        return supabase.rpc(debug.rpcFunction, {
+          query_embedding: embParam,
+          match_threshold: th,
+          match_count: matchCount,
+          preferred_plan_id: planId || null
+        });
       }
-      chunks = Array.isArray(rpc.data) ? rpc.data : [];
-      scope = chunks.length ? String(chunks[0].scope || 'none') : 'none';
-      if (!chunks.length) {
+
+      function applySequentialFallback() {
         console.warn(
           '[CHA RAG] No chunks returned from RPC, applying direct table fallback',
           JSON.stringify({
@@ -240,44 +318,108 @@ module.exports = function handler(req, res) {
             });
         });
       }
-      return null;
+
+      // Short queries often score ~0.15–0.22 vs the best chunk; default 0.3 would return 0 rows.
+      var relaxedRpcThreshold = 0.15;
+
+      return rpcCall(matchThreshold)
+        .then(function (rpc) {
+          if (rpc.error) {
+            throw new Error(
+              'Supabase RPC error: ' +
+                rpc.error.message +
+                ' [function=' +
+                debug.rpcFunction +
+                ', args=' +
+                JSON.stringify(debug.rpcArgs) +
+                ']'
+            );
+          }
+          chunks = Array.isArray(rpc.data) ? rpc.data : [];
+          scope = chunks.length ? String(chunks[0].scope || 'none') : 'none';
+          if (chunks.length) return null;
+
+          if (matchThreshold <= relaxedRpcThreshold) {
+            return applySequentialFallback();
+          }
+
+          debug.rpcRetry = {
+            match_threshold: relaxedRpcThreshold,
+            reason: 'primary RPC returned 0 rows (similarity floor)'
+          };
+          return rpcCall(relaxedRpcThreshold).then(function (rpc2) {
+            if (rpc2.error) {
+              throw new Error(
+                'Supabase RPC retry error: ' +
+                  rpc2.error.message +
+                  ' [function=' +
+                  debug.rpcFunction +
+                  ']'
+              );
+            }
+            chunks = Array.isArray(rpc2.data) ? rpc2.data : [];
+            scope = chunks.length ? String(chunks[0].scope || 'none') : 'none';
+            if (!chunks.length) {
+              return applySequentialFallback();
+            }
+            return null;
+          });
+        });
     })
     .then(function () {
-      context = buildContext(chunks);
-      console.log(
-        '[CHA RAG] Using context',
-        JSON.stringify({
-          requestId: requestId,
-          count: chunks.length,
-          scope: scope,
-          firstPlanId: chunks[0] && chunks[0].plan_id
-        })
-      );
+      return supplementPlanChunksForLabQuery(supabase, planId, query, chunks).then(function (merged) {
+        chunks = merged;
+        context = buildContext(chunks);
+        console.log(
+          '[CHA RAG] Using context',
+          JSON.stringify({
+            requestId: requestId,
+            count: chunks.length,
+            scope: scope,
+            firstPlanId: chunks[0] && chunks[0].plan_id
+          })
+        );
 
-      var sysPrompt =
+        var sysPrompt =
         'You are a health insurance benefits assistant for Central Health Advisors.\n' +
-        'Use ONLY PLAN CONTEXT. Never guess. If unsupported, use VERIFY.\n' +
-        'Allowed STATUS values: COVERED, NOT COVERED, VERIFY, PARTIAL.\n' +
+        'Use ONLY PLAN CONTEXT below. Never invent coverage.\n' +
+        'Allowed STATUS values: COVERED, NOT COVERED, VERIFY, PARTIAL.\n\n' +
+        'RULE 1 — HIGHEST PRIORITY (OVERRIDES ALL OTHER RULES):\n' +
+        'Scan the entire PLAN CONTEXT. If ANY chunk contains ANY of the following phrases (case-insensitive), ' +
+        'then STATUS MUST be NOT COVERED for the topic the agent asked about when that topic is addressed or ' +
+        'listed in the same section, table, or exclusion list — NO EXCEPTIONS:\n' +
+        '- "Not a covered insurance benefit"\n' +
+        '- "not covered" (as a standalone phrase about a benefit)\n' +
+        '- "will not be considered eligible"\n' +
+        '- "is not covered under the Plan" (or "this Plan")\n' +
+        'Discounts, cash pay, network savings, or "discounted rates available" do NOT make something COVERED. ' +
+        'If the plan says not covered / not eligible as insurance, STATUS is NOT COVERED; you may still mention ' +
+        'discounted rates in SAY THIS as non-insurance savings only.\n\n' +
+        'RULE 2 — SCOPE: Answer ONLY the agent\'s exact question. For "bloodwork", tie your answer to lab / ' +
+        'diagnostic testing / blood draw language in PLAN CONTEXT. Do not drift to unrelated benefits.\n' +
+        'RULE 3 — SAY THIS: If NOT COVERED but PLAN CONTEXT mentions a network and discounted rates, you may use: ' +
+        '"NOT COVERED as insurance benefit. Pre-negotiated discounted rates may be available through [network from context]."\n\n' +
         'FORMAT EXACTLY:\n' +
         'STATUS: ...\nFACT: ...\nSAY THIS: ...\nSOURCE: ...\n\n' +
         'PLAN CONTEXT:\n' +
         context;
 
-      return fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + groqKey
-        },
-        body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          temperature: 0,
-          max_tokens: 500,
-          messages: [
-            { role: 'system', content: sysPrompt },
-            { role: 'user', content: 'Agent question: ' + query }
-          ]
-        })
+        return fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + groqKey
+          },
+          body: JSON.stringify({
+            model: 'llama-3.1-8b-instant',
+            temperature: 0,
+            max_tokens: 500,
+            messages: [
+              { role: 'system', content: sysPrompt },
+              { role: 'user', content: 'Agent question: ' + query }
+            ]
+          })
+        });
       });
     })
     .then(function (r) {
@@ -290,6 +432,8 @@ module.exports = function handler(req, res) {
           ? j.choices[0].message.content
           : '';
       var parsed = parseModelOutput(raw);
+      var mandatoryExclusion = contextRequiresMandatoryNotCovered(context, query);
+      parsed = enforceMandatoryNotCovered(parsed, context, query);
 
       return res.status(200).json({
         requestId: requestId,
@@ -298,6 +442,7 @@ module.exports = function handler(req, res) {
         sayThis: parsed.sayThis,
         source: parsed.source,
         scope: scope,
+        mandatoryNotCoveredFromContext: mandatoryExclusion,
         citations: chunks.map(function (c) {
           return {
             plan_id: c.plan_id,

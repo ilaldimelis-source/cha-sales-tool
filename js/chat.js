@@ -952,8 +952,8 @@ function brServerAnswer(query, planId) {
     body: JSON.stringify({
       query: query,
       planId: planId || null,
-      matchCount: 5,
-      matchThreshold: 0.65
+      matchCount: 8,
+      matchThreshold: 0.3
     })
   }).then(function (response) {
     if (!response.ok) throw new Error('br-answer error ' + response.status);
@@ -961,8 +961,21 @@ function brServerAnswer(query, planId) {
   });
 }
 
+/** Normalize API / model status strings for badge + color logic. */
+function normalizeBrStatus(raw) {
+  var s = String(raw == null ? '' : raw)
+    .trim()
+    .replace(/\s+/g, ' ')
+    .toUpperCase();
+  if (s === 'NOT COVERED' || s === 'NOTCOVERED') return 'NOT COVERED';
+  if (s === 'COVERED') return 'COVERED';
+  if (s === 'VERIFY') return 'VERIFY';
+  if (s === 'PARTIAL') return 'PARTIAL';
+  return s;
+}
+
 function brStatusColor(status) {
-  var s = String(status || '').toUpperCase();
+  var s = normalizeBrStatus(status);
   if (s === 'COVERED') {
     return { border: '#22c55e', bg: '#f0fdf4', badge: '#16a34a', text: '#166534' };
   }
@@ -972,11 +985,26 @@ function brStatusColor(status) {
   if (s === 'PARTIAL') {
     return { border: '#3b82f6', bg: '#eff6ff', badge: '#2563eb', text: '#1e3a8a' };
   }
+  if (s === 'VERIFY') {
+    return { border: '#f59e0b', bg: '#fffbeb', badge: '#d97706', text: '#78350f' };
+  }
   return { border: '#f59e0b', bg: '#fffbeb', badge: '#d97706', text: '#78350f' };
 }
 
+function brStatusBadgeIcon(status) {
+  var s = normalizeBrStatus(status);
+  if (s === 'NOT COVERED') return '\u274c ';
+  if (s === 'COVERED') return '\u2705 ';
+  if (s === 'VERIFY') return '\u26a0\ufe0f ';
+  if (s === 'PARTIAL') return '\u25cf ';
+  return '\u26a0\ufe0f ';
+}
+
 function brRenderServerAnswer(payload, planName, planSource) {
-  var status = String((payload && payload.status) || 'VERIFY').toUpperCase();
+  var status = normalizeBrStatus((payload && payload.status) || 'VERIFY');
+  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL)$/.test(status)) {
+    status = 'VERIFY';
+  }
   var fact = String(
     (payload && payload.fact) || '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]'
   );
@@ -1055,6 +1083,7 @@ function brRenderServerAnswer(payload, planName, planSource) {
       '<span style="display:inline-block;background:' +
         c.badge +
         ';color:#fff;font-size:10px;font-weight:700;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">' +
+        brStatusBadgeIcon(status) +
         escHTML(status) +
         '</span>'
     ) +
@@ -1082,14 +1111,8 @@ function brAIAnswer(query, planId) {
     return;
   }
 
-  // STEP 1: Try POLICY_DOCS lookup first
-  var localResult = brLocalLookup(query, plan);
-  if (localResult.confident) {
-    console.log('[CHA] Local lookup confident:', localResult.status);
-    brRenderLocalResult(localResult, plan.name);
-    return;
-  }
-
+  // Server RAG (/api/br-answer) is authoritative for status badges — POLICY_DOCS
+  // local lookup is only used when the API is unavailable.
   console.log('[CHA RAG] Calling /api/br-answer for plan:', planId, 'query:', query);
   brShowTyping();
   brServerAnswer(query, plan.id)
@@ -1103,7 +1126,13 @@ function brAIAnswer(query, planId) {
     })
     .catch(function (err) {
       brHideTyping();
-      console.warn('[CHA RAG] Falling back to local lookup:', err.message);
+      var localResult = brLocalLookup(query, plan);
+      if (localResult.confident) {
+        console.log('[CHA] Local lookup confident (API unavailable):', localResult.status);
+        brRenderLocalResult(localResult, plan.name);
+        return;
+      }
+      console.warn('[CHA RAG] Falling back to structured answer:', err.message);
       var plansToUse = brActivePlan ? [brActivePlan] : [];
       brAddMsg('ai', brStructuredAnswer(query, plansToUse));
     });

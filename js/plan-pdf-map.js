@@ -811,6 +811,118 @@
     "missingFiles": []
   },
   {
+    "planId": "tdk-1",
+    "planName": "TDK 1",
+    "type": "MEC",
+    "group": "TDK",
+    "category": "plan",
+    "aliases": [
+      "TDK 1",
+      "tdk 1",
+      "tdk-1",
+      "TDK1"
+    ],
+    "pdfFiles": [
+      "_CustomerBrochure_TDKPlan1.pdf"
+    ],
+    "status": "ready",
+    "missingFiles": []
+  },
+  {
+    "planId": "tdk-2",
+    "planName": "TDK 2",
+    "type": "MEC",
+    "group": "TDK",
+    "category": "plan",
+    "aliases": [
+      "TDK 2",
+      "tdk 2",
+      "tdk-2",
+      "TDK2"
+    ],
+    "pdfFiles": [
+      "_CustomerBrochure_TDKPlan2.pdf"
+    ],
+    "status": "ready",
+    "missingFiles": []
+  },
+  {
+    "planId": "tdk-3",
+    "planName": "TDK 3",
+    "type": "MEC",
+    "group": "TDK",
+    "category": "plan",
+    "aliases": [
+      "TDK 3",
+      "tdk 3",
+      "tdk-3",
+      "TDK3"
+    ],
+    "pdfFiles": [
+      "_CustomerBrochure_TDKPlan3.pdf"
+    ],
+    "status": "ready",
+    "missingFiles": []
+  },
+  {
+    "planId": "tdk-4",
+    "planName": "TDK 4",
+    "type": "MEC",
+    "group": "TDK",
+    "category": "plan",
+    "aliases": [
+      "TDK 4",
+      "tdk 4",
+      "tdk-4",
+      "TDK4"
+    ],
+    "pdfFiles": [
+      "_CustomerBrochure_TDKPlan4.pdf"
+    ],
+    "status": "ready",
+    "missingFiles": []
+  },
+  {
+    "planId": "tdk-5",
+    "planName": "TDK 5",
+    "type": "MEC",
+    "group": "TDK",
+    "category": "plan",
+    "aliases": [
+      "TDK 5",
+      "tdk 5",
+      "tdk-5",
+      "TDK5"
+    ],
+    "pdfFiles": [
+      "_CustomerBrochure_TDKPlan5.pdf"
+    ],
+    "status": "ready",
+    "missingFiles": []
+  },
+  {
+    "planId": "tdk-complete-guide",
+    "planName": "TDK Complete Guide",
+    "type": "MEC",
+    "group": "TDK",
+    "category": "plan",
+    "aliases": [
+      "TDK 1",
+      "TDK 2",
+      "TDK 3",
+      "TDK 4",
+      "TDK 5",
+      "TDK Complete Guide",
+      "tdk complete guide",
+      "tdk-complete-guide"
+    ],
+    "pdfFiles": [
+      "TDK_Plans_Complete_Guide.pdf"
+    ],
+    "status": "ready",
+    "missingFiles": []
+  },
+  {
     "planId": "trueh1",
     "planName": "TrueHealth 1",
     "type": "MEC",
@@ -979,6 +1091,13 @@
   "tdk4": "tdk4",
   "tdk 5": "tdk5",
   "tdk5": "tdk5",
+  "tdk-1": "tdk-1",
+  "tdk-2": "tdk-2",
+  "tdk-3": "tdk-3",
+  "tdk-4": "tdk-4",
+  "tdk-5": "tdk-5",
+  "tdk complete guide": "tdk-complete-guide",
+  "tdk-complete-guide": "tdk-complete-guide",
   "truehealth 1": "trueh1",
   "trueh1": "trueh1",
   "truehealth1": "trueh1",

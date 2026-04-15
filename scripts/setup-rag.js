@@ -52,7 +52,7 @@ function smokeApi(url) {
     query: 'Is maternity covered?',
     planId: 'sigmacare',
     matchCount: 5,
-    matchThreshold: 0.65
+    matchThreshold: 0.3
   };
   return fetch(endpoint, {
     method: 'POST',

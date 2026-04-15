@@ -135,8 +135,13 @@ function loadPdfMap() {
   // Support both:
   // 1) Node export map: { "file.pdf": { planId, ... } }
   // 2) Browser map file that sets window.CHA_PLAN_PDF_MAP.
-  // eslint-disable-next-line global-require, import/no-dynamic-require
-  const required = require(MAP_PATH);
+  let required = null;
+  try {
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    required = require(MAP_PATH);
+  } catch (e) {
+    required = null;
+  }
   if (required && typeof required === 'object' && !Array.isArray(required)) {
     const keys = Object.keys(required);
     if (keys.length && typeof required[keys[0]] === 'object') {
@@ -160,7 +165,7 @@ function loadPdfMap() {
       out[pdfFile] = {
         planId: entry.planId,
         planName: entry.planName || entry.planId,
-        category: entry.type || 'plan',
+        category: entry.category || entry.type || 'plan',
         aliases: Array.isArray(entry.aliases) ? entry.aliases : []
       };
     });
@@ -319,7 +324,14 @@ async function processPdf({
 
 async function main() {
   const supabaseUrl = requiredEnv('SUPABASE_URL');
-  const supabaseAnonKey = requiredEnv('SUPABASE_ANON_KEY');
+  const supabaseKey =
+    (process.env.SUPABASE_SERVICE_ROLE_KEY || '').trim() ||
+    (process.env.SUPABASE_ANON_KEY || '').trim();
+  if (!supabaseKey) {
+    throw new Error(
+      'Missing Supabase key: set SUPABASE_SERVICE_ROLE_KEY (recommended) or SUPABASE_ANON_KEY'
+    );
+  }
   const openAiApiKey = requiredEnv('OPENAI_API_KEY');
 
   const pdfMap = loadPdfMap();
@@ -333,7 +345,7 @@ async function main() {
   if (targetPdf) console.log('TARGET_PDF filter:', targetPdf);
   console.log('Chunk target:', CHUNK_SIZE_TOKENS, 'overlap:', CHUNK_OVERLAP_TOKENS);
 
-  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+  const supabase = createClient(supabaseUrl, supabaseKey);
   const openai = new OpenAI({ apiKey: openAiApiKey });
 
   let totalInserted = 0;
