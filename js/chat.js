@@ -616,44 +616,102 @@ function brHideTyping() {
   _brSetStatus(key && key !== 'skip' && key.length > 20 ? 'ai' : 'local');
 }
 
-function brRenderAIAnswer(text, planName) {
+/** Replace weak “I don’t know” phrasing with a consultative pivot (compliance-safe). */
+function _brSanitizeAiUnknowns(t) {
+  if (!t || typeof t !== 'string') return t;
+  var piv =
+    "The plan text we have doesn't spell that out word-for-word—here's what it *does* say, and we'll keep STATUS as VERIFY until you match it to the carrier-facing line.";
+  return t
+    .replace(/\bI\s+don'?t\s+know\b/gi, piv)
+    .replace(/\bI\s+do\s+not\s+know\b/gi, piv)
+    .replace(/\bI\s+am\s+not\s+sure\b/gi, piv)
+    .replace(/\bI'?m\s+not\s+sure\b/gi, piv)
+    .replace(/\bI\s+cannot\s+(answer|tell|say)\b/gi, piv)
+    .replace(/\bI\s+can'?t\s+(answer|tell|say)\b/gi, piv)
+    .replace(/\bno\s+idea\b/gi, piv);
+}
+
+/** True if combined model text signals an exclusion / non-benefit (tier-1). */
+function _brTierExclusionSignals(lower) {
+  return (
+    lower.indexOf('exclusion') !== -1 ||
+    lower.indexOf('not covered') !== -1 ||
+    lower.indexOf('not a benefit') !== -1
+  );
+}
+
+function _brHudRow(label, value) {
+  if (!value && label !== 'PLAN' && label !== 'STATUS') return '';
+  return (
+    '<div style="display:grid;grid-template-columns:88px 1fr;gap:8px 12px;align-items:start;padding:6px 0;border-bottom:1px solid rgb(15 23 42 / 0.06);font-size:12px;line-height:1.45;">' +
+    '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;">' +
+    escHTML(label) +
+    '</span>' +
+    '<span style="color:#1e293b;">' +
+    value +
+    '</span></div>'
+  );
+}
+
+function brRenderAIAnswer(text, planName, planSource) {
+  var srcFile = planSource || '';
+  text = _brSanitizeAiUnknowns(text);
   var status = 'VERIFY';
-  var answer = '';
+  var fact = '';
   var sayThis = '';
+  var sourceFromModel = '';
   var lines = text.split('\n');
   for (var li = 0; li < lines.length; li++) {
     var line = lines[li].trim();
-    if (line.toUpperCase().indexOf('STATUS:') === 0) {
+    var up = line.toUpperCase();
+    if (up.indexOf('STATUS:') === 0) {
       var sv = line.substring(7).trim().toUpperCase();
       if (sv.indexOf('NOT COVERED') !== -1) status = 'NOT COVERED';
       else if (sv.indexOf('PARTIAL') !== -1) status = 'PARTIAL';
       else if (sv.indexOf('COVERED') !== -1) status = 'COVERED';
       else status = 'VERIFY';
-    } else if (line.toUpperCase().indexOf('ANSWER:') === 0) {
-      answer = line.substring(7).trim();
-    } else if (line.toUpperCase().indexOf('SAY THIS:') === 0) {
+    } else if (up.indexOf('FACT:') === 0) {
+      fact = line.substring(5).trim();
+    } else if (up.indexOf('ANSWER:') === 0) {
+      if (!fact) fact = line.substring(7).trim();
+    } else if (up.indexOf('SAY THIS:') === 0) {
       sayThis = line.substring(9).trim().replace(/^"|"$/g, '');
+    } else if (up.indexOf('SOURCE:') === 0) {
+      sourceFromModel = line.substring(7).trim();
     }
   }
-  if (!answer)
-    answer = text
+  if (!fact)
+    fact = text
       .replace(/STATUS:.*\n?/i, '')
+      .replace(/FACT:.*\n?/i, '')
+      .replace(/ANSWER:.*\n?/i, '')
       .replace(/SAY THIS:.*\n?/i, '')
+      .replace(/SOURCE:.*\n?/i, '')
       .trim();
+  if (!fact)
+    fact =
+      'Use the plan PDF or carrier materials to confirm this point; keep the conversation consultative until the exact policy language is in hand.';
   var _unconfirmed =
-    answer.indexOf('[UNCONFIRMED: PLEASE CHECK PLAN DOCS]') !== -1 ||
+    fact.indexOf('[UNCONFIRMED: PLEASE CHECK PLAN DOCS]') !== -1 ||
     sayThis.indexOf('[UNCONFIRMED: PLEASE CHECK PLAN DOCS]') !== -1 ||
     text.indexOf('[UNCONFIRMED: PLEASE CHECK PLAN DOCS]') !== -1;
   if (_unconfirmed) {
     status = 'VERIFY';
   }
-  // Override COVERED → NOT COVERED when response text contradicts the badge
+  var combinedLower = (fact + ' ' + sayThis + ' ' + text).toLowerCase();
+  // Tier 1: exclusion / not covered / not a benefit → NOT COVERED
+  if (_brTierExclusionSignals(combinedLower)) {
+    status = 'NOT COVERED';
+  }
+  // Override COVERED when text contradicts coverage
   if (status === 'COVERED') {
-    var _checkText = (answer + ' ' + sayThis + ' ' + text).toLowerCase();
+    var _checkText = combinedLower;
     if (
       _checkText.indexOf('not covered') !== -1 ||
       _checkText.indexOf('no coverage') !== -1 ||
       _checkText.indexOf('not a covered') !== -1 ||
+      _checkText.indexOf('not a benefit') !== -1 ||
+      _checkText.indexOf('exclusion') !== -1 ||
       _checkText.indexOf('no reimbursement') !== -1
     ) {
       status = 'NOT COVERED';
@@ -661,30 +719,29 @@ function brRenderAIAnswer(text, planName) {
   }
   var borderColor = '#f59e0b';
   var bgColor = '#fffbeb';
-  var badgeColor = '#d97706';
-  var icon = '⚠';
   if (status === 'COVERED') {
     borderColor = '#22c55e';
     bgColor = '#f0fdf4';
-    badgeColor = '#16a34a';
-    icon = '✓';
   } else if (status === 'NOT COVERED') {
     borderColor = '#ef4444';
     bgColor = '#fef2f2';
-    badgeColor = '#dc2626';
-    icon = '✗';
   } else if (status === 'PARTIAL') {
     borderColor = '#3b82f6';
     bgColor = '#eff6ff';
-    badgeColor = '#2563eb';
-    icon = '◑';
   }
-  var sayHtml = '';
+  var statusHud = status;
+  if (status === 'NOT COVERED') statusHud = '\u274c NOT COVERED';
+  else if (status === 'COVERED') statusHud = '\u2705 COVERED';
+  else if (status === 'PARTIAL') statusHud = '\u25d1 PARTIAL';
+  else if (status === 'VERIFY') statusHud = '\u26a0 VERIFY';
+
+  var sourceHud = escHTML(sourceFromModel || srcFile || planName || 'Plan document');
+
+  var sayBlock = '';
   if (sayThis) {
     var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-    sayHtml =
-      '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:10px;">' +
-      '<div style="font-size:9px;font-weight:700;color:#94a3b8;letter-spacing:1px;margin-bottom:4px;">SAY THIS</div>' +
+    sayBlock =
+      '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:4px;">' +
       '<div style="font-size:12px;font-style:italic;color:#374151;">' +
       escHTML(sayThis) +
       '</div>' +
@@ -693,29 +750,21 @@ function brRenderAIAnswer(text, planName) {
       "');this.textContent='Copied!';var b=this;setTimeout(function(){b.textContent='Copy';},2000);\" " +
       'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;">Copy</button></div>';
   }
+
   var html =
     '<div style="border-left:4px solid ' +
     borderColor +
     ';background:' +
     bgColor +
-    ';border-radius:12px;padding:14px 16px;margin-bottom:10px;border:1px solid ' +
+    ';border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid ' +
     borderColor +
-    '30;">' +
-    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">' +
-    '<span style="background:' +
-    badgeColor +
-    ';color:#fff;font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:999px;">' +
-    icon +
-    ' ' +
-    status +
-    '</span>' +
-    '<span style="font-size:12px;font-weight:500;color:#1e293b;">' +
-    escHTML(planName) +
-    '</span></div>' +
-    '<div style="font-size:13px;color:#374151;line-height:1.7;">' +
-    answer.replace(/\n/g, '<br>') +
-    '</div>' +
-    sayHtml +
+    '35;">' +
+    '<div style="font-family:var(--font-ui);font-size:10px;font-weight:800;letter-spacing:0.1em;color:#64748b;margin-bottom:6px;">BENEFITS HUD</div>' +
+    _brHudRow('PLAN', escHTML(planName || '')) +
+    _brHudRow('STATUS', statusHud) +
+    _brHudRow('FACT', escHTML(fact).replace(/\n/g, '<br>')) +
+    _brHudRow('SAY THIS', sayBlock || '<span style="color:#94a3b8;">—</span>') +
+    _brHudRow('SOURCE', sourceHud) +
     '</div>';
   brAddMsg('ai', html);
 }
@@ -925,10 +974,12 @@ function brAIAnswer(query, planId) {
 
   var sysPrompt =
     'You are a health insurance benefits assistant for Central Health Advisors. Use ONLY the plan data in PLAN DATA below — nothing else. When PLAN DATA includes "COMPLETE PDF TEXT", treat that block as the authoritative full document and search it thoroughly before answering. ' +
-    'NEVER guess, infer from industry norms, or fill gaps with assumptions. If the answer is not explicitly supported by PLAN DATA, you MUST output STATUS: VERIFY and ANSWER must be exactly: [UNCONFIRMED: PLEASE CHECK PLAN DOCS] (SAY THIS may repeat that phrase or stay empty). ' +
-    'RULES: STATUS must be COVERED, NOT COVERED, VERIFY, or PARTIAL. Use COVERED only when the benefit is clearly described in plan data. Use NOT COVERED ONLY when plan data explicitly says excluded or not covered. Use VERIFY when the topic is not mentioned or ambiguous. NEVER use NOT COVERED for missing data — use VERIFY with the unconfirmed phrase. ' +
+    'NEVER say "I don\'t know", "I\'m not sure", "I am not sure", "I cannot answer", or similar hedges. Use a consultative pivot: acknowledge what the document does or does not state, keep compliance, and either cite concrete lines or use STATUS: VERIFY with clear next steps for the agent. ' +
+    'NEVER guess, infer from industry norms, or fill gaps with assumptions. If the answer is not explicitly supported by PLAN DATA, you MUST output STATUS: VERIFY and FACT must be exactly: [UNCONFIRMED: PLEASE CHECK PLAN DOCS] (SAY THIS may repeat that phrase or stay empty). ' +
+    'RULES: STATUS must be COVERED, NOT COVERED, VERIFY, or PARTIAL. Use COVERED only when the benefit is clearly described in plan data. Use NOT COVERED ONLY when plan data explicitly says excluded, not covered, not a benefit, or lists an exclusion. Use VERIFY when the topic is not mentioned or ambiguous. NEVER use NOT COVERED for missing data — use VERIFY with the unconfirmed phrase. ' +
+    'THREE-TIER CHECK: If the cited plan language includes the concepts exclusion, not covered, or not a benefit for this topic, you MUST set STATUS: NOT COVERED (not COVERED or VERIFY). ' +
     'MEC plans have NO deductible — only state that if PLAN DATA confirms MEC. MedFirst 1 Rx = BestChoiceRx discount card only if PLAN DATA says so. ' +
-    'FORMAT RESPONSE EXACTLY LIKE THIS WITH NO VARIATIONS: STATUS: COVERED\nANSWER: one to three lines from plan data only\nSAY THIS: exact words for agent to read\n\nPLAN DATA:\n' +
+    'FORMAT RESPONSE EXACTLY LIKE THIS WITH NO VARIATIONS (use these labels only):\nSTATUS: COVERED\nFACT: one to three lines from plan data only\nSAY THIS: exact words for agent to read\nSOURCE: document file name or section if identifiable; otherwise "Plan PDF / POLICY_DOCS"\n\nPLAN DATA:\n' +
     planContext;
 
   function _brGroqCall() {
@@ -962,7 +1013,11 @@ function brAIAnswer(query, planId) {
     })
     .then(function (data) {
       brHideTyping();
-      brRenderAIAnswer(data.choices[0].message.content, plan.name);
+      brRenderAIAnswer(
+        data.choices[0].message.content,
+        plan.name,
+        plan.source || ''
+      );
     })
     .catch(function (err) {
       // Silent fallback to local lookup — no error shown to user
