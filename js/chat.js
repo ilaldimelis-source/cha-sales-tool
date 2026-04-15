@@ -904,7 +904,8 @@ function brAIAnswer(query, planId) {
   brShowTyping();
 
   var planContext = plan.rawText
-    ? 'FULL PLAN DOCUMENT:\n' + plan.rawText
+    ? 'COMPLETE PDF TEXT (verbatim extract from knowledge_base; use only this for facts):\n' +
+      plan.rawText
     : 'PLAN: ' +
       plan.name +
       '\nTYPE: ' +
@@ -923,7 +924,7 @@ function brAIAnswer(query, planId) {
       (plan.planNotes || '');
 
   var sysPrompt =
-    'You are a health insurance benefits assistant for Central Health Advisors. Use ONLY the plan data in PLAN DATA below — nothing else. ' +
+    'You are a health insurance benefits assistant for Central Health Advisors. Use ONLY the plan data in PLAN DATA below — nothing else. When PLAN DATA includes "COMPLETE PDF TEXT", treat that block as the authoritative full document and search it thoroughly before answering. ' +
     'NEVER guess, infer from industry norms, or fill gaps with assumptions. If the answer is not explicitly supported by PLAN DATA, you MUST output STATUS: VERIFY and ANSWER must be exactly: [UNCONFIRMED: PLEASE CHECK PLAN DOCS] (SAY THIS may repeat that phrase or stay empty). ' +
     'RULES: STATUS must be COVERED, NOT COVERED, VERIFY, or PARTIAL. Use COVERED only when the benefit is clearly described in plan data. Use NOT COVERED ONLY when plan data explicitly says excluded or not covered. Use VERIFY when the topic is not mentioned or ambiguous. NEVER use NOT COVERED for missing data — use VERIFY with the unconfirmed phrase. ' +
     'MEC plans have NO deductible — only state that if PLAN DATA confirms MEC. MedFirst 1 Rx = BestChoiceRx discount card only if PLAN DATA says so. ' +
@@ -939,7 +940,7 @@ function brAIAnswer(query, planId) {
       },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',
-        max_tokens: 400,
+        max_tokens: 600,
         temperature: 0.0,
         messages: [
           { role: 'system', content: sysPrompt },

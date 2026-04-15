@@ -1207,9 +1207,6 @@
         POLICY_DOCS.push(plan);
       }
     });
-    if (typeof chaApplyKnowledgeBasePdfToDocs === 'function') {
-      chaApplyKnowledgeBasePdfToDocs(POLICY_DOCS);
-    }
   } else {
     window._CHA_EXTENDED_PLANS = EXTENDED_PLANS;
   }
