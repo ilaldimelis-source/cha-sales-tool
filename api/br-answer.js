@@ -58,6 +58,13 @@ function parseModelOutput(raw) {
   return out;
 }
 
+function maskSecret(v) {
+  var s = String(v || '');
+  if (!s) return '[missing]';
+  if (s.length <= 10) return '[set:' + s.length + ']';
+  return s.slice(0, 6) + '...' + s.slice(-4);
+}
+
 module.exports = function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -94,26 +101,58 @@ module.exports = function handler(req, res) {
   var chunks = [];
   var scope = 'none';
   var context = '';
+  var debug = {
+    requestId: requestId,
+    stage: 'init',
+    rpcFunction: 'match_plan_chunks_prefer_plan',
+    rpcArgs: null
+  };
 
-  fetch('https://api.openai.com/v1/embeddings', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + openAiKey
-    },
-    body: JSON.stringify({
-      model: 'text-embedding-3-small',
-      input: query
+  // Lightweight sanity check to prove service-role access and table visibility.
+  // If this fails, RPC often "succeeds" with no data or masked auth behavior.
+  var authCheck = supabase.from('plan_chunks').select('id', { head: true, count: 'exact' }).limit(1);
+
+  authCheck
+    .then(function (authRes) {
+      if (authRes && authRes.error) {
+        throw new Error(
+          'Supabase auth/table check failed: ' +
+            authRes.error.message +
+            ' [url=' +
+            supabaseUrl +
+            ', service_key=' +
+            maskSecret(serviceKey) +
+            ']'
+        );
+      }
+      debug.stage = 'embedding';
+      return fetch('https://api.openai.com/v1/embeddings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + openAiKey
+        },
+        body: JSON.stringify({
+          model: 'text-embedding-3-small',
+          input: query
+        })
+      });
     })
-  })
     .then(function (r) {
       if (!r.ok) throw new Error('Embedding API error ' + r.status);
       return r.json();
     })
     .then(function (j) {
+      debug.stage = 'rpc';
       var emb = j && j.data && j.data[0] && j.data[0].embedding ? j.data[0].embedding : null;
       if (!emb) throw new Error('Embedding missing');
-      return supabase.rpc('match_plan_chunks_prefer_plan', {
+      debug.rpcArgs = {
+        query_embedding_len: Array.isArray(emb) ? emb.length : 0,
+        match_threshold: matchThreshold,
+        match_count: matchCount,
+        preferred_plan_id: planId || null
+      };
+      return supabase.rpc(debug.rpcFunction, {
         query_embedding: emb,
         match_threshold: matchThreshold,
         match_count: matchCount,
@@ -121,10 +160,40 @@ module.exports = function handler(req, res) {
       });
     })
     .then(function (rpc) {
-      if (rpc.error) throw new Error('Supabase RPC error: ' + rpc.error.message);
+      if (rpc.error) {
+        throw new Error(
+          'Supabase RPC error: ' +
+            rpc.error.message +
+            ' [function=' +
+            debug.rpcFunction +
+            ', args=' +
+            JSON.stringify(debug.rpcArgs) +
+            ']'
+        );
+      }
       chunks = Array.isArray(rpc.data) ? rpc.data : [];
       scope = chunks.length ? String(chunks[0].scope || 'none') : 'none';
       context = buildContext(chunks);
+      if (!chunks.length) {
+        console.warn(
+          '[CHA RAG] No chunks returned',
+          JSON.stringify({
+            requestId: requestId,
+            function: debug.rpcFunction,
+            args: debug.rpcArgs
+          })
+        );
+      } else {
+        console.log(
+          '[CHA RAG] Retrieved chunks',
+          JSON.stringify({
+            requestId: requestId,
+            count: chunks.length,
+            scope: scope,
+            firstPlanId: chunks[0] && chunks[0].plan_id
+          })
+        );
+      }
 
       var sysPrompt =
         'You are a health insurance benefits assistant for Central Health Advisors.\n' +
@@ -182,6 +251,16 @@ module.exports = function handler(req, res) {
       });
     })
     .catch(function (err) {
+      console.error(
+        '[CHA RAG] Fallback triggered',
+        JSON.stringify({
+          requestId: requestId,
+          stage: debug.stage,
+          message: err && err.message ? err.message : String(err),
+          function: debug.rpcFunction,
+          args: debug.rpcArgs
+        })
+      );
       return res.status(200).json({
         requestId: requestId,
         status: 'VERIFY',
@@ -191,7 +270,12 @@ module.exports = function handler(req, res) {
         source: 'Plan PDF / POLICY_DOCS',
         scope: 'none',
         citations: [],
-        fallbackReason: err && err.message ? err.message : 'Unknown error'
+        fallbackReason: err && err.message ? err.message : 'Unknown error',
+        debug: {
+          stage: debug.stage,
+          function: debug.rpcFunction,
+          args: debug.rpcArgs
+        }
       });
     });
 };
