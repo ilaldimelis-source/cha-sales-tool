@@ -257,28 +257,33 @@ function renderLive() {
     '<div class="la-panel-header"><div id="la-panel-title" class="la-panel-title"></div><button class="la-panel-close" onclick="closeLaPanel()">&times;</button></div>';
   html += '<div id="la-panel-body" class="la-panel-body"></div>';
   html += '</div>';
-  // Objection cards
-  html += '<div class="la-obj-list">';
+  // Objection quick list (compact rows — same expand/collapse behavior)
+  html += '<div class="la-qlist">';
   for (var i = 0; i < Math.min(6, OBJECTIONS.length); i++) {
     var o = OBJECTIONS[i];
-    html += '<div class="xcard la-obj-card" id="liveobj' + i + '">';
-    html += '<div class="xcard-hd" onclick="toggleLiveObj(' + i + ')">';
+    var catCls =
+      typeof _objCatClass === 'function'
+        ? _objCatClass(o.cat)
+        : 'obj-cat-default';
+    html += '<div class="la-qrow" id="liveobj' + i + '">';
     html +=
-      '<div class="xcard-hd-l"><div class="xcard-label">&ldquo;' +
-      o.obj +
-      '&rdquo;</div>';
+      '<button type="button" class="la-qrow-hd" onclick="toggleLiveObj(' +
+      i +
+      ')" aria-expanded="false">';
     html +=
-      '<div class="la-obj-hint">' +
+      '<span class="obj-cat-badge ' +
+      catCls +
+      '">' +
       o.cat +
-      ' &middot; Tap</div></div>';
+      '</span>';
     html +=
-      '<span class="xcard-chev" id="liveobjchev' +
-      i +
-      '" aria-hidden="true">▼</span></div>';
+      '<span class="la-qtext">&ldquo;' + o.obj + '&rdquo;</span>';
     html +=
-      '<div class="xcard-body la-obj-body" id="liveobjbody' +
+      '<span class="la-qchev" id="liveobjchev' +
       i +
-      '" style="display:none;">';
+      '" aria-hidden="true">▼</span></button>';
+    html +=
+      '<div class="la-qbody" id="liveobjbody' + i + '" style="display:none;">';
     html +=
       '<div class="la-section"><span class="la-sec-lbl">Diagnostic Question First</span><div class="la-sec-text">' +
       o.diag +
@@ -288,7 +293,7 @@ function renderLive() {
       o.real +
       '</div></div>';
     html +=
-      '<div style="display:flex;gap:8px;margin:14px 0 8px;"><button class="rtab active" onclick="switchTab(event,\'lo' +
+      '<div style="display:flex;gap:6px;margin:8px 0 6px;flex-wrap:wrap;"><button class="rtab active" onclick="switchTab(event,\'lo' +
       i +
       '\',\'best\')">Best Response</button><button class="rtab" onclick="switchTab(event,\'lo' +
       i +
@@ -323,28 +328,33 @@ function renderLive() {
 function toggleLiveObj(i) {
   var body = document.getElementById('liveobjbody' + i);
   var chev = document.getElementById('liveobjchev' + i);
-  var card = document.getElementById('liveobj' + i);
+  var row = document.getElementById('liveobj' + i);
+  var btn = row ? row.querySelector('.la-qrow-hd') : null;
   if (!body) return;
   var open = body.style.display !== 'none';
   if (open) {
     body.style.display = 'none';
     if (chev) chev.style.transform = '';
-    if (card) card.style.borderColor = '#C8CEDD';
+    if (row) row.classList.remove('is-open');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
     return;
   }
   for (var j = 0; j < 6; j++) {
     var b2 = document.getElementById('liveobjbody' + j);
     var c2 = document.getElementById('liveobjchev' + j);
-    var k2 = document.getElementById('liveobj' + j);
+    var r2 = document.getElementById('liveobj' + j);
+    var bbtn = r2 ? r2.querySelector('.la-qrow-hd') : null;
     if (b2) b2.style.display = 'none';
     if (c2) c2.style.transform = '';
-    if (k2) k2.style.borderColor = '#C8CEDD';
+    if (r2) r2.classList.remove('is-open');
+    if (bbtn) bbtn.setAttribute('aria-expanded', 'false');
   }
   body.style.display = 'block';
   if (chev) chev.style.transform = 'rotate(180deg)';
-  if (card) {
-    card.style.borderColor = '#5B8DEF';
-    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (row) {
+    row.classList.add('is-open');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
+    row.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 }
 

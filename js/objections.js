@@ -268,14 +268,14 @@ function renderObjList() {
           return o.cat === objCat;
         });
   var html = '';
-  html += '<div class="obj-battle-grid">';
+  html += '<div class="obj-battle-list">';
   filtered.forEach(function (o) {
     var gi = OBJECTIONS.indexOf(o);
     var inCat = objCat === 'All' || o.cat === objCat;
     var open = inCat && gi === _objBattleIdx;
     html += '<div class="obj-battle-item' + (open ? ' is-open' : '') + '">';
     html +=
-      '<button type="button" class="obj-battle-card' +
+      '<button type="button" class="obj-battle-row' +
       (open ? ' is-active' : '') +
       '" onclick="_objSelectBattle(' +
       gi +
@@ -289,15 +289,11 @@ function renderObjList() {
       o.cat +
       '</span>';
     html +=
-      (typeof favStarHTML === 'function'
-        ? '<div style="margin-top:6px;">' +
-          favStarHTML('objection', 'obj-' + gi, o.obj, o.best, 'Objections') +
-          '</div>'
-        : '') +
-      '<div class="obj-battle-title">&ldquo;' +
+      '<span class="obj-battle-title">&ldquo;' +
       _objEsc(o.obj) +
-      '&rdquo;</div>';
-    html += '<div class="obj-battle-cta">Tap for rebuttal</div></button>';
+      '&rdquo;</span>';
+    html +=
+      '<span class="obj-battle-chev" aria-hidden="true">▼</span></button>';
     html +=
       '<div class="obj-battle-drawer" role="region" aria-label="Rebuttal"' +
       (open ? '' : ' hidden') +
