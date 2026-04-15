@@ -146,14 +146,18 @@ module.exports = function handler(req, res) {
       debug.stage = 'rpc';
       var emb = j && j.data && j.data[0] && j.data[0].embedding ? j.data[0].embedding : null;
       if (!emb) throw new Error('Embedding missing');
+      var embParam = emb;
+      // Supabase RPC works more reliably with pgvector text literal
+      // than raw JS arrays in some runtime/driver paths.
+      if (Array.isArray(emb)) embParam = '[' + emb.join(',') + ']';
       debug.rpcArgs = {
-        query_embedding_len: Array.isArray(emb) ? emb.length : 0,
+        query_embedding_len: Array.isArray(emb) ? emb.length : String(emb || '').length,
         match_threshold: matchThreshold,
         match_count: matchCount,
         preferred_plan_id: planId || null
       };
       return supabase.rpc(debug.rpcFunction, {
-        query_embedding: emb,
+        query_embedding: embParam,
         match_threshold: matchThreshold,
         match_count: matchCount,
         preferred_plan_id: planId || null
