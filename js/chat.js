@@ -72,6 +72,18 @@ function brBuildSOB(p) {
 
 var brActiveFilter = 'all';
 
+function brGetPlanCategory(plan) {
+  if (!plan) return '';
+  var group = String(plan.group || '').trim();
+  if (group === 'MEC' || group === 'STM' || group === 'Limited') return group;
+
+  var type = String(plan.type || '').toLowerCase();
+  if (type.indexOf('limited') !== -1) return 'Limited';
+  if (type.indexOf('stm') !== -1 || type.indexOf('short term') !== -1) return 'STM';
+  if (type.indexOf('mec') !== -1) return 'MEC';
+  return group;
+}
+
 // ── AI STATUS INDICATOR ─────────────────────────────────────────────────────
 function _brSetStatus(mode) {
   var el = document.getElementById('br-ai-status');
@@ -243,7 +255,7 @@ function brInit() {
       // Group filter
       if (groupTarget) {
         var planObj = BR_PLANS.find(function (p) { return p.name === btnName; });
-        if (planObj && planObj.group === groupTarget) show = true;
+        if (planObj && brGetPlanCategory(planObj) === groupTarget) show = true;
       }
       // Synonym target match
       if (synonymTarget && btnNameLower.indexOf(synonymTarget.toLowerCase()) !== -1) show = true;
@@ -294,7 +306,7 @@ function brInit() {
         brRenderPlanButtons(f.key);
         // Auto-select first plan in this group
         var firstInGroup = BR_PLANS.find(function (p) {
-          return p.group === f.key;
+          return brGetPlanCategory(p) === f.key;
         });
         if (firstInGroup) {
           brActivePlan = firstInGroup;
@@ -332,7 +344,7 @@ function brRenderPlanButtons(groupFilter) {
 
   var plans = groupFilter
     ? BR_PLANS.filter(function (p) {
-        return p.group === groupFilter;
+        return brGetPlanCategory(p) === groupFilter;
       })
     : BR_PLANS;
 
@@ -345,9 +357,9 @@ function brRenderPlanButtons(groupFilter) {
     btn.dataset.id = p.id;
     btn.onclick = function () {
       brSearchAllPlans = false;
-      brActiveFilter = p.group;
+      brActiveFilter = brGetPlanCategory(p);
       document.querySelectorAll('.br-filter-btn').forEach(function (b) {
-        b.classList.toggle('active', b.dataset.filter === p.group);
+        b.classList.toggle('active', b.dataset.filter === brGetPlanCategory(p));
       });
       brActivePlan = BR_PLANS.find(function (x) {
         return x.id === p.id;
@@ -357,7 +369,7 @@ function brRenderPlanButtons(groupFilter) {
         setActivePlan(
           brActivePlan.id,
           brActivePlan.name,
-          brActivePlan.group || ''
+          brGetPlanCategory(brActivePlan) || ''
         );
       }
       document.querySelectorAll('.br-plan-btn').forEach(function (b) {
@@ -410,16 +422,16 @@ function brWelcomePick(planId) {
   });
   if (!plan) return;
   brSearchAllPlans = false;
-  brActiveFilter = plan.group;
+  brActiveFilter = brGetPlanCategory(plan);
   brActivePlan = plan;
   document.querySelectorAll('.br-filter-btn').forEach(function (b) {
-    b.classList.toggle('active', b.dataset.filter === plan.group);
+    b.classList.toggle('active', b.dataset.filter === brGetPlanCategory(plan));
   });
   document.querySelectorAll('.br-plan-btn').forEach(function (b) {
     b.classList.toggle('active', b.dataset.id === planId);
   });
   if (typeof setActivePlan === 'function') {
-    setActivePlan(plan.id, plan.name, plan.group || '');
+    setActivePlan(plan.id, plan.name, brGetPlanCategory(plan) || '');
   }
   document.getElementById('br-input').value = 'Tell me about ' + plan.name;
   document.getElementById('br-input').dispatchEvent(new Event('input'));

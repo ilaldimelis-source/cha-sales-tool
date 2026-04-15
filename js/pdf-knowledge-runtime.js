@@ -69,33 +69,35 @@
   }
 
   function resolvePlan(query, activePlan) {
-    var directId = activePlan && activePlan.id ? String(activePlan.id) : '';
-    if (directId) return { status: 'resolved', planId: directId, method: 'active_plan' };
-
     var normalized = normalizeText(query);
-    if (!normalized) return { status: 'no_plan' };
-
     var aliasIndex = window.CHA_PLAN_ALIAS_INDEX || {};
-    if (aliasIndex[normalized]) {
-      return { status: 'resolved', planId: aliasIndex[normalized], method: 'exact_alias' };
+    var directId = activePlan && activePlan.id ? String(activePlan.id) : '';
+
+    if (normalized) {
+      if (aliasIndex[normalized]) {
+        return { status: 'resolved', planId: aliasIndex[normalized], method: 'exact_alias' };
+      }
+
+      var keys = Object.keys(aliasIndex);
+      var matches = [];
+      for (var i = 0; i < keys.length; i++) {
+        var alias = keys[i];
+        if (!alias || alias.length < 3) continue;
+        if (normalized.indexOf(alias) !== -1) matches.push(aliasIndex[alias]);
+      }
+      matches = matches.filter(function (value, index, arr) {
+        return arr.indexOf(value) === index;
+      });
+      if (matches.length === 1) {
+        return { status: 'resolved', planId: matches[0], method: 'alias_contains' };
+      }
+      if (matches.length > 1) {
+        return { status: 'ambiguous', candidates: matches };
+      }
     }
 
-    var keys = Object.keys(aliasIndex);
-    var matches = [];
-    for (var i = 0; i < keys.length; i++) {
-      var alias = keys[i];
-      if (!alias || alias.length < 3) continue;
-      if (normalized.indexOf(alias) !== -1) matches.push(aliasIndex[alias]);
-    }
-    matches = matches.filter(function (value, index, arr) {
-      return arr.indexOf(value) === index;
-    });
-    if (matches.length === 1) {
-      return { status: 'resolved', planId: matches[0], method: 'alias_contains' };
-    }
-    if (matches.length > 1) {
-      return { status: 'ambiguous', candidates: matches };
-    }
+    if (directId) return { status: 'resolved', planId: directId, method: 'active_plan' };
+    if (!normalized) return { status: 'no_plan' };
     return { status: 'no_plan' };
   }
 
