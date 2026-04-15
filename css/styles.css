@@ -7060,18 +7060,21 @@ body.plan-drawer-lock {
 .back-btn:hover{text-decoration:underline}
 .lessons-list{display:flex;flex-direction:column;gap:12px}
 .lesson-card{display:flex;align-items:center;gap:16px;background:#F9FAFB;border-radius:16px;padding:18px 20px;cursor:pointer;transition:all 0.2s ease;border:2px solid transparent}
-.lesson-card:hover:not(.locked){background:#F3F4F6;border-color:#4A90D9}
+.lesson-card:hover{background:#F3F4F6;border-color:#4A90D9}
 .lesson-card.completed{background:#F0FDF4;border-color:#34C759}
 .lesson-card.current{background:#EFF6FF;border-color:#4A90D9}
+.lesson-card.available{background:#F9FAFB}
 .lesson-card.locked{opacity:0.5;cursor:not-allowed}
 .lesson-check{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
 .lesson-card.completed .lesson-check{background:#34C759;color:white}
 .lesson-card.current .lesson-check{background:#4A90D9;color:white}
+.lesson-card.available .lesson-check{background:#E5E7EB;color:#4B5563}
 .lesson-card.locked .lesson-check{background:#E5E7EB;color:#9CA3AF}
 .lesson-info{flex:1}
 .lesson-tag{font-size:11px;font-weight:600;text-transform:uppercase;margin-bottom:4px}
 .lesson-card.completed .lesson-tag{color:#34C759}
 .lesson-card.current .lesson-tag{color:#4A90D9}
+.lesson-card.available .lesson-tag{color:#6B7280}
 .lesson-card.locked .lesson-tag{color:#9CA3AF}
 .lesson-info h4{font-size:15px;font-weight:600;margin:0 0 4px 0;color:#1a1a2e}
 .lesson-info p{font-size:13px;color:#6B7280;margin:0}
