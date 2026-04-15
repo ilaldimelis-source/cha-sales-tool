@@ -2566,10 +2566,16 @@ function _chaBuildGroundedPrompt(planMeta, topChunks) {
     excerpts.push('[Excerpt ' + (i + 1) + '] ' + topChunks[i].text);
   }
   return [
-    'You are a CHA plan document assistant.',
-    'Use ONLY the provided plan excerpts to answer.',
-    'Do not use outside knowledge, assumptions, or prior context.',
-    'If the answer is not explicitly in the excerpts, respond exactly with:',
+    'You are a CHA plan document assistant for live agent questions.',
+    'Read the provided plan PDF excerpts and answer the specific question clearly.',
+    'Use ONLY the provided excerpts. Do not use outside knowledge, assumptions, or prior context.',
+    'Return a short, clean answer with exact numbers from the document.',
+    'Do NOT paste raw OCR/extracted text blocks.',
+    'Do NOT repeat excerpt labels like "[Excerpt 1]" in the final answer.',
+    'Preferred output style: "MedFirst 1 PCP Copay: $25, 3 visits/year".',
+    'If multiple values are needed, use 1-3 concise bullet lines.',
+    'Preserve exact amounts, limits, visit counts, percentages, and conditions from excerpts.',
+    'If the detail is not explicitly in excerpts, respond exactly with:',
     '"That specific detail is not in the ' + planMeta.planName + ' document."',
     '',
     'Plan Name: ' + planMeta.planName,
