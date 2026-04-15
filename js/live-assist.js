@@ -439,7 +439,14 @@ function openLaPanel(type) {
     if (typeof POLICY_DOCS !== 'undefined') {
       var groupColors = { MEC: '#5B8DEF', STM: '#d97706', Limited: '#dc2626' };
       html += '<div class="la-hud-panel la-hud-panel-stack">';
-      POLICY_DOCS.forEach(function (p) {
+      POLICY_DOCS.filter(function (p) {
+        if (!p) return false;
+        var id = String(p.id || '').toLowerCase();
+        var typeName = String(p.type || '').toLowerCase();
+        if (id.indexOf('kb-') === 0) return false;
+        if (typeName === 'knowledge base pdf') return false;
+        return !!String(p.name || '').trim();
+      }).forEach(function (p) {
         var gColor = groupColors[p.group] || '#6B7280';
         html +=
           '<button type="button" class="la-hud-plan-row" onclick="closeLaPanel();showPage(\'policydocs\')">';

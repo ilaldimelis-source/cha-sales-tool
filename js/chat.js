@@ -72,6 +72,18 @@ function brBuildSOB(p) {
 
 var brActiveFilter = 'all';
 
+function brIsRealPlanRecord(plan) {
+  if (!plan) return false;
+  var id = String(plan.id || '').toLowerCase();
+  var type = String(plan.type || '').toLowerCase();
+  var name = String(plan.name || '').trim();
+  if (!id || !name) return false;
+  // Exclude orphan knowledge-base file rows injected by plan-data-pdf-raw.js.
+  if (id.indexOf('kb-') === 0) return false;
+  if (type === 'knowledge base pdf') return false;
+  return true;
+}
+
 function brGetPlanCategory(plan) {
   if (!plan) return '';
   var group = String(plan.group || '').trim();
@@ -109,7 +121,9 @@ function brInit() {
   if (!document.getElementById('br-plan-bar')) return;
   _brInitDone = true;
 
-  BR_PLANS = POLICY_DOCS.map(function (p) {
+  BR_PLANS = POLICY_DOCS.filter(function (p) {
+    return brIsRealPlanRecord(p);
+  }).map(function (p) {
     return {
       id: p.id,
       name: p.name,
