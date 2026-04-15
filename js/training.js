@@ -1410,6 +1410,27 @@ function chaAcademyCopy(btn) {
   }, 1600);
 }
 
+function chaAcademySetStep(n, doScroll) {
+  var w = document.getElementById('ca-academy-root');
+  if (!w) return;
+  if (doScroll) {
+    var el = w.querySelector('details.ca-level[data-ca-step="' + n + '"]');
+    if (el) {
+      el.open = true;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+  var st = w.querySelectorAll('.ca-path-step');
+  for (var i = 0; i < st.length; i++) {
+    st[i].classList.toggle('ca-path-step--on', i + 1 === n);
+  }
+  w.setAttribute('data-ca-active-step', String(n));
+}
+
+function chaAcademyGoStep(n) {
+  chaAcademySetStep(n, true);
+}
+
 function _caCopyBtn(text) {
   var b = _caB64Encode(text);
   return (
@@ -1417,6 +1438,51 @@ function _caCopyBtn(text) {
     b +
     '" data-lbl="Copy" onclick="chaAcademyCopy(this)">Copy</button>'
   );
+}
+
+/** Progress path + scroll: highlights current level; step buttons jump to section. */
+function chaAcademyInitProgress() {
+  if (!document.getElementById('ca-academy-root')) return;
+
+  function syncFromScroll() {
+    var w2 = document.getElementById('ca-academy-root');
+    if (!w2) return;
+    var L = w2.querySelectorAll('details.ca-level[data-ca-step]');
+    if (!L.length) return;
+    var vh = window.innerHeight || 800;
+    var targetY = vh * 0.32;
+    var pick = 1;
+    var best = 1e12;
+    for (var j = 0; j < L.length; j++) {
+      var r = L[j].getBoundingClientRect();
+      var mid = (r.top + r.bottom) / 2;
+      if (r.bottom < 120 || r.top > vh - 60) continue;
+      var d = Math.abs(mid - targetY);
+      if (d < best) {
+        best = d;
+        pick = parseInt(L[j].getAttribute('data-ca-step'), 10) || pick;
+      }
+    }
+    chaAcademySetStep(pick, false);
+  }
+
+  chaAcademySetStep(1, false);
+  syncFromScroll();
+
+  if (!window._chaAcademyScrollHooked) {
+    window._chaAcademyScrollHooked = true;
+    var mc = document.getElementById('main-content');
+    if (mc) {
+      mc.addEventListener(
+        'scroll',
+        function () {
+          if (!document.getElementById('ca-academy-root')) return;
+          syncFromScroll();
+        },
+        { passive: true }
+      );
+    }
+  }
 }
 
 function _caToolboxHtml() {
@@ -1497,138 +1563,186 @@ function renderTrainingHome() {
 
   _trainingView = 'home';
 
-  var html = '<div class="ca-wrap">';
+  var html =
+    '<div class="ca-wrap" id="ca-academy-root" data-ca-active-step="1">';
 
   html +=
-    '<div class="ph ca-hero"><div class="pt">CHA <span>Academy</span></div><div class="pd">Structured path: foundations → call flow → objections → compliance. Work top to bottom before you dial.</div></div>';
+    '<div class="ph ca-hero"><div class="pt">CHA <span>Academy</span></div><div class="pd">Structured learning path for new hires. Work Step 1 → 4 in order.</div></div>';
 
-  html += '<div class="ca-progress" aria-label="Learning path: four levels">';
-  html += '<div class="ca-progress-bar"><span class="ca-progress-fill"></span></div>';
-  html += '<div class="ca-progress-steps">';
   html +=
-    '<span class="ca-step ca-step--active">Foundations</span><span class="ca-step-arrow" aria-hidden="true">→</span>';
-  html += '<span class="ca-step">Call Flow</span><span class="ca-step-arrow" aria-hidden="true">→</span>';
-  html += '<span class="ca-step">Objections</span><span class="ca-step-arrow" aria-hidden="true">→</span>';
-  html += '<span class="ca-step">Compliance</span>';
-  html += '</div></div>';
-
-  // —— Level 1 ——
+    '<nav class="ca-path" aria-label="Learning path: four levels"><div class="ca-path-meter" aria-hidden="true"><div class="ca-path-meter-fill"></div></div><div class="ca-path-row">';
   html +=
-    '<details class="ca-level" open><summary class="ca-level-sum"><span class="ca-level-badge">1</span><span class="ca-level-titles"><span class="ca-level-name">Foundations</span><span class="ca-level-tag">Learn the basics before you dial</span></span></summary><div class="ca-level-body">';
+    '<button type="button" class="ca-path-step ca-path-step--on" data-step="1" onclick="chaAcademyGoStep(1)"><span class="ca-path-step-n">1</span><span class="ca-path-step-l">Foundations</span></button>';
+  html += '<span class="ca-path-join" aria-hidden="true">→</span>';
+  html +=
+    '<button type="button" class="ca-path-step" data-step="2" onclick="chaAcademyGoStep(2)"><span class="ca-path-step-n">2</span><span class="ca-path-step-l">Call Flow</span></button>';
+  html += '<span class="ca-path-join" aria-hidden="true">→</span>';
+  html +=
+    '<button type="button" class="ca-path-step" data-step="3" onclick="chaAcademyGoStep(3)"><span class="ca-path-step-n">3</span><span class="ca-path-step-l">Objections</span></button>';
+  html += '<span class="ca-path-join" aria-hidden="true">→</span>';
+  html +=
+    '<button type="button" class="ca-path-step" data-step="4" onclick="chaAcademyGoStep(4)"><span class="ca-path-step-n">4</span><span class="ca-path-step-l">Compliance</span></button>';
+  html += '</div></nav>';
 
-  function caFold(title, line1, line2) {
+  function caBrain(title, body, why) {
     return (
       '<details class="ca-nest"><summary class="ca-nest-sum">' +
       escHTML(title) +
       '</summary><div class="ca-nest-body"><p class="ca-nest-line">' +
-      escHTML(line1) +
-      '</p><p class="ca-nest-tip">' +
-      escHTML(line2) +
-      '</p><div class="ca-nest-actions">' +
-      _caCopyBtn(line1 + ' ' + line2) +
+      escHTML(body) +
+      '</p><div class="ca-why"><span class="ca-why-lbl">Why it matters:</span> ' +
+      escHTML(why) +
+      '</div><div class="ca-nest-actions">' +
+      _caCopyBtn(body + ' ' + why) +
       '</div></div></details>'
     );
   }
 
-  html += caFold(
+  // —— Level 1 ——
+  html +=
+    '<details class="ca-level" data-ca-step="1" open><summary class="ca-level-sum"><span class="ca-level-badge">1</span><span class="ca-level-titles"><span class="ca-level-name">Level 1: Insurance Foundations</span><span class="ca-level-tag">Learn the basics before you dial</span></span></summary><div class="ca-level-body">';
+
+  html += caBrain(
     'Premium',
-    'Monthly payment to keep coverage active.',
-    'This is what customers compare first.'
+    'Your monthly payment to keep coverage active',
+    'This is what customers compare first'
   );
-  html += caFold(
+  html += caBrain(
     'Deductible',
-    'Amount paid first before plan kicks in.',
-    'MEC and Indemnity have NO deductible.'
+    'Amount customer pays first before plan kicks in',
+    "MEC and Indemnity have NO deductible - that's our advantage"
   );
-  html += caFold(
+  html += caBrain(
     'Copay',
-    'Fixed fee per visit (like $25).',
-    'Simple and predictable.'
+    'Fixed fee for a visit (like $25 for doctor)',
+    'Simple and predictable for customers'
   );
-  html += caFold(
+  html += caBrain(
     'Coinsurance',
-    'Percentage split after deductible.',
-    "STM uses this; MEC/Indemnity don't."
+    'Percentage split after deductible (like 80/20)',
+    "STM plans use this, MEC/Indemnity don't"
   );
-  html += caFold(
+  html += caBrain(
     'Network',
-    'List of contracted providers.',
-    'First Health and MultiPlan are our networks.'
+    'List of doctors/hospitals with contracted rates',
+    'First Health and MultiPlan are our networks'
   );
-  html += caFold(
-    'Plan types',
-    'MEC = wellness + copays + hospital indemnity.',
-    'STM = deductible + coinsurance. Indemnity = network repricing + cash benefits.'
-  );
+
+  var planMec =
+    'No deductible, copays for doctors, preventative care, indemnity benefits for hospital';
+  var planStm =
+    'Short-term, has deductible + coinsurance + max out of pocket, works like Obamacare but cheaper';
+  var planInd =
+    'No deductible, 2-sided: network repricing first, then pays cash benefits toward remaining balance';
+  html +=
+    '<details class="ca-nest"><summary class="ca-nest-sum">Plan Types (MEC vs STM vs Indemnity)</summary><div class="ca-nest-body">' +
+    '<div class="ca-plan-row"><span class="ca-plan-lbl">MEC:</span> <span class="ca-plan-txt">' +
+    escHTML(planMec) +
+    '</span></div>' +
+    '<div class="ca-plan-row"><span class="ca-plan-lbl">STM:</span> <span class="ca-plan-txt">' +
+    escHTML(planStm) +
+    '</span></div>' +
+    '<div class="ca-plan-row"><span class="ca-plan-lbl">Indemnity:</span> <span class="ca-plan-txt">' +
+    escHTML(planInd) +
+    '</span></div><div class="ca-nest-actions">' +
+    _caCopyBtn('MEC: ' + planMec + ' STM: ' + planStm + ' Indemnity: ' + planInd) +
+    '</div></div></details>';
 
   html += '</div></details>';
 
   // —— Level 2 ——
   html +=
-    '<details class="ca-level" open><summary class="ca-level-sum"><span class="ca-level-badge">2</span><span class="ca-level-titles"><span class="ca-level-name">Call flow</span><span class="ca-level-tag">Master each stage in order</span></span></summary><div class="ca-level-body ca-timeline">';
+    '<details class="ca-level" data-ca-step="2" open><summary class="ca-level-sum"><span class="ca-level-badge">2</span><span class="ca-level-titles"><span class="ca-level-name">Level 2: The Sales Call</span><span class="ca-level-tag">Master each stage in order</span></span></summary><div class="ca-level-body ca-timeline">';
 
-  var stages = [
+  var tieScript =
+    "Is there a monthly price range you're hoping to stay within so I can narrow down the best options?";
+  var stages2 = [
     {
       n: 1,
       t: 'Opening',
       b:
-        'Breaking rapport tone, slow pace, assume it is the customer on the other end.',
-      c: 'Breaking rapport tone, slow pace, assume it is the customer.'
+        "Use breaking rapport tonality (down tone). Sound happy. Slow steady pace. Assume it's the customer.",
+      k: "Don't rush - people listen more when you're not desperate",
+      s: ''
     },
     {
       n: 2,
       t: 'Prequalify',
-      b: '50/50 conversational — gather info plus buying points.',
-      c: '50/50 conversational: gather info and buying points.'
+      b:
+        'Conversational 50/50. Gather eligibility info + listen for buying points + medical info',
+      k: 'After this section, switch to 90% talking 10% listening',
+      s: ''
     },
     {
       n: 3,
-      t: 'Tie-down',
-      b: 'Get budget BEFORE pitching. Know your plan before hold.',
-      c: 'Get budget before pitching. Know your plan before hold.'
+      t: 'Tie-Down Price',
+      b:
+        'Get their budget BEFORE you pitch. Ask income questions like marketplace does.',
+      k: 'You should know what plan to sell BEFORE the hold',
+      s: tieScript
     },
     {
       n: 4,
       t: 'Hold',
-      b: 'Max 2 minutes — build urgency.',
-      c: 'Hold: max 2 minutes, build urgency.'
+      b: 'Max 2 minutes. Build urgency. Get organized.',
+      k: 'DO NOT leave them on hold longer than 2 minutes',
+      s: ''
     },
     {
       n: 5,
       t: 'Teaser',
-      b: 'Higher energy — do not ask if they are still there.',
-      c: 'Teaser: higher energy, do not ask if still there.'
+      b:
+        "Come back with higher energy. Steady pace so they can't interrupt.",
+      k: "DO NOT ask if they're still there - assume they are",
+      s: ''
     },
     {
       n: 6,
       t: 'Benefits',
-      b: 'Read VERBATIM — 90% talking, less is more.',
-      c: 'Benefits: read verbatim; 90% talking, less is more.'
+      b: "Read VERBATIM. 90% talking. Don't acknowledge 'oh that's great' comments.",
+      k: 'LESS IS MORE. Do not add things to the script.',
+      s: ''
     },
     {
       n: 7,
       t: 'Close',
-      b: 'Assumptive close — whoever talks first loses.',
-      c: 'Close: assumptive; whoever talks first loses.'
+      b: 'Assumptive close. Use close-ended questions (2 options that both work for us)',
+      k: 'Whoever talks first loses - wait for their answer',
+      s: ''
     },
     {
       n: 8,
-      t: 'Post-close',
-      b: 'CHA561337, 855-736-1590 — make sales stick.',
-      c: 'Post-close: CHA561337, 855-736-1590 — make sales stick.'
+      t: 'Post-Close',
+      b: 'Read verification. Get signature. Read post-close to make sales stick.',
+      k: 'Give them CHA561337 confirmation + 855-736-1590 customer service',
+      s: ''
     }
   ];
-  for (var si = 0; si < stages.length; si++) {
-    var st = stages[si];
+  for (var si = 0; si < stages2.length; si++) {
+    var st = stages2[si];
     html +=
       '<div class="ca-tl-item"><div class="ca-tl-dot">' +
       st.n +
-      '</div><div class="ca-tl-card"><div class="ca-tl-title">' +
+      '</div><div class="ca-tl-card"><div class="ca-tl-kicker">Stage ' +
+      st.n +
+      '</div><div class="ca-tl-title">' +
       escHTML(st.t) +
       '</div><p class="ca-tl-body">' +
       escHTML(st.b) +
-      '</p><div class="ca-tl-actions">' +
-      _caCopyBtn(st.c) +
+      '</p><div class="ca-tl-key"><span class="ca-tl-key-lbl">Key</span><p>' +
+      escHTML(st.k) +
+      '</p></div>';
+    if (st.s) {
+      html +=
+        '<div class="ca-tl-script"><span class="ca-tl-script-lbl">Script line</span><p>' +
+        escHTML(st.s) +
+        '</p><div class="ca-tl-actions">' +
+        _caCopyBtn(st.s) +
+        '</div></div>';
+    }
+    html +=
+      '<div class="ca-tl-actions">' +
+      _caCopyBtn(st.b + ' ' + st.k + (st.s ? ' ' + st.s : '')) +
       '</div></div></div>';
   }
   html +=
@@ -1640,54 +1754,72 @@ function renderTrainingHome() {
 
   // —— Level 3 ——
   html +=
-    '<details class="ca-level" open><summary class="ca-level-sum"><span class="ca-level-badge">3</span><span class="ca-level-titles"><span class="ca-level-name">Objections</span><span class="ca-level-tag">Battle cards for hard moments</span></span></summary><div class="ca-level-body">';
+    '<details class="ca-level" data-ca-step="3" open><summary class="ca-level-sum"><span class="ca-level-badge">3</span><span class="ca-level-titles"><span class="ca-level-name">Level 3: Battle Cards</span><span class="ca-level-tag">Practice the hardest moments</span></span></summary><div class="ca-level-body">';
+
+  var thinkScript =
+    "I understand you need to think about it but right now there is nothing to really think about yet because we didn't go over how the plan works, and secondly, we don't even know if you are approved yet, so what I normally do is...";
 
   var objs = [
     {
-      title: 'Price',
-      obj: '“This is too expensive.”',
+      tag: 'PRICE',
+      obj: "It's too expensive",
       a: 'Acknowledge: “I hear you — nobody wants to pay a dollar more than they have to.”',
       r: 'Respond: “Let’s anchor what you’re comparing: fixed dollars per month versus one ER visit without coverage.”',
-      c: 'Continue: “If the premium fits the budget you gave me, does locking today beat risking another month bare?”'
+      c: 'Continue: “If the premium fits the budget you gave me, does locking today beat risking another month bare?”',
+      mode: 'arc'
     },
     {
-      title: 'Think about it',
-      obj: '“I need to think about it.”',
-      a: 'Acknowledge: “Totally — it’s a real decision.”',
-      r: 'Respond: “What’s the one piece you want to think through — price, network, or what’s covered?”',
-      c: 'Continue: “If I answer that now, can we pick a time today to finalize so you’re not deciding on guesses?”'
+      tag: 'DELAY',
+      obj: 'I need to think about it',
+      ex: thinkScript,
+      mode: 'think'
     },
     {
-      title: 'Spouse',
-      obj: '“I need to talk to my spouse.”',
+      tag: 'SPOUSE',
+      obj: 'I need to talk to my spouse',
       a: 'Acknowledge: “Makes sense — they should be in the loop.”',
       r: 'Respond: “What would they ask that I can answer for both of you in two minutes?”',
-      c: 'Continue: “When are you both free for a three-way so we don’t lose the rate window?”'
+      c: 'Continue: “When are you both free for a three-way so we don’t lose the rate window?”',
+      mode: 'arc'
     },
     {
-      title: 'Send info',
-      obj: '“Just email me something.”',
+      tag: 'DELAY',
+      obj: 'Send me the information',
       a: 'Acknowledge: “Happy to get you something in writing.”',
       r: 'Respond: “These plans read wrong on paper without context — two minutes on the phone saves the back-and-forth.”',
-      c: 'Continue: “What outcome do you need the paperwork to prove — budget, network, or waiting period?”'
+      c: 'Continue: “What outcome do you need the paperwork to prove — budget, network, or waiting period?”',
+      mode: 'arc'
     },
     {
-      title: 'Trust',
-      obj: '“I’ve never heard of your company.”',
+      tag: 'TRUST',
+      obj: "I don't trust this",
       a: 'Acknowledge: “Fair — there are a lot of voices in health coverage.”',
       r: 'Respond: “You’re enrolling with the carrier; we’re Central Health Advisors on the front end. You’ll get confirmation numbers and carrier materials.”',
-      c: 'Continue: “What would you need to see on the enrollment confirmation to feel solid moving forward?”'
+      c: 'Continue: “What would you need to see on the enrollment confirmation to feel solid moving forward?”',
+      mode: 'arc'
     }
   ];
   for (var oi = 0; oi < objs.length; oi++) {
     var o = objs[oi];
+    html +=
+      '<div class="ca-obj-card"><div class="ca-obj-head"><span class="ca-obj-pill">' +
+      escHTML(o.tag) +
+      '</span></div><p class="ca-obj-line ca-obj-obj">' +
+      escHTML(o.obj) +
+      '</p>';
+    if (o.mode === 'think') {
+      html +=
+        '<p class="ca-arc-intro">Acknowledge → Respond → Continue</p><div class="ca-think-script"><p>' +
+        escHTML(o.ex) +
+        '</p><div class="ca-obj-footer">' +
+        _caCopyBtn(o.ex) +
+        '<span class="ca-obj-foot-hint">Example script</span></div></div></div>';
+      continue;
+    }
     var arcFull = o.obj + ' ' + o.a + ' ' + o.r + ' ' + o.c;
     html +=
-      '<div class="ca-obj-card"><div class="ca-obj-title">' +
-      escHTML(o.title) +
-      '</div><p class="ca-obj-line ca-obj-obj">' +
-      escHTML(o.obj) +
-      '</p><div class="ca-arc"><div class="ca-arc-row"><span class="ca-arc-lbl">A</span><div class="ca-arc-main"><p>' +
+      '<div class="ca-arc"><p class="ca-arc-intro">Acknowledge → Respond → Continue</p>' +
+      '<div class="ca-arc-row"><span class="ca-arc-lbl">A</span><div class="ca-arc-main"><p>' +
       escHTML(o.a) +
       '</p></div>' +
       _caCopyBtn(o.a) +
@@ -1707,21 +1839,34 @@ function renderTrainingHome() {
 
   // —— Level 4 ——
   html +=
-    '<details class="ca-level" open><summary class="ca-level-sum"><span class="ca-level-badge">4</span><span class="ca-level-titles"><span class="ca-level-name">Compliance</span><span class="ca-level-tag">What you CANNOT mess up</span></span></summary><div class="ca-level-body">';
+    '<details class="ca-level" data-ca-step="4" open><summary class="ca-level-sum"><span class="ca-level-badge">4</span><span class="ca-level-titles"><span class="ca-level-name">Level 4: Compliance Shield</span><span class="ca-level-tag">What you CANNOT mess up</span></span></summary><div class="ca-level-body">';
 
   var must = [
-    'No mental health, substance abuse, pregnancy.',
-    'Not ACA coverage.',
-    '12/12 pre-ex, 30-day sickness waiting.'
+    'This plan does not include mental health, substance abuse, or pregnancy-related care',
+    'This is not ACA/marketplace coverage',
+    '12-month pre-existing condition clause',
+    '30-day waiting period for sickness'
   ];
   var never = [
-    '"Just like marketplace"',
-    '"Covers everything"',
-    '"No pre-existing issues"'
+    { show: '\u274c "Just like marketplace"', copy: '"Just like marketplace"' },
+    { show: '\u274c "Covers everything"', copy: '"Covers everything"' },
+    { show: '\u274c "No pre-existing issues"', copy: '"No pre-existing issues"' },
+    {
+      show: '\u274c "Same as BCBS/major medical"',
+      copy: '"Same as BCBS/major medical"'
+    }
+  ];
+  var sayInstead = [
+    { show: '\u2705 "This is a limited benefit plan"', copy: '"This is a limited benefit plan"' },
+    { show: '\u2705 "Designed for healthy people"', copy: '"Designed for healthy people"' },
+    {
+      show: '\u2705 "Built for unexpected emergencies"',
+      copy: '"Built for unexpected emergencies"'
+    }
   ];
 
   html += '<div class="ca-compliance-block ca-compliance--must">';
-  html += '<div class="ca-compliance-hd">Must disclose</div><ul class="ca-compliance-list">';
+  html += '<div class="ca-compliance-hd">MUST DISCLOSE</div><ul class="ca-compliance-list">';
   for (var mi = 0; mi < must.length; mi++) {
     html +=
       '<li><span class="ca-li-txt">' +
@@ -1733,23 +1878,69 @@ function renderTrainingHome() {
   html += '</ul></div>';
 
   html += '<div class="ca-compliance-block ca-compliance--never">';
-  html += '<div class="ca-compliance-hd">Never say</div><ul class="ca-compliance-list">';
+  html += '<div class="ca-compliance-hd">NEVER SAY</div><ul class="ca-compliance-list">';
   for (var ni = 0; ni < never.length; ni++) {
     html +=
       '<li><span class="ca-li-txt ca-li-never">' +
-      escHTML(never[ni]) +
+      escHTML(never[ni].show) +
       '</span>' +
-      _caCopyBtn('Never say: ' + never[ni]) +
+      _caCopyBtn('Never say: ' + never[ni].copy) +
+      '</li>';
+  }
+  html += '</ul></div>';
+
+  html += '<div class="ca-compliance-block ca-compliance--say">';
+  html += '<div class="ca-compliance-hd">SAY INSTEAD</div><ul class="ca-compliance-list">';
+  for (var si2 = 0; si2 < sayInstead.length; si2++) {
+    html +=
+      '<li><span class="ca-li-txt ca-li-good">' +
+      escHTML(sayInstead[si2].show) +
+      '</span>' +
+      _caCopyBtn(sayInstead[si2].copy) +
       '</li>';
   }
   html += '</ul></div>';
 
   html += '</div></details>';
 
+  // —— Sales tactics (collapsed) ——
+  html +=
+    '<details class="ca-tactics"><summary class="ca-tactics-sum">SALES TACTICS QUICK REFERENCE</summary><div class="ca-tactics-body">';
+  html +=
+    '<div class="ca-tac-block"><div class="ca-tac-hd">ARC Method</div><ul class="ca-tac-list">' +
+    '<li><span class="ca-li-txt">A = Acknowledge what they said</span>' +
+    _caCopyBtn('A = Acknowledge what they said') +
+    '</li>' +
+    '<li><span class="ca-li-txt">R = Respond to redirect back to pitch</span>' +
+    _caCopyBtn('R = Respond to redirect back to pitch') +
+    '</li>' +
+    '<li><span class="ca-li-txt">C = Continue with script</span>' +
+    _caCopyBtn('C = Continue with script') +
+    '</li></ul></div>';
+  html +=
+    '<div class="ca-tac-block"><div class="ca-tac-hd">DON\'T DO</div><ul class="ca-tac-list">' +
+    '<li><span class="ca-li-txt">Don\'t say "um" or "uh"</span>' +
+    _caCopyBtn('Don\'t say "um" or "uh"') +
+    '</li>' +
+    '<li><span class="ca-li-txt">Don\'t say "basically" or "actually"</span>' +
+    _caCopyBtn('Don\'t say "basically" or "actually"') +
+    '</li>' +
+    '<li><span class="ca-li-txt">Don\'t say "honestly" or "to be honest"</span>' +
+    _caCopyBtn('Don\'t say "honestly" or "to be honest"') +
+    '</li>' +
+    '<li><span class="ca-li-txt">Don\'t add things to the script</span>' +
+    _caCopyBtn('Don\'t add things to the script') +
+    '</li>' +
+    '<li><span class="ca-li-txt">Don\'t overtalk - LESS IS MORE</span>' +
+    _caCopyBtn('Don\'t overtalk - LESS IS MORE') +
+    '</li></ul></div>';
+  html += '</div></details>';
+
   html += _caToolboxHtml();
   html += '</div>';
 
   pg.innerHTML = html;
+  chaAcademyInitProgress();
 }
 
 function openTrainingSection(id) {

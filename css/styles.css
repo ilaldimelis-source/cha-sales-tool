@@ -5993,64 +5993,110 @@ body.plan-drawer-lock {
   color: #475569;
 }
 
-/* ── CHA Academy (Training tab learning path) ─────────────────────── */
+/* ── CHA Academy (Training tab — Inter, bubble cards, vertical path) ─ */
 #page-traininghome .ca-wrap {
   max-width: 720px;
   margin: 0 auto 32px;
   padding: 0 4px 8px;
+  font-family: var(--font-ui), 'Inter', system-ui, sans-serif;
 }
 #page-traininghome .ca-hero {
   margin-bottom: 20px;
 }
-#page-traininghome .ca-progress {
-  margin-bottom: 24px;
-  padding: 16px 18px;
-  border-radius: 16px;
+
+#page-traininghome .ca-path {
+  margin-bottom: 22px;
+  padding: 18px 20px;
+  border-radius: 22px;
   background: var(--bg-card, #fff);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.07);
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  box-shadow: 0 6px 28px rgba(15, 23, 42, 0.08);
 }
-#page-traininghome .ca-progress-bar {
-  height: 6px;
+#page-traininghome .ca-path-meter {
+  height: 10px;
   border-radius: 999px;
-  background: #e2e8f0;
+  background: #e8ecf4;
   overflow: hidden;
   margin-bottom: 14px;
 }
-#page-traininghome .ca-progress-fill {
-  display: block;
+#page-traininghome .ca-path-meter-fill {
   height: 100%;
-  width: 100%;
+  width: 25%;
   border-radius: 999px;
   background: linear-gradient(90deg, var(--accent, #5175f1), #6366f1);
+  transition: width 0.28s ease;
 }
-#page-traininghome .ca-progress-steps {
+#ca-academy-root[data-ca-active-step='1'] .ca-path-meter-fill {
+  width: 25%;
+}
+#ca-academy-root[data-ca-active-step='2'] .ca-path-meter-fill {
+  width: 50%;
+}
+#ca-academy-root[data-ca-active-step='3'] .ca-path-meter-fill {
+  width: 75%;
+}
+#ca-academy-root[data-ca-active-step='4'] .ca-path-meter-fill {
+  width: 100%;
+}
+#page-traininghome .ca-path-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 6px 8px;
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  justify-content: center;
+  gap: 6px 4px;
+}
+#page-traininghome .ca-path-step {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 16px;
+  background: #f1f5f9;
   color: #64748b;
+  cursor: pointer;
+  font-family: var(--font-ui), 'Inter', system-ui, sans-serif;
+  transition:
+    background 0.18s,
+    color 0.18s,
+    box-shadow 0.18s;
 }
-#page-traininghome .ca-step-arrow {
+#page-traininghome .ca-path-step-n {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+#page-traininghome .ca-path-step-l {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  max-width: 92px;
+  line-height: 1.25;
+  text-align: center;
+}
+#page-traininghome .ca-path-step--on {
+  background: linear-gradient(145deg, var(--accent, #5175f1), #4f46e5);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(81, 117, 241, 0.35);
+}
+#page-traininghome .ca-path-join {
   color: #cbd5e1;
+  font-size: 12px;
   font-weight: 600;
-}
-#page-traininghome .ca-step--active {
-  color: var(--accent, #5175f1);
+  padding: 0 2px;
+  user-select: none;
 }
 
 #page-traininghome details.ca-level {
-  border-radius: 16px;
+  border-radius: 22px;
   background: var(--bg-card, #fff);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.07);
-  margin-bottom: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  box-shadow: 0 6px 28px rgba(15, 23, 42, 0.08);
+  margin-bottom: 16px;
   overflow: hidden;
+  scroll-margin-top: 96px;
 }
 #page-traininghome details.ca-level > summary.ca-level-sum {
   list-style: none;
@@ -6066,9 +6112,9 @@ body.plan-drawer-lock {
 }
 #page-traininghome .ca-level-badge {
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 14px;
   background: linear-gradient(145deg, var(--accent, #5175f1), #4f46e5);
   color: #fff;
   font-family: var(--font-ui);
@@ -6085,11 +6131,11 @@ body.plan-drawer-lock {
   min-width: 0;
 }
 #page-traininghome .ca-level-name {
-  font-family: var(--font-ui);
+  font-family: var(--font-ui), 'Inter', system-ui, sans-serif;
   font-size: 17px;
   font-weight: 700;
   color: var(--text-primary, #0f172a);
-  text-transform: capitalize;
+  text-transform: none;
 }
 #page-traininghome .ca-level-tag {
   font-size: 13px;
@@ -6103,11 +6149,11 @@ body.plan-drawer-lock {
 }
 
 #page-traininghome details.ca-nest {
-  border-radius: 12px;
+  border-radius: 18px;
   background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  margin-bottom: 10px;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  border: 1px solid #e8ecf4;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.05);
 }
 #page-traininghome details.ca-nest > summary.ca-nest-sum {
   list-style: none;
@@ -6135,6 +6181,30 @@ body.plan-drawer-lock {
   color: #64748b;
   font-style: italic;
 }
+#page-traininghome .ca-why {
+  margin: 10px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #475569;
+}
+#page-traininghome .ca-why-lbl {
+  font-weight: 700;
+  color: #334155;
+}
+#page-traininghome .ca-plan-row {
+  margin-bottom: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #334155;
+}
+#page-traininghome .ca-plan-lbl {
+  font-weight: 800;
+  color: var(--accent, #5175f1);
+  margin-right: 6px;
+}
+#page-traininghome .ca-plan-txt {
+  color: #475569;
+}
 #page-traininghome .ca-nest-actions {
   margin-top: 10px;
 }
@@ -6150,8 +6220,8 @@ body.plan-drawer-lock {
 }
 #page-traininghome .ca-tl-dot {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 999px;
   background: #eff6ff;
   border: 2px solid var(--accent, #5175f1);
@@ -6166,14 +6236,22 @@ body.plan-drawer-lock {
 #page-traininghome .ca-tl-card {
   flex: 1;
   min-width: 0;
-  border-radius: 12px;
-  padding: 12px 14px;
+  border-radius: 18px;
+  padding: 14px 16px;
   background: #fff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  border: 1px solid #e8ecf4;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+}
+#page-traininghome .ca-tl-kicker {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 4px;
 }
 #page-traininghome .ca-tl-title {
-  font-family: var(--font-ui);
+  font-family: var(--font-ui), 'Inter', system-ui, sans-serif;
   font-size: 15px;
   font-weight: 700;
   color: #0f172a;
@@ -6184,6 +6262,51 @@ body.plan-drawer-lock {
   font-size: 14px;
   color: #475569;
   line-height: 1.55;
+}
+#page-traininghome .ca-tl-key {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e8ecf4;
+}
+#page-traininghome .ca-tl-key-lbl {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+#page-traininghome .ca-tl-key p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334155;
+}
+#page-traininghome .ca-tl-script {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #eef2ff;
+  border: 1px solid rgba(81, 117, 241, 0.2);
+}
+#page-traininghome .ca-tl-script-lbl {
+  display: block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent, #5175f1);
+  margin-bottom: 6px;
+}
+#page-traininghome .ca-tl-script p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #1e293b;
+  font-weight: 500;
 }
 #page-traininghome .ca-tl-actions {
   margin-top: 10px;
@@ -6198,19 +6321,53 @@ body.plan-drawer-lock {
 }
 
 #page-traininghome .ca-obj-card {
-  border-radius: 14px;
+  border-radius: 18px;
   padding: 14px 16px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   background: #fff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.06);
+  border: 1px solid #e8ecf4;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06);
+}
+#page-traininghome .ca-obj-head {
+  margin-bottom: 8px;
+}
+#page-traininghome .ca-obj-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(81, 117, 241, 0.12);
+  color: #4338ca;
 }
 #page-traininghome .ca-obj-title {
-  font-family: var(--font-ui);
+  font-family: var(--font-ui), 'Inter', system-ui, sans-serif;
   font-size: 15px;
   font-weight: 700;
   color: #0f172a;
   margin-bottom: 8px;
+}
+#page-traininghome .ca-arc-intro {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+#page-traininghome .ca-think-script {
+  margin-top: 4px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f8fafc;
+  border: 1px solid #e8ecf4;
+}
+#page-traininghome .ca-think-script p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #334155;
 }
 #page-traininghome .ca-obj-obj {
   font-weight: 600;
@@ -6269,6 +6426,14 @@ body.plan-drawer-lock {
 #page-traininghome .ca-compliance--never {
   background: #fef2f2;
   border: 1px solid #fecaca;
+}
+#page-traininghome .ca-compliance--say {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+#page-traininghome .ca-li-good {
+  font-weight: 600;
+  color: #1d4ed8;
 }
 #page-traininghome .ca-compliance-hd {
   font-family: var(--font-ui);
@@ -6388,5 +6553,63 @@ body.plan-drawer-lock {
 #page-traininghome .ca-toolbox-pill:hover {
   border-color: var(--accent, #5175f1);
   color: var(--accent, #5175f1);
+}
+
+#page-traininghome details.ca-tactics {
+  margin-top: 18px;
+  border-radius: 22px;
+  background: #fafbfc;
+  border: 1px dashed #cbd5e1;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+}
+#page-traininghome details.ca-tactics > summary.ca-tactics-sum {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 18px;
+  font-family: var(--font-ui), 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #475569;
+}
+#page-traininghome details.ca-tactics > summary.ca-tactics-sum::-webkit-details-marker {
+  display: none;
+}
+#page-traininghome .ca-tactics-body {
+  padding: 0 18px 18px;
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+#page-traininghome .ca-tac-block {
+  margin-top: 14px;
+}
+#page-traininghome .ca-tac-block:first-child {
+  margin-top: 10px;
+}
+#page-traininghome .ca-tac-hd {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+#page-traininghome .ca-tac-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+#page-traininghome .ca-tac-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.06);
+  font-size: 14px;
+  color: #334155;
+}
+#page-traininghome .ca-tac-list li:last-child {
+  border-bottom: 0;
 }
 
