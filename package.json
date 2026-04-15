@@ -21,26 +21,30 @@
     "extract-pdfs": "node scripts/extract-knowledge-pdfs.js",
     "build:pdf-knowledge": "node scripts/build-plan-pdf-knowledge.js",
     "verify:pdf-knowledge": "node scripts/verify-pdf-knowledge.js",
+    "rag:setup": "node scripts/setup-rag.js",
+    "rag:verify": "node scripts/verify-rag.js",
     "verify": "node scripts/verify.js",
     "diagnose": "node scripts/diagnose.js",
     "postinstall": "node scripts/install-hooks.js",
     "revert": "git revert HEAD --no-edit && git push origin main"
   },
   "devDependencies": {
-    "pdf-parse": "1.1.1",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.55.0",
     "eslint": "^10.2.0",
     "globals": "^17.4.0",
     "htmlhint": "^1.7.1",
     "http-server": "^14.1.1",
+    "pdf-parse": "^1.1.1",
     "prettier": "^3.6.2",
     "stylelint": "^17.6.0",
     "stylelint-config-standard": "^40.0.0"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.103.2",
     "@vercel/speed-insights": "^2.0.0",
     "dotenv": "^17.4.1",
-    "node-fetch": "^2.7.0"
+    "node-fetch": "^2.7.0",
+    "openai": "^6.34.0"
   }
 }

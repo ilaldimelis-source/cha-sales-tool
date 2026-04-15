@@ -945,13 +945,129 @@ function brRenderLocalResult(result, planName) {
   brAddMsg('ai', html);
 }
 
+function brServerAnswer(query, planId) {
+  return fetch('/api/br-answer?t=' + Date.now(), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: query,
+      planId: planId || null,
+      matchCount: 5,
+      matchThreshold: 0.65
+    })
+  }).then(function (response) {
+    if (!response.ok) throw new Error('br-answer error ' + response.status);
+    return response.json();
+  });
+}
+
+function brStatusColor(status) {
+  var s = String(status || '').toUpperCase();
+  if (s === 'COVERED') {
+    return { border: '#22c55e', bg: '#f0fdf4', badge: '#16a34a', text: '#166534' };
+  }
+  if (s === 'NOT COVERED') {
+    return { border: '#ef4444', bg: '#fef2f2', badge: '#dc2626', text: '#7f1d1d' };
+  }
+  if (s === 'PARTIAL') {
+    return { border: '#3b82f6', bg: '#eff6ff', badge: '#2563eb', text: '#1e3a8a' };
+  }
+  return { border: '#f59e0b', bg: '#fffbeb', badge: '#d97706', text: '#78350f' };
+}
+
+function brRenderServerAnswer(payload, planName, planSource) {
+  var status = String((payload && payload.status) || 'VERIFY').toUpperCase();
+  var fact = String(
+    (payload && payload.fact) || '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]'
+  );
+  var sayThis = String((payload && payload.sayThis) || '');
+  var source = String(
+    (payload && payload.source) || planSource || planName || 'Plan PDF / POLICY_DOCS'
+  );
+  var scope = String((payload && payload.scope) || 'none');
+  var citations =
+    payload && Array.isArray(payload.citations) ? payload.citations : [];
+  var requestId = String((payload && payload.requestId) || '');
+  var c = brStatusColor(status);
+
+  var scopeLabel = 'No retrieval context';
+  if (scope === 'preferred_plan') scopeLabel = 'Selected plan context';
+  else if (scope === 'fallback_global') scopeLabel = 'Fallback cross-plan context';
+
+  var sayBlock = '<span style="color:#94a3b8;">—</span>';
+  if (sayThis) {
+    var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    sayBlock =
+      '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:4px;">' +
+      '<div style="font-size:12px;font-style:italic;color:#374151;">' +
+      escHTML(sayThis).replace(/\n/g, '<br>') +
+      '</div>' +
+      '<button onclick="navigator.clipboard.writeText(\'' +
+      safeText +
+      "');this.textContent='Copied!';var b=this;setTimeout(function(){b.textContent='Copy';},2000);\" " +
+      'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;">Copy</button></div>';
+  }
+
+  var citationsHtml = '<span style="color:#94a3b8;">—</span>';
+  if (citations.length) {
+    citationsHtml =
+      '<details style="margin-top:4px;"><summary style="cursor:pointer;color:#334155;font-size:12px;">Citations (' +
+      citations.length +
+      ')</summary><div style="margin-top:8px;">';
+    for (var i = 0; i < citations.length; i++) {
+      var ct = citations[i] || {};
+      var sim =
+        typeof ct.similarity === 'number'
+          ? ct.similarity.toFixed(3)
+          : String(ct.similarity || 'n/a');
+      citationsHtml +=
+        '<div style="font-size:11px;color:#475569;line-height:1.5;margin-bottom:6px;">' +
+        '<strong>[' +
+        (i + 1) +
+        ']</strong> ' +
+        escHTML(ct.plan_name || ct.plan_id || 'Unknown plan') +
+        ' • ' +
+        escHTML(ct.source_pdf || source) +
+        ' • chunk ' +
+        escHTML(ct.chunk_index) +
+        ' • sim ' +
+        escHTML(sim) +
+        '</div>';
+    }
+    citationsHtml += '</div></details>';
+  }
+
+  var sourceHud = escHTML(source);
+  if (requestId) sourceHud += '<div style="margin-top:4px;color:#94a3b8;">Request: ' + escHTML(requestId) + '</div>';
+
+  var html =
+    '<div style="border-left:4px solid ' +
+    c.border +
+    ';background:' +
+    c.bg +
+    ';border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid ' +
+    c.border +
+    '35;">' +
+    '<div style="font-family:var(--font-ui);font-size:10px;font-weight:800;letter-spacing:0.1em;color:#64748b;margin-bottom:6px;">BENEFITS HUD</div>' +
+    _brHudRow('PLAN', escHTML(planName || '')) +
+    _brHudRow(
+      'STATUS',
+      '<span style="display:inline-block;background:' +
+        c.badge +
+        ';color:#fff;font-size:10px;font-weight:700;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">' +
+        escHTML(status) +
+        '</span>'
+    ) +
+    _brHudRow('FACT', '<span style="color:' + c.text + ';">' + escHTML(fact).replace(/\n/g, '<br>') + '</span>') +
+    _brHudRow('SAY THIS', sayBlock) +
+    _brHudRow('SOURCE', sourceHud) +
+    _brHudRow('RETRIEVAL', escHTML(scopeLabel)) +
+    _brHudRow('CITATIONS', citationsHtml) +
+    '</div>';
+  brAddMsg('ai', html);
+}
+
 function brAIAnswer(query, planId) {
-  // Shared company key (fetched by ai-tools.js) always wins. Fall
-  // back to a local key only if the shared key failed to load.
-  var apiKey =
-    (typeof _aiGroqFallbackKey !== 'undefined' && _aiGroqFallbackKey) ||
-    localStorage.getItem('cha_groq_key') ||
-    CHA_OFFICE_GROQ_KEY;
   var plan = null;
   if (typeof POLICY_DOCS !== 'undefined') {
     for (var i = 0; i < POLICY_DOCS.length; i++) {
@@ -974,88 +1090,20 @@ function brAIAnswer(query, planId) {
     return;
   }
 
-  // STEP 2: No confident local answer — try AI
-  if (!apiKey || apiKey === 'skip' || apiKey === '' || apiKey.length < 20) {
-    console.log('[CHA] No valid key, falling back to structured answer');
-    var plansToUse = brActivePlan ? [brActivePlan] : [];
-    brAddMsg('ai', brStructuredAnswer(query, plansToUse));
-    return;
-  }
-
-  console.log('[CHA Groq] Calling AI for plan:', planId, 'query:', query);
+  console.log('[CHA RAG] Calling /api/br-answer for plan:', planId, 'query:', query);
   brShowTyping();
-
-  var planContext = plan.rawText
-    ? 'COMPLETE PDF TEXT (verbatim extract from knowledge_base; use only this for facts):\n' +
-      plan.rawText
-    : 'PLAN: ' +
-      plan.name +
-      '\nTYPE: ' +
-      (plan.type || '') +
-      '\nNETWORK: ' +
-      (plan.network || '') +
-      '\nBENEFITS:\n' +
-      JSON.stringify(plan.benefits || [], null, 2) +
-      '\nLIMITATIONS:\n' +
-      JSON.stringify(plan.limitations || [], null, 2) +
-      '\nWAITING PERIODS:\n' +
-      JSON.stringify(plan.waitingPeriods || [], null, 2) +
-      '\nPRE-EX:\n' +
-      JSON.stringify(plan.preEx || '', null, 2) +
-      '\nNOTES:\n' +
-      (plan.planNotes || '');
-
-  var sysPrompt =
-    'You are a health insurance benefits assistant for Central Health Advisors. Use ONLY the plan data in PLAN DATA below — nothing else. When PLAN DATA includes "COMPLETE PDF TEXT", treat that block as the authoritative full document and search it thoroughly before answering. ' +
-    'NEVER say "I don\'t know", "I\'m not sure", "I am not sure", "I cannot answer", or similar hedges. Use a consultative pivot: acknowledge what the document does or does not state, keep compliance, and either cite concrete lines or use STATUS: VERIFY with clear next steps for the agent. ' +
-    'NEVER guess, infer from industry norms, or fill gaps with assumptions. If the answer is not explicitly supported by PLAN DATA, you MUST output STATUS: VERIFY and FACT must be exactly: [UNCONFIRMED: PLEASE CHECK PLAN DOCS] (SAY THIS may repeat that phrase or stay empty). ' +
-    'RULES: STATUS must be COVERED, NOT COVERED, VERIFY, or PARTIAL. Use COVERED only when the benefit is clearly described in plan data. Use NOT COVERED ONLY when plan data explicitly says excluded, not covered, not a benefit, or lists an exclusion. Use VERIFY when the topic is not mentioned or ambiguous. NEVER use NOT COVERED for missing data — use VERIFY with the unconfirmed phrase. ' +
-    'THREE-TIER CHECK: If the cited plan language includes the concepts exclusion, not covered, or not a benefit for this topic, you MUST set STATUS: NOT COVERED (not COVERED or VERIFY). ' +
-    'MEC plans have NO deductible — only state that if PLAN DATA confirms MEC. MedFirst 1 Rx = BestChoiceRx discount card only if PLAN DATA says so. ' +
-    'FORMAT RESPONSE EXACTLY LIKE THIS WITH NO VARIATIONS (use these labels only):\nSTATUS: COVERED\nFACT: one to three lines from plan data only\nSAY THIS: exact words for agent to read\nSOURCE: document file name or section if identifiable; otherwise "Plan PDF / POLICY_DOCS"\n\nPLAN DATA:\n' +
-    planContext;
-
-  function _brGroqCall() {
-    return fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + apiKey
-      },
-      body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        max_tokens: 600,
-        temperature: 0.0,
-        messages: [
-          { role: 'system', content: sysPrompt },
-          { role: 'user', content: 'Agent question: ' + query }
-        ]
-      })
-    }).then(function (response) {
-      console.log('[CHA Groq] Status:', response.status);
-      if (!response.ok) throw new Error('API error ' + response.status);
-      return response.json();
-    });
-  }
-
-  _brGroqCall()
+  brServerAnswer(query, plan.id)
     .catch(function (err) {
-      // Silent retry once (handles transient 429 / network blips)
-      console.warn('[CHA Groq] First attempt failed, retrying once:', err.message);
-      return _brGroqCall();
+      console.warn('[CHA RAG] First attempt failed, retrying once:', err.message);
+      return brServerAnswer(query, plan.id);
     })
-    .then(function (data) {
+    .then(function (payload) {
       brHideTyping();
-      brRenderAIAnswer(
-        data.choices[0].message.content,
-        plan.name,
-        plan.source || ''
-      );
+      brRenderServerAnswer(payload, plan.name, plan.source || '');
     })
     .catch(function (err) {
-      // Silent fallback to local lookup — no error shown to user
       brHideTyping();
-      console.warn('[CHA Groq] Falling back to local lookup:', err.message);
+      console.warn('[CHA RAG] Falling back to local lookup:', err.message);
       var plansToUse = brActivePlan ? [brActivePlan] : [];
       brAddMsg('ai', brStructuredAnswer(query, plansToUse));
     });
