@@ -7,6 +7,20 @@ var policyDocSearch = '';
 var policyDocOpen = null;
 var _pdSearchTimer;
 
+function _pdIsDisplayablePlan(p) {
+  if (!p) return false;
+  var id = String(p.id || '').toLowerCase();
+  var type = String(p.type || '').toLowerCase();
+  var carrier = String(p.carrier || '').trim();
+  var network = String(p.network || '').trim();
+  if (!String(p.name || '').trim()) return false;
+  if (id.indexOf('kb-') === 0) return false;
+  if (type === 'knowledge base pdf') return false;
+  // Raw PDF rows use placeholder metadata like "— · —".
+  if (carrier === '—' && network === '—') return false;
+  return true;
+}
+
 function _pdFindSalesPlan(doc) {
   if (typeof PLANS === 'undefined') return null;
   for (var i = 0; i < PLANS.length; i++) {
@@ -312,6 +326,7 @@ function _pdExpandedDetail(plan) {
 function renderPolicyResults() {
   var html = '';
   var filtered = POLICY_DOCS.filter(function (p) {
+    if (!_pdIsDisplayablePlan(p)) return false;
     var groupOk = policyDocFilter === 'All' || p.group === policyDocFilter;
     if (!groupOk) return false;
     if (!policyDocSearch.trim()) return true;

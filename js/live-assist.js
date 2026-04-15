@@ -443,8 +443,11 @@ function openLaPanel(type) {
         if (!p) return false;
         var id = String(p.id || '').toLowerCase();
         var typeName = String(p.type || '').toLowerCase();
+        var carrier = String(p.carrier || '').trim();
+        var network = String(p.network || '').trim();
         if (id.indexOf('kb-') === 0) return false;
         if (typeName === 'knowledge base pdf') return false;
+        if (carrier === '—' && network === '—') return false;
         return !!String(p.name || '').trim();
       }).forEach(function (p) {
         var gColor = groupColors[p.group] || '#6B7280';

@@ -15,12 +15,8 @@ var CHA_ORPHAN_PDF_PLANS = [{"id":"kb-bcs-brochure-2","name":"BCS_Brochure_2","g
     POLICY_DOCS.forEach(function (p) {
       ids[p.id] = 1;
     });
-    CHA_ORPHAN_PDF_PLANS.forEach(function (plan) {
-      if (!ids[plan.id]) {
-        POLICY_DOCS.push(plan);
-        ids[plan.id] = 1;
-      }
-    });
+    // Keep orphan PDF extracts available for diagnostics/search tooling,
+    // but do not inject them into POLICY_DOCS because they are not plans.
   }
   if (typeof chaApplyKnowledgeBasePdfToDocs === "function") {
     chaApplyKnowledgeBasePdfToDocs(POLICY_DOCS);

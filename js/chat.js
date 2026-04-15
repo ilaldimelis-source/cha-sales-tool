@@ -77,10 +77,13 @@ function brIsRealPlanRecord(plan) {
   var id = String(plan.id || '').toLowerCase();
   var type = String(plan.type || '').toLowerCase();
   var name = String(plan.name || '').trim();
+  var carrier = String(plan.carrier || '').trim();
+  var network = String(plan.network || '').trim();
   if (!id || !name) return false;
   // Exclude orphan knowledge-base file rows injected by plan-data-pdf-raw.js.
   if (id.indexOf('kb-') === 0) return false;
   if (type === 'knowledge base pdf') return false;
+  if (carrier === '—' && network === '—') return false;
   return true;
 }
 
@@ -355,6 +358,10 @@ function brRenderPlanButtons(groupFilter) {
   var planBar = document.getElementById('br-plan-bar');
   if (!planBar) return;
   planBar.innerHTML = '';
+  // Show all plans in filtered views without requiring horizontal scroll.
+  planBar.style.flexWrap = groupFilter ? 'wrap' : 'nowrap';
+  planBar.style.overflowX = groupFilter ? 'hidden' : 'auto';
+  planBar.style.overflowY = 'hidden';
 
   var plans = groupFilter
     ? BR_PLANS.filter(function (p) {

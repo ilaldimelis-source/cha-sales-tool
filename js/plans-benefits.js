@@ -1112,6 +1112,19 @@ var PLAN_GROUPS = [
 ];
 var activePlanGroup = 'All';
 
+function isDisplayablePlanDoc(plan) {
+  if (!plan) return false;
+  var id = String(plan.id || '').toLowerCase();
+  var type = String(plan.type || '').toLowerCase();
+  var carrier = String(plan.carrier || '').trim();
+  var network = String(plan.network || '').trim();
+  if (!String(plan.name || '').trim()) return false;
+  if (id.indexOf('kb-') === 0) return false;
+  if (type === 'knowledge base pdf') return false;
+  if (carrier === '—' && network === '—') return false;
+  return true;
+}
+
 function renderPlans() {
   var html =
     '<div class="ph">' +
@@ -1278,7 +1291,7 @@ function renderPlanGroups() {
   var html = '';
   showGroups.forEach(function (grp) {
     var docs = POLICY_DOCS.filter(function (p) {
-      return p.group === grp.key;
+      return p.group === grp.key && isDisplayablePlanDoc(p);
     });
     if (!docs.length) return;
 
