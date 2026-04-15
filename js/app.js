@@ -1339,6 +1339,28 @@ if (document.readyState === 'loading') {
   });
 })();
 
+// Auto-close mobile sidebar after navigation item click.
+(function _chaSidebarAutoClose() {
+  function bind() {
+    var items = document.querySelectorAll('.sidebar a, .sidebar button, .sidebar .nav-item, .sidebar .nb');
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].dataset.autoCloseBound === '1') continue;
+      items[i].dataset.autoCloseBound = '1';
+      items[i].addEventListener('click', function () {
+        var sidebar = document.querySelector('.sidebar');
+        if (sidebar) sidebar.classList.remove('open');
+        var overlay = document.querySelector('.sidebar-overlay');
+        if (overlay) overlay.style.display = 'none';
+      });
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bind);
+  } else {
+    bind();
+  }
+})();
+
 // ── Keyboard Shortcuts ────────────────────────────────
 document.addEventListener('keydown', function (e) {
   // Ctrl+K — open search overlay

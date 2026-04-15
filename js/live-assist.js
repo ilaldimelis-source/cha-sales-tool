@@ -38,6 +38,204 @@ function copyScript(btn) {
     .catch(function () {});
 }
 
+function showToast(message, kind) {
+  var id = 'cha-toast-lite';
+  var old = document.getElementById(id);
+  if (old) old.remove();
+  var t = document.createElement('div');
+  t.id = id;
+  t.textContent = message;
+  t.style.cssText =
+    'position:fixed;right:20px;bottom:20px;z-index:99999;padding:10px 14px;border-radius:10px;font-size:12px;font-weight:600;color:#fff;' +
+    (kind === 'error' ? 'background:#ef4444;' : 'background:#10b981;');
+  document.body.appendChild(t);
+  setTimeout(function () {
+    if (t && t.parentNode) t.parentNode.removeChild(t);
+  }, 1800);
+}
+
+var CHA_SCRIPT_LINES = [
+  { text: "Central Health Advisors, this is [NAME]. I'll be your licensed health insurance agent assisting you today.", tone: 'authority' },
+  { text: 'Please note that this call may be recorded for training and quality assurance.', tone: 'authority' },
+  { text: 'Were you looking for an individual or family plan TODAY?', tone: 'friendly' },
+  { text: 'OK! GREAT! Now are you currently insured?', tone: 'friendly' },
+  { text: 'Do you have any pre-existing medical conditions I should be aware of?', tone: 'friendly' },
+  { text: "Are you currently taking any medications you'd like me to make sure are covered?", tone: 'friendly' },
+  { text: 'What is your Date of Birth?', tone: 'friendly' },
+  { text: 'Please verify your zip code?', tone: 'friendly' },
+  { text: 'Are you a tobacco user?', tone: 'friendly' },
+  { text: 'How many times do you go to the doctors on a yearly basis?', tone: 'friendly' },
+  { text: "Do you have any doctors you'd like to keep in the network?", tone: 'friendly' },
+  { text: 'Do you have any upcoming surgeries, procedures or treatments scheduled?', tone: 'friendly' },
+  { text: 'How much money do you make on a yearly basis BEFORE TAX?', tone: 'authority' },
+  { text: "Is there a monthly price range you're hoping to stay within?", tone: 'friendly' },
+  { text: 'Assuming we find the right fit, how soon would you like your coverage to begin?', tone: 'friendly' },
+  { text: "I'm going to submit your information into my system now. Give me about 30-60 seconds...", tone: 'authority' }
+];
+var chaScriptIndex = parseInt(localStorage.getItem('scriptIndex') || '0', 10);
+var complianceChecklist = { agency: false, recording: false, exclusions: false, preex: false };
+var academyProgress = JSON.parse(localStorage.getItem('academyProgress') || '{"1":false,"2":false,"3":false,"4":false}');
+
+function showCurrentLine() {
+  var display = document.getElementById('script-display');
+  var counter = document.getElementById('line-counter');
+  if (!display || !counter) return;
+  if (chaScriptIndex < 0) chaScriptIndex = 0;
+  if (chaScriptIndex >= CHA_SCRIPT_LINES.length) chaScriptIndex = CHA_SCRIPT_LINES.length - 1;
+  var line = CHA_SCRIPT_LINES[chaScriptIndex];
+  var toneColor = line.tone === 'authority' ? '#6366F1' : '#F59E0B';
+  var toneIcon = line.tone === 'authority' ? 'AUTHORITY' : 'FRIENDLY';
+  display.innerHTML =
+    '<div class="script-line" style="box-shadow:0 0 12px ' + toneColor + ';border-left:4px solid ' + toneColor + ';">' +
+    '<div class="tone-indicator" style="color:' + toneColor + ';">' + toneIcon + '</div>' +
+    '<p>' + escHTML(line.text) + '</p></div>';
+  counter.textContent = (chaScriptIndex + 1) + ' / ' + CHA_SCRIPT_LINES.length;
+}
+
+function nextLine() {
+  chaScriptIndex = Math.min(chaScriptIndex + 1, CHA_SCRIPT_LINES.length - 1);
+  localStorage.setItem('scriptIndex', String(chaScriptIndex));
+  showCurrentLine();
+}
+function prevLine() {
+  chaScriptIndex = Math.max(chaScriptIndex - 1, 0);
+  localStorage.setItem('scriptIndex', String(chaScriptIndex));
+  showCurrentLine();
+}
+function resetScript() {
+  chaScriptIndex = 0;
+  localStorage.setItem('scriptIndex', '0');
+  showCurrentLine();
+}
+function updateChecklist(item) {
+  var el = document.getElementById('check-' + item);
+  complianceChecklist[item] = !!(el && el.checked);
+  checkSubmitEligibility();
+}
+function checkSubmitEligibility() {
+  var btn = document.getElementById('submit-sale-btn');
+  if (!btn) return;
+  var ok = true;
+  var keys = Object.keys(complianceChecklist);
+  for (var i = 0; i < keys.length; i++) {
+    if (!complianceChecklist[keys[i]]) ok = false;
+  }
+  btn.disabled = !ok;
+}
+function attemptSubmit() {
+  var ok = true;
+  var keys = Object.keys(complianceChecklist);
+  for (var i = 0; i < keys.length; i++) {
+    if (!complianceChecklist[keys[i]]) ok = false;
+  }
+  if (!ok) {
+    showToast('Complete all compliance disclosures first.', 'error');
+    return false;
+  }
+  showToast('Sale submitted.', 'success');
+  return true;
+}
+
+function copyToClipboard(text) {
+  safeCopy(text).then(function () { showToast('Copied.', 'success'); }).catch(function () {});
+}
+function markComplete(moduleNum) {
+  academyProgress[moduleNum] = true;
+  localStorage.setItem('academyProgress', JSON.stringify(academyProgress));
+  updateProgressBar();
+}
+function updateProgressBar() {
+  var completed = 0;
+  var vals = Object.keys(academyProgress);
+  for (var i = 0; i < vals.length; i++) if (academyProgress[vals[i]]) completed++;
+  var fill = document.getElementById('progress-fill');
+  var text = document.querySelector('.progress-text');
+  if (fill) fill.style.width = ((completed / 4) * 100) + '%';
+  if (text) text.textContent = completed + '/4 Complete';
+}
+
+function parseReceipt(rawText) {
+  var text = String(rawText || '');
+  var out = [];
+  var dateMatch = text.match(/Confirmation Date:\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/i);
+  var saleDate = dateMatch ? dateMatch[1] : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  var autoDate = !dateMatch;
+  var re = /(?:premium|monthly)[:\s]*\$?([\d,]+\.?\d*)/gi;
+  var m;
+  var idx = 0;
+  while ((m = re.exec(text)) !== null) {
+    var monthly = parseFloat(String(m[1]).replace(',', '')) || 0;
+    out.push({
+      id: Date.now() + idx,
+      date: saleDate,
+      dateAutoDefaulted: autoDate,
+      member: 'Client ' + (idx + 1),
+      product: 'Plan ' + (idx + 1),
+      monthlyPremium: monthly,
+      commission: monthly * 0.25,
+      timestamp: new Date().toISOString()
+    });
+    idx++;
+  }
+  return out;
+}
+function parseAndReview() {
+  var input = document.getElementById('receipt-input');
+  if (!input) return;
+  var deals = parseReceipt(input.value || '');
+  if (!deals.length) {
+    showToast('No receipts found. Check your paste.', 'error');
+    return;
+  }
+  try {
+    var existing = JSON.parse(localStorage.getItem('trackerDeals') || '[]');
+    localStorage.setItem('trackerDeals', JSON.stringify(existing.concat(deals)));
+  } catch (_e) {}
+  updateTotals();
+  showToast('Parsed ' + deals.length + ' receipt line(s).', 'success');
+}
+function updateTotals() {
+  var deals = [];
+  try { deals = JSON.parse(localStorage.getItem('trackerDeals') || '[]'); } catch (_e) {}
+  var today = new Date().toDateString();
+  var weekAgo = new Date();
+  weekAgo.setDate(weekAgo.getDate() - 7);
+  var dailyTotal = 0;
+  var dailyCom = 0;
+  var weeklyTotal = 0;
+  var weeklyCom = 0;
+  for (var i = 0; i < deals.length; i++) {
+    var d = deals[i];
+    var when = new Date(d.timestamp || Date.now());
+    if (when.toDateString() === today) {
+      dailyTotal += Number(d.monthlyPremium) || 0;
+      dailyCom += Number(d.commission) || 0;
+    }
+    if (when >= weekAgo) {
+      weeklyTotal += Number(d.monthlyPremium) || 0;
+      weeklyCom += Number(d.commission) || 0;
+    }
+  }
+  var dailyEl = document.getElementById('daily-total');
+  var weeklyEl = document.getElementById('weekly-total');
+  if (dailyEl) dailyEl.innerHTML = 'Today: $' + dailyTotal.toFixed(2) + ' <span style="color:#10B981;">| Commission: $' + dailyCom.toFixed(2) + '</span>';
+  if (weeklyEl) weeklyEl.innerHTML = 'This Week: $' + weeklyTotal.toFixed(2) + ' <span style="color:#10B981;">| Commission: $' + weeklyCom.toFixed(2) + '</span>';
+}
+
+function _bindBentoKeys() {
+  if (document.body.dataset.chaBentoKeys === '1') return;
+  document.body.dataset.chaBentoKeys = '1';
+  document.addEventListener('keydown', function (e) {
+    if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      nextLine();
+    }
+    if (e.code === 'Escape') resetScript();
+    if (e.code === 'ArrowRight') nextLine();
+    if (e.code === 'ArrowLeft') prevLine();
+  });
+}
+
 var QA_REBUTTALS = [
   {
     q: 'So how much will the doctor visit cost me?',
@@ -247,7 +445,28 @@ function renderLive() {
   html +=
     '<div class="soa-copy-strip la-soa-hud" onclick="copySOA(this)">' +
     '<div class="la-soa-hud-txt"><strong>SOA</strong> <span class="la-soa-hint">Tap = copy full wording</span></div>' +
-    '<button type="button" class="la-soa-cheat" onclick="event.stopPropagation();showPage(\'cheatsheet\')">Sheets</button></div>';
+    '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="event.stopPropagation();showPage(\'cheatsheet\')">📋 Cheat Sheet</button></div>';
+  html += '<div class="bento-container">';
+  html += '<div class="bento-card playbook-box"><div class="card-header"><h2>📜 Live Playbook</h2><span id="line-counter">1 / 16</span></div><div id="script-display"></div>';
+  html += '<div class="playbook-controls"><button onclick="prevLine()">← Prev</button><button onclick="nextLine()" class="primary-btn">Next Line →</button><button onclick="resetScript()">Reset</button></div>';
+  html += '<div class="shortcuts-hint">SPACE = next, ESC = reset, ←/→ = navigate</div>';
+  html += '<div class="compliance-checklist"><h4>🔒 Audit Lock - Complete Before Submit:</h4>' +
+    '<label><input type="checkbox" id="check-agency" onchange="updateChecklist(\'agency\')"> Agency: "Central Health Advisors"</label>' +
+    '<label><input type="checkbox" id="check-recording" onchange="updateChecklist(\'recording\')"> Recording: "This call may be recorded"</label>' +
+    '<label><input type="checkbox" id="check-exclusions" onchange="updateChecklist(\'exclusions\')"> Exclusions: "Pregnancy, Mental Health, Substance Abuse excluded"</label>' +
+    '<label><input type="checkbox" id="check-preex" onchange="updateChecklist(\'preex\')"> 12/12 Rule disclosed</label>' +
+    '<button id="submit-sale-btn" disabled onclick="attemptSubmit()">Submit Sale</button></div></div>';
+  html += '<div class="bento-card brain-box"><div class="card-header"><h2>🧠 The Brain</h2></div>';
+  html += '<div class="chat-container" id="chat-messages"><div class="ai-message welcome">Ask me anything about plans, benefits, objections, or compliance.</div></div>';
+  html += '<div class="chat-input-container"><input type="text" id="chat-input" placeholder="Type your question..." /><button id="send-btn">Send</button></div>';
+  html += '<div class="quick-actions"><button onclick="handleChatMessage(\'MEC vs STM?\')">MEC vs STM</button><button onclick="handleChatMessage(\'Spouse objection?\')">Spouse</button><button onclick="handleChatMessage(\'12/12 rule?\')">12/12 Rule</button><button onclick="handleChatMessage(\'ER vs UC?\')">ER vs UC</button></div></div>';
+  html += '<div class="bento-card academy-box"><div class="tracker-section"><h3>📋 Receipt Tracker</h3><textarea id="receipt-input" placeholder="Paste carrier receipt here..."></textarea><button onclick="parseAndReview()">Parse Receipt</button><div id="daily-total"></div><div id="weekly-total"></div></div>';
+  html += '<div class="academy-section"><h3>🎓 CHA Academy</h3><div class="progress-bar"><div id="progress-fill"></div></div><p class="progress-text">0/4 Complete</p>';
+  html += '<details><summary>📚 Module 1: Insurance Vocabulary</summary><div class="vocab-card"><strong>Premium</strong><p>Monthly payment to keep membership active</p><button class="copy-btn" onclick="copyToClipboard(\'Your monthly rate is $___\')">📋 COPY</button></div><button onclick="markComplete(1)">Mark Complete</button></details>';
+  html += '<details><summary>📋 Module 2: Know Your Plans</summary><div class="plan-card"><strong>MEC</strong><p>No deductible, copays for doctors.</p></div><div class="plan-card"><strong>STM</strong><p>Deductible + coinsurance + max OOP.</p></div><button onclick="markComplete(2)">Mark Complete</button></details>';
+  html += '<details><summary>🛡️ Module 3: Compliance Shield</summary><div class="compliance-row never-say"><span class="wrong">❌ "ACA compliant"</span> <span class="right">✓ "Private market plan"</span></div><button onclick="markComplete(3)">Mark Complete</button></details>';
+  html += '<details><summary>🎯 Module 4: Objection Mastery</summary><div class="objection-card"><strong>"Spouse"</strong><div class="response-row"><span>"Let\'s see if you qualify so you have something real to show them."</span></div></div><button onclick="markComplete(4)">Mark Complete</button></details>';
+  html += '</div></div></div>';
   html += '<div class="la-section-label la-sec-tight">Rebuttals</div>';
   // Slide-in panel overlay + panel (injected once)
   html +=
@@ -323,6 +542,12 @@ function renderLive() {
   html += '</div></div>';
   var _page_live = document.getElementById('page-live');
   if (_page_live) _page_live.innerHTML = html;
+  showCurrentLine();
+  updateProgressBar();
+  updateTotals();
+  checkSubmitEligibility();
+  if (typeof initBrainChatBox === 'function') initBrainChatBox();
+  _bindBentoKeys();
 }
 
 function toggleLiveObj(i) {

@@ -2295,3 +2295,206 @@ if (document.readyState === 'loading') {
     setInterval(_brRotatePlaceholder, 4000);
   }, 0);
 }
+
+// ═══════════════════════════════════════════════════
+// CHA BRAIN CHAT BOX (Live Playbook panel)
+// Local-first conceptual router + KB search + optional Groq call.
+// ES5 only (no async/await).
+// ═══════════════════════════════════════════════════
+var CHA_BRAIN_KEYWORDS = {
+  spouse: 'objections',
+  wife: 'objections',
+  husband: 'objections',
+  price: 'objections',
+  expensive: 'objections',
+  budget: 'objections',
+  deductible: 'benefits',
+  copay: 'benefits',
+  coinsurance: 'benefits',
+  network: 'benefits',
+  premium: 'benefits',
+  rx: 'benefits',
+  compliance: 'compliance',
+  disclosure: 'compliance',
+  'red flag': 'compliance'
+};
+
+var CHA_BRAIN_PROMPT =
+  'You are an elite Sales Assistant for CHA insurance agents. ' +
+  'MAX 2 sentences. Never say I do not know. ' +
+  'Use format: FACT: ... SAY THIS: ... ' +
+  'If not found, use: DOCUMENTATION GAP: This detail is not in the official Summary of Benefits.';
+
+function detectScope(query) {
+  var q = String(query || '').toLowerCase();
+  var keys = Object.keys(CHA_BRAIN_KEYWORDS);
+  for (var i = 0; i < keys.length; i++) {
+    if (q.indexOf(keys[i]) !== -1) return CHA_BRAIN_KEYWORDS[keys[i]];
+  }
+  return 'benefits';
+}
+
+function checkConceptualRouter(query) {
+  if (typeof KNOWLEDGE_BASE === 'undefined' || !KNOWLEDGE_BASE.conceptual) return null;
+  var q = String(query || '').toLowerCase();
+  if (q.indexOf('er') !== -1 && (q.indexOf('urgent') !== -1 || q.indexOf('uc') !== -1)) {
+    return { answer: KNOWLEDGE_BASE.conceptual.erVsUrgent, scope: 'benefits' };
+  }
+  if (q.indexOf('what') !== -1 && q.indexOf('premium') !== -1) return { answer: KNOWLEDGE_BASE.conceptual.whatIsPremium, scope: 'vocabulary' };
+  if (q.indexOf('what') !== -1 && q.indexOf('deductible') !== -1) return { answer: KNOWLEDGE_BASE.conceptual.whatIsDeductible, scope: 'vocabulary' };
+  if (q.indexOf('what') !== -1 && q.indexOf('coinsurance') !== -1) return { answer: KNOWLEDGE_BASE.conceptual.whatIsCoinsurance, scope: 'vocabulary' };
+  if (q.indexOf('what') !== -1 && q.indexOf('copay') !== -1) return { answer: KNOWLEDGE_BASE.conceptual.whatIsCopay, scope: 'vocabulary' };
+  if (q.indexOf('out of pocket') !== -1 || q.indexOf('oop') !== -1) return { answer: KNOWLEDGE_BASE.conceptual.whatIsOOP, scope: 'vocabulary' };
+  if (q.indexOf('mec') !== -1 && q.indexOf('stm') !== -1) return { answer: KNOWLEDGE_BASE.conceptual.mecVsStm, scope: 'plans' };
+  if (q.indexOf('difference') !== -1 && (q.indexOf('mec') !== -1 || q.indexOf('stm') !== -1)) return { answer: KNOWLEDGE_BASE.conceptual.mecVsStm, scope: 'plans' };
+  if (q.indexOf('pre-existing') !== -1 || q.indexOf('preexisting') !== -1 || q.indexOf('12/12') !== -1) return { answer: KNOWLEDGE_BASE.conceptual.preExisting, scope: 'compliance' };
+  if (q.indexOf('prescription') !== -1 || q.indexOf(' rx') !== -1 || q.indexOf('medication') !== -1) return { answer: KNOWLEDGE_BASE.conceptual.rx, scope: 'benefits' };
+  return null;
+}
+
+function searchKnowledgeBase(query) {
+  var q = String(query || '').toLowerCase();
+  var out = [];
+  if (typeof KNOWLEDGE_BASE === 'undefined') return out;
+  var planNames = KNOWLEDGE_BASE.plans ? Object.keys(KNOWLEDGE_BASE.plans) : [];
+  for (var i = 0; i < planNames.length; i++) {
+    var pn = planNames[i];
+    var pdata = KNOWLEDGE_BASE.plans[pn];
+    var pstr = JSON.stringify(pdata).toLowerCase();
+    if (pn.toLowerCase().indexOf(q) !== -1 || pstr.indexOf(q) !== -1) {
+      out.push({ source: pn, data: pdata, type: 'plan' });
+    }
+  }
+  var terms = KNOWLEDGE_BASE.vocabulary ? Object.keys(KNOWLEDGE_BASE.vocabulary) : [];
+  for (var j = 0; j < terms.length; j++) {
+    if (q.indexOf(terms[j]) !== -1) out.push({ source: terms[j], data: KNOWLEDGE_BASE.vocabulary[terms[j]], type: 'vocabulary' });
+  }
+  var obs = KNOWLEDGE_BASE.objections ? Object.keys(KNOWLEDGE_BASE.objections) : [];
+  for (var k = 0; k < obs.length; k++) {
+    if (q.indexOf(obs[k]) !== -1) out.push({ source: obs[k], data: KNOWLEDGE_BASE.objections[obs[k]], type: 'objection' });
+  }
+  return out;
+}
+
+function formatResponse(content, scope) {
+  return (
+    '<div class="ai-response">' +
+    '<div class="response-content">' + content + '</div>' +
+    '<div class="source-tag">[Source: ' + scope + ' knowledge base]</div>' +
+    '</div>'
+  );
+}
+
+function _chaBrainScroll() {
+  var chat = document.getElementById('chat-messages');
+  if (chat) chat.scrollTop = chat.scrollHeight;
+}
+
+function handleChatMessage(userMessage) {
+  var chatContainer = document.getElementById('chat-messages');
+  if (!chatContainer) return;
+  var clean = String(userMessage || '').trim();
+  if (!clean) return;
+  chatContainer.innerHTML += '<div class="user-message">' + escHTML(clean) + '</div>';
+
+  var conceptual = checkConceptualRouter(clean);
+  if (conceptual) {
+    chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(escHTML(conceptual.answer), conceptual.scope) + '</div>';
+    _chaBrainScroll();
+    return;
+  }
+
+  var localResults = searchKnowledgeBase(clean);
+  var scope = detectScope(clean);
+  var context = '';
+  if (localResults.length > 0) {
+    var rows = [];
+    for (var i = 0; i < localResults.length; i++) {
+      rows.push(localResults[i].source + ': ' + JSON.stringify(localResults[i].data));
+    }
+    context = rows.join('\n');
+  }
+
+  var sharedKey = (typeof _aiGroqFallbackKey !== 'undefined' && _aiGroqFallbackKey) || localStorage.getItem('cha_groq_key') || '';
+  if (!sharedKey || sharedKey === 'skip' || sharedKey.length < 20) {
+    if (localResults.length > 0) {
+      var fallbackRows = [];
+      for (var f = 0; f < localResults.length && f < 3; f++) {
+        fallbackRows.push('<strong>' + escHTML(localResults[f].source) + ':</strong> ' + escHTML(JSON.stringify(localResults[f].data).substring(0, 220)));
+      }
+      chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(fallbackRows.join('<br>'), scope) + '</div>';
+    } else {
+      chatContainer.innerHTML += '<div class="ai-message">' + formatResponse('DOCUMENTATION GAP: Please check the carrier portal.', scope) + '</div>';
+    }
+    _chaBrainScroll();
+    return;
+  }
+
+  fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + sharedKey
+    },
+    body: JSON.stringify({
+      model: 'llama-3.1-8b-instant',
+      messages: [
+        { role: 'system', content: CHA_BRAIN_PROMPT },
+        { role: 'user', content: 'Context:\n' + context + '\n\nQuestion: ' + clean }
+      ],
+      max_tokens: 150,
+      temperature: 0.2
+    })
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      var msg = data && data.choices && data.choices[0] && data.choices[0].message
+        ? data.choices[0].message.content
+        : 'DOCUMENTATION GAP: This detail is not in the official Summary of Benefits.';
+      chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(escHTML(msg), scope) + '</div>';
+      _chaBrainScroll();
+    })
+    .catch(function () {
+      if (localResults.length > 0) {
+        var fb = '<strong>' + escHTML(localResults[0].source) + ':</strong> ' + escHTML(JSON.stringify(localResults[0].data).substring(0, 220));
+        chatContainer.innerHTML += '<div class="ai-message">' + formatResponse(fb, scope) + '</div>';
+      } else {
+        chatContainer.innerHTML += '<div class="ai-message">' + formatResponse('DOCUMENTATION GAP: Please check the carrier portal.', scope) + '</div>';
+      }
+      _chaBrainScroll();
+    });
+}
+
+function initBrainChatBox() {
+  var chatInput = document.getElementById('chat-input');
+  var sendBtn = document.getElementById('send-btn');
+  if (sendBtn && !sendBtn.dataset.chaBound) {
+    sendBtn.dataset.chaBound = '1';
+    sendBtn.addEventListener('click', function () {
+      if (!chatInput) return;
+      var msg = chatInput.value.trim();
+      if (msg) {
+        handleChatMessage(msg);
+        chatInput.value = '';
+      }
+    });
+  }
+  if (chatInput && !chatInput.dataset.chaBound) {
+    chatInput.dataset.chaBound = '1';
+    chatInput.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') {
+        var msg = chatInput.value.trim();
+        if (msg) {
+          handleChatMessage(msg);
+          chatInput.value = '';
+        }
+      }
+    });
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBrainChatBox);
+} else {
+  setTimeout(initBrainChatBox, 0);
+}
