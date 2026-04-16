@@ -3,6 +3,10 @@
 // ── SOA One-Tap Copy ──
 var SOA_TEXT =
   'This is a supplemental fixed indemnity health plan — not major medical insurance. It is not minimum essential coverage under the ACA. Pre-existing conditions are excluded for the first 12 months. Benefits are fixed dollar amounts, not full coverage. This plan is NOT ACA-compliant major medical insurance.';
+var LIVE_CLOSES_EXCLUDED_LINES = {
+  'Based on everything you told me, this fits your situation well. The best thing to do right now is get this submitted so your coverage starts [date]. I just need to confirm a few quick details.': true,
+  'Is your mailing address still [address]?': true
+};
 function copySOA(el) {
   safeCopy(SOA_TEXT)
     .then(function () {
@@ -373,7 +377,9 @@ function openLaPanel(type) {
       html += '<div class="la-hud-panel">';
       Object.keys(groups).forEach(function (t) {
         var items = CLOSES.filter(function (c) {
-          return c.type === t;
+          if (c.type !== t) return false;
+          if (t === 'assumptive' && LIVE_CLOSES_EXCLUDED_LINES[c.line]) return false;
+          return true;
         });
         if (!items.length) return;
         html += '<div class="la-hud-group-lbl">' + groups[t] + '</div>';
@@ -504,9 +510,9 @@ function renderLive() {
     '</div>';
   html += '</div>';
   html +=
-    '<div class="soa-copy-strip la-soa-hud" onclick="copySOA(this)">' +
-    '<div class="la-soa-hud-txt"><strong>SOA</strong> <span class="la-soa-hint">Tap = copy full wording</span></div>' +
-    '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="event.stopPropagation();showPage(\'cheatsheet\')">📋 Cheat Sheet</button></div>';
+    '<div class="soa-copy-strip la-soa-hud">' +
+    '<div class="la-soa-hud-txt"><strong>SOA</strong> <span class="la-soa-hint">Reference</span></div>' +
+    '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="showPage(\'cheatsheet\')">Cheat Sheets</button></div>';
   html += '<div class="la-section-label la-sec-tight">Rebuttals</div>';
   // Slide-in panel overlay + panel (injected once)
   html +=
@@ -520,20 +526,23 @@ function renderLive() {
   html += '<div class="la-qlist">';
   for (var i = 0; i < Math.min(6, OBJECTIONS.length); i++) {
     var o = OBJECTIONS[i];
-    var catCls =
-      typeof _objCatClass === 'function'
-        ? _objCatClass(o.cat)
-        : 'obj-cat-default';
+    var cat = String(o.cat || '').toUpperCase();
+    var badgeClass = 'la-cat-default';
+    if (cat === 'PRICE') badgeClass = 'la-cat-price';
+    else if (cat === 'DELAY') badgeClass = 'la-cat-delay';
+    else if (cat === 'SPOUSE') badgeClass = 'la-cat-spouse';
+    else if (cat === 'TRUST') badgeClass = 'la-cat-trust';
+    else if (cat === 'TIMING') badgeClass = 'la-cat-timing';
     html += '<div class="la-qrow" id="liveobj' + i + '">';
     html +=
       '<button type="button" class="la-qrow-hd" onclick="toggleLiveObj(' +
       i +
       ')" aria-expanded="false">';
     html +=
-      '<span class="obj-cat-badge ' +
-      catCls +
+      '<span class="la-cat-badge ' +
+      badgeClass +
       '">' +
-      o.cat +
+      escHTML(o.cat) +
       '</span>';
     html +=
       '<span class="la-qtext">&ldquo;' + o.obj + '&rdquo;</span>';
@@ -544,38 +553,16 @@ function renderLive() {
     html +=
       '<div class="la-qbody" id="liveobjbody' + i + '" style="display:none;">';
     html +=
-      '<div class="la-section"><span class="la-sec-lbl">Diagnostic Question First</span><div class="la-sec-text">' +
+      '<div class="la-section"><span class="la-sec-lbl">Ask First</span><div class="la-sec-text">' +
       o.diag +
       '</div></div>';
     html +=
-      '<div class="la-section"><span class="la-sec-lbl">What This Usually Means</span><div class="la-sec-text">' +
-      o.real +
-      '</div></div>';
-    html +=
-      '<div style="display:flex;gap:6px;margin:8px 0 6px;flex-wrap:wrap;"><button class="rtab active" onclick="switchTab(event,\'lo' +
-      i +
-      '\',\'best\')">Best Response</button><button class="rtab" onclick="switchTab(event,\'lo' +
-      i +
-      '\',\'soft\')">Softer</button><button class="rtab" onclick="switchTab(event,\'lo' +
-      i +
-      "','strong')\">Stronger</button></div>";
-    html +=
-      '<div id="lo' +
-      i +
-      '-best" class="rpanel active sbox">' +
+      '<div class="la-section la-section-best"><span class="la-sec-lbl">Best Response</span><div class="la-sec-text la-best-box">' +
       o.best +
-      '</div>';
-    html +=
-      '<div id="lo' + i + '-soft" class="rpanel sbox">' + o.soft + '</div>';
-    html +=
-      '<div id="lo' + i + '-strong" class="rpanel sbox">' + o.strong + '</div>';
-    html +=
-      '<div class="la-section" style="margin-top:12px;"><span class="la-sec-lbl">Bridge Line</span><div class="la-sec-text">' +
-      o.bridge +
       '</div></div>';
     html +=
-      '<div class="la-section la-section-close"><span class="la-sec-lbl">Close Line</span><div class="la-sec-text">' +
-      o.close +
+      '<div class="la-section"><span class="la-sec-lbl">Bridge</span><div class="la-sec-text">' +
+      o.bridge +
       '</div></div>';
     html += '</div></div>';
   }

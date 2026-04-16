@@ -1010,6 +1010,7 @@ function renderCheatsheets() {
     ' Mental health — EXCLUDED. Say it every call.',
     ' Maternity — EXCLUDED. Say it every call.',
     ' Substance abuse rehab — EXCLUDED. Say it every call.',
+    ' Must disclose network, underwriter, association, and billing — DISCLOSE.',
     ' 30-day waiting period for illness — DISCLOSE.',
     ' 12/12 pre-ex clause — DISCLOSE.',
     ' Not ACA-compliant — DISCLOSE.',

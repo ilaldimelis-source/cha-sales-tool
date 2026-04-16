@@ -311,6 +311,7 @@ function _stSet(key, value) {
 // every render — it only runs if the scoped key is empty and the
 // legacy key exists.
 var _stMigrated = false;
+var _stAllSalesRange = 'all';
 function _stMigrateLegacyKeys() {
   if (_stMigrated) return;
   _stMigrated = true;
@@ -344,7 +345,19 @@ function _stLoadSales() {
   var raw = _stGet(_stKey('cha_sales')) || '[]';
   try {
     var parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    var changed = false;
+    for (var i = 0; i < parsed.length; i++) {
+      var s = parsed[i];
+      if (!s) continue;
+      var normalized = _stNormalizeStatus(s);
+      if (normalized !== s.status) {
+        s.status = normalized;
+        changed = true;
+      }
+    }
+    if (changed) _stSaveSales(parsed);
+    return parsed;
   } catch (_e) {
     return [];
   }
@@ -352,6 +365,33 @@ function _stLoadSales() {
 
 function _stSaveSales(sales) {
   _stSet(_stKey('cha_sales'), JSON.stringify(sales || []));
+}
+
+function _stClearDateMs(sale) {
+  var base = Number(sale && sale.ts);
+  if (!base) return 0;
+  return base + (30 * 24 * 60 * 60 * 1000);
+}
+
+function _stNormalizeStatus(sale) {
+  var raw = String((sale && sale.status) || '').toLowerCase();
+  if (raw === 'chargeback') return 'chargeback';
+  if (raw === 'cleared') return 'cleared';
+  if (raw === 'cancel') return 'chargeback';
+  var clearMs = _stClearDateMs(sale);
+  if (clearMs && Date.now() >= clearMs) return 'cleared';
+  return 'pending';
+}
+
+function _stStatusText(sale) {
+  var st = _stNormalizeStatus(sale);
+  if (st === 'chargeback') return 'Chargeback';
+  if (st === 'cleared') return 'Cleared';
+  var clearMs = _stClearDateMs(sale);
+  if (!clearMs) return 'Pending';
+  var remaining = Math.ceil((clearMs - Date.now()) / (24 * 60 * 60 * 1000));
+  if (remaining <= 0) return 'Clears today';
+  return 'Clears in ' + remaining + ' day' + (remaining === 1 ? '' : 's');
 }
 
 // ── POST-DATED SALES ────────────────────────────────────────
@@ -1365,8 +1405,7 @@ function _stComputeLineCommission(sale, rates) {
       : _stPlanTierRate(amt, rates);
   }
   var commission = amt * rate;
-  if (sale.status === 'cancel') return 0;
-  if (sale.status === 'chargeback') return -Math.abs(commission);
+  if (_stNormalizeStatus(sale) === 'chargeback') return -Math.abs(commission);
   return commission;
 }
 
@@ -1385,8 +1424,7 @@ function _stStampDealCommission(sales, dealIdx, rates) {
     : _stPlanTierRate(amt, rates);
   deal.planCommissionRate = rate;
   var planCommission = amt * rate;
-  if (deal.status === 'cancel') planCommission = 0;
-  else if (deal.status === 'chargeback') planCommission = -Math.abs(planCommission);
+  if (_stNormalizeStatus(deal) === 'chargeback') planCommission = -Math.abs(planCommission);
   deal.planCommission = planCommission;
 
   // Sum add-on commissions that belong to this receipt.
@@ -1403,8 +1441,7 @@ function _stStampDealCommission(sales, dealIdx, rates) {
         : (rates.addonTypes[_stClassifyAddon(s.plan)] || rates.addonTypes.standard);
       var acR = s.addonCommissionRate;
       var acAmt = (Number(s.amount) || 0) * acR;
-      if (s.status === 'cancel') acAmt = 0;
-      else if (s.status === 'chargeback') acAmt = -Math.abs(acAmt);
+      if (_stNormalizeStatus(s) === 'chargeback') acAmt = -Math.abs(acAmt);
       s.addonCommission = acAmt;
     }
   }
@@ -1413,13 +1450,12 @@ function _stStampDealCommission(sales, dealIdx, rates) {
   // Enrollment bonus: only paid when enrollmentFee is exactly $125
   var bonus = 0;
   if (Number(deal.enrollmentFee) === 125) bonus = rates.enrollmentBonus;
-  if (deal.status === 'cancel') bonus = 0;
-  else if (deal.status === 'chargeback') bonus = -Math.abs(bonus);
+  if (_stNormalizeStatus(deal) === 'chargeback') bonus = -Math.abs(bonus);
   deal.enrollmentBonus = bonus;
 
   // Expected total = plan + add-ons + bonus (with status logic already applied)
   var expected = planCommission + totalAddon + bonus;
-  if (deal.status === 'cancel') expected = 0;
+  if (_stNormalizeStatus(deal) === 'chargeback') expected = -Math.abs(expected);
   deal.expectedDealTotal = expected;
 
   // Preserve any existing audit fields; initialize if missing
@@ -1430,7 +1466,7 @@ function _stStampDealCommission(sales, dealIdx, rates) {
   // Auto-flag common audit issues on the deal itself
   var flags = [];
   if (!deal.memberId) flags.push('missing_member_id');
-  if (deal.status !== 'cancel' && deal.status !== 'chargeback') {
+  if (_stNormalizeStatus(deal) !== 'chargeback') {
     if (Number(deal.enrollmentFee) === 125 && bonus === 0) {
       flags.push('missing_enrollment_bonus');
     }
@@ -1812,7 +1848,7 @@ function _stAutoDetectAndAdd() {
           plan: pp2.name || 'Unknown Plan',
           amount: pp2.price,
           type: isDeal2 ? 'deal' : 'addon',
-          status: 'valid',
+          status: 'pending',
           raw: rawB,
           notes: pp2.policy ? 'Policy: ' + pp2.policy : '',
           receiptId: rcptIdB,
@@ -1926,7 +1962,7 @@ function _stAddSale(saleType) {
       plan: first.name || 'Unknown Plan',
       amount: first.price,
       type: isDealManual ? 'deal' : 'addon',
-      status: 'valid',
+      status: 'pending',
       raw: text,
       notes: first.policy ? 'Policy: ' + first.policy : '',
       receiptId: '',
@@ -2084,7 +2120,7 @@ function _stConfirmPostDate(id) {
     plan: pd.plan || 'Unknown Plan',
     amount: Number(pd.amount) || 0,
     type: isDealPd ? 'deal' : 'addon',
-    status: 'valid',
+    status: 'pending',
     raw: pd.raw || '',
     notes: pd.notes || '',
     receiptId: pd.receiptId || '',
@@ -2117,8 +2153,8 @@ function _stRemovePostDate(id) {
 
 function _stUpdateStatus(id, newStatus) {
   if (
-    newStatus !== 'valid' &&
-    newStatus !== 'cancel' &&
+    newStatus !== 'pending' &&
+    newStatus !== 'cleared' &&
     newStatus !== 'chargeback'
   ) {
     return;
@@ -2235,7 +2271,7 @@ function _stCalcStats(sales) {
     if (!ds) continue;
     if (ds.type !== 'deal') continue;
     if (ds.ts < weekStart) continue;
-    if (ds.status === 'valid' && ds.receiptId) {
+    if (_stNormalizeStatus(ds) !== 'chargeback' && ds.receiptId) {
       validDealReceiptIds[ds.receiptId] = true;
     }
   }
@@ -2257,7 +2293,7 @@ function _stCalcStats(sales) {
     }
 
     // Stats below only count VALID rows
-    if (s.status !== 'valid') continue;
+    if (_stNormalizeStatus(s) === 'chargeback') continue;
     if (s.ts >= todayStart) stats.todayCount++;
     if (s.ts < weekStart) continue;
 
@@ -2316,6 +2352,7 @@ function _stCalcStats(sales) {
       stats.weekCommissionValid += lineComm;
     }
   }
+  stats.weekExpectedCommission += _stCurrentTierBonus(stats);
   return stats;
 }
 
@@ -2432,6 +2469,47 @@ function _stBuildBonus(stats) {
       '</div>';
   }
   html += '</div>';
+  html += '</div>';
+  return html;
+}
+
+function _stCurrentTierBonus(stats) {
+  var bonus = 0;
+  for (var i = 0; i < ST_BONUS_TIERS.length; i++) {
+    if (stats.weekDeals >= ST_BONUS_TIERS[i].deals && stats.weekAddons >= ST_BONUS_TIERS[i].addons) {
+      bonus = ST_BONUS_TIERS[i].bonus;
+    }
+  }
+  return bonus;
+}
+
+function _stBuildPaycheckSummary(sales, stats) {
+  var dealComm = 0;
+  var addonComm = 0;
+  var enrollmentBonus = 0;
+  for (var i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'deal') continue;
+    if (s.ts < stats.weekStart) continue;
+    dealComm += Number(s.planCommission) || 0;
+    addonComm += Number(s.totalAddonCommission) || 0;
+    enrollmentBonus += Number(s.enrollmentBonus) || 0;
+  }
+  var tierBonus = _stCurrentTierBonus(stats);
+  var monthlyPremium = Math.round((Number(stats.weekSales) || 0) * 100) / 100;
+  var estimated = dealComm + addonComm + enrollmentBonus + tierBonus;
+  var html = '<div class="st-paycheck-wrap">';
+  html += '<div class="st-pay-row"><span>Total deals count</span><strong>' + stats.weekDeals + '</strong></div>';
+  html += '<div class="st-pay-row"><span>Total add-ons count</span><strong>' + stats.weekAddons + '</strong></div>';
+  html += '<div class="st-pay-row"><span>Current tier bonus status</span><strong>$' + tierBonus.toFixed(2) + '</strong></div>';
+  html += '<div class="st-pay-row"><span>Total monthly premium</span><strong>$' + monthlyPremium.toFixed(2) + '</strong></div>';
+  html += '<div class="st-pay-sub">Add-on premium is included in monthly premium total.</div>';
+  html += '<div class="st-pay-row"><span>Deal commission</span><strong>$' + dealComm.toFixed(2) + '</strong></div>';
+  html += '<div class="st-pay-row"><span>Add-on commission</span><strong>$' + addonComm.toFixed(2) + '</strong></div>';
+  html += '<div class="st-pay-row"><span>Enrollment fee bonus</span><strong>$' + enrollmentBonus.toFixed(2) + '</strong></div>';
+  html += '<div class="st-pay-row"><span>Tier bonus</span><strong>$' + tierBonus.toFixed(2) + '</strong></div>';
+  html += '<div class="st-pay-est">Estimated paycheck: $' + estimated.toFixed(2) + '</div>';
+  html += '<button type="button" class="st-pdf-btn" onclick="_stDownloadWeeklyPdf()">Download weekly breakdown (PDF)</button>';
   html += '</div>';
   return html;
 }
@@ -2753,9 +2831,9 @@ function _stGroupListTs(g) {
 }
 
 function _stGroupListStatus(g) {
-  if (g.deal) return g.deal.status;
-  if (g.addons.length) return g.addons[0].status;
-  return 'valid';
+  if (g.deal) return _stNormalizeStatus(g.deal);
+  if (g.addons.length) return _stNormalizeStatus(g.addons[0]);
+  return 'pending';
 }
 
 function _stCommissionCellHtml(s) {
@@ -2790,8 +2868,7 @@ function _stCommissionCellHtml(s) {
       ? s.addonCommissionRate
       : _stLoadCommissionRates().addonTypes[_stClassifyAddon(s.plan)] || 0.25;
   var aComm = (Number(s.amount) || 0) * aRate;
-  if (s.status === 'cancel') aComm = 0;
-  else if (s.status === 'chargeback') aComm = -Math.abs(aComm);
+  if (_stNormalizeStatus(s) === 'chargeback') aComm = -Math.abs(aComm);
   return (
     '<div class="st-comm-cell">' +
     '<div class="st-comm-total">$' +
@@ -2865,16 +2942,18 @@ function _stRenderSaleSegment(s, isAll, opts) {
     '<select class="st-status-select" onchange="_stUpdateStatus(\'' +
     s.id +
     '\', this.value)">' +
-    '<option value="valid"' +
-    (s.status === 'valid' ? ' selected' : '') +
-    '>Valid</option>' +
-    '<option value="cancel"' +
-    (s.status === 'cancel' ? ' selected' : '') +
-    '>Cancel</option>' +
+    '<option value="pending"' +
+    (_stNormalizeStatus(s) === 'pending' ? ' selected' : '') +
+    '>Pending</option>' +
+    '<option value="cleared"' +
+    (_stNormalizeStatus(s) === 'cleared' ? ' selected' : '') +
+    '>Cleared</option>' +
     '<option value="chargeback"' +
-    (s.status === 'chargeback' ? ' selected' : '') +
+    (_stNormalizeStatus(s) === 'chargeback' ? ' selected' : '') +
     '>Chargeback</option>' +
-    '</select></div>' +
+    '</select><div class="st-status-note">' +
+    _stEscape(_stStatusText(s)) +
+    '</div></div>' +
     '</div></div>'
   );
 }
@@ -2942,9 +3021,6 @@ function _stBuildTable(sales) {
   var groups = _stGroupRowsForDisplay(rows);
 
   var html = '<div class="st-table-section">';
-  // Header row: title on the left, This Week / All Sales
-  // toggle on the right. Reuses the existing .st-mode-toggle
-  // pill-button styles from the receipt input section.
   html += '<div class="st-table-header">';
   html +=
     '<div class="st-table-title">' +
@@ -2966,23 +3042,6 @@ function _stBuildTable(sales) {
 
   var isAll = mode === 'all';
 
-  // Bulk-delete bar (All Sales view only) — shows Delete
-  // Selected (count) + Delete ALL Sales.
-  if (isAll) {
-    var selectedCount = 0;
-    for (var selC = 0; selC < rows.length; selC++) {
-      if (_stSelectedIds[rows[selC].id]) selectedCount++;
-    }
-    html += '<div class="st-bulk-bar">';
-    html +=
-      '<button type="button" class="st-bulk-delete" onclick="_stBulkDeleteSelected()">Delete Selected (<span class="st-bulk-count">' +
-      selectedCount +
-      '</span>)</button>';
-    html +=
-      '<button type="button" class="st-bulk-delete-all" onclick="_stBulkDeleteAll()">Delete ALL Sales</button>';
-    html += '</div>';
-  }
-
   if (rows.length === 0) {
     html +=
       '<div class="st-empty">' +
@@ -2993,28 +3052,117 @@ function _stBuildTable(sales) {
     html += '</div>';
     return html;
   }
-  html += '<div class="st-table-wrap st-sale-bubble-wrap">';
   if (isAll) {
-    var allChecked2 = rows.length > 0;
-    for (var hc2 = 0; hc2 < rows.length; hc2++) {
-      if (!_stSelectedIds[rows[hc2].id]) {
-        allChecked2 = false;
-        break;
-      }
-    }
+    var now = new Date();
+    var monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    var last30 = Date.now() - (30 * 24 * 60 * 60 * 1000);
+    var filteredGroups = groups.filter(function (g) {
+      var ts = _stGroupListTs(g);
+      if (_stAllSalesRange === 'month') return ts >= monthStart;
+      if (_stAllSalesRange === 'last30') return ts >= last30;
+      return true;
+    });
     html +=
-      '<div class="st-select-all-bar"><label class="st-select-all-lbl">' +
-      '<input type="checkbox" id="st-select-all"' +
-      (allChecked2 ? ' checked' : '') +
-      ' onclick="_stToggleAllSelection()"> Select all</label></div>';
+      '<div class="st-all-controls"><select class="st-all-filter" onchange="_stSetAllSalesRange(this.value)">' +
+      '<option value="all"' + (_stAllSalesRange === 'all' ? ' selected' : '') + '>All time</option>' +
+      '<option value="month"' + (_stAllSalesRange === 'month' ? ' selected' : '') + '>This month</option>' +
+      '<option value="last30"' + (_stAllSalesRange === 'last30' ? ' selected' : '') + '>Last 30 days</option>' +
+      '</select><button type="button" class="st-export-btn" onclick="_stExportAllSalesCsv()">Export</button></div>';
+    html += '<div class="st-all-list"><div class="st-all-head"><span>Client</span><span>Plan</span><span>Premium</span><span>Date</span><span>Status</span></div>';
+    for (var ag = 0; ag < filteredGroups.length; ag++) {
+      var grp = filteredGroups[ag];
+      var lead = grp.deal || grp.addons[0];
+      if (!lead) continue;
+      var gid = String(grp.receiptId || lead.id);
+      html += '<div class="st-all-row" onclick="_stToggleAllSaleDetails(\'' + gid + '\')">';
+      html += '<span><strong>' + _stEscape(lead.customer || '—') + '</strong>' + (lead.memberId ? '<em>ID: ' + _stEscape(lead.memberId) + '</em>' : '') + '</span>';
+      html += '<span>' + _stEscape(lead.plan || '—') + '</span>';
+      html += '<span>$' + (Number(lead.amount) || 0).toFixed(2) + '</span>';
+      html += '<span>' + _stEscape(_stFormatSaleListDate(_stGroupListTs(grp))) + '</span>';
+      html += '<span class="st-all-status st-row-' + _stNormalizeStatus(lead) + '">' + _stEscape(_stStatusText(lead)) + '</span>';
+      html += '</div>';
+      html += '<div class="st-all-detail" id="st-all-detail-' + gid + '" style="display:none;">';
+      if (grp.addons.length) {
+        html += '<div class="st-all-detail-line"><b>Add-ons:</b> ' + grp.addons.map(function (a) { return _stEscape(a.plan) + ' ($' + (Number(a.amount) || 0).toFixed(2) + ')'; }).join(', ') + '</div>';
+      }
+      if (grp.deal) {
+        html += '<div class="st-all-detail-line"><b>Commission:</b> $' + (Number(grp.deal.expectedDealTotal) || 0).toFixed(2) + '</div>';
+      }
+      html += '</div>';
+    }
+    html += '</div></div>';
+    return html;
   }
+  html += '<div class="st-table-wrap st-sale-bubble-wrap">';
   html += '<div class="st-sale-bubble-grid">';
   for (var gi = 0; gi < groups.length; gi++) {
-    html += _stRenderSaleGroupCard(groups[gi], isAll);
+    html += _stRenderSaleGroupCard(groups[gi], false);
   }
   html += '</div></div>';
   html += '</div>';
   return html;
+}
+
+function _stSetAllSalesRange(mode) {
+  _stAllSalesRange = mode || 'all';
+  _stRender();
+}
+
+function _stToggleAllSaleDetails(id) {
+  var row = document.getElementById('st-all-detail-' + id);
+  if (!row) return;
+  row.style.display = row.style.display === 'none' ? 'block' : 'none';
+}
+
+function _stExportAllSalesCsv() {
+  var sales = _stLoadSales().slice().sort(function (a, b) { return b.ts - a.ts; });
+  var lines = ['Client,Member ID,Plan,Premium,Date,Status,Type'];
+  for (var i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    lines.push([
+      '"' + String(s.customer || '').replace(/"/g, '""') + '"',
+      '"' + String(s.memberId || '').replace(/"/g, '""') + '"',
+      '"' + String(s.plan || '').replace(/"/g, '""') + '"',
+      (Number(s.amount) || 0).toFixed(2),
+      '"' + _stFormatSaleListDate(s.ts) + '"',
+      '"' + _stNormalizeStatus(s) + '"',
+      '"' + String(s.type || '') + '"'
+    ].join(','));
+  }
+  var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'all-sales.csv';
+  a.click();
+  setTimeout(function () { URL.revokeObjectURL(url); }, 500);
+}
+
+function _stDownloadWeeklyPdf() {
+  var sales = _stLoadSales();
+  var stats = _stCalcStats(sales);
+  var weekStart = stats.weekStart;
+  var weekEnd = weekStart + (6 * 24 * 60 * 60 * 1000);
+  var deals = sales.filter(function (s) { return s.type === 'deal' && s.ts >= weekStart && s.ts <= weekEnd; });
+  var html = '<html><head><title>Weekly breakdown</title></head><body style="font-family:Arial;padding:24px;">';
+  html += '<h2>Weekly Breakdown</h2>';
+  html += '<p>Week: ' + _stFormatSaleListDate(weekStart) + ' - ' + _stFormatSaleListDate(weekEnd) + '</p>';
+  html += '<table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:12px;"><tr><th>Client</th><th>Plan</th><th>Premium</th><th>Member ID</th><th>Commission</th></tr>';
+  for (var i = 0; i < deals.length; i++) {
+    var d = deals[i];
+    html += '<tr><td>' + _stEscape(d.customer || '') + '</td><td>' + _stEscape(d.plan || '') + '</td><td>$' + (Number(d.amount) || 0).toFixed(2) + '</td><td>' + _stEscape(d.memberId || '') + '</td><td>$' + (Number(d.expectedDealTotal) || 0).toFixed(2) + '</td></tr>';
+  }
+  html += '</table>';
+  html += '<p><b>Tier bonus:</b> $' + _stCurrentTierBonus(stats).toFixed(2) + '</p>';
+  html += '<p><b>Total estimated commission:</b> $' + (Number(stats.weekExpectedCommission) + _stCurrentTierBonus(stats)).toFixed(2) + '</p>';
+  html += '</body></html>';
+  var w = window.open('', '_blank');
+  if (!w) return;
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  w.print();
 }
 
 // ── INLINE COMMISSION RATE EDITOR ───────────────────────────
@@ -3049,11 +3197,31 @@ function _stOpenCommissionEditor(saleId) {
     _stFlash('Enter a decimal between 0 and 1 (e.g. 0.35).', 'error');
     return;
   }
+  var currentAddon = typeof deal.addonCommissionRate === 'number'
+    ? deal.addonCommissionRate
+    : rates.addonTypes.standard;
+  var inAddon = window.prompt(
+    'Add-on commission rate for this deal (decimal, default 0.70):',
+    String(currentAddon)
+  );
+  if (inAddon === null) return;
+  var newAddon = parseFloat(inAddon);
+  if (isNaN(newAddon) || newAddon < 0 || newAddon > 1) {
+    _stFlash('Enter add-on rate as a decimal between 0 and 1.', 'error');
+    return;
+  }
   deal.commissionRate = newPlan;
+  deal.addonCommissionRate = newAddon;
+  for (var ai = 0; ai < sales.length; ai++) {
+    if (!sales[ai] || sales[ai].type !== 'addon') continue;
+    if (sales[ai].receiptId && sales[ai].receiptId === deal.receiptId) {
+      sales[ai].addonCommissionRate = newAddon;
+    }
+  }
   _stStampDealCommission(sales, idx, rates);
   _stSaveSales(sales);
   _stRender();
-  _stFlash('Commission rate updated for this deal.', 'ok');
+  _stFlash('Commission rates updated for this deal.', 'ok');
 }
 
 // Reset the deal's commission rate back to the tier default.
@@ -3098,7 +3266,7 @@ function _stBuildWeeklySalesSummary(stats) {
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s) continue;
-    if (s.status !== 'valid') continue;
+    if (_stNormalizeStatus(s) === 'chargeback') continue;
     if (s.ts < weekStart) continue;
     var lineAmt = Number(s.amount) || 0;
     if (lineAmt <= 0) continue;
@@ -3244,6 +3412,7 @@ function _stRender() {
   html += _stBuildStats(stats);
   // 6. Weekly Bonus progress
   html += _stBuildBonus(stats);
+  html += _stBuildPaycheckSummary(sales, stats);
   // 7. Receipt input section
   html += _stBuildInput();
   // 8. This Week's table

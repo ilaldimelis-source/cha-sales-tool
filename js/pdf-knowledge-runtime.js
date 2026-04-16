@@ -68,9 +68,11 @@
     return out;
   }
 
-  function resolvePlan(query, activePlan) {
+  function resolvePlan(query, activePlan, options) {
     var normalized = normalizeText(query);
     var aliasIndex = window.CHA_PLAN_ALIAS_INDEX || {};
+    var preferredPlanId =
+      options && options.preferredPlanId ? String(options.preferredPlanId) : '';
     var directId = activePlan && activePlan.id ? String(activePlan.id) : '';
 
     if (normalized) {
@@ -96,9 +98,28 @@
       }
     }
 
+    if (preferredPlanId) {
+      return { status: 'resolved', planId: preferredPlanId, method: 'preferred_plan' };
+    }
     if (directId) return { status: 'resolved', planId: directId, method: 'active_plan' };
     if (!normalized) return { status: 'no_plan' };
     return { status: 'no_plan' };
+  }
+
+  function validatePlanForLoad(planId) {
+    var meta = getPlanMeta(planId);
+    if (!meta) {
+      return { ok: false, reason: 'missing_plan', planId: planId || '', planName: '' };
+    }
+    if (meta.status === 'excluded' || meta.status === 'missing_pdf') {
+      return {
+        ok: false,
+        reason: 'not_ready',
+        planId: meta.planId,
+        planName: meta.planName || ''
+      };
+    }
+    return { ok: true, reason: 'ok', planId: meta.planId, planName: meta.planName || '' };
   }
 
   function getPlanMeta(planId) {
@@ -156,6 +177,7 @@
     getPlanMeta: getPlanMeta,
     loadPlanContent: loadPlanContent,
     resolvePlan: resolvePlan,
+    validatePlanForLoad: validatePlanForLoad,
     retrieveTopChunks: retrieveTopChunks,
     listAvailablePlanNames: listAvailablePlanNames
   };
