@@ -171,10 +171,11 @@ var CHA_DEFAULT_COMMISSION_RATES = {
   ],
   addonTypes: {
     standard: 0.25,
-    dvh: 0.35,        // dental / vision / health bundle
-    accident: 0.70,   // accident / AD&D / AME
-    rx: 0.20,         // prescription discount
-    gap: 0.60         // GAP products
+    dvh: 0.25,        // dental / vision / life / catastrophic
+    dvhDirect: 0.35,  // Direct Access DVH
+    accident: 0.7,    // AD&D, AccessCare Pro, NowCare, Continue Care, Wellness4U
+    rx: 0.2,          // SureScript, BestChoice
+    gap: 0.5           // GAP
   },
   enrollmentBonus: 20 // dollars per $125 enrollment
 };
@@ -219,6 +220,7 @@ function _stCloneRates(r) {
     addonTypes: {
       standard: r.addonTypes.standard,
       dvh: r.addonTypes.dvh,
+      dvhDirect: r.addonTypes.dvhDirect,
       accident: r.addonTypes.accident,
       rx: r.addonTypes.rx,
       gap: r.addonTypes.gap
@@ -232,17 +234,27 @@ function _stCloneRates(r) {
 function _stClassifyAddon(name) {
   if (!name) return 'standard';
   var n = String(name).toLowerCase();
-  // Rx / prescription discounts
-  if (/\b(rx|prescription|prime health pass|assistpro|mdlive|telemed)\b/.test(n)) {
-    return 'rx';
-  }
   // GAP support products
   if (/\bgap(support)?\b/.test(n)) return 'gap';
-  // Dental / Vision / Health bundles
-  if (/\b(dental|vision|dvh|dental-vision|ameritas)\b/.test(n)) return 'dvh';
-  // Accident / AD&D / AME
-  if (/\b(accident|ad&?d|ad and d|ame|critical illness|critical care|hospital expense|cancer)\b/.test(n)) {
+  // Direct Access DVH (35%)
+  if (/\bdirect access\b/.test(n) && /\bdvh\b/.test(n)) return 'dvhDirect';
+  // Dental / Vision / Life / Catastrophic / generic DVH (25%)
+  if (
+    /\b(dental|vision|life|catastrophic|dvh|dental-vision|ameritas)\b/.test(n)
+  ) {
+    return 'dvh';
+  }
+  // AD&D, AccessCare Pro, NowCare, Continue Care, Wellness4U
+  if (
+    /\b(accesscare pro|nowcare|continue care|wellness4u|accident|ad&?d|ad and d|ame|critical illness|critical care|hospital expense|cancer)\b/.test(
+      n
+    )
+  ) {
     return 'accident';
+  }
+  // Rx / prescription discounts (SureScript, BestChoice; not RxSavers — flat $ in compute)
+  if (/\b(rx|prescription|surescript|bestchoice|prime health pass|assistpro|mdlive|telemed)\b/.test(n)) {
+    return 'rx';
   }
   return 'standard';
 }
@@ -1392,6 +1404,12 @@ function _stComputeLineCommission(sale, rates) {
   var amt = Number(sale.amount) || 0;
   var rate;
   if (sale.type === 'addon') {
+    var planN = String(sale.plan || '').toLowerCase();
+    if (/\brx\s*savers?\b/.test(planN)) {
+      var flatRx = 10;
+      if (_stNormalizeStatus(sale) === 'chargeback') return -Math.abs(flatRx);
+      return flatRx;
+    }
     if (typeof sale.addonCommissionRate === 'number') {
       rate = sale.addonCommissionRate;
     } else {
@@ -1434,15 +1452,18 @@ function _stStampDealCommission(sales, dealIdx, rates) {
       var s = sales[i];
       if (!s || s.type !== 'addon') continue;
       if (s.receiptId !== deal.receiptId) continue;
-      totalAddon += _stComputeLineCommission(s, rates);
+      var lineCommAddon = _stComputeLineCommission(s, rates);
+      totalAddon += lineCommAddon;
       // Also stamp the add-on so its own fields stay in sync
-      s.addonCommissionRate = typeof s.addonCommissionRate === 'number'
-        ? s.addonCommissionRate
-        : (rates.addonTypes[_stClassifyAddon(s.plan)] || rates.addonTypes.standard);
-      var acR = s.addonCommissionRate;
-      var acAmt = (Number(s.amount) || 0) * acR;
-      if (_stNormalizeStatus(s) === 'chargeback') acAmt = -Math.abs(acAmt);
-      s.addonCommission = acAmt;
+      var planN = String(s.plan || '').toLowerCase();
+      if (/\brx\s*savers?\b/.test(planN)) {
+        s.addonCommissionRate = null;
+      } else {
+        s.addonCommissionRate = typeof s.addonCommissionRate === 'number'
+          ? s.addonCommissionRate
+          : (rates.addonTypes[_stClassifyAddon(s.plan)] || rates.addonTypes.standard);
+      }
+      s.addonCommission = lineCommAddon;
     }
   }
   deal.totalAddonCommission = totalAddon;
@@ -2483,7 +2504,7 @@ function _stCurrentTierBonus(stats) {
   return bonus;
 }
 
-function _stBuildPaycheckSummary(sales, stats) {
+function _stPaycheckBreakdown(sales, stats) {
   var dealComm = 0;
   var addonComm = 0;
   var enrollmentBonus = 0;
@@ -2496,22 +2517,28 @@ function _stBuildPaycheckSummary(sales, stats) {
     enrollmentBonus += Number(s.enrollmentBonus) || 0;
   }
   var tierBonus = _stCurrentTierBonus(stats);
-  var monthlyPremium = Math.round((Number(stats.weekSales) || 0) * 100) / 100;
   var estimated = dealComm + addonComm + enrollmentBonus + tierBonus;
-  var html = '<div class="st-paycheck-wrap">';
-  html += '<div class="st-pay-row"><span>Total deals count</span><strong>' + stats.weekDeals + '</strong></div>';
-  html += '<div class="st-pay-row"><span>Total add-ons count</span><strong>' + stats.weekAddons + '</strong></div>';
-  html += '<div class="st-pay-row"><span>Current tier bonus status</span><strong>$' + tierBonus.toFixed(2) + '</strong></div>';
-  html += '<div class="st-pay-row"><span>Total monthly premium</span><strong>$' + monthlyPremium.toFixed(2) + '</strong></div>';
-  html += '<div class="st-pay-sub">Add-on premium is included in monthly premium total.</div>';
-  html += '<div class="st-pay-row"><span>Deal commission</span><strong>$' + dealComm.toFixed(2) + '</strong></div>';
-  html += '<div class="st-pay-row"><span>Add-on commission</span><strong>$' + addonComm.toFixed(2) + '</strong></div>';
-  html += '<div class="st-pay-row"><span>Enrollment fee bonus</span><strong>$' + enrollmentBonus.toFixed(2) + '</strong></div>';
-  html += '<div class="st-pay-row"><span>Tier bonus</span><strong>$' + tierBonus.toFixed(2) + '</strong></div>';
-  html += '<div class="st-pay-est">Estimated paycheck: $' + estimated.toFixed(2) + '</div>';
-  html += '<button type="button" class="st-pdf-btn" onclick="_stDownloadWeeklyPdf()">Download weekly breakdown (PDF)</button>';
-  html += '</div>';
-  return html;
+  return {
+    dealComm: dealComm,
+    addonComm: addonComm,
+    enrollmentBonus: enrollmentBonus,
+    tierBonus: tierBonus,
+    estimated: estimated
+  };
+}
+
+function _stOpenCommissionEditorFromTracker() {
+  var sales = _stLoadSales();
+  var stats = _stCalcStats(sales);
+  var ws = stats.weekStart;
+  for (var i = 0; i < sales.length; i++) {
+    if (!sales[i] || sales[i].type !== 'deal') continue;
+    if (sales[i].status !== 'valid') continue;
+    if (sales[i].ts < ws) continue;
+    _stOpenCommissionEditor(sales[i].id);
+    return;
+  }
+  _stFlash('No deals this week to edit commission rates from.', 'error');
 }
 
 function _stBuildInput() {
@@ -3310,7 +3337,7 @@ function _stFmtMoney(n) {
   );
 }
 
-function _stBuildCommissionTracker(stats) {
+function _stBuildCommissionTracker(sales, stats) {
   var dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
   var wc = Number(stats.weekCommissionValid) || 0;
   var ws = Number(stats.weekSales) || 0;
@@ -3318,6 +3345,7 @@ function _stBuildCommissionTracker(stats) {
   var wac = Number(stats.weekAddonCommissionOnly) || 0;
   var eff = ws > 0 ? wc / ws : 0;
   var effStr = eff > 0 ? String(Math.round(eff * 1000) / 10) + '%' : '—';
+  var pb = _stPaycheckBreakdown(sales, stats);
   var html = '<div class="st-comm-tracker">';
   html +=
     '<div class="st-comm-tracker-hd"><span class="st-comm-tracker-icon" aria-hidden="true">&#128176;</span><span class="st-comm-tracker-title">Commission Tracker</span></div>';
@@ -3373,9 +3401,78 @@ function _stBuildCommissionTracker(stats) {
   }
   html += '</tbody></table></div>';
   html +=
+    '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin:16px 0 8px">Weekly deals</div>';
+  html +=
+    '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th></tr></thead><tbody>';
+  var wsT = stats.weekStart;
+  var weekDeals = [];
+  for (var wi = 0; wi < sales.length; wi++) {
+    var sd = sales[wi];
+    if (!sd || sd.type !== 'deal') continue;
+    if (sd.status !== 'valid') continue;
+    if (sd.ts < wsT) continue;
+    weekDeals.push(sd);
+  }
+  weekDeals.sort(function (a, b) {
+    return (a.ts || 0) - (b.ts || 0);
+  });
+  for (var wj = 0; wj < weekDeals.length; wj++) {
+    var wdRow = weekDeals[wj];
+    var commTotal =
+      (Number(wdRow.planCommission) || 0) +
+      (Number(wdRow.totalAddonCommission) || 0) +
+      (Number(wdRow.enrollmentBonus) || 0);
+    html +=
+      '<tr><td>' +
+      _stEscape(_stFormatSaleListDate(wdRow.ts)) +
+      '</td><td>' +
+      _stEscape(wdRow.customer || '—') +
+      '</td><td>' +
+      _stEscape(wdRow.plan || '—') +
+      '</td><td>' +
+      _stFmtMoney(wdRow.amount) +
+      '</td><td>' +
+      _stFmtMoney(commTotal) +
+      '</td></tr>';
+  }
+  if (!weekDeals.length) {
+    html += '<tr><td colspan="5" style="color:#94a3b8;font-size:13px;">No deals this week</td></tr>';
+  }
+  html += '</tbody></table></div>';
+  html +=
     '<div class="st-comm-addon-row"><span class="st-comm-addon-lbl">Add-on commission (this week)</span><span class="st-comm-addon-val">' +
     _stFmtMoney(wac) +
     '</span></div>';
+  html +=
+    '<div style="border-top:1px solid #eef1f5;margin:16px 0;padding-top:16px">' +
+    '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Earnings breakdown</div>';
+  html +=
+    '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Deal commission</span><span>' +
+    _stFmtMoney(pb.dealComm) +
+    ' <button type="button" class="st-comm-pct-link" onclick="_stOpenCommissionEditorFromTracker()">edit %</button></span></div>';
+  html +=
+    '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Add-on commission</span><span>' +
+    _stFmtMoney(pb.addonComm) +
+    ' <button type="button" class="st-comm-pct-link" onclick="_stOpenCommissionEditorFromTracker()">edit %</button></span></div>';
+  html +=
+    '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Enrollment fee bonus</span><span>' +
+    _stFmtMoney(pb.enrollmentBonus) +
+    '</span></div>';
+  html +=
+    '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Tier bonus</span><span>' +
+    _stFmtMoney(pb.tierBonus) +
+    '</span></div>';
+  html += '</div>';
+  html +=
+    '<div style="background:#5175F1;color:white;padding:12px 18px;border-radius:10px;font-size:15px;font-weight:600;margin-top:16px;display:flex;justify-content:space-between"><span>Estimated paycheck</span><span>' +
+    _stFmtMoney(pb.estimated) +
+    '</span></div>';
+  html += '<div class="st-comm-tracker-actions">';
+  html +=
+    '<button type="button" class="st-pdf-btn" onclick="_stDownloadWeeklyPdf()">Download PDF</button>';
+  html +=
+    '<button type="button" class="st-print-btn" onclick="window.print()">Print</button>';
+  html += '</div>';
   html += '</div>';
   return html;
 }
@@ -3412,15 +3509,14 @@ function _stRender() {
   html += _stBuildStats(stats);
   // 6. Weekly Bonus progress
   html += _stBuildBonus(stats);
-  html += _stBuildPaycheckSummary(sales, stats);
   // 7. Receipt input section
   html += _stBuildInput();
   // 8. This Week's table
   html += _stBuildTable(sales);
   // 9. Pending Post-Dates
   html += _stBuildPostDatesSection(postdates);
-  // 10. Commission Tracker (weekly commission at a glance)
-  html += _stBuildCommissionTracker(stats);
+  // 10. Commission Tracker (weekly commission + paycheck + earnings)
+  html += _stBuildCommissionTracker(sales, stats);
   // 11. Bottom spacer so the floating bottom toolbar never covers the last row
   html += '<div class="st-bottom-spacer" aria-hidden="true"></div>';
 

@@ -566,6 +566,11 @@ function brAddMsg(role, html) {
       '<span class="br-tdot"></span><span class="br-tdot"></span><span class="br-tdot"></span>';
     msgs.appendChild(typing);
     brScroll();
+    var _m0 = document.getElementById('br-msgs');
+    if (_m0)
+      setTimeout(function () {
+        _m0.scrollTop = _m0.scrollHeight;
+      }, 50);
     // Safety: force-clear after 3s in case setTimeout fails
     setTimeout(function () {
       var stuck = document.getElementById('br-typing-ind');
@@ -582,6 +587,11 @@ function brAddMsg(role, html) {
         '</div>';
       msgs.appendChild(d);
       brScroll();
+      var _m1 = document.getElementById('br-msgs');
+      if (_m1)
+        setTimeout(function () {
+          _m1.scrollTop = _m1.scrollHeight;
+        }, 50);
     }, 600);
     return;
   }
@@ -595,6 +605,11 @@ function brAddMsg(role, html) {
     '</div>';
   msgs.appendChild(d);
   brScroll();
+  var _m = document.getElementById('br-msgs');
+  if (_m)
+    setTimeout(function () {
+      _m.scrollTop = _m.scrollHeight;
+    }, 50);
 }
 
 function brScroll() {
@@ -852,11 +867,57 @@ function brLocalLookup(query, plan) {
         : JSON.stringify(plan.planNotes)
     );
 
-  var terms = [q];
+  var STOP = ['what','is','are','the','a','an','for','this','that','does','do','have','has','would','will','can','i','you','my','your','our','we','they','them','about','listed','there','any','plan','cover','covered','coverage','on','in','to','of','with','be','been','from','get','if','how','much','me','all','one','time','times','per','as','year','years','month','monthly','day','day']; 
+  var qClean = q.replace(/[^a-z0-9\s]/g, ' ');
+  var words = qClean.split(/\s+/).filter(function(w){
+    return w.length >= 3 && STOP.indexOf(w) === -1;
+  });
+  var terms = words.length > 0 ? words.slice() : [q];
   if (typeof _brExpandTerm === 'function') {
-    var expanded = _brExpandTerm(q);
-    for (var e = 0; e < expanded.length; e++) {
-      if (terms.indexOf(expanded[e]) === -1) terms.push(expanded[e]);
+    for (var k = 0; k < words.length; k++) {
+      var expanded = _brExpandTerm(words[k]);
+      for (var e = 0; e < expanded.length; e++) {
+        if (terms.indexOf(expanded[e]) === -1) terms.push(expanded[e]);
+      }
+    }
+  }
+
+  var SYNONYMS = {
+    'exclusion':['exclusion','exclusions','limitation','limitations','excluded','not covered','not eligible'],
+    'exclusions':['exclusion','exclusions','limitation','limitations','excluded','not covered','not eligible'],
+    'bloodwork':['bloodwork','blood work','lab','labs','laboratory','lab test','blood test','lab work'],
+    'labs':['bloodwork','blood work','lab','labs','laboratory','lab test','blood test','lab work'],
+    'lab':['bloodwork','blood work','lab','labs','laboratory','lab test','blood test','lab work'],
+    'xray':['xray','x-ray','radiology','imaging','diagnostic imaging'],
+    'network':['network','ppo','in-network','out-of-network','first health','multiplan','phcs'],
+    'waiting':['waiting','waiting period','wait','30-day','30 day','sickness','injury'],
+    'periods':['waiting','waiting period','wait','30-day','30 day','sickness','injury'],
+    'preex':['pre-existing','pre existing','preex','pre-ex','12/12','look-back','lookback'],
+    'preexisting':['pre-existing','pre existing','preex','pre-ex','12/12','look-back','lookback'],
+    'er':['emergency room','er','emergency'],
+    'emergency':['emergency room','er','emergency'],
+    'rx':['rx','prescription','prescriptions','pharmacy','drug','medication','script'],
+    'prescription':['rx','prescription','prescriptions','pharmacy','drug','medication','script'],
+    'deductible':['deductible','deductibles'],
+    'copay':['copay','copays','copayment'],
+    'copays':['copay','copays','copayment'],
+    'urgent':['urgent care','urgent'],
+    'ambulance':['ambulance'],
+    'hospital':['hospital','inpatient','hospitalization','admission'],
+    'inpatient':['hospital','inpatient','hospitalization','admission'],
+    'outpatient':['outpatient','surgery','outpatient surgery'],
+    'mental':['mental health','mental','psychiatry','therapy','counseling'],
+    'dental':['dental','dentist','teeth'],
+    'vision':['vision','eye','optometry','eyeglass'],
+    'preventive':['preventive','preventative','wellness','checkup','annual']
+  };
+  var originalTerms = terms.slice();
+  for (var s = 0; s < originalTerms.length; s++) {
+    var syns = SYNONYMS[originalTerms[s]];
+    if (syns) {
+      for (var ss = 0; ss < syns.length; ss++) {
+        if (terms.indexOf(syns[ss]) === -1) terms.push(syns[ss]);
+      }
     }
   }
 
@@ -871,13 +932,15 @@ function brLocalLookup(query, plan) {
     }
   }
 
+  matched = matched.slice(0, 3);
+
   if (matched.length > 0) {
     result.confident = true;
     // Only count NOT COVERED if the MAJORITY of matches say so — prevents one
     // unrelated exclusion line from poisoning a query that IS covered
     var notCoveredCount = 0;
     var coveredCount = 0;
-    matched.slice(0, 5).forEach(function (m) {
+    matched.forEach(function (m) {
       var ml = String(m).toLowerCase();
       if (
         ml.indexOf('not a covered insurance benefit') !== -1 ||
@@ -891,7 +954,7 @@ function brLocalLookup(query, plan) {
         coveredCount++;
       }
     });
-    result.data = matched.slice(0, 5).join('\n');
+    result.data = matched.slice(0, 3).join('\n');
     var mt = result.data.toLowerCase();
     // Neutral info queries — waiting period (non-STM), pre-existing, network
     // are informational facts, not coverage yes/no. Use VERIFY (neutral amber)
@@ -1136,25 +1199,82 @@ function brRenderServerAnswer(payload, planName, planSource) {
 }
 
 function brAIAnswer(query, planId) {
-  // Build marker — if DevTools does not show this, the browser is running stale chat.js (SW/cache).
-  console.log('[CHA BR] build=server-first-v6-always-api');
+  console.log('[CHA BR] build=local-first-v2');
 
   var plan = null;
   if (typeof POLICY_DOCS !== 'undefined') {
     for (var i = 0; i < POLICY_DOCS.length; i++) {
-      if (POLICY_DOCS[i].id === planId) {
-        plan = POLICY_DOCS[i];
-        break;
-      }
+      if (POLICY_DOCS[i].id === planId) { plan = POLICY_DOCS[i]; break; }
     }
   }
-  if (!plan) {
-    brAddMsg('ai', 'Please select a plan first.');
+  if (!plan) { brAddMsg('ai', 'Please select a plan first.'); return; }
+
+  // ── TIER 1: Local deterministic lookup from POLICY_DOCS ──
+  var local = null;
+  try { local = brLocalLookup(query, plan); } catch (e) {
+    console.warn('[CHA BR] local lookup threw, falling through:', e);
+  }
+
+  var localStatusUpper = local && local.status ? String(local.status).toUpperCase().trim() : '';
+  var trustedLocalStatuses = ['COVERED', 'NOT COVERED', 'INFO', 'PARTIAL', 'DISCOUNT'];
+  var isTrustedLocal = local && local.confident &&
+    trustedLocalStatuses.indexOf(localStatusUpper) !== -1;
+  if (isTrustedLocal) {
+    console.log('[CHA BR] Local lookup confident:', local.status, '— using POLICY_DOCS answer');
+    try {
+      brHideTyping();
+    } catch (e) {}
+
+    var lines = String(local.data || '')
+      .split('\n')
+      .filter(function (l) {
+        return l.trim().length > 3;
+      });
+    if (lines.length > 3) lines = lines.slice(0, 3);
+    var factText = lines.join('\n');
+
+    var sayText = '';
+    if (lines.length > 0) {
+      var firstLine = lines[0].split('—')[0].split(':');
+      sayText =
+        firstLine.length > 1 ? firstLine[1].trim() : firstLine[0].trim();
+      if (sayText.length > 60) sayText = sayText.substring(0, 57) + '...';
+    } else {
+      sayText = 'Check the plan document for details.';
+    }
+
+    var statusForPayload = localStatusUpper;
+    if (statusForPayload === 'DISCOUNT') statusForPayload = 'PARTIAL';
+
+    brRenderServerAnswer(
+      {
+        status: statusForPayload,
+        fact: factText,
+        sayThis: sayText,
+        source: local.source || (plan.source || 'Plan document'),
+        scope: 'policy_docs',
+        requestId: 'local_' + Date.now()
+      },
+      plan.name,
+      plan.source || ''
+    );
+
+    var _brI = document.getElementById('br-input');
+    if (_brI) {
+      _brI.disabled = false;
+      _brI.focus();
+    }
+    var _brS = document.getElementById('br-send');
+    if (_brS) _brS.disabled = false;
+
+    var _brM = document.getElementById('br-msgs');
+    if (_brM) _brM.scrollTop = _brM.scrollHeight;
+
     return;
   }
 
-  // Server-only RAG (/api/br-answer). Do not use POLICY_DOCS / brStructuredAnswer here — it confuses agents vs PDF truth.
-  console.log('[CHA RAG] Calling /api/br-answer (authoritative) for plan:', planId, 'query:', query);
+  // ── TIER 2: Server RAG fallback (/api/br-answer) ──
+  console.log('[CHA RAG] Local not confident, calling /api/br-answer for plan:', planId, 'query:', query);
   brShowTyping();
   brServerAnswer(query, plan.id)
     .catch(function (err) {
@@ -1167,13 +1287,12 @@ function brAIAnswer(query, planId) {
     })
     .catch(function (err) {
       brHideTyping();
-      console.warn('[CHA RAG] API failed after retry — showing VERIFY (no POLICY_DOCS fallback):', err.message);
+      console.warn('[CHA RAG] API failed after retry — showing VERIFY:', err.message);
       brRenderServerAnswer(
         {
           status: 'VERIFY',
-          fact:
-            'Could not reach the benefits server. Your answer was not loaded from local plan text — try again in a moment.',
-          sayThis: 'Hang on—I need to reconnect to pull the exact plan language.',
+          fact: 'Could not reach the benefits server. Try again in a moment.',
+          sayThis: 'Hang on—let me pull the exact plan language.',
           source: 'CHA Command Center',
           scope: 'none',
           requestId: ''
@@ -2932,4 +3051,19 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initBrainChatBox);
 } else {
   setTimeout(initBrainChatBox, 0);
+}
+
+// Unhide chat for testing via ?showchat=1 (must run after css/styles.css hide rule; uses !important)
+if (window.location.search.indexOf('showchat=1') !== -1) {
+  window.addEventListener('DOMContentLoaded', function () {
+    var el = document.querySelectorAll('#br-toggle,#br-panel');
+    for (var i = 0; i < el.length; i++) {
+      el[i].style.setProperty('display', 'block', 'important');
+    }
+  });
+  // Fallback if DOMContentLoaded already fired (e.g. script at end of body)
+  var el2 = document.querySelectorAll('#br-toggle,#br-panel');
+  for (var j = 0; j < el2.length; j++) {
+    el2[j].style.setProperty('display', 'block', 'important');
+  }
 }

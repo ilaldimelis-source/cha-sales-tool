@@ -1534,3 +1534,34 @@
 .st-all-status { font-weight: 700; }
 .st-all-detail { padding: 8px 12px 12px; border-top: 1px solid #eef2f7; background: #f8fafc; }
 .st-all-detail-line { font-size: 12px; color: #334155; margin-top: 4px; }
+
+.st-comm-deals-table {
+  font-size: 13px;
+}
+.st-comm-tracker-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.st-comm-tracker-actions .st-print-btn {
+  border: none;
+  border-radius: 10px;
+  background: #e2e8f0;
+  color: #1e293b;
+  padding: 9px 16px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+.st-comm-pct-link {
+  background: none;
+  border: none;
+  color: #5175f1;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 0 0 4px;
+  text-decoration: underline;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}

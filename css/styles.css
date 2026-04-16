@@ -7364,3 +7364,62 @@ body.plan-drawer-lock {
   display: none !important;
 }
 
+/* ── LIVE ASSIST GRAY OVERLAY FIX ── */
+.rebuttal-overlay,
+.live-assist-overlay,
+.la-overlay {
+  display: none !important;
+}
+#page-live .la-panel-overlay:not(.show) {
+  display: none !important;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ── LIVE ASSIST: fix gray line spacing ──
+   Sticky SOA strip (.soa-copy-strip) + #page-live .la-soa-hud sit above the
+   Rebuttals block; extra margin/padding keeps the strip edge from overlapping
+   the "Rebuttals" label and first accordion rows when scrolling. */
+#page-live .soa-copy-strip {
+  margin-bottom: 12px !important;
+}
+#page-live .la-section-label.la-sec-tight {
+  margin-top: 6px !important;
+  padding-top: 6px !important;
+}
+#page-live .la-qlist {
+  margin-top: 10px !important;
+}
+
+/* ── SALES TRACKER: HIDE STATUS UI (data preserved in localStorage) ── */
+.st-status-pill,
+.st-status-badge,
+.st-status-select,
+.st-status-label,
+[class*="status-pending"],
+[class*="status-cleared"],
+[class*="status-chargeback"],
+.st-status-column,
+.st-status-filter,
+.st-clearance-label,
+#st-status-dropdown,
+select[onchange*="Status"],
+.st-deal-status-row,
+.st-sale-bubble-status {
+  display: none !important;
+}
+
+/* ── LIVE ASSIST: remove rebuttal left border curve ──
+   Inner .la-section blocks inherit .la-section { border-left: 3px solid #c8cedd; }
+   from the global rule; scoped reset for Live accordion bodies only. */
+#page-live .la-qbody .la-section::before,
+#page-live .la-qbody .la-section::after,
+#page-live .la-qbody .la-section,
+#page-live .la-qbody .la-section-close::before,
+#page-live .la-qbody .la-section-close::after,
+#page-live .la-qbody .la-section-close {
+  border-left: none !important;
+  border-image: none !important;
+  box-shadow: none !important;
+}
+
