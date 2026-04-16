@@ -1012,6 +1012,7 @@ function normalizeBrStatus(raw) {
   if (s === 'COVERED') return 'COVERED';
   if (s === 'VERIFY') return 'VERIFY';
   if (s === 'PARTIAL') return 'PARTIAL';
+  if (s === 'INFO') return 'INFO';
   return s;
 }
 
@@ -1026,6 +1027,15 @@ function brStatusColor(status) {
   if (s === 'PARTIAL') {
     return { border: '#3b82f6', bg: '#eff6ff', badge: '#2563eb', text: '#1e3a8a' };
   }
+  if (s === 'INFO') {
+    return {
+      border: '#5175f1',
+      bg: '#eef1fb',
+      badge: '#eef1fb',
+      badgeFg: '#3550c8',
+      text: '#3550c8'
+    };
+  }
   if (s === 'VERIFY') {
     return { border: '#f59e0b', bg: '#fffbeb', badge: '#d97706', text: '#78350f' };
   }
@@ -1038,6 +1048,7 @@ function brStatusBadgeIcon(status) {
   if (s === 'COVERED') return '\u2705 ';
   if (s === 'VERIFY') return '\u26a0\ufe0f ';
   if (s === 'PARTIAL') return '\u25cf ';
+  if (s === 'INFO') return '\u24d8 ';
   return '\u26a0\ufe0f ';
 }
 
@@ -1061,6 +1072,7 @@ function brRenderServerAnswer(payload, planName, planSource) {
   var sayThis = String((payload && payload.sayThis) || '');
   var status = normalizeBrStatus((payload && payload.status) || 'VERIFY');
   if (
+    status !== 'INFO' &&
     (status === 'COVERED' || status === 'PARTIAL') &&
     brAnswerTextImpliesNotCovered(fact, sayThis)
   ) {
@@ -1071,7 +1083,7 @@ function brRenderServerAnswer(payload, planName, planSource) {
     );
     status = 'NOT COVERED';
   }
-  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL)$/.test(status)) {
+  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL|INFO)$/.test(status)) {
     status = 'VERIFY';
   }
   var source = String((payload && payload.source) || planSource || planName || 'Plan PDF');
@@ -1109,7 +1121,9 @@ function brRenderServerAnswer(payload, planName, planSource) {
       'STATUS',
       '<span style="display:inline-block;background:' +
         c.badge +
-        ';color:#fff;font-size:10px;font-weight:700;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">' +
+        ';color:' +
+        (c.badgeFg || '#fff') +
+        ';font-size:10px;font-weight:700;letter-spacing:0.04em;padding:2px 8px;border-radius:999px;">' +
         brStatusBadgeIcon(status) +
         escHTML(status) +
         '</span>'

@@ -72,7 +72,7 @@ function parseModelOutput(raw) {
     if (/^SOURCE:/i.test(l)) out.source = l.replace(/^SOURCE:\s*/i, '').trim();
   });
 
-  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL)$/.test(out.status)) out.status = 'VERIFY';
+  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL|INFO)$/.test(out.status)) out.status = 'VERIFY';
   if (!out.fact) out.fact = '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]';
   if (!out.source) out.source = 'Plan PDF / POLICY_DOCS';
   return out;
@@ -179,53 +179,6 @@ function aiOutputImpliesNotCovered(fact, sayThis) {
 }
 
 function enforceMandatoryNotCovered(parsed, planContextText, query) {
-  var fromContext = contextRequiresMandatoryNotCovered(planContextText, query);
-  var fromAi = aiOutputImpliesNotCovered(parsed.fact, parsed.sayThis);
-  if (!fromContext && !fromAi) {
-    if (parsed.status === 'COVERED' || parsed.status === 'PARTIAL') {
-      console.log('[CHA RAG] enforceMandatoryNotCovered: skip (suspicious)', {
-        status: parsed.status,
-        fromContext: false,
-        fromAi: false,
-        queryPreview: String(query || '').slice(0, 80)
-      });
-    }
-    return parsed;
-  }
-
-  var prev = parsed.status;
-  console.log('[CHA RAG] enforceMandatoryNotCovered: APPLY', {
-    prevStatus: prev,
-    fromContext: fromContext,
-    fromAi: fromAi,
-    queryPreview: String(query || '').slice(0, 80)
-  });
-  parsed.status = 'NOT COVERED';
-  if (prev === 'COVERED' || prev === 'PARTIAL') {
-    if (fromAi && !fromContext) {
-      parsed.fact =
-        'The model summary contradicts COVERED: it references not covered / not a covered insurance benefit and/or discounted rates without insurance coverage — status corrected to NOT COVERED.';
-      parsed.sayThis =
-        'NOT COVERED as an insurance benefit. Pre-negotiated discounted rates may still be available through the plan network, but they are not insurance coverage.';
-    } else {
-      parsed.fact =
-        'The plan excerpts include explicit language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible — discounts or network rates do not change that it is not covered as insurance.';
-      parsed.sayThis =
-        'NOT COVERED as an insurance benefit. If the plan mentions discounted or network rates, those are not insurance coverage — say: NOT COVERED as insurance benefit; pre-negotiated discounted rates may still be available through the network named in the plan.';
-    }
-  } else {
-    if (fromAi && !fromContext && String(parsed.fact || '').indexOf('contradicts') === -1) {
-      parsed.fact =
-        String(parsed.fact || '').trim() +
-        ' (Aligned to NOT COVERED based on exclusion language in the answer text.)';
-    } else if (!fromAi || fromContext) {
-      parsed.fact =
-        'The plan excerpts include language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible.';
-    }
-    parsed.sayThis =
-      String(parsed.sayThis || '').trim() ||
-      'NOT COVERED as an insurance benefit per the plan language in context. Discounted rates mentioned in the plan are not insurance coverage.';
-  }
   return parsed;
 }
 
@@ -471,45 +424,44 @@ module.exports = function handler(req, res) {
         );
 
         var sysPrompt =
-        'CRITICAL: Answer ONLY the exact benefit asked about. If user asks \'bloodwork\', respond ONLY about bloodwork/lab tests. ' +
-        'Do NOT mention Rx, outpatient, X-ray, MRI, CT scans, or any other benefit.\n\n' +
-        'You are a health insurance benefits assistant for Central Health Advisors.\n' +
-        'Use ONLY PLAN CONTEXT below. Never invent coverage.\n' +
-        'Allowed STATUS values: COVERED, NOT COVERED, VERIFY, PARTIAL.\n\n' +
-        'RULE 1 — HIGHEST PRIORITY (OVERRIDES ALL OTHER RULES):\n' +
-        'Scan the entire PLAN CONTEXT. If ANY chunk contains ANY of the following phrases (case-insensitive), ' +
-        'then STATUS MUST be NOT COVERED for the topic the agent asked about when that topic is addressed or ' +
-        'listed in the same section, table, or exclusion list — NO EXCEPTIONS:\n' +
-        '- "Not a covered insurance benefit"\n' +
-        '- "not covered" (as a standalone phrase about a benefit)\n' +
-        '- "will not be considered eligible"\n' +
-        '- "is not covered under the Plan" (or "this Plan")\n' +
-        'Discounts, cash pay, network savings, or "discounted rates available" do NOT make something COVERED. ' +
-        'If the plan says not covered / not eligible as insurance, STATUS is NOT COVERED; you may still mention ' +
-        'discounted rates in SAY THIS as non-insurance savings only.\n\n' +
-        'RULE 2 — OUTPUT SHAPE (STRICT):\n' +
-        'FACT: at most two short sentences about ONLY the benefit named in the user question (same style as the CORRECT EXAMPLE below). No bullet lists. No extra benefits.\n' +
-        'SAY THIS must be exactly ONE short sentence for the agent to read aloud. Do not restate FACT verbatim; same meaning, fewer words.\n' +
-        'SOURCE must name the plan document from PLAN CONTEXT (e.g. brochure PDF name), not chunk labels.\n\n' +
-        'FACT format:\n' +
-        'FACT: [One sentence about the specific benefit asked] Example for bloodwork: \'Blood work and lab tests are not a covered insurance benefit. Discounted rates available through First Health PPO.\'\n' +
-        '(Your FACT must follow that shape: one sentence; only bloodwork/lab if that was the question; use the real network name from PLAN CONTEXT when you mention discounts.)\n\n' +
-        'SAY THIS format:\n' +
-        'SAY THIS: [One short sentence to read to customer] Example: \'Lab work isn\'t covered as insurance, but you get discounted rates through the First Health network.\'\n\n' +
-        'WRONG RESPONSE EXAMPLE — DO NOT DO THIS: Listing Rx, Outpatient, X-ray, MRI when user only asked about bloodwork.\n\n' +
-        'CORRECT RESPONSE EXAMPLE for \'bloodwork\' query:\n' +
-        'STATUS: NOT COVERED\n' +
-        'FACT: Blood work is not a covered insurance benefit. Discounted rates available through First Health PPO network.\n' +
-        'SAY THIS: Lab work isn\'t covered, but you get discounted rates through First Health.\n' +
-        'SOURCE: TDK 4 Customer Brochure\n' +
-        '(Adapt STATUS/FACT/SAY THIS/SOURCE to the actual user question and PLAN CONTEXT; keep the same brevity and single-benefit focus.)\n\n' +
-        'FORMAT EXACTLY (four lines only, no other text before or after):\n' +
-        'STATUS: ...\n' +
-        'FACT: ...\n' +
-        'SAY THIS: ...\n' +
-        'SOURCE: ...\n\n' +
-        'PLAN CONTEXT:\n' +
-        context;
+          'You are a health insurance benefits assistant for Central Health Advisors agents on live sales calls.\n\n' +
+          'Use ONLY the PLAN CONTEXT below. If the answer is not in the context, respond honestly with VERIFY status.\n\n' +
+          'CHOOSE STATUS BASED ON QUESTION TYPE:\n' +
+          '- "Is X covered?" or "Does the plan cover X?" -> STATUS: COVERED or NOT COVERED\n' +
+          '- "What is NOT covered?" or "List exclusions" -> STATUS: NOT COVERED\n' +
+          '- "What is the copay/deductible/premium amount?" -> STATUS: INFO\n' +
+          '- "What is the network?" or "How does X work?" or "When does X start?" -> STATUS: INFO\n' +
+          '- "What are the waiting periods?" -> STATUS: INFO\n' +
+          '- Cannot find answer in context -> STATUS: VERIFY\n\n' +
+          'OUTPUT FORMAT - exactly four lines, no other text before or after:\n' +
+          'STATUS: [COVERED or NOT COVERED or INFO or VERIFY]\n' +
+          'FACT: [Maximum 2 short sentences. Plain English. State the specific fact. No bullet dumps. For lists like exclusions, summarize the top 3-5 items naturally and add "plus other limits in the plan doc"]\n' +
+          'SAY THIS: [One short sentence the agent reads aloud to the customer. Casual, conversational]\n' +
+          'SOURCE: [Just the plan PDF filename from PLAN CONTEXT]\n\n' +
+          'STRICT RULES:\n' +
+          '- Answer ONLY the specific benefit asked about. Never add other benefits.\n' +
+          '- Never include reasoning, explanations, parentheticals like "(Aligned to...)" or "(based on language...)" anywhere in the output.\n' +
+          '- Never repeat the same sentence twice.\n' +
+          '- Never paste raw OCR text or chunk labels like [Excerpt 1].\n' +
+          '- Keep total answer under 80 words.\n\n' +
+          'EXAMPLES:\n\n' +
+          'User: "What are the copays for doctor visits?" (MedFirst 1)\n' +
+          'STATUS: INFO\n' +
+          'FACT: MedFirst 1 does not include traditional copays. Members access First Health PPO discounted rates instead.\n' +
+          'SAY THIS: This plan uses network discounts instead of copays through First Health PPO.\n' +
+          'SOURCE: MEC_MedFirst1_SPD_Jan25.pdf\n\n' +
+          'User: "What is the network?" (TrueHealth 1)\n' +
+          'STATUS: INFO\n' +
+          'FACT: TrueHealth 1 uses the First Health Network for in-network care. Out-of-network services are also available at higher cost.\n' +
+          'SAY THIS: You are covered through First Health for the best rates, but you can use any provider.\n' +
+          'SOURCE: MEC_TrueHealth1_SPD_Jan25.pdf\n\n' +
+          'User: "What is NOT covered?" (MedFirst 1)\n' +
+          'STATUS: NOT COVERED\n' +
+          'FACT: Major exclusions include fertility treatment, weight loss surgery, cosmetic surgery, organ transplants, and DME. Plus other limits listed in the plan document.\n' +
+          'SAY THIS: This plan has standard exclusions like fertility, weight loss surgery, and cosmetic procedures.\n' +
+          'SOURCE: MEC_MedFirst1_SPD_Jan25.pdf\n\n' +
+          'PLAN CONTEXT:\n' +
+          context;
 
         return fetch('https://api.groq.com/openai/v1/chat/completions', {
           method: 'POST',
