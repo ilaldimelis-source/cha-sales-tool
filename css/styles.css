@@ -7409,3 +7409,17 @@ select[onchange*="Status"],
   display: none !important;
 }
 
+/* ── LIVE ASSIST: remove rebuttal left border curve ──
+   Inner .la-section blocks inherit .la-section { border-left: 3px solid #c8cedd; }
+   from the global rule; scoped reset for Live accordion bodies only. */
+#page-live .la-qbody .la-section::before,
+#page-live .la-qbody .la-section::after,
+#page-live .la-qbody .la-section,
+#page-live .la-qbody .la-section-close::before,
+#page-live .la-qbody .la-section-close::after,
+#page-live .la-qbody .la-section-close {
+  border-left: none !important;
+  border-image: none !important;
+  box-shadow: none !important;
+}
+

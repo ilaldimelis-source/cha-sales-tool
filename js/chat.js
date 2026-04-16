@@ -1212,13 +1212,36 @@ function brAIAnswer(query, planId) {
     trustedLocalStatuses.indexOf(localStatusUpper) !== -1;
   if (isTrustedLocal) {
     console.log('[CHA BR] Local lookup confident:', local.status, '— using POLICY_DOCS answer');
-    var hudStatus = local.status;
-    if (localStatusUpper === 'DISCOUNT') hudStatus = 'PARTIAL';
+    try {
+      brHideTyping();
+    } catch (eBrH) {}
+    // Limit FACT to first 3 matched lines max, keep it concise
+    var factLines = String(local.data || '').split(
+      /\n|(?=Primary|Specialist|Urgent|Telemedic|Preventive|Inpatient|Outpatient|Emergency|Ambulance|Hospital|Prescri|Mental|Dental|Vision|Maternity)/i
+    );
+    var cleanFact = [];
+    for (var fl = 0; fl < factLines.length && cleanFact.length < 3; fl++) {
+      var trimmed = factLines[fl].trim();
+      if (trimmed.length > 5) cleanFact.push(trimmed);
+    }
+    var factText = cleanFact.join('\n');
+    // SAY THIS: ultra-short summary, NOT a repeat of FACT
+    var sayText = '';
+    if (localStatusUpper === 'COVERED' || localStatusUpper === 'INFO') {
+      sayText =
+        cleanFact.length > 0 ? cleanFact[0].split('—')[0].trim() : 'See plan details.';
+    } else if (localStatusUpper === 'NOT COVERED') {
+      sayText = 'This is not covered under the plan.';
+    } else {
+      sayText = 'Please check the plan document for details.';
+    }
+    var statusForPayload =
+      localStatusUpper === 'DISCOUNT' ? 'PARTIAL' : localStatusUpper;
     brRenderServerAnswer(
       {
-        status: hudStatus,
-        fact: local.data || '',
-        sayThis: local.data ? String(local.data).split(/[.!?]/)[0].trim() : '',
+        status: statusForPayload,
+        fact: factText,
+        sayThis: sayText,
         source: local.source || (plan.source || 'Plan document'),
         scope: 'policy_docs',
         requestId: 'local_' + Date.now()
@@ -1226,6 +1249,13 @@ function brAIAnswer(query, planId) {
       plan.name,
       plan.source || ''
     );
+    var brInput = document.getElementById('br-input');
+    if (brInput) {
+      brInput.disabled = false;
+      brInput.focus();
+    }
+    var brSendBtn = document.getElementById('br-send');
+    if (brSendBtn) brSendBtn.disabled = false;
     return;
   }
 
