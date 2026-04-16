@@ -574,6 +574,11 @@ function brAddMsg(role, html) {
       '<span class="br-tdot"></span><span class="br-tdot"></span><span class="br-tdot"></span>';
     msgs.appendChild(typing);
     brScroll();
+    var _m0 = document.getElementById('br-msgs');
+    if (_m0)
+      setTimeout(function () {
+        _m0.scrollTop = _m0.scrollHeight;
+      }, 50);
     // Safety: force-clear after 3s in case setTimeout fails
     setTimeout(function () {
       var stuck = document.getElementById('br-typing-ind');
@@ -590,6 +595,11 @@ function brAddMsg(role, html) {
         '</div>';
       msgs.appendChild(d);
       brScroll();
+      var _m1 = document.getElementById('br-msgs');
+      if (_m1)
+        setTimeout(function () {
+          _m1.scrollTop = _m1.scrollHeight;
+        }, 50);
     }, 600);
     return;
   }
@@ -603,6 +613,11 @@ function brAddMsg(role, html) {
     '</div>';
   msgs.appendChild(d);
   brScroll();
+  var _m = document.getElementById('br-msgs');
+  if (_m)
+    setTimeout(function () {
+      _m.scrollTop = _m.scrollHeight;
+    }, 50);
 }
 
 function brScroll() {
@@ -925,13 +940,15 @@ function brLocalLookup(query, plan) {
     }
   }
 
+  matched = matched.slice(0, 3);
+
   if (matched.length > 0) {
     result.confident = true;
     // Only count NOT COVERED if the MAJORITY of matches say so — prevents one
     // unrelated exclusion line from poisoning a query that IS covered
     var notCoveredCount = 0;
     var coveredCount = 0;
-    matched.slice(0, 5).forEach(function (m) {
+    matched.forEach(function (m) {
       var ml = String(m).toLowerCase();
       if (
         ml.indexOf('not a covered insurance benefit') !== -1 ||
@@ -945,7 +962,7 @@ function brLocalLookup(query, plan) {
         coveredCount++;
       }
     });
-    result.data = matched.slice(0, 5).join('\n');
+    result.data = matched.slice(0, 3).join('\n');
     var mt = result.data.toLowerCase();
     // Neutral info queries — waiting period (non-STM), pre-existing, network
     // are informational facts, not coverage yes/no. Use VERIFY (neutral amber)
@@ -1214,29 +1231,29 @@ function brAIAnswer(query, planId) {
     console.log('[CHA BR] Local lookup confident:', local.status, '— using POLICY_DOCS answer');
     try {
       brHideTyping();
-    } catch (eBrH) {}
-    // Limit FACT to first 3 matched lines max, keep it concise
-    var factLines = String(local.data || '').split(
-      /\n|(?=Primary|Specialist|Urgent|Telemedic|Preventive|Inpatient|Outpatient|Emergency|Ambulance|Hospital|Prescri|Mental|Dental|Vision|Maternity)/i
-    );
-    var cleanFact = [];
-    for (var fl = 0; fl < factLines.length && cleanFact.length < 3; fl++) {
-      var trimmed = factLines[fl].trim();
-      if (trimmed.length > 5) cleanFact.push(trimmed);
-    }
-    var factText = cleanFact.join('\n');
-    // SAY THIS: ultra-short summary, NOT a repeat of FACT
+    } catch (e) {}
+
+    var lines = String(local.data || '')
+      .split('\n')
+      .filter(function (l) {
+        return l.trim().length > 3;
+      });
+    if (lines.length > 3) lines = lines.slice(0, 3);
+    var factText = lines.join('\n');
+
     var sayText = '';
-    if (localStatusUpper === 'COVERED' || localStatusUpper === 'INFO') {
+    if (lines.length > 0) {
+      var firstLine = lines[0].split('—')[0].split(':');
       sayText =
-        cleanFact.length > 0 ? cleanFact[0].split('—')[0].trim() : 'See plan details.';
-    } else if (localStatusUpper === 'NOT COVERED') {
-      sayText = 'This is not covered under the plan.';
+        firstLine.length > 1 ? firstLine[1].trim() : firstLine[0].trim();
+      if (sayText.length > 60) sayText = sayText.substring(0, 57) + '...';
     } else {
-      sayText = 'Please check the plan document for details.';
+      sayText = 'Check the plan document for details.';
     }
-    var statusForPayload =
-      localStatusUpper === 'DISCOUNT' ? 'PARTIAL' : localStatusUpper;
+
+    var statusForPayload = localStatusUpper;
+    if (statusForPayload === 'DISCOUNT') statusForPayload = 'PARTIAL';
+
     brRenderServerAnswer(
       {
         status: statusForPayload,
@@ -1249,13 +1266,18 @@ function brAIAnswer(query, planId) {
       plan.name,
       plan.source || ''
     );
-    var brInput = document.getElementById('br-input');
-    if (brInput) {
-      brInput.disabled = false;
-      brInput.focus();
+
+    var _brI = document.getElementById('br-input');
+    if (_brI) {
+      _brI.disabled = false;
+      _brI.focus();
     }
-    var brSendBtn = document.getElementById('br-send');
-    if (brSendBtn) brSendBtn.disabled = false;
+    var _brS = document.getElementById('br-send');
+    if (_brS) _brS.disabled = false;
+
+    var _brM = document.getElementById('br-msgs');
+    if (_brM) _brM.scrollTop = _brM.scrollHeight;
+
     return;
   }
 
