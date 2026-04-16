@@ -7364,6 +7364,12 @@ body.plan-drawer-lock {
   display: none !important;
 }
 
+/* Override: unhide chat when body has .showchat class (?showchat=1) */
+body.showchat #br-toggle,
+body.showchat #br-panel {
+  display: block !important;
+}
+
 /* ── LIVE ASSIST GRAY OVERLAY FIX ── */
 .rebuttal-overlay,
 .live-assist-overlay,

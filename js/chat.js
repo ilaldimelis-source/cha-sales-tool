@@ -3053,17 +3053,6 @@ if (document.readyState === 'loading') {
   setTimeout(initBrainChatBox, 0);
 }
 
-// Unhide chat for testing via ?showchat=1 (must run after css/styles.css hide rule; uses !important)
 if (window.location.search.indexOf('showchat=1') !== -1) {
-  window.addEventListener('DOMContentLoaded', function () {
-    var el = document.querySelectorAll('#br-toggle,#br-panel');
-    for (var i = 0; i < el.length; i++) {
-      el[i].style.setProperty('display', 'block', 'important');
-    }
-  });
-  // Fallback if DOMContentLoaded already fired (e.g. script at end of body)
-  var el2 = document.querySelectorAll('#br-toggle,#br-panel');
-  for (var j = 0; j < el2.length; j++) {
-    el2[j].style.setProperty('display', 'block', 'important');
-  }
+  document.body.classList.add('showchat');
 }

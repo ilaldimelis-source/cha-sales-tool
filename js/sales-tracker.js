@@ -2531,14 +2531,54 @@ function _stOpenCommissionEditorFromTracker() {
   var sales = _stLoadSales();
   var stats = _stCalcStats(sales);
   var ws = stats.weekStart;
+  var weekEnd = ws + 7 * 24 * 60 * 60 * 1000;
   for (var i = 0; i < sales.length; i++) {
     if (!sales[i] || sales[i].type !== 'deal') continue;
-    if (sales[i].status !== 'valid') continue;
-    if (sales[i].ts < ws) continue;
+    if (_stNormalizeStatus(sales[i]) === 'chargeback') continue;
+    if (sales[i].ts < ws || sales[i].ts >= weekEnd) continue;
     _stOpenCommissionEditor(sales[i].id);
     return;
   }
   _stFlash('No deals this week to edit commission rates from.', 'error');
+}
+
+// Bulk-edit global tier or add-on rates from the earnings row (applies to all sales after restamp).
+function _stEditCommissionRate(type) {
+  var raw = window.prompt(
+    'Enter new commission rate (e.g. 0.35 for 35%):',
+    '0.35'
+  );
+  if (raw === null) return;
+  var newRate = parseFloat(raw);
+  if (isNaN(newRate) || newRate < 0 || newRate > 1) {
+    _stFlash('Enter a decimal between 0 and 1 (e.g. 0.35).', 'error');
+    return;
+  }
+  var rates = _stLoadCommissionRates();
+  if (type === 'deal') {
+    for (var ti = 0; ti < rates.planTiers.length; ti++) {
+      rates.planTiers[ti].rate = newRate;
+    }
+  } else if (type === 'addon') {
+    for (var key in rates.addonTypes) {
+      if (Object.prototype.hasOwnProperty.call(rates.addonTypes, key)) {
+        rates.addonTypes[key] = newRate;
+      }
+    }
+  } else {
+    return;
+  }
+  _stSaveCommissionRates(rates);
+  var sales = _stLoadSales();
+  _stRestampAllCommissions(sales);
+  _stSaveSales(sales);
+  _stRender();
+  _stFlash(
+    'Commission ' +
+      (type === 'deal' ? 'plan tier' : 'add-on') +
+      ' defaults updated. All deals restamped.',
+    'ok'
+  );
 }
 
 function _stBuildInput() {
@@ -3405,12 +3445,13 @@ function _stBuildCommissionTracker(sales, stats) {
   html +=
     '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th></tr></thead><tbody>';
   var wsT = stats.weekStart;
+  var weekEndT = wsT + 7 * 24 * 60 * 60 * 1000;
   var weekDeals = [];
   for (var wi = 0; wi < sales.length; wi++) {
     var sd = sales[wi];
     if (!sd || sd.type !== 'deal') continue;
-    if (sd.status !== 'valid') continue;
-    if (sd.ts < wsT) continue;
+    if (_stNormalizeStatus(sd) === 'chargeback') continue;
+    if (sd.ts < wsT || sd.ts >= weekEndT) continue;
     weekDeals.push(sd);
   }
   weekDeals.sort(function (a, b) {
@@ -3449,11 +3490,11 @@ function _stBuildCommissionTracker(sales, stats) {
   html +=
     '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Deal commission</span><span>' +
     _stFmtMoney(pb.dealComm) +
-    ' <button type="button" class="st-comm-pct-link" onclick="_stOpenCommissionEditorFromTracker()">edit %</button></span></div>';
+    ' <button type="button" class="st-comm-pct-link" onclick="_stEditCommissionRate(\'deal\')">edit %</button></span></div>';
   html +=
     '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Add-on commission</span><span>' +
     _stFmtMoney(pb.addonComm) +
-    ' <button type="button" class="st-comm-pct-link" onclick="_stOpenCommissionEditorFromTracker()">edit %</button></span></div>';
+    ' <button type="button" class="st-comm-pct-link" onclick="_stEditCommissionRate(\'addon\')">edit %</button></span></div>';
   html +=
     '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Enrollment fee bonus</span><span>' +
     _stFmtMoney(pb.enrollmentBonus) +
