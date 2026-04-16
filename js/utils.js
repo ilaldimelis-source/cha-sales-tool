@@ -1080,6 +1080,47 @@ function buildSearchIndex() {
     });
   }
 
+  if (typeof PLAN_SCRIPTS !== 'undefined') {
+    PLAN_SCRIPTS.forEach(function (p) {
+      var sectionText = (p.sections || [])
+        .map(function (s) {
+          return (s.title || '') + ' ' + (s.text || '');
+        })
+        .join(' ');
+      SEARCH_INDEX.push({
+        type: 'Plan Scripts',
+        title: p.name || 'Plan Script',
+        preview: (p.group || '') + ' script',
+        searchText: ((p.name || '') + ' ' + sectionText).toLowerCase(),
+        action: function () {
+          closeSearch();
+          showPage('planscripts');
+        }
+      });
+    });
+  }
+
+  SEARCH_INDEX.push({
+    type: 'Training',
+    title: 'Cheat Sheets',
+    preview: 'Compliance non-negotiables and plan reference table',
+    searchText: 'training cheat sheet network underwriter association billing disclose',
+    action: function () {
+      closeSearch();
+      showPage('cheatsheet');
+    }
+  });
+  SEARCH_INDEX.push({
+    type: 'Compliance',
+    title: 'Compliance Center',
+    preview: 'Required disclosures and call audit standards',
+    searchText: 'compliance disclosures non aca not major medical waiting period pre existing exclusions',
+    action: function () {
+      closeSearch();
+      showPage('compliancecenter');
+    }
+  });
+
   _searchIndexBuilt = true;
 }
 
@@ -1193,6 +1234,7 @@ function doSearch(val) {
       else prev = item.preview;
       res.push({
         sec: 'Policy Reference — ' + item.title,
+        group: item.type,
         txt:
           (matchedBens.length
             ? 'Benefit: '
@@ -1214,6 +1256,7 @@ function doSearch(val) {
     } else {
       res.push({
         sec: item.type,
+        group: item.type,
         txt: item.title,
         prev: item.preview + '...',
         action: item.action,
@@ -1234,34 +1277,54 @@ function doSearch(val) {
   window.srActions = res.map(function (r) {
     return r.action;
   });
+  var grouped = {};
+  var groupOrder = [];
+  var g;
+  res.forEach(function (r) {
+    g = r.group || r.type || 'Results';
+    if (!grouped[g]) {
+      grouped[g] = [];
+      groupOrder.push(g);
+    }
+    grouped[g].push(r);
+  });
+  var actionIndex = 0;
   document.getElementById('srList').innerHTML = res.length
-    ? res
-        .map(function (r, i) {
-          return (
-            '<div class="sr-item" onclick="srActions[' +
-            i +
-            ']()">' +
-            '<span class="sr-badge ' +
-            getBadgeClass(r.sec) +
-            '">' +
-            escHTML(r.sec) +
-            '</span>' +
-            (getSourceLabel(r.sec)
-              ? '<span class="sr-source-pill">' +
-                getSourceLabel(r.sec) +
-                '</span>'
-              : '') +
-            '<div class="sr-item-title">' +
-            hlSearch(r.txt, expandedTerms) +
-            '</div>' +
-            '<div class="sr-item-preview">' +
-            hlSearch(r.prev, expandedTerms) +
-            '</div>' +
-            (r.prev && r.prev.includes('match(es)')
-              ? '<div class="sr-item-detail">' + escHTML(r.prev) + '</div>'
-              : '') +
-            '</div>'
-          );
+    ? groupOrder
+        .map(function (groupName) {
+          var block = '<div class="sr-group-title">' + escHTML(groupName) + '</div>';
+          var rows = grouped[groupName] || [];
+          block += rows
+            .map(function (r) {
+              var html =
+                '<div class="sr-item" onclick="srActions[' +
+                actionIndex +
+                ']()">' +
+                '<span class="sr-badge ' +
+                getBadgeClass(r.sec) +
+                '">' +
+                escHTML(r.sec) +
+                '</span>' +
+                (getSourceLabel(r.sec)
+                  ? '<span class="sr-source-pill">' +
+                    getSourceLabel(r.sec) +
+                    '</span>'
+                  : '') +
+                '<div class="sr-item-title">' +
+                hlSearch(r.txt, expandedTerms) +
+                '</div>' +
+                '<div class="sr-item-preview">' +
+                hlSearch(r.prev, expandedTerms) +
+                '</div>' +
+                (r.prev && r.prev.includes('match(es)')
+                  ? '<div class="sr-item-detail">' + escHTML(r.prev) + '</div>'
+                  : '') +
+                '</div>';
+              actionIndex++;
+              return html;
+            })
+            .join('');
+          return block;
         })
         .join('')
     : '<div class="sr-empty"><div class="sr-empty-icon">🔍</div><div class="sr-empty-title">No results for "' +
