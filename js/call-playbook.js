@@ -20,17 +20,6 @@ function copyScriptBubble(btn) {
 
 const CLOSES = [
   {
-    line: 'Based on everything you told me, this fits your situation well. The best thing to do right now is get this submitted so your coverage starts [date]. I just need to confirm a few quick details.',
-    type: 'assumptive',
-    when: 'After smooth presentation with no major unresolved resistance. Assumes the sale is happening — because it is.',
-    tone: 'Confident and matter-of-fact. No question mark in your voice.',
-    before:
-      'Full discovery complete, benefits presented, no major open objections.',
-    bridge:
-      "'Does that feel like it addresses what you were dealing with?' → pause → then move directly into this.",
-    hesitate: "'What's the one thing that's making you hesitate right now?'"
-  },
-  {
     line: "It sounds like you're about 90% there. What's the 10% that's holding you back?",
     type: 'soft',
     when: 'They seem interested but hesitating without a clear objection.',
@@ -62,18 +51,6 @@ const CLOSES = [
     bridge:
       "'I hear you on wanting to think about it. Here's the one thing I want you to factor in...' → this line.",
     hesitate: "'Does that change your thinking at all?'"
-  },
-  {
-    line: 'Is your mailing address still [address]?',
-    type: 'assumptive',
-    when: "Temperature is warm and they've agreed conceptually. Minor question close.",
-    tone: 'Completely casual. Sounds like paperwork, not a close.',
-    before:
-      "Once you've gotten clear verbal agreement that the plan makes sense.",
-    bridge:
-      "Transition naturally from presentation: 'Great — let me just confirm a few things...'",
-    hesitate:
-      "If they pause: 'I just want to make sure everything's accurate on the application.'"
   },
   {
     line: 'I can get you started today for [amount]. Should we use a credit card or bank account?',
@@ -836,10 +813,6 @@ const ISA_SCRIPTS = {
     {
       label: 'Logistics close (Softer)',
       line: "Alright — let's get this locked in. I just need your date of birth to confirm your rate — are you looking at the 1st or the 15th for your start date?"
-    },
-    {
-      label: 'Assumptive close (Standard)',
-      line: 'Based on everything you told me, this is the right fit. Let me pull up the enrollment — what email should I send your confirmation to?'
     },
     {
       label: 'Direct close (Stronger)',

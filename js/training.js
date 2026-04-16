@@ -779,16 +779,6 @@ const ISA_SIMPLIFIER = [
 ];
 const ISA_CLOSES = [
   {
-    name: 'Assumptive Close',
-    when: "You've completed discovery, positioned the plan, and the prospect has shown interest without a hard objection.",
-    tone: 'Natural. Confident. Like this is the obvious next step.',
-    weak: "'So... do you want to go ahead with this?'",
-    better:
-      "'Based on everything you told me, this plan fits perfectly. Let me pull up the enrollment.'",
-    elite:
-      "'Alright — this is the right fit for your situation. Let me grab your date of birth to confirm the rate and get your start date locked in. Are you thinking the 1st or the 15th?'"
-  },
-  {
     name: 'Logistics Close',
     when: 'Prospect is ready but needs direction to move forward.',
     tone: 'Efficient. Helpful. Removing friction.',
@@ -805,7 +795,7 @@ const ISA_CLOSES = [
     weak: "'I don't want to push you, so whatever you decide is fine.'",
     better: "'Does this feel like the right fit for where you are right now?'",
     elite:
-      "'I don't want to push you into anything — but I also don't want you to go another week without coverage if this is the right fit. Based on everything we talked about, does this solve what you need it to solve?'"
+      "'I don't want to push you into anything — but I also don't want you to go another week without coverage if this is the right fit. From what we've gone over, does this solve what you need it to solve?'"
   },
   {
     name: 'Direct Close',
@@ -1179,7 +1169,6 @@ function renderClosingengine() {
       '"You\'re going to love having this in place. Let\'s get you activated."'
     ],
     Soft: [
-      '"Based on everything you told me, this really makes sense for your situation. Want to go ahead?"',
       '"I don\'t want to pressure you — but I do want to make sure you\'re protected. Can we lock this in?"',
       '"A lot of people feel the same way before they enroll and they\'re always glad they did. Should we move forward?"',
       '"There\'s no risk in getting covered today. Want me to walk you through the last step?"'

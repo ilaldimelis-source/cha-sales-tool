@@ -3,10 +3,7 @@
 // ── SOA One-Tap Copy ──
 var SOA_TEXT =
   'This is a supplemental fixed indemnity health plan — not major medical insurance. It is not minimum essential coverage under the ACA. Pre-existing conditions are excluded for the first 12 months. Benefits are fixed dollar amounts, not full coverage. This plan is NOT ACA-compliant major medical insurance.';
-var LIVE_CLOSES_EXCLUDED_LINES = {
-  'Based on everything you told me, this fits your situation well. The best thing to do right now is get this submitted so your coverage starts [date]. I just need to confirm a few quick details.': true,
-  'Is your mailing address still [address]?': true
-};
+var LIVE_CLOSES_EXCLUDED_LINES = {};
 function copySOA(el) {
   safeCopy(SOA_TEXT)
     .then(function () {
