@@ -557,24 +557,34 @@ function showPage(id) {
 }
 
 var _dashLookupState = {
-  group: 'MEC',
-  planId: ''
+  planId: '',
+  searchQuery: ''
 };
 
 function _dashLookupProviderUrl(network) {
   var net = String(network || '').toLowerCase();
-  if (net.indexOf('first health') !== -1 || net.indexOf('phcs') !== -1 || net.indexOf('multiplan') !== -1) {
-    return 'https://providersearch.multiplan.com';
+  if (
+    net.indexOf('first health') !== -1 ||
+    net.indexOf('first health epo') !== -1
+  ) {
+    return 'https://providerlocator.firsthealth.com';
   }
-  return '';
+  if (net.indexOf('phcs') !== -1 || net.indexOf('multiplan') !== -1) {
+    return 'https://www.multiplan.com/webcenter/portal/ProviderSearch';
+  }
+  if (net.indexOf('managed care') !== -1) {
+    return 'https://www.bcsins.com';
+  }
+  return 'https://www.bcsins.com';
 }
 
-function _dashLookupPlansByGroup(group) {
+function _dashLookupAllPlans() {
   if (typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return [];
   var out = POLICY_DOCS.filter(function (p) {
     if (!p || !String(p.name || '').trim()) return false;
-    if (typeof _pdIsDisplayablePlan === 'function' && !_pdIsDisplayablePlan(p)) return false;
-    if (group && group !== 'All' && p.group !== group) return false;
+    if (typeof _pdIsDisplayablePlan === 'function' && !_pdIsDisplayablePlan(p)) {
+      return false;
+    }
     return true;
   });
   out.sort(function (a, b) {
@@ -583,47 +593,89 @@ function _dashLookupPlansByGroup(group) {
   return out;
 }
 
+function _dashLookupFilteredPlans() {
+  var all = _dashLookupAllPlans();
+  var q = String(_dashLookupState.searchQuery || '').trim().toLowerCase();
+  if (!q) return all;
+  return all.filter(function (p) {
+    return String(p.name || '').toLowerCase().indexOf(q) !== -1;
+  });
+}
+
+function _dashLookupDisplayType(plan) {
+  if (!plan) return '—';
+  var n = String(plan.name || '').toLowerCase();
+  if (
+    /\bmedfirst\b|\btruehealth\b|\bgoodhealth\b|\btdk\b|\bsmartchoice\b|\bghdp\b/.test(
+      n
+    )
+  ) {
+    return 'MEC — Minimum Essential Coverage';
+  }
+  if (
+    /\bpinnacle stm\b|\baccess health\b|\bsmart health\b|\bgalena\b|\ballstate enhanced\b|\ballstate copay\b|\ballstate essentials\b/.test(
+      n
+    )
+  ) {
+    return 'STM — Short Term Medical';
+  }
+  if (
+    /\bharmony\b|\bsigma\b|\beverest\b|\bpinnacle protect\b|\bbwa americare\b|\bbwa paramount\b|\bhealth choice\b|\ballstate health access\b|\bmychoice\b/.test(
+      n
+    )
+  ) {
+    return 'Limited Benefit';
+  }
+  return plan.type || '—';
+}
+
 function _dashLookupSelectedPlan() {
-  var plans = _dashLookupPlansByGroup(_dashLookupState.group);
+  var plans = _dashLookupFilteredPlans();
   if (!plans.length) return null;
   var i;
   for (i = 0; i < plans.length; i++) {
-    if (String(plans[i].id) === String(_dashLookupState.planId)) return plans[i];
+    if (String(plans[i].id) === String(_dashLookupState.planId)) {
+      return plans[i];
+    }
+  }
+  if (plans.length === 1) {
+    _dashLookupState.planId = plans[0].id;
+    return plans[0];
   }
   _dashLookupState.planId = plans[0].id;
   return plans[0];
 }
 
 function renderDashboardLookupCard() {
-  var plans = _dashLookupPlansByGroup(_dashLookupState.group);
+  var plans = _dashLookupFilteredPlans();
   var selected = _dashLookupSelectedPlan();
   var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
-  var pill = function (id, label) {
-    return (
-      '<button type="button" class="dash-lookup-pill' +
-      (_dashLookupState.group === id ? ' active' : '') +
-      '" onclick="dashLookupSetGroup(\'' +
-      id +
-      '\')">' +
-      label +
-      '</button>'
-    );
-  };
   var html = '<div class="dash-lookup-card">';
   html += '<div class="dash-lookup-head">';
   html += '<div class="dash-lookup-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>';
   html += '<div><div class="dash-lookup-title">Plan lookup</div><div class="dash-lookup-subtitle">Network, underwriter, provider search — one tap</div></div>';
   html += '</div>';
-  html += '<div class="dash-lookup-pills">' + pill('MEC', 'MEC') + pill('STM', 'STM') + pill('Limited', 'Limited') + '</div>';
+  html +=
+    '<input id="dashLookupSearch" type="text" placeholder="Search any plan by name..." oninput="dashLookupFilter(this.value)" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #d1d5db;font-size:14px;margin-bottom:8px;font-family:Inter,sans-serif;">';
   html += '<select id="dashPlanLookupSelect" class="dash-lookup-select" onchange="dashLookupSelectPlan(this.value)">';
   plans.forEach(function (p) {
-    html += '<option value="' + escHTML(String(p.id)) + '"' + (selected && selected.id === p.id ? ' selected' : '') + '>' + escHTML(p.name) + '</option>';
+    html +=
+      '<option value="' +
+      escHTML(String(p.id)) +
+      '"' +
+      (selected && selected.id === p.id ? ' selected' : '') +
+      '>' +
+      escHTML(p.name) +
+      '</option>';
   });
   html += '</select>';
   html += '<div class="dash-lookup-grid">';
   html += '<div class="dash-lookup-cell"><span>Network</span><strong>' + escHTML((selected && selected.network) || '—') + '</strong></div>';
   html += '<div class="dash-lookup-cell"><span>Underwriter</span><strong>' + escHTML((selected && selected.carrier) || '—') + '</strong></div>';
-  html += '<div class="dash-lookup-cell"><span>Type</span><strong>' + escHTML((selected && selected.type) || '—') + '</strong></div>';
+  html +=
+    '<div class="dash-lookup-cell"><span>Type</span><strong>' +
+    escHTML(selected ? _dashLookupDisplayType(selected) : '—') +
+    '</strong></div>';
   html += '<div class="dash-lookup-cell"><span>Association</span><strong>' + escHTML((selected && selected.assoc) || '—') + '</strong></div>';
   html += '</div>';
   html += '<div class="dash-lookup-actions">';
@@ -638,11 +690,12 @@ function renderDashboardLookupCard() {
 function dashLookupRefresh() {
   var mount = document.getElementById('dashPlanLookupMount');
   if (mount) mount.innerHTML = renderDashboardLookupCard();
+  var si = document.getElementById('dashLookupSearch');
+  if (si) si.value = _dashLookupState.searchQuery || '';
 }
 
-function dashLookupSetGroup(group) {
-  _dashLookupState.group = group;
-  _dashLookupState.planId = '';
+function dashLookupFilter(query) {
+  _dashLookupState.searchQuery = query == null ? '' : String(query);
   dashLookupRefresh();
 }
 
@@ -666,7 +719,7 @@ function dashLookupCopy() {
     'Plan: ' + selected.name,
     'Network: ' + (selected.network || '—'),
     'Underwriter: ' + (selected.carrier || '—'),
-    'Type: ' + (selected.type || '—'),
+    'Type: ' + _dashLookupDisplayType(selected),
     'Association: ' + (selected.assoc || '—'),
     'Provider URL: ' + (providerUrl || '—')
   ].join('\n');

@@ -68,7 +68,7 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
     } else if (idsGood[id]) {
       p.network = 'First Health';
       p.carrier = 'Merchants Benefit Administration (MBA)';
-      p.assoc = 'Good Health Partners';
+      p.assoc = 'Good Health Distribution Partners';
     } else if (idsTdk[id]) {
       p.network = 'First Health';
       p.carrier = 'Detego Health';
@@ -76,31 +76,31 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
     } else if (id === 'pinnacle') {
       p.network = 'PHCS';
       p.carrier = 'Everest';
-      p.assoc = 'AWA';
+      p.assoc = 'American Workers Association (AWA)';
     } else if (id === 'accesshealth') {
       p.network = 'PHCS';
       p.carrier = 'AFSLIC';
-      p.assoc = 'NCE';
+      p.assoc = 'National Congress of Employers (NCE)';
     } else if (id === 'smarthealth') {
       p.network = 'PHCS';
       p.carrier = 'Standard Life';
-      p.assoc = 'NCE';
+      p.assoc = 'National Congress of Employers (NCE)';
     } else if (id === 'galena') {
       p.network = 'MultiPlan';
       p.carrier = 'Southern Guarantee';
-      p.assoc = 'AFRP';
+      p.assoc = 'Association for Responsible Planners';
     } else if (id === 'harmonycare') {
       p.network = 'First Health';
       p.carrier = 'Everest';
-      p.assoc = 'NCE';
+      p.assoc = 'National Congress of Employers (NCE)';
     } else if (id === 'sigmacare') {
       p.network = 'MultiPlan';
       p.carrier = 'Everest';
-      p.assoc = 'NCE';
+      p.assoc = 'National Congress of Employers (NCE)';
     } else if (id === 'everest') {
       p.network = 'MultiPlan';
       p.carrier = 'AFSLIC';
-      p.assoc = 'NCE';
+      p.assoc = 'National Congress of Employers (NCE)';
     } else if (
       id === 'pinnacleprotect1' ||
       id === 'pinnacleprotect2' ||
@@ -109,7 +109,7 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
     ) {
       p.network = 'PHCS';
       p.carrier = 'Everest';
-      p.assoc = 'AWA';
+      p.assoc = 'American Workers Association (AWA)';
     } else if (
       id === 'pinnaclecriticalcare1' ||
       id === 'pinnaclecriticalcare2' ||
@@ -118,11 +118,11 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
     ) {
       p.network = 'PHCS';
       p.carrier = 'Everest';
-      p.assoc = 'AWA';
+      p.assoc = 'American Workers Association (AWA)';
     } else if (id === 'bwapara' || id === 'bwaamericare') {
       p.network = 'PHCS';
       p.carrier = 'American Public Life';
-      p.assoc = 'BWA';
+      p.assoc = 'Business Workers of America (BWA)';
     } else if (
       id === 'smartchoice2500' ||
       id === 'smartchoice1500' ||
@@ -1288,7 +1288,7 @@ var POLICY_DOCS = [
     name: 'TDK 1',
     type: 'MEC — Limited Health & Wellness',
     carrier: 'Detego Health LLC (TPA)',
-    assoc: 'Healthcare Data Analytics',
+    assoc: 'Health Care Data Analytics',
     network: 'First Health',
     source: 'TDK_Promo_Combined.pdf',
     benefits: [
@@ -1407,7 +1407,7 @@ var POLICY_DOCS = [
     name: 'TDK 2',
     type: 'MEC — Limited Health & Wellness',
     carrier: 'Detego Health LLC (TPA)',
-    assoc: 'Healthcare Data Analytics',
+    assoc: 'Health Care Data Analytics',
     network: 'First Health',
     source: 'TDK_Promo_Combined.pdf',
     benefits: [
@@ -1525,7 +1525,7 @@ var POLICY_DOCS = [
     name: 'TDK 3',
     type: 'MEC — Limited Health & Wellness',
     carrier: 'Detego Health LLC (TPA)',
-    assoc: 'Healthcare Data Analytics',
+    assoc: 'Health Care Data Analytics',
     network: 'First Health',
     source: 'TDK_Promo_Combined.pdf',
     benefits: [
@@ -1644,7 +1644,7 @@ var POLICY_DOCS = [
     name: 'TDK 4',
     type: 'MEC — Limited Health & Wellness',
     carrier: 'Detego Health LLC (TPA)',
-    assoc: 'Healthcare Data Analytics',
+    assoc: 'Health Care Data Analytics',
     network: 'First Health',
     source: 'TDK_Promo_Combined.pdf',
     benefits: [
@@ -1747,7 +1747,7 @@ var POLICY_DOCS = [
     name: 'TDK 5',
     type: 'MEC — Limited Health & Wellness',
     carrier: 'Detego Health LLC (TPA)',
-    assoc: 'Healthcare Data Analytics',
+    assoc: 'Health Care Data Analytics',
     network: 'First Health',
     source: 'TDK_Promo_Combined.pdf',
     benefits: [
@@ -1850,7 +1850,7 @@ var POLICY_DOCS = [
     name: 'Pinnacle STM',
     type: 'Short-Term Medical',
     carrier: 'Everest Reinsurance Company',
-    assoc: 'AWA — Americas Workers Association',
+    assoc: 'American Workers Association (AWA)',
     network: 'PHCS Practitioner & Ancillary',
     source: 'Pinnacle_STM_Brochure.pdf',
     benefits: [

@@ -507,9 +507,9 @@ function renderLive() {
     '</div>';
   html += '</div>';
   html +=
-    '<div class="soa-copy-strip la-soa-hud">' +
-    '<div class="la-soa-hud-txt"><strong>SOA</strong> <span class="la-soa-hint">Reference</span></div>' +
-    '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="showPage(\'cheatsheet\')">Cheat Sheets</button></div>';
+    '<div class="soa-copy-strip la-soa-hud" onclick="copySOA(this)">' +
+    '<div class="la-soa-hud-txt"><strong>SOA</strong> <span class="la-soa-hint">Tap = copy full wording</span></div>' +
+    '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="event.stopPropagation();showPage(\'cheatsheets\')" style="background:#5175F1;color:white;border:none;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Cheat Sheet</button></div>';
   html += '<div class="la-section-label la-sec-tight">Rebuttals</div>';
   // Slide-in panel overlay + panel (injected once)
   html +=

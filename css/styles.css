@@ -7364,3 +7364,33 @@ body.plan-drawer-lock {
   display: none !important;
 }
 
+/* ── LIVE ASSIST GRAY OVERLAY FIX ── */
+.rebuttal-overlay,
+.live-assist-overlay,
+.la-overlay {
+  display: none !important;
+}
+#page-live .la-panel-overlay:not(.show) {
+  display: none !important;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* ── SALES TRACKER: HIDE STATUS UI (data preserved in localStorage) ── */
+.st-status-pill,
+.st-status-badge,
+.st-status-select,
+.st-status-label,
+[class*="status-pending"],
+[class*="status-cleared"],
+[class*="status-chargeback"],
+.st-status-column,
+.st-status-filter,
+.st-clearance-label,
+#st-status-dropdown,
+select[onchange*="Status"],
+.st-deal-status-row,
+.st-sale-bubble-status {
+  display: none !important;
+}
+

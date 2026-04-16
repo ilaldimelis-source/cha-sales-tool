@@ -867,6 +867,45 @@ function brLocalLookup(query, plan) {
     }
   }
 
+  var SYNONYMS = {
+    'exclusion':['exclusion','exclusions','limitation','limitations','excluded','not covered','not eligible'],
+    'exclusions':['exclusion','exclusions','limitation','limitations','excluded','not covered','not eligible'],
+    'bloodwork':['bloodwork','blood work','lab','labs','laboratory','lab test','blood test','lab work'],
+    'labs':['bloodwork','blood work','lab','labs','laboratory','lab test','blood test','lab work'],
+    'lab':['bloodwork','blood work','lab','labs','laboratory','lab test','blood test','lab work'],
+    'xray':['xray','x-ray','radiology','imaging','diagnostic imaging'],
+    'network':['network','ppo','in-network','out-of-network','first health','multiplan','phcs'],
+    'waiting':['waiting','waiting period','wait','30-day','30 day','sickness','injury'],
+    'periods':['waiting','waiting period','wait','30-day','30 day','sickness','injury'],
+    'preex':['pre-existing','pre existing','preex','pre-ex','12/12','look-back','lookback'],
+    'preexisting':['pre-existing','pre existing','preex','pre-ex','12/12','look-back','lookback'],
+    'er':['emergency room','er','emergency'],
+    'emergency':['emergency room','er','emergency'],
+    'rx':['rx','prescription','prescriptions','pharmacy','drug','medication','script'],
+    'prescription':['rx','prescription','prescriptions','pharmacy','drug','medication','script'],
+    'deductible':['deductible','deductibles'],
+    'copay':['copay','copays','copayment'],
+    'copays':['copay','copays','copayment'],
+    'urgent':['urgent care','urgent'],
+    'ambulance':['ambulance'],
+    'hospital':['hospital','inpatient','hospitalization','admission'],
+    'inpatient':['hospital','inpatient','hospitalization','admission'],
+    'outpatient':['outpatient','surgery','outpatient surgery'],
+    'mental':['mental health','mental','psychiatry','therapy','counseling'],
+    'dental':['dental','dentist','teeth'],
+    'vision':['vision','eye','optometry','eyeglass'],
+    'preventive':['preventive','preventative','wellness','checkup','annual']
+  };
+  var originalTerms = terms.slice();
+  for (var s = 0; s < originalTerms.length; s++) {
+    var syns = SYNONYMS[originalTerms[s]];
+    if (syns) {
+      for (var ss = 0; ss < syns.length; ss++) {
+        if (terms.indexOf(syns[ss]) === -1) terms.push(syns[ss]);
+      }
+    }
+  }
+
   var matched = [];
   for (var i = 0; i < allData.length; i++) {
     var entry = String(allData[i]).toLowerCase();
@@ -1159,11 +1198,17 @@ function brAIAnswer(query, planId) {
     console.warn('[CHA BR] local lookup threw, falling through:', e);
   }
 
-  if (local && local.confident && (local.status === 'COVERED' || local.status === 'NOT COVERED')) {
+  var localStatusUpper = local && local.status ? String(local.status).toUpperCase().trim() : '';
+  var trustedLocalStatuses = ['COVERED', 'NOT COVERED', 'INFO', 'PARTIAL', 'DISCOUNT'];
+  var isTrustedLocal = local && local.confident &&
+    trustedLocalStatuses.indexOf(localStatusUpper) !== -1;
+  if (isTrustedLocal) {
     console.log('[CHA BR] Local lookup confident:', local.status, '— using POLICY_DOCS answer');
+    var hudStatus = local.status;
+    if (localStatusUpper === 'DISCOUNT') hudStatus = 'PARTIAL';
     brRenderServerAnswer(
       {
-        status: local.status,
+        status: hudStatus,
         fact: local.data || '',
         sayThis: local.data ? String(local.data).split(/[.!?]/)[0].trim() : '',
         source: local.source || (plan.source || 'Plan document'),
