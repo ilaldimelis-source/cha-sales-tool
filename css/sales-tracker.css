@@ -1331,3 +1331,147 @@
 .st-sale-bubble-solo .st-combo-segment-main {
   padding-top: 0;
 }
+
+/* ── Commission Tracker (bottom of Sales Tracker) ─────────── */
+.st-comm-tracker {
+  background: #ffffff;
+  border: 1px solid #e2e4eb;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+  font-family: var(--font-body, system-ui, sans-serif);
+}
+
+.st-comm-tracker-hd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.st-comm-tracker-icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.st-comm-tracker-title {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary, #1e293b);
+  letter-spacing: -0.02em;
+}
+
+.st-comm-tracker-summary {
+  margin-bottom: 20px;
+}
+
+.st-comm-summary-card {
+  background: #fafbfc;
+  border: 1px solid #e2e4eb;
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+
+.st-comm-summary-lbl {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-primary, #1e293b);
+  margin-bottom: 10px;
+}
+
+.st-comm-summary-sub {
+  font-size: 13px;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 6px;
+  line-height: 1.45;
+}
+
+.st-comm-summary-sub strong {
+  color: var(--text-primary, #1e293b);
+  font-weight: 700;
+}
+
+.st-comm-summary-note {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+}
+
+.st-comm-day-title {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 10px;
+}
+
+.st-comm-day-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e2e4eb;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.st-comm-day-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.st-comm-day-table th,
+.st-comm-day-table td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid #eef0f4;
+}
+
+.st-comm-day-table th {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #64748b;
+  background: #f8fafc;
+}
+
+.st-comm-day-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.st-comm-day-table td:nth-child(2),
+.st-comm-day-table td:nth-child(3),
+.st-comm-day-table td:nth-child(4) {
+  font-variant-numeric: tabular-nums;
+}
+
+.st-comm-addon-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e4eb;
+  border-radius: 12px;
+}
+
+.st-comm-addon-lbl {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #64748b);
+}
+
+.st-comm-addon-val {
+  font-family: var(--font-ui, system-ui, sans-serif);
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text-primary, #1e293b);
+  font-variant-numeric: tabular-nums;
+}

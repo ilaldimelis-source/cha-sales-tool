@@ -507,35 +507,6 @@ function renderLive() {
     '<div class="soa-copy-strip la-soa-hud" onclick="copySOA(this)">' +
     '<div class="la-soa-hud-txt"><strong>SOA</strong> <span class="la-soa-hint">Tap = copy full wording</span></div>' +
     '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="event.stopPropagation();showPage(\'cheatsheet\')">📋 Cheat Sheet</button></div>';
-  html += '<div class="bento-container">';
-  html += '<div class="bento-card playbook-box"><div class="card-header"><h2>📜 Live Playbook</h2><span id="line-counter">1 / 16</span></div><div id="script-display"></div>';
-  html += '<div class="playbook-controls"><button onclick="prevLine()">← Prev</button><button onclick="nextLine()" class="primary-btn">Next Line →</button><button onclick="resetScript()">Reset</button></div>';
-  html += '<div class="shortcuts-hint">SPACE = next, ESC = reset, ←/→ = navigate</div>';
-  html += '<div class="compliance-checklist"><h4>🔒 Audit Lock - Complete Before Submit:</h4>' +
-    '<label><input type="checkbox" id="check-agency" onchange="updateChecklist(\'agency\')"> Agency: "Central Health Advisors"</label>' +
-    '<label><input type="checkbox" id="check-recording" onchange="updateChecklist(\'recording\')"> Recording: "This call may be recorded"</label>' +
-    '<label><input type="checkbox" id="check-exclusions" onchange="updateChecklist(\'exclusions\')"> Exclusions: "Pregnancy, Mental Health, Substance Abuse excluded"</label>' +
-    '<label><input type="checkbox" id="check-preex" onchange="updateChecklist(\'preex\')"> 12/12 Rule disclosed</label>' +
-    '<button id="submit-sale-btn" disabled onclick="attemptSubmit()">Submit Sale</button></div></div>';
-  html += '<div class="bento-card brain-box"><div class="card-header"><h2>🧠 The Brain</h2></div>';
-  html += '<div class="chat-container" id="chat-messages"><div class="ai-message welcome">Ask me anything about plans, benefits, objections, or compliance.</div></div>';
-  html += '<div class="chat-input-container"><input type="text" id="chat-input" placeholder="Type your question..." /><button id="send-btn">Send</button></div>';
-  html += '<div class="quick-actions"><button onclick="handleChatMessage(\'MEC vs STM?\')">MEC vs STM</button><button onclick="handleChatMessage(\'Spouse objection?\')">Spouse</button><button onclick="handleChatMessage(\'12/12 rule?\')">12/12 Rule</button><button onclick="handleChatMessage(\'ER vs UC?\')">ER vs UC</button></div></div>';
-  html += '<div class="bento-card academy-box"><div class="tracker-section"><h3>📋 Receipt Tracker</h3><textarea id="receipt-input" placeholder="Paste carrier receipt here..."></textarea><button onclick="parseAndReview()">Parse Receipt</button><div id="daily-total"></div><div id="weekly-total"></div></div>';
-  html += '<div class="academy-section"><h3>🎓 CHA Academy</h3><div class="progress-bar"><div id="progress-fill"></div></div><p class="progress-text">0/4 Complete</p>';
-  html += '<details><summary>📚 Module 1: Insurance Vocabulary</summary><div class="vocab-card"><strong>Premium</strong><p>Monthly payment to keep membership active</p><button class="copy-btn" onclick="copyToClipboard(\'Your monthly rate is $___\')">📋 COPY</button></div><button onclick="markComplete(1)">Mark Complete</button></details>';
-  html += '<details><summary>📋 Module 2: Know Your Plans</summary><div class="plan-card"><strong>MEC</strong><p>No deductible, copays for doctors.</p></div><div class="plan-card"><strong>STM</strong><p>Deductible + coinsurance + max OOP.</p></div><button onclick="markComplete(2)">Mark Complete</button></details>';
-  html += '<details><summary>🛡️ Module 3: Compliance Shield</summary><div class="compliance-row never-say"><span class="wrong">❌ "ACA compliant"</span> <span class="right">✓ "Private market plan"</span></div><button onclick="markComplete(3)">Mark Complete</button></details>';
-  html += '<details><summary>🎯 Module 4: Objection Mastery</summary><div class="objection-card"><strong>"Spouse"</strong><div class="response-row"><span>"Let\'s see if you qualify so you have something real to show them."</span></div></div><button onclick="markComplete(4)">Mark Complete</button></details>';
-  html += '</div></div>';
-  html += '<div id="review-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;">';
-  html +=   '<div style="width:min(900px,95vw);max-height:85vh;overflow:auto;background:#111827;border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:16px;color:#E5E7EB;">';
-  html +=     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 style="margin:0;">Receipt Review</h3><button onclick="closeReviewModal()" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#E5E7EB;border-radius:8px;padding:6px 10px;">Close</button></div>';
-  html +=     '<table style="width:100%;border-collapse:collapse;font-size:13px;"><thead><tr><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Date</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Member</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Product</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Premium</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.15);">Commission</th></tr></thead><tbody id="review-table-body"></tbody></table>';
-  html +=     '<div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px;"><button onclick="closeReviewModal()" style="background:#374151;border:none;color:#fff;border-radius:8px;padding:8px 12px;">Cancel</button><button onclick="confirmReviewModal()" style="background:#10B981;border:none;color:#fff;border-radius:8px;padding:8px 12px;">Confirm & Save</button></div>';
-  html +=   '</div>';
-  html += '</div>';
-  html += '</div>';
   html += '<div class="la-section-label la-sec-tight">Rebuttals</div>';
   // Slide-in panel overlay + panel (injected once)
   html +=
@@ -611,12 +582,6 @@ function renderLive() {
   html += '</div></div>';
   var _page_live = document.getElementById('page-live');
   if (_page_live) _page_live.innerHTML = html;
-  showCurrentLine();
-  updateProgressBar();
-  updateTotals();
-  checkSubmitEligibility();
-  if (typeof initBrainChatBox === 'function') initBrainChatBox();
-  _bindBentoKeys();
 }
 
 function toggleLiveObj(i) {

@@ -5671,33 +5671,6 @@ body.dark-mode .chat-input {
   border-color: var(--border-med);
 }
 
-/* 3-BOX BENTO LAYOUT */
-.bento-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 16px;
-  padding: 12px;
-  background: #0b0f19;
-  border-radius: 12px;
-  margin-bottom: 12px;
-}
-
-.bento-card {
-  background: #1f2937;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  padding: 16px;
-  color: #e5e7eb;
-}
-
-.academy-box {
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
 .script-line {
   background: #1a1c23;
   padding: 20px;
@@ -5872,15 +5845,6 @@ body.dark-mode .chat-input {
 #weekly-total {
   margin-top: 12px;
   font-size: 0.9rem;
-}
-
-@media (max-width: 1024px) {
-  .bento-container {
-    grid-template-columns: 1fr;
-  }
-  .academy-box {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Cards / tiles that use hardcoded light backgrounds */

@@ -994,6 +994,9 @@ function brServerAnswer(query, planId) {
   }).then(function (response) {
     if (!response.ok) throw new Error('br-answer error ' + response.status);
     return response.json();
+  }).then(function (data) {
+    console.log('[CHA DEBUG] API response:', data);
+    return data;
   });
 }
 
@@ -1071,18 +1074,9 @@ function brRenderServerAnswer(payload, planName, planSource) {
   if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL)$/.test(status)) {
     status = 'VERIFY';
   }
-  var source = String(
-    (payload && payload.source) || planSource || planName || 'Plan PDF / POLICY_DOCS'
-  );
-  var scope = String((payload && payload.scope) || 'none');
-  var citations =
-    payload && Array.isArray(payload.citations) ? payload.citations : [];
+  var source = String((payload && payload.source) || planSource || planName || 'Plan PDF');
   var requestId = String((payload && payload.requestId) || '');
   var c = brStatusColor(status);
-
-  var scopeLabel = 'No retrieval context';
-  if (scope === 'preferred_plan') scopeLabel = 'Selected plan context';
-  else if (scope === 'fallback_global') scopeLabel = 'Fallback cross-plan context';
 
   var sayBlock = '<span style="color:#94a3b8;">—</span>';
   if (sayThis) {
@@ -1096,35 +1090,6 @@ function brRenderServerAnswer(payload, planName, planSource) {
       safeText +
       "');this.textContent='Copied!';var b=this;setTimeout(function(){b.textContent='Copy';},2000);\" " +
       'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;">Copy</button></div>';
-  }
-
-  var citationsHtml = '<span style="color:#94a3b8;">—</span>';
-  if (citations.length) {
-    citationsHtml =
-      '<details style="margin-top:4px;"><summary style="cursor:pointer;color:#334155;font-size:12px;">Citations (' +
-      citations.length +
-      ')</summary><div style="margin-top:8px;">';
-    for (var i = 0; i < citations.length; i++) {
-      var ct = citations[i] || {};
-      var sim =
-        typeof ct.similarity === 'number'
-          ? ct.similarity.toFixed(3)
-          : String(ct.similarity || 'n/a');
-      citationsHtml +=
-        '<div style="font-size:11px;color:#475569;line-height:1.5;margin-bottom:6px;">' +
-        '<strong>[' +
-        (i + 1) +
-        ']</strong> ' +
-        escHTML(ct.plan_name || ct.plan_id || 'Unknown plan') +
-        ' • ' +
-        escHTML(ct.source_pdf || source) +
-        ' • chunk ' +
-        escHTML(ct.chunk_index) +
-        ' • sim ' +
-        escHTML(sim) +
-        '</div>';
-    }
-    citationsHtml += '</div></details>';
   }
 
   var sourceHud = escHTML(source);
@@ -1152,15 +1117,13 @@ function brRenderServerAnswer(payload, planName, planSource) {
     _brHudRow('FACT', '<span style="color:' + c.text + ';">' + escHTML(fact).replace(/\n/g, '<br>') + '</span>') +
     _brHudRow('SAY THIS', sayBlock) +
     _brHudRow('SOURCE', sourceHud) +
-    _brHudRow('RETRIEVAL', escHTML(scopeLabel)) +
-    _brHudRow('CITATIONS', citationsHtml) +
     '</div>';
   brAddMsg('ai', html);
 }
 
 function brAIAnswer(query, planId) {
   // Build marker — if DevTools does not show this, the browser is running stale chat.js (SW/cache).
-  console.log('[CHA BR] build=server-first-v5-ragplanid');
+  console.log('[CHA BR] build=server-first-v6-always-api');
 
   var plan = null;
   if (typeof POLICY_DOCS !== 'undefined') {
@@ -1176,8 +1139,7 @@ function brAIAnswer(query, planId) {
     return;
   }
 
-  // Server RAG (/api/br-answer) ALWAYS runs first. brLocalLookup runs ONLY in .catch when API fails.
-  // Do not reorder — local POLICY_DOCS text can say COVERED while PDF RAG says NOT COVERED.
+  // Server-only RAG (/api/br-answer). Do not use POLICY_DOCS / brStructuredAnswer here — it confuses agents vs PDF truth.
   console.log('[CHA RAG] Calling /api/br-answer (authoritative) for plan:', planId, 'query:', query);
   brShowTyping();
   brServerAnswer(query, plan.id)
@@ -1191,15 +1153,20 @@ function brAIAnswer(query, planId) {
     })
     .catch(function (err) {
       brHideTyping();
-      var localResult = brLocalLookup(query, plan);
-      if (localResult.confident) {
-        console.log('[CHA] Local lookup confident (API unavailable):', localResult.status);
-        brRenderLocalResult(localResult, plan.name);
-        return;
-      }
-      console.warn('[CHA RAG] Falling back to structured answer:', err.message);
-      var plansToUse = brActivePlan ? [brActivePlan] : [];
-      brAddMsg('ai', brStructuredAnswer(query, plansToUse));
+      console.warn('[CHA RAG] API failed after retry — showing VERIFY (no POLICY_DOCS fallback):', err.message);
+      brRenderServerAnswer(
+        {
+          status: 'VERIFY',
+          fact:
+            'Could not reach the benefits server. Your answer was not loaded from local plan text — try again in a moment.',
+          sayThis: 'Hang on—I need to reconnect to pull the exact plan language.',
+          source: 'CHA Command Center',
+          scope: 'none',
+          requestId: ''
+        },
+        plan.name,
+        plan.source || ''
+      );
     });
 }
 
@@ -1322,26 +1289,11 @@ function brSend() {
 
   brAddMsg('user', escHTML(query));
 
-  // Route through AI if key exists (company key from ai-tools.js or saved key), otherwise local
-  var _apiKey =
-    (typeof _aiGroqFallbackKey !== 'undefined' && _aiGroqFallbackKey) ||
-    localStorage.getItem('cha_groq_key') ||
-    CHA_OFFICE_GROQ_KEY;
-  if (
-    _apiKey &&
-    _apiKey !== 'skip' &&
-    _apiKey.length >= 20 &&
-    brActivePlan
-  ) {
+  // Benefits Reference always uses /api/br-answer (server RAG). Client Groq key is not required for this panel.
+  if (brActivePlan) {
     brAIAnswer(query, brActivePlan.id);
   } else {
-    var plansToUse = brSearchAllPlans
-      ? BR_PLANS
-      : brActivePlan
-        ? [brActivePlan]
-        : [];
-    var structured = brStructuredAnswer(query, plansToUse);
-    brAddMsg('ai', structured);
+    brAddMsg('ai', '<div style="color:var(--text-secondary)">Please select a plan first.</div>');
   }
 
   document.getElementById('br-send').disabled = false;

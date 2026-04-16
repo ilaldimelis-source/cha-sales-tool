@@ -1,7 +1,7 @@
 // CHA Sales Command Center — Service Worker (sw2.js — new filename busts stale SW registrations)
 // Caches the app so agents can use it offline during live calls
 
-var CACHE_NAME = 'cha-command-center-v301';
+var CACHE_NAME = 'cha-command-center-v302';
 var URLS_TO_CACHE = [
   './',
   './index.html',
@@ -26,7 +26,7 @@ var URLS_TO_CACHE = [
   './js/myspace.js',
   './js/sales-tracker.js?v=2',
   './js/app.js',
-  './js/chat.js?v=1776298600000',
+  './js/chat.js?v=1776299500000',
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap'
 ];
 

@@ -2192,7 +2192,15 @@ function _stCalcStats(sales) {
   for (var b = 0; b < 7; b++) {
     var bd = new Date(weekStartDate);
     bd.setDate(bd.getDate() + b);
-    dayBuckets.push({ amount: 0, count: 0, date: bd });
+    dayBuckets.push({
+      amount: 0,
+      count: 0,
+      date: bd,
+      commission: 0,
+      dealCount: 0,
+      addonCount: 0,
+      addonCommission: 0
+    });
   }
   var stats = {
     todayCount: 0,
@@ -2210,7 +2218,9 @@ function _stCalcStats(sales) {
     weekAddons: 0,
     dayBuckets: dayBuckets,
     weekStart: weekStart,
-    weekExpectedCommission: 0
+    weekExpectedCommission: 0,
+    weekCommissionValid: 0,
+    weekAddonCommissionOnly: 0
   };
 
   // First pass: identify VALID DEALS this week so that when we
@@ -2290,8 +2300,20 @@ function _stCalcStats(sales) {
       var dt = new Date(s.ts);
       var jsDay = dt.getDay(); // 0=Sun, 1=Mon, …
       var idx = jsDay === 0 ? 6 : jsDay - 1;
-      dayBuckets[idx].amount += Number(s.amount) || 0;
+      var lineAmt2 = Number(s.amount) || 0;
+      dayBuckets[idx].amount += lineAmt2;
       dayBuckets[idx].count += 1;
+      var lineComm = _stComputeLineCommission(s, rates);
+      if (s.type === 'deal') {
+        lineComm += Number(s.enrollmentBonus) || 0;
+        dayBuckets[idx].dealCount += 1;
+      } else {
+        dayBuckets[idx].addonCount += 1;
+        dayBuckets[idx].addonCommission += lineComm;
+        stats.weekAddonCommissionOnly += lineComm;
+      }
+      dayBuckets[idx].commission += lineComm;
+      stats.weekCommissionValid += lineComm;
     }
   }
   return stats;
@@ -3110,6 +3132,86 @@ function _stBuildWeeklySalesSummary(stats) {
   return html;
 }
 
+function _stFmtMoney(n) {
+  return (
+    '$' +
+    (Number(n) || 0).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })
+  );
+}
+
+function _stBuildCommissionTracker(stats) {
+  var dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+  var wc = Number(stats.weekCommissionValid) || 0;
+  var ws = Number(stats.weekSales) || 0;
+  var wd = Number(stats.weekDeals) || 0;
+  var wac = Number(stats.weekAddonCommissionOnly) || 0;
+  var eff = ws > 0 ? wc / ws : 0;
+  var effStr = eff > 0 ? String(Math.round(eff * 1000) / 10) + '%' : '—';
+  var html = '<div class="st-comm-tracker">';
+  html +=
+    '<div class="st-comm-tracker-hd"><span class="st-comm-tracker-icon" aria-hidden="true">&#128176;</span><span class="st-comm-tracker-title">Commission Tracker</span></div>';
+  html += '<div class="st-comm-tracker-summary">';
+  html += '<div class="st-comm-summary-card">';
+  html += '<div class="st-comm-summary-lbl">This Week\'s Commission</div>';
+  html +=
+    '<div class="st-comm-summary-sub">Total deals: <strong>' +
+    wd +
+    '</strong></div>';
+  html +=
+    '<div class="st-comm-summary-sub">Total monthly premium: <strong>' +
+    _stFmtMoney(ws) +
+    '</strong></div>';
+  html +=
+    '<div class="st-comm-summary-sub">Estimated commission: <strong>' +
+    _stFmtMoney(wc) +
+    '</strong></div>';
+  html +=
+    '<div class="st-comm-summary-note">From stored tier rates, add-on rates, and enrollment bonus where applicable. Effective blended rate this week: ' +
+    effStr +
+    ' of premium.</div>';
+  html += '</div></div>';
+  html += '<div class="st-comm-day-title">By day (Mon–Fri)</div>';
+  html +=
+    '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table"><thead><tr><th>Day</th><th>Deals</th><th>Premium</th><th>Commission</th></tr></thead><tbody>';
+  var db = stats.dayBuckets || [];
+  for (var d = 0; d < 5; d++) {
+    var b = db[d] || {};
+    var dealsD = b.dealCount || 0;
+    var amtD = b.amount || 0;
+    var commD = b.commission || 0;
+    var dateStr = '';
+    if (b.date) {
+      dateStr =
+        ' (' +
+        (b.date.getMonth() + 1) +
+        '/' +
+        b.date.getDate() +
+        ')';
+    }
+    html +=
+      '<tr><td>' +
+      dayLabels[d] +
+      dateStr +
+      '</td><td>' +
+      dealsD +
+      '</td><td>' +
+      _stFmtMoney(amtD) +
+      '</td><td>' +
+      _stFmtMoney(commD) +
+      '</td></tr>';
+  }
+  html += '</tbody></table></div>';
+  html +=
+    '<div class="st-comm-addon-row"><span class="st-comm-addon-lbl">Add-on commission (this week)</span><span class="st-comm-addon-val">' +
+    _stFmtMoney(wac) +
+    '</span></div>';
+  html += '</div>';
+  return html;
+}
+
 // ── MAIN RENDER ─────────────────────────────────────────────
 function _stRender() {
   var page = document.getElementById('page-salestracker');
@@ -3148,7 +3250,9 @@ function _stRender() {
   html += _stBuildTable(sales);
   // 9. Pending Post-Dates
   html += _stBuildPostDatesSection(postdates);
-  // 10. Bottom spacer so the floating bottom toolbar never covers the last row
+  // 10. Commission Tracker (weekly commission at a glance)
+  html += _stBuildCommissionTracker(stats);
+  // 11. Bottom spacer so the floating bottom toolbar never covers the last row
   html += '<div class="st-bottom-spacer" aria-hidden="true"></div>';
 
   page.innerHTML = html;
