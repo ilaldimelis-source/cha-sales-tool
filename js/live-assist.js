@@ -508,8 +508,7 @@ function renderLive() {
   html += '</div>';
   html +=
     '<div class="soa-copy-strip la-soa-hud">' +
-    '<div class="la-soa-hud-txt"><strong>SOA</strong> <span class="la-soa-hint">Reference</span></div>' +
-    '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="showPage(\'cheatsheet\')">Cheat Sheets</button></div>';
+    '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="showPage(\'cheatsheet\')">Cheat Sheet</button></div>';
   html += '<div class="la-section-label la-sec-tight">Rebuttals</div>';
   // Slide-in panel overlay + panel (injected once)
   html +=

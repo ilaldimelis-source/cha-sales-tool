@@ -7364,3 +7364,56 @@ body.plan-drawer-lock {
   display: none !important;
 }
 
+/* ── PLAN SCRIPTS POLISH ── */
+[id*="planscripts"] .script-text,
+[id*="planscripts"] p,
+#page-planscripts p,
+.plan-script-text,
+#page-planscripts .ps-bubble-text {
+  font-size: 13px;
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+[id*="planscripts"] .script-section,
+.plan-script-section {
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eef1f5;
+}
+
+/* ── LIVE ASSIST REBUTTALS CLEANUP ── */
+#page-live .rebuttal-overlay,
+#page-liveassist .rebuttal-overlay,
+.live-assist-gray-bar,
+.soa-reference-bar,
+.soa-copy-strip,
+.la-soa-hud {
+  display: none !important;
+}
+#page-live .rebuttal-card,
+#page-liveassist .rebuttal-card,
+.rebuttal-card,
+.la-qrow {
+  margin-bottom: 14px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid #e9ecf5;
+  background: #ffffff;
+}
+
+/* ── SALES TRACKER: HIDE STATUS LABELS (data preserved) ── */
+.st-status-pill,
+.st-status-badge,
+[class*="status-pending"],
+[class*="status-cleared"],
+[class*="status-chargeback"],
+.st-status-column,
+.st-status-filter,
+#st-status-dropdown,
+.st-sale-bubble-status,
+.st-status-select,
+.st-status-note,
+.st-all-status {
+  display: none !important;
+}
+

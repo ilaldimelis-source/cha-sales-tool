@@ -2185,16 +2185,18 @@ function _stUpdateStatus(id, newStatus) {
   }
 }
 
-function _stDeleteSale(id) {
-  if (!confirm('Permanently delete this sale? This cannot be undone.')) {
+function _stDeleteSale(id, skipConfirm, skipRenderAndFlash) {
+  if (!skipConfirm && !confirm('Permanently delete this sale? This cannot be undone.')) {
     return;
   }
   var sales = _stLoadSales().filter(function (s) {
     return s.id !== id;
   });
   _stSaveSales(sales);
-  _stRender();
-  _stFlash('Sale deleted.', 'ok');
+  if (!skipRenderAndFlash) {
+    _stRender();
+    _stFlash('Sale deleted.', 'ok');
+  }
 }
 
 // Transient flash message at the top of the input section.
@@ -2741,6 +2743,57 @@ function _stBulkDeleteSelected() {
   );
 }
 
+function _stUpdateBulkToolbarVisibility() {
+  var boxes = document.querySelectorAll('.st-bulk-checkbox');
+  var selected = 0;
+  for (var i = 0; i < boxes.length; i++) {
+    if (boxes[i].checked) selected++;
+  }
+  var toolbar = document.getElementById('st-bulk-toolbar');
+  var countEl = document.getElementById('st-bulk-count');
+  if (countEl) {
+    countEl.textContent = selected + ' selected';
+  }
+  if (toolbar) {
+    toolbar.style.display = selected > 0 ? 'block' : 'none';
+  }
+  var selectAll = document.querySelector('.st-bulk-select-all');
+  if (selectAll) {
+    selectAll.checked = !!boxes.length && selected === boxes.length;
+  }
+}
+
+function _stBindBulkSelectionHandlers() {
+  var selectAll = document.querySelector('.st-bulk-select-all');
+  var boxes = document.querySelectorAll('.st-bulk-checkbox');
+  if (selectAll) {
+    selectAll.addEventListener('change', function () {
+      for (var i = 0; i < boxes.length; i++) {
+        boxes[i].checked = selectAll.checked;
+        var id = boxes[i].getAttribute('data-id');
+        if (!id) continue;
+        if (selectAll.checked) _stSelectedIds[id] = true;
+        else delete _stSelectedIds[id];
+      }
+      _stUpdateBulkToolbarVisibility();
+    });
+  }
+  for (var b = 0; b < boxes.length; b++) {
+    boxes[b].addEventListener('change', function () {
+      var id = this.getAttribute('data-id');
+      if (id) {
+        if (this.checked) _stSelectedIds[id] = true;
+        else delete _stSelectedIds[id];
+      }
+      _stUpdateBulkToolbarVisibility();
+    });
+    boxes[b].addEventListener('click', function (e) {
+      e.stopPropagation();
+    });
+  }
+  _stUpdateBulkToolbarVisibility();
+}
+
 // Delete every logged sale after two confirmations.
 function _stBulkDeleteAll() {
   var sales = _stLoadSales();
@@ -3063,18 +3116,26 @@ function _stBuildTable(sales) {
       return true;
     });
     html +=
+      '<div id="st-bulk-toolbar" style="display:none; padding:10px 14px; background:#fef2f2; border:1px solid #fecaca; border-radius:10px; margin-bottom:12px; font-family:Inter,sans-serif;">' +
+      '<span id="st-bulk-count">0 selected</span>' +
+      '<button onclick="window.SalesTracker.bulkDelete()" style="background:#dc2626; color:white; border:none; padding:6px 14px; border-radius:8px; margin-left:12px; cursor:pointer; font-weight:600;">Delete Selected</button>' +
+      '<button onclick="window.SalesTracker.clearBulkSelection()" style="background:transparent; border:1px solid #999; padding:6px 12px; border-radius:8px; margin-left:8px; cursor:pointer;">Cancel</button>' +
+      '</div>';
+    html +=
       '<div class="st-all-controls"><select class="st-all-filter" onchange="_stSetAllSalesRange(this.value)">' +
       '<option value="all"' + (_stAllSalesRange === 'all' ? ' selected' : '') + '>All time</option>' +
       '<option value="month"' + (_stAllSalesRange === 'month' ? ' selected' : '') + '>This month</option>' +
       '<option value="last30"' + (_stAllSalesRange === 'last30' ? ' selected' : '') + '>Last 30 days</option>' +
       '</select><button type="button" class="st-export-btn" onclick="_stExportAllSalesCsv()">Export</button></div>';
-    html += '<div class="st-all-list"><div class="st-all-head"><span>Client</span><span>Plan</span><span>Premium</span><span>Date</span><span>Status</span></div>';
+    html += '<div class="st-all-list"><div class="st-all-head"><span><input type="checkbox" class="st-bulk-select-all" aria-label="Select all sales"></span><span>Client</span><span>Plan</span><span>Premium</span><span>Date</span><span>Status</span></div>';
     for (var ag = 0; ag < filteredGroups.length; ag++) {
       var grp = filteredGroups[ag];
       var lead = grp.deal || grp.addons[0];
       if (!lead) continue;
       var gid = String(grp.receiptId || lead.id);
+      var checked = _stSelectedIds[lead.id] ? ' checked' : '';
       html += '<div class="st-all-row" onclick="_stToggleAllSaleDetails(\'' + gid + '\')">';
+      html += '<span><input type="checkbox" class="st-bulk-checkbox" data-id="' + _stEscape(lead.id) + '"' + checked + ' aria-label="Select sale"></span>';
       html += '<span><strong>' + _stEscape(lead.customer || '—') + '</strong>' + (lead.memberId ? '<em>ID: ' + _stEscape(lead.memberId) + '</em>' : '') + '</span>';
       html += '<span>' + _stEscape(lead.plan || '—') + '</span>';
       html += '<span>$' + (Number(lead.amount) || 0).toFixed(2) + '</span>';
@@ -3425,4 +3486,34 @@ function _stRender() {
   html += '<div class="st-bottom-spacer" aria-hidden="true"></div>';
 
   page.innerHTML = html;
+  _stBindBulkSelectionHandlers();
 }
+
+window.SalesTracker = window.SalesTracker || {};
+window.SalesTracker.bulkDelete = function () {
+  var boxes = document.querySelectorAll('.st-bulk-checkbox:checked');
+  var ids = [];
+  for (var i = 0; i < boxes.length; i++) {
+    var id = boxes[i].getAttribute('data-id');
+    if (id) ids.push(id);
+  }
+  if (!ids.length) return;
+  if (!window.confirm('Delete ' + ids.length + ' sales?')) return;
+  for (var j = 0; j < ids.length; j++) {
+    _stDeleteSale(ids[j], true, true);
+  }
+  _stSelectedIds = {};
+  _stRender();
+  _stFlash(
+    'Deleted ' + ids.length + ' sale' + (ids.length === 1 ? '' : 's') + '.',
+    'ok'
+  );
+};
+window.SalesTracker.clearBulkSelection = function () {
+  _stSelectedIds = {};
+  var boxes = document.querySelectorAll('.st-bulk-checkbox');
+  for (var i = 0; i < boxes.length; i++) {
+    boxes[i].checked = false;
+  }
+  _stUpdateBulkToolbarVisibility();
+};

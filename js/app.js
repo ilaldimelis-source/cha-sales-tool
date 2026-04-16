@@ -673,6 +673,226 @@ function dashLookupCopy() {
   safeCopy(text).then(function () {}).catch(function () {});
 }
 
+const DASH_PLAN_METADATA = {
+  'SmartChoice 1500': {
+    type: 'MEC',
+    network: 'First Health EPO',
+    underwriter: 'Detego Health',
+    association: 'Population Science Management'
+  },
+  'SmartChoice 2500': {
+    type: 'MEC',
+    network: 'First Health EPO',
+    underwriter: 'Detego Health',
+    association: 'Population Science Management'
+  },
+  'SmartChoice 3000': {
+    type: 'MEC',
+    network: 'First Health EPO',
+    underwriter: 'Detego Health',
+    association: 'Population Science Management'
+  },
+  'SmartChoice 3500': {
+    type: 'MEC',
+    network: 'First Health EPO',
+    underwriter: 'Detego Health',
+    association: 'Population Science Management'
+  },
+  'Pinnacle STM': {
+    type: 'STM',
+    network: 'PHCS',
+    underwriter: 'Everest Reinsurance',
+    association: 'American Workers Association (AWA)'
+  },
+  'Access Health STM': {
+    type: 'STM',
+    network: 'PHCS',
+    underwriter: 'AFSLIC',
+    association: 'NCE'
+  },
+  'Smart Health STM': {
+    type: 'STM',
+    network: 'PHCS',
+    underwriter: 'SLACIC (Standard Life and Casualty)',
+    association: 'NCE'
+  },
+  'AFRP Galena STM Elite': {
+    type: 'STM',
+    network: 'MultiPlan',
+    underwriter: 'SGIC (Southern Guarantee Insurance Company)',
+    association: 'Association for Responsible Planners'
+  },
+  'Everest Summit': {
+    type: 'Limited',
+    network: 'MultiPlan',
+    underwriter: 'Everest Reinsurance',
+    association: 'NCE'
+  },
+  'HealthChoice Silver': {
+    type: 'Limited',
+    network: 'MultiPlan',
+    underwriter: 'AFSLIC',
+    association: 'NCE'
+  },
+  'BWA Paramount': {
+    type: 'Limited',
+    network: 'Managed Care',
+    underwriter: 'BCS Insurance Company',
+    association: 'BWA'
+  }
+};
+
+function _dashLookupMetadataByName(name) {
+  if (!name) return null;
+  if (DASH_PLAN_METADATA[name]) return DASH_PLAN_METADATA[name];
+  if (/^TDK [1-5]$/.test(name)) {
+    return {
+      type: 'MEC',
+      network: 'First Health Network',
+      underwriter: 'Detego Health',
+      association: 'Health Care Data Analytics'
+    };
+  }
+  if (/^GoodHealth [1-5]$/.test(name) || /^GHDP [1-5]$/.test(name)) {
+    return {
+      type: 'MEC',
+      network: 'First Health Network',
+      underwriter: 'Merchants Benefit Administrators (MBA)',
+      association: 'Good Health Distribution Partners'
+    };
+  }
+  if (/^MedFirst [1-5]$/.test(name) || /^TrueHealth [1-3]$/.test(name)) {
+    return {
+      type: 'MEC',
+      network: 'First Health Network',
+      underwriter: 'Merchants Benefit Administrators (MBA)',
+      association: 'VP Limited Partnership / The Vitamin Patch (TVP)'
+    };
+  }
+  if (/^Pinnacle Protect [1-4]$/.test(name)) {
+    return {
+      type: 'Limited',
+      network: 'PHCS',
+      underwriter: 'Everest Reinsurance',
+      association: 'AWA'
+    };
+  }
+  if (/^BWA Americare [2-4]$/.test(name)) {
+    return {
+      type: 'Limited',
+      network: 'PHCS',
+      underwriter: 'American Public Life (APL)',
+      association: 'Business Workers of America (BWA)'
+    };
+  }
+  if (/Harmony Care|Sigma Care/.test(name)) {
+    return {
+      type: 'Limited',
+      network: 'First Health Network',
+      underwriter: 'AFSLIC (American Financial Security Life Insurance Co)',
+      association: 'National Congress of Employers (NCE)'
+    };
+  }
+  return null;
+}
+
+function _dashLookupInferType(name, existingType) {
+  if (existingType) return existingType;
+  if (/Harmony|Sigma|Everest|Pinnacle Protect|BWA Americare|BWA Paramount|HealthChoice|Allstate Health Access|MyChoice/i.test(name)) return 'Limited';
+  if (/Pinnacle STM|Access Health|Smart Health|Galena|Allstate Enhanced|Allstate Copay|Allstate Essentials/i.test(name)) return 'STM';
+  if (/MedFirst|TrueHealth|GoodHealth|TDK|SmartChoice|GHDP/i.test(name)) return 'MEC';
+  return 'Limited';
+}
+
+function _dashLookupProviderSearchUrl(network) {
+  var n = String(network || '').toLowerCase();
+  if (n.indexOf('first health') !== -1) return 'https://providerlocator.firsthealth.com';
+  if (n.indexOf('phcs') !== -1) return 'https://www.multiplan.com/webcenter/portal/ProviderSearch';
+  if (n.indexOf('multiplan') !== -1) return 'https://www.multiplan.com/webcenter/portal/ProviderSearch';
+  return 'https://www.bcsins.com';
+}
+
+function _dashLookupRegistryPlans() {
+  var plans = Array.isArray(window.CHA_PLAN_REGISTRY) ? window.CHA_PLAN_REGISTRY : [];
+  return plans.filter(function (p) {
+    return p && p.name;
+  });
+}
+
+function renderDashboardPlanLookupSection() {
+  return (
+    '<div class="plan-lookup-card" style="background:white;border-radius:14px; padding:20px; margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06); border:1px solid #eef1f5;">' +
+    '<h3 style="margin:0 0 12px 0; font-family:Inter,sans-serif;font-size:15px; font-weight:700;">Quick Plan Lookup</h3>' +
+    '<input id="plan-lookup-input" type="text" placeholder="Search any plan by name..." style="width:100%; padding:10px 14px; border-radius:10px;border:1px solid #d1d5db; font-family:Inter,sans-serif;font-size:14px; margin-bottom:10px;">' +
+    '<div id="plan-lookup-results" style="display:none;"></div>' +
+    '</div>'
+  );
+}
+
+function _dashLookupRenderResults(query) {
+  var resultsEl = document.getElementById('plan-lookup-results');
+  if (!resultsEl) return;
+  var q = String(query || '').trim().toLowerCase();
+  if (!q) {
+    resultsEl.style.display = 'none';
+    resultsEl.innerHTML = '';
+    return;
+  }
+  var matches = _dashLookupRegistryPlans()
+    .filter(function (p) {
+      return String(p.name || '').toLowerCase().indexOf(q) !== -1;
+    })
+    .slice(0, 5);
+  if (!matches.length) {
+    resultsEl.style.display = 'block';
+    resultsEl.innerHTML = '<div style="padding:10px 12px;border:1px solid #e5e7eb;border-radius:10px;font-family:Inter,sans-serif;font-size:13px;color:#64748b;">No matching plans found.</div>';
+    return;
+  }
+  var html = '';
+  for (var i = 0; i < matches.length; i++) {
+    var plan = matches[i];
+    var m = _dashLookupMetadataByName(plan.name) || {};
+    var typeLabel = _dashLookupInferType(plan.name, m.type || plan.type || plan.group);
+    var network = m.network || plan.network || '—';
+    var underwriter = m.underwriter || plan.carrier || '—';
+    var association = m.association || plan.assoc || '—';
+    var providerUrl = _dashLookupProviderSearchUrl(network);
+    html +=
+      '<div style="border:1px solid #e5e7eb;border-radius:12px;padding:12px 14px;margin-bottom:10px;background:#fff;">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;">' +
+      '<div style="font-family:Inter,sans-serif;font-size:15px;font-weight:700;color:#111827;">' +
+      escHTML(plan.name) +
+      '</div>' +
+      '<span style="display:inline-block;padding:4px 10px;border-radius:999px;background:#eef2ff;color:#1d4ed8;font-family:Inter,sans-serif;font-size:11px;font-weight:700;letter-spacing:.03em;">' +
+      escHTML(typeLabel) +
+      '</span></div>' +
+      '<div style="font-family:Inter,sans-serif;font-size:12px;color:#475569;line-height:1.6;">' +
+      '<div><strong>Network:</strong> ' + escHTML(network) + '</div>' +
+      '<div><strong>Underwriter:</strong> ' + escHTML(underwriter) + '</div>' +
+      '<div><strong>Association:</strong> ' + escHTML(association) + '</div>' +
+      '</div>' +
+      '<button type="button" onclick="window.open(\'' +
+      providerUrl +
+      '\', \'_blank\', \'noopener\')" style="margin-top:10px;background:#2563eb;color:#fff;border:none;padding:8px 12px;border-radius:8px;font-family:Inter,sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Provider Search</button>' +
+      '</div>';
+  }
+  resultsEl.style.display = 'block';
+  resultsEl.innerHTML = html;
+}
+
+function _dashLookupBindInput() {
+  var input = document.getElementById('plan-lookup-input');
+  if (!input) return;
+  var timer = null;
+  input.addEventListener('input', function () {
+    clearTimeout(timer);
+    var val = input.value;
+    timer = setTimeout(function () {
+      _dashLookupRenderResults(val);
+    }, 150);
+  });
+}
+
 function renderDashboard() {
   var pg = document.getElementById('page-dashboard');
   if (!pg || pg.innerHTML.trim()) return;
@@ -816,6 +1036,7 @@ function renderDashboard() {
   ];
   var html =
     '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
+  html += renderDashboardPlanLookupSection();
   html += _greetHtml;
   html += '<div class="dash-grid">';
   cards.forEach(function (c) {
@@ -876,6 +1097,7 @@ function renderDashboard() {
   html += '<span class="dash-kb"><kbd>Esc</kbd> Close</span>';
   html += '</div></div>';
   pg.innerHTML = html;
+  _dashLookupBindInput();
   dashLookupRefresh();
 }
 

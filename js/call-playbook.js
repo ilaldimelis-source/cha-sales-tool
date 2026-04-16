@@ -1,23 +1,5 @@
 // call-playbook.js — Call Playbook tab (Call Flow, Closes, Scripts, Plan Scripts)
 
-function copyScriptBubble(btn) {
-  var bubble = btn.closest('div[style*="border-radius:16px"]');
-  if (!bubble) return;
-  var textEl = bubble.querySelector('.ps-bubble-text');
-  if (!textEl) return;
-  var text = textEl.textContent || textEl.innerText;
-  if (typeof safeCopy === 'function') {
-    safeCopy(text)
-      .then(function () {
-        btn.textContent = 'Copied!';
-        setTimeout(function () {
-          btn.textContent = 'Copy';
-        }, 1500);
-      })
-      .catch(function () {});
-  }
-}
-
 const CLOSES = [
   {
     line: "It sounds like you're about 90% there. What's the 10% that's holding you back?",
@@ -1487,9 +1469,6 @@ function renderPlanScripts() {
       c +
       '</div>';
     html += '</div>';
-    // Tap to Copy button
-    html +=
-      '<button onclick="copyScriptBubble(this)" style="display:block;width:100%;max-width:720px;margin:8px auto 0;font-family:var(--font-ui);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:10px 20px;border-radius:10px;border:1.5px solid #5175f1;background:rgba(81,117,241,0.08);color:#5175f1;cursor:pointer;transition:background .15s;">TAP TO COPY</button>';
     html += '</div>';
   });
 
