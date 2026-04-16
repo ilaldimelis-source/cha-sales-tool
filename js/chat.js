@@ -2,14 +2,6 @@
 // Plan answers (local lookup + AI context) come only from POLICY_DOCS in
 // plan-data.js / plan-data-extended.js. That data must match the official PDFs
 // stored under CHA_KNOWLEDGE_BASE (/knowledge_base) — not /docs, /data, or /plans.
-// Temporary: unhide chat panel via URL param for testing
-(function () {
-  if (window.location.search.indexOf('showchat=1') !== -1) {
-    var s = document.createElement('style');
-    s.textContent = '#br-toggle, #br-panel { display: block !important; }';
-    document.head.appendChild(s);
-  }
-})();
 // ── SOB LOOKUP — Synonym-Aware, Cross-Plan, Instant + Ask AI ─────────────
 var brActivePlan = null;
 var brSearchAllPlans = false;
@@ -3059,4 +3051,19 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initBrainChatBox);
 } else {
   setTimeout(initBrainChatBox, 0);
+}
+
+// Unhide chat for testing via ?showchat=1 (must run after css/styles.css hide rule; uses !important)
+if (window.location.search.indexOf('showchat=1') !== -1) {
+  window.addEventListener('DOMContentLoaded', function () {
+    var el = document.querySelectorAll('#br-toggle,#br-panel');
+    for (var i = 0; i < el.length; i++) {
+      el[i].style.setProperty('display', 'block', 'important');
+    }
+  });
+  // Fallback if DOMContentLoaded already fired (e.g. script at end of body)
+  var el2 = document.querySelectorAll('#br-toggle,#br-panel');
+  for (var j = 0; j < el2.length; j++) {
+    el2[j].style.setProperty('display', 'block', 'important');
+  }
 }
