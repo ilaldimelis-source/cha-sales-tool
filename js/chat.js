@@ -852,11 +852,18 @@ function brLocalLookup(query, plan) {
         : JSON.stringify(plan.planNotes)
     );
 
-  var terms = [q];
+  var STOP = ['what','is','are','the','a','an','for','this','that','does','do','have','has','would','will','can','i','you','my','your','our','we','they','them','about','listed','there','any','plan','cover','covered','coverage','on','in','to','of','with','be','been','from','get','if','how','much','me','all','one','time','times','per','as','year','years','month','monthly','day','day']; 
+  var qClean = q.replace(/[^a-z0-9\s]/g, ' ');
+  var words = qClean.split(/\s+/).filter(function(w){
+    return w.length >= 3 && STOP.indexOf(w) === -1;
+  });
+  var terms = words.length > 0 ? words.slice() : [q];
   if (typeof _brExpandTerm === 'function') {
-    var expanded = _brExpandTerm(q);
-    for (var e = 0; e < expanded.length; e++) {
-      if (terms.indexOf(expanded[e]) === -1) terms.push(expanded[e]);
+    for (var k = 0; k < words.length; k++) {
+      var expanded = _brExpandTerm(words[k]);
+      for (var e = 0; e < expanded.length; e++) {
+        if (terms.indexOf(expanded[e]) === -1) terms.push(expanded[e]);
+      }
     }
   }
 
@@ -1136,25 +1143,41 @@ function brRenderServerAnswer(payload, planName, planSource) {
 }
 
 function brAIAnswer(query, planId) {
-  // Build marker — if DevTools does not show this, the browser is running stale chat.js (SW/cache).
-  console.log('[CHA BR] build=server-first-v6-always-api');
+  console.log('[CHA BR] build=local-first-v2');
 
   var plan = null;
   if (typeof POLICY_DOCS !== 'undefined') {
     for (var i = 0; i < POLICY_DOCS.length; i++) {
-      if (POLICY_DOCS[i].id === planId) {
-        plan = POLICY_DOCS[i];
-        break;
-      }
+      if (POLICY_DOCS[i].id === planId) { plan = POLICY_DOCS[i]; break; }
     }
   }
-  if (!plan) {
-    brAddMsg('ai', 'Please select a plan first.');
+  if (!plan) { brAddMsg('ai', 'Please select a plan first.'); return; }
+
+  // ── TIER 1: Local deterministic lookup from POLICY_DOCS ──
+  var local = null;
+  try { local = brLocalLookup(query, plan); } catch (e) {
+    console.warn('[CHA BR] local lookup threw, falling through:', e);
+  }
+
+  if (local && local.confident && (local.status === 'COVERED' || local.status === 'NOT COVERED')) {
+    console.log('[CHA BR] Local lookup confident:', local.status, '— using POLICY_DOCS answer');
+    brRenderServerAnswer(
+      {
+        status: local.status,
+        fact: local.data || '',
+        sayThis: local.data ? String(local.data).split(/[.!?]/)[0].trim() : '',
+        source: local.source || (plan.source || 'Plan document'),
+        scope: 'policy_docs',
+        requestId: 'local_' + Date.now()
+      },
+      plan.name,
+      plan.source || ''
+    );
     return;
   }
 
-  // Server-only RAG (/api/br-answer). Do not use POLICY_DOCS / brStructuredAnswer here — it confuses agents vs PDF truth.
-  console.log('[CHA RAG] Calling /api/br-answer (authoritative) for plan:', planId, 'query:', query);
+  // ── TIER 2: Server RAG fallback (/api/br-answer) ──
+  console.log('[CHA RAG] Local not confident, calling /api/br-answer for plan:', planId, 'query:', query);
   brShowTyping();
   brServerAnswer(query, plan.id)
     .catch(function (err) {
@@ -1167,13 +1190,12 @@ function brAIAnswer(query, planId) {
     })
     .catch(function (err) {
       brHideTyping();
-      console.warn('[CHA RAG] API failed after retry — showing VERIFY (no POLICY_DOCS fallback):', err.message);
+      console.warn('[CHA RAG] API failed after retry — showing VERIFY:', err.message);
       brRenderServerAnswer(
         {
           status: 'VERIFY',
-          fact:
-            'Could not reach the benefits server. Your answer was not loaded from local plan text — try again in a moment.',
-          sayThis: 'Hang on—I need to reconnect to pull the exact plan language.',
+          fact: 'Could not reach the benefits server. Try again in a moment.',
+          sayThis: 'Hang on—let me pull the exact plan language.',
           source: 'CHA Command Center',
           scope: 'none',
           requestId: ''
