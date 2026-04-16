@@ -7376,6 +7376,21 @@ body.plan-drawer-lock {
   opacity: 0;
 }
 
+/* ── LIVE ASSIST: fix gray line spacing ──
+   Sticky SOA strip (.soa-copy-strip) + #page-live .la-soa-hud sit above the
+   Rebuttals block; extra margin/padding keeps the strip edge from overlapping
+   the "Rebuttals" label and first accordion rows when scrolling. */
+#page-live .soa-copy-strip {
+  margin-bottom: 12px !important;
+}
+#page-live .la-section-label.la-sec-tight {
+  margin-top: 6px !important;
+  padding-top: 6px !important;
+}
+#page-live .la-qlist {
+  margin-top: 10px !important;
+}
+
 /* ── SALES TRACKER: HIDE STATUS UI (data preserved in localStorage) ── */
 .st-status-pill,
 .st-status-badge,

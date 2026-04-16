@@ -2,6 +2,14 @@
 // Plan answers (local lookup + AI context) come only from POLICY_DOCS in
 // plan-data.js / plan-data-extended.js. That data must match the official PDFs
 // stored under CHA_KNOWLEDGE_BASE (/knowledge_base) — not /docs, /data, or /plans.
+// Temporary: unhide chat panel via URL param for testing
+(function () {
+  if (window.location.search.indexOf('showchat=1') !== -1) {
+    var s = document.createElement('style');
+    s.textContent = '#br-toggle, #br-panel { display: block !important; }';
+    document.head.appendChild(s);
+  }
+})();
 // ── SOB LOOKUP — Synonym-Aware, Cross-Plan, Instant + Ask AI ─────────────
 var brActivePlan = null;
 var brSearchAllPlans = false;

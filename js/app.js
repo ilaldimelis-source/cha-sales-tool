@@ -646,6 +646,60 @@ function _dashLookupSelectedPlan() {
   return plans[0];
 }
 
+function _dashLookupGridInnerHtml(selected) {
+  return (
+    '<div class="dash-lookup-cell"><span>Network</span><strong>' +
+    escHTML((selected && selected.network) || '—') +
+    '</strong></div>' +
+    '<div class="dash-lookup-cell"><span>Underwriter</span><strong>' +
+    escHTML((selected && selected.carrier) || '—') +
+    '</strong></div>' +
+    '<div class="dash-lookup-cell"><span>Type</span><strong>' +
+    escHTML(selected ? _dashLookupDisplayType(selected) : '—') +
+    '</strong></div>' +
+    '<div class="dash-lookup-cell"><span>Association</span><strong>' +
+    escHTML((selected && selected.assoc) || '—') +
+    '</strong></div>'
+  );
+}
+
+function _dashLookupSyncSelectAndGrid() {
+  var sel = document.getElementById('dashPlanLookupSelect');
+  var grid = document.getElementById('dashLookupGrid');
+  var provBtn = document.querySelector('#dashPlanLookupMount .dash-lookup-provider');
+  var plans = _dashLookupFilteredPlans();
+  if (!plans.length) {
+    _dashLookupState.planId = '';
+  }
+  var selected = _dashLookupSelectedPlan();
+  var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
+  if (sel) {
+    if (!plans.length) {
+      sel.innerHTML = '<option value="">No plans found</option>';
+    } else {
+      var opts = '';
+      for (var j = 0; j < plans.length; j++) {
+        var p = plans[j];
+        opts +=
+          '<option value="' +
+          escHTML(String(p.id)) +
+          '"' +
+          (selected && selected.id === p.id ? ' selected' : '') +
+          '>' +
+          escHTML(p.name) +
+          '</option>';
+      }
+      sel.innerHTML = opts;
+    }
+  }
+  if (grid) {
+    grid.innerHTML = _dashLookupGridInnerHtml(selected);
+  }
+  if (provBtn) {
+    provBtn.disabled = !providerUrl;
+  }
+}
+
 function renderDashboardLookupCard() {
   var plans = _dashLookupFilteredPlans();
   var selected = _dashLookupSelectedPlan();
@@ -669,14 +723,8 @@ function renderDashboardLookupCard() {
       '</option>';
   });
   html += '</select>';
-  html += '<div class="dash-lookup-grid">';
-  html += '<div class="dash-lookup-cell"><span>Network</span><strong>' + escHTML((selected && selected.network) || '—') + '</strong></div>';
-  html += '<div class="dash-lookup-cell"><span>Underwriter</span><strong>' + escHTML((selected && selected.carrier) || '—') + '</strong></div>';
-  html +=
-    '<div class="dash-lookup-cell"><span>Type</span><strong>' +
-    escHTML(selected ? _dashLookupDisplayType(selected) : '—') +
-    '</strong></div>';
-  html += '<div class="dash-lookup-cell"><span>Association</span><strong>' + escHTML((selected && selected.assoc) || '—') + '</strong></div>';
+  html += '<div class="dash-lookup-grid" id="dashLookupGrid">';
+  html += _dashLookupGridInnerHtml(selected);
   html += '</div>';
   html += '<div class="dash-lookup-actions">';
   html += '<button type="button" class="dash-lookup-provider" onclick="dashLookupOpenProvider()"' + (providerUrl ? '' : ' disabled') + '>Provider search</button>';
@@ -696,12 +744,13 @@ function dashLookupRefresh() {
 
 function dashLookupFilter(query) {
   _dashLookupState.searchQuery = query == null ? '' : String(query);
-  dashLookupRefresh();
+  _dashLookupSyncSelectAndGrid();
 }
 
 function dashLookupSelectPlan(planId) {
+  if (!planId) return;
   _dashLookupState.planId = planId;
-  dashLookupRefresh();
+  _dashLookupSyncSelectAndGrid();
 }
 
 function dashLookupOpenProvider() {
