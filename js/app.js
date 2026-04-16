@@ -1210,8 +1210,16 @@ function _closeBenefitsSidebar() {
   }
   var panel = document.getElementById('br-panel');
   var toggle = document.getElementById('br-toggle');
-  if (panel) panel.classList.remove('open');
+  if (panel) {
+    panel.classList.remove('open');
+    panel.classList.remove('br-expanded');
+  }
   if (toggle) toggle.classList.remove('open');
+  var brEx = document.getElementById('br-expand');
+  if (brEx) {
+    brEx.textContent = 'Expand';
+    brEx.setAttribute('aria-pressed', 'false');
+  }
   document.body.classList.remove('br-open');
 }
 

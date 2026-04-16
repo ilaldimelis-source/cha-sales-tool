@@ -13,6 +13,20 @@ function clamp(n, min, max, fallback) {
   return Math.max(min, Math.min(max, v));
 }
 
+/**
+ * POLICY_DOCS plan ids are tdk1..tdk5; Supabase plan_chunks use tdk-1..tdk-5 for the
+ * customer brochure embeddings. Without this, preferred_plan_id misses rows and the
+ * model reads wrong PDF chunks (e.g. promo) and returns COVERED for bloodwork.
+ */
+function normalizeRagPreferredPlanId(raw) {
+  var id = raw ? String(raw).trim() : '';
+  if (!id) return '';
+  var lower = id.toLowerCase();
+  var tdk = lower.match(/^tdk([1-5])$/);
+  if (tdk) return 'tdk-' + tdk[1];
+  return id;
+}
+
 function buildContext(chunks) {
   if (!chunks || !chunks.length) return '[No matching plan chunks found]';
   return chunks
@@ -46,7 +60,13 @@ function parseModelOutput(raw) {
 
   text.split('\n').forEach(function (line) {
     var l = line.trim();
-    if (/^STATUS:/i.test(l)) out.status = l.replace(/^STATUS:\s*/i, '').trim().toUpperCase();
+    if (/^STATUS:/i.test(l)) {
+    out.status = l
+      .replace(/^STATUS:\s*/i, '')
+      .trim()
+      .replace(/[.]+$/g, '')
+      .toUpperCase();
+  }
     if (/^FACT:/i.test(l)) out.fact = l.replace(/^FACT:\s*/i, '').trim();
     if (/^SAY THIS:/i.test(l)) out.sayThis = l.replace(/^SAY THIS:\s*/i, '').trim();
     if (/^SOURCE:/i.test(l)) out.source = l.replace(/^SOURCE:\s*/i, '').trim();
@@ -127,18 +147,81 @@ function supplementPlanChunksForLabQuery(supabase, planId, query, chunks) {
     });
 }
 
+/**
+ * After the LLM responds: if FACT / SAY THIS contradict COVERED (exclusion language,
+ * "not covered", or discounted rates framed as non-insurance), force NOT COVERED.
+ */
+function aiOutputImpliesNotCovered(fact, sayThis) {
+  var combined = String(fact || '') + '\n' + String(sayThis || '');
+  var t = combined
+    .toLowerCase()
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+/g, ' ');
+  if (t.indexOf('not a covered insurance benefit') !== -1) return true;
+  if (t.indexOf('will not be considered eligible') !== -1) return true;
+  if (t.indexOf('is not covered under the plan') !== -1) return true;
+  if (t.indexOf('is not covered under this plan') !== -1) return true;
+  if (/\bnot covered\b/i.test(combined)) return true;
+  if (t.indexOf('not eligible') !== -1 && t.indexOf('insurance') !== -1) return true;
+  if (
+    (t.indexOf('discounted rates') !== -1 || t.indexOf('discounted rate') !== -1) &&
+    (t.indexOf('not covered') !== -1 ||
+      t.indexOf('not insurance') !== -1 ||
+      t.indexOf('not an insurance') !== -1 ||
+      t.indexOf('non-insurance') !== -1)
+  ) {
+    return true;
+  }
+  if (t.indexOf('discounted rates available') !== -1 && t.indexOf('not covered') !== -1) {
+    return true;
+  }
+  return false;
+}
+
 function enforceMandatoryNotCovered(parsed, planContextText, query) {
-  if (!contextRequiresMandatoryNotCovered(planContextText, query)) return parsed;
+  var fromContext = contextRequiresMandatoryNotCovered(planContextText, query);
+  var fromAi = aiOutputImpliesNotCovered(parsed.fact, parsed.sayThis);
+  if (!fromContext && !fromAi) {
+    if (parsed.status === 'COVERED' || parsed.status === 'PARTIAL') {
+      console.log('[CHA RAG] enforceMandatoryNotCovered: skip (suspicious)', {
+        status: parsed.status,
+        fromContext: false,
+        fromAi: false,
+        queryPreview: String(query || '').slice(0, 80)
+      });
+    }
+    return parsed;
+  }
+
   var prev = parsed.status;
+  console.log('[CHA RAG] enforceMandatoryNotCovered: APPLY', {
+    prevStatus: prev,
+    fromContext: fromContext,
+    fromAi: fromAi,
+    queryPreview: String(query || '').slice(0, 80)
+  });
   parsed.status = 'NOT COVERED';
   if (prev === 'COVERED' || prev === 'PARTIAL') {
-    parsed.fact =
-      'The plan excerpts include explicit language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible — discounts or network rates do not change that it is not covered as insurance.';
-    parsed.sayThis =
-      'NOT COVERED as an insurance benefit. If the plan mentions discounted or network rates, those are not insurance coverage — say: NOT COVERED as insurance benefit; pre-negotiated discounted rates may still be available through the network named in the plan.';
+    if (fromAi && !fromContext) {
+      parsed.fact =
+        'The model summary contradicts COVERED: it references not covered / not a covered insurance benefit and/or discounted rates without insurance coverage — status corrected to NOT COVERED.';
+      parsed.sayThis =
+        'NOT COVERED as an insurance benefit. Pre-negotiated discounted rates may still be available through the plan network, but they are not insurance coverage.';
+    } else {
+      parsed.fact =
+        'The plan excerpts include explicit language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible — discounts or network rates do not change that it is not covered as insurance.';
+      parsed.sayThis =
+        'NOT COVERED as an insurance benefit. If the plan mentions discounted or network rates, those are not insurance coverage — say: NOT COVERED as insurance benefit; pre-negotiated discounted rates may still be available through the network named in the plan.';
+    }
   } else {
-    parsed.fact =
-      'The plan excerpts include language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible.';
+    if (fromAi && !fromContext && String(parsed.fact || '').indexOf('contradicts') === -1) {
+      parsed.fact =
+        String(parsed.fact || '').trim() +
+        ' (Aligned to NOT COVERED based on exclusion language in the answer text.)';
+    } else if (!fromAi || fromContext) {
+      parsed.fact =
+        'The plan excerpts include language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible.';
+    }
     parsed.sayThis =
       String(parsed.sayThis || '').trim() ||
       'NOT COVERED as an insurance benefit per the plan language in context. Discounted rates mentioned in the plan are not insurance coverage.';
@@ -162,7 +245,14 @@ module.exports = function handler(req, res) {
 
   var body = req.body || {};
   var query = String(body.query || '').trim();
-  var planId = body.planId ? String(body.planId).trim() : null;
+  var planIdRaw = body.planId ? String(body.planId).trim() : '';
+  var planId = planIdRaw ? normalizeRagPreferredPlanId(planIdRaw) : null;
+  if (planIdRaw && planId && planId !== planIdRaw) {
+    console.log('[CHA RAG] normalized planId for RAG', {
+      requested: planIdRaw,
+      using: planId
+    });
+  }
   var matchCount = clamp(body.matchCount, 1, 12, 8);
   var matchThreshold = clamp(body.matchThreshold, 0, 1, 0.3);
   var requestId = 'req_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
@@ -395,12 +485,19 @@ module.exports = function handler(req, res) {
         'Discounts, cash pay, network savings, or "discounted rates available" do NOT make something COVERED. ' +
         'If the plan says not covered / not eligible as insurance, STATUS is NOT COVERED; you may still mention ' +
         'discounted rates in SAY THIS as non-insurance savings only.\n\n' +
-        'RULE 2 — SCOPE: Answer ONLY the agent\'s exact question. For "bloodwork", tie your answer to lab / ' +
-        'diagnostic testing / blood draw language in PLAN CONTEXT. Do not drift to unrelated benefits.\n' +
-        'RULE 3 — SAY THIS: If NOT COVERED but PLAN CONTEXT mentions a network and discounted rates, you may use: ' +
-        '"NOT COVERED as insurance benefit. Pre-negotiated discounted rates may be available through [network from context]."\n\n' +
+        'RULE 2 — TOPIC FOCUS ONLY:\n' +
+        'Only address the specific benefit asked about. If the user asks about bloodwork, only answer about bloodwork — ' +
+        'do not mention X-rays, MRIs, outpatient, Rx, or other benefits.\n\n' +
+        'RULE 3 — SCOPE: Tie your answer to the exact topic in PLAN CONTEXT (e.g. lab / diagnostic testing / blood draw for bloodwork). ' +
+        'Do not drift to unrelated benefits.\n' +
+        'RULE 4 — SAY THIS when NOT COVERED + network: One short sentence only. Example pattern (compress to one sentence): ' +
+        '"NOT COVERED as insurance benefit; pre-negotiated discounted rates may be available through [network from context]." ' +
+        'Do not repeat FACT.\n\n' +
         'FORMAT EXACTLY:\n' +
-        'STATUS: ...\nFACT: ...\nSAY THIS: ...\nSOURCE: ...\n\n' +
+        'STATUS: ...\n' +
+        'FACT: ... (Keep it to 1-2 sentences max. Only answer the specific question asked — do not list other benefits.)\n' +
+        'SAY THIS: ... (Keep it brief — one short sentence the agent can read aloud. Do not repeat information from FACT.)\n' +
+        'SOURCE: ...\n\n' +
         'PLAN CONTEXT:\n' +
         context;
 
@@ -432,7 +529,8 @@ module.exports = function handler(req, res) {
           ? j.choices[0].message.content
           : '';
       var parsed = parseModelOutput(raw);
-      var mandatoryExclusion = contextRequiresMandatoryNotCovered(context, query);
+      var mandatoryExclusionContext = contextRequiresMandatoryNotCovered(context, query);
+      var mandatoryExclusionAi = aiOutputImpliesNotCovered(parsed.fact, parsed.sayThis);
       parsed = enforceMandatoryNotCovered(parsed, context, query);
 
       return res.status(200).json({
@@ -442,7 +540,8 @@ module.exports = function handler(req, res) {
         sayThis: parsed.sayThis,
         source: parsed.source,
         scope: scope,
-        mandatoryNotCoveredFromContext: mandatoryExclusion,
+        mandatoryNotCoveredFromContext: mandatoryExclusionContext,
+        mandatoryNotCoveredFromAiOutput: mandatoryExclusionAi,
         citations: chunks.map(function (c) {
           return {
             plan_id: c.plan_id,
@@ -481,15 +580,28 @@ module.exports = function handler(req, res) {
           args: debug.rpcArgs
         })
       );
+      var ctxForGuard = String(context || '');
+      var mandatoryFromCtxOnFallback = contextRequiresMandatoryNotCovered(ctxForGuard, query);
+      if (mandatoryFromCtxOnFallback) {
+        console.log('[CHA RAG] Fallback: enforcing NOT COVERED from plan context (no LLM)', {
+          requestId: requestId,
+          queryPreview: String(query || '').slice(0, 80)
+        });
+      }
       return res.status(200).json({
         requestId: requestId,
-        status: 'VERIFY',
-        fact: '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]',
-        sayThis:
-          'Let me verify this in the plan document so I give you the exact compliant answer.',
+        status: mandatoryFromCtxOnFallback ? 'NOT COVERED' : 'VERIFY',
+        fact: mandatoryFromCtxOnFallback
+          ? 'The plan excerpts include language that this is not a covered insurance benefit, is not covered under the Plan, and/or will not be considered eligible. (Answering engine unavailable; status enforced from retrieved plan text.)'
+          : '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]',
+        sayThis: mandatoryFromCtxOnFallback
+          ? 'NOT COVERED as an insurance benefit per the plan language in context. Discounted rates mentioned in the plan are not insurance coverage.'
+          : 'Let me verify this in the plan document so I give you the exact compliant answer.',
         source: safeSource,
         scope: safeScope,
         citations: safeCitations,
+        mandatoryNotCoveredFromContext: mandatoryFromCtxOnFallback,
+        mandatoryNotCoveredFromAiOutput: false,
         fallbackReason: err && err.message ? err.message : 'Unknown error',
         debug: {
           stage: debug.stage,

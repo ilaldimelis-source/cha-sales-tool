@@ -475,6 +475,19 @@ document.getElementById('br-toggle').addEventListener('click', function () {
   }
 });
 
+(function () {
+  var ex = document.getElementById('br-expand');
+  if (!ex) return;
+  ex.addEventListener('click', function (ev) {
+    ev.stopPropagation();
+    var panel = document.getElementById('br-panel');
+    if (!panel) return;
+    var on = panel.classList.toggle('br-expanded');
+    ex.setAttribute('aria-pressed', on ? 'true' : 'false');
+    ex.textContent = on ? 'Shrink' : 'Expand';
+  });
+})();
+
 document.getElementById('br-input').addEventListener('input', function () {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 110) + 'px';
@@ -587,8 +600,14 @@ function brAddMsg(role, html) {
 function brScroll() {
   var msgs = document.getElementById('br-msgs');
   setTimeout(function () {
-    msgs.scrollTop = msgs.scrollHeight;
-  }, 40);
+    if (!msgs) return;
+    var last = msgs.lastElementChild;
+    if (last && typeof last.scrollIntoView === 'function') {
+      last.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    } else {
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+  }, 80);
 }
 
 function _brBottomLine(status, query) {
@@ -860,7 +879,13 @@ function brLocalLookup(query, plan) {
     var coveredCount = 0;
     matched.slice(0, 5).forEach(function (m) {
       var ml = String(m).toLowerCase();
-      if (ml.indexOf('not covered') !== -1 || ml.indexOf('excluded') !== -1 || ml.indexOf('no coverage') !== -1) {
+      if (
+        ml.indexOf('not a covered insurance benefit') !== -1 ||
+        ml.indexOf('will not be considered eligible') !== -1 ||
+        ml.indexOf('not covered') !== -1 ||
+        ml.indexOf('excluded') !== -1 ||
+        ml.indexOf('no coverage') !== -1
+      ) {
         notCoveredCount++;
       } else {
         coveredCount++;
@@ -945,13 +970,24 @@ function brRenderLocalResult(result, planName) {
   brAddMsg('ai', html);
 }
 
+/** Match server normalizeRagPreferredPlanId — POLICY_DOCS uses tdk5, chunks use tdk-5. */
+function brNormalizePlanIdForBrApi(planId) {
+  var id = planId ? String(planId).trim() : '';
+  if (!id) return null;
+  var lower = id.toLowerCase();
+  var m = lower.match(/^tdk([1-5])$/);
+  if (m) return 'tdk-' + m[1];
+  return id;
+}
+
 function brServerAnswer(query, planId) {
+  var ragPlanId = brNormalizePlanIdForBrApi(planId);
   return fetch('/api/br-answer?t=' + Date.now(), {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       query: query,
-      planId: planId || null,
+      planId: ragPlanId || null,
       matchCount: 8,
       matchThreshold: 0.3
     })
@@ -964,10 +1000,12 @@ function brServerAnswer(query, planId) {
 /** Normalize API / model status strings for badge + color logic. */
 function normalizeBrStatus(raw) {
   var s = String(raw == null ? '' : raw)
+    .replace(/[\u00a0\u2007\u202f]/g, ' ')
     .trim()
     .replace(/\s+/g, ' ')
+    .replace(/[.]+$/g, '')
     .toUpperCase();
-  if (s === 'NOT COVERED' || s === 'NOTCOVERED') return 'NOT COVERED';
+  if (s === 'NOTCOVERED' || /^NOT\s+COVERED/.test(s)) return 'NOT COVERED';
   if (s === 'COVERED') return 'COVERED';
   if (s === 'VERIFY') return 'VERIFY';
   if (s === 'PARTIAL') return 'PARTIAL';
@@ -1000,15 +1038,39 @@ function brStatusBadgeIcon(status) {
   return '\u26a0\ufe0f ';
 }
 
+/** Client-side guard when API/status and visible answer text disagree (stale cache, model drift). */
+function brAnswerTextImpliesNotCovered(fact, sayThis) {
+  var t = (String(fact || '') + '\n' + String(sayThis || ''))
+    .toLowerCase()
+    .replace(/\u00a0/g, ' ')
+    .replace(/\s+/g, ' ');
+  if (t.indexOf('not a covered insurance benefit') !== -1) return true;
+  if (t.indexOf('will not be considered eligible') !== -1) return true;
+  if (t.indexOf('is not covered under the plan') !== -1) return true;
+  if (t.indexOf('is not covered under this plan') !== -1) return true;
+  return false;
+}
+
 function brRenderServerAnswer(payload, planName, planSource) {
-  var status = normalizeBrStatus((payload && payload.status) || 'VERIFY');
-  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL)$/.test(status)) {
-    status = 'VERIFY';
-  }
   var fact = String(
     (payload && payload.fact) || '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]'
   );
   var sayThis = String((payload && payload.sayThis) || '');
+  var status = normalizeBrStatus((payload && payload.status) || 'VERIFY');
+  if (
+    (status === 'COVERED' || status === 'PARTIAL') &&
+    brAnswerTextImpliesNotCovered(fact, sayThis)
+  ) {
+    console.warn(
+      '[CHA BR] brRenderServerAnswer: forcing NOT COVERED (answer text contradicts status ' +
+        status +
+        ')'
+    );
+    status = 'NOT COVERED';
+  }
+  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL)$/.test(status)) {
+    status = 'VERIFY';
+  }
   var source = String(
     (payload && payload.source) || planSource || planName || 'Plan PDF / POLICY_DOCS'
   );
@@ -1097,6 +1159,9 @@ function brRenderServerAnswer(payload, planName, planSource) {
 }
 
 function brAIAnswer(query, planId) {
+  // Build marker — if DevTools does not show this, the browser is running stale chat.js (SW/cache).
+  console.log('[CHA BR] build=server-first-v5-ragplanid');
+
   var plan = null;
   if (typeof POLICY_DOCS !== 'undefined') {
     for (var i = 0; i < POLICY_DOCS.length; i++) {
@@ -1111,9 +1176,9 @@ function brAIAnswer(query, planId) {
     return;
   }
 
-  // Server RAG (/api/br-answer) is authoritative for status badges — POLICY_DOCS
-  // local lookup is only used when the API is unavailable.
-  console.log('[CHA RAG] Calling /api/br-answer for plan:', planId, 'query:', query);
+  // Server RAG (/api/br-answer) ALWAYS runs first. brLocalLookup runs ONLY in .catch when API fails.
+  // Do not reorder — local POLICY_DOCS text can say COVERED while PDF RAG says NOT COVERED.
+  console.log('[CHA RAG] Calling /api/br-answer (authoritative) for plan:', planId, 'query:', query);
   brShowTyping();
   brServerAnswer(query, plan.id)
     .catch(function (err) {
@@ -1640,7 +1705,7 @@ function _brSpecialCase(topic, planDoc) {
     };
   }
   // X-ray / Labs / Imaging
-  if (/\bx.?ray\b|\blab\b|\blabs\b|\bblood work\b|\bimaging\b|\bmri\b|\bct scan\b|\bradiology\b|\bdiagnostic\b/.test(t)) {
+  if (/\bx.?ray\b|\blab\b|\blabs\b|\bblood work\b|\bbloodwork\b|\bimaging\b|\bmri\b|\bct scan\b|\bradiology\b|\bdiagnostic\b/.test(t)) {
     var hasNetwork = !!(planDoc.network && /First Health|PHCS|MultiPlan/i.test(planDoc.network));
     var networkNote = hasNetwork
       ? 'Network discount available through ' + planDoc.network + ' — member pays negotiated rate at in-network facilities. Not a fixed insurance benefit.'

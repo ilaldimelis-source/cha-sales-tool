@@ -636,6 +636,30 @@ function _stGroqSyncReceiptPrimary(raw) {
   }
 }
 
+// Parse "Month D, YYYY at H:MM AM/PM" after "Confirmation" (or whole
+// receipt if none). Used for saleDate so weekly buckets match the
+// enrollment confirmation, not a generic Date: line or Active date.
+function _stParseConfirmationTimestampInRaw(raw) {
+  var text = String(raw || '');
+  var monthMap = {
+    january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+    july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
+    jan: 0, feb: 1, mar: 2, apr: 3, jun: 5, jul: 6,
+    aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11
+  };
+  var idx = text.search(/\bconfirmation\b/i);
+  var slice = idx >= 0 ? text.slice(idx) : text;
+  var re = /\b([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})\s+at\s+\d{1,2}:\d{2}\s*(?:AM|PM)\b/i;
+  var m = slice.match(re);
+  if (!m) return null;
+  var mIdx = monthMap[String(m[1]).toLowerCase()];
+  if (typeof mIdx !== 'number') return null;
+  var dNum = parseInt(m[2], 10);
+  var yNum = parseInt(m[3], 10);
+  if (isNaN(dNum) || isNaN(yNum)) return null;
+  return new Date(yNum, mIdx, dNum, 9, 0, 0, 0);
+}
+
 // ── SMART RECEIPT PARSER ────────────────────────────────────
 // Line-based parser. Scans every line for a monthly price
 // pattern ("$X per Month") and uses the nearest preceding
@@ -679,6 +703,8 @@ function _stParseReceipt(text, useGroq) {
       out.enrollmentFee = groqPrim.enrollmentFee;
       if (groqPrim.agent) out.agent = groqPrim.agent;
       if (groqPrim.saleDate) out.saleDate = groqPrim.saleDate;
+      var confirmTsGroq = _stParseConfirmationTimestampInRaw(raw);
+      if (confirmTsGroq) out.saleDate = confirmTsGroq;
       _stApplySummaryTotalFromRaw(raw, out);
       _stReorderDealProducts(out);
       return out;
@@ -786,6 +812,11 @@ function _stParseReceipt(text, useGroq) {
     // precedence over any "Member ID:" field found below —
     // this is the receipt's canonical member number.
     out.memberId = confMatch[4];
+  }
+
+  var confirmTsParsed = _stParseConfirmationTimestampInRaw(raw);
+  if (confirmTsParsed) {
+    out.saleDate = confirmTsParsed;
   }
 
   // ── Customer name (if any explicit field) ─────────────────

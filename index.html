@@ -103,6 +103,108 @@
         }
       })();
     </script>
+    <style id="cha-command-center-overrides">
+      /* FIX 1: Live Assist (Live Call tab) - brighten playbook / SOA / bento */
+      #page-live .bento-container {
+        background: #f8f9fc;
+        border: 1px solid #e2e4eb;
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+      #page-live .bento-card {
+        background: #ffffff;
+        border: 1px solid #e2e4eb;
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        color: #1f2937;
+      }
+      #page-live .la-soa-hud {
+        background: #ffffff;
+        color: #1f2937;
+        border: 1px solid #e2e4eb;
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+      #page-live .la-soa-hud:hover {
+        background: #f8f9fc;
+      }
+      #page-live .la-soa-hud-txt {
+        color: #1f2937;
+      }
+      #page-live .script-line {
+        background: #f8f9fc;
+        color: #1f2937;
+        border: 1px solid #e2e4eb;
+      }
+      #page-live .compliance-checklist {
+        background: #f8f9fc;
+        color: #1f2937;
+      }
+      #page-live .chat-container {
+        background: #f8f9fc;
+      }
+      #page-live .ai-message {
+        background: #ffffff;
+        color: #1f2937;
+        border: 1px solid #e2e4eb;
+      }
+      /* FIX 3: Benefits Reference panel */
+      #br-panel .br-plan-bar {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      #br-panel .br-msgs {
+        flex: 1 1 auto;
+        min-height: 0;
+        font-size: 14px;
+      }
+      #br-panel .br-bub {
+        font-size: 14px;
+      }
+      #br-panel .br-plan-btn {
+        font-size: 13px;
+      }
+      #br-panel .br-head,
+      #br-panel .br-nav-section,
+      #br-panel .br-chips,
+      #br-panel .br-quick-actions,
+      #br-panel .br-input-bar {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      #br-panel .br-msgs {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .br-expand-btn {
+        flex-shrink: 0;
+        font-family: var(--font-ui, Inter, sans-serif);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.12);
+        color: #f5f0e8;
+        cursor: pointer;
+      }
+      .br-expand-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      #br-panel.br-expanded {
+        width: 90vw;
+        max-width: 90vw;
+        height: 90vh;
+        max-height: 90vh;
+        top: 5vh;
+        right: 5vw;
+        left: auto;
+        bottom: auto;
+        border-radius: 16px;
+        border: 1px solid #e2e4eb;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      }
+    </style>
   </head>
   <body>
     <div id="cha-debug-stamp" style="position:fixed;right:6px;bottom:6px;z-index:999999;background:#111827;color:#fff;padding:4px 8px;border-radius:999px;font-size:10px;font-family:Inter,sans-serif;opacity:.85;">dbg fb7e63</div>
@@ -736,6 +838,15 @@
           ↺ Clear
         </button>
         <button
+          type="button"
+          id="br-expand"
+          class="br-expand-btn"
+          title="Expand or shrink panel"
+          aria-pressed="false"
+        >
+          Expand
+        </button>
+        <button
           class="br-close-btn"
           onclick="_closeBenefitsSidebar()"
           aria-label="Close"
@@ -896,7 +1007,7 @@
     <script src="js/myspace.js?v=1775582443698"></script>
     <script src="js/sales-tracker.js?v=2"></script>
     <script src="js/app.js?v=1775582443698"></script>
-    <script src="js/chat.js?v=1776299000000"></script>
+    <script src="js/chat.js?v=1776298600000"></script>
     <script>
       (function () {
         var required = [
@@ -928,7 +1039,7 @@
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js').catch(function () {});
+          navigator.serviceWorker.register('/sw2.js').catch(function () {});
         });
       }
     </script>
