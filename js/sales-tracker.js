@@ -1799,6 +1799,9 @@ function _stAutoDetectAndAdd() {
     return;
   }
 
+  // Unrecognized fallback should trigger only for a single-receipt
+  // auto-detect. Multi-receipt pastes must continue normal per-chunk
+  // save flow so deals don't collapse into one draft.
   var firstParsed = parsedChunks[0].parsed || {};
   var firstProducts = firstParsed.products || [];
   var corePlanName =
@@ -1810,7 +1813,7 @@ function _stAutoDetectAndAdd() {
     !!matchedPlanName &&
     !genericPlanPattern.test(corePlanName) &&
     corePlanName.length >= 5;
-  if (!isRecognizedPlan) {
+  if (parsedChunks.length === 1 && !isRecognizedPlan) {
     var fallbackFirstLine = '';
     var textLines = text.split(/\r?\n/);
     for (var li = 0; li < textLines.length; li++) {
@@ -2225,6 +2228,17 @@ function _stSaveUnrecognizedDeal() {
   }
   var receiptId =
     'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  var existingReceiptIds = {};
+  var existingIds = {};
+  var allExisting = _stLoadSales();
+  for (var ex = 0; ex < allExisting.length; ex++) {
+    if (!allExisting[ex]) continue;
+    if (allExisting[ex].id) existingIds[allExisting[ex].id] = true;
+    if (allExisting[ex].receiptId) existingReceiptIds[allExisting[ex].receiptId] = true;
+  }
+  while (existingReceiptIds[receiptId]) {
+    receiptId = 'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  }
   var dealId = '';
   if (billDate) {
     var pds = _stLoadPostDates();
@@ -2273,6 +2287,7 @@ function _stSaveUnrecognizedDeal() {
   var tsBase = _stReadDateSoldTs();
   dealId =
     'st_' + tsBase + '_u_0_' + Math.random().toString(36).slice(2, 6);
+  if (existingIds[dealId]) return;
   sales.push({
     id: dealId,
     ts: tsBase,
@@ -2290,8 +2305,11 @@ function _stSaveUnrecognizedDeal() {
   });
   for (var ai = 0; ai < (d.addons || []).length; ai++) {
     var addon = d.addons[ai];
+    var addonId =
+      'st_' + tsBase + '_u_' + (ai + 1) + '_' + Math.random().toString(36).slice(2, 6);
+    if (existingIds[addonId]) continue;
     sales.push({
-      id: 'st_' + tsBase + '_u_' + (ai + 1) + '_' + Math.random().toString(36).slice(2, 6),
+      id: addonId,
       ts: tsBase + ai + 1,
       customer: d.customer || 'Unknown',
       memberId: d.memberId || '',
@@ -2321,6 +2339,30 @@ function _stSaveUnrecognizedDeal() {
   _stRender();
   _stOpenCommissionEditor(dealId);
   _stFlash('Saved unrecognized receipt. Review fields and save.', 'ok');
+}
+
+function _stValidateSalesIntegrity(sales) {
+  var deals = sales.filter(function (s) { return s && s.type === 'deal'; });
+  var addons = sales.filter(function (s) { return s && s.type === 'addon'; });
+  if (deals.length === 0 && addons.length > 0) {
+    console.warn('[CHA SALES] Data integrity warning: add-ons exist without any deals');
+  }
+  var ids = {};
+  for (var i = 0; i < sales.length; i++) {
+    if (!sales[i]) continue;
+    if (ids[sales[i].id]) {
+      console.warn('[CHA SALES] Duplicate sale id found:', sales[i].id);
+    }
+    ids[sales[i].id] = true;
+  }
+  for (var j = 0; j < sales.length; j++) {
+    if (!sales[j]) continue;
+    if (!sales[j].type) {
+      console.warn('[CHA SALES] Sale missing type:', sales[j].id);
+      sales[j].type = 'deal';
+    }
+  }
+  return sales;
 }
 
 // Confirm a post-date: move it out of the postdates list and
@@ -3909,6 +3951,25 @@ function _stRender() {
   var page = document.getElementById('page-salestracker');
   if (!page) return;
   var sales = _stLoadSales();
+  sales = _stValidateSalesIntegrity(sales);
+  var _dbgSales = _stLoadSales();
+  console.log(
+    '[DIAG] All sales:',
+    JSON.stringify(
+      _dbgSales.map(function (s) {
+        return {
+          id: s.id,
+          type: s.type,
+          customer: s.customer,
+          plan: s.plan || s.policy,
+          receiptId: s.receiptId,
+          amount: s.amount || s.policyAmount
+        };
+      }),
+      null,
+      2
+    )
+  );
   // ── DEBUG: trace how many sales _stRender sees at paint
   // time to diagnose the persistence bug.
   var _dbgRenderUser = _stGetCurrentUser();
