@@ -33,7 +33,6 @@
 
 'use strict';
 
-var _stUnrecognizedDraft = null;
 var _stDealEditSaleId = '';
 
 // ── BONUS TIER CONFIG ───────────────────────────────────────
@@ -970,65 +969,6 @@ function _stParseReceipt(text, useGroq) {
     }
   }
 
-  // ── Combined Policy+Price lines ──────────────────────────
-  // CHA receipts put enrollment + premium on one line:
-  // "Policy:XXX Active:DATE $125 Enrollment one-time $341 Product per Month..."
-  // Extract the "Product per Month" price from these lines BEFORE
-  // skipLineRe-gated passes (which skip lines starting with "Policy:").
-  var combinedPriceRe =
-    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:product\s+)?per\s*month/i;
-  var deductibleRe =
-    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*deductible/i;
-  var combinedWalkBackSkip =
-    /^(?:confirmation|products?|summary|total|policy|active|effective|starts?|address|phone|email|date|member|central|health|advisors)/i;
-  for (var cpI = 0; cpI < lines.length; cpI++) {
-    var cpLine = lines[cpI];
-    if (!/policy|active/i.test(cpLine)) continue;
-    var cpMatch = cpLine.match(combinedPriceRe);
-    if (!cpMatch) continue;
-    var dedMatch = cpLine.match(deductibleRe);
-    var dedValue = dedMatch
-      ? parseFloat(String(dedMatch[1]).replace(/,/g, ''))
-      : NaN;
-    var cpPrice = parseFloat(cpMatch[1].replace(/,/g, ''));
-    if (isNaN(cpPrice) || cpPrice <= 0) continue;
-    if (!isNaN(dedValue) && dedValue > 0 && Math.abs(cpPrice - dedValue) < 0.01) {
-      continue;
-    }
-    var cpName = '';
-    for (var cpBack = cpI - 1; cpBack >= 0 && cpBack >= cpI - 10; cpBack--) {
-      var cpPrev = (lines[cpBack] || '').trim();
-      if (!cpPrev) continue;
-      if (combinedWalkBackSkip.test(cpPrev)) continue;
-      if (/^\$/.test(cpPrev)) continue;
-      if (enrollmentRe.test(cpPrev)) continue;
-      cpName = cpPrev;
-      break;
-    }
-    if (!cpName) cpName = 'Unknown Plan';
-    var cpMatched = _stMatchPlanName(cpName);
-    var cpFinal = cpMatched || cpName.substring(0, 120);
-    var cpEntry = { name: cpFinal, price: cpPrice, policy: '' };
-    var cpPol = cpLine.match(/policy\s*:?\s*([A-Z0-9-]{4,})/i);
-    if (cpPol) cpEntry.policy = cpPol[1];
-    var cpDup = false;
-    for (var cpDi = 0; cpDi < out.products.length; cpDi++) {
-      if (
-        out.products[cpDi].name === cpFinal &&
-        Math.abs(out.products[cpDi].price - cpPrice) < 0.01
-      ) {
-        cpDup = true;
-        break;
-      }
-    }
-    if (cpDup) continue;
-    if (/add[-\s]?on/i.test(cpName) || /add[-\s]?on/i.test(cpFinal)) {
-      out.products.push(cpEntry);
-    } else {
-      out.products.unshift(cpEntry);
-    }
-  }
-
   // ── Per-month price lines ─────────────────────────────────
   // Matches "$291.00 per Month", "$39.99/mo", "$22.99 monthly".
   // Requires an explicit monthly marker — bare "$50.00" will
@@ -1822,39 +1762,10 @@ function _stAutoDetectAndAdd() {
     parsedChunks.push({ parsed: pc, raw: chunk });
   }
   if (!parsedChunks.length) {
-    var parsedFallback = _stParseReceipt(text, false) || {};
-    var firstLine = '';
-    var rawLines = text.split(/\r?\n/);
-    for (var rl = 0; rl < rawLines.length; rl++) {
-      if (String(rawLines[rl] || '').trim()) {
-        firstLine = String(rawLines[rl]).trim();
-        break;
-      }
-    }
-    var fallbackAddons = [];
-    var fallbackProducts = parsedFallback.products || [];
-    for (var fp = 1; fp < fallbackProducts.length; fp++) {
-      fallbackAddons.push({
-        name: fallbackProducts[fp].name || 'Unknown Add-on',
-        amount: Number(fallbackProducts[fp].price) || 0
-      });
-    }
-    _stUnrecognizedDraft = {
-      raw: text,
-      customer: parsedFallback.customer || 'Unknown',
-      memberId: parsedFallback.memberId || '',
-      plan:
-        (fallbackProducts[0] && fallbackProducts[0].name) ||
-        firstLine ||
-        'Unknown Plan',
-      amount: Number(
-        (fallbackProducts[0] && fallbackProducts[0].price) || 0
-      ),
-      addons: fallbackAddons,
-      enrollmentFee: Number(parsedFallback.enrollmentFee) || 0
-    };
-    _stRenderUnrecognizedPreview();
-    _stFlash('Plan not recognized — review and edit before saving.', 'error');
+    _stFlash(
+      'Could not find any products in that receipt. Try "Add as Deal" instead.',
+      'error'
+    );
     return;
   }
 
@@ -2206,147 +2117,6 @@ function _stUpdateReceiptPreview() {
   wrap.innerHTML = parts.join('');
 }
 
-function _stRenderUnrecognizedPreview() {
-  var wrap = document.getElementById('st-receipt-preview');
-  if (!wrap || !_stUnrecognizedDraft) return;
-  var d = _stUnrecognizedDraft;
-  var addonText = 'none detected';
-  if (d.addons && d.addons.length) {
-    addonText = d.addons
-      .map(function (a) {
-        return _stEscape(a.name || 'Unknown Add-on') + ' ($' + (Number(a.amount) || 0).toFixed(2) + ')';
-      })
-      .join(', ');
-  }
-  wrap.innerHTML =
-    '<div class="st-preview-card st-unrecognized-preview">' +
-    '<div class="st-unrecognized-title">Plan not recognized — review and edit before saving</div>' +
-    '<div>Client: ' + _stEscape(d.customer || 'Unknown') + '</div>' +
-    '<div>Plan: ' + _stEscape(d.plan || 'Unknown Plan') + '</div>' +
-    '<div>Premium: ' + (Number(d.amount) > 0 ? _stFmtMoney(d.amount) : '—') + '</div>' +
-    '<div>Add-ons: ' + addonText + '</div>' +
-    '<button onclick="_stSaveUnrecognizedDeal()" style="background:#5175F1;color:white;border:none;padding:8px 16px;border-radius:10px;margin-top:10px;cursor:pointer;font-weight:600;">Save as deal (edit after)</button>' +
-    '<button onclick="_stDismissPreview()" style="background:transparent;border:1px solid #999;padding:8px 16px;border-radius:10px;margin-top:10px;margin-left:8px;cursor:pointer;">Discard</button>' +
-    '</div>';
-}
-
-function _stDismissPreview() {
-  _stUnrecognizedDraft = null;
-  var wrap = document.getElementById('st-receipt-preview');
-  if (wrap) wrap.innerHTML = '';
-}
-
-function _stSaveUnrecognizedDeal() {
-  if (!_stUnrecognizedDraft) return;
-  var d = _stUnrecognizedDraft;
-  var billDate = _stReadPostDate();
-  if (billDate === 'INVALID') {
-    _stFlash('Pick a future bill date for the post-date.', 'error');
-    return;
-  }
-  var receiptId =
-    'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
-  var dealId = '';
-  if (billDate) {
-    var pds = _stLoadPostDates();
-    dealId = 'pd_' + Date.now() + '_0_' + Math.random().toString(36).slice(2, 6);
-    pds.push({
-      id: dealId,
-      createdTs: Date.now(),
-      billDate: billDate,
-      customer: d.customer || 'Unknown',
-      memberId: d.memberId || '',
-      plan: d.plan || 'Unknown Plan',
-      amount: Number(d.amount) || 0,
-      type: 'deal',
-      raw: d.raw || '',
-      notes: '',
-      receiptId: receiptId,
-      enrollmentFee: Number(d.enrollmentFee) || 0
-    });
-    for (var pdi = 0; pdi < (d.addons || []).length; pdi++) {
-      var ad = d.addons[pdi];
-      pds.push({
-        id: 'pd_' + Date.now() + '_' + (pdi + 1) + '_' + Math.random().toString(36).slice(2, 6),
-        createdTs: Date.now() + pdi + 1,
-        billDate: billDate,
-        customer: d.customer || 'Unknown',
-        memberId: d.memberId || '',
-        plan: ad.name || 'Unknown Add-on',
-        amount: Number(ad.amount) || 0,
-        type: 'addon',
-        raw: d.raw || '',
-        notes: '',
-        receiptId: receiptId
-      });
-    }
-    _stSavePostDates(pds);
-    _stDismissPreview();
-    var inputPd = document.getElementById('st-receipt-input');
-    if (inputPd) inputPd.value = '';
-    _stResetPostDateInputs();
-    _stRender();
-    _stFlash('Saved as post-dated deal. Confirm on billing date to edit.', 'ok');
-    return;
-  }
-
-  var sales = _stLoadSales();
-  var tsBase = _stReadDateSoldTs();
-  dealId =
-    'st_' + tsBase + '_u_0_' + Math.random().toString(36).slice(2, 6);
-  sales.push({
-    id: dealId,
-    ts: tsBase,
-    customer: d.customer || 'Unknown',
-    memberId: d.memberId || '',
-    plan: d.plan || 'Unknown Plan',
-    amount: Number(d.amount) || 0,
-    type: 'deal',
-    status: 'pending',
-    raw: d.raw || '',
-    notes: '',
-    receiptId: receiptId,
-    receiptTotal: 0,
-    enrollmentFee: Number(d.enrollmentFee) || 0
-  });
-  for (var ai = 0; ai < (d.addons || []).length; ai++) {
-    var addon = d.addons[ai];
-    sales.push({
-      id: 'st_' + tsBase + '_u_' + (ai + 1) + '_' + Math.random().toString(36).slice(2, 6),
-      ts: tsBase + ai + 1,
-      customer: d.customer || 'Unknown',
-      memberId: d.memberId || '',
-      plan: addon.name || 'Unknown Add-on',
-      amount: Number(addon.amount) || 0,
-      type: 'addon',
-      status: 'pending',
-      raw: d.raw || '',
-      notes: '',
-      receiptId: receiptId,
-      receiptTotal: 0,
-      enrollmentFee: 0
-    });
-  }
-  var rates = _stLoadCommissionRates();
-  for (var si = 0; si < sales.length; si++) {
-    if (sales[si].id === dealId) {
-      _stStampDealCommission(sales, si, rates);
-      break;
-    }
-  }
-  _stSaveSales(sales);
-  _stDismissPreview();
-  var input = document.getElementById('st-receipt-input');
-  if (input) input.value = '';
-  _stResetPostDateInputs();
-  _stRender();
-  _stOpenCommissionEditor(dealId);
-  _stFlash('Saved unrecognized receipt. Review fields and save.', 'ok');
-}
-
-// Confirm a post-date: move it out of the postdates list and
-// into the main sales list with ts set to the billing day (at
-// 9am local so it sorts sensibly among the day's entries).
 function _stConfirmPostDate(id) {
   var pds = _stLoadPostDates();
   var idx = -1;
@@ -3965,3 +3735,4 @@ function _stRender() {
 
   page.innerHTML = html;
 }
+
