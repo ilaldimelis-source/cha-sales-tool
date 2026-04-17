@@ -33,6 +33,9 @@
 
 'use strict';
 
+var _stUnrecognizedDraft = null;
+var _stDealEditSaleId = '';
+
 // ── BONUS TIER CONFIG ───────────────────────────────────────
 // D = Deals (core plan sales). A = Add-ons.
 // Both targets must be hit to unlock the bonus for that tier.
@@ -1760,10 +1763,39 @@ function _stAutoDetectAndAdd() {
     parsedChunks.push({ parsed: pc, raw: chunk });
   }
   if (!parsedChunks.length) {
-    _stFlash(
-      'Could not find any products in that receipt. Try "Add as Deal" instead.',
-      'error'
-    );
+    var parsedFallback = _stParseReceipt(text, false) || {};
+    var firstLine = '';
+    var rawLines = text.split(/\r?\n/);
+    for (var rl = 0; rl < rawLines.length; rl++) {
+      if (String(rawLines[rl] || '').trim()) {
+        firstLine = String(rawLines[rl]).trim();
+        break;
+      }
+    }
+    var fallbackAddons = [];
+    var fallbackProducts = parsedFallback.products || [];
+    for (var fp = 1; fp < fallbackProducts.length; fp++) {
+      fallbackAddons.push({
+        name: fallbackProducts[fp].name || 'Unknown Add-on',
+        amount: Number(fallbackProducts[fp].price) || 0
+      });
+    }
+    _stUnrecognizedDraft = {
+      raw: text,
+      customer: parsedFallback.customer || 'Unknown',
+      memberId: parsedFallback.memberId || '',
+      plan:
+        (fallbackProducts[0] && fallbackProducts[0].name) ||
+        firstLine ||
+        'Unknown Plan',
+      amount: Number(
+        (fallbackProducts[0] && fallbackProducts[0].price) || 0
+      ),
+      addons: fallbackAddons,
+      enrollmentFee: Number(parsedFallback.enrollmentFee) || 0
+    };
+    _stRenderUnrecognizedPreview();
+    _stFlash('Plan not recognized — review and edit before saving.', 'error');
     return;
   }
 
@@ -2113,6 +2145,144 @@ function _stUpdateReceiptPreview() {
     return;
   }
   wrap.innerHTML = parts.join('');
+}
+
+function _stRenderUnrecognizedPreview() {
+  var wrap = document.getElementById('st-receipt-preview');
+  if (!wrap || !_stUnrecognizedDraft) return;
+  var d = _stUnrecognizedDraft;
+  var addonText = 'none detected';
+  if (d.addons && d.addons.length) {
+    addonText = d.addons
+      .map(function (a) {
+        return _stEscape(a.name || 'Unknown Add-on') + ' ($' + (Number(a.amount) || 0).toFixed(2) + ')';
+      })
+      .join(', ');
+  }
+  wrap.innerHTML =
+    '<div class="st-preview-card st-unrecognized-preview">' +
+    '<div class="st-unrecognized-title">Plan not recognized — review and edit before saving</div>' +
+    '<div>Client: ' + _stEscape(d.customer || 'Unknown') + '</div>' +
+    '<div>Plan: ' + _stEscape(d.plan || 'Unknown Plan') + '</div>' +
+    '<div>Premium: ' + (Number(d.amount) > 0 ? _stFmtMoney(d.amount) : '—') + '</div>' +
+    '<div>Add-ons: ' + addonText + '</div>' +
+    '<button onclick="_stSaveUnrecognizedDeal()" style="background:#5175F1;color:white;border:none;padding:8px 16px;border-radius:10px;margin-top:10px;cursor:pointer;font-weight:600;">Save as deal (edit after)</button>' +
+    '<button onclick="_stDismissPreview()" style="background:transparent;border:1px solid #999;padding:8px 16px;border-radius:10px;margin-top:10px;margin-left:8px;cursor:pointer;">Discard</button>' +
+    '</div>';
+}
+
+function _stDismissPreview() {
+  _stUnrecognizedDraft = null;
+  var wrap = document.getElementById('st-receipt-preview');
+  if (wrap) wrap.innerHTML = '';
+}
+
+function _stSaveUnrecognizedDeal() {
+  if (!_stUnrecognizedDraft) return;
+  var d = _stUnrecognizedDraft;
+  var billDate = _stReadPostDate();
+  if (billDate === 'INVALID') {
+    _stFlash('Pick a future bill date for the post-date.', 'error');
+    return;
+  }
+  var receiptId =
+    'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  var dealId = '';
+  if (billDate) {
+    var pds = _stLoadPostDates();
+    dealId = 'pd_' + Date.now() + '_0_' + Math.random().toString(36).slice(2, 6);
+    pds.push({
+      id: dealId,
+      createdTs: Date.now(),
+      billDate: billDate,
+      customer: d.customer || 'Unknown',
+      memberId: d.memberId || '',
+      plan: d.plan || 'Unknown Plan',
+      amount: Number(d.amount) || 0,
+      type: 'deal',
+      raw: d.raw || '',
+      notes: '',
+      receiptId: receiptId,
+      enrollmentFee: Number(d.enrollmentFee) || 0
+    });
+    for (var pdi = 0; pdi < (d.addons || []).length; pdi++) {
+      var ad = d.addons[pdi];
+      pds.push({
+        id: 'pd_' + Date.now() + '_' + (pdi + 1) + '_' + Math.random().toString(36).slice(2, 6),
+        createdTs: Date.now() + pdi + 1,
+        billDate: billDate,
+        customer: d.customer || 'Unknown',
+        memberId: d.memberId || '',
+        plan: ad.name || 'Unknown Add-on',
+        amount: Number(ad.amount) || 0,
+        type: 'addon',
+        raw: d.raw || '',
+        notes: '',
+        receiptId: receiptId
+      });
+    }
+    _stSavePostDates(pds);
+    _stDismissPreview();
+    var inputPd = document.getElementById('st-receipt-input');
+    if (inputPd) inputPd.value = '';
+    _stResetPostDateInputs();
+    _stRender();
+    _stFlash('Saved as post-dated deal. Confirm on billing date to edit.', 'ok');
+    return;
+  }
+
+  var sales = _stLoadSales();
+  var tsBase = _stReadDateSoldTs();
+  dealId =
+    'st_' + tsBase + '_u_0_' + Math.random().toString(36).slice(2, 6);
+  sales.push({
+    id: dealId,
+    ts: tsBase,
+    customer: d.customer || 'Unknown',
+    memberId: d.memberId || '',
+    plan: d.plan || 'Unknown Plan',
+    amount: Number(d.amount) || 0,
+    type: 'deal',
+    status: 'pending',
+    raw: d.raw || '',
+    notes: '',
+    receiptId: receiptId,
+    receiptTotal: 0,
+    enrollmentFee: Number(d.enrollmentFee) || 0
+  });
+  for (var ai = 0; ai < (d.addons || []).length; ai++) {
+    var addon = d.addons[ai];
+    sales.push({
+      id: 'st_' + tsBase + '_u_' + (ai + 1) + '_' + Math.random().toString(36).slice(2, 6),
+      ts: tsBase + ai + 1,
+      customer: d.customer || 'Unknown',
+      memberId: d.memberId || '',
+      plan: addon.name || 'Unknown Add-on',
+      amount: Number(addon.amount) || 0,
+      type: 'addon',
+      status: 'pending',
+      raw: d.raw || '',
+      notes: '',
+      receiptId: receiptId,
+      receiptTotal: 0,
+      enrollmentFee: 0
+    });
+  }
+  var rates = _stLoadCommissionRates();
+  for (var si = 0; si < sales.length; si++) {
+    if (sales[si].id === dealId) {
+      _stStampDealCommission(sales, si, rates);
+      break;
+    }
+  }
+  _stSaveSales(sales);
+  _stDismissPreview();
+  var input = document.getElementById('st-receipt-input');
+  if (input) input.value = '';
+  _stResetPostDateInputs();
+  _stRender();
+  _stOpenCommissionEditor(dealId);
+  _stFlash('Saved unrecognized receipt. Review fields and save.', 'ok');
 }
 
 // Confirm a post-date: move it out of the postdates list and
@@ -3170,7 +3340,27 @@ function _stDownloadWeeklyPdf() {
   var stats = _stCalcStats(sales);
   var weekStart = stats.weekStart;
   var weekEnd = weekStart + (6 * 24 * 60 * 60 * 1000);
-  var deals = sales.filter(function (s) { return s.type === 'deal' && s.ts >= weekStart && s.ts <= weekEnd; });
+  var deals = sales.filter(function (s) {
+    return (
+      s &&
+      s.type === 'deal' &&
+      s.ts >= weekStart &&
+      s.ts <= weekEnd &&
+      _stNormalizeStatus(s) !== 'chargeback'
+    );
+  });
+  var enrollmentDeals = deals.filter(function (d) {
+    return Number(d.enrollmentAmount || d.enrollmentFee || 0) === 125;
+  });
+  var enrollmentFeeBonus = enrollmentDeals.length * 20;
+  var tierBonus = _stCurrentTierBonus(stats);
+  var baseCommissionNoEnroll = 0;
+  for (var bi = 0; bi < deals.length; bi++) {
+    baseCommissionNoEnroll +=
+      (Number(deals[bi].planCommission) || 0) +
+      (Number(deals[bi].totalAddonCommission) || 0);
+  }
+  var pdfEstimatedTotal = baseCommissionNoEnroll + enrollmentFeeBonus + tierBonus;
   var html = '<html><head><title>Weekly breakdown</title></head><body style="font-family:Arial;padding:24px;">';
   html += '<h2>Weekly Breakdown</h2>';
   html += '<p>Week: ' + _stFormatSaleListDate(weekStart) + ' - ' + _stFormatSaleListDate(weekEnd) + '</p>';
@@ -3180,8 +3370,20 @@ function _stDownloadWeeklyPdf() {
     html += '<tr><td>' + _stEscape(d.customer || '') + '</td><td>' + _stEscape(d.plan || '') + '</td><td>$' + (Number(d.amount) || 0).toFixed(2) + '</td><td>' + _stEscape(d.memberId || '') + '</td><td>$' + (Number(d.expectedDealTotal) || 0).toFixed(2) + '</td></tr>';
   }
   html += '</table>';
-  html += '<p><b>Tier bonus:</b> $' + _stCurrentTierBonus(stats).toFixed(2) + '</p>';
-  html += '<p><b>Total estimated commission:</b> $' + (Number(stats.weekExpectedCommission) + _stCurrentTierBonus(stats)).toFixed(2) + '</p>';
+  html += '<p><b>Tier bonus:</b> $' + tierBonus.toFixed(2) + '</p>';
+  html += '<p><b>Enrollment fee bonus:</b> $' + enrollmentFeeBonus.toFixed(2) + '</p>';
+  html += '<p style="font-size:12px;color:#64748b;margin-top:-8px;">($125 enrollments only — $20 per qualifying enrollment)</p>';
+  html += '<div style="margin-top:14px;"><b>$125 Enrollment Verification:</b></div>';
+  if (!enrollmentDeals.length) {
+    html += '<div style="font-size:12px;color:#64748b;margin-top:6px;">No qualifying $125 enrollments this week.</div>';
+  } else {
+    html += '<ul style="margin-top:8px;padding-left:18px;">';
+    for (var ei = 0; ei < enrollmentDeals.length; ei++) {
+      html += '<li>' + _stEscape(enrollmentDeals[ei].customer || 'Unknown') + ' — $125 enrollment ✓</li>';
+    }
+    html += '</ul>';
+  }
+  html += '<p><b>Total estimated commission:</b> $' + pdfEstimatedTotal.toFixed(2) + '</p>';
   html += '</body></html>';
   var w = window.open('', '_blank');
   if (!w) return;
@@ -3202,7 +3404,10 @@ function _stOpenCommissionEditor(saleId) {
   var sales = _stLoadSales();
   var idx = -1;
   for (var i = 0; i < sales.length; i++) {
-    if (sales[i].id === saleId) { idx = i; break; }
+    if (sales[i].id === saleId) {
+      idx = i;
+      break;
+    }
   }
   if (idx === -1) return;
   var deal = sales[idx];
@@ -3210,45 +3415,187 @@ function _stOpenCommissionEditor(saleId) {
     _stFlash('Commission editor opens from deals only.', 'error');
     return;
   }
+  if (!deal.receiptId) {
+    deal.receiptId = 'rcpt_manual_' + deal.id;
+    _stSaveSales(sales);
+  }
+  _stDealEditSaleId = deal.id;
   var rates = _stLoadCommissionRates();
-  var currentPlan = typeof deal.commissionRate === 'number'
-    ? deal.commissionRate
-    : _stPlanTierRate(deal.amount, rates);
-  var inPlan = window.prompt(
-    'Plan commission rate for this deal (as a decimal, e.g. 0.30 for 30%):',
-    String(currentPlan)
-  );
-  if (inPlan === null) return;
-  var newPlan = parseFloat(inPlan);
-  if (isNaN(newPlan) || newPlan < 0 || newPlan > 1) {
-    _stFlash('Enter a decimal between 0 and 1 (e.g. 0.35).', 'error');
-    return;
-  }
-  var currentAddon = typeof deal.addonCommissionRate === 'number'
-    ? deal.addonCommissionRate
-    : rates.addonTypes.standard;
-  var inAddon = window.prompt(
-    'Add-on commission rate for this deal (decimal, default 0.70):',
-    String(currentAddon)
-  );
-  if (inAddon === null) return;
-  var newAddon = parseFloat(inAddon);
-  if (isNaN(newAddon) || newAddon < 0 || newAddon > 1) {
-    _stFlash('Enter add-on rate as a decimal between 0 and 1.', 'error');
-    return;
-  }
-  deal.commissionRate = newPlan;
-  deal.addonCommissionRate = newAddon;
+  var planRate = typeof deal.commissionRate === 'number' ? deal.commissionRate : _stPlanTierRate(deal.amount, rates);
+  var soldDate = new Date(Number(deal.ts) || Date.now());
+  var y = soldDate.getFullYear();
+  var m = String(soldDate.getMonth() + 1);
+  if (m.length < 2) m = '0' + m;
+  var dd = String(soldDate.getDate());
+  if (dd.length < 2) dd = '0' + dd;
+  var addons = [];
   for (var ai = 0; ai < sales.length; ai++) {
     if (!sales[ai] || sales[ai].type !== 'addon') continue;
-    if (sales[ai].receiptId && sales[ai].receiptId === deal.receiptId) {
-      sales[ai].addonCommissionRate = newAddon;
+    if (sales[ai].receiptId === deal.receiptId) addons.push(sales[ai]);
+  }
+  var modal = document.createElement('div');
+  modal.id = 'st-edit-modal';
+  modal.className = 'st-edit-modal';
+  modal.innerHTML =
+    '<div class="st-edit-card">' +
+    '<div class="st-edit-title">Edit deal</div>' +
+    '<div class="st-edit-grid">' +
+    '<label>Client name<input id="st-edit-customer" type="text" value="' +
+    _stEscape(deal.customer || '') +
+    '"></label>' +
+    '<label>Member ID<input id="st-edit-memberid" type="text" value="' +
+    _stEscape(deal.memberId || '') +
+    '"></label>' +
+    '<label>Plan name<input id="st-edit-plan" type="text" value="' +
+    _stEscape(deal.plan || '') +
+    '"></label>' +
+    '<label>Monthly premium<input id="st-edit-premium" type="number" step="0.01" value="' +
+    _stEscape(Number(deal.amount) || 0) +
+    '"></label>' +
+    '<label>Commission rate (%)<input id="st-edit-rate" type="number" step="0.01" value="' +
+    _stEscape((planRate * 100).toFixed(2)) +
+    '"></label>' +
+    '<label>Enrollment fee<input id="st-edit-enroll" type="number" step="0.01" value="' +
+    _stEscape(Number(deal.enrollmentFee) || 0) +
+    '"></label>' +
+    '<label>Date sold<input id="st-edit-date" type="date" value="' +
+    _stEscape(y + '-' + m + '-' + dd) +
+    '"></label>' +
+    '</div>' +
+    '<div class="st-edit-addon-title">Add-ons</div>' +
+    '<div id="st-edit-addons"></div>' +
+    '<button type="button" class="st-edit-add-addon" onclick="_stAddDealEditorAddonRow()">Add another add-on</button>' +
+    '<div class="st-edit-actions">' +
+    '<button type="button" class="st-edit-save" onclick="_stSaveDealEditor()">Save</button>' +
+    '<button type="button" class="st-edit-cancel" onclick="_stCloseDealEditor()">Cancel</button>' +
+    '</div>' +
+    '</div>';
+  document.body.appendChild(modal);
+  for (var aj = 0; aj < addons.length; aj++) {
+    _stAddDealEditorAddonRow(addons[aj]);
+  }
+}
+
+function _stCloseDealEditor() {
+  _stDealEditSaleId = '';
+  var modal = document.getElementById('st-edit-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stAddDealEditorAddonRow(addon) {
+  var wrap = document.getElementById('st-edit-addons');
+  if (!wrap) return;
+  var row = document.createElement('div');
+  row.className = 'st-edit-addon-row';
+  row.setAttribute('data-addon-id', addon && addon.id ? addon.id : '');
+  row.innerHTML =
+    '<input class="st-edit-addon-name" type="text" placeholder="Add-on name" value="' +
+    _stEscape((addon && addon.plan) || (addon && addon.name) || '') +
+    '">' +
+    '<input class="st-edit-addon-amt" type="number" step="0.01" placeholder="0.00" value="' +
+    _stEscape(Number((addon && addon.amount) || 0)) +
+    '">' +
+    '<button type="button" class="st-edit-addon-remove" title="Remove add-on" onclick="this.parentNode.remove()">&#128465;</button>';
+  wrap.appendChild(row);
+}
+
+function _stSaveDealEditor() {
+  var saleId = _stDealEditSaleId;
+  if (!saleId) return;
+  var sales = _stLoadSales();
+  var idx = -1;
+  for (var i = 0; i < sales.length; i++) {
+    if (sales[i].id === saleId) {
+      idx = i;
+      break;
     }
   }
-  _stStampDealCommission(sales, idx, rates);
+  if (idx === -1) {
+    _stCloseDealEditor();
+    return;
+  }
+  var deal = sales[idx];
+  var premium = parseFloat((document.getElementById('st-edit-premium') || {}).value);
+  var ratePct = parseFloat((document.getElementById('st-edit-rate') || {}).value);
+  var enroll = parseFloat((document.getElementById('st-edit-enroll') || {}).value);
+  var soldIso = (document.getElementById('st-edit-date') || {}).value;
+  if (isNaN(premium) || premium < 0) {
+    _stFlash('Enter a valid premium amount.', 'error');
+    return;
+  }
+  if (isNaN(ratePct) || ratePct < 0 || ratePct > 100) {
+    _stFlash('Enter commission rate as 0 to 100.', 'error');
+    return;
+  }
+  deal.customer = ((document.getElementById('st-edit-customer') || {}).value || '').trim();
+  deal.memberId = ((document.getElementById('st-edit-memberid') || {}).value || '').trim();
+  deal.plan = ((document.getElementById('st-edit-plan') || {}).value || '').trim() || 'Unknown Plan';
+  deal.amount = premium;
+  deal.commissionRate = ratePct / 100;
+  deal.enrollmentFee = isNaN(enroll) ? 0 : enroll;
+  if (soldIso) {
+    var sold = _stIsoToDate(soldIso);
+    if (sold) deal.ts = sold.getTime() + 9 * 60 * 60 * 1000;
+  }
+  if (!deal.receiptId) {
+    deal.receiptId = 'rcpt_manual_' + deal.id;
+  }
+  var receiptId = deal.receiptId;
+  var existingAddons = {};
+  for (var ei = 0; ei < sales.length; ei++) {
+    if (!sales[ei] || sales[ei].type !== 'addon') continue;
+    if (sales[ei].receiptId === receiptId) existingAddons[sales[ei].id] = sales[ei];
+  }
+  var keepAddonIds = {};
+  var rows = document.querySelectorAll('#st-edit-addons .st-edit-addon-row');
+  for (var r = 0; r < rows.length; r++) {
+    var row = rows[r];
+    var name = (row.querySelector('.st-edit-addon-name') || {}).value || '';
+    var amountVal = parseFloat((row.querySelector('.st-edit-addon-amt') || {}).value);
+    if (!name.trim() && (isNaN(amountVal) || amountVal <= 0)) continue;
+    var addonId = row.getAttribute('data-addon-id');
+    var addonSale = addonId && existingAddons[addonId] ? existingAddons[addonId] : null;
+    if (!addonSale) {
+      addonSale = {
+        id: 'st_' + Date.now() + '_addon_' + r + '_' + Math.random().toString(36).slice(2, 6),
+        ts: deal.ts + r + 1,
+        customer: deal.customer,
+        memberId: deal.memberId,
+        plan: '',
+        amount: 0,
+        type: 'addon',
+        status: deal.status || 'pending',
+        raw: deal.raw || '',
+        notes: '',
+        receiptId: receiptId,
+        receiptTotal: 0,
+        enrollmentFee: 0
+      };
+      sales.push(addonSale);
+    }
+    addonSale.customer = deal.customer;
+    addonSale.memberId = deal.memberId;
+    addonSale.plan = name.trim() || 'Unknown Add-on';
+    addonSale.amount = isNaN(amountVal) ? 0 : amountVal;
+    addonSale.ts = deal.ts + r + 1;
+    keepAddonIds[addonSale.id] = true;
+  }
+  sales = sales.filter(function (s) {
+    if (!s || s.type !== 'addon') return true;
+    if (s.receiptId !== receiptId) return true;
+    return keepAddonIds[s.id] === true;
+  });
+  var rates = _stLoadCommissionRates();
+  for (var si = 0; si < sales.length; si++) {
+    if (sales[si] && sales[si].id === deal.id) {
+      _stStampDealCommission(sales, si, rates);
+      break;
+    }
+  }
   _stSaveSales(sales);
+  _stCloseDealEditor();
   _stRender();
-  _stFlash('Commission rates updated for this deal.', 'ok');
+  _stFlash('Deal updated.', 'ok');
 }
 
 // Reset the deal's commission rate back to the tier default.
@@ -3403,16 +3750,18 @@ function _stBuildCommissionTracker(sales, stats) {
   html +=
     '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin:16px 0 8px">Weekly deals</div>';
   html +=
-    '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th></tr></thead><tbody>';
+    '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th><th>EDIT</th></tr></thead><tbody>';
   var wsT = stats.weekStart;
+  var weekEndT = wsT + 7 * 24 * 60 * 60 * 1000;
   var weekDeals = [];
   for (var wi = 0; wi < sales.length; wi++) {
     var sd = sales[wi];
     if (!sd || sd.type !== 'deal') continue;
-    if (sd.status !== 'valid') continue;
-    if (sd.ts < wsT) continue;
+    if (_stNormalizeStatus(sd) === 'chargeback') continue;
+    if (sd.ts < wsT || sd.ts >= weekEndT) continue;
     weekDeals.push(sd);
   }
+  var ratesForRows = _stLoadCommissionRates();
   weekDeals.sort(function (a, b) {
     return (a.ts || 0) - (b.ts || 0);
   });
@@ -3433,10 +3782,47 @@ function _stBuildCommissionTracker(sales, stats) {
       _stFmtMoney(wdRow.amount) +
       '</td><td>' +
       _stFmtMoney(commTotal) +
-      '</td></tr>';
+      '</td><td><a href="#" onclick="_stOpenCommissionEditor(\'' +
+      _stEscape(wdRow.id || '') +
+      '\'); return false;" style="color:#5175F1;font-size:12px;text-decoration:none;cursor:pointer;">edit %</a></td></tr>';
+    var addonRows = [];
+    if (Array.isArray(wdRow.addons) && wdRow.addons.length) {
+      addonRows = wdRow.addons.slice();
+    } else if (wdRow.receiptId) {
+      for (var wa = 0; wa < sales.length; wa++) {
+        var sa = sales[wa];
+        if (!sa || sa.type !== 'addon') continue;
+        if (sa.receiptId !== wdRow.receiptId) continue;
+        if (_stNormalizeStatus(sa) === 'chargeback') continue;
+        addonRows.push(sa);
+      }
+    }
+    for (var ak = 0; ak < addonRows.length; ak++) {
+      var ar = addonRows[ak] || {};
+      var addonName = ar.name || ar.plan || 'Unknown Add-on';
+      var addonAmt = Number(ar.amount);
+      var addonCommText = '—';
+      if (typeof ar.addonCommission === 'number') {
+        addonCommText = _stFmtMoney(ar.addonCommission);
+      } else if (typeof ar.commission === 'number') {
+        addonCommText = _stFmtMoney(ar.commission);
+      } else if (typeof ar.rate === 'number' && !isNaN(addonAmt)) {
+        addonCommText = _stFmtMoney(addonAmt * ar.rate);
+      } else if (ar.type === 'addon') {
+        addonCommText = _stFmtMoney(_stComputeLineCommission(ar, ratesForRows));
+      }
+      html +=
+        '<tr style="background:#fafbff;"><td></td><td colspan="2" style="padding-left:24px;font-size:12px;color:#64748b;">+ ' +
+        _stEscape(addonName) +
+        '</td><td style="font-size:12px;color:#64748b;">' +
+        (isNaN(addonAmt) ? '—' : _stFmtMoney(addonAmt)) +
+        '</td><td style="font-size:12px;color:#64748b;">' +
+        addonCommText +
+        '</td><td></td></tr>';
+    }
   }
   if (!weekDeals.length) {
-    html += '<tr><td colspan="5" style="color:#94a3b8;font-size:13px;">No deals this week</td></tr>';
+    html += '<tr><td colspan="6" style="color:#94a3b8;font-size:13px;">No deals this week</td></tr>';
   }
   html += '</tbody></table></div>';
   html +=
@@ -3470,8 +3856,6 @@ function _stBuildCommissionTracker(sales, stats) {
   html += '<div class="st-comm-tracker-actions">';
   html +=
     '<button type="button" class="st-pdf-btn" onclick="_stDownloadWeeklyPdf()">Download PDF</button>';
-  html +=
-    '<button type="button" class="st-print-btn" onclick="window.print()">Print</button>';
   html += '</div>';
   html += '</div>';
   return html;
