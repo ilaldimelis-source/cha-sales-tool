@@ -3053,6 +3053,3 @@ if (document.readyState === 'loading') {
   setTimeout(initBrainChatBox, 0);
 }
 
-if (window.location.search.indexOf('showchat=1') !== -1) {
-  document.body.classList.add('showchat');
-}

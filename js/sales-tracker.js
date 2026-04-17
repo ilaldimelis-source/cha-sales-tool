@@ -3405,6 +3405,10 @@ function _stBuildCommissionTracker(sales, stats) {
     _stFmtMoney(wc) +
     '</strong></div>';
   html +=
+    '<div class="st-comm-summary-sub">Add-on commission: <strong>' +
+    _stFmtMoney(wac) +
+    '</strong></div>';
+  html +=
     '<div class="st-comm-summary-note">From stored tier rates, add-on rates, and enrollment bonus where applicable. Effective blended rate this week: ' +
     effStr +
     ' of premium.</div>';
@@ -3443,7 +3447,7 @@ function _stBuildCommissionTracker(sales, stats) {
   html +=
     '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin:16px 0 8px">Weekly deals</div>';
   html +=
-    '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th></tr></thead><tbody>';
+    '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th><th>EDIT</th></tr></thead><tbody>';
   var wsT = stats.weekStart;
   var weekEndT = wsT + 7 * 24 * 60 * 60 * 1000;
   var weekDeals = [];
@@ -3474,27 +3478,26 @@ function _stBuildCommissionTracker(sales, stats) {
       _stFmtMoney(wdRow.amount) +
       '</td><td>' +
       _stFmtMoney(commTotal) +
+      '</td><td><a href="#" onclick="_stOpenCommissionEditor(\'' +
+      _stEscape(wdRow.id || '') +
+      '\'); return false;" style="color:#5175F1;font-size:12px;text-decoration:none;cursor:pointer;">edit %</a>' +
       '</td></tr>';
   }
   if (!weekDeals.length) {
-    html += '<tr><td colspan="5" style="color:#94a3b8;font-size:13px;">No deals this week</td></tr>';
+    html += '<tr><td colspan="6" style="color:#94a3b8;font-size:13px;">No deals this week</td></tr>';
   }
   html += '</tbody></table></div>';
-  html +=
-    '<div class="st-comm-addon-row"><span class="st-comm-addon-lbl">Add-on commission (this week)</span><span class="st-comm-addon-val">' +
-    _stFmtMoney(wac) +
-    '</span></div>';
   html +=
     '<div style="border-top:1px solid #eef1f5;margin:16px 0;padding-top:16px">' +
     '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Earnings breakdown</div>';
   html +=
     '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Deal commission</span><span>' +
     _stFmtMoney(pb.dealComm) +
-    ' <button type="button" class="st-comm-pct-link" onclick="_stEditCommissionRate(\'deal\')">edit %</button></span></div>';
+    '</span></div>';
   html +=
     '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Add-on commission</span><span>' +
     _stFmtMoney(pb.addonComm) +
-    ' <button type="button" class="st-comm-pct-link" onclick="_stEditCommissionRate(\'addon\')">edit %</button></span></div>';
+    '</span></div>';
   html +=
     '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Enrollment fee bonus</span><span>' +
     _stFmtMoney(pb.enrollmentBonus) +
