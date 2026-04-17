@@ -1799,6 +1799,47 @@ function _stAutoDetectAndAdd() {
     return;
   }
 
+  var firstParsed = parsedChunks[0].parsed || {};
+  var firstProducts = firstParsed.products || [];
+  var corePlanName =
+    (firstProducts[0] && String(firstProducts[0].name || '').trim()) || '';
+  var matchedPlanName =
+    typeof _stMatchPlanName === 'function' ? _stMatchPlanName(corePlanName) : '';
+  var genericPlanPattern = /(plan summary|short term medical|medical)$/i;
+  var isRecognizedPlan =
+    !!matchedPlanName &&
+    !genericPlanPattern.test(corePlanName) &&
+    corePlanName.length >= 5;
+  if (!isRecognizedPlan) {
+    var fallbackFirstLine = '';
+    var textLines = text.split(/\r?\n/);
+    for (var li = 0; li < textLines.length; li++) {
+      if (String(textLines[li] || '').trim()) {
+        fallbackFirstLine = String(textLines[li]).trim();
+        break;
+      }
+    }
+    var parsedAddons = [];
+    for (var pi0 = 1; pi0 < firstProducts.length; pi0++) {
+      parsedAddons.push({
+        name: firstProducts[pi0].name || 'Unknown Add-on',
+        amount: Number(firstProducts[pi0].price) || 0
+      });
+    }
+    _stUnrecognizedDraft = {
+      raw: text,
+      customer: firstParsed.customer || 'Unknown',
+      memberId: firstParsed.memberId || '',
+      plan: corePlanName || fallbackFirstLine || 'Unknown Plan',
+      amount: Number((firstProducts[0] && firstProducts[0].price) || 0),
+      addons: parsedAddons,
+      enrollmentFee: Number(firstParsed.enrollmentFee) || 0
+    };
+    _stRenderUnrecognizedPreview();
+    _stFlash('Plan not recognized — review and edit before saving.', 'error');
+    return;
+  }
+
   // Fallback ts (used only when a chunk has no parseable sale
   // date): the agent-selected Date Sold field at 9am local.
   var fallbackTs = _stReadDateSoldTs();
@@ -3482,19 +3523,6 @@ function _stDownloadWeeklyPdf() {
     '<div>Tier Bonus Amount: <strong>$' + tierBonus.toFixed(2) + '</strong></div>' +
     '<div>Enrollment Fee Bonus: <strong>$' + enrollmentFeesCollected.toFixed(2) + '</strong></div>' +
     '</div>';
-  html += '<div style="margin-top:14px;font-weight:700;">$125 Enrollment Verification:</div>';
-  if (!enrollQualified.length) {
-    html += '<div style="color:#64748b;font-size:12px;margin-top:6px;">No qualifying $125 enrollments this week.</div>';
-  } else {
-    html += '<ul style="margin-top:6px;padding-left:18px;">';
-    for (var ev = 0; ev < enrollQualified.length; ev++) {
-      html +=
-        '<li>' +
-        _stEscape(enrollQualified[ev].customer || 'Unknown') +
-        ' - $125 enrollment ✓</li>';
-    }
-    html += '</ul>';
-  }
   html +=
     '<div style="margin-top:14px;font-size:14px;font-weight:700;">Total estimated commission: $' +
     totalEstimated.toFixed(2) +
