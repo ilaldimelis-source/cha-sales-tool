@@ -970,6 +970,65 @@ function _stParseReceipt(text, useGroq) {
     }
   }
 
+  // ── Combined Policy+Price lines ──────────────────────────
+  // CHA receipts put enrollment + premium on one line:
+  // "Policy:XXX Active:DATE $125 Enrollment one-time $341 Product per Month..."
+  // Extract the "Product per Month" price from these lines BEFORE
+  // skipLineRe-gated passes (which skip lines starting with "Policy:").
+  var combinedPriceRe =
+    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:product\s+)?per\s*month/i;
+  var deductibleRe =
+    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*deductible/i;
+  var combinedWalkBackSkip =
+    /^(?:confirmation|products?|summary|total|policy|active|effective|starts?|address|phone|email|date|member|central|health|advisors)/i;
+  for (var cpI = 0; cpI < lines.length; cpI++) {
+    var cpLine = lines[cpI];
+    if (!/policy|active/i.test(cpLine)) continue;
+    var cpMatch = cpLine.match(combinedPriceRe);
+    if (!cpMatch) continue;
+    var dedMatch = cpLine.match(deductibleRe);
+    var dedValue = dedMatch
+      ? parseFloat(String(dedMatch[1]).replace(/,/g, ''))
+      : NaN;
+    var cpPrice = parseFloat(cpMatch[1].replace(/,/g, ''));
+    if (isNaN(cpPrice) || cpPrice <= 0) continue;
+    if (!isNaN(dedValue) && dedValue > 0 && Math.abs(cpPrice - dedValue) < 0.01) {
+      continue;
+    }
+    var cpName = '';
+    for (var cpBack = cpI - 1; cpBack >= 0 && cpBack >= cpI - 10; cpBack--) {
+      var cpPrev = (lines[cpBack] || '').trim();
+      if (!cpPrev) continue;
+      if (combinedWalkBackSkip.test(cpPrev)) continue;
+      if (/^\$/.test(cpPrev)) continue;
+      if (enrollmentRe.test(cpPrev)) continue;
+      cpName = cpPrev;
+      break;
+    }
+    if (!cpName) cpName = 'Unknown Plan';
+    var cpMatched = _stMatchPlanName(cpName);
+    var cpFinal = cpMatched || cpName.substring(0, 120);
+    var cpEntry = { name: cpFinal, price: cpPrice, policy: '' };
+    var cpPol = cpLine.match(/policy\s*:?\s*([A-Z0-9-]{4,})/i);
+    if (cpPol) cpEntry.policy = cpPol[1];
+    var cpDup = false;
+    for (var cpDi = 0; cpDi < out.products.length; cpDi++) {
+      if (
+        out.products[cpDi].name === cpFinal &&
+        Math.abs(out.products[cpDi].price - cpPrice) < 0.01
+      ) {
+        cpDup = true;
+        break;
+      }
+    }
+    if (cpDup) continue;
+    if (/add[-\s]?on/i.test(cpName) || /add[-\s]?on/i.test(cpFinal)) {
+      out.products.push(cpEntry);
+    } else {
+      out.products.unshift(cpEntry);
+    }
+  }
+
   // ── Per-month price lines ─────────────────────────────────
   // Matches "$291.00 per Month", "$39.99/mo", "$22.99 monthly".
   // Requires an explicit monthly marker — bare "$50.00" will
