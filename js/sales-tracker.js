@@ -779,17 +779,24 @@ function _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe) {
     var _cpFinal = _cpMatch || _cpName.substring(0, 120);
     var _cpPol = _cpL.match(/policy\s*:?\s*([A-Z0-9-]{4,})/i);
     var _cpEntry = { name: _cpFinal, price: _cpP, policy: _cpPol ? _cpPol[1] : '' };
-    var _cpDup = false;
+    // Check if a product with the same name already exists
+    var _cpExistIdx = -1;
     for (var _cpD = 0; _cpD < out.products.length; _cpD++) {
-      if (
-        out.products[_cpD].name === _cpEntry.name &&
-        Math.abs(out.products[_cpD].price - _cpEntry.price) < 0.01
-      ) {
-        _cpDup = true;
+      if (out.products[_cpD].name === _cpEntry.name) {
+        _cpExistIdx = _cpD;
         break;
       }
     }
-    if (!_cpDup) {
+    if (_cpExistIdx >= 0) {
+      // Same name exists — REPLACE its price with the correct
+      // "Product per Month" value (which is authoritative over
+      // Groq's guess that may have used enrollment fee)
+      out.products[_cpExistIdx].price = _cpEntry.price;
+      if (_cpEntry.policy) {
+        out.products[_cpExistIdx].policy = _cpEntry.policy;
+      }
+    } else {
+      // New product — add it
       if (/add[-\s]?on/i.test(_cpName) || /add[-\s]?on/i.test(_cpFinal)) {
         out.products.push(_cpEntry);
       } else {
