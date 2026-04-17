@@ -1625,6 +1625,8 @@ function _stGetSaleMode() {
 
 // Splits a blob of pasted text into individual receipt chunks.
 // A new receipt starts when either:
+//   (0) Two+ standalone "Central Health Advisors [LLC]" header lines
+//       (company name) — most reliable for multi-paste, OR
 //   (a) a line contains "Confirmation" and that same line OR the
 //       next line has a "Month DD, YYYY" style date pattern, OR
 //   (b) a line is exactly "Member" and the next line begins
@@ -1670,11 +1672,8 @@ function _stSplitReceipts(text) {
     lines = raw.split('\n');
   }
 
-  var monthRe =
-    /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\b\s+\d{1,2},?\s+\d{4}/i;
-  var confRe = /\bconfirmation\b/i;
-
-  // Slack / UI noise lines that appear between receipts.
+  // Slack / UI noise lines that appear between receipts — strip
+  // BEFORE boundary detection so they cannot hide real headers.
   var noiseLinkRe = /^link\s+central\s+health/i;
   var noiseBackRe = /^back\s+to\s+home/i;
   // Slack message timestamps like "4/1 11:27 AM"
@@ -1685,10 +1684,40 @@ function _stSplitReceipts(text) {
   // Slack preview lines like "Member ID: 686934779 Cody Wagner ..."
   // that appear BEFORE the actual receipt text.
   var noiseMemberPreviewRe = /^\s*member\s+id\s*:.*\.{3}/i;
+  var filteredLines = [];
+  for (var fxi = 0; fxi < lines.length; fxi++) {
+    var fxRaw = lines[fxi];
+    var fxTrim = fxRaw.trim();
+    if (!fxTrim) {
+      filteredLines.push(fxRaw);
+      continue;
+    }
+    if (noiseLinkRe.test(fxTrim)) continue;
+    if (noiseBackRe.test(fxTrim)) continue;
+    if (noiseSlackTsRe.test(fxTrim)) continue;
+    if (noiseSlackDayRe.test(fxTrim)) continue;
+    if (noiseMemberPreviewRe.test(fxTrim)) continue;
+    filteredLines.push(fxRaw);
+  }
+  lines = filteredLines;
+
+  var monthRe =
+    /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\b\s+\d{1,2},?\s+\d{4}/i;
+  var confRe = /\bconfirmation\b/i;
+  // Standalone company header — not "Link Central Health…" (noise
+  // removed above). $ anchor: whole trimmed line is only the name.
+  var companyRe = /^\s*central\s+health\s+advisors\s*(llc)?\s*$/i;
   // Stray person-name lines: 2-4 TitleCase words, no digits or
   // special characters. Used to trim trailing Slack sender names
   // that appear between receipts.
   var nameRe = /^[A-Z][A-Za-z'\-]+(?:\s+[A-Z][A-Za-z'\-]+){1,3}$/;
+
+  var companyStarts = [];
+  for (var csi = 0; csi < lines.length; csi++) {
+    if (companyRe.test((lines[csi] || '').trim())) {
+      companyStarts.push(csi);
+    }
+  }
 
   // Pass 1: find every line index that opens a new receipt.
   // A line opens a receipt when either:
@@ -1696,35 +1725,46 @@ function _stSplitReceipts(text) {
   //       appears on that same line or within 2 lines after it,
   //   (b) the line is exactly "Member" and the next line begins
   //       with "ID:" (two-line member-header layout).
+  // When two+ company headers are present, use ONLY those as
+  // boundaries so "Confirmation" inside a receipt does not create
+  // extra false splits. One standalone company line → one chunk
+  // from that header (avoids a false split on inner "Confirmation").
+  // Zero company lines → fall back to Confirmation / Member rules.
   var starts = [];
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
-    if (confRe.test(line)) {
-      var hasDate =
-        monthRe.test(line) ||
-        (i + 1 < lines.length && monthRe.test(lines[i + 1])) ||
-        (i + 2 < lines.length && monthRe.test(lines[i + 2]));
-      if (hasDate) {
-        starts.push(i);
-        continue;
+  if (companyStarts.length >= 2) {
+    starts = companyStarts.slice();
+  } else if (companyStarts.length === 1) {
+    starts = [companyStarts[0]];
+  } else {
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (confRe.test(line)) {
+        var hasDate =
+          monthRe.test(line) ||
+          (i + 1 < lines.length && monthRe.test(lines[i + 1])) ||
+          (i + 2 < lines.length && monthRe.test(lines[i + 2]));
+        if (hasDate) {
+          starts.push(i);
+          continue;
+        }
       }
-    }
-    // Two-line format: "Member" alone then "ID: XXXXXXXX"
-    var isTwoLineMember =
-      /^\s*member\s*$/i.test(line) &&
-      i + 1 < lines.length &&
-      /^\s*id\s*:/i.test(lines[i + 1]);
+      // Two-line format: "Member" alone then "ID: XXXXXXXX"
+      var isTwoLineMember =
+        /^\s*member\s*$/i.test(line) &&
+        i + 1 < lines.length &&
+        /^\s*id\s*:/i.test(lines[i + 1]);
 
-    // One-line format: "Member ID: 686934779" or
-    // "Member ID: 686934779 Cody Wagner ..." — but NOT the
-    // Slack preview "Member ID: ... ..." ellipsis lines, which
-    // are stripped by the noiseMemberPreviewRe filter.
-    var isOneLineMember =
-      /^\s*member\s+id\s*:\s*\d{6,}/i.test(line) &&
-      !noiseMemberPreviewRe.test(line);
+      // One-line format: "Member ID: 686934779" or
+      // "Member ID: 686934779 Cody Wagner ..." — but NOT the
+      // Slack preview "Member ID: ... ..." ellipsis lines, which
+      // are stripped by the noiseMemberPreviewRe filter.
+      var isOneLineMember =
+        /^\s*member\s+id\s*:\s*\d{6,}/i.test(line) &&
+        !noiseMemberPreviewRe.test(line);
 
-    if (isTwoLineMember || isOneLineMember) {
-      starts.push(i);
+      if (isTwoLineMember || isOneLineMember) {
+        starts.push(i);
+      }
     }
   }
 
