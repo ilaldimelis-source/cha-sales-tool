@@ -969,6 +969,52 @@ function _stParseReceipt(text, useGroq) {
     }
   }
 
+  // ── Extract premium from combined Policy+Enrollment+Price lines ──
+  // CHA format: "Policy:XXX Active:DATE $125 Enrollment one-time $341 Product per Month for TYPE"
+  // The enrollment fee was already captured above. Now grab the
+  // "Product per Month" price from these same lines that skipLineRe
+  // would otherwise exclude.
+  var _cpRe = /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:product\s+)?per\s*month/i;
+  var _dedRe = /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*deductible/i;
+  for (var _cpI = 0; _cpI < lines.length; _cpI++) {
+    var _cpL = lines[_cpI];
+    if (!/policy|active/i.test(_cpL)) continue;
+    if (!_cpRe.test(_cpL)) continue;
+    var _cpM = _cpL.match(_cpRe);
+    if (!_cpM) continue;
+    var _cpP = parseFloat(_cpM[1].replace(/,/g, ''));
+    if (isNaN(_cpP) || _cpP <= 0) continue;
+    var _dedM = _cpL.match(_dedRe);
+    var _dedV = _dedM ? parseFloat(_dedM[1].replace(/,/g, '')) : -1;
+    if (_cpP === _dedV) continue;
+    var _cpName = '';
+    for (var _cpB = _cpI - 1; _cpB >= 0 && _cpB >= _cpI - 10; _cpB--) {
+      var _cpPr = lines[_cpB].trim();
+      if (!_cpPr) continue;
+      if (/^(?:confirmation|products?|summary|total|policy|active|address|phone|email|date|member|central|health|advisors)/i.test(_cpPr)) continue;
+      if (/^\$/.test(_cpPr)) continue;
+      if (enrollmentRe.test(_cpPr)) continue;
+      _cpName = _cpPr;
+      break;
+    }
+    if (!_cpName) _cpName = 'Unknown Plan';
+    var _cpMatch = _stMatchPlanName(_cpName);
+    var _cpFinal = _cpMatch || _cpName.substring(0, 120);
+    var _cpPol = _cpL.match(/policy\s*:?\s*([A-Z0-9-]{4,})/i);
+    var _cpEntry = { name: _cpFinal, price: _cpP, policy: _cpPol ? _cpPol[1] : '' };
+    var _cpDup = false;
+    for (var _cpD = 0; _cpD < out.products.length; _cpD++) {
+      if (out.products[_cpD].name === _cpEntry.name && out.products[_cpD].price === _cpEntry.price) { _cpDup = true; break; }
+    }
+    if (!_cpDup) {
+      if (/add[-\s]?on/i.test(_cpName) || /add[-\s]?on/i.test(_cpFinal)) {
+        out.products.push(_cpEntry);
+      } else {
+        out.products.unshift(_cpEntry);
+      }
+    }
+  }
+
   // ── Per-month price lines ─────────────────────────────────
   // Matches "$291.00 per Month", "$39.99/mo", "$22.99 monthly".
   // Requires an explicit monthly marker — bare "$50.00" will
