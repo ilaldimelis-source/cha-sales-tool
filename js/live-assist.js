@@ -1,21 +1,17 @@
 // live-assist.js — Live Assist tab (Live, Control the Call, QA Rebuttals)
 
-// ── SOA One-Tap Copy ──
-var SOA_TEXT =
-  'This is a supplemental fixed indemnity health plan — not major medical insurance. It is not minimum essential coverage under the ACA. Pre-existing conditions are excluded for the first 12 months. Benefits are fixed dollar amounts, not full coverage. This plan is NOT ACA-compliant major medical insurance.';
 var LIVE_CLOSES_EXCLUDED_LINES = {};
-function copySOA(el) {
-  safeCopy(SOA_TEXT)
-    .then(function () {
-      el.style.background = '#D1FAE5';
-      var hint = el.querySelector('.soa-copy-hint');
-      if (hint) hint.textContent = 'Copied!';
-      setTimeout(function () {
-        el.style.background = '#EEF3FF';
-        if (hint) hint.textContent = 'Tap to copy';
-      }, 1500);
-    })
-    .catch(function () {});
+
+function pruneLiveCallAiTabs() {
+  if (typeof PAGE_CONFIG === 'undefined' || !PAGE_CONFIG.livecall) return;
+  var subs = PAGE_CONFIG.livecall.subs || [];
+  PAGE_CONFIG.livecall.subs = subs.filter(function (sub) {
+    return sub && sub.id !== 'complianceai' && sub.id !== 'coachingai';
+  });
+  if (typeof SUB_TO_PARENT !== 'undefined') {
+    delete SUB_TO_PARENT.complianceai;
+    delete SUB_TO_PARENT.coachingai;
+  }
 }
 
 // ── Copy Script Block ──
@@ -482,6 +478,7 @@ function closeLaPanel() {
 }
 
 function renderLive() {
+  pruneLiveCallAiTabs();
   var arrow =
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="la-nav-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
   var html = '<div class="la-live-hud">';
@@ -507,9 +504,7 @@ function renderLive() {
     '</div>';
   html += '</div>';
   html +=
-    '<div class="soa-copy-strip la-soa-hud" onclick="copySOA(this)">' +
-    '<div class="la-soa-hud-txt"><strong>SOA</strong> <span class="la-soa-hint">Tap = copy full wording</span></div>' +
-    '<button type="button" class="la-soa-cheat cheat-sheet-btn" onclick="event.stopPropagation();showPage(\'cheatsheets\')" style="background:#5175F1;color:white;border:none;padding:8px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;">Cheat Sheet</button></div>';
+    '<div style="text-align:center;padding:12px 0;"><button onclick="showPage(\'cheatsheets\')" style="background:#5175F1;color:white;border:none;padding:12px 32px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;letter-spacing:0.02em;">Cheat Sheet</button></div>';
   html += '<div class="la-section-label la-sec-tight">Rebuttals</div>';
   // Slide-in panel overlay + panel (injected once)
   html +=

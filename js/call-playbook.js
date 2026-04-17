@@ -1478,6 +1478,23 @@ function renderPlanScripts() {
       '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1e293b;background:#ffffff;border:1px solid #e2e8f0;border-bottom:none;padding:14px 24px;border-radius:14px 14px 0 0;">' +
       secLabel +
       '</div>';
+    html +=
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:#ffffff;border:1px solid #e2e8f0;border-top:none;border-bottom:none;padding:10px 24px;">';
+    if (planScriptSection > 0) {
+      html +=
+        '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#374151;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← Back</button>';
+    } else {
+      html +=
+        '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← All Plans</button>';
+    }
+    if (planScriptSection < activePlan.sections.length - 1) {
+      html +=
+        '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:none;background:#5175F1;color:white;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">Next →</button>';
+    } else {
+      html +=
+        '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:none;background:#16a34a;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">Finish ✓</button>';
+    }
+    html += '</div>';
     // Script card body
     html +=
       '<div style="background:#ffffff;border:1px solid #e2e8f0;border-top:none;border-radius:0 0 14px 14px;padding:28px;">';
@@ -1499,10 +1516,10 @@ function renderPlanScripts() {
     '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid #e2e8f0;background:#fff;padding:14px 24px;margin-top:20px;border-radius:12px;">';
   if (planScriptSection > 0) {
     html +=
-      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#374151;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← Back</button>';
+      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#374151;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← Back</button>';
   } else {
     html +=
-      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">← All Plans</button>';
+      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid #e2e8f0;background:#fff;color:#64748b;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← All Plans</button>';
   }
   html +=
     '<span style="font-size:12px;font-weight:700;color:#1e293b;">Section ' +
@@ -1512,10 +1529,10 @@ function renderPlanScripts() {
     '</span>';
   if (planScriptSection < activePlan.sections.length - 1) {
     html +=
-      '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:none;background:#5175f1;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">Next →</button>';
+      '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:none;background:#5175F1;color:white;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">Next →</button>';
   } else {
     html +=
-      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:7px 16px;border-radius:999px;border:none;background:#16a34a;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">Finish ✓</button>';
+      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:none;background:#16a34a;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">Finish ✓</button>';
   }
   html += '</div>';
   var _page_planscripts = document.getElementById('page-planscripts');
