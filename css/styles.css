@@ -7356,14 +7356,6 @@ body.plan-drawer-lock {
   margin: 12px 4px 6px;
 }
 
-/* ── HIDE BENEFITS REFERENCE AI CHAT (in-progress, not yet public) ──
-   Re-enable by removing this block or wrapping with a feature flag.
-   Code remains fully functional — only the UI is hidden. */
-#br-toggle,
-#br-panel {
-  display: none !important;
-}
-
 /* ── LIVE ASSIST GRAY OVERLAY FIX ── */
 .rebuttal-overlay,
 .live-assist-overlay,
