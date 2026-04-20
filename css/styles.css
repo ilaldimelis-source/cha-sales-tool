@@ -7733,7 +7733,7 @@ select[onchange*="Status"],
    Theme Consolidation + Home Hero Redesign
    ========================================================== */
 :root {
-  --bg-page: #f0f2f7;
+  --bg-page: #FAFAFA;
   --bg-surface: #ffffff;
   --bg-surface-raised: #ffffff;
   --bg-surface-muted: #f4f5f9;
