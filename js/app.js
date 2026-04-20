@@ -706,11 +706,14 @@ function renderDashboardLookupCard() {
   var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
   var html = '<div class="dash-lookup-card">';
   html += '<div class="dash-lookup-head">';
-  html += '<div class="dash-lookup-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>';
+  html += '<div class="dash-lookup-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>';
   html += '<div><div class="dash-lookup-title">Plan lookup</div><div class="dash-lookup-subtitle">Network, underwriter, provider search — one tap</div></div>';
   html += '</div>';
+  html += '<div class="dash-lookup-input-wrap">';
   html +=
-    '<input id="dashLookupSearch" type="text" placeholder="Search any plan by name..." oninput="dashLookupFilter(this.value)" style="width:100%;padding:10px 14px;border-radius:10px;border:1px solid #d1d5db;font-size:14px;margin-bottom:8px;font-family:Inter,sans-serif;">';
+    '<input id="dashLookupSearch" type="text" placeholder="Quick plan lookup — start typing a plan name…" oninput="dashLookupFilter(this.value)" autocomplete="off">';
+  html += '<span class="dash-lookup-kbd">Ctrl + L</span>';
+  html += '</div>';
   html += '<select id="dashPlanLookupSelect" class="dash-lookup-select" onchange="dashLookupSelectPlan(this.value)">';
   plans.forEach(function (p) {
     html +=
@@ -730,7 +733,6 @@ function renderDashboardLookupCard() {
   html += '<button type="button" class="dash-lookup-provider" onclick="dashLookupOpenProvider()"' + (providerUrl ? '' : ' disabled') + '>Provider search</button>';
   html += '<button type="button" class="dash-lookup-copy" onclick="dashLookupCopy()">Copy</button>';
   html += '</div>';
-  html += '<div class="dash-lookup-tip">Pro tip: Have this open during calls — you\'ll need network and provider URL for post-close.</div>';
   html += '</div>';
   return html;
 }
@@ -740,6 +742,21 @@ function dashLookupRefresh() {
   if (mount) mount.innerHTML = renderDashboardLookupCard();
   var si = document.getElementById('dashLookupSearch');
   if (si) si.value = _dashLookupState.searchQuery || '';
+  if (
+    si &&
+    document.body &&
+    document.getElementById('page-dashboard') &&
+    document.getElementById('page-dashboard').classList.contains('active')
+  ) {
+    setTimeout(function () {
+      try {
+        si.focus();
+        si.select();
+      } catch (_e) {
+        /* no-op */
+      }
+    }, 0);
+  }
 }
 
 function dashLookupFilter(query) {
@@ -858,13 +875,13 @@ function renderDashboard() {
     {
       page: 'livecall',
       title: 'Live Call',
-      desc: 'Mid-call tools, objections, and AI assist',
+      desc: 'Mid-call tools',
       icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>')
     },
     {
       page: 'plans',
       title: 'Plans',
-      desc: 'Every plan, sell it view and full details',
+      desc: 'Full details',
       icon: ic(
         '<rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/>'
       )
@@ -872,7 +889,7 @@ function renderDashboard() {
     {
       page: 'scripts',
       title: 'Scripts',
-      desc: 'Every script for every situation',
+      desc: 'Every situation',
       icon: ic(
         '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
       )
@@ -880,7 +897,7 @@ function renderDashboard() {
     {
       page: 'networkguide',
       title: 'Network Guide',
-      desc: 'Provider networks, lookup tools, and coverage rules',
+      desc: 'Lookup rules',
       icon: ic(
         '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
       )
@@ -888,7 +905,7 @@ function renderDashboard() {
     {
       page: 'training',
       title: 'Training',
-      desc: 'Learn, study, and practice',
+      desc: 'Learn & practice',
       icon: ic(
         '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'
       )
@@ -896,7 +913,7 @@ function renderDashboard() {
     {
       page: 'compliance',
       title: 'Compliance',
-      desc: 'Disclosures, audit, and compliance rules',
+      desc: 'Disclosures',
       icon: ic(
         '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'
       )
@@ -904,13 +921,13 @@ function renderDashboard() {
     {
       page: 'myspace',
       title: 'My Space',
-      desc: 'Notes and saved favorites',
+      desc: 'Notes & faves',
       icon: ic('<path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/>')
     },
     {
       page: 'cheatsheet',
       title: 'Cheat Sheets',
-      desc: 'Plans, networks, underwriters at a glance',
+      desc: 'At a glance',
       icon: ic(
         '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>'
       )
@@ -919,7 +936,9 @@ function renderDashboard() {
   var html =
     '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
   html += _greetHtml;
-  html += '<div class="dash-grid">';
+  html += '<div id="dashPlanLookupMount"></div>';
+  html += '<div class="dash-sections-label">Sections</div>';
+  html += '<div class="dash-grid dash-grid-compact">';
   cards.forEach(function (c) {
     html += '<div class="dash-card" onclick="showPage(\'' + c.page + '\')">';
     html += '<div class="dash-icon">' + c.icon + '</div>';
@@ -928,7 +947,6 @@ function renderDashboard() {
     html += '</div>';
   });
   html += '</div>';
-  html += '<div id="dashPlanLookupMount"></div>';
   // Recently visited strip
   var recent = getRecentPages();
   if (recent.length) {
@@ -1600,6 +1618,32 @@ if (document.readyState === 'loading') {
 
 // ── Keyboard Shortcuts ────────────────────────────────
 document.addEventListener('keydown', function (e) {
+  // Ctrl+L — focus plan lookup search on dashboard
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'l') {
+    e.preventDefault();
+    var pls = document.getElementById('dashLookupSearch');
+    if (pls) {
+      pls.focus();
+      try {
+        pls.select();
+      } catch (_e) {
+        /* no-op */
+      }
+    } else {
+      showPage('dashboard');
+      setTimeout(function () {
+        var plsi = document.getElementById('dashLookupSearch');
+        if (!plsi) return;
+        plsi.focus();
+        try {
+          plsi.select();
+        } catch (_e2) {
+          /* no-op */
+        }
+      }, 40);
+    }
+    return;
+  }
   // Ctrl+K — open search overlay
   if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
     e.preventDefault();
