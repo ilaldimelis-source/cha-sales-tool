@@ -1732,3 +1732,146 @@
   background: #e2e8f0;
   color: #334155;
 }
+
+/* ============================================================
+   Sales Tracker Modernization Layer
+   ============================================================ */
+.st-welcome {
+  margin-bottom: 20px;
+  padding: 8px 2px 16px;
+}
+
+.st-welcome-hi {
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.st-welcome-sub {
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.st-daily,
+.st-pd-section,
+.st-input-section,
+.st-table-section,
+.st-weekly-summary,
+.st-comm-tracker,
+.st-entry-card,
+.st-all-list {
+  border-radius: 12px;
+  border: 1px solid var(--border, #f1f5f9);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.st-daily,
+.st-pd-section,
+.st-input-section,
+.st-table-section,
+.st-weekly-summary {
+  padding: 16px 18px;
+}
+
+.st-daily-grid {
+  gap: 10px;
+}
+
+.st-day-card,
+.st-pd-row,
+.st-wks-card,
+.st-sale-bubble-card,
+.st-all-head,
+.st-all-row {
+  border-radius: 12px;
+  border-color: var(--border, #f1f5f9);
+}
+
+.st-day-card,
+.st-pd-row {
+  padding: 10px 10px;
+}
+
+.st-input-actions,
+.st-pd-row-actions,
+.st-entry-actions,
+.st-all-controls,
+.st-bulk-bar {
+  gap: 12px;
+}
+
+.st-textarea,
+.st-date-field input[type='date'],
+.st-all-filter,
+.st-entry-grid input,
+.st-entry-addon-row input,
+.st-postdate-date {
+  min-height: 44px;
+  border-radius: 12px;
+  border-color: var(--border-med, #e2e8f0);
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.st-textarea:focus,
+.st-date-field input[type='date']:focus,
+.st-entry-grid input:focus,
+.st-entry-addon-row input:focus,
+.st-postdate-date:focus {
+  box-shadow: 0 0 0 3px rgba(91, 141, 239, 0.14);
+}
+
+.st-add-deal,
+.st-add-addon,
+.st-pd-confirm,
+.st-pd-remove,
+.st-bulk-delete,
+.st-bulk-delete-all,
+.st-entry-save,
+.st-entry-cancel,
+.st-export-btn,
+.st-payroll-btn,
+.st-print-btn,
+.st-pdf-btn {
+  min-height: 42px;
+  border-radius: 12px;
+  padding: 10px 14px;
+  transition:
+    background-color 200ms ease,
+    color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
+
+.st-add-deal:hover,
+.st-add-addon:hover,
+.st-pd-confirm:hover,
+.st-pd-remove:hover,
+.st-entry-save:hover,
+.st-entry-cancel:hover,
+.st-export-btn:hover,
+.st-print-btn:hover,
+.st-pdf-btn:hover {
+  transform: translateY(-1px);
+}
+
+.st-table th,
+.st-comm-day-table th,
+.st-all-head {
+  background: #f8fafc;
+}
+
+.st-table th,
+.st-table td,
+.st-comm-day-table th,
+.st-comm-day-table td,
+.st-all-row {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.st-table tbody tr:nth-child(even):not(.st-row-cancel):not(.st-row-chargeback) {
+  background: rgba(248, 250, 252, 0.6);
+}
