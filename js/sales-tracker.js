@@ -33,7 +33,6 @@
 
 'use strict';
 
-var _stUnrecognizedDraft = null;
 var _stDealEditSaleId = '';
 
 // ── BONUS TIER CONFIG ───────────────────────────────────────
@@ -715,6 +714,98 @@ function _stParseConfirmationTimestampInRaw(raw) {
   return new Date(yNum, mIdx, dNum, 9, 0, 0, 0);
 }
 
+// Split receipt text into lines; when Slack collapses to one line,
+// re-insert breaks at CHA phrase boundaries (same rules as
+// _stParseReceipt). Returns possibly-updated raw + lines.
+function _stReceiptLinesSplit(rawIn) {
+  var raw = String(rawIn || '');
+  var lines = raw.split('\n');
+  if (lines.length <= 1) {
+    raw = raw
+      .replace(/\s+(Confirmation\s)/g, '\nConfirmation ')
+      .replace(/\s+(MemberName:)/g, '\nMemberName:')
+      .replace(/\s+(Address:)/g, '\nAddress:')
+      .replace(/\s+(Phone:)/g, '\nPhone:')
+      .replace(/\s+(Email:)/g, '\nEmail:')
+      .replace(/\s+(Products\s)/g, '\nProducts\n')
+      .replace(/\s+(Policy:)/g, '\nPolicy:')
+      .replace(/\s+(Active:)/g, '\nActive:')
+      .replace(/\s+(Summary\$)/g, '\nSummary$')
+      .replace(/\s+(Back to home)/g, '\nBack to home')
+      .replace(/\s+(SALE on)/g, '\nSALE on')
+      .replace(/\s+(Date:\s)/g, '\nDate: ')
+      .replace(/\s+(Order\s#:)/g, '\nOrder #:')
+      .replace(/\s+(Total\s\$)/g, '\nTotal $')
+      .replace(/\s+(Member\s+ID:)/g, '\nMember ID:')
+      .replace(/\s+(Individual\s+-\s+ID:)/g, '\nIndividual - ID:')
+      .replace(/(\bone[-\s]?time)\s+(\$)/g, '$1\n$2')
+      .replace(/(\$\s*[\d,.]+\s+Product\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
+      .replace(/(\$\s*[\d,.]+\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
+      .replace(/(\bProduct\s+\$\s*[\d,.]+)\s+([A-Z][A-Za-z])/g, '$1\n$2')
+      .replace(/(\bEnrollment\s+\$\s*[\d,.]+)\s+(\bProduct\s+\$)/g, '$1\n$2');
+    lines = raw.split('\n');
+  }
+  return { raw: raw, lines: lines };
+}
+
+// Premium on "Policy:… Active:… $125 Enrollment one-time $341 Product per Month…"
+// lines (skipLineRe skips Policy-led lines in later passes). Mutates out.products.
+function _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe) {
+  var _cpRe = /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:product\s+)?per\s*month/i;
+  var _dedRe = /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*deductible/i;
+  for (var _cpI = 0; _cpI < lines.length; _cpI++) {
+    var _cpL = lines[_cpI];
+    if (!/policy|active/i.test(_cpL)) continue;
+    if (!_cpRe.test(_cpL)) continue;
+    var _cpM = _cpL.match(_cpRe);
+    if (!_cpM) continue;
+    var _cpP = parseFloat(_cpM[1].replace(/,/g, ''));
+    if (isNaN(_cpP) || _cpP <= 0) continue;
+    var _dedM = _cpL.match(_dedRe);
+    var _dedV = _dedM ? parseFloat(_dedM[1].replace(/,/g, '')) : -1;
+    if (_cpP === _dedV) continue;
+    var _cpName = '';
+    for (var _cpB = _cpI - 1; _cpB >= 0 && _cpB >= _cpI - 10; _cpB--) {
+      var _cpPr = lines[_cpB].trim();
+      if (!_cpPr) continue;
+      if (/^(?:confirmation|products?|summary|total|policy|active|address|phone|email|date|member|central|health|advisors)/i.test(_cpPr)) continue;
+      if (/^\$/.test(_cpPr)) continue;
+      if (enrollmentRe.test(_cpPr)) continue;
+      _cpName = _cpPr;
+      break;
+    }
+    if (!_cpName) _cpName = 'Unknown Plan';
+    var _cpMatch = _stMatchPlanName(_cpName);
+    var _cpFinal = _cpMatch || _cpName.substring(0, 120);
+    var _cpPol = _cpL.match(/policy\s*:?\s*([A-Z0-9-]{4,})/i);
+    var _cpEntry = { name: _cpFinal, price: _cpP, policy: _cpPol ? _cpPol[1] : '' };
+    // Check if a product with the same name already exists
+    var _cpExistIdx = -1;
+    for (var _cpD = 0; _cpD < out.products.length; _cpD++) {
+      if (out.products[_cpD].name === _cpEntry.name) {
+        _cpExistIdx = _cpD;
+        break;
+      }
+    }
+    if (_cpExistIdx >= 0) {
+      // Same name exists — REPLACE its price with the correct
+      // "Product per Month" value (which is authoritative over
+      // Groq's guess that may have used enrollment fee)
+      out.products[_cpExistIdx].price = _cpEntry.price;
+      if (_cpEntry.policy) {
+        out.products[_cpExistIdx].policy = _cpEntry.policy;
+      }
+    } else {
+      // New product — add it
+      if (/add[-\s]?on/i.test(_cpName) || /add[-\s]?on/i.test(_cpFinal)) {
+        out.products.push(_cpEntry);
+      } else {
+        out.products.unshift(_cpEntry);
+      }
+    }
+  }
+}
+
 // ── SMART RECEIPT PARSER ────────────────────────────────────
 // Line-based parser. Scans every line for a monthly price
 // pattern ("$X per Month") and uses the nearest preceding
@@ -762,44 +853,25 @@ function _stParseReceipt(text, useGroq) {
       if (groqPrim.saleDate) out.saleDate = groqPrim.saleDate;
       var confirmTsGroq = _stParseConfirmationTimestampInRaw(raw);
       if (confirmTsGroq) out.saleDate = confirmTsGroq;
+      // Groq primary path used to return here BEFORE any local line
+      // parsing — so Policy+Enrollment+Product-per-Month lines were
+      // never scanned and planPremium could wrongly equal $125.
+      var _spGroq = _stReceiptLinesSplit(raw);
+      raw = _spGroq.raw;
+      _stInjectCombinedPolicyPremiums(
+        _spGroq.lines,
+        out,
+        /enrollment|one[-\s]?time|sign[-\s]?up\s+fee/i
+      );
       _stApplySummaryTotalFromRaw(raw, out);
       _stReorderDealProducts(out);
       return out;
     }
   }
 
-  var lines = raw.split('\n');
-  // Slack / browser sometimes collapses a receipt onto a single
-  // line (no \n at all). When that happens, reconstruct line
-  // breaks at known phrase boundaries that always appear in
-  // CHA receipts so the downstream line-based passes still work.
-  if (lines.length <= 1) {
-    raw = raw
-      .replace(/\s+(Confirmation\s)/g, '\nConfirmation ')
-      .replace(/\s+(MemberName:)/g, '\nMemberName:')
-      .replace(/\s+(Address:)/g, '\nAddress:')
-      .replace(/\s+(Phone:)/g, '\nPhone:')
-      .replace(/\s+(Email:)/g, '\nEmail:')
-      .replace(/\s+(Products\s)/g, '\nProducts\n')
-      .replace(/\s+(Policy:)/g, '\nPolicy:')
-      .replace(/\s+(Active:)/g, '\nActive:')
-      .replace(/\s+(Summary\$)/g, '\nSummary$')
-      .replace(/\s+(Back to home)/g, '\nBack to home')
-      .replace(/\s+(SALE on)/g, '\nSALE on')
-      .replace(/\s+(Date:\s)/g, '\nDate: ')
-      .replace(/\s+(Order\s#:)/g, '\nOrder #:')
-      .replace(/\s+(Total\s\$)/g, '\nTotal $')
-      .replace(/\s+(Member\s+ID:)/g, '\nMember ID:')
-      .replace(/\s+(Individual\s+-\s+ID:)/g, '\nIndividual - ID:')
-      // Standard (CHA confirmation) format splits
-      .replace(/(\bone[-\s]?time)\s+(\$)/g, '$1\n$2')
-      .replace(/(\$\s*[\d,.]+\s+Product\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
-      .replace(/(\$\s*[\d,.]+\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
-      // Member ID format splits
-      .replace(/(\bProduct\s+\$\s*[\d,.]+)\s+([A-Z][A-Za-z])/g, '$1\n$2')
-      .replace(/(\bEnrollment\s+\$\s*[\d,.]+)\s+(\bProduct\s+\$)/g, '$1\n$2');
-    lines = raw.split('\n');
-  }
+  var _sp = _stReceiptLinesSplit(raw);
+  raw = _sp.raw;
+  var lines = _sp.lines;
 
   // ── Summary total ─────────────────────────────────────────
   _stApplySummaryTotalFromRaw(raw, out);
@@ -985,6 +1057,13 @@ function _stParseReceipt(text, useGroq) {
     var dval = parseFloat(String(dmatch[1]).replace(/,/g, ''));
     if (!isNaN(dval) && dval > 0) out.deductibles.push(dval);
   }
+
+  // ── Extract premium from combined Policy+Enrollment+Price lines ──
+  // CHA format: "Policy:XXX Active:DATE $125 Enrollment one-time $341 Product per Month for TYPE"
+  // The enrollment fee was already captured above. Now grab the
+  // "Product per Month" price from these same lines that skipLineRe
+  // would otherwise exclude.
+  _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe);
 
   // ── Per-month price lines ─────────────────────────────────
   // Matches "$291.00 per Month", "$39.99/mo", "$22.99 monthly".
@@ -1605,6 +1684,8 @@ function _stGetSaleMode() {
 
 // Splits a blob of pasted text into individual receipt chunks.
 // A new receipt starts when either:
+//   (0) Two+ standalone "Central Health Advisors [LLC]" header lines
+//       (company name) — most reliable for multi-paste, OR
 //   (a) a line contains "Confirmation" and that same line OR the
 //       next line has a "Month DD, YYYY" style date pattern, OR
 //   (b) a line is exactly "Member" and the next line begins
@@ -1650,11 +1731,8 @@ function _stSplitReceipts(text) {
     lines = raw.split('\n');
   }
 
-  var monthRe =
-    /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\b\s+\d{1,2},?\s+\d{4}/i;
-  var confRe = /\bconfirmation\b/i;
-
-  // Slack / UI noise lines that appear between receipts.
+  // Slack / UI noise lines that appear between receipts — strip
+  // BEFORE boundary detection so they cannot hide real headers.
   var noiseLinkRe = /^link\s+central\s+health/i;
   var noiseBackRe = /^back\s+to\s+home/i;
   // Slack message timestamps like "4/1 11:27 AM"
@@ -1665,10 +1743,40 @@ function _stSplitReceipts(text) {
   // Slack preview lines like "Member ID: 686934779 Cody Wagner ..."
   // that appear BEFORE the actual receipt text.
   var noiseMemberPreviewRe = /^\s*member\s+id\s*:.*\.{3}/i;
+  var filteredLines = [];
+  for (var fxi = 0; fxi < lines.length; fxi++) {
+    var fxRaw = lines[fxi];
+    var fxTrim = fxRaw.trim();
+    if (!fxTrim) {
+      filteredLines.push(fxRaw);
+      continue;
+    }
+    if (noiseLinkRe.test(fxTrim)) continue;
+    if (noiseBackRe.test(fxTrim)) continue;
+    if (noiseSlackTsRe.test(fxTrim)) continue;
+    if (noiseSlackDayRe.test(fxTrim)) continue;
+    if (noiseMemberPreviewRe.test(fxTrim)) continue;
+    filteredLines.push(fxRaw);
+  }
+  lines = filteredLines;
+
+  var monthRe =
+    /\b(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sep|sept|oct|nov|dec)\b\s+\d{1,2},?\s+\d{4}/i;
+  var confRe = /\bconfirmation\b/i;
+  // Standalone company header — not "Link Central Health…" (noise
+  // removed above). $ anchor: whole trimmed line is only the name.
+  var companyRe = /^\s*central\s+health\s+advisors\s*(llc)?\s*$/i;
   // Stray person-name lines: 2-4 TitleCase words, no digits or
   // special characters. Used to trim trailing Slack sender names
   // that appear between receipts.
   var nameRe = /^[A-Z][A-Za-z'\-]+(?:\s+[A-Z][A-Za-z'\-]+){1,3}$/;
+
+  var companyStarts = [];
+  for (var csi = 0; csi < lines.length; csi++) {
+    if (companyRe.test((lines[csi] || '').trim())) {
+      companyStarts.push(csi);
+    }
+  }
 
   // Pass 1: find every line index that opens a new receipt.
   // A line opens a receipt when either:
@@ -1676,35 +1784,46 @@ function _stSplitReceipts(text) {
   //       appears on that same line or within 2 lines after it,
   //   (b) the line is exactly "Member" and the next line begins
   //       with "ID:" (two-line member-header layout).
+  // When two+ company headers are present, use ONLY those as
+  // boundaries so "Confirmation" inside a receipt does not create
+  // extra false splits. One standalone company line → one chunk
+  // from that header (avoids a false split on inner "Confirmation").
+  // Zero company lines → fall back to Confirmation / Member rules.
   var starts = [];
-  for (var i = 0; i < lines.length; i++) {
-    var line = lines[i];
-    if (confRe.test(line)) {
-      var hasDate =
-        monthRe.test(line) ||
-        (i + 1 < lines.length && monthRe.test(lines[i + 1])) ||
-        (i + 2 < lines.length && monthRe.test(lines[i + 2]));
-      if (hasDate) {
-        starts.push(i);
-        continue;
+  if (companyStarts.length >= 2) {
+    starts = companyStarts.slice();
+  } else if (companyStarts.length === 1) {
+    starts = [companyStarts[0]];
+  } else {
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      if (confRe.test(line)) {
+        var hasDate =
+          monthRe.test(line) ||
+          (i + 1 < lines.length && monthRe.test(lines[i + 1])) ||
+          (i + 2 < lines.length && monthRe.test(lines[i + 2]));
+        if (hasDate) {
+          starts.push(i);
+          continue;
+        }
       }
-    }
-    // Two-line format: "Member" alone then "ID: XXXXXXXX"
-    var isTwoLineMember =
-      /^\s*member\s*$/i.test(line) &&
-      i + 1 < lines.length &&
-      /^\s*id\s*:/i.test(lines[i + 1]);
+      // Two-line format: "Member" alone then "ID: XXXXXXXX"
+      var isTwoLineMember =
+        /^\s*member\s*$/i.test(line) &&
+        i + 1 < lines.length &&
+        /^\s*id\s*:/i.test(lines[i + 1]);
 
-    // One-line format: "Member ID: 686934779" or
-    // "Member ID: 686934779 Cody Wagner ..." — but NOT the
-    // Slack preview "Member ID: ... ..." ellipsis lines, which
-    // are stripped by the noiseMemberPreviewRe filter.
-    var isOneLineMember =
-      /^\s*member\s+id\s*:\s*\d{6,}/i.test(line) &&
-      !noiseMemberPreviewRe.test(line);
+      // One-line format: "Member ID: 686934779" or
+      // "Member ID: 686934779 Cody Wagner ..." — but NOT the
+      // Slack preview "Member ID: ... ..." ellipsis lines, which
+      // are stripped by the noiseMemberPreviewRe filter.
+      var isOneLineMember =
+        /^\s*member\s+id\s*:\s*\d{6,}/i.test(line) &&
+        !noiseMemberPreviewRe.test(line);
 
-    if (isTwoLineMember || isOneLineMember) {
-      starts.push(i);
+      if (isTwoLineMember || isOneLineMember) {
+        starts.push(i);
+      }
     }
   }
 
@@ -1822,39 +1941,10 @@ function _stAutoDetectAndAdd() {
     parsedChunks.push({ parsed: pc, raw: chunk });
   }
   if (!parsedChunks.length) {
-    var parsedFallback = _stParseReceipt(text, false) || {};
-    var firstLine = '';
-    var rawLines = text.split(/\r?\n/);
-    for (var rl = 0; rl < rawLines.length; rl++) {
-      if (String(rawLines[rl] || '').trim()) {
-        firstLine = String(rawLines[rl]).trim();
-        break;
-      }
-    }
-    var fallbackAddons = [];
-    var fallbackProducts = parsedFallback.products || [];
-    for (var fp = 1; fp < fallbackProducts.length; fp++) {
-      fallbackAddons.push({
-        name: fallbackProducts[fp].name || 'Unknown Add-on',
-        amount: Number(fallbackProducts[fp].price) || 0
-      });
-    }
-    _stUnrecognizedDraft = {
-      raw: text,
-      customer: parsedFallback.customer || 'Unknown',
-      memberId: parsedFallback.memberId || '',
-      plan:
-        (fallbackProducts[0] && fallbackProducts[0].name) ||
-        firstLine ||
-        'Unknown Plan',
-      amount: Number(
-        (fallbackProducts[0] && fallbackProducts[0].price) || 0
-      ),
-      addons: fallbackAddons,
-      enrollmentFee: Number(parsedFallback.enrollmentFee) || 0
-    };
-    _stRenderUnrecognizedPreview();
-    _stFlash('Plan not recognized — review and edit before saving.', 'error');
+    _stFlash(
+      'Could not find any products in that receipt. Try "Add as Deal" instead.',
+      'error'
+    );
     return;
   }
 
@@ -4072,3 +4162,4 @@ function _stRender() {
 
   page.innerHTML = html;
 }
+
