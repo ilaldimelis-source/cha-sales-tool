@@ -1041,6 +1041,10 @@ function _showComboPage(parentId, subId) {
 function renderSubTabs(parentId, activeSubId) {
   var container = document.getElementById('subtabs-' + parentId);
   if (!container) return;
+  if (parentId === 'myspace' && activeSubId === 'salestracker') {
+    container.innerHTML = '';
+    return;
+  }
   var config = PAGE_CONFIG[parentId];
   if (!config || config.subs.length <= 1) {
     container.innerHTML = '';
