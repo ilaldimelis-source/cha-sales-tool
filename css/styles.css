@@ -383,7 +383,25 @@ svg {
 }
 
 .sidebar .nb-icon {
-  display: none;
+  display: flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.82;
+  color: inherit;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease;
+}
+
+.sidebar .nb-icon svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentcolor;
+  stroke-width: 2;
+  flex-shrink: 0;
 }
 
 .nb-icon {
