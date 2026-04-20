@@ -7105,7 +7105,7 @@ body.plan-drawer-lock {
 #page-traininghome details.ca-tactics {
   margin-top: 18px;
   border-radius: 22px;
-  background: #fafbfc;
+  background: #f1f5f9;
   border: 1px dashed #cbd5e1;
   overflow: hidden;
   box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
@@ -8810,14 +8810,49 @@ button {
   }
 }
 
+/* Dashboard: compact Plan Lookup + Jump To grid (after Modern Theme rules) */
+#page-dashboard .dash-lookup-card {
+  padding: 14px;
+  margin-bottom: 0;
+}
+#page-dashboard .page {
+  padding-bottom: 16px;
+}
+.dash-grid-jump.dash-grid-compact .dash-card {
+  min-height: 86px;
+  max-height: 92px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #ffffff;
+  border-color: var(--border-default, #e2e8f0);
+}
+.dash-grid-jump.dash-grid-compact .dash-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+.dash-grid-jump.dash-grid-compact .dash-desc {
+  font-size: 11px;
+}
+.dash-grid-jump.dash-grid-compact .dash-icon {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 6px;
+}
+.dash-grid-jump.dash-grid-compact .dash-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
 /* ============================================
    FORCE COOL PAGE BACKGROUND — TOP-LEVEL OVERRIDE
    Eliminates warm/cream cast on page surfaces
    ============================================ */
 html,
 body {
-  background: #eef1f6 !important;
-  background-color: #eef1f6 !important;
+  background: #EEF1F6 !important;
+  background-color: #EEF1F6 !important;
 }
 #app,
 #root,
@@ -8830,7 +8865,7 @@ main,
 #main-content,
 .content,
 .combo-page {
-  background: #eef1f6 !important;
+  background: #EEF1F6 !important;
 }
 [data-theme='dark'] html,
 [data-theme='dark'] body,
@@ -8858,35 +8893,68 @@ body.dark-mode .combo-page {
   background: #0c111d !important;
 }
 
-/* Dashboard: compact Plan Lookup + Jump To grid (after Modern Theme rules) */
-#page-dashboard .dash-lookup-card {
-  padding: 14px;
-  margin-bottom: 0;
+/* Stronger page-level cool background (must stay last after block above) */
+body,
+html body,
+#app,
+#root,
+.app-shell,
+.app-layout,
+.main-area,
+.page,
+.page-content,
+#page-dashboard,
+#page-home,
+#page-salestracker,
+#page-livecall,
+#page-plans,
+#page-scripts,
+#page-network,
+#page-cheatsheet,
+#page-academy,
+#page-compliance,
+#page-myspace,
+#page-networkguide,
+#page-training {
+  background-color: #eef1f6 !important;
 }
-#page-dashboard .page {
-  padding-bottom: 16px;
-}
-.dash-grid-jump.dash-grid-compact .dash-card {
-  min-height: 86px;
-  max-height: 92px;
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.dash-grid-jump.dash-grid-compact .dash-title {
-  font-size: 13px;
-  font-weight: 600;
-}
-.dash-grid-jump.dash-grid-compact .dash-desc {
-  font-size: 11px;
-}
-.dash-grid-jump.dash-grid-compact .dash-icon {
-  width: 22px;
-  height: 22px;
-  margin-bottom: 6px;
-}
-.dash-grid-jump.dash-grid-compact .dash-icon svg {
-  width: 15px;
-  height: 15px;
+[data-theme='dark'] body,
+[data-theme='dark'] html body,
+[data-theme='dark'] #app,
+[data-theme='dark'] #root,
+[data-theme='dark'] .app-shell,
+[data-theme='dark'] .app-layout,
+[data-theme='dark'] .main-area,
+[data-theme='dark'] .page,
+[data-theme='dark'] .page-content,
+[data-theme='dark'] #page-dashboard,
+[data-theme='dark'] #page-salestracker,
+[data-theme='dark'] #page-livecall,
+[data-theme='dark'] #page-plans,
+[data-theme='dark'] #page-scripts,
+[data-theme='dark'] #page-networkguide,
+[data-theme='dark'] #page-cheatsheet,
+[data-theme='dark'] #page-training,
+[data-theme='dark'] #page-compliance,
+[data-theme='dark'] #page-myspace,
+body.dark-mode body,
+body.dark-mode html body,
+body.dark-mode #app,
+body.dark-mode #root,
+body.dark-mode .app-shell,
+body.dark-mode .app-layout,
+body.dark-mode .main-area,
+body.dark-mode .page,
+body.dark-mode .page-content,
+body.dark-mode #page-dashboard,
+body.dark-mode #page-salestracker,
+body.dark-mode #page-livecall,
+body.dark-mode #page-plans,
+body.dark-mode #page-scripts,
+body.dark-mode #page-networkguide,
+body.dark-mode #page-cheatsheet,
+body.dark-mode #page-training,
+body.dark-mode #page-compliance,
+body.dark-mode #page-myspace {
+  background-color: #0c111d !important;
 }

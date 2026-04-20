@@ -2058,7 +2058,7 @@
 
 /* Week at a glance */
 .st-week-glance {
-  background: var(--bg-card, #fff);
+  background: #ffffff;
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 12px;
   padding: 12px 14px;
@@ -2068,11 +2068,12 @@
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   margin-bottom: 10px;
+  background: transparent;
 }
 .st-glance-day {
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 10px;
-  background: #eef1f6;
+  background: var(--bg-page, #eef1f6);
   padding: 8px 6px;
   text-align: center;
   min-height: 76px;
@@ -2120,7 +2121,7 @@
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 10px;
   padding: 8px 10px;
-  background: #f8fafc;
+  background: #ffffff;
 }
 .st-glance-stat span {
   display: block;
@@ -2187,7 +2188,7 @@
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid var(--border, #e2e8f0);
-  background: linear-gradient(180deg, #f8fafc 0%, #eef1f6 100%);
+  background: #ffffff;
   font-family: var(--font-ui);
   font-size: 14px;
   font-weight: 700;
@@ -2206,7 +2207,7 @@
   padding: 12px;
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 12px;
-  background: var(--bg-card, #fff);
+  background: #ffffff;
 }
 
 .st-input-actions .st-input-link {
@@ -2226,7 +2227,7 @@
 
 /* Estimated paycheck */
 .st-paycheck-card {
-  background: var(--bg-card, #fff);
+  background: #ffffff;
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 12px;
   padding: 12px 14px 10px;
@@ -2271,7 +2272,7 @@
   padding: 6px 12px;
   border-radius: 8px;
   border: 1px solid var(--border, #e2e8f0);
-  background: #f8fafc;
+  background: #f1f5f9;
   font-size: 12px;
   font-weight: 600;
   font-family: var(--font-ui);
