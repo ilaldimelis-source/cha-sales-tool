@@ -2237,6 +2237,183 @@ function _stUpdateReceiptPreview() {
   wrap.innerHTML = parts.join('');
 }
 
+function _stRenderUnrecognizedPreview() {
+  var wrap = document.getElementById('st-receipt-preview');
+  if (!wrap || !_stUnrecognizedDraft) return;
+  var d = _stUnrecognizedDraft;
+  var addonCount = d.addons && d.addons.length ? d.addons.length : 0;
+  wrap.innerHTML =
+    '<div id="st-unrecognized-preview" class="st-preview-card st-unrecognized-preview">' +
+    '<div class="st-unrecognized-title">Plan not recognized - review before saving</div>' +
+    '<div>Client: ' + _stEscape(d.customer || 'Unknown') + '</div>' +
+    '<div>Plan: ' + _stEscape(d.plan || 'Unknown Plan') + '</div>' +
+    '<div>Premium: ' + _stFmtMoney(Number(d.amount) || 0) + '</div>' +
+    '<div>Add-ons detected: ' + (addonCount ? String(addonCount) : 'none') + '</div>' +
+    '<div style="margin-top:10px;">' +
+    '<button onclick="_stSaveUnrecognizedDeal()" style="background:#5175F1;color:white;border:none;padding:8px 16px;border-radius:10px;font-weight:600;cursor:pointer;">Save as deal (edit after)</button>' +
+    '<button onclick="_stDismissPreview()" style="background:transparent;border:1px solid #999;padding:8px 16px;border-radius:10px;margin-left:8px;cursor:pointer;">Discard</button>' +
+    '</div>' +
+    '</div>';
+}
+
+function _stDismissPreview() {
+  _stUnrecognizedDraft = null;
+  var wrap = document.getElementById('st-receipt-preview');
+  if (wrap) wrap.innerHTML = '';
+  var input = document.getElementById('st-receipt-input');
+  if (input) input.value = '';
+}
+
+function _stSaveUnrecognizedDeal() {
+  if (!_stUnrecognizedDraft) return;
+  var d = _stUnrecognizedDraft;
+  var billDate = _stReadPostDate();
+  if (billDate === 'INVALID') {
+    _stFlash('Pick a future bill date for the post-date.', 'error');
+    return;
+  }
+  var receiptId =
+    'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  var existingReceiptIds = {};
+  var existingIds = {};
+  var allExisting = _stLoadSales();
+  for (var ex = 0; ex < allExisting.length; ex++) {
+    if (!allExisting[ex]) continue;
+    if (allExisting[ex].id) existingIds[allExisting[ex].id] = true;
+    if (allExisting[ex].receiptId) existingReceiptIds[allExisting[ex].receiptId] = true;
+  }
+  while (existingReceiptIds[receiptId]) {
+    receiptId = 'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+  }
+  var dealId = '';
+  if (billDate) {
+    var pds = _stLoadPostDates();
+    dealId = 'pd_' + Date.now() + '_0_' + Math.random().toString(36).slice(2, 6);
+    pds.push({
+      id: dealId,
+      createdTs: Date.now(),
+      billDate: billDate,
+      customer: d.customer || 'Unknown',
+      memberId: d.memberId || '',
+      plan: d.plan || 'Unknown Plan',
+      amount: Number(d.amount) || 0,
+      type: 'deal',
+      raw: d.raw || '',
+      notes: '',
+      receiptId: receiptId,
+      enrollmentFee: Number(d.enrollmentFee) || 0
+    });
+    for (var pdi = 0; pdi < (d.addons || []).length; pdi++) {
+      var ad = d.addons[pdi];
+      pds.push({
+        id: 'pd_' + Date.now() + '_' + (pdi + 1) + '_' + Math.random().toString(36).slice(2, 6),
+        createdTs: Date.now() + pdi + 1,
+        billDate: billDate,
+        customer: d.customer || 'Unknown',
+        memberId: d.memberId || '',
+        plan: ad.name || 'Unknown Add-on',
+        amount: Number(ad.amount) || 0,
+        type: 'addon',
+        raw: d.raw || '',
+        notes: '',
+        receiptId: receiptId
+      });
+    }
+    _stSavePostDates(pds);
+    _stDismissPreview();
+    var inputPd = document.getElementById('st-receipt-input');
+    if (inputPd) inputPd.value = '';
+    _stResetPostDateInputs();
+    _stRender();
+    _stFlash('Saved as post-dated deal. Confirm on billing date to edit.', 'ok');
+    return;
+  }
+
+  var sales = _stLoadSales();
+  var tsBase = _stReadDateSoldTs();
+  dealId =
+    'st_' + tsBase + '_u_0_' + Math.random().toString(36).slice(2, 6);
+  if (existingIds[dealId]) return;
+  sales.push({
+    id: dealId,
+    ts: tsBase,
+    customer: d.customer || 'Unknown',
+    memberId: d.memberId || '',
+    plan: d.plan || 'Unknown Plan',
+    amount: Number(d.amount) || 0,
+    type: 'deal',
+    status: 'pending',
+    raw: d.raw || '',
+    notes: '',
+    receiptId: receiptId,
+    receiptTotal: 0,
+    enrollmentFee: Number(d.enrollmentFee) || 0
+  });
+  for (var ai = 0; ai < (d.addons || []).length; ai++) {
+    var addon = d.addons[ai];
+    var addonId =
+      'st_' + tsBase + '_u_' + (ai + 1) + '_' + Math.random().toString(36).slice(2, 6);
+    if (existingIds[addonId]) continue;
+    sales.push({
+      id: addonId,
+      ts: tsBase + ai + 1,
+      customer: d.customer || 'Unknown',
+      memberId: d.memberId || '',
+      plan: addon.name || 'Unknown Add-on',
+      amount: Number(addon.amount) || 0,
+      type: 'addon',
+      status: 'pending',
+      raw: d.raw || '',
+      notes: '',
+      receiptId: receiptId,
+      receiptTotal: 0,
+      enrollmentFee: 0
+    });
+  }
+  var rates = _stLoadCommissionRates();
+  for (var si = 0; si < sales.length; si++) {
+    if (sales[si].id === dealId) {
+      _stStampDealCommission(sales, si, rates);
+      break;
+    }
+  }
+  _stSaveSales(sales);
+  _stDismissPreview();
+  var input = document.getElementById('st-receipt-input');
+  if (input) input.value = '';
+  _stResetPostDateInputs();
+  _stRender();
+  _stOpenCommissionEditor(dealId);
+  _stFlash('Saved unrecognized receipt. Review fields and save.', 'ok');
+}
+
+function _stValidateSalesIntegrity(sales) {
+  var deals = sales.filter(function (s) { return s && s.type === 'deal'; });
+  var addons = sales.filter(function (s) { return s && s.type === 'addon'; });
+  if (deals.length === 0 && addons.length > 0) {
+    console.warn('[CHA SALES] Data integrity warning: add-ons exist without any deals');
+  }
+  var ids = {};
+  for (var i = 0; i < sales.length; i++) {
+    if (!sales[i]) continue;
+    if (ids[sales[i].id]) {
+      console.warn('[CHA SALES] Duplicate sale id found:', sales[i].id);
+    }
+    ids[sales[i].id] = true;
+  }
+  for (var j = 0; j < sales.length; j++) {
+    if (!sales[j]) continue;
+    if (!sales[j].type) {
+      console.warn('[CHA SALES] Sale missing type:', sales[j].id);
+      sales[j].type = 'deal';
+    }
+  }
+  return sales;
+}
+
+// Confirm a post-date: move it out of the postdates list and
+// into the main sales list with ts set to the billing day (at
+// 9am local so it sorts sensibly among the day's entries).
 function _stConfirmPostDate(id) {
   var pds = _stLoadPostDates();
   var idx = -1;
@@ -2463,7 +2640,10 @@ function _stCalcStats(sales) {
     // $125 Enrollments: count deals whose receipt had exactly
     // a $125 enrollment fee. Never count add-ons (the fee is
     // stored on the deal only).
-    if (s.type === 'deal' && Number(s.enrollmentFee) === 125) {
+    if (
+      s.type === 'deal' &&
+      Number(s.enrollmentAmount || s.enrollmentFee || 0) === 125
+    ) {
       stats.enrollments++;
     }
     if (s.type === 'addon') stats.weekAddons++;
@@ -2837,54 +3017,59 @@ function _stToggleSaleSelection(id) {
   } else {
     _stSelectedIds[id] = true;
   }
-  _stRender();
-}
-
-// Header "Select All" checkbox handler.
-function _stToggleAllSelection() {
-  var cb = document.getElementById('st-select-all');
-  var checked = !!(cb && cb.checked);
-  var sales = _stLoadSales();
-  _stSelectedIds = {};
-  if (checked) {
-    for (var i = 0; i < sales.length; i++) {
-      _stSelectedIds[sales[i].id] = true;
-    }
+  if (_stTableFilter === 'all') {
+    _stBulkSelectionChanged();
+    return;
   }
   _stRender();
 }
 
-// Delete every currently-selected sale after confirmation.
-function _stBulkDeleteSelected() {
+function _stBulkSelectionChanged() {
   var ids = [];
   for (var k in _stSelectedIds) {
     if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k]) ids.push(k);
   }
-  if (!ids.length) {
-    _stFlash('No sales selected.', 'error');
+  var bar = document.getElementById('st-bulk-bar');
+  var count = document.getElementById('st-bulk-count');
+  if (count) count.textContent = ids.length + ' selected';
+  if (bar) bar.style.display = ids.length ? 'block' : 'none';
+}
+
+function _stBulkToggleAll(checked) {
+  var cbs = document.querySelectorAll('.st-bulk-cb');
+  _stSelectedIds = {};
+  for (var i = 0; i < cbs.length; i++) {
+    cbs[i].checked = !!checked;
+    var sid = cbs[i].getAttribute('data-id');
+    if (checked && sid) _stSelectedIds[sid] = true;
+  }
+  _stBulkSelectionChanged();
+}
+
+function _stBulkDelete() {
+  var ids = [];
+  for (var k in _stSelectedIds) {
+    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k]) ids.push(k);
+  }
+  if (!ids.length) return;
+  if (!confirm('Delete ' + ids.length + ' sales?')) {
     return;
   }
-  if (
-    !confirm(
-      'Permanently delete ' +
-        ids.length +
-        ' selected sale' +
-        (ids.length === 1 ? '' : 's') +
-        '? This cannot be undone.'
-    )
-  ) {
-    return;
-  }
-  var sales = _stLoadSales().filter(function (s) {
+  var filtered = _stLoadSales().filter(function (s) {
     return !_stSelectedIds[s.id];
   });
-  _stSaveSales(sales);
+  _stSaveSales(filtered);
   _stSelectedIds = {};
   _stRender();
-  _stFlash(
-    'Deleted ' + ids.length + ' sale' + (ids.length === 1 ? '' : 's') + '.',
-    'ok'
-  );
+}
+
+function _stBulkClear() {
+  _stSelectedIds = {};
+  var cbs = document.querySelectorAll('.st-bulk-cb');
+  for (var i = 0; i < cbs.length; i++) cbs[i].checked = false;
+  var all = document.querySelector('.st-bulk-all');
+  if (all) all.checked = false;
+  _stBulkSelectionChanged();
 }
 
 // Delete every logged sale after two confirmations.
@@ -3214,13 +3399,28 @@ function _stBuildTable(sales) {
       '<option value="month"' + (_stAllSalesRange === 'month' ? ' selected' : '') + '>This month</option>' +
       '<option value="last30"' + (_stAllSalesRange === 'last30' ? ' selected' : '') + '>Last 30 days</option>' +
       '</select><button type="button" class="st-export-btn" onclick="_stExportAllSalesCsv()">Export</button></div>';
-    html += '<div class="st-all-list"><div class="st-all-head"><span>Client</span><span>Plan</span><span>Premium</span><span>Date</span><span>Status</span></div>';
+    var selectedCount = 0;
+    for (var sid in _stSelectedIds) {
+      if (_stSelectedIds.hasOwnProperty(sid) && _stSelectedIds[sid]) selectedCount++;
+    }
+    html +=
+      '<div id="st-bulk-bar" style="' +
+      (selectedCount ? 'display:block;' : 'display:none;') +
+      'padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;margin-bottom:12px;font-size:13px;">' +
+      '<span id="st-bulk-count">' +
+      selectedCount +
+      ' selected</span>' +
+      '<button onclick="_stBulkDelete()" style="background:#dc2626;color:white;border:none;padding:6px 14px;border-radius:8px;margin-left:12px;font-weight:600;cursor:pointer;">Delete selected</button>' +
+      '<button onclick="_stBulkClear()" style="background:transparent;border:1px solid #999;padding:6px 12px;border-radius:8px;margin-left:8px;cursor:pointer;">Cancel</button>' +
+      '</div>';
+    html += '<div class="st-all-list"><div class="st-all-head"><span><input type="checkbox" class="st-bulk-all" onchange="_stBulkToggleAll(this.checked)"></span><span>Client</span><span>Plan</span><span>Premium</span><span>Date</span><span>Status</span></div>';
     for (var ag = 0; ag < filteredGroups.length; ag++) {
       var grp = filteredGroups[ag];
       var lead = grp.deal || grp.addons[0];
       if (!lead) continue;
       var gid = String(grp.receiptId || lead.id);
       html += '<div class="st-all-row" onclick="_stToggleAllSaleDetails(\'' + gid + '\')">';
+      html += '<span><input type="checkbox" class="st-bulk-cb" data-id="' + _stEscape(lead.id) + '"' + (_stSelectedIds[lead.id] ? ' checked' : '') + ' onchange="_stToggleSaleSelection(\'' + _stEscape(lead.id) + '\')" onclick="event.stopPropagation()"></span>';
       html += '<span><strong>' + _stEscape(lead.customer || '—') + '</strong>' + (lead.memberId ? '<em>ID: ' + _stEscape(lead.memberId) + '</em>' : '') + '</span>';
       html += '<span>' + _stEscape(lead.plan || '—') + '</span>';
       html += '<span>$' + (Number(lead.amount) || 0).toFixed(2) + '</span>';
@@ -3288,51 +3488,136 @@ function _stDownloadWeeklyPdf() {
   var sales = _stLoadSales();
   var stats = _stCalcStats(sales);
   var weekStart = stats.weekStart;
-  var weekEnd = weekStart + (6 * 24 * 60 * 60 * 1000);
-  var deals = sales.filter(function (s) {
-    return (
-      s &&
-      s.type === 'deal' &&
-      s.ts >= weekStart &&
-      s.ts <= weekEnd &&
-      _stNormalizeStatus(s) !== 'chargeback'
-    );
-  });
-  var enrollmentDeals = deals.filter(function (d) {
-    return Number(d.enrollmentAmount || d.enrollmentFee || 0) === 125;
-  });
-  var enrollmentFeeBonus = enrollmentDeals.length * 20;
-  var tierBonus = _stCurrentTierBonus(stats);
-  var baseCommissionNoEnroll = 0;
-  for (var bi = 0; bi < deals.length; bi++) {
-    baseCommissionNoEnroll +=
-      (Number(deals[bi].planCommission) || 0) +
-      (Number(deals[bi].totalAddonCommission) || 0);
+  var weekEnd = weekStart + 6 * 24 * 60 * 60 * 1000;
+  var rates = _stLoadCommissionRates();
+  var deals = [];
+  for (var i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'deal') continue;
+    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (s.ts < weekStart || s.ts > weekEnd) continue;
+    deals.push(s);
   }
-  var pdfEstimatedTotal = baseCommissionNoEnroll + enrollmentFeeBonus + tierBonus;
-  var html = '<html><head><title>Weekly breakdown</title></head><body style="font-family:Arial;padding:24px;">';
-  html += '<h2>Weekly Breakdown</h2>';
-  html += '<p>Week: ' + _stFormatSaleListDate(weekStart) + ' - ' + _stFormatSaleListDate(weekEnd) + '</p>';
-  html += '<table border="1" cellspacing="0" cellpadding="6" style="border-collapse:collapse;width:100%;font-size:12px;"><tr><th>Client</th><th>Plan</th><th>Premium</th><th>Member ID</th><th>Commission</th></tr>';
-  for (var i = 0; i < deals.length; i++) {
-    var d = deals[i];
-    html += '<tr><td>' + _stEscape(d.customer || '') + '</td><td>' + _stEscape(d.plan || '') + '</td><td>$' + (Number(d.amount) || 0).toFixed(2) + '</td><td>' + _stEscape(d.memberId || '') + '</td><td>$' + (Number(d.expectedDealTotal) || 0).toFixed(2) + '</td></tr>';
-  }
-  html += '</table>';
-  html += '<p><b>Tier bonus:</b> $' + tierBonus.toFixed(2) + '</p>';
-  html += '<p><b>Enrollment fee bonus:</b> $' + enrollmentFeeBonus.toFixed(2) + '</p>';
-  html += '<p style="font-size:12px;color:#64748b;margin-top:-8px;">($125 enrollments only — $20 per qualifying enrollment)</p>';
-  html += '<div style="margin-top:14px;"><b>$125 Enrollment Verification:</b></div>';
-  if (!enrollmentDeals.length) {
-    html += '<div style="font-size:12px;color:#64748b;margin-top:6px;">No qualifying $125 enrollments this week.</div>';
-  } else {
-    html += '<ul style="margin-top:8px;padding-left:18px;">';
-    for (var ei = 0; ei < enrollmentDeals.length; ei++) {
-      html += '<li>' + _stEscape(enrollmentDeals[ei].customer || 'Unknown') + ' — $125 enrollment ✓</li>';
+  deals.sort(function (a, b) {
+    return (a.ts || 0) - (b.ts || 0);
+  });
+  var agentName = '';
+  try {
+    if (window.CHA_USER && window.CHA_USER.name) {
+      agentName = String(window.CHA_USER.name);
+    } else {
+      var u = _stGetCurrentUser();
+      agentName = u && (u.name || u.firstName) ? String(u.name || u.firstName) : '';
     }
-    html += '</ul>';
+  } catch (_e) {}
+  if (!agentName) agentName = 'Unknown Agent';
+
+  var coreCount = deals.length;
+  var addonCount = 0;
+  var enrollQualified = [];
+  var dealComm = 0;
+  var addonComm = 0;
+  var enrollmentBonus = 0;
+  var enrollmentFeesCollected = 0;
+  var rowsHtml = '';
+
+  for (var di = 0; di < deals.length; di++) {
+    var d = deals[di];
+    var dDate = _stEscape(_stFormatSaleListDate(d.ts));
+    var dComm =
+      (Number(d.planCommission) || 0) +
+      (Number(d.totalAddonCommission) || 0) +
+      (Number(d.enrollmentBonus) || 0);
+    dealComm += Number(d.planCommission) || 0;
+    addonComm += Number(d.totalAddonCommission) || 0;
+    enrollmentBonus += Number(d.enrollmentBonus) || 0;
+    enrollmentFeesCollected += Number(d.enrollmentFee) || 0;
+    if (Number(d.enrollmentAmount || d.enrollmentFee || 0) === 125) {
+      enrollQualified.push(d);
+    }
+    rowsHtml +=
+      '<tr>' +
+      '<td>' + dDate + '</td>' +
+      '<td>' + _stEscape(agentName) + '</td>' +
+      '<td>' + _stEscape(d.customer || 'Unknown') + '</td>' +
+      '<td>' + _stEscape(d.plan || 'Unknown Plan') + '</td>' +
+      '<td>$' + (Number(d.enrollmentFee) || 0).toFixed(2) + '</td>' +
+      '<td>$' + dComm.toFixed(2) + '</td>' +
+      '</tr>';
+
+    var addons = [];
+    if (Array.isArray(d.addons) && d.addons.length) {
+      addons = d.addons.slice();
+    } else if (d.receiptId) {
+      for (var ai = 0; ai < sales.length; ai++) {
+        var a = sales[ai];
+        if (!a || a.type !== 'addon') continue;
+        if (_stNormalizeStatus(a) === 'chargeback') continue;
+        if (a.receiptId !== d.receiptId) continue;
+        addons.push(a);
+      }
+    }
+    addonCount += addons.length;
+    for (var aj = 0; aj < addons.length; aj++) {
+      var ad = addons[aj];
+      var aAmt = Number(ad.amount) || 0;
+      var aComm =
+        typeof ad.addonCommission === 'number'
+          ? Number(ad.addonCommission)
+          : _stComputeLineCommission(ad, rates);
+      rowsHtml +=
+        '<tr style="background:#fafbff;">' +
+        '<td>' + dDate + '</td>' +
+        '<td>' + _stEscape(agentName) + '</td>' +
+        '<td>' + _stEscape(d.customer || 'Unknown') + '</td>' +
+        '<td style="padding-left:12px;">+ ' + _stEscape(ad.name || ad.plan || 'Add-on') + '</td>' +
+        '<td>$0.00</td>' +
+        '<td>$' + Number(aComm).toFixed(2) + '</td>' +
+        '</tr>';
+    }
   }
-  html += '<p><b>Total estimated commission:</b> $' + pdfEstimatedTotal.toFixed(2) + '</p>';
+
+  var tierBonus = _stCurrentTierBonus(stats);
+  var enrollmentFeeBonus = enrollQualified.length * 20;
+  var totalEstimated =
+    dealComm + addonComm + enrollmentFeeBonus + tierBonus;
+  var html =
+    '<html><head><title>Weekly breakdown</title></head><body style="font-family:Inter,Arial,sans-serif;padding:24px;color:#0f172a;">';
+  html += '<h2 style="margin:0 0 4px;">Weekly Breakdown</h2>';
+  html +=
+    '<div style="font-size:13px;color:#64748b;margin-bottom:4px;">Week: ' +
+    _stEscape(_stFormatSaleListDate(weekStart)) +
+    ' - ' +
+    _stEscape(_stFormatSaleListDate(weekEnd)) +
+    '</div>';
+  html +=
+    '<div style="font-size:13px;color:#64748b;margin-bottom:14px;">Agent: ' +
+    _stEscape(agentName) +
+    '</div>';
+  html +=
+    '<table cellspacing="0" cellpadding="7" style="border-collapse:collapse;width:100%;font-size:12px;border:1px solid #dbe3ef;">' +
+    '<tr style="background:#f8fafc;">' +
+    '<th style="text-align:left;border:1px solid #dbe3ef;">Date</th>' +
+    '<th style="text-align:left;border:1px solid #dbe3ef;">Agent</th>' +
+    '<th style="text-align:left;border:1px solid #dbe3ef;">Client</th>' +
+    '<th style="text-align:left;border:1px solid #dbe3ef;">Plan/Product</th>' +
+    '<th style="text-align:left;border:1px solid #dbe3ef;">Enrollment Fee</th>' +
+    '<th style="text-align:left;border:1px solid #dbe3ef;">Commission</th>' +
+    '</tr>' +
+    (rowsHtml || '<tr><td colspan="6" style="border:1px solid #dbe3ef;color:#94a3b8;">No deals this week.</td></tr>') +
+    '</table>';
+  html +=
+    '<div style="margin-top:12px;line-height:1.6;font-size:13px;">' +
+    '<div>Core Policies Sold: <strong>' + coreCount + '</strong></div>' +
+    '<div>Add-on Policies Sold: <strong>' + addonCount + '</strong></div>' +
+    '<div>Full Enrollment Fee Bonus: <strong>$' + enrollmentFeeBonus.toFixed(2) + '</strong></div>' +
+    '<div>Tier Bonus Amount: <strong>$' + tierBonus.toFixed(2) + '</strong></div>' +
+    '<div>Enrollment Fee Bonus: <strong>$' + enrollmentFeesCollected.toFixed(2) + '</strong></div>' +
+    '</div>';
+  html +=
+    '<div style="margin-top:14px;font-size:14px;font-weight:700;">Total estimated commission: $' +
+    totalEstimated.toFixed(2) +
+    '</div>';
   html += '</body></html>';
   var w = window.open('', '_blank');
   if (!w) return;
@@ -3634,178 +3919,78 @@ function _stFmtMoney(n) {
 }
 
 function _stBuildCommissionTracker(sales, stats) {
-  var dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-  var wc = Number(stats.weekCommissionValid) || 0;
   var ws = Number(stats.weekSales) || 0;
   var wd = Number(stats.weekDeals) || 0;
-  var wac = Number(stats.weekAddonCommissionOnly) || 0;
-  var eff = ws > 0 ? wc / ws : 0;
-  var effStr = eff > 0 ? String(Math.round(eff * 1000) / 10) + '%' : '—';
+  var wa = Number(stats.weekAddons) || 0;
   var pb = _stPaycheckBreakdown(sales, stats);
-  var html = '<div class="st-comm-tracker">';
-  html +=
-    '<div class="st-comm-tracker-hd"><span class="st-comm-tracker-icon" aria-hidden="true">&#128176;</span><span class="st-comm-tracker-title">Commission Tracker</span></div>';
-  html += '<div class="st-comm-tracker-summary">';
-  html += '<div class="st-comm-summary-card">';
-  html += '<div class="st-comm-summary-lbl">This Week\'s Commission</div>';
-  html +=
-    '<div class="st-comm-summary-sub">Total deals: <strong>' +
-    wd +
-    '</strong></div>';
-  html +=
-    '<div class="st-comm-summary-sub">Total monthly premium: <strong>' +
-    _stFmtMoney(ws) +
-    '</strong></div>';
-  html +=
-    '<div class="st-comm-summary-sub">Estimated commission: <strong>' +
-    _stFmtMoney(wc) +
-    '</strong></div>';
-  html +=
-    '<div class="st-comm-summary-note">From stored tier rates, add-on rates, and enrollment bonus where applicable. Effective blended rate this week: ' +
-    effStr +
-    ' of premium.</div>';
-  html += '</div></div>';
-  html += '<div class="st-comm-day-title">By day (Mon–Fri)</div>';
-  html +=
-    '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table"><thead><tr><th>Day</th><th>Deals</th><th>Premium</th><th>Commission</th></tr></thead><tbody>';
-  var db = stats.dayBuckets || [];
-  for (var d = 0; d < 5; d++) {
-    var b = db[d] || {};
-    var dealsD = b.dealCount || 0;
-    var amtD = b.amount || 0;
-    var commD = b.commission || 0;
-    var dateStr = '';
-    if (b.date) {
-      dateStr =
-        ' (' +
-        (b.date.getMonth() + 1) +
-        '/' +
-        b.date.getDate() +
-        ')';
-    }
-    html +=
-      '<tr><td>' +
-      dayLabels[d] +
-      dateStr +
-      '</td><td>' +
-      dealsD +
-      '</td><td>' +
-      _stFmtMoney(amtD) +
-      '</td><td>' +
-      _stFmtMoney(commD) +
-      '</td></tr>';
-  }
-  html += '</tbody></table></div>';
-  html +=
-    '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin:16px 0 8px">Weekly deals</div>';
-  html +=
-    '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th><th>EDIT</th></tr></thead><tbody>';
-  var wsT = stats.weekStart;
-  var weekEndT = wsT + 7 * 24 * 60 * 60 * 1000;
+  var rates = _stLoadCommissionRates();
+  var weekStart = stats.weekStart;
+  var weekEnd = weekStart + 7 * 24 * 60 * 60 * 1000;
   var weekDeals = [];
-  for (var wi = 0; wi < sales.length; wi++) {
-    var sd = sales[wi];
-    if (!sd || sd.type !== 'deal') continue;
-    if (_stNormalizeStatus(sd) === 'chargeback') continue;
-    if (sd.ts < wsT || sd.ts >= weekEndT) continue;
-    weekDeals.push(sd);
+  for (var i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'deal') continue;
+    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (s.ts < weekStart || s.ts >= weekEnd) continue;
+    weekDeals.push(s);
   }
-  var ratesForRows = _stLoadCommissionRates();
   weekDeals.sort(function (a, b) {
     return (a.ts || 0) - (b.ts || 0);
   });
-  for (var wj = 0; wj < weekDeals.length; wj++) {
-    var wdRow = weekDeals[wj];
+  var html = '<div class="st-comm-tracker">';
+  html +=
+    '<div class="st-comm-tracker-hd"><span class="st-comm-tracker-icon" aria-hidden="true">&#128176;</span><span class="st-comm-tracker-title">Commission Tracker</span></div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">';
+  html += '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#64748b;">Deals</div><div style="font-size:20px;font-weight:600;margin-top:2px;">' + wd + '</div></div>';
+  html += '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#64748b;">Add-ons</div><div style="font-size:20px;font-weight:600;margin-top:2px;">' + wa + '</div></div>';
+  html += '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#64748b;">Premium</div><div style="font-size:20px;font-weight:600;margin-top:2px;">' + _stFmtMoney(ws) + '</div></div>';
+  html += '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#64748b;">Paycheck</div><div style="font-size:20px;font-weight:600;margin-top:2px;">' + _stFmtMoney(pb.estimated) + '</div></div>';
+  html += '</div>';
+  html += '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin:0 0 8px">This week\'s deals</div>';
+  html += '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th><th>Edit</th></tr></thead><tbody>';
+  for (var di = 0; di < weekDeals.length; di++) {
+    var deal = weekDeals[di];
     var commTotal =
-      (Number(wdRow.planCommission) || 0) +
-      (Number(wdRow.totalAddonCommission) || 0) +
-      (Number(wdRow.enrollmentBonus) || 0);
-    html +=
-      '<tr><td>' +
-      _stEscape(_stFormatSaleListDate(wdRow.ts)) +
-      '</td><td>' +
-      _stEscape(wdRow.customer || '—') +
-      '</td><td>' +
-      _stEscape(wdRow.plan || '—') +
-      '</td><td>' +
-      _stFmtMoney(wdRow.amount) +
-      '</td><td>' +
-      _stFmtMoney(commTotal) +
-      '</td><td><a href="#" onclick="_stOpenCommissionEditor(\'' +
-      _stEscape(wdRow.id || '') +
-      '\'); return false;" style="color:#5175F1;font-size:12px;text-decoration:none;cursor:pointer;">edit %</a></td></tr>';
-    var addonRows = [];
-    if (Array.isArray(wdRow.addons) && wdRow.addons.length) {
-      addonRows = wdRow.addons.slice();
-    } else if (wdRow.receiptId) {
-      for (var wa = 0; wa < sales.length; wa++) {
-        var sa = sales[wa];
-        if (!sa || sa.type !== 'addon') continue;
-        if (sa.receiptId !== wdRow.receiptId) continue;
-        if (_stNormalizeStatus(sa) === 'chargeback') continue;
-        addonRows.push(sa);
+      (Number(deal.planCommission) || 0) +
+      (Number(deal.totalAddonCommission) || 0) +
+      (Number(deal.enrollmentBonus) || 0);
+    html += '<tr><td>' + _stEscape(_stFormatSaleListDate(deal.ts)) + '</td><td>' + _stEscape(deal.customer || '—') + '</td><td>' + _stEscape(deal.plan || '—') + '</td><td>' + _stFmtMoney(deal.amount) + '</td><td>' + _stFmtMoney(commTotal) + '</td><td><a href="#" onclick="_stOpenCommissionEditor(\'' + _stEscape(deal.id || '') + '\'); return false;" style="color:#5175F1;font-size:12px;text-decoration:none;">edit</a></td></tr>';
+    var addons = [];
+    if (Array.isArray(deal.addons) && deal.addons.length) {
+      addons = deal.addons.slice();
+    } else if (deal.receiptId) {
+      for (var ai = 0; ai < sales.length; ai++) {
+        var ad = sales[ai];
+        if (!ad || ad.type !== 'addon') continue;
+        if (_stNormalizeStatus(ad) === 'chargeback') continue;
+        if (ad.receiptId !== deal.receiptId) continue;
+        addons.push(ad);
       }
     }
-    for (var ak = 0; ak < addonRows.length; ak++) {
-      var ar = addonRows[ak] || {};
-      var addonName = ar.name || ar.plan || 'Unknown Add-on';
-      var addonAmt = Number(ar.amount);
-      var addonCommText = '—';
-      if (typeof ar.addonCommission === 'number') {
-        addonCommText = _stFmtMoney(ar.addonCommission);
-      } else if (typeof ar.commission === 'number') {
-        addonCommText = _stFmtMoney(ar.commission);
-      } else if (typeof ar.rate === 'number' && !isNaN(addonAmt)) {
-        addonCommText = _stFmtMoney(addonAmt * ar.rate);
-      } else if (ar.type === 'addon') {
-        addonCommText = _stFmtMoney(_stComputeLineCommission(ar, ratesForRows));
-      }
-      html +=
-        '<tr style="background:#fafbff;"><td></td><td colspan="2" style="padding-left:24px;font-size:12px;color:#64748b;">+ ' +
-        _stEscape(addonName) +
-        '</td><td style="font-size:12px;color:#64748b;">' +
-        (isNaN(addonAmt) ? '—' : _stFmtMoney(addonAmt)) +
-        '</td><td style="font-size:12px;color:#64748b;">' +
-        addonCommText +
-        '</td><td></td></tr>';
+    for (var aj = 0; aj < addons.length; aj++) {
+      var addon = addons[aj] || {};
+      var addonAmt = Number(addon.amount);
+      var addonComm = '—';
+      if (typeof addon.addonCommission === 'number') addonComm = _stFmtMoney(addon.addonCommission);
+      else if (addon.type === 'addon') addonComm = _stFmtMoney(_stComputeLineCommission(addon, rates));
+      else if (typeof addon.rate === 'number' && !isNaN(addonAmt)) addonComm = _stFmtMoney(addonAmt * addon.rate);
+      html += '<tr style="background:#fafbff;"><td></td><td colspan="2" style="padding-left:16px;font-size:12px;color:#64748b;">+ ' + _stEscape(addon.name || addon.plan || 'Add-on') + '</td><td style="font-size:12px;color:#64748b;">' + (isNaN(addonAmt) ? '—' : _stFmtMoney(addonAmt)) + '</td><td style="font-size:12px;color:#64748b;">' + addonComm + '</td><td></td></tr>';
     }
   }
   if (!weekDeals.length) {
     html += '<tr><td colspan="6" style="color:#94a3b8;font-size:13px;">No deals this week</td></tr>';
   }
   html += '</tbody></table></div>';
-  html +=
-    '<div class="st-comm-addon-row"><span class="st-comm-addon-lbl">Add-on commission (this week)</span><span class="st-comm-addon-val">' +
-    _stFmtMoney(wac) +
-    '</span></div>';
-  html +=
-    '<div style="border-top:1px solid #eef1f5;margin:16px 0;padding-top:16px">' +
-    '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin-bottom:10px">Earnings breakdown</div>';
-  html +=
-    '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Deal commission</span><span>' +
-    _stFmtMoney(pb.dealComm) +
-    ' <button type="button" class="st-comm-pct-link" onclick="_stOpenCommissionEditorFromTracker()">edit %</button></span></div>';
-  html +=
-    '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Add-on commission</span><span>' +
-    _stFmtMoney(pb.addonComm) +
-    ' <button type="button" class="st-comm-pct-link" onclick="_stOpenCommissionEditorFromTracker()">edit %</button></span></div>';
-  html +=
-    '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Enrollment fee bonus</span><span>' +
-    _stFmtMoney(pb.enrollmentBonus) +
-    '</span></div>';
-  html +=
-    '<div class="st-earn-row" style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:8px;color:#334155"><span>Tier bonus</span><span>' +
-    _stFmtMoney(pb.tierBonus) +
-    '</span></div>';
+  var enrollCount = Math.round((Number(pb.enrollmentBonus) || 0) / 20);
+  html += '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin:12px 0 6px">Earnings</div>';
+  html += '<div style="display:grid;grid-template-columns:1fr auto;gap:3px 16px;font-size:14px;padding:6px 0;">';
+  html += '<span style="color:#64748b">Deal commission</span><strong>' + _stFmtMoney(pb.dealComm) + '</strong>';
+  html += '<span style="color:#64748b">Add-on commission</span><strong>' + _stFmtMoney(pb.addonComm) + '</strong>';
+  html += '<span style="color:#64748b">Enrollment bonus (' + enrollCount + ' x $20)</span><strong>' + _stFmtMoney(pb.enrollmentBonus) + '</strong>';
+  html += '<span style="color:#64748b">Tier bonus</span><strong>' + _stFmtMoney(pb.tierBonus) + '</strong>';
   html += '</div>';
-  html +=
-    '<div style="background:#5175F1;color:white;padding:12px 18px;border-radius:10px;font-size:15px;font-weight:600;margin-top:16px;display:flex;justify-content:space-between"><span>Estimated paycheck</span><span>' +
-    _stFmtMoney(pb.estimated) +
-    '</span></div>';
-  html += '<div class="st-comm-tracker-actions">';
-  html +=
-    '<button type="button" class="st-pdf-btn" onclick="_stDownloadWeeklyPdf()">Download PDF</button>';
-  html += '</div>';
+  html += '<div style="background:#5175F1;color:white;padding:12px 18px;border-radius:10px;font-size:15px;font-weight:600;margin-top:12px;display:flex;justify-content:space-between;"><span>Estimated paycheck</span><span>' + _stFmtMoney(pb.estimated) + '</span></div>';
+  html += '<button type="button" onclick="_stDownloadWeeklyPdf()" style="margin-top:10px;background:white;color:#1a1a2e;border:1px solid #d1d5db;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;display:inline-flex;align-items:center;gap:6px;">Download PDF</button>';
   html += '</div>';
   return html;
 }
@@ -3815,6 +4000,25 @@ function _stRender() {
   var page = document.getElementById('page-salestracker');
   if (!page) return;
   var sales = _stLoadSales();
+  sales = _stValidateSalesIntegrity(sales);
+  var _dbgSales = _stLoadSales();
+  console.log(
+    '[DIAG] All sales:',
+    JSON.stringify(
+      _dbgSales.map(function (s) {
+        return {
+          id: s.id,
+          type: s.type,
+          customer: s.customer,
+          plan: s.plan || s.policy,
+          receiptId: s.receiptId,
+          amount: s.amount || s.policyAmount
+        };
+      }),
+      null,
+      2
+    )
+  );
   // ── DEBUG: trace how many sales _stRender sees at paint
   // time to diagnose the persistence bug.
   var _dbgRenderUser = _stGetCurrentUser();
