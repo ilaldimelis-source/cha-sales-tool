@@ -140,12 +140,12 @@ function brInit() {
 
   // ── SMART PLAN SEARCH BAR ──────────────────────────────────────
   var searchWrap = document.createElement('div');
-  searchWrap.style.cssText = 'padding:8px 12px 0;background:#fff;';
+  searchWrap.style.cssText = 'padding:8px 12px 0;background:var(--bg-surface);';
   var searchInput = document.createElement('input');
   searchInput.type = 'text';
   searchInput.id = 'br-plan-search';
   searchInput.placeholder = 'Search plans... (e.g. "MedFirst", "Everest", "STM")';
-  searchInput.style.cssText = 'width:100%;font-size:13px;padding:9px 14px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;color:#1e293b;box-sizing:border-box;outline:none;';
+  searchInput.style.cssText = 'width:100%;font-size:13px;padding:9px 14px;border-radius:8px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);color:var(--text-primary);box-sizing:border-box;outline:none;';
   searchInput.addEventListener('focus', function () {
     searchInput.style.borderColor = '#5175f1';
   });
@@ -156,7 +156,7 @@ function brInit() {
 
   var noMatchMsg = document.createElement('div');
   noMatchMsg.id = 'br-search-no-match';
-  noMatchMsg.style.cssText = 'display:none;font-size:12px;color:#94a3b8;padding:6px 14px 0;';
+  noMatchMsg.style.cssText = 'display:none;font-size:12px;color:var(--text-tertiary);padding:6px 14px 0;';
   noMatchMsg.textContent = 'No plans found \u2014 try a different term';
   searchWrap.appendChild(noMatchMsg);
 
@@ -412,13 +412,13 @@ function brShowWelcome() {
   var html = '<div style="text-align:center;padding:16px 8px 8px;">';
   // Active plan badge
   if (brActivePlan) {
-    html += '<div style="display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:5px 14px;margin-bottom:12px;">';
+    html += '<div style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-surface-muted);border:1px solid var(--border-light, var(--border-default));border-radius:999px;padding:5px 14px;margin-bottom:12px;">';
     html += '<span style="width:7px;height:7px;border-radius:50%;background:' + dot + ';display:inline-block;"></span>';
-    html += '<span style="font-size:12px;font-weight:700;color:#1e293b;">' + escHTML(planName) + '</span>';
-    html += '<span style="font-size:10px;font-weight:600;color:#64748b;">' + escHTML(planGroup) + '</span>';
+    html += '<span style="font-size:12px;font-weight:700;color:var(--text-primary);">' + escHTML(planName) + '</span>';
+    html += '<span style="font-size:10px;font-weight:600;color:var(--text-secondary);">' + escHTML(planGroup) + '</span>';
     html += '</div>';
   }
-  html += '<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:14px;">Use the chips above or type any question below — copays, exclusions, waiting periods, x-ray, Rx, and more.</div>';
+  html += '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;">Use the chips above or type any question below — copays, exclusions, waiting periods, x-ray, Rx, and more.</div>';
   html += '</div>';
 
   // Quick suggestion buttons — 2 per row, simple
@@ -430,7 +430,7 @@ function brShowWelcome() {
   ];
   html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 4px 8px;">';
   suggestions.forEach(function(s) {
-    html += '<button onclick="brQuick(\'' + escHTML(s.q) + '\')" style="padding:9px 10px;border-radius:8px;border:1px solid #e2e8f0;background:#fff;font-size:12px;font-weight:600;color:#374151;cursor:pointer;text-align:left;line-height:1.4;">' + escHTML(s.label) + '</button>';
+    html += '<button onclick="brQuick(\'' + escHTML(s.q) + '\')" style="padding:9px 10px;border-radius:8px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;text-align:left;line-height:1.4;">' + escHTML(s.label) + '</button>';
   });
   html += '</div>';
 
@@ -711,10 +711,10 @@ function _brHudRow(label, value) {
   if (!value && label !== 'PLAN' && label !== 'STATUS') return '';
   return (
     '<div style="display:grid;grid-template-columns:88px 1fr;gap:8px 12px;align-items:start;padding:6px 0;border-bottom:1px solid rgb(15 23 42 / 0.06);font-size:12px;line-height:1.45;">' +
-    '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;">' +
+    '<span style="font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-secondary);">' +
     escHTML(label) +
     '</span>' +
-    '<span style="color:#1e293b;">' +
+    '<span style="color:var(--text-primary);">' +
     value +
     '</span></div>'
   );
@@ -808,14 +808,14 @@ function brRenderAIAnswer(text, planName, planSource) {
   if (sayThis) {
     var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     sayBlock =
-      '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:4px;">' +
-      '<div style="font-size:12px;font-style:italic;color:#374151;">' +
+      '<div style="background:var(--bg-surface-raised);border-radius:8px;padding:8px 10px;margin-top:4px;">' +
+      '<div style="font-size:12px;font-style:italic;color:var(--text-secondary);">' +
       escHTML(sayThis) +
       '</div>' +
       '<button onclick="navigator.clipboard.writeText(\'' +
       safeText +
       "');this.textContent='Copied!';var b=this;setTimeout(function(){b.textContent='Copy';},2000);\" " +
-      'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;">Copy</button></div>';
+      'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);cursor:pointer;color:var(--text-secondary);">Copy</button></div>';
   }
 
   var html =
@@ -826,11 +826,11 @@ function brRenderAIAnswer(text, planName, planSource) {
     ';border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid ' +
     borderColor +
     '35;">' +
-    '<div style="font-family:var(--font-ui);font-size:10px;font-weight:800;letter-spacing:0.1em;color:#64748b;margin-bottom:6px;">BENEFITS HUD</div>' +
+    '<div style="font-family:var(--font-ui);font-size:10px;font-weight:800;letter-spacing:0.1em;color:var(--text-secondary);margin-bottom:6px;">BENEFITS HUD</div>' +
     _brHudRow('PLAN', escHTML(planName || '')) +
     _brHudRow('STATUS', statusHud) +
     _brHudRow('FACT', escHTML(fact).replace(/\n/g, '<br>')) +
-    _brHudRow('SAY THIS', sayBlock || '<span style="color:#94a3b8;">—</span>') +
+    _brHudRow('SAY THIS', sayBlock || '<span style="color:var(--text-tertiary);">—</span>') +
     _brHudRow('SOURCE', sourceHud) +
     '</div>';
   brAddMsg('ai', html);
@@ -1023,11 +1023,11 @@ function brRenderLocalResult(result, planName) {
     ' ' +
     label +
     '</span>' +
-    '<span style="font-size:12px;font-weight:500;color:#1e293b;">' +
+    '<span style="font-size:12px;font-weight:500;color:var(--text-primary);">' +
     escHTML(planName) +
     '</span>' +
-    '<span style="font-size:9px;color:#94a3b8;margin-left:auto;">From plan documents</span></div>' +
-    '<div style="font-size:13px;color:#374151;line-height:1.7;">' +
+    '<span style="font-size:9px;color:var(--text-tertiary);margin-left:auto;">From plan documents</span></div>' +
+    '<div style="font-size:13px;color:var(--text-secondary);line-height:1.7;">' +
     escHTML(result.data).replace(/\n/g, '<br>') +
     '</div></div>';
   brAddMsg('ai', html);
@@ -1153,22 +1153,22 @@ function brRenderServerAnswer(payload, planName, planSource) {
   var requestId = String((payload && payload.requestId) || '');
   var c = brStatusColor(status);
 
-  var sayBlock = '<span style="color:#94a3b8;">—</span>';
+  var sayBlock = '<span style="color:var(--text-tertiary);">—</span>';
   if (sayThis) {
     var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     sayBlock =
-      '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:4px;">' +
-      '<div style="font-size:12px;font-style:italic;color:#374151;">' +
+      '<div style="background:var(--bg-surface-raised);border-radius:8px;padding:8px 10px;margin-top:4px;">' +
+      '<div style="font-size:12px;font-style:italic;color:var(--text-secondary);">' +
       escHTML(sayThis).replace(/\n/g, '<br>') +
       '</div>' +
       '<button onclick="navigator.clipboard.writeText(\'' +
       safeText +
       "');this.textContent='Copied!';var b=this;setTimeout(function(){b.textContent='Copy';},2000);\" " +
-      'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid #e2e8f0;background:white;cursor:pointer;color:#64748b;">Copy</button></div>';
+      'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);cursor:pointer;color:var(--text-secondary);">Copy</button></div>';
   }
 
   var sourceHud = escHTML(source);
-  if (requestId) sourceHud += '<div style="margin-top:4px;color:#94a3b8;">Request: ' + escHTML(requestId) + '</div>';
+  if (requestId) sourceHud += '<div style="margin-top:4px;color:var(--text-tertiary);">Request: ' + escHTML(requestId) + '</div>';
 
   var html =
     '<div style="border-left:4px solid ' +
@@ -1178,7 +1178,7 @@ function brRenderServerAnswer(payload, planName, planSource) {
     ';border-radius:12px;padding:12px 14px;margin-bottom:10px;border:1px solid ' +
     c.border +
     '35;">' +
-    '<div style="font-family:var(--font-ui);font-size:10px;font-weight:800;letter-spacing:0.1em;color:#64748b;margin-bottom:6px;">BENEFITS HUD</div>' +
+    '<div style="font-family:var(--font-ui);font-size:10px;font-weight:800;letter-spacing:0.1em;color:var(--text-secondary);margin-bottom:6px;">BENEFITS HUD</div>' +
     _brHudRow('PLAN', escHTML(planName || '')) +
     _brHudRow(
       'STATUS',
@@ -1315,30 +1315,30 @@ function brShowSetupModal() {
   modal.style.cssText =
     'position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:99999;';
   modal.innerHTML =
-    '<div style="background:white;border-radius:16px;padding:28px;width:320px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">' +
-    '<div style="font-size:16px;font-weight:600;color:#1e293b;margin-bottom:6px;">' +
+    '<div style="background:var(--bg-surface);border-radius:16px;padding:28px;width:320px;box-shadow:0 20px 60px rgba(0,0,0,0.3);">' +
+    '<div style="font-size:16px;font-weight:600;color:var(--text-primary);margin-bottom:6px;">' +
     (hasKey ? 'AI Settings' : 'Enable AI Answers') +
     '</div>' +
     (hasKey
       ? '<div style="font-size:12px;color:#16a34a;margin-bottom:12px;">✓ AI is active</div>'
       : '') +
-    '<div style="font-size:12px;color:#64748b;margin-bottom:16px;line-height:1.6;">' +
+    '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;">' +
     (hasKey
       ? 'Update or reset your Groq API key.'
       : 'Enter your free Groq API key for AI-powered answers.<br>Get one at <a href="https://console.groq.com" target="_blank" style="color:#5175f1;">console.groq.com</a>') +
     '</div>' +
     '<input id="br-api-input" type="password" placeholder="gsk_..." value="' +
     (hasKey ? currentKey : '') +
-    '" style="width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;margin-bottom:12px;box-sizing:border-box;" />' +
+    '" style="width:100%;padding:10px 12px;border:1px solid var(--border-light, var(--border-default));border-radius:8px;font-size:13px;margin-bottom:12px;box-sizing:border-box;" />' +
     '<div style="display:flex;gap:8px;">' +
     '<button onclick="brSaveApiKey()" style="flex:1;padding:10px;background:#5175f1;color:white;border:none;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;">Save Key</button>' +
-    '<button onclick="brSkipSetup()" style="padding:10px 16px;background:white;color:#64748b;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;cursor:pointer;">Skip</button>' +
+    '<button onclick="brSkipSetup()" style="padding:10px 16px;background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border-light, var(--border-default));border-radius:8px;font-size:13px;cursor:pointer;">Skip</button>' +
     '</div>' +
     '<button onclick="brTestConnection()" style="width:100%;margin-top:8px;padding:10px;background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;border-radius:8px;font-size:13px;cursor:pointer;">Test Connection</button>' +
     (hasKey
-      ? '<button onclick="brResetApiKey()" style="width:100%;margin-top:8px;padding:8px;background:white;color:#ef4444;border:1px solid #fecaca;border-radius:8px;font-size:12px;cursor:pointer;">Reset AI Key</button>'
+      ? '<button onclick="brResetApiKey()" style="width:100%;margin-top:8px;padding:8px;background:var(--bg-surface);color:#ef4444;border:1px solid #fecaca;border-radius:8px;font-size:12px;cursor:pointer;">Reset AI Key</button>'
       : '') +
-    '<div style="font-size:10px;color:#94a3b8;margin-top:10px;text-align:center;">Saved locally only</div></div>';
+    '<div style="font-size:10px;color:var(--text-tertiary);margin-top:10px;text-align:center;">Saved locally only</div></div>';
   document.body.appendChild(modal);
 }
 function brResetApiKey() {
@@ -2104,11 +2104,11 @@ function brStructuredAnswer(query, plans) {
     html +=
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
     html +=
-      '<span style="font-size:11px;font-weight:600;color:#64748b;">' +
+      '<span style="font-size:11px;font-weight:600;color:var(--text-secondary);">' +
       results.length +
       ' items found</span>';
     html +=
-      '<span style="font-size:10px;color:#94a3b8;">' +
+      '<span style="font-size:10px;color:var(--text-tertiary);">' +
       parts.join(' · ') +
       '</span>';
     html += '</div>';
@@ -2146,7 +2146,7 @@ function brStructuredAnswer(query, plans) {
         r.status +
         '</span>';
       html +=
-        '<span style="font-size:14px;font-weight:600;color:#1e293b;">' +
+        '<span style="font-size:14px;font-weight:600;color:var(--text-primary);">' +
         r.label.charAt(0).toUpperCase() +
         r.label.slice(1) +
         '</span>';
@@ -2154,38 +2154,38 @@ function brStructuredAnswer(query, plans) {
     html += '</div>';
     // Divider
     html +=
-      '<div style="height:1px;background:rgba(0,0,0,0.06);margin-bottom:8px;"></div>';
+      '<div style="height:1px;background:var(--border-light, var(--border-default));margin-bottom:8px;"></div>';
     // Data
     if (r.items.length) {
       r.items.forEach(function (item) {
         html +=
-          '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:2px;">• ' +
+          '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:2px;">• ' +
           item +
           '</div>';
       });
     } else {
       html +=
-        '<div style="font-size:13px;color:#94a3b8;line-height:1.6;">Not confirmed in plan documents. Confirm with carrier before quoting.</div>';
+        '<div style="font-size:13px;color:var(--text-tertiary);line-height:1.6;">Not confirmed in plan documents. Confirm with carrier before quoting.</div>';
     }
     // SAY THIS section (for Covered/Discount/Not Covered with items)
     if ((r.status === 'Covered' || r.status === 'Discount') && r.items.length) {
       var sayText = r.sayThis || r.items[0];
       html +=
-        '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:8px;">';
+        '<div style="background:var(--bg-surface-raised);border-radius:8px;padding:8px 10px;margin-top:8px;">';
       html +=
-        '<div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;white-space:nowrap;">SAY THIS →</div>';
+        '<div style="font-size:9px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;white-space:nowrap;">SAY THIS →</div>';
       html +=
-        '<div style="font-size:11px;color:#374151;font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"' +
+        '<div style="font-size:11px;color:var(--text-secondary);font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"' +
         sayText +
         '"</div>';
       html += '</div>';
     } else if (r.status === 'Not Covered' && r.items.length) {
       html +=
-        '<div style="background:#f8fafc;border-radius:8px;padding:8px 10px;margin-top:8px;">';
+        '<div style="background:var(--bg-surface-raised);border-radius:8px;padding:8px 10px;margin-top:8px;">';
       html +=
-        '<div style="font-size:9px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;white-space:nowrap;">SAY THIS →</div>';
+        '<div style="font-size:9px;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px;white-space:nowrap;">SAY THIS →</div>';
       html +=
-        '<div style="font-size:13px;color:#1e293b;font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"That benefit isn\'t included on this plan — let me show you what IS covered."</div>';
+        '<div style="font-size:13px;color:var(--text-primary);font-style:italic;line-height:1.5;word-break:normal;overflow-wrap:break-word;">"That benefit isn\'t included on this plan — let me show you what IS covered."</div>';
       html += '</div>';
     }
     // Network discount callout — shown on ANY status if result has networkDiscount set
@@ -2200,7 +2200,7 @@ function brStructuredAnswer(query, plans) {
 
   // Source
   html +=
-    '<div style="font-size:10px;color:#94a3b8;text-align:right;margin-top:2px;">Source: ' +
+    '<div style="font-size:10px;color:var(--text-tertiary);text-align:right;margin-top:2px;">Source: ' +
     planDoc.name +
     '</div>';
   return html;
@@ -2316,7 +2316,7 @@ function brSmartAnswer(query, plans) {
     );
 
   var html =
-    '<div style="background:#F8FAFF;border:1px solid #E8EBF5;border-left:3px solid #5175F1;border-radius:8px;padding:12px;">';
+    '<div style="background:var(--bg-surface-raised);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #5175F1;border-radius:8px;padding:12px;">';
   html +=
     '<div style="font-size:10px;font-weight:800;color:#5175F1;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px;">' +
     LI.brain +
@@ -2368,7 +2368,7 @@ function brSmartAnswer(query, plans) {
 
     html += '<div style="margin-bottom:10px;">';
     html +=
-      '<div style="font-size:12px;font-weight:800;color:#1C2035;margin-bottom:6px;">' +
+      '<div style="font-size:12px;font-weight:800;color:var(--text-primary);margin-bottom:6px;">' +
       LI.file +
       ' ' +
       plan.name +
@@ -2376,14 +2376,14 @@ function brSmartAnswer(query, plans) {
 
     if (planMatches.benefits.length) {
       html +=
-        '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-left:3px solid #29A26A;border-radius:8px;padding:8px 10px;margin-bottom:5px;">';
+        '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #29A26A;border-radius:8px;padding:8px 10px;margin-bottom:5px;">';
       html +=
         '<div style="font-size:10px;font-weight:800;color:#15803D;margin-bottom:4px;">' +
         LI.check +
         ' &#9989; COVERED</div>';
       planMatches.benefits.forEach(function (b) {
         html +=
-          '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;padding-left:8px;border-left:2px solid #29A26A;">' +
+          '<div style="font-size:12px;color:var(--text-primary);margin-bottom:3px;padding-left:8px;border-left:2px solid #29A26A;">' +
           LI.dot +
           ' ' +
           brHl(b, specificTerms) +
@@ -2394,14 +2394,14 @@ function brSmartAnswer(query, plans) {
 
     if (planMatches.exclusions.length) {
       html +=
-        '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-left:3px solid #DC2626;border-radius:8px;padding:8px 10px;margin-bottom:5px;">';
+        '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #DC2626;border-radius:8px;padding:8px 10px;margin-bottom:5px;">';
       html +=
         '<div style="font-size:10px;font-weight:800;color:#DC2626;margin-bottom:4px;">' +
         LI.ban +
         ' &#10060; NOT COVERED / LIMITED</div>';
       planMatches.exclusions.forEach(function (e) {
         html +=
-          '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;padding-left:8px;border-left:2px solid #DC2626;">' +
+          '<div style="font-size:12px;color:var(--text-primary);margin-bottom:3px;padding-left:8px;border-left:2px solid #DC2626;">' +
           LI.dot +
           ' ' +
           brHl(e, specificTerms) +
@@ -2412,14 +2412,14 @@ function brSmartAnswer(query, plans) {
 
     if (isWaiting && planMatches.waiting.length) {
       html +=
-        '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-left:3px solid #F59E0B;border-radius:8px;padding:8px 10px;margin-bottom:5px;">';
+        '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #F59E0B;border-radius:8px;padding:8px 10px;margin-bottom:5px;">';
       html +=
         '<div style="font-size:10px;font-weight:800;color:#C2410C;margin-bottom:4px;">' +
         LI.clock +
         ' &#9203; WAITING PERIODS</div>';
       planMatches.waiting.forEach(function (w) {
         html +=
-          '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;">' +
+          '<div style="font-size:12px;color:var(--text-primary);margin-bottom:3px;">' +
           LI.dot +
           ' ' +
           brHl(w, specificTerms) +
@@ -2430,14 +2430,14 @@ function brSmartAnswer(query, plans) {
 
     if (isPreEx && planMatches.preex.length) {
       html +=
-        '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-left:3px solid #F59E0B;border-radius:8px;padding:8px 10px;margin-bottom:5px;">';
+        '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #F59E0B;border-radius:8px;padding:8px 10px;margin-bottom:5px;">';
       html +=
         '<div style="font-size:10px;font-weight:800;color:#C2410C;margin-bottom:4px;">' +
         LI.warn +
         ' &#9888;&#65039; PRE-EXISTING CONDITIONS</div>';
       planMatches.preex.forEach(function (p) {
         html +=
-          '<div style="font-size:12px;color:#1C2035;margin-bottom:3px;">' +
+          '<div style="font-size:12px;color:var(--text-primary);margin-bottom:3px;">' +
           LI.dot +
           ' ' +
           brHl(p, specificTerms) +
@@ -2482,15 +2482,15 @@ function brSmartAnswer(query, plans) {
         '</div>';
     }
     html +=
-      '<div style="font-size:10px;color:#6B7280;font-style:italic;margin-top:6px;padding-top:4px;border-top:1px dashed rgba(0,0,0,0.08);">⚠️ Always verify against the full Schedule of Benefits before confirming coverage to the prospect.</div>';
+      '<div style="font-size:10px;color:var(--text-secondary);font-style:italic;margin-top:6px;padding-top:4px;border-top:1px dashed var(--border-light, var(--border-default));">⚠️ Always verify against the full Schedule of Benefits before confirming coverage to the prospect.</div>';
 
     html += '</div>';
   });
 
   if (!foundAnything) {
-    html += '<div style="font-size:12px;color:#6B7280;line-height:1.6;">';
+    html += '<div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">';
     html +=
-      '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-left:3px solid #DC2626;border-radius:8px;padding:10px;margin-bottom:8px;">';
+      '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #DC2626;border-radius:8px;padding:10px;margin-bottom:8px;">';
     html +=
       '<div style="font-size:10px;font-weight:800;color:#DC2626;margin-bottom:4px;">' +
       LI.ban +
@@ -2499,7 +2499,7 @@ function brSmartAnswer(query, plans) {
       '<strong>"' +
       query.replace(/</g, '&lt;') +
       '"</strong> is not specifically listed in the Schedule of Benefits.</div>';
-    html += '<div style="font-size:11px;color:#6B7280;line-height:1.6;">';
+    html += '<div style="font-size:11px;color:var(--text-secondary);line-height:1.6;">';
     html +=
       LI.dot +
       ' Plans state: <em>"does not cover any service NOT listed in Schedule of Benefits"</em><br>';
@@ -2515,7 +2515,7 @@ function brSmartAnswer(query, plans) {
 
   if (specificTerms.length > 1) {
     html +=
-      '<div style="font-size:10px;color:#9CA3AF;margin-top:6px;border-top:1px solid rgba(0,0,0,0.06);padding-top:6px;">Searched: ' +
+      '<div style="font-size:10px;color:var(--text-tertiary);margin-top:6px;border-top:1px solid var(--border-light, var(--border-default));padding-top:6px;">Searched: ' +
       specificTerms.slice(0, 8).join(', ') +
       (specificTerms.length > 8 ? ' + more' : '') +
       '</div>';
@@ -2794,7 +2794,7 @@ function _chaDebugBadgeHtml(meta) {
   var matchCount = Number(meta.matchCount || 0);
   var sourceFile = escHTML(meta.sourceFile || 'Unknown source');
   return (
-    '<div style="margin-top:6px;font-size:11px;color:#6b7280;background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:3px 8px;display:inline-block;">' +
+    '<div style="margin-top:6px;font-size:11px;color:#6b7280;background:var(--bg-surface-muted);border:1px solid var(--border-light, var(--border-default));border-radius:999px;padding:3px 8px;display:inline-block;">' +
     '📎 ' + planName + ' | ' + matchCount + ' matches | ' + sourceFile +
     '</div>'
   );
