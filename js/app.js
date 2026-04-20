@@ -736,13 +736,6 @@ function chaDashWeeklyProgressHtml() {
 }
 
 function chaDashWidgetsHtml() {
-  var act = chaDashLoadActivity();
-  var salesToday = 0;
-  try {
-    if (typeof chaAnalyticsReadBundle === 'function') {
-      salesToday = chaAnalyticsReadBundle().stats.todayCount || 0;
-    }
-  } catch (_e) {}
   var recent = chaDashRecentLoad();
   var recentHtml = '';
   if (recent.length) {
@@ -768,15 +761,8 @@ function chaDashWidgetsHtml() {
     );
   };
   return (
-    '<div id="dashCommandWidgets" class="dash-cc-grid">' +
-    '<div class="dash-cc-card dash-cc-card-activity"><div class="dash-cc-card-title">Today\'s Activity</div><div class="dash-cc-triple"><div><div class="dash-cc-big">' +
-    act.lookups +
-    '</div><div class="dash-cc-lbl">Plan lookups</div></div><div><div class="dash-cc-big">' +
-    salesToday +
-    '</div><div class="dash-cc-lbl">Sales logged</div></div><div><div class="dash-cc-big">' +
-    act.scripts +
-    '</div><div class="dash-cc-lbl">Script views</div></div></div></div>' +
-    '<div class="dash-cc-card dash-cc-card-weekly"><div class="dash-cc-card-title">Weekly Progress</div>' +
+    '<div id="dashCommandWidgets" class="dash-cc-grid dash-cc-grid-3w">' +
+    '<div class="dash-cc-card dash-cc-card-weekly dash-cc-weekly-span"><div class="dash-cc-card-title">Weekly Progress</div>' +
     chaDashWeeklyProgressHtml() +
     '</div>' +
     '<div class="dash-cc-card dash-cc-card-actions"><div class="dash-cc-card-title">Quick Actions</div><div class="dash-cc-actions">' +

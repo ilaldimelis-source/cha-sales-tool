@@ -8190,9 +8190,22 @@ body.dark-mode {
   gap: 14px;
   margin: 0 0 18px;
 }
+.dash-cc-grid-3w {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: auto auto;
+}
+.dash-cc-weekly-span {
+  grid-column: 1 / -1;
+}
 @media (max-width: 720px) {
   .dash-cc-grid {
     grid-template-columns: 1fr;
+  }
+  .dash-cc-grid-3w {
+    grid-template-columns: 1fr;
+  }
+  .dash-cc-weekly-span {
+    grid-column: 1;
   }
 }
 .dash-cc-card {
