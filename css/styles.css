@@ -7549,26 +7549,93 @@ select[onchange*="Status"],
   display: none !important;
 }
 
-/* ── BENEFIT EXPLAINER: collapsed cards ── */
-.benefit-detail-wrap {
-  display: none;
-}
-.benefit-card.expanded .benefit-detail-wrap {
-  display: block;
-}
-.benefit-expand-indicator {
-  float: right;
-  font-size: 18px;
-  color: #64748b;
-  cursor: pointer;
-  line-height: 1;
+/* ── BENEFIT EXPLAINER: clean collapsed cards ── */
+.benefit-cards-wrap {
+  display: block !important;
 }
 .benefit-card {
+  background: white;
+  border: 0.5px solid #e9ecf5;
+  border-radius: 12px;
+  margin-bottom: 12px;
   cursor: pointer;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
 }
 .benefit-card:hover {
   border-color: #5175f1;
+}
+.benefit-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+}
+.benefit-card-left {
+  flex: 1;
+  min-width: 0;
+}
+.benefit-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+.benefit-card-simple {
+  font-size: 13px;
+  color: #64748b;
+  line-height: 1.5;
+}
+.benefit-card-toggle {
+  font-size: 20px;
+  color: #94a3b8;
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+  font-weight: 300;
+}
+.benefit-card-detail {
+  display: none;
+  padding: 0 20px 16px;
+  border-top: 0.5px solid #e9ecf5;
+}
+.benefit-card.expanded .benefit-card-detail {
+  display: block;
+}
+.benefit-field {
+  padding: 10px 0;
+  border-bottom: 0.5px solid #f0f2f7;
+}
+.benefit-field:last-child {
+  border-bottom: none;
+}
+.benefit-field-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+.benefit-field-text {
+  font-size: 13px;
+  color: #374151;
+  line-height: 1.6;
+}
+.benefit-field-danger {
+  background: #fef2f2;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 4px;
+}
+.benefit-field-success {
+  background: #f0fdf4;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-top: 4px;
 }
 
 /* ── PLAN FIT & FRAMING: collapsed accordion ── */
@@ -7610,15 +7677,5 @@ select[onchange*="Status"],
   border-radius: 4px;
   background: #e6f1fb;
   color: #0c447c;
-}
-
-/* ── BENEFIT EXPLAINER: fix card stacking ── */
-.benefit-cards-wrap {
-  display: block !important;
-}
-.benefit-card {
-  display: block !important;
-  width: 100% !important;
-  margin-bottom: 10px !important;
 }
 

@@ -915,16 +915,14 @@ const PLANS = [
   }
 ];
 
-function _toggleBenefitCard(ev, id) {
+window._toggleBenefitCard = function (id) {
   var card = document.getElementById(id);
   if (!card) return;
-  var t = ev && ev.target;
-  if (t && t.closest && t.closest('a[href]')) return;
-  if (t && t.closest && t.closest('.benefit-detail-wrap')) return;
+  var isExpanded = card.classList.contains('expanded');
   card.classList.toggle('expanded');
-  var ind = card.querySelector('.benefit-expand-indicator');
-  if (ind) ind.textContent = card.classList.contains('expanded') ? '\u2212' : '+';
-}
+  var toggle = card.querySelector('.benefit-card-toggle');
+  if (toggle) toggle.textContent = isExpanded ? '+' : '\u2212';
+};
 
 function renderBenefits() {
   // Categorize benefits by index into the BENEFITS array
@@ -984,69 +982,62 @@ function renderBenefits() {
       '</div></div>';
     html += '</div>';
 
-    // Cards stack vertically (full-width rows; class for CSS override)
-    html +=
-      '<div class="benefit-cards-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;">';
+    html += '<div class="benefit-cards-wrap">';
     cat.indices.forEach(function (i) {
       var b = BENEFITS[i];
+      var cardId = 'bx' + i;
       html +=
-        '<div class="xcard benefit-card benefit-card-item" id="bx' +
-        i +
+        '<div class="benefit-card benefit-card-item" id="' +
+        cardId +
         '" data-benefit-search="' +
         escHTML((b.name + ' ' + b.simple + ' ' + b.official).toLowerCase()) +
-        '" style="border-left:3px solid ' +
-        cat.color +
-        ';border-radius:12px;background:#fff;overflow:hidden;" onclick="_toggleBenefitCard(event,\'bx' +
-        i +
+        '" onclick="_toggleBenefitCard(\'' +
+        cardId +
         '\')">';
-      html += '<div style="padding:16px 18px;">';
+      html += '<div class="benefit-card-header">';
+      html += '<div class="benefit-card-left">';
+      html += '<div class="benefit-card-name">' + b.name + '</div>';
+      html += '<div class="benefit-card-simple">' + b.simple + '</div>';
+      html += '</div>';
+      html += '<span class="benefit-card-toggle">+</span>';
+      html += '</div>';
+      html += '<div class="benefit-card-detail">';
       html +=
-        '<div style="display:flex;align-items:flex-start;gap:10px;">' +
-        iconBox(P[b.icon] || P.circle) +
-        '<div style="flex:1;min-width:0;">' +
-        '<div class="xcard-label" style="font-size:15px;font-weight:700;color:var(--text-primary);line-height:1.35;">' +
-        b.name +
-        '<span class="benefit-expand-indicator" aria-hidden="true">+</span></div>' +
-        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-top:8px;">' +
-        b.simple +
-        '</div>' +
-        '<div style="font-size:12px;color:#5175f1;font-weight:600;margin-top:8px;font-family:var(--font-ui);">Tap for details</div>' +
+        '<div class="benefit-field"><div class="benefit-field-label">Why it matters</div><div class="benefit-field-text">' +
+        b.frame +
         '</div></div>';
       html +=
-        '<div class="benefit-detail-wrap" style="padding:0 18px 18px;">';
-      html +=
-        '<div style="padding-top:4px;margin-bottom:14px;font-size:13px;color:var(--text-secondary);line-height:1.5;border-top:1px solid #F0F2F7;padding-top:14px;">' +
-        '<span style="font-family:var(--font-ui);font-weight:600;color:var(--text-primary);font-size:12px;">Why it matters: </span>' +
-        b.frame +
-        '</div>';
-      html +=
-        '<div class="field" style="margin-bottom:14px;"><div class="field-lbl" style="color:var(--charcoal2)">Official Meaning</div><div class="field-txt">' +
+        '<div class="benefit-field"><div class="benefit-field-label">Official meaning</div><div class="benefit-field-text">' +
         b.official +
         '</div></div>';
-      html +=
-        '<div class="field" style="margin-bottom:14px;"><div class="field-lbl" style="color:#7a5f00">Simple Explanation</div><div class="field-txt">' +
-        b.simple +
-        '</div></div>';
-      html +=
-        '<div class="field" style="margin-bottom:14px;"><div class="field-lbl" style="color:var(--warmgray3)">Common Misunderstanding</div><div class="field-txt" style="color:var(--warmgray3)">' +
-        b.misunderstand +
-        '</div></div>';
-      html +=
-        '<div class="ibox ibox-avoid u-mt10" style="margin-bottom:12px;"><span class="sbox-lbl" style="color:var(--error)">Never Say</span><br>' +
-        b.notsay +
-        '</div>';
-      html +=
-        '<div class="ibox ibox-bridge" style="margin-bottom:12px;"><span class="sbox-lbl" style="color:#29A26A">Common Follow-Up</span><br>' +
-        b.followup +
-        '</div>';
-      html +=
-        '<div class="ibox ibox-bridge" style="border-color:rgba(212,96,122,0.2);background:rgba(212,96,122,0.05);"><span class="sbox-lbl" style="color:var(--charcoal)">Bridge Back</span><br>' +
-        b.bridge +
-        '</div>';
+      if (b.misunderstand) {
+        html +=
+          '<div class="benefit-field"><div class="benefit-field-label">Common misunderstanding</div><div class="benefit-field-text">' +
+          b.misunderstand +
+          '</div></div>';
+      }
+      if (b.notsay) {
+        html +=
+          '<div class="benefit-field benefit-field-danger"><div class="benefit-field-label" style="color:#991b1b;">Never say</div><div class="benefit-field-text">' +
+          b.notsay +
+          '</div></div>';
+      }
+      if (b.followup) {
+        html +=
+          '<div class="benefit-field benefit-field-success"><div class="benefit-field-label" style="color:#15803d;">Common follow-up</div><div class="benefit-field-text">' +
+          b.followup +
+          '</div></div>';
+      }
+      if (b.bridge) {
+        html +=
+          '<div class="benefit-field"><div class="benefit-field-label" style="color:#5175F1;">Bridge back</div><div class="benefit-field-text">' +
+          b.bridge +
+          '</div></div>';
+      }
       html += '</div>';
       html += '</div>';
     });
-    html += '</div>'; // close grid
+    html += '</div>';
     html += '</div>'; // close category section
   });
 
