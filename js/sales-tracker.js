@@ -830,8 +830,6 @@ function _stParseReceipt(text, useGroq) {
     products: [],
     receiptTotal: 0,
     enrollmentFee: 0,
-    enrollmentAmount: 0,
-    deductibles: [],
     customer: '',
     agent: '',
     memberId: '',
@@ -1033,29 +1031,15 @@ function _stParseReceipt(text, useGroq) {
   // One-time enrollment charges are tracked separately and
   // NEVER used as a plan monthly amount.
   var enrollmentRe = /enrollment|one[-\s]?time|sign[-\s]?up\s+fee/i;
-  var enrollmentAmountRe =
-    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:enrollment(?:\s+one[-\s]?time)?|one[-\s]?time(?:\s+enrollment)?|sign[-\s]?up\s+fee)\b/i;
-  var deductibleAmountRe =
-    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*deductible\b/i;
   var priceAnyRe = /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/;
   for (var ei = 0; ei < lines.length; ei++) {
     var eline = lines[ei];
     if (!enrollmentRe.test(eline)) continue;
-    var em = eline.match(enrollmentAmountRe) || eline.match(priceAnyRe);
+    var em = eline.match(priceAnyRe);
     if (em) {
       var efee = parseFloat(em[1].replace(/,/g, ''));
       if (!isNaN(efee) && efee > 0) out.enrollmentFee += efee;
     }
-  }
-  out.enrollmentAmount = out.enrollmentFee;
-
-  // Collect deductible amounts so they are never treated as premium.
-  for (var dii = 0; dii < lines.length; dii++) {
-    var dline = lines[dii] || '';
-    var dmatch = dline.match(deductibleAmountRe);
-    if (!dmatch) continue;
-    var dval = parseFloat(String(dmatch[1]).replace(/,/g, ''));
-    if (!isNaN(dval) && dval > 0) out.deductibles.push(dval);
   }
 
   // ── Extract premium from combined Policy+Enrollment+Price lines ──
@@ -1070,7 +1054,7 @@ function _stParseReceipt(text, useGroq) {
   // Requires an explicit monthly marker — bare "$50.00" will
   // never match, and enrollment lines are skipped entirely.
   var priceRe =
-    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:product\s*)?(?:per\s*month|\/\s*mo\b|monthly|a\s+month|\bmo\b)/i;
+    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)[^$\n]{0,60}?(?:per\s*month|\/\s*mo\b|monthly|a\s+month|\bmo\b)/i;
   var skipLineRe =
     /^(?:central health|confirmation|products?|summary|total|policy|active|effective|starts?|member\s+\d|payment|plan\s+type|type\b|address|phone|email|date|status|enrollment|one[-\s]?time)/i;
   var policyRe = /policy\s*(?:number|#|:)?\s*[:-]?\s*([A-Z0-9-]{4,})/i;
@@ -1327,13 +1311,10 @@ function _stParseReceipt(text, useGroq) {
     for (var fi = 0; fi < lines.length; fi++) {
       var fline = lines[fi];
       if (enrollmentRe.test(fline)) continue;
-      var fm = fline.match(priceRe) || fline.match(productLineRe);
-      if (!fm && deductibleAmountRe.test(fline)) continue;
-      if (!fm) fm = fline.match(priceAnyRe);
+      var fm = fline.match(priceAnyRe);
       if (fm) {
         var fp = parseFloat(fm[1].replace(/,/g, ''));
         if (!isNaN(fp) && fp > 0) {
-          if (out.deductibles.indexOf(fp) !== -1) continue;
           fallbackPrice = fp;
           break;
         }
@@ -1381,46 +1362,6 @@ function _stParseReceipt(text, useGroq) {
 
   // ── DEAL DETECTION & REORDER ──────────────────────────────
   _stReorderDealProducts(out);
-
-  // ── Parser sanity guard: premium/enrollment swap & deductible bleed ──
-  if (out.products.length > 0) {
-    var firstPremium = Number(out.products[0].price) || 0;
-    var feeAmount = Number(out.enrollmentFee) || 0;
-    var likelyDeductibles = {
-      1000: true,
-      1500: true,
-      2000: true,
-      2500: true,
-      3000: true,
-      5000: true,
-      7500: true,
-      10000: true
-    };
-    // If deductible value leaked into premium, choose a real per-month amount.
-    if (
-      firstPremium > 0 &&
-      (out.deductibles.indexOf(firstPremium) !== -1 || likelyDeductibles[Math.round(firstPremium)] === true)
-    ) {
-      for (var pmi = 0; pmi < lines.length; pmi++) {
-        var pmLine = lines[pmi] || '';
-        var pmMatch = pmLine.match(priceRe) || pmLine.match(productLineRe);
-        if (!pmMatch) continue;
-        var pmVal = parseFloat(String(pmMatch[1]).replace(/,/g, ''));
-        if (isNaN(pmVal) || pmVal <= 0) continue;
-        if (out.deductibles.indexOf(pmVal) !== -1) continue;
-        if (Math.abs(pmVal - feeAmount) < 0.01) continue;
-        firstPremium = pmVal;
-        out.products[0].price = pmVal;
-        break;
-      }
-    }
-    // Swap correction for known regression pattern.
-    if (feeAmount > 100 && firstPremium > 0 && firstPremium < feeAmount) {
-      out.products[0].price = feeAmount;
-      out.enrollmentFee = firstPremium;
-      out.enrollmentAmount = out.enrollmentFee;
-    }
-  }
 
   // ── GROQ FALLBACK ─────────────────────────────────────────
   // Last-resort parser for receipt formats we've never seen.
@@ -1945,50 +1886,6 @@ function _stAutoDetectAndAdd() {
       'Could not find any products in that receipt. Try "Add as Deal" instead.',
       'error'
     );
-    return;
-  }
-
-  // Unrecognized fallback should trigger only for a single-receipt
-  // auto-detect. Multi-receipt pastes must continue normal per-chunk
-  // save flow so deals don't collapse into one draft.
-  var firstParsed = parsedChunks[0].parsed || {};
-  var firstProducts = firstParsed.products || [];
-  var corePlanName =
-    (firstProducts[0] && String(firstProducts[0].name || '').trim()) || '';
-  var matchedPlanName =
-    typeof _stMatchPlanName === 'function' ? _stMatchPlanName(corePlanName) : '';
-  var genericPlanPattern = /(plan summary|short term medical|medical)$/i;
-  var isRecognizedPlan =
-    !!matchedPlanName &&
-    !genericPlanPattern.test(corePlanName) &&
-    corePlanName.length >= 5;
-  if (parsedChunks.length === 1 && !isRecognizedPlan) {
-    var fallbackFirstLine = '';
-    var textLines = text.split(/\r?\n/);
-    for (var li = 0; li < textLines.length; li++) {
-      if (String(textLines[li] || '').trim()) {
-        fallbackFirstLine = String(textLines[li]).trim();
-        break;
-      }
-    }
-    var parsedAddons = [];
-    for (var pi0 = 1; pi0 < firstProducts.length; pi0++) {
-      parsedAddons.push({
-        name: firstProducts[pi0].name || 'Unknown Add-on',
-        amount: Number(firstProducts[pi0].price) || 0
-      });
-    }
-    _stUnrecognizedDraft = {
-      raw: text,
-      customer: firstParsed.customer || 'Unknown',
-      memberId: firstParsed.memberId || '',
-      plan: corePlanName || fallbackFirstLine || 'Unknown Plan',
-      amount: Number((firstProducts[0] && firstProducts[0].price) || 0),
-      addons: parsedAddons,
-      enrollmentFee: Number(firstParsed.enrollmentFee) || 0
-    };
-    _stRenderUnrecognizedPreview();
-    _stFlash('Plan not recognized — review and edit before saving.', 'error');
     return;
   }
 
