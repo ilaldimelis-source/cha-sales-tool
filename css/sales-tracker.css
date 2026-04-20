@@ -63,7 +63,7 @@
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 8px;
   padding: 8px 6px;
-  background: #f7f8fa;
+  background: var(--bg-page, #eef1f6);
   text-align: center;
 }
 
@@ -250,7 +250,7 @@
   padding: 8px 10px;
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 10px;
-  background: #f7f8fa;
+  background: var(--bg-page, #eef1f6);
   flex-wrap: wrap;
 }
 
@@ -449,7 +449,7 @@
   padding: 4px 9px;
   border-radius: 999px;
   border: 1px solid var(--border, #e2e8f0);
-  background: #f7f8fa;
+  background: var(--bg-page, #eef1f6);
   font-family: var(--font-ui);
   font-size: 10px;
   font-weight: 700;
@@ -1367,7 +1367,7 @@
 }
 
 .st-comm-summary-card {
-  background: #f7f8fa;
+  background: var(--bg-page, #eef1f6);
   border: 1px solid #e2e4eb;
   border-radius: 12px;
   padding: 16px 18px;
@@ -1943,7 +1943,7 @@
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 12px;
   padding: 12px 14px 14px;
-  background: var(--bg-surface-muted, #f7f8fa);
+  background: var(--bg-surface-muted, var(--bg-page, #eef1f6));
 }
 .st-analytics-card-title {
   font-size: 10px;
