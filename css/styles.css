@@ -7956,6 +7956,14 @@ body.dark-mode {
 }
 
 /* Home: Plan lookup (compact tool card) */
+#page-dashboard .dashboard-home-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+#page-dashboard .dash-lookup-card {
+  margin-bottom: 0;
+}
 .dash-lookup-card {
   position: relative;
   margin-top: 0;
@@ -7963,14 +7971,40 @@ body.dark-mode {
   border: 1px solid var(--border-default);
   border-radius: 14px;
   background: #ffffff;
-  padding: 20px;
+  padding: 14px;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  max-height: none;
 }
 .dash-lookup-head {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
+}
+.dash-lookup-head-inline {
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.dash-lookup-head-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0;
+  min-width: 0;
+  line-height: 1.25;
+}
+.dash-lookup-head-inline .dash-lookup-title {
+  flex-shrink: 0;
+}
+.dash-lookup-head-inline .dash-lookup-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  white-space: normal;
+}
+.dash-lookup-title-sep {
+  color: var(--text-tertiary);
+  font-weight: 500;
 }
 .dash-lookup-icon {
   width: 32px;
@@ -7992,11 +8026,11 @@ body.dark-mode {
 .dash-lookup-input-wrap {
   position: relative;
   z-index: 5;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 #dashLookupSearch {
   width: 100%;
-  height: 44px;
+  height: 38px;
   border-radius: 10px;
   border: 1px solid var(--border-default);
   background: #ffffff;
@@ -8027,9 +8061,9 @@ body.dark-mode {
   width: 100%;
   border: 1px solid var(--border-default);
   border-radius: 10px;
-  min-height: 40px;
+  min-height: 36px;
   padding: 0 10px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   font-size: 13px;
   background: #ffffff;
   color: var(--text-primary);
@@ -8037,7 +8071,7 @@ body.dark-mode {
 .dash-lookup-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 6px;
+  gap: 8px;
 }
 @media (max-width: 560px) {
   .dash-lookup-grid {
@@ -8047,13 +8081,14 @@ body.dark-mode {
 .dash-lookup-cell {
   border: 1px solid var(--border-default);
   border-radius: 8px;
-  padding: 6px 8px;
+  padding: 8px;
   background: #eef1f6;
 }
 .dash-lookup-cell span {
-  font-size: 9px;
-  letter-spacing: 0.06em;
+  font-size: 10px;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-weight: 700;
   color: var(--text-tertiary);
 }
 .dash-lookup-cell strong {
@@ -8064,7 +8099,7 @@ body.dark-mode {
   display: block;
 }
 .dash-lookup-actions {
-  margin-top: 8px;
+  margin-top: 10px;
 }
 .dash-lookup-provider,
 .dash-lookup-copy {
@@ -8354,7 +8389,7 @@ body.dark-mode {
 }
 
 .dash-sections-label {
-  margin: 10px 0 6px;
+  margin: 4px 0 6px;
   font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
@@ -8365,11 +8400,22 @@ body.dark-mode {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
 }
+.dash-grid-jump.dash-grid-compact {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
 .dash-grid-compact .dash-card {
   padding: 12px;
   border: 0.5px solid var(--border-default);
   border-radius: 12px;
   background: var(--bg-surface);
+}
+.dash-grid-jump.dash-grid-compact .dash-card {
+  min-height: 86px;
+  max-height: 92px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 .dash-grid-compact .dash-icon {
   width: 24px;
@@ -8377,15 +8423,29 @@ body.dark-mode {
   margin-bottom: 8px;
   color: var(--accent);
 }
+.dash-grid-jump.dash-grid-compact .dash-icon {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 6px;
+}
 .dash-grid-compact .dash-icon svg {
   width: 16px;
   height: 16px;
+}
+.dash-grid-jump.dash-grid-compact .dash-icon svg {
+  width: 15px;
+  height: 15px;
 }
 .dash-grid-compact .dash-title {
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 2px;
   color: var(--text-primary);
+}
+.dash-grid-jump.dash-grid-compact .dash-title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 2px;
 }
 .dash-grid-compact .dash-desc {
   font-size: 11px;
@@ -8437,10 +8497,15 @@ body.dark-mode [style*='border: 2px solid #E5E7EB'] {
 }
 
 @media (max-width: 1100px) {
-  .dash-grid-compact {
+  .dash-grid-compact:not(.dash-grid-jump) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .dash-lookup-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 639px) {
+  .dash-grid-jump.dash-grid-compact {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -8791,4 +8856,37 @@ body.dark-mode #main-content,
 body.dark-mode .content,
 body.dark-mode .combo-page {
   background: #0c111d !important;
+}
+
+/* Dashboard: compact Plan Lookup + Jump To grid (after Modern Theme rules) */
+#page-dashboard .dash-lookup-card {
+  padding: 14px;
+  margin-bottom: 0;
+}
+#page-dashboard .page {
+  padding-bottom: 16px;
+}
+.dash-grid-jump.dash-grid-compact .dash-card {
+  min-height: 86px;
+  max-height: 92px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dash-grid-jump.dash-grid-compact .dash-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+.dash-grid-jump.dash-grid-compact .dash-desc {
+  font-size: 11px;
+}
+.dash-grid-jump.dash-grid-compact .dash-icon {
+  width: 22px;
+  height: 22px;
+  margin-bottom: 6px;
+}
+.dash-grid-jump.dash-grid-compact .dash-icon svg {
+  width: 15px;
+  height: 15px;
 }
