@@ -63,7 +63,7 @@
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 8px;
   padding: 8px 6px;
-  background: #fafbfc;
+  background: #f7f8fa;
   text-align: center;
 }
 
@@ -159,8 +159,8 @@
 
 /* Post-date "due today" banner */
 .st-pd-banner {
-  background: #fff7ed;
-  border: 1px solid #fdba74;
+  background: #f0f4f8;
+  border: 1px solid #cbd5e1;
   border-radius: 12px;
   padding: 12px 14px;
   margin-bottom: 12px;
@@ -169,7 +169,7 @@
 .st-pd-banner-head {
   font-family: var(--font-ui);
   font-size: 13px;
-  color: #9a3412;
+  color: #475569;
   margin-bottom: 8px;
 }
 
@@ -179,7 +179,7 @@
 
 .st-pd-banner-head span {
   font-weight: 500;
-  color: #b45309;
+  color: #64748b;
 }
 
 .st-pd-banner-list {
@@ -193,8 +193,8 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  background: #fff;
-  border: 1px solid #fed7aa;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 7px 10px;
 }
@@ -250,7 +250,7 @@
   padding: 8px 10px;
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 10px;
-  background: #fafbfc;
+  background: #f7f8fa;
   flex-wrap: wrap;
 }
 
@@ -270,9 +270,9 @@
   display: inline-block;
   padding: 2px 8px;
   border-radius: 999px;
-  background: #fff7ed;
-  color: #9a3412;
-  border: 1px solid #fdba74;
+  background: #e8eef5;
+  color: #475569;
+  border: 1px solid #cbd5e1;
   font-family: var(--font-ui);
   font-size: 9px;
   font-weight: 800;
@@ -336,7 +336,7 @@
 .st-pd-remove:hover {
   color: #b91c1c;
   border-color: #fca5a5;
-  background: #fef2f2;
+  background: #f0f4f8;
 }
 
 /* Bottom spacer so the floating nav toolbar never covers
@@ -449,7 +449,7 @@
   padding: 4px 9px;
   border-radius: 999px;
   border: 1px solid var(--border, #e2e8f0);
-  background: #fafbfc;
+  background: #f7f8fa;
   font-family: var(--font-ui);
   font-size: 10px;
   font-weight: 700;
@@ -492,7 +492,7 @@
 }
 
 .st-flash-error {
-  background: #fef2f2;
+  background: #f0f4f8;
   color: #b91c1c;
   border: 1px solid #fca5a5;
 }
@@ -633,7 +633,7 @@
 
 .st-row-chargeback td {
   color: #b91c1c;
-  background: #fef2f2;
+  background: #f0f4f8;
 }
 
 .st-type-deal {
@@ -691,7 +691,7 @@
 
 .st-delete:hover {
   color: #dc2626;
-  background: #fef2f2;
+  background: #f0f4f8;
   border-color: #fca5a5;
 }
 
@@ -1117,8 +1117,8 @@
   box-shadow: 0 2px 8px rgb(15 23 42 / 0.04);
 }
 .st-preview-bubble-fee {
-  background: linear-gradient(145deg, #fffbeb 0%, #fef3c7 100%);
-  border-color: #fcd34d;
+  background: linear-gradient(145deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-color: #94a3b8;
 }
 .st-preview-empty {
   font-size: 12px;
@@ -1134,7 +1134,7 @@
   margin-bottom: 4px;
 }
 .st-preview-bubble-fee .st-pb-badge {
-  color: #b45309;
+  color: #475569;
 }
 .st-pb-name {
   font-family: var(--font-ui);
@@ -1245,8 +1245,8 @@
 .st-sale-bubble-fee {
   font-size: 11px;
   font-weight: 600;
-  color: #b45309;
-  background: #fffbeb;
+  color: #475569;
+  background: #eef2f7;
   border-radius: 10px;
   padding: 6px 10px;
   margin-bottom: 8px;
@@ -1367,7 +1367,7 @@
 }
 
 .st-comm-summary-card {
-  background: #fafbfc;
+  background: #f7f8fa;
   border: 1px solid #e2e4eb;
   border-radius: 12px;
   padding: 16px 18px;
@@ -1567,9 +1567,9 @@
 }
 
 .st-flash-warn {
-  background: #fef3c7;
-  color: #78350f;
-  border: 1px solid #f59e0b;
+  background: #e8f0fc;
+  color: #334155;
+  border: 1px solid #94a3b8;
 }
 
 .st-flash-neutral {
@@ -1943,7 +1943,7 @@
   border: 1px solid var(--border, #e2e8f0);
   border-radius: 12px;
   padding: 12px 14px 14px;
-  background: var(--bg-surface-muted, #fafbfc);
+  background: var(--bg-surface-muted, #f7f8fa);
 }
 .st-analytics-card-title {
   font-size: 10px;

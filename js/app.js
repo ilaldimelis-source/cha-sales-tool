@@ -735,24 +735,23 @@ function chaDashWeeklyProgressHtml() {
   );
 }
 
+function chaDashOpenPhcsSearch() {
+  window.open(
+    'https://www.multiplan.com/webcenter/portal/ProviderSearch',
+    '_blank',
+    'noopener,noreferrer'
+  );
+}
+
+function chaDashOpenFirstHealthSearch() {
+  window.open(
+    'https://providerlocator.firsthealth.com/',
+    '_blank',
+    'noopener,noreferrer'
+  );
+}
+
 function chaDashWidgetsHtml() {
-  var recent = chaDashRecentLoad();
-  var recentHtml = '';
-  if (recent.length) {
-    recent.forEach(function (r) {
-      recentHtml +=
-        '<button type="button" class="dash-cc-recent-item" onclick="dashLookupSelectPlan(\'' +
-        escHTML(String(r.id)) +
-        '\')"><span class="dash-cc-recent-name">' +
-        escHTML(r.name) +
-        '</span><span class="dash-cc-recent-type">' +
-        escHTML(r.type || '') +
-        '</span></button>';
-    });
-  } else {
-    recentHtml =
-      '<p class="dash-cc-muted">No recent lookups yet. Select a plan above.</p>';
-  }
   var ic = function (paths) {
     return (
       '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
@@ -760,12 +759,14 @@ function chaDashWidgetsHtml() {
       '</svg>'
     );
   };
+  var globe =
+    '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>';
   return (
-    '<div id="dashCommandWidgets" class="dash-cc-grid dash-cc-grid-3w">' +
-    '<div class="dash-cc-card dash-cc-card-weekly dash-cc-weekly-span"><div class="dash-cc-card-title">Weekly Progress</div>' +
+    '<div id="dashCommandWidgets" class="dash-cc-grid dash-cc-grid-pair">' +
+    '<div class="dash-cc-card dash-cc-card-weekly"><div class="dash-cc-card-title">Weekly Progress</div>' +
     chaDashWeeklyProgressHtml() +
     '</div>' +
-    '<div class="dash-cc-card dash-cc-card-actions"><div class="dash-cc-card-title">Quick Actions</div><div class="dash-cc-actions">' +
+    '<div class="dash-cc-card dash-cc-card-actions"><div class="dash-cc-card-title">Quick Actions</div><div class="dash-cc-actions dash-cc-actions-5">' +
     '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'myspace\',\'salestracker\')">' +
     ic('<circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/>') +
     '<span>Log a Sale</span></button>' +
@@ -775,13 +776,13 @@ function chaDashWidgetsHtml() {
     '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'scripts\',\'planscripts\')">' +
     ic('<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/>') +
     '<span>Open Script</span></button>' +
-    '<button type="button" class="dash-cc-action" onclick="dashLookupOpenProvider()">' +
-    ic('<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>') +
-    '<span>Provider Search</span></button>' +
+    '<button type="button" class="dash-cc-action" onclick="chaDashOpenPhcsSearch()">' +
+    ic(globe) +
+    '<span>PHCS Search</span></button>' +
+    '<button type="button" class="dash-cc-action" onclick="chaDashOpenFirstHealthSearch()">' +
+    ic(globe) +
+    '<span>FirstHealth Search</span></button>' +
     '</div></div>' +
-    '<div class="dash-cc-card dash-cc-card-recent"><div class="dash-cc-card-title">Recent Plans</div>' +
-    recentHtml +
-    '<button type="button" class="dash-cc-clear" onclick="chaDashClearRecent()">Clear history</button></div>' +
     '</div>'
   );
 }
