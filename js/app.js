@@ -168,14 +168,14 @@ function _initTheme() {
 function _buildGreetingText() {
   var hr = new Date().getHours();
   var gr =
-    hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+    hr < 12 ? 'Good Morning' : hr < 17 ? 'Good Afternoon' : 'Good Evening';
   var custom = '';
   try {
-    custom = (safeGetItem('cha_display_name') || '').trim();
+    custom = (safeGetItem('preferredName') || safeGetItem('cha_display_name') || '').trim();
   } catch (_e) {
     custom = '';
   }
-  if (custom) return gr + ', ' + custom;
+  if (custom) return gr + ' ! ' + custom;
   var first = 'Agent';
   try {
     var u = window.CHA_USER;
@@ -183,7 +183,7 @@ function _buildGreetingText() {
   } catch (_e) {
     /* ignore */
   }
-  return gr + ', ' + first;
+  return gr + ' ! ' + first;
 }
 
 function _refreshTopbarGreeting() {
@@ -207,7 +207,7 @@ function _openTopbarGreetingEditor() {
 
   var current = '';
   try {
-    current = (safeGetItem('cha_display_name') || '').trim();
+    current = (safeGetItem('preferredName') || safeGetItem('cha_display_name') || '').trim();
   } catch (_e) {
     current = '';
   }
@@ -229,6 +229,7 @@ function _openTopbarGreetingEditor() {
       if (typeof saveDisplayName === 'function') {
         saveDisplayName(val);
       } else {
+        safeSetItem('preferredName', val);
         safeSetItem('cha_display_name', val);
       }
     } catch (_e) {

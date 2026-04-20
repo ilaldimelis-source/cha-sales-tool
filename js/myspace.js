@@ -122,7 +122,10 @@ function renderNotes() {
   // Settings: Display Name
   var savedName = '';
   try {
-    savedName = safeGetItem('cha_display_name') || '';
+    savedName =
+      safeGetItem('preferredName') ||
+      safeGetItem('cha_display_name') ||
+      ((window.CHA_USER && (window.CHA_USER.firstName || window.CHA_USER.name)) || '');
   } catch (_e) {
     savedName = '';
   }
@@ -194,8 +197,11 @@ function renderNotes() {
 }
 
 function saveDisplayName(val) {
+  var next = (val || '').trim();
   try {
-    safeSetItem('cha_display_name', (val || '').trim());
+    safeSetItem('preferredName', next);
+    // Keep legacy key in sync for compatibility with older flows.
+    safeSetItem('cha_display_name', next);
   } catch (_e) {
     /* ignore */
   }
