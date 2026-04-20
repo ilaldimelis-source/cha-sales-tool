@@ -984,9 +984,9 @@ function renderBenefits() {
       '</div></div>';
     html += '</div>';
 
-    // Cards grid
+    // Cards stack vertically (full-width rows; class for CSS override)
     html +=
-      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;">';
+      '<div class="benefit-cards-wrap" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;">';
     cat.indices.forEach(function (i) {
       var b = BENEFITS[i];
       html +=

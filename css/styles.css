@@ -7612,3 +7612,13 @@ select[onchange*="Status"],
   color: #0c447c;
 }
 
+/* ── BENEFIT EXPLAINER: fix card stacking ── */
+.benefit-cards-wrap {
+  display: block !important;
+}
+.benefit-card {
+  display: block !important;
+  width: 100% !important;
+  margin-bottom: 10px !important;
+}
+
