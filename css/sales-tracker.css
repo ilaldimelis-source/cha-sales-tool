@@ -1904,3 +1904,115 @@
 #page-salestracker .st-wks-amount {
   font-size: 24px;
 }
+
+/* ── Sales analytics (additive dashboard at top of tracker) ── */
+.st-analytics {
+  margin: 0 0 18px;
+  padding: 16px 18px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: var(--bg-card, #fff);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.st-analytics:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.07);
+}
+.st-analytics-head {
+  margin-bottom: 14px;
+}
+.st-analytics-title {
+  margin: 0 0 4px;
+  font-family: var(--font-ui);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-primary, #1e293b);
+}
+.st-analytics-sub {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+  line-height: 1.45;
+}
+.st-analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+@media (max-width: 720px) {
+  .st-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+.st-analytics-card {
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 14px;
+  padding: 14px 14px 16px;
+  background: var(--bg-surface-muted, #fafbfc);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.st-analytics-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+.st-analytics-chart-card {
+  grid-column: 1 / -1;
+}
+.st-analytics-card-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 10px;
+}
+.st-analytics-chart {
+  display: block;
+  max-width: 100%;
+}
+.st-analytics-goal-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary, #1e293b);
+  margin-bottom: 8px;
+}
+.st-analytics-muted {
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+  font-weight: 500;
+}
+.st-analytics-progress {
+  height: 10px;
+  border-radius: 999px;
+  background: var(--border, #e2e8f0);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.st-analytics-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent, #5b8def);
+  transition: width 0.25s ease;
+}
+.st-analytics-link {
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent, #5175f1);
+  text-decoration: underline;
+  cursor: pointer;
+  font-family: var(--font-ui);
+}
+.st-analytics-body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary, #334155);
+}
+.st-analytics-body strong {
+  color: var(--text-primary, #1e293b);
+}

@@ -46,6 +46,8 @@ var ST_BONUS_TIERS = [
   { deals: 25, addons: 25, bonus: 1000 }
 ];
 
+window.CHA_BONUS_TIERS_FOR_DASH = ST_BONUS_TIERS;
+
 // ── PLAN NAME RECOGNITION ───────────────────────────────────
 // Comprehensive list of all core plans + add-ons CHA sells.
 // Used by the receipt parser for case-insensitive substring
@@ -4343,6 +4345,213 @@ function _stBuildCommissionTracker(sales, stats) {
   return html;
 }
 
+// ── ANALYTICS DASHBOARD (additive — read-only rollups) ───────
+function chaAnalyticsReadBundle() {
+  var sales = _stLoadSales();
+  sales = _stValidateSalesIntegrity(sales);
+  var stats = _stCalcStats(sales);
+  return { sales: sales, stats: stats };
+}
+
+function _stSumPremiumInRange(sales, t0, t1) {
+  var validDealReceiptIds = {};
+  var di;
+  for (di = 0; di < sales.length; di++) {
+    var ds = sales[di];
+    if (!ds || ds.type !== 'deal') continue;
+    if (ds.ts < t0 || ds.ts >= t1) continue;
+    if (_stNormalizeStatus(ds) !== 'chargeback' && ds.receiptId) {
+      validDealReceiptIds[ds.receiptId] = true;
+    }
+  }
+  var total = 0;
+  var i;
+  for (i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s) continue;
+    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (s.ts < t0 || s.ts >= t1) continue;
+    var include = false;
+    if (s.type === 'deal') include = true;
+    else if (s.type === 'addon') {
+      include = s.receiptId ? validDealReceiptIds[s.receiptId] === true : true;
+    }
+    if (include) total += Number(s.amount) || 0;
+  }
+  return total;
+}
+
+function _stMonthPremiumTotal(sales, y, m) {
+  var t0 = new Date(y, m, 1, 0, 0, 0, 0).getTime();
+  var t1 = new Date(y, m + 1, 1, 0, 0, 0, 0).getTime();
+  return _stSumPremiumInRange(sales, t0, t1);
+}
+
+function _stGetMonthlyGoalDollars() {
+  try {
+    var raw = localStorage.getItem('cha_monthly_goal');
+    var n = raw ? parseFloat(raw) : 10000;
+    if (isNaN(n) || n < 1000) return 10000;
+    return n;
+  } catch (_e) {
+    return 10000;
+  }
+}
+
+function _stEditMonthlyGoal() {
+  var cur = _stGetMonthlyGoalDollars();
+  var v = window.prompt('Monthly sales goal ($)', String(cur));
+  if (v == null) return;
+  var n = parseFloat(String(v).replace(/[$,]/g, ''));
+  if (isNaN(n) || n < 0) {
+    _stFlash('Invalid goal.', 'error');
+    return;
+  }
+  try {
+    localStorage.setItem('cha_monthly_goal', String(n));
+  } catch (_e2) {}
+  _stRender();
+  _stFlash('Monthly goal updated.', 'ok');
+}
+
+function _stBuildAnalyticsDashboard(sales, stats) {
+  var now = new Date();
+  var ws = stats.weekStart;
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var wkTotals = [];
+  var wkLabels = [];
+  var wi;
+  for (wi = 3; wi >= 0; wi--) {
+    var start = ws - wi * weekMs;
+    wkTotals.push(_stSumPremiumInRange(sales, start, start + weekMs));
+    wkLabels.push(wi === 0 ? 'This week' : 'Week ' + (4 - wi));
+  }
+  var maxBar = Math.max.apply(null, wkTotals.concat([1]));
+  var barW = 56;
+  var barGap = 12;
+  var chartH = 120;
+  var svgBars = '';
+  for (var bi = 0; bi < wkTotals.length; bi++) {
+    var h = Math.round((wkTotals[bi] / maxBar) * (chartH - 28));
+    var x = 24 + bi * (barW + barGap);
+    var y = chartH - 20 - h;
+    svgBars +=
+      '<rect x="' +
+      x +
+      '" y="' +
+      y +
+      '" width="' +
+      barW +
+      '" height="' +
+      h +
+      '" rx="6" fill="#5B8DEF" title="' +
+      _stEscape(wkLabels[bi] + ': $' + Math.round(wkTotals[bi])) +
+      '"/>';
+    svgBars +=
+      '<text x="' +
+      (x + barW / 2) +
+      '" y="' +
+      (chartH - 4) +
+      '" text-anchor="middle" font-size="10" fill="#64748b">' +
+      _stEscape(wkLabels[bi]) +
+      '</text>';
+  }
+
+  var goal = _stGetMonthlyGoalDollars();
+  var monthPrem = _stMonthPremiumTotal(
+    sales,
+    now.getFullYear(),
+    now.getMonth()
+  );
+  var pct = goal > 0 ? Math.min(100, Math.round((monthPrem / goal) * 100)) : 0;
+
+  var msDay = 24 * 60 * 60 * 1000;
+  var daysElapsed = Math.max(
+    1,
+    Math.min(7, Math.floor((Date.now() - ws) / msDay) + 1)
+  );
+  var paceWeek =
+    daysElapsed > 0 ? (stats.weekCommissionValid / daysElapsed) * 7 : 0;
+  var paceMonth = paceWeek * 4.3;
+
+  var fourWeekStart = _stStartOfDay(new Date(now.getTime() - 27 * msDay)).getTime();
+  var wdSum = [0, 0, 0, 0, 0, 0, 0];
+  var wdCnt = [0, 0, 0, 0, 0, 0, 0];
+  var t;
+  for (t = fourWeekStart; t <= now.getTime(); t += msDay) {
+    var dayTot = _stSumPremiumInRange(sales, t, t + msDay);
+    var dd = new Date(t);
+    var wd = dd.getDay();
+    wdCnt[wd]++;
+    wdSum[wd] += dayTot;
+  }
+  var bestWd = 1;
+  var bestAvg = 0;
+  var wdx;
+  for (wdx = 0; wdx < 7; wdx++) {
+    if (wdCnt[wdx] === 0) continue;
+    var av = wdSum[wdx] / wdCnt[wdx];
+    if (av > bestAvg) {
+      bestAvg = av;
+      bestWd = wdx;
+    }
+  }
+  var dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+
+  var html = '<section class="st-analytics" aria-label="Sales analytics">';
+  html += '<div class="st-analytics-head"><h2 class="st-analytics-title">Analytics</h2><p class="st-analytics-sub">Last four weeks of premium volume, goals, and pacing (read-only from your saved sales).</p></div>';
+  html += '<div class="st-analytics-grid">';
+  html += '<div class="st-analytics-card st-analytics-chart-card"><div class="st-analytics-card-title">Weekly premium (4 weeks)</div>';
+  html +=
+    '<svg class="st-analytics-chart" viewBox="0 0 320 ' +
+    chartH +
+    '" width="100%" height="' +
+    chartH +
+    '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Bar chart of weekly premium totals">' +
+    svgBars +
+    '</svg></div>';
+
+  html += '<div class="st-analytics-card"><div class="st-analytics-card-title">Monthly goal</div>';
+  html +=
+    '<div class="st-analytics-goal-num">$' +
+    Math.round(monthPrem).toLocaleString() +
+    ' of $' +
+    Math.round(goal).toLocaleString() +
+    ' <span class="st-analytics-muted">(' +
+    pct +
+    '%)</span></div>';
+  html += '<div class="st-analytics-progress"><span style="width:' + pct + '%"></span></div>';
+  html +=
+    '<button type="button" class="st-analytics-link" onclick="_stEditMonthlyGoal()">Edit goal</button></div>';
+
+  html += '<div class="st-analytics-card"><div class="st-analytics-card-title">Commission forecast</div>';
+  html +=
+    '<p class="st-analytics-body">On pace for about <strong>' +
+    _stFmtMoney(paceWeek) +
+    '</strong> this week and <strong>' +
+    _stFmtMoney(paceMonth) +
+    '</strong> this month (from valid-line commission pace).</p></div>';
+
+  html += '<div class="st-analytics-card"><div class="st-analytics-card-title">Best day</div>';
+  html +=
+    '<p class="st-analytics-body">Your best day is <strong>' +
+    dayNames[bestWd] +
+    '</strong> (~$' +
+    Math.round(bestAvg).toLocaleString() +
+    ' avg daily premium).</p><p class="st-analytics-muted">Based on 4 weeks of daily totals (last 28 days).</p></div>';
+
+  html += '</div></section>';
+  return html;
+}
+
 // ── MAIN RENDER ─────────────────────────────────────────────
 function _stRender() {
   var page = document.getElementById('page-salestracker');
@@ -4388,6 +4597,7 @@ function _stRender() {
   html +=
     '<div class="ph"><div class="pt">Sales <span>Tracker</span></div>' +
     '<div class="pd">Log enrollments, watch your weekly bonus progress, and see your numbers at a glance. Everything stays on your account.</div></div>';
+  html += _stBuildAnalyticsDashboard(sales, stats);
   // 4. This Week's Sales cards (Mon-Fri grid, deals only)
   html += _stBuildWeeklySalesSummary(stats);
   // 5. Stats row

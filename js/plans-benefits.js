@@ -2483,3 +2483,36 @@ document.addEventListener('click', function (e) {
     if (typeof filterPlanSearch === 'function') filterPlanSearch('');
   }
 });
+
+// Dashboard: similar plans (read-only POLICY_DOCS; additive helper for app.js)
+function chaPickSimilarPlansForDash(plan, limit) {
+  if (!plan || typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return [];
+  var lim = Math.min(8, Math.max(1, Number(limit) || 3));
+  var net = String(plan.network || '').trim().toLowerCase();
+  var typ = String(plan.type || '').trim().toLowerCase();
+  var scored = [];
+  var i;
+  for (i = 0; i < POLICY_DOCS.length; i++) {
+    var p = POLICY_DOCS[i];
+    if (!p || String(p.id) === String(plan.id)) continue;
+    if (typeof _pdIsDisplayablePlan === 'function' && !_pdIsDisplayablePlan(p)) {
+      continue;
+    }
+    var pn = String(p.network || '').trim().toLowerCase();
+    var pt = String(p.type || '').trim().toLowerCase();
+    var score = 0;
+    if (net && pn === net) score += 3;
+    if (typ && pt === typ) score += 2;
+    if (score > 0) scored.push({ p: p, score: score });
+  }
+  scored.sort(function (a, b) {
+    return (
+      b.score - a.score || String(a.p.name).localeCompare(String(b.p.name))
+    );
+  });
+  var out = [];
+  for (i = 0; i < scored.length && out.length < lim; i++) {
+    out.push(scored[i].p);
+  }
+  return out;
+}
