@@ -19,6 +19,13 @@ function escHTML(s) {
     .replace(/'/g, '&#39;');
 }
 
+function escAttr(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ── ICON HELPERS ──────────────────────────────────────
 function mkIcon(p) {
   return (
@@ -1140,13 +1147,13 @@ function debouncedSearch(val) {
       }
       doSearch(val);
     }
-  }, 150);
+  }, 0);
 }
 function debouncedOverlaySearch(val) {
   clearTimeout(_searchTimer);
   _searchTimer = setTimeout(function () {
     doSearch(val);
-  }, 150);
+  }, 0);
 }
 
 function getBadgeClass(type) {
@@ -1188,15 +1195,122 @@ function hlSearch(text, terms) {
   return safe;
 }
 
+var SR_SEARCH_RECENT_KEY = 'chaGlobalSearchRecent';
+var SR_SEARCH_POPULAR = [
+  'copay',
+  'waiting period',
+  'NEO Smart Choice',
+  'pre-existing',
+  'First Health',
+  'hospital',
+  'prescription',
+  'network',
+  'objection',
+  'compliance'
+];
+
+function mapSearchBucket(type) {
+  var t = String(type || '').toLowerCase();
+  if (
+    t.indexOf('plan vault') >= 0 ||
+    t.indexOf('policy reference') >= 0 ||
+    t.indexOf('benefit explainer') >= 0
+  )
+    return 'Plans';
+  if (
+    t.indexOf('plan scripts') >= 0 ||
+    t.indexOf('objection') >= 0 ||
+    t.indexOf('closing') >= 0 ||
+    t.indexOf('control the call') >= 0
+  )
+    return 'Scripts';
+  if (t.indexOf('compliance') >= 0) return 'Compliance';
+  return 'Tools';
+}
+
+function getSearchRecent() {
+  try {
+    var raw = localStorage.getItem(SR_SEARCH_RECENT_KEY);
+    var arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.slice(0, 10) : [];
+  } catch (_e) {
+    return [];
+  }
+}
+
+function rememberSearch(q) {
+  var v = String(q || '').trim();
+  if (v.length < 2) return;
+  var list = getSearchRecent().filter(function (x) {
+    return String(x).toLowerCase() !== v.toLowerCase();
+  });
+  list.unshift(v);
+  try {
+    localStorage.setItem(
+      SR_SEARCH_RECENT_KEY,
+      JSON.stringify(list.slice(0, 10))
+    );
+  } catch (_e) {}
+}
+
+function renderSearchIdle() {
+  var listEl = document.getElementById('srList');
+  if (!listEl) return;
+  var recent = getSearchRecent();
+  var html = '';
+  if (recent.length) {
+    html += '<div class="sr-group-title">Recent searches</div>';
+    html += '<div class="sr-chip-row">';
+    recent.forEach(function (q) {
+      html +=
+        '<button type="button" class="sr-chip" data-cha-q="' +
+        escAttr(q) +
+        '">' +
+        escHTML(q) +
+        '</button>';
+    });
+    html += '</div>';
+  }
+  html += '<div class="sr-group-title">Popular searches</div>';
+  html += '<div class="sr-chip-row">';
+  SR_SEARCH_POPULAR.forEach(function (q) {
+    html +=
+      '<button type="button" class="sr-chip sr-chip-muted" data-cha-q="' +
+      escAttr(q) +
+      '">' +
+      escHTML(q) +
+      '</button>';
+  });
+  html += '</div>';
+  html +=
+    '<div class="sr-idle-hint">Search runs across plans, scripts, objections, compliance, and tools. Use ↑ ↓ and Enter on results.</div>';
+  listEl.innerHTML = html;
+}
+
+function applySearchQuery(q) {
+  var v = String(q || '');
+  var srInput = document.getElementById('srInput');
+  var gs = document.getElementById('gs');
+  if (srInput) srInput.value = v;
+  if (gs) gs.value = v;
+  doSearch(v);
+}
+
 function doSearch(val) {
   buildSearchIndex();
   document.getElementById('scBtn').style.display =
     val.length > 0 ? 'block' : 'none';
   if (!val.trim()) {
-    document.getElementById('srList').innerHTML = '';
     document.getElementById('srMatchCount').textContent = '';
+    var ovClear = document.getElementById('srOverlay');
+    if (ovClear && ovClear.classList.contains('show')) {
+      renderSearchIdle();
+    } else {
+      document.getElementById('srList').innerHTML = '';
+    }
     return;
   }
+  rememberSearch(val);
   var expandedTerms = expandSearchSynonyms(val.toLowerCase());
   var res = [];
 
@@ -1235,6 +1349,7 @@ function doSearch(val) {
       res.push({
         sec: 'Policy Reference — ' + item.title,
         group: item.type,
+        bucket: mapSearchBucket('Policy Reference'),
         txt:
           (matchedBens.length
             ? 'Benefit: '
@@ -1257,6 +1372,7 @@ function doSearch(val) {
       res.push({
         sec: item.type,
         group: item.type,
+        bucket: mapSearchBucket(item.type),
         txt: item.title,
         prev: item.preview + '...',
         action: item.action,
@@ -1278,17 +1394,19 @@ function doSearch(val) {
     return r.action;
   });
   var grouped = {};
-  var groupOrder = [];
   var g;
   res.forEach(function (r) {
-    g = r.group || r.type || 'Results';
-    if (!grouped[g]) {
-      grouped[g] = [];
-      groupOrder.push(g);
-    }
+    g = r.bucket || mapSearchBucket(r.type);
+    if (!grouped[g]) grouped[g] = [];
     grouped[g].push(r);
   });
+  var bucketOrder = ['Plans', 'Scripts', 'Tools', 'Compliance'];
+  var groupOrder = bucketOrder.filter(function (name) {
+    return grouped[name] && grouped[name].length;
+  });
   var actionIndex = 0;
+  var srOv = document.getElementById('srOverlay');
+  if (srOv) srOv.dataset.srSel = '-1';
   document.getElementById('srList').innerHTML = res.length
     ? groupOrder
         .map(function (groupName) {
@@ -1297,7 +1415,9 @@ function doSearch(val) {
           block += rows
             .map(function (r) {
               var html =
-                '<div class="sr-item" onclick="srActions[' +
+                '<div class="sr-item" role="option" data-sr-idx="' +
+                actionIndex +
+                '" onclick="srActions[' +
                 actionIndex +
                 ']()">' +
                 '<span class="sr-badge ' +
@@ -1340,18 +1460,105 @@ function doSearch(val) {
 
 function openSearch() {
   var overlay = document.getElementById('srOverlay');
-  if (overlay) overlay.classList.add('show');
+  if (overlay) {
+    overlay.classList.add('show');
+    overlay.dataset.srSel = '-1';
+  }
   var srInput = document.getElementById('srInput');
   if (srInput) {
     srInput.value = '';
     srInput.focus();
+    renderSearchIdle();
   }
 }
 
 function closeSearch() {
-  document.getElementById('srOverlay').classList.remove('show');
+  var ov = document.getElementById('srOverlay');
+  if (ov) {
+    ov.classList.remove('show');
+    ov.dataset.srSel = '-1';
+  }
   document.getElementById('gs').value = '';
   document.getElementById('scBtn').style.display = 'none';
   var srInput = document.getElementById('srInput');
   if (srInput) srInput.value = '';
 }
+
+function chaSrKeynav(e) {
+  var ov = document.getElementById('srOverlay');
+  if (!ov || !ov.classList.contains('show')) return;
+  var items = ov.querySelectorAll('.sr-item');
+  if (!items.length) return;
+  var cur = parseInt(ov.dataset.srSel || '-1', 10);
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    cur = Math.min(cur + 1, items.length - 1);
+    if (cur < 0) cur = 0;
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    cur = Math.max(cur - 1, 0);
+  } else if (e.key === 'Enter') {
+    if (document.activeElement === document.getElementById('srInput') && cur >= 0) {
+      if (window.srActions && typeof window.srActions[cur] === 'function') {
+        e.preventDefault();
+        window.srActions[cur]();
+      }
+    }
+    return;
+  } else {
+    return;
+  }
+  ov.dataset.srSel = String(cur);
+  items.forEach(function (el, i) {
+    el.classList.toggle('sr-item-key', i === cur);
+    if (i === cur) {
+      try {
+        el.scrollIntoView({ block: 'nearest' });
+      } catch (_e2) {}
+    }
+  });
+}
+
+document.addEventListener('click', function (e) {
+  var chip = e.target.closest('.sr-chip[data-cha-q]');
+  if (!chip) return;
+  e.preventDefault();
+  applySearchQuery(chip.getAttribute('data-cha-q') || '');
+});
+
+document.addEventListener('keydown', chaSrKeynav, true);
+
+(function chaPlanSearchStatusInit() {
+  function tryHook() {
+    var inp = document.getElementById('planSearchInput');
+    if (!inp || inp._chaPlanHook) return;
+    inp._chaPlanHook = true;
+    var wrap = inp.parentElement;
+    if (!wrap) return;
+    var st = document.createElement('div');
+    st.className = 'cha-plan-search-status';
+    st.setAttribute('aria-live', 'polite');
+    wrap.appendChild(st);
+    var hideT;
+    inp.addEventListener('input', function () {
+      var v = String(inp.value || '').trim();
+      if (!v) {
+        st.textContent = '';
+        st.classList.remove('show');
+        return;
+      }
+      st.textContent = 'Searching plans...';
+      st.classList.add('show');
+      clearTimeout(hideT);
+      hideT = setTimeout(function () {
+        st.classList.remove('show');
+      }, 180);
+    });
+  }
+  var n = 0;
+  var id = setInterval(function () {
+    tryHook();
+    var inp = document.getElementById('planSearchInput');
+    if ((inp && inp._chaPlanHook) || ++n > 60) clearInterval(id);
+  }, 400);
+})();
