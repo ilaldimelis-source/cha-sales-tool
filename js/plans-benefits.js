@@ -4,10 +4,15 @@ const BENEFITS = [
   {
     icon: 'hospital',
     name: 'Hospitalization (Indemnity Benefit)',
+    tags: [
+      { text: 'Varies by plan type', type: 'key' },
+      { text: 'MEC: indemnity to you', type: 'info' },
+      { text: 'STM: deductible + coinsurance', type: 'use' }
+    ],
     official:
       'A fixed daily hospital benefit paid directly to the insured when admitted to the hospital. Example: $1,000/day up to $10,000 annual max depending on tier.',
     simple:
-      "If you're admitted to the hospital, the plan pays a set amount per day directly to YOU — not to the hospital. You control how it's used.",
+      'Hospital benefits work differently by plan — MEC pays a daily cash amount to you, STM covers through deductible and coinsurance, and limited plans pay a fixed daily benefit.',
     frame:
       "Hospital stays average $20,000–$40,000+ in the U.S. This benefit is designed to offset that financial hit directly in your pocket. It's not full coverage — it's a cash buffer that gives you control.",
     misunderstand:
@@ -22,10 +27,15 @@ const BENEFITS = [
   {
     icon: 'users',
     name: 'Doctor Visits (PCP)',
+    tags: [
+      { text: 'Varies by plan type', type: 'key' },
+      { text: 'Visit limits apply', type: 'use' },
+      { text: 'In-network', type: 'info' }
+    ],
     official:
       'Covered primary care physician visits with a flat copay and annual visit limit. Example (TrueHealth 2): PCP $25 copay, Specialist $50 copay, limited visits per year.',
     simple:
-      'You see a doctor for a small flat copay instead of paying full price. Simple.',
+      'How you pay for doctor visits depends on your plan — some use copays, others use pre-pays with bill repricing, and some pay a fixed benefit amount per visit.',
     frame:
       'Without coverage: doctor visit = $150–$250. With this plan: $25–$50. Every visit saves you $100–$200. For someone who goes even twice a year, the plan pays for itself.',
     misunderstand:
@@ -40,10 +50,15 @@ const BENEFITS = [
   {
     icon: 'warning',
     name: 'Urgent Care',
+    tags: [
+      { text: 'Varies by plan type', type: 'key' },
+      { text: 'Visit limits apply', type: 'use' },
+      { text: 'Not the ER', type: 'key' }
+    ],
     official:
       'Covered urgent care visits with a flat copay and visit limit. Example structure: $40–$75 copay, visit limit depending on plan tier.',
     simple:
-      'Same-day care for non-emergency situations — without the ER price tag.',
+      'Same-day care for non-emergencies. Costs vary by plan type — copay, pre-pay, or fixed benefit depending on the plan.',
     frame:
       'Urgent care without coverage: $150–$350 out of pocket. With this plan: $40–$75 copay. You save $100–$275 every single visit. For most people this is the most used benefit after telemedicine.',
     misunderstand:
@@ -58,10 +73,15 @@ const BENEFITS = [
   {
     icon: 'mobile',
     name: 'Telemedicine',
+    tags: [
+      { text: '$0 consult', type: 'save' },
+      { text: 'Unlimited visits', type: 'info' },
+      { text: '24/7 access', type: 'use' }
+    ],
     official:
       '24/7 virtual doctor access with $0 consultation fee. Many plans use services like MyLiveDoc or similar telehealth providers.',
     simple:
-      'Talk to a real doctor anytime from your phone. $0 copay. No waiting room. They can prescribe most common medications.',
+      'Talk to a doctor by phone or video for $0. Available 24/7 on most plans with no visit limits.',
     frame:
       "Telemedicine resolves 60–70% of common medical needs: cold, flu, rash, allergies, UTIs, prescription refills. It's the most-used benefit on most plans and the one members thank you for first.",
     misunderstand:
@@ -76,10 +96,15 @@ const BENEFITS = [
   {
     icon: 'pill',
     name: 'Prescriptions (Rx)',
+    tags: [
+      { text: 'Varies by plan type', type: 'key' },
+      { text: 'Preventive generic: $0', type: 'save' },
+      { text: 'Formulary restrictions', type: 'use' }
+    ],
     official:
       'Coverage for generic medications through formulary pricing or discount programs. Example: Generic $0–$5 copay. Specialty drugs typically not covered, but assistance programs may exist.',
     simple:
-      "Your everyday medications — generics for common conditions — are low copay or discounted through the plan's pharmacy network.",
+      'Prescription benefits vary significantly. MEC plans cover preventive generics at $0 with a $150/month limit on non-preventive drugs. Most STM plans do not include Rx coverage.',
     frame:
       'Many clients take 1–3 maintenance medications. Even saving $20–$50 per month on Rx helps offset the premium. Frame it as built-in savings, not just a feature.',
     misunderstand:
@@ -94,10 +119,15 @@ const BENEFITS = [
   {
     icon: 'clock',
     name: 'Pre-Existing Conditions',
+    tags: [
+      { text: '12/12 rule common', type: 'key' },
+      { text: 'Must disclose', type: 'use' },
+      { text: '30-day sickness wait', type: 'key' }
+    ],
     official:
       'Conditions diagnosed or treated in the 12 months before the policy effective date are excluded for the first 12 months of the plan.',
     simple:
-      "If you've been treated for something in the last 12 months before your plan starts, that condition isn't covered for the first 12 months. Anything new after your plan starts is covered.",
+      'Anything diagnosed in the last 12 months typically has a 12-month waiting period before benefits apply. This must always be disclosed.',
     frame:
       "Being transparent here builds trust and prevents chargebacks. A client who clearly understands pre-ex and still enrolls is a qualified, informed buyer. One who didn't understand it becomes a cancellation.",
     misunderstand:
@@ -112,10 +142,15 @@ const BENEFITS = [
   {
     icon: 'hourglass',
     name: 'Waiting Periods',
+    tags: [
+      { text: '30-day sickness wait', type: 'key' },
+      { text: 'Injury: immediate', type: 'save' },
+      { text: 'Plan-specific', type: 'use' }
+    ],
     official:
       'A defined period before certain benefits activate. STM example: Accidents → day one. Sickness → 5-day wait. Cancer → 30-day wait. MEC example: Sickness → 30-day wait.',
     simple:
-      'Accidents are covered immediately — day one. Illness benefits start after a short waiting period. The specific length depends on the plan.',
+      'Most plans have a 30-day waiting period for sickness benefits. Injuries are typically covered immediately. Scheduled doctor visits also have a 30-day wait.',
     frame:
       "Waiting periods exist so people can't enroll while already sick and immediately claim benefits. It's the mechanism that keeps premiums affordable. Frame it as a feature of affordability, not a flaw.",
     misunderstand:
@@ -130,10 +165,15 @@ const BENEFITS = [
   {
     icon: 'globe',
     name: 'Networks',
+    tags: [
+      { text: 'PPO networks', type: 'info' },
+      { text: 'In-network = savings', type: 'save' },
+      { text: 'Verify before visit', type: 'use' }
+    ],
     official:
       'Healthcare providers contracted at pre-negotiated rates. Networks used in this portfolio: First Health, PHCS (MultiPlan), MultiPlan, and Managed Care.',
     simple:
-      "Using doctors in the plan's network keeps your costs lower and prevents surprise balance bills. Always verify your doctor is in-network before your first visit.",
+      'All plans use PPO networks. Staying in-network means lower costs. Members should always verify their provider is in-network before visiting.',
     frame:
       'Network access is what separates a plan that works from one that creates billing surprises. In-network = negotiated rates. Out-of-network = balance billing risk. Always encourage them to verify before using.',
     misunderstand:
@@ -148,10 +188,15 @@ const BENEFITS = [
   {
     icon: 'plus',
     name: 'Add-Ons & Supplements',
+    tags: [
+      { text: 'Optional layers', type: 'key' },
+      { text: 'Own premium each', type: 'info' },
+      { text: 'After base is set', type: 'use' }
+    ],
     official:
       'Optional supplemental benefits added to the base plan for additional premium. Options: Critical illness, Accident coverage, Dental, Vision, Hospital gap.',
     simple:
-      'Add-ons let you build on top of the base plan. Think of them as layers — the base covers everyday medical, add-ons add financial protection for bigger events.',
+      'Optional extras stack on the base plan — each add-on has its own premium, terms, and claims path. Present only after the base plan is confirmed.',
     frame:
       'Add-ons are where plans become personal. The right add-on for the right prospect turns a good plan into complete protection. Always present after the base plan is confirmed.',
     misunderstand:
@@ -986,21 +1031,37 @@ function renderBenefits() {
     cat.indices.forEach(function (i) {
       var b = BENEFITS[i];
       var cardId = 'bx' + i;
+      var searchData = escHTML(
+        (b.name + ' ' + b.simple + ' ' + b.official).toLowerCase()
+      );
       html +=
         '<div class="benefit-card benefit-card-item" id="' +
         cardId +
         '" data-benefit-search="' +
-        escHTML((b.name + ' ' + b.simple + ' ' + b.official).toLowerCase()) +
+        searchData +
         '" onclick="_toggleBenefitCard(\'' +
         cardId +
         '\')">';
-      html += '<div class="benefit-card-header">';
-      html += '<div class="benefit-card-left">';
+      html += '<div class="benefit-card-top">';
+      html += '<div class="benefit-card-top-left">';
       html += '<div class="benefit-card-name">' + b.name + '</div>';
-      html += '<div class="benefit-card-simple">' + b.simple + '</div>';
+      html += '<div class="benefit-card-tags">';
+      if (b.tags) {
+        for (var ti = 0; ti < b.tags.length; ti++) {
+          var tagClass = b.tags[ti].type || 'info';
+          html +=
+            '<span class="bc-tag bc-tag-' +
+            tagClass +
+            '">' +
+            b.tags[ti].text +
+            '</span>';
+        }
+      }
+      html += '</div>';
       html += '</div>';
       html += '<span class="benefit-card-toggle">+</span>';
       html += '</div>';
+      html += '<div class="benefit-card-summary">' + b.simple + '</div>';
       html += '<div class="benefit-card-detail">';
       html +=
         '<div class="benefit-field"><div class="benefit-field-label">Why it matters</div><div class="benefit-field-text">' +

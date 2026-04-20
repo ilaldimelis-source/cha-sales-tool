@@ -7549,17 +7549,17 @@ select[onchange*="Status"],
   display: none !important;
 }
 
-/* ── BENEFIT EXPLAINER: clean collapsed cards ── */
+/* ── BENEFIT EXPLAINER: Option B cards ── */
 .benefit-cards-wrap {
   display: block !important;
 }
 .benefit-card {
-  background: white;
-  border: 0.5px solid #e9ecf5;
-  border-radius: 12px;
-  margin-bottom: 12px;
+  background: var(--color-bg-primary, white);
+  border: 0.5px solid #e2e5f1;
+  border-radius: 14px;
+  margin-bottom: 14px;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.15s;
   overflow: hidden;
   display: block;
   width: 100%;
@@ -7568,45 +7568,80 @@ select[onchange*="Status"],
 .benefit-card:hover {
   border-color: #5175f1;
 }
-.benefit-card-header {
+.benefit-card-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
+  align-items: flex-start;
+  padding: 18px 22px 12px;
 }
-.benefit-card-left {
+.benefit-card-top-left {
   flex: 1;
   min-width: 0;
 }
 .benefit-card-name {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
   color: #1a1a2e;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
-.benefit-card-simple {
+.benefit-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.bc-tag {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.bc-tag-key {
+  background: #fef3c7;
+  color: #92400e;
+}
+.bc-tag-save {
+  background: #f0fdf4;
+  color: #15803d;
+}
+.bc-tag-info {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+.bc-tag-use {
+  background: #f0f4ff;
+  color: #4338ca;
+}
+.benefit-card-toggle {
+  font-size: 22px;
+  color: #94a3b8;
+  flex-shrink: 0;
+  width: 32px;
+  text-align: center;
+  font-weight: 300;
+  padding-top: 2px;
+}
+.benefit-card-summary {
+  padding: 10px 22px 14px;
   font-size: 13px;
   color: #64748b;
   line-height: 1.5;
-}
-.benefit-card-toggle {
-  font-size: 20px;
-  color: #94a3b8;
-  flex-shrink: 0;
-  width: 28px;
-  text-align: center;
-  font-weight: 300;
+  background: #f8f9fe;
+  border-top: 0.5px solid #f0f2f7;
 }
 .benefit-card-detail {
   display: none;
-  padding: 0 20px 16px;
-  border-top: 0.5px solid #e9ecf5;
+  padding: 0 22px 20px;
+  border-top: 0.5px solid #e2e5f1;
 }
 .benefit-card.expanded .benefit-card-detail {
   display: block;
 }
+.benefit-card.expanded .benefit-card-summary {
+  background: white;
+}
 .benefit-field {
-  padding: 10px 0;
+  padding: 12px 0;
   border-bottom: 0.5px solid #f0f2f7;
 }
 .benefit-field:last-child {
@@ -7615,27 +7650,36 @@ select[onchange*="Status"],
 .benefit-field-label {
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #64748b;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
 .benefit-field-text {
-  font-size: 13px;
+  font-size: 14px;
   color: #374151;
-  line-height: 1.6;
+  line-height: 1.7;
 }
 .benefit-field-danger {
   background: #fef2f2;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-top: 4px;
+  border: 0.5px solid #fecaca;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 6px;
 }
 .benefit-field-success {
   background: #f0fdf4;
-  border-radius: 8px;
-  padding: 10px 12px;
-  margin-top: 4px;
+  border: 0.5px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 6px;
+}
+.benefit-field-info {
+  background: #eff6ff;
+  border: 0.5px solid #bfdbfe;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 6px;
 }
 
 /* ── PLAN FIT & FRAMING: collapsed accordion ── */
