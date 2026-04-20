@@ -554,6 +554,11 @@ function showPage(id) {
           '<div style="padding:24px;color:#B91C1C;">Something went wrong. Please try again.</div>';
     }
   }
+  if (id === 'dashboard') {
+    setTimeout(function () {
+      if (typeof chaDashRefreshWidgets === 'function') chaDashRefreshWidgets();
+    }, 0);
+  }
   _resetScrollTop();
 }
 
@@ -561,6 +566,438 @@ var _dashLookupState = {
   planId: '',
   searchQuery: ''
 };
+
+var CHA_DASH_ACTIVITY_KEY = 'cha_dash_activity_v1';
+var CHA_DASH_RECENT_KEY = 'cha_dash_recent_plans_v1';
+var _dashSuggestIdx = -1;
+var _dashSuggestList = [];
+
+function chaDashTodayIso() {
+  var d = new Date();
+  return (
+    d.getFullYear() +
+    '-' +
+    String(d.getMonth() + 1).padStart(2, '0') +
+    '-' +
+    String(d.getDate()).padStart(2, '0')
+  );
+}
+
+function chaDashLoadActivity() {
+  var today = chaDashTodayIso();
+  try {
+    var raw = localStorage.getItem(CHA_DASH_ACTIVITY_KEY);
+    var o = raw ? JSON.parse(raw) : null;
+    if (!o || o.d !== today) {
+      return { d: today, lookups: 0, scripts: 0 };
+    }
+    return {
+      d: o.d,
+      lookups: Number(o.lookups) || 0,
+      scripts: Number(o.scripts) || 0
+    };
+  } catch (_e) {
+    return { d: today, lookups: 0, scripts: 0 };
+  }
+}
+
+function chaDashSaveActivity(o) {
+  try {
+    localStorage.setItem(CHA_DASH_ACTIVITY_KEY, JSON.stringify(o));
+  } catch (_e) {}
+}
+
+function chaDashBumpLookup() {
+  var a = chaDashLoadActivity();
+  a.lookups = (Number(a.lookups) || 0) + 1;
+  chaDashSaveActivity(a);
+}
+
+function chaDashBumpScript() {
+  var a = chaDashLoadActivity();
+  a.scripts = (Number(a.scripts) || 0) + 1;
+  chaDashSaveActivity(a);
+}
+
+function chaDashRecentLoad() {
+  try {
+    var raw = localStorage.getItem(CHA_DASH_RECENT_KEY);
+    var arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.slice(0, 5) : [];
+  } catch (_e2) {
+    return [];
+  }
+}
+
+function chaDashRecentSave(arr) {
+  try {
+    localStorage.setItem(CHA_DASH_RECENT_KEY, JSON.stringify(arr.slice(0, 5)));
+  } catch (_e3) {}
+}
+
+function chaDashRecentPush(plan) {
+  if (!plan || !plan.id) return;
+  var row = {
+    id: String(plan.id),
+    name: String(plan.name || ''),
+    type: String(_dashLookupDisplayType(plan) || plan.type || '')
+  };
+  var list = chaDashRecentLoad().filter(function (x) {
+    return String(x.id) !== row.id;
+  });
+  list.unshift(row);
+  chaDashRecentSave(list);
+}
+
+function chaDashClearRecent() {
+  try {
+    localStorage.removeItem(CHA_DASH_RECENT_KEY);
+  } catch (_e) {}
+  chaDashRenderRecentChips();
+  chaDashRefreshWidgets();
+}
+
+function chaDashFmtMoney(n) {
+  var x = Number(n) || 0;
+  return '$' + Math.round(x).toLocaleString();
+}
+
+function chaDashWeeklyProgressHtml() {
+  var tiers = window.CHA_BONUS_TIERS_FOR_DASH || [];
+  var bundle =
+    typeof chaAnalyticsReadBundle === 'function' ? chaAnalyticsReadBundle() : null;
+  var deals = bundle && bundle.stats ? Number(bundle.stats.weekDeals) || 0 : 0;
+  var addons = bundle && bundle.stats ? Number(bundle.stats.weekAddons) || 0 : 0;
+  var next = null;
+  var ti;
+  for (ti = 0; ti < tiers.length; ti++) {
+    if (deals < tiers[ti].deals || addons < tiers[ti].addons) {
+      next = tiers[ti];
+      break;
+    }
+  }
+  var msg = '';
+  var pct = 0;
+  if (!next) {
+    msg = 'You have reached the top bonus tier this week.';
+    pct = 100;
+  } else {
+    var gd = Math.max(0, next.deals - deals);
+    var ga = Math.max(0, next.addons - addons);
+    msg =
+      gd +
+      ' deal' +
+      (gd === 1 ? '' : 's') +
+      ' + ' +
+      ga +
+      ' add-on' +
+      (ga === 1 ? '' : 's') +
+      ' away from the $' +
+      next.bonus +
+      ' tier';
+    var rd = next.deals ? deals / next.deals : 1;
+    var ra = next.addons ? addons / next.addons : 1;
+    pct = Math.round(Math.min(100, Math.min(rd, ra) * 100));
+  }
+  var tierMarks =
+    '<div class="dash-cc-tier-marks">' +
+    (tiers || [])
+      .map(function (t) {
+        return (
+          '<span class="dash-cc-tier-mark"><b>' +
+          t.deals +
+          '/' +
+          t.addons +
+          'A</b> → $' +
+          t.bonus +
+          '</span>'
+        );
+      })
+      .join('') +
+    '</div>';
+  return (
+    '<div class="dash-cc-stat-row"><div><div class="dash-cc-big">' +
+    deals +
+    '</div><div class="dash-cc-lbl">Deals this week</div></div><div><div class="dash-cc-big">' +
+    addons +
+    '</div><div class="dash-cc-lbl">Add-ons this week</div></div></div>' +
+    '<div class="dash-cc-progress-wrap"><div class="dash-cc-progress"><span style="width:' +
+    pct +
+    '%"></span></div>' +
+    (pct < 100
+      ? '<span class="dash-cc-progress-pip" style="left:calc(' + pct + '% - 6px)"></span>'
+      : '') +
+    '</div>' +
+    tierMarks +
+    '<p class="dash-cc-msg">' +
+    escHTML(msg) +
+    '</p>'
+  );
+}
+
+function chaDashOpenPhcsSearch() {
+  window.open(
+    'https://www.multiplan.com/webcenter/portal/ProviderSearch',
+    '_blank',
+    'noopener,noreferrer'
+  );
+}
+
+function chaDashOpenFirstHealthSearch() {
+  window.open(
+    'https://providerlocator.firsthealth.com/',
+    '_blank',
+    'noopener,noreferrer'
+  );
+}
+
+function chaDashWidgetsHtml() {
+  var ic = function (paths) {
+    return (
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      paths +
+      '</svg>'
+    );
+  };
+  var globe =
+    '<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>';
+  return (
+    '<div id="dashCommandWidgets" class="dash-cc-grid dash-cc-grid-pair">' +
+    '<div class="dash-cc-card dash-cc-card-weekly"><div class="dash-cc-card-title">Weekly Progress</div>' +
+    chaDashWeeklyProgressHtml() +
+    '</div>' +
+    '<div class="dash-cc-card dash-cc-card-actions"><div class="dash-cc-card-title">Quick Actions</div><div class="dash-cc-actions dash-cc-actions-5">' +
+    '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'myspace\',\'salestracker\')">' +
+    ic('<circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/>') +
+    '<span>Log a Sale</span></button>' +
+    '<button type="button" class="dash-cc-action" onclick="chaDashFocusLookup()">' +
+    ic('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>') +
+    '<span>Find a Plan</span></button>' +
+    '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'scripts\',\'planscripts\')">' +
+    ic('<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/>') +
+    '<span>Open Script</span></button>' +
+    '<button type="button" class="dash-cc-action" onclick="chaDashOpenPhcsSearch()">' +
+    ic(globe) +
+    '<span>PHCS Search</span></button>' +
+    '<button type="button" class="dash-cc-action" onclick="chaDashOpenFirstHealthSearch()">' +
+    ic(globe) +
+    '<span>FirstHealth Search</span></button>' +
+    '</div></div>' +
+    '</div>'
+  );
+}
+
+function chaDashFocusLookup() {
+  showPage('dashboard');
+  setTimeout(function () {
+    var el = document.getElementById('dashLookupSearch');
+    if (el) {
+      el.focus();
+      chaDashRenderRecentChips();
+    }
+  }, 50);
+}
+
+function chaDashRenderRecentChips() {
+  var wrap = document.getElementById('dashLookupRecentChips');
+  if (!wrap) return;
+  var recent = chaDashRecentLoad();
+  if (!recent.length) {
+    wrap.innerHTML = '';
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = 'flex';
+  wrap.innerHTML =
+    '<span class="dash-lookup-recent-label">Recent</span>' +
+    recent
+      .map(function (r) {
+        return (
+          '<button type="button" class="dash-lookup-chip" onclick="dashLookupSelectPlan(\'' +
+          escHTML(String(r.id)) +
+          '\')">' +
+          escHTML(r.name) +
+          '</button>'
+        );
+      })
+      .join('');
+}
+
+function chaDashSuggestUpdate(q) {
+  var box = document.getElementById('dashLookupSuggest');
+  if (!box) return;
+  var v = String(q || '')
+    .trim()
+    .toLowerCase();
+  _dashSuggestList = [];
+  _dashSuggestIdx = -1;
+  if (v.length < 3) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+  var all = _dashLookupAllPlans();
+  var scored = [];
+  var pi;
+  for (pi = 0; pi < all.length; pi++) {
+    var p = all[pi];
+    var nm = String(p.name || '').toLowerCase();
+    if (nm.indexOf(v) !== -1) {
+      scored.push({ p: p, sc: 0 });
+      continue;
+    }
+    if (typeof fuzzyMatch === 'function' && v.length >= 3 && fuzzyMatch(v, nm)) {
+      scored.push({ p: p, sc: 1 });
+    }
+  }
+  scored.sort(function (a, b) {
+    return (
+      a.sc - b.sc ||
+      String(a.p.name).length - String(b.p.name).length
+    );
+  });
+  var out = scored.slice(0, 8).map(function (x) {
+    return x.p;
+  });
+  _dashSuggestList = out;
+  if (!out.length) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+  var escRe = function (s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  };
+  var parts = v.split(/\s+/).filter(function (x) {
+    return x.length > 0;
+  });
+  var hl = function (name) {
+    var s = escHTML(name);
+    for (var hi = 0; hi < parts.length; hi++) {
+      if (parts[hi].length < 2) continue;
+      var r = new RegExp('(' + escRe(parts[hi]) + ')', 'ig');
+      s = s.replace(r, '<mark>$1</mark>');
+    }
+    return s;
+  };
+  box.style.display = 'block';
+  box.innerHTML = out
+    .map(function (p, idx) {
+      return (
+        '<button type="button" class="dash-lookup-suggest-item' +
+        (idx === 0 ? ' active' : '') +
+        '" data-idx="' +
+        idx +
+        '" onclick="chaDashPickSuggest(' +
+        idx +
+        ')"><span class="dash-lookup-suggest-name">' +
+        hl(p.name) +
+        '</span><span class="dash-lookup-suggest-meta">' +
+        escHTML(_dashLookupDisplayType(p)) +
+        '</span></button>'
+      );
+    })
+    .join('');
+}
+
+function chaDashPickSuggest(idx) {
+  var p = _dashSuggestList[idx];
+  if (!p) return;
+  _dashLookupState.searchQuery = '';
+  var si = document.getElementById('dashLookupSearch');
+  if (si) si.value = '';
+  var box = document.getElementById('dashLookupSuggest');
+  if (box) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+  }
+  _dashSuggestList = [];
+  _dashSuggestIdx = -1;
+  dashLookupSelectPlan(String(p.id));
+}
+
+function chaDashSuggestHighlight(idx) {
+  var box = document.getElementById('dashLookupSuggest');
+  if (!box) return;
+  var btns = box.querySelectorAll('.dash-lookup-suggest-item');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].classList.toggle('active', i === idx);
+  }
+}
+
+function chaDashWireLookupEnhancements() {
+  var si = document.getElementById('dashLookupSearch');
+  if (!si || si.dataset.chaDashWired === '1') return;
+  si.dataset.chaDashWired = '1';
+  si.addEventListener('focus', function () {
+    if (!String(si.value || '').trim()) chaDashRenderRecentChips();
+  });
+  si.addEventListener('blur', function () {
+    setTimeout(function () {
+      var box = document.getElementById('dashLookupSuggest');
+      if (box && document.activeElement && box.contains(document.activeElement))
+        return;
+      if (box) box.style.display = 'none';
+    }, 180);
+  });
+  si.addEventListener('keydown', function (e) {
+    if (!_dashSuggestList.length || !document.getElementById('dashLookupSuggest'))
+      return;
+    var box = document.getElementById('dashLookupSuggest');
+    if (!box || box.style.display === 'none') return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      _dashSuggestIdx = Math.min(
+        _dashSuggestList.length - 1,
+        _dashSuggestIdx + 1
+      );
+      if (_dashSuggestIdx < 0) _dashSuggestIdx = 0;
+      chaDashSuggestHighlight(_dashSuggestIdx);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      _dashSuggestIdx = Math.max(0, _dashSuggestIdx - 1);
+      chaDashSuggestHighlight(_dashSuggestIdx);
+    } else if (e.key === 'Enter' && _dashSuggestList.length) {
+      e.preventDefault();
+      var pick = _dashSuggestIdx >= 0 ? _dashSuggestIdx : 0;
+      chaDashPickSuggest(pick);
+    }
+  });
+}
+
+function chaDashRefreshWidgets() {
+  var el = document.getElementById('dashCommandWidgets');
+  if (!el || typeof chaDashWidgetsHtml !== 'function') return;
+  var wrap = document.createElement('div');
+  wrap.innerHTML = chaDashWidgetsHtml();
+  var next = wrap.firstElementChild;
+  if (next) el.replaceWith(next);
+}
+
+function chaDashRenderSimilarPlans() {
+  var el = document.getElementById('dashLookupSimilar');
+  if (!el) return;
+  var sel = _dashLookupSelectedPlan();
+  var html = '';
+  if (sel && typeof chaPickSimilarPlansForDash === 'function') {
+    var sim = chaPickSimilarPlansForDash(sel, 3);
+    if (sim && sim.length) {
+      html =
+        '<div class="dash-lookup-similar-label">Similar plans</div><div class="dash-lookup-similar-row">';
+      for (var i = 0; i < sim.length; i++) {
+        var sp = sim[i];
+        html +=
+          '<button type="button" class="dash-lookup-similar-chip" onclick="dashLookupSelectPlan(\'' +
+          escHTML(String(sp.id)) +
+          '\')">' +
+          escHTML(sp.name) +
+          '</button>';
+      }
+      html += '</div>';
+    }
+  }
+  el.innerHTML = html;
+}
 
 function _dashLookupProviderUrl(network) {
   var net = String(network || '').toLowerCase();
@@ -714,7 +1151,11 @@ function renderDashboardLookupCard() {
   html +=
     '<input id="dashLookupSearch" type="text" placeholder="Quick plan lookup — start typing a plan name…" oninput="dashLookupFilter(this.value)" autocomplete="off">';
   html += '<span class="dash-lookup-kbd">Ctrl + L</span>';
+  html +=
+    '<div id="dashLookupSuggest" class="dash-lookup-suggest" style="display:none" role="listbox" aria-label="Matching plans"></div>';
   html += '</div>';
+  html +=
+    '<div id="dashLookupRecentChips" class="dash-lookup-recent-chips" style="display:none"></div>';
   html += '<select id="dashPlanLookupSelect" class="dash-lookup-select" onchange="dashLookupSelectPlan(this.value)">';
   plans.forEach(function (p) {
     html +=
@@ -730,6 +1171,7 @@ function renderDashboardLookupCard() {
   html += '<div class="dash-lookup-grid" id="dashLookupGrid">';
   html += _dashLookupGridInnerHtml(selected);
   html += '</div>';
+  html += '<div id="dashLookupSimilar" class="dash-lookup-similar-wrap"></div>';
   html += '<div class="dash-lookup-actions">';
   html += '<button type="button" class="dash-lookup-provider" onclick="dashLookupOpenProvider()"' + (providerUrl ? '' : ' disabled') + '>Provider search</button>';
   html += '<button type="button" class="dash-lookup-copy" onclick="dashLookupCopy()">Copy</button>';
@@ -743,32 +1185,35 @@ function dashLookupRefresh() {
   if (mount) mount.innerHTML = renderDashboardLookupCard();
   var si = document.getElementById('dashLookupSearch');
   if (si) si.value = _dashLookupState.searchQuery || '';
-  if (
-    si &&
-    document.body &&
-    document.getElementById('page-dashboard') &&
-    document.getElementById('page-dashboard').classList.contains('active')
-  ) {
-    setTimeout(function () {
-      try {
-        si.focus();
-        si.select();
-      } catch (_e) {
-        /* no-op */
-      }
-    }, 0);
-  }
+  chaDashWireLookupEnhancements();
+  chaDashSuggestUpdate(_dashLookupState.searchQuery || '');
+  chaDashRenderSimilarPlans();
+  chaDashRenderRecentChips();
 }
 
 function dashLookupFilter(query) {
   _dashLookupState.searchQuery = query == null ? '' : String(query);
   _dashLookupSyncSelectAndGrid();
+  chaDashSuggestUpdate(_dashLookupState.searchQuery);
 }
 
 function dashLookupSelectPlan(planId) {
   if (!planId) return;
   _dashLookupState.planId = planId;
+  chaDashBumpLookup();
+  var list = _dashLookupAllPlans();
+  var found = null;
+  var ri;
+  for (ri = 0; ri < list.length; ri++) {
+    if (String(list[ri].id) === String(planId)) {
+      found = list[ri];
+      break;
+    }
+  }
+  if (found) chaDashRecentPush(found);
   _dashLookupSyncSelectAndGrid();
+  chaDashRenderSimilarPlans();
+  chaDashRefreshWidgets();
 }
 
 function dashLookupOpenProvider() {
@@ -938,6 +1383,7 @@ function renderDashboard() {
     '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
   html += _greetHtml;
   html += '<div id="dashPlanLookupMount"></div>';
+  html += chaDashWidgetsHtml();
   html += '<div class="dash-sections-label">Sections</div>';
   html += '<div class="dash-grid dash-grid-compact">';
   cards.forEach(function (c) {
@@ -1053,6 +1499,9 @@ function _showComboPage(parentId, subId) {
       }
       break;
     }
+  }
+  if (parentId === 'scripts' && subId === 'planscripts') {
+    if (typeof chaDashBumpScript === 'function') chaDashBumpScript();
   }
   _resetScrollTop();
 }
@@ -1630,6 +2079,7 @@ document.addEventListener('keydown', function (e) {
       } catch (_e) {
         /* no-op */
       }
+      if (typeof chaDashRenderRecentChips === 'function') chaDashRenderRecentChips();
     } else {
       showPage('dashboard');
       setTimeout(function () {
@@ -1641,6 +2091,7 @@ document.addEventListener('keydown', function (e) {
         } catch (_e2) {
           /* no-op */
         }
+        if (typeof chaDashRenderRecentChips === 'function') chaDashRenderRecentChips();
       }, 40);
     }
     return;

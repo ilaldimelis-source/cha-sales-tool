@@ -46,6 +46,8 @@ var ST_BONUS_TIERS = [
   { deals: 25, addons: 25, bonus: 1000 }
 ];
 
+window.CHA_BONUS_TIERS_FOR_DASH = ST_BONUS_TIERS;
+
 // ── PLAN NAME RECOGNITION ───────────────────────────────────
 // Comprehensive list of all core plans + add-ons CHA sells.
 // Used by the receipt parser for case-insensitive substring
@@ -4343,6 +4345,284 @@ function _stBuildCommissionTracker(sales, stats) {
   return html;
 }
 
+// ── ANALYTICS DASHBOARD (additive — read-only rollups) ───────
+function chaAnalyticsReadBundle() {
+  var sales = _stLoadSales();
+  sales = _stValidateSalesIntegrity(sales);
+  var stats = _stCalcStats(sales);
+  return { sales: sales, stats: stats };
+}
+
+function _stSumPremiumInRange(sales, t0, t1) {
+  var validDealReceiptIds = {};
+  var di;
+  for (di = 0; di < sales.length; di++) {
+    var ds = sales[di];
+    if (!ds || ds.type !== 'deal') continue;
+    if (ds.ts < t0 || ds.ts >= t1) continue;
+    if (_stNormalizeStatus(ds) !== 'chargeback' && ds.receiptId) {
+      validDealReceiptIds[ds.receiptId] = true;
+    }
+  }
+  var total = 0;
+  var i;
+  for (i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s) continue;
+    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (s.ts < t0 || s.ts >= t1) continue;
+    var include = false;
+    if (s.type === 'deal') include = true;
+    else if (s.type === 'addon') {
+      include = s.receiptId ? validDealReceiptIds[s.receiptId] === true : true;
+    }
+    if (include) total += Number(s.amount) || 0;
+  }
+  return total;
+}
+
+function _stMonthPremiumTotal(sales, y, m) {
+  var t0 = new Date(y, m, 1, 0, 0, 0, 0).getTime();
+  var t1 = new Date(y, m + 1, 1, 0, 0, 0, 0).getTime();
+  return _stSumPremiumInRange(sales, t0, t1);
+}
+
+function _stGetMonthlyGoalDollars() {
+  try {
+    var raw = localStorage.getItem('cha_monthly_goal');
+    var n = raw ? parseFloat(raw) : 10000;
+    if (isNaN(n) || n < 1000) return 10000;
+    return n;
+  } catch (_e) {
+    return 10000;
+  }
+}
+
+function _stEditMonthlyGoal() {
+  var cur = _stGetMonthlyGoalDollars();
+  var v = window.prompt('Monthly sales goal ($)', String(cur));
+  if (v == null) return;
+  var n = parseFloat(String(v).replace(/[$,]/g, ''));
+  if (isNaN(n) || n < 0) {
+    _stFlash('Invalid goal.', 'error');
+    return;
+  }
+  try {
+    localStorage.setItem('cha_monthly_goal', String(n));
+  } catch (_e2) {}
+  _stRender();
+  _stFlash('Monthly goal updated.', 'ok');
+}
+
+function _stGetSavedTab() {
+  try {
+    var v = localStorage.getItem('cha_st_tab');
+    if (v === 'analytics' || v === 'thisweek') return v;
+  } catch (_e) {}
+  return 'thisweek';
+}
+
+function _stBuildInternalSubtabs(activeTab) {
+  var tw = activeTab === 'thisweek' ? ' active' : '';
+  var an = activeTab === 'analytics' ? ' active' : '';
+  return (
+    '<div class="page-subtabs st-internal-subtabs" id="stInternalSubtabs" role="tablist">' +
+    '<div class="page-subtabs-inner">' +
+    '<button type="button" class="stab' +
+    tw +
+    '" role="tab" aria-selected="' +
+    (activeTab === 'thisweek' ? 'true' : 'false') +
+    '" onclick="_stSwitchTab(\'thisweek\')">This Week</button>' +
+    '<button type="button" class="stab' +
+    an +
+    '" role="tab" aria-selected="' +
+    (activeTab === 'analytics' ? 'true' : 'false') +
+    '" onclick="_stSwitchTab(\'analytics\')">Analytics</button>' +
+    '</div></div>'
+  );
+}
+
+function _stSwitchTab(tabId) {
+  if (tabId !== 'analytics' && tabId !== 'thisweek') tabId = 'thisweek';
+  try {
+    localStorage.setItem('cha_st_tab', tabId);
+  } catch (_e) {}
+  var pThis = document.getElementById('stTabPanelThisWeek');
+  var pAn = document.getElementById('stTabPanelAnalytics');
+  if (pThis) pThis.style.display = tabId === 'thisweek' ? 'block' : 'none';
+  if (pAn) pAn.style.display = tabId === 'analytics' ? 'block' : 'none';
+  var wrap = document.getElementById('stInternalSubtabs');
+  if (wrap) {
+    var btns = wrap.querySelectorAll('.stab');
+    var i;
+    for (i = 0; i < btns.length; i++) {
+      var b = btns[i];
+      var label = (b.textContent || '').trim();
+      var on =
+        (tabId === 'thisweek' && label === 'This Week') ||
+        (tabId === 'analytics' && label === 'Analytics');
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    }
+  }
+}
+
+function _stBuildAnalyticsDashboard(sales, stats) {
+  var now = new Date();
+  var ws = stats.weekStart;
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var wkTotals = [];
+  var wkLabels = [];
+  var wi;
+  for (wi = 3; wi >= 0; wi--) {
+    var start = ws - wi * weekMs;
+    wkTotals.push(_stSumPremiumInRange(sales, start, start + weekMs));
+    wkLabels.push(wi === 0 ? 'This week' : 'Week ' + (4 - wi));
+  }
+  var sumWk = 0;
+  for (wi = 0; wi < wkTotals.length; wi++) {
+    sumWk += Number(wkTotals[wi]) || 0;
+  }
+  var allWeeksZero = sumWk === 0;
+  var maxBar = Math.max.apply(null, wkTotals.concat([1]));
+  var barW = 48;
+  var barGap = 10;
+  var chartH = 132;
+  var chartBlock = '';
+  if (allWeeksZero) {
+    chartBlock =
+      '<div class="st-analytics-chart-empty" role="status">No sales data yet. Start logging sales to see your weekly trend.</div>';
+  } else {
+    var svgBars = '';
+    var bi;
+    for (bi = 0; bi < wkTotals.length; bi++) {
+      var h = Math.round((wkTotals[bi] / maxBar) * (chartH - 26));
+      var x = 20 + bi * (barW + barGap);
+      var y = chartH - 18 - h;
+      svgBars +=
+        '<rect x="' +
+        x +
+        '" y="' +
+        y +
+        '" width="' +
+        barW +
+        '" height="' +
+        h +
+        '" rx="4" fill="#5B8DEF"><title>' +
+        _stEscape(wkLabels[bi] + ': $' + Math.round(wkTotals[bi])) +
+        '</title></rect>';
+      svgBars +=
+        '<text x="' +
+        (x + barW / 2) +
+        '" y="' +
+        (chartH - 4) +
+        '" text-anchor="middle" font-size="9" fill="#64748b">' +
+        _stEscape(wkLabels[bi]) +
+        '</text>';
+    }
+    chartBlock =
+      '<svg class="st-analytics-chart" viewBox="0 0 300 ' +
+      chartH +
+      '" width="100%" height="' +
+      Math.min(160, chartH) +
+      '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Weekly premium totals">' +
+      svgBars +
+      '</svg>';
+  }
+
+  var goal = _stGetMonthlyGoalDollars();
+  var monthPrem = _stMonthPremiumTotal(
+    sales,
+    now.getFullYear(),
+    now.getMonth()
+  );
+  var pct = goal > 0 ? Math.min(100, Math.round((monthPrem / goal) * 100)) : 0;
+
+  var msDay = 24 * 60 * 60 * 1000;
+  var daysElapsed = Math.max(
+    1,
+    Math.min(7, Math.floor((Date.now() - ws) / msDay) + 1)
+  );
+  var paceWeek =
+    daysElapsed > 0 ? (stats.weekCommissionValid / daysElapsed) * 7 : 0;
+  var paceMonth = paceWeek * 4.3;
+
+  var fourWeekStart = _stStartOfDay(new Date(now.getTime() - 27 * msDay)).getTime();
+  var wdSum = [0, 0, 0, 0, 0, 0, 0];
+  var wdCnt = [0, 0, 0, 0, 0, 0, 0];
+  var t;
+  for (t = fourWeekStart; t <= now.getTime(); t += msDay) {
+    var dayTot = _stSumPremiumInRange(sales, t, t + msDay);
+    var dd = new Date(t);
+    var wd = dd.getDay();
+    wdCnt[wd]++;
+    wdSum[wd] += dayTot;
+  }
+  var bestWd = 1;
+  var bestAvg = 0;
+  var wdx;
+  for (wdx = 0; wdx < 7; wdx++) {
+    if (wdCnt[wdx] === 0) continue;
+    var av = wdSum[wdx] / wdCnt[wdx];
+    if (av > bestAvg) {
+      bestAvg = av;
+      bestWd = wdx;
+    }
+  }
+  var dayNames = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+
+  var html = '<section class="st-analytics st-analytics-compact" aria-label="Sales analytics">';
+  html += '<div class="st-analytics-chart-card"><div class="st-analytics-card-title">Weekly premium</div>';
+  html += chartBlock + '</div>';
+
+  html += '<div class="st-analytics-cards-3">';
+  html += '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Monthly goal</div>';
+  html += '<div class="st-analytics-goal-row">';
+  html +=
+    '<span class="st-analytics-goal-line">$' +
+    Math.round(monthPrem).toLocaleString() +
+    ' of $' +
+    Math.round(goal).toLocaleString() +
+    ' <span class="st-analytics-pct">(' +
+    pct +
+    '%)</span></span>';
+  html +=
+    '<button type="button" class="st-analytics-link" onclick="_stEditMonthlyGoal()">Edit goal</button></div>';
+  html +=
+    '<div class="st-analytics-progress st-analytics-progress-thin"><span style="width:' +
+    pct +
+    '%"></span></div></div>';
+
+  html += '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Commission forecast</div>';
+  html +=
+    '<p class="st-analytics-one-line">This week: <strong>' +
+    _stFmtMoney(paceWeek) +
+    '</strong> · This month: <strong>' +
+    _stFmtMoney(paceMonth) +
+    '</strong></p>';
+  html += '<p class="st-analytics-note">Based on current pace</p></div>';
+
+  html += '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Best day</div>';
+  html +=
+    '<p class="st-analytics-one-line"><strong>' +
+    dayNames[bestWd] +
+    '</strong> · $' +
+    Math.round(bestAvg).toLocaleString() +
+    ' avg</p>';
+  html += '<p class="st-analytics-note">Last 4 weeks</p></div>';
+
+  html += '</div></section>';
+  return html;
+}
+
 // ── MAIN RENDER ─────────────────────────────────────────────
 function _stRender() {
   var page = document.getElementById('page-salestracker');
@@ -4378,6 +4658,7 @@ function _stRender() {
   );
   var postdates = _stLoadPostDates();
   var stats = _stCalcStats(sales);
+  var stTab = _stGetSavedTab();
 
   var html = '';
   // 1. Welcome greeting at the very top so it's visible immediately
@@ -4388,22 +4669,27 @@ function _stRender() {
   html +=
     '<div class="ph"><div class="pt">Sales <span>Tracker</span></div>' +
     '<div class="pd">Log enrollments, watch your weekly bonus progress, and see your numbers at a glance. Everything stays on your account.</div></div>';
-  // 4. This Week's Sales cards (Mon-Fri grid, deals only)
+  html += _stBuildInternalSubtabs(stTab);
+  html +=
+    '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
+    (stTab === 'thisweek' ? 'block' : 'none') +
+    '">';
+  // This Week tab: existing tracker body
   html += _stBuildWeeklySalesSummary(stats);
-  // 5. Stats row
   html += _stBuildStats(stats);
-  // 6. Weekly Bonus progress
   html += _stBuildBonus(stats);
-  // 7. Receipt input section
   html += _stBuildInput();
-  // 8. This Week's table
   html += _stBuildTable(sales);
-  // 9. Pending Post-Dates
   html += _stBuildPostDatesSection(postdates);
-  // 10. Commission Tracker (weekly commission + paycheck + earnings)
   html += _stBuildCommissionTracker(sales, stats);
-  // 11. Bottom spacer so the floating bottom toolbar never covers the last row
   html += '<div class="st-bottom-spacer" aria-hidden="true"></div>';
+  html += '</div>';
+  html +=
+    '<div id="stTabPanelAnalytics" class="st-tab-panel" role="tabpanel" style="display:' +
+    (stTab === 'analytics' ? 'block' : 'none') +
+    '">';
+  html += _stBuildAnalyticsDashboard(sales, stats);
+  html += '</div>';
 
   page.innerHTML = html;
 }
