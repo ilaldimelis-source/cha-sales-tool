@@ -1737,17 +1737,18 @@
    Sales Tracker Modernization Layer
    ============================================================ */
 .st-welcome {
-  margin-bottom: 20px;
-  padding: 8px 2px 16px;
+  margin-bottom: 14px;
+  padding: 0 0 10px;
 }
 
 .st-welcome-hi {
-  font-size: 24px;
+  font-size: 30px;
+  font-weight: 700;
   line-height: 1.2;
 }
 
 .st-welcome-sub {
-  font-size: 13px;
+  font-size: 16px;
   line-height: 1.6;
 }
 
@@ -1769,7 +1770,7 @@
 .st-input-section,
 .st-table-section,
 .st-weekly-summary {
-  padding: 16px 18px;
+  padding: 20px 22px;
 }
 
 .st-daily-grid {
@@ -1788,7 +1789,7 @@
 
 .st-day-card,
 .st-pd-row {
-  padding: 10px 10px;
+  padding: 14px 12px;
 }
 
 .st-input-actions,
@@ -1805,7 +1806,7 @@
 .st-entry-grid input,
 .st-entry-addon-row input,
 .st-postdate-date {
-  min-height: 44px;
+  min-height: 46px;
   border-radius: 12px;
   border-color: var(--border-med, #e2e8f0);
   transition:
@@ -1834,9 +1835,11 @@
 .st-payroll-btn,
 .st-print-btn,
 .st-pdf-btn {
-  min-height: 42px;
+  min-height: 46px;
   border-radius: 12px;
-  padding: 10px 14px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
   transition:
     background-color 200ms ease,
     color 200ms ease,
@@ -1868,10 +1871,36 @@
 .st-comm-day-table th,
 .st-comm-day-table td,
 .st-all-row {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 
 .st-table tbody tr:nth-child(even):not(.st-row-cancel):not(.st-row-chargeback) {
   background: rgba(248, 250, 252, 0.6);
+}
+
+/* Targeted fix: remove dead top gap above Sales Tracker heading. */
+#page-salestracker.page {
+  padding-top: 12px;
+}
+
+#page-salestracker .ph {
+  margin-top: 0;
+  margin-bottom: 12px;
+}
+
+#page-salestracker .st-daily-title,
+#page-salestracker .st-weekly-summary-title,
+#page-salestracker .st-table-title,
+#page-salestracker .st-pd-title {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+#page-salestracker .st-wks-card {
+  padding: 18px 14px 16px;
+}
+
+#page-salestracker .st-wks-amount {
+  font-size: 24px;
 }
