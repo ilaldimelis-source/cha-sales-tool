@@ -1020,10 +1020,17 @@ function _lcGpsFocusStage(n) {
       else btns[i].classList.remove('is-active');
     }
   }
-  var el = document.getElementById('lc-gps-stage-' + n);
-  if (el && typeof el.scrollIntoView === 'function') {
-    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  var blocks = document.querySelectorAll('.lc-gps-hud-block');
+  for (var j = 0; j < blocks.length; j++) {
+    if (j === n) blocks[j].classList.remove('lc-gps-stage-hidden');
+    else blocks[j].classList.add('lc-gps-stage-hidden');
   }
+}
+
+function lcGpsGoStage(n) {
+  var blocks = document.querySelectorAll('.lc-gps-hud-block');
+  if (n < 0 || n >= blocks.length) return;
+  _lcGpsFocusStage(n);
 }
 
 function _renderLiveCallGpsHtml() {
@@ -1052,7 +1059,9 @@ function _renderLiveCallGpsHtml() {
   for (var gi = 0; gi < stages.length; gi++) {
     var step = stages[gi];
     html +=
-      '<section class="lc-gps-hud-block" id="lc-gps-stage-' +
+      '<section class="lc-gps-hud-block' +
+      (gi === 0 ? '' : ' lc-gps-stage-hidden') +
+      '" id="lc-gps-stage-' +
       gi +
       '" aria-labelledby="lc-gps-hud-h-' +
       gi +
@@ -1080,6 +1089,25 @@ function _renderLiveCallGpsHtml() {
       }
       html += '</div>';
     }
+    html +=
+      '<div style="display:flex;justify-content:space-between;margin-top:16px;">';
+    if (gi > 0) {
+      html +=
+        '<button type="button" onclick="lcGpsGoStage(' +
+        (gi - 1) +
+        ')" style="padding:10px 24px;border-radius:10px;border:1px solid #d1d5db;background:white;font-size:14px;cursor:pointer;">← Previous</button>';
+    } else {
+      html += '<span></span>';
+    }
+    if (gi < stages.length - 1) {
+      html +=
+        '<button type="button" onclick="lcGpsGoStage(' +
+        (gi + 1) +
+        ')" style="padding:10px 24px;border-radius:10px;border:none;background:#5175F1;color:white;font-size:14px;font-weight:600;cursor:pointer;">Next →</button>';
+    } else {
+      html += '<span></span>';
+    }
+    html += '</div>';
     html += '</section>';
   }
   html += '</div></section>';
@@ -1091,60 +1119,11 @@ function _renderLiveCallGpsHtml() {
 // ══════════════════════════════════════════════════════
 function renderCallFlow() {
   var html = _renderLiveCallGpsHtml();
-  html +=
-    '<div class="ph"><div class="pt">Call Flow <span>Blueprint</span></div><div class="pd">The anatomy of a perfect call. Tap each step to expand.</div></div>';
-  CF_STEPS.forEach(function (s, i) {
-    html += '<div class="cf-step" id="cf' + i + '">';
-    html +=
-      '<div onclick="toggleCF(' +
-      i +
-      ')" style="display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;">';
-    var _cfBubbleBg =
-      s.num <= 4 ? '#5B8DEF' : s.num <= 8 ? '#10b981' : '#8b5cf6';
-    html +=
-      '<div style="width:32px;height:32px;border-radius:50%;background:' +
-      _cfBubbleBg +
-      ';display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:.82rem;color:#ffffff;flex-shrink:0;letter-spacing:0.01em;">' +
-      s.num +
-      '</div>';
-    html +=
-      '<div class="cf-title" style="flex:1;font-weight:700;">' +
-      s.title +
-      '</div>';
-    html +=
-      '<span style="color:var(--warmgray3);font-size:12px;" aria-hidden="true">▼</span></div>';
-    html +=
-      '<div class="cf-body" style="display:none;padding:0 20px 16px 66px;">';
-    html +=
-      '<div class="field"><div class="field-lbl">Goal</div><div class="field-txt">' +
-      s.goal +
-      '</div></div>';
-    html += '<div class="slbl u-mt10">What to Say</div>';
-    if (s.lines)
-      s.lines.forEach(function (l) {
-        html += '<div class="sbox" style="margin-bottom:6px;">' + l + '</div>';
-      });
-    if (s.mistakes) {
-      html +=
-        '<div class="ibox ibox-avoid" style="margin-top:8px;"><span class="sbox-lbl" style="color:var(--error);">Avoid</span><br>';
-      s.mistakes.forEach(function (m) {
-        html +=
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> ' +
-          m +
-          '<br>';
-      });
-      html += '</div>';
-    }
-    if (s.listen) {
-      html +=
-        '<div class="ibox ibox-bridge" style="margin-top:8px;"><span class="sbox-lbl">Listen For</span><br>' +
-        s.listen +
-        '</div>';
-    }
-    html += '</div></div>';
-  });
   var _page_callflow = document.getElementById('page-callflow');
-  if (_page_callflow) _page_callflow.innerHTML = html;
+  if (_page_callflow) {
+    _page_callflow.innerHTML = html;
+    _lcGpsFocusStage(0);
+  }
 }
 
 function toggleCF(i) {

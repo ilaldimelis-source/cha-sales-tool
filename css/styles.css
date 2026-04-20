@@ -7544,3 +7544,189 @@ select[onchange*="Status"],
   box-shadow: none !important;
 }
 
+/* ── LIVE CALL GPS: one stage visible ── */
+.lc-gps-stage-hidden {
+  display: none !important;
+}
+
+/* ── BENEFIT EXPLAINER: minimal rows + grid boxes ── */
+.benefit-cards-wrap {
+  display: block !important;
+}
+.benefit-card {
+  border: 0.5px solid #e2e5f1;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+}
+.benefit-card:hover {
+  border-color: #5175f1;
+}
+.benefit-card.expanded {
+  border-color: #5175f1;
+}
+.bc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+.bc-row-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.bc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.bc-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a2e;
+}
+.bc-hint {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+.bc-toggle {
+  font-size: 20px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+.bc-detail {
+  display: none;
+  padding: 0 16px 16px;
+}
+.benefit-card.expanded .bc-detail {
+  display: block;
+}
+.bc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.bc-box {
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.bc-box-blue {
+  background: #eff6ff;
+  border: 0.5px solid #bfdbfe;
+}
+.bc-box-amber {
+  background: #fffbeb;
+  border: 0.5px solid #fde68a;
+}
+.bc-box-green {
+  background: #f0fdf4;
+  border: 0.5px solid #bbf7d0;
+}
+.bc-box-red {
+  background: #fef2f2;
+  border: 0.5px solid #fecaca;
+}
+.bc-box-blue-light {
+  background: #f8f9fe;
+  border: 0.5px solid #bfdbfe;
+}
+.bc-full {
+  grid-column: 1 / -1;
+}
+.bc-box-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.bc-lbl-blue {
+  color: #1d4ed8;
+}
+.bc-lbl-amber {
+  color: #92400e;
+}
+.bc-lbl-green {
+  color: #15803d;
+}
+.bc-lbl-red {
+  color: #991b1b;
+}
+.bc-box-txt {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1a1a2e;
+}
+.bc-plan-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 13px;
+}
+.bc-plan-type {
+  font-weight: 600;
+  color: #5175f1;
+  min-width: 55px;
+  flex-shrink: 0;
+}
+.bc-plan-desc {
+  color: #1a1a2e;
+  line-height: 1.5;
+}
+@media (max-width: 500px) {
+  .bc-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── PLAN FIT & FRAMING: collapsed accordion ── */
+.plan-group-detail {
+  display: none;
+}
+.plan-group-row.expanded .plan-group-detail {
+  display: block;
+}
+.plan-group-row {
+  border: 0.5px solid #e9ecf5;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.plan-group-row:hover {
+  border-color: #5175f1;
+}
+.plan-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.plan-group-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+.plan-group-oneliner {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+.plan-type-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #e6f1fb;
+  color: #0c447c;
+}
+
