@@ -3621,7 +3621,6 @@ function _stDownloadWeeklyPdf() {
   var dealComm = 0;
   var addonComm = 0;
   var enrollmentBonus = 0;
-  var enrollmentFeesCollected = 0;
   var rowsHtml = '';
 
   for (var di = 0; di < deals.length; di++) {
@@ -3634,7 +3633,6 @@ function _stDownloadWeeklyPdf() {
     dealComm += Number(d.planCommission) || 0;
     addonComm += Number(d.totalAddonCommission) || 0;
     enrollmentBonus += Number(d.enrollmentBonus) || 0;
-    enrollmentFeesCollected += Number(d.enrollmentFee) || 0;
     if (Number(d.enrollmentAmount || d.enrollmentFee || 0) === 125) {
       enrollQualified.push(d);
     }
@@ -3715,7 +3713,6 @@ function _stDownloadWeeklyPdf() {
     '<div>Add-on Policies Sold: <strong>' + addonCount + '</strong></div>' +
     '<div>Full Enrollment Fee Bonus: <strong>$' + enrollmentFeeBonus.toFixed(2) + '</strong></div>' +
     '<div>Tier Bonus Amount: <strong>$' + tierBonus.toFixed(2) + '</strong></div>' +
-    '<div>Enrollment Fee Bonus: <strong>$' + enrollmentFeesCollected.toFixed(2) + '</strong></div>' +
     '</div>';
   html +=
     '<div style="margin-top:14px;font-size:14px;font-weight:700;">Total estimated commission: $' +
