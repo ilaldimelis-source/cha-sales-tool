@@ -7722,3 +7722,10 @@ select[onchange*="Status"],
   color: #0c447c;
 }
 
+/* ── HIDE BENEFITS REFERENCE AI CHAT (in-progress, not yet public) ──
+   Re-enable by removing this block when ready to launch. */
+#br-toggle,
+#br-panel {
+  display: none !important;
+}
+
