@@ -7549,137 +7549,144 @@ select[onchange*="Status"],
   display: none !important;
 }
 
-/* ── BENEFIT EXPLAINER: Option B cards ── */
+/* ── BENEFIT EXPLAINER: minimal rows + grid boxes ── */
 .benefit-cards-wrap {
   display: block !important;
 }
 .benefit-card {
-  background: var(--color-bg-primary, white);
   border: 0.5px solid #e2e5f1;
-  border-radius: 14px;
-  margin-bottom: 14px;
+  border-radius: 12px;
+  margin-bottom: 10px;
   cursor: pointer;
   transition: border-color 0.15s;
   overflow: hidden;
   display: block;
   width: 100%;
   box-sizing: border-box;
+  background: #fff;
 }
 .benefit-card:hover {
   border-color: #5175f1;
 }
-.benefit-card-top {
+.benefit-card.expanded {
+  border-color: #5175f1;
+}
+.bc-row {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  align-items: flex-start;
-  padding: 18px 22px 12px;
+  padding: 16px 20px;
 }
-.benefit-card-top-left {
-  flex: 1;
-  min-width: 0;
-}
-.benefit-card-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1a1a2e;
-  margin-bottom: 8px;
-}
-.benefit-card-tags {
+.bc-row-left {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  align-items: center;
+  gap: 14px;
 }
-.bc-tag {
-  font-size: 10px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
+.bc-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
-.bc-tag-key {
-  background: #fef3c7;
-  color: #92400e;
+.bc-name {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a2e;
 }
-.bc-tag-save {
-  background: #f0fdf4;
-  color: #15803d;
+.bc-hint {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
 }
-.bc-tag-info {
-  background: #eff6ff;
-  color: #1d4ed8;
-}
-.bc-tag-use {
-  background: #f0f4ff;
-  color: #4338ca;
-}
-.benefit-card-toggle {
-  font-size: 22px;
+.bc-toggle {
+  font-size: 20px;
   color: #94a3b8;
   flex-shrink: 0;
-  width: 32px;
-  text-align: center;
-  font-weight: 300;
-  padding-top: 2px;
 }
-.benefit-card-summary {
-  padding: 10px 22px 14px;
-  font-size: 13px;
-  color: #64748b;
-  line-height: 1.5;
-  background: #f8f9fe;
-  border-top: 0.5px solid #f0f2f7;
-}
-.benefit-card-detail {
+.bc-detail {
   display: none;
-  padding: 0 22px 20px;
-  border-top: 0.5px solid #e2e5f1;
+  padding: 0 16px 16px;
 }
-.benefit-card.expanded .benefit-card-detail {
+.benefit-card.expanded .bc-detail {
   display: block;
 }
-.benefit-card.expanded .benefit-card-summary {
-  background: white;
+.bc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
-.benefit-field {
-  padding: 12px 0;
-  border-bottom: 0.5px solid #f0f2f7;
-}
-.benefit-field:last-child {
-  border-bottom: none;
-}
-.benefit-field-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: #64748b;
-  margin-bottom: 5px;
-}
-.benefit-field-text {
-  font-size: 14px;
-  color: #374151;
-  line-height: 1.7;
-}
-.benefit-field-danger {
-  background: #fef2f2;
-  border: 0.5px solid #fecaca;
+.bc-box {
   border-radius: 10px;
-  padding: 12px 14px;
-  margin-top: 6px;
+  padding: 14px 16px;
 }
-.benefit-field-success {
-  background: #f0fdf4;
-  border: 0.5px solid #bbf7d0;
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-top: 6px;
-}
-.benefit-field-info {
+.bc-box-blue {
   background: #eff6ff;
   border: 0.5px solid #bfdbfe;
-  border-radius: 10px;
-  padding: 12px 14px;
-  margin-top: 6px;
+}
+.bc-box-amber {
+  background: #fffbeb;
+  border: 0.5px solid #fde68a;
+}
+.bc-box-green {
+  background: #f0fdf4;
+  border: 0.5px solid #bbf7d0;
+}
+.bc-box-red {
+  background: #fef2f2;
+  border: 0.5px solid #fecaca;
+}
+.bc-box-blue-light {
+  background: #f8f9fe;
+  border: 0.5px solid #bfdbfe;
+}
+.bc-full {
+  grid-column: 1 / -1;
+}
+.bc-box-lbl {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.bc-lbl-blue {
+  color: #1d4ed8;
+}
+.bc-lbl-amber {
+  color: #92400e;
+}
+.bc-lbl-green {
+  color: #15803d;
+}
+.bc-lbl-red {
+  color: #991b1b;
+}
+.bc-box-txt {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1a1a2e;
+}
+.bc-plan-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 13px;
+}
+.bc-plan-type {
+  font-weight: 600;
+  color: #5175f1;
+  min-width: 55px;
+  flex-shrink: 0;
+}
+.bc-plan-desc {
+  color: #1a1a2e;
+  line-height: 1.5;
+}
+@media (max-width: 500px) {
+  .bc-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ── PLAN FIT & FRAMING: collapsed accordion ── */

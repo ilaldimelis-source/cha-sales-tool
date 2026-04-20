@@ -4,11 +4,30 @@ const BENEFITS = [
   {
     icon: 'hospital',
     name: 'Hospitalization (Indemnity Benefit)',
-    tags: [
-      { text: 'Varies by plan type', type: 'key' },
-      { text: 'MEC: indemnity to you', type: 'info' },
-      { text: 'STM: deductible + coinsurance', type: 'use' }
+    hint: 'Varies by plan type',
+    howItWorks:
+      'How hospital benefits pay out depends entirely on the plan type. Some pay cash directly to you, others cover through insurance mechanics.',
+    byPlan: [
+      {
+        type: 'MEC',
+        desc: '$500-$1,500/day indemnity paid to you, not the hospital'
+      },
+      {
+        type: 'BWA',
+        desc: 'Fixed daily benefit + MBR repricing on remaining bills'
+      },
+      { type: 'STM', desc: 'Deductible + coinsurance (80/20 or 50/50)' },
+      {
+        type: 'Limited',
+        desc: 'Fixed daily cash benefit ($100-$1,000/day)'
+      }
     ],
+    sayThis:
+      '"If you are admitted to the hospital, your plan provides financial support to help cover costs. The exact benefit depends on your specific plan."',
+    neverSay:
+      'Don\'t say the plan "covers" hospitalization fully. MEC and Limited plans pay a set amount — they don\'t cover the entire bill. Don\'t compare to major medical.',
+    ifTheyAsk:
+      '"What if my hospital bill is more than what the plan pays?" → "The plan pays its stated benefit. For remaining balances, advocacy services like MyHealthcare Ninja can help negotiate and reduce bills."',
     official:
       'A fixed daily hospital benefit paid directly to the insured when admitted to the hospital. Example: $1,000/day up to $10,000 annual max depending on tier.',
     simple:
@@ -27,11 +46,27 @@ const BENEFITS = [
   {
     icon: 'users',
     name: 'Doctor Visits (PCP)',
-    tags: [
-      { text: 'Varies by plan type', type: 'key' },
-      { text: 'Visit limits apply', type: 'use' },
-      { text: 'In-network', type: 'info' }
+    hint: 'Copay, pre-pay, or fixed benefit',
+    howItWorks:
+      'How you pay for doctor visits depends on the plan. All plans have visit limits per year and require in-network providers for best rates.',
+    byPlan: [
+      { type: 'MEC', desc: '$25-$75 copay per visit, 3-5 visits/year' },
+      {
+        type: 'BWA',
+        desc: '$25 pre-pay PCP, $50 specialist — MBR reprices the rest'
+      },
+      { type: 'STM', desc: '$25-$50 copay for limited visits, then deductible' },
+      {
+        type: 'Limited',
+        desc: 'Fixed dollar amount per visit (e.g. $50/visit)'
+      }
     ],
+    sayThis:
+      '"You see a doctor for a low, predictable cost — always less than paying out of pocket. The exact amount depends on your plan."',
+    neverSay:
+      'Don\'t say "copay" for BWA plans — they use pre-pays with MBR repricing, not traditional copays. Don\'t promise unlimited visits — all plans have annual limits.',
+    ifTheyAsk:
+      '"How many visits do I get?" → "Your plan includes a set number of visits per year at the reduced rate. I can look up the exact number for your specific plan."',
     official:
       'Covered primary care physician visits with a flat copay and annual visit limit. Example (TrueHealth 2): PCP $25 copay, Specialist $50 copay, limited visits per year.',
     simple:
@@ -50,11 +85,21 @@ const BENEFITS = [
   {
     icon: 'warning',
     name: 'Urgent Care',
-    tags: [
-      { text: 'Varies by plan type', type: 'key' },
-      { text: 'Visit limits apply', type: 'use' },
-      { text: 'Not the ER', type: 'key' }
+    hint: 'Not the ER — visit limits apply',
+    howItWorks:
+      'Same-day care for non-emergency situations. Faster and cheaper than the ER. All plans have visit limits.',
+    byPlan: [
+      { type: 'MEC', desc: '$75 copay (same tier as specialist)' },
+      { type: 'BWA', desc: '$25 pre-pay, remaining bills repriced by MBR' },
+      { type: 'STM', desc: '$25-$60 copay with visit limits' },
+      { type: 'Limited', desc: 'Fixed benefit amount per visit' }
     ],
+    sayThis:
+      '"For non-emergency situations, urgent care gets you seen the same day at a fraction of the ER cost."',
+    neverSay:
+      'Don\'t say urgent care and the ER are the same benefit. Don\'t say urgent care is for emergencies — it\'s for non-life-threatening situations only.',
+    ifTheyAsk:
+      '"What\'s the difference between urgent care and the ER?" → "Urgent care handles same-day non-emergencies like infections, sprains, or flu. The ER is for life-threatening situations like chest pain or severe injury."',
     official:
       'Covered urgent care visits with a flat copay and visit limit. Example structure: $40–$75 copay, visit limit depending on plan tier.',
     simple:
@@ -73,11 +118,21 @@ const BENEFITS = [
   {
     icon: 'mobile',
     name: 'Telemedicine',
-    tags: [
-      { text: '$0 consult', type: 'save' },
-      { text: 'Unlimited visits', type: 'info' },
-      { text: '24/7 access', type: 'use' }
+    hint: '$0 consult, unlimited, 24/7',
+    howItWorks:
+      '$0 virtual doctor consultations available 24/7 on most plans. No visit limits. Available by phone or video.',
+    byPlan: [
+      { type: 'MEC', desc: '$0 via Opyn — unlimited visits' },
+      { type: 'BWA', desc: '$0 telemedicine included' },
+      { type: 'STM', desc: 'Varies — check plan details' },
+      { type: 'Limited', desc: 'May include telemedicine benefit' }
     ],
+    sayThis:
+      '"You can talk to a doctor 24/7 from your phone for $0. No appointment needed, no visit limits."',
+    neverSay:
+      'Don\'t say telemedicine replaces in-person care. Don\'t say it handles emergencies — it\'s for consultations only.',
+    ifTheyAsk:
+      '"Can I get prescriptions through telemedicine?" → "Yes, the doctor can prescribe medications during a virtual visit when appropriate."',
     official:
       '24/7 virtual doctor access with $0 consultation fee. Many plans use services like MyLiveDoc or similar telehealth providers.',
     simple:
@@ -96,11 +151,27 @@ const BENEFITS = [
   {
     icon: 'pill',
     name: 'Prescriptions (Rx)',
-    tags: [
-      { text: 'Varies by plan type', type: 'key' },
-      { text: 'Preventive generic: $0', type: 'save' },
-      { text: 'Formulary restrictions', type: 'use' }
+    hint: 'Varies — some plans exclude Rx',
+    howItWorks:
+      'Rx benefits vary significantly between plan types. MEC plans have the most comprehensive coverage. Most STM plans do not include Rx.',
+    byPlan: [
+      {
+        type: 'MEC',
+        desc: 'Preventive generic $0, preferred $5, $150/mo limit on non-preventive'
+      },
+      { type: 'BWA', desc: 'Rx discount program included' },
+      {
+        type: 'STM',
+        desc: 'Usually NOT covered — except Galena (ReviveHealth)'
+      },
+      { type: 'Limited', desc: 'Rx discount program or not covered' }
     ],
+    sayThis:
+      '"Your plan includes prescription benefits to help reduce medication costs. The specifics depend on your plan tier."',
+    neverSay:
+      'Don\'t say all plans cover prescriptions — most STM plans do NOT include Rx. Don\'t say medications are free — even MEC plans have a $150/month limit on non-preventive drugs.',
+    ifTheyAsk:
+      '"Are my medications covered?" → "That depends on the specific medication and your plan. Preventive generics are typically $0 on MEC plans. I can help you check the formulary for your specific medication."',
     official:
       'Coverage for generic medications through formulary pricing or discount programs. Example: Generic $0–$5 copay. Specialty drugs typically not covered, but assistance programs may exist.',
     simple:
@@ -119,11 +190,21 @@ const BENEFITS = [
   {
     icon: 'clock',
     name: 'Pre-Existing Conditions',
-    tags: [
-      { text: '12/12 rule common', type: 'key' },
-      { text: 'Must disclose', type: 'use' },
-      { text: '30-day sickness wait', type: 'key' }
+    hint: '12/12 rule — must disclose',
+    howItWorks:
+      'Most plans have a 12/12 pre-existing condition clause. Anything diagnosed or treated in the last 12 months has a 12-month waiting period before benefits apply.',
+    byPlan: [
+      { type: 'MEC', desc: '12/12 month pre-ex on hospital benefits' },
+      { type: 'BWA', desc: '12/12 month pre-ex clause' },
+      { type: 'STM', desc: 'Pre-ex excluded entirely or 12/12 rule' },
+      { type: 'Limited', desc: '12/12 month pre-ex typical' }
     ],
+    sayThis:
+      '"I want to be upfront — any condition diagnosed in the past 12 months would have a 12-month waiting period before hospital benefits apply."',
+    neverSay:
+      'Never skip the pre-ex disclosure. Never say pre-existing conditions are "covered" without explaining the waiting period. This is a compliance requirement.',
+    ifTheyAsk:
+      '"So my diabetes won\'t be covered?" → "Hospital benefits related to a pre-existing condition would have a 12-month waiting period. Your doctor visits, telemedicine, and prescriptions are not affected by the pre-ex clause."',
     official:
       'Conditions diagnosed or treated in the 12 months before the policy effective date are excluded for the first 12 months of the plan.',
     simple:
@@ -142,11 +223,19 @@ const BENEFITS = [
   {
     icon: 'hourglass',
     name: 'Waiting Periods',
-    tags: [
-      { text: '30-day sickness wait', type: 'key' },
-      { text: 'Injury: immediate', type: 'save' },
-      { text: 'Plan-specific', type: 'use' }
+    hint: '30-day sickness, injury immediate',
+    howItWorks:
+      'Standard 30-day waiting period for sickness benefits and scheduled doctor visits. Injuries are typically covered immediately from day one.',
+    byPlan: [
+      { type: 'All plans', desc: '30-day wait for sickness and scheduled visits' },
+      { type: 'All plans', desc: 'Injuries covered immediately' }
     ],
+    sayThis:
+      '"There is a standard 30-day waiting period for sickness-related benefits. However, if you have an injury, you are covered from day one."',
+    neverSay:
+      'Don\'t say there are no waiting periods. Don\'t say coverage starts immediately for everything — only injuries are immediate.',
+    ifTheyAsk:
+      '"Why is there a waiting period?" → "The 30-day waiting period is standard across these plans. It prevents someone from signing up only when they are already sick, which keeps premiums lower for everyone."',
     official:
       'A defined period before certain benefits activate. STM example: Accidents → day one. Sickness → 5-day wait. Cancer → 30-day wait. MEC example: Sickness → 30-day wait.',
     simple:
@@ -165,11 +254,21 @@ const BENEFITS = [
   {
     icon: 'globe',
     name: 'Networks',
-    tags: [
-      { text: 'PPO networks', type: 'info' },
-      { text: 'In-network = savings', type: 'save' },
-      { text: 'Verify before visit', type: 'use' }
+    hint: 'PPO — verify before visiting',
+    howItWorks:
+      'All plans use PPO networks for doctor visits and outpatient services. Using in-network providers means lower costs. Always verify before visiting.',
+    byPlan: [
+      { type: 'MEC', desc: 'First Health PPO network' },
+      { type: 'BWA', desc: 'PHCS PPO network + MBR repricing' },
+      { type: 'STM', desc: 'PHCS or plan-specific PPO network' },
+      { type: 'Limited', desc: 'Varies — check plan documents' }
     ],
+    sayThis:
+      '"Your plan uses a PPO network, which means you have a large selection of doctors to choose from. Always verify your doctor is in-network before your visit."',
+    neverSay:
+      'Don\'t say members can see any doctor they want without consequences. Out-of-network visits may not be covered or may cost significantly more.',
+    ifTheyAsk:
+      '"How do I find a doctor?" → "You can search for in-network providers on the network website, or call the number on your insurance card for help finding a provider near you."',
     official:
       'Healthcare providers contracted at pre-negotiated rates. Networks used in this portfolio: First Health, PHCS (MultiPlan), MultiPlan, and Managed Care.',
     simple:
@@ -188,11 +287,21 @@ const BENEFITS = [
   {
     icon: 'plus',
     name: 'Add-Ons & Supplements',
-    tags: [
-      { text: 'Optional layers', type: 'key' },
-      { text: 'Own premium each', type: 'info' },
-      { text: 'After base is set', type: 'use' }
+    hint: 'Optional extras on base plan',
+    howItWorks:
+      'Optional supplemental products that stack on top of the base plan. Each add-on has its own premium, terms, and claims process.',
+    byPlan: [
+      { type: 'Dental/Vision', desc: 'Ameritas plans — separate premium' },
+      { type: 'Accident', desc: 'Compass VAB — 70% commission' },
+      { type: 'Rx Discount', desc: 'RxSavers or Recuro — flat $10 commission' },
+      { type: 'GAP/Critical', desc: 'Additional financial protection layers' }
     ],
+    sayThis:
+      '"These optional add-ons give you extra layers of protection. Each one is separate from your base plan and has its own benefits."',
+    neverSay:
+      'Don\'t present add-ons before the base plan is confirmed. Don\'t say add-ons are required — they are always optional.',
+    ifTheyAsk:
+      '"Do I need the add-ons?" → "They are completely optional. I recommend them because they fill gaps that the base plan doesn\'t cover, but the choice is always yours."',
     official:
       'Optional supplemental benefits added to the base plan for additional premium. Options: Critical illness, Accident coverage, Dental, Vision, Hospital gap.',
     simple:
@@ -963,10 +1072,12 @@ const PLANS = [
 window._toggleBenefitCard = function (id) {
   var card = document.getElementById(id);
   if (!card) return;
-  var isExpanded = card.classList.contains('expanded');
   card.classList.toggle('expanded');
-  var toggle = card.querySelector('.benefit-card-toggle');
-  if (toggle) toggle.textContent = isExpanded ? '+' : '\u2212';
+  var tog = card.querySelector('.bc-toggle');
+  if (tog)
+    tog.textContent = card.classList.contains('expanded')
+      ? String.fromCharCode(8722)
+      : '+';
 };
 
 function renderBenefits() {
@@ -1031,9 +1142,27 @@ function renderBenefits() {
     cat.indices.forEach(function (i) {
       var b = BENEFITS[i];
       var cardId = 'bx' + i;
-      var searchData = escHTML(
-        (b.name + ' ' + b.simple + ' ' + b.official).toLowerCase()
-      );
+      var searchBits = [
+        b.name,
+        b.hint || '',
+        b.simple || '',
+        b.official || '',
+        b.frame || '',
+        b.misunderstand || '',
+        b.notsay || '',
+        b.followup || '',
+        b.bridge || '',
+        b.howItWorks || '',
+        b.sayThis || '',
+        b.neverSay || '',
+        b.ifTheyAsk || ''
+      ];
+      if (b.byPlan) {
+        for (var si = 0; si < b.byPlan.length; si++) {
+          searchBits.push(b.byPlan[si].type + ' ' + b.byPlan[si].desc);
+        }
+      }
+      var searchData = escHTML(searchBits.join(' ').toLowerCase());
       html +=
         '<div class="benefit-card benefit-card-item" id="' +
         cardId +
@@ -1042,59 +1171,50 @@ function renderBenefits() {
         '" onclick="_toggleBenefitCard(\'' +
         cardId +
         '\')">';
-      html += '<div class="benefit-card-top">';
-      html += '<div class="benefit-card-top-left">';
-      html += '<div class="benefit-card-name">' + b.name + '</div>';
-      html += '<div class="benefit-card-tags">';
-      if (b.tags) {
-        for (var ti = 0; ti < b.tags.length; ti++) {
-          var tagClass = b.tags[ti].type || 'info';
+      html += '<div class="bc-row">';
+      html += '<div class="bc-row-left">';
+      html +=
+        '<div class="bc-dot" style="background:' + cat.color + '"></div>';
+      html += '<div>';
+      html += '<div class="bc-name">' + b.name + '</div>';
+      html += '<div class="bc-hint">' + (b.hint || '') + '</div>';
+      html += '</div></div>';
+      html += '<span class="bc-toggle">+</span>';
+      html += '</div>';
+      html += '<div class="bc-detail">';
+      html += '<div class="bc-grid">';
+      html += '<div class="bc-box bc-box-blue">';
+      html += '<div class="bc-box-lbl bc-lbl-blue">How it works</div>';
+      html += '<div class="bc-box-txt">' + b.howItWorks + '</div>';
+      html += '</div>';
+      html += '<div class="bc-box bc-box-amber">';
+      html += '<div class="bc-box-lbl bc-lbl-amber">By plan type</div>';
+      if (b.byPlan) {
+        for (var pi = 0; pi < b.byPlan.length; pi++) {
+          html += '<div class="bc-plan-row">';
           html +=
-            '<span class="bc-tag bc-tag-' +
-            tagClass +
-            '">' +
-            b.tags[ti].text +
-            '</span>';
+            '<span class="bc-plan-type">' + b.byPlan[pi].type + '</span>';
+          html +=
+            '<span class="bc-plan-desc">' + b.byPlan[pi].desc + '</span>';
+          html += '</div>';
         }
       }
       html += '</div>';
+      html += '<div class="bc-box bc-box-green bc-full">';
+      html += '<div class="bc-box-lbl bc-lbl-green">Say this</div>';
+      html += '<div class="bc-box-txt">' + b.sayThis + '</div>';
       html += '</div>';
-      html += '<span class="benefit-card-toggle">+</span>';
+      html += '<div class="bc-box bc-box-red bc-full">';
+      html += '<div class="bc-box-lbl bc-lbl-red">Never say</div>';
+      html += '<div class="bc-box-txt">' + b.neverSay + '</div>';
       html += '</div>';
-      html += '<div class="benefit-card-summary">' + b.simple + '</div>';
-      html += '<div class="benefit-card-detail">';
-      html +=
-        '<div class="benefit-field"><div class="benefit-field-label">Why it matters</div><div class="benefit-field-text">' +
-        b.frame +
-        '</div></div>';
-      html +=
-        '<div class="benefit-field"><div class="benefit-field-label">Official meaning</div><div class="benefit-field-text">' +
-        b.official +
-        '</div></div>';
-      if (b.misunderstand) {
-        html +=
-          '<div class="benefit-field"><div class="benefit-field-label">Common misunderstanding</div><div class="benefit-field-text">' +
-          b.misunderstand +
-          '</div></div>';
+      if (b.ifTheyAsk) {
+        html += '<div class="bc-box bc-box-blue-light bc-full">';
+        html += '<div class="bc-box-lbl bc-lbl-blue">If they ask</div>';
+        html += '<div class="bc-box-txt">' + b.ifTheyAsk + '</div>';
+        html += '</div>';
       }
-      if (b.notsay) {
-        html +=
-          '<div class="benefit-field benefit-field-danger"><div class="benefit-field-label" style="color:#991b1b;">Never say</div><div class="benefit-field-text">' +
-          b.notsay +
-          '</div></div>';
-      }
-      if (b.followup) {
-        html +=
-          '<div class="benefit-field benefit-field-success"><div class="benefit-field-label" style="color:#15803d;">Common follow-up</div><div class="benefit-field-text">' +
-          b.followup +
-          '</div></div>';
-      }
-      if (b.bridge) {
-        html +=
-          '<div class="benefit-field"><div class="benefit-field-label" style="color:#5175F1;">Bridge back</div><div class="benefit-field-text">' +
-          b.bridge +
-          '</div></div>';
-      }
+      html += '</div>';
       html += '</div>';
       html += '</div>';
     });
