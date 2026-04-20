@@ -34,6 +34,7 @@
 'use strict';
 
 var _stDealEditSaleId = '';
+var _stEntryModalState = null;
 
 // ── BONUS TIER CONFIG ───────────────────────────────────────
 // D = Deals (core plan sales). A = Add-ons.
@@ -1617,6 +1618,108 @@ function _stReadDateSoldTs() {
   return d.getTime();
 }
 
+
+function _stDay3(ts) {
+  var d = new Date(Number(ts) || Date.now());
+  var names = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  return names[d.getDay()] || 'DAY';
+}
+
+function _stMd(ts) {
+  var d = new Date(Number(ts) || Date.now());
+  return d.getMonth() + 1 + '/' + d.getDate();
+}
+
+function _stMdY(ts) {
+  var d = new Date(Number(ts) || Date.now());
+  return d.getMonth() + 1 + '/' + d.getDate() + '/' + d.getFullYear();
+}
+
+function _stIsCurrentWeekTs(ts) {
+  var weekStart = _stStartOfWeek(new Date()).getTime();
+  var weekEnd = weekStart + 7 * 24 * 60 * 60 * 1000;
+  return Number(ts) >= weekStart && Number(ts) < weekEnd;
+}
+
+function _stBuildAddedFlash(customer, ts) {
+  var name = (customer || 'Customer').trim() || 'Customer';
+  if (_stIsCurrentWeekTs(ts)) {
+    return {
+      kind: 'ok',
+      msg: 'Added ' + name + ' to ' + _stDay3(ts) + ' ' + _stMd(ts)
+    };
+  }
+  return {
+    kind: 'warn',
+    msg:
+      'Added ' +
+      name +
+      ' for ' +
+      _stMdY(ts) +
+      ' (not in this week). View in All Sales.'
+  };
+}
+
+function _stFlashSequence(items, idx) {
+  if (!items || !items.length) return;
+  var i = typeof idx === 'number' ? idx : 0;
+  if (i >= items.length) return;
+  _stFlash(items[i].msg, items[i].kind);
+  if (i + 1 < items.length) {
+    setTimeout(function () {
+      _stFlashSequence(items, i + 1);
+    }, 2700);
+  }
+}
+
+function _stFindDuplicateDeal(receiptId, customer, skipSaleId) {
+  var rid = String(receiptId || '').trim().toLowerCase();
+  var cust = String(customer || '').trim().toLowerCase();
+  if (!rid || !cust) return null;
+  var sales = _stLoadSales();
+  for (var i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'deal') continue;
+    if (skipSaleId && s.id === skipSaleId) continue;
+    var srid = String(s.receiptId || '').trim().toLowerCase();
+    var scust = String(s.customer || '').trim().toLowerCase();
+    if (srid === rid && scust === cust) return s;
+  }
+  return null;
+}
+
+function _stMaybeConfirmDuplicate(customer, receiptId) {
+  var dup = _stFindDuplicateDeal(receiptId, customer);
+  if (!dup) return true;
+  var c = (customer || 'Customer').trim() || 'Customer';
+  var r = String(receiptId || '').trim();
+  return window.confirm(
+    c + ' (Policy #' + r + ') was already added earlier. Add this anyway?'
+  );
+}
+
+function _stBuildUniqueReceiptId(prefix) {
+  return (
+    (prefix || 'rcpt_') +
+    Date.now() +
+    '_' +
+    Math.random().toString(36).slice(2, 7)
+  );
+}
+
+function _stResolveReceiptPolicy(parsed, fallbackId) {
+  var policy = '';
+  if (parsed && parsed.products && parsed.products.length) {
+    for (var i = 0; i < parsed.products.length; i++) {
+      if (parsed.products[i] && parsed.products[i].policy) {
+        policy = String(parsed.products[i].policy).trim();
+        if (policy) break;
+      }
+    }
+  }
+  return policy || fallbackId;
+}
+
 // Current value of the Same-Day vs Post-Date toggle.
 function _stGetSaleMode() {
   var el = document.getElementById('st-sale-mode');
@@ -1870,9 +1973,6 @@ function _stAutoDetectAndAdd() {
     return;
   }
 
-  // Split the pasted blob into individual receipts and parse
-  // each one independently. Chunks with zero products are
-  // dropped silently (e.g. noise or a trailing footer).
   var chunks = _stSplitReceipts(text);
   var parsedChunks = [];
   for (var ci = 0; ci < chunks.length; ci++) {
@@ -1881,36 +1981,53 @@ function _stAutoDetectAndAdd() {
     if (!pc || !pc.products.length) continue;
     parsedChunks.push({ parsed: pc, raw: chunk });
   }
+
   if (!parsedChunks.length) {
-    _stFlash(
-      'Could not find any products in that receipt. Try "Add as Deal" instead.',
-      'error'
-    );
+    _stOpenEntryModal({
+      mode: 'create',
+      previewText: text,
+      initial: { dateSold: _stTodayIso(), enrollmentFee: 125 }
+    });
     return;
   }
 
-  // Fallback ts (used only when a chunk has no parseable sale
-  // date): the agent-selected Date Sold field at 9am local.
-  var fallbackTs = _stReadDateSoldTs();
+  var hasCustomerDetected = false;
+  for (var h = 0; h < parsedChunks.length; h++) {
+    if (
+      parsedChunks[h] &&
+      parsedChunks[h].parsed &&
+      String(parsedChunks[h].parsed.customer || '').trim()
+    ) {
+      hasCustomerDetected = true;
+      break;
+    }
+  }
+  if (!hasCustomerDetected) {
+    _stOpenEntryModal({
+      mode: 'create',
+      previewText: text,
+      initial: { dateSold: _stTodayIso(), enrollmentFee: 125 }
+    });
+    return;
+  }
 
+  var fallbackTs = _stReadDateSoldTs();
   var totalDeals = 0;
   var totalAddons = 0;
-  var receiptsProcessed = parsedChunks.length;
+  var flashItems = [];
+  var flashedCustomers = {};
 
   if (billDate) {
-    // Post-date flow: every chunk lands in the Pending
-    // Post-Dates list with the shared billDate.
     var pds = _stLoadPostDates();
     for (var rc = 0; rc < parsedChunks.length; rc++) {
       var parsedA = parsedChunks[rc].parsed;
       var rawA = parsedChunks[rc].raw;
-      var rcptIdA =
-        'rcpt_' +
-        Date.now() +
-        '_' +
-        rc +
-        '_' +
-        Math.random().toString(36).slice(2, 6);
+      var customerA = String(parsedA.customer || '').trim() || 'Customer';
+      var rcptIdA = _stResolveReceiptPolicy(parsedA, _stBuildUniqueReceiptId('rcpt_'));
+      if (!_stMaybeConfirmDuplicate(customerA, rcptIdA)) {
+        _stFlash('Cancelled - ' + customerA + ' was not re-added', 'neutral');
+        return;
+      }
       var baseTsA = Date.now() + rc * 1000;
       for (var pi = 0; pi < parsedA.products.length; pi++) {
         var pp = parsedA.products[pi];
@@ -1924,7 +2041,7 @@ function _stAutoDetectAndAdd() {
             Math.random().toString(36).slice(2, 6),
           createdTs: baseTsA + pi,
           billDate: billDate,
-          customer: parsedA.customer,
+          customer: customerA,
           plan: pp.name || 'Unknown Plan',
           amount: pp.price,
           type: pi === 0 ? 'deal' : 'addon',
@@ -1935,27 +2052,25 @@ function _stAutoDetectAndAdd() {
         if (pi === 0) totalDeals++;
         else totalAddons++;
       }
+      var keyA = customerA.toLowerCase();
+      if (!flashedCustomers[keyA]) {
+        flashItems.push(_stBuildAddedFlash(customerA, baseTsA));
+        flashedCustomers[keyA] = true;
+      }
     }
     _stSavePostDates(pds);
   } else {
-    // Same-Day flow: every chunk lands directly in sales with
-    // its own per-receipt ts (parsed saleDate, or fallback).
     var sales = _stLoadSales();
     var newDealIdxs = [];
     for (var rc2 = 0; rc2 < parsedChunks.length; rc2++) {
       var parsedB = parsedChunks[rc2].parsed;
       var rawB = parsedChunks[rc2].raw;
-      var rcptIdB =
-        'rcpt_' +
-        Date.now() +
-        '_' +
-        rc2 +
-        '_' +
-        Math.random().toString(36).slice(2, 6);
-      // Prefer the receipt's own saleDate at 9am local. If the
-      // parser couldn't find one, fall back to the Date Sold
-      // field with a small per-receipt offset so sort order
-      // stays stable within the batch.
+      var customerB = String(parsedB.customer || '').trim() || 'Customer';
+      var rcptIdB = _stResolveReceiptPolicy(parsedB, _stBuildUniqueReceiptId('rcpt_'));
+      if (!_stMaybeConfirmDuplicate(customerB, rcptIdB)) {
+        _stFlash('Cancelled - ' + customerB + ' was not re-added', 'neutral');
+        return;
+      }
       var rcTs;
       if (parsedB.saleDate && parsedB.saleDate instanceof Date) {
         var sd = parsedB.saleDate;
@@ -1986,7 +2101,7 @@ function _stAutoDetectAndAdd() {
             '_' +
             Math.random().toString(36).slice(2, 6),
           ts: rcTs + pj,
-          customer: parsedB.customer,
+          customer: customerB,
           memberId: parsedB.memberId || '',
           plan: pp2.name || 'Unknown Plan',
           amount: pp2.price,
@@ -1996,9 +2111,6 @@ function _stAutoDetectAndAdd() {
           notes: pp2.policy ? 'Policy: ' + pp2.policy : '',
           receiptId: rcptIdB,
           receiptTotal: parsedB.receiptTotal,
-          // Store the receipt-level enrollment fee on the DEAL
-          // only so the $125 enrollment counter never
-          // double-counts.
           enrollmentFee: isDeal2 ? parsedB.enrollmentFee || 0 : 0
         });
         if (isDeal2) {
@@ -2008,55 +2120,37 @@ function _stAutoDetectAndAdd() {
           totalAddons++;
         }
       }
+      var keyB = customerB.toLowerCase();
+      if (!flashedCustomers[keyB]) {
+        flashItems.push(_stBuildAddedFlash(customerB, rcTs));
+        flashedCustomers[keyB] = true;
+      }
     }
-    // Stamp commission fields on every new deal (each one
-    // rolls up its own add-ons via receiptId).
     if (newDealIdxs.length) {
       var rates = _stLoadCommissionRates();
       for (var di = 0; di < newDealIdxs.length; di++) {
         _stStampDealCommission(sales, newDealIdxs[di], rates);
       }
     }
-    // ── DEBUG: trace the save path to diagnose the
-    // persistence bug reported in the receipt-add flow.
-    var _dbgUser = _stGetCurrentUser();
-    console.log(
-      'Saving',
-      sales.length,
-      'sales for user',
-      _dbgUser ? _dbgUser.id : '(no user)'
-    );
     _stSaveSales(sales);
-    console.log(
-      'Verified saved:',
-      _stLoadSales().length,
-      'sales in storage'
-    );
   }
 
   input.value = '';
   _stResetPostDateInputs();
-  var label = billDate
-    ? 'Post-dated ' + _stFormatBillDate(billDate) + ': '
-    : '';
-  var msg =
-    label +
-    'Added ' +
-    totalDeals +
-    ' deal' +
-    (totalDeals === 1 ? '' : 's');
-  if (totalAddons > 0) {
-    msg +=
-      ' + ' + totalAddons + ' add-on' + (totalAddons === 1 ? '' : 's');
-  }
-  msg +=
-    ' from ' +
-    receiptsProcessed +
-    ' receipt' +
-    (receiptsProcessed === 1 ? '' : 's') +
-    '.';
   _stRender();
-  _stFlash(msg, 'ok');
+  if (flashItems.length) {
+    _stFlashSequence(flashItems);
+  } else {
+    _stFlash(
+      'Added ' +
+        totalDeals +
+        ' deal' +
+        (totalDeals === 1 ? '' : 's') +
+        (totalAddons ? ' + ' + totalAddons + ' add-ons' : '') +
+        '.',
+      'ok'
+    );
+  }
 }
 
 // Manual fallback: add a single sale as deal or addon, using the
@@ -2519,7 +2613,11 @@ function _stFlash(msg, kind) {
   var el = document.getElementById('st-flash');
   if (!el) return;
   el.textContent = msg;
-  el.className = 'st-flash st-flash-' + (kind === 'error' ? 'error' : 'ok');
+  var cls = 'ok';
+  if (kind === 'error') cls = 'error';
+  else if (kind === 'warn') cls = 'warn';
+  else if (kind === 'neutral') cls = 'neutral';
+  el.className = 'st-flash st-flash-' + cls;
   el.style.opacity = '1';
   clearTimeout(window._stFlashT);
   window._stFlashT = setTimeout(function () {
@@ -2884,6 +2982,8 @@ function _stBuildInput() {
   html +=
     '<button class="st-add-deal" onclick="_stAutoDetectAndAdd()">Auto-detect &amp; Add</button>';
   html +=
+    '<button class="st-add-addon" onclick="_stOpenEntryModal({mode:\'create\', initial:{dateSold:_stTodayIso(), enrollmentFee:125}})">Enter manually</button>';
+  html +=
     '<button class="st-add-addon" onclick="_stAddSale(\'deal\')">Add as Deal</button>';
   html +=
     '<button class="st-add-addon" onclick="_stAddSale(\'addon\')">Add as Add-on</button>';
@@ -3210,6 +3310,9 @@ function _stCommissionCellHtml(s) {
     '% (' +
     _stClassifyAddon(s.plan) +
     ')</div>' +
+    '<button type="button" class="st-comm-edit" title="Edit sale group" onclick="_stOpenCommissionEditor(\'' +
+    s.id +
+    '\')">Edit</button>' +
     '</div>'
   );
 }
@@ -3628,6 +3731,368 @@ function _stDownloadWeeklyPdf() {
   w.print();
 }
 
+
+
+function _stOpenEntryModal(opts) {
+  opts = opts || {};
+  _stCloseEntryModal();
+  var mode = opts.mode === 'edit' ? 'edit' : 'create';
+  var initial = opts.initial || {};
+  var preview = opts.previewText ? String(opts.previewText) : '';
+  var soldIso = initial.dateSold || _stTodayIso();
+  var premiumVal = Number(initial.premium || 0);
+  if (!isFinite(premiumVal)) premiumVal = 0;
+  var enrollVal = Number(initial.enrollmentFee);
+  if (!isFinite(enrollVal)) enrollVal = 125;
+  var defaultDealRate = _stPlanTierRate(premiumVal, _stLoadCommissionRates()) * 100;
+  var dealRatePct =
+    typeof initial.dealRatePct === 'number' && !isNaN(initial.dealRatePct)
+      ? initial.dealRatePct
+      : defaultDealRate;
+  var addonRows = initial.addons && initial.addons.length ? initial.addons : [];
+
+  _stEntryModalState = {
+    mode: mode,
+    dealId: initial.dealId || '',
+    receiptIdForEdit: initial.receiptId || '',
+    previewText: preview
+  };
+
+  var modal = document.createElement('div');
+  modal.id = 'st-entry-modal';
+  modal.className = 'st-entry-modal';
+  var html = '';
+  html += '<div class="st-entry-card" role="dialog" aria-modal="true">';
+  html +=
+    '<div class="st-entry-title">' +
+    (mode === 'edit' ? 'Edit sale group' : 'Enter sale manually') +
+    '</div>';
+  if (preview) {
+    html += '<div class="st-entry-preview-wrap">';
+    html += '<div class="st-entry-preview-label">Paste preview</div>';
+    html += '<pre class="st-entry-preview">' + _stEscape(preview) + '</pre>';
+    html += '</div>';
+  }
+  html += '<div class="st-entry-grid">';
+  html +=
+    '<label>Customer name<input id="st-entry-customer" type="text" value="' +
+    _stEscape(initial.customer || '') +
+    '" required></label>';
+  html +=
+    '<label>Policy ID / Receipt ID<input id="st-entry-receiptid" type="text" value="' +
+    _stEscape(initial.receiptId || '') +
+    '"></label>';
+  html +=
+    '<label>Date sold<input id="st-entry-date" type="date" value="' +
+    _stEscape(soldIso) +
+    '"></label>';
+  html += '</div>';
+  html += '<div class="st-entry-sec-title">Deal</div>';
+  html += '<div class="st-entry-grid st-entry-grid-deal">';
+  html +=
+    '<label>Plan name<input id="st-entry-plan" type="text" value="' +
+    _stEscape(initial.plan || '') +
+    '"></label>';
+  html +=
+    '<label>Monthly premium $<input id="st-entry-premium" type="number" step="0.01" value="' +
+    _stEscape(premiumVal) +
+    '"></label>';
+  html +=
+    '<label>Enrollment fee $<input id="st-entry-enroll" type="number" step="0.01" value="' +
+    _stEscape(enrollVal) +
+    '"></label>';
+  html +=
+    '<label>Deal commission %<input id="st-entry-deal-rate" type="number" step="1" value="' +
+    _stEscape(Math.round(dealRatePct)) +
+    '"></label>';
+  html += '</div>';
+  html += '<div class="st-entry-sec-title">Add-ons</div>';
+  html += '<div id="st-entry-addons"></div>';
+  html +=
+    '<button type="button" class="st-entry-add-addon" onclick="_stEntryAddAddonRow()">+ Add another add-on</button>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" onclick="_stCloseEntryModal()">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save" onclick="_stSaveEntryModal()">Save</button>';
+  html += '</div>';
+  html += '</div>';
+  modal.innerHTML = html;
+  modal.onclick = function (ev) {
+    if (ev.target === modal) _stCloseEntryModal();
+  };
+  document.body.appendChild(modal);
+
+  for (var i = 0; i < addonRows.length; i++) {
+    _stEntryAddAddonRow(addonRows[i]);
+  }
+  if (!addonRows.length) _stEntryAddAddonRow();
+
+  window._stEntryEscHandler = function (ev) {
+    if (ev.key === 'Escape') _stCloseEntryModal();
+  };
+  window.addEventListener('keydown', window._stEntryEscHandler);
+}
+
+function _stCloseEntryModal() {
+  _stEntryModalState = null;
+  var modal = document.getElementById('st-entry-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+  if (window._stEntryEscHandler) {
+    window.removeEventListener('keydown', window._stEntryEscHandler);
+    window._stEntryEscHandler = null;
+  }
+}
+
+function _stEntryAddAddonRow(addon) {
+  var wrap = document.getElementById('st-entry-addons');
+  if (!wrap) return;
+  var row = document.createElement('div');
+  row.className = 'st-entry-addon-row';
+  row.setAttribute('data-addon-id', addon && addon.id ? addon.id : '');
+  var amount = addon && typeof addon.amount !== 'undefined' ? Number(addon.amount) : 0;
+  if (!isFinite(amount)) amount = 0;
+  var ratePct =
+    addon && typeof addon.ratePct === 'number' && !isNaN(addon.ratePct)
+      ? addon.ratePct
+      : 70;
+  row.innerHTML =
+    '<input class="st-entry-addon-name" type="text" placeholder="Add-on name" value="' +
+    _stEscape((addon && addon.name) || '') +
+    '">' +
+    '<input class="st-entry-addon-amt" type="number" step="0.01" placeholder="0.00" value="' +
+    _stEscape(amount) +
+    '">' +
+    '<input class="st-entry-addon-rate" type="number" step="1" placeholder="70" value="' +
+    _stEscape(Math.round(ratePct)) +
+    '">' +
+    '<button type="button" class="st-entry-addon-remove" onclick="this.parentNode.remove()">Remove</button>';
+  wrap.appendChild(row);
+}
+
+function _stCreateSaleGroupFromModal(payload) {
+  var receiptId = payload.receiptId || _stBuildUniqueReceiptId('rcpt_manual_');
+  if (!_stMaybeConfirmDuplicate(payload.customer, receiptId)) {
+    _stFlash('Cancelled - ' + payload.customer + ' was not re-added', 'neutral');
+    return false;
+  }
+  var sales = _stLoadSales();
+  var dealId =
+    'st_' + payload.ts + '_manual_0_' + Math.random().toString(36).slice(2, 6);
+  sales.push({
+    id: dealId,
+    ts: payload.ts,
+    customer: payload.customer,
+    memberId: '',
+    plan: payload.plan || 'Unknown Plan',
+    amount: payload.premium,
+    type: 'deal',
+    status: 'pending',
+    raw: payload.rawText || '',
+    notes: receiptId ? 'Policy: ' + receiptId : '',
+    receiptId: receiptId,
+    receiptTotal: 0,
+    enrollmentFee: payload.enrollmentFee,
+    commissionRate: payload.dealRatePct / 100
+  });
+  for (var i = 0; i < payload.addons.length; i++) {
+    var ad = payload.addons[i];
+    sales.push({
+      id:
+        'st_' +
+        payload.ts +
+        '_manual_' +
+        (i + 1) +
+        '_' +
+        Math.random().toString(36).slice(2, 6),
+      ts: payload.ts + i + 1,
+      customer: payload.customer,
+      memberId: '',
+      plan: ad.name,
+      amount: ad.amount,
+      type: 'addon',
+      status: 'pending',
+      raw: payload.rawText || '',
+      notes: receiptId ? 'Policy: ' + receiptId : '',
+      receiptId: receiptId,
+      receiptTotal: 0,
+      enrollmentFee: 0,
+      addonCommissionRate: ad.ratePct / 100
+    });
+  }
+  for (var si = 0; si < sales.length; si++) {
+    if (sales[si].id === dealId) {
+      _stStampDealCommission(sales, si, _stLoadCommissionRates());
+      break;
+    }
+  }
+  _stSaveSales(sales);
+  _stRender();
+  var addedFlash = _stBuildAddedFlash(payload.customer, payload.ts);
+  _stFlash(addedFlash.msg, addedFlash.kind);
+  return true;
+}
+
+function _stUpdateSaleGroupFromModal(payload, state) {
+  var sales = _stLoadSales();
+  var dealIdx = -1;
+  for (var i = 0; i < sales.length; i++) {
+    if (sales[i] && sales[i].id === state.dealId) {
+      dealIdx = i;
+      break;
+    }
+  }
+  if (dealIdx === -1) return false;
+
+  var deal = sales[dealIdx];
+  var oldReceipt = deal.receiptId || state.receiptIdForEdit || '';
+  var receiptId = payload.receiptId || oldReceipt || _stBuildUniqueReceiptId('rcpt_manual_');
+  deal.customer = payload.customer;
+  deal.plan = payload.plan || 'Unknown Plan';
+  deal.amount = payload.premium;
+  deal.enrollmentFee = payload.enrollmentFee;
+  deal.ts = payload.ts;
+  deal.commissionRate = payload.dealRatePct / 100;
+  deal.receiptId = receiptId;
+  deal.notes = receiptId ? 'Policy: ' + receiptId : '';
+
+  var existingAddons = {};
+  for (var a = 0; a < sales.length; a++) {
+    var s = sales[a];
+    if (!s || s.type !== 'addon') continue;
+    if (s.receiptId === oldReceipt) existingAddons[s.id] = s;
+  }
+
+  var keep = {};
+  for (var r = 0; r < payload.addons.length; r++) {
+    var ad = payload.addons[r];
+    var adId = ad.id && existingAddons[ad.id] ? ad.id : '';
+    var rowSale = adId ? existingAddons[adId] : null;
+    if (!rowSale) {
+      rowSale = {
+        id:
+          'st_' +
+          payload.ts +
+          '_edit_' +
+          r +
+          '_' +
+          Math.random().toString(36).slice(2, 6),
+        ts: payload.ts + r + 1,
+        customer: payload.customer,
+        memberId: deal.memberId || '',
+        plan: ad.name,
+        amount: ad.amount,
+        type: 'addon',
+        status: deal.status || 'pending',
+        raw: deal.raw || '',
+        notes: receiptId ? 'Policy: ' + receiptId : '',
+        receiptId: receiptId,
+        receiptTotal: 0,
+        enrollmentFee: 0
+      };
+      sales.push(rowSale);
+    }
+    rowSale.customer = payload.customer;
+    rowSale.plan = ad.name;
+    rowSale.amount = ad.amount;
+    rowSale.ts = payload.ts + r + 1;
+    rowSale.receiptId = receiptId;
+    rowSale.notes = receiptId ? 'Policy: ' + receiptId : '';
+    rowSale.addonCommissionRate = ad.ratePct / 100;
+    keep[rowSale.id] = true;
+  }
+
+  sales = sales.filter(function (s) {
+    if (!s || s.type !== 'addon') return true;
+    if (s.receiptId !== oldReceipt && s.receiptId !== receiptId) return true;
+    return keep[s.id] === true;
+  });
+
+  for (var di = 0; di < sales.length; di++) {
+    if (sales[di] && sales[di].id === deal.id) {
+      _stStampDealCommission(sales, di, _stLoadCommissionRates());
+      break;
+    }
+  }
+  _stSaveSales(sales);
+  _stRender();
+  _stFlash('Updated ' + payload.customer, 'ok');
+  return true;
+}
+
+function _stSaveEntryModal() {
+  var state = _stEntryModalState;
+  if (!state) return;
+  var customer =
+    ((document.getElementById('st-entry-customer') || {}).value || '').trim();
+  if (!customer) {
+    _stFlash('Customer name is required.', 'error');
+    return;
+  }
+
+  var receiptId =
+    ((document.getElementById('st-entry-receiptid') || {}).value || '').trim();
+  var soldIso = ((document.getElementById('st-entry-date') || {}).value || '').trim();
+  var soldDate = soldIso ? _stIsoToDate(soldIso) : null;
+  var ts = soldDate ? soldDate.getTime() + 9 * 60 * 60 * 1000 : _stReadDateSoldTs();
+  var plan = ((document.getElementById('st-entry-plan') || {}).value || '').trim();
+  var premium = parseFloat((document.getElementById('st-entry-premium') || {}).value);
+  var enrollmentFee = parseFloat((document.getElementById('st-entry-enroll') || {}).value);
+  var dealRatePct = parseFloat((document.getElementById('st-entry-deal-rate') || {}).value);
+
+  if (isNaN(premium) || premium < 0) {
+    _stFlash('Enter a valid monthly premium.', 'error');
+    return;
+  }
+  if (isNaN(enrollmentFee) || enrollmentFee < 0) enrollmentFee = 125;
+  if (isNaN(dealRatePct) || dealRatePct < 0) {
+    _stFlash('Enter a valid deal commission percent.', 'error');
+    return;
+  }
+
+  var rows = document.querySelectorAll('#st-entry-addons .st-entry-addon-row');
+  var addons = [];
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    var name =
+      ((row.querySelector('.st-entry-addon-name') || {}).value || '').trim();
+    var amount = parseFloat((row.querySelector('.st-entry-addon-amt') || {}).value);
+    var ratePct = parseFloat((row.querySelector('.st-entry-addon-rate') || {}).value);
+    if (!name && (isNaN(amount) || amount <= 0)) continue;
+    if (!name) name = 'Unknown Add-on';
+    if (isNaN(amount) || amount < 0) amount = 0;
+    if (isNaN(ratePct) || ratePct < 0) ratePct = 70;
+    addons.push({
+      id: row.getAttribute('data-addon-id') || '',
+      name: name,
+      amount: amount,
+      ratePct: ratePct
+    });
+  }
+
+  var payload = {
+    customer: customer,
+    receiptId: receiptId,
+    ts: ts,
+    plan: plan,
+    premium: premium,
+    enrollmentFee: enrollmentFee,
+    dealRatePct: dealRatePct,
+    addons: addons,
+    rawText: state.previewText || ''
+  };
+  var ok =
+    state.mode === 'edit'
+      ? _stUpdateSaleGroupFromModal(payload, state)
+      : _stCreateSaleGroupFromModal(payload);
+  if (ok) {
+    _stCloseEntryModal();
+    var input = document.getElementById('st-receipt-input');
+    if (input) input.value = '';
+    _stResetPostDateInputs();
+  }
+}
+
 // ── INLINE COMMISSION RATE EDITOR ───────────────────────────
 // Opens a small prompt-based inline editor for the given sale.
 // Uses window.prompt for a no-framework UX — keeps the editor
@@ -3644,18 +4109,27 @@ function _stOpenCommissionEditor(saleId) {
     }
   }
   if (idx === -1) return;
-  var deal = sales[idx];
+  var seed = sales[idx];
+  var deal = seed;
+  if (seed.type !== 'deal' && seed.receiptId) {
+    for (var fi = 0; fi < sales.length; fi++) {
+      if (sales[fi] && sales[fi].type === 'deal' && sales[fi].receiptId === seed.receiptId) {
+        deal = sales[fi];
+        break;
+      }
+    }
+  }
   if (deal.type !== 'deal') {
-    _stFlash('Commission editor opens from deals only.', 'error');
+    _stFlash('Edit is available on grouped receipts only.', 'error');
     return;
   }
-  if (!deal.receiptId) {
-    deal.receiptId = 'rcpt_manual_' + deal.id;
-    _stSaveSales(sales);
-  }
-  _stDealEditSaleId = deal.id;
+  if (!deal.receiptId) deal.receiptId = 'rcpt_manual_' + deal.id;
+
   var rates = _stLoadCommissionRates();
-  var planRate = typeof deal.commissionRate === 'number' ? deal.commissionRate : _stPlanTierRate(deal.amount, rates);
+  var planRate =
+    typeof deal.commissionRate === 'number'
+      ? deal.commissionRate
+      : _stPlanTierRate(deal.amount, rates);
   var soldDate = new Date(Number(deal.ts) || Date.now());
   var y = soldDate.getFullYear();
   var m = String(soldDate.getMonth() + 1);
@@ -3665,174 +4139,51 @@ function _stOpenCommissionEditor(saleId) {
   var addons = [];
   for (var ai = 0; ai < sales.length; ai++) {
     if (!sales[ai] || sales[ai].type !== 'addon') continue;
-    if (sales[ai].receiptId === deal.receiptId) addons.push(sales[ai]);
+    if (sales[ai].receiptId !== deal.receiptId) continue;
+    var ar =
+      typeof sales[ai].addonCommissionRate === 'number'
+        ? sales[ai].addonCommissionRate * 100
+        :
+          (rates.addonTypes[_stClassifyAddon(sales[ai].plan)] ||
+            rates.addonTypes.standard ||
+            0.7) *
+          100;
+    addons.push({
+      id: sales[ai].id,
+      name: sales[ai].plan || '',
+      amount: Number(sales[ai].amount) || 0,
+      ratePct: ar
+    });
   }
-  var modal = document.createElement('div');
-  modal.id = 'st-edit-modal';
-  modal.className = 'st-edit-modal';
-  modal.innerHTML =
-    '<div class="st-edit-card">' +
-    '<div class="st-edit-title">Edit deal</div>' +
-    '<div class="st-edit-grid">' +
-    '<label>Client name<input id="st-edit-customer" type="text" value="' +
-    _stEscape(deal.customer || '') +
-    '"></label>' +
-    '<label>Member ID<input id="st-edit-memberid" type="text" value="' +
-    _stEscape(deal.memberId || '') +
-    '"></label>' +
-    '<label>Plan name<input id="st-edit-plan" type="text" value="' +
-    _stEscape(deal.plan || '') +
-    '"></label>' +
-    '<label>Monthly premium<input id="st-edit-premium" type="number" step="0.01" value="' +
-    _stEscape(Number(deal.amount) || 0) +
-    '"></label>' +
-    '<label>Commission rate (%)<input id="st-edit-rate" type="number" step="0.01" value="' +
-    _stEscape((planRate * 100).toFixed(2)) +
-    '"></label>' +
-    '<label>Enrollment fee<input id="st-edit-enroll" type="number" step="0.01" value="' +
-    _stEscape(Number(deal.enrollmentFee) || 0) +
-    '"></label>' +
-    '<label>Date sold<input id="st-edit-date" type="date" value="' +
-    _stEscape(y + '-' + m + '-' + dd) +
-    '"></label>' +
-    '</div>' +
-    '<div class="st-edit-addon-title">Add-ons</div>' +
-    '<div id="st-edit-addons"></div>' +
-    '<button type="button" class="st-edit-add-addon" onclick="_stAddDealEditorAddonRow()">Add another add-on</button>' +
-    '<div class="st-edit-actions">' +
-    '<button type="button" class="st-edit-save" onclick="_stSaveDealEditor()">Save</button>' +
-    '<button type="button" class="st-edit-cancel" onclick="_stCloseDealEditor()">Cancel</button>' +
-    '</div>' +
-    '</div>';
-  document.body.appendChild(modal);
-  for (var aj = 0; aj < addons.length; aj++) {
-    _stAddDealEditorAddonRow(addons[aj]);
-  }
+
+  _stOpenEntryModal({
+    mode: 'edit',
+    initial: {
+      dealId: deal.id,
+      customer: deal.customer || '',
+      receiptId: deal.receiptId || '',
+      dateSold: y + '-' + m + '-' + dd,
+      plan: deal.plan || '',
+      premium: Number(deal.amount) || 0,
+      enrollmentFee: Number(deal.enrollmentFee) || 0,
+      dealRatePct: planRate * 100,
+      addons: addons
+    }
+  });
 }
 
 function _stCloseDealEditor() {
-  _stDealEditSaleId = '';
-  var modal = document.getElementById('st-edit-modal');
-  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+  _stCloseEntryModal();
 }
 
 function _stAddDealEditorAddonRow(addon) {
-  var wrap = document.getElementById('st-edit-addons');
-  if (!wrap) return;
-  var row = document.createElement('div');
-  row.className = 'st-edit-addon-row';
-  row.setAttribute('data-addon-id', addon && addon.id ? addon.id : '');
-  row.innerHTML =
-    '<input class="st-edit-addon-name" type="text" placeholder="Add-on name" value="' +
-    _stEscape((addon && addon.plan) || (addon && addon.name) || '') +
-    '">' +
-    '<input class="st-edit-addon-amt" type="number" step="0.01" placeholder="0.00" value="' +
-    _stEscape(Number((addon && addon.amount) || 0)) +
-    '">' +
-    '<button type="button" class="st-edit-addon-remove" title="Remove add-on" onclick="this.parentNode.remove()">&#128465;</button>';
-  wrap.appendChild(row);
+  _stEntryAddAddonRow(addon);
 }
 
 function _stSaveDealEditor() {
-  var saleId = _stDealEditSaleId;
-  if (!saleId) return;
-  var sales = _stLoadSales();
-  var idx = -1;
-  for (var i = 0; i < sales.length; i++) {
-    if (sales[i].id === saleId) {
-      idx = i;
-      break;
-    }
-  }
-  if (idx === -1) {
-    _stCloseDealEditor();
-    return;
-  }
-  var deal = sales[idx];
-  var premium = parseFloat((document.getElementById('st-edit-premium') || {}).value);
-  var ratePct = parseFloat((document.getElementById('st-edit-rate') || {}).value);
-  var enroll = parseFloat((document.getElementById('st-edit-enroll') || {}).value);
-  var soldIso = (document.getElementById('st-edit-date') || {}).value;
-  if (isNaN(premium) || premium < 0) {
-    _stFlash('Enter a valid premium amount.', 'error');
-    return;
-  }
-  if (isNaN(ratePct) || ratePct < 0 || ratePct > 100) {
-    _stFlash('Enter commission rate as 0 to 100.', 'error');
-    return;
-  }
-  deal.customer = ((document.getElementById('st-edit-customer') || {}).value || '').trim();
-  deal.memberId = ((document.getElementById('st-edit-memberid') || {}).value || '').trim();
-  deal.plan = ((document.getElementById('st-edit-plan') || {}).value || '').trim() || 'Unknown Plan';
-  deal.amount = premium;
-  deal.commissionRate = ratePct / 100;
-  deal.enrollmentFee = isNaN(enroll) ? 0 : enroll;
-  if (soldIso) {
-    var sold = _stIsoToDate(soldIso);
-    if (sold) deal.ts = sold.getTime() + 9 * 60 * 60 * 1000;
-  }
-  if (!deal.receiptId) {
-    deal.receiptId = 'rcpt_manual_' + deal.id;
-  }
-  var receiptId = deal.receiptId;
-  var existingAddons = {};
-  for (var ei = 0; ei < sales.length; ei++) {
-    if (!sales[ei] || sales[ei].type !== 'addon') continue;
-    if (sales[ei].receiptId === receiptId) existingAddons[sales[ei].id] = sales[ei];
-  }
-  var keepAddonIds = {};
-  var rows = document.querySelectorAll('#st-edit-addons .st-edit-addon-row');
-  for (var r = 0; r < rows.length; r++) {
-    var row = rows[r];
-    var name = (row.querySelector('.st-edit-addon-name') || {}).value || '';
-    var amountVal = parseFloat((row.querySelector('.st-edit-addon-amt') || {}).value);
-    if (!name.trim() && (isNaN(amountVal) || amountVal <= 0)) continue;
-    var addonId = row.getAttribute('data-addon-id');
-    var addonSale = addonId && existingAddons[addonId] ? existingAddons[addonId] : null;
-    if (!addonSale) {
-      addonSale = {
-        id: 'st_' + Date.now() + '_addon_' + r + '_' + Math.random().toString(36).slice(2, 6),
-        ts: deal.ts + r + 1,
-        customer: deal.customer,
-        memberId: deal.memberId,
-        plan: '',
-        amount: 0,
-        type: 'addon',
-        status: deal.status || 'pending',
-        raw: deal.raw || '',
-        notes: '',
-        receiptId: receiptId,
-        receiptTotal: 0,
-        enrollmentFee: 0
-      };
-      sales.push(addonSale);
-    }
-    addonSale.customer = deal.customer;
-    addonSale.memberId = deal.memberId;
-    addonSale.plan = name.trim() || 'Unknown Add-on';
-    addonSale.amount = isNaN(amountVal) ? 0 : amountVal;
-    addonSale.ts = deal.ts + r + 1;
-    keepAddonIds[addonSale.id] = true;
-  }
-  sales = sales.filter(function (s) {
-    if (!s || s.type !== 'addon') return true;
-    if (s.receiptId !== receiptId) return true;
-    return keepAddonIds[s.id] === true;
-  });
-  var rates = _stLoadCommissionRates();
-  for (var si = 0; si < sales.length; si++) {
-    if (sales[si] && sales[si].id === deal.id) {
-      _stStampDealCommission(sales, si, rates);
-      break;
-    }
-  }
-  _stSaveSales(sales);
-  _stCloseDealEditor();
-  _stRender();
-  _stFlash('Deal updated.', 'ok');
+  _stSaveEntryModal();
 }
 
-// Reset the deal's commission rate back to the tier default.
 function _stResetDealCommission(saleId) {
   var sales = _stLoadSales();
   for (var i = 0; i < sales.length; i++) {
