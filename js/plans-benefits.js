@@ -915,6 +915,17 @@ const PLANS = [
   }
 ];
 
+function _toggleBenefitCard(ev, id) {
+  var card = document.getElementById(id);
+  if (!card) return;
+  var t = ev && ev.target;
+  if (t && t.closest && t.closest('a[href]')) return;
+  if (t && t.closest && t.closest('.benefit-detail-wrap')) return;
+  card.classList.toggle('expanded');
+  var ind = card.querySelector('.benefit-expand-indicator');
+  if (ind) ind.textContent = card.classList.contains('expanded') ? '\u2212' : '+';
+}
+
 function renderBenefits() {
   // Categorize benefits by index into the BENEFITS array
   var categories = [
@@ -979,37 +990,35 @@ function renderBenefits() {
     cat.indices.forEach(function (i) {
       var b = BENEFITS[i];
       html +=
-        '<div class="xcard benefit-card-item" id="bx' +
+        '<div class="xcard benefit-card benefit-card-item" id="bx' +
         i +
         '" data-benefit-search="' +
         escHTML((b.name + ' ' + b.simple + ' ' + b.official).toLowerCase()) +
         '" style="border-left:3px solid ' +
         cat.color +
-        ';">';
-      // Header
-      html +=
-        '<div class="xcard-hd" onclick="toggleXcard(\'bx' +
+        ';border-radius:12px;background:#fff;overflow:hidden;" onclick="_toggleBenefitCard(event,\'bx' +
         i +
-        '\')" style="padding:16px 18px;">';
+        '\')">';
+      html += '<div style="padding:16px 18px;">';
       html +=
-        '<div class="xcard-hd-l" style="display:flex;align-items:center;gap:10px;">' +
+        '<div style="display:flex;align-items:flex-start;gap:10px;">' +
         iconBox(P[b.icon] || P.circle) +
-        '<div class="xcard-label" style="font-size:15px;">' +
+        '<div style="flex:1;min-width:0;">' +
+        '<div class="xcard-label" style="font-size:15px;font-weight:700;color:var(--text-primary);line-height:1.35;">' +
         b.name +
+        '<span class="benefit-expand-indicator" aria-hidden="true">+</span></div>' +
+        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;margin-top:8px;">' +
+        b.simple +
+        '</div>' +
+        '<div style="font-size:12px;color:#5175f1;font-weight:600;margin-top:8px;font-family:var(--font-ui);">Tap for details</div>' +
         '</div></div>';
       html +=
-        '<span class="xcard-chev" aria-hidden="true">&#9660;</span></div>';
-
-      // Why it matters tip — visible on collapsed card
+        '<div class="benefit-detail-wrap" style="padding:0 18px 18px;">';
       html +=
-        '<div style="padding:0 18px 14px;font-size:13px;color:var(--text-secondary);line-height:1.5;border-bottom:1px solid #F0F2F7;">';
-      html +=
+        '<div style="padding-top:4px;margin-bottom:14px;font-size:13px;color:var(--text-secondary);line-height:1.5;border-top:1px solid #F0F2F7;padding-top:14px;">' +
         '<span style="font-family:var(--font-ui);font-weight:600;color:var(--text-primary);font-size:12px;">Why it matters: </span>' +
-        b.frame;
-      html += '</div>';
-
-      // Expandable body
-      html += '<div class="xcard-body" style="padding:16px 18px;">';
+        b.frame +
+        '</div>';
       html +=
         '<div class="field" style="margin-bottom:14px;"><div class="field-lbl" style="color:var(--charcoal2)">Official Meaning</div><div class="field-txt">' +
         b.official +
@@ -1034,8 +1043,8 @@ function renderBenefits() {
         '<div class="ibox ibox-bridge" style="border-color:rgba(212,96,122,0.2);background:rgba(212,96,122,0.05);"><span class="sbox-lbl" style="color:var(--charcoal)">Bridge Back</span><br>' +
         b.bridge +
         '</div>';
-      html += '</div>'; // close xcard-body
-      html += '</div>'; // close xcard
+      html += '</div>';
+      html += '</div>';
     });
     html += '</div>'; // close grid
     html += '</div>'; // close category section
@@ -1248,6 +1257,17 @@ function setPlanGroup(g) {
   renderPlans();
 }
 
+function _toggleVaultPlanGroup(ev) {
+  var row = ev && ev.currentTarget;
+  if (!row || !row.classList || !row.classList.contains('plan-group-row')) return;
+  var t = ev.target;
+  if (t && t.closest && (t.closest('button') || t.closest('a') || t.closest('.plan-card')))
+    return;
+  row.classList.toggle('expanded');
+  var ind = row.querySelector('.plan-group-expand-ind');
+  if (ind) ind.textContent = row.classList.contains('expanded') ? '\u2212' : '+';
+}
+
 function renderPlanGroups() {
   var wrap = document.getElementById('planGroupsWrap');
   if (!wrap) return;
@@ -1296,16 +1316,25 @@ function renderPlanGroups() {
     if (!docs.length) return;
 
     html +=
-      '<div style="margin-bottom:24px;" data-plan-group="' + grp.key + '">';
+      '<div class="plan-group-row" data-plan-group="' +
+      grp.key +
+      '" onclick="_toggleVaultPlanGroup(event)">';
     html +=
-      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">' +
-      '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);">' +
+      '<div class="plan-group-header">' +
+      '<div style="flex:1;min-width:0;">' +
+      '<div class="plan-group-name">' +
       grp.label +
       '</div>' +
-      '<div style="flex:1;height:1px;background:#E5E7EB;"></div>' +
-      '<span style="font-size:12px;color:var(--text-secondary);">' +
-      docs.length +
-      ' plans</span></div>';
+      '<div class="plan-group-oneliner">' +
+      grp.desc +
+      '</div>' +
+      '</div>' +
+      '<span class="plan-type-badge">' +
+      grp.key +
+      '</span>' +
+      '<span class="plan-group-expand-ind benefit-expand-indicator" aria-hidden="true">+</span>' +
+      '</div>';
+    html += '<div class="plan-group-detail">';
 
     docs.forEach(function (doc) {
       var badgeBg =
@@ -1487,7 +1516,7 @@ function renderPlanGroups() {
       html += '</div>'; // close pv-detail
       html += '</div>'; // close plan-card
     });
-    html += '</div>';
+    html += '</div></div>';
   });
   wrap.innerHTML = html;
 }

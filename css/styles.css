@@ -7544,3 +7544,71 @@ select[onchange*="Status"],
   box-shadow: none !important;
 }
 
+/* ── LIVE CALL GPS: one stage visible ── */
+.lc-gps-stage-hidden {
+  display: none !important;
+}
+
+/* ── BENEFIT EXPLAINER: collapsed cards ── */
+.benefit-detail-wrap {
+  display: none;
+}
+.benefit-card.expanded .benefit-detail-wrap {
+  display: block;
+}
+.benefit-expand-indicator {
+  float: right;
+  font-size: 18px;
+  color: #64748b;
+  cursor: pointer;
+  line-height: 1;
+}
+.benefit-card {
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.benefit-card:hover {
+  border-color: #5175f1;
+}
+
+/* ── PLAN FIT & FRAMING: collapsed accordion ── */
+.plan-group-detail {
+  display: none;
+}
+.plan-group-row.expanded .plan-group-detail {
+  display: block;
+}
+.plan-group-row {
+  border: 0.5px solid #e9ecf5;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.plan-group-row:hover {
+  border-color: #5175f1;
+}
+.plan-group-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.plan-group-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+.plan-group-oneliner {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+.plan-type-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #e6f1fb;
+  color: #0c447c;
+}
+
