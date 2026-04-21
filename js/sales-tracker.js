@@ -2777,122 +2777,6 @@ function _stCalcStats(sales) {
 }
 
 // ── HTML BUILDERS ───────────────────────────────────────────
-function _stBuildWelcome() {
-  var user = _stGetCurrentUser();
-  var greeting = user.greeting || 'Welcome';
-  var first = user.firstName || user.name || '';
-  var line = first ? greeting + ', ' + first : greeting;
-  return (
-    '<div class="st-welcome">' +
-    '<div class="st-welcome-hi">' +
-    _stEscape(line) +
-    '</div>' +
-    '<div class="st-welcome-sub">Here are your numbers for this week.</div>' +
-    '</div>'
-  );
-}
-
-// Compact daily breakdown Monday → Friday. Shows day name,
-// total $ sold, and the number of plans that day. Weekend
-// columns (Sat/Sun) are hidden by default since the business
-// week is Mon–Fri.
-function _stBuildStats(stats) {
-  var html = '<div class="st-stats">';
-  html +=
-    '<div class="st-stat-card"><div class="st-stat-label">Total Sales <span class="st-stat-sublabel">(monthly premiums; excludes enrollment fees)</span></div><div class="st-stat-value">$' +
-    Math.round(stats.weekSales).toLocaleString() +
-    '</div></div>';
-  html +=
-    '<div class="st-stat-card"><div class="st-stat-label">Deals</div><div class="st-stat-value">' +
-    stats.weekDeals +
-    '</div></div>';
-  html +=
-    '<div class="st-stat-card"><div class="st-stat-label">$125 Enrollments</div><div class="st-stat-value">' +
-    stats.enrollments +
-    '</div></div>';
-  html +=
-    '<div class="st-stat-card"><div class="st-stat-label">Add-ons</div><div class="st-stat-value">' +
-    stats.weekAddons +
-    '</div></div>';
-  html += '</div>';
-  return html;
-}
-
-// Compact bonus strip: next-tier focus with a single progress
-// bar, then a small chip row for the remaining tiers. Much
-// shorter than the old 4-tier 2-bar grid.
-function _stBuildBonus(stats) {
-  // Find the next tier (first one not yet achieved)
-  var nextIdx = -1;
-  for (var i = 0; i < ST_BONUS_TIERS.length; i++) {
-    var t = ST_BONUS_TIERS[i];
-    if (stats.weekDeals < t.deals || stats.weekAddons < t.addons) {
-      nextIdx = i;
-      break;
-    }
-  }
-  var topAchieved = nextIdx === -1;
-  var target = topAchieved
-    ? ST_BONUS_TIERS[ST_BONUS_TIERS.length - 1]
-    : ST_BONUS_TIERS[nextIdx];
-  var dealsPct = Math.min(100, (stats.weekDeals / target.deals) * 100);
-  var addonsPct = Math.min(100, (stats.weekAddons / target.addons) * 100);
-  var combinedPct = Math.round((dealsPct + addonsPct) / 2);
-
-  var html = '<div class="st-bonus">';
-  html += '<div class="st-bonus-head">';
-  html += '<div class="st-bonus-title">Weekly Bonus</div>';
-  if (topAchieved) {
-    html +=
-      '<div class="st-bonus-next st-bonus-maxed">Top tier unlocked — $' +
-      target.bonus +
-      '</div>';
-  } else {
-    html +=
-      '<div class="st-bonus-next">Next: $' +
-      target.bonus +
-      ' &middot; ' +
-      target.deals +
-      'D / ' +
-      target.addons +
-      'A</div>';
-  }
-  html += '</div>';
-  html +=
-    '<div class="st-bonus-bar"><div class="st-bonus-fill" style="width:' +
-    combinedPct +
-    '%"></div></div>';
-  html +=
-    '<div class="st-bonus-counts">' +
-    stats.weekDeals +
-    ' deals &middot; ' +
-    stats.weekAddons +
-    ' add-ons</div>';
-  // Tier chip row
-  html += '<div class="st-tier-chips">';
-  for (var j = 0; j < ST_BONUS_TIERS.length; j++) {
-    var tt = ST_BONUS_TIERS[j];
-    var achieved = stats.weekDeals >= tt.deals && stats.weekAddons >= tt.addons;
-    html +=
-      '<div class="st-tier-chip' +
-      (achieved ? ' achieved' : '') +
-      '">' +
-      '<span class="st-tier-chip-goal">' +
-      tt.deals +
-      'D/' +
-      tt.addons +
-      'A</span>' +
-      '<span class="st-tier-chip-bonus">$' +
-      tt.bonus +
-      (achieved ? ' \u2713' : '') +
-      '</span>' +
-      '</div>';
-  }
-  html += '</div>';
-  html += '</div>';
-  return html;
-}
-
 function _stCurrentTierBonus(stats) {
   var bonus = 0;
   for (var i = 0; i < ST_BONUS_TIERS.length; i++) {
@@ -2982,16 +2866,64 @@ function _stBuildInput() {
   html += '</div>';
   html += '<div class="st-input-actions">';
   html +=
-    '<button class="st-add-deal" onclick="_stAutoDetectAndAdd()">Auto-detect &amp; Add</button>';
+    '<button type="button" id="st-btn-auto-detect" class="st-add-deal" onclick="_stAutoDetectAndAdd()">Auto-detect &amp; Add</button>';
   html +=
-    '<button class="st-add-addon" onclick="_stOpenEntryModal({mode:\'create\', initial:{dateSold:_stTodayIso(), enrollmentFee:125}})">Enter manually</button>';
+    '<button type="button" id="st-btn-enter-manually" class="st-add-addon st-input-link" onclick="_stOpenEntryModal({mode:\'create\', initial:{dateSold:_stTodayIso(), enrollmentFee:125}})">Enter manually</button>';
   html +=
-    '<button class="st-add-addon" onclick="_stAddSale(\'deal\')">Add as Deal</button>';
+    '<button type="button" id="st-btn-add-deal" class="st-add-addon st-input-link" onclick="_stAddSale(\'deal\')">Add as Deal</button>';
   html +=
-    '<button class="st-add-addon" onclick="_stAddSale(\'addon\')">Add as Add-on</button>';
+    '<button type="button" id="st-btn-add-addon" class="st-add-addon st-input-link" onclick="_stAddSale(\'addon\')">Add as Add-on</button>';
   html += '</div>';
   html += '</div>';
   return html;
+}
+
+function _stSetAddSalePanelOpen(open) {
+  var panel = document.getElementById('st-add-sale-panel');
+  var btn = document.getElementById('st-add-sale-toggle');
+  if (!panel) return;
+  panel.style.display = open ? 'block' : 'none';
+  if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) {
+    var ta = document.getElementById('st-receipt-input');
+    if (ta) {
+      setTimeout(function () {
+        try {
+          ta.focus();
+        } catch (_e) {}
+      }, 10);
+    }
+  }
+}
+
+function _stToggleAddSalePanel() {
+  var panel = document.getElementById('st-add-sale-panel');
+  if (!panel) return;
+  var hidden =
+    panel.style.display === 'none' ||
+    panel.style.display === '' ||
+    !panel.style.display;
+  _stSetAddSalePanelOpen(hidden);
+}
+
+function _stTogglePaycheckBreakdown() {
+  var el = document.getElementById('st-paycheck-detail');
+  var link = document.getElementById('st-paycheck-toggle-link');
+  if (!el) return;
+  var hidden =
+    el.style.display === 'none' || el.style.display === '' || !el.style.display;
+  el.style.display = hidden ? 'block' : 'none';
+  if (link) link.textContent = hidden ? 'Hide breakdown' : 'View full breakdown';
+}
+
+function _stBuildAddSaleSection() {
+  return (
+    '<section class="st-sec st-sec-addsale" aria-label="Add a sale">' +
+    '<button type="button" id="st-add-sale-toggle" class="st-add-sale-toggle" aria-expanded="false" onclick="_stToggleAddSalePanel()">+ Add new sale</button>' +
+    '<div id="st-add-sale-panel" class="st-add-sale-panel" style="display:none">' +
+    _stBuildInput() +
+    '</div></section>'
+  );
 }
 
 // Banner shown at the very top of the page when one or more
@@ -4207,57 +4139,6 @@ function _stResetGlobalCommissionRates() {
   _stFlash('Commission defaults reset.', 'ok');
 }
 
-function _stBuildWeeklySalesSummary(stats) {
-  var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-  var today = new Date();
-  var todayDayIdx = today.getDay();
-  var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
-  // Per-day totals for the Mon-Sun grid. The dollar amount sums
-  // ALL valid line items for the day (deals + add-ons) so the
-  // day card matches what an agent expects to see for total
-  // production. The "X deals" subtitle still counts core deals
-  // only (add-ons don't increment the deal counter).
-  var dealAmounts = [0, 0, 0, 0, 0, 0, 0];
-  var dealCounts = [0, 0, 0, 0, 0, 0, 0];
-  var weekStart = stats.weekStart;
-  var sales = _stLoadSales();
-  for (var i = 0; i < sales.length; i++) {
-    var s = sales[i];
-    if (!s) continue;
-    if (_stNormalizeStatus(s) === 'chargeback') continue;
-    if (s.ts < weekStart) continue;
-    var lineAmt = Number(s.amount) || 0;
-    if (lineAmt <= 0) continue;
-    var dt = new Date(s.ts);
-    var jsDay = dt.getDay();
-    var bucketIdx = jsDay === 0 ? 6 : jsDay - 1;
-    if (bucketIdx < 0 || bucketIdx >= 7) continue;
-    dealAmounts[bucketIdx] += lineAmt;
-    if (s.type === 'deal') dealCounts[bucketIdx]++;
-  }
-  var html = '<div class="st-weekly-summary">';
-  html += '<div class="st-weekly-summary-title">This Week\'s Sales</div>';
-  html += '<div class="st-weekly-summary-grid">';
-  for (var d = 0; d < 5; d++) {
-    var bucket = stats.dayBuckets[d] || { date: null };
-    var isToday = d === todayBucketIdx;
-    var amt = dealAmounts[d] || 0;
-    var deals = dealCounts[d] || 0;
-    var hasSales = amt > 0 || deals > 0;
-    var dateStr = '';
-    if (bucket.date) {
-      dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
-    }
-    html += '<div class="st-wks-card' + (isToday ? ' st-wks-today' : '') + (hasSales ? ' st-wks-active' : '') + '">';
-    html += '<div class="st-wks-day">' + dayNames[d] + (dateStr ? '<span class="st-wks-date"> ' + dateStr + '</span>' : '') + '</div>';
-    html += '<div class="st-wks-amount">$' + amt.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + '</div>';
-    html += '<div class="st-wks-deals">' + deals + (deals === 1 ? ' deal' : ' deals') + '</div>';
-    html += '</div>';
-  }
-  html += '</div></div>';
-  return html;
-}
-
 function _stFmtMoney(n) {
   return (
     '$' +
@@ -4268,80 +4149,133 @@ function _stFmtMoney(n) {
   );
 }
 
-function _stBuildCommissionTracker(sales, stats) {
-  var ws = Number(stats.weekSales) || 0;
-  var wd = Number(stats.weekDeals) || 0;
-  var wa = Number(stats.weekAddons) || 0;
-  var pb = _stPaycheckBreakdown(sales, stats);
-  var rates = _stLoadCommissionRates();
-  var weekStart = stats.weekStart;
-  var weekEnd = weekStart + 7 * 24 * 60 * 60 * 1000;
-  var weekDeals = [];
-  for (var i = 0; i < sales.length; i++) {
-    var s = sales[i];
-    if (!s || s.type !== 'deal') continue;
-    if (_stNormalizeStatus(s) === 'chargeback') continue;
-    if (s.ts < weekStart || s.ts >= weekEnd) continue;
-    weekDeals.push(s);
+function _stBuildWeekAtGlanceSection(stats) {
+  var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+  var today = new Date();
+  var todayDayIdx = today.getDay();
+  var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
+  var nextIdx = -1;
+  for (var ti = 0; ti < ST_BONUS_TIERS.length; ti++) {
+    var tt0 = ST_BONUS_TIERS[ti];
+    if (stats.weekDeals < tt0.deals || stats.weekAddons < tt0.addons) {
+      nextIdx = ti;
+      break;
+    }
   }
-  weekDeals.sort(function (a, b) {
-    return (a.ts || 0) - (b.ts || 0);
-  });
-  var html = '<div class="st-comm-tracker">';
+  var topAchieved = nextIdx === -1;
+  var target = topAchieved
+    ? ST_BONUS_TIERS[ST_BONUS_TIERS.length - 1]
+    : ST_BONUS_TIERS[nextIdx];
+  var dealsPct = Math.min(100, (stats.weekDeals / target.deals) * 100);
+  var addonsPct = Math.min(100, (stats.weekAddons / target.addons) * 100);
+  var combinedPct = Math.round((dealsPct + addonsPct) / 2);
+
+  var html = '<section class="st-sec st-week-glance" aria-labelledby="st-glance-h">';
+  html += '<div id="st-glance-h" class="st-sec-title">Week at a glance</div>';
+  html += '<div class="st-glance-days">';
+  for (var d = 0; d < 5; d++) {
+    var bucket = stats.dayBuckets[d] || { date: null, amount: 0 };
+    var isToday = d === todayBucketIdx;
+    var amt = Number(bucket.amount) || 0;
+    var dateStr = '';
+    if (bucket.date) {
+      dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
+    }
+    html +=
+      '<div class="st-glance-day' +
+      (isToday ? ' st-glance-day-today' : '') +
+      (amt > 0 ? ' st-glance-day-hit' : '') +
+      '">';
+    html +=
+      '<div class="st-glance-day-label">' +
+      dayNames[d] +
+      (dateStr ? ' <span class="st-glance-day-dt">' + dateStr + '</span>' : '') +
+      '</div>';
+    html += '<div class="st-glance-day-amt">' + _stFmtMoney(amt) + '</div>';
+    html += '</div>';
+  }
+  html += '</div>';
+  html += '<div class="st-glance-stats">';
   html +=
-    '<div class="st-comm-tracker-hd"><span class="st-comm-tracker-icon" aria-hidden="true">&#128176;</span><span class="st-comm-tracker-title">Commission Tracker</span></div>';
-  html += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">';
-  html += '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#64748b;">Deals</div><div style="font-size:20px;font-weight:600;margin-top:2px;">' + wd + '</div></div>';
-  html += '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#64748b;">Add-ons</div><div style="font-size:20px;font-weight:600;margin-top:2px;">' + wa + '</div></div>';
-  html += '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#64748b;">Premium</div><div style="font-size:20px;font-weight:600;margin-top:2px;">' + _stFmtMoney(ws) + '</div></div>';
-  html += '<div style="background:#f8fafc;border-radius:8px;padding:10px 12px;"><div style="font-size:10px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#64748b;">Paycheck</div><div style="font-size:20px;font-weight:600;margin-top:2px;">' + _stFmtMoney(pb.estimated) + '</div></div>';
+    '<div class="st-glance-stat"><span>Deals</span><strong>' +
+    stats.weekDeals +
+    '</strong></div>';
+  html +=
+    '<div class="st-glance-stat"><span>Add-ons</span><strong>' +
+    stats.weekAddons +
+    '</strong></div>';
+  html +=
+    '<div class="st-glance-stat"><span>Weekly premium</span><strong>' +
+    _stFmtMoney(stats.weekSales) +
+    '</strong></div>';
   html += '</div>';
-  html += '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin:0 0 8px">This week\'s deals</div>';
-  html += '<div class="st-comm-day-table-wrap"><table class="st-comm-day-table st-comm-deals-table"><thead><tr><th>Date</th><th>Client</th><th>Plan</th><th>Premium</th><th>Commission</th><th>Edit</th></tr></thead><tbody>';
-  for (var di = 0; di < weekDeals.length; di++) {
-    var deal = weekDeals[di];
-    var commTotal =
-      (Number(deal.planCommission) || 0) +
-      (Number(deal.totalAddonCommission) || 0) +
-      (Number(deal.enrollmentBonus) || 0);
-    html += '<tr><td>' + _stEscape(_stFormatSaleListDate(deal.ts)) + '</td><td>' + _stEscape(deal.customer || '—') + '</td><td>' + _stEscape(deal.plan || '—') + '</td><td>' + _stFmtMoney(deal.amount) + '</td><td>' + _stFmtMoney(commTotal) + '</td><td><a href="#" onclick="_stOpenCommissionEditor(\'' + _stEscape(deal.id || '') + '\'); return false;" style="color:#5175F1;font-size:12px;text-decoration:none;">edit</a></td></tr>';
-    var addons = [];
-    if (Array.isArray(deal.addons) && deal.addons.length) {
-      addons = deal.addons.slice();
-    } else if (deal.receiptId) {
-      for (var ai = 0; ai < sales.length; ai++) {
-        var ad = sales[ai];
-        if (!ad || ad.type !== 'addon') continue;
-        if (_stNormalizeStatus(ad) === 'chargeback') continue;
-        if (ad.receiptId !== deal.receiptId) continue;
-        addons.push(ad);
-      }
-    }
-    for (var aj = 0; aj < addons.length; aj++) {
-      var addon = addons[aj] || {};
-      var addonAmt = Number(addon.amount);
-      var addonComm = '—';
-      if (typeof addon.addonCommission === 'number') addonComm = _stFmtMoney(addon.addonCommission);
-      else if (addon.type === 'addon') addonComm = _stFmtMoney(_stComputeLineCommission(addon, rates));
-      else if (typeof addon.rate === 'number' && !isNaN(addonAmt)) addonComm = _stFmtMoney(addonAmt * addon.rate);
-      html += '<tr style="background:#fafbff;"><td></td><td colspan="2" style="padding-left:16px;font-size:12px;color:#64748b;">+ ' + _stEscape(addon.name || addon.plan || 'Add-on') + '</td><td style="font-size:12px;color:#64748b;">' + (isNaN(addonAmt) ? '—' : _stFmtMoney(addonAmt)) + '</td><td style="font-size:12px;color:#64748b;">' + addonComm + '</td><td></td></tr>';
-    }
+  html += '<div class="st-glance-bonus">';
+  if (topAchieved) {
+    html +=
+      '<div class="st-glance-bonus-lbl">Max bonus tier — $' +
+      target.bonus +
+      '</div>';
+  } else {
+    html +=
+      '<div class="st-glance-bonus-lbl">Next bonus tier — $' +
+      target.bonus +
+      '</div>';
   }
-  if (!weekDeals.length) {
-    html += '<tr><td colspan="6" style="color:#94a3b8;font-size:13px;">No deals this week</td></tr>';
-  }
-  html += '</tbody></table></div>';
+  html +=
+    '<div class="st-glance-bonus-bar"><div class="st-glance-bonus-fill" style="width:' +
+    combinedPct +
+    '%"></div></div>';
+  html += '</div></section>';
+  return html;
+}
+
+function _stBuildEstimatedPaycheckSection(sales, stats) {
+  var pb = _stPaycheckBreakdown(sales, stats);
   var enrollCount = Math.round((Number(pb.enrollmentBonus) || 0) / 20);
-  html += '<div style="font-size:11px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#64748b;margin:12px 0 6px">Earnings</div>';
-  html += '<div style="display:grid;grid-template-columns:1fr auto;gap:3px 16px;font-size:14px;padding:6px 0;">';
-  html += '<span style="color:#64748b">Deal commission</span><strong>' + _stFmtMoney(pb.dealComm) + '</strong>';
-  html += '<span style="color:#64748b">Add-on commission</span><strong>' + _stFmtMoney(pb.addonComm) + '</strong>';
-  html += '<span style="color:#64748b">Enrollment bonus (' + enrollCount + ' x $20)</span><strong>' + _stFmtMoney(pb.enrollmentBonus) + '</strong>';
-  html += '<span style="color:#64748b">Tier bonus</span><strong>' + _stFmtMoney(pb.tierBonus) + '</strong>';
+  var html = '<section class="st-sec st-paycheck-card" aria-labelledby="st-paycheck-h">';
+  html += '<div id="st-paycheck-h" class="st-sec-title">Estimated paycheck</div>';
+  html += '<div class="st-paycheck-row">';
+  html +=
+    '<div class="st-paycheck-total">' + _stFmtMoney(pb.estimated) + '</div>';
   html += '</div>';
-  html += '<div style="background:#5175F1;color:white;padding:12px 18px;border-radius:10px;font-size:15px;font-weight:600;margin-top:12px;display:flex;justify-content:space-between;"><span>Estimated paycheck</span><span>' + _stFmtMoney(pb.estimated) + '</span></div>';
-  html += '<button type="button" onclick="_stDownloadWeeklyPdf()" style="margin-top:10px;background:white;color:#1a1a2e;border:1px solid #d1d5db;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;display:inline-flex;align-items:center;gap:6px;">Download PDF</button>';
+  html +=
+    '<div class="st-paycheck-sub">Deals: ' +
+    _stFmtMoney(pb.dealComm) +
+    ' / Add-ons: ' +
+    _stFmtMoney(pb.addonComm) +
+    ' / Bonuses: ' +
+    _stFmtMoney(pb.enrollmentBonus + pb.tierBonus) +
+    '</div>';
+  html += '<div id="st-paycheck-detail" class="st-paycheck-detail" style="display:none">';
+  html += '<div class="st-paycheck-detail-grid">';
+  html +=
+    '<span class="st-paycheck-detail-lbl">Deal commission</span><strong>' +
+    _stFmtMoney(pb.dealComm) +
+    '</strong>';
+  html +=
+    '<span class="st-paycheck-detail-lbl">Add-on commission</span><strong>' +
+    _stFmtMoney(pb.addonComm) +
+    '</strong>';
+  html +=
+    '<span class="st-paycheck-detail-lbl">Enrollment bonus (' +
+    enrollCount +
+    ' x $20)</span><strong>' +
+    _stFmtMoney(pb.enrollmentBonus) +
+    '</strong>';
+  html +=
+    '<span class="st-paycheck-detail-lbl">Tier bonus</span><strong>' +
+    _stFmtMoney(pb.tierBonus) +
+    '</strong>';
   html += '</div>';
+  html +=
+    '<button type="button" class="st-paycheck-comm-btn" onclick="_stOpenCommissionEditorFromTracker()">Adjust commission rates</button>';
+  html += '</div>';
+  html += '<div class="st-paycheck-foot">';
+  html +=
+    '<a href="#" id="st-paycheck-toggle-link" class="st-paycheck-link" onclick="_stTogglePaycheckBreakdown(); return false;">View full breakdown</a>';
+  html +=
+    '<button type="button" id="st-paycheck-pdf-btn" class="st-paycheck-pdf" onclick="_stDownloadWeeklyPdf()">Download PDF</button>';
+  html += '</div></section>';
   return html;
 }
 
@@ -4661,28 +4595,20 @@ function _stRender() {
   var stTab = _stGetSavedTab();
 
   var html = '';
-  // 1. Welcome greeting at the very top so it's visible immediately
-  html += _stBuildWelcome();
-  // 2. Alert banner for any post-dates billing today (above page header)
   html += _stBuildPostDateBanner(postdates);
-  // 3. Page header
   html +=
-    '<div class="ph"><div class="pt">Sales <span>Tracker</span></div>' +
-    '<div class="pd">Log enrollments, watch your weekly bonus progress, and see your numbers at a glance. Everything stays on your account.</div></div>';
+    '<div class="ph ph-st-compact"><div class="pt">Sales <span>Tracker</span></div></div>';
   html += _stBuildInternalSubtabs(stTab);
   html +=
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
-  // This Week tab: existing tracker body
-  html += _stBuildWeeklySalesSummary(stats);
-  html += _stBuildStats(stats);
-  html += _stBuildBonus(stats);
-  html += _stBuildInput();
+  html += _stBuildWeekAtGlanceSection(stats);
+  html += _stBuildAddSaleSection();
   html += _stBuildTable(sales);
   html += _stBuildPostDatesSection(postdates);
-  html += _stBuildCommissionTracker(sales, stats);
-  html += '<div class="st-bottom-spacer" aria-hidden="true"></div>';
+  html += _stBuildEstimatedPaycheckSection(sales, stats);
+  html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
   html += '</div>';
   html +=
     '<div id="stTabPanelAnalytics" class="st-tab-panel" role="tabpanel" style="display:' +
@@ -4692,5 +4618,14 @@ function _stRender() {
   html += '</div>';
 
   page.innerHTML = html;
+  if (!page.dataset.stAddSaleEsc) {
+    page.dataset.stAddSaleEsc = '1';
+    page.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var panel = document.getElementById('st-add-sale-panel');
+      if (!panel || panel.style.display === 'none') return;
+      _stSetAddSalePanelOpen(false);
+    });
+  }
 }
 

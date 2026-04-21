@@ -537,6 +537,8 @@
 
 .st-input-actions {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   margin-top: 10px;
 }
@@ -2028,4 +2030,288 @@
   font-size: 11px;
   color: var(--text-secondary, #94a3b8);
   line-height: 1.3;
+}
+
+/* ── This Week redesign: 4 sections ───────────────────────── */
+#page-salestracker .ph-st-compact {
+  margin-bottom: 8px;
+}
+#page-salestracker .ph-st-compact .pd {
+  display: none;
+}
+#page-salestracker .st-internal-subtabs {
+  margin-bottom: 12px;
+}
+
+.st-sec {
+  margin-bottom: 14px;
+}
+.st-sec-title {
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #64748b);
+  margin: 0 0 10px;
+}
+
+/* Week at a glance */
+.st-week-glance {
+  background: #ffffff;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.st-glance-days {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+  background: transparent;
+}
+.st-glance-day {
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  background: var(--bg-page, #eef1f6);
+  padding: 8px 6px;
+  text-align: center;
+  min-height: 76px;
+  max-height: 82px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.st-glance-day-hit {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+.st-glance-day-today {
+  border-color: var(--accent, #5175f1);
+  box-shadow: 0 0 0 2px rgba(81, 117, 241, 0.12);
+}
+.st-glance-day-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 4px;
+}
+.st-glance-day-today .st-glance-day-label {
+  color: var(--accent, #5175f1);
+}
+.st-glance-day-dt {
+  font-weight: 600;
+  opacity: 0.85;
+}
+.st-glance-day-amt {
+  font-size: 14px;
+  font-weight: 800;
+  font-family: var(--font-ui);
+  color: var(--text-primary, #1e293b);
+}
+.st-glance-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.st-glance-stat {
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: #ffffff;
+}
+.st-glance-stat span {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #64748b);
+  margin-bottom: 2px;
+}
+.st-glance-stat strong {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-ui);
+  color: var(--text-primary, #1e293b);
+}
+.st-glance-bonus-lbl {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary, #334155);
+  margin-bottom: 6px;
+}
+.st-glance-bonus-sub {
+  font-weight: 500;
+  color: var(--text-secondary, #64748b);
+  font-size: 11px;
+}
+.st-glance-bonus-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--border, #e2e8f0);
+  overflow: hidden;
+}
+.st-glance-bonus-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent, #5175f1);
+  transition: width 0.25s ease;
+}
+
+@media (max-width: 640px) {
+  .st-glance-days {
+    gap: 6px;
+  }
+  .st-glance-day {
+    min-height: 72px;
+    padding: 6px 4px;
+  }
+  .st-glance-day-amt {
+    font-size: 12px;
+  }
+}
+
+/* Collapsible add sale */
+.st-sec-addsale {
+  margin-bottom: 14px;
+}
+.st-add-sale-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: #ffffff;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary, #1e293b);
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+.st-add-sale-toggle:hover {
+  border-color: var(--accent, #5175f1);
+  box-shadow: 0 2px 10px rgba(81, 117, 241, 0.12);
+}
+.st-add-sale-panel {
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.st-input-actions .st-input-link {
+  background: transparent !important;
+  border: none !important;
+  padding: 6px 8px !important;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent, #5175f1);
+  text-decoration: underline;
+  min-height: 0;
+  box-shadow: none;
+}
+.st-input-actions .st-input-link:hover {
+  color: #3d5ccc;
+}
+
+/* Estimated paycheck */
+.st-paycheck-card {
+  background: #ffffff;
+  border: 1px solid var(--border, #e2e8f0);
+  border-radius: 12px;
+  padding: 12px 14px 10px;
+}
+.st-paycheck-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  margin-top: -4px;
+}
+.st-paycheck-total {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: var(--font-ui);
+  color: var(--text-primary, #1e293b);
+  letter-spacing: -0.02em;
+}
+.st-paycheck-sub {
+  font-size: 12px;
+  color: var(--text-secondary, #64748b);
+  margin: 4px 0 10px;
+  line-height: 1.4;
+}
+.st-paycheck-detail {
+  padding-top: 8px;
+  margin-bottom: 8px;
+  border-top: 1px solid var(--border, #e2e8f0);
+}
+.st-paycheck-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 14px;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+.st-paycheck-detail-lbl {
+  color: var(--text-secondary, #64748b);
+}
+.st-paycheck-comm-btn {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: #f1f5f9;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  color: var(--text-primary, #334155);
+  cursor: pointer;
+}
+.st-paycheck-foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border, #e2e8f0);
+}
+.st-paycheck-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent, #5175f1);
+  text-decoration: none;
+}
+.st-paycheck-link:hover {
+  text-decoration: underline;
+}
+.st-paycheck-pdf {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border, #e2e8f0);
+  background: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  color: var(--text-primary, #1e293b);
+  cursor: pointer;
+}
+.st-paycheck-pdf:hover {
+  border-color: var(--accent, #5175f1);
+}
+
+.st-bottom-spacer-sm {
+  height: 8px;
 }

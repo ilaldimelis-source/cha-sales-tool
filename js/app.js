@@ -1143,9 +1143,10 @@ function renderDashboardLookupCard() {
   var selected = _dashLookupSelectedPlan();
   var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
   var html = '<div class="dash-lookup-card">';
-  html += '<div class="dash-lookup-head">';
+  html += '<div class="dash-lookup-head dash-lookup-head-inline">';
   html += '<div class="dash-lookup-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>';
-  html += '<div><div class="dash-lookup-title">Plan lookup</div><div class="dash-lookup-subtitle">Network, underwriter, provider search — one tap</div></div>';
+  html +=
+    '<div class="dash-lookup-head-text"><span class="dash-lookup-title">Plan lookup</span><span class="dash-lookup-title-sep"> — </span><span class="dash-lookup-subtitle">Network, underwriter, provider search — one tap</span></div>';
   html += '</div>';
   html += '<div class="dash-lookup-input-wrap">';
   html +=
@@ -1325,14 +1326,6 @@ function renderDashboard() {
       icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>')
     },
     {
-      page: 'plans',
-      title: 'Plans',
-      desc: 'Full details',
-      icon: ic(
-        '<rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/>'
-      )
-    },
-    {
       page: 'scripts',
       title: 'Scripts',
       desc: 'Every situation',
@@ -1341,19 +1334,11 @@ function renderDashboard() {
       )
     },
     {
-      page: 'networkguide',
-      title: 'Network Guide',
-      desc: 'Lookup rules',
+      page: 'cheatsheet',
+      title: 'Cheat sheet',
+      desc: 'At a glance',
       icon: ic(
-        '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
-      )
-    },
-    {
-      page: 'training',
-      title: 'Training',
-      desc: 'Learn & practice',
-      icon: ic(
-        '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>'
+        '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>'
       )
     },
     {
@@ -1363,29 +1348,16 @@ function renderDashboard() {
       icon: ic(
         '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'
       )
-    },
-    {
-      page: 'myspace',
-      title: 'My Space',
-      desc: 'Notes & faves',
-      icon: ic('<path d="M2 20h20M4 20L2 8l6 5 4-7 4 7 6-5-2 12H4z"/>')
-    },
-    {
-      page: 'cheatsheet',
-      title: 'Cheat Sheets',
-      desc: 'At a glance',
-      icon: ic(
-        '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>'
-      )
     }
   ];
   var html =
-    '<div class="ph"><div class="pt">Command <span>Center</span></div><div class="pd">Your starting point. Tap any section to jump in.</div></div>';
+    '<div class="ph"><div class="pt">CHA Academy</div><div class="pd">Your starting point</div></div>';
   html += _greetHtml;
+  html += '<div class="dashboard-home-stack">';
   html += '<div id="dashPlanLookupMount"></div>';
   html += chaDashWidgetsHtml();
-  html += '<div class="dash-sections-label">Sections</div>';
-  html += '<div class="dash-grid dash-grid-compact">';
+  html += '<div class="dash-sections-label">Jump To</div>';
+  html += '<div class="dash-grid dash-grid-compact dash-grid-jump">';
   cards.forEach(function (c) {
     html += '<div class="dash-card" onclick="showPage(\'' + c.page + '\')">';
     html += '<div class="dash-icon">' + c.icon + '</div>';
@@ -1393,7 +1365,7 @@ function renderDashboard() {
     html += '<div class="dash-desc">' + c.desc + '</div>';
     html += '</div>';
   });
-  html += '</div>';
+  html += '</div></div>';
   // Recently visited strip
   var recent = getRecentPages();
   if (recent.length) {
