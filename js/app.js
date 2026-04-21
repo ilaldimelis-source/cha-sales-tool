@@ -65,29 +65,8 @@ function safeSetItem(key, val) {
 // Cache-buster on the URL prevents the service worker's
 // stale-while-revalidate path from caching the key response.
 // ══════════════════════════════════════════════════════
-(function _chaAutoPopulateGroqKey() {
-  var existing = safeGetItem('cha_groq_key');
-  // Only auto-populate when there is literally no value saved.
-  // Any non-empty value (real key or 'skip' sentinel) is preserved.
-  if (existing) return;
-  fetch('/api/groq-key?t=' + Date.now())
-    .then(function (r) {
-      if (!r.ok) return null;
-      return r.json();
-    })
-    .then(function (d) {
-      if (!d || !d.key) return;
-      // Re-check right before writing, in case something else populated
-      // it between the fetch starting and this handler resolving.
-      if (!safeGetItem('cha_groq_key')) {
-        safeSetItem('cha_groq_key', d.key);
-      }
-    })
-    .catch(function () {
-      // Network failure or 500 — silently leave localStorage empty.
-      // The existing manual-entry prompt in chat.js still works as a fallback.
-    });
-})();
+// Groq key auto-populate runs from chaAfterAuthUserReady() in js/storage-utils.js
+// after Clerk sets window.CHA_USER (scoped per user).
 
 // ══════════════════════════════════════════════════════
 // FONT SIZE TOGGLE (S / M / L)
@@ -100,7 +79,11 @@ function setFontSize(size) {
   var html = document.documentElement;
   html.classList.remove('font-s', 'font-m', 'font-l');
   html.classList.add('font-' + size);
-  safeSetItem('cha_font_size', size);
+  if (typeof chaSet === 'function') {
+    chaSet('cha_font_size', size);
+  } else {
+    safeSetItem('cha_font_size', size);
+  }
   var btns = document.querySelectorAll('.font-toggle-btn');
   btns.forEach(function (btn) {
     var isActive = btn.textContent.trim().toLowerCase() === size;
@@ -111,7 +94,11 @@ function setFontSize(size) {
   });
 }
 function _initFontSize() {
-  var saved = safeGetItem('cha_font_size') || 'm';
+  var saved =
+    typeof chaGet === 'function'
+      ? chaGet('cha_font_size', 'm')
+      : safeGetItem('cha_font_size') || 'm';
+  if (typeof saved !== 'string') saved = 'm';
   setFontSize(saved);
 }
 
@@ -129,7 +116,11 @@ function setTheme(theme) {
   } else {
     b.classList.remove('dark-mode');
   }
-  safeSetItem('cha_theme', t);
+  if (typeof chaSet === 'function') {
+    chaSet('cha_theme', t);
+  } else {
+    safeSetItem('cha_theme', t);
+  }
   var btn = document.getElementById('themeToggle');
   if (btn) {
     btn.setAttribute('data-theme', t);
@@ -154,7 +145,11 @@ function toggleTheme() {
 }
 
 function _initTheme() {
-  var saved = safeGetItem('cha_theme') || 'light';
+  var saved =
+    typeof chaGet === 'function'
+      ? chaGet('cha_theme', 'light')
+      : safeGetItem('cha_theme') || 'light';
+  if (typeof saved !== 'string') saved = 'light';
   setTheme(saved);
 }
 
@@ -171,7 +166,11 @@ function _buildGreetingText() {
     hr < 12 ? 'Good Morning' : hr < 17 ? 'Good Afternoon' : 'Good Evening';
   var custom = '';
   try {
-    custom = (safeGetItem('preferredName') || safeGetItem('cha_display_name') || '').trim();
+    custom = (
+      (typeof chaGet === 'function'
+        ? chaGet('preferredName', '') || chaGet('cha_display_name', '')
+        : safeGetItem('preferredName') || safeGetItem('cha_display_name')) || ''
+    ).trim();
   } catch (_e) {
     custom = '';
   }
@@ -207,7 +206,11 @@ function _openTopbarGreetingEditor() {
 
   var current = '';
   try {
-    current = (safeGetItem('preferredName') || safeGetItem('cha_display_name') || '').trim();
+    current = (
+      (typeof chaGet === 'function'
+        ? chaGet('preferredName', '') || chaGet('cha_display_name', '')
+        : safeGetItem('preferredName') || safeGetItem('cha_display_name')) || ''
+    ).trim();
   } catch (_e) {
     current = '';
   }
@@ -229,8 +232,13 @@ function _openTopbarGreetingEditor() {
       if (typeof saveDisplayName === 'function') {
         saveDisplayName(val);
       } else {
-        safeSetItem('preferredName', val);
-        safeSetItem('cha_display_name', val);
+        if (typeof chaSet === 'function') {
+          chaSet('preferredName', val);
+          chaSet('cha_display_name', val);
+        } else {
+          safeSetItem('preferredName', val);
+          safeSetItem('cha_display_name', val);
+        }
       }
     } catch (_e) {
       /* ignore */
@@ -586,8 +594,13 @@ function chaDashTodayIso() {
 function chaDashLoadActivity() {
   var today = chaDashTodayIso();
   try {
-    var raw = localStorage.getItem(CHA_DASH_ACTIVITY_KEY);
-    var o = raw ? JSON.parse(raw) : null;
+    var o = null;
+    if (typeof chaGet === 'function') {
+      o = chaGet(CHA_DASH_ACTIVITY_KEY, null);
+    } else {
+      var raw = localStorage.getItem(CHA_DASH_ACTIVITY_KEY);
+      o = raw ? JSON.parse(raw) : null;
+    }
     if (!o || o.d !== today) {
       return { d: today, lookups: 0, scripts: 0 };
     }
@@ -603,7 +616,11 @@ function chaDashLoadActivity() {
 
 function chaDashSaveActivity(o) {
   try {
-    localStorage.setItem(CHA_DASH_ACTIVITY_KEY, JSON.stringify(o));
+    if (typeof chaSet === 'function') {
+      chaSet(CHA_DASH_ACTIVITY_KEY, o);
+    } else {
+      localStorage.setItem(CHA_DASH_ACTIVITY_KEY, JSON.stringify(o));
+    }
   } catch (_e) {}
 }
 
@@ -621,8 +638,13 @@ function chaDashBumpScript() {
 
 function chaDashRecentLoad() {
   try {
-    var raw = localStorage.getItem(CHA_DASH_RECENT_KEY);
-    var arr = raw ? JSON.parse(raw) : [];
+    var arr = [];
+    if (typeof chaGet === 'function') {
+      arr = chaGet(CHA_DASH_RECENT_KEY, []);
+    } else {
+      var raw = localStorage.getItem(CHA_DASH_RECENT_KEY);
+      arr = raw ? JSON.parse(raw) : [];
+    }
     return Array.isArray(arr) ? arr.slice(0, 5) : [];
   } catch (_e2) {
     return [];
@@ -631,7 +653,11 @@ function chaDashRecentLoad() {
 
 function chaDashRecentSave(arr) {
   try {
-    localStorage.setItem(CHA_DASH_RECENT_KEY, JSON.stringify(arr.slice(0, 5)));
+    if (typeof chaSet === 'function') {
+      chaSet(CHA_DASH_RECENT_KEY, arr.slice(0, 5));
+    } else {
+      localStorage.setItem(CHA_DASH_RECENT_KEY, JSON.stringify(arr.slice(0, 5)));
+    }
   } catch (_e3) {}
 }
 
@@ -651,7 +677,11 @@ function chaDashRecentPush(plan) {
 
 function chaDashClearRecent() {
   try {
-    localStorage.removeItem(CHA_DASH_RECENT_KEY);
+    if (typeof chaRemove === 'function') {
+      chaRemove(CHA_DASH_RECENT_KEY);
+    } else {
+      localStorage.removeItem(CHA_DASH_RECENT_KEY);
+    }
   } catch (_e) {}
   chaDashRenderRecentChips();
   chaDashRefreshWidgets();
@@ -1247,7 +1277,11 @@ function renderDashboard() {
 
   var homeName = 'there';
   try {
-    var dName = (safeGetItem('preferredName') || safeGetItem('cha_display_name') || '').trim();
+    var dName = (
+      (typeof chaGet === 'function'
+        ? chaGet('preferredName', '') || chaGet('cha_display_name', '')
+        : safeGetItem('preferredName') || safeGetItem('cha_display_name')) || ''
+    ).trim();
     if (dName) homeName = dName;
     else if (window.CHA_USER) {
       homeName = window.CHA_USER.firstName || window.CHA_USER.name || 'there';
@@ -1413,7 +1447,11 @@ function _renderPlanPill() {
 // ══════════════════════════════════════════════════════
 function getFavorites() {
   try {
-    return JSON.parse(safeGetItem('cha_favorites') || '[]');
+    var arr =
+      typeof chaGet === 'function'
+        ? chaGet('cha_favorites', [])
+        : JSON.parse(safeGetItem('cha_favorites') || '[]');
+    return Array.isArray(arr) ? arr : [];
   } catch (e) {
     return [];
   }
@@ -1446,7 +1484,11 @@ function toggleFavorite(type, id, title, preview, source) {
     });
     if (favs.length > 50) favs = favs.slice(0, 50);
   }
-  safeSetItem('cha_favorites', JSON.stringify(favs));
+  if (typeof chaSet === 'function') {
+    chaSet('cha_favorites', favs);
+  } else {
+    safeSetItem('cha_favorites', JSON.stringify(favs));
+  }
   // Update star state
   document
     .querySelectorAll(
@@ -1527,7 +1569,11 @@ function _showTourStep() {
   if (oldTip) oldTip.remove();
 
   if (_tourStep >= TOUR_STEPS.length) {
-    safeSetItem('cha_tour_done', '1');
+    if (typeof chaSet === 'function') {
+      chaSet('cha_tour_done', '1');
+    } else {
+      safeSetItem('cha_tour_done', '1');
+    }
     return;
   }
 
@@ -1613,7 +1659,11 @@ function _nextTourStep() {
 }
 
 function _endTour() {
-  safeSetItem('cha_tour_done', '1');
+  if (typeof chaSet === 'function') {
+    chaSet('cha_tour_done', '1');
+  } else {
+    safeSetItem('cha_tour_done', '1');
+  }
   var ov = document.getElementById('tour-overlay');
   if (ov) ov.remove();
   var tip = document.getElementById('tour-tooltip');
@@ -1761,7 +1811,11 @@ function initApp() {
   _initSidebar();
   showPage('dashboard');
   // Start onboarding tour for first-time users
-  if (!safeGetItem('cha_tour_done')) {
+  var tourDone =
+    typeof chaGet === 'function'
+      ? chaGet('cha_tour_done', '')
+      : safeGetItem('cha_tour_done');
+  if (!tourDone) {
     setTimeout(startTour, 600);
   }
   // Inject floating quick-action bar

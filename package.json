@@ -17,7 +17,7 @@
     "test:e2e:headed": "playwright test --headed",
     "validate": "npm run format:check && npm run lint && npm run test:e2e",
     "version:bust": "node -e \"var f=require('fs');var t=Date.now();var h=f.readFileSync('index.html','utf8');h=h.replace(/\\?v=\\d+/g,'?v='+t);f.writeFileSync('index.html',h);console.log('Cache busted to v='+t);\"",
-    "check": "node --check js/plan-registry.js && node --check js/plan-data.js && node --check js/plan-data-extended.js && node --check js/plan-data-pdf-raw.js && node --check js/policy-docs.js && node --check js/app.js && node --check js/chat.js && node --check js/plans-benefits.js && node --check js/call-playbook.js && node --check js/utils.js && echo ALL FILES PASS",
+    "check": "node --check js/plan-registry.js && node --check js/plan-data.js && node --check js/plan-data-extended.js && node --check js/plan-data-pdf-raw.js && node --check js/policy-docs.js && node --check js/storage-utils.js && node --check js/app.js && node --check js/chat.js && node --check js/plans-benefits.js && node --check js/call-playbook.js && node --check js/utils.js && echo ALL FILES PASS",
     "extract-pdfs": "node scripts/extract-knowledge-pdfs.js",
     "build:pdf-knowledge": "node scripts/build-plan-pdf-knowledge.js",
     "verify:pdf-knowledge": "node scripts/verify-pdf-knowledge.js",

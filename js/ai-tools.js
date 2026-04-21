@@ -30,7 +30,8 @@ function _aiGroq(systemPrompt, userMsg, onSuccess, onError) {
   // failed to load (e.g. network blip during initial fetch).
   var key = _aiGroqFallbackKey || '';
   if (!key || key.length < 20) {
-    var lsKey = localStorage.getItem('cha_groq_key') || '';
+    var lsKey =
+      typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
     if (lsKey && lsKey !== 'skip' && lsKey.length >= 20) {
       key = lsKey;
     }

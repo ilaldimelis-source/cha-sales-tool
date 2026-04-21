@@ -110,12 +110,61 @@ function renderMindset() {
 // ══════════════════════════════════════════════════════
 // RENDER: NOTES
 // ══════════════════════════════════════════════════════
+function chaMigrateMySpaceNotesScripts() {
+  var uid = window.CHA_USER && window.CHA_USER.id;
+  if (!uid || uid === 'anonymous') return;
+  var email = (window.CHA_USER && window.CHA_USER.email) || '';
+  if (!email) return;
+  var oldNotes = 'cha_notes_' + email;
+  var oldScripts = 'cha_scripts_' + email;
+  try {
+    if (typeof chaKey === 'function' && typeof chaSet === 'function') {
+      var skN = chaKey('cha_notes');
+      if (localStorage.getItem(skN) === null) {
+        var nv = localStorage.getItem(oldNotes);
+        if (nv != null) {
+          chaSet('cha_notes', nv);
+          localStorage.removeItem(oldNotes);
+        }
+      }
+      var skS = chaKey('cha_scripts');
+      if (localStorage.getItem(skS) === null) {
+        var sv = localStorage.getItem(oldScripts);
+        if (sv != null) {
+          try {
+            var parsed = JSON.parse(sv);
+            chaSet('cha_scripts', Array.isArray(parsed) ? parsed : []);
+          } catch (_e1) {
+            chaSet('cha_scripts', []);
+          }
+          localStorage.removeItem(oldScripts);
+        }
+      }
+    }
+  } catch (_e2) {
+    /* ignore */
+  }
+}
+if (typeof window !== 'undefined') {
+  window.chaMigrateMySpaceNotesScripts = chaMigrateMySpaceNotesScripts;
+}
+
 function renderNotes() {
+  if (typeof chaMigrateMySpaceNotesScripts === 'function') {
+    chaMigrateMySpaceNotesScripts();
+  }
   var saved = getSavedScripts();
-  var notesVal =
-    safeGetItem(
-      'cha_notes_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared')
-    ) || '';
+  var notesVal = '';
+  try {
+    notesVal =
+      typeof chaGet === 'function'
+        ? String(chaGet('cha_notes', '') || '')
+        : safeGetItem(
+            'cha_notes_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared')
+          ) || '';
+  } catch (_nv) {
+    notesVal = '';
+  }
   var html =
     '<div class="ph"><div class="pt">My <span>Notes</span></div><div class="pd">Write your own scripts, custom phrasing, and reminders. Everything saves automatically.</div></div>';
 
@@ -123,8 +172,9 @@ function renderNotes() {
   var savedName = '';
   try {
     savedName =
-      safeGetItem('preferredName') ||
-      safeGetItem('cha_display_name') ||
+      (typeof chaGet === 'function'
+        ? chaGet('preferredName', '') || chaGet('cha_display_name', '')
+        : safeGetItem('preferredName') || safeGetItem('cha_display_name')) ||
       ((window.CHA_USER && (window.CHA_USER.firstName || window.CHA_USER.name)) || '');
   } catch (_e) {
     savedName = '';
@@ -199,9 +249,13 @@ function renderNotes() {
 function saveDisplayName(val) {
   var next = (val || '').trim();
   try {
-    safeSetItem('preferredName', next);
-    // Keep legacy key in sync for compatibility with older flows.
-    safeSetItem('cha_display_name', next);
+    if (typeof chaSet === 'function') {
+      chaSet('preferredName', next);
+      chaSet('cha_display_name', next);
+    } else {
+      safeSetItem('preferredName', next);
+      safeSetItem('cha_display_name', next);
+    }
   } catch (_e) {
     /* ignore */
   }
@@ -224,10 +278,20 @@ function saveDisplayName(val) {
 }
 
 function saveNotes() {
-  safeSetItem(
-    'cha_notes_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'),
-    document.getElementById('notesTA').value
-  );
+  var ta = document.getElementById('notesTA');
+  var body = ta ? ta.value : '';
+  try {
+    if (typeof chaSet === 'function') {
+      chaSet('cha_notes', body);
+    } else {
+      safeSetItem(
+        'cha_notes_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'),
+        body
+      );
+    }
+  } catch (_e) {
+    /* ignore */
+  }
   var m = document.getElementById('saveMsg');
   if (m) {
     m.style.opacity = '1';
@@ -244,12 +308,16 @@ function clearNotes() {
 }
 function getSavedScripts() {
   try {
-    return JSON.parse(
-      safeGetItem(
-        'cha_scripts_' +
-          ((window.CHA_USER && window.CHA_USER.email) || 'shared')
-      ) || '[]'
-    );
+    var arr =
+      typeof chaGet === 'function'
+        ? chaGet('cha_scripts', [])
+        : JSON.parse(
+            safeGetItem(
+              'cha_scripts_' +
+                ((window.CHA_USER && window.CHA_USER.email) || 'shared')
+            ) || '[]'
+          );
+    return Array.isArray(arr) ? arr : [];
   } catch (e) {
     return [];
   }
@@ -259,27 +327,39 @@ function saveScript() {
   if (!v) return;
   var s = getSavedScripts();
   s.unshift(v);
-  safeSetItem(
-    'cha_scripts_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'),
-    JSON.stringify(s.slice(0, 30))
-  );
+  if (typeof chaSet === 'function') {
+    chaSet('cha_scripts', s.slice(0, 30));
+  } else {
+    safeSetItem(
+      'cha_scripts_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'),
+      JSON.stringify(s.slice(0, 30))
+    );
+  }
   document.getElementById('scriptInput').value = '';
   renderSavedScripts();
 }
 function deleteScript(i) {
   var s = getSavedScripts();
   s.splice(i, 1);
-  safeSetItem(
-    'cha_scripts_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'),
-    JSON.stringify(s)
-  );
+  if (typeof chaSet === 'function') {
+    chaSet('cha_scripts', s);
+  } else {
+    safeSetItem(
+      'cha_scripts_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared'),
+      JSON.stringify(s)
+    );
+  }
   renderSavedScripts();
 }
 function removeFavorite(idx) {
   var favs = typeof getFavorites === 'function' ? getFavorites() : [];
   if (idx >= 0 && idx < favs.length) {
     favs.splice(idx, 1);
-    safeSetItem('cha_favorites', JSON.stringify(favs));
+    if (typeof chaSet === 'function') {
+      chaSet('cha_favorites', favs);
+    } else {
+      safeSetItem('cha_favorites', JSON.stringify(favs));
+    }
     renderNotes();
   }
 }

@@ -335,10 +335,10 @@ var _stAllSearchQuery = '';
 var _stAllStatusFilter = 'all';
 var _stAllRowsShown = 10;
 function _stMigrateLegacyKeys() {
-  if (_stMigrated) return;
-  _stMigrated = true;
   var user = _stGetCurrentUser();
   if (user.id === 'anonymous') return;
+  if (_stMigrated) return;
+  _stMigrated = true;
   try {
     var scopedSales = _stKey('cha_sales');
     if (!_stGet(scopedSales)) {
@@ -538,7 +538,8 @@ function _stGroqApiKeyForReceipt() {
     return _aiGroqFallbackKey;
   }
   try {
-    var ls = localStorage.getItem('cha_groq_key') || '';
+    var ls =
+      typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
     if (ls && ls !== 'skip' && ls.length >= 20) return ls;
   } catch (_k) {}
   return '';
@@ -4772,7 +4773,12 @@ function _stMonthPremiumTotal(sales, y, m) {
 
 function _stGetMonthlyGoalDollars() {
   try {
-    var raw = localStorage.getItem('cha_monthly_goal');
+    var raw = null;
+    if (typeof chaGet === 'function') {
+      var v = chaGet('cha_monthly_goal', null);
+      raw = v == null ? null : String(v);
+    }
+    if (raw == null) raw = '';
     var n = raw ? parseFloat(raw) : 10000;
     if (isNaN(n) || n < 1000) return 10000;
     return n;
@@ -4791,7 +4797,11 @@ function _stEditMonthlyGoal() {
     return;
   }
   try {
-    localStorage.setItem('cha_monthly_goal', String(n));
+    if (typeof chaSet === 'function') {
+      chaSet('cha_monthly_goal', n);
+    } else {
+      localStorage.setItem('cha_monthly_goal', String(n));
+    }
   } catch (_e2) {}
   _stRender();
   _stFlash('Monthly goal updated.', 'ok');
@@ -4799,7 +4809,11 @@ function _stEditMonthlyGoal() {
 
 function _stGetSavedTab() {
   try {
-    var v = localStorage.getItem('cha_st_tab');
+    var v =
+      typeof chaGet === 'function'
+        ? chaGet('cha_st_tab', '')
+        : localStorage.getItem('cha_st_tab');
+    v = typeof v === 'string' ? v : '';
     if (v === 'analytics' || v === 'thisweek') return v;
   } catch (_e) {}
   return 'thisweek';
@@ -4828,7 +4842,11 @@ function _stBuildInternalSubtabs(activeTab) {
 function _stSwitchTab(tabId) {
   if (tabId !== 'analytics' && tabId !== 'thisweek') tabId = 'thisweek';
   try {
-    localStorage.setItem('cha_st_tab', tabId);
+    if (typeof chaSet === 'function') {
+      chaSet('cha_st_tab', tabId);
+    } else {
+      localStorage.setItem('cha_st_tab', tabId);
+    }
   } catch (_e) {}
   var pThis = document.getElementById('stTabPanelThisWeek');
   var pAn = document.getElementById('stTabPanelAnalytics');

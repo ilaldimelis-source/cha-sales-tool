@@ -1230,8 +1230,13 @@ function mapSearchBucket(type) {
 
 function getSearchRecent() {
   try {
-    var raw = localStorage.getItem(SR_SEARCH_RECENT_KEY);
-    var arr = raw ? JSON.parse(raw) : [];
+    var arr = [];
+    if (typeof chaGet === 'function') {
+      arr = chaGet(SR_SEARCH_RECENT_KEY, []);
+    } else {
+      var raw = localStorage.getItem(SR_SEARCH_RECENT_KEY);
+      arr = raw ? JSON.parse(raw) : [];
+    }
     return Array.isArray(arr) ? arr.slice(0, 10) : [];
   } catch (_e) {
     return [];
@@ -1246,10 +1251,14 @@ function rememberSearch(q) {
   });
   list.unshift(v);
   try {
-    localStorage.setItem(
-      SR_SEARCH_RECENT_KEY,
-      JSON.stringify(list.slice(0, 10))
-    );
+    if (typeof chaSet === 'function') {
+      chaSet(SR_SEARCH_RECENT_KEY, list.slice(0, 10));
+    } else {
+      localStorage.setItem(
+        SR_SEARCH_RECENT_KEY,
+        JSON.stringify(list.slice(0, 10))
+      );
+    }
   } catch (_e) {}
 }
 

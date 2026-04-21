@@ -1525,7 +1525,12 @@ function _trnGetScope() {
 
 function _trnSetStoredTag(scope, value) {
   try {
-    localStorage.setItem(LIB_LAST_TAG_KEY, String(value || '').trim().toLowerCase());
+    var next = String(value || '').trim().toLowerCase();
+    if (typeof chaSet === 'function') {
+      chaSet(LIB_LAST_TAG_KEY, next);
+    } else {
+      localStorage.setItem(LIB_LAST_TAG_KEY, next);
+    }
   } catch (_e) {
     /* ignore */
   }
@@ -1533,6 +1538,10 @@ function _trnSetStoredTag(scope, value) {
 
 function _trnGetStoredTag(scope) {
   try {
+    if (typeof chaGet === 'function') {
+      var v = chaGet(LIB_LAST_TAG_KEY, '');
+      return String(v || '').trim();
+    }
     return String(localStorage.getItem(LIB_LAST_TAG_KEY) || '').trim();
   } catch (_e) {
     return '';
@@ -2267,9 +2276,62 @@ function academySelectLesson(dayNum, lessonIndex) {
   academyViewLesson['d' + dayNum] = lessonIndex;
   loadDayContent(dayNum);
 }
-function initAcademy(){var agentId=localStorage.getItem('visibleAgentId')||'default';if(academyViewLessonAgent!==null&&academyViewLessonAgent!==agentId){academyViewLesson={};}academyViewLessonAgent=agentId;var saved=localStorage.getItem('academyProgress_'+agentId);if(saved){academyProgress=JSON.parse(saved);}else{academyProgress={};for(var i=1;i<=5;i++){academyProgress['day'+i]={lessons:[false,false,false,false],complete:false};}}renderDayCards();updateAcademyUI();initBenefitsPanel();}
+function _trnAcademyOverrideId() {
+  try {
+    var v = localStorage.getItem('visibleAgentId');
+    if (v && String(v).trim()) return String(v).trim();
+  } catch (_e) {}
+  return '';
+}
+function _trnAcademyAgentId() {
+  var ov = _trnAcademyOverrideId();
+  if (ov) return ov;
+  var uid = (window.CHA_USER && window.CHA_USER.id) || '';
+  if (uid && uid !== 'anonymous') return uid;
+  return 'default';
+}
+function _trnAcademyStorageKey() {
+  return 'academyProgress_' + _trnAcademyAgentId();
+}
+function initAcademy() {
+  var agentId = _trnAcademyAgentId();
+  if (academyViewLessonAgent !== null && academyViewLessonAgent !== agentId) {
+    academyViewLesson = {};
+  }
+  academyViewLessonAgent = agentId;
+  var storageKey = _trnAcademyStorageKey();
+  var saved = localStorage.getItem(storageKey);
+  if (!saved && !_trnAcademyOverrideId() && agentId !== 'default') {
+    var leg = localStorage.getItem('academyProgress_default');
+    if (leg) {
+      saved = leg;
+      try {
+        localStorage.setItem(storageKey, saved);
+        localStorage.removeItem('academyProgress_default');
+      } catch (_e0) {}
+    }
+  }
+  if (saved) {
+    academyProgress = JSON.parse(saved);
+  } else {
+    academyProgress = {};
+    for (var i = 1; i <= 5; i++) {
+      academyProgress['day' + i] = {
+        lessons: [false, false, false, false],
+        complete: false
+      };
+    }
+  }
+  renderDayCards();
+  updateAcademyUI();
+  initBenefitsPanel();
+}
 function renderDayCards(){var grid=document.getElementById('daysGrid');if(!grid)return;var html='';for(var i=0;i<dayConfig.length;i++){var d=dayConfig[i];html+='<div class="day-card" data-day="'+d.num+'" onclick="selectDay('+d.num+')"><div class="day-icon-circle blue" id="dayIcon'+d.num+'">'+d.num+'</div><h3>'+d.title+'</h3><p class="day-desc">Day '+d.num+'</p><div class="day-progress"><div class="day-progress-bar" id="day'+d.num+'Progress"></div></div><span class="day-status" id="day'+d.num+'Status">Not started</span></div>';}grid.innerHTML=html;}
-function saveAcademyProgress(){var agentId=localStorage.getItem('visibleAgentId')||'default';localStorage.setItem('academyProgress_'+agentId,JSON.stringify(academyProgress));}
+function saveAcademyProgress() {
+  try {
+    localStorage.setItem(_trnAcademyStorageKey(), JSON.stringify(academyProgress));
+  } catch (_e) {}
+}
 function updateAcademyUI(){var totalLessons=20;var completedLessons=0;for(var d=1;d<=5;d++){var dayData=academyProgress['day'+d];var dayCompleted=dayData.lessons.filter(function(l){return l;}).length;completedLessons+=dayCompleted;var dayPercent=(dayCompleted/4)*100;var progressBar=document.getElementById('day'+d+'Progress');var statusEl=document.getElementById('day'+d+'Status');var dayCard=document.querySelector('.day-card[data-day="'+d+'"]');var iconEl=document.getElementById('dayIcon'+d);if(progressBar)progressBar.style.width=dayPercent+'%';if(dayData.complete){if(statusEl)statusEl.textContent='Complete';if(dayCard){dayCard.classList.add('completed');dayCard.classList.remove('locked');}if(iconEl){iconEl.classList.remove('blue','gray');iconEl.classList.add('green');iconEl.innerHTML=svgIcons.check;}}else{if(statusEl)statusEl.textContent=dayPercent>0?'In progress':'Not started';if(dayCard)dayCard.classList.remove('locked');if(iconEl){iconEl.classList.remove('gray','green');iconEl.classList.add('blue');iconEl.innerHTML=d;}}}var overallPercent=Math.round((completedLessons/totalLessons)*100);var percentEl=document.getElementById('academyProgressPercent');var ringEl=document.getElementById('academyProgressRing');if(percentEl)percentEl.textContent=overallPercent+'%';if(ringEl){var circumference=264;var offset=circumference-(overallPercent/100)*circumference;ringEl.style.strokeDashoffset=offset;}}
 function selectDay(dayNum){document.querySelectorAll('.day-card').forEach(function(card){card.classList.remove('active');});document.querySelector('.day-card[data-day="'+dayNum+'"]').classList.add('active');document.querySelectorAll('.day-content').forEach(function(content){content.classList.remove('active');});document.getElementById('day'+dayNum+'Content').classList.add('active');loadDayContent(dayNum);}
 function loadDayContent(dayNum){var container=document.getElementById('day'+dayNum+'Content');if(!container)return;var dayData=academyProgress['day'+dayNum];if(dayNum===1)container.innerHTML=generateDay1Content(dayData);else if(dayNum===2)container.innerHTML=generateDay2Content(dayData);else if(dayNum===3)container.innerHTML=generateDay3Content(dayData);else if(dayNum===4)container.innerHTML=generateDay4Content(dayData);else if(dayNum===5)container.innerHTML=generateDay5Content(dayData);}
@@ -2283,6 +2345,7 @@ if (typeof window !== 'undefined') {
   window.completeLesson = completeLesson;
   window.copyScript = copyScript;
   window.hideAllDayContent = hideAllDayContent;
+  window.initAcademy = initAcademy;
 }
 function showConfetti(){var colors=['#4A90D9','#34C759','#8B5CF6','#F59E0B','#EF4444'];for(var i=0;i<50;i++){var piece=document.createElement('div');piece.className='confetti-piece';piece.style.left=Math.random()*100+'vw';piece.style.background=colors[Math.floor(Math.random()*colors.length)];piece.style.animationDelay=Math.random()*0.5+'s';piece.style.animationDuration=(2+Math.random()*2)+'s';piece.style.borderRadius=Math.random()>0.5?'50%':'0';document.body.appendChild(piece);setTimeout(function(){piece.remove();},4000);}}
 function generateDay1Content(dayData){var lessons=dayData.lessons;var firstIncomplete=lessons.findIndex(function(l){return !l;});var viewLesson=academyGetViewLesson(1,lessons);var html='<button class="back-btn" onclick="hideAllDayContent()">'+svgIcons.x+' Back to all days</button>';html+='<div class="day-header"><div class="day-header-icon">'+svgIcons.book+'</div><div><h2>Day 1: Insurance Basics</h2><p>4 quick lessons to build your foundation</p></div></div>';html+=academyDayToneTip(1);html+='<div class="lessons-list">';html+=generateLessonCard(1,0,'What We Sell','The 3 plan types and who they help','3 min',lessons[0],viewLesson===0,firstIncomplete===0&&!lessons[0]);html+=generateLessonCard(1,1,'Key Terms','7 words you will use every call','5 min',lessons[1],viewLesson===1,firstIncomplete===1&&!lessons[1]);html+=generateLessonCard(1,2,'ACA vs Private','Know the difference','4 min',lessons[2],viewLesson===2,firstIncomplete===2&&!lessons[2]);html+=generateLessonCard(1,3,'Required Disclosures','What you MUST say','3 min',lessons[3],viewLesson===3,firstIncomplete===3&&!lessons[3]);html+='</div>';if(viewLesson===0)html+=generateLesson1_1();else if(viewLesson===1)html+=generateLesson1_2();else if(viewLesson===2)html+=generateLesson1_3();else if(viewLesson===3)html+=generateLesson1_4();else html+='<div class="pro-tip" style="margin-top:24px;">'+svgIcons.check+'<div class="pro-tip-content"><div class="tip-label">Day 1 Complete!</div><p>Great job! Day 2 is now unlocked.</p></div></div>';return html;}

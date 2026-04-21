@@ -7,6 +7,7 @@
   var LOGIN_URL = '/login.html';
   var INACTIVITY_MS = 30 * 60 * 1000;
   var _inactivityTimer = null;
+  var _chaLastSeenUserId = null;
 
   // ── STEP 1: Inject Clerk SDK using official pattern (same as login.html) ────
   var clerkScript = document.createElement('script');
@@ -57,6 +58,17 @@
           return;
         }
         window.Clerk = Clerk;
+        try {
+          if (typeof Clerk.addListener === 'function') {
+            Clerk.addListener(function () {
+              if (Clerk.user) {
+                renderUserInfo(Clerk.user);
+              }
+            });
+          }
+        } catch (_el) {
+          /* older Clerk builds may omit addListener */
+        }
         renderUserInfo(Clerk.user);
         hideOverlay();
         startInactivityTimer();
@@ -93,6 +105,9 @@
   // ── LOGOUT ───────────────────────────────────────────────────────────────────
   function doLogout() {
     clearTimeout(_inactivityTimer);
+    if (typeof chaClearSensitive === 'function') {
+      chaClearSensitive();
+    }
     if (Clerk && typeof Clerk.signOut === 'function') {
       Clerk.signOut()
         .then(function () {
@@ -146,13 +161,34 @@
       greeting: greeting
     };
 
+    if (typeof chaAfterAuthUserReady === 'function') {
+      chaAfterAuthUserReady();
+    }
+    if (
+      _chaLastSeenUserId &&
+      window.CHA_USER.id &&
+      _chaLastSeenUserId !== window.CHA_USER.id
+    ) {
+      try {
+        if (typeof _stRender === 'function') {
+          _stRender();
+        }
+      } catch (_e) {}
+    }
+    if (window.CHA_USER.id) {
+      _chaLastSeenUserId = window.CHA_USER.id;
+    }
+
     function inject() {
       var nav = document.querySelector('.nav');
       if (!nav) {
         setTimeout(inject, 150);
         return;
       }
-      if (document.getElementById('auth-user-card')) return;
+      var oldCard = document.getElementById('auth-user-card');
+      if (oldCard) {
+        oldCard.remove();
+      }
 
       var card = document.createElement('div');
       card.id = 'auth-user-card';
