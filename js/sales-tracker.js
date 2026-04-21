@@ -1734,16 +1734,16 @@ function _stGetSaleMode() {
 }
 
 // Splits a blob of pasted text into individual receipt chunks.
-// A new receipt starts when either:
-//   (0) Two+ standalone "Central Health Advisors [LLC]" header lines
-//       (company name) — most reliable for multi-paste, OR
-//   (a) a line contains "Confirmation" and that same line OR the
-//       next line has a "Month DD, YYYY" style date pattern, OR
-//   (b) a line is exactly "Member" and the next line begins
-//       with "ID:" — a common two-line header layout.
-// The first chunk always starts at line 0; each subsequent
-// boundary closes the previous chunk and opens a new one.
-// Returns an array of trimmed receipt strings.
+// Primary: each "Confirmation" line (with a Month DD, YYYY date on
+// that line or within the next two lines) opens a new receipt, plus
+// common Member / Member ID header layouts.
+// Fallback when no such headers exist: standalone
+// "Central Health Advisors [LLC]" lines (Slack paste without the
+// word "Confirmation"). Company-only boundaries are NOT used when
+// any Confirmation header was found — that dropped leading receipts
+// and merged trailing ones in multi-paste.
+// The first chunk starts at starts[0]; any lines before starts[0]
+// are discarded. Returns an array of trimmed receipt strings.
 function _stSplitReceipts(text) {
   if (!text) return [];
   var raw = String(text)
@@ -1830,52 +1830,51 @@ function _stSplitReceipts(text) {
   }
 
   // Pass 1: find every line index that opens a new receipt.
-  // A line opens a receipt when either:
-  //   (a) it contains "Confirmation" AND a Month DD, YYYY date
-  //       appears on that same line or within 2 lines after it,
-  //   (b) the line is exactly "Member" and the next line begins
-  //       with "ID:" (two-line member-header layout).
-  // When two+ company headers are present, use ONLY those as
-  // boundaries so "Confirmation" inside a receipt does not create
-  // extra false splits. One standalone company line → one chunk
-  // from that header (avoids a false split on inner "Confirmation").
-  // Zero company lines → fall back to Confirmation / Member rules.
+  // Primary boundaries (always collected first):
+  //   (a) "Confirmation" AND a Month DD, YYYY date on this line or
+  //       within the next 2 lines — each confirmation header starts
+  //       a new receipt (works for Central Health Advisors vs LLC,
+  //       Slack wrappers, enrollment lines, etc.).
+  //   (b) "Member" / Member ID layouts when used as headers.
+  // Fallback when NO confirmation/member headers were found at all:
+  //   use standalone "Central Health Advisors [LLC]" lines (same
+  //   as before) so odd pastes without the word "Confirmation" still
+  //   split. We never prefer company-only boundaries when at least
+  //   one confirmation header exists — that mode dropped entire
+  //   receipts (e.g. first sale before the first company line) and
+  //   merged the last receipt when only two company lines appeared.
+  var confStarts = [];
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    if (confRe.test(line)) {
+      var hasDate =
+        monthRe.test(line) ||
+        (i + 1 < lines.length && monthRe.test(lines[i + 1])) ||
+        (i + 2 < lines.length && monthRe.test(lines[i + 2]));
+      if (hasDate) {
+        confStarts.push(i);
+        continue;
+      }
+    }
+    var isTwoLineMember =
+      /^\s*member\s*$/i.test(line) &&
+      i + 1 < lines.length &&
+      /^\s*id\s*:/i.test(lines[i + 1]);
+    var isOneLineMember =
+      /^\s*member\s+id\s*:\s*\d{6,}/i.test(line) &&
+      !noiseMemberPreviewRe.test(line);
+    if (isTwoLineMember || isOneLineMember) {
+      confStarts.push(i);
+    }
+  }
+
   var starts = [];
-  if (companyStarts.length >= 2) {
+  if (confStarts.length) {
+    starts = confStarts.slice();
+  } else if (companyStarts.length >= 2) {
     starts = companyStarts.slice();
   } else if (companyStarts.length === 1) {
     starts = [companyStarts[0]];
-  } else {
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i];
-      if (confRe.test(line)) {
-        var hasDate =
-          monthRe.test(line) ||
-          (i + 1 < lines.length && monthRe.test(lines[i + 1])) ||
-          (i + 2 < lines.length && monthRe.test(lines[i + 2]));
-        if (hasDate) {
-          starts.push(i);
-          continue;
-        }
-      }
-      // Two-line format: "Member" alone then "ID: XXXXXXXX"
-      var isTwoLineMember =
-        /^\s*member\s*$/i.test(line) &&
-        i + 1 < lines.length &&
-        /^\s*id\s*:/i.test(lines[i + 1]);
-
-      // One-line format: "Member ID: 686934779" or
-      // "Member ID: 686934779 Cody Wagner ..." — but NOT the
-      // Slack preview "Member ID: ... ..." ellipsis lines, which
-      // are stripped by the noiseMemberPreviewRe filter.
-      var isOneLineMember =
-        /^\s*member\s+id\s*:\s*\d{6,}/i.test(line) &&
-        !noiseMemberPreviewRe.test(line);
-
-      if (isTwoLineMember || isOneLineMember) {
-        starts.push(i);
-      }
-    }
   }
 
   // No boundaries at all → treat the whole blob as one chunk,
@@ -2607,10 +2606,29 @@ function _stDeleteSale(id) {
   if (!confirm('Permanently delete this sale? This cannot be undone.')) {
     return;
   }
-  var sales = _stLoadSales().filter(function (s) {
-    return s.id !== id;
-  });
-  _stSaveSales(sales);
+  var lid = String(id);
+  var sales = _stLoadSales();
+  var target = null;
+  for (var di = 0; di < sales.length; di++) {
+    if (sales[di] && String(sales[di].id) === lid) {
+      target = sales[di];
+      break;
+    }
+  }
+  if (!target) return;
+  var rid = target.receiptId ? String(target.receiptId) : '';
+  var filtered;
+  if (rid) {
+    filtered = sales.filter(function (s) {
+      return !s || String(s.receiptId || '') !== rid;
+    });
+  } else {
+    filtered = sales.filter(function (s) {
+      return !s || String(s.id) !== lid;
+    });
+  }
+  _stSaveSales(filtered);
+  _stSelectedIds = {};
   _stRender();
   _stFlash('Sale deleted.', 'ok');
 }
@@ -3100,10 +3118,20 @@ function _stBulkDelete() {
   var kill = {};
   for (var ki = 0; ki < ids.length; ki++) kill[ids[ki]] = true;
   var sales = _stLoadSales();
+  var killRid = {};
+  for (var ri = 0; ri < sales.length; ri++) {
+    var sr = sales[ri];
+    if (!sr) continue;
+    if (kill[String(sr.id)] && sr.receiptId) {
+      killRid[String(sr.receiptId)] = true;
+    }
+  }
   var before = sales.length;
   var filtered = sales.filter(function (s) {
     if (!s) return true;
-    return !kill[String(s.id)];
+    if (kill[String(s.id)]) return false;
+    if (s.receiptId && killRid[String(s.receiptId)]) return false;
+    return true;
   });
   var removed = before - filtered.length;
   if (removed < 1) {
