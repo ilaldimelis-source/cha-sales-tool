@@ -186,24 +186,6 @@ function _buildGreetingText() {
   return gr + ' ! ' + first;
 }
 
-// Home dashboard title — same name resolution as top bar, without the time-of-day prefix.
-function _dashHomePreferredName() {
-  try {
-    var c = (safeGetItem('preferredName') || safeGetItem('cha_display_name') || '').trim();
-    if (c) return c;
-  } catch (_e) {}
-  try {
-    var u = window.CHA_USER;
-    if (u) {
-      var f = String(u.firstName || '').trim();
-      if (f) return f;
-      var n = String(u.name || '').trim();
-      if (n) return n.split(/\s+/)[0];
-    }
-  } catch (_e2) {}
-  return 'there';
-}
-
 function _refreshTopbarGreeting() {
   var el = document.getElementById('topbarWelcome');
   if (!el) return;
@@ -1368,11 +1350,8 @@ function renderDashboard() {
       )
     }
   ];
-  var homeName = escHTML(_dashHomePreferredName());
   var html =
-    '<div class="ph"><div class="pt">Welcome back, ' +
-    homeName +
-    '</div><div class="pd">Your starting point</div></div>';
+    '<div class="ph"><div class="pt">CHA Academy</div><div class="pd">Your starting point</div></div>';
   html += _greetHtml;
   html += '<div class="dashboard-home-stack">';
   html += '<div id="dashPlanLookupMount"></div>';
