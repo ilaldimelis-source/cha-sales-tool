@@ -8625,7 +8625,7 @@ h3 {
   box-sizing: border-box;
 }
 
-#main-content.content > .combo-page.active > .page.active {
+#main-content.content > .combo-page.active .page.active {
   padding-top: 8px;
 }
 
