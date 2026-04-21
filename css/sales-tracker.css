@@ -2599,8 +2599,8 @@
   max-height: none;
 }
 .st-week-compact-card {
-  background: #fff;
-  border: 1px solid #e2e8f0;
+  background: var(--cha-bg-card);
+  border: 1px solid var(--cha-border-default);
   border-radius: 10px;
   padding: 10px 10px 12px;
   position: relative;
