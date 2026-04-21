@@ -1167,9 +1167,9 @@ function renderDashboardLookupCard() {
   html +=
     '<button type="button" class="dash-lookup-provider" onclick="dashLookupOpenProvider()"' +
     (providerUrl ? '' : ' disabled') +
-    '>Provider search</button>';
+    '><svg class="dash-lookup-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M4 20v-1a6 6 0 0 1 6-6"/><circle cx="18" cy="18" r="3"/><path d="m22 22-2.5-2.5"/></svg><span>Find a provider</span></button>';
   html +=
-    '<button type="button" class="dash-lookup-copy" onclick="dashLookupCopy()">Copy</button>';
+    '<button type="button" class="dash-lookup-copy" onclick="dashLookupCopy()"><svg class="dash-lookup-btn-icon dash-lookup-btn-icon-sm" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/></svg><span>Copy info</span></button>';
   html += '</div>';
   html += '</div>';
   return html;

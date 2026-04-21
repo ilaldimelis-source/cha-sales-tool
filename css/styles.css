@@ -8986,16 +8986,65 @@ body.dark-mode #page-myspace {
   color: #667085;
 }
 .dash-lookup-actions-embedded {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: stretch;
 }
 .dash-lookup-similar-wrap {
   display: none !important;
 }
-.dash-lookup-provider,
-.dash-lookup-copy {
-  width: 100%;
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-provider {
+  flex: 2;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+  cursor: pointer;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-provider:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-provider:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy {
+  flex: 1;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary, #1e293b);
+  background: #fff;
+  border: 0.5px solid var(--color-border-secondary, #e2e8f0);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy:hover {
+  background: var(--color-background-secondary, #f8fafc);
+}
+.dash-lookup-btn-icon {
+  flex-shrink: 0;
+}
+.dash-lookup-btn-icon-sm {
+  flex-shrink: 0;
 }
 
 /* Weekly progress all-tier line */
