@@ -19,10 +19,10 @@ window.onerror = function (msg, src, line) {
   console.error('[CHA] JS Error:', msg, 'in', src, 'line', line);
   if (!window._chaAppStarted) {
     document.body.innerHTML =
-      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#f8fafc;font-family:sans-serif;gap:16px;">' +
+      '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:var(--cha-bg-muted);font-family:sans-serif;gap:16px;">' +
       '<img src="logo.png" style="width:60px;height:60px;border-radius:50%;" />' +
       '<div style="font-size:18px;font-weight:600;color:#1e293b;">CHA Command Center</div>' +
-      '<div style="font-size:13px;color:#ef4444;background:#fef2f2;padding:10px 16px;border-radius:8px;border:1px solid #fecaca;">A script error occurred. Please refresh the page.</div>' +
+      '<div style="font-size:13px;color:var(--cha-danger-text);background:var(--cha-danger-bg);padding:10px 16px;border-radius:8px;border:1px solid #fecaca;">A script error occurred. Please refresh the page.</div>' +
       '<button onclick="location.reload()" style="padding:10px 24px;background:#5175f1;color:white;border:none;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;">Refresh Now</button>' +
       '<div style="font-size:11px;color:#94a3b8;">Error: ' +
       msg +
@@ -1133,12 +1133,15 @@ function renderDashboardLookupCard() {
   var plans = _dashLookupFilteredPlans();
   var selected = _dashLookupSelectedPlan();
   var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
-  var html = '<div class="dash-lookup-card">';
-  html += '<div class="dash-lookup-head dash-lookup-head-inline">';
-  html += '<div class="dash-lookup-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>';
+  var html = '<div class="dash-lookup-card dash-lookup-card--option-d">';
+  html += '<div class="dash-lookup-head-option-d">';
   html +=
-    '<div class="dash-lookup-head-text"><span class="dash-lookup-title">Plan lookup</span><span class="dash-lookup-title-sep"> — </span><span class="dash-lookup-subtitle">Network, underwriter, provider search — one tap</span></div>';
-  html += '</div>';
+    '<div class="dash-lookup-head-icon-wrap" aria-hidden="true"><svg class="dash-lookup-head-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>';
+  html += '<div class="dash-lookup-head-titles">';
+  html += '<div class="dash-lookup-head-title-main">Plan lookup</div>';
+  html +=
+    '<div class="dash-lookup-head-sub-main">Network, underwriter, provider search</div>';
+  html += '</div></div>';
   html += '<div class="dash-lookup-input-wrap">';
   html +=
     '<input id="dashLookupSearch" type="text" placeholder="Quick plan lookup — start typing a plan name…" oninput="dashLookupFilter(this.value)" autocomplete="off">';

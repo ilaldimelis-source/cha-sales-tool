@@ -407,7 +407,7 @@ function analyzePsych() {
   var aiDiv = document.createElement('div');
   aiDiv.id = 'psychAiScripts';
   aiDiv.style.cssText =
-    'margin-top:12px;padding:14px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;font-size:13px;color:#64748b;';
+    'margin-top:12px;padding:14px 16px;background:var(--cha-bg-muted);border:1px solid #e2e8f0;border-radius:12px;font-size:13px;color:#64748b;';
   aiDiv.textContent =
     '✦ AI generating personalized scripts for this prospect...';
   el.appendChild(aiDiv);
@@ -580,7 +580,7 @@ function checkCompliance() {
         risk === 'HIGH' ? '#dc2626' : risk === 'MEDIUM' ? '#d97706' : '#16a34a';
       if (isFlagged) {
         result.innerHTML =
-          '<div style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;padding:16px;">' +
+          '<div style="background:var(--cha-danger-bg);border:1.5px solid #fecaca;border-radius:12px;padding:16px;">' +
           '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">' +
           '<span style="background:' +
           riskColor +
@@ -879,7 +879,7 @@ function analyzeCall() {
       html += '</div></div>';
       if (analysis)
         html +=
-          '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px;padding:10px;background:#f8fafc;border-radius:8px;">' +
+          '<div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:12px;padding:10px;background:var(--cha-bg-muted);border-radius:8px;">' +
           escHTML(analysis) +
           '</div>';
       if (rewrite && !noFlags) {

@@ -791,7 +791,7 @@ function brRenderAIAnswer(text, planName, planSource) {
     bgColor = '#f0fdf4';
   } else if (status === 'NOT COVERED') {
     borderColor = '#ef4444';
-    bgColor = '#fef2f2';
+    bgColor = 'var(--cha-danger-bg)';
   } else if (status === 'PARTIAL') {
     borderColor = '#3b82f6';
     bgColor = '#eff6ff';
@@ -992,7 +992,7 @@ function brRenderLocalResult(result, planName) {
   var label = result.status;
   if (result.status === 'NOT COVERED') {
     borderColor = '#ef4444';
-    bgColor = '#fef2f2';
+    bgColor = 'var(--cha-danger-bg)';
     badgeColor = '#dc2626';
     icon = '✗';
   } else if (result.status === 'VERIFY') {
@@ -1085,7 +1085,7 @@ function brStatusColor(status) {
     return { border: '#22c55e', bg: '#f0fdf4', badge: '#16a34a', text: '#166534' };
   }
   if (s === 'NOT COVERED') {
-    return { border: '#ef4444', bg: '#fef2f2', badge: '#dc2626', text: '#7f1d1d' };
+    return { border: '#ef4444', bg: 'var(--cha-danger-bg)', badge: '#dc2626', text: '#7f1d1d' };
   }
   if (s === 'PARTIAL') {
     return { border: '#3b82f6', bg: '#eff6ff', badge: '#2563eb', text: '#1e3a8a' };
@@ -1382,7 +1382,7 @@ function brTestConnection() {
     })
     .catch(function (err) {
       if (testBtn) testBtn.textContent = 'Connection Failed';
-      if (testBtn) testBtn.style.background = '#fef2f2';
+      if (testBtn) testBtn.style.background = 'var(--cha-danger-bg)';
       if (testBtn) testBtn.style.color = '#dc2626';
       alert(
         'Connection failed: ' +
@@ -2049,7 +2049,7 @@ function brStructuredAnswer(query, plans) {
     'Not Covered': {
       border: '#e2e8f0',
       bg: '#fff',
-      badge: '#fef2f2',
+      badge: 'var(--cha-danger-bg)',
       badgeText: '#dc2626',
       icon: '✗'
     },

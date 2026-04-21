@@ -1674,7 +1674,7 @@ function renderPlanGroups() {
       // (Plan Vault cards stay data-only: benefits, limits, carrier facts.)
       html += _divider('Agent scripts');
       html +=
-        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.55;padding:10px 12px;background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;">' +
+        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.55;padding:10px 12px;background:var(--cha-bg-muted);border-radius:12px;border:1px solid #e2e8f0;">' +
         'Framing, best-fit / not-a-fit, and delivery notes for this plan family live under ' +
         '<strong>Live Call → Rebuttals</strong> (Plan fit &amp; framing section).</div>';
 
@@ -1879,9 +1879,9 @@ function _compCellStyle(status) {
     return 'background:#f0fdf4;color:#166534;';
   }
   if (status === 'notcovered') {
-    return 'background:#fef2f2;color:#991b1b;';
+    return 'background:var(--cha-danger-bg);color:var(--cha-danger-text);';
   }
-  return 'background:#f8fafc;color:#475569;';
+  return 'background:var(--cha-bg-muted);color:#475569;';
 }
 
 // Trim long benefit strings so compare cells stay readable.
@@ -2060,7 +2060,7 @@ function renderCompare() {
   qcHtml +=
     '<div style="flex:1;min-width:140px;"><label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Plan A</label>';
   qcHtml +=
-    '<select id="qc-plan-a" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#1e293b;background:#f8fafc;">';
+    '<select id="qc-plan-a" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#1e293b;background:var(--cha-bg-muted);">';
   qcHtml += '<option value="">Select...</option>';
   for (var qi = 0; qi < PLANS.length; qi++) {
     qcHtml +=
@@ -2070,7 +2070,7 @@ function renderCompare() {
   qcHtml +=
     '<div style="flex:1;min-width:140px;"><label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Plan B</label>';
   qcHtml +=
-    '<select id="qc-plan-b" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#1e293b;background:#f8fafc;">';
+    '<select id="qc-plan-b" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#1e293b;background:var(--cha-bg-muted);">';
   qcHtml += '<option value="">Select...</option>';
   for (var qj = 0; qj < PLANS.length; qj++) {
     qcHtml +=

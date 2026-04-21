@@ -3989,7 +3989,7 @@ function _stDownloadWeeklyPdf() {
     '</div>';
   html +=
     '<table cellspacing="0" cellpadding="7" style="border-collapse:collapse;width:100%;font-size:12px;border:1px solid #dbe3ef;">' +
-    '<tr style="background:#f8fafc;">' +
+    '<tr style="background:var(--cha-bg-muted);">' +
     '<th style="text-align:left;border:1px solid #dbe3ef;">Date</th>' +
     '<th style="text-align:left;border:1px solid #dbe3ef;">Agent</th>' +
     '<th style="text-align:left;border:1px solid #dbe3ef;">Client</th>' +
