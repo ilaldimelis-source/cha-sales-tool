@@ -681,6 +681,8 @@ svg {
 
 /* ── PAGE HEADER ── */
 .ph {
+  margin-top: 0;
+  padding-top: 0;
   margin-bottom: 22px;
 }
 
@@ -8607,14 +8609,24 @@ h3 {
 }
 
 .content {
-  padding: 28px;
+  padding: 0 16px 16px;
   gap: 28px;
 }
 
 .page {
-  padding: 28px;
+  padding: 16px 28px 28px 28px;
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
+}
+
+/* Combo shells: first row (subtabs) sits below top bar; inner pages keep modest top padding */
+#main-content.content > .combo-page.active {
+  padding-top: 16px;
+  box-sizing: border-box;
+}
+
+#main-content.content > .combo-page.active > .page.active {
+  padding-top: 8px;
 }
 
 .dash-lookup-card {
@@ -8756,6 +8768,8 @@ button {
 }
 
 .ph {
+  margin-top: 0;
+  padding-top: 0;
   margin-bottom: 16px;
 }
 
@@ -8799,7 +8813,7 @@ button {
 
 @media (max-width: 960px) {
   .content {
-    padding: 16px;
+    padding: 0 16px 16px;
   }
   .page {
     padding: 16px;
@@ -8815,7 +8829,7 @@ button {
   padding: 14px;
   margin-bottom: 0;
 }
-#page-dashboard .page {
+#page-dashboard.page {
   padding-bottom: 16px;
 }
 .dash-grid-jump.dash-grid-compact .dash-card {
