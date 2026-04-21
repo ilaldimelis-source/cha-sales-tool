@@ -2294,42 +2294,50 @@ function _stUpdateReceiptPreview() {
     wrap.innerHTML = '';
     return;
   }
-  var p = _stParseReceipt(txt, false);
+  var chunks = _stSplitReceipts(txt);
+  if (!chunks.length) chunks = [txt];
   var parts = [];
   parts.push(
     '<div class="st-preview-hint">Preview uses fast parsing. <strong>Add</strong> runs Groq AI when your key is active.</div>'
   );
   parts.push('<div class="st-preview-bubbles">');
-  for (var i = 0; i < p.products.length; i++) {
-    var pr = p.products[i];
-    var isDeal = i === 0;
-    parts.push(
-      '<div class="st-preview-bubble">' +
-        '<div class="st-pb-badge">' +
-        (isDeal ? 'Plan premium' : 'Add-on') +
-        '</div>' +
-        '<div class="st-pb-name">' +
-        _stEscape(pr.name || '—') +
-        '</div>' +
-        '<div class="st-pb-price">$' +
-        (Math.round((Number(pr.price) || 0) * 100) / 100).toFixed(2) +
-        '<span>/mo</span></div>' +
-        '</div>'
-    );
-  }
-  if (Number(p.enrollmentFee) > 0) {
-    parts.push(
-      '<div class="st-preview-bubble st-preview-bubble-fee">' +
-        '<div class="st-pb-badge">Enrollment fee</div>' +
-        '<div class="st-pb-name">One-time</div>' +
-        '<div class="st-pb-price">$' +
-        (Math.round(Number(p.enrollmentFee) * 100) / 100).toFixed(2) +
-        '</div>' +
-        '</div>'
-    );
+  var anyContent = false;
+  for (var ci = 0; ci < chunks.length; ci++) {
+    var p = _stParseReceipt(chunks[ci], false);
+    if (!p) continue;
+    for (var i = 0; i < p.products.length; i++) {
+      var pr = p.products[i];
+      var isDeal = i === 0;
+      anyContent = true;
+      parts.push(
+        '<div class="st-preview-bubble">' +
+          '<div class="st-pb-badge">' +
+          (isDeal ? 'Plan premium' : 'Add-on') +
+          '</div>' +
+          '<div class="st-pb-name">' +
+          _stEscape(pr.name || '—') +
+          '</div>' +
+          '<div class="st-pb-price">$' +
+          (Math.round((Number(pr.price) || 0) * 100) / 100).toFixed(2) +
+          '<span>/mo</span></div>' +
+          '</div>'
+      );
+    }
+    if (Number(p.enrollmentFee) > 0) {
+      anyContent = true;
+      parts.push(
+        '<div class="st-preview-bubble st-preview-bubble-fee">' +
+          '<div class="st-pb-badge">Enrollment fee</div>' +
+          '<div class="st-pb-name">One-time</div>' +
+          '<div class="st-pb-price">$' +
+          (Math.round(Number(p.enrollmentFee) * 100) / 100).toFixed(2) +
+          '</div>' +
+          '</div>'
+      );
+    }
   }
   parts.push('</div>');
-  if (!p.products.length && !Number(p.enrollmentFee)) {
+  if (!anyContent) {
     wrap.innerHTML =
       '<div class="st-preview-empty">No products detected yet — paste more of the receipt or use <strong>Add</strong> with Groq.</div>';
     return;
