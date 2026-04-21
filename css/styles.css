@@ -8972,3 +8972,70 @@ body.dark-mode #page-compliance,
 body.dark-mode #page-myspace {
   background-color: #0c111d !important;
 }
+
+/* Home redesign: focused stack + embedded lookup actions */
+#page-dashboard .dashboard-home-stack {
+  gap: 12px;
+}
+#page-dashboard .ph .pt {
+  font-size: 24px;
+  font-weight: 600;
+}
+#page-dashboard .ph .pd {
+  margin-top: 2px;
+  color: #667085;
+}
+.dash-lookup-actions-embedded {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.dash-lookup-similar-wrap {
+  display: none !important;
+}
+.dash-lookup-provider,
+.dash-lookup-copy {
+  width: 100%;
+}
+
+/* Weekly progress all-tier line */
+.dash-cc-stat-row-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.dash-cc-tier-markers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+.dash-cc-tier-marker {
+  text-align: center;
+  font-size: 10px;
+  color: #667085;
+}
+.dash-cc-tier-marker.active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Quick actions icon-over-label */
+.dash-cc-actions-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.dash-cc-action {
+  min-height: 86px;
+  padding: 12px 6px;
+  border: 0.5px solid rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+}
+.dash-cc-action span {
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.15;
+}
+.dash-cc-action svg {
+  width: 16px;
+  height: 16px;
+}

@@ -2909,7 +2909,10 @@ function _stToggleAddSalePanel() {
 function _stTogglePaycheckBreakdown() {
   var el = document.getElementById('st-paycheck-detail');
   var link = document.getElementById('st-paycheck-toggle-link');
-  if (!el) return;
+  if (!el) {
+    _stOpenCommissionEditorFromTracker();
+    return;
+  }
   var hidden =
     el.style.display === 'none' || el.style.display === '' || !el.style.display;
   el.style.display = hidden ? 'block' : 'none';
@@ -2919,7 +2922,7 @@ function _stTogglePaycheckBreakdown() {
 function _stBuildAddSaleSection() {
   return (
     '<section class="st-sec st-sec-addsale" aria-label="Add a sale">' +
-    '<button type="button" id="st-add-sale-toggle" class="st-add-sale-toggle" aria-expanded="false" onclick="_stToggleAddSalePanel()">+ Add new sale</button>' +
+    '<button type="button" id="st-add-sale-toggle" class="st-add-sale-toggle" aria-expanded="false" onclick="_stToggleAddSalePanel()"><span class="st-add-sale-icon">+</span><span>Add new sale</span></button>' +
     '<div id="st-add-sale-panel" class="st-add-sale-panel" style="display:none">' +
     _stBuildInput() +
     '</div></section>'
@@ -3388,19 +3391,16 @@ function _stBuildTable(sales) {
 
   var groups = _stGroupRowsForDisplay(rows);
 
-  var html = '<div class="st-table-section">';
+  var html = '<div class="st-table-section st-sales-log">';
   html += '<div class="st-table-header">';
-  html +=
-    '<div class="st-table-title">' +
-    _stEscape(titleLabel) +
-    ' (' +
-    groups.length +
-    ')</div>';
+  html += '<div class="st-table-title">Sales log</div>';
   html += '<div class="st-mode-toggle st-table-filter">';
   html +=
     '<button type="button" class="st-mode-btn' +
     (mode === 'week' ? ' st-mode-active' : '') +
-    '" onclick="_stSetTableFilter(\'week\')">This Week</button>';
+    '" onclick="_stSetTableFilter(\'week\')">This week (' +
+    groups.length +
+    ')</button>';
   html +=
     '<button type="button" class="st-mode-btn' +
     (mode === 'all' ? ' st-mode-active' : '') +
@@ -3415,7 +3415,7 @@ function _stBuildTable(sales) {
       '<div class="st-empty">' +
       (isAll
         ? 'No sales logged yet. Paste a receipt above to add one.'
-        : 'No sales logged yet this week. Paste a receipt above to add one.') +
+        : 'No sales logged yet this week') +
       '</div>';
     html += '</div>';
     return html;
@@ -4149,29 +4149,129 @@ function _stFmtMoney(n) {
   );
 }
 
+function _stTierProgressData(stats) {
+  var tiers = ST_BONUS_TIERS || [];
+  var achieved = null;
+  var next = null;
+  for (var i = 0; i < tiers.length; i++) {
+    var t = tiers[i];
+    if (stats.weekDeals >= t.deals && stats.weekAddons >= t.addons) {
+      achieved = t;
+    } else if (!next) {
+      next = t;
+    }
+  }
+  if (!next && tiers.length) next = tiers[tiers.length - 1];
+  var targetDeals = next ? next.deals : 0;
+  var targetAddons = next ? next.addons : 0;
+  var pct = targetDeals
+    ? Math.min(
+        100,
+        Math.round(
+          Math.min(stats.weekDeals / targetDeals, stats.weekAddons / targetAddons) * 100
+        )
+      )
+    : 0;
+  return { achieved: achieved, next: next, pct: pct };
+}
+
+function _stWeeklyPaycheckMomentum(sales, stats) {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var prevStats = _stCalcStats(
+    sales.filter(function (s) {
+      return s && s.ts >= stats.weekStart - weekMs && s.ts < stats.weekStart;
+    })
+  );
+  prevStats.weekStart = stats.weekStart - weekMs;
+  var thisPb = _stPaycheckBreakdown(sales, stats);
+  var lastPb = _stPaycheckBreakdown(sales, prevStats);
+  if (!lastPb || !lastPb.estimated) return null;
+  var delta = Math.round(((thisPb.estimated - lastPb.estimated) / lastPb.estimated) * 100);
+  return { delta: delta, lastWeek: lastPb.estimated };
+}
+
+function _stBuildPaycheckHeroSection(sales, stats) {
+  var pb = _stPaycheckBreakdown(sales, stats);
+  var tier = _stTierProgressData(stats);
+  var momentum = _stWeeklyPaycheckMomentum(sales, stats);
+  var bonusTotal = Number(pb.enrollmentBonus || 0) + Number(pb.tierBonus || 0);
+  var goalLine = '';
+  if (tier.next) {
+    var dNeed = Math.max(0, tier.next.deals - stats.weekDeals);
+    goalLine =
+      dNeed +
+      ' more deals to unlock $' +
+      tier.next.bonus +
+      ' tier bonus';
+  }
+  var html = '<section id="st-paycheck-hero" class="st-paycheck-hero">';
+  html += '<div class="st-paycheck-hero-kicker">ESTIMATED PAYCHECK · THIS WEEK</div>';
+  html += '<div class="st-paycheck-hero-main">';
+  html += '<div>';
+  html += '<div class="st-paycheck-hero-total">' + _stFmtMoney(pb.estimated) + '</div>';
+  if (momentum) {
+    html +=
+      '<div class="st-paycheck-hero-momentum">' +
+      (momentum.delta >= 0 ? '↑ ' : '↓ ') +
+      Math.abs(momentum.delta) +
+      '% vs last week (' +
+      _stFmtMoney(momentum.lastWeek) +
+      ')</div>';
+  }
+  html += '</div>';
+  if (pb.estimated > 0 && tier.achieved) {
+    html +=
+      '<div class="st-paycheck-hero-tier">✓ $' +
+      tier.achieved.bonus.toLocaleString() +
+      ' tier</div>';
+  }
+  html += '</div>';
+  html +=
+    '<div class="st-paycheck-hero-breakdown"><div><strong>' +
+    _stFmtMoney(pb.dealComm) +
+    '</strong><span>Deals (' +
+    stats.weekDeals +
+    ')</span></div>' +
+    '<div><strong>' +
+    _stFmtMoney(pb.addonComm) +
+    '</strong><span>Add-ons (' +
+    stats.weekAddons +
+    ')</span></div>' +
+    '<div><strong>' +
+    _stFmtMoney(bonusTotal) +
+    '</strong><span>Bonuses</span></div></div>';
+  html += '<div class="st-paycheck-hero-progress-head">';
+  html +=
+    '<span>' + _stEscape(pb.estimated > 0 ? goalLine || 'Max tier reached' : 'Log your first sale to start earning') + '</span>';
+  html +=
+    '<span>' +
+    (tier.next ? stats.weekDeals + ' / ' + tier.next.deals : '0 / 0') +
+    '</span></div>';
+  html +=
+    '<div class="st-paycheck-hero-progress"><span style="width:' + tier.pct + '%"></span></div>';
+  html += '</section>';
+  return html;
+}
+
 function _stBuildWeekAtGlanceSection(stats) {
   var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
   var today = new Date();
   var todayDayIdx = today.getDay();
   var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
-  var nextIdx = -1;
-  for (var ti = 0; ti < ST_BONUS_TIERS.length; ti++) {
-    var tt0 = ST_BONUS_TIERS[ti];
-    if (stats.weekDeals < tt0.deals || stats.weekAddons < tt0.addons) {
-      nextIdx = ti;
-      break;
-    }
-  }
-  var topAchieved = nextIdx === -1;
-  var target = topAchieved
-    ? ST_BONUS_TIERS[ST_BONUS_TIERS.length - 1]
-    : ST_BONUS_TIERS[nextIdx];
-  var dealsPct = Math.min(100, (stats.weekDeals / target.deals) * 100);
-  var addonsPct = Math.min(100, (stats.weekAddons / target.addons) * 100);
-  var combinedPct = Math.round((dealsPct + addonsPct) / 2);
+  var weekStart = new Date(stats.weekStart);
+  var weekEnd = new Date(stats.weekStart + 4 * 24 * 60 * 60 * 1000);
+  var hdr =
+    weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+    '-' +
+    weekEnd.toLocaleDateString('en-US', { day: 'numeric' });
 
-  var html = '<section class="st-sec st-week-glance" aria-labelledby="st-glance-h">';
-  html += '<div id="st-glance-h" class="st-sec-title">Week at a glance</div>';
+  var html = '<section class="st-sec st-week-glance st-week-glance-unified" aria-labelledby="st-glance-h">';
+  html +=
+    '<div class="st-week-glance-head"><span id="st-glance-h" class="st-sec-title">THIS WEEK · ' +
+    hdr.toUpperCase() +
+    '</span><span class="st-week-glance-mini">' +
+    stats.weekDeals +
+    ' deals logged</span></div>';
   html += '<div class="st-glance-days">';
   for (var d = 0; d < 5; d++) {
     var bucket = stats.dayBuckets[d] || { date: null, amount: 0 };
@@ -4188,14 +4288,14 @@ function _stBuildWeekAtGlanceSection(stats) {
       '">';
     html +=
       '<div class="st-glance-day-label">' +
-      dayNames[d] +
+      (isToday ? 'TODAY' : dayNames[d]) +
       (dateStr ? ' <span class="st-glance-day-dt">' + dateStr + '</span>' : '') +
       '</div>';
     html += '<div class="st-glance-day-amt">' + _stFmtMoney(amt) + '</div>';
     html += '</div>';
   }
-  html += '</div>';
-  html += '<div class="st-glance-stats">';
+  html += '</div><div class="st-glance-divider"></div>';
+  html += '<div class="st-glance-stats st-glance-stats-plain">';
   html +=
     '<div class="st-glance-stat"><span>Deals</span><strong>' +
     stats.weekDeals +
@@ -4209,74 +4309,27 @@ function _stBuildWeekAtGlanceSection(stats) {
     _stFmtMoney(stats.weekSales) +
     '</strong></div>';
   html += '</div>';
-  html += '<div class="st-glance-bonus">';
-  if (topAchieved) {
-    html +=
-      '<div class="st-glance-bonus-lbl">Max bonus tier — $' +
-      target.bonus +
-      '</div>';
-  } else {
-    html +=
-      '<div class="st-glance-bonus-lbl">Next bonus tier — $' +
-      target.bonus +
-      '</div>';
-  }
-  html +=
-    '<div class="st-glance-bonus-bar"><div class="st-glance-bonus-fill" style="width:' +
-    combinedPct +
-    '%"></div></div>';
-  html += '</div></section>';
+  html += '</section>';
   return html;
 }
 
-function _stBuildEstimatedPaycheckSection(sales, stats) {
+function _stBuildFloatingPaycheckBar(sales, stats) {
   var pb = _stPaycheckBreakdown(sales, stats);
-  var enrollCount = Math.round((Number(pb.enrollmentBonus) || 0) / 20);
-  var html = '<section class="st-sec st-paycheck-card" aria-labelledby="st-paycheck-h">';
-  html += '<div id="st-paycheck-h" class="st-sec-title">Estimated paycheck</div>';
-  html += '<div class="st-paycheck-row">';
-  html +=
-    '<div class="st-paycheck-total">' + _stFmtMoney(pb.estimated) + '</div>';
-  html += '</div>';
-  html +=
-    '<div class="st-paycheck-sub">Deals: ' +
-    _stFmtMoney(pb.dealComm) +
-    ' / Add-ons: ' +
-    _stFmtMoney(pb.addonComm) +
-    ' / Bonuses: ' +
-    _stFmtMoney(pb.enrollmentBonus + pb.tierBonus) +
-    '</div>';
-  html += '<div id="st-paycheck-detail" class="st-paycheck-detail" style="display:none">';
-  html += '<div class="st-paycheck-detail-grid">';
-  html +=
-    '<span class="st-paycheck-detail-lbl">Deal commission</span><strong>' +
-    _stFmtMoney(pb.dealComm) +
-    '</strong>';
-  html +=
-    '<span class="st-paycheck-detail-lbl">Add-on commission</span><strong>' +
-    _stFmtMoney(pb.addonComm) +
-    '</strong>';
-  html +=
-    '<span class="st-paycheck-detail-lbl">Enrollment bonus (' +
-    enrollCount +
-    ' x $20)</span><strong>' +
-    _stFmtMoney(pb.enrollmentBonus) +
-    '</strong>';
-  html +=
-    '<span class="st-paycheck-detail-lbl">Tier bonus</span><strong>' +
-    _stFmtMoney(pb.tierBonus) +
-    '</strong>';
-  html += '</div>';
-  html +=
-    '<button type="button" class="st-paycheck-comm-btn" onclick="_stOpenCommissionEditorFromTracker()">Adjust commission rates</button>';
-  html += '</div>';
-  html += '<div class="st-paycheck-foot">';
-  html +=
-    '<a href="#" id="st-paycheck-toggle-link" class="st-paycheck-link" onclick="_stTogglePaycheckBreakdown(); return false;">View full breakdown</a>';
-  html +=
-    '<button type="button" id="st-paycheck-pdf-btn" class="st-paycheck-pdf" onclick="_stDownloadWeeklyPdf()">Download PDF</button>';
-  html += '</div></section>';
-  return html;
+  var tier = _stTierProgressData(stats);
+  return (
+    '<div id="st-paycheck-float" class="st-paycheck-float" style="display:none">' +
+    '<div class="st-paycheck-float-left"><div><div class="st-paycheck-float-k">PAYCHECK</div><div class="st-paycheck-float-v">' +
+    _stFmtMoney(pb.estimated) +
+    '</div></div><div class="st-paycheck-float-divider"></div><div><div class="st-paycheck-float-meta">' +
+    stats.weekDeals +
+    ' deals · ' +
+    stats.weekAddons +
+    ' add-ons</div><div class="st-paycheck-float-meta2">' +
+    (tier.achieved ? '✓ $' + tier.achieved.bonus + ' tier' : 'Next: $' + (tier.next ? tier.next.bonus : 0)) +
+    '</div></div></div>' +
+    '<div class="st-paycheck-float-right"><button type="button" class="st-paycheck-float-pdf" onclick="_stDownloadWeeklyPdf()">↓ PDF</button><button type="button" class="st-paycheck-float-break" onclick="_stTogglePaycheckBreakdown()">Breakdown</button></div>' +
+    '</div>'
+  );
 }
 
 // ── ANALYTICS DASHBOARD (additive — read-only rollups) ───────
@@ -4385,6 +4438,8 @@ function _stSwitchTab(tabId) {
   var pAn = document.getElementById('stTabPanelAnalytics');
   if (pThis) pThis.style.display = tabId === 'thisweek' ? 'block' : 'none';
   if (pAn) pAn.style.display = tabId === 'analytics' ? 'block' : 'none';
+  var fl = document.getElementById('st-paycheck-float');
+  if (fl) fl.style.display = tabId === 'thisweek' ? fl.style.display : 'none';
   var wrap = document.getElementById('stInternalSubtabs');
   if (wrap) {
     var btns = wrap.querySelectorAll('.stab');
@@ -4399,6 +4454,7 @@ function _stSwitchTab(tabId) {
       b.setAttribute('aria-selected', on ? 'true' : 'false');
     }
   }
+  if (tabId === 'thisweek') _stWirePaycheckObserver();
 }
 
 function _stBuildAnalyticsDashboard(sales, stats) {
@@ -4603,11 +4659,12 @@ function _stRender() {
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
+  html += _stBuildPaycheckHeroSection(sales, stats);
   html += _stBuildWeekAtGlanceSection(stats);
   html += _stBuildAddSaleSection();
   html += _stBuildTable(sales);
   html += _stBuildPostDatesSection(postdates);
-  html += _stBuildEstimatedPaycheckSection(sales, stats);
+  html += _stBuildFloatingPaycheckBar(sales, stats);
   html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
   html += '</div>';
   html +=
@@ -4627,5 +4684,31 @@ function _stRender() {
       _stSetAddSalePanelOpen(false);
     });
   }
+  _stWirePaycheckObserver();
+}
+
+function _stWirePaycheckObserver() {
+  var hero = document.getElementById('st-paycheck-hero');
+  var bar = document.getElementById('st-paycheck-float');
+  var tw = document.getElementById('stTabPanelThisWeek');
+  if (!hero || !bar || !tw || tw.style.display === 'none') return;
+  if (window._stHeroObs) {
+    try {
+      window._stHeroObs.disconnect();
+    } catch (_e) {}
+  }
+  window._stHeroObs = new IntersectionObserver(
+    function (entries) {
+      var e = entries && entries[0];
+      if (!e) return;
+      if (e.isIntersecting) {
+        bar.style.display = 'none';
+      } else {
+        bar.style.display = 'flex';
+      }
+    },
+    { threshold: 0.12 }
+  );
+  window._stHeroObs.observe(hero);
 }
 
