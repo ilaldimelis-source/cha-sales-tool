@@ -3677,6 +3677,20 @@ function _stRenderWeekCompactCard(g) {
   return h;
 }
 
+function _stCollectFilteredAllGroups(sales) {
+  var allRowsSorted = sales.slice().sort(function (a, b) {
+    return b.ts - a.ts;
+  });
+  var allGroups = _stGroupRowsForDisplay(allRowsSorted);
+  var filteredAll = [];
+  for (var fi = 0; fi < allGroups.length; fi++) {
+    if (_stGroupMatchesAllListFilters(allGroups[fi])) {
+      filteredAll.push(allGroups[fi]);
+    }
+  }
+  return filteredAll;
+}
+
 function _stBuildTable(sales) {
   var stats = _stCalcStats(sales);
   var weekStart = _stStartOfWeek(new Date()).getTime();
@@ -3688,14 +3702,7 @@ function _stBuildTable(sales) {
       return b.ts - a.ts;
     });
   var weekGroups = _stGroupRowsForDisplay(weekRows);
-  var allRowsSorted = sales.slice().sort(function (a, b) {
-    return b.ts - a.ts;
-  });
-  var allGroups = _stGroupRowsForDisplay(allRowsSorted);
-  var filteredAll = [];
-  for (var fi = 0; fi < allGroups.length; fi++) {
-    if (_stGroupMatchesAllListFilters(allGroups[fi])) filteredAll.push(allGroups[fi]);
-  }
+  var filteredAll = _stCollectFilteredAllGroups(sales);
   var totalFiltered = filteredAll.length;
   var pageLen = Math.min(Math.max(_stAllRowsShown || 10, 10), 50);
   var paged = filteredAll.slice(0, pageLen);
@@ -3729,7 +3736,17 @@ function _stBuildTable(sales) {
   html +=
     '<div class="st-split-col-head st-split-col-head-row2"><span class="st-split-title">All sales (' +
     totalFiltered +
-    ')</span><button type="button" class="st-export-link" onclick="_stExportAllSalesCsv()">↓ Export</button></div>';
+    ')</span><div class="st-all-export-actions">' +
+    '<div class="st-pdf-export-wrap">' +
+    '<button type="button" class="st-pdf-export-main" id="st-pdf-export-btn" onclick="_stTogglePdfMenu(event)" aria-haspopup="true" aria-expanded="false">Export PDF ▾</button>' +
+    '<div id="st-pdf-menu" class="st-pdf-menu" style="display:none" role="menu">' +
+    '<button type="button" class="st-pdf-menu-item" role="menuitem" onclick="_stPdfExportCurrentView()">Current view</button>' +
+    '<button type="button" class="st-pdf-menu-item" role="menuitem" onclick="_stPdfExportThisWeek()">This week (payroll)</button>' +
+    '<button type="button" class="st-pdf-menu-item" role="menuitem" onclick="_stPdfExportLastWeek()">Last week</button>' +
+    '<button type="button" class="st-pdf-menu-item" role="menuitem" onclick="_stPdfOpenCustomRangeModal()">Custom range…</button>' +
+    '</div></div>' +
+    '<button type="button" class="st-export-link st-export-csv" onclick="_stExportAllSalesCsv()">↓ CSV</button>' +
+    '</div></div>';
 
   function chip(val, label) {
     var act = _stAllSalesRange === val ? ' st-chip-active' : '';
@@ -3916,137 +3933,319 @@ function _stExportAllSalesCsv() {
   setTimeout(function () { URL.revokeObjectURL(url); }, 500);
 }
 
-function _stDownloadWeeklyPdf() {
-  var sales = _stLoadSales();
-  var stats = _stCalcStats(sales);
-  var weekStart = stats.weekStart;
-  var weekEnd = weekStart + 6 * 24 * 60 * 60 * 1000;
-  var rates = _stLoadCommissionRates();
-  var deals = [];
-  for (var i = 0; i < sales.length; i++) {
-    var s = sales[i];
-    if (!s || s.type !== 'deal') continue;
-    if (_stNormalizeStatus(s) === 'chargeback') continue;
-    if (s.ts < weekStart || s.ts > weekEnd) continue;
-    deals.push(s);
-  }
-  deals.sort(function (a, b) {
-    return (a.ts || 0) - (b.ts || 0);
-  });
-  var agentName = '';
+function _stPayrollAgentDisplayName() {
+  var custom = '';
   try {
-    if (window.CHA_USER && window.CHA_USER.name) {
-      agentName = String(window.CHA_USER.name);
-    } else {
-      var u = _stGetCurrentUser();
-      agentName = u && (u.name || u.firstName) ? String(u.name || u.firstName) : '';
+    if (typeof chaGet === 'function') {
+      custom = String(
+        chaGet('preferredName', '') || chaGet('cha_display_name', '') || ''
+      ).trim();
     }
   } catch (_e) {}
-  if (!agentName) agentName = 'Unknown Agent';
+  if (custom) return custom;
+  try {
+    if (window.CHA_USER && window.CHA_USER.firstName) {
+      return String(window.CHA_USER.firstName);
+    }
+    if (window.CHA_USER && window.CHA_USER.name) {
+      return String(window.CHA_USER.name);
+    }
+    var u = _stGetCurrentUser();
+    if (u && (u.firstName || u.name)) return String(u.firstName || u.name);
+  } catch (_e2) {}
+  return 'Agent';
+}
 
+function _stPayrollMonthNames() {
+  return [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ];
+}
+
+function _stFormatPayrollLongDate(ts) {
+  var d = new Date(ts);
+  var mo = _stPayrollMonthNames();
+  return mo[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+}
+
+function _stFormatPayrollRangeLong(t0, t1) {
+  return _stFormatPayrollLongDate(t0) + ' – ' + _stFormatPayrollLongDate(t1);
+}
+
+function _stFormatGeneratedTimestamp() {
+  var d = new Date();
+  var days = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+  var mo = _stPayrollMonthNames();
+  var h = d.getHours();
+  var m = d.getMinutes();
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12;
+  if (h12 === 0) h12 = 12;
+  var mm = m < 10 ? '0' + m : String(m);
+  return (
+    days[d.getDay()] +
+    ', ' +
+    mo[d.getMonth()] +
+    ' ' +
+    d.getDate() +
+    ', ' +
+    d.getFullYear() +
+    ' at ' +
+    h12 +
+    ':' +
+    mm +
+    ' ' +
+    ampm
+  );
+}
+
+function _stPdfTierBonusForCounts(dealCount, addonCount) {
+  var bonus = 0;
+  for (var i = 0; i < ST_BONUS_TIERS.length; i++) {
+    if (
+      dealCount >= ST_BONUS_TIERS[i].deals &&
+      addonCount >= ST_BONUS_TIERS[i].addons
+    ) {
+      bonus = ST_BONUS_TIERS[i].bonus;
+    }
+  }
+  return bonus;
+}
+
+function _stPdfAddonsForDeal(d, sales, rates) {
+  var addons = [];
+  if (Array.isArray(d.addons) && d.addons.length) {
+    addons = d.addons.slice();
+  } else if (d.receiptId) {
+    for (var ai = 0; ai < sales.length; ai++) {
+      var a = sales[ai];
+      if (!a || a.type !== 'addon') continue;
+      if (_stNormalizeStatus(a) === 'chargeback') continue;
+      if (a.receiptId !== d.receiptId) continue;
+      addons.push(a);
+    }
+  }
+  return addons;
+}
+
+function _stPdfAddonPremiumSum(addons) {
+  var t = 0;
+  for (var i = 0; i < addons.length; i++) {
+    t += Number(addons[i].amount) || 0;
+  }
+  return t;
+}
+
+function _stGeneratePayrollPDF(startMs, endMs, rangeLabel, mode) {
+  mode = mode || 'range';
+  var sales = _stLoadSales();
+  var rates = _stLoadCommissionRates();
+  var deals = [];
+  var di;
+  if (mode === 'filtered') {
+    var grps = _stCollectFilteredAllGroups(sales);
+    for (di = 0; di < grps.length; di++) {
+      var g = grps[di];
+      if (!g || !g.deal) continue;
+      var dd = g.deal;
+      if (_stNormalizeStatus(dd) === 'chargeback') continue;
+      deals.push(dd);
+    }
+    deals.sort(function (a, b) {
+      return (b.ts || 0) - (a.ts || 0);
+    });
+  } else {
+    for (di = 0; di < sales.length; di++) {
+      var s = sales[di];
+      if (!s || s.type !== 'deal') continue;
+      if (_stNormalizeStatus(s) === 'chargeback') continue;
+      if (s.ts < startMs || s.ts > endMs) continue;
+      deals.push(s);
+    }
+    deals.sort(function (a, b) {
+      return (b.ts || 0) - (a.ts || 0);
+    });
+  }
+
+  var agentName = _stPayrollAgentDisplayName();
   var coreCount = deals.length;
   var addonCount = 0;
   var enrollQualified = [];
   var dealComm = 0;
   var addonComm = 0;
-  var enrollmentBonus = 0;
+  var periodPremium = 0;
   var rowsHtml = '';
 
-  for (var di = 0; di < deals.length; di++) {
-    var d = deals[di];
+  for (var dj = 0; dj < deals.length; dj++) {
+    var d = deals[dj];
+    var addons = _stPdfAddonsForDeal(d, sales, rates);
+    addonCount += addons.length;
     var dDate = _stEscape(_stFormatSaleListDate(d.ts));
-    var dComm =
-      (Number(d.planCommission) || 0) +
-      (Number(d.totalAddonCommission) || 0) +
-      (Number(d.enrollmentBonus) || 0);
+    var prem = Number(d.amount) || 0;
+    periodPremium += prem;
+    periodPremium += _stPdfAddonPremiumSum(addons);
+    var ratePct = Math.round((Number(d.planCommissionRate) || 0) * 100);
+    var rowComm = Number(d.expectedDealTotal) || 0;
     dealComm += Number(d.planCommission) || 0;
     addonComm += Number(d.totalAddonCommission) || 0;
-    enrollmentBonus += Number(d.enrollmentBonus) || 0;
     if (Number(d.enrollmentAmount || d.enrollmentFee || 0) === 125) {
       enrollQualified.push(d);
     }
+    var addCol =
+      addons.length === 0
+        ? '—'
+        : addons.length +
+          ' · $' +
+          _stPdfAddonPremiumSum(addons).toFixed(2) +
+          '/mo';
     rowsHtml +=
       '<tr>' +
-      '<td>' + dDate + '</td>' +
-      '<td>' + _stEscape(agentName) + '</td>' +
-      '<td>' + _stEscape(d.customer || 'Unknown') + '</td>' +
-      '<td>' + _stEscape(d.plan || 'Unknown Plan') + '</td>' +
-      '<td>$' + (Number(d.enrollmentFee) || 0).toFixed(2) + '</td>' +
-      '<td>$' + dComm.toFixed(2) + '</td>' +
+      '<td style="border:1px solid #cbd5e1;padding:6px;">' +
+      dDate +
+      '</td>' +
+      '<td style="border:1px solid #cbd5e1;padding:6px;">' +
+      _stEscape(d.customer || 'Unknown') +
+      '</td>' +
+      '<td style="border:1px solid #cbd5e1;padding:6px;">' +
+      _stEscape(d.plan || 'Unknown Plan') +
+      '</td>' +
+      '<td style="border:1px solid #cbd5e1;padding:6px;">$' +
+      prem.toFixed(2) +
+      '</td>' +
+      '<td style="border:1px solid #cbd5e1;padding:6px;">' +
+      ratePct +
+      '%</td>' +
+      '<td style="border:1px solid #cbd5e1;padding:6px;">$' +
+      rowComm.toFixed(2) +
+      '</td>' +
+      '<td style="border:1px solid #cbd5e1;padding:6px;">' +
+      _stEscape(addCol) +
+      '</td>' +
+      '<td style="border:1px solid #cbd5e1;padding:6px;">' +
+      _stEscape(_stNormalizeStatus(d)) +
+      '</td>' +
       '</tr>';
-
-    var addons = [];
-    if (Array.isArray(d.addons) && d.addons.length) {
-      addons = d.addons.slice();
-    } else if (d.receiptId) {
-      for (var ai = 0; ai < sales.length; ai++) {
-        var a = sales[ai];
-        if (!a || a.type !== 'addon') continue;
-        if (_stNormalizeStatus(a) === 'chargeback') continue;
-        if (a.receiptId !== d.receiptId) continue;
-        addons.push(a);
-      }
-    }
-    addonCount += addons.length;
     for (var aj = 0; aj < addons.length; aj++) {
       var ad = addons[aj];
-      var aAmt = Number(ad.amount) || 0;
       var aComm =
         typeof ad.addonCommission === 'number'
           ? Number(ad.addonCommission)
           : _stComputeLineCommission(ad, rates);
+      var aPrem = Number(ad.amount) || 0;
       rowsHtml +=
-        '<tr style="background:#fafbff;">' +
-        '<td>' + dDate + '</td>' +
-        '<td>' + _stEscape(agentName) + '</td>' +
-        '<td>' + _stEscape(d.customer || 'Unknown') + '</td>' +
-        '<td style="padding-left:12px;">+ ' + _stEscape(ad.name || ad.plan || 'Add-on') + '</td>' +
-        '<td>$0.00</td>' +
-        '<td>$' + Number(aComm).toFixed(2) + '</td>' +
+        '<tr style="background:#f8fafc;">' +
+        '<td style="border:1px solid #cbd5e1;padding:6px;"></td>' +
+        '<td style="border:1px solid #cbd5e1;padding:6px;"></td>' +
+        '<td style="border:1px solid #cbd5e1;padding:6px;padding-left:18px;">+ ' +
+        _stEscape(ad.name || ad.plan || 'Add-on') +
+        '</td>' +
+        '<td style="border:1px solid #cbd5e1;padding:6px;">$' +
+        aPrem.toFixed(2) +
+        '</td>' +
+        '<td style="border:1px solid #cbd5e1;padding:6px;">—</td>' +
+        '<td style="border:1px solid #cbd5e1;padding:6px;">$' +
+        aComm.toFixed(2) +
+        '</td>' +
+        '<td style="border:1px solid #cbd5e1;padding:6px;">—</td>' +
+        '<td style="border:1px solid #cbd5e1;padding:6px;">' +
+        _stEscape(_stNormalizeStatus(ad)) +
+        '</td>' +
         '</tr>';
     }
   }
 
-  var tierBonus = _stCurrentTierBonus(stats);
+  var tierBonus = _stPdfTierBonusForCounts(coreCount, addonCount);
   var enrollmentFeeBonus = enrollQualified.length * 20;
-  var totalEstimated =
+  var grand =
     dealComm + addonComm + enrollmentFeeBonus + tierBonus;
+  var hdrRange =
+    rangeLabel && String(rangeLabel).trim()
+      ? String(rangeLabel).trim()
+      : _stFormatPayrollRangeLong(startMs, endMs);
+
   var html =
-    '<html><head><title>Weekly breakdown</title></head><body style="font-family:Inter,Arial,sans-serif;padding:24px;color:#0f172a;">';
-  html += '<h2 style="margin:0 0 4px;">Weekly Breakdown</h2>';
+    '<html><head><title>CHA Payroll Summary</title></head><body style="font-family:Inter,Arial,sans-serif;padding:24px;color:#0f172a;">';
+  html += '<h1 style="margin:0 0 6px;font-size:22px;">CHA Payroll Summary</h1>';
   html +=
-    '<div style="font-size:13px;color:#64748b;margin-bottom:4px;">Week: ' +
-    _stEscape(_stFormatSaleListDate(weekStart)) +
-    ' - ' +
-    _stEscape(_stFormatSaleListDate(weekEnd)) +
-    '</div>';
-  html +=
-    '<div style="font-size:13px;color:#64748b;margin-bottom:14px;">Agent: ' +
+    '<div style="font-size:14px;font-weight:600;margin-bottom:2px;">' +
     _stEscape(agentName) +
     '</div>';
   html +=
-    '<table cellspacing="0" cellpadding="7" style="border-collapse:collapse;width:100%;font-size:12px;border:1px solid #dbe3ef;">' +
-    '<tr style="background:var(--cha-bg-muted);">' +
-    '<th style="text-align:left;border:1px solid #dbe3ef;">Date</th>' +
-    '<th style="text-align:left;border:1px solid #dbe3ef;">Agent</th>' +
-    '<th style="text-align:left;border:1px solid #dbe3ef;">Client</th>' +
-    '<th style="text-align:left;border:1px solid #dbe3ef;">Plan/Product</th>' +
-    '<th style="text-align:left;border:1px solid #dbe3ef;">Enrollment Fee</th>' +
-    '<th style="text-align:left;border:1px solid #dbe3ef;">Commission</th>' +
-    '</tr>' +
-    (rowsHtml || '<tr><td colspan="6" style="border:1px solid #dbe3ef;color:#94a3b8;">No deals this week.</td></tr>') +
-    '</table>';
-  html +=
-    '<div style="margin-top:12px;line-height:1.6;font-size:13px;">' +
-    '<div>Core Policies Sold: <strong>' + coreCount + '</strong></div>' +
-    '<div>Add-on Policies Sold: <strong>' + addonCount + '</strong></div>' +
-    '<div>Full Enrollment Fee Bonus: <strong>$' + enrollmentFeeBonus.toFixed(2) + '</strong></div>' +
-    '<div>Tier Bonus Amount: <strong>$' + tierBonus.toFixed(2) + '</strong></div>' +
+    '<div style="font-size:13px;color:#64748b;margin-bottom:2px;">' +
+    _stEscape(hdrRange) +
     '</div>';
   html +=
-    '<div style="margin-top:14px;font-size:14px;font-weight:700;">Total estimated commission: $' +
-    totalEstimated.toFixed(2) +
+    '<div style="font-size:12px;color:#94a3b8;margin-bottom:16px;">Generated ' +
+    _stEscape(_stFormatGeneratedTimestamp()) +
     '</div>';
+
+  html +=
+    '<div style="margin:0 0 14px;padding:12px 14px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;line-height:1.55;font-size:13px;">' +
+    '<div>Total deals: <strong>' +
+    coreCount +
+    '</strong></div>' +
+    '<div>Total add-ons: <strong>' +
+    addonCount +
+    '</strong></div>' +
+    '<div>Weekly premium: <strong>$' +
+    periodPremium.toFixed(2) +
+    '</strong></div>' +
+    '<div>Deal commission: <strong>$' +
+    dealComm.toFixed(2) +
+    '</strong></div>' +
+    '<div>Add-on commission: <strong>$' +
+    addonComm.toFixed(2) +
+    '</strong></div>' +
+    '<div>Enrollment bonuses: <strong>$' +
+    enrollmentFeeBonus.toFixed(2) +
+    '</strong> <span style="color:#64748b;">(' +
+    enrollQualified.length +
+    ' × $20)</span></div>';
+  if (tierBonus > 0) {
+    html +=
+      '<div>Tier bonus: <strong>$' + tierBonus.toFixed(0) + '</strong></div>';
+  }
+  html +=
+    '<div style="margin-top:10px;font-size:18px;font-weight:800;">GRAND TOTAL PAYCHECK: $' +
+    grand.toFixed(2) +
+    '</div></div>';
+
+  html +=
+    '<table cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;font-size:11px;margin-bottom:20px;">' +
+    '<thead><tr style="background:#e2e8f0;">' +
+    '<th style="text-align:left;border:1px solid #cbd5e1;padding:6px;">Date</th>' +
+    '<th style="text-align:left;border:1px solid #cbd5e1;padding:6px;">Client</th>' +
+    '<th style="text-align:left;border:1px solid #cbd5e1;padding:6px;">Plan</th>' +
+    '<th style="text-align:left;border:1px solid #cbd5e1;padding:6px;">Premium</th>' +
+    '<th style="text-align:left;border:1px solid #cbd5e1;padding:6px;">Rate</th>' +
+    '<th style="text-align:left;border:1px solid #cbd5e1;padding:6px;">Commission</th>' +
+    '<th style="text-align:left;border:1px solid #cbd5e1;padding:6px;">Add-ons</th>' +
+    '<th style="text-align:left;border:1px solid #cbd5e1;padding:6px;">Status</th>' +
+    '</tr></thead><tbody>' +
+    (rowsHtml ||
+      '<tr><td colspan="8" style="border:1px solid #cbd5e1;padding:8px;color:#64748b;">No deals in this range.</td></tr>') +
+    '</tbody></table>';
+  html +=
+    '<div style="margin-top:28px;font-size:11px;color:#64748b;border-top:1px solid #e2e8f0;padding-top:10px;">Central Health Advisors · Page 1</div>';
   html += '</body></html>';
   var w = window.open('', '_blank');
   if (!w) return;
@@ -4055,6 +4254,187 @@ function _stDownloadWeeklyPdf() {
   w.document.close();
   w.focus();
   w.print();
+}
+
+function _stPdfMenuCloseOnce() {
+  var m = document.getElementById('st-pdf-menu');
+  if (m) m.style.display = 'none';
+  var btn = document.getElementById('st-pdf-export-btn');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+  document.removeEventListener('click', _stPdfMenuCloseOnce);
+}
+
+function _stTogglePdfMenu(ev) {
+  if (ev && ev.stopPropagation) ev.stopPropagation();
+  var m = document.getElementById('st-pdf-menu');
+  if (!m) return;
+  var open = m.style.display === 'block';
+  m.style.display = open ? 'none' : 'block';
+  if (!open) {
+    setTimeout(function () {
+      document.addEventListener('click', _stPdfMenuCloseOnce);
+    }, 0);
+  }
+}
+
+function _stPdfRangeLabelForCurrentView() {
+  var mode = _stAllSalesRange || 'all';
+  if (mode === 'all') return 'All time (filtered view)';
+  var now = new Date();
+  if (mode === 'month') {
+    var ms = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    var me = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999).getTime();
+    return _stFormatPayrollRangeLong(ms, me) + ' (this month)';
+  }
+  if (mode === 'lastMonth') {
+    var y = now.getFullYear();
+    var mo = now.getMonth();
+    var ls = new Date(y, mo - 1, 1).getTime();
+    var le = new Date(y, mo, 0, 23, 59, 59, 999).getTime();
+    return _stFormatPayrollRangeLong(ls, le) + ' (last month)';
+  }
+  if (mode === 'last7') {
+    var e7 = _stStartOfDay(now).getTime() + 24 * 60 * 60 * 1000 - 1;
+    var s7 = e7 - 7 * 24 * 60 * 60 * 1000 + 1;
+    return _stFormatPayrollRangeLong(s7, e7) + ' (last 7 days)';
+  }
+  if (mode === 'custom' && _stCustomRangeFrom && _stCustomRangeTo) {
+    var d0 = new Date(_stCustomRangeFrom + 'T00:00:00').getTime();
+    var d1 = new Date(_stCustomRangeTo + 'T23:59:59.999').getTime();
+    return _stFormatPayrollRangeLong(d0, d1) + ' (custom)';
+  }
+  return 'Current table filters';
+}
+
+function _stPdfExportCurrentView() {
+  _stPdfMenuCloseOnce();
+  _stGeneratePayrollPDF(0, 0, _stPdfRangeLabelForCurrentView(), 'filtered');
+}
+
+function _stPdfExportThisWeek() {
+  _stPdfMenuCloseOnce();
+  var stats = _stCalcStats(_stLoadSales());
+  var ws = stats.weekStart;
+  var we = ws + 7 * 24 * 60 * 60 * 1000 - 1;
+  _stGeneratePayrollPDF(ws, we, _stFormatPayrollRangeLong(ws, we), 'range');
+}
+
+function _stPdfExportLastWeek() {
+  _stPdfMenuCloseOnce();
+  var stats = _stCalcStats(_stLoadSales());
+  var ws = stats.weekStart;
+  var prevStart = ws - 7 * 24 * 60 * 60 * 1000;
+  var prevEnd = ws - 1;
+  _stGeneratePayrollPDF(
+    prevStart,
+    prevEnd,
+    _stFormatPayrollRangeLong(prevStart, prevEnd) + ' (last week)',
+    'range'
+  );
+}
+
+function _stPdfCloseCustomModal() {
+  var el = document.getElementById('st-pdf-range-modal');
+  if (el) el.remove();
+  document.removeEventListener('keydown', _stPdfModalKey);
+}
+
+function _stPdfModalKey(e) {
+  if (e.key === 'Escape') _stPdfCloseCustomModal();
+}
+
+function _stPdfSetCustomPreset(kind) {
+  var f = document.getElementById('st-pdf-modal-from');
+  var t = document.getElementById('st-pdf-modal-to');
+  if (!f || !t) return;
+  var now = new Date();
+  var end = _stStartOfDay(now);
+  var start;
+  if (kind === '2w') {
+    start = new Date(end);
+    start.setDate(start.getDate() - 13);
+  } else if (kind === '1m') {
+    var y = now.getFullYear();
+    var mo = now.getMonth();
+    start = new Date(y, mo - 1, 1);
+    end = new Date(y, mo, 0);
+  } else if (kind === '3m') {
+    var y3 = now.getFullYear();
+    var m3 = now.getMonth();
+    start = new Date(y3, m3 - 3, 1);
+    end = _stStartOfDay(now);
+  } else {
+    start = new Date(end);
+    start.setDate(start.getDate() - 13);
+  }
+  function iso(d) {
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1);
+    if (m.length < 2) m = '0' + m;
+    var da = String(d.getDate());
+    if (da.length < 2) da = '0' + da;
+    return y + '-' + m + '-' + da;
+  }
+  f.value = iso(start);
+  t.value = iso(end);
+}
+
+function _stPdfSubmitCustomRange() {
+  var f = document.getElementById('st-pdf-modal-from');
+  var t = document.getElementById('st-pdf-modal-to');
+  if (!f || !t || !f.value || !t.value) {
+    alert('Please choose both From and To dates.');
+    return;
+  }
+  var d0 = new Date(f.value + 'T00:00:00').getTime();
+  var d1 = new Date(t.value + 'T23:59:59.999').getTime();
+  if (isNaN(d0) || isNaN(d1) || d0 > d1) {
+    alert('From date must be on or before To date.');
+    return;
+  }
+  _stPdfCloseCustomModal();
+  _stGeneratePayrollPDF(
+    d0,
+    d1,
+    _stFormatPayrollRangeLong(d0, d1),
+    'range'
+  );
+}
+
+function _stPdfOpenCustomRangeModal() {
+  _stPdfMenuCloseOnce();
+  if (document.getElementById('st-pdf-range-modal')) return;
+  var now = new Date();
+  var isoToday = _stTodayIso();
+  var html =
+    '<div id="st-pdf-range-modal" class="st-pdf-modal-overlay" onclick="if(event.target===this)_stPdfCloseCustomModal()">' +
+    '<div class="st-pdf-modal" role="dialog" aria-modal="true" aria-labelledby="st-pdf-modal-title" onclick="event.stopPropagation()">' +
+    '<div id="st-pdf-modal-title" class="st-pdf-modal-title">Export PDF for date range</div>' +
+    '<div class="st-pdf-modal-presets">' +
+    '<button type="button" class="st-pdf-preset" onclick="_stPdfSetCustomPreset(\'2w\')">Last 2 weeks</button>' +
+    '<span class="st-pdf-preset-sep">·</span>' +
+    '<button type="button" class="st-pdf-preset" onclick="_stPdfSetCustomPreset(\'1m\')">Last month</button>' +
+    '<span class="st-pdf-preset-sep">·</span>' +
+    '<button type="button" class="st-pdf-preset" onclick="_stPdfSetCustomPreset(\'3m\')">Last 3 months</button>' +
+    '</div>' +
+    '<div class="st-pdf-modal-row"><label class="st-pdf-modal-label" for="st-pdf-modal-from">From</label>' +
+    '<input type="date" id="st-pdf-modal-from" class="st-pdf-modal-input" value="' +
+    _stEscape(isoToday) +
+    '" /></div>' +
+    '<div class="st-pdf-modal-row"><label class="st-pdf-modal-label" for="st-pdf-modal-to">To</label>' +
+    '<input type="date" id="st-pdf-modal-to" class="st-pdf-modal-input" value="' +
+    _stEscape(isoToday) +
+    '" /></div>' +
+    '<div class="st-pdf-modal-actions">' +
+    '<button type="button" class="st-pdf-modal-btn st-pdf-modal-cancel" onclick="_stPdfCloseCustomModal()">Cancel</button>' +
+    '<button type="button" class="st-pdf-modal-btn st-pdf-modal-go" onclick="_stPdfSubmitCustomRange()">Export</button>' +
+    '</div></div></div>';
+  document.body.insertAdjacentHTML('beforeend', html);
+  document.addEventListener('keydown', _stPdfModalKey);
+}
+
+function _stDownloadWeeklyPdf() {
+  _stPdfExportThisWeek();
 }
 
 
