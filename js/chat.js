@@ -8,11 +8,13 @@ var brSearchAllPlans = false;
 var brOpen = false;
 var BR_PLANS = [];
 var _brInitDone = false;
-// Office key from localStorage — set once via browser console: brSetOfficeKey('gsk_...')
-var CHA_OFFICE_GROQ_KEY = localStorage.getItem('cha_groq_key') || '';
+// Office key — scoped per Clerk user (see js/storage-utils.js). Console: brSetOfficeKey('gsk_...')
 function brSetOfficeKey(key) {
-  localStorage.setItem('cha_groq_key', key);
-  CHA_OFFICE_GROQ_KEY = key;
+  if (typeof chaSet === 'function') {
+    chaSet('cha_groq_key', key);
+  } else {
+    localStorage.setItem('cha_groq_key', key);
+  }
 }
 // ── LUCIDE-STYLE SVG ICONS ──────────────────────────────────────────
 var LI = {
@@ -346,7 +348,8 @@ function brInit() {
   brShowWelcome();
 
   // Set initial AI status
-  var _initKey = localStorage.getItem('cha_groq_key');
+  var _initKey =
+    typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
   _brSetStatus(_initKey && _initKey !== 'skip' && _initKey.length > 20 ? 'ai' : 'local');
 
   // Groq AI is provided automatically via the shared company key
@@ -679,7 +682,7 @@ function brHideTyping() {
   var t = document.getElementById('br-typing');
   if (t) t.remove();
   // Reset status after AI responds
-  var key = localStorage.getItem('cha_groq_key');
+  var key = typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
   _brSetStatus(key && key !== 'skip' && key.length > 20 ? 'ai' : 'local');
 }
 
@@ -1308,7 +1311,8 @@ function brShowSetupModal() {
   if (existing) {
     existing.remove();
   }
-  var currentKey = localStorage.getItem('cha_groq_key');
+  var currentKey =
+    typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
   var hasKey = currentKey && currentKey !== 'skip' && currentKey !== '';
   var modal = document.createElement('div');
   modal.id = 'br-setup-modal';
@@ -1342,13 +1346,18 @@ function brShowSetupModal() {
   document.body.appendChild(modal);
 }
 function brResetApiKey() {
-  localStorage.removeItem('cha_groq_key');
+  if (typeof chaRemove === 'function') {
+    chaRemove('cha_groq_key');
+  } else {
+    localStorage.removeItem('cha_groq_key');
+  }
   var modal = document.getElementById('br-setup-modal');
   if (modal) modal.remove();
   brShowSetupModal();
 }
 function brTestConnection() {
-  var apiKey = localStorage.getItem('cha_groq_key');
+  var apiKey =
+    typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
   if (!apiKey || apiKey === 'skip') {
     alert('No API key saved. Please enter your Groq key first.');
     return;
@@ -1394,13 +1403,21 @@ function brTestConnection() {
 function brSaveApiKey() {
   var input = document.getElementById('br-api-input');
   if (!input || !input.value.trim()) return;
-  localStorage.setItem('cha_groq_key', input.value.trim());
+  if (typeof chaSet === 'function') {
+    chaSet('cha_groq_key', input.value.trim());
+  } else {
+    localStorage.setItem('cha_groq_key', input.value.trim());
+  }
   var modal = document.getElementById('br-setup-modal');
   if (modal) modal.style.display = 'none';
   brAddMsg('ai', 'AI mode enabled! Select a plan and ask anything.');
 }
 function brSkipSetup() {
-  localStorage.setItem('cha_groq_key', 'skip');
+  if (typeof chaSet === 'function') {
+    chaSet('cha_groq_key', 'skip');
+  } else {
+    localStorage.setItem('cha_groq_key', 'skip');
+  }
   var modal = document.getElementById('br-setup-modal');
   if (modal) modal.style.display = 'none';
 }
@@ -2781,8 +2798,18 @@ function _chaIsDebugBadgeEnabled() {
     var p = new URLSearchParams(window.location.search || '');
     var q = (p.get('debug') || '').toLowerCase();
     if (q === 'true' || q === '1' || q === 'yes') return true;
-    var stored = localStorage.getItem('cha_debug_chat_badge');
-    return stored === 'true' || stored === '1';
+    var stored = '';
+    if (typeof chaGet === 'function') {
+      stored = chaGet('cha_debug_chat_badge', '');
+    } else {
+      stored = localStorage.getItem('cha_debug_chat_badge') || '';
+    }
+    return (
+      stored === true ||
+      stored === 'true' ||
+      stored === '1' ||
+      stored === 1
+    );
   } catch (_e) {
     return false;
   }
@@ -2866,7 +2893,10 @@ function handleChatMessage(userMessage) {
     '<div class="ai-message"><div class="response-content">Searching plan documents...</div></div>';
   _chaBrainScroll();
 
-  var sharedKey = (typeof _aiGroqFallbackKey !== 'undefined' && _aiGroqFallbackKey) || localStorage.getItem('cha_groq_key') || '';
+  var sharedKey =
+    (typeof _aiGroqFallbackKey !== 'undefined' && _aiGroqFallbackKey) ||
+    (typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '') ||
+    '';
   if (!sharedKey || sharedKey === 'skip' || sharedKey.length < 20) {
     chatContainer.innerHTML +=
       '<div class="ai-message">' +

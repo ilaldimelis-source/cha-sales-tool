@@ -69,9 +69,51 @@ var CHA_SCRIPT_LINES = [
   { text: 'Assuming we find the right fit, how soon would you like your coverage to begin?', tone: 'friendly' },
   { text: "I'm going to submit your information into my system now. Give me about 30-60 seconds...", tone: 'authority' }
 ];
-var chaScriptIndex = parseInt(localStorage.getItem('scriptIndex') || '0', 10);
+var chaScriptIndex = 0;
 var complianceChecklist = { agency: false, recording: false, exclusions: false, preex: false };
-var academyProgress = JSON.parse(localStorage.getItem('academyProgress') || '{"1":false,"2":false,"3":false,"4":false}');
+var laAcademyProgress = { 1: false, 2: false, 3: false, 4: false };
+function laPersistScriptIndex() {
+  if (typeof chaSet === 'function') {
+    chaSet('scriptIndex', chaScriptIndex);
+  } else {
+    localStorage.setItem('scriptIndex', String(chaScriptIndex));
+  }
+}
+function laPersistAcademy() {
+  if (typeof chaSet === 'function') {
+    chaSet('academyProgress', laAcademyProgress);
+  } else {
+    localStorage.setItem('academyProgress', JSON.stringify(laAcademyProgress));
+  }
+}
+function laHydrateFromStorage() {
+  if (typeof chaTryMigrateLegacy === 'function') {
+    chaTryMigrateLegacy('scriptIndex');
+    chaTryMigrateLegacy('academyProgress');
+    chaTryMigrateLegacy('trackerDeals');
+  }
+  if (typeof chaGet === 'function') {
+    var si = chaGet('scriptIndex', 0);
+    chaScriptIndex = parseInt(String(si != null ? si : '0'), 10) || 0;
+    var ap = chaGet('academyProgress', null);
+    if (ap && typeof ap === 'object') {
+      laAcademyProgress = ap;
+    }
+  } else {
+    chaScriptIndex = parseInt(localStorage.getItem('scriptIndex') || '0', 10);
+    try {
+      laAcademyProgress = JSON.parse(
+        localStorage.getItem('academyProgress') ||
+          '{"1":false,"2":false,"3":false,"4":false}'
+      );
+    } catch (_e) {
+      laAcademyProgress = { 1: false, 2: false, 3: false, 4: false };
+    }
+  }
+}
+if (typeof window !== 'undefined') {
+  window.laHydrateFromStorage = laHydrateFromStorage;
+}
 
 function showCurrentLine() {
   var display = document.getElementById('script-display');
@@ -91,17 +133,17 @@ function showCurrentLine() {
 
 function nextLine() {
   chaScriptIndex = Math.min(chaScriptIndex + 1, CHA_SCRIPT_LINES.length - 1);
-  localStorage.setItem('scriptIndex', String(chaScriptIndex));
+  laPersistScriptIndex();
   showCurrentLine();
 }
 function prevLine() {
   chaScriptIndex = Math.max(chaScriptIndex - 1, 0);
-  localStorage.setItem('scriptIndex', String(chaScriptIndex));
+  laPersistScriptIndex();
   showCurrentLine();
 }
 function resetScript() {
   chaScriptIndex = 0;
-  localStorage.setItem('scriptIndex', '0');
+  laPersistScriptIndex();
   showCurrentLine();
 }
 function updateChecklist(item) {
@@ -137,14 +179,14 @@ function copyToClipboard(text) {
   safeCopy(text).then(function () { showToast('Copied.', 'success'); }).catch(function () {});
 }
 function markComplete(moduleNum) {
-  academyProgress[moduleNum] = true;
-  localStorage.setItem('academyProgress', JSON.stringify(academyProgress));
+  laAcademyProgress[moduleNum] = true;
+  laPersistAcademy();
   updateProgressBar();
 }
 function updateProgressBar() {
   var completed = 0;
-  var vals = Object.keys(academyProgress);
-  for (var i = 0; i < vals.length; i++) if (academyProgress[vals[i]]) completed++;
+  var vals = Object.keys(laAcademyProgress);
+  for (var i = 0; i < vals.length; i++) if (laAcademyProgress[vals[i]]) completed++;
   var fill = document.getElementById('progress-fill');
   var text = document.querySelector('.progress-text');
   if (fill) fill.style.width = ((completed / 4) * 100) + '%';
@@ -189,9 +231,26 @@ function parseAndReview() {
   }
   showReviewModal(deals);
 }
+function laGetTrackerDeals() {
+  if (typeof chaGet === 'function') {
+    var d = chaGet('trackerDeals', []);
+    return Array.isArray(d) ? d : [];
+  }
+  try {
+    return JSON.parse(localStorage.getItem('trackerDeals') || '[]');
+  } catch (_e) {
+    return [];
+  }
+}
+function laSetTrackerDeals(arr) {
+  if (typeof chaSet === 'function') {
+    chaSet('trackerDeals', arr);
+  } else {
+    localStorage.setItem('trackerDeals', JSON.stringify(arr));
+  }
+}
 function updateTotals() {
-  var deals = [];
-  try { deals = JSON.parse(localStorage.getItem('trackerDeals') || '[]'); } catch (_e) {}
+  var deals = laGetTrackerDeals();
   var today = new Date().toDateString();
   var weekAgo = new Date();
   weekAgo.setDate(weekAgo.getDate() - 7);
@@ -261,8 +320,8 @@ function confirmReviewModal() {
     return;
   }
   try {
-    var existing = JSON.parse(localStorage.getItem('trackerDeals') || '[]');
-    localStorage.setItem('trackerDeals', JSON.stringify(existing.concat(deals)));
+    var existing = laGetTrackerDeals();
+    laSetTrackerDeals(existing.concat(deals));
   } catch (_e) {}
   closeReviewModal();
   updateTotals();
