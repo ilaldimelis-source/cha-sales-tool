@@ -1,5 +1,28 @@
 # CHA Sales Command Center — Claude Code Reference
 
+## Color palette — STRICT RULES
+
+Never use warm hex values anywhere in the codebase. All colors MUST flow through css/tokens.css.
+
+Blocked values (pre-commit hook rejects): FAF5F5, FDF9F7, FCF7F7, F7F2F2, FEF2F2, FDF2F8, F5F0E8, FAFBFC, FAFAFA
+
+Use tokens instead:
+
+- Page background: var(--cha-bg-page)
+- Card background: var(--cha-bg-card)
+- Muted surface: var(--cha-bg-muted)
+- Subtle border: var(--cha-border-subtle)
+- Primary text: var(--cha-text-primary)
+- Accent blue: var(--cha-accent)
+
+For status colors use semantic tokens:
+
+- Warning: var(--cha-warning-bg) / var(--cha-warning-text)
+- Danger: var(--cha-danger-bg) / var(--cha-danger-text)
+- Success: var(--cha-success-bg) / var(--cha-success-text)
+
+Enforced by scripts/verify.js. Do not bypass.
+
 ## Project
 
 Static SPA — vanilla HTML/CSS/JS, no framework, no build step.
@@ -9,6 +32,7 @@ Live URL: https://ilaldimelis-source.github.io/cha-sales-tool/
 ## File Structure
 
 - index.html — app shell
+- css/tokens.css — **FIRST stylesheet** in index.html; shared CHA palette tokens (`--cha-*`)
 - css/styles.css — all styling
 - js/plan-registry.js — MASTER PLAN LIST (edit this to add new plans)
 - js/plan-data.js — POLICY_DOCS array (27 plan benefit data objects)
@@ -25,6 +49,10 @@ Live URL: https://ilaldimelis-source.github.io/cha-sales-tool/
 - js/objections.js — objections tab
 - js/myspace.js — My Space tab
 - js/app.js — routing, navigation, initApp (LOADS LAST)
+
+## Stylesheet load order in index.html (NEVER CHANGE)
+
+1. css/tokens.css (FIRST — defines `--cha-*` tokens used by the rest of the CSS)
 
 ## Script Load Order in index.html (NEVER CHANGE)
 
@@ -56,7 +84,7 @@ Live URL: https://ilaldimelis-source.github.io/cha-sales-tool/
 - Text body: #374151
 - Text muted: #94a3b8
 - Border: #e2e8f0
-- Background: #f8fafc
+- Page / muted surfaces: use `var(--cha-bg-page)` and `var(--cha-bg-muted)` from css/tokens.css (do not use legacy warm grays)
 
 ## HARD RULES — NEVER VIOLATE
 

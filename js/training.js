@@ -893,7 +893,7 @@ function renderProductvault() {
     body += '<div style="height:12px;"></div>';
     body += _trnTwoCols('RIGHT FIT', p.rightfit, 'WRONG FIT', p.wrongfit);
     body +=
-      '<div style="margin-top:12px;padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Compliance:</strong> ' +
+      '<div style="margin-top:12px;padding:10px 14px;background:var(--cha-danger-bg);border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Compliance:</strong> ' +
       p.compliance +
       '</div>';
     html += _trnOpenCard(p.title, body);
@@ -917,7 +917,7 @@ function renderSimplifier() {
       '</div></div>';
     body += '</div>';
     body +=
-      '<div style="padding:10px 14px;background:#FEF2F2;border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Never say:</strong> ' +
+      '<div style="padding:10px 14px;background:var(--cha-danger-bg);border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Never say:</strong> ' +
       item.dontsay +
       '</div>';
     html += _trnOpenCard(item.term, body);

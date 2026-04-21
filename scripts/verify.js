@@ -39,6 +39,36 @@ const color = {
   bold: (s) => `\x1b[1m${s}\x1b[0m`
 };
 
+const WARM_HEX_PATTERNS = [
+  /#FAF5F5/gi,
+  /#FDF9F7/gi,
+  /#FCF7F7/gi,
+  /#F7F2F2/gi,
+  /#FEF2F2/gi,
+  /#FDF2F8/gi,
+  /#F5F0E8/gi,
+  /#FAFBFC/gi,
+  /#FAFAFA/gi
+];
+const WARM_ALLOWED_FILES = ['css/tokens.css'];
+
+function checkForWarmValues(filepath, contents) {
+  const normPath = filepath.replace(/\\/g, '/');
+  if (WARM_ALLOWED_FILES.some((f) => normPath.endsWith(f))) return [];
+  const violations = [];
+  WARM_HEX_PATTERNS.forEach((pattern) => {
+    const matches = contents.match(pattern);
+    if (matches) {
+      violations.push({
+        file: filepath,
+        pattern: pattern.source,
+        count: matches.length
+      });
+    }
+  });
+  return violations;
+}
+
 const blockers = [];
 const warnings = [];
 const passed = [];
@@ -269,6 +299,41 @@ step('API: serverless function files parse (if api/ exists)', () => {
     return;
   }
   for (const f of files) nodeCheck(f);
+});
+
+// ---------------------------------------------------------------
+// STEP 6 — block known warm “pink page” hex values (palette lockdown)
+// ---------------------------------------------------------------
+step('Palette: no blocked warm hex values', () => {
+  const found = [];
+  const cssDir = path.join(ROOT, 'css');
+  if (fs.existsSync(cssDir)) {
+    for (const name of fs.readdirSync(cssDir)) {
+      if (!name.endsWith('.css')) continue;
+      const abs = path.join(cssDir, name);
+      const rel = path.relative(ROOT, abs).replace(/\\/g, '/');
+      const contents = fs.readFileSync(abs, 'utf8');
+      found.push(...checkForWarmValues(rel, contents));
+    }
+  }
+  for (const f of listFiles(JS_DIR, /\.js$/)) {
+    const rel = path.relative(ROOT, f).replace(/\\/g, '/');
+    const contents = fs.readFileSync(f, 'utf8');
+    found.push(...checkForWarmValues(rel, contents));
+  }
+  if (found.length) {
+    const lines = found.map(
+      (v) =>
+        'Commit blocked: Warm palette values detected. File: ' +
+        v.file +
+        '. Pattern: ' +
+        v.pattern +
+        '. Count: ' +
+        v.count +
+        '. Fix: Replace with var(--cha-bg-page) or other token from css/tokens.css.'
+    );
+    throw new Error(lines.join('\n'));
+  }
 });
 
 // ---------------------------------------------------------------

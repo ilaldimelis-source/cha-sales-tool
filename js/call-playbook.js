@@ -1403,7 +1403,7 @@ function renderPlanScripts() {
       border: '#FECDD3',
       color: '#BE123C'
     },
-    { label: 'POST-CLOSE', bg: '#F8FAFC', border: '#E2E8F0', color: '#475569' }
+    { label: 'POST-CLOSE', bg: 'var(--cha-bg-muted)', border: '#E2E8F0', color: '#475569' }
   ];
 
   activePlan.sections.forEach(function (sec, si) {
