@@ -668,67 +668,58 @@ function chaDashWeeklyProgressHtml() {
     typeof chaAnalyticsReadBundle === 'function' ? chaAnalyticsReadBundle() : null;
   var deals = bundle && bundle.stats ? Number(bundle.stats.weekDeals) || 0 : 0;
   var addons = bundle && bundle.stats ? Number(bundle.stats.weekAddons) || 0 : 0;
+  var prem =
+    bundle && bundle.stats ? Number(bundle.stats.weekSales || 0) : 0;
   var next = null;
+  var activeIdx = -1;
   var ti;
   for (ti = 0; ti < tiers.length; ti++) {
-    if (deals < tiers[ti].deals || addons < tiers[ti].addons) {
-      next = tiers[ti];
-      break;
-    }
+    var achieved = deals >= tiers[ti].deals && addons >= tiers[ti].addons;
+    if (achieved) activeIdx = ti;
+    if (!next && !achieved) next = tiers[ti];
   }
-  var msg = '';
-  var pct = 0;
-  if (!next) {
-    msg = 'You have reached the top bonus tier this week.';
-    pct = 100;
-  } else {
-    var gd = Math.max(0, next.deals - deals);
-    var ga = Math.max(0, next.addons - addons);
-    msg =
-      gd +
+  var gd = next ? Math.max(0, next.deals - deals) : 0;
+  var ga = next ? Math.max(0, next.addons - addons) : 0;
+  var msg = next
+    ? gd +
       ' deal' +
       (gd === 1 ? '' : 's') +
       ' + ' +
       ga +
       ' add-on' +
       (ga === 1 ? '' : 's') +
-      ' away from the $' +
-      next.bonus +
-      ' tier';
-    var rd = next.deals ? deals / next.deals : 1;
-    var ra = next.addons ? addons / next.addons : 1;
-    pct = Math.round(Math.min(100, Math.min(rd, ra) * 100));
+      ' to next tier'
+    : 'Top tier unlocked this week';
+  var topTier = tiers.length ? tiers[tiers.length - 1] : null;
+  var pct = topTier
+    ? Math.min(
+        100,
+        Math.round(Math.min(deals / topTier.deals, addons / topTier.addons) * 100)
+      )
+    : 0;
+  var markerHtml = '<div class="dash-cc-tier-markers">';
+  for (ti = 0; ti < tiers.length; ti++) {
+    var label = '$' + tiers[ti].bonus.toLocaleString() + ' tier';
+    markerHtml +=
+      '<span class="dash-cc-tier-marker' +
+      (ti === activeIdx ? ' active' : '') +
+      '">' +
+      label +
+      '</span>';
   }
-  var tierMarks =
-    '<div class="dash-cc-tier-marks">' +
-    (tiers || [])
-      .map(function (t) {
-        return (
-          '<span class="dash-cc-tier-mark"><b>' +
-          t.deals +
-          '/' +
-          t.addons +
-          'A</b> → $' +
-          t.bonus +
-          '</span>'
-        );
-      })
-      .join('') +
-    '</div>';
+  markerHtml += '</div>';
   return (
-    '<div class="dash-cc-stat-row"><div><div class="dash-cc-big">' +
+    '<div class="dash-cc-stat-row dash-cc-stat-row-3"><div><div class="dash-cc-big">' +
     deals +
-    '</div><div class="dash-cc-lbl">Deals this week</div></div><div><div class="dash-cc-big">' +
+    '</div><div class="dash-cc-lbl">Deals</div></div><div><div class="dash-cc-big">' +
     addons +
-    '</div><div class="dash-cc-lbl">Add-ons this week</div></div></div>' +
+    '</div><div class="dash-cc-lbl">Add-ons</div></div><div><div class="dash-cc-big">' +
+    chaDashFmtMoney(prem) +
+    '</div><div class="dash-cc-lbl">Weekly premium</div></div></div>' +
     '<div class="dash-cc-progress-wrap"><div class="dash-cc-progress"><span style="width:' +
     pct +
-    '%"></span></div>' +
-    (pct < 100
-      ? '<span class="dash-cc-progress-pip" style="left:calc(' + pct + '% - 6px)"></span>'
-      : '') +
-    '</div>' +
-    tierMarks +
+    '%"></span></div></div>' +
+    markerHtml +
     '<p class="dash-cc-msg">' +
     escHTML(msg) +
     '</p>'
@@ -769,16 +760,16 @@ function chaDashWidgetsHtml() {
     '<div class="dash-cc-card dash-cc-card-actions"><div class="dash-cc-card-title">Quick Actions</div><div class="dash-cc-actions dash-cc-actions-5">' +
     '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'myspace\',\'salestracker\')">' +
     ic('<circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4v8"/>') +
-    '<span>Log a Sale</span></button>' +
+    '<span>Log sale</span></button>' +
     '<button type="button" class="dash-cc-action" onclick="chaDashFocusLookup()">' +
     ic('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>') +
     '<span>Find a Plan</span></button>' +
     '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'scripts\',\'planscripts\')">' +
     ic('<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/>') +
-    '<span>Open Script</span></button>' +
+    '<span>Scripts</span></button>' +
     '<button type="button" class="dash-cc-action" onclick="chaDashOpenPhcsSearch()">' +
     ic(globe) +
-    '<span>PHCS Search</span></button>' +
+    '<span>PHCS</span></button>' +
     '<button type="button" class="dash-cc-action" onclick="chaDashOpenFirstHealthSearch()">' +
     ic(globe) +
     '<span>FirstHealth Search</span></button>' +
@@ -1172,10 +1163,13 @@ function renderDashboardLookupCard() {
   html += '<div class="dash-lookup-grid" id="dashLookupGrid">';
   html += _dashLookupGridInnerHtml(selected);
   html += '</div>';
-  html += '<div id="dashLookupSimilar" class="dash-lookup-similar-wrap"></div>';
-  html += '<div class="dash-lookup-actions">';
-  html += '<button type="button" class="dash-lookup-provider" onclick="dashLookupOpenProvider()"' + (providerUrl ? '' : ' disabled') + '>Provider search</button>';
-  html += '<button type="button" class="dash-lookup-copy" onclick="dashLookupCopy()">Copy</button>';
+  html += '<div class="dash-lookup-actions dash-lookup-actions-embedded">';
+  html +=
+    '<button type="button" class="dash-lookup-provider" onclick="dashLookupOpenProvider()"' +
+    (providerUrl ? '' : ' disabled') +
+    '><svg class="dash-lookup-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M4 20v-1a6 6 0 0 1 6-6"/><circle cx="18" cy="18" r="3"/><path d="m22 22-2.5-2.5"/></svg><span>Find a provider</span></button>';
+  html +=
+    '<button type="button" class="dash-lookup-copy" onclick="dashLookupCopy()"><svg class="dash-lookup-btn-icon dash-lookup-btn-icon-sm" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/></svg><span>Copy info</span></button>';
   html += '</div>';
   html += '</div>';
   return html;
@@ -1188,7 +1182,6 @@ function dashLookupRefresh() {
   if (si) si.value = _dashLookupState.searchQuery || '';
   chaDashWireLookupEnhancements();
   chaDashSuggestUpdate(_dashLookupState.searchQuery || '');
-  chaDashRenderSimilarPlans();
   chaDashRenderRecentChips();
 }
 
@@ -1213,7 +1206,6 @@ function dashLookupSelectPlan(planId) {
   }
   if (found) chaDashRecentPush(found);
   _dashLookupSyncSelectAndGrid();
-  chaDashRenderSimilarPlans();
   chaDashRefreshWidgets();
 }
 
@@ -1250,170 +1242,28 @@ function renderDashboard() {
     );
   };
 
-  // ── GREETING CARD (Task 1) ──────────────────────────────────────────────
-  var _greetHtml = '';
+  var homeName = 'there';
   try {
-    var _u = window.CHA_USER;
-    if (_u) {
-      var _h = new Date().getHours();
-      var _greet =
-        _h < 12 ? 'Good morning' : _h < 17 ? 'Good afternoon' : 'Good evening';
-      var _fname = _u.name || 'Agent';
-      var _role = _u.role || 'agent';
-      var _isM = _role === 'manager';
-      var _today = new Date();
-      var _days = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
-      ];
-      var _months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December'
-      ];
-      var _dateStr =
-        _days[_today.getDay()] +
-        ', ' +
-        _months[_today.getMonth()] +
-        ' ' +
-        _today.getDate() +
-        ', ' +
-        _today.getFullYear();
-      _greetHtml =
-        '<div style="background:linear-gradient(135deg,#1e293b 0%,#243b55 100%);border-radius:16px;padding:20px 24px;margin-bottom:16px;color:#fff;">' +
-        '<div style="font-size:22px;font-weight:800;margin-bottom:4px;">' +
-        _greet +
-        ', ' +
-        escHTML(_fname) +
-        '</div>' +
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
-        '<span style="display:inline-block;padding:2px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;' +
-        (_isM
-          ? 'background:#166534;color:#4ade80;'
-          : 'background:#1e3a5f;color:#93c5fd;') +
-        '">' +
-        (_isM ? '★ Manager' : 'Agent') +
-        '</span>' +
-        '</div>' +
-        '<div style="font-size:13px;color:#94a3b8;">' +
-        _dateStr +
-        '</div>' +
-        '</div>';
+    var dName = (safeGetItem('preferredName') || safeGetItem('cha_display_name') || '').trim();
+    if (dName) homeName = dName;
+    else if (window.CHA_USER) {
+      homeName = window.CHA_USER.firstName || window.CHA_USER.name || 'there';
     }
-  } catch (_ge) {
-    /* skip greeting gracefully */
-  }
-
-  var cards = [
-    {
-      page: 'livecall',
-      title: 'Live Call',
-      desc: 'Mid-call tools',
-      icon: ic('<path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/>')
-    },
-    {
-      page: 'scripts',
-      title: 'Scripts',
-      desc: 'Every situation',
-      icon: ic(
-        '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>'
-      )
-    },
-    {
-      page: 'cheatsheet',
-      title: 'Cheat sheet',
-      desc: 'At a glance',
-      icon: ic(
-        '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M8 7h8M8 11h5M8 15h6"/>'
-      )
-    },
-    {
-      page: 'compliance',
-      title: 'Compliance',
-      desc: 'Disclosures',
-      icon: ic(
-        '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'
-      )
-    }
-  ];
+  } catch (_e) {}
+  var now = new Date();
+  var day = now.toLocaleDateString('en-US', { weekday: 'long' });
+  var date = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+  var subtitle = day + ' · ' + date;
   var html =
-    '<div class="ph"><div class="pt">CHA Academy</div><div class="pd">Your starting point</div></div>';
-  html += _greetHtml;
+    '<div class="ph"><div class="pt">Welcome back, ' +
+    escHTML(homeName) +
+    '</div><div class="pd">' +
+    escHTML(subtitle) +
+    '</div></div>';
   html += '<div class="dashboard-home-stack">';
   html += '<div id="dashPlanLookupMount"></div>';
   html += chaDashWidgetsHtml();
-  html += '<div class="dash-sections-label">Jump To</div>';
-  html += '<div class="dash-grid dash-grid-compact dash-grid-jump">';
-  cards.forEach(function (c) {
-    html += '<div class="dash-card" onclick="showPage(\'' + c.page + '\')">';
-    html += '<div class="dash-icon">' + c.icon + '</div>';
-    html += '<div class="dash-title">' + c.title + '</div>';
-    html += '<div class="dash-desc">' + c.desc + '</div>';
-    html += '</div>';
-  });
-  html += '</div></div>';
-  // Recently visited strip
-  var recent = getRecentPages();
-  if (recent.length) {
-    var labelMap = {};
-    Object.keys(PAGE_CONFIG).forEach(function (pid) {
-      labelMap[pid] = PAGE_CONFIG[pid].label;
-      PAGE_CONFIG[pid].subs.forEach(function (s) {
-        labelMap[s.id] = s.label;
-      });
-    });
-    labelMap.dashboard = 'Dashboard';
-    html +=
-      '<div class="dash-recent-strip"><div class="dash-recent-label">Recently Visited</div><div class="dash-recent-pills">';
-    recent.forEach(function (rid) {
-      var lbl = labelMap[rid] || rid;
-      html +=
-        '<button class="dash-recent-pill" onclick="showPage(\'' +
-        rid +
-        '\')">' +
-        lbl +
-        '</button>';
-    });
-    html += '</div></div>';
-  }
-  // Agent quick reference strip
-  html += '<div class="dash-ref-strip">';
-  html +=
-    '<div class="dash-ref-card"><div class="dash-ref-title">Say Every Call</div><div class="dash-ref-text">Disclose plan type &middot; Pre-ex exclusion &middot; Waiting periods &middot; Fixed benefit amounts &middot; NOT ACA major medical</div></div>';
-  html +=
-    '<div class="dash-ref-card"><div class="dash-ref-title">Pre-Existing Rule</div><div class="dash-ref-text">12/12 — conditions diagnosed or treated in prior 12 months excluded for first 12 months of coverage</div></div>';
-  html +=
-    '<div class="dash-ref-card"><div class="dash-ref-title">Network</div><div class="dash-ref-text">Always confirm provider is IN NETWORK before the call ends.</div></div>';
   html += '</div>';
-  // Keyboard shortcut hint
-  html +=
-    '<div class="dash-kb-strip"><div class="dash-kb-title">Keyboard Shortcuts</div><div class="dash-kb-list">';
-  html += '<span class="dash-kb"><kbd>1</kbd> Home</span>';
-  html += '<span class="dash-kb"><kbd>2</kbd> Live Call</span>';
-  html += '<span class="dash-kb"><kbd>3</kbd> Plans</span>';
-  html += '<span class="dash-kb"><kbd>4</kbd> Scripts</span>';
-  html += '<span class="dash-kb"><kbd>5</kbd> Network</span>';
-  html += '<span class="dash-kb"><kbd>6</kbd> CHA Academy</span>';
-  html += '<span class="dash-kb"><kbd>7</kbd> Compliance</span>';
-  html += '<span class="dash-kb"><kbd>8</kbd> My Space</span>';
-  html += '<span class="dash-kb"><kbd>Ctrl+K</kbd> Search</span>';
-  html += '<span class="dash-kb"><kbd>Ctrl+B</kbd> Benefits</span>';
-  html += '<span class="dash-kb"><kbd>Esc</kbd> Close</span>';
-  html += '</div></div>';
   pg.innerHTML = html;
   dashLookupRefresh();
 }

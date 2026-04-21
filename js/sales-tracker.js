@@ -329,6 +329,11 @@ function _stSet(key, value) {
 // legacy key exists.
 var _stMigrated = false;
 var _stAllSalesRange = 'all';
+var _stCustomRangeFrom = '';
+var _stCustomRangeTo = '';
+var _stAllSearchQuery = '';
+var _stAllStatusFilter = 'all';
+var _stAllRowsShown = 10;
 function _stMigrateLegacyKeys() {
   if (_stMigrated) return;
   _stMigrated = true;
@@ -2909,7 +2914,10 @@ function _stToggleAddSalePanel() {
 function _stTogglePaycheckBreakdown() {
   var el = document.getElementById('st-paycheck-detail');
   var link = document.getElementById('st-paycheck-toggle-link');
-  if (!el) return;
+  if (!el) {
+    _stOpenCommissionEditorFromTracker();
+    return;
+  }
   var hidden =
     el.style.display === 'none' || el.style.display === '' || !el.style.display;
   el.style.display = hidden ? 'block' : 'none';
@@ -2919,7 +2927,7 @@ function _stTogglePaycheckBreakdown() {
 function _stBuildAddSaleSection() {
   return (
     '<section class="st-sec st-sec-addsale" aria-label="Add a sale">' +
-    '<button type="button" id="st-add-sale-toggle" class="st-add-sale-toggle" aria-expanded="false" onclick="_stToggleAddSalePanel()">+ Add new sale</button>' +
+    '<button type="button" id="st-add-sale-toggle" class="st-add-sale-toggle" aria-expanded="false" onclick="_stToggleAddSalePanel()"><span class="st-add-sale-icon">+</span><span>Add new sale</span></button>' +
     '<div id="st-add-sale-panel" class="st-add-sale-panel" style="display:none">' +
     _stBuildInput() +
     '</div></section>'
@@ -3037,25 +3045,25 @@ var _stSelectedIds = {};
 // buttons at the top of the sales table.
 function _stSetTableFilter(mode) {
   _stTableFilter = mode === 'all' ? 'all' : 'week';
-  // Wipe bulk selection whenever the filter changes so a
-  // lingering selection from 'all' doesn't silently apply
-  // across filter flips.
   _stSelectedIds = {};
   _stRender();
 }
 
+function _stToggleSaleSelectionFromCb(el) {
+  var id = el && el.getAttribute ? el.getAttribute('data-id') : '';
+  _stToggleSaleSelection(id);
+}
+
 // Row checkbox handler (bulk delete).
 function _stToggleSaleSelection(id) {
-  if (_stSelectedIds[id]) {
-    delete _stSelectedIds[id];
+  var k = String(id == null ? '' : id);
+  if (!k) return;
+  if (_stSelectedIds[k]) {
+    delete _stSelectedIds[k];
   } else {
-    _stSelectedIds[id] = true;
+    _stSelectedIds[k] = true;
   }
-  if (_stTableFilter === 'all') {
-    _stBulkSelectionChanged();
-    return;
-  }
-  _stRender();
+  _stBulkSelectionChanged();
 }
 
 function _stBulkSelectionChanged() {
@@ -3075,7 +3083,7 @@ function _stBulkToggleAll(checked) {
   for (var i = 0; i < cbs.length; i++) {
     cbs[i].checked = !!checked;
     var sid = cbs[i].getAttribute('data-id');
-    if (checked && sid) _stSelectedIds[sid] = true;
+    if (checked && sid) _stSelectedIds[String(sid)] = true;
   }
   _stBulkSelectionChanged();
 }
@@ -3083,18 +3091,29 @@ function _stBulkToggleAll(checked) {
 function _stBulkDelete() {
   var ids = [];
   for (var k in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k]) ids.push(k);
+    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k]) ids.push(String(k));
   }
   if (!ids.length) return;
-  if (!confirm('Delete ' + ids.length + ' sales?')) {
+  if (!confirm('Delete ' + ids.length + ' selected sales?')) {
     return;
   }
-  var filtered = _stLoadSales().filter(function (s) {
-    return !_stSelectedIds[s.id];
+  var kill = {};
+  for (var ki = 0; ki < ids.length; ki++) kill[ids[ki]] = true;
+  var sales = _stLoadSales();
+  var before = sales.length;
+  var filtered = sales.filter(function (s) {
+    if (!s) return true;
+    return !kill[String(s.id)];
   });
+  var removed = before - filtered.length;
+  if (removed < 1) {
+    _stFlash('Could not delete the selected rows. Try re-selecting.', 'warn');
+    return;
+  }
   _stSaveSales(filtered);
   _stSelectedIds = {};
   _stRender();
+  _stFlash(removed + ' sales deleted', 'ok');
 }
 
 function _stBulkClear() {
@@ -3170,6 +3189,164 @@ function _stGroupRowsForDisplay(rows) {
     out.push(g);
   }
   return out;
+}
+
+function _stWeekCardDateLabel(ts) {
+  var d = new Date(ts);
+  var names = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  return names[d.getDay()] + ' ' + (d.getMonth() + 1) + '/' + d.getDate();
+}
+
+function _stFormatSaleShortDate(ts) {
+  var d = new Date(ts);
+  return d.getMonth() + 1 + '/' + d.getDate();
+}
+
+function _stStatusAbbrevForTable(sale) {
+  var st = _stNormalizeStatus(sale);
+  if (st === 'cleared') return 'Clr';
+  if (st === 'chargeback') return 'Cbk';
+  return 'Pnd';
+}
+
+function _stGroupMatchesDateChip(grp) {
+  var ts = _stGroupListTs(grp);
+  var mode = _stAllSalesRange || 'all';
+  if (mode === 'all') return true;
+  var now = new Date();
+  if (mode === 'month') {
+    var monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
+    return ts >= monthStart;
+  }
+  if (mode === 'lastMonth') {
+    var y = now.getFullYear();
+    var m = now.getMonth();
+    var lmStart = new Date(y, m - 1, 1).getTime();
+    var lmEnd = new Date(y, m, 0, 23, 59, 59, 999).getTime();
+    return ts >= lmStart && ts <= lmEnd;
+  }
+  if (mode === 'last7') {
+    return ts >= Date.now() - 7 * 24 * 60 * 60 * 1000;
+  }
+  if (mode === 'custom') {
+    var d0 = _stCustomRangeFrom
+      ? new Date(_stCustomRangeFrom + 'T00:00:00').getTime()
+      : 0;
+    var d1 = _stCustomRangeTo
+      ? new Date(_stCustomRangeTo + 'T23:59:59.999').getTime()
+      : 8e15;
+    return ts >= d0 && ts <= d1;
+  }
+  return true;
+}
+
+function _stGroupMatchesAllListFilters(grp) {
+  if (!_stGroupMatchesDateChip(grp)) return false;
+  var stF = _stAllStatusFilter || 'all';
+  if (stF !== 'all') {
+    var gst = _stGroupListStatus(grp);
+    if (stF !== gst) return false;
+  }
+  var q = (_stAllSearchQuery || '').trim().toLowerCase();
+  if (!q) return true;
+  var lead = grp.deal || grp.addons[0];
+  if (!lead) return false;
+  var hay =
+    String(lead.customer || '') +
+    ' ' +
+    String(lead.plan || '') +
+    ' ' +
+    String(lead.memberId || '');
+  return hay.toLowerCase().indexOf(q) !== -1;
+}
+
+function _stAddonLineCommission(s) {
+  if (typeof s.addonCommission === 'number') {
+    var c = Number(s.addonCommission);
+    if (_stNormalizeStatus(s) === 'chargeback') c = -Math.abs(c);
+    return c;
+  }
+  var r =
+    typeof s.addonCommissionRate === 'number'
+      ? s.addonCommissionRate
+      : _stLoadCommissionRates().addonTypes[_stClassifyAddon(s.plan)] || 0.25;
+  var c = (Number(s.amount) || 0) * r;
+  if (_stNormalizeStatus(s) === 'chargeback') c = -Math.abs(c);
+  return c;
+}
+
+function _stGroupCommissionDisplay(grp) {
+  if (grp.deal) return Number(grp.deal.expectedDealTotal) || 0;
+  var t = 0;
+  for (var i = 0; i < grp.addons.length; i++) {
+    t += _stAddonLineCommission(grp.addons[i]);
+  }
+  return t;
+}
+
+function _stSetAllSalesChip(mode) {
+  _stAllSalesRange = mode || 'all';
+  _stAllRowsShown = 10;
+  _stSelectedIds = {};
+  _stRender();
+}
+
+function _stApplyCustomDateRange() {
+  var f = document.getElementById('st-all-date-from');
+  var t = document.getElementById('st-all-date-to');
+  _stCustomRangeFrom = f && f.value ? f.value : '';
+  _stCustomRangeTo = t && t.value ? t.value : '';
+  _stAllRowsShown = 10;
+  _stRender();
+}
+
+function _stSetAllStatusFilter(v) {
+  _stAllStatusFilter = v || 'all';
+  _stAllRowsShown = 10;
+  _stRender();
+}
+
+function _stQueueAllSearchRender(q) {
+  _stAllSearchQuery = String(q == null ? '' : q);
+  clearTimeout(window._stSearchRerenderT);
+  window._stSearchRerenderT = setTimeout(function () {
+    _stAllRowsShown = 10;
+    _stRender();
+  }, 200);
+}
+
+function _stShowMoreAllSales() {
+  _stAllRowsShown = Math.min((_stAllRowsShown || 10) + 18, 50);
+  _stRender();
+}
+
+function _stDeleteSaleGroupByLeadId(leadId) {
+  if (!confirm('Permanently delete this sale and any linked add-ons?')) return;
+  var sales = _stLoadSales();
+  var target = null;
+  var lid = String(leadId);
+  for (var i = 0; i < sales.length; i++) {
+    if (sales[i] && String(sales[i].id) === lid) {
+      target = sales[i];
+      break;
+    }
+  }
+  if (!target) return;
+  var rid = target.receiptId ? String(target.receiptId) : '';
+  var filtered;
+  if (rid) {
+    filtered = sales.filter(function (s) {
+      return !s || String(s.receiptId || '') !== rid;
+    });
+  } else {
+    filtered = sales.filter(function (s) {
+      return !s || String(s.id) !== lid;
+    });
+  }
+  _stSaveSales(filtered);
+  _stSelectedIds = {};
+  _stRender();
+  _stFlash('Sale deleted.', 'ok');
 }
 
 function _stFormatSaleListDate(ts) {
@@ -3365,130 +3542,311 @@ function _stRenderSaleGroupCard(g, isAll) {
   return parts.join('');
 }
 
+function _stRenderWeekCompactCard(g) {
+  var lead = g.deal || (g.addons.length ? g.addons[0] : null);
+  if (!lead) return '';
+  var st = _stGroupListStatus(g);
+  var ts = _stGroupListTs(g);
+  var dateLabel = _stWeekCardDateLabel(ts);
+  var lid = String(lead.id);
+  var pillLabel = g.deal ? 'DEAL' : 'ADD-ON';
+  var pillClass = g.deal ? 'st-week-deal-pill' : 'st-week-deal-pill st-week-pill-addon';
+  var actions =
+    '<div class="st-week-card-actions">' +
+    '<button type="button" class="st-week-card-icon" title="Edit" aria-label="Edit" onclick="event.stopPropagation();_stOpenCommissionEditor(\'' +
+    lid +
+    '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>' +
+    '<button type="button" class="st-week-card-icon" title="Delete" aria-label="Delete" onclick="event.stopPropagation();_stDeleteSaleGroupByLeadId(\'' +
+    lid +
+    '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
+    '</div>';
+  var premAmt = g.deal ? Number(g.deal.amount) || 0 : Number(lead.amount) || 0;
+  var idLine =
+    (lead.memberId ? 'ID: ' + _stEscape(String(lead.memberId)) + ' · ' : '') +
+    _stEscape(lead.plan || '—');
+  var commBox = '';
+  if (g.deal) {
+    var d = g.deal;
+    var rate = Math.round((Number(d.planCommissionRate) || 0) * 100);
+    var planComm = Number(d.planCommission) || 0;
+    var addonComm = Number(d.totalAddonCommission) || 0;
+    var expected = Number(d.expectedDealTotal) || 0;
+    commBox =
+      '<div class="st-week-comm-box">' +
+      '<div class="st-week-comm-row"><span>plan · ' +
+      rate +
+      '%</span><span>$' +
+      planComm.toFixed(2) +
+      '</span></div>';
+    if (addonComm !== 0) {
+      commBox +=
+        '<div class="st-week-comm-row"><span>+ add-ons</span><span>$' +
+        addonComm.toFixed(2) +
+        '</span></div>';
+    }
+    commBox +=
+      '<div class="st-week-comm-div"></div>' +
+      '<div class="st-week-comm-row st-week-comm-total"><span>Commission</span><span>$' +
+      expected.toFixed(2) +
+      '</span></div></div>';
+  } else {
+    var exp2 = _stGroupCommissionDisplay(g);
+    commBox =
+      '<div class="st-week-comm-box"><div class="st-week-comm-row st-week-comm-total"><span>Commission</span><span>$' +
+      exp2.toFixed(2) +
+      '</span></div></div>';
+  }
+  var addonSec = '';
+  if (g.deal && g.addons.length) {
+    addonSec =
+      '<div class="st-week-dash"></div><div class="st-week-addon-label">' +
+      g.addons.length +
+      ' ADD-ON' +
+      (g.addons.length === 1 ? '' : 'S') +
+      '</div>';
+    for (var ai = 0; ai < g.addons.length; ai++) {
+      var ax = g.addons[ai];
+      addonSec +=
+        '<div class="st-week-addon-strip"><span class="st-week-addon-pill">ADD</span>' +
+        '<span class="st-week-addon-name">' +
+        _stEscape(ax.plan || 'Add-on') +
+        '</span>' +
+        '<span class="st-week-addon-price">$' +
+        (Number(ax.amount) || 0).toFixed(2) +
+        '</span></div>';
+    }
+  }
+  var h =
+    '<article class="st-week-compact-card st-row st-row-' +
+    st +
+    '"><div class="st-week-card-toprow"><span class="' +
+    pillClass +
+    '">' +
+    pillLabel +
+    '</span><span class="st-week-card-date">' +
+    _stEscape(dateLabel) +
+    '</span>' +
+    actions +
+    '</div><div class="st-week-card-client">' +
+    _stEscape(lead.customer || '—') +
+    '</div><div class="st-week-card-meta">' +
+    idLine +
+    '</div><div class="st-week-card-prem">$' +
+    premAmt.toFixed(2) +
+    '<span>/mo</span></div>' +
+    commBox +
+    addonSec +
+    '</article>';
+  return h;
+}
+
 function _stBuildTable(sales) {
-  var mode = _stTableFilter === 'all' ? 'all' : 'week';
-  var rows;
-  var titleLabel;
-  if (mode === 'all') {
-    rows = sales.slice().sort(function (a, b) {
+  var stats = _stCalcStats(sales);
+  var weekStart = _stStartOfWeek(new Date()).getTime();
+  var weekRows = sales
+    .filter(function (s) {
+      return s && s.ts >= weekStart;
+    })
+    .sort(function (a, b) {
       return b.ts - a.ts;
     });
-    titleLabel = 'All Sales';
+  var weekGroups = _stGroupRowsForDisplay(weekRows);
+  var allRowsSorted = sales.slice().sort(function (a, b) {
+    return b.ts - a.ts;
+  });
+  var allGroups = _stGroupRowsForDisplay(allRowsSorted);
+  var filteredAll = [];
+  for (var fi = 0; fi < allGroups.length; fi++) {
+    if (_stGroupMatchesAllListFilters(allGroups[fi])) filteredAll.push(allGroups[fi]);
+  }
+  var totalFiltered = filteredAll.length;
+  var pageLen = Math.min(Math.max(_stAllRowsShown || 10, 10), 50);
+  var paged = filteredAll.slice(0, pageLen);
+  var selectedCount = 0;
+  for (var sid in _stSelectedIds) {
+    if (_stSelectedIds.hasOwnProperty(sid) && _stSelectedIds[sid]) selectedCount++;
+  }
+  var wkMeta =
+    _stFmtMoney(stats.weekSales) + ' · ' + _stFmtMoney(stats.weekExpectedCommission) + ' comm';
+
+  var html = '<div class="st-table-section st-sales-log st-sales-log-split">';
+  html += '<div class="st-sales-split-grid">';
+  html += '<div class="st-week-split-col">';
+  html +=
+    '<div class="st-split-col-head"><span class="st-split-title">This week (' +
+    weekGroups.length +
+    ')</span><span class="st-split-meta">' +
+    _stEscape(wkMeta) +
+    '</span></div>';
+  html += '<div class="st-week-cards-scroller">';
+  if (!weekGroups.length) {
+    html += '<div class="st-empty st-empty-tight">No sales logged yet this week.</div>';
   } else {
-    var weekStart = _stStartOfWeek(new Date()).getTime();
-    rows = sales
-      .filter(function (s) {
-        return s && s.ts >= weekStart;
-      })
-      .sort(function (a, b) {
-        return b.ts - a.ts;
-      });
-    titleLabel = 'This Week';
-  }
-
-  var groups = _stGroupRowsForDisplay(rows);
-
-  var html = '<div class="st-table-section">';
-  html += '<div class="st-table-header">';
-  html +=
-    '<div class="st-table-title">' +
-    _stEscape(titleLabel) +
-    ' (' +
-    groups.length +
-    ')</div>';
-  html += '<div class="st-mode-toggle st-table-filter">';
-  html +=
-    '<button type="button" class="st-mode-btn' +
-    (mode === 'week' ? ' st-mode-active' : '') +
-    '" onclick="_stSetTableFilter(\'week\')">This Week</button>';
-  html +=
-    '<button type="button" class="st-mode-btn' +
-    (mode === 'all' ? ' st-mode-active' : '') +
-    '" onclick="_stSetTableFilter(\'all\')">All Sales</button>';
-  html += '</div>';
-  html += '</div>';
-
-  var isAll = mode === 'all';
-
-  if (rows.length === 0) {
-    html +=
-      '<div class="st-empty">' +
-      (isAll
-        ? 'No sales logged yet. Paste a receipt above to add one.'
-        : 'No sales logged yet this week. Paste a receipt above to add one.') +
-      '</div>';
-    html += '</div>';
-    return html;
-  }
-  if (isAll) {
-    var now = new Date();
-    var monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
-    var last30 = Date.now() - (30 * 24 * 60 * 60 * 1000);
-    var filteredGroups = groups.filter(function (g) {
-      var ts = _stGroupListTs(g);
-      if (_stAllSalesRange === 'month') return ts >= monthStart;
-      if (_stAllSalesRange === 'last30') return ts >= last30;
-      return true;
-    });
-    html +=
-      '<div class="st-all-controls"><select class="st-all-filter" onchange="_stSetAllSalesRange(this.value)">' +
-      '<option value="all"' + (_stAllSalesRange === 'all' ? ' selected' : '') + '>All time</option>' +
-      '<option value="month"' + (_stAllSalesRange === 'month' ? ' selected' : '') + '>This month</option>' +
-      '<option value="last30"' + (_stAllSalesRange === 'last30' ? ' selected' : '') + '>Last 30 days</option>' +
-      '</select><button type="button" class="st-export-btn" onclick="_stExportAllSalesCsv()">Export</button></div>';
-    var selectedCount = 0;
-    for (var sid in _stSelectedIds) {
-      if (_stSelectedIds.hasOwnProperty(sid) && _stSelectedIds[sid]) selectedCount++;
+    for (var wi = 0; wi < weekGroups.length; wi++) {
+      html += _stRenderWeekCompactCard(weekGroups[wi]);
     }
-    html +=
-      '<div id="st-bulk-bar" style="' +
-      (selectedCount ? 'display:block;' : 'display:none;') +
-      'padding:10px 14px;background:#fef2f2;border:1px solid #fecaca;border-radius:10px;margin-bottom:12px;font-size:13px;">' +
-      '<span id="st-bulk-count">' +
-      selectedCount +
-      ' selected</span>' +
-      '<button onclick="_stBulkDelete()" style="background:#dc2626;color:white;border:none;padding:6px 14px;border-radius:8px;margin-left:12px;font-weight:600;cursor:pointer;">Delete selected</button>' +
-      '<button onclick="_stBulkClear()" style="background:transparent;border:1px solid #999;padding:6px 12px;border-radius:8px;margin-left:8px;cursor:pointer;">Cancel</button>' +
-      '</div>';
-    html += '<div class="st-all-list"><div class="st-all-head"><span><input type="checkbox" class="st-bulk-all" onchange="_stBulkToggleAll(this.checked)"></span><span>Client</span><span>Plan</span><span>Premium</span><span>Date</span><span>Status</span></div>';
-    for (var ag = 0; ag < filteredGroups.length; ag++) {
-      var grp = filteredGroups[ag];
-      var lead = grp.deal || grp.addons[0];
-      if (!lead) continue;
-      var gid = String(grp.receiptId || lead.id);
-      html += '<div class="st-all-row" onclick="_stToggleAllSaleDetails(\'' + gid + '\')">';
-      html += '<span><input type="checkbox" class="st-bulk-cb" data-id="' + _stEscape(lead.id) + '"' + (_stSelectedIds[lead.id] ? ' checked' : '') + ' onchange="_stToggleSaleSelection(\'' + _stEscape(lead.id) + '\')" onclick="event.stopPropagation()"></span>';
-      html += '<span><strong>' + _stEscape(lead.customer || '—') + '</strong>' + (lead.memberId ? '<em>ID: ' + _stEscape(lead.memberId) + '</em>' : '') + '</span>';
-      html += '<span>' + _stEscape(lead.plan || '—') + '</span>';
-      html += '<span>$' + (Number(lead.amount) || 0).toFixed(2) + '</span>';
-      html += '<span>' + _stEscape(_stFormatSaleListDate(_stGroupListTs(grp))) + '</span>';
-      html += '<span class="st-all-status st-row-' + _stNormalizeStatus(lead) + '">' + _stEscape(_stStatusText(lead)) + '</span>';
-      html += '</div>';
-      html += '<div class="st-all-detail" id="st-all-detail-' + gid + '" style="display:none;">';
-      if (grp.addons.length) {
-        html += '<div class="st-all-detail-line"><b>Add-ons:</b> ' + grp.addons.map(function (a) { return _stEscape(a.plan) + ' ($' + (Number(a.amount) || 0).toFixed(2) + ')'; }).join(', ') + '</div>';
-      }
-      if (grp.deal) {
-        html += '<div class="st-all-detail-line"><b>Commission:</b> $' + (Number(grp.deal.expectedDealTotal) || 0).toFixed(2) + '</div>';
-      }
-      html += '</div>';
-    }
-    html += '</div></div>';
-    return html;
-  }
-  html += '<div class="st-table-wrap st-sale-bubble-wrap">';
-  html += '<div class="st-sale-bubble-grid">';
-  for (var gi = 0; gi < groups.length; gi++) {
-    html += _stRenderSaleGroupCard(groups[gi], false);
   }
   html += '</div></div>';
+
+  html += '<div class="st-all-split-col">';
+  html +=
+    '<div class="st-split-col-head st-split-col-head-row2"><span class="st-split-title">All sales (' +
+    totalFiltered +
+    ')</span><button type="button" class="st-export-link" onclick="_stExportAllSalesCsv()">↓ Export</button></div>';
+
+  function chip(val, label) {
+    var act = _stAllSalesRange === val ? ' st-chip-active' : '';
+    return (
+      '<button type="button" class="st-date-chip' +
+      act +
+      '" onclick="_stSetAllSalesChip(\'' +
+      val +
+      '\')">' +
+      _stEscape(label) +
+      '</button>'
+    );
+  }
+  html += '<div class="st-date-chips">';
+  html += chip('all', 'All time');
+  html += chip('month', 'This month');
+  html += chip('lastMonth', 'Last month');
+  html += chip('last7', 'Last 7 days');
+  html +=
+    '<button type="button" class="st-date-chip' +
+    (_stAllSalesRange === 'custom' ? ' st-chip-active' : '') +
+    '" onclick="_stSetAllSalesChip(\'custom\')"><svg class="st-chip-cal" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Custom</button>';
   html += '</div>';
+
+  var customVis = _stAllSalesRange === 'custom' ? 'block' : 'none';
+  html +=
+    '<div class="st-custom-range-row" style="display:' +
+    customVis +
+    '"><span class="st-custom-label">Custom range:</span>' +
+    '<input type="date" id="st-all-date-from" class="st-date-chip-input" value="' +
+    _stEscape(_stCustomRangeFrom) +
+    '">' +
+    '<span class="st-custom-arrow" aria-hidden="true">→</span>' +
+    '<input type="date" id="st-all-date-to" class="st-date-chip-input" value="' +
+    _stEscape(_stCustomRangeTo) +
+    '">' +
+    '<button type="button" class="st-custom-apply" onclick="_stApplyCustomDateRange()">Apply</button></div>';
+
+  html += '<div class="st-all-filter-row">';
+  html +=
+    '<input type="text" class="st-all-search" placeholder="Search client, plan, ID…" value="' +
+    _stEscape(_stAllSearchQuery) +
+    '" oninput="_stQueueAllSearchRender(this.value)">';
+  html += '<select class="st-all-status-dd" onchange="_stSetAllStatusFilter(this.value)">';
+  var stOpts = [
+    ['all', 'All status'],
+    ['cleared', 'Cleared'],
+    ['pending', 'Pending'],
+    ['chargeback', 'Chargeback']
+  ];
+  for (var si = 0; si < stOpts.length; si++) {
+    html +=
+      '<option value="' +
+      stOpts[si][0] +
+      '"' +
+      (_stAllStatusFilter === stOpts[si][0] ? ' selected' : '') +
+      '>' +
+      stOpts[si][1] +
+      '</option>';
+  }
+  html += '</select></div>';
+
+  html +=
+    '<div id="st-bulk-bar" class="st-bulk-bar-compact" style="' +
+    (selectedCount ? 'display:flex;' : 'display:none;') +
+    '"><span id="st-bulk-count">' +
+    selectedCount +
+    ' selected</span><span class="st-bulk-actions"><button type="button" class="st-bulk-del" onclick="_stBulkDelete()">Delete</button><button type="button" class="st-bulk-can" onclick="_stBulkClear()">Cancel</button></span></div>';
+
+  html += '<div class="st-compact-table-wrap">';
+  html += '<div class="st-compact-head">';
+  html +=
+    '<span class="st-cch st-cch-cb"><input type="checkbox" class="st-bulk-all" aria-label="Select all" onchange="_stBulkToggleAll(this.checked)"></span>';
+  html += '<span class="st-cch st-cch-dt">Date</span>';
+  html += '<span class="st-cch st-cch-cp">Client · plan</span>';
+  html += '<span class="st-cch st-cch-pr">Premium</span>';
+  html += '<span class="st-cch st-cch-cm">Comm.</span>';
+  html += '<span class="st-cch st-cch-st">Sts</span>';
+  html += '<span class="st-cch st-cch-ac"></span>';
+  html += '</div>';
+
+  if (!sales.length) {
+    html +=
+      '<div class="st-empty st-empty-tight">No sales logged yet. Paste a receipt above to add one.</div>';
+  } else if (!totalFiltered) {
+    html += '<div class="st-empty st-empty-tight">No sales match these filters.</div>';
+  } else {
+    for (var ri = 0; ri < paged.length; ri++) {
+      var grp = paged[ri];
+      var lead2 = grp.deal || grp.addons[0];
+      if (!lead2) continue;
+      var lid2 = String(lead2.id);
+      var prem = grp.deal ? Number(grp.deal.amount) || 0 : Number(lead2.amount) || 0;
+      var abbr = _stStatusAbbrevForTable(lead2);
+      var gst = _stGroupListStatus(grp);
+      html += '<div class="st-compact-row st-row st-row-' + gst + '">';
+      html +=
+        '<span class="st-ccb"><input type="checkbox" class="st-bulk-cb" data-id="' +
+        _stEscape(lid2) +
+        '"' +
+        (_stSelectedIds[lid2] ? ' checked' : '') +
+        ' onchange="_stToggleSaleSelectionFromCb(this)"></span>';
+      html +=
+        '<span class="st-cdt muted">' +
+        _stEscape(_stFormatSaleShortDate(_stGroupListTs(grp))) +
+        '</span>';
+      html +=
+        '<span class="st-ccp"><span class="st-ccp-name">' +
+        _stEscape(lead2.customer || '—') +
+        '</span><span class="st-ccp-plan">' +
+        _stEscape(lead2.plan || '—') +
+        '</span></span>';
+      html += '<span class="st-cpr">$' + prem.toFixed(2) + '</span>';
+      html +=
+        '<span class="st-ccm">$' + _stGroupCommissionDisplay(grp).toFixed(2) + '</span>';
+      html +=
+        '<span class="st-cst"><span class="st-pill-mini st-pill-' +
+        gst +
+        '">' +
+        abbr +
+        '</span></span>';
+      html +=
+        '<span class="st-cac"><details class="st-row-menu" onclick="event.stopPropagation()"><summary aria-label="Actions">⋯</summary><div class="st-row-menu-pop">' +
+        '<button type="button" onclick="var d=this.closest(\'details\');if(d)d.removeAttribute(\'open\');_stOpenCommissionEditor(\'' +
+        lid2 +
+        '\')">Edit</button>' +
+        '<button type="button" onclick="var d=this.closest(\'details\');if(d)d.removeAttribute(\'open\');_stDeleteSaleGroupByLeadId(\'' +
+        lid2 +
+        '\')">Delete</button></div></details></span>';
+      html += '</div>';
+    }
+  }
+  html += '</div>';
+
+  if (sales.length && totalFiltered > pageLen && pageLen < 50) {
+    var moreN = Math.min(18, totalFiltered - pageLen, 50 - pageLen);
+    if (moreN > 0) {
+      html +=
+        '<button type="button" class="st-show-more" onclick="_stShowMoreAllSales()">Show ' +
+        moreN +
+        ' more ↓</button>';
+    }
+  }
+  if (sales.length && totalFiltered > 50 && pageLen >= 50) {
+    html +=
+      '<p class="st-show-more-note">Showing first 50 matches. Narrow filters to see more.</p>';
+  }
+
+  html += '</div></div></div>';
   return html;
 }
 
 function _stSetAllSalesRange(mode) {
-  _stAllSalesRange = mode || 'all';
-  _stRender();
+  _stSetAllSalesChip(mode);
 }
 
 function _stToggleAllSaleDetails(id) {
@@ -4149,29 +4507,131 @@ function _stFmtMoney(n) {
   );
 }
 
+function _stTierProgressData(stats) {
+  var tiers = ST_BONUS_TIERS || [];
+  var achieved = null;
+  var next = null;
+  for (var i = 0; i < tiers.length; i++) {
+    var t = tiers[i];
+    if (stats.weekDeals >= t.deals && stats.weekAddons >= t.addons) {
+      achieved = t;
+    } else if (!next) {
+      next = t;
+    }
+  }
+  if (!next && tiers.length) next = tiers[tiers.length - 1];
+  var targetDeals = next ? next.deals : 0;
+  var targetAddons = next ? next.addons : 0;
+  var pct = targetDeals
+    ? Math.min(
+        100,
+        Math.round(
+          Math.min(stats.weekDeals / targetDeals, stats.weekAddons / targetAddons) * 100
+        )
+      )
+    : 0;
+  return { achieved: achieved, next: next, pct: pct };
+}
+
+function _stWeeklyPaycheckMomentum(sales, stats) {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var prevStats = _stCalcStats(
+    sales.filter(function (s) {
+      return s && s.ts >= stats.weekStart - weekMs && s.ts < stats.weekStart;
+    })
+  );
+  prevStats.weekStart = stats.weekStart - weekMs;
+  var thisPb = _stPaycheckBreakdown(sales, stats);
+  var lastPb = _stPaycheckBreakdown(sales, prevStats);
+  if (!lastPb || !lastPb.estimated) return null;
+  var delta = Math.round(((thisPb.estimated - lastPb.estimated) / lastPb.estimated) * 100);
+  return { delta: delta, lastWeek: lastPb.estimated };
+}
+
+function _stBuildPaycheckHeroSection(sales, stats) {
+  var pb = _stPaycheckBreakdown(sales, stats);
+  var tier = _stTierProgressData(stats);
+  var momentum = _stWeeklyPaycheckMomentum(sales, stats);
+  var bonusTotal = Number(pb.enrollmentBonus || 0) + Number(pb.tierBonus || 0);
+  var est = Number(pb.estimated) || 0;
+  var tiersCfg = ST_BONUS_TIERS || [];
+  var lastTier = tiersCfg.length ? tiersCfg[tiersCfg.length - 1] : null;
+  var maxed =
+    lastTier &&
+    stats.weekDeals >= lastTier.deals &&
+    stats.weekAddons >= lastTier.addons;
+  var statusLine = '';
+  if (est <= 0) {
+    statusLine = 'Log your first sale to start earning';
+  } else if (maxed) {
+    statusLine = 'Max tier reached';
+  } else if (tier.next) {
+    statusLine =
+      stats.weekDeals +
+      ' / ' +
+      tier.next.deals +
+      ' to $' +
+      tier.next.bonus +
+      ' tier';
+  } else {
+    statusLine = 'Keep selling to grow your paycheck';
+  }
+  var html = '<section id="st-paycheck-hero" class="st-paycheck-hero st-paycheck-hero--compact">';
+  html += '<div class="st-paycheck-hero-kicker">ESTIMATED PAYCHECK · THIS WEEK</div>';
+  html += '<div class="st-paycheck-hero-mid">';
+  html += '<div class="st-paycheck-hero-left">';
+  html += '<div class="st-paycheck-hero-total">' + _stFmtMoney(est) + '</div>';
+  if (est > 0 && momentum) {
+    html +=
+      '<div class="st-paycheck-hero-momentum">' +
+      (momentum.delta >= 0 ? '↑ ' : '↓ ') +
+      Math.abs(momentum.delta) +
+      '% vs last week</div>';
+  }
+  html += '</div>';
+  if (est > 0) {
+    html +=
+      '<div class="st-paycheck-hero-breakdown-inline">' +
+      '<div><span class="st-ph-num">' +
+      _stFmtMoney(pb.dealComm) +
+      '</span><span class="st-ph-lbl">Deals</span></div>' +
+      '<div><span class="st-ph-num">' +
+      _stFmtMoney(pb.addonComm) +
+      '</span><span class="st-ph-lbl">Add-ons</span></div>' +
+      '<div><span class="st-ph-num">' +
+      _stFmtMoney(bonusTotal) +
+      '</span><span class="st-ph-lbl">Bonuses</span></div></div>';
+  }
+  html += '</div>';
+  html +=
+    '<div class="st-paycheck-hero-progress"><span style="width:' +
+    (est > 0 ? tier.pct : 0) +
+    '%"></span></div>';
+  html +=
+    '<div class="st-paycheck-hero-progress-status">' + _stEscape(statusLine) + '</div>';
+  html += '</section>';
+  return html;
+}
+
 function _stBuildWeekAtGlanceSection(stats) {
   var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
   var today = new Date();
   var todayDayIdx = today.getDay();
   var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
-  var nextIdx = -1;
-  for (var ti = 0; ti < ST_BONUS_TIERS.length; ti++) {
-    var tt0 = ST_BONUS_TIERS[ti];
-    if (stats.weekDeals < tt0.deals || stats.weekAddons < tt0.addons) {
-      nextIdx = ti;
-      break;
-    }
-  }
-  var topAchieved = nextIdx === -1;
-  var target = topAchieved
-    ? ST_BONUS_TIERS[ST_BONUS_TIERS.length - 1]
-    : ST_BONUS_TIERS[nextIdx];
-  var dealsPct = Math.min(100, (stats.weekDeals / target.deals) * 100);
-  var addonsPct = Math.min(100, (stats.weekAddons / target.addons) * 100);
-  var combinedPct = Math.round((dealsPct + addonsPct) / 2);
+  var weekStart = new Date(stats.weekStart);
+  var weekEnd = new Date(stats.weekStart + 4 * 24 * 60 * 60 * 1000);
+  var hdr =
+    weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+    '-' +
+    weekEnd.toLocaleDateString('en-US', { day: 'numeric' });
 
-  var html = '<section class="st-sec st-week-glance" aria-labelledby="st-glance-h">';
-  html += '<div id="st-glance-h" class="st-sec-title">Week at a glance</div>';
+  var html = '<section class="st-sec st-week-glance st-week-glance-unified" aria-labelledby="st-glance-h">';
+  html +=
+    '<div class="st-week-glance-head"><span id="st-glance-h" class="st-sec-title">THIS WEEK · ' +
+    hdr.toUpperCase() +
+    '</span><span class="st-week-glance-mini">' +
+    stats.weekDeals +
+    ' deals logged</span></div>';
   html += '<div class="st-glance-days">';
   for (var d = 0; d < 5; d++) {
     var bucket = stats.dayBuckets[d] || { date: null, amount: 0 };
@@ -4188,14 +4648,14 @@ function _stBuildWeekAtGlanceSection(stats) {
       '">';
     html +=
       '<div class="st-glance-day-label">' +
-      dayNames[d] +
+      (isToday ? 'TODAY' : dayNames[d]) +
       (dateStr ? ' <span class="st-glance-day-dt">' + dateStr + '</span>' : '') +
       '</div>';
     html += '<div class="st-glance-day-amt">' + _stFmtMoney(amt) + '</div>';
     html += '</div>';
   }
-  html += '</div>';
-  html += '<div class="st-glance-stats">';
+  html += '</div><div class="st-glance-divider"></div>';
+  html += '<div class="st-glance-stats st-glance-stats-plain">';
   html +=
     '<div class="st-glance-stat"><span>Deals</span><strong>' +
     stats.weekDeals +
@@ -4209,74 +4669,27 @@ function _stBuildWeekAtGlanceSection(stats) {
     _stFmtMoney(stats.weekSales) +
     '</strong></div>';
   html += '</div>';
-  html += '<div class="st-glance-bonus">';
-  if (topAchieved) {
-    html +=
-      '<div class="st-glance-bonus-lbl">Max bonus tier — $' +
-      target.bonus +
-      '</div>';
-  } else {
-    html +=
-      '<div class="st-glance-bonus-lbl">Next bonus tier — $' +
-      target.bonus +
-      '</div>';
-  }
-  html +=
-    '<div class="st-glance-bonus-bar"><div class="st-glance-bonus-fill" style="width:' +
-    combinedPct +
-    '%"></div></div>';
-  html += '</div></section>';
+  html += '</section>';
   return html;
 }
 
-function _stBuildEstimatedPaycheckSection(sales, stats) {
+function _stBuildFloatingPaycheckBar(sales, stats) {
   var pb = _stPaycheckBreakdown(sales, stats);
-  var enrollCount = Math.round((Number(pb.enrollmentBonus) || 0) / 20);
-  var html = '<section class="st-sec st-paycheck-card" aria-labelledby="st-paycheck-h">';
-  html += '<div id="st-paycheck-h" class="st-sec-title">Estimated paycheck</div>';
-  html += '<div class="st-paycheck-row">';
-  html +=
-    '<div class="st-paycheck-total">' + _stFmtMoney(pb.estimated) + '</div>';
-  html += '</div>';
-  html +=
-    '<div class="st-paycheck-sub">Deals: ' +
-    _stFmtMoney(pb.dealComm) +
-    ' / Add-ons: ' +
-    _stFmtMoney(pb.addonComm) +
-    ' / Bonuses: ' +
-    _stFmtMoney(pb.enrollmentBonus + pb.tierBonus) +
-    '</div>';
-  html += '<div id="st-paycheck-detail" class="st-paycheck-detail" style="display:none">';
-  html += '<div class="st-paycheck-detail-grid">';
-  html +=
-    '<span class="st-paycheck-detail-lbl">Deal commission</span><strong>' +
-    _stFmtMoney(pb.dealComm) +
-    '</strong>';
-  html +=
-    '<span class="st-paycheck-detail-lbl">Add-on commission</span><strong>' +
-    _stFmtMoney(pb.addonComm) +
-    '</strong>';
-  html +=
-    '<span class="st-paycheck-detail-lbl">Enrollment bonus (' +
-    enrollCount +
-    ' x $20)</span><strong>' +
-    _stFmtMoney(pb.enrollmentBonus) +
-    '</strong>';
-  html +=
-    '<span class="st-paycheck-detail-lbl">Tier bonus</span><strong>' +
-    _stFmtMoney(pb.tierBonus) +
-    '</strong>';
-  html += '</div>';
-  html +=
-    '<button type="button" class="st-paycheck-comm-btn" onclick="_stOpenCommissionEditorFromTracker()">Adjust commission rates</button>';
-  html += '</div>';
-  html += '<div class="st-paycheck-foot">';
-  html +=
-    '<a href="#" id="st-paycheck-toggle-link" class="st-paycheck-link" onclick="_stTogglePaycheckBreakdown(); return false;">View full breakdown</a>';
-  html +=
-    '<button type="button" id="st-paycheck-pdf-btn" class="st-paycheck-pdf" onclick="_stDownloadWeeklyPdf()">Download PDF</button>';
-  html += '</div></section>';
-  return html;
+  var tier = _stTierProgressData(stats);
+  return (
+    '<div id="st-paycheck-float" class="st-paycheck-float" style="display:none">' +
+    '<div class="st-paycheck-float-left"><div><div class="st-paycheck-float-k">PAYCHECK</div><div class="st-paycheck-float-v">' +
+    _stFmtMoney(pb.estimated) +
+    '</div></div><div class="st-paycheck-float-divider"></div><div><div class="st-paycheck-float-meta">' +
+    stats.weekDeals +
+    ' deals · ' +
+    stats.weekAddons +
+    ' add-ons</div><div class="st-paycheck-float-meta2">' +
+    (tier.achieved ? '✓ $' + tier.achieved.bonus + ' tier' : 'Next: $' + (tier.next ? tier.next.bonus : 0)) +
+    '</div></div></div>' +
+    '<div class="st-paycheck-float-right"><button type="button" class="st-paycheck-float-pdf" onclick="_stDownloadWeeklyPdf()">↓ PDF</button><button type="button" class="st-paycheck-float-break" onclick="_stTogglePaycheckBreakdown()">Breakdown</button></div>' +
+    '</div>'
+  );
 }
 
 // ── ANALYTICS DASHBOARD (additive — read-only rollups) ───────
@@ -4385,6 +4798,8 @@ function _stSwitchTab(tabId) {
   var pAn = document.getElementById('stTabPanelAnalytics');
   if (pThis) pThis.style.display = tabId === 'thisweek' ? 'block' : 'none';
   if (pAn) pAn.style.display = tabId === 'analytics' ? 'block' : 'none';
+  var fl = document.getElementById('st-paycheck-float');
+  if (fl) fl.style.display = tabId === 'thisweek' ? fl.style.display : 'none';
   var wrap = document.getElementById('stInternalSubtabs');
   if (wrap) {
     var btns = wrap.querySelectorAll('.stab');
@@ -4399,6 +4814,7 @@ function _stSwitchTab(tabId) {
       b.setAttribute('aria-selected', on ? 'true' : 'false');
     }
   }
+  if (tabId === 'thisweek') _stWirePaycheckObserver();
 }
 
 function _stBuildAnalyticsDashboard(sales, stats) {
@@ -4603,11 +5019,12 @@ function _stRender() {
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
+  html += _stBuildPaycheckHeroSection(sales, stats);
   html += _stBuildWeekAtGlanceSection(stats);
   html += _stBuildAddSaleSection();
   html += _stBuildTable(sales);
   html += _stBuildPostDatesSection(postdates);
-  html += _stBuildEstimatedPaycheckSection(sales, stats);
+  html += _stBuildFloatingPaycheckBar(sales, stats);
   html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
   html += '</div>';
   html +=
@@ -4627,5 +5044,31 @@ function _stRender() {
       _stSetAddSalePanelOpen(false);
     });
   }
+  _stWirePaycheckObserver();
+}
+
+function _stWirePaycheckObserver() {
+  var hero = document.getElementById('st-paycheck-hero');
+  var bar = document.getElementById('st-paycheck-float');
+  var tw = document.getElementById('stTabPanelThisWeek');
+  if (!hero || !bar || !tw || tw.style.display === 'none') return;
+  if (window._stHeroObs) {
+    try {
+      window._stHeroObs.disconnect();
+    } catch (_e) {}
+  }
+  window._stHeroObs = new IntersectionObserver(
+    function (entries) {
+      var e = entries && entries[0];
+      if (!e) return;
+      if (e.isIntersecting) {
+        bar.style.display = 'none';
+      } else {
+        bar.style.display = 'flex';
+      }
+    },
+    { threshold: 0.12 }
+  );
+  window._stHeroObs.observe(hero);
 }
 

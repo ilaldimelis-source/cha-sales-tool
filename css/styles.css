@@ -8972,3 +8972,119 @@ body.dark-mode #page-compliance,
 body.dark-mode #page-myspace {
   background-color: #0c111d !important;
 }
+
+/* Home redesign: focused stack + embedded lookup actions */
+#page-dashboard .dashboard-home-stack {
+  gap: 12px;
+}
+#page-dashboard .ph .pt {
+  font-size: 24px;
+  font-weight: 600;
+}
+#page-dashboard .ph .pd {
+  margin-top: 2px;
+  color: #667085;
+}
+.dash-lookup-actions-embedded {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: stretch;
+}
+.dash-lookup-similar-wrap {
+  display: none !important;
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-provider {
+  flex: 2;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+  cursor: pointer;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-provider:hover:not(:disabled) {
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-provider:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy {
+  flex: 1;
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary, #1e293b);
+  background: #fff;
+  border: 0.5px solid var(--color-border-secondary, #e2e8f0);
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: var(--font-ui, system-ui, sans-serif);
+}
+#page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy:hover {
+  background: var(--color-background-secondary, #f8fafc);
+}
+.dash-lookup-btn-icon {
+  flex-shrink: 0;
+}
+.dash-lookup-btn-icon-sm {
+  flex-shrink: 0;
+}
+
+/* Weekly progress all-tier line */
+.dash-cc-stat-row-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.dash-cc-tier-markers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 8px;
+}
+.dash-cc-tier-marker {
+  text-align: center;
+  font-size: 10px;
+  color: #667085;
+}
+.dash-cc-tier-marker.active {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Quick actions icon-over-label */
+.dash-cc-actions-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.dash-cc-action {
+  min-height: 86px;
+  padding: 12px 6px;
+  border: 0.5px solid rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+}
+.dash-cc-action span {
+  font-size: 11px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.15;
+}
+.dash-cc-action svg {
+  width: 16px;
+  height: 16px;
+}
