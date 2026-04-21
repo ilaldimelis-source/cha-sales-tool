@@ -21,10 +21,10 @@ window.onerror = function (msg, src, line) {
     document.body.innerHTML =
       '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:var(--cha-bg-muted);font-family:sans-serif;gap:16px;">' +
       '<img src="logo.png" style="width:60px;height:60px;border-radius:50%;" />' +
-      '<div style="font-size:18px;font-weight:600;color:#1e293b;">CHA Command Center</div>' +
+      '<div style="font-size:18px;font-weight:600;color:var(--cha-text-primary);">CHA Command Center</div>' +
       '<div style="font-size:13px;color:var(--cha-danger-text);background:var(--cha-danger-bg);padding:10px 16px;border-radius:8px;border:1px solid #fecaca;">A script error occurred. Please refresh the page.</div>' +
       '<button onclick="location.reload()" style="padding:10px 24px;background:#5175f1;color:white;border:none;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;">Refresh Now</button>' +
-      '<div style="font-size:11px;color:#94a3b8;">Error: ' +
+      '<div style="font-size:11px;color:var(--cha-text-tertiary);">Error: ' +
       msg +
       '</div></div>';
   }
@@ -104,13 +104,19 @@ function _initFontSize() {
 
 // ══════════════════════════════════════════════════════
 // DARK MODE TOGGLE
-// Persists under cha_theme ('light' | 'dark'). Applied as
-// body.dark-mode — CSS variables in styles.css provide the
-// actual color overrides.
+// Persists under cha_theme ('light' | 'dark'). Sets data-theme on
+// <html> so css/tokens.css [data-theme="dark"] variables apply.
+// body.dark-mode is kept in sync for legacy rules in styles.css.
 // ══════════════════════════════════════════════════════
 function setTheme(theme) {
   var t = theme === 'dark' ? 'dark' : 'light';
   var b = document.body;
+  var root = document.documentElement;
+  try {
+    root.setAttribute('data-theme', t);
+  } catch (_e) {
+    /* ignore */
+  }
   if (t === 'dark') {
     b.classList.add('dark-mode');
   } else {
@@ -140,7 +146,14 @@ function setTheme(theme) {
 }
 
 function toggleTheme() {
-  var cur = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+  var cur = 'light';
+  try {
+    var attr = document.documentElement.getAttribute('data-theme');
+    if (attr === 'dark' || attr === 'light') cur = attr;
+    else if (document.body.classList.contains('dark-mode')) cur = 'dark';
+  } catch (_e) {
+    cur = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+  }
   setTheme(cur === 'dark' ? 'light' : 'dark');
 }
 
@@ -150,6 +163,7 @@ function _initTheme() {
       ? chaGet('cha_theme', 'light')
       : safeGetItem('cha_theme') || 'light';
   if (typeof saved !== 'string') saved = 'light';
+  if (saved !== 'dark' && saved !== 'light') saved = 'light';
   setTheme(saved);
 }
 
