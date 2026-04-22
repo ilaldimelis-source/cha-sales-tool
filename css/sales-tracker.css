@@ -1087,7 +1087,7 @@
 /* Same-Day / Post-Date toggle + Date Sold / Post-Date Billing fields */
 .st-mode-toggle { display: flex; gap: 0; margin-bottom: 12px; border-radius: 10px; overflow: hidden; border: 1.5px solid #e2e8f0; width: fit-content; }
 .st-mode-btn { padding: 9px 22px; font-size: 13px; font-weight: 600; font-family: var(--font-ui); border: none; background: var(--cha-bg-muted); color: #64748b; cursor: pointer; transition: background 0.15s, color 0.15s; }
-.st-mode-btn.st-mode-active { background: #5175f1; color: #ffffff; }
+.st-mode-btn.st-mode-active { background: var(--cha-accent); color: #ffffff; }
 .st-mode-btn:hover:not(.st-mode-active) {
   background: var(--accent-soft, rgba(91, 141, 239, 0.12));
   color: var(--accent, #5175f1);
@@ -2103,7 +2103,7 @@
   justify-content: center;
 }
 .st-glance-day-hit {
-  background: #eef2ff;
+  background: var(--cha-accent-soft, #eef2ff);
   border-color: #c7d2fe;
 }
 .st-glance-day-today {
@@ -2208,18 +2208,19 @@
   padding: 12px 16px;
   border-radius: 12px;
   border: 1px solid var(--border, #e2e8f0);
-  background: #ffffff;
+  background: var(--cha-accent);
   font-family: var(--font-ui);
   font-size: 14px;
   font-weight: 700;
-  color: var(--text-primary, #1e293b);
+  color: #ffffff;
   cursor: pointer;
   transition:
     border-color 0.15s ease,
     box-shadow 0.15s ease;
 }
 .st-add-sale-toggle:hover {
-  border-color: var(--accent, #5175f1);
+  border-color: var(--cha-accent);
+  background: var(--cha-accent);
   box-shadow: 0 2px 10px rgba(81, 117, 241, 0.12);
 }
 .st-add-sale-panel {
@@ -2339,7 +2340,7 @@
 /* Sales tracker hero + floating paycheck redesign (compact) */
 .st-paycheck-hero.st-paycheck-hero--compact,
 .st-paycheck-hero--compact {
-  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  background: var(--cha-accent-gradient);
   border-radius: 12px;
   padding: 14px 18px;
   color: #fff;
@@ -2507,8 +2508,8 @@
   color: #101828;
 }
 .st-glance-day-today {
-  background: #5b8def;
-  border-color: #5b8def;
+  background: var(--cha-accent);
+  border-color: var(--cha-accent);
 }
 .st-glance-day-today .st-glance-day-label,
 .st-glance-day-today .st-glance-day-amt {
@@ -2533,14 +2534,14 @@
 }
 
 .st-add-sale-toggle {
-  background: #5b8def;
+  background: var(--cha-accent);
   color: #fff;
   border: none;
   padding: 14px;
   font-weight: 500;
 }
 .st-add-sale-toggle:hover {
-  background: #4a7fe4;
+  background: var(--cha-accent);
   border: none;
 }
 .st-add-sale-icon {

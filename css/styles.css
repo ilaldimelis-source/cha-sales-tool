@@ -754,9 +754,9 @@ svg {
 .page-subtabs .stab.active {
   color: #fff;
   font-weight: 600;
-  background: #5b8def;
+  background: var(--cha-accent);
   border-radius: 999px;
-  border-color: #5b8def;
+  border-color: var(--cha-accent);
   box-shadow: 0 2px 10px rgb(91, 141, 239, 0.25);
   transform: none;
 }
@@ -4861,6 +4861,10 @@ body.dark-mode {
   --cha-text-primary: #f1f5f9;
   --cha-text-secondary: #cbd5e1;
   --cha-text-tertiary: #94a3b8;
+  --cha-accent: #2563EB;
+  --cha-accent-hover: #1D4ED8;
+  --cha-accent-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  --cha-accent-soft: rgba(37, 99, 235, 0.15);
 
   --bg-page: #0c111d;
   --bg-card: #1e293b;
@@ -4887,6 +4891,10 @@ body.dark-mode {
   --milk2: #0c111d;
   --butter: rgb(91, 141, 239, 0.18);
   --pastel-blue: rgb(91, 141, 239, 0.18);
+  --accent-soft: rgba(59, 130, 246, 0.15);
+  --text-strong: var(--cha-text-primary);
+  --surface: var(--cha-bg-surface);
+  --surface-muted: var(--cha-bg-muted);
 }
 
 body.dark-mode {
@@ -7955,6 +7963,10 @@ body.dark-mode {
   --text-tertiary: #6b7185;
   --accent: #7ba4f5;
   --accent-soft: rgba(123, 164, 245, 0.16);
+  --cha-accent: #2563EB;
+  --cha-accent-hover: #1D4ED8;
+  --cha-accent-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  --cha-accent-soft: rgba(37, 99, 235, 0.15);
   --sidebar-bg: #1a1c23;
   --sidebar-text: #e5e7eb;
   --bg-card: var(--bg-surface);
@@ -8917,13 +8929,13 @@ button {
   color: #fff;
   border: none;
   border-radius: 10px;
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  background: var(--cha-accent-gradient);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
   cursor: pointer;
   font-family: var(--font-ui, system-ui, sans-serif);
 }
 #page-dashboard .dash-lookup-actions-embedded .dash-lookup-provider:hover:not(:disabled) {
-  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 100%);
+  background: var(--cha-accent-gradient);
 }
 #page-dashboard .dash-lookup-actions-embedded .dash-lookup-provider:disabled {
   opacity: 0.45;
@@ -8949,6 +8961,11 @@ button {
 }
 #page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy:hover {
   background: var(--color-background-secondary, var(--cha-bg-muted));
+}
+body.dark-mode #page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy {
+  background: var(--cha-bg-muted);
+  color: var(--cha-text-primary);
+  border-color: var(--cha-border-default);
 }
 .dash-lookup-btn-icon {
   flex-shrink: 0;
