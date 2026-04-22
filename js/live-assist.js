@@ -819,7 +819,7 @@ function renderQaRebuttals() {
   html += '<div style="display:flex;flex-direction:column;gap:12px;">';
   QA_REBUTTALS.forEach(function (item) {
     html +=
-      '<div style="background:#FFFFFF;border:2px solid #C8CEDD;border-radius:20px;padding:18px 22px;box-shadow:var(--shadow-card)">';
+      '<div style="background:var(--cha-bg-card);border:2px solid var(--cha-border-default);border-radius:20px;padding:18px 22px;box-shadow:var(--shadow-card)">';
     html +=
       '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">';
     html +=
