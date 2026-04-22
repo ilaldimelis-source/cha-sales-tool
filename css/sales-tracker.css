@@ -1055,7 +1055,13 @@
 }
 .st-weekly-summary-title { font-family: var(--font-ui); font-weight: 700; font-size: 15px; color: var(--text-primary, #1e293b); margin-bottom: 14px; }
 .st-weekly-summary-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-.st-wks-card { background: var(--cha-bg-muted); border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px 10px 12px; text-align: center; }
+.st-wks-card {
+  background: var(--cha-bg-muted);
+  border: 1px solid var(--cha-border-default);
+  border-radius: 10px;
+  padding: 14px 10px 12px;
+  text-align: center;
+}
 .st-wks-card.st-wks-active { background: #eef2ff; border-color: #c7d2fe; }
 .st-wks-card.st-wks-today { border-color: #5175f1; background: #eef2ff; box-shadow: 0 0 0 2px rgba(81,117,241,0.15); }
 .st-wks-day { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted, #94a3b8); margin-bottom: 8px; }
@@ -1082,7 +1088,10 @@
 .st-mode-toggle { display: flex; gap: 0; margin-bottom: 12px; border-radius: 10px; overflow: hidden; border: 1.5px solid #e2e8f0; width: fit-content; }
 .st-mode-btn { padding: 9px 22px; font-size: 13px; font-weight: 600; font-family: var(--font-ui); border: none; background: var(--cha-bg-muted); color: #64748b; cursor: pointer; transition: background 0.15s, color 0.15s; }
 .st-mode-btn.st-mode-active { background: #5175f1; color: #ffffff; }
-.st-mode-btn:hover:not(.st-mode-active) { background: #eef2ff; color: #5175f1; }
+.st-mode-btn:hover:not(.st-mode-active) {
+  background: var(--accent-soft, rgba(91, 141, 239, 0.12));
+  color: var(--accent, #5175f1);
+}
 .st-date-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-end; }
 .st-date-field { display: flex; flex-direction: column; gap: 4px; }
 .st-date-field label { font-size: 12px; font-weight: 600; color: #64748b; }
@@ -2559,8 +2568,9 @@
 .st-sales-log .st-empty {
   padding: 24px;
   font-size: 13px;
-  color: #667085;
-  background: #eef1f6;
+  color: var(--cha-text-secondary);
+  background: var(--cha-bg-muted);
+  border: 1px solid var(--cha-border-default);
   border-radius: 10px;
 }
 
