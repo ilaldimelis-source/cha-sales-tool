@@ -1105,7 +1105,7 @@ function _renderLiveCallGpsHtml() {
       html +=
         '<button type="button" onclick="lcGpsGoStage(' +
         (gi - 1) +
-        ')" style="padding:10px 24px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);font-size:14px;cursor:pointer;">← Previous</button>';
+        ')" style="padding:10px 24px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);font-size:14px;cursor:pointer;">← Previous</button>';
     } else {
       html += '<span></span>';
     }
@@ -1227,7 +1227,7 @@ function renderPlanScripts() {
     html +=
       '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
     html +=
-      '<input type="text" id="psSearchInput" placeholder="Search plans..." oninput="_filterPsCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:var(--bg-surface-raised);color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
+      '<input type="text" id="psSearchInput" placeholder="Search plans..." oninput="_filterPsCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:var(--cha-bg-card);color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'var(--cha-border-default)\'" />';
     html +=
       '<button id="psSearchClear" onclick="var i=document.getElementById(\'psSearchInput\');if(i){i.value=\'\';_filterPsCards(\'\');i.focus();}" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-tertiary);font-size:18px;line-height:1;padding:4px;">&times;</button>';
     html += '</div>';
@@ -1241,7 +1241,7 @@ function renderPlanScripts() {
         (p.name + ' ' + p.planType).toLowerCase() +
         '" onclick="planScriptActive=' +
         idx +
-        ";planScriptSection=0;renderPlanScripts()\" style=\"background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-radius:16px;padding:16px 18px;cursor:pointer;transition:all 0.15s ease;min-height:90px;display:flex;flex-direction:column;justify-content:space-between;\" onmouseover=\"this.style.borderColor='#5175f1';this.style.boxShadow='0 0 0 2px rgba(81,117,241,0.15)';this.style.transform='translateY(-1px)'\" onmouseout=\"this.style.borderColor='#e2e8f0';this.style.boxShadow='none';this.style.transform='none'\">";
+        ";planScriptSection=0;renderPlanScripts()\" style=\"background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-radius:16px;padding:16px 18px;cursor:pointer;transition:all 0.15s ease;min-height:90px;display:flex;flex-direction:column;justify-content:space-between;\" onmouseover=\"this.style.borderColor='#5175f1';this.style.boxShadow='0 0 0 2px rgba(81,117,241,0.15)';this.style.transform='translateY(-1px)'\" onmouseout=\"this.style.borderColor='var(--cha-border-default)';this.style.boxShadow='none';this.style.transform='none'\">";
       html +=
         '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
       html +=
@@ -1276,7 +1276,7 @@ function renderPlanScripts() {
       p.sections.forEach(function (s, si) {
         var pl = pillLabels[si] || s.title;
         html +=
-          '<span style="font-size:9px;padding:2px 6px;border-radius:999px;background:var(--bg-surface-muted);color:var(--text-secondary);">' +
+          '<span style="font-size:9px;padding:2px 6px;border-radius:999px;background:var(--cha-bg-muted);color:var(--text-secondary);">' +
           pl +
           '</span>';
       });
@@ -1296,11 +1296,11 @@ function renderPlanScripts() {
   html +=
     '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;">';
   html +=
-    '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">\u2190 All Plans</button>';
+    '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">\u2190 All Plans</button>';
   html +=
     '<label style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--text-secondary);letter-spacing:.06em;text-transform:uppercase;">Plan:</label>';
   html +=
-    '<select onchange="planScriptActive=parseInt(this.value,10);planScriptSection=0;renderPlanScripts()" style="flex:1;min-width:200px;max-width:360px;padding:7px 12px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);color:var(--text-primary);font-family:var(--font-ui);font-size:13px;font-weight:600;cursor:pointer;outline:none;">';
+    '<select onchange="planScriptActive=parseInt(this.value,10);planScriptSection=0;renderPlanScripts()" style="flex:1;min-width:200px;max-width:360px;padding:7px 12px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-primary);font-family:var(--font-ui);font-size:13px;font-weight:600;cursor:pointer;outline:none;">';
   filtered.forEach(function (p, idx) {
     html +=
       '<option value="' +
@@ -1318,7 +1318,7 @@ function renderPlanScripts() {
 
   // Plan card wrapper
   html +=
-    '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">';
+    '<div style="background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">';
 
   // Sticky plan name header
   html +=
@@ -1348,7 +1348,7 @@ function renderPlanScripts() {
     'Post-Close'
   ];
   html +=
-    '<div style="display:flex;align-items:center;gap:0;margin-bottom:20px;padding:10px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;">';
+    '<div style="display:flex;align-items:center;gap:0;margin-bottom:20px;padding:10px 0;border-top:1px solid var(--cha-border-subtle);border-bottom:1px solid var(--cha-border-subtle);">';
   activePlan.sections.forEach(function (sec, si) {
     var isCurrent = si === planScriptSection;
     var dotLabel = sec.title || secLabels[si] || 'Section ' + (si + 1);
@@ -1359,9 +1359,9 @@ function renderPlanScripts() {
       ';renderPlanScripts()" style="display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;min-width:0;flex-shrink:0;">';
     html +=
       '<div style="width:12px;height:12px;border-radius:50%;background:' +
-      (isCurrent ? '#5B8DEF' : si < planScriptSection ? '#BBF7D0' : '#e2e8f0') +
+      (isCurrent ? '#5B8DEF' : si < planScriptSection ? '#BBF7D0' : 'var(--cha-bg-muted)') +
       ';border:2px solid ' +
-      (isCurrent ? '#5B8DEF' : si < planScriptSection ? '#15803D' : '#cbd5e1') +
+      (isCurrent ? '#5B8DEF' : si < planScriptSection ? '#15803D' : 'var(--cha-border-default)') +
       ';"></div>';
     html +=
       '<span style="font-size:9px;font-weight:' +
@@ -1375,7 +1375,7 @@ function renderPlanScripts() {
     if (si < activePlan.sections.length - 1)
       html +=
         '<div style="flex:1;height:2px;background:' +
-        (si < planScriptSection ? '#BBF7D0' : '#e2e8f0') +
+        (si < planScriptSection ? '#BBF7D0' : 'var(--cha-bg-muted)') +
         ';margin:0 2px;margin-bottom:16px;"></div>';
     html += '</div>';
   });
@@ -1424,7 +1424,7 @@ function renderPlanScripts() {
         // Strip existing ✖ prefix to avoid double
         var cleanDo = trimLine.replace(/^✖\s*/, '');
         parsedLines.push(
-          '<div style="background:#fff1f2;border-left:3px solid #dc2626;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:12px;font-weight:700;color:#dc2626;letter-spacing:0.5px;">✖ ' +
+          '<div style="background:var(--cha-danger-bg);border-left:3px solid #dc2626;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:12px;font-weight:700;color:#dc2626;letter-spacing:0.5px;">✖ ' +
             cleanDo +
             '</div>'
         );
@@ -1432,14 +1432,14 @@ function renderPlanScripts() {
         // Strip existing ▶ prefix to avoid double
         var cleanWait = trimLine.replace(/^▶\s*/, '');
         parsedLines.push(
-          '<div style="background:#fffbeb;border-left:3px solid #f59e0b;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:13px;font-style:italic;color:#92400e;">▶ ' +
+          '<div style="background:var(--cha-warning-bg);border-left:3px solid #f59e0b;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:13px;font-style:italic;color:var(--cha-warning-text);">▶ ' +
             cleanWait +
             '</div>'
         );
       } else if (/^✔/.test(trimLine)) {
         var cleanOk = trimLine.replace(/^✔\s*/, '');
         parsedLines.push(
-          '<div style="background:#f0fdf4;border-left:3px solid #16a34a;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:13px;font-weight:600;color:#166534;">✔ ' +
+          '<div style="background:var(--cha-success-bg);border-left:3px solid #16a34a;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:13px;font-weight:600;color:var(--cha-success-text);">✔ ' +
             cleanOk +
             '</div>'
         );
@@ -1448,11 +1448,11 @@ function renderPlanScripts() {
         // Strip any stray ✔/✖/▶ that were in original data (handled by block detection above)
         parsed = parsed.replace(
           /(_{3,}|\$___)/g,
-          '<span style="background:#fef08a;padding:1px 6px;border-radius:6px;font-weight:600;color:#713f12;">$1</span>'
+          '<span style="background:var(--cha-warning-bg);padding:1px 6px;border-radius:6px;font-weight:600;color:var(--cha-warning-text);">$1</span>'
         );
         parsed = parsed.replace(
           /\[Customer Name\]/gi,
-          '<span style="background:#dbeafe;color:#1d4ed8;padding:1px 6px;border-radius:6px;font-weight:600;">[Customer Name]</span>'
+          '<span style="background:var(--cha-bg-surface);color:var(--cha-accent);padding:1px 6px;border-radius:6px;font-weight:600;">[Customer Name]</span>'
         );
         parsedLines.push(
           '<div style="margin-bottom:16px;">' + parsed + '</div>'
@@ -1471,17 +1471,17 @@ function renderPlanScripts() {
       '" style="max-width:720px;margin:0 auto 24px;position:relative;">';
     // Large bold section header
     html +=
-      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-primary);background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-bottom:none;padding:14px 24px;border-radius:14px 14px 0 0;">' +
+      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-primary);background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-bottom:none;padding:14px 24px;border-radius:14px 14px 0 0;">' +
       secLabel +
       '</div>';
     html +=
-      '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-top:none;border-bottom:none;padding:10px 24px;">';
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-top:none;border-bottom:none;padding:10px 24px;">';
     if (planScriptSection > 0) {
       html +=
-        '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← Back</button>';
+        '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← Back</button>';
     } else {
       html +=
-        '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← All Plans</button>';
+        '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← All Plans</button>';
     }
     if (planScriptSection < activePlan.sections.length - 1) {
       html +=
@@ -1493,7 +1493,7 @@ function renderPlanScripts() {
     html += '</div>';
     // Script card body
     html +=
-      '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-top:none;border-radius:0 0 14px 14px;padding:28px;">';
+      '<div style="background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-top:none;border-radius:0 0 14px 14px;padding:28px;">';
     // Script text
     html +=
       '<div class="ps-bubble-text" style="font-size:17px;line-height:1.9;color:var(--text-primary);font-family:var(--font-body);">' +
@@ -1509,13 +1509,13 @@ function renderPlanScripts() {
   html += '</div>'; // close plan card wrapper
   // Progress footer
   html +=
-    '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);padding:14px 24px;margin-top:20px;border-radius:12px;">';
+    '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);padding:14px 24px;margin-top:20px;border-radius:12px;">';
   if (planScriptSection > 0) {
     html +=
-      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← Back</button>';
+      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← Back</button>';
   } else {
     html +=
-      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← All Plans</button>';
+      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← All Plans</button>';
   }
   html +=
     '<span style="font-size:12px;font-weight:700;color:var(--text-primary);">Section ' +

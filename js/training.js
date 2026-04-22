@@ -887,13 +887,13 @@ function renderProductvault() {
     body +=
       '<div style="margin-top:12px;"><div class="trn-sec-label">HOW TO EXPLAIN IT</div>';
     body +=
-      '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' +
+      '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:var(--cha-text-secondary);line-height:1.8;padding:12px 14px;background:var(--cha-bg-muted);border-radius:8px;">' +
       p.explain +
       '</div></div>';
     body += '<div style="height:12px;"></div>';
     body += _trnTwoCols('RIGHT FIT', p.rightfit, 'WRONG FIT', p.wrongfit);
     body +=
-      '<div style="margin-top:12px;padding:10px 14px;background:var(--cha-danger-bg);border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Compliance:</strong> ' +
+      '<div style="margin-top:12px;padding:10px 14px;background:var(--cha-danger-bg);border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:var(--cha-text-secondary);line-height:1.7;"><strong style="color:#B91C1C;">Compliance:</strong> ' +
       p.compliance +
       '</div>';
     html += _trnOpenCard(p.title, body);
@@ -908,16 +908,16 @@ function renderSimplifier() {
     var body = '';
     body += '<div class="trn-two-col" style="margin-bottom:12px;">';
     body +=
-      '<div><div class="trn-sec-label">TECHNICAL DEFINITION</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' +
+      '<div><div class="trn-sec-label">TECHNICAL DEFINITION</div><div style="font-family:var(--font-body);font-size:14px;color:var(--cha-text-secondary);line-height:1.7;">' +
       item.tech +
       '</div></div>';
     body +=
-      '<div><div class="trn-sec-label" style="color:#15803D;">SAY IT THIS WAY</div><div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;padding:12px 14px;background:#F8F9FE;border-radius:8px;">' +
+      '<div><div class="trn-sec-label" style="color:#15803D;">SAY IT THIS WAY</div><div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:var(--cha-text-secondary);line-height:1.8;padding:12px 14px;background:var(--cha-bg-muted);border-radius:8px;">' +
       item.plain +
       '</div></div>';
     body += '</div>';
     body +=
-      '<div style="padding:10px 14px;background:var(--cha-danger-bg);border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#B91C1C;">Never say:</strong> ' +
+      '<div style="padding:10px 14px;background:var(--cha-danger-bg);border-left:3px solid #B91C1C;border-radius:12px;font-family:var(--font-body);font-size:14px;color:var(--cha-text-secondary);line-height:1.7;"><strong style="color:#B91C1C;">Never say:</strong> ' +
       item.dontsay +
       '</div>';
     html += _trnOpenCard(item.term, body);
@@ -931,13 +931,13 @@ function renderRoleplay() {
   ISA_ROLEPLAY.forEach(function (sc, i) {
     var body = '';
     body +=
-      '<div style="font-family:var(--font-body);font-size:14px;color:#6B7280;margin-bottom:12px;">' +
+      '<div style="font-family:var(--font-body);font-size:14px;color:var(--cha-text-tertiary);margin-bottom:12px;">' +
       sc.desc +
       '</div>';
     body +=
-      '<div style="padding:14px;background:#F8F9FE;border-radius:12px;margin-bottom:12px;"><div class="trn-sec-label">PROSPECT SAYS</div>';
+      '<div style="padding:14px;background:var(--cha-bg-muted);border-radius:12px;margin-bottom:12px;"><div class="trn-sec-label">PROSPECT SAYS</div>';
     body +=
-      '<div style="font-family:var(--font-body);font-size:14px;font-weight:700;color:#111827;font-style:italic;line-height:1.8;">&ldquo;' +
+      '<div style="font-family:var(--font-body);font-size:14px;font-weight:700;color:var(--cha-text-primary);font-style:italic;line-height:1.8;">&ldquo;' +
       sc.says +
       '&rdquo;</div></div>';
     body += '<div class="trn-two-col">';
@@ -962,11 +962,11 @@ function renderClosinglab() {
     var body = '';
     body += '<div class="trn-two-col" style="margin-bottom:12px;">';
     body +=
-      '<div><div class="trn-sec-label">WHEN TO USE</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' +
+      '<div><div class="trn-sec-label">WHEN TO USE</div><div style="font-family:var(--font-body);font-size:14px;color:var(--cha-text-secondary);line-height:1.7;">' +
       cl.when +
       '</div></div>';
     body +=
-      '<div><div class="trn-sec-label">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;">' +
+      '<div><div class="trn-sec-label">TONE</div><div style="font-family:var(--font-body);font-size:14px;color:var(--cha-text-secondary);line-height:1.7;">' +
       cl.tone +
       '</div></div>';
     body += '</div>';
@@ -977,7 +977,7 @@ function renderClosinglab() {
       cl.weak +
       '</div></div>';
     body +=
-      '<div style="border-left:3px solid #d97706;background:#FFFBEB;border-radius:12px;padding:14px;"><div class="trn-col-label" style="color:#d97706;">BETTER</div><div class="trn-col-text" style="font-style:italic;">' +
+      '<div style="border-left:3px solid #d97706;background:var(--cha-warning-bg);border-radius:12px;padding:14px;"><div class="trn-col-label" style="color:#d97706;">BETTER</div><div class="trn-col-text" style="font-style:italic;">' +
       cl.better +
       '</div></div>';
     body +=
@@ -1007,7 +1007,7 @@ function renderCheatsheets() {
     ' Not major medical — DISCLOSE.'
   ].forEach(function (item) {
     compBody +=
-      '<div style="font-family:var(--font-body);font-size:14px;color:#374151;padding:8px 0;border-bottom:1px solid #E5E7EB;">' +
+      '<div style="font-family:var(--font-body);font-size:14px;color:var(--cha-text-secondary);padding:8px 0;border-bottom:1px solid var(--cha-border-default);">' +
       item +
       '</div>';
   });
@@ -1015,7 +1015,7 @@ function renderCheatsheets() {
 
   // Plan Reference Table card
   var tableBody =
-    '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid #C8CEDD;min-width:600px;">';
+    '<div style="overflow-x:auto;"><table class="ctable" style="border:2px solid var(--cha-border-default);min-width:600px;">';
   tableBody +=
     '<thead><tr><th style="font-size:13px;">Plan Name</th><th style="font-size:13px;">Network</th><th style="font-size:13px;">Underwriter / Admin</th><th style="font-size:13px;">Association</th></tr></thead><tbody>';
   if (typeof PLANS !== 'undefined') {
@@ -1119,9 +1119,9 @@ function renderDiscovery() {
         q.replace(/"/g, '&quot;') +
         '" ';
       body +=
-        'style="padding:12px 14px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:8px;margin-bottom:8px;cursor:pointer;font-family:var(--font-body);font-size:14px;color:#374151;line-height:1.7;transition:all 0.15s;" ';
+        'style="padding:12px 14px;background:var(--cha-bg-muted);border:1px solid var(--cha-border-default);border-radius:8px;margin-bottom:8px;cursor:pointer;font-family:var(--font-body);font-size:14px;color:var(--cha-text-secondary);line-height:1.7;transition:all 0.15s;" ';
       body +=
-        'onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
+        'onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'var(--cha-border-default)\'">';
       body += '\u201c' + q + '\u201d';
       body +=
         '<span style="display:block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9CA3AF;margin-top:5px;">Tap to copy</span>';
@@ -1236,7 +1236,7 @@ function renderClosingengine() {
       ';color:' +
       typeColors[t] +
       ';border:1px solid ' +
-      (ti === 0 ? typeColors[t] : '#C8CEDD') +
+      (ti === 0 ? typeColors[t] : 'var(--cha-border-default)') +
       ';border-radius:12px;padding:7px 16px;font-size:12px;font-weight:800;cursor:pointer;transition:all 0.15s;font-family:var(--font-ui);" onclick="switchCeTab(\'' +
       t +
       '\')" data-ce-type="' +
@@ -1261,7 +1261,7 @@ function renderClosingengine() {
       html +=
         '<div onclick="copyClose(this)" data-line="' +
         line.replace(/"/g, '&quot;') +
-        '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:#F8F9FE;border:1px solid #E5E7EB;border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'#E5E7EB\'">';
+        '" style="display:flex;align-items:flex-start;gap:10px;padding:12px;background:var(--cha-bg-muted);border:1px solid var(--cha-border-default);border-radius:12px;margin-bottom:8px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor=\'#5B8DEF\'" onmouseout="this.style.borderColor=\'var(--cha-border-default)\'">';
       html +=
         '<span style="background:' +
         bg +
@@ -1271,7 +1271,7 @@ function renderClosingengine() {
         t +
         '</span>';
       html +=
-        '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:#374151;line-height:1.8;">' +
+        '<div style="font-family:var(--font-body);font-size:14px;font-style:italic;color:var(--cha-text-secondary);line-height:1.8;">' +
         line +
         '</div></div>';
     });
@@ -1326,11 +1326,11 @@ function switchCeTab(type) {
     var t = btn.getAttribute('data-ce-type');
     if (t === type) {
       btn.style.background = typeBg[t] || 'transparent';
-      btn.style.borderColor = typeColors[t] || '#C8CEDD';
+      btn.style.borderColor = typeColors[t] || 'var(--cha-border-default)';
       btn.classList.add('ce-tab-active');
     } else {
       btn.style.background = 'transparent';
-      btn.style.borderColor = '#C8CEDD';
+      btn.style.borderColor = 'var(--cha-border-default)';
       btn.classList.remove('ce-tab-active');
     }
   });
@@ -2109,12 +2109,12 @@ function _trnBottomStrip(activeId) {
     });
   });
   var html =
-    '<div style="position:sticky;bottom:0;background:#FFFFFF;border-top:2px solid #E5E7EB;padding:10px 20px;display:flex;flex-wrap:wrap;gap:8px;z-index:50;margin-top:24px;">';
+    '<div style="position:sticky;bottom:0;background:var(--cha-bg-card);border-top:2px solid var(--cha-border-default);padding:10px 20px;display:flex;flex-wrap:wrap;gap:8px;z-index:50;margin-top:24px;">';
   allItems.forEach(function (item) {
     var isActive = item.id === activeId;
-    var bg = isActive ? '#5B8DEF' : '#F4F6FB';
-    var color = isActive ? '#FFFFFF' : '#374151';
-    var border = isActive ? '1.5px solid #5B8DEF' : '1.5px solid #E5E7EB';
+    var bg = isActive ? '#5B8DEF' : 'var(--cha-bg-muted)';
+    var color = isActive ? '#FFFFFF' : 'var(--cha-text-primary)';
+    var border = isActive ? '1.5px solid #5B8DEF' : '1.5px solid var(--cha-border-default)';
     html +=
       '<button onclick="openTrainingSection(\'' +
       item.id +

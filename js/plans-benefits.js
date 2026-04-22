@@ -1111,7 +1111,7 @@ function renderBenefits() {
   html +=
     '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
   html +=
-    '<input type="text" id="benefitSearchInput" placeholder="Search benefits — e.g. copay, pre-existing, telemedicine..." oninput="_filterBenefitCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
+    '<input type="text" id="benefitSearchInput" placeholder="Search benefits — e.g. copay, pre-existing, telemedicine..." oninput="_filterBenefitCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid var(--cha-border-default);padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:var(--cha-bg-muted);color:var(--cha-text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'var(--cha-border-default)\'" />';
   html +=
     '<button id="benefitSearchClear" onclick="_clearBenefitSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
@@ -1331,11 +1331,11 @@ function renderPlans() {
       '<button onclick="setPlanGroup(\'' +
       t.key +
       '\')" style="padding:9px 22px;border-radius:999px;font-family:var(--font-ui);font-size:14px;font-weight:600;cursor:pointer;transition:all 0.15s;border:2px solid ' +
-      (isActive ? t.color : '#E5E7EB') +
+      (isActive ? t.color : 'var(--cha-border-default)') +
       ';background:' +
-      (isActive ? t.color : '#fff') +
+      (isActive ? t.color : 'var(--cha-bg-card)') +
       ';color:' +
-      (isActive ? '#fff' : 'var(--text-secondary)') +
+      (isActive ? '#fff' : 'var(--cha-text-secondary)') +
       ';">' +
       t.label +
       '</button>';
@@ -1348,7 +1348,7 @@ function renderPlans() {
   html +=
     '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
   html +=
-    '<input type="text" id="planSearchInput" placeholder="Search by plan name, benefit, or coverage type..." oninput="filterPlanSearch(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'" />';
+    '<input type="text" id="planSearchInput" placeholder="Search by plan name, benefit, or coverage type..." oninput="filterPlanSearch(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid var(--cha-border-default);padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:var(--cha-bg-muted);color:var(--cha-text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'var(--cha-border-default)\'" />';
   html +=
     '<button id="planSearchClear" onclick="clearPlanSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
@@ -1876,12 +1876,12 @@ function _compFindDocs(planName) {
 //   'verify' / 'neutral' → gray (informational or unknown → VERIFY)
 function _compCellStyle(status) {
   if (status === 'covered') {
-    return 'background:#f0fdf4;color:#166534;';
+    return 'background:var(--cha-success-bg);color:var(--cha-success-text);';
   }
   if (status === 'notcovered') {
     return 'background:var(--cha-danger-bg);color:var(--cha-danger-text);';
   }
-  return 'background:var(--cha-bg-muted);color:#475569;';
+  return 'background:var(--cha-bg-muted);color:var(--cha-text-secondary);';
 }
 
 // Trim long benefit strings so compare cells stay readable.
@@ -2014,12 +2014,12 @@ function buildQuickCompare() {
   var tbl =
     '<table style="width:100%;border-collapse:collapse;font-size:13px;">';
   tbl +=
-    '<thead><tr style="background:#f1f5f9;">' +
-    '<th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">Topic</th>' +
-    '<th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">' +
+    '<thead><tr style="background:var(--cha-bg-muted);">' +
+    '<th style="padding:10px 12px;text-align:left;font-weight:700;color:var(--cha-text-secondary);border-bottom:2px solid var(--cha-border-default);">Topic</th>' +
+    '<th style="padding:10px 12px;text-align:left;font-weight:700;color:var(--cha-text-secondary);border-bottom:2px solid var(--cha-border-default);">' +
     escHTML(pA.name) +
     '</th>' +
-    '<th style="padding:10px 12px;text-align:left;font-weight:700;color:#475569;border-bottom:2px solid #e2e8f0;">' +
+    '<th style="padding:10px 12px;text-align:left;font-weight:700;color:var(--cha-text-secondary);border-bottom:2px solid var(--cha-border-default);">' +
     escHTML(pB.name) +
     '</th></tr></thead><tbody>';
 
@@ -2028,17 +2028,17 @@ function buildQuickCompare() {
     var sB = _compLookup(pB, topics[t]);
     tbl += '<tr>';
     tbl +=
-      '<td style="padding:10px 12px;font-weight:600;color:#1e293b;border-bottom:1px solid #f1f5f9;">' +
+      '<td style="padding:10px 12px;font-weight:600;color:var(--cha-text-primary);border-bottom:1px solid var(--cha-border-subtle);">' +
       topics[t] +
       '</td>';
     tbl +=
-      '<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;' +
+      '<td style="padding:10px 12px;border-bottom:1px solid var(--cha-border-subtle);' +
       _compCellStyle(sA.status) +
       '">' +
       escHTML(sA.text) +
       '</td>';
     tbl +=
-      '<td style="padding:10px 12px;border-bottom:1px solid #f1f5f9;' +
+      '<td style="padding:10px 12px;border-bottom:1px solid var(--cha-border-subtle);' +
       _compCellStyle(sB.status) +
       '">' +
       escHTML(sB.text) +
@@ -2052,15 +2052,15 @@ function buildQuickCompare() {
 function renderCompare() {
   // ── Quick Compare Card ──
   var qcHtml =
-    '<div style="background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:16px;">';
+    '<div style="background:var(--cha-bg-card);border:1.5px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:16px;">';
   qcHtml +=
-    '<div style="font-size:15px;font-weight:800;color:#1e293b;margin-bottom:12px;">Quick Compare</div>';
+    '<div style="font-size:15px;font-weight:800;color:var(--cha-text-primary);margin-bottom:12px;">Quick Compare</div>';
   qcHtml +=
     '<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;margin-bottom:14px;">';
   qcHtml +=
-    '<div style="flex:1;min-width:140px;"><label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Plan A</label>';
+    '<div style="flex:1;min-width:140px;"><label style="font-size:11px;font-weight:700;color:var(--cha-text-tertiary);display:block;margin-bottom:4px;">Plan A</label>';
   qcHtml +=
-    '<select id="qc-plan-a" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#1e293b;background:var(--cha-bg-muted);">';
+    '<select id="qc-plan-a" style="width:100%;padding:8px 10px;border:1px solid var(--cha-border-default);border-radius:8px;font-size:13px;color:var(--cha-text-primary);background:var(--cha-bg-muted);">';
   qcHtml += '<option value="">Select...</option>';
   for (var qi = 0; qi < PLANS.length; qi++) {
     qcHtml +=
@@ -2068,9 +2068,9 @@ function renderCompare() {
   }
   qcHtml += '</select></div>';
   qcHtml +=
-    '<div style="flex:1;min-width:140px;"><label style="font-size:11px;font-weight:700;color:#64748b;display:block;margin-bottom:4px;">Plan B</label>';
+    '<div style="flex:1;min-width:140px;"><label style="font-size:11px;font-weight:700;color:var(--cha-text-tertiary);display:block;margin-bottom:4px;">Plan B</label>';
   qcHtml +=
-    '<select id="qc-plan-b" style="width:100%;padding:8px 10px;border:1px solid #e2e8f0;border-radius:8px;font-size:13px;color:#1e293b;background:var(--cha-bg-muted);">';
+    '<select id="qc-plan-b" style="width:100%;padding:8px 10px;border:1px solid var(--cha-border-default);border-radius:8px;font-size:13px;color:var(--cha-text-primary);background:var(--cha-bg-muted);">';
   qcHtml += '<option value="">Select...</option>';
   for (var qj = 0; qj < PLANS.length; qj++) {
     qcHtml +=
@@ -2338,7 +2338,7 @@ function renderNetworkexplainer() {
 
   // Simple how billing works — no scripts
   html +=
-    '<div style="background:#FFFFFF;border:1px solid #E8EBF5;border-radius:12px;padding:20px;margin-bottom:20px;">';
+    '<div style="background:var(--cha-bg-card);border:1px solid var(--cha-border-default);border-radius:12px;padding:20px;margin-bottom:20px;">';
   html +=
     '<div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--charcoal3);margin-bottom:14px;">How It Works — Simple Version</div>';
   html += '<div style="display:flex;flex-direction:column;gap:10px;">';
@@ -2412,7 +2412,7 @@ function renderNetworkexplainer() {
       '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">';
     n.plans.forEach(function (p) {
       html +=
-        '<span style="background:#FFFFFF;border:1px solid ' +
+        '<span style="background:var(--cha-bg-card);border:1px solid ' +
         n.color +
         '44;border-radius:12px;padding:4px 12px;font-size:12px;color:' +
         n.color +
@@ -2424,7 +2424,7 @@ function renderNetworkexplainer() {
 
     // Provider search
     html +=
-      '<div style="background:#FFFFFF;border-radius:12px;padding:12px 14px;margin-bottom:8px;">';
+      '<div style="background:var(--cha-bg-muted);border-radius:12px;padding:12px 14px;margin-bottom:8px;">';
     html +=
       '<div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--warmgray3);margin-bottom:4px;">HOW TO FIND A PROVIDER</div>';
     html +=
