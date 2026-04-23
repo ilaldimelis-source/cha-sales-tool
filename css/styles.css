@@ -8575,11 +8575,14 @@ body.dark-mode .term-card p,
 body.dark-mode .flow-content p,
 body.dark-mode .checklist-item label,
 body.dark-mode .plan-info-item span,
-body.dark-mode .academy-tone-tip p,
+body.dark-mode .academy-tone-tip p {
+  color: var(--cha-text-secondary) !important;
+}
+body.dark-mode .intro-bubble p,
 body.dark-mode .academy-fixed-benefits-callout p,
 body.dark-mode .pro-tip-content p,
 body.dark-mode .pro-tip-content .tip-label {
-  color: var(--cha-text-secondary) !important;
+  color: var(--cha-text-primary) !important;
 }
 body.dark-mode .lesson-card.completed,
 body.dark-mode .lesson-card.current,
@@ -8597,8 +8600,6 @@ body.dark-mode .ref-objection-item {
   border-color: var(--cha-border-default) !important;
 }
 body.dark-mode .plan-type-header.mec,
-body.dark-mode .plan-type-header.stm,
-body.dark-mode .plan-type-header.indemnity,
 body.dark-mode .compare-card.aca,
 body.dark-mode .compare-card.private,
 body.dark-mode .tonality-card.down,
@@ -8608,6 +8609,36 @@ body.dark-mode .plan-info-card,
 body.dark-mode .ref-number-card {
   background: var(--cha-bg-surface) !important;
   border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .plan-type-header.mec {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+}
+body.dark-mode .plan-type-header.stm {
+  background: rgba(148, 163, 184, 0.16) !important;
+  border-color: rgba(148, 163, 184, 0.3) !important;
+}
+body.dark-mode .plan-type-header.indemnity {
+  background: rgba(34, 197, 94, 0.15) !important;
+  border-color: rgba(34, 197, 94, 0.3) !important;
+}
+body.dark-mode .plan-features li {
+  color: var(--cha-text-primary) !important;
+}
+body.dark-mode .plan-features li svg,
+body.dark-mode .plan-features li i {
+  color: var(--cha-accent) !important;
+}
+body.dark-mode .lesson-detail-header,
+body.dark-mode .day-header {
+  background: var(--cha-bg-surface) !important;
+}
+body.dark-mode .lesson-detail-header h3,
+body.dark-mode .day-header p {
+  color: var(--cha-text-primary) !important;
+}
+body.dark-mode .day-header-icon {
+  background: rgba(59, 130, 246, 0.15) !important;
 }
 body.dark-mode .benefits-panel {
   background: var(--cha-bg-card) !important;
