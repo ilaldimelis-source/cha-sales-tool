@@ -4843,28 +4843,13 @@ select {
 
 /* ══════════════════════════════════════════════════════
    DARK MODE
-   Applied via body.dark-mode. Overrides the CSS variables
-   defined in :root so every component that already uses
-   var(--bg-*, --text-*, --border) switches automatically.
-   Accent colors stay the same so the brand is consistent.
+   Applied via body.dark-mode. cha-* tokens live in css/tokens.css
+   ([data-theme="dark"], body.dark-mode). This file maps legacy
+   --bg-*, --text-*, --border, etc. so older components switch theme.
    ══════════════════════════════════════════════════════ */
 
 body.dark-mode {
-  /* Align cha-* tokens with body.dark-mode (tokens.css only had [data-theme="dark"]). */
-  --cha-bg-page: #0f172a;
-  --cha-bg-card: #1e293b;
-  --cha-bg-surface: #334155;
-  --cha-bg-muted: #475569;
-  --cha-border-subtle: rgba(255, 255, 255, 0.08);
-  --cha-border-default: rgba(255, 255, 255, 0.12);
-  --cha-border-strong: rgba(255, 255, 255, 0.2);
-  --cha-text-primary: #f1f5f9;
-  --cha-text-secondary: #cbd5e1;
-  --cha-text-tertiary: #94a3b8;
-  --cha-accent: #2563EB;
-  --cha-accent-hover: #1D4ED8;
-  --cha-accent-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-  --cha-accent-soft: rgba(37, 99, 235, 0.15);
+  /* cha-* surface/text/accent tokens: css/tokens.css ([data-theme="dark"], body.dark-mode). */
 
   --bg-page: #0c111d;
   --bg-card: #1e293b;
@@ -7963,10 +7948,6 @@ body.dark-mode {
   --text-tertiary: #6b7185;
   --accent: #7ba4f5;
   --accent-soft: rgba(123, 164, 245, 0.16);
-  --cha-accent: #2563EB;
-  --cha-accent-hover: #1D4ED8;
-  --cha-accent-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-  --cha-accent-soft: rgba(37, 99, 235, 0.15);
   --sidebar-bg: #1a1c23;
   --sidebar-text: #e5e7eb;
   --bg-card: var(--bg-surface);
@@ -9074,6 +9055,45 @@ body.dark-mode #page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy {
 @media (max-width: 640px) {
   #page-dashboard #dashPlanLookupMount .dash-lookup-card--option-d {
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  }
+}
+
+/* ── Roadmap: responsive polish (tablet / phone) ── */
+@media (max-width: 768px) {
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 60px;
+    row-gap: 8px;
+    padding-bottom: 10px;
+  }
+  .sw {
+    flex: 1 1 160px;
+    min-width: 0;
+  }
+  .dash-lookup-actions-embedded {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dash-lookup-actions-embedded .dash-lookup-provider,
+  .dash-lookup-actions-embedded .dash-lookup-copy {
+    min-height: 44px;
+  }
+  #page-live .la-nav-grid {
+    grid-template-columns: 1fr;
+  }
+  .content {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  #page-dashboard .ph .pt {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .dash-lookup-grid {
+    grid-template-columns: 1fr;
   }
 }
 
