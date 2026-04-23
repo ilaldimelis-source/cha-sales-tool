@@ -9228,6 +9228,21 @@ body.dark-mode #page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy {
   }
 }
 
+/* Dark contrast: placeholders + card subtitles (tokens only; light unchanged) */
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: var(--cha-text-secondary);
+  opacity: 0.88;
+}
+
+body.dark-mode .dash-desc,
+body.dark-mode .trn-home-desc,
+body.dark-mode .la-nav-desc,
+body.dark-mode .fav-card-desc,
+body.dark-mode .dash-ref-text {
+  color: var(--cha-text-secondary);
+}
+
 html,
 body {
   background-color: var(--cha-bg-page) !important;
