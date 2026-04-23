@@ -24,6 +24,7 @@
     "rag:setup": "node scripts/setup-rag.js",
     "rag:verify": "node scripts/verify-rag.js",
     "verify": "node scripts/verify.js",
+    "plan-check": "node scripts/check-plan-sync.js",
     "diagnose": "node scripts/diagnose.js",
     "postinstall": "node scripts/install-hooks.js",
     "revert": "git revert HEAD --no-edit && git push origin main"

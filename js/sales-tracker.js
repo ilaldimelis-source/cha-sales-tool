@@ -832,8 +832,16 @@ function _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe) {
 //   receiptTotal:  number,
 //   enrollmentFee: number (sum of any one-time enrollment fees),
 //   customer:      string,
-//   agent:         string
+//   agent:         string,
+//   saleDate:      Date|null
 // }
+// Date semantics:
+// - saleDate is the parsed "date sold" signal from receipt text
+//   (Confirmation Date / Date line). Save flows convert this to
+//   persisted sale.ts for week/day/paycheck attribution.
+// - Policy effective/active date may be present in receipt text or
+//   product metadata, but is NOT persisted as a separate top-level
+//   field on saved sales rows today.
 function _stParseReceipt(text, useGroq) {
   var out = {
     products: [],
@@ -2520,9 +2528,13 @@ function _stValidateSalesIntegrity(sales) {
   return sales;
 }
 
-// Confirm a post-date: move it out of the postdates list and
-// into the main sales list with ts set to the billing day (at
-// 9am local so it sorts sensibly among the day's entries).
+/**
+ * Confirm a post-dated sale: remove it from `cha_postdates` and append
+ * a normal sales row. `billDate` (ISO day on the post-date row) becomes
+ * the new row's `ts` (billing calendar day at 9:00 local for stable
+ * sorting). After that, stats and paycheck logic treat it like any other
+ * sale keyed by `ts`.
+ */
 function _stConfirmPostDate(id) {
   var pds = _stLoadPostDates();
   var idx = -1;
@@ -2660,9 +2672,19 @@ function _stFlash(msg, kind) {
 }
 
 // ── STATS CALCULATION ───────────────────────────────────────
-// Only counts sales with status === 'valid'. Cancelled and
-// chargeback sales stay on the table for records but don't count
-// toward bonus or stats totals.
+/**
+ * Compute week/day tracker stats from persisted sales rows.
+ *
+ * Time model:
+ * - `s.ts` is the source-of-truth dateSold timestamp (ms) used for
+ *   weekly attribution, day buckets, and paycheck period rollups.
+ * - A separate persisted effectiveDate/activeDate is not currently
+ *   stored on sales rows; it remains in receipt text if needed.
+ * - Post-dated rows live in `cha_postdates` with `billDate` until
+ *   confirmation writes a normal sales row with `ts`.
+ * - Week-at-a-glance day cells (`_stBuildWeekAtGlanceSection`) read
+ *   `stats.dayBuckets` built here, so they use the same `s.ts` model.
+ */
 function _stCalcStats(sales) {
   var now = new Date();
   var weekStartDate = _stStartOfWeek(now);
@@ -2819,6 +2841,14 @@ function _stCurrentTierBonus(stats) {
   return bonus;
 }
 
+/**
+ * Build paycheck breakdown for the current stats.weekStart window.
+ *
+ * Uses persisted `s.ts` (dateSold timestamp) for inclusion. There is
+ * no separate persisted effectiveDate field in this calculation path.
+ * Post-dated items only appear here after `_stConfirmPostDate`, when
+ * their `billDate` has been written into `ts` on a normal sales row.
+ */
 function _stPaycheckBreakdown(sales, stats) {
   var dealComm = 0;
   var addonComm = 0;
@@ -4650,6 +4680,14 @@ function _stBuildPaycheckHeroSection(sales, stats) {
   return html;
 }
 
+/**
+ * Render the week-at-a-glance day cells from stats.dayBuckets.
+ *
+ * Buckets are generated from persisted `s.ts` (dateSold timestamp), so
+ * this section follows paycheck attribution dates rather than a separate
+ * policy effective date. Policy active/effective dates from receipts are
+ * not modeled as their own persisted field on sales rows.
+ */
 function _stBuildWeekAtGlanceSection(stats) {
   var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
   var today = new Date();
