@@ -3827,12 +3827,12 @@ function _stBuildTable(sales) {
     (selectedCount ? 'display:flex;' : 'display:none;') +
     '"><span id="st-bulk-count">' +
     selectedCount +
-    ' selected</span><span class="st-bulk-actions"><button type="button" class="st-bulk-del" onclick="_stBulkDelete()">Delete</button><button type="button" class="st-bulk-can" onclick="_stBulkClear()">Cancel</button></span></div>';
+    ' selected</span><span class="st-bulk-actions"><button type="button" class="st-bulk-del">Delete</button><button type="button" class="st-bulk-can">Cancel</button></span></div>';
 
   html += '<div class="st-compact-table-wrap">';
   html += '<div class="st-compact-head">';
   html +=
-    '<span class="st-cch st-cch-cb"><input type="checkbox" class="st-bulk-all" aria-label="Select all" onchange="_stBulkToggleAll(this.checked)"></span>';
+    '<span class="st-cch st-cch-cb"><input type="checkbox" class="st-bulk-all" aria-label="Select all"></span>';
   html += '<span class="st-cch st-cch-dt">Date</span>';
   html += '<span class="st-cch st-cch-cp">Client · plan</span>';
   html += '<span class="st-cch st-cch-pr">Premium</span>';
@@ -3861,7 +3861,7 @@ function _stBuildTable(sales) {
         _stEscape(lid2) +
         '"' +
         (_stSelectedIds[lid2] ? ' checked' : '') +
-        ' onchange="_stToggleSaleSelectionFromCb(this)"></span>';
+        '></span>';
       html +=
         '<span class="st-cdt muted">' +
         _stEscape(_stFormatSaleShortDate(_stGroupListTs(grp))) +
@@ -4709,9 +4709,11 @@ function _stBuildWeekAtGlanceSection(stats) {
     ' deals logged</span></div>';
   html += '<div class="st-glance-days">';
   for (var d = 0; d < 5; d++) {
-    var bucket = stats.dayBuckets[d] || { date: null, amount: 0 };
+    var bucket = stats.dayBuckets[d] || { date: null, amount: 0, dealCount: 0 };
     var isToday = d === todayBucketIdx;
     var amt = Number(bucket.amount) || 0;
+    var dealN = Number(bucket.dealCount) || 0;
+    var dealLine = dealN === 1 ? '1 deal' : dealN + ' deals';
     var dateStr = '';
     if (bucket.date) {
       dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
@@ -4726,6 +4728,7 @@ function _stBuildWeekAtGlanceSection(stats) {
       (isToday ? 'TODAY' : dayNames[d]) +
       (dateStr ? ' <span class="st-glance-day-dt">' + dateStr + '</span>' : '') +
       '</div>';
+    html += '<div class="st-glance-day-deals">' + dealLine + '</div>';
     html += '<div class="st-glance-day-amt">' + _stFmtMoney(amt) + '</div>';
     html += '</div>';
   }
@@ -5136,7 +5139,40 @@ function _stRender() {
       _stSetAddSalePanelOpen(false);
     });
   }
+  _stWireSalesBulkDelegation(page);
   _stWirePaycheckObserver();
+}
+
+// One delegated click/change listener on #page-salestracker so bulk
+// actions do not rely on per-render inline handlers (avoids double-fire
+// and stray handler quirks after innerHTML refresh).
+function _stWireSalesBulkDelegation(page) {
+  if (!page || page.dataset.stBulkDeleg) return;
+  page.dataset.stBulkDeleg = '1';
+  page.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    if (t.closest('.st-bulk-del')) {
+      e.preventDefault();
+      _stBulkDelete();
+      return;
+    }
+    if (t.closest('.st-bulk-can')) {
+      e.preventDefault();
+      _stBulkClear();
+    }
+  });
+  page.addEventListener('change', function (e) {
+    var el = e.target;
+    if (!el || !el.classList) return;
+    if (el.classList.contains('st-bulk-cb')) {
+      _stToggleSaleSelectionFromCb(el);
+      return;
+    }
+    if (el.classList.contains('st-bulk-all')) {
+      _stBulkToggleAll(!!el.checked);
+    }
+  });
 }
 
 function _stWirePaycheckObserver() {
