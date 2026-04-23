@@ -4843,28 +4843,13 @@ select {
 
 /* ══════════════════════════════════════════════════════
    DARK MODE
-   Applied via body.dark-mode. Overrides the CSS variables
-   defined in :root so every component that already uses
-   var(--bg-*, --text-*, --border) switches automatically.
-   Accent colors stay the same so the brand is consistent.
+   Applied via body.dark-mode. cha-* tokens live in css/tokens.css
+   ([data-theme="dark"], body.dark-mode). This file maps legacy
+   --bg-*, --text-*, --border, etc. so older components switch theme.
    ══════════════════════════════════════════════════════ */
 
 body.dark-mode {
-  /* Align cha-* tokens with body.dark-mode (tokens.css only had [data-theme="dark"]). */
-  --cha-bg-page: #0f172a;
-  --cha-bg-card: #1e293b;
-  --cha-bg-surface: #334155;
-  --cha-bg-muted: #475569;
-  --cha-border-subtle: rgba(255, 255, 255, 0.08);
-  --cha-border-default: rgba(255, 255, 255, 0.12);
-  --cha-border-strong: rgba(255, 255, 255, 0.2);
-  --cha-text-primary: #f1f5f9;
-  --cha-text-secondary: #cbd5e1;
-  --cha-text-tertiary: #94a3b8;
-  --cha-accent: #2563EB;
-  --cha-accent-hover: #1D4ED8;
-  --cha-accent-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-  --cha-accent-soft: rgba(37, 99, 235, 0.15);
+  /* cha-* surface/text/accent tokens: css/tokens.css ([data-theme="dark"], body.dark-mode). */
 
   --bg-page: #0c111d;
   --bg-card: #1e293b;
@@ -7963,10 +7948,6 @@ body.dark-mode {
   --text-tertiary: #6b7185;
   --accent: #7ba4f5;
   --accent-soft: rgba(123, 164, 245, 0.16);
-  --cha-accent: #2563EB;
-  --cha-accent-hover: #1D4ED8;
-  --cha-accent-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-  --cha-accent-soft: rgba(37, 99, 235, 0.15);
   --sidebar-bg: #1a1c23;
   --sidebar-text: #e5e7eb;
   --bg-card: var(--bg-surface);
@@ -8538,6 +8519,106 @@ body.dark-mode [style*='border: 2px solid #E5E7EB'] {
   border-color: var(--border-default) !important;
 }
 
+/* Final sweep: force remaining training/live/dashboard light surfaces to dark tokens. */
+body.dark-mode .dash-cc-card,
+body.dark-mode .dash-cc-card-weekly,
+body.dark-mode .dash-cc-card-actions {
+  background: var(--cha-bg-card) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .dash-lookup-copy,
+body.dark-mode #page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy {
+  background: var(--cha-bg-muted) !important;
+  color: var(--cha-text-primary) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .day-card,
+body.dark-mode .day-content,
+body.dark-mode .lesson-card,
+body.dark-mode .lesson-detail-body,
+body.dark-mode .script-block,
+body.dark-mode .script-header,
+body.dark-mode .script-body,
+body.dark-mode .plan-features,
+body.dark-mode .best-for,
+body.dark-mode .term-card,
+body.dark-mode .objection-card,
+body.dark-mode .objection-header,
+body.dark-mode .objection-body,
+body.dark-mode .checklist-item,
+body.dark-mode .ref-card,
+body.dark-mode .ref-plan-select,
+body.dark-mode .ref-card-body,
+body.dark-mode .academy-tone-tip,
+body.dark-mode .academy-fixed-benefits-callout,
+body.dark-mode .pro-tip {
+  background: var(--cha-bg-card) !important;
+  color: var(--cha-text-primary) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .day-card h3,
+body.dark-mode .day-header h2,
+body.dark-mode .lesson-info h4,
+body.dark-mode .plan-type-header h4,
+body.dark-mode .ref-card-title,
+body.dark-mode .flow-content h4,
+body.dark-mode .plan-info-item strong {
+  color: var(--cha-text-primary) !important;
+}
+body.dark-mode .day-card .day-desc,
+body.dark-mode .day-status,
+body.dark-mode .lesson-info p,
+body.dark-mode .lesson-time,
+body.dark-mode .script-body,
+body.dark-mode .best-for,
+body.dark-mode .term-card p,
+body.dark-mode .flow-content p,
+body.dark-mode .checklist-item label,
+body.dark-mode .plan-info-item span,
+body.dark-mode .academy-tone-tip p,
+body.dark-mode .academy-fixed-benefits-callout p,
+body.dark-mode .pro-tip-content p,
+body.dark-mode .pro-tip-content .tip-label {
+  color: var(--cha-text-secondary) !important;
+}
+body.dark-mode .lesson-card.completed,
+body.dark-mode .lesson-card.current,
+body.dark-mode .lesson-card.available,
+body.dark-mode .lesson-card:hover,
+body.dark-mode .intro-bubble,
+body.dark-mode .fill-in,
+body.dark-mode .branch.hesitant,
+body.dark-mode .script-callout.dont-wait,
+body.dark-mode .disclosure-item,
+body.dark-mode .knockout-list,
+body.dark-mode .never-say-item,
+body.dark-mode .ref-objection-item {
+  background: var(--cha-bg-muted) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .plan-type-header.mec,
+body.dark-mode .plan-type-header.stm,
+body.dark-mode .plan-type-header.indemnity,
+body.dark-mode .compare-card.aca,
+body.dark-mode .compare-card.private,
+body.dark-mode .tonality-card.down,
+body.dark-mode .tonality-card.up,
+body.dark-mode .tonality-card.neutral,
+body.dark-mode .plan-info-card,
+body.dark-mode .ref-number-card {
+  background: var(--cha-bg-surface) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .benefits-panel {
+  background: var(--cha-bg-card) !important;
+}
+body.dark-mode .benefits-content {
+  background: var(--cha-bg-card) !important;
+}
+body.dark-mode .benefits-tab.active {
+  background: var(--cha-bg-surface) !important;
+}
+
 @media (max-width: 1100px) {
   .dash-grid-compact:not(.dash-grid-jump) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -9074,6 +9155,45 @@ body.dark-mode #page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy {
 @media (max-width: 640px) {
   #page-dashboard #dashPlanLookupMount .dash-lookup-card--option-d {
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  }
+}
+
+/* ── Roadmap: responsive polish (tablet / phone) ── */
+@media (max-width: 768px) {
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 60px;
+    row-gap: 8px;
+    padding-bottom: 10px;
+  }
+  .sw {
+    flex: 1 1 160px;
+    min-width: 0;
+  }
+  .dash-lookup-actions-embedded {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .dash-lookup-actions-embedded .dash-lookup-provider,
+  .dash-lookup-actions-embedded .dash-lookup-copy {
+    min-height: 44px;
+  }
+  #page-live .la-nav-grid {
+    grid-template-columns: 1fr;
+  }
+  .content {
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  #page-dashboard .ph .pt {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .dash-lookup-grid {
+    grid-template-columns: 1fr;
   }
 }
 
