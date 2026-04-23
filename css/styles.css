@@ -8519,6 +8519,106 @@ body.dark-mode [style*='border: 2px solid #E5E7EB'] {
   border-color: var(--border-default) !important;
 }
 
+/* Final sweep: force remaining training/live/dashboard light surfaces to dark tokens. */
+body.dark-mode .dash-cc-card,
+body.dark-mode .dash-cc-card-weekly,
+body.dark-mode .dash-cc-card-actions {
+  background: var(--cha-bg-card) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .dash-lookup-copy,
+body.dark-mode #page-dashboard .dash-lookup-actions-embedded .dash-lookup-copy {
+  background: var(--cha-bg-muted) !important;
+  color: var(--cha-text-primary) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .day-card,
+body.dark-mode .day-content,
+body.dark-mode .lesson-card,
+body.dark-mode .lesson-detail-body,
+body.dark-mode .script-block,
+body.dark-mode .script-header,
+body.dark-mode .script-body,
+body.dark-mode .plan-features,
+body.dark-mode .best-for,
+body.dark-mode .term-card,
+body.dark-mode .objection-card,
+body.dark-mode .objection-header,
+body.dark-mode .objection-body,
+body.dark-mode .checklist-item,
+body.dark-mode .ref-card,
+body.dark-mode .ref-plan-select,
+body.dark-mode .ref-card-body,
+body.dark-mode .academy-tone-tip,
+body.dark-mode .academy-fixed-benefits-callout,
+body.dark-mode .pro-tip {
+  background: var(--cha-bg-card) !important;
+  color: var(--cha-text-primary) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .day-card h3,
+body.dark-mode .day-header h2,
+body.dark-mode .lesson-info h4,
+body.dark-mode .plan-type-header h4,
+body.dark-mode .ref-card-title,
+body.dark-mode .flow-content h4,
+body.dark-mode .plan-info-item strong {
+  color: var(--cha-text-primary) !important;
+}
+body.dark-mode .day-card .day-desc,
+body.dark-mode .day-status,
+body.dark-mode .lesson-info p,
+body.dark-mode .lesson-time,
+body.dark-mode .script-body,
+body.dark-mode .best-for,
+body.dark-mode .term-card p,
+body.dark-mode .flow-content p,
+body.dark-mode .checklist-item label,
+body.dark-mode .plan-info-item span,
+body.dark-mode .academy-tone-tip p,
+body.dark-mode .academy-fixed-benefits-callout p,
+body.dark-mode .pro-tip-content p,
+body.dark-mode .pro-tip-content .tip-label {
+  color: var(--cha-text-secondary) !important;
+}
+body.dark-mode .lesson-card.completed,
+body.dark-mode .lesson-card.current,
+body.dark-mode .lesson-card.available,
+body.dark-mode .lesson-card:hover,
+body.dark-mode .intro-bubble,
+body.dark-mode .fill-in,
+body.dark-mode .branch.hesitant,
+body.dark-mode .script-callout.dont-wait,
+body.dark-mode .disclosure-item,
+body.dark-mode .knockout-list,
+body.dark-mode .never-say-item,
+body.dark-mode .ref-objection-item {
+  background: var(--cha-bg-muted) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .plan-type-header.mec,
+body.dark-mode .plan-type-header.stm,
+body.dark-mode .plan-type-header.indemnity,
+body.dark-mode .compare-card.aca,
+body.dark-mode .compare-card.private,
+body.dark-mode .tonality-card.down,
+body.dark-mode .tonality-card.up,
+body.dark-mode .tonality-card.neutral,
+body.dark-mode .plan-info-card,
+body.dark-mode .ref-number-card {
+  background: var(--cha-bg-surface) !important;
+  border-color: var(--cha-border-default) !important;
+}
+body.dark-mode .benefits-panel {
+  background: var(--cha-bg-card) !important;
+}
+body.dark-mode .benefits-content {
+  background: var(--cha-bg-card) !important;
+}
+body.dark-mode .benefits-tab.active {
+  background: var(--cha-bg-surface) !important;
+}
+
 @media (max-width: 1100px) {
   .dash-grid-compact:not(.dash-grid-jump) {
     grid-template-columns: repeat(2, minmax(0, 1fr));

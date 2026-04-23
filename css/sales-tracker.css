@@ -3074,6 +3074,25 @@
   }
 }
 
+/* Final dark-mode sweep: ensure week glance wrappers/stats/empty cards are not white. */
+body.dark-mode .st-week-glance,
+body.dark-mode .st-week-glance-unified,
+body.dark-mode .st-glance-stat,
+body.dark-mode .st-paycheck-card {
+  background: var(--cha-bg-card);
+  border-color: var(--cha-border-default);
+}
+body.dark-mode .st-glance-day {
+  background: var(--cha-bg-muted);
+  border-color: var(--cha-border-default);
+}
+body.dark-mode .st-sales-log .st-empty,
+body.dark-mode .st-empty {
+  background: var(--cha-bg-muted);
+  border-color: var(--cha-border-default);
+  color: var(--cha-text-secondary);
+}
+
 @media (max-width: 768px) {
   .st-paycheck-hero.st-paycheck-hero--compact,
   .st-paycheck-hero--compact {
