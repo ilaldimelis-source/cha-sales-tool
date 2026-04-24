@@ -1998,6 +1998,7 @@ function _stAutoDetectAndAdd() {
   }
 
   if (!parsedChunks.length) {
+    _stSetAddSalePanelOpen(false);
     _stOpenEntryModal({
       mode: 'create',
       previewText: text,
@@ -2018,6 +2019,7 @@ function _stAutoDetectAndAdd() {
     }
   }
   if (!hasCustomerDetected) {
+    _stSetAddSalePanelOpen(false);
     _stOpenEntryModal({
       mode: 'create',
       previewText: text,
@@ -2152,6 +2154,7 @@ function _stAutoDetectAndAdd() {
 
   input.value = '';
   _stResetPostDateInputs();
+  _stSetAddSalePanelOpen(false);
   _stRender();
   if (flashItems.length) {
     _stFlashSequence(flashItems);
@@ -2229,6 +2232,7 @@ function _stAddSale(saleType) {
 
   input.value = '';
   _stResetPostDateInputs();
+  _stSetAddSalePanelOpen(false);
   _stRender();
   var prefix = billDate
     ? 'Post-dated ' + _stFormatBillDate(billDate) + ': '
@@ -2930,7 +2934,7 @@ function _stBuildInput() {
   html +=
     '<button type="button" id="st-btn-auto-detect" class="st-add-deal" onclick="_stAutoDetectAndAdd()">Auto-detect &amp; Add</button>';
   html +=
-    '<button type="button" id="st-btn-enter-manually" class="st-add-addon st-input-link" onclick="_stOpenEntryModal({mode:\'create\', initial:{dateSold:_stTodayIso(), enrollmentFee:125}})">Enter manually</button>';
+    '<button type="button" id="st-btn-enter-manually" class="st-add-addon st-input-link" onclick="_stSetAddSalePanelOpen(false);_stOpenEntryModal({mode:\'create\', initial:{dateSold:_stTodayIso(), enrollmentFee:125}})">Enter manually</button>';
   html +=
     '<button type="button" id="st-btn-add-deal" class="st-add-addon st-input-link" onclick="_stAddSale(\'deal\')">Add as Deal</button>';
   html +=
@@ -2942,10 +2946,12 @@ function _stBuildInput() {
 
 function _stSetAddSalePanelOpen(open) {
   var panel = document.getElementById('st-add-sale-panel');
-  var btn = document.getElementById('st-add-sale-toggle');
-  if (!panel) return;
-  panel.style.display = open ? 'block' : 'none';
-  if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  var backdrop = document.getElementById('st-add-sale-backdrop');
+  if (!panel || !backdrop) return;
+  _stAddSalePanelOpen = !!open;
+  panel.classList.toggle('open', _stAddSalePanelOpen);
+  backdrop.classList.toggle('open', _stAddSalePanelOpen);
+  _stUpdateFabVisibility();
   if (open) {
     var ta = document.getElementById('st-receipt-input');
     if (ta) {
@@ -2959,13 +2965,15 @@ function _stSetAddSalePanelOpen(open) {
 }
 
 function _stToggleAddSalePanel() {
-  var panel = document.getElementById('st-add-sale-panel');
-  if (!panel) return;
-  var hidden =
-    panel.style.display === 'none' ||
-    panel.style.display === '' ||
-    !panel.style.display;
-  _stSetAddSalePanelOpen(hidden);
+  _stSetAddSalePanelOpen(!_stAddSalePanelOpen);
+}
+
+function _stUpdateFabVisibility() {
+  var fab = document.getElementById('st-add-sale-fab');
+  if (!fab) return;
+  var tab = _stGetSavedTab();
+  var show = (tab === 'thisweek' || tab === 'allsales') && !_stAddSalePanelOpen;
+  fab.style.display = show ? 'flex' : 'none';
 }
 
 function _stTogglePaycheckBreakdown() {
@@ -2983,11 +2991,13 @@ function _stTogglePaycheckBreakdown() {
 
 function _stBuildAddSaleSection() {
   return (
-    '<section class="st-sec st-sec-addsale" aria-label="Add a sale">' +
-    '<button type="button" id="st-add-sale-toggle" class="st-add-sale-toggle" aria-expanded="false" onclick="_stToggleAddSalePanel()"><span class="st-add-sale-icon">+</span><span>Add new sale</span></button>' +
-    '<div id="st-add-sale-panel" class="st-add-sale-panel" style="display:none">' +
+    '<div id="st-add-sale-backdrop" class="st-add-sale-backdrop" onclick="_stSetAddSalePanelOpen(false)" aria-hidden="true"></div>' +
+    '<aside id="st-add-sale-panel" class="st-add-sale-panel" aria-hidden="true">' +
+    '<div class="st-add-sale-panel-head"><h3>Add new sale</h3><button type="button" class="st-add-sale-close" aria-label="Close add sale panel" onclick="_stSetAddSalePanelOpen(false)">×</button></div>' +
+    '<div class="st-add-sale-panel-body">' +
     _stBuildInput() +
-    '</div></section>'
+    '</div></aside>' +
+    '<button type="button" id="st-add-sale-fab" class="st-add-sale-fab" aria-label="Add new sale" onclick="_stSetAddSalePanelOpen(true)"><span>+</span></button>'
   );
 }
 
@@ -3103,6 +3113,7 @@ var _stSelectedIds = {};
 var _stThisWeekExpandedDays = {};
 var _stThisWeekExpandBootstrapped = false;
 var _stActiveTab = 'thisweek';
+var _stAddSalePanelOpen = false;
 
 // Toggle handler: called from the This Week / All Sales
 // buttons at the top of the sales table.
@@ -5227,6 +5238,7 @@ function _stBuildAnalyticsDashboard(sales, stats) {
 function _stRender() {
   var page = document.getElementById('page-salestracker');
   if (!page) return;
+  _stAddSalePanelOpen = false;
   var sales = _stLoadSales();
   sales = _stValidateSalesIntegrity(sales);
   var _dbgSales = _stLoadSales();
@@ -5270,7 +5282,6 @@ function _stRender() {
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
   html += _stBuildPaycheckHeroSection(sales, stats);
-  html += _stBuildAddSaleSection();
   html += _stBuildTable(sales, stTab);
   html += _stBuildPostDatesSection(postdates);
   html += _stBuildFloatingPaycheckBar(sales, stats);
@@ -5289,6 +5300,7 @@ function _stRender() {
     '">';
   html += _stBuildAnalyticsDashboard(sales, stats);
   html += '</div>';
+  html += _stBuildAddSaleSection();
 
   page.innerHTML = html;
   if (!page.dataset.stAddSaleEsc) {
@@ -5296,10 +5308,11 @@ function _stRender() {
     page.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       var panel = document.getElementById('st-add-sale-panel');
-      if (!panel || panel.style.display === 'none') return;
+      if (!panel || !panel.classList.contains('open')) return;
       _stSetAddSalePanelOpen(false);
     });
   }
+  _stUpdateFabVisibility();
   _stWireSalesBulkDelegation(page);
   _stWirePaycheckObserver();
 }
