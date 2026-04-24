@@ -1905,10 +1905,7 @@ function _stSplitReceipts(text) {
       wholeCleaned.push(wlRaw);
     }
     var whole = wholeCleaned.join('\n').trim();
-    if (whole) {
-      console.log('Chunk 0:', whole.substring(0, 80));
-      return [whole];
-    }
+    if (whole) return [whole];
     return [];
   }
 
@@ -1957,13 +1954,7 @@ function _stSplitReceipts(text) {
     }
 
     var chunkText = cleaned.join('\n').trim();
-    if (chunkText) {
-      chunks.push(chunkText);
-      console.log(
-        'Chunk ' + (chunks.length - 1) + ':',
-        chunkText.substring(0, 80)
-      );
-    }
+    if (chunkText) chunks.push(chunkText);
   }
   return chunks;
 }
@@ -2992,8 +2983,8 @@ function _stTogglePaycheckBreakdown() {
 function _stBuildAddSaleSection() {
   return (
     '<div id="st-add-sale-backdrop" class="st-add-sale-backdrop" onclick="_stSetAddSalePanelOpen(false)" aria-hidden="true"></div>' +
-    '<aside id="st-add-sale-panel" class="st-add-sale-panel" aria-hidden="true">' +
-    '<div class="st-add-sale-panel-head"><h3>Add new sale</h3><button type="button" class="st-add-sale-close" aria-label="Close add sale panel" onclick="_stSetAddSalePanelOpen(false)">×</button></div>' +
+    '<aside id="st-add-sale-panel" class="st-add-sale-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="st-add-sale-title">' +
+    '<div class="st-add-sale-panel-head"><h3 id="st-add-sale-title">Add new sale</h3><button type="button" class="st-add-sale-close" aria-label="Close add sale panel" onclick="_stSetAddSalePanelOpen(false)">×</button></div>' +
     '<div class="st-add-sale-panel-body">' +
     _stBuildInput() +
     '</div></aside>' +
@@ -5333,33 +5324,6 @@ function _stRender() {
   _stAddSalePanelOpen = false;
   var sales = _stLoadSales();
   sales = _stValidateSalesIntegrity(sales);
-  var _dbgSales = _stLoadSales();
-  console.log(
-    '[DIAG] All sales:',
-    JSON.stringify(
-      _dbgSales.map(function (s) {
-        return {
-          id: s.id,
-          type: s.type,
-          customer: s.customer,
-          plan: s.plan || s.policy,
-          receiptId: s.receiptId,
-          amount: s.amount || s.policyAmount
-        };
-      }),
-      null,
-      2
-    )
-  );
-  // ── DEBUG: trace how many sales _stRender sees at paint
-  // time to diagnose the persistence bug.
-  var _dbgRenderUser = _stGetCurrentUser();
-  console.log(
-    '_stRender loaded',
-    sales.length,
-    'sales for user',
-    _dbgRenderUser ? _dbgRenderUser.id : '(no user)'
-  );
   var postdates = _stLoadPostDates();
   var stats = _stCalcStats(sales);
   var stTab = _stGetSavedTab();
