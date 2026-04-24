@@ -3098,6 +3098,11 @@ var _stTableFilter = 'week';
 // page reload and whenever the user flips out of 'all' mode.
 var _stSelectedIds = {};
 
+// This Week day-group expand: day anchor ms -> true when expanded.
+// Bootstrapped once on first This Week paint; reset when switching subtabs.
+var _stThisWeekExpandedDays = {};
+var _stThisWeekExpandBootstrapped = false;
+
 // Toggle handler: called from the This Week / All Sales
 // buttons at the top of the sales table.
 function _stSetTableFilter(mode) {
@@ -3609,105 +3614,177 @@ function _stRenderSaleGroupCard(g, isAll) {
   return parts.join('');
 }
 
-function _stRenderWeekCompactCard(g) {
+function _stDayAnchorMs(ts) {
+  return _stStartOfDay(new Date(ts)).getTime();
+}
+
+function _stToggleThisWeekDay(anchorMs) {
+  var k = String(anchorMs);
+  if (_stThisWeekExpandedDays[k]) {
+    delete _stThisWeekExpandedDays[k];
+  } else {
+    _stThisWeekExpandedDays[k] = true;
+  }
+  _stRender();
+}
+
+function _stThisWeekDayKeyDown(e, anchorMs) {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  e.preventDefault();
+  _stToggleThisWeekDay(anchorMs);
+}
+
+function _stPruneThisWeekExpandedDays(validKeysArr) {
+  var ok = {};
+  for (var i = 0; i < validKeysArr.length; i++) {
+    ok[String(validKeysArr[i])] = true;
+  }
+  for (var ex in _stThisWeekExpandedDays) {
+    if (_stThisWeekExpandedDays.hasOwnProperty(ex) && !ok[ex]) {
+      delete _stThisWeekExpandedDays[ex];
+    }
+  }
+}
+
+function _stRenderThisWeekSubRow(g) {
   var lead = g.deal || (g.addons.length ? g.addons[0] : null);
   if (!lead) return '';
   var st = _stGroupListStatus(g);
-  var ts = _stGroupListTs(g);
-  var dateLabel = _stWeekCardDateLabel(ts);
   var lid = String(lead.id);
-  var pillLabel = g.deal ? 'DEAL' : 'ADD-ON';
-  var pillClass = g.deal ? 'st-week-deal-pill' : 'st-week-deal-pill st-week-pill-addon';
-  var actions =
-    '<div class="st-week-card-actions">' +
-    '<button type="button" class="st-week-card-icon" title="Edit" aria-label="Edit" onclick="event.stopPropagation();_stOpenCommissionEditor(\'' +
+  var planLine = _stEscape(lead.plan || '—');
+  if (g.deal && g.addons.length) {
+    planLine +=
+      ' · +' +
+      g.addons.length +
+      ' add-on' +
+      (g.addons.length === 1 ? '' : 's');
+  }
+  var commAmt = g.deal
+    ? Number(g.deal.expectedDealTotal) || 0
+    : _stGroupCommissionDisplay(g);
+  return (
+    '<div class="st-week-sub-row st-row st-row-' +
+    st +
+    '">' +
+    '<div class="st-week-sub-left">' +
+    '<div class="st-week-sub-name">' +
+    _stEscape(lead.customer || '—') +
+    '</div>' +
+    '<div class="st-week-sub-meta">' +
+    planLine +
+    '</div></div>' +
+    '<div class="st-week-sub-right">' +
+    '<span class="st-week-sub-comm-amt">' +
+    _stFmtMoney(commAmt) +
+    '</span>' +
+    '<button type="button" class="st-week-card-icon" title="Edit" aria-label="Edit sale" onclick="_stOpenCommissionEditor(\'' +
     lid +
     '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>' +
-    '<button type="button" class="st-week-card-icon" title="Delete" aria-label="Delete" onclick="event.stopPropagation();_stDeleteSaleGroupByLeadId(\'' +
+    '<button type="button" class="st-week-card-icon" title="Delete" aria-label="Delete sale" onclick="_stDeleteSaleGroupByLeadId(\'' +
     lid +
     '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
-    '</div>';
-  var premAmt = g.deal ? Number(g.deal.amount) || 0 : Number(lead.amount) || 0;
-  var idLine =
-    (lead.memberId ? 'ID: ' + _stEscape(String(lead.memberId)) + ' · ' : '') +
-    _stEscape(lead.plan || '—');
-  var commBox = '';
-  if (g.deal) {
-    var d = g.deal;
-    var rate = Math.round((Number(d.planCommissionRate) || 0) * 100);
-    var planComm = Number(d.planCommission) || 0;
-    var addonComm = Number(d.totalAddonCommission) || 0;
-    var expected = Number(d.expectedDealTotal) || 0;
-    commBox =
-      '<div class="st-week-comm-box">' +
-      '<div class="st-week-comm-row"><span>plan · ' +
-      rate +
-      '%</span><span>$' +
-      planComm.toFixed(2) +
-      '</span></div>';
-    if (addonComm !== 0) {
-      commBox +=
-        '<div class="st-week-comm-row"><span>+ add-ons</span><span>$' +
-        addonComm.toFixed(2) +
-        '</span></div>';
-    }
-    commBox +=
-      '<div class="st-week-comm-div"></div>' +
-      '<div class="st-week-comm-row st-week-comm-total"><span>Commission</span><span>$' +
-      expected.toFixed(2) +
-      '</span></div></div>';
-  } else {
-    var exp2 = _stGroupCommissionDisplay(g);
-    commBox =
-      '<div class="st-week-comm-box"><div class="st-week-comm-row st-week-comm-total"><span>Commission</span><span>$' +
-      exp2.toFixed(2) +
-      '</span></div></div>';
-  }
-  var addonSec = '';
-  if (g.deal && g.addons.length) {
-    addonSec =
-      '<div class="st-week-dash"></div><div class="st-week-addon-label">' +
-      g.addons.length +
-      ' ADD-ON' +
-      (g.addons.length === 1 ? '' : 'S') +
-      '</div>';
-    for (var ai = 0; ai < g.addons.length; ai++) {
-      var ax = g.addons[ai];
-      addonSec +=
-        '<div class="st-week-addon-strip"><span class="st-week-addon-pill">ADD</span>' +
-        '<span class="st-week-addon-name">' +
-        _stEscape(ax.plan || 'Add-on') +
-        '</span>' +
-        '<span class="st-week-addon-price">$' +
-        (Number(ax.amount) || 0).toFixed(2) +
-        '</span></div>';
-    }
-  }
-  var h =
-    '<article class="st-week-compact-card st-row st-row-' +
-    st +
-    '"><div class="st-week-card-toprow"><span class="' +
-    pillClass +
-    '">' +
-    pillLabel +
-    '</span><span class="st-week-card-date">' +
-    _stEscape(dateLabel) +
-    '</span>' +
-    actions +
-    '</div><div class="st-week-card-client">' +
-    _stEscape(lead.customer || '—') +
-    '</div><div class="st-week-card-meta">' +
-    idLine +
-    '</div><div class="st-week-card-prem">$' +
-    premAmt.toFixed(2) +
-    '<span>/mo</span></div>' +
-    commBox +
-    addonSec +
-    '</article>';
-  return h;
+    '</div></div>'
+  );
 }
 
-function _stBuildTable(sales) {
+function _stBucketAmountForDayAnchor(stats, anchorMs) {
+  var buckets = stats && stats.dayBuckets ? stats.dayBuckets : [];
+  for (var bi = 0; bi < buckets.length; bi++) {
+    var bd = buckets[bi].date;
+    if (!bd) continue;
+    if (_stDayAnchorMs(bd.getTime()) === anchorMs) {
+      return Number(buckets[bi].amount) || 0;
+    }
+  }
+  return null;
+}
+
+function _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats) {
+  var byDay = {};
+  for (var wi = 0; wi < weekGroups.length; wi++) {
+    var g = weekGroups[wi];
+    var ts = _stGroupListTs(g);
+    var anchor = _stDayAnchorMs(ts);
+    var ks = String(anchor);
+    if (!byDay[ks]) byDay[ks] = { anchorMs: anchor, groups: [] };
+    byDay[ks].groups.push(g);
+  }
+  var dayAnchors = [];
+  for (var dk in byDay) {
+    if (byDay.hasOwnProperty(dk)) dayAnchors.push(byDay[dk].anchorMs);
+  }
+  dayAnchors.sort(function (a, b) {
+    return b - a;
+  });
+  _stPruneThisWeekExpandedDays(dayAnchors);
+  if (
+    stTab === 'thisweek' &&
+    dayAnchors.length &&
+    !_stThisWeekExpandBootstrapped
+  ) {
+    _stThisWeekExpandedDays[String(_stDayAnchorMs(Date.now()))] = true;
+    _stThisWeekExpandBootstrapped = true;
+  }
+  var parts = [];
+  for (var di = 0; di < dayAnchors.length; di++) {
+    var anchor = dayAnchors[di];
+    var ks2 = String(anchor);
+    var bucket = byDay[ks2];
+    var groups = bucket.groups.slice().sort(function (a, b) {
+      return _stGroupListTs(b) - _stGroupListTs(a);
+    });
+    var dayPrem = 0;
+    for (var gi = 0; gi < groups.length; gi++) {
+      if (groups[gi].deal) {
+        dayPrem += Number(groups[gi].deal.amount) || 0;
+      }
+    }
+    var bucketAmt = _stBucketAmountForDayAnchor(stats, anchor);
+    var dayPremDisp =
+      bucketAmt !== null && typeof bucketAmt === 'number' ? bucketAmt : dayPrem;
+    var n = groups.length;
+    var dealPill = n === 1 ? '1 deal' : n + ' deals';
+    var expanded = _stThisWeekExpandedDays[ks2] === true;
+    var dateLabel = _stWeekCardDateLabel(anchor);
+    var subHtml = '';
+    if (expanded) {
+      for (var si = 0; si < groups.length; si++) {
+        subHtml += _stRenderThisWeekSubRow(groups[si]);
+      }
+    }
+    parts.push(
+      '<div class="st-week-day-wrap">' +
+        '<div class="st-week-day-head' +
+        (expanded ? ' st-week-day-head-expanded' : '') +
+        '" role="button" tabindex="0" aria-expanded="' +
+        (expanded ? 'true' : 'false') +
+        '" onclick="_stToggleThisWeekDay(' +
+        anchor +
+        ')" onkeydown="_stThisWeekDayKeyDown(event,' +
+        anchor +
+        ')">' +
+        '<div class="st-week-day-head-left">' +
+        '<span class="st-week-day-label">' +
+        _stEscape(dateLabel) +
+        '</span>' +
+        '<span class="st-week-day-pill">' +
+        _stEscape(dealPill) +
+        '</span></div>' +
+        '<div class="st-week-day-head-right">' +
+        '<span class="st-week-day-total-prem">' +
+        _stFmtMoney(dayPremDisp) +
+        '</span>' +
+        '<span class="st-week-day-chev" aria-hidden="true">' +
+        (expanded ? '\u25B2' : '\u25BC') +
+        '</span></div></div>' +
+        (expanded ? '<div class="st-week-day-body">' + subHtml + '</div>' : '') +
+        '</div>'
+    );
+  }
+  return parts.join('');
+}
+
+function _stBuildTable(sales, stTab) {
   var stats = _stCalcStats(sales);
   var weekStart = _stStartOfWeek(new Date()).getTime();
   var weekRows = sales
@@ -3749,9 +3826,7 @@ function _stBuildTable(sales) {
   if (!weekGroups.length) {
     html += '<div class="st-empty st-empty-tight">No sales logged yet this week.</div>';
   } else {
-    for (var wi = 0; wi < weekGroups.length; wi++) {
-      html += _stRenderWeekCompactCard(weekGroups[wi]);
-    }
+    html += _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats);
   }
   html += '</div></div>';
 
@@ -4882,6 +4957,16 @@ function _stBuildInternalSubtabs(activeTab) {
 
 function _stSwitchTab(tabId) {
   if (tabId !== 'analytics' && tabId !== 'thisweek') tabId = 'thisweek';
+  var prev = _stGetSavedTab();
+  if (prev === tabId) return;
+  if (tabId === 'analytics') {
+    _stThisWeekExpandedDays = {};
+    _stThisWeekExpandBootstrapped = false;
+  } else if (tabId === 'thisweek') {
+    _stThisWeekExpandedDays = {};
+    _stThisWeekExpandedDays[String(_stDayAnchorMs(Date.now()))] = true;
+    _stThisWeekExpandBootstrapped = true;
+  }
   try {
     if (typeof chaSet === 'function') {
       chaSet('cha_st_tab', tabId);
@@ -4889,27 +4974,7 @@ function _stSwitchTab(tabId) {
       localStorage.setItem('cha_st_tab', tabId);
     }
   } catch (_e) {}
-  var pThis = document.getElementById('stTabPanelThisWeek');
-  var pAn = document.getElementById('stTabPanelAnalytics');
-  if (pThis) pThis.style.display = tabId === 'thisweek' ? 'block' : 'none';
-  if (pAn) pAn.style.display = tabId === 'analytics' ? 'block' : 'none';
-  var fl = document.getElementById('st-paycheck-float');
-  if (fl) fl.style.display = tabId === 'thisweek' ? fl.style.display : 'none';
-  var wrap = document.getElementById('stInternalSubtabs');
-  if (wrap) {
-    var btns = wrap.querySelectorAll('.stab');
-    var i;
-    for (i = 0; i < btns.length; i++) {
-      var b = btns[i];
-      var label = (b.textContent || '').trim();
-      var on =
-        (tabId === 'thisweek' && label === 'This Week') ||
-        (tabId === 'analytics' && label === 'Analytics');
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-selected', on ? 'true' : 'false');
-    }
-  }
-  if (tabId === 'thisweek') _stWirePaycheckObserver();
+  _stRender();
 }
 
 function _stBuildAnalyticsDashboard(sales, stats) {
@@ -5117,7 +5182,7 @@ function _stRender() {
   html += _stBuildPaycheckHeroSection(sales, stats);
   html += _stBuildWeekAtGlanceSection(stats);
   html += _stBuildAddSaleSection();
-  html += _stBuildTable(sales);
+  html += _stBuildTable(sales, stTab);
   html += _stBuildPostDatesSection(postdates);
   html += _stBuildFloatingPaycheckBar(sales, stats);
   html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
