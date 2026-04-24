@@ -3102,6 +3102,7 @@ var _stSelectedIds = {};
 // Bootstrapped once on first This Week paint; reset when switching subtabs.
 var _stThisWeekExpandedDays = {};
 var _stThisWeekExpandBootstrapped = false;
+var _stActiveTab = 'thisweek';
 
 // Toggle handler: called from the This Week / All Sales
 // buttons at the top of the sales table.
@@ -3852,6 +3853,26 @@ function _stBuildTable(sales, stTab) {
       return b.ts - a.ts;
     });
   var weekGroups = _stGroupRowsForDisplay(weekRows);
+  var wkMeta =
+    _stFmtMoney(stats.weekSales) + ' · ' + _stFmtMoney(stats.weekExpectedCommission) + ' comm';
+  var html = '<div class="st-table-section st-sales-log">';
+  html +=
+    '<div class="st-split-col-head"><span class="st-split-title">This week (' +
+    weekGroups.length +
+    ')</span><span class="st-split-meta">' +
+    _stEscape(wkMeta) +
+    '</span></div>';
+  html += '<div class="st-week-cards-scroller">';
+  if (!weekGroups.length) {
+    html += '<div class="st-empty st-empty-tight">No sales logged yet this week.</div>';
+  } else {
+    html += _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats);
+  }
+  html += '</div></div>';
+  return html;
+}
+
+function _stBuildAllSalesPane(sales) {
   var allRowsSorted = sales.slice().sort(function (a, b) {
     return b.ts - a.ts;
   });
@@ -3867,27 +3888,7 @@ function _stBuildTable(sales, stTab) {
   for (var sid in _stSelectedIds) {
     if (_stSelectedIds.hasOwnProperty(sid) && _stSelectedIds[sid]) selectedCount++;
   }
-  var wkMeta =
-    _stFmtMoney(stats.weekSales) + ' · ' + _stFmtMoney(stats.weekExpectedCommission) + ' comm';
-
-  var html = '<div class="st-table-section st-sales-log st-sales-log-split">';
-  html += '<div class="st-sales-split-grid">';
-  html += '<div class="st-week-split-col">';
-  html +=
-    '<div class="st-split-col-head"><span class="st-split-title">This week (' +
-    weekGroups.length +
-    ')</span><span class="st-split-meta">' +
-    _stEscape(wkMeta) +
-    '</span></div>';
-  html += '<div class="st-week-cards-scroller">';
-  if (!weekGroups.length) {
-    html += '<div class="st-empty st-empty-tight">No sales logged yet this week.</div>';
-  } else {
-    html += _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats);
-  }
-  html += '</div></div>';
-
-  html += '<div class="st-all-split-col">';
+  var html = '<div class="st-table-section st-sales-log st-all-sales-pane">';
   html +=
     '<div class="st-split-col-head st-split-col-head-row2"><span class="st-split-title">All sales (' +
     totalFiltered +
@@ -4039,8 +4040,7 @@ function _stBuildTable(sales, stTab) {
     html +=
       '<p class="st-show-more-note">Showing first 50 matches. Narrow filters to see more.</p>';
   }
-
-  html += '</div></div></div>';
+  html += '</div>';
   return html;
 }
 
@@ -4981,19 +4981,19 @@ function _stEditMonthlyGoal() {
 }
 
 function _stGetSavedTab() {
-  try {
-    var v =
-      typeof chaGet === 'function'
-        ? chaGet('cha_st_tab', '')
-        : localStorage.getItem('cha_st_tab');
-    v = typeof v === 'string' ? v : '';
-    if (v === 'analytics' || v === 'thisweek') return v;
-  } catch (_e) {}
+  if (
+    _stActiveTab === 'thisweek' ||
+    _stActiveTab === 'allsales' ||
+    _stActiveTab === 'analytics'
+  ) {
+    return _stActiveTab;
+  }
   return 'thisweek';
 }
 
 function _stBuildInternalSubtabs(activeTab) {
   var tw = activeTab === 'thisweek' ? ' active' : '';
+  var as = activeTab === 'allsales' ? ' active' : '';
   var an = activeTab === 'analytics' ? ' active' : '';
   return (
     '<div class="page-subtabs st-internal-subtabs" id="stInternalSubtabs" role="tablist">' +
@@ -5004,6 +5004,11 @@ function _stBuildInternalSubtabs(activeTab) {
     (activeTab === 'thisweek' ? 'true' : 'false') +
     '" onclick="_stSwitchTab(\'thisweek\')">This Week</button>' +
     '<button type="button" class="stab' +
+    as +
+    '" role="tab" aria-selected="' +
+    (activeTab === 'allsales' ? 'true' : 'false') +
+    '" onclick="_stSwitchTab(\'allsales\')">All Sales</button>' +
+    '<button type="button" class="stab' +
     an +
     '" role="tab" aria-selected="' +
     (activeTab === 'analytics' ? 'true' : 'false') +
@@ -5013,24 +5018,20 @@ function _stBuildInternalSubtabs(activeTab) {
 }
 
 function _stSwitchTab(tabId) {
-  if (tabId !== 'analytics' && tabId !== 'thisweek') tabId = 'thisweek';
+  if (tabId !== 'analytics' && tabId !== 'thisweek' && tabId !== 'allsales') {
+    tabId = 'thisweek';
+  }
   var prev = _stGetSavedTab();
   if (prev === tabId) return;
-  if (tabId === 'analytics') {
+  if (prev === 'thisweek' && tabId !== 'thisweek') {
     _stThisWeekExpandedDays = {};
     _stThisWeekExpandBootstrapped = false;
-  } else if (tabId === 'thisweek') {
+  } else if (tabId === 'thisweek' && prev !== 'thisweek') {
     _stThisWeekExpandedDays = {};
     _stThisWeekExpandedDays[String(_stDayAnchorMs(Date.now()))] = true;
     _stThisWeekExpandBootstrapped = true;
   }
-  try {
-    if (typeof chaSet === 'function') {
-      chaSet('cha_st_tab', tabId);
-    } else {
-      localStorage.setItem('cha_st_tab', tabId);
-    }
-  } catch (_e) {}
+  _stActiveTab = tabId;
   _stRender();
 }
 
@@ -5242,6 +5243,13 @@ function _stRender() {
   html += _stBuildTable(sales, stTab);
   html += _stBuildPostDatesSection(postdates);
   html += _stBuildFloatingPaycheckBar(sales, stats);
+  html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
+  html += '</div>';
+  html +=
+    '<div id="stTabPanelAllSales" class="st-tab-panel" role="tabpanel" style="display:' +
+    (stTab === 'allsales' ? 'block' : 'none') +
+    '">';
+  html += _stBuildAllSalesPane(sales);
   html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
   html += '</div>';
   html +=
