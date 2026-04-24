@@ -2598,6 +2598,9 @@
 .st-sales-log-split {
   margin-top: 4px;
 }
+.st-all-sales-pane {
+  margin-top: 4px;
+}
 .st-sales-split-grid {
   display: grid;
   grid-template-columns: 320px 1fr;
