@@ -2054,7 +2054,7 @@ function brStructuredAnswer(query, plans) {
   else if (notCount > 0 && verCount === 0) overallStatus = 'Not Covered';
   else overallStatus = 'Verify';
 
-  // ── BUILD HTML OUTPUT (dark theme) ──
+  // ── BUILD HTML OUTPUT (status strip) ──
   var _sc = {
     Covered: {
       border: '#e2e8f0',
