@@ -4808,6 +4808,38 @@ function _stBuildPaycheckHeroSection(sales, stats) {
     '%"></span></div>';
   html +=
     '<div class="st-paycheck-hero-progress-status">' + _stEscape(statusLine) + '</div>';
+  html += '<div class="st-paycheck-hero-days">';
+  for (var d = 0; d < 5; d++) {
+    var bucket = stats.dayBuckets[d] || { date: null, amount: 0, dealCount: 0 };
+    var nowD = new Date();
+    var todayDayIdx = nowD.getDay();
+    var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
+    var isToday = d === todayBucketIdx;
+    var amt = Number(bucket.amount) || 0;
+    var dealN = Number(bucket.dealCount) || 0;
+    var dealLine = dealN === 1 ? '1 deal' : dealN + ' deals';
+    var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+    var dateStr = '';
+    if (bucket.date) {
+      dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
+    }
+    html +=
+      '<div class="st-paycheck-day' +
+      (isToday ? ' st-paycheck-day-today' : '') +
+      '">' +
+      '<div class="st-paycheck-day-label">' +
+      (isToday ? 'TODAY' : dayNames[d]) +
+      (dateStr ? ' <span class="st-paycheck-day-dt">' + dateStr + '</span>' : '') +
+      '</div>' +
+      '<div class="st-paycheck-day-deals">' +
+      dealLine +
+      '</div>' +
+      '<div class="st-paycheck-day-amt">' +
+      _stFmtMoney(amt) +
+      '</div>' +
+      '</div>';
+  }
+  html += '</div>';
   html += '</section>';
   return html;
 }
@@ -5238,7 +5270,6 @@ function _stRender() {
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
   html += _stBuildPaycheckHeroSection(sales, stats);
-  html += _stBuildWeekAtGlanceSection(stats);
   html += _stBuildAddSaleSection();
   html += _stBuildTable(sales, stTab);
   html += _stBuildPostDatesSection(postdates);

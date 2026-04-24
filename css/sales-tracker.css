@@ -2425,6 +2425,60 @@
   margin-top: 6px;
   font-weight: 500;
 }
+.st-paycheck-hero-days {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 7px;
+}
+.st-paycheck-day {
+  border-radius: 6px;
+  padding: 10px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  min-height: 78px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 2px;
+}
+.st-paycheck-day-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+.st-paycheck-day-dt {
+  font-weight: 500;
+  opacity: 0.9;
+}
+.st-paycheck-day-deals {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 1px;
+}
+.st-paycheck-day-amt {
+  margin-top: auto;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+}
+.st-paycheck-day-today {
+  background: #fff;
+  color: #185fa5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+.st-paycheck-day-today .st-paycheck-day-label {
+  color: #185fa5;
+}
+.st-paycheck-day-today .st-paycheck-day-deals {
+  color: rgba(24, 95, 165, 0.72);
+}
+.st-paycheck-day-today .st-paycheck-day-amt {
+  color: #185fa5;
+}
 
 .st-paycheck-float {
   position: fixed;
@@ -3184,5 +3238,18 @@
   .st-custom-apply {
     min-height: 44px;
     width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .st-paycheck-hero-days {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .st-paycheck-day {
+    min-height: 72px;
+    padding: 8px 6px;
+  }
+  .st-paycheck-day-amt {
+    font-size: 12px;
   }
 }
