@@ -1905,10 +1905,7 @@ function _stSplitReceipts(text) {
       wholeCleaned.push(wlRaw);
     }
     var whole = wholeCleaned.join('\n').trim();
-    if (whole) {
-      console.log('Chunk 0:', whole.substring(0, 80));
-      return [whole];
-    }
+    if (whole) return [whole];
     return [];
   }
 
@@ -1957,13 +1954,7 @@ function _stSplitReceipts(text) {
     }
 
     var chunkText = cleaned.join('\n').trim();
-    if (chunkText) {
-      chunks.push(chunkText);
-      console.log(
-        'Chunk ' + (chunks.length - 1) + ':',
-        chunkText.substring(0, 80)
-      );
-    }
+    if (chunkText) chunks.push(chunkText);
   }
   return chunks;
 }
@@ -2992,13 +2983,23 @@ function _stTogglePaycheckBreakdown() {
 function _stBuildAddSaleSection() {
   return (
     '<div id="st-add-sale-backdrop" class="st-add-sale-backdrop" onclick="_stSetAddSalePanelOpen(false)" aria-hidden="true"></div>' +
-    '<aside id="st-add-sale-panel" class="st-add-sale-panel" aria-hidden="true">' +
-    '<div class="st-add-sale-panel-head"><h3>Add new sale</h3><button type="button" class="st-add-sale-close" aria-label="Close add sale panel" onclick="_stSetAddSalePanelOpen(false)">×</button></div>' +
+    '<aside id="st-add-sale-panel" class="st-add-sale-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="st-add-sale-title">' +
+    '<div class="st-add-sale-panel-head"><h3 id="st-add-sale-title">Add new sale</h3><button type="button" class="st-add-sale-close" aria-label="Close add sale panel" onclick="_stSetAddSalePanelOpen(false)">×</button></div>' +
     '<div class="st-add-sale-panel-body">' +
     _stBuildInput() +
     '</div></aside>' +
-    '<button type="button" id="st-add-sale-fab" class="st-add-sale-fab" aria-label="Add new sale" onclick="_stSetAddSalePanelOpen(true)"><span>+</span></button>'
+    '<button type="button" id="st-add-sale-fab" class="st-add-sale-fab" aria-label="Add new sale" onclick="_stSetAddSalePanelOpen(true)"><span class="st-add-sale-fab-plus">+</span><span class="st-add-sale-fab-label">Add Sale</span></button>'
   );
+}
+
+function _stMountAddSaleOverlay() {
+  var root = document.getElementById('st-add-sale-overlay-root');
+  if (!root) {
+    root = document.createElement('div');
+    root.id = 'st-add-sale-overlay-root';
+    document.body.appendChild(root);
+  }
+  root.innerHTML = _stBuildAddSaleSection();
 }
 
 // Banner shown at the very top of the page when one or more
@@ -4758,6 +4759,88 @@ function _stWeeklyPaycheckMomentum(sales, stats) {
   return { delta: delta, lastWeek: lastPb.estimated };
 }
 
+function _stCalcWeekStatsFor(sales, weekStartMs) {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var t0 = Number(weekStartMs) || _stStartOfWeek(new Date()).getTime();
+  var t1 = t0 + weekMs;
+  var weekSalesRows = (sales || []).filter(function (s) {
+    return s && Number(s.ts) >= t0 && Number(s.ts) < t1;
+  });
+  var weekStats = _stCalcStats(weekSalesRows);
+  weekStats.weekStart = t0;
+  var pb = _stPaycheckBreakdown(weekSalesRows, weekStats);
+  return {
+    paycheck: Number(pb.estimated) || 0,
+    deals: Number(weekStats.weekDeals) || 0,
+    addons: Number(weekStats.weekAddons) || 0,
+    premium: Number(weekStats.weekSales) || 0
+  };
+}
+
+function _stBuildKpiStrip(sales, stats) {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var currentStart = Number(stats && stats.weekStart) || _stStartOfWeek(new Date()).getTime();
+  var current = _stCalcWeekStatsFor(sales, currentStart);
+  var previous = _stCalcWeekStatsFor(sales, currentStart - weekMs);
+  var hasPreviousData =
+    previous.paycheck > 0 || previous.deals > 0 || previous.addons > 0 || previous.premium > 0;
+
+  function pctDelta(nowVal, prevVal) {
+    if (!hasPreviousData || !prevVal) return null;
+    return Math.round(((nowVal - prevVal) / prevVal) * 100);
+  }
+  function countDelta(nowVal, prevVal) {
+    if (!hasPreviousData) return null;
+    return Number(nowVal) - Number(prevVal);
+  }
+  function deltaMarkup(deltaValue, suffix) {
+    if (deltaValue == null) {
+      return '<span class="st-kpi-delta st-kpi-delta-zero">—</span>';
+    }
+    if (deltaValue > 0) {
+      return (
+        '<span class="st-kpi-delta st-kpi-delta-pos">▲ ' +
+        Math.abs(deltaValue) +
+        suffix +
+        '</span>'
+      );
+    }
+    if (deltaValue < 0) {
+      return (
+        '<span class="st-kpi-delta st-kpi-delta-neg">▼ ' +
+        Math.abs(deltaValue) +
+        suffix +
+        '</span>'
+      );
+    }
+    return '<span class="st-kpi-delta st-kpi-delta-zero">—</span>';
+  }
+
+  var paycheckDelta = pctDelta(current.paycheck, previous.paycheck);
+  var dealsDelta = countDelta(current.deals, previous.deals);
+  var addonsDelta = countDelta(current.addons, previous.addons);
+  var premiumDelta = pctDelta(current.premium, previous.premium);
+
+  var html = '<section class="st-kpi-strip" aria-label="Weekly KPI strip">';
+  html += '<article class="st-kpi-card"><div class="st-kpi-label">PAYCHECK</div>';
+  html += '<div class="st-kpi-value">' + _stFmtMoney(current.paycheck) + '</div>';
+  html += '<div class="st-kpi-meta">' + deltaMarkup(paycheckDelta, '% vs last wk') + '</div></article>';
+
+  html += '<article class="st-kpi-card"><div class="st-kpi-label">DEALS</div>';
+  html += '<div class="st-kpi-value">' + (current.deals || 0) + '</div>';
+  html += '<div class="st-kpi-meta">' + deltaMarkup(dealsDelta, ' vs last wk') + '</div></article>';
+
+  html += '<article class="st-kpi-card"><div class="st-kpi-label">ADD-ONS</div>';
+  html += '<div class="st-kpi-value">' + (current.addons || 0) + '</div>';
+  html += '<div class="st-kpi-meta">' + deltaMarkup(addonsDelta, ' vs last wk') + '</div></article>';
+
+  html += '<article class="st-kpi-card"><div class="st-kpi-label">WK PREMIUM</div>';
+  html += '<div class="st-kpi-value">' + _stFmtMoney(current.premium) + '</div>';
+  html += '<div class="st-kpi-meta">' + deltaMarkup(premiumDelta, '% vs last wk') + '</div></article>';
+  html += '</section>';
+  return html;
+}
+
 function _stBuildPaycheckHeroSection(sales, stats) {
   var pb = _stPaycheckBreakdown(sales, stats);
   var tier = _stTierProgressData(stats);
@@ -5241,33 +5324,6 @@ function _stRender() {
   _stAddSalePanelOpen = false;
   var sales = _stLoadSales();
   sales = _stValidateSalesIntegrity(sales);
-  var _dbgSales = _stLoadSales();
-  console.log(
-    '[DIAG] All sales:',
-    JSON.stringify(
-      _dbgSales.map(function (s) {
-        return {
-          id: s.id,
-          type: s.type,
-          customer: s.customer,
-          plan: s.plan || s.policy,
-          receiptId: s.receiptId,
-          amount: s.amount || s.policyAmount
-        };
-      }),
-      null,
-      2
-    )
-  );
-  // ── DEBUG: trace how many sales _stRender sees at paint
-  // time to diagnose the persistence bug.
-  var _dbgRenderUser = _stGetCurrentUser();
-  console.log(
-    '_stRender loaded',
-    sales.length,
-    'sales for user',
-    _dbgRenderUser ? _dbgRenderUser.id : '(no user)'
-  );
   var postdates = _stLoadPostDates();
   var stats = _stCalcStats(sales);
   var stTab = _stGetSavedTab();
@@ -5276,6 +5332,7 @@ function _stRender() {
   html += _stBuildPostDateBanner(postdates);
   html +=
     '<div class="ph ph-st-compact"><div class="pt">Sales <span>Tracker</span></div></div>';
+  html += _stBuildKpiStrip(sales, stats);
   html += _stBuildInternalSubtabs(stTab);
   html +=
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
@@ -5300,12 +5357,20 @@ function _stRender() {
     '">';
   html += _stBuildAnalyticsDashboard(sales, stats);
   html += '</div>';
-  html += _stBuildAddSaleSection();
-
   page.innerHTML = html;
+  _stMountAddSaleOverlay();
   if (!page.dataset.stAddSaleEsc) {
     page.dataset.stAddSaleEsc = '1';
     page.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var panel = document.getElementById('st-add-sale-panel');
+      if (!panel || !panel.classList.contains('open')) return;
+      _stSetAddSalePanelOpen(false);
+    });
+  }
+  if (!document.body.dataset.stAddSaleEscDoc) {
+    document.body.dataset.stAddSaleEscDoc = '1';
+    document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       var panel = document.getElementById('st-add-sale-panel');
       if (!panel || !panel.classList.contains('open')) return;
