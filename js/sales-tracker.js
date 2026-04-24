@@ -2997,8 +2997,18 @@ function _stBuildAddSaleSection() {
     '<div class="st-add-sale-panel-body">' +
     _stBuildInput() +
     '</div></aside>' +
-    '<button type="button" id="st-add-sale-fab" class="st-add-sale-fab" aria-label="Add new sale" onclick="_stSetAddSalePanelOpen(true)"><span>+</span></button>'
+    '<button type="button" id="st-add-sale-fab" class="st-add-sale-fab" aria-label="Add new sale" onclick="_stSetAddSalePanelOpen(true)"><span class="st-add-sale-fab-plus">+</span><span class="st-add-sale-fab-label">Add Sale</span></button>'
   );
+}
+
+function _stMountAddSaleOverlay() {
+  var root = document.getElementById('st-add-sale-overlay-root');
+  if (!root) {
+    root = document.createElement('div');
+    root.id = 'st-add-sale-overlay-root';
+    document.body.appendChild(root);
+  }
+  root.innerHTML = _stBuildAddSaleSection();
 }
 
 // Banner shown at the very top of the page when one or more
@@ -5300,12 +5310,20 @@ function _stRender() {
     '">';
   html += _stBuildAnalyticsDashboard(sales, stats);
   html += '</div>';
-  html += _stBuildAddSaleSection();
-
   page.innerHTML = html;
+  _stMountAddSaleOverlay();
   if (!page.dataset.stAddSaleEsc) {
     page.dataset.stAddSaleEsc = '1';
     page.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var panel = document.getElementById('st-add-sale-panel');
+      if (!panel || !panel.classList.contains('open')) return;
+      _stSetAddSalePanelOpen(false);
+    });
+  }
+  if (!document.body.dataset.stAddSaleEscDoc) {
+    document.body.dataset.stAddSaleEscDoc = '1';
+    document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
       var panel = document.getElementById('st-add-sale-panel');
       if (!panel || !panel.classList.contains('open')) return;
