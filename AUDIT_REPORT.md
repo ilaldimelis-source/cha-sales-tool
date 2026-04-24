@@ -89,3 +89,44 @@ Static code review and data-shape review only (no parser, commission, or storage
 1. Add an automated **`registry id ⊆ pdf map`** check in CI (browser `window` shim or regex-based extractor).
 2. Add **`HEAD`** PDF smoke tests against the static host.
 3. Keep **embedding / vector expansion** blocked on OpenAI quota as noted — no change here.
+
+---
+
+## TASK 10 — Final redesign hygiene audit (sessions 108-131)
+
+Scope: conservative cleanup only; no parser/storage/commission/user-scope behavior changes.
+
+### Applied cleanup
+
+- Removed debug-only `console.log` traces from `js/sales-tracker.js` receipt chunking and render diagnostics.
+- Added missing a11y semantics to Add Sale slide-over panel:
+  - `role="dialog"`
+  - `aria-modal="true"`
+  - `aria-labelledby="st-add-sale-title"` on panel and matching `id` on heading.
+
+### Cache-bust consistency
+
+- `sw2.js` cache name verified at `cha-command-center-v379`.
+- `index.html` `?v=` query values are consistent (`1776970500000`) across CSS and JS assets.
+- No stale mixed timestamp variants found.
+
+### Protected function drift check
+
+- Confirmed no edits in this audit to protected parser/storage/commission/user-scope functions:
+  - `_stParseReceipt`, `_stInjectCombinedPolicyPremiums`, `_stSplitReceipts`, `_stMatchPlanName`
+  - `_stLoadSales`, `_stSaveSales`
+  - `_stComputeLineCommission`, `_stStampDealCommission`
+  - `chaKey`, `chaGet`, `chaSet`, `chaClearSensitive`
+
+### Optional PDF map orphan status (`npm run plan-check`)
+
+- Registry plans: 27
+- PDF map entries: 53
+- Registry plans missing map entries: 0
+- PDF map orphan entries: 26
+- Newly missing registry plans: none
+
+### Flagged (not changed in this pass)
+
+- Additional `console.log` statements exist outside Sales Tracker core (not removed in this hygiene pass to avoid unrelated behavior risk).
+- Potential CSS dead-selector cleanup remains intentionally conservative; no broad removals were performed without high-confidence usage proof.

@@ -29,6 +29,23 @@ Static SPA — vanilla HTML/CSS/JS, no framework, no build step.
 Hosted on GitHub Pages from main branch.
 Live URL: https://ilaldimelis-source.github.io/cha-sales-tool/
 
+## Sales Tracker architecture (current)
+
+- Sales Tracker page has a page-level KPI strip above the internal tab bar.
+- Internal tabs: `This Week`, `All Sales`, `Analytics`.
+- Add Sale uses a fixed FAB + slide-over panel mounted as a body-level overlay root.
+- Dark mode has been permanently removed from this app and should not be reintroduced.
+- Service worker cache name is currently `cha-command-center-v379` in `sw2.js`.
+
+## Protected Sales Tracker functions
+
+- Do not modify parser/storage/commission core paths without explicit approval:
+  - `_stParseReceipt`, `_stInjectCombinedPolicyPremiums`, `_stSplitReceipts`, `_stMatchPlanName`
+  - `_stLoadSales`, `_stSaveSales`
+  - `_stComputeLineCommission`, `_stStampDealCommission`
+- Do not modify scoped storage helpers without explicit approval:
+  - `chaKey`, `chaGet`, `chaSet`, `chaClearSensitive`
+
 ## File Structure
 
 - index.html — app shell
