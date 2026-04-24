@@ -2266,44 +2266,76 @@
 }
 
 /* Floating add-sale action button + slide-over panel */
+@keyframes st-fab-pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
 .st-add-sale-fab {
   position: fixed;
   right: 28px;
   bottom: 28px;
-  min-width: 64px;
-  height: 64px;
-  border: 2px solid rgba(255, 255, 255, 0.9);
-  border-radius: 999px;
-  background: var(--cha-accent);
-  color: #fff;
-  display: flex;
+  z-index: 9999;
+  isolation: isolate;
+  overflow: visible;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 0 14px;
-  z-index: 9999;
-  box-shadow:
-    0 8px 24px rgba(59, 130, 246, 0.5),
-    0 2px 6px rgba(59, 130, 246, 0.3);
+  gap: 8px;
+  min-width: 140px;
+  min-height: 50px;
+  height: auto;
+  padding: 14px 24px;
+  border-radius: 30px;
+  border: 2px solid #ffffff;
+  background: linear-gradient(135deg, #1e3a8a 0%, #378add 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-ui, system-ui, sans-serif);
+  box-shadow: 0 10px 28px rgba(59, 130, 246, 0.5);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.st-add-sale-fab::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: rgba(59, 130, 246, 0.25);
+  z-index: -1;
+  pointer-events: none;
+  animation: st-fab-pulse-ring 2.5s ease-out infinite;
 }
 .st-add-sale-fab-plus {
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 400;
   line-height: 1;
 }
 .st-add-sale-fab-label {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.01em;
   white-space: nowrap;
 }
 .st-add-sale-fab:hover {
-  transform: scale(1.08);
-  box-shadow:
-    0 10px 28px rgba(59, 130, 246, 0.58),
-    0 3px 8px rgba(59, 130, 246, 0.35);
+  transform: scale(1.05);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.6);
+}
+.st-add-sale-fab:hover::before {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .st-add-sale-fab::before {
+    animation: none;
+  }
 }
 .st-add-sale-backdrop {
   position: fixed;
@@ -3380,16 +3412,19 @@
   .st-add-sale-fab {
     right: 20px;
     bottom: 20px;
-    width: 58px;
-    min-width: 58px;
-    height: 58px;
+    width: 56px;
+    min-width: 56px;
+    height: 56px;
+    min-height: 56px;
     padding: 0;
+    border-radius: 999px;
+    gap: 0;
   }
   .st-add-sale-fab-label {
     display: none;
   }
   .st-add-sale-fab-plus {
-    font-size: 30px;
+    font-size: 28px;
   }
   .st-add-sale-panel {
     width: 100vw;
