@@ -1927,6 +1927,57 @@
   font-size: 24px;
 }
 
+/* Top-level KPI strip above Sales Tracker tabs */
+.st-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+  margin: 0 0 12px;
+}
+.st-kpi-card {
+  border: 0.5px solid var(--cha-border-subtle, rgba(15, 23, 42, 0.14));
+  border-radius: 8px;
+  background: var(--cha-bg-card, #fff);
+  padding: 12px 14px;
+  min-width: 0;
+}
+.st-kpi-label {
+  font-size: 10px;
+  color: var(--cha-text-tertiary, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  line-height: 1.2;
+}
+.st-kpi-value {
+  margin-top: 6px;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--cha-text-primary, #0f172a);
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.st-kpi-meta {
+  margin-top: 5px;
+  min-height: 14px;
+  font-size: 10px;
+  line-height: 1.3;
+}
+.st-kpi-delta {
+  display: inline-block;
+}
+.st-kpi-delta-pos {
+  color: #0f6e56;
+}
+.st-kpi-delta-neg {
+  color: #c93434;
+}
+.st-kpi-delta-zero {
+  color: var(--cha-text-tertiary, #64748b);
+}
+
 /* ── Sales Tracker: This Week / Analytics tabs (same .stab pattern as app subtabs) ── */
 #page-salestracker .st-internal-subtabs {
   margin: 0 0 14px;
@@ -1957,8 +2008,17 @@
   gap: 10px;
 }
 @media (max-width: 900px) {
+  .st-kpi-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .st-analytics-cards-3 {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .st-kpi-strip {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 }
 .st-analytics-mini {

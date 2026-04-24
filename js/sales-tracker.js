@@ -4768,6 +4768,88 @@ function _stWeeklyPaycheckMomentum(sales, stats) {
   return { delta: delta, lastWeek: lastPb.estimated };
 }
 
+function _stCalcWeekStatsFor(sales, weekStartMs) {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var t0 = Number(weekStartMs) || _stStartOfWeek(new Date()).getTime();
+  var t1 = t0 + weekMs;
+  var weekSalesRows = (sales || []).filter(function (s) {
+    return s && Number(s.ts) >= t0 && Number(s.ts) < t1;
+  });
+  var weekStats = _stCalcStats(weekSalesRows);
+  weekStats.weekStart = t0;
+  var pb = _stPaycheckBreakdown(weekSalesRows, weekStats);
+  return {
+    paycheck: Number(pb.estimated) || 0,
+    deals: Number(weekStats.weekDeals) || 0,
+    addons: Number(weekStats.weekAddons) || 0,
+    premium: Number(weekStats.weekSales) || 0
+  };
+}
+
+function _stBuildKpiStrip(sales, stats) {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var currentStart = Number(stats && stats.weekStart) || _stStartOfWeek(new Date()).getTime();
+  var current = _stCalcWeekStatsFor(sales, currentStart);
+  var previous = _stCalcWeekStatsFor(sales, currentStart - weekMs);
+  var hasPreviousData =
+    previous.paycheck > 0 || previous.deals > 0 || previous.addons > 0 || previous.premium > 0;
+
+  function pctDelta(nowVal, prevVal) {
+    if (!hasPreviousData || !prevVal) return null;
+    return Math.round(((nowVal - prevVal) / prevVal) * 100);
+  }
+  function countDelta(nowVal, prevVal) {
+    if (!hasPreviousData) return null;
+    return Number(nowVal) - Number(prevVal);
+  }
+  function deltaMarkup(deltaValue, suffix) {
+    if (deltaValue == null) {
+      return '<span class="st-kpi-delta st-kpi-delta-zero">—</span>';
+    }
+    if (deltaValue > 0) {
+      return (
+        '<span class="st-kpi-delta st-kpi-delta-pos">▲ ' +
+        Math.abs(deltaValue) +
+        suffix +
+        '</span>'
+      );
+    }
+    if (deltaValue < 0) {
+      return (
+        '<span class="st-kpi-delta st-kpi-delta-neg">▼ ' +
+        Math.abs(deltaValue) +
+        suffix +
+        '</span>'
+      );
+    }
+    return '<span class="st-kpi-delta st-kpi-delta-zero">—</span>';
+  }
+
+  var paycheckDelta = pctDelta(current.paycheck, previous.paycheck);
+  var dealsDelta = countDelta(current.deals, previous.deals);
+  var addonsDelta = countDelta(current.addons, previous.addons);
+  var premiumDelta = pctDelta(current.premium, previous.premium);
+
+  var html = '<section class="st-kpi-strip" aria-label="Weekly KPI strip">';
+  html += '<article class="st-kpi-card"><div class="st-kpi-label">PAYCHECK</div>';
+  html += '<div class="st-kpi-value">' + _stFmtMoney(current.paycheck) + '</div>';
+  html += '<div class="st-kpi-meta">' + deltaMarkup(paycheckDelta, '% vs last wk') + '</div></article>';
+
+  html += '<article class="st-kpi-card"><div class="st-kpi-label">DEALS</div>';
+  html += '<div class="st-kpi-value">' + (current.deals || 0) + '</div>';
+  html += '<div class="st-kpi-meta">' + deltaMarkup(dealsDelta, ' vs last wk') + '</div></article>';
+
+  html += '<article class="st-kpi-card"><div class="st-kpi-label">ADD-ONS</div>';
+  html += '<div class="st-kpi-value">' + (current.addons || 0) + '</div>';
+  html += '<div class="st-kpi-meta">' + deltaMarkup(addonsDelta, ' vs last wk') + '</div></article>';
+
+  html += '<article class="st-kpi-card"><div class="st-kpi-label">WK PREMIUM</div>';
+  html += '<div class="st-kpi-value">' + _stFmtMoney(current.premium) + '</div>';
+  html += '<div class="st-kpi-meta">' + deltaMarkup(premiumDelta, '% vs last wk') + '</div></article>';
+  html += '</section>';
+  return html;
+}
+
 function _stBuildPaycheckHeroSection(sales, stats) {
   var pb = _stPaycheckBreakdown(sales, stats);
   var tier = _stTierProgressData(stats);
@@ -5286,6 +5368,7 @@ function _stRender() {
   html += _stBuildPostDateBanner(postdates);
   html +=
     '<div class="ph ph-st-compact"><div class="pt">Sales <span>Tracker</span></div></div>';
+  html += _stBuildKpiStrip(sales, stats);
   html += _stBuildInternalSubtabs(stTab);
   html +=
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
