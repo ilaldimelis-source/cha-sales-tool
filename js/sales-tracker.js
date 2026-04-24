@@ -3341,7 +3341,11 @@ function _stGroupMatchesAllListFilters(grp) {
     ' ' +
     String(lead.plan || '') +
     ' ' +
-    String(lead.memberId || '');
+    String(lead.memberId || '') +
+    ' ' +
+    String(lead.receiptId || '') +
+    ' ' +
+    String(lead.notes || '');
   return hay.toLowerCase().indexOf(q) !== -1;
 }
 
@@ -3947,7 +3951,7 @@ function _stBuildAllSalesPane(sales) {
   html +=
     '<input type="text" class="st-all-search" placeholder="Search client, plan, ID…" value="' +
     _stEscape(_stAllSearchQuery) +
-    '" oninput="_stQueueAllSearchRender(this.value)">';
+    '">';
   html += '<select class="st-all-status-dd" onchange="_stSetAllStatusFilter(this.value)">';
   var stOpts = [
     ['all', 'All status'],
@@ -5379,6 +5383,7 @@ function _stRender() {
   }
   _stUpdateFabVisibility();
   _stWireSalesBulkDelegation(page);
+  _stWireAllSalesSearchDelegation(page);
   _stWirePaycheckObserver();
 }
 
@@ -5411,6 +5416,18 @@ function _stWireSalesBulkDelegation(page) {
     if (el.classList.contains('st-bulk-all')) {
       _stBulkToggleAll(!!el.checked);
     }
+  });
+}
+
+// Delegated input on #page-salestracker so All Sales search works when
+// inline oninput is blocked by stricter CSP (e.g. Vercel headers).
+function _stWireAllSalesSearchDelegation(page) {
+  if (!page || page.dataset.stAllSearchDeleg) return;
+  page.dataset.stAllSearchDeleg = '1';
+  page.addEventListener('input', function (e) {
+    var el = e.target;
+    if (!el || !el.classList || !el.classList.contains('st-all-search')) return;
+    _stQueueAllSearchRender(el.value);
   });
 }
 
