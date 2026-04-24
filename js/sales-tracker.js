@@ -1959,6 +1959,519 @@ function _stSplitReceipts(text) {
   return chunks;
 }
 
+// ── RECEIPT REVIEW (post-parse classification only; parser untouched) ──
+var _stReceiptReview = null;
+
+function _stDealExistsForReceiptId(sales, receiptId) {
+  if (!receiptId) return false;
+  var rid = String(receiptId);
+  for (var i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (s && s.type === 'deal' && String(s.receiptId || '') === rid) return true;
+  }
+  return false;
+}
+
+function _stStampOrphanAddonReceiptCommissions(sales, receiptId, rates) {
+  if (!receiptId || !rates) return;
+  var rid = String(receiptId);
+  for (var i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'addon' || String(s.receiptId || '') !== rid) continue;
+    var lineComm = _stComputeLineCommission(s, rates);
+    var planN = String(s.plan || '').toLowerCase();
+    if (/\brx\s*savers?\b/.test(planN)) {
+      s.addonCommissionRate = null;
+    } else {
+      s.addonCommissionRate =
+        typeof s.addonCommissionRate === 'number'
+          ? s.addonCommissionRate
+          : rates.addonTypes[_stClassifyAddon(s.plan)] || rates.addonTypes.standard;
+    }
+    s.addonCommission = lineComm;
+  }
+}
+
+function _stReceiptReviewLineIsJunk(name) {
+  var n = String(name || '').toLowerCase();
+  if (!n.trim()) return true;
+  if (
+    /monthly premium|^\s*total\b|summary\b|application fee|one[-\s]?time\s*application|\bapplication fee\b|\bone[-\s]?time\b/.test(
+      n
+    )
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function _stReceiptReviewLineLooksAddonOnly(name) {
+  var n = String(name || '').toLowerCase();
+  if (/short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|medfirst|goodhealth|tdk\b|access health/.test(n)) {
+    return false;
+  }
+  return (
+    /\bame\b|\bawa\b|assistpro|compass|dental|vision|recuro|life association|patient assistance|behavioral|prescription|virtual|select dental|plus vision|add[-\s]?on/.test(
+      n
+    ) || /application\s*#/.test(n)
+  );
+}
+
+function _stReceiptReviewBuildRowsForChunk(parsed, chunkIdx) {
+  var products = (parsed && parsed.products) || [];
+  var rows = [];
+  var i;
+  var nonJunkIdxs = [];
+  for (i = 0; i < products.length; i++) {
+    var p = products[i] || {};
+    var nm = String(p.name || '');
+    var pr = Number(p.price) || 0;
+    var junk = _stReceiptReviewLineIsJunk(nm);
+    var role = 'addon';
+    var detected = junk ? 'Skipped (summary / fee / total line)' : 'Add-on';
+    if (junk) role = 'skip';
+    rows.push({
+      chunkIdx: chunkIdx,
+      prodIdx: i,
+      name: nm,
+      price: pr,
+      policy: p.policy || '',
+      role: role,
+      detected: detected,
+      junk: junk
+    });
+    if (!junk) nonJunkIdxs.push(rows.length - 1);
+  }
+  var noCoreBanner = false;
+  if (nonJunkIdxs.length) {
+    var allAddonOnly = true;
+    for (var j = 0; j < nonJunkIdxs.length; j++) {
+      if (!_stReceiptReviewLineLooksAddonOnly(rows[nonJunkIdxs[j]].name)) {
+        allAddonOnly = false;
+        break;
+      }
+    }
+    if (allAddonOnly) {
+      noCoreBanner = true;
+      for (var k = 0; k < nonJunkIdxs.length; k++) {
+        var ri = nonJunkIdxs[k];
+        rows[ri].role = 'addon';
+        rows[ri].detected = 'Add-on (no core plan detected)';
+      }
+    } else {
+      var firstCore = nonJunkIdxs[0];
+      rows[firstCore].role = 'core';
+      rows[firstCore].detected = 'Core (first plan line)';
+      for (var m = 1; m < nonJunkIdxs.length; m++) {
+        var rj = nonJunkIdxs[m];
+        if (rows[rj].role !== 'skip') {
+          rows[rj].role = 'addon';
+          rows[rj].detected = 'Add-on';
+        }
+      }
+    }
+  }
+  return { rows: rows, noCoreBanner: noCoreBanner };
+}
+
+function _stReceiptReviewFlattenChunks(parsedChunks) {
+  var flat = [];
+  var banners = [];
+  for (var c = 0; c < parsedChunks.length; c++) {
+    var built = _stReceiptReviewBuildRowsForChunk(parsedChunks[c].parsed, c);
+    for (var r = 0; r < built.rows.length; r++) {
+      flat.push(built.rows[r]);
+    }
+    banners.push(!!built.noCoreBanner);
+  }
+  return { flatRows: flat, chunkBanners: banners };
+}
+
+function _stReceiptReviewShowPanes(reviewVisible) {
+  var fp = document.getElementById('st-add-sale-form-pane');
+  var rp = document.getElementById('st-receipt-review-pane');
+  if (fp) fp.style.display = reviewVisible ? 'none' : 'block';
+  if (rp) rp.style.display = reviewVisible ? 'block' : 'none';
+  var h = document.getElementById('st-add-sale-title');
+  if (h) h.textContent = reviewVisible ? 'Review sale' : 'Add new sale';
+}
+
+function _stReceiptReviewPaint() {
+  var pane = document.getElementById('st-receipt-review-pane');
+  if (!pane || !_stReceiptReview) return;
+  var st = _stReceiptReview;
+  var html = '';
+  var sub = '';
+  if (st.chunks.length === 1) {
+    sub = _stEscape(String((st.chunks[0].parsed && st.chunks[0].parsed.customer) || '').trim() || '—');
+  } else {
+    sub = st.chunks.length + ' receipts — review each section';
+  }
+  html += '<div class="st-review-head">';
+  html += '<div class="st-review-head-text">';
+  html += '<div class="st-review-title">Review sale</div>';
+  html += '<div class="st-review-sub">' + sub + '</div>';
+  if (st.anyNoCoreBanner) {
+    html +=
+      '<div class="st-review-banner" role="status">No core plan detected. This will save as an add-on-only sale. Adjust below if needed.</div>';
+  }
+  html += '</div>';
+  html +=
+    '<button type="button" class="st-review-edit-manual" aria-label="Edit sale manually" onclick="_stReceiptReviewEditManually()">✎ Edit manually</button>';
+  html += '</div>';
+
+  var lastChunk = -1;
+  for (var i = 0; i < st.flatRows.length; i++) {
+    var row = st.flatRows[i];
+    if (row.chunkIdx !== lastChunk) {
+      lastChunk = row.chunkIdx;
+      var cust = String(
+        (st.chunks[lastChunk].parsed && st.chunks[lastChunk].parsed.customer) || ''
+      ).trim();
+      html +=
+        '<div class="st-review-chunk-h">' +
+        _stEscape(st.chunks.length > 1 ? 'Receipt ' + (lastChunk + 1) + (cust ? ' — ' + cust : '') : '') +
+        '</div>';
+    }
+    var indClass = 'st-review-ind st-review-ind-skip';
+    var indLabel = 'Skip';
+    if (row.role === 'core') {
+      indClass = 'st-review-ind st-review-ind-core';
+      indLabel = 'Core';
+    } else if (row.role === 'addon') {
+      indClass = 'st-review-ind st-review-ind-addon';
+      indLabel = 'Add-on';
+    }
+    html += '<div class="st-review-row" data-review-idx="' + i + '">';
+    html +=
+      '<div class="' +
+      indClass +
+      '" aria-label="' +
+      _stEscape(indLabel) +
+      '"></div>';
+    html += '<div class="st-review-mid">';
+    html += '<div class="st-review-name">' + _stEscape(row.name || '—') + '</div>';
+    html +=
+      '<div class="st-review-detected">Detected as ' + _stEscape(row.detected || '') + '</div>';
+    html += '</div>';
+    html += '<div class="st-review-right">';
+    html += '<div class="st-review-amt">$' + (Number(row.price) || 0).toFixed(2) + '</div>';
+    html +=
+      '<select class="st-review-role-dd" data-review-idx="' +
+      i +
+      '" aria-label="Line classification">';
+    var opts = ['core', 'addon', 'skip'];
+    for (var oi = 0; oi < opts.length; oi++) {
+      var ov = opts[oi];
+      html +=
+        '<option value="' +
+        ov +
+        '"' +
+        (row.role === ov ? ' selected' : '') +
+        '>' +
+        (ov === 'core' ? 'Core' : ov === 'addon' ? 'Add-on' : 'Skip') +
+        '</option>';
+    }
+    html += '</select></div></div>';
+  }
+
+  var monthly = 0;
+  for (var t = 0; t < st.flatRows.length; t++) {
+    if (st.flatRows[t].role !== 'skip') monthly += Number(st.flatRows[t].price) || 0;
+  }
+  var feeParts = [];
+  for (var cj = 0; cj < st.chunks.length; cj++) {
+    var en = Number((st.chunks[cj].parsed && st.chunks[cj].parsed.enrollmentFee) || 0);
+    if (en > 0) feeParts.push('Enrollment / one-time: $' + en.toFixed(2));
+  }
+  html += '<div class="st-review-foot">';
+  html += '<div class="st-review-foot-left">';
+  html +=
+    '<div class="st-review-sum"><strong>Monthly (non-skipped):</strong> $' +
+    monthly.toFixed(2) +
+    '</div>';
+  if (feeParts.length) {
+    html += '<div class="st-review-fees">' + _stEscape(feeParts.join(' · ')) + '</div>';
+  }
+  html += '</div>';
+  html += '<div class="st-review-foot-actions">';
+  html +=
+    '<button type="button" class="st-review-cancel" onclick="_stReceiptReviewCancel()">Cancel</button>';
+  html +=
+    '<button type="button" class="st-review-save" onclick="_stReceiptReviewSave()">Save Sale</button>';
+  html += '</div></div>';
+
+  pane.innerHTML = html;
+  pane.onchange = function (e) {
+    var t = e.target;
+    if (!t || !t.classList || !t.classList.contains('st-review-role-dd')) return;
+    var idx = parseInt(t.getAttribute('data-review-idx'), 10);
+    if (isNaN(idx)) return;
+    _stReceiptReviewSetRole(idx, t.value);
+  };
+}
+
+function _stReceiptReviewSetRole(flatIdx, newRole) {
+  if (!_stReceiptReview || !_stReceiptReview.flatRows[flatIdx]) return;
+  var row = _stReceiptReview.flatRows[flatIdx];
+  var chunkIdx = row.chunkIdx;
+  if (newRole === 'core') {
+    for (var i = 0; i < _stReceiptReview.flatRows.length; i++) {
+      var r = _stReceiptReview.flatRows[i];
+      if (r.chunkIdx !== chunkIdx) continue;
+      if (i === flatIdx) continue;
+      if (r.role === 'core') {
+        r.role = 'addon';
+        r.detected = 'Add-on';
+      }
+    }
+    row.role = 'core';
+    row.detected = 'Core';
+  } else {
+    row.role = newRole;
+    row.detected = newRole === 'skip' ? 'Skip' : 'Add-on';
+  }
+  _stReceiptReviewPaint();
+}
+
+function _stReceiptReviewCancel() {
+  _stReceiptReview = null;
+  _stReceiptReviewShowPanes(false);
+  var pane = document.getElementById('st-receipt-review-pane');
+  if (pane) pane.innerHTML = '';
+  _stSetAddSalePanelOpen(false);
+}
+
+function _stReceiptReviewEditManually() {
+  if (!_stReceiptReview) return;
+  var st = _stReceiptReview;
+  var initial = _stReceiptReviewBuildManualInitial(st);
+  _stReceiptReview = null;
+  _stReceiptReviewShowPanes(false);
+  var pane = document.getElementById('st-receipt-review-pane');
+  if (pane) pane.innerHTML = '';
+  _stSetAddSalePanelOpen(false);
+  _stOpenEntryModal(initial);
+}
+
+function _stReceiptReviewBuildManualInitial(st) {
+  var out = {
+    mode: 'create',
+    previewText: st.chunks.map(function (c) { return c.raw; }).join('\n\n---\n\n'),
+    initial: { dateSold: _stTodayIso(), enrollmentFee: 125 }
+  };
+  var coreRow = null;
+  var addons = [];
+  for (var i = 0; i < st.flatRows.length; i++) {
+    var r = st.flatRows[i];
+    if (r.role === 'skip') continue;
+    if (r.role === 'core') coreRow = r;
+    else if (r.role === 'addon')
+      addons.push({ name: r.name, amount: r.price, ratePct: 70 });
+  }
+  var parsed0 = st.chunks[0].parsed || {};
+  out.initial.customer = String(parsed0.customer || '').trim();
+  out.initial.memberId = parsed0.memberId || '';
+  if (coreRow) {
+    out.initial.plan = coreRow.name;
+    out.initial.premium = Number(coreRow.price) || 0;
+    out.initial.enrollmentFee = Number(parsed0.enrollmentFee) || 0;
+  } else {
+    out.initial.addonOnly = true;
+    out.initial.plan = '';
+    out.initial.premium = 0;
+    out.initial.enrollmentFee = 0;
+  }
+  out.initial.addons = addons;
+  return out;
+}
+
+function _stReceiptReviewSave() {
+  if (!_stReceiptReview) return;
+  var st = _stReceiptReview;
+  var billDate = st.billDate;
+  var fallbackTs = st.fallbackTs;
+
+  if (billDate) {
+    var pds = _stLoadPostDates();
+    for (var rc = 0; rc < st.chunks.length; rc++) {
+      var parsedA = st.chunks[rc].parsed;
+      var rawA = st.chunks[rc].raw;
+      var customerA = String(parsedA.customer || '').trim() || 'Customer';
+      var rcptIdA = _stResolveReceiptPolicy(parsedA, _stBuildUniqueReceiptId('rcpt_'));
+      if (!_stMaybeConfirmDuplicate(customerA, rcptIdA)) {
+        _stFlash('Cancelled - ' + customerA + ' was not re-added', 'neutral');
+        return;
+      }
+      var baseTsA = Date.now() + rc * 1000;
+      var rowsC = st.flatRows.filter(function (r) {
+        return r.chunkIdx === rc;
+      });
+      var active = rowsC.filter(function (r) {
+        return r.role !== 'skip';
+      });
+      if (!active.length) {
+        _stFlash('Select at least one line to save for ' + customerA + '.', 'error');
+        return;
+      }
+      var coreRows = active.filter(function (r) {
+        return r.role === 'core';
+      });
+      var hasCore = coreRows.length > 0;
+      var order = active.slice().sort(function (a, b) {
+        return a.prodIdx - b.prodIdx;
+      });
+      for (var oi = 0; oi < order.length; oi++) {
+        var rw = order[oi];
+        var pp = (parsedA.products && parsedA.products[rw.prodIdx]) || {};
+        var isDeal = hasCore && rw.role === 'core';
+        var typ = isDeal ? 'deal' : 'addon';
+        pds.push({
+          id:
+            'pd_' +
+            baseTsA +
+            '_' +
+            oi +
+            '_' +
+            Math.random().toString(36).slice(2, 6),
+          createdTs: baseTsA + oi,
+          billDate: billDate,
+          customer: customerA,
+          plan: rw.name || 'Unknown Plan',
+          amount: rw.price,
+          type: typ,
+          raw: rawA,
+          notes: pp.policy ? 'Policy: ' + pp.policy : '',
+          receiptId: rcptIdA
+        });
+      }
+    }
+    _stSavePostDates(pds);
+  } else {
+    var sales = _stLoadSales();
+    var rates = _stLoadCommissionRates();
+    var newDealIdxs = [];
+    for (var rc2 = 0; rc2 < st.chunks.length; rc2++) {
+      var parsedB = st.chunks[rc2].parsed;
+      var rawB = st.chunks[rc2].raw;
+      var customerB = String(parsedB.customer || '').trim() || 'Customer';
+      var rcptIdB = _stResolveReceiptPolicy(parsedB, _stBuildUniqueReceiptId('rcpt_'));
+      if (!_stMaybeConfirmDuplicate(customerB, rcptIdB)) {
+        _stFlash('Cancelled - ' + customerB + ' was not re-added', 'neutral');
+        return;
+      }
+      var rcTs;
+      if (parsedB.saleDate && parsedB.saleDate instanceof Date) {
+        var sd = parsedB.saleDate;
+        var sdLocal = new Date(
+          sd.getFullYear(),
+          sd.getMonth(),
+          sd.getDate(),
+          9,
+          0,
+          0,
+          0
+        );
+        rcTs = sdLocal.getTime();
+      } else {
+        rcTs = fallbackTs + rc2 * 60000;
+      }
+      var rowsC2 = st.flatRows.filter(function (r) {
+        return r.chunkIdx === rc2;
+      });
+      var active2 = rowsC2.filter(function (r) {
+        return r.role !== 'skip';
+      });
+      if (!active2.length) {
+        _stFlash('Select at least one line to save for ' + customerB + '.', 'error');
+        return;
+      }
+      var hasCore2 = active2.some(function (r) {
+        return r.role === 'core';
+      });
+      var order2 = active2.slice().sort(function (a, b) {
+        return a.prodIdx - b.prodIdx;
+      });
+      for (var oj = 0; oj < order2.length; oj++) {
+        var rw2 = order2[oj];
+        var pp2 = (parsedB.products && parsedB.products[rw2.prodIdx]) || {};
+        var isDeal2 = hasCore2 && rw2.role === 'core';
+        var typ2 = isDeal2 ? 'deal' : 'addon';
+        sales.push({
+          id:
+            'st_' +
+            rcTs +
+            '_' +
+            rc2 +
+            '_' +
+            oj +
+            '_' +
+            Math.random().toString(36).slice(2, 6),
+          ts: rcTs + oj,
+          customer: customerB,
+          memberId: parsedB.memberId || '',
+          plan: rw2.name || 'Unknown Plan',
+          amount: rw2.price,
+          type: typ2,
+          status: 'pending',
+          raw: rawB,
+          notes: pp2.policy ? 'Policy: ' + pp2.policy : '',
+          receiptId: rcptIdB,
+          receiptTotal: parsedB.receiptTotal,
+          enrollmentFee: isDeal2 ? parsedB.enrollmentFee || 0 : 0
+        });
+        if (isDeal2) newDealIdxs.push(sales.length - 1);
+      }
+      if (!hasCore2) {
+        _stStampOrphanAddonReceiptCommissions(sales, rcptIdB, rates);
+      }
+    }
+    if (newDealIdxs.length) {
+      for (var di = 0; di < newDealIdxs.length; di++) {
+        _stStampDealCommission(sales, newDealIdxs[di], rates);
+      }
+    }
+    _stSaveSales(sales);
+  }
+
+  var input = document.getElementById('st-receipt-input');
+  if (input) input.value = '';
+  _stResetPostDateInputs();
+  _stReceiptReview = null;
+  _stReceiptReviewShowPanes(false);
+  var rp = document.getElementById('st-receipt-review-pane');
+  if (rp) rp.innerHTML = '';
+  _stSetAddSalePanelOpen(false);
+  _stRender();
+  _stFlash('Sale saved.', 'ok');
+}
+
+function _stStartReceiptReview(parsedChunks, billDate, fallbackTs) {
+  var flat = _stReceiptReviewFlattenChunks(parsedChunks);
+  var anyBanner = false;
+  for (var b = 0; b < flat.chunkBanners.length; b++) {
+    if (flat.chunkBanners[b]) anyBanner = true;
+  }
+  _stReceiptReview = {
+    active: true,
+    chunks: parsedChunks,
+    billDate: billDate,
+    fallbackTs: fallbackTs,
+    flatRows: flat.flatRows,
+    anyNoCoreBanner: anyBanner
+  };
+  _stReceiptReviewShowPanes(true);
+  _stReceiptReviewPaint();
+}
+
+function _stReceiptReviewAfterOverlayMount() {
+  if (_stReceiptReview && _stReceiptReview.active) {
+    _stReceiptReviewShowPanes(true);
+    _stReceiptReviewPaint();
+    _stSetAddSalePanelOpen(true);
+  }
+}
+
 // Primary action: parse the pasted text (which may contain ONE
 // or MANY receipts), split it into per-receipt chunks, and
 // insert one deal + N add-ons per chunk. All chunks share the
@@ -2020,146 +2533,7 @@ function _stAutoDetectAndAdd() {
   }
 
   var fallbackTs = _stReadDateSoldTs();
-  var totalDeals = 0;
-  var totalAddons = 0;
-  var flashItems = [];
-  var flashedCustomers = {};
-
-  if (billDate) {
-    var pds = _stLoadPostDates();
-    for (var rc = 0; rc < parsedChunks.length; rc++) {
-      var parsedA = parsedChunks[rc].parsed;
-      var rawA = parsedChunks[rc].raw;
-      var customerA = String(parsedA.customer || '').trim() || 'Customer';
-      var rcptIdA = _stResolveReceiptPolicy(parsedA, _stBuildUniqueReceiptId('rcpt_'));
-      if (!_stMaybeConfirmDuplicate(customerA, rcptIdA)) {
-        _stFlash('Cancelled - ' + customerA + ' was not re-added', 'neutral');
-        return;
-      }
-      var baseTsA = Date.now() + rc * 1000;
-      for (var pi = 0; pi < parsedA.products.length; pi++) {
-        var pp = parsedA.products[pi];
-        pds.push({
-          id:
-            'pd_' +
-            baseTsA +
-            '_' +
-            pi +
-            '_' +
-            Math.random().toString(36).slice(2, 6),
-          createdTs: baseTsA + pi,
-          billDate: billDate,
-          customer: customerA,
-          plan: pp.name || 'Unknown Plan',
-          amount: pp.price,
-          type: pi === 0 ? 'deal' : 'addon',
-          raw: rawA,
-          notes: pp.policy ? 'Policy: ' + pp.policy : '',
-          receiptId: rcptIdA
-        });
-        if (pi === 0) totalDeals++;
-        else totalAddons++;
-      }
-      var keyA = customerA.toLowerCase();
-      if (!flashedCustomers[keyA]) {
-        flashItems.push(_stBuildAddedFlash(customerA, baseTsA));
-        flashedCustomers[keyA] = true;
-      }
-    }
-    _stSavePostDates(pds);
-  } else {
-    var sales = _stLoadSales();
-    var newDealIdxs = [];
-    for (var rc2 = 0; rc2 < parsedChunks.length; rc2++) {
-      var parsedB = parsedChunks[rc2].parsed;
-      var rawB = parsedChunks[rc2].raw;
-      var customerB = String(parsedB.customer || '').trim() || 'Customer';
-      var rcptIdB = _stResolveReceiptPolicy(parsedB, _stBuildUniqueReceiptId('rcpt_'));
-      if (!_stMaybeConfirmDuplicate(customerB, rcptIdB)) {
-        _stFlash('Cancelled - ' + customerB + ' was not re-added', 'neutral');
-        return;
-      }
-      var rcTs;
-      if (parsedB.saleDate && parsedB.saleDate instanceof Date) {
-        var sd = parsedB.saleDate;
-        var sdLocal = new Date(
-          sd.getFullYear(),
-          sd.getMonth(),
-          sd.getDate(),
-          9,
-          0,
-          0,
-          0
-        );
-        rcTs = sdLocal.getTime();
-      } else {
-        rcTs = fallbackTs + rc2 * 60000;
-      }
-      for (var pj = 0; pj < parsedB.products.length; pj++) {
-        var pp2 = parsedB.products[pj];
-        var isDeal2 = pj === 0;
-        sales.push({
-          id:
-            'st_' +
-            rcTs +
-            '_' +
-            rc2 +
-            '_' +
-            pj +
-            '_' +
-            Math.random().toString(36).slice(2, 6),
-          ts: rcTs + pj,
-          customer: customerB,
-          memberId: parsedB.memberId || '',
-          plan: pp2.name || 'Unknown Plan',
-          amount: pp2.price,
-          type: isDeal2 ? 'deal' : 'addon',
-          status: 'pending',
-          raw: rawB,
-          notes: pp2.policy ? 'Policy: ' + pp2.policy : '',
-          receiptId: rcptIdB,
-          receiptTotal: parsedB.receiptTotal,
-          enrollmentFee: isDeal2 ? parsedB.enrollmentFee || 0 : 0
-        });
-        if (isDeal2) {
-          newDealIdxs.push(sales.length - 1);
-          totalDeals++;
-        } else {
-          totalAddons++;
-        }
-      }
-      var keyB = customerB.toLowerCase();
-      if (!flashedCustomers[keyB]) {
-        flashItems.push(_stBuildAddedFlash(customerB, rcTs));
-        flashedCustomers[keyB] = true;
-      }
-    }
-    if (newDealIdxs.length) {
-      var rates = _stLoadCommissionRates();
-      for (var di = 0; di < newDealIdxs.length; di++) {
-        _stStampDealCommission(sales, newDealIdxs[di], rates);
-      }
-    }
-    _stSaveSales(sales);
-  }
-
-  input.value = '';
-  _stResetPostDateInputs();
-  _stSetAddSalePanelOpen(false);
-  _stRender();
-  if (flashItems.length) {
-    _stFlashSequence(flashItems);
-  } else {
-    _stFlash(
-      'Added ' +
-        totalDeals +
-        ' deal' +
-        (totalDeals === 1 ? '' : 's') +
-        (totalAddons ? ' + ' + totalAddons + ' add-ons' : '') +
-        '.',
-      'ok'
-    );
-  }
+  _stStartReceiptReview(parsedChunks, billDate, fallbackTs);
 }
 
 // Manual fallback: add a single sale as deal or addon, using the
@@ -2776,7 +3150,9 @@ function _stCalcStats(sales) {
       includeInSales = true; // we already filtered to valid
     } else if (s.type === 'addon') {
       if (s.receiptId) {
-        includeInSales = validDealReceiptIds[s.receiptId] === true;
+        includeInSales =
+          validDealReceiptIds[s.receiptId] === true ||
+          !_stDealExistsForReceiptId(sales, s.receiptId);
       } else {
         // Manual add-on without a receipt — judge on its own status
         includeInSales = true;
@@ -2848,6 +3224,7 @@ function _stPaycheckBreakdown(sales, stats) {
   var dealComm = 0;
   var addonComm = 0;
   var enrollmentBonus = 0;
+  var ratesOrphan = _stLoadCommissionRates();
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s || s.type !== 'deal') continue;
@@ -2855,6 +3232,18 @@ function _stPaycheckBreakdown(sales, stats) {
     dealComm += Number(s.planCommission) || 0;
     addonComm += Number(s.totalAddonCommission) || 0;
     enrollmentBonus += Number(s.enrollmentBonus) || 0;
+  }
+  for (var j = 0; j < sales.length; j++) {
+    var ad = sales[j];
+    if (!ad || ad.type !== 'addon') continue;
+    if (ad.ts < stats.weekStart) continue;
+    if (_stNormalizeStatus(ad) === 'chargeback') continue;
+    if (!ad.receiptId || _stDealExistsForReceiptId(sales, ad.receiptId)) continue;
+    var ac =
+      typeof ad.addonCommission === 'number'
+        ? ad.addonCommission
+        : _stComputeLineCommission(ad, ratesOrphan);
+    addonComm += ac;
   }
   var tierBonus = _stCurrentTierBonus(stats);
   var estimated = dealComm + addonComm + enrollmentBonus + tierBonus;
@@ -2939,6 +3328,18 @@ function _stSetAddSalePanelOpen(open) {
   var panel = document.getElementById('st-add-sale-panel');
   var backdrop = document.getElementById('st-add-sale-backdrop');
   if (!panel || !backdrop) return;
+  if (!open && _stReceiptReview) {
+    _stReceiptReview = null;
+    var rp0 = document.getElementById('st-receipt-review-pane');
+    if (rp0) {
+      rp0.innerHTML = '';
+      rp0.style.display = 'none';
+    }
+    var fp0 = document.getElementById('st-add-sale-form-pane');
+    if (fp0) fp0.style.display = 'block';
+    var h0 = document.getElementById('st-add-sale-title');
+    if (h0) h0.textContent = 'Add new sale';
+  }
   _stAddSalePanelOpen = !!open;
   panel.classList.toggle('open', _stAddSalePanelOpen);
   backdrop.classList.toggle('open', _stAddSalePanelOpen);
@@ -2986,7 +3387,10 @@ function _stBuildAddSaleSection() {
     '<aside id="st-add-sale-panel" class="st-add-sale-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="st-add-sale-title">' +
     '<div class="st-add-sale-panel-head"><h3 id="st-add-sale-title">Add new sale</h3><button type="button" class="st-add-sale-close" aria-label="Close add sale panel" onclick="_stSetAddSalePanelOpen(false)">×</button></div>' +
     '<div class="st-add-sale-panel-body">' +
+    '<div id="st-add-sale-form-pane" class="st-add-sale-form-pane">' +
     _stBuildInput() +
+    '</div>' +
+    '<div id="st-receipt-review-pane" class="st-receipt-review-pane" style="display:none" role="dialog" aria-modal="true" aria-label="Review sale"></div>' +
     '</div></aside>' +
     '<button type="button" id="st-add-sale-fab" class="st-add-sale-fab" aria-label="Add new sale" onclick="_stSetAddSalePanelOpen(true)"><span class="st-add-sale-fab-plus">+</span><span class="st-add-sale-fab-label">Add Sale</span></button>'
   );
@@ -3000,6 +3404,7 @@ function _stMountAddSaleOverlay() {
     document.body.appendChild(root);
   }
   root.innerHTML = _stBuildAddSaleSection();
+  _stReceiptReviewAfterOverlayMount();
 }
 
 // Banner shown at the very top of the page when one or more
@@ -4259,7 +4664,8 @@ function _stOpenEntryModal(opts) {
     mode: mode,
     dealId: initial.dealId || '',
     receiptIdForEdit: initial.receiptId || '',
-    previewText: preview
+    previewText: preview,
+    addonOnly: !!initial.addonOnly
   };
 
   var modal = document.createElement('div');
@@ -4437,6 +4843,47 @@ function _stCreateSaleGroupFromModal(payload) {
   return true;
 }
 
+function _stCreateAddonOnlyFromModal(payload) {
+  var receiptId = payload.receiptId || _stBuildUniqueReceiptId('rcpt_manual_');
+  if (!_stMaybeConfirmDuplicate(payload.customer, receiptId)) {
+    _stFlash('Cancelled - ' + payload.customer + ' was not re-added', 'neutral');
+    return false;
+  }
+  var sales = _stLoadSales();
+  var rates = _stLoadCommissionRates();
+  for (var i = 0; i < payload.addons.length; i++) {
+    var ad = payload.addons[i];
+    sales.push({
+      id:
+        'st_' +
+        payload.ts +
+        '_manual_ao_' +
+        i +
+        '_' +
+        Math.random().toString(36).slice(2, 6),
+      ts: payload.ts + i,
+      customer: payload.customer,
+      memberId: '',
+      plan: ad.name,
+      amount: ad.amount,
+      type: 'addon',
+      status: 'pending',
+      raw: payload.rawText || '',
+      notes: receiptId ? 'Policy: ' + receiptId : '',
+      receiptId: receiptId,
+      receiptTotal: 0,
+      enrollmentFee: 0,
+      addonCommissionRate: ad.ratePct / 100
+    });
+  }
+  _stStampOrphanAddonReceiptCommissions(sales, receiptId, rates);
+  _stSaveSales(sales);
+  _stRender();
+  var addedFlash = _stBuildAddedFlash(payload.customer, payload.ts);
+  _stFlash(addedFlash.msg, addedFlash.kind);
+  return true;
+}
+
 function _stUpdateSaleGroupFromModal(payload, state) {
   var sales = _stLoadSales();
   var dealIdx = -1;
@@ -4544,16 +4991,6 @@ function _stSaveEntryModal() {
   var enrollmentFee = parseFloat((document.getElementById('st-entry-enroll') || {}).value);
   var dealRatePct = parseFloat((document.getElementById('st-entry-deal-rate') || {}).value);
 
-  if (isNaN(premium) || premium < 0) {
-    _stFlash('Enter a valid monthly premium.', 'error');
-    return;
-  }
-  if (isNaN(enrollmentFee) || enrollmentFee < 0) enrollmentFee = 125;
-  if (isNaN(dealRatePct) || dealRatePct < 0) {
-    _stFlash('Enter a valid deal commission percent.', 'error');
-    return;
-  }
-
   var rows = document.querySelectorAll('#st-entry-addons .st-entry-addon-row');
   var addons = [];
   for (var i = 0; i < rows.length; i++) {
@@ -4572,6 +5009,47 @@ function _stSaveEntryModal() {
       amount: amount,
       ratePct: ratePct
     });
+  }
+
+  if (state.mode === 'create' && state.addonOnly) {
+    var hasAddonAmt = false;
+    for (var ai = 0; ai < addons.length; ai++) {
+      if (addons[ai].name && addons[ai].amount > 0) {
+        hasAddonAmt = true;
+        break;
+      }
+    }
+    if (!hasAddonAmt) {
+      _stFlash('Add at least one add-on with a premium for add-on-only sale.', 'error');
+      return;
+    }
+    if (isNaN(enrollmentFee) || enrollmentFee < 0) enrollmentFee = 0;
+    if (isNaN(dealRatePct) || dealRatePct < 0) dealRatePct = 0;
+    var payloadAo = {
+      customer: customer,
+      receiptId: receiptId,
+      ts: ts,
+      addons: addons,
+      rawText: state.previewText || ''
+    };
+    var okAo = _stCreateAddonOnlyFromModal(payloadAo);
+    if (okAo) {
+      _stCloseEntryModal();
+      var inputAo = document.getElementById('st-receipt-input');
+      if (inputAo) inputAo.value = '';
+      _stResetPostDateInputs();
+    }
+    return;
+  }
+
+  if (isNaN(premium) || premium < 0) {
+    _stFlash('Enter a valid monthly premium.', 'error');
+    return;
+  }
+  if (isNaN(enrollmentFee) || enrollmentFee < 0) enrollmentFee = 125;
+  if (isNaN(dealRatePct) || dealRatePct < 0) {
+    _stFlash('Enter a valid deal commission percent.', 'error');
+    return;
   }
 
   var payload = {
@@ -5325,7 +5803,10 @@ function _stBuildAnalyticsDashboard(sales, stats) {
 function _stRender() {
   var page = document.getElementById('page-salestracker');
   if (!page) return;
-  _stAddSalePanelOpen = false;
+  var stPreserveReceiptReview = _stReceiptReview && _stReceiptReview.active;
+  if (!stPreserveReceiptReview) {
+    _stAddSalePanelOpen = false;
+  }
   var sales = _stLoadSales();
   sales = _stValidateSalesIntegrity(sales);
   var postdates = _stLoadPostDates();
