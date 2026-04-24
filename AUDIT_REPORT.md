@@ -130,3 +130,62 @@ Scope: conservative cleanup only; no parser/storage/commission/user-scope behavi
 
 - Additional `console.log` statements exist outside Sales Tracker core (not removed in this hygiene pass to avoid unrelated behavior risk).
 - Potential CSS dead-selector cleanup remains intentionally conservative; no broad removals were performed without high-confidence usage proof.
+
+---
+
+## TASK 11 — Production console errors (CSP worker blob, connection refused, meta deprecation)
+
+Investigation only for Issues 1–2; Issue 3 fixed in code (meta tag + cache bump).
+
+### Issue 1 — CSP worker blob violation
+
+**Worker creation sites in first-party code**
+
+- None found: `grep` for `new Worker(`, `SharedWorker`, and `Worker(` across `*.js` / `*.html` returned **no matches**.
+
+**Blob `URL.createObjectURL` (not workers)**
+
+- `js/sales-tracker.js` (approx. lines 4084–4090) — `_stExportAllSalesCsv`: creates a `Blob` for CSV download and `URL.createObjectURL(blob)` for a temporary `<a download>`. This is a **download link**, not a Web Worker.
+
+**Third-party scripts that may spawn blob workers**
+
+- `index.html` — Clerk: `script` `src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js"` (also `js/auth.js` loads Clerk from `clerk.accounts.dev` in other flows).
+- `index.html` — `js/speed-insights.js` injects `/_vercel/speed-insights/script.js` (prod) or `https://va.vercel-scripts.com/v1/speed-insights/script.debug.js` (dev). Vercel Speed Insights commonly uses workers internally.
+
+**Recommendation**
+
+- **A) Extend CSP** — Add an explicit `worker-src` (and often `child-src` for older browsers) allowing blob workers used by trusted third parties, e.g. include `blob:` (and typically `'self'`) in `worker-src` alongside your existing `default-src`. This preserves Clerk / Speed Insights behavior without forking libraries.
+- **B** / **C** are possible (remove worker-dependent SDKs or reconfigure them) but are **feature / infra decisions**, not appropriate for a report-only hygiene pass.
+
+### Issue 2 — `ERR_CONNECTION_REFUSED` (likely five failures)
+
+**Leaked localhost / non-HTTPS runtime URLs**
+
+- `http://127.0.0.1:7347/ingest/...` — **Cursor / agent debug ingest probes** (not reachable in production):
+  - `index.html:8` — CSP `connect-src` explicitly allows `http://127.0.0.1:7347`
+  - `index.html:63-64` — two `fetch(...)` probes in `<head>`
+  - `index.html:68` — `navigator.sendBeacon(...)` to same host
+  - `js/app.js:11, 445, 1765` — `fetch` on `window.onerror`, `showPage`, `initApp`
+  - `js/chat.js:2887` — `fetch` in chat path
+  - `js/live-assist.js:226, 301, 316` — `fetch` in Live Assist flows
+
+**Count:** **9** first-party references to `127.0.0.1:7347` in shipped app sources (excluding `playwright.config.js`). Any subset can surface as **connection refused** in DevTools on Vercel; **five** matches a plausible subset on initial load + first navigation (e.g. head probes + `initApp` + `showPage` + one more).
+
+**Other external URLs (representative; not exhaustive of every string in data files)**
+
+- `https://api.groq.com/openai/v1/chat/completions` — `index.html` (window default), `js/chat.js`, `js/utils.js`, `js/sales-tracker.js`
+- `https://fonts.googleapis.com/...`, `https://fonts.gstatic.com` — `index.html`
+- `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js` — `index.html`
+- `https://whole-viper-89.clerk.accounts.dev/npm/@clerk/clerk-js@latest/dist/clerk.browser.js` — `js/auth.js` (and `login.html`)
+- `https://va.vercel-scripts.com/v1/speed-insights/script.debug.js` — `js/speed-insights.js` (dev hostname only)
+- `/_vercel/speed-insights/script.js` — `js/speed-insights.js` (relative, production)
+- Relative `/api/groq-key`, `/api/br-answer` etc. — various modules (same-origin; not the refused pattern unless API missing)
+
+**Likely culprits for the user’s five `ERR_CONNECTION_REFUSED`**
+
+- The **`http://127.0.0.1:7347`** debug ingest / beacon calls above. They always fail off the developer machine; **remove or gate behind dev** in a future PR (not done here per instructions).
+
+### Issue 3 — Deprecated `apple-mobile-web-app-capable`
+
+- **Fixed in this PR:** added `<meta name="mobile-web-app-capable" content="yes" />` next to the existing Apple meta in `index.html`.
+- **Cache:** `sw2.js` bumped `v379` → `v380`; `index.html` asset `?v=` timestamps advanced to `1776972000000`.
