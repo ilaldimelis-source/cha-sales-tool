@@ -3650,40 +3650,97 @@ function _stRenderThisWeekSubRow(g) {
   var lead = g.deal || (g.addons.length ? g.addons[0] : null);
   if (!lead) return '';
   var st = _stGroupListStatus(g);
+  var ts = _stGroupListTs(g);
+  var dateLabel = _stWeekCardDateLabel(ts);
   var lid = String(lead.id);
-  var planLine = _stEscape(lead.plan || '—');
-  if (g.deal && g.addons.length) {
-    planLine +=
-      ' · +' +
-      g.addons.length +
-      ' add-on' +
-      (g.addons.length === 1 ? '' : 's');
-  }
-  var commAmt = g.deal
-    ? Number(g.deal.expectedDealTotal) || 0
-    : _stGroupCommissionDisplay(g);
-  return (
-    '<div class="st-week-sub-row st-row st-row-' +
-    st +
-    '">' +
-    '<div class="st-week-sub-left">' +
-    '<div class="st-week-sub-name">' +
-    _stEscape(lead.customer || '—') +
-    '</div>' +
-    '<div class="st-week-sub-meta">' +
-    planLine +
-    '</div></div>' +
-    '<div class="st-week-sub-right">' +
-    '<span class="st-week-sub-comm-amt">' +
-    _stFmtMoney(commAmt) +
-    '</span>' +
-    '<button type="button" class="st-week-card-icon" title="Edit" aria-label="Edit sale" onclick="_stOpenCommissionEditor(\'' +
+  var pillLabel = g.deal ? 'DEAL' : 'ADD-ON';
+  var pillClass = g.deal ? 'st-week-deal-pill' : 'st-week-deal-pill st-week-pill-addon';
+  var actions =
+    '<div class="st-week-card-actions">' +
+    '<button type="button" class="st-week-card-icon" title="Edit" aria-label="Edit" onclick="event.stopPropagation();_stOpenCommissionEditor(\'' +
     lid +
     '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>' +
-    '<button type="button" class="st-week-card-icon" title="Delete" aria-label="Delete sale" onclick="_stDeleteSaleGroupByLeadId(\'' +
+    '<button type="button" class="st-week-card-icon" title="Delete" aria-label="Delete" onclick="event.stopPropagation();_stDeleteSaleGroupByLeadId(\'' +
     lid +
     '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
-    '</div></div>'
+    '</div>';
+  var premAmt = g.deal ? Number(g.deal.amount) || 0 : Number(lead.amount) || 0;
+  var idLine =
+    (lead.memberId ? 'ID: ' + _stEscape(String(lead.memberId)) + ' · ' : '') +
+    _stEscape(lead.plan || '—');
+  var commBox = '';
+  if (g.deal) {
+    var d = g.deal;
+    var rate = Math.round((Number(d.planCommissionRate) || 0) * 100);
+    var planComm = Number(d.planCommission) || 0;
+    var addonComm = Number(d.totalAddonCommission) || 0;
+    var expected = Number(d.expectedDealTotal) || 0;
+    commBox =
+      '<div class="st-week-comm-box">' +
+      '<div class="st-week-comm-row"><span>plan · ' +
+      rate +
+      '%</span><span>$' +
+      planComm.toFixed(2) +
+      '</span></div>';
+    if (addonComm !== 0) {
+      commBox +=
+        '<div class="st-week-comm-row"><span>+ add-ons</span><span>$' +
+        addonComm.toFixed(2) +
+        '</span></div>';
+    }
+    commBox +=
+      '<div class="st-week-comm-div"></div>' +
+      '<div class="st-week-comm-row st-week-comm-total"><span>Commission</span><span>$' +
+      expected.toFixed(2) +
+      '</span></div></div>';
+  } else {
+    var exp2 = _stGroupCommissionDisplay(g);
+    commBox =
+      '<div class="st-week-comm-box"><div class="st-week-comm-row st-week-comm-total"><span>Commission</span><span>$' +
+      exp2.toFixed(2) +
+      '</span></div></div>';
+  }
+  var addonSec = '';
+  if (g.deal && g.addons.length) {
+    addonSec =
+      '<div class="st-week-dash"></div><div class="st-week-addon-label">' +
+      g.addons.length +
+      ' ADD-ON' +
+      (g.addons.length === 1 ? '' : 'S') +
+      '</div>';
+    for (var ai = 0; ai < g.addons.length; ai++) {
+      var ax = g.addons[ai];
+      addonSec +=
+        '<div class="st-week-addon-strip"><span class="st-week-addon-pill">ADD</span>' +
+        '<span class="st-week-addon-name">' +
+        _stEscape(ax.plan || 'Add-on') +
+        '</span>' +
+        '<span class="st-week-addon-price">$' +
+        (Number(ax.amount) || 0).toFixed(2) +
+        '</span></div>';
+    }
+  }
+  return (
+    '<article class="st-week-compact-card st-row st-row-' +
+    st +
+    '"><div class="st-week-card-toprow"><span class="' +
+    pillClass +
+    '">' +
+    pillLabel +
+    '</span><span class="st-week-card-date">' +
+    _stEscape(dateLabel) +
+    '</span>' +
+    actions +
+    '</div><div class="st-week-card-client">' +
+    _stEscape(lead.customer || '—') +
+    '</div><div class="st-week-card-meta">' +
+    idLine +
+    '</div><div class="st-week-card-prem">$' +
+    premAmt.toFixed(2) +
+    '<span>/mo</span></div>' +
+    commBox +
+    addonSec +
+    '</article>'
   );
 }
 
