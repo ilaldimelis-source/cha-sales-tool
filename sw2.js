@@ -26,7 +26,7 @@ var URLS_TO_CACHE = [
   './js/plan-data-pdf-raw.js?v=1',
   './js/policy-docs.js',
   './js/myspace.js',
-  './js/sales-tracker.js?v=1778000000000',
+  './js/sales-tracker.js?v=1779100000000',
   './js/app.js',
   './js/chat.js?v=1778000000000',
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap'
