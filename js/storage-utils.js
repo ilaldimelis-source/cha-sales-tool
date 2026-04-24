@@ -15,7 +15,6 @@
     'cha_st_tab',
     'chaGlobalSearchRecent',
     'cha_lib_last_tag',
-    'cha_theme',
     'cha_font_size',
     'cha_debug_chat_badge',
     'scriptIndex',
