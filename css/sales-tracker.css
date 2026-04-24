@@ -3088,66 +3088,6 @@
   }
 }
 
-/* Final dark-mode sweep: ensure week glance wrappers/stats/empty cards are not white. */
-body.dark-mode .st-week-glance,
-body.dark-mode .st-week-glance-unified,
-body.dark-mode .st-glance-stat,
-body.dark-mode .st-paycheck-card {
-  background: var(--cha-bg-card);
-  border-color: var(--cha-border-default);
-}
-body.dark-mode .st-glance-day {
-  background: var(--cha-bg-muted);
-  border-color: var(--cha-border-default);
-}
-body.dark-mode .st-glance-day:not(.st-glance-day-today) .st-glance-day-deals {
-  color: var(--cha-text-secondary);
-}
-body.dark-mode .st-glance-day-today {
-  background: var(--cha-accent);
-  border-color: var(--cha-accent);
-  box-shadow: 0 0 0 2px var(--cha-accent-soft, rgba(37, 99, 235, 0.2));
-}
-body.dark-mode .st-glance-day-today .st-glance-day-label {
-  color: #ffffff;
-}
-body.dark-mode .st-glance-day-today .st-glance-day-dt {
-  color: #ffffff;
-  opacity: 0.9;
-}
-body.dark-mode .st-split-title {
-  color: var(--cha-text-primary);
-}
-body.dark-mode .st-split-meta,
-body.dark-mode .st-week-glance-mini {
-  color: var(--cha-text-secondary);
-}
-body.dark-mode .st-week-compact-card {
-  background: var(--cha-bg-card);
-  border-color: var(--cha-border-default);
-}
-body.dark-mode .st-week-card-client {
-  color: var(--cha-text-primary);
-}
-body.dark-mode .st-week-card-meta,
-body.dark-mode .st-week-card-date {
-  color: var(--cha-text-secondary);
-}
-body.dark-mode .st-date-chip:not(.st-chip-active) {
-  color: var(--cha-text-secondary);
-  border-color: var(--cha-border-default);
-}
-body.dark-mode .st-all-search::placeholder {
-  color: var(--cha-text-secondary);
-  opacity: 0.85;
-}
-body.dark-mode .st-sales-log .st-empty,
-body.dark-mode .st-empty {
-  background: var(--cha-bg-muted);
-  border-color: var(--cha-border-default);
-  color: var(--cha-text-secondary);
-}
-
 @media (max-width: 768px) {
   .st-paycheck-hero.st-paycheck-hero--compact,
   .st-paycheck-hero--compact {
