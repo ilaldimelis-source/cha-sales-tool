@@ -555,7 +555,7 @@ function _objBuildPlanFitSection() {
     '<button type="button" class="pff-pill" data-filter="limited" role="tab" aria-selected="false">Limited Benefit</button>' +
     '</div>' +
     '<div class="pff-grid" id="obj-pff-grid"></div>' +
-    '<div class="pff-modal-backdrop" id="obj-pff-modal-backdrop" hidden>' +
+    '<div class="pff-modal-backdrop" hidden id="obj-pff-modal-backdrop">' +
     '<div class="pff-modal" role="dialog" aria-modal="true" aria-label="Plan details"></div>' +
     '</div>' +
     '</section>'
