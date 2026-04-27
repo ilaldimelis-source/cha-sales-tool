@@ -525,6 +525,29 @@ function closeLaPanel() {
   if (panel) panel.classList.remove('show');
 }
 
+function liveAssistGoToBenefitsExplainer(e) {
+  if (e) e.preventDefault();
+  closeLaPanel();
+  if (typeof showPage === 'function') showPage('benefits');
+  else {
+    var p = document.querySelector('[data-page="benefits"], a[href="#benefits"]');
+    if (p) p.click();
+  }
+  setTimeout(function () {
+    var pill = document.querySelector('[data-subtab="benefits"]');
+    if (!pill) {
+      var btns = document.querySelectorAll('#subtabs-plans button');
+      for (var i = 0; i < btns.length; i++) {
+        if (btns[i].textContent.trim().toLowerCase() === 'benefits') {
+          pill = btns[i];
+          break;
+        }
+      }
+    }
+    if (pill) pill.click();
+  }, 60);
+}
+
 function renderLive() {
   pruneLiveCallAiTabs();
   var arrow =
@@ -543,7 +566,7 @@ function renderLive() {
     arrow +
     '</div>';
   html +=
-    '<div class="la-nav-card la-nav-card-hud" onclick="openLaPanel(\'benefits\')"><div class="la-nav-inner"><div class="la-nav-title">Benefits</div></div>' +
+    '<div class="la-nav-card la-nav-card-hud" onclick="liveAssistGoToBenefitsExplainer(event)"><div class="la-nav-inner"><div class="la-nav-title">Benefits</div></div>' +
     arrow +
     '</div>';
   html +=
@@ -649,7 +672,7 @@ function toggleLiveObj(i) {
 // ══════════════════════════════════════════════════════
 function renderRecovery() {
   var html =
-    '<div class="ph"><div class="pt">Control the <span>Call</span></div><div class="pd">Answer. Bridge. Close. Every situation handled.</div></div>';
+    '<div class="ph"><div class="pt">Rebuttals</div><div class="pd">Answer. Bridge. Close. Every situation handled.</div></div>';
   RECOVERY.forEach(function (r, i) {
     html += '<div class="rec-card" id="rec' + i + '">';
 

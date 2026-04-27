@@ -1271,26 +1271,6 @@ function _clearBenefitSearch() {
 // ══════════════════════════════════════════════════════
 // RENDER: PLANS
 // ══════════════════════════════════════════════════════
-var PLAN_GROUPS = [
-  {
-    key: 'MEC',
-    label: 'MEC Plans',
-    color: '#5B8DEF',
-    desc: 'Minimum Essential Coverage — preventive-first base plans'
-  },
-  {
-    key: 'STM',
-    label: 'Short-Term Medical',
-    color: '#d97706',
-    desc: 'Temporary bridge coverage — major-medical style'
-  },
-  {
-    key: 'Limited',
-    label: 'Limited Benefit Plans',
-    color: '#dc2626',
-    desc: 'Fixed indemnity plans — pay set amounts toward services'
-  }
-];
 var activePlanGroup = 'All';
 
 function isDisplayablePlanDoc(plan) {
@@ -1825,12 +1805,10 @@ function togglePlanVault(id) {
 // ══════════════════════════════════════════════════════
 // RENDER: COMPARE
 // ══════════════════════════════════════════════════════
-var selPlans = [0, 5];
-
 // ══════════════════════════════════════════════════════
 // COMPARE — data lookup helpers
-// Quick Compare and Full Compare both use these so data,
-// fallback text, and cell styling stay consistent.
+// Quick Compare uses these so data, fallback text,
+// and cell styling stay consistent.
 // ══════════════════════════════════════════════════════
 
 // Explicit mapping: PLANS family name → POLICY_DOCS id array.
@@ -2085,187 +2063,8 @@ function renderCompare() {
   qcHtml += '</div>';
 
   var html = qcHtml;
-  html +=
-    '<div class="ph"><div class="pt">Compare <span>Plans</span></div><div class="pd">Select up to 3 plans to compare side by side.</div></div>';
-  PLAN_GROUPS.forEach(function (grp) {
-    var plans = PLANS.filter(function (p) {
-      return p.group === grp.key;
-    });
-    html +=
-      '<div style="background:var(--bg-card);border:1.5px solid var(--border);border-radius:var(--r-card);padding:14px 18px;margin-bottom:10px;">';
-    html +=
-      '<div style="font-family:var(--font-ui);font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">' +
-      grp.label +
-      '</div>';
-    html += '<div class="comp-sel">';
-    plans.forEach(function (p) {
-      var idx = PLANS.indexOf(p);
-      html +=
-        '<button class="comp-btn ' +
-        (selPlans.indexOf(idx) > -1 ? 'sel' : '') +
-        '" id="cb' +
-        idx +
-        '" onclick="toggleComp(' +
-        idx +
-        ')">' +
-        p.name +
-        '</button>';
-    });
-    html += '</div></div>';
-  });
-  html += '<div id="compTable"></div>';
   var _page_compare = document.getElementById('page-compare');
   if (_page_compare) _page_compare.innerHTML = html;
-  buildCompTable();
-}
-
-function toggleComp(i) {
-  var idx = selPlans.indexOf(i);
-  if (idx > -1) {
-    if (selPlans.length > 1) selPlans.splice(idx, 1);
-  } else {
-    if (selPlans.length >= 3) selPlans.shift();
-    selPlans.push(i);
-  }
-  document.querySelectorAll('.comp-btn').forEach(function (b) {
-    b.classList.toggle(
-      'sel',
-      selPlans.indexOf(parseInt(b.id.replace('cb', ''))) > -1
-    );
-  });
-  buildCompTable();
-}
-
-function buildCompTable() {
-  var plans = selPlans.map(function (i) {
-    return PLANS[i];
-  });
-  if (!plans.length) return;
-
-  var neutralStyle = _compCellStyle('neutral');
-  var greenStyle = _compCellStyle('covered');
-  var redStyle = _compCellStyle('notcovered');
-
-  // ── Table start with mobile scroll ──
-  var html =
-    '<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;margin-top:16px;border:1.5px solid #E5E7EB;border-radius:14px;">';
-  html += '<table class="ctable" style="min-width:500px;">';
-
-  // ── Header row (neutral — no color accents per group) ──
-  html += '<thead><tr><th style="min-width:120px;">Feature</th>';
-  plans.forEach(function (p) {
-    html +=
-      '<th>' +
-      '<div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:2px;">' +
-      p.name +
-      '</div>' +
-      '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-secondary);">' +
-      p.group +
-      '</span></th>';
-  });
-  html += '</tr></thead><tbody>';
-
-  // ── Standard info rows (neutral gray cells) ──
-  var rows = [
-    { k: 'type', l: 'Plan Type' },
-    { k: 'network', l: 'Network' },
-    { k: 'admin', l: 'Administrator' },
-    { k: 'assoc', l: 'Association' },
-    { k: 'idealClient', l: 'Ideal Client' },
-    { k: 'notGood', l: 'Not Good For' }
-  ];
-  rows.forEach(function (r) {
-    html += '<tr><td>' + r.l + '</td>';
-    plans.forEach(function (p) {
-      html +=
-        '<td style="' + neutralStyle + '">' + (p[r.k] || 'VERIFY') + '</td>';
-    });
-    html += '</tr>';
-  });
-
-  // ── Row: Top Benefits — uniform green (covered) ──
-  html += '<tr><td>Top Benefits</td>';
-  plans.forEach(function (p) {
-    var items = (p.topPoints || []).slice(0, 5);
-    var body = items.length
-      ? items
-          .map(function (t) {
-            return '&#10003; ' + t;
-          })
-          .join('<br>')
-      : 'VERIFY';
-    html +=
-      '<td style="font-size:12px;line-height:1.6;' +
-      greenStyle +
-      '">' +
-      body +
-      '</td>';
-  });
-  html += '</tr>';
-
-  // ── Row: Main Limits — uniform red (not covered) ──
-  html += '<tr><td>Main Limits</td>';
-  plans.forEach(function (p) {
-    var items = (p.limitations || []).slice(0, 4);
-    var body = items.length
-      ? items
-          .map(function (t) {
-            return '&#10005; ' + t;
-          })
-          .join('<br>')
-      : 'VERIFY';
-    html +=
-      '<td style="font-size:12px;line-height:1.6;' +
-      redStyle +
-      '">' +
-      body +
-      '</td>';
-  });
-  html += '</tr>';
-
-  // ── Row: Best Fit — neutral ──
-  html += '<tr><td>Best Fit</td>';
-  plans.forEach(function (p) {
-    var items = (p.fitYes || []).slice(0, 3);
-    var body = items.length
-      ? items
-          .map(function (t) {
-            return '&#10003; ' + t;
-          })
-          .join('<br>')
-      : 'VERIFY';
-    html +=
-      '<td style="font-size:12px;line-height:1.6;' +
-      neutralStyle +
-      '">' +
-      body +
-      '</td>';
-  });
-  html += '</tr>';
-
-  // ── Row: Bad Fit — neutral ──
-  html += '<tr><td>Bad Fit</td>';
-  plans.forEach(function (p) {
-    var items = (p.fitNo || []).slice(0, 3);
-    var body = items.length
-      ? items
-          .map(function (t) {
-            return '&#10005; ' + t;
-          })
-          .join('<br>')
-      : 'VERIFY';
-    html +=
-      '<td style="font-size:12px;line-height:1.6;' +
-      neutralStyle +
-      '">' +
-      body +
-      '</td>';
-  });
-  html += '</tr>';
-
-  html += '</tbody></table></div>';
-  var _compTable = document.getElementById('compTable');
-  if (_compTable) _compTable.innerHTML = html;
 }
 
 // ══════════════════════════════════════════════════════

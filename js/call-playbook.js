@@ -113,7 +113,7 @@ const CF_STEPS = [
     title: 'Opening',
     goal: 'Open the call with confidence. Set the frame and earn the next 60 seconds.',
     lines: [
-      "Hey [Name], this is [Your Name] calling about your health coverage inquiry. I've got a couple of questions for you before I recommend anything — is now okay?",
+      "Hey [Name], this is [Your Name] calling about your health coverage inquiry. I've got a couple of questions for you before I recommend anything.",
       "[Name], this is [Your Name]. I'm looking at your inquiry right now — before I walk you through your options, tell me: what's your coverage situation like right now?"
     ],
     listen:
@@ -734,7 +734,7 @@ const ISA_SCRIPTS = {
   openings: [
     {
       label: 'Standard',
-      line: "Hey [Name], this is [Your Name] calling about your health coverage inquiry. I've got a couple of questions for you before I recommend anything — is now okay?"
+      line: "Hey [Name], this is [Your Name] calling about your health coverage inquiry. I've got a couple of questions for you before I recommend anything."
     },
     {
       label: 'Stronger',
@@ -916,7 +916,7 @@ var LIVE_CALL_GPS = [
   {
     title: 'Hook',
     scripts: [
-      "Hey [Name], this is [Your Name] calling about your health coverage inquiry. I've got a couple of questions for you before I recommend anything — is now okay?",
+      "Hey [Name], this is [Your Name] calling about your health coverage inquiry. I've got a couple of questions for you before I recommend anything.",
       "[Name], this is [Your Name]. I'm looking at your inquiry right now — before I walk you through your options, tell me: what's your coverage situation like right now?"
     ],
     compliance: [

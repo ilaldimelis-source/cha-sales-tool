@@ -335,7 +335,7 @@ var PAGE_CONFIG = {
       { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
       { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
       { id: 'closes', label: 'Closing Lines', render: renderCloses },
-      { id: 'recovery', label: 'Control the Call', render: renderRecovery }
+      { id: 'recovery', label: 'Rebuttals', render: renderRecovery }
     ]
   },
   networkguide: {
