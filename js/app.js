@@ -7,9 +7,6 @@ window._chaAppStarted = false;
 window._chaErrors = [];
 
 window.onerror = function (msg, src, line) {
-  // #region agent log
-  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H1',location:'js/app.js:window.onerror',message:'Global JS error trapped',data:{msg:String(msg||''),src:String(src||''),line:Number(line||0)},timestamp:Date.now()})}).catch(function(){});
-  // #endregion
   window._chaErrors.push({
     msg: msg,
     src: src,
@@ -441,9 +438,6 @@ function _resetScrollTop() {
 }
 
 function showPage(id) {
-  // #region agent log
-  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H2',location:'js/app.js:showPage',message:'showPage invoked',data:{id:String(id||'')},timestamp:Date.now()})}).catch(function(){});
-  // #endregion
   var searchOverlay = document.getElementById('srOverlay');
   if (searchOverlay && searchOverlay.classList.contains('show')) closeSearch();
   if (id !== 'dashboard') trackRecentPage(id);
@@ -1761,9 +1755,6 @@ function initApp() {
       '<button class="fab-btn" onclick="showPage(\'plans\')" title="Plans"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg></button>';
     document.body.appendChild(fab);
   }
-  // #region agent log
-  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H2',location:'js/app.js:initApp',message:'initApp completed',data:{appStarted:!!window._chaAppStarted,hasSidebar:!!document.querySelector('.sidebar')},timestamp:Date.now()})}).catch(function(){});
-  // #endregion
 }
 function _safeInitApp() {
   try {

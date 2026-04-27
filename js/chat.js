@@ -2883,9 +2883,6 @@ function handleChatMessage(userMessage) {
   if (!chatContainer) return;
   var clean = String(userMessage || '').trim();
   if (!clean) return;
-  // #region agent log
-  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H3',location:'js/chat.js:handleChatMessage',message:'Brain chat input received',data:{len:clean.length},timestamp:Date.now()})}).catch(function(){});
-  // #endregion
   chatContainer.innerHTML += '<div class="user-message">' + escHTML(clean) + '</div>';
 
   var scope = 'plan documents';

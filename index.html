@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https:; connect-src 'self' https: http://127.0.0.1:7347;"
+      content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https:; connect-src 'self' https:;"
     />
     <meta
       http-equiv="Cache-Control"
@@ -60,18 +60,6 @@
         window.GROQ_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
     </script>
     <script>
-      // #region agent log
-      fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-2',hypothesisId:'H6',location:'index.html:head-probe',message:'Head probe executed',data:{protocol:location.protocol,host:location.host},timestamp:Date.now()})}).catch(function(){});
-      fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-3',hypothesisId:'H9',location:'index.html:head-probe-nocors',message:'Head probe no-cors executed',data:{protocol:location.protocol,host:location.host},timestamp:Date.now()})}).catch(function(){});
-      if (navigator.sendBeacon) {
-        try {
-          navigator.sendBeacon(
-            'http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',
-            JSON.stringify({sessionId:'fb7e63',runId:'audit-run-4',hypothesisId:'H10',location:'index.html:head-probe-beacon',message:'Head probe sendBeacon executed',data:{protocol:location.protocol,host:location.host},timestamp:Date.now()})
-          );
-        } catch (_e) {}
-      }
-      // #endregion
       (function () {
         // Give the <link> a moment, then check. If it failed (0 rules), inject via XHR.
         var link = document.getElementById('mainCSS');
@@ -1053,14 +1041,14 @@
     <script src="js/policy-docs.js?v=1776974000000"></script>
     <script src="js/plans-benefits.js?v=1776974000000"></script>
     <script src="js/call-playbook.js?v=1776974000000"></script>
-    <script src="js/live-assist.js?v=1776974000000"></script>
+    <script src="js/live-assist.js?v=1779300000000"></script>
     <script src="js/ai-tools.js?v=1776974000000"></script>
     <script src="js/training.js?v=1776974000000"></script>
     <script src="js/compliance.js?v=1776974000000"></script>
     <script src="js/myspace.js?v=1776974000000"></script>
     <script src="js/sales-tracker.js?v=1779200000000"></script>
-    <script src="js/app.js?v=1776974000000"></script>
-    <script src="js/chat.js?v=1776974000000"></script>
+    <script src="js/app.js?v=1779300000000"></script>
+    <script src="js/chat.js?v=1779300000000"></script>
     <script>
       (function () {
         var required = [

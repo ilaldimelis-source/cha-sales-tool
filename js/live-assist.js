@@ -222,9 +222,6 @@ function parseAndReview() {
   var input = document.getElementById('receipt-input');
   if (!input) return;
   var deals = parseReceipt(input.value || '');
-  // #region agent log
-  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H5',location:'js/live-assist.js:parseAndReview',message:'Receipt parse executed',data:{deals:deals.length,inputLen:String((input.value||'')).length},timestamp:Date.now()})}).catch(function(){});
-  // #endregion
   if (!deals.length) {
     showToast('No receipts found. Check your paste.', 'error');
     return;
@@ -295,11 +292,6 @@ function showReviewModal(deals) {
       '</tr>'
     );
   }
-  // #region agent log
-  var __chaWarnCount = 0;
-  for (var wi = 0; wi < deals.length; wi++) { if (deals[wi] && deals[wi].dateAutoDefaulted) __chaWarnCount++; }
-  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H5',location:'js/live-assist.js:showReviewModal',message:'Receipt review modal rendered',data:{rows:deals.length,defaultedDates:__chaWarnCount},timestamp:Date.now()})}).catch(function(){});
-  // #endregion
   tbody.innerHTML = rows.join('');
   modal.style.display = 'flex';
   window.__chaPendingDeals = deals;
@@ -312,9 +304,6 @@ function closeReviewModal() {
 
 function confirmReviewModal() {
   var deals = window.__chaPendingDeals || [];
-  // #region agent log
-  fetch('http://127.0.0.1:7347/ingest/4aa1827a-5cdd-4035-8984-1fb063ffa870',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'fb7e63'},body:JSON.stringify({sessionId:'fb7e63',runId:'audit-run-1',hypothesisId:'H5',location:'js/live-assist.js:confirmReviewModal',message:'Receipt review confirm triggered',data:{pendingDeals:deals.length},timestamp:Date.now()})}).catch(function(){});
-  // #endregion
   if (!deals.length) {
     closeReviewModal();
     return;
