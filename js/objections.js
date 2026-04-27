@@ -306,58 +306,258 @@ function renderObjList() {
   html += _objBuildPlanFitSection();
   var _objList = document.getElementById('objList');
   if (_objList) _objList.innerHTML = html;
+  _objMountPlanFitUI();
 }
 
-// Plan fit / framing / compliance (from PLANS) — kept out of Plan Vault (data-only).
-function _objBuildPlanFitSection() {
-  if (typeof PLANS === 'undefined' || !PLANS.length) return '';
+// --- Plan Fit & Framing (PLANS): card grid + filter pills + modal (no compliance UI) ---
+var _pffBackdropClick = null;
+var _pffEscHandler = null;
+
+function _pffTruncate(s, max) {
+  s = String(s || '').trim();
+  if (s.length <= max) return s;
+  return s.slice(0, max - 1).trim() + '...';
+}
+
+function _pffCategoryToFilter(category) {
+  var c = String(category || '').toLowerCase();
+  if (c.indexOf('mec') !== -1) return 'mec';
+  if (c.indexOf('stm') !== -1 || c.indexOf('short') !== -1) return 'stm';
+  if (c.indexOf('limited') !== -1) return 'limited';
+  return 'other';
+}
+
+function _pffBadgeLabel(group) {
+  var g = String(group || '');
+  if (g === 'Limited') return 'Limited Benefit';
+  return g || 'Plan';
+}
+
+function _objPffCloseModal() {
+  var backdrop = document.getElementById('obj-pff-modal-backdrop');
+  if (backdrop) {
+    backdrop.setAttribute('hidden', '');
+    if (_pffBackdropClick) {
+      backdrop.removeEventListener('click', _pffBackdropClick);
+      _pffBackdropClick = null;
+    }
+  }
+  if (_pffEscHandler) {
+    document.removeEventListener('keydown', _pffEscHandler);
+    _pffEscHandler = null;
+  }
+}
+
+function _objPffOpenModal(planIdx) {
+  if (typeof PLANS === 'undefined' || !PLANS[planIdx]) return;
+  var plan = PLANS[planIdx];
+  var backdrop = document.getElementById('obj-pff-modal-backdrop');
+  var modal = backdrop ? backdrop.querySelector('.pff-modal') : null;
+  if (!backdrop || !modal) return;
+
+  _objPffCloseModal();
+
+  modal.innerHTML = '';
+
+  var filt = _pffCategoryToFilter(plan.group);
+  var badgeClass =
+    filt === 'mec'
+      ? 'pff-badge-mec'
+      : filt === 'stm'
+        ? 'pff-badge-stm'
+        : filt === 'limited'
+          ? 'pff-badge-limited'
+          : 'pff-badge-other';
+
+  var head = document.createElement('div');
+  head.className = 'pff-modal-head';
+  var titleWrap = document.createElement('div');
+  titleWrap.className = 'pff-modal-titlewrap';
+  var nameEl = document.createElement('div');
+  nameEl.className = 'pff-modal-name';
+  nameEl.textContent = plan.name || '';
+  titleWrap.appendChild(nameEl);
+  var badge = document.createElement('span');
+  badge.className = 'pff-card-badge ' + badgeClass;
+  badge.textContent = _pffBadgeLabel(plan.group);
+  titleWrap.appendChild(badge);
+  head.appendChild(titleWrap);
+  var closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'pff-modal-x';
+  closeBtn.setAttribute('aria-label', 'Close');
+  closeBtn.textContent = 'X';
+  head.appendChild(closeBtn);
+  modal.appendChild(head);
+
+  var framing = document.createElement('div');
+  framing.className = 'pff-framing';
+  framing.textContent = plan.framing || '';
+  modal.appendChild(framing);
+
+  var bf = document.createElement('div');
+  bf.className = 'pff-best-fit';
+  var bfLabel = document.createElement('div');
+  bfLabel.className = 'pff-fit-label';
+  bfLabel.textContent = 'Best Fit';
+  bf.appendChild(bfLabel);
+  var bfList = document.createElement('ul');
+  (plan.fitYes || []).forEach(function (b) {
+    var li = document.createElement('li');
+    li.textContent = b;
+    bfList.appendChild(li);
+  });
+  bf.appendChild(bfList);
+  modal.appendChild(bf);
+
+  var nf = document.createElement('div');
+  nf.className = 'pff-not-fit';
+  var nfLabel = document.createElement('div');
+  nfLabel.className = 'pff-fit-label';
+  nfLabel.textContent = 'Not a Fit';
+  nf.appendChild(nfLabel);
+  var nfList = document.createElement('ul');
+  (plan.fitNo || []).forEach(function (b) {
+    var li = document.createElement('li');
+    li.textContent = b;
+    nfList.appendChild(li);
+  });
+  nf.appendChild(nfList);
+  modal.appendChild(nf);
+
+  function onClose() {
+    _objPffCloseModal();
+  }
+  closeBtn.addEventListener('click', onClose);
+
+  _pffBackdropClick = function (e) {
+    if (e.target === backdrop) onClose();
+  };
+  backdrop.addEventListener('click', _pffBackdropClick);
+
+  _pffEscHandler = function (e) {
+    if (e.key === 'Escape') onClose();
+  };
+  document.addEventListener('keydown', _pffEscHandler);
+
+  backdrop.removeAttribute('hidden');
+}
+
+function _objMountPlanFitUI() {
+  var grid = document.getElementById('obj-pff-grid');
+  if (!grid || typeof PLANS === 'undefined') return;
+
+  while (grid.firstChild) {
+    grid.removeChild(grid.firstChild);
+  }
+
+  var pillRoot = document.getElementById('objList');
+  if (!pillRoot) return;
+  var pills = pillRoot.querySelectorAll('.pff-filter-pills .pff-pill');
   var cards = [];
+
   for (var i = 0; i < PLANS.length; i++) {
     var p = PLANS[i];
     if (!p || !p.framing) continue;
-    var one = [];
-    one.push('<article class="obj-planfit-card">');
-    one.push('<h3 class="obj-planfit-name">' + _objEsc(p.name) + '</h3>');
-    one.push(
-      '<div class="obj-planfit-block"><span class="obj-planfit-lbl">Framing</span><div class="obj-planfit-txt">' +
-        _objEsc(p.framing) +
-        '</div></div>'
-    );
-    if (p.fitYes && p.fitYes.length) {
-      one.push(
-        '<div class="obj-planfit-block"><span class="obj-planfit-lbl">Best fit</span><ul class="obj-planfit-ul">'
-      );
-      for (var j = 0; j < p.fitYes.length; j++) {
-        one.push('<li>' + _objEsc(p.fitYes[j]) + '</li>');
-      }
-      one.push('</ul></div>');
-    }
-    if (p.fitNo && p.fitNo.length) {
-      one.push(
-        '<div class="obj-planfit-block"><span class="obj-planfit-lbl">Not a fit</span><ul class="obj-planfit-ul">'
-      );
-      for (var k = 0; k < p.fitNo.length; k++) {
-        one.push('<li>' + _objEsc(p.fitNo[k]) + '</li>');
-      }
-      one.push('</ul></div>');
-    }
-    if (p.compliance) {
-      one.push(
-        '<div class="obj-planfit-compliance"><span class="obj-planfit-compliance-lbl">Compliance</span>' +
-          _objEsc(p.compliance) +
-          '</div>'
-      );
-    }
-    one.push('</article>');
-    cards.push(one.join(''));
+
+    var filt = _pffCategoryToFilter(p.group);
+    var badgeClass =
+      filt === 'mec'
+        ? 'pff-badge-mec'
+        : filt === 'stm'
+          ? 'pff-badge-stm'
+          : filt === 'limited'
+            ? 'pff-badge-limited'
+            : 'pff-badge-other';
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'pff-card';
+    btn.setAttribute('data-plan-id', String(i));
+    btn.setAttribute('data-category', filt);
+
+    var nm = document.createElement('div');
+    nm.className = 'pff-card-name';
+    nm.textContent = p.name || '';
+    btn.appendChild(nm);
+
+    var bd = document.createElement('span');
+    bd.className = 'pff-card-badge ' + badgeClass;
+    bd.textContent = _pffBadgeLabel(p.group);
+    btn.appendChild(bd);
+
+    var bl = document.createElement('div');
+    bl.className = 'pff-card-best-label';
+    bl.textContent = 'Best for';
+    btn.appendChild(bl);
+
+    var sum = document.createElement('div');
+    sum.className = 'pff-card-best-summary';
+    var firstFit = p.fitYes && p.fitYes.length ? p.fitYes[0] : '';
+    sum.textContent = _pffTruncate(firstFit, 50);
+    btn.appendChild(sum);
+
+    var cta = document.createElement('span');
+    cta.className = 'pff-card-cta';
+    cta.textContent = 'View ->';
+    btn.appendChild(cta);
+
+    (function (idx) {
+      btn.addEventListener('click', function () {
+        _objPffOpenModal(idx);
+      });
+    })(i);
+
+    grid.appendChild(btn);
+    cards.push(btn);
   }
-  if (!cards.length) return '';
+
+  pills.forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      pills.forEach(function (p) {
+        p.classList.remove('is-active');
+        p.setAttribute('aria-selected', 'false');
+      });
+      pill.classList.add('is-active');
+      pill.setAttribute('aria-selected', 'true');
+      var filter = pill.getAttribute('data-filter') || 'all';
+      cards.forEach(function (card) {
+        var cat = card.getAttribute('data-category') || '';
+        if (filter === 'all' || cat === filter) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+}
+
+// Plan fit / framing (from PLANS) — shell HTML; cards mounted in _objMountPlanFitUI.
+function _objBuildPlanFitSection() {
+  if (typeof PLANS === 'undefined' || !PLANS.length) return '';
+  var hasAny = false;
+  for (var z = 0; z < PLANS.length; z++) {
+    if (PLANS[z] && PLANS[z].framing) {
+      hasAny = true;
+      break;
+    }
+  }
+  if (!hasAny) return '';
   return (
     '<section class="obj-planfit-section" aria-label="Plan fit and framing">' +
     '<h2 class="obj-planfit-h">Plan fit &amp; framing</h2>' +
     '<p class="obj-planfit-intro">Product-level framing, fit filters, and delivery compliance — Plan Vault stays data-only.</p>' +
-    '<div class="obj-planfit-grid">' +
-    cards.join('') +
-    '</div></section>'
+    '<div class="pff-filter-pills" role="tablist">' +
+    '<button type="button" class="pff-pill is-active" data-filter="all" role="tab" aria-selected="true">All</button>' +
+    '<button type="button" class="pff-pill" data-filter="mec" role="tab" aria-selected="false">MEC</button>' +
+    '<button type="button" class="pff-pill" data-filter="stm" role="tab" aria-selected="false">STM</button>' +
+    '<button type="button" class="pff-pill" data-filter="limited" role="tab" aria-selected="false">Limited Benefit</button>' +
+    '</div>' +
+    '<div class="pff-grid" id="obj-pff-grid"></div>' +
+    '<div class="pff-modal-backdrop" hidden id="obj-pff-modal-backdrop">' +
+    '<div class="pff-modal" role="dialog" aria-modal="true" aria-label="Plan details"></div>' +
+    '</div>' +
+    '</section>'
   );
 }
