@@ -2,18 +2,6 @@
 
 var LIVE_CLOSES_EXCLUDED_LINES = {};
 
-function pruneLiveCallAiTabs() {
-  if (typeof PAGE_CONFIG === 'undefined' || !PAGE_CONFIG.livecall) return;
-  var subs = PAGE_CONFIG.livecall.subs || [];
-  PAGE_CONFIG.livecall.subs = subs.filter(function (sub) {
-    return sub && sub.id !== 'complianceai' && sub.id !== 'coachingai';
-  });
-  if (typeof SUB_TO_PARENT !== 'undefined') {
-    delete SUB_TO_PARENT.complianceai;
-    delete SUB_TO_PARENT.coachingai;
-  }
-}
-
 // ── Copy Script Block ──
 function copyScript(btn) {
   var block =
@@ -549,7 +537,6 @@ function liveAssistGoToBenefitsExplainer(e) {
 }
 
 function renderLive() {
-  pruneLiveCallAiTabs();
   var arrow =
     '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="la-nav-arrow"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
   var html = '<div class="la-live-hud">';

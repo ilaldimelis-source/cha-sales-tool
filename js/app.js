@@ -312,13 +312,7 @@ var PAGE_CONFIG = {
         id: 'psychprofile',
         label: 'Client Profiler',
         render: renderPsychprofile
-      },
-      {
-        id: 'complianceai',
-        label: 'Compliance AI',
-        render: renderComplianceai
-      },
-      { id: 'coachingai', label: 'Call Coach', render: renderCoachingai }
+      }
     ]
   },
   plans: {
