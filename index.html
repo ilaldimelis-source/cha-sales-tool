@@ -181,6 +181,148 @@
         border: 1px solid #e2e4eb;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
       }
+      /* === DocuSign Walkthrough === */
+      .ds-walkthrough-group { margin-top: 16px; }
+      .ds-walkthrough-trigger {
+        width: 100%; display: flex; justify-content: space-between; align-items: center;
+        padding: 14px 18px; border: 1px solid #000; border-radius: 14px;
+        background: #fff; cursor: pointer; font-weight: 600; font-size: 16px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+      }
+      .ds-walkthrough-trigger:hover { background: #fafafa; }
+      .ds-chevron::before { content: '+'; font-weight: 700; }
+      .ds-walkthrough-trigger[aria-expanded="true"] .ds-chevron::before { content: '-'; }
+      .ds-walkthrough-body { margin-top: 12px; }
+      .ds-walkthrough-search { margin-bottom: 12px; }
+      .ds-walkthrough-search input {
+        width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1;
+        border-radius: 12px; background: #E8EEFB; font-size: 15px; outline: none;
+      }
+      .ds-walkthrough-search input:focus { border-color: #1a4692; background: #fff; }
+      .ds-walkthrough-tabs {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+      }
+      .ds-tab {
+        padding: 10px 14px; border: 1px solid #000; border-radius: 999px;
+        background: #fff; color: #000; font-weight: 600; font-size: 12px;
+        letter-spacing: 0.04em; cursor: pointer;
+      }
+      .ds-tab.is-active { background: #1a4692; color: #fff; border-color: #1a4692; }
+      .ds-panel { display: none; }
+      .ds-panel.is-active { display: block; }
+      /* severity bar (left edge) */
+      .ds-card { position: relative; border: 1px solid #e2e8f0; border-radius: 14px;
+        background: #fff; margin-bottom: 12px; overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+      .ds-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+        width: 5px; background: #10B981; }
+      .ds-card.ds-sev-amber::before { background: #F59E0B; }
+      .ds-card.ds-sev-red::before   { background: #EF4444; }
+      .ds-card-header {
+        width: 100%; display: flex; justify-content: space-between; align-items: flex-start;
+        padding: 14px 16px 14px 22px; background: transparent; border: none; cursor: pointer;
+        text-align: left;
+      }
+      .ds-card-titlewrap { flex: 1; }
+      .ds-card-num { display: inline-block; min-width: 26px; height: 26px; line-height: 26px;
+        text-align: center; border-radius: 999px; background: #1a4692; color: #fff;
+        font-weight: 700; font-size: 13px; margin-right: 8px; }
+      .ds-card-title { font-weight: 600; font-size: 15px; color: #0f172a; }
+      .ds-card-oneliner { margin-top: 4px; font-size: 13px; color: #475569; line-height: 1.45; }
+      .ds-card-toggle { font-size: 22px; font-weight: 700; color: #1a4692;
+        margin-left: 12px; line-height: 1; }
+      .ds-card-body { padding: 0 16px 14px 22px; }
+      .ds-box { border-radius: 10px; padding: 12px 14px; margin-top: 10px;
+        border: 1px solid transparent; }
+      .ds-box-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+        margin-bottom: 6px; color: #334155; }
+      .ds-box-text { font-size: 14px; line-height: 1.5; color: #0f172a; }
+      .ds-box-quote   { background: #FFF1F2; }
+      .ds-box-means   { background: #F1F5F9; }
+      .ds-box-sayThis { background: #ECFDF5; }
+      .ds-box-pushback{ background: #FEF3C7; }
+      .ds-qa { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); }
+      .ds-qa:first-of-type { border-top: none; padding-top: 0; }
+      .ds-qa-q { font-weight: 600; font-size: 13px; color: #0f172a; }
+      .ds-qa-a { font-size: 13px; color: #334155; margin-top: 2px; line-height: 1.5; }
+      /* attestations grid */
+      .ds-att-intro { font-size: 13px; color: #475569; margin-bottom: 14px; }
+      .ds-att-grid { display: grid; grid-template-columns: repeat(5, 1fr);
+        gap: 10px; margin-bottom: 16px; }
+      .ds-att-tile { position: relative; padding: 14px 8px; border: 1px solid #e2e8f0;
+        border-radius: 14px; background: #fff; cursor: pointer; text-align: center; }
+      .ds-att-tile::before { content: ''; position: absolute; top: 0; left: 0; right: 0;
+        height: 6px; border-top-left-radius: 14px; border-top-right-radius: 14px;
+        background: #10B981; }
+      .ds-att-tile.ds-sev-amber::before { background: #F59E0B; }
+      .ds-att-tile.ds-sev-red::before   { background: #EF4444; }
+      .ds-att-tile:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+      .ds-att-num { font-size: 22px; font-weight: 700; color: #1a4692; margin-top: 6px; }
+      .ds-att-label { font-size: 11px; font-weight: 600; color: #334155;
+        text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; }
+      .ds-att-details { margin-bottom: 18px; }
+      .ds-att-detail { border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px 18px;
+        background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); position: relative;
+        overflow: hidden; }
+      .ds-att-detail::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+        width: 6px; background: #10B981; }
+      .ds-att-detail.ds-sev-amber::before { background: #F59E0B; }
+      .ds-att-detail.ds-sev-red::before   { background: #EF4444; }
+      .ds-att-detail-num { font-size: 16px; font-weight: 700; color: #1a4692;
+        margin-bottom: 10px; padding-left: 4px; }
+      /* red flags */
+      .ds-redflags { margin-top: 18px; padding: 14px 16px; border-radius: 14px;
+        background: #FFF1F2; border: 1px solid #FECACA; }
+      .ds-redflags-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+        color: #991B1B; margin-bottom: 10px; }
+      .ds-redflags-list { list-style: none; padding: 0; margin: 0; }
+      .ds-redflags-item { padding: 8px 0; font-size: 13px; color: #0f172a;
+        border-top: 1px solid rgba(0,0,0,0.06); line-height: 1.5; }
+      .ds-redflags-item:first-child { border-top: none; }
+      /* glossary */
+      .ds-glossary { margin-top: 18px; padding: 14px 16px; border-radius: 14px;
+        background: #F8FAFC; border: 1px solid #e2e8f0; }
+      .ds-glossary-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+        color: #1a4692; margin-bottom: 10px; }
+      .ds-glossary-row { padding: 10px 0; border-top: 1px solid rgba(0,0,0,0.06); }
+      .ds-glossary-row:first-of-type { border-top: none; }
+      .ds-glossary-term { font-weight: 700; font-size: 13px; color: #0f172a; }
+      .ds-glossary-def { font-size: 13px; color: #334155; line-height: 1.5; margin-top: 2px; }
+      /* full walkthrough */
+      .ds-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+        padding: 16px 18px; margin-bottom: 14px; }
+      .ds-section-title { color: #1a4692; font-size: 17px; font-weight: 700;
+        margin: 0 0 8px 0; }
+      .ds-section-summary { font-size: 14px; color: #334155; line-height: 1.55;
+        margin-bottom: 12px; }
+      .ds-twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      .ds-section-card { background: #F8FAFC; border-radius: 12px; padding: 12px 14px; }
+      .ds-section-card-h { margin: 0 0 6px 0; font-size: 13px; font-weight: 700;
+        color: #1a4692; text-transform: uppercase; letter-spacing: 0.04em; }
+      .ds-section-card-p { margin: 0; font-size: 13px; color: #0f172a; line-height: 1.5; }
+      .ds-section-card-ul { margin: 0; padding-left: 18px; font-size: 13px;
+        color: #0f172a; line-height: 1.6; }
+      .ds-mini-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+        padding: 12px 14px; margin-bottom: 10px; }
+      .ds-mini-section.ds-warn { border-color: #F59E0B; background: #FFFBEB; }
+      .ds-mini-section-h { font-weight: 600; color: #0f172a; margin-bottom: 4px; }
+      .ds-mini-section-num { color: #1a4692; font-weight: 700; margin-right: 6px; }
+      .ds-warn-badge { display: inline-block; margin-left: 8px; padding: 2px 8px;
+        border-radius: 999px; background: #F59E0B; color: #fff; font-size: 10px;
+        letter-spacing: 0.06em; font-weight: 700; }
+      .ds-mini-section-p { margin: 4px 0; font-size: 13px; color: #334155; line-height: 1.55; }
+      .ds-mini-section-ul { margin: 4px 0; padding-left: 18px; font-size: 13px;
+        color: #0f172a; line-height: 1.6; }
+      .ds-faq { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+        padding: 12px 14px; margin-bottom: 8px; }
+      .ds-faq-q { font-weight: 600; color: #0f172a; font-size: 14px; }
+      .ds-faq-a { color: #334155; font-size: 13px; line-height: 1.55; margin-top: 4px; }
+      /* mobile */
+      @media (max-width: 720px) {
+        .ds-att-grid { grid-template-columns: repeat(3, 1fr); }
+        .ds-twocol   { grid-template-columns: 1fr; }
+        .ds-tab      { font-size: 11px; padding: 8px 12px; }
+      }
     </style>
   </head>
   <body>
@@ -738,6 +880,29 @@
             style="display: none"
           ></div>
           <div id="page-callaudit" class="page" style="display: none"></div>
+          <div class="ds-walkthrough-group">
+            <button class="ds-walkthrough-trigger" type="button" aria-expanded="false">
+              <span>SmartChoice DocuSign Walkthrough</span>
+              <span class="ds-chevron" aria-hidden="true"></span>
+            </button>
+            <div class="ds-walkthrough-body" hidden>
+              <div class="ds-walkthrough-search">
+                <input type="text" id="dsSearchInput"
+                       placeholder="Search current tab..."
+                       autocomplete="off">
+              </div>
+              <div class="ds-walkthrough-tabs" role="tablist">
+                <button class="ds-tab is-active" data-tab="ask" role="tab" aria-selected="true">WHAT CLIENTS ASK MOST</button>
+                <button class="ds-tab" data-tab="att" role="tab" aria-selected="false">10 ADDITIONAL MEMBER ATTESTATIONS</button>
+                <button class="ds-tab" data-tab="full" role="tab" aria-selected="false">FULL WALKTHROUGH</button>
+              </div>
+              <div class="ds-tab-panels">
+                <div class="ds-panel is-active" data-panel="ask"  role="tabpanel"></div>
+                <div class="ds-panel"            data-panel="att" role="tabpanel" hidden></div>
+                <div class="ds-panel"            data-panel="full" role="tabpanel" hidden></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- MY SPACE -->
@@ -1045,9 +1210,308 @@
     <script src="js/ai-tools.js?v=1776974000000"></script>
     <script src="js/training.js?v=1776974000000"></script>
     <script src="js/compliance.js?v=1776974000000"></script>
+    <script src="js/docusign-walkthrough.js?v=385"></script>
     <script src="js/myspace.js?v=1776974000000"></script>
     <script src="js/sales-tracker.js?v=1779400000000"></script>
     <script src="js/app.js?v=1779300000000"></script>
+    <script>
+      (function() {
+        var data = window.docusignWalkthroughData;
+        if (!data) return;
+        var group = document.querySelector('.ds-walkthrough-group');
+        if (!group) return;
+        var trigger = group.querySelector('.ds-walkthrough-trigger');
+        var body = group.querySelector('.ds-walkthrough-body');
+        var search = group.querySelector('#dsSearchInput');
+        var tabs = group.querySelectorAll('.ds-tab');
+        var panels = {
+          ask: group.querySelector('[data-panel="ask"]'),
+          att: group.querySelector('[data-panel="att"]'),
+          full: group.querySelector('[data-panel="full"]')
+        };
+        if (!trigger || !body || !search || !panels.ask || !panels.att || !panels.full) return;
+        trigger.addEventListener('click', function() {
+          var open = trigger.getAttribute('aria-expanded') === 'true';
+          trigger.setAttribute('aria-expanded', String(!open));
+          if (open) {
+            body.setAttribute('hidden', '');
+          } else {
+            body.removeAttribute('hidden');
+          }
+        });
+        tabs.forEach(function(tab) {
+          tab.addEventListener('click', function() {
+            tabs.forEach(function(t) {
+              t.classList.remove('is-active');
+              t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('is-active');
+            tab.setAttribute('aria-selected', 'true');
+            Object.keys(panels).forEach(function(k) {
+              panels[k].classList.remove('is-active');
+              panels[k].setAttribute('hidden', '');
+            });
+            var key = tab.getAttribute('data-tab');
+            panels[key].classList.add('is-active');
+            panels[key].removeAttribute('hidden');
+            search.value = '';
+            filterCurrentTab('');
+          });
+        });
+        function el(tag, cls, text) {
+          var n = document.createElement(tag);
+          if (cls) n.className = cls;
+          if (text != null) n.textContent = text;
+          return n;
+        }
+        function buildExpandableCard(opts) {
+          var card = el('div', 'ds-card ds-sev-' + (opts.severity || 'green'));
+          if (opts.searchable) card.setAttribute('data-searchable', opts.searchable);
+          var header = el('button', 'ds-card-header');
+          header.setAttribute('type', 'button');
+          header.setAttribute('aria-expanded', 'false');
+          var titleWrap = el('div', 'ds-card-titlewrap');
+          if (opts.number != null) {
+            var numBadge = el('span', 'ds-card-num', String(opts.number));
+            titleWrap.appendChild(numBadge);
+          }
+          titleWrap.appendChild(el('div', 'ds-card-title', opts.title));
+          if (opts.oneLiner) {
+            titleWrap.appendChild(el('div', 'ds-card-oneliner', opts.oneLiner));
+          }
+          header.appendChild(titleWrap);
+          header.appendChild(el('span', 'ds-card-toggle', '+'));
+          var content = el('div', 'ds-card-body');
+          content.setAttribute('hidden', '');
+          (opts.sections || []).forEach(function(s) {
+            var box = el('div', 'ds-box ds-box-' + s.kind);
+            box.appendChild(el('div', 'ds-box-label', s.label));
+            if (s.kind === 'pushback' && Array.isArray(s.body)) {
+              s.body.forEach(function(qa) {
+                var qaWrap = el('div', 'ds-qa');
+                qaWrap.appendChild(el('div', 'ds-qa-q', 'Q: ' + qa.q));
+                qaWrap.appendChild(el('div', 'ds-qa-a', 'A: ' + qa.a));
+                box.appendChild(qaWrap);
+              });
+            } else {
+              box.appendChild(el('div', 'ds-box-text', s.body));
+            }
+            content.appendChild(box);
+          });
+          header.addEventListener('click', function() {
+            var open = header.getAttribute('aria-expanded') === 'true';
+            header.setAttribute('aria-expanded', String(!open));
+            if (open) {
+              content.setAttribute('hidden', '');
+              header.querySelector('.ds-card-toggle').textContent = '+';
+            } else {
+              content.removeAttribute('hidden');
+              header.querySelector('.ds-card-toggle').textContent = '-';
+            }
+          });
+          card.appendChild(header);
+          card.appendChild(content);
+          return card;
+        }
+        function renderAsk() {
+          var p = panels.ask;
+          p.innerHTML = '';
+          data.whatClientsAsk.forEach(function(item) {
+            var card = buildExpandableCard({
+              severity: item.severity,
+              title: item.title,
+              oneLiner: item.oneLiner,
+              searchable: (item.title + ' ' + item.oneLiner + ' ' + item.sayThis).toLowerCase(),
+              sections: [
+                { label: 'SAY THIS TO YOUR CLIENT', kind: 'sayThis', body: item.sayThis },
+                { label: 'IF THEY PUSH BACK', kind: 'pushback', body: item.pushback }
+              ]
+            });
+            p.appendChild(card);
+          });
+          var rfWrap = el('div', 'ds-redflags');
+          rfWrap.appendChild(el('div', 'ds-redflags-title', 'AGENT RED FLAGS -- CHECK BEFORE SUBMISSION'));
+          var ul = el('ul', 'ds-redflags-list');
+          data.redFlagsChecklist.forEach(function(rf) {
+            var li = el('li', 'ds-redflags-item');
+            li.setAttribute('data-searchable', rf.toLowerCase());
+            li.textContent = rf;
+            ul.appendChild(li);
+          });
+          rfWrap.appendChild(ul);
+          p.appendChild(rfWrap);
+        }
+        function renderAttestations() {
+          var p = panels.att;
+          p.innerHTML = '';
+          var intro = el('div', 'ds-att-intro', 'Tap any number to see the DocuSign quote, plain-English meaning, what to say, and how to handle pushback.');
+          p.appendChild(intro);
+          var grid = el('div', 'ds-att-grid');
+          var details = el('div', 'ds-att-details');
+          data.attestations.forEach(function(a) {
+            var tile = el('button', 'ds-att-tile ds-sev-' + a.severity);
+            tile.setAttribute('type', 'button');
+            tile.setAttribute('data-searchable', (a.title + ' ' + a.shortLabel + ' ' + a.whatItMeans + ' ' + a.docusignText).toLowerCase());
+            tile.appendChild(el('div', 'ds-att-num', String(a.number)));
+            tile.appendChild(el('div', 'ds-att-label', a.shortLabel));
+            tile.addEventListener('click', function() {
+              renderAttDetail(a, details);
+              details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            grid.appendChild(tile);
+          });
+          p.appendChild(grid);
+          p.appendChild(details);
+          var glossWrap = el('div', 'ds-glossary');
+          glossWrap.appendChild(el('div', 'ds-glossary-title', 'GLOSSARY -- TRANSLATE THE LEGAL STUFF'));
+          data.glossary.forEach(function(g) {
+            var row = el('div', 'ds-glossary-row');
+            row.setAttribute('data-searchable', (g.term + ' ' + g.def).toLowerCase());
+            row.appendChild(el('div', 'ds-glossary-term', g.term));
+            row.appendChild(el('div', 'ds-glossary-def', g.def));
+            glossWrap.appendChild(row);
+          });
+          p.appendChild(glossWrap);
+        }
+        function renderAttDetail(a, mount) {
+          mount.innerHTML = '';
+          var card = el('div', 'ds-att-detail ds-sev-' + a.severity);
+          card.appendChild(el('div', 'ds-att-detail-num', '#' + a.number + ' -- ' + a.title));
+          var quote = el('div', 'ds-box ds-box-quote');
+          quote.appendChild(el('div', 'ds-box-label', 'WHAT THE DOCUSIGN SAYS'));
+          quote.appendChild(el('div', 'ds-box-text', a.docusignText));
+          card.appendChild(quote);
+          var means = el('div', 'ds-box ds-box-means');
+          means.appendChild(el('div', 'ds-box-label', 'WHAT IT REALLY MEANS'));
+          means.appendChild(el('div', 'ds-box-text', a.whatItMeans));
+          card.appendChild(means);
+          var say = el('div', 'ds-box ds-box-sayThis');
+          say.appendChild(el('div', 'ds-box-label', 'SAY THIS TO YOUR CLIENT'));
+          say.appendChild(el('div', 'ds-box-text', a.sayToClient));
+          card.appendChild(say);
+          var push = el('div', 'ds-box ds-box-pushback');
+          push.appendChild(el('div', 'ds-box-label', 'IF THEY PUSH BACK'));
+          a.pushback.forEach(function(qa) {
+            var qaWrap = el('div', 'ds-qa');
+            qaWrap.appendChild(el('div', 'ds-qa-q', 'Q: ' + qa.q));
+            qaWrap.appendChild(el('div', 'ds-qa-a', 'A: ' + qa.a));
+            push.appendChild(qaWrap);
+          });
+          card.appendChild(push);
+          mount.appendChild(card);
+        }
+        function renderFull() {
+          var p = panels.full;
+          p.innerHTML = '';
+          var wo = data.workingOwnerOverview;
+          var woCard = el('div', 'ds-section');
+          woCard.appendChild(el('h3', 'ds-section-title', wo.title));
+          woCard.appendChild(el('p', 'ds-section-summary', wo.summary));
+          var woGrid = el('div', 'ds-twocol');
+          wo.cards.forEach(function(c) {
+            var box = el('div', 'ds-section-card');
+            box.appendChild(el('h4', 'ds-section-card-h', c.heading));
+            if (c.body) box.appendChild(el('p', 'ds-section-card-p', c.body));
+            if (c.bullets) {
+              var ul = el('ul', 'ds-section-card-ul');
+              c.bullets.forEach(function(b) { ul.appendChild(el('li', null, b)); });
+              box.appendChild(ul);
+            }
+            woGrid.appendChild(box);
+          });
+          woCard.appendChild(woGrid);
+          woCard.setAttribute('data-searchable', (wo.title + ' ' + wo.summary).toLowerCase());
+          p.appendChild(woCard);
+          var pp = data.planPositioning;
+          var ppCard = el('div', 'ds-section');
+          ppCard.appendChild(el('h3', 'ds-section-title', pp.title));
+          ppCard.appendChild(el('p', 'ds-section-summary', pp.intro));
+          var ppGrid = el('div', 'ds-twocol');
+          pp.cards.forEach(function(c) {
+            var box = el('div', 'ds-section-card');
+            box.appendChild(el('h4', 'ds-section-card-h', c.heading));
+            if (c.bullets) {
+              var ul = el('ul', 'ds-section-card-ul');
+              c.bullets.forEach(function(b) { ul.appendChild(el('li', null, b)); });
+              box.appendChild(ul);
+            }
+            ppGrid.appendChild(box);
+          });
+          ppCard.appendChild(ppGrid);
+          ppCard.setAttribute('data-searchable', (pp.title + ' ' + pp.intro).toLowerCase());
+          p.appendChild(ppCard);
+          var bp = data.bigPicture;
+          var bpCard = el('div', 'ds-section');
+          bpCard.appendChild(el('h3', 'ds-section-title', bp.title));
+          bpCard.appendChild(el('p', 'ds-section-summary', bp.summary));
+          var bpUl = el('ul', 'ds-section-card-ul');
+          bp.points.forEach(function(pt) { bpUl.appendChild(el('li', null, pt)); });
+          bpCard.appendChild(bpUl);
+          bpCard.setAttribute('data-searchable', (bp.title + ' ' + bp.summary).toLowerCase());
+          p.appendChild(bpCard);
+          var secsHeader = el('h3', 'ds-section-title', 'Section-by-Section Breakdown (25)');
+          p.appendChild(secsHeader);
+          data.sections.forEach(function(s) {
+            var card = el('div', 'ds-mini-section' + (s.warning ? ' ds-warn' : ''));
+            var searchTxt = s.title + ' ';
+            var head = el('div', 'ds-mini-section-h');
+            head.appendChild(el('span', 'ds-mini-section-num', String(s.number) + '.'));
+            head.appendChild(el('span', 'ds-mini-section-t', s.title));
+            if (s.warning) head.appendChild(el('span', 'ds-warn-badge', 'WARNING'));
+            card.appendChild(head);
+            if (s.body) {
+              card.appendChild(el('p', 'ds-mini-section-p', s.body));
+              searchTxt += s.body + ' ';
+            }
+            if (s.intro) {
+              card.appendChild(el('p', 'ds-mini-section-p', s.intro));
+              searchTxt += s.intro + ' ';
+            }
+            if (s.bullets) {
+              var ul = el('ul', 'ds-mini-section-ul');
+              s.bullets.forEach(function(b) {
+                ul.appendChild(el('li', null, b));
+                searchTxt += b + ' ';
+              });
+              card.appendChild(ul);
+            }
+            if (s.outro) {
+              card.appendChild(el('p', 'ds-mini-section-p', s.outro));
+              searchTxt += s.outro + ' ';
+            }
+            card.setAttribute('data-searchable', searchTxt.toLowerCase());
+            p.appendChild(card);
+          });
+          var faqHeader = el('h3', 'ds-section-title', 'Top Client Questions');
+          p.appendChild(faqHeader);
+          data.faq.forEach(function(qa) {
+            var card = el('div', 'ds-faq');
+            card.appendChild(el('div', 'ds-faq-q', qa.q));
+            card.appendChild(el('div', 'ds-faq-a', qa.a));
+            card.setAttribute('data-searchable', (qa.q + ' ' + qa.a).toLowerCase());
+            p.appendChild(card);
+          });
+        }
+        function filterCurrentTab(query) {
+          var activePanel = group.querySelector('.ds-panel.is-active');
+          if (!activePanel) return;
+          var q = (query || '').trim().toLowerCase();
+          var nodes = activePanel.querySelectorAll('[data-searchable]');
+          nodes.forEach(function(n) {
+            if (!q) {
+              n.style.display = '';
+              return;
+            }
+            var hay = n.getAttribute('data-searchable') || '';
+            n.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
+          });
+        }
+        search.addEventListener('input', function() { filterCurrentTab(search.value); });
+        renderAsk();
+        renderAttestations();
+        renderFull();
+      })();
+    </script>
     <script src="js/chat.js?v=1779300000000"></script>
     <script>
       (function () {
