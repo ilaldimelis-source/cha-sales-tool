@@ -331,6 +331,17 @@
       .dash-cc-action.ds-home-tile svg {
         color: #7c3aed;
       }
+      /* === DocuSign Walkthrough -- empty search state === */
+      .ds-search-empty {
+        padding: 14px 16px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+        background: #F1F5F9;
+        border: 1px dashed #CBD5E1;
+        color: #475569;
+        font-size: 14px;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -897,7 +908,7 @@
               <div class="ds-walkthrough-body">
                 <div class="ds-walkthrough-search">
                   <input type="text" id="dsSearchInput"
-                         placeholder="Search current tab..."
+                         placeholder="Search all walkthrough tabs..."
                          autocomplete="off">
                 </div>
                 <div class="ds-walkthrough-tabs" role="tablist">
@@ -1220,7 +1231,7 @@
     <script src="js/ai-tools.js?v=1776974000000"></script>
     <script src="js/training.js?v=1776974000000"></script>
     <script src="js/compliance.js?v=1776974000000"></script>
-    <script src="js/docusign-walkthrough.js?v=386"></script>
+    <script src="js/docusign-walkthrough.js?v=387"></script>
     <script src="js/myspace.js?v=1776974000000"></script>
     <script src="js/sales-tracker.js?v=1779400000000"></script>
     <script src="js/app.js?v=1779300000000"></script>
@@ -1264,8 +1275,9 @@
             var key = tab.getAttribute('data-tab');
             panels[key].classList.add('is-active');
             panels[key].removeAttribute('hidden');
-            search.value = '';
-            filterCurrentTab('');
+            var stale = group.querySelector('#ds-search-empty');
+            if (stale && stale.parentNode) stale.parentNode.removeChild(stale);
+            filterAllTabs(search.value);
           });
         });
         function el(tag, cls, text) {
@@ -1501,21 +1513,58 @@
             p.appendChild(card);
           });
         }
-        function filterCurrentTab(query) {
+        function filterAllTabs(query) {
+          var q = (query || '').trim().toLowerCase();
+          var totalMatches = 0;
+          var perPanelCounts = { ask: 0, att: 0, full: 0 };
+          Object.keys(panels).forEach(function(key) {
+            var panel = panels[key];
+            if (!panel) return;
+            var nodes = panel.querySelectorAll('[data-searchable]');
+            nodes.forEach(function(n) {
+              if (!q) {
+                n.style.display = '';
+                return;
+              }
+              var hay = n.getAttribute('data-searchable') || '';
+              var match = hay.indexOf(q) !== -1;
+              n.style.display = match ? '' : 'none';
+              if (match) {
+                perPanelCounts[key]++;
+                totalMatches++;
+              }
+            });
+          });
+          tabs.forEach(function(tab) {
+            var key = tab.getAttribute('data-tab');
+            var baseLabel = tab.getAttribute('data-base-label');
+            if (!baseLabel) {
+              baseLabel = tab.textContent.trim();
+              tab.setAttribute('data-base-label', baseLabel);
+            }
+            if (!q || !perPanelCounts[key]) {
+              tab.textContent = baseLabel;
+            } else {
+              tab.textContent = baseLabel + ' (' + perPanelCounts[key] + ')';
+            }
+          });
           var activePanel = group.querySelector('.ds-panel.is-active');
           if (!activePanel) return;
-          var q = (query || '').trim().toLowerCase();
-          var nodes = activePanel.querySelectorAll('[data-searchable]');
-          nodes.forEach(function(n) {
-            if (!q) {
-              n.style.display = '';
-              return;
+          var emptyId = 'ds-search-empty';
+          var existingEmpty = activePanel.querySelector('#' + emptyId);
+          if (q && totalMatches === 0) {
+            if (!existingEmpty) {
+              var empty = document.createElement('div');
+              empty.id = emptyId;
+              empty.className = 'ds-search-empty';
+              empty.textContent = 'No matches in any tab.';
+              activePanel.insertBefore(empty, activePanel.firstChild);
             }
-            var hay = n.getAttribute('data-searchable') || '';
-            n.style.display = hay.indexOf(q) !== -1 ? '' : 'none';
-          });
+          } else if (existingEmpty) {
+            existingEmpty.parentNode.removeChild(existingEmpty);
+          }
         }
-        search.addEventListener('input', function() { filterCurrentTab(search.value); });
+        search.addEventListener('input', function() { filterAllTabs(search.value); });
         renderAsk();
         renderAttestations();
         renderFull();
