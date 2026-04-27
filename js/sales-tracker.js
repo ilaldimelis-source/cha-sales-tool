@@ -4659,13 +4659,15 @@ function _stOpenEntryModal(opts) {
       ? initial.dealRatePct
       : defaultDealRate;
   var addonRows = initial.addons && initial.addons.length ? initial.addons : [];
+  var addonOnlyDefault = !!initial.addonOnly || (mode === 'edit' && !initial.dealId);
 
   _stEntryModalState = {
     mode: mode,
     dealId: initial.dealId || '',
     receiptIdForEdit: initial.receiptId || '',
     previewText: preview,
-    addonOnly: !!initial.addonOnly
+    addonOnly: addonOnlyDefault,
+    seedSaleId: initial.seedSaleId || ''
   };
 
   var modal = document.createElement('div');
@@ -4683,6 +4685,16 @@ function _stOpenEntryModal(opts) {
     html += '<pre class="st-entry-preview">' + _stEscape(preview) + '</pre>';
     html += '</div>';
   }
+  html += '<div class="st-entry-sale-type" role="tablist" aria-label="Sale type">';
+  html +=
+    '<button type="button" id="st-entry-mode-core" class="st-entry-sale-pill" role="tab" aria-selected="' +
+    (!addonOnlyDefault ? 'true' : 'false') +
+    '" onclick="_stEntryModalSetAddonOnly(false)">Core plan + add-ons</button>';
+  html +=
+    '<button type="button" id="st-entry-mode-addon-only" class="st-entry-sale-pill" role="tab" aria-selected="' +
+    (addonOnlyDefault ? 'true' : 'false') +
+    '" onclick="_stEntryModalSetAddonOnly(true)">Add-ons only</button>';
+  html += '</div>';
   html += '<div class="st-entry-grid">';
   html +=
     '<label>Customer name<input id="st-entry-customer" type="text" value="' +
@@ -4697,6 +4709,7 @@ function _stOpenEntryModal(opts) {
     _stEscape(soldIso) +
     '"></label>';
   html += '</div>';
+  html += '<div id="st-entry-deal-section">';
   html += '<div class="st-entry-sec-title">Deal</div>';
   html += '<div class="st-entry-grid st-entry-grid-deal">';
   html +=
@@ -4715,7 +4728,7 @@ function _stOpenEntryModal(opts) {
     '<label>Deal commission %<input id="st-entry-deal-rate" type="number" step="1" value="' +
     _stEscape(Math.round(dealRatePct)) +
     '"></label>';
-  html += '</div>';
+  html += '</div></div>';
   html += '<div class="st-entry-sec-title">Add-ons</div>';
   html += '<div id="st-entry-addons"></div>';
   html +=
@@ -4737,11 +4750,37 @@ function _stOpenEntryModal(opts) {
     _stEntryAddAddonRow(addonRows[i]);
   }
   if (!addonRows.length) _stEntryAddAddonRow();
+  _stEntryModalApplyMode();
 
   window._stEntryEscHandler = function (ev) {
     if (ev.key === 'Escape') _stCloseEntryModal();
   };
   window.addEventListener('keydown', window._stEntryEscHandler);
+}
+
+function _stEntryModalApplyMode() {
+  var state = _stEntryModalState || {};
+  var addonOnly = !!state.addonOnly;
+  var card = document.querySelector('#st-entry-modal .st-entry-card');
+  if (card) card.classList.toggle('st-entry-addon-only', addonOnly);
+  var dealSection = document.getElementById('st-entry-deal-section');
+  if (dealSection) dealSection.classList.toggle('st-hidden', addonOnly);
+  var coreBtn = document.getElementById('st-entry-mode-core');
+  var addonBtn = document.getElementById('st-entry-mode-addon-only');
+  if (coreBtn) {
+    coreBtn.classList.toggle('is-selected', !addonOnly);
+    coreBtn.setAttribute('aria-selected', !addonOnly ? 'true' : 'false');
+  }
+  if (addonBtn) {
+    addonBtn.classList.toggle('is-selected', addonOnly);
+    addonBtn.setAttribute('aria-selected', addonOnly ? 'true' : 'false');
+  }
+}
+
+function _stEntryModalSetAddonOnly(on) {
+  if (!_stEntryModalState) return;
+  _stEntryModalState.addonOnly = !!on;
+  _stEntryModalApplyMode();
 }
 
 function _stCloseEntryModal() {
@@ -4884,6 +4923,78 @@ function _stCreateAddonOnlyFromModal(payload) {
   return true;
 }
 
+function _stUpdateAddonOnlyGroupFromModal(payload, state) {
+  var sales = _stLoadSales();
+  var oldReceipt = String(state.receiptIdForEdit || '').trim();
+  var receiptId = payload.receiptId || oldReceipt || _stBuildUniqueReceiptId('rcpt_manual_');
+  var existingAddons = {};
+  for (var a = 0; a < sales.length; a++) {
+    var s = sales[a];
+    if (!s || s.type !== 'addon') continue;
+    if (oldReceipt) {
+      if (String(s.receiptId || '') !== oldReceipt) continue;
+    } else {
+      if (s.id !== state.seedSaleId) continue;
+    }
+    existingAddons[s.id] = s;
+  }
+
+  var keep = {};
+  for (var r = 0; r < payload.addons.length; r++) {
+    var ad = payload.addons[r];
+    var adId = ad.id && existingAddons[ad.id] ? ad.id : '';
+    var rowSale = adId ? existingAddons[adId] : null;
+    if (!rowSale) {
+      rowSale = {
+        id:
+          'st_' +
+          payload.ts +
+          '_edit_ao_' +
+          r +
+          '_' +
+          Math.random().toString(36).slice(2, 6),
+        ts: payload.ts + r,
+        customer: payload.customer,
+        memberId: '',
+        plan: ad.name,
+        amount: ad.amount,
+        type: 'addon',
+        status: 'pending',
+        raw: payload.rawText || '',
+        notes: receiptId ? 'Policy: ' + receiptId : '',
+        receiptId: receiptId,
+        receiptTotal: 0,
+        enrollmentFee: 0
+      };
+      sales.push(rowSale);
+    }
+    rowSale.customer = payload.customer;
+    rowSale.plan = ad.name;
+    rowSale.amount = ad.amount;
+    rowSale.ts = payload.ts + r;
+    rowSale.receiptId = receiptId;
+    rowSale.notes = receiptId ? 'Policy: ' + receiptId : '';
+    rowSale.addonCommissionRate = ad.ratePct / 100;
+    keep[rowSale.id] = true;
+  }
+
+  sales = sales.filter(function (s) {
+    if (!s || s.type !== 'addon') return true;
+    if (oldReceipt) {
+      if (String(s.receiptId || '') !== oldReceipt && String(s.receiptId || '') !== receiptId) return true;
+    } else if (s.id !== state.seedSaleId && String(s.receiptId || '') !== receiptId) {
+      return true;
+    }
+    return keep[s.id] === true;
+  });
+
+  _stStampOrphanAddonReceiptCommissions(sales, receiptId, _stLoadCommissionRates());
+  _stSaveSales(sales);
+  _stRender();
+  _stFlash('Updated ' + payload.customer, 'ok');
+  return true;
+}
+
 function _stUpdateSaleGroupFromModal(payload, state) {
   var sales = _stLoadSales();
   var dealIdx = -1;
@@ -5011,7 +5122,7 @@ function _stSaveEntryModal() {
     });
   }
 
-  if (state.mode === 'create' && state.addonOnly) {
+  if (state.addonOnly) {
     var hasAddonAmt = false;
     for (var ai = 0; ai < addons.length; ai++) {
       if (addons[ai].name && addons[ai].amount > 0) {
@@ -5023,8 +5134,6 @@ function _stSaveEntryModal() {
       _stFlash('Add at least one add-on with a premium for add-on-only sale.', 'error');
       return;
     }
-    if (isNaN(enrollmentFee) || enrollmentFee < 0) enrollmentFee = 0;
-    if (isNaN(dealRatePct) || dealRatePct < 0) dealRatePct = 0;
     var payloadAo = {
       customer: customer,
       receiptId: receiptId,
@@ -5032,7 +5141,10 @@ function _stSaveEntryModal() {
       addons: addons,
       rawText: state.previewText || ''
     };
-    var okAo = _stCreateAddonOnlyFromModal(payloadAo);
+    var okAo =
+      state.mode === 'edit'
+        ? _stUpdateAddonOnlyGroupFromModal(payloadAo, state)
+        : _stCreateAddonOnlyFromModal(payloadAo);
     if (okAo) {
       _stCloseEntryModal();
       var inputAo = document.getElementById('st-receipt-input');
@@ -5100,6 +5212,72 @@ function _stOpenCommissionEditor(saleId) {
         break;
       }
     }
+  }
+  if (deal.type !== 'deal' && seed.type === 'addon') {
+    var soldDateAo = new Date(Number(seed.ts) || Date.now());
+    var yAo = soldDateAo.getFullYear();
+    var mAo = String(soldDateAo.getMonth() + 1);
+    if (mAo.length < 2) mAo = '0' + mAo;
+    var ddAo = String(soldDateAo.getDate());
+    if (ddAo.length < 2) ddAo = '0' + ddAo;
+    var ratesAo = _stLoadCommissionRates();
+    var addonsAo = [];
+    for (var ax = 0; ax < sales.length; ax++) {
+      if (!sales[ax] || sales[ax].type !== 'addon') continue;
+      if (seed.receiptId) {
+        if (sales[ax].receiptId !== seed.receiptId) continue;
+      } else if (sales[ax].id !== seed.id) {
+        continue;
+      }
+      var arAo =
+        typeof sales[ax].addonCommissionRate === 'number'
+          ? sales[ax].addonCommissionRate * 100
+          :
+            (ratesAo.addonTypes[_stClassifyAddon(sales[ax].plan)] ||
+              ratesAo.addonTypes.standard ||
+              0.7) *
+            100;
+      addonsAo.push({
+        id: sales[ax].id,
+        name: sales[ax].plan || '',
+        amount: Number(sales[ax].amount) || 0,
+        ratePct: arAo
+      });
+    }
+    if (!addonsAo.length) {
+      var seedRate =
+        typeof seed.addonCommissionRate === 'number'
+          ? seed.addonCommissionRate * 100
+          :
+            (ratesAo.addonTypes[_stClassifyAddon(seed.plan)] ||
+              ratesAo.addonTypes.standard ||
+              0.7) *
+            100;
+      addonsAo.push({
+        id: seed.id,
+        name: seed.plan || '',
+        amount: Number(seed.amount) || 0,
+        ratePct: seedRate
+      });
+    }
+    _stOpenEntryModal({
+      mode: 'edit',
+      initial: {
+        dealId: '',
+        customer: seed.customer || '',
+        receiptId: seed.receiptId || '',
+        dateSold: yAo + '-' + mAo + '-' + ddAo,
+        plan: '',
+        premium: 0,
+        enrollmentFee: 0,
+        dealRatePct: 0,
+        addonOnly: true,
+        seedSaleId: seed.id,
+        addons: addonsAo
+      }
+    });
+    if (_stEntryModalState) _stEntryModalState.seedSaleId = seed.id;
+    return;
   }
   if (deal.type !== 'deal') {
     _stFlash('Edit is available on grouped receipts only.', 'error');

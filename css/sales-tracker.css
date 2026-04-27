@@ -1657,6 +1657,43 @@
   white-space: pre-wrap;
 }
 
+.st-entry-sale-type {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+
+.st-entry-sale-pill {
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #64748b;
+  border-radius: 999px;
+  min-height: 40px;
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease;
+}
+
+.st-entry-sale-pill:hover {
+  background: #eef2f7;
+}
+
+.st-entry-sale-pill.is-selected {
+  background: #5175f1;
+  border-color: #5175f1;
+  color: #fff;
+}
+
+.st-hidden {
+  display: none !important;
+}
+
 .st-entry-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
