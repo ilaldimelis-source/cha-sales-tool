@@ -728,6 +728,17 @@
         line-height: 1.6;
         color: #0f172a;
       }
+      /* === Hide floating bubbles globally (chat + Academy Quick Reference) === */
+      /* Visual-only hide. Both features stay fully wired up underneath. */
+      /* To re-enable: remove relevant selectors from this rule. */
+      /* - #br-toggle / #br-panel: chat assistant (PR #149) */
+      /* - .benefits-bubble / #benefitsPanel: Academy Quick Reference (PR following #149) */
+      #br-toggle,
+      #br-panel,
+      .benefits-bubble,
+      #benefitsPanel {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
