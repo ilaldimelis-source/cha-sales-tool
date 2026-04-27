@@ -5507,6 +5507,7 @@ function _stBuildPaycheckHeroSection(sales, stats) {
   var momentum = _stWeeklyPaycheckMomentum(sales, stats);
   var bonusTotal = Number(pb.enrollmentBonus || 0) + Number(pb.tierBonus || 0);
   var est = Number(pb.estimated) || 0;
+  var showWeekPdfBtn = (Number(stats && stats.weekDeals) || 0) > 0;
   var tiersCfg = ST_BONUS_TIERS || [];
   var lastTier = tiersCfg.length ? tiersCfg[tiersCfg.length - 1] : null;
   var maxed =
@@ -5530,7 +5531,13 @@ function _stBuildPaycheckHeroSection(sales, stats) {
     statusLine = 'Keep selling to grow your paycheck';
   }
   var html = '<section id="st-paycheck-hero" class="st-paycheck-hero st-paycheck-hero--compact">';
+  html += '<div class="st-paycheck-hero-head">';
   html += '<div class="st-paycheck-hero-kicker">ESTIMATED PAYCHECK · THIS WEEK</div>';
+  if (showWeekPdfBtn) {
+    html +=
+      '<button type="button" class="st-hero-pdf-btn" aria-label="Download this week PDF" onclick="_stDownloadWeeklyPdf()">↓ PDF</button>';
+  }
+  html += '</div>';
   html += '<div class="st-paycheck-hero-mid">';
   html += '<div class="st-paycheck-hero-left">';
   html += '<div class="st-paycheck-hero-total">' + _stFmtMoney(est) + '</div>';

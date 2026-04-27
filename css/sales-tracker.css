@@ -2734,6 +2734,32 @@
   opacity: 0.85;
   font-weight: 500;
 }
+.st-paycheck-hero-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.st-hero-pdf-btn {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.st-hero-pdf-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+.st-hero-pdf-btn:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.95);
+  outline-offset: 2px;
+}
 .st-paycheck-hero-mid {
   margin-top: 8px;
   display: flex;
@@ -3622,6 +3648,10 @@
   }
   .st-paycheck-day-amt {
     font-size: 12px;
+  }
+  .st-hero-pdf-btn {
+    padding: 6px 10px;
+    font-size: 11px;
   }
   .st-add-sale-fab {
     right: 20px;
