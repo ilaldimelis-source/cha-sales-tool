@@ -323,6 +323,14 @@
         .ds-twocol   { grid-template-columns: 1fr; }
         .ds-tab      { font-size: 11px; padding: 8px 12px; }
       }
+      .dash-cc-action.ds-home-tile {
+        background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+        border: 1px solid #c4b5fd;
+        color: #5b21b6;
+      }
+      .dash-cc-action.ds-home-tile svg {
+        color: #7c3aed;
+      }
     </style>
   </head>
   <body>
@@ -880,26 +888,28 @@
             style="display: none"
           ></div>
           <div id="page-callaudit" class="page" style="display: none"></div>
-          <div class="ds-walkthrough-group">
-            <button class="ds-walkthrough-trigger" type="button" aria-expanded="false">
-              <span>SmartChoice DocuSign Walkthrough</span>
-              <span class="ds-chevron" aria-hidden="true"></span>
-            </button>
-            <div class="ds-walkthrough-body" hidden>
-              <div class="ds-walkthrough-search">
-                <input type="text" id="dsSearchInput"
-                       placeholder="Search current tab..."
-                       autocomplete="off">
-              </div>
-              <div class="ds-walkthrough-tabs" role="tablist">
-                <button class="ds-tab is-active" data-tab="ask" role="tab" aria-selected="true">WHAT CLIENTS ASK MOST</button>
-                <button class="ds-tab" data-tab="att" role="tab" aria-selected="false">10 ADDITIONAL MEMBER ATTESTATIONS</button>
-                <button class="ds-tab" data-tab="full" role="tab" aria-selected="false">FULL WALKTHROUGH</button>
-              </div>
-              <div class="ds-tab-panels">
-                <div class="ds-panel is-active" data-panel="ask"  role="tabpanel"></div>
-                <div class="ds-panel"            data-panel="att" role="tabpanel" hidden></div>
-                <div class="ds-panel"            data-panel="full" role="tabpanel" hidden></div>
+          <div id="page-docusign" class="page" style="display: none">
+            <div class="ds-walkthrough-group">
+              <button class="ds-walkthrough-trigger" type="button" aria-expanded="true">
+                <span>SmartChoice DocuSign Walkthrough</span>
+                <span class="ds-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="ds-walkthrough-body">
+                <div class="ds-walkthrough-search">
+                  <input type="text" id="dsSearchInput"
+                         placeholder="Search current tab..."
+                         autocomplete="off">
+                </div>
+                <div class="ds-walkthrough-tabs" role="tablist">
+                  <button class="ds-tab is-active" data-tab="ask" role="tab" aria-selected="true">WHAT CLIENTS ASK MOST</button>
+                  <button class="ds-tab" data-tab="att" role="tab" aria-selected="false">10 ADDITIONAL MEMBER ATTESTATIONS</button>
+                  <button class="ds-tab" data-tab="full" role="tab" aria-selected="false">FULL WALKTHROUGH</button>
+                </div>
+                <div class="ds-tab-panels">
+                  <div class="ds-panel is-active" data-panel="ask"  role="tabpanel"></div>
+                  <div class="ds-panel"            data-panel="att" role="tabpanel" hidden></div>
+                  <div class="ds-panel"            data-panel="full" role="tabpanel" hidden></div>
+                </div>
               </div>
             </div>
           </div>
@@ -1210,7 +1220,7 @@
     <script src="js/ai-tools.js?v=1776974000000"></script>
     <script src="js/training.js?v=1776974000000"></script>
     <script src="js/compliance.js?v=1776974000000"></script>
-    <script src="js/docusign-walkthrough.js?v=385"></script>
+    <script src="js/docusign-walkthrough.js?v=386"></script>
     <script src="js/myspace.js?v=1776974000000"></script>
     <script src="js/sales-tracker.js?v=1779400000000"></script>
     <script src="js/app.js?v=1779300000000"></script>
@@ -1457,7 +1467,6 @@
             var head = el('div', 'ds-mini-section-h');
             head.appendChild(el('span', 'ds-mini-section-num', String(s.number) + '.'));
             head.appendChild(el('span', 'ds-mini-section-t', s.title));
-            if (s.warning) head.appendChild(el('span', 'ds-warn-badge', 'WARNING'));
             card.appendChild(head);
             if (s.body) {
               card.appendChild(el('p', 'ds-mini-section-p', s.body));
