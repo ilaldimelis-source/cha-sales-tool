@@ -368,7 +368,8 @@ var PAGE_CONFIG = {
         label: 'Compliance Center',
         render: renderComplianceCenter
       },
-      { id: 'callaudit', label: 'Call Audit', render: renderCallAudit }
+      { id: 'callaudit', label: 'Call Audit', render: renderCallAudit },
+      { id: 'docusign', label: 'DocuSign Walkthrough' }
     ]
   },
   myspace: {
@@ -729,9 +730,30 @@ function chaDashWidgetsHtml() {
     '<button type="button" class="dash-cc-action" onclick="chaDashOpenFirstHealthSearch()">' +
     ic(globe) +
     '<span>FirstHealth Search</span></button>' +
+    '<button type="button" class="dash-cc-action ds-home-tile" onclick="goToDocusignWalkthrough(event)">' +
+    ic('<path d="M3 4h13a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z"/><path d="M7 8h7M7 12h7"/>') +
+    '<span>DocuSign Walkthrough</span></button>' +
     '</div></div>' +
     '</div>'
   );
+}
+
+function goToDocusignWalkthrough(e) {
+  if (e && typeof e.preventDefault === 'function') e.preventDefault();
+  if (typeof showPage === 'function') showPage('compliance');
+  else if (typeof navigateTo === 'function') navigateTo('compliance');
+  else {
+    var comp = document.querySelector('[data-page="compliance"], a[href="#compliance"]');
+    if (comp && typeof comp.click === 'function') comp.click();
+  }
+  setTimeout(function() {
+    var pill = document.querySelector('[data-subtab="docusign"]');
+    if (pill && typeof pill.click === 'function') pill.click();
+    var trigger = document.querySelector('.ds-walkthrough-trigger');
+    if (trigger && trigger.getAttribute('aria-expanded') !== 'true') {
+      trigger.click();
+    }
+  }, 60);
 }
 
 function chaDashFocusLookup() {
@@ -1313,7 +1335,9 @@ function renderSubTabs(parentId, activeSubId) {
       parentId +
       "','" +
       sub.id +
-      '\')">' +
+      '\')" data-subtab="' +
+      sub.id +
+      '">' +
       sub.label +
       '</button>';
   });
