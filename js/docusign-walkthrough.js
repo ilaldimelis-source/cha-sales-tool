@@ -298,5 +298,36 @@ window.docusignWalkthroughData = {
     { q: 'What does Call Right mean?', a: 'Companys right to buy back your Preferred Units (and end plan access) if you fail to meet Working Owner conditions.' },
     { q: 'What happens if I lie on the application?', a: 'Coverage rescinded back to day one -- you owe for any claims paid. Possible criminal fraud penalties.' },
     { q: 'What is TCPA consent?', a: 'You agree to receive automated calls, texts, and pre-recorded messages from PSM and partners. Standard for autopay/billing.' }
-  ]
+  ],
+  searchSynonyms: {
+    'call right': ['kick out', 'remove me', 'throw out', 'forced out', 'kicked out', 'remove'],
+    'k-1': ['k1', 'tax form', 'yearly tax', 'partnership tax'],
+    'schedule k-1': ['k1', 'tax form', 'yearly form'],
+    'working owner': ['owner', 'wo', 'partial owner', 'limited member', 'self employed owner'],
+    'preferred units': ['units', 'shares', 'stock', '3 units', 'three units'],
+    'spousal consent': ['spouse', 'wife', 'husband', 'partner', 'married', 'marriage', 'divorce'],
+    rescission: ['rescind', 'cancel back', 'lying', 'lied', 'fraud', 'dishonest', 'false info'],
+    specialty: ['biologics', 'biologic', 'glp-1', 'glp1', 'ozempic', 'humira', 'enbrel', 'expensive meds', 'specialty drugs', 'injectables', 'injectable'],
+    mylivedoc: ['pharmacy', 'rx', 'prescription', 'medication', 'meds'],
+    'pre-existing': ['preex', 'pre ex', 'preexisting', 'pre existing', 'health condition', 'chronic'],
+    termination: ['cancel', 'cancellation', 'quit', 'stop', 'leave', 'end coverage'],
+    billing: ['payment', 'charge', 'billed', 'neoins', 'neo', 'autopay', 'ach', 'card'],
+    nsf: ['bounce', 'bounced', 'failed payment', 'declined', 'returned'],
+    tcpa: ['robocall', 'auto dial', 'auto-dial', 'text message', 'sms'],
+    'workers comp': ['workers compensation', 'work injury', 'on the job', 'occupational'],
+    erisa: ['group plan', 'group health', 'federal plan'],
+    'guaranteed payment': ['paid', 'survey payment', 'survey pay', 'getting paid'],
+    'open enrollment': ['oe', 'enrollment window', 'change plans', 'switch plans'],
+    qle: ['qualifying life event', 'life event', 'baby', 'marriage', 'divorce', 'job loss'],
+    deductible: ['ded', 'out of pocket', 'oop'],
+    phi: ['health info', 'medical info', 'health data', 'protected health'],
+    hipaa: ['health privacy', 'medical privacy'],
+    pap: ['patient assistance', 'help with meds', 'discount program'],
+    'capital contribution': ['extra payment', 'additional money', 'put in money'],
+    joinder: ['join the llc', 'sign on', 'membership form'],
+    preauthorization: ['preauth', 'prior auth', 'authorization', 'approval'],
+    'centers of excellence': ['coe', 'top hospitals', 'best doctors', 'best hospitals'],
+    'limited medical': ['not full insurance', 'capped benefits', 'fixed dollar'],
+    attestations: ['checkboxes', 'agreements', 'i agree', 'acknowledge']
+  }
 };
