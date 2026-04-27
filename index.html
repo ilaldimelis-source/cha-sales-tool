@@ -1249,7 +1249,7 @@
     <script src="js/ai-tools.js?v=1776974000000"></script>
     <script src="js/training.js?v=1776974000000"></script>
     <script src="js/compliance.js?v=1776974000000"></script>
-    <script src="js/docusign-walkthrough.js?v=388"></script>
+    <script src="js/docusign-walkthrough.js?v=389"></script>
     <script src="js/myspace.js?v=1776974000000"></script>
     <script src="js/sales-tracker.js?v=1779400000000"></script>
     <script src="js/app.js?v=1779300000000"></script>
@@ -1258,7 +1258,7 @@
         var data = window.docusignWalkthroughData;
         if (!data) return;
         var SYN = data.searchSynonyms || {};
-        function expandWithSynonyms(text) {
+        function expandSearchableText(text) {
           if (!text) return '';
           var lower = String(text).toLowerCase();
           var extra = [];
@@ -1268,6 +1268,22 @@
             }
           });
           return (lower + ' ' + extra.join(' ')).trim();
+        }
+        function expandWithSynonyms(query) {
+          var q = (query || '').trim().toLowerCase();
+          if (!q) return [q];
+          var syn = (window.docusignWalkthroughData &&
+                     window.docusignWalkthroughData.searchSynonyms) || {};
+          var terms = [q];
+          if (syn[q]) {
+            syn[q].forEach(function(s) { terms.push(String(s).toLowerCase()); });
+          }
+          Object.keys(syn).forEach(function(key) {
+            if (key !== q && q.indexOf(key) !== -1) {
+              syn[key].forEach(function(s) { terms.push(String(s).toLowerCase()); });
+            }
+          });
+          return terms;
         }
         function levenshtein(a, b) {
           if (a === b) return 0;
@@ -1408,7 +1424,7 @@
               severity: item.severity,
               title: item.title,
               oneLiner: item.oneLiner,
-              searchable: expandWithSynonyms(item.title + ' ' + item.oneLiner + ' ' + item.sayThis),
+              searchable: expandSearchableText(item.title + ' ' + item.oneLiner + ' ' + item.sayThis),
               sections: [
                 { label: 'SAY THIS TO YOUR CLIENT', kind: 'sayThis', body: item.sayThis },
                 { label: 'IF THEY PUSH BACK', kind: 'pushback', body: item.pushback }
@@ -1421,7 +1437,7 @@
           var ul = el('ul', 'ds-redflags-list');
           data.redFlagsChecklist.forEach(function(rf) {
             var li = el('li', 'ds-redflags-item');
-            li.setAttribute('data-searchable', expandWithSynonyms(rf));
+            li.setAttribute('data-searchable', expandSearchableText(rf));
             li.textContent = rf;
             ul.appendChild(li);
           });
@@ -1438,7 +1454,7 @@
           data.attestations.forEach(function(a) {
             var tile = el('button', 'ds-att-tile ds-sev-' + a.severity);
             tile.setAttribute('type', 'button');
-            tile.setAttribute('data-searchable', expandWithSynonyms(a.title + ' ' + a.shortLabel + ' ' + a.whatItMeans + ' ' + a.docusignText));
+            tile.setAttribute('data-searchable', expandSearchableText(a.title + ' ' + a.shortLabel + ' ' + a.whatItMeans + ' ' + a.docusignText));
             tile.appendChild(el('div', 'ds-att-num', String(a.number)));
             tile.appendChild(el('div', 'ds-att-label', a.shortLabel));
             tile.addEventListener('click', function() {
@@ -1453,7 +1469,7 @@
           glossWrap.appendChild(el('div', 'ds-glossary-title', 'GLOSSARY -- TRANSLATE THE LEGAL STUFF'));
           data.glossary.forEach(function(g) {
             var row = el('div', 'ds-glossary-row');
-            row.setAttribute('data-searchable', expandWithSynonyms(g.term + ' ' + g.def));
+            row.setAttribute('data-searchable', expandSearchableText(g.term + ' ' + g.def));
             row.appendChild(el('div', 'ds-glossary-term', g.term));
             row.appendChild(el('div', 'ds-glossary-def', g.def));
             glossWrap.appendChild(row);
@@ -1463,7 +1479,7 @@
         function renderAttDetail(a, mount) {
           mount.innerHTML = '';
           var card = el('div', 'ds-att-detail ds-sev-' + a.severity);
-          card.setAttribute('data-searchable', expandWithSynonyms(a.title + ' ' + a.docusignText + ' ' + a.whatItMeans + ' ' + a.sayToClient));
+          card.setAttribute('data-searchable', expandSearchableText(a.title + ' ' + a.docusignText + ' ' + a.whatItMeans + ' ' + a.sayToClient));
           card.appendChild(el('div', 'ds-att-detail-num', '#' + a.number + ' -- ' + a.title));
           var quote = el('div', 'ds-box ds-box-quote');
           quote.appendChild(el('div', 'ds-box-label', 'WHAT THE DOCUSIGN SAYS'));
@@ -1508,7 +1524,7 @@
             woGrid.appendChild(box);
           });
           woCard.appendChild(woGrid);
-          woCard.setAttribute('data-searchable', expandWithSynonyms(wo.title + ' ' + wo.summary));
+          woCard.setAttribute('data-searchable', expandSearchableText(wo.title + ' ' + wo.summary));
           p.appendChild(woCard);
           var pp = data.planPositioning;
           var ppCard = el('div', 'ds-section');
@@ -1526,7 +1542,7 @@
             ppGrid.appendChild(box);
           });
           ppCard.appendChild(ppGrid);
-          ppCard.setAttribute('data-searchable', expandWithSynonyms(pp.title + ' ' + pp.intro));
+          ppCard.setAttribute('data-searchable', expandSearchableText(pp.title + ' ' + pp.intro));
           p.appendChild(ppCard);
           var bp = data.bigPicture;
           var bpCard = el('div', 'ds-section');
@@ -1535,7 +1551,7 @@
           var bpUl = el('ul', 'ds-section-card-ul');
           bp.points.forEach(function(pt) { bpUl.appendChild(el('li', null, pt)); });
           bpCard.appendChild(bpUl);
-          bpCard.setAttribute('data-searchable', expandWithSynonyms(bp.title + ' ' + bp.summary));
+          bpCard.setAttribute('data-searchable', expandSearchableText(bp.title + ' ' + bp.summary));
           p.appendChild(bpCard);
           var secsHeader = el('h3', 'ds-section-title', 'Section-by-Section Breakdown (25)');
           p.appendChild(secsHeader);
@@ -1566,7 +1582,7 @@
               card.appendChild(el('p', 'ds-mini-section-p', s.outro));
               searchTxt += s.outro + ' ';
             }
-            card.setAttribute('data-searchable', expandWithSynonyms(searchTxt));
+            card.setAttribute('data-searchable', expandSearchableText(searchTxt));
             p.appendChild(card);
           });
           var faqHeader = el('h3', 'ds-section-title', 'Top Client Questions');
@@ -1575,7 +1591,7 @@
             var card = el('div', 'ds-faq');
             card.appendChild(el('div', 'ds-faq-q', qa.q));
             card.appendChild(el('div', 'ds-faq-a', qa.a));
-            card.setAttribute('data-searchable', expandWithSynonyms(qa.q + ' ' + qa.a));
+            card.setAttribute('data-searchable', expandSearchableText(qa.q + ' ' + qa.a));
             p.appendChild(card);
           });
         }
@@ -1586,83 +1602,96 @@
           });
         }
         function exitSearchMode() {
-          if (resultsContainer) {
-            resultsContainer.setAttribute('hidden', '');
-            resultsContainer.innerHTML = '';
+          var results = group.querySelector('.ds-search-results');
+          if (results) {
+            results.innerHTML = '';
+            results.setAttribute('hidden', '');
           }
+          var activeTab = group.querySelector('.ds-tab.is-active');
+          var key = activeTab ? activeTab.getAttribute('data-tab') : 'ask';
+          if (!panels[key]) key = 'ask';
+          Object.keys(panels).forEach(function(k) {
+            if (k === key) {
+              panels[k].removeAttribute('hidden');
+              panels[k].classList.add('is-active');
+            } else {
+              panels[k].setAttribute('hidden', '');
+              panels[k].classList.remove('is-active');
+            }
+          });
+          tabs.forEach(function(t) {
+            var tKey = t.getAttribute('data-tab');
+            if (tKey === key) {
+              t.classList.add('is-active');
+              t.setAttribute('aria-selected', 'true');
+            } else {
+              t.classList.remove('is-active');
+              t.setAttribute('aria-selected', 'false');
+            }
+          });
           if (tabsBar) tabsBar.style.display = '';
-          Object.keys(panels).forEach(function(k) {
-            var p = panels[k];
-            if (!p) return;
-            p.style.display = '';
-          });
           clearTabBadges();
-          Object.keys(panels).forEach(function(k) {
-            var p = panels[k];
-            if (!p) return;
-            p.querySelectorAll('[data-searchable]').forEach(function(n) {
-              n.style.display = '';
-            });
-          });
         }
         function enterSearchMode(query) {
-          if (!resultsContainer) return;
           var q = (query || '').trim().toLowerCase();
-          if (!q) {
-            exitSearchMode();
-            return;
-          }
-          if (tabsBar) tabsBar.style.display = 'none';
-          Object.keys(panels).forEach(function(k) {
-            if (panels[k]) panels[k].style.display = 'none';
-          });
-          resultsContainer.innerHTML = '';
-          resultsContainer.removeAttribute('hidden');
-          var groupOrder = ['ask', 'att', 'full'];
-          var groupLabels = {
-            ask: 'WHAT CLIENTS ASK MOST',
-            att: '10 ADDITIONAL MEMBER ATTESTATIONS',
-            full: 'FULL WALKTHROUGH'
-          };
-          var totalMatches = 0;
-          groupOrder.forEach(function(key) {
+          var terms = expandWithSynonyms(q);
+          var results = group.querySelector('.ds-search-results');
+          if (!results) return;
+          if (!q) { exitSearchMode(); return; }
+          var allMatches = { ask: [], att: [], full: [] };
+          Object.keys(panels).forEach(function(key) {
             var panel = panels[key];
             if (!panel) return;
-            var matches = [];
-            panel.querySelectorAll('[data-searchable]').forEach(function(n) {
-              var hay = n.getAttribute('data-searchable') || '';
-              if (fuzzyIncludes(hay, q)) matches.push(n);
-            });
-            if (!matches.length) return;
-            totalMatches += matches.length;
-            var groupWrap = document.createElement('div');
-            groupWrap.className = 'ds-search-group';
-            var heading = document.createElement('div');
-            heading.className = 'ds-search-group-heading';
-            heading.textContent = groupLabels[key] + ' (' + matches.length + ')';
-            groupWrap.appendChild(heading);
-            matches.forEach(function(n) {
-              var clone = n.cloneNode(true);
-              clone.style.display = '';
-              clone.removeAttribute('hidden');
-              clone.querySelectorAll('[id]').forEach(function(node) {
-                node.removeAttribute('id');
+            var nodes = panel.querySelectorAll('[data-searchable]');
+            nodes.forEach(function(n) {
+              var hay = (n.getAttribute('data-searchable') || '').toLowerCase();
+              if (!hay) return;
+              var hit = terms.some(function(t) {
+                if (!t) return false;
+                if (hay.indexOf(t) !== -1) return true;
+                return fuzzyIncludes(hay, t);
               });
-              if (clone.id) clone.id = '';
-              groupWrap.appendChild(clone);
+              if (hit) {
+                allMatches[key].push(n.cloneNode(true));
+              }
             });
-            resultsContainer.appendChild(groupWrap);
           });
-          if (totalMatches === 0) {
+          Object.keys(panels).forEach(function(key) {
+            panels[key].setAttribute('hidden', '');
+            panels[key].classList.remove('is-active');
+          });
+          if (tabsBar) tabsBar.style.display = 'none';
+          results.innerHTML = '';
+          var totalCount = allMatches.ask.length + allMatches.att.length +
+                           allMatches.full.length;
+          if (totalCount === 0) {
             var empty = document.createElement('div');
             empty.className = 'ds-search-empty';
-            empty.textContent = 'No matches found.';
-            resultsContainer.appendChild(empty);
+            empty.textContent = 'No matches in any tab.';
+            results.appendChild(empty);
+          } else {
+            var headings = {
+              ask: 'WHAT CLIENTS ASK MOST',
+              att: '10 ADDITIONAL MEMBER ATTESTATIONS',
+              full: 'FULL WALKTHROUGH'
+            };
+            Object.keys(allMatches).forEach(function(key) {
+              if (!allMatches[key].length) return;
+              var groupBlock = document.createElement('div');
+              groupBlock.className = 'ds-search-group';
+              var h = document.createElement('div');
+              h.className = 'ds-search-group-heading';
+              h.textContent = headings[key] + ' (' + allMatches[key].length + ')';
+              groupBlock.appendChild(h);
+              allMatches[key].forEach(function(node) { groupBlock.appendChild(node); });
+              results.appendChild(groupBlock);
+            });
           }
+          results.removeAttribute('hidden');
         }
         search.addEventListener('input', function() {
-          var v = search.value;
-          if (!v || !v.trim()) {
+          var v = (search.value || '').trim();
+          if (!v) {
             exitSearchMode();
           } else {
             enterSearchMode(v);
