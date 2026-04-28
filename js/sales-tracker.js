@@ -3369,16 +3369,184 @@ function _stUpdateFabVisibility() {
 }
 
 function _stTogglePaycheckBreakdown() {
-  var el = document.getElementById('st-paycheck-detail');
-  var link = document.getElementById('st-paycheck-toggle-link');
-  if (!el) {
-    _stOpenCommissionEditorFromTracker();
-    return;
+  _stOpenPaycheckBreakdownModal();
+}
+
+function _stPaycheckBreakdownRoot() {
+  var root = document.getElementById('st-paycheck-breakdown-root');
+  if (!root) {
+    root = document.createElement('div');
+    root.id = 'st-paycheck-breakdown-root';
+    document.body.appendChild(root);
   }
-  var hidden =
-    el.style.display === 'none' || el.style.display === '' || !el.style.display;
-  el.style.display = hidden ? 'block' : 'none';
-  if (link) link.textContent = hidden ? 'Hide breakdown' : 'View full breakdown';
+  return root;
+}
+
+function _stPaycheckCarrierName(sale) {
+  if (!sale) return '';
+  var raw =
+    sale.carrier ||
+    sale.carrierName ||
+    sale.planCarrier ||
+    sale.primaryCarrier ||
+    '';
+  return String(raw || '').trim();
+}
+
+function _stFmtWeekRangeMonSun(weekStartMs) {
+  var ws = Number(weekStartMs) || _stStartOfWeek(new Date()).getTime();
+  var start = new Date(ws);
+  var end = new Date(ws + 6 * 24 * 60 * 60 * 1000);
+  var a = start.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric'
+  });
+  var b = end.toLocaleDateString('en-US', {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric'
+  });
+  return a + ' - ' + b;
+}
+
+function _stOpenPaycheckBreakdownModal() {
+  var sales = _stLoadSales();
+  sales = _stValidateSalesIntegrity(sales);
+  var stats = _stCalcStats(sales);
+  var pb = _stPaycheckBreakdown(sales, stats);
+  var weekStart = Number(stats.weekStart) || _stStartOfWeek(new Date()).getTime();
+  var weekEnd = weekStart + 7 * 24 * 60 * 60 * 1000;
+  var rates = _stLoadCommissionRates();
+  var deals = [];
+  var carrierAgg = {};
+  var carrierOrder = [];
+  var plansSubtotal = 0;
+  var addonsSubtotal = 0;
+  var i;
+  for (i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s) continue;
+    if (s.ts < weekStart || s.ts >= weekEnd) continue;
+    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (s.type === 'deal') {
+      var dealComm =
+        typeof s.planCommission === 'number'
+          ? Number(s.planCommission)
+          : Number(_stComputeLineCommission(s, rates));
+      var premium = Number(s.amount) || 0;
+      var carrier = _stPaycheckCarrierName(s);
+      deals.push({
+        customer: String(s.customer || '').trim() || 'Unknown',
+        carrier: carrier,
+        plan: String(s.plan || '').trim() || 'Plan',
+        premium: premium,
+        commission: dealComm
+      });
+      plansSubtotal += dealComm;
+      if (carrier) {
+        if (!carrierAgg[carrier]) {
+          carrierAgg[carrier] = { deals: 0, subtotal: 0 };
+          carrierOrder.push(carrier);
+        }
+        carrierAgg[carrier].deals += 1;
+        carrierAgg[carrier].subtotal += dealComm;
+      }
+      continue;
+    }
+    if (s.type === 'addon') {
+      var addonComm =
+        typeof s.addonCommission === 'number'
+          ? Number(s.addonCommission)
+          : Number(_stComputeLineCommission(s, rates));
+      addonsSubtotal += addonComm;
+    }
+  }
+  var bonuses = Number(pb.enrollmentBonus || 0) + Number(pb.tierBonus || 0);
+  var showCarrier = carrierOrder.length > 0;
+  var html = '';
+  html +=
+    '<div class="st-pb-backdrop" onclick="_stClosePaycheckBreakdownModal(event)">' +
+    '<section class="st-pb-modal" role="dialog" aria-modal="true" aria-labelledby="st-pb-title" onclick="event.stopPropagation()">' +
+    '<div class="st-pb-header">' +
+    '<div><h3 id="st-pb-title">Paycheck Breakdown</h3><div class="st-pb-subhead">This Week: ' +
+    _stEscape(_stFmtWeekRangeMonSun(weekStart)) +
+    '</div></div>' +
+    '<div class="st-pb-head-right"><div class="st-pb-head-total">' +
+    _stFmtMoney(Number(pb.estimated) || 0) +
+    '</div><button type="button" class="st-pb-close" aria-label="Close paycheck breakdown" onclick="_stClosePaycheckBreakdownModal(event)">&times;</button></div>' +
+    '</div>';
+  html += '<div class="st-pb-section"><div class="st-pb-section-label">By Deal</div>';
+  if (!deals.length) {
+    html += '<div class="st-pb-empty">No this-week deals to display.</div>';
+  } else {
+    for (i = 0; i < deals.length; i++) {
+      var d = deals[i];
+      html +=
+        '<div class="st-pb-row"><div class="st-pb-row-main"><div class="st-pb-row-title">' +
+        _stEscape(d.customer) +
+        '</div><div class="st-pb-row-meta">' +
+        (d.carrier ? _stEscape(d.carrier) + ' \u00b7 ' : '') +
+        _stEscape(d.plan) +
+        '</div></div><div class="st-pb-row-money"><div>' +
+        _stFmtMoney(d.premium) +
+        '</div><div>' +
+        _stFmtMoney(d.commission) +
+        '</div></div></div>';
+    }
+  }
+  html +=
+    '<div class="st-pb-subtotal"><span>Deals subtotal</span><strong>' +
+    _stFmtMoney(plansSubtotal) +
+    '</strong></div></div>';
+  if (showCarrier) {
+    html += '<div class="st-pb-section"><div class="st-pb-section-label">By Carrier</div>';
+    for (i = 0; i < carrierOrder.length; i++) {
+      var key = carrierOrder[i];
+      var row = carrierAgg[key];
+      html +=
+        '<div class="st-pb-row"><div class="st-pb-row-main"><div class="st-pb-row-title">' +
+        _stEscape(key) +
+        '</div><div class="st-pb-row-meta">' +
+        row.deals +
+        (row.deals === 1 ? ' deal' : ' deals') +
+        '</div></div><div class="st-pb-row-money"><div>' +
+        _stFmtMoney(row.subtotal) +
+        '</div></div></div>';
+    }
+    html += '</div>';
+  }
+  html +=
+    '<div class="st-pb-section"><div class="st-pb-section-label">Mix</div>' +
+    '<div class="st-pb-row"><div class="st-pb-row-title">Plans commission</div><div class="st-pb-row-money"><div>' +
+    _stFmtMoney(plansSubtotal) +
+    '</div></div></div>' +
+    '<div class="st-pb-row"><div class="st-pb-row-title">Add-ons commission</div><div class="st-pb-row-money"><div>' +
+    _stFmtMoney(addonsSubtotal) +
+    '</div></div></div>' +
+    '<div class="st-pb-row"><div class="st-pb-row-title">Bonuses (enrollment + tier)</div><div class="st-pb-row-money"><div>' +
+    _stFmtMoney(bonuses) +
+    '</div></div></div>' +
+    '</div>';
+  html +=
+    '<div class="st-pb-total"><span>TOTAL ESTIMATED PAYCHECK</span><strong>' +
+    _stFmtMoney(Number(pb.estimated) || 0) +
+    '</strong></div></section></div>';
+  var root = _stPaycheckBreakdownRoot();
+  root.innerHTML = html;
+  document.body.classList.add('st-pb-modal-open');
+}
+
+function _stClosePaycheckBreakdownModal(ev) {
+  if (ev && typeof ev.stopPropagation === 'function') ev.stopPropagation();
+  var root = document.getElementById('st-paycheck-breakdown-root');
+  if (root) root.innerHTML = '';
+  document.body.classList.remove('st-pb-modal-open');
+}
+
+function _stPaycheckBreakdownModalIsOpen() {
+  var root = document.getElementById('st-paycheck-breakdown-root');
+  return !!(root && root.innerHTML && root.innerHTML.trim());
 }
 
 function _stBuildAddSaleSection() {
@@ -6042,6 +6210,10 @@ function _stRender() {
     document.body.dataset.stAddSaleEscDoc = '1';
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
+      if (_stPaycheckBreakdownModalIsOpen()) {
+        _stClosePaycheckBreakdownModal();
+        return;
+      }
       var panel = document.getElementById('st-add-sale-panel');
       if (!panel || !panel.classList.contains('open')) return;
       _stSetAddSalePanelOpen(false);
