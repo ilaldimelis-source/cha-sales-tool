@@ -5702,8 +5702,12 @@ function _stBuildPaycheckHeroSection(sales, stats) {
   html += '<div class="st-paycheck-hero-head">';
   html += '<div class="st-paycheck-hero-kicker">ESTIMATED PAYCHECK · THIS WEEK</div>';
   if (showWeekPdfBtn) {
+    html += '<div class="st-paycheck-hero-actions">';
     html +=
-      '<button type="button" class="st-hero-pdf-btn" aria-label="Download this week PDF" onclick="_stDownloadWeeklyPdf()">↓ PDF</button>';
+      '<button type="button" class="st-hero-pdf-btn st-hero-action-btn" aria-label="Download this week PDF" onclick="_stDownloadWeeklyPdf()">↓ PDF</button>';
+    html +=
+      '<button type="button" class="st-hero-breakdown-btn st-hero-action-btn" aria-label="View paycheck breakdown" onclick="_stOpenPaycheckBreakdownModal()">Breakdown</button>';
+    html += '</div>';
   }
   html += '</div>';
   html += '<div class="st-paycheck-hero-mid">';
