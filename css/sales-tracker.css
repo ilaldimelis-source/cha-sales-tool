@@ -2740,7 +2740,12 @@
   justify-content: space-between;
   gap: 10px;
 }
-.st-hero-pdf-btn {
+.st-paycheck-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.st-hero-action-btn {
   background: rgba(255, 255, 255, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #fff;
@@ -2752,11 +2757,11 @@
   cursor: pointer;
   transition: all 150ms ease;
 }
-.st-hero-pdf-btn:hover {
+.st-hero-action-btn:hover {
   background: rgba(255, 255, 255, 0.28);
   transform: translateY(-1px);
 }
-.st-hero-pdf-btn:focus-visible {
+.st-hero-action-btn:focus-visible {
   outline: 2px solid rgba(255, 255, 255, 0.95);
   outline-offset: 2px;
 }
@@ -3812,7 +3817,7 @@ body.st-pb-modal-open {
   .st-paycheck-day-amt {
     font-size: 12px;
   }
-  .st-hero-pdf-btn {
+  .st-hero-action-btn {
     padding: 6px 10px;
     font-size: 11px;
   }
