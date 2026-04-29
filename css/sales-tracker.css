@@ -1053,8 +1053,18 @@
   border-radius: 10px;
   padding: 16px 18px;
 }
-.st-weekly-summary-title { font-family: var(--font-ui); font-weight: 700; font-size: 15px; color: var(--text-primary, #1e293b); margin-bottom: 14px; }
-.st-weekly-summary-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.st-weekly-summary-title {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text-primary, #1e293b);
+  margin-bottom: 14px;
+}
+.st-weekly-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
 .st-wks-card {
   background: var(--cha-bg-muted);
   border: 1px solid var(--cha-border-default);
@@ -1062,15 +1072,50 @@
   padding: 14px 10px 12px;
   text-align: center;
 }
-.st-wks-card.st-wks-active { background: #eef2ff; border-color: #c7d2fe; }
-.st-wks-card.st-wks-today { border-color: #5175f1; background: #eef2ff; box-shadow: 0 0 0 2px rgba(81,117,241,0.15); }
-.st-wks-day { font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted, #94a3b8); margin-bottom: 8px; }
-.st-wks-card.st-wks-today .st-wks-day { color: #5175f1; }
-.st-wks-date { font-size: 10px; font-weight: 400; opacity: 0.8; }
-.st-wks-amount { font-size: 20px; font-weight: 800; font-family: var(--font-ui); color: var(--text-primary, #1e293b); margin-bottom: 4px; }
-.st-wks-card.st-wks-active .st-wks-amount, .st-wks-card.st-wks-today .st-wks-amount { color: #3730a3; }
-.st-wks-deals { font-size: 12px; font-weight: 600; color: var(--text-muted, #94a3b8); }
-.st-wks-card.st-wks-active .st-wks-deals { color: #5175f1; }
+.st-wks-card.st-wks-active {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+}
+.st-wks-card.st-wks-today {
+  border-color: #5175f1;
+  background: #eef2ff;
+  box-shadow: 0 0 0 2px rgba(81, 117, 241, 0.15);
+}
+.st-wks-day {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted, #94a3b8);
+  margin-bottom: 8px;
+}
+.st-wks-card.st-wks-today .st-wks-day {
+  color: #5175f1;
+}
+.st-wks-date {
+  font-size: 10px;
+  font-weight: 400;
+  opacity: 0.8;
+}
+.st-wks-amount {
+  font-size: 20px;
+  font-weight: 800;
+  font-family: var(--font-ui);
+  color: var(--text-primary, #1e293b);
+  margin-bottom: 4px;
+}
+.st-wks-card.st-wks-active .st-wks-amount,
+.st-wks-card.st-wks-today .st-wks-amount {
+  color: #3730a3;
+}
+.st-wks-deals {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted, #94a3b8);
+}
+.st-wks-card.st-wks-active .st-wks-deals {
+  color: #5175f1;
+}
 
 @media (max-width: 700px) {
   .st-payroll-grid {
@@ -1085,26 +1130,106 @@
 }
 
 /* Same-Day / Post-Date toggle + Date Sold / Post-Date Billing fields */
-.st-mode-toggle { display: flex; gap: 0; margin-bottom: 12px; border-radius: 10px; overflow: hidden; border: 1.5px solid #e2e8f0; width: fit-content; }
-.st-mode-btn { padding: 9px 22px; font-size: 13px; font-weight: 600; font-family: var(--font-ui); border: none; background: var(--cha-bg-muted); color: #64748b; cursor: pointer; transition: background 0.15s, color 0.15s; }
-.st-mode-btn.st-mode-active { background: var(--cha-accent); color: #ffffff; }
+.st-mode-toggle {
+  display: flex;
+  gap: 0;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1.5px solid #e2e8f0;
+  width: fit-content;
+}
+.st-mode-btn {
+  padding: 9px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+  border: none;
+  background: var(--cha-bg-muted);
+  color: #64748b;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+.st-mode-btn.st-mode-active {
+  background: var(--cha-accent);
+  color: #ffffff;
+}
 .st-mode-btn:hover:not(.st-mode-active) {
   background: var(--accent-soft, rgba(91, 141, 239, 0.12));
   color: var(--accent, #5175f1);
 }
-.st-date-row { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 10px; align-items: flex-end; }
-.st-date-field { display: flex; flex-direction: column; gap: 4px; }
-.st-date-field label { font-size: 12px; font-weight: 600; color: #64748b; }
-.st-date-field input[type="date"] { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 7px 12px; font-size: 13px; font-family: var(--font-ui); color: #1e293b; background: var(--cha-bg-muted); }
-.st-date-field input[type="date"]:focus { outline: none; border-color: #5175f1; box-shadow: 0 0 0 2px rgba(81,117,241,0.15); }
+.st-date-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  align-items: flex-end;
+}
+.st-date-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.st-date-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+.st-date-field input[type='date'] {
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-family: var(--font-ui);
+  color: #1e293b;
+  background: var(--cha-bg-muted);
+}
+.st-date-field input[type='date']:focus {
+  outline: none;
+  border-color: #5175f1;
+  box-shadow: 0 0 0 2px rgba(81, 117, 241, 0.15);
+}
 
 /* Bulk-delete bar for the All Sales view */
-.st-bulk-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-.st-bulk-delete { background: #ef4444; color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
-.st-bulk-delete:hover { background: #dc2626; }
-.st-bulk-delete-all { background: #1e293b; color: #fff; border: none; border-radius: 8px; padding: 8px 16px; font-size: 13px; font-weight: 700; cursor: pointer; }
-.st-bulk-delete-all:hover { background: #0f172a; }
-.st-bulk-count { font-size: 13px; color: #64748b; }
+.st-bulk-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.st-bulk-delete {
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.st-bulk-delete:hover {
+  background: #dc2626;
+}
+.st-bulk-delete-all {
+  background: #1e293b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.st-bulk-delete-all:hover {
+  background: #0f172a;
+}
+.st-bulk-count {
+  font-size: 13px;
+  color: #64748b;
+}
 
 /* Receipt live preview + Groq hint */
 .st-receipt-preview {
@@ -1514,8 +1639,14 @@
   font-size: 13px;
   border-bottom: 1px solid #eef2f7;
 }
-.st-pay-row:last-of-type { border-bottom: 0; }
-.st-pay-sub { font-size: 12px; color: #94a3b8; margin: 6px 0 2px; }
+.st-pay-row:last-of-type {
+  border-bottom: 0;
+}
+.st-pay-sub {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 6px 0 2px;
+}
 .st-pay-est {
   margin-top: 10px;
   border-radius: 10px;
@@ -1534,28 +1665,72 @@
   font-weight: 700;
   cursor: pointer;
 }
-.st-all-controls { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
-.st-all-filter { min-height: 38px; border: 1px solid #cbd5e1; border-radius: 9px; padding: 0 10px; }
-.st-export-btn { border: none; border-radius: 9px; background: #e2e8f0; color: #1e293b; padding: 8px 12px; font-weight: 700; cursor: pointer; }
+.st-all-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.st-all-filter {
+  min-height: 38px;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  padding: 0 10px;
+}
+.st-export-btn {
+  border: none;
+  border-radius: 9px;
+  background: #e2e8f0;
+  color: #1e293b;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
 .st-all-list {
   border: 1px solid var(--cha-border-default);
   border-radius: 12px;
   overflow: hidden;
   background: var(--cha-bg-card);
 }
-.st-all-head, .st-all-row {
+.st-all-head,
+.st-all-row {
   display: grid;
   grid-template-columns: 2fr 1.4fr 1fr 1.2fr 1.3fr;
   gap: 10px;
   align-items: center;
   padding: 10px 12px;
 }
-.st-all-head { background: var(--cha-bg-muted); font-weight: 800; font-size: 12px; color: #475569; }
-.st-all-row { border-top: 1px solid #eef2f7; cursor: pointer; font-size: 13px; }
-.st-all-row em { display: block; font-style: normal; font-size: 11px; color: #94a3b8; margin-top: 2px; }
-.st-all-status { font-weight: 700; }
-.st-all-detail { padding: 8px 12px 12px; border-top: 1px solid #eef2f7; background: var(--cha-bg-muted); }
-.st-all-detail-line { font-size: 12px; color: #334155; margin-top: 4px; }
+.st-all-head {
+  background: var(--cha-bg-muted);
+  font-weight: 800;
+  font-size: 12px;
+  color: #475569;
+}
+.st-all-row {
+  border-top: 1px solid #eef2f7;
+  cursor: pointer;
+  font-size: 13px;
+}
+.st-all-row em {
+  display: block;
+  font-style: normal;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+.st-all-status {
+  font-weight: 700;
+}
+.st-all-detail {
+  padding: 8px 12px 12px;
+  border-top: 1px solid #eef2f7;
+  background: var(--cha-bg-muted);
+}
+.st-all-detail-line {
+  font-size: 12px;
+  color: #334155;
+  margin-top: 4px;
+}
 
 .st-comm-deals-table {
   font-size: 13px;
@@ -2338,7 +2513,9 @@
   font-family: var(--font-ui, system-ui, sans-serif);
   box-shadow: 0 10px 28px rgba(59, 130, 246, 0.5);
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .st-add-sale-fab::before {
   content: '';

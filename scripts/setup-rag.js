@@ -27,7 +27,8 @@ function parseArgs() {
   var args = process.argv.slice(2);
   var out = { url: '' };
   for (var i = 0; i < args.length; i++) {
-    if (args[i] === '--url' && args[i + 1]) out.url = String(args[i + 1]).trim();
+    if (args[i] === '--url' && args[i + 1])
+      out.url = String(args[i + 1]).trim();
   }
   return out;
 }
@@ -66,9 +67,13 @@ function smokeApi(url) {
     .then(function (data) {
       var validStatus =
         data &&
-        /^(COVERED|NOT COVERED|VERIFY|PARTIAL)$/.test(String(data.status || ''));
+        /^(COVERED|NOT COVERED|VERIFY|PARTIAL)$/.test(
+          String(data.status || '')
+        );
       if (!validStatus) {
-        throw new Error('Unexpected status enum: ' + JSON.stringify(data && data.status));
+        throw new Error(
+          'Unexpected status enum: ' + JSON.stringify(data && data.status)
+        );
       }
       if (!data.source) {
         throw new Error('Missing source in /api/br-answer response');
@@ -81,7 +86,9 @@ function printSqlReminder() {
   console.log('');
   console.log(color.bold('Run this SQL in Supabase before deploy:'));
   console.log(color.yellow('1) Add missing column + indexes'));
-  console.log(color.yellow('2) Create match_plan_chunks_prefer_plan() function'));
+  console.log(
+    color.yellow('2) Create match_plan_chunks_prefer_plan() function')
+  );
   console.log(color.yellow("3) Run: notify pgrst, 'reload schema';"));
   console.log('');
 }
@@ -91,7 +98,10 @@ console.log(color.bold('RAG setup preflight'));
 console.log('');
 
 try {
-  if (!process.versions.node || Number(process.versions.node.split('.')[0]) < 22) {
+  if (
+    !process.versions.node ||
+    Number(process.versions.node.split('.')[0]) < 22
+  ) {
     throw new Error('Node 22+ required. Found: ' + process.versions.node);
   }
 
@@ -100,7 +110,11 @@ try {
 
   var missingEnvs = checkEnv();
   if (missingEnvs.length) {
-    console.log(color.yellow('! Missing env vars (set in Vercel): ' + missingEnvs.join(', ')));
+    console.log(
+      color.yellow(
+        '! Missing env vars (set in Vercel): ' + missingEnvs.join(', ')
+      )
+    );
   } else {
     console.log(color.green('[OK] Required env vars detected in this shell'));
   }
@@ -123,7 +137,10 @@ try {
       console.log(color.green('[OK] Smoke test passed at ' + baseUrl));
       console.log(
         color.green(
-          '[OK] Response status=' + data.status + ', source=' + String(data.source || '')
+          '[OK] Response status=' +
+            data.status +
+            ', source=' +
+            String(data.source || '')
         )
       );
       console.log('');

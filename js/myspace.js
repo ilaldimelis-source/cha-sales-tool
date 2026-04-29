@@ -160,7 +160,8 @@ function renderNotes() {
       typeof chaGet === 'function'
         ? String(chaGet('cha_notes', '') || '')
         : safeGetItem(
-            'cha_notes_' + ((window.CHA_USER && window.CHA_USER.email) || 'shared')
+            'cha_notes_' +
+              ((window.CHA_USER && window.CHA_USER.email) || 'shared')
           ) || '';
   } catch (_nv) {
     notesVal = '';
@@ -175,7 +176,9 @@ function renderNotes() {
       (typeof chaGet === 'function'
         ? chaGet('preferredName', '') || chaGet('cha_display_name', '')
         : safeGetItem('preferredName') || safeGetItem('cha_display_name')) ||
-      ((window.CHA_USER && (window.CHA_USER.firstName || window.CHA_USER.name)) || '');
+      (window.CHA_USER &&
+        (window.CHA_USER.firstName || window.CHA_USER.name)) ||
+      '';
   } catch (_e) {
     savedName = '';
   }

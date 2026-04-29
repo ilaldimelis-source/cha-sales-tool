@@ -10,11 +10,16 @@
       })
     }).then(function (res) {
       if (!res.ok) {
-        return res.json().catch(function () {
-          return {};
-        }).then(function (payload) {
-          throw new Error(payload.error || 'Vector search failed (' + res.status + ')');
-        });
+        return res
+          .json()
+          .catch(function () {
+            return {};
+          })
+          .then(function (payload) {
+            throw new Error(
+              payload.error || 'Vector search failed (' + res.status + ')'
+            );
+          });
       }
       return res.json();
     });

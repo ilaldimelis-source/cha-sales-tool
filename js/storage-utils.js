@@ -145,7 +145,11 @@
       } catch (_e3) {}
     }
     var dash = document.getElementById('page-dashboard');
-    if (dash && dash.classList.contains('active') && typeof window.chaDashRefreshWidgets === 'function') {
+    if (
+      dash &&
+      dash.classList.contains('active') &&
+      typeof window.chaDashRefreshWidgets === 'function'
+    ) {
       window.chaDashRefreshWidgets();
     }
     chaAutoPopulateGroqIfEmpty();

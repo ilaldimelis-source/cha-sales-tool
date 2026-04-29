@@ -1111,7 +1111,8 @@ function buildSearchIndex() {
     type: 'Training',
     title: 'Cheat Sheets',
     preview: 'Compliance non-negotiables and plan reference table',
-    searchText: 'training cheat sheet network underwriter association billing disclose',
+    searchText:
+      'training cheat sheet network underwriter association billing disclose',
     action: function () {
       closeSearch();
       showPage('cheatsheet');
@@ -1121,7 +1122,8 @@ function buildSearchIndex() {
     type: 'Compliance',
     title: 'Compliance Center',
     preview: 'Required disclosures and call audit standards',
-    searchText: 'compliance disclosures non aca not major medical waiting period pre existing exclusions',
+    searchText:
+      'compliance disclosures non aca not major medical waiting period pre existing exclusions',
     action: function () {
       closeSearch();
       showPage('compliancecenter');
@@ -1419,7 +1421,8 @@ function doSearch(val) {
   document.getElementById('srList').innerHTML = res.length
     ? groupOrder
         .map(function (groupName) {
-          var block = '<div class="sr-group-title">' + escHTML(groupName) + '</div>';
+          var block =
+            '<div class="sr-group-title">' + escHTML(groupName) + '</div>';
           var rows = grouped[groupName] || [];
           block += rows
             .map(function (r) {
@@ -1507,7 +1510,10 @@ function chaSrKeynav(e) {
     e.preventDefault();
     cur = Math.max(cur - 1, 0);
   } else if (e.key === 'Enter') {
-    if (document.activeElement === document.getElementById('srInput') && cur >= 0) {
+    if (
+      document.activeElement === document.getElementById('srInput') &&
+      cur >= 0
+    ) {
       if (window.srActions && typeof window.srActions[cur] === 'function') {
         e.preventDefault();
         window.srActions[cur]();

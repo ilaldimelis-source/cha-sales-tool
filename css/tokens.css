@@ -1,21 +1,21 @@
 :root {
-  --cha-bg-page: #EEF1F6;
-  --cha-bg-card: #FFFFFF;
-  --cha-bg-surface: #F1F5F9;
-  --cha-bg-muted: #F8FAFC;
+  --cha-bg-page: #eef1f6;
+  --cha-bg-card: #ffffff;
+  --cha-bg-surface: #f1f5f9;
+  --cha-bg-muted: #f8fafc;
   --cha-border-subtle: rgba(15, 23, 42, 0.08);
   --cha-border-default: rgba(15, 23, 42, 0.12);
   --cha-border-strong: rgba(15, 23, 42, 0.2);
-  --cha-text-primary: #0F172A;
+  --cha-text-primary: #0f172a;
   --cha-text-secondary: #475569;
-  --cha-text-tertiary: #64748B;
-  --cha-accent: #3B82F6;
-  --cha-accent-dark: #1E40AF;
-  --cha-accent-gradient: linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
-  --cha-success-bg: #DCFCE7;
+  --cha-text-tertiary: #64748b;
+  --cha-accent: #3b82f6;
+  --cha-accent-dark: #1e40af;
+  --cha-accent-gradient: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+  --cha-success-bg: #dcfce7;
   --cha-success-text: #166534;
-  --cha-warning-bg: #FEF3C7;
-  --cha-warning-text: #92400E;
-  --cha-danger-bg: #FEE2E2;
-  --cha-danger-text: #991B1B;
+  --cha-warning-bg: #fef3c7;
+  --cha-warning-text: #92400e;
+  --cha-danger-bg: #fee2e2;
+  --cha-danger-text: #991b1b;
 }

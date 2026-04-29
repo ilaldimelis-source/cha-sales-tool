@@ -77,7 +77,11 @@
 
     if (normalized) {
       if (aliasIndex[normalized]) {
-        return { status: 'resolved', planId: aliasIndex[normalized], method: 'exact_alias' };
+        return {
+          status: 'resolved',
+          planId: aliasIndex[normalized],
+          method: 'exact_alias'
+        };
       }
 
       var keys = Object.keys(aliasIndex);
@@ -91,7 +95,11 @@
         return arr.indexOf(value) === index;
       });
       if (matches.length === 1) {
-        return { status: 'resolved', planId: matches[0], method: 'alias_contains' };
+        return {
+          status: 'resolved',
+          planId: matches[0],
+          method: 'alias_contains'
+        };
       }
       if (matches.length > 1) {
         return { status: 'ambiguous', candidates: matches };
@@ -99,9 +107,14 @@
     }
 
     if (preferredPlanId) {
-      return { status: 'resolved', planId: preferredPlanId, method: 'preferred_plan' };
+      return {
+        status: 'resolved',
+        planId: preferredPlanId,
+        method: 'preferred_plan'
+      };
     }
-    if (directId) return { status: 'resolved', planId: directId, method: 'active_plan' };
+    if (directId)
+      return { status: 'resolved', planId: directId, method: 'active_plan' };
     if (!normalized) return { status: 'no_plan' };
     return { status: 'no_plan' };
   }
@@ -109,7 +122,12 @@
   function validatePlanForLoad(planId) {
     var meta = getPlanMeta(planId);
     if (!meta) {
-      return { ok: false, reason: 'missing_plan', planId: planId || '', planName: '' };
+      return {
+        ok: false,
+        reason: 'missing_plan',
+        planId: planId || '',
+        planName: ''
+      };
     }
     if (meta.status === 'excluded' || meta.status === 'missing_pdf') {
       return {
@@ -119,7 +137,12 @@
         planName: meta.planName || ''
       };
     }
-    return { ok: true, reason: 'ok', planId: meta.planId, planName: meta.planName || '' };
+    return {
+      ok: true,
+      reason: 'ok',
+      planId: meta.planId,
+      planName: meta.planName || ''
+    };
   }
 
   function getPlanMeta(planId) {
@@ -142,7 +165,11 @@
       for (var t = 0; t < terms.length; t++) {
         if (text.indexOf(terms[t]) !== -1) score += 1;
       }
-      if (/copay|deductible|coinsurance|exclusion|pre existing|waiting period|rx|drug|emergency|hospital/.test(text)) {
+      if (
+        /copay|deductible|coinsurance|exclusion|pre existing|waiting period|rx|drug|emergency|hospital/.test(
+          text
+        )
+      ) {
         score += 0.3;
       }
       return { chunk: chunk, score: score };

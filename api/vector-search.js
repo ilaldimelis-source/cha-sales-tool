@@ -1,8 +1,13 @@
 const OpenAI = require('openai');
 
 function json(res, status, payload) {
-  res.status(status).setHeader('Content-Type', 'application/json; charset=utf-8');
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res
+    .status(status)
+    .setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader(
+    'Cache-Control',
+    'no-store, no-cache, must-revalidate, max-age=0'
+  );
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
   res.json(payload);
@@ -43,10 +48,11 @@ module.exports = function handler(req, res) {
   if (!question) return json(res, 400, { error: 'question is required' });
 
   var openai = new OpenAI({ apiKey: openaiKey });
-  openai.embeddings.create({
-    model: 'text-embedding-3-small',
-    input: question
-  })
+  openai.embeddings
+    .create({
+      model: 'text-embedding-3-small',
+      input: question
+    })
     .then(function (emb) {
       var questionEmbedding = emb.data[0].embedding;
       return fetch(supabaseUrl + '/rest/v1/rpc/match_plan_chunks', {
@@ -66,7 +72,9 @@ module.exports = function handler(req, res) {
     .then(function (sbRes) {
       if (!sbRes.ok) {
         return sbRes.text().then(function (errText) {
-          throw new Error('Supabase vector RPC failed: ' + errText.slice(0, 400));
+          throw new Error(
+            'Supabase vector RPC failed: ' + errText.slice(0, 400)
+          );
         });
       }
       return sbRes.json();

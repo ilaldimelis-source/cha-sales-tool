@@ -25,7 +25,7 @@ const BENEFITS = [
     sayThis:
       '"If you are admitted to the hospital, your plan provides financial support to help cover costs. The exact benefit depends on your specific plan."',
     neverSay:
-      'Don\'t say the plan "covers" hospitalization fully. MEC and Limited plans pay a set amount — they don\'t cover the entire bill. Don\'t compare to major medical.',
+      "Don't say the plan \"covers\" hospitalization fully. MEC and Limited plans pay a set amount — they don't cover the entire bill. Don't compare to major medical.",
     ifTheyAsk:
       '"What if my hospital bill is more than what the plan pays?" → "The plan pays its stated benefit. For remaining balances, advocacy services like MyHealthcare Ninja can help negotiate and reduce bills."',
     official:
@@ -55,7 +55,10 @@ const BENEFITS = [
         type: 'BWA',
         desc: '$25 pre-pay PCP, $50 specialist — MBR reprices the rest'
       },
-      { type: 'STM', desc: '$25-$50 copay for limited visits, then deductible' },
+      {
+        type: 'STM',
+        desc: '$25-$50 copay for limited visits, then deductible'
+      },
       {
         type: 'Limited',
         desc: 'Fixed dollar amount per visit (e.g. $50/visit)'
@@ -97,7 +100,7 @@ const BENEFITS = [
     sayThis:
       '"For non-emergency situations, urgent care gets you seen the same day at a fraction of the ER cost."',
     neverSay:
-      'Don\'t say urgent care and the ER are the same benefit. Don\'t say urgent care is for emergencies — it\'s for non-life-threatening situations only.',
+      "Don't say urgent care and the ER are the same benefit. Don't say urgent care is for emergencies — it's for non-life-threatening situations only.",
     ifTheyAsk:
       '"What\'s the difference between urgent care and the ER?" → "Urgent care handles same-day non-emergencies like infections, sprains, or flu. The ER is for life-threatening situations like chest pain or severe injury."',
     official:
@@ -130,7 +133,7 @@ const BENEFITS = [
     sayThis:
       '"You can talk to a doctor 24/7 from your phone for $0. No appointment needed, no visit limits."',
     neverSay:
-      'Don\'t say telemedicine replaces in-person care. Don\'t say it handles emergencies — it\'s for consultations only.',
+      "Don't say telemedicine replaces in-person care. Don't say it handles emergencies — it's for consultations only.",
     ifTheyAsk:
       '"Can I get prescriptions through telemedicine?" → "Yes, the doctor can prescribe medications during a virtual visit when appropriate."',
     official:
@@ -169,7 +172,7 @@ const BENEFITS = [
     sayThis:
       '"Your plan includes prescription benefits to help reduce medication costs. The specifics depend on your plan tier."',
     neverSay:
-      'Don\'t say all plans cover prescriptions — most STM plans do NOT include Rx. Don\'t say medications are free — even MEC plans have a $150/month limit on non-preventive drugs.',
+      "Don't say all plans cover prescriptions — most STM plans do NOT include Rx. Don't say medications are free — even MEC plans have a $150/month limit on non-preventive drugs.",
     ifTheyAsk:
       '"Are my medications covered?" → "That depends on the specific medication and your plan. Preventive generics are typically $0 on MEC plans. I can help you check the formulary for your specific medication."',
     official:
@@ -227,13 +230,16 @@ const BENEFITS = [
     howItWorks:
       'Standard 30-day waiting period for sickness benefits and scheduled doctor visits. Injuries are typically covered immediately from day one.',
     byPlan: [
-      { type: 'All plans', desc: '30-day wait for sickness and scheduled visits' },
+      {
+        type: 'All plans',
+        desc: '30-day wait for sickness and scheduled visits'
+      },
       { type: 'All plans', desc: 'Injuries covered immediately' }
     ],
     sayThis:
       '"There is a standard 30-day waiting period for sickness-related benefits. However, if you have an injury, you are covered from day one."',
     neverSay:
-      'Don\'t say there are no waiting periods. Don\'t say coverage starts immediately for everything — only injuries are immediate.',
+      "Don't say there are no waiting periods. Don't say coverage starts immediately for everything — only injuries are immediate.",
     ifTheyAsk:
       '"Why is there a waiting period?" → "The 30-day waiting period is standard across these plans. It prevents someone from signing up only when they are already sick, which keeps premiums lower for everyone."',
     official:
@@ -266,7 +272,7 @@ const BENEFITS = [
     sayThis:
       '"Your plan uses a PPO network, which means you have a large selection of doctors to choose from. Always verify your doctor is in-network before your visit."',
     neverSay:
-      'Don\'t say members can see any doctor they want without consequences. Out-of-network visits may not be covered or may cost significantly more.',
+      "Don't say members can see any doctor they want without consequences. Out-of-network visits may not be covered or may cost significantly more.",
     ifTheyAsk:
       '"How do I find a doctor?" → "You can search for in-network providers on the network website, or call the number on your insurance card for help finding a provider near you."',
     official:
@@ -299,7 +305,7 @@ const BENEFITS = [
     sayThis:
       '"These optional add-ons give you extra layers of protection. Each one is separate from your base plan and has its own benefits."',
     neverSay:
-      'Don\'t present add-ons before the base plan is confirmed. Don\'t say add-ons are required — they are always optional.',
+      "Don't present add-ons before the base plan is confirmed. Don't say add-ons are required — they are always optional.",
     ifTheyAsk:
       '"Do I need the add-ons?" → "They are completely optional. I recommend them because they fill gaps that the base plan doesn\'t cover, but the choice is always yours."',
     official:
@@ -1173,8 +1179,7 @@ function renderBenefits() {
         '\')">';
       html += '<div class="bc-row">';
       html += '<div class="bc-row-left">';
-      html +=
-        '<div class="bc-dot" style="background:' + cat.color + '"></div>';
+      html += '<div class="bc-dot" style="background:' + cat.color + '"></div>';
       html += '<div>';
       html += '<div class="bc-name">' + b.name + '</div>';
       html += '<div class="bc-hint">' + (b.hint || '') + '</div>';
@@ -1192,10 +1197,8 @@ function renderBenefits() {
       if (b.byPlan) {
         for (var pi = 0; pi < b.byPlan.length; pi++) {
           html += '<div class="bc-plan-row">';
-          html +=
-            '<span class="bc-plan-type">' + b.byPlan[pi].type + '</span>';
-          html +=
-            '<span class="bc-plan-desc">' + b.byPlan[pi].desc + '</span>';
+          html += '<span class="bc-plan-type">' + b.byPlan[pi].type + '</span>';
+          html += '<span class="bc-plan-desc">' + b.byPlan[pi].desc + '</span>';
           html += '</div>';
         }
       }
@@ -1411,13 +1414,19 @@ function setPlanGroup(g) {
 
 function _toggleVaultPlanGroup(ev) {
   var row = ev && ev.currentTarget;
-  if (!row || !row.classList || !row.classList.contains('plan-group-row')) return;
+  if (!row || !row.classList || !row.classList.contains('plan-group-row'))
+    return;
   var t = ev.target;
-  if (t && t.closest && (t.closest('button') || t.closest('a') || t.closest('.plan-card')))
+  if (
+    t &&
+    t.closest &&
+    (t.closest('button') || t.closest('a') || t.closest('.plan-card'))
+  )
     return;
   row.classList.toggle('expanded');
   var ind = row.querySelector('.plan-group-expand-ind');
-  if (ind) ind.textContent = row.classList.contains('expanded') ? '\u2212' : '+';
+  if (ind)
+    ind.textContent = row.classList.contains('expanded') ? '\u2212' : '+';
 }
 
 function renderPlanGroups() {
@@ -2285,20 +2294,32 @@ document.addEventListener('click', function (e) {
 
 // Dashboard: similar plans (read-only POLICY_DOCS; additive helper for app.js)
 function chaPickSimilarPlansForDash(plan, limit) {
-  if (!plan || typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return [];
+  if (!plan || typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length)
+    return [];
   var lim = Math.min(8, Math.max(1, Number(limit) || 3));
-  var net = String(plan.network || '').trim().toLowerCase();
-  var typ = String(plan.type || '').trim().toLowerCase();
+  var net = String(plan.network || '')
+    .trim()
+    .toLowerCase();
+  var typ = String(plan.type || '')
+    .trim()
+    .toLowerCase();
   var scored = [];
   var i;
   for (i = 0; i < POLICY_DOCS.length; i++) {
     var p = POLICY_DOCS[i];
     if (!p || String(p.id) === String(plan.id)) continue;
-    if (typeof _pdIsDisplayablePlan === 'function' && !_pdIsDisplayablePlan(p)) {
+    if (
+      typeof _pdIsDisplayablePlan === 'function' &&
+      !_pdIsDisplayablePlan(p)
+    ) {
       continue;
     }
-    var pn = String(p.network || '').trim().toLowerCase();
-    var pt = String(p.type || '').trim().toLowerCase();
+    var pn = String(p.network || '')
+      .trim()
+      .toLowerCase();
+    var pt = String(p.type || '')
+      .trim()
+      .toLowerCase();
     var score = 0;
     if (net && pn === net) score += 3;
     if (typ && pt === typ) score += 2;

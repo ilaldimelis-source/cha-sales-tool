@@ -25,9 +25,11 @@
   function isDevelopment() {
     try {
       // Check various development indicators
-      if (window.location.hostname === 'localhost' ||
-          window.location.hostname === '127.0.0.1' ||
-          window.location.hostname.includes('local')) {
+      if (
+        window.location.hostname === 'localhost' ||
+        window.location.hostname === '127.0.0.1' ||
+        window.location.hostname.includes('local')
+      ) {
         return true;
       }
     } catch (_e) {
@@ -64,7 +66,7 @@
     script.onerror = function () {
       console.log(
         `[Vercel Speed Insights] Failed to load script from ${scriptSrc}. ` +
-        'Please check if any content blockers are enabled and try again.'
+          'Please check if any content blockers are enabled and try again.'
       );
     };
 

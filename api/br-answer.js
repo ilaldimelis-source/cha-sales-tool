@@ -1,7 +1,10 @@
 const { createClient } = require('@supabase/supabase-js');
 
 function jsonNoCache(res) {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+  res.setHeader(
+    'Cache-Control',
+    'no-store, no-cache, must-revalidate, max-age=0'
+  );
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -61,18 +64,20 @@ function parseModelOutput(raw) {
   text.split('\n').forEach(function (line) {
     var l = line.trim();
     if (/^STATUS:/i.test(l)) {
-    out.status = l
-      .replace(/^STATUS:\s*/i, '')
-      .trim()
-      .replace(/[.]+$/g, '')
-      .toUpperCase();
-  }
+      out.status = l
+        .replace(/^STATUS:\s*/i, '')
+        .trim()
+        .replace(/[.]+$/g, '')
+        .toUpperCase();
+    }
     if (/^FACT:/i.test(l)) out.fact = l.replace(/^FACT:\s*/i, '').trim();
-    if (/^SAY THIS:/i.test(l)) out.sayThis = l.replace(/^SAY THIS:\s*/i, '').trim();
+    if (/^SAY THIS:/i.test(l))
+      out.sayThis = l.replace(/^SAY THIS:\s*/i, '').trim();
     if (/^SOURCE:/i.test(l)) out.source = l.replace(/^SOURCE:\s*/i, '').trim();
   });
 
-  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL|INFO)$/.test(out.status)) out.status = 'VERIFY';
+  if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL|INFO)$/.test(out.status))
+    out.status = 'VERIFY';
   if (!out.fact) out.fact = '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]';
   if (!out.source) out.source = 'Plan PDF / POLICY_DOCS';
   return out;
@@ -88,7 +93,8 @@ function contextRequiresMandatoryNotCovered(planContextText, query) {
 
   if (t.indexOf('not a covered insurance benefit') !== -1) return true;
 
-  var labishQ = /blood|lab|labs|phlebotom|diagnostic|testing\b|laboratory/i.test(q);
+  var labishQ =
+    /blood|lab|labs|phlebotom|diagnostic|testing\b|laboratory/i.test(q);
   if (labishQ && t.indexOf('will not be considered eligible') !== -1) {
     if (t.indexOf('diagnostic testing') !== -1) return true;
     if (
@@ -110,12 +116,21 @@ function contextRequiresMandatoryNotCovered(planContextText, query) {
  */
 function supplementPlanChunksForLabQuery(supabase, planId, query, chunks) {
   if (!planId || !Array.isArray(chunks)) return Promise.resolve(chunks || []);
-  if (!/blood|bloodwork|labs?\b|diagnostic|phlebotom|lab test/i.test(String(query || ''))) {
+  if (
+    !/blood|bloodwork|labs?\b|diagnostic|phlebotom|lab test/i.test(
+      String(query || '')
+    )
+  ) {
     return Promise.resolve(chunks);
   }
   var seen = {};
   chunks.forEach(function (c) {
-    var k = (c.plan_id || '') + ':' + String(c.chunk_index) + ':' + (c.source_pdf || '');
+    var k =
+      (c.plan_id || '') +
+      ':' +
+      String(c.chunk_index) +
+      ':' +
+      (c.source_pdf || '');
     seen[k] = true;
   });
   return supabase
@@ -128,12 +143,20 @@ function supplementPlanChunksForLabQuery(supabase, planId, query, chunks) {
     .limit(10)
     .then(function (res) {
       if (res.error) {
-        console.warn('[CHA RAG] supplementPlanChunksForLabQuery:', res.error.message);
+        console.warn(
+          '[CHA RAG] supplementPlanChunksForLabQuery:',
+          res.error.message
+        );
         return chunks;
       }
       var merged = chunks.slice();
       (res.data || []).forEach(function (row) {
-        var k = (row.plan_id || '') + ':' + String(row.chunk_index) + ':' + (row.source_pdf || '');
+        var k =
+          (row.plan_id || '') +
+          ':' +
+          String(row.chunk_index) +
+          ':' +
+          (row.source_pdf || '');
         if (seen[k]) return;
         seen[k] = true;
         row.similarity = row.similarity != null ? row.similarity : null;
@@ -162,9 +185,11 @@ function aiOutputImpliesNotCovered(fact, sayThis) {
   if (t.indexOf('is not covered under the plan') !== -1) return true;
   if (t.indexOf('is not covered under this plan') !== -1) return true;
   if (/\bnot covered\b/i.test(combined)) return true;
-  if (t.indexOf('not eligible') !== -1 && t.indexOf('insurance') !== -1) return true;
+  if (t.indexOf('not eligible') !== -1 && t.indexOf('insurance') !== -1)
+    return true;
   if (
-    (t.indexOf('discounted rates') !== -1 || t.indexOf('discounted rate') !== -1) &&
+    (t.indexOf('discounted rates') !== -1 ||
+      t.indexOf('discounted rate') !== -1) &&
     (t.indexOf('not covered') !== -1 ||
       t.indexOf('not insurance') !== -1 ||
       t.indexOf('not an insurance') !== -1 ||
@@ -172,7 +197,10 @@ function aiOutputImpliesNotCovered(fact, sayThis) {
   ) {
     return true;
   }
-  if (t.indexOf('discounted rates available') !== -1 && t.indexOf('not covered') !== -1) {
+  if (
+    t.indexOf('discounted rates available') !== -1 &&
+    t.indexOf('not covered') !== -1
+  ) {
     return true;
   }
   return false;
@@ -208,9 +236,13 @@ module.exports = function handler(req, res) {
   }
   var matchCount = clamp(body.matchCount, 1, 12, 8);
   var matchThreshold = clamp(body.matchThreshold, 0, 1, 0.3);
-  var requestId = 'req_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
+  var requestId =
+    'req_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8);
 
-  if (!query) return res.status(400).json({ error: 'Missing query', requestId: requestId });
+  if (!query)
+    return res
+      .status(400)
+      .json({ error: 'Missing query', requestId: requestId });
   if (query.length > 700) {
     return res
       .status(400)
@@ -242,7 +274,10 @@ module.exports = function handler(req, res) {
 
   // Lightweight sanity check to prove service-role access and table visibility.
   // If this fails, RPC often "succeeds" with no data or masked auth behavior.
-  var authCheck = supabase.from('plan_chunks').select('id', { head: true, count: 'exact' }).limit(1);
+  var authCheck = supabase
+    .from('plan_chunks')
+    .select('id', { head: true, count: 'exact' })
+    .limit(1);
 
   authCheck
     .then(function (authRes) {
@@ -276,7 +311,10 @@ module.exports = function handler(req, res) {
     })
     .then(function (j) {
       debug.stage = 'rpc';
-      var emb = j && j.data && j.data[0] && j.data[0].embedding ? j.data[0].embedding : null;
+      var emb =
+        j && j.data && j.data[0] && j.data[0].embedding
+          ? j.data[0].embedding
+          : null;
       if (!emb) throw new Error('Embedding missing');
       var embParam = emb;
       // Supabase RPC works more reliably with pgvector text literal
@@ -285,7 +323,9 @@ module.exports = function handler(req, res) {
 
       function rpcCall(th) {
         debug.rpcArgs = {
-          query_embedding_len: Array.isArray(emb) ? emb.length : String(emb || '').length,
+          query_embedding_len: Array.isArray(emb)
+            ? emb.length
+            : String(emb || '').length,
           match_threshold: th,
           match_count: matchCount,
           preferred_plan_id: planId || null
@@ -311,9 +351,7 @@ module.exports = function handler(req, res) {
         var fallbackPreferred = planId
           ? supabase
               .from('plan_chunks')
-              .select(
-                'id,plan_id,plan_name,source_pdf,chunk_index,chunk_text'
-              )
+              .select('id,plan_id,plan_name,source_pdf,chunk_index,chunk_text')
               .eq('plan_id', planId)
               .not('embedding', 'is', null)
               .order('chunk_index', { ascending: true })
@@ -365,52 +403,56 @@ module.exports = function handler(req, res) {
       // Short queries often score ~0.15–0.22 vs the best chunk; default 0.3 would return 0 rows.
       var relaxedRpcThreshold = 0.15;
 
-      return rpcCall(matchThreshold)
-        .then(function (rpc) {
-          if (rpc.error) {
+      return rpcCall(matchThreshold).then(function (rpc) {
+        if (rpc.error) {
+          throw new Error(
+            'Supabase RPC error: ' +
+              rpc.error.message +
+              ' [function=' +
+              debug.rpcFunction +
+              ', args=' +
+              JSON.stringify(debug.rpcArgs) +
+              ']'
+          );
+        }
+        chunks = Array.isArray(rpc.data) ? rpc.data : [];
+        scope = chunks.length ? String(chunks[0].scope || 'none') : 'none';
+        if (chunks.length) return null;
+
+        if (matchThreshold <= relaxedRpcThreshold) {
+          return applySequentialFallback();
+        }
+
+        debug.rpcRetry = {
+          match_threshold: relaxedRpcThreshold,
+          reason: 'primary RPC returned 0 rows (similarity floor)'
+        };
+        return rpcCall(relaxedRpcThreshold).then(function (rpc2) {
+          if (rpc2.error) {
             throw new Error(
-              'Supabase RPC error: ' +
-                rpc.error.message +
+              'Supabase RPC retry error: ' +
+                rpc2.error.message +
                 ' [function=' +
                 debug.rpcFunction +
-                ', args=' +
-                JSON.stringify(debug.rpcArgs) +
                 ']'
             );
           }
-          chunks = Array.isArray(rpc.data) ? rpc.data : [];
+          chunks = Array.isArray(rpc2.data) ? rpc2.data : [];
           scope = chunks.length ? String(chunks[0].scope || 'none') : 'none';
-          if (chunks.length) return null;
-
-          if (matchThreshold <= relaxedRpcThreshold) {
+          if (!chunks.length) {
             return applySequentialFallback();
           }
-
-          debug.rpcRetry = {
-            match_threshold: relaxedRpcThreshold,
-            reason: 'primary RPC returned 0 rows (similarity floor)'
-          };
-          return rpcCall(relaxedRpcThreshold).then(function (rpc2) {
-            if (rpc2.error) {
-              throw new Error(
-                'Supabase RPC retry error: ' +
-                  rpc2.error.message +
-                  ' [function=' +
-                  debug.rpcFunction +
-                  ']'
-              );
-            }
-            chunks = Array.isArray(rpc2.data) ? rpc2.data : [];
-            scope = chunks.length ? String(chunks[0].scope || 'none') : 'none';
-            if (!chunks.length) {
-              return applySequentialFallback();
-            }
-            return null;
-          });
+          return null;
         });
+      });
     })
     .then(function () {
-      return supplementPlanChunksForLabQuery(supabase, planId, query, chunks).then(function (merged) {
+      return supplementPlanChunksForLabQuery(
+        supabase,
+        planId,
+        query,
+        chunks
+      ).then(function (merged) {
         chunks = merged;
         context = buildContext(chunks);
         console.log(
@@ -499,8 +541,14 @@ module.exports = function handler(req, res) {
           ? j.choices[0].message.content
           : '';
       var parsed = parseModelOutput(raw);
-      var mandatoryExclusionContext = contextRequiresMandatoryNotCovered(context, query);
-      var mandatoryExclusionAi = aiOutputImpliesNotCovered(parsed.fact, parsed.sayThis);
+      var mandatoryExclusionContext = contextRequiresMandatoryNotCovered(
+        context,
+        query
+      );
+      var mandatoryExclusionAi = aiOutputImpliesNotCovered(
+        parsed.fact,
+        parsed.sayThis
+      );
       parsed = enforceMandatoryNotCovered(parsed, context, query);
 
       return res.status(200).json({
@@ -551,12 +599,18 @@ module.exports = function handler(req, res) {
         })
       );
       var ctxForGuard = String(context || '');
-      var mandatoryFromCtxOnFallback = contextRequiresMandatoryNotCovered(ctxForGuard, query);
+      var mandatoryFromCtxOnFallback = contextRequiresMandatoryNotCovered(
+        ctxForGuard,
+        query
+      );
       if (mandatoryFromCtxOnFallback) {
-        console.log('[CHA RAG] Fallback: enforcing NOT COVERED from plan context (no LLM)', {
-          requestId: requestId,
-          queryPreview: String(query || '').slice(0, 80)
-        });
+        console.log(
+          '[CHA RAG] Fallback: enforcing NOT COVERED from plan context (no LLM)',
+          {
+            requestId: requestId,
+            queryPreview: String(query || '').slice(0, 80)
+          }
+        );
       }
       return res.status(200).json({
         requestId: requestId,

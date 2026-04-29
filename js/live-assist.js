@@ -40,25 +40,66 @@ function showToast(message, kind) {
 }
 
 var CHA_SCRIPT_LINES = [
-  { text: "Central Health Advisors, this is [NAME]. I'll be your licensed health insurance agent assisting you today.", tone: 'authority' },
-  { text: 'Please note that this call may be recorded for training and quality assurance.', tone: 'authority' },
-  { text: 'Were you looking for an individual or family plan TODAY?', tone: 'friendly' },
+  {
+    text: "Central Health Advisors, this is [NAME]. I'll be your licensed health insurance agent assisting you today.",
+    tone: 'authority'
+  },
+  {
+    text: 'Please note that this call may be recorded for training and quality assurance.',
+    tone: 'authority'
+  },
+  {
+    text: 'Were you looking for an individual or family plan TODAY?',
+    tone: 'friendly'
+  },
   { text: 'OK! GREAT! Now are you currently insured?', tone: 'friendly' },
-  { text: 'Do you have any pre-existing medical conditions I should be aware of?', tone: 'friendly' },
-  { text: "Are you currently taking any medications you'd like me to make sure are covered?", tone: 'friendly' },
+  {
+    text: 'Do you have any pre-existing medical conditions I should be aware of?',
+    tone: 'friendly'
+  },
+  {
+    text: "Are you currently taking any medications you'd like me to make sure are covered?",
+    tone: 'friendly'
+  },
   { text: 'What is your Date of Birth?', tone: 'friendly' },
   { text: 'Please verify your zip code?', tone: 'friendly' },
   { text: 'Are you a tobacco user?', tone: 'friendly' },
-  { text: 'How many times do you go to the doctors on a yearly basis?', tone: 'friendly' },
-  { text: "Do you have any doctors you'd like to keep in the network?", tone: 'friendly' },
-  { text: 'Do you have any upcoming surgeries, procedures or treatments scheduled?', tone: 'friendly' },
-  { text: 'How much money do you make on a yearly basis BEFORE TAX?', tone: 'authority' },
-  { text: "Is there a monthly price range you're hoping to stay within?", tone: 'friendly' },
-  { text: 'Assuming we find the right fit, how soon would you like your coverage to begin?', tone: 'friendly' },
-  { text: "I'm going to submit your information into my system now. Give me about 30-60 seconds...", tone: 'authority' }
+  {
+    text: 'How many times do you go to the doctors on a yearly basis?',
+    tone: 'friendly'
+  },
+  {
+    text: "Do you have any doctors you'd like to keep in the network?",
+    tone: 'friendly'
+  },
+  {
+    text: 'Do you have any upcoming surgeries, procedures or treatments scheduled?',
+    tone: 'friendly'
+  },
+  {
+    text: 'How much money do you make on a yearly basis BEFORE TAX?',
+    tone: 'authority'
+  },
+  {
+    text: "Is there a monthly price range you're hoping to stay within?",
+    tone: 'friendly'
+  },
+  {
+    text: 'Assuming we find the right fit, how soon would you like your coverage to begin?',
+    tone: 'friendly'
+  },
+  {
+    text: "I'm going to submit your information into my system now. Give me about 30-60 seconds...",
+    tone: 'authority'
+  }
 ];
 var chaScriptIndex = 0;
-var complianceChecklist = { agency: false, recording: false, exclusions: false, preex: false };
+var complianceChecklist = {
+  agency: false,
+  recording: false,
+  exclusions: false,
+  preex: false
+};
 var laAcademyProgress = { 1: false, 2: false, 3: false, 4: false };
 function laPersistScriptIndex() {
   if (typeof chaSet === 'function') {
@@ -108,15 +149,26 @@ function showCurrentLine() {
   var counter = document.getElementById('line-counter');
   if (!display || !counter) return;
   if (chaScriptIndex < 0) chaScriptIndex = 0;
-  if (chaScriptIndex >= CHA_SCRIPT_LINES.length) chaScriptIndex = CHA_SCRIPT_LINES.length - 1;
+  if (chaScriptIndex >= CHA_SCRIPT_LINES.length)
+    chaScriptIndex = CHA_SCRIPT_LINES.length - 1;
   var line = CHA_SCRIPT_LINES[chaScriptIndex];
   var toneColor = line.tone === 'authority' ? '#6366F1' : '#F59E0B';
   var toneIcon = line.tone === 'authority' ? 'AUTHORITY' : 'FRIENDLY';
   display.innerHTML =
-    '<div class="script-line" style="box-shadow:0 0 12px ' + toneColor + ';border-left:4px solid ' + toneColor + ';">' +
-    '<div class="tone-indicator" style="color:' + toneColor + ';">' + toneIcon + '</div>' +
-    '<p>' + escHTML(line.text) + '</p></div>';
-  counter.textContent = (chaScriptIndex + 1) + ' / ' + CHA_SCRIPT_LINES.length;
+    '<div class="script-line" style="box-shadow:0 0 12px ' +
+    toneColor +
+    ';border-left:4px solid ' +
+    toneColor +
+    ';">' +
+    '<div class="tone-indicator" style="color:' +
+    toneColor +
+    ';">' +
+    toneIcon +
+    '</div>' +
+    '<p>' +
+    escHTML(line.text) +
+    '</p></div>';
+  counter.textContent = chaScriptIndex + 1 + ' / ' + CHA_SCRIPT_LINES.length;
 }
 
 function nextLine() {
@@ -164,7 +216,11 @@ function attemptSubmit() {
 }
 
 function copyToClipboard(text) {
-  safeCopy(text).then(function () { showToast('Copied.', 'success'); }).catch(function () {});
+  safeCopy(text)
+    .then(function () {
+      showToast('Copied.', 'success');
+    })
+    .catch(function () {});
 }
 function markComplete(moduleNum) {
   laAcademyProgress[moduleNum] = true;
@@ -174,18 +230,27 @@ function markComplete(moduleNum) {
 function updateProgressBar() {
   var completed = 0;
   var vals = Object.keys(laAcademyProgress);
-  for (var i = 0; i < vals.length; i++) if (laAcademyProgress[vals[i]]) completed++;
+  for (var i = 0; i < vals.length; i++)
+    if (laAcademyProgress[vals[i]]) completed++;
   var fill = document.getElementById('progress-fill');
   var text = document.querySelector('.progress-text');
-  if (fill) fill.style.width = ((completed / 4) * 100) + '%';
+  if (fill) fill.style.width = (completed / 4) * 100 + '%';
   if (text) text.textContent = completed + '/4 Complete';
 }
 
 function parseReceipt(rawText) {
   var text = String(rawText || '');
   var out = [];
-  var dateMatch = text.match(/Confirmation Date:\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/i);
-  var saleDate = dateMatch ? dateMatch[1] : new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  var dateMatch = text.match(
+    /Confirmation Date:\s*([A-Za-z]+\s+\d{1,2},\s+\d{4})/i
+  );
+  var saleDate = dateMatch
+    ? dateMatch[1]
+    : new Date().toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
   var autoDate = !dateMatch;
   var re = /(?:premium|monthly)[:\s]*\$?([\d,]+\.?\d*)/gi;
   var m;
@@ -257,8 +322,20 @@ function updateTotals() {
   }
   var dailyEl = document.getElementById('daily-total');
   var weeklyEl = document.getElementById('weekly-total');
-  if (dailyEl) dailyEl.innerHTML = 'Today: $' + dailyTotal.toFixed(2) + ' <span style="color:#10B981;">| Commission: $' + dailyCom.toFixed(2) + '</span>';
-  if (weeklyEl) weeklyEl.innerHTML = 'This Week: $' + weeklyTotal.toFixed(2) + ' <span style="color:#10B981;">| Commission: $' + weeklyCom.toFixed(2) + '</span>';
+  if (dailyEl)
+    dailyEl.innerHTML =
+      'Today: $' +
+      dailyTotal.toFixed(2) +
+      ' <span style="color:#10B981;">| Commission: $' +
+      dailyCom.toFixed(2) +
+      '</span>';
+  if (weeklyEl)
+    weeklyEl.innerHTML =
+      'This Week: $' +
+      weeklyTotal.toFixed(2) +
+      ' <span style="color:#10B981;">| Commission: $' +
+      weeklyCom.toFixed(2) +
+      '</span>';
 }
 
 function showReviewModal(deals) {
@@ -270,14 +347,25 @@ function showReviewModal(deals) {
     var d = deals[i];
     rows.push(
       '<tr>' +
-        '<td style="' + (d.dateAutoDefaulted ? 'background:#EF4444;color:white;' : '') + '">' +
-          (d.dateAutoDefaulted ? '⚠️ ' : '') + escHTML(d.date) +
+        '<td style="' +
+        (d.dateAutoDefaulted ? 'background:#EF4444;color:white;' : '') +
+        '">' +
+        (d.dateAutoDefaulted ? '⚠️ ' : '') +
+        escHTML(d.date) +
         '</td>' +
-        '<td>' + escHTML(d.member) + '</td>' +
-        '<td>' + escHTML(d.product) + '</td>' +
-        '<td>$' + Number(d.monthlyPremium || 0).toFixed(2) + '</td>' +
-        '<td style="color:#10B981;font-weight:600;">$' + Number(d.commission || 0).toFixed(2) + '</td>' +
-      '</tr>'
+        '<td>' +
+        escHTML(d.member) +
+        '</td>' +
+        '<td>' +
+        escHTML(d.product) +
+        '</td>' +
+        '<td>$' +
+        Number(d.monthlyPremium || 0).toFixed(2) +
+        '</td>' +
+        '<td style="color:#10B981;font-weight:600;">$' +
+        Number(d.commission || 0).toFixed(2) +
+        '</td>' +
+        '</tr>'
     );
   }
   tbody.innerHTML = rows.join('');
@@ -310,7 +398,11 @@ function _bindBentoKeys() {
   if (document.body.dataset.chaBentoKeys === '1') return;
   document.body.dataset.chaBentoKeys = '1';
   document.addEventListener('keydown', function (e) {
-    if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+    if (
+      e.code === 'Space' &&
+      e.target.tagName !== 'INPUT' &&
+      e.target.tagName !== 'TEXTAREA'
+    ) {
       e.preventDefault();
       nextLine();
     }
@@ -407,7 +499,8 @@ function openLaPanel(type) {
       Object.keys(groups).forEach(function (t) {
         var items = CLOSES.filter(function (c) {
           if (c.type !== t) return false;
-          if (t === 'assumptive' && LIVE_CLOSES_EXCLUDED_LINES[c.line]) return false;
+          if (t === 'assumptive' && LIVE_CLOSES_EXCLUDED_LINES[c.line])
+            return false;
           return true;
         });
         if (!items.length) return;
@@ -518,7 +611,9 @@ function liveAssistGoToBenefitsExplainer(e) {
   closeLaPanel();
   if (typeof showPage === 'function') showPage('benefits');
   else {
-    var p = document.querySelector('[data-page="benefits"], a[href="#benefits"]');
+    var p = document.querySelector(
+      '[data-page="benefits"], a[href="#benefits"]'
+    );
     if (p) p.click();
   }
   setTimeout(function () {
@@ -594,8 +689,7 @@ function renderLive() {
       '">' +
       escHTML(o.cat) +
       '</span>';
-    html +=
-      '<span class="la-qtext">&ldquo;' + o.obj + '&rdquo;</span>';
+    html += '<span class="la-qtext">&ldquo;' + o.obj + '&rdquo;</span>';
     html +=
       '<span class="la-qchev" id="liveobjchev' +
       i +
