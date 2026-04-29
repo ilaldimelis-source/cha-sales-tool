@@ -38,9 +38,14 @@ var URLS_TO_CACHE = [
 self.addEventListener('install', function (event) {
   self.skipWaiting();
   event.waitUntil(
-    caches.delete(CACHE_NAME)
-      .then(function () { return caches.open(CACHE_NAME); })
-      .then(function (cache) { return cache.addAll(URLS_TO_CACHE); })
+    caches
+      .delete(CACHE_NAME)
+      .then(function () {
+        return caches.open(CACHE_NAME);
+      })
+      .then(function (cache) {
+        return cache.addAll(URLS_TO_CACHE);
+      })
   );
 });
 
@@ -49,12 +54,17 @@ self.addEventListener('install', function (event) {
 // the fresh JS/CSS immediately.
 self.addEventListener('activate', function (event) {
   event.waitUntil(
-    caches.keys()
+    caches
+      .keys()
       .then(function (cacheNames) {
         return Promise.all(
           cacheNames
-            .filter(function (name) { return name !== CACHE_NAME; })
-            .map(function (name) { return caches.delete(name); })
+            .filter(function (name) {
+              return name !== CACHE_NAME;
+            })
+            .map(function (name) {
+              return caches.delete(name);
+            })
         );
       })
       .then(function () {
@@ -67,7 +77,11 @@ self.addEventListener('activate', function (event) {
         for (var i = 0; i < clientList.length; i++) {
           var client = clientList[i];
           if (client && typeof client.navigate === 'function') {
-            try { client.navigate(client.url); } catch (_e) { /* ignore */ }
+            try {
+              client.navigate(client.url);
+            } catch (_e) {
+              /* ignore */
+            }
           }
         }
       })

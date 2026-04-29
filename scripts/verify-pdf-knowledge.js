@@ -13,12 +13,21 @@ function assert(condition, message) {
 
 function main() {
   assert(fs.existsSync(MAP_PATH), 'Missing js/plan-pdf-map.js');
-  assert(fs.existsSync(INDEX_PATH), 'Missing knowledge_base/extracted/index.json');
+  assert(
+    fs.existsSync(INDEX_PATH),
+    'Missing knowledge_base/extracted/index.json'
+  );
   assert(fs.existsSync(PLANS_DIR), 'Missing knowledge_base/extracted/plans/');
 
   const mapJs = fs.readFileSync(MAP_PATH, 'utf8');
-  assert(mapJs.indexOf('window.CHA_PLAN_PDF_MAP') !== -1, 'plan map not exported');
-  assert(mapJs.indexOf('window.CHA_PLAN_ALIAS_INDEX') !== -1, 'alias map not exported');
+  assert(
+    mapJs.indexOf('window.CHA_PLAN_PDF_MAP') !== -1,
+    'plan map not exported'
+  );
+  assert(
+    mapJs.indexOf('window.CHA_PLAN_ALIAS_INDEX') !== -1,
+    'alias map not exported'
+  );
 
   const index = JSON.parse(fs.readFileSync(INDEX_PATH, 'utf8'));
   assert(Array.isArray(index.plans), 'index.plans must be an array');
@@ -37,7 +46,10 @@ function main() {
     if (plan.status === 'excluded') excludedCount += 1;
   });
 
-  assert(missingPlanFiles.length === 0, 'Missing plan artifacts: ' + missingPlanFiles.join(', '));
+  assert(
+    missingPlanFiles.length === 0,
+    'Missing plan artifacts: ' + missingPlanFiles.join(', ')
+  );
   assert(readyCount > 0, 'No ready plans found in extracted index');
   assert(excludedCount > 0, 'Expected excluded plans were not marked');
 

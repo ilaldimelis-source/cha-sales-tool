@@ -57,7 +57,8 @@
       // Groq API configuration for chat modules
       window.GROQ_API_KEY = window.GROQ_API_KEY || '';
       window.GROQ_API_URL =
-        window.GROQ_API_URL || 'https://api.groq.com/openai/v1/chat/completions';
+        window.GROQ_API_URL ||
+        'https://api.groq.com/openai/v1/chat/completions';
     </script>
     <script>
       (function () {
@@ -182,146 +183,481 @@
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
       }
       /* === DocuSign Walkthrough === */
-      .ds-walkthrough-group { margin-top: 16px; }
+      .ds-walkthrough-group {
+        margin-top: 16px;
+      }
       .ds-walkthrough-trigger {
-        width: 100%; display: flex; justify-content: space-between; align-items: center;
-        padding: 14px 18px; border: 1px solid #000; border-radius: 14px;
-        background: #fff; cursor: pointer; font-weight: 600; font-size: 16px;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 18px;
+        border: 1px solid #000;
+        border-radius: 14px;
+        background: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
       }
-      .ds-walkthrough-trigger:hover { background: #fafafa; }
-      .ds-chevron::before { content: '+'; font-weight: 700; }
-      .ds-walkthrough-trigger[aria-expanded="true"] .ds-chevron::before { content: '-'; }
-      .ds-walkthrough-body { margin-top: 12px; }
-      .ds-walkthrough-search { margin-bottom: 12px; }
+      .ds-walkthrough-trigger:hover {
+        background: #fafafa;
+      }
+      .ds-chevron::before {
+        content: '+';
+        font-weight: 700;
+      }
+      .ds-walkthrough-trigger[aria-expanded='true'] .ds-chevron::before {
+        content: '-';
+      }
+      .ds-walkthrough-body {
+        margin-top: 12px;
+      }
+      .ds-walkthrough-search {
+        margin-bottom: 12px;
+      }
       .ds-walkthrough-search input {
-        width: 100%; padding: 12px 14px; border: 1px solid #cbd5e1;
-        border-radius: 12px; background: #E8EEFB; font-size: 15px; outline: none;
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        background: #e8eefb;
+        font-size: 15px;
+        outline: none;
       }
-      .ds-walkthrough-search input:focus { border-color: #1a4692; background: #fff; }
+      .ds-walkthrough-search input:focus {
+        border-color: #1a4692;
+        background: #fff;
+      }
       .ds-walkthrough-tabs {
-        display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
       }
       .ds-tab {
-        padding: 10px 14px; border: 1px solid #000; border-radius: 999px;
-        background: #fff; color: #000; font-weight: 600; font-size: 12px;
-        letter-spacing: 0.04em; cursor: pointer;
+        padding: 10px 14px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        background: #fff;
+        color: #000;
+        font-weight: 600;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        cursor: pointer;
       }
-      .ds-tab.is-active { background: #1a4692; color: #fff; border-color: #1a4692; }
-      .ds-panel { display: none; }
-      .ds-panel.is-active { display: block; }
+      .ds-tab.is-active {
+        background: #1a4692;
+        color: #fff;
+        border-color: #1a4692;
+      }
+      .ds-panel {
+        display: none;
+      }
+      .ds-panel.is-active {
+        display: block;
+      }
       /* severity bar (left edge) */
-      .ds-card { position: relative; border: 1px solid #e2e8f0; border-radius: 14px;
-        background: #fff; margin-bottom: 12px; overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-      .ds-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-        width: 5px; background: #10B981; }
-      .ds-card.ds-sev-amber::before { background: #F59E0B; }
-      .ds-card.ds-sev-red::before   { background: #EF4444; }
+      .ds-card {
+        position: relative;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        background: #fff;
+        margin-bottom: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+      .ds-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        background: #10b981;
+      }
+      .ds-card.ds-sev-amber::before {
+        background: #f59e0b;
+      }
+      .ds-card.ds-sev-red::before {
+        background: #ef4444;
+      }
       .ds-card-header {
-        width: 100%; display: flex; justify-content: space-between; align-items: flex-start;
-        padding: 14px 16px 14px 22px; background: transparent; border: none; cursor: pointer;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 14px 16px 14px 22px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
         text-align: left;
       }
-      .ds-card-titlewrap { flex: 1; }
-      .ds-card-num { display: inline-block; min-width: 26px; height: 26px; line-height: 26px;
-        text-align: center; border-radius: 999px; background: #1a4692; color: #fff;
-        font-weight: 700; font-size: 13px; margin-right: 8px; }
-      .ds-card-title { font-weight: 600; font-size: 15px; color: #0f172a; }
-      .ds-card-oneliner { margin-top: 4px; font-size: 13px; color: #475569; line-height: 1.45; }
-      .ds-card-toggle { font-size: 22px; font-weight: 700; color: #1a4692;
-        margin-left: 12px; line-height: 1; }
-      .ds-card-body { padding: 0 16px 14px 22px; }
-      .ds-box { border-radius: 10px; padding: 12px 14px; margin-top: 10px;
-        border: 1px solid transparent; }
-      .ds-box-label { font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
-        margin-bottom: 6px; color: #334155; }
-      .ds-box-text { font-size: 14px; line-height: 1.5; color: #0f172a; }
-      .ds-box-quote   { background: #FFF1F2; }
-      .ds-box-means   { background: #F1F5F9; }
-      .ds-box-sayThis { background: #ECFDF5; }
-      .ds-box-pushback{ background: #FEF3C7; }
-      .ds-qa { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(0,0,0,0.06); }
-      .ds-qa:first-of-type { border-top: none; padding-top: 0; }
-      .ds-qa-q { font-weight: 600; font-size: 13px; color: #0f172a; }
-      .ds-qa-a { font-size: 13px; color: #334155; margin-top: 2px; line-height: 1.5; }
+      .ds-card-titlewrap {
+        flex: 1;
+      }
+      .ds-card-num {
+        display: inline-block;
+        min-width: 26px;
+        height: 26px;
+        line-height: 26px;
+        text-align: center;
+        border-radius: 999px;
+        background: #1a4692;
+        color: #fff;
+        font-weight: 700;
+        font-size: 13px;
+        margin-right: 8px;
+      }
+      .ds-card-title {
+        font-weight: 600;
+        font-size: 15px;
+        color: #0f172a;
+      }
+      .ds-card-oneliner {
+        margin-top: 4px;
+        font-size: 13px;
+        color: #475569;
+        line-height: 1.45;
+      }
+      .ds-card-toggle {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a4692;
+        margin-left: 12px;
+        line-height: 1;
+      }
+      .ds-card-body {
+        padding: 0 16px 14px 22px;
+      }
+      .ds-box {
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-top: 10px;
+        border: 1px solid transparent;
+      }
+      .ds-box-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        margin-bottom: 6px;
+        color: #334155;
+      }
+      .ds-box-text {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #0f172a;
+      }
+      .ds-box-quote {
+        background: #fff1f2;
+      }
+      .ds-box-means {
+        background: #f1f5f9;
+      }
+      .ds-box-sayThis {
+        background: #ecfdf5;
+      }
+      .ds-box-pushback {
+        background: #fef3c7;
+      }
+      .ds-qa {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .ds-qa:first-of-type {
+        border-top: none;
+        padding-top: 0;
+      }
+      .ds-qa-q {
+        font-weight: 600;
+        font-size: 13px;
+        color: #0f172a;
+      }
+      .ds-qa-a {
+        font-size: 13px;
+        color: #334155;
+        margin-top: 2px;
+        line-height: 1.5;
+      }
       /* attestations grid */
-      .ds-att-intro { font-size: 13px; color: #475569; margin-bottom: 14px; }
-      .ds-att-grid { display: grid; grid-template-columns: repeat(5, 1fr);
-        gap: 10px; margin-bottom: 16px; }
-      .ds-att-tile { position: relative; padding: 14px 8px; border: 1px solid #e2e8f0;
-        border-radius: 14px; background: #fff; cursor: pointer; text-align: center; }
-      .ds-att-tile::before { content: ''; position: absolute; top: 0; left: 0; right: 0;
-        height: 6px; border-top-left-radius: 14px; border-top-right-radius: 14px;
-        background: #10B981; }
-      .ds-att-tile.ds-sev-amber::before { background: #F59E0B; }
-      .ds-att-tile.ds-sev-red::before   { background: #EF4444; }
-      .ds-att-tile:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-      .ds-att-num { font-size: 22px; font-weight: 700; color: #1a4692; margin-top: 6px; }
-      .ds-att-label { font-size: 11px; font-weight: 600; color: #334155;
-        text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; }
-      .ds-att-details { margin-bottom: 18px; }
-      .ds-att-detail { border: 1px solid #e2e8f0; border-radius: 14px; padding: 16px 18px;
-        background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.06); position: relative;
-        overflow: hidden; }
-      .ds-att-detail::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-        width: 6px; background: #10B981; }
-      .ds-att-detail.ds-sev-amber::before { background: #F59E0B; }
-      .ds-att-detail.ds-sev-red::before   { background: #EF4444; }
-      .ds-att-detail-num { font-size: 16px; font-weight: 700; color: #1a4692;
-        margin-bottom: 10px; padding-left: 4px; }
+      .ds-att-intro {
+        font-size: 13px;
+        color: #475569;
+        margin-bottom: 14px;
+      }
+      .ds-att-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .ds-att-tile {
+        position: relative;
+        padding: 14px 8px;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        background: #fff;
+        cursor: pointer;
+        text-align: center;
+      }
+      .ds-att-tile::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        background: #10b981;
+      }
+      .ds-att-tile.ds-sev-amber::before {
+        background: #f59e0b;
+      }
+      .ds-att-tile.ds-sev-red::before {
+        background: #ef4444;
+      }
+      .ds-att-tile:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+      .ds-att-num {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a4692;
+        margin-top: 6px;
+      }
+      .ds-att-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-top: 4px;
+      }
+      .ds-att-details {
+        margin-bottom: 18px;
+      }
+      .ds-att-detail {
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 16px 18px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        position: relative;
+        overflow: hidden;
+      }
+      .ds-att-detail::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: #10b981;
+      }
+      .ds-att-detail.ds-sev-amber::before {
+        background: #f59e0b;
+      }
+      .ds-att-detail.ds-sev-red::before {
+        background: #ef4444;
+      }
+      .ds-att-detail-num {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a4692;
+        margin-bottom: 10px;
+        padding-left: 4px;
+      }
       /* red flags */
-      .ds-redflags { margin-top: 18px; padding: 14px 16px; border-radius: 14px;
-        background: #FFF1F2; border: 1px solid #FECACA; }
-      .ds-redflags-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
-        color: #991B1B; margin-bottom: 10px; }
-      .ds-redflags-list { list-style: none; padding: 0; margin: 0; }
-      .ds-redflags-item { padding: 8px 0; font-size: 13px; color: #0f172a;
-        border-top: 1px solid rgba(0,0,0,0.06); line-height: 1.5; }
-      .ds-redflags-item:first-child { border-top: none; }
+      .ds-redflags {
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #fff1f2;
+        border: 1px solid #fecaca;
+      }
+      .ds-redflags-title {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: #991b1b;
+        margin-bottom: 10px;
+      }
+      .ds-redflags-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .ds-redflags-item {
+        padding: 8px 0;
+        font-size: 13px;
+        color: #0f172a;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        line-height: 1.5;
+      }
+      .ds-redflags-item:first-child {
+        border-top: none;
+      }
       /* glossary */
-      .ds-glossary { margin-top: 18px; padding: 14px 16px; border-radius: 14px;
-        background: #F8FAFC; border: 1px solid #e2e8f0; }
-      .ds-glossary-title { font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
-        color: #1a4692; margin-bottom: 10px; }
-      .ds-glossary-row { padding: 10px 0; border-top: 1px solid rgba(0,0,0,0.06); }
-      .ds-glossary-row:first-of-type { border-top: none; }
-      .ds-glossary-term { font-weight: 700; font-size: 13px; color: #0f172a; }
-      .ds-glossary-def { font-size: 13px; color: #334155; line-height: 1.5; margin-top: 2px; }
+      .ds-glossary {
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+      }
+      .ds-glossary-title {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: #1a4692;
+        margin-bottom: 10px;
+      }
+      .ds-glossary-row {
+        padding: 10px 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .ds-glossary-row:first-of-type {
+        border-top: none;
+      }
+      .ds-glossary-term {
+        font-weight: 700;
+        font-size: 13px;
+        color: #0f172a;
+      }
+      .ds-glossary-def {
+        font-size: 13px;
+        color: #334155;
+        line-height: 1.5;
+        margin-top: 2px;
+      }
       /* full walkthrough */
-      .ds-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
-        padding: 16px 18px; margin-bottom: 14px; }
-      .ds-section-title { color: #1a4692; font-size: 17px; font-weight: 700;
-        margin: 0 0 8px 0; }
-      .ds-section-summary { font-size: 14px; color: #334155; line-height: 1.55;
-        margin-bottom: 12px; }
-      .ds-twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-      .ds-section-card { background: #F8FAFC; border-radius: 12px; padding: 12px 14px; }
-      .ds-section-card-h { margin: 0 0 6px 0; font-size: 13px; font-weight: 700;
-        color: #1a4692; text-transform: uppercase; letter-spacing: 0.04em; }
-      .ds-section-card-p { margin: 0; font-size: 13px; color: #0f172a; line-height: 1.5; }
-      .ds-section-card-ul { margin: 0; padding-left: 18px; font-size: 13px;
-        color: #0f172a; line-height: 1.6; }
-      .ds-mini-section { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
-        padding: 12px 14px; margin-bottom: 10px; }
-      .ds-mini-section.ds-warn { border-color: #F59E0B; background: #FFFBEB; }
-      .ds-mini-section-h { font-weight: 600; color: #0f172a; margin-bottom: 4px; }
-      .ds-mini-section-num { color: #1a4692; font-weight: 700; margin-right: 6px; }
-      .ds-warn-badge { display: inline-block; margin-left: 8px; padding: 2px 8px;
-        border-radius: 999px; background: #F59E0B; color: #fff; font-size: 10px;
-        letter-spacing: 0.06em; font-weight: 700; }
-      .ds-mini-section-p { margin: 4px 0; font-size: 13px; color: #334155; line-height: 1.55; }
-      .ds-mini-section-ul { margin: 4px 0; padding-left: 18px; font-size: 13px;
-        color: #0f172a; line-height: 1.6; }
-      .ds-faq { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
-        padding: 12px 14px; margin-bottom: 8px; }
-      .ds-faq-q { font-weight: 600; color: #0f172a; font-size: 14px; }
-      .ds-faq-a { color: #334155; font-size: 13px; line-height: 1.55; margin-top: 4px; }
+      .ds-section {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 16px 18px;
+        margin-bottom: 14px;
+      }
+      .ds-section-title {
+        color: #1a4692;
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+      }
+      .ds-section-summary {
+        font-size: 14px;
+        color: #334155;
+        line-height: 1.55;
+        margin-bottom: 12px;
+      }
+      .ds-twocol {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .ds-section-card {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 12px 14px;
+      }
+      .ds-section-card-h {
+        margin: 0 0 6px 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a4692;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .ds-section-card-p {
+        margin: 0;
+        font-size: 13px;
+        color: #0f172a;
+        line-height: 1.5;
+      }
+      .ds-section-card-ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 13px;
+        color: #0f172a;
+        line-height: 1.6;
+      }
+      .ds-mini-section {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+      }
+      .ds-mini-section.ds-warn {
+        border-color: #f59e0b;
+        background: #fffbeb;
+      }
+      .ds-mini-section-h {
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 4px;
+      }
+      .ds-mini-section-num {
+        color: #1a4692;
+        font-weight: 700;
+        margin-right: 6px;
+      }
+      .ds-warn-badge {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #f59e0b;
+        color: #fff;
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+      }
+      .ds-mini-section-p {
+        margin: 4px 0;
+        font-size: 13px;
+        color: #334155;
+        line-height: 1.55;
+      }
+      .ds-mini-section-ul {
+        margin: 4px 0;
+        padding-left: 18px;
+        font-size: 13px;
+        color: #0f172a;
+        line-height: 1.6;
+      }
+      .ds-faq {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+      }
+      .ds-faq-q {
+        font-weight: 600;
+        color: #0f172a;
+        font-size: 14px;
+      }
+      .ds-faq-a {
+        color: #334155;
+        font-size: 13px;
+        line-height: 1.55;
+        margin-top: 4px;
+      }
       /* mobile */
       @media (max-width: 720px) {
-        .ds-att-grid { grid-template-columns: repeat(3, 1fr); }
-        .ds-twocol   { grid-template-columns: 1fr; }
-        .ds-tab      { font-size: 11px; padding: 8px 12px; }
+        .ds-att-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .ds-twocol {
+          grid-template-columns: 1fr;
+        }
+        .ds-tab {
+          font-size: 11px;
+          padding: 8px 12px;
+        }
       }
       .dash-cc-action.ds-home-tile {
         background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
@@ -345,7 +681,7 @@
         color: #1a4692;
         padding: 6px 10px;
         margin-bottom: 8px;
-        background: #E8EEFB;
+        background: #e8eefb;
         border-radius: 8px;
         display: inline-block;
       }
@@ -353,8 +689,8 @@
         padding: 14px 16px;
         margin-bottom: 12px;
         border-radius: 12px;
-        background: #F1F5F9;
-        border: 1px dashed #CBD5E1;
+        background: #f1f5f9;
+        border: 1px dashed #cbd5e1;
         color: #475569;
         font-size: 14px;
         text-align: center;
@@ -369,7 +705,10 @@
         margin-bottom: 14px !important;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
       }
-      #page-networkexplainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(-n + 4) {
+      #page-networkexplainer
+        > div:nth-child(2)
+        > div:nth-child(2)
+        > div:nth-child(-n + 4) {
         background: #fff !important;
         border: 1px solid rgba(0, 0, 0, 0.06) !important;
         border-radius: 14px !important;
@@ -380,7 +719,11 @@
         align-items: center !important;
         gap: 14px !important;
       }
-      #page-networkexplainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(-n + 4) > div:first-child {
+      #page-networkexplainer
+        > div:nth-child(2)
+        > div:nth-child(2)
+        > div:nth-child(-n + 4)
+        > div:first-child {
         background: #1a4692 !important;
         color: #fff !important;
         width: 28px !important;
@@ -395,13 +738,20 @@
         border: none !important;
         box-sizing: border-box !important;
       }
-      #page-networkexplainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(-n + 4) > div:nth-child(2) {
+      #page-networkexplainer
+        > div:nth-child(2)
+        > div:nth-child(2)
+        > div:nth-child(-n + 4)
+        > div:nth-child(2) {
         font-size: 14px !important;
         color: #0f172a !important;
         line-height: 1.5 !important;
         font-weight: 500 !important;
       }
-      #page-networkexplainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(5) {
+      #page-networkexplainer
+        > div:nth-child(2)
+        > div:nth-child(2)
+        > div:nth-child(5) {
         background: #e6f1fb !important;
         border: 1px solid #b5d4f4 !important;
         border-radius: 12px !important;
@@ -466,10 +816,22 @@
         padding: 12px 14px !important;
         margin-top: 10px !important;
       }
-      #page-networkexplainer > div:nth-child(3) > div:nth-child(4) > div:first-child,
-      #page-networkexplainer > div:nth-child(4) > div:nth-child(4) > div:first-child,
-      #page-networkexplainer > div:nth-child(5) > div:nth-child(4) > div:first-child,
-      #page-networkexplainer > div:nth-child(6) > div:nth-child(4) > div:first-child {
+      #page-networkexplainer
+        > div:nth-child(3)
+        > div:nth-child(4)
+        > div:first-child,
+      #page-networkexplainer
+        > div:nth-child(4)
+        > div:nth-child(4)
+        > div:first-child,
+      #page-networkexplainer
+        > div:nth-child(5)
+        > div:nth-child(4)
+        > div:first-child,
+      #page-networkexplainer
+        > div:nth-child(6)
+        > div:nth-child(4)
+        > div:first-child {
         font-size: 11px !important;
         font-weight: 500 !important;
         color: #64748b !important;
@@ -477,16 +839,28 @@
         text-transform: uppercase !important;
         margin: 0 0 4px !important;
       }
-      #page-networkexplainer > div:nth-child(3) > div:nth-child(4) > div:nth-child(2),
-      #page-networkexplainer > div:nth-child(4) > div:nth-child(4) > div:nth-child(2),
-      #page-networkexplainer > div:nth-child(5) > div:nth-child(4) > div:nth-child(2),
-      #page-networkexplainer > div:nth-child(6) > div:nth-child(4) > div:nth-child(2) {
+      #page-networkexplainer
+        > div:nth-child(3)
+        > div:nth-child(4)
+        > div:nth-child(2),
+      #page-networkexplainer
+        > div:nth-child(4)
+        > div:nth-child(4)
+        > div:nth-child(2),
+      #page-networkexplainer
+        > div:nth-child(5)
+        > div:nth-child(4)
+        > div:nth-child(2),
+      #page-networkexplainer
+        > div:nth-child(6)
+        > div:nth-child(4)
+        > div:nth-child(2) {
         font-size: 13px !important;
         color: #334155 !important;
         line-height: 1.55 !important;
         margin: 0 0 10px !important;
       }
-      #page-networkexplainer a[target="_blank"][href^="https://"] {
+      #page-networkexplainer a[target='_blank'][href^='https://'] {
         background: #000 !important;
         color: #fff !important;
         border: none !important;
@@ -499,12 +873,15 @@
         display: inline-block !important;
         margin-top: 8px !important;
       }
-      #page-networkexplainer a[target="_blank"][href^="https://"]:hover {
+      #page-networkexplainer a[target='_blank'][href^='https://']:hover {
         background: #1a4692 !important;
         color: #fff !important;
       }
       @media (max-width: 720px) {
-        #page-networkexplainer > div:nth-child(2) > div:nth-child(2) > div:nth-child(-n + 4) {
+        #page-networkexplainer
+          > div:nth-child(2)
+          > div:nth-child(2)
+          > div:nth-child(-n + 4) {
           padding: 10px 12px !important;
         }
         #page-networkexplainer > div:nth-child(3),
@@ -571,7 +948,9 @@
         cursor: pointer;
         text-align: left;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        transition: box-shadow 0.15s, transform 0.05s;
+        transition:
+          box-shadow 0.15s,
+          transform 0.05s;
       }
       .pff-card:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -812,7 +1191,24 @@
     </style>
   </head>
   <body>
-    <div id="cha-debug-stamp" style="position:fixed;right:6px;bottom:6px;z-index:999999;background:#111827;color:#fff;padding:4px 8px;border-radius:999px;font-size:10px;font-family:Inter,sans-serif;opacity:.85;">dbg fb7e63</div>
+    <div
+      id="cha-debug-stamp"
+      style="
+        position: fixed;
+        right: 6px;
+        bottom: 6px;
+        z-index: 999999;
+        background: #111827;
+        color: #fff;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-family: Inter, sans-serif;
+        opacity: 0.85;
+      "
+    >
+      dbg fb7e63
+    </div>
     <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <nav
@@ -830,90 +1226,88 @@
       </div>
       <div class="nav">
         <div class="nav-primary" aria-label="Primary navigation">
-        <button class="nb" onclick="showPage('dashboard')">
-          <span class="nb-icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-              />
-              <polyline points="9 22 9 12 15 12 15 22" /></svg
-          ></span>
-          <span class="nb-label">Home</span>
-          <span class="nb-dot" aria-hidden="true"></span>
-        </button>
-        <button class="nb" onclick="showPage('livecall')">
-          <span class="nb-icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-              /></svg
-          ></span>
-          <span class="nb-label">Live Call</span>
-          <span class="nb-dot" aria-hidden="true"></span>
-        </button>
-        <button class="nb" onclick="showPage('plans')">
-          <span class="nb-icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
-              />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="16" x2="8" y1="13" y2="13" />
-              <line x1="16" x2="8" y1="17" y2="17" />
-              <line x1="10" x2="8" y1="9" y2="9" /></svg
-          ></span>
-          <span class="nb-label">Plans</span>
-          <span class="nb-dot" aria-hidden="true"></span>
-        </button>
-        <button class="nb" onclick="showPage('salestracker')">
-          <span class="nb-icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-              <polyline points="16 7 22 7 22 13" /></svg
-          ></span>
-          <span class="nb-label">Sales Tracker</span>
-          <span class="nb-dot" aria-hidden="true"></span>
-        </button>
+          <button class="nb" onclick="showPage('dashboard')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" /></svg
+            ></span>
+            <span class="nb-label">Home</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
+          <button class="nb" onclick="showPage('livecall')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                /></svg
+            ></span>
+            <span class="nb-label">Live Call</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
+          <button class="nb" onclick="showPage('plans')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" x2="8" y1="13" y2="13" />
+                <line x1="16" x2="8" y1="17" y2="17" />
+                <line x1="10" x2="8" y1="9" y2="9" /></svg
+            ></span>
+            <span class="nb-label">Plans</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
+          <button class="nb" onclick="showPage('salestracker')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                <polyline points="16 7 22 7 22 13" /></svg
+            ></span>
+            <span class="nb-label">Sales Tracker</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
         </div>
         <div class="nav-divider" role="presentation"></div>
         <button class="nb" onclick="showPage('scripts')">
@@ -953,9 +1347,7 @@
               stroke-linejoin="round"
             >
               <circle cx="12" cy="12" r="10" />
-              <path
-                d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"
-              />
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
               <path d="M2 12h20" /></svg
           ></span>
           <span class="nb-label">Network Guide</span>
@@ -1301,17 +1693,27 @@
             <div class="academy-container" id="academyContainer">
               <div class="academy-welcome">
                 <div class="welcome-text">
-                  <p style="font-size:14px;opacity:0.85;margin-bottom:4px;">Welcome to</p>
+                  <p style="font-size: 14px; opacity: 0.85; margin-bottom: 4px">
+                    Welcome to
+                  </p>
                   <h2>CHA Academy</h2>
                   <p>5 days to your first sale. One step at a time.</p>
                 </div>
                 <div class="progress-ring-container">
                   <svg class="progress-ring" viewBox="0 0 100 100">
-                    <circle class="progress-ring-bg" cx="50" cy="50" r="42"/>
-                    <circle class="progress-ring-fill" id="academyProgressRing" cx="50" cy="50" r="42"/>
+                    <circle class="progress-ring-bg" cx="50" cy="50" r="42" />
+                    <circle
+                      class="progress-ring-fill"
+                      id="academyProgressRing"
+                      cx="50"
+                      cy="50"
+                      r="42"
+                    />
                   </svg>
                   <div class="progress-center">
-                    <span class="progress-percent" id="academyProgressPercent">0%</span>
+                    <span class="progress-percent" id="academyProgressPercent"
+                      >0%</span
+                    >
                     <span class="progress-label">complete</span>
                   </div>
                 </div>
@@ -1324,20 +1726,131 @@
               <div class="day-content" id="day5Content"></div>
             </div>
             <div class="benefits-bubble">
-              <button class="benefits-bubble-btn" id="benefitsBubbleBtn" onclick="toggleBenefitsPanel()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+              <button
+                class="benefits-bubble-btn"
+                id="benefitsBubbleBtn"
+                onclick="toggleBenefitsPanel()"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                  />
+                </svg>
               </button>
             </div>
             <div class="benefits-panel" id="benefitsPanel">
               <div class="benefits-panel-header">
-                <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg> Quick Reference</h3>
-                <button class="benefits-panel-close" onclick="toggleBenefitsPanel()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+                <h3>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2"
+                  >
+                    <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                    <path
+                      d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                    />
+                  </svg>
+                  Quick Reference
+                </h3>
+                <button
+                  class="benefits-panel-close"
+                  onclick="toggleBenefitsPanel()"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2"
+                  >
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </button>
               </div>
               <div class="benefits-tabs">
-                <button class="benefits-tab active" onclick="switchBenefitsTab('scripts')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg> Scripts</button>
-                <button class="benefits-tab" onclick="switchBenefitsTab('plans')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg> Plans</button>
-                <button class="benefits-tab" onclick="switchBenefitsTab('objections')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Rebuttals</button>
-                <button class="benefits-tab" onclick="switchBenefitsTab('numbers')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg> Numbers</button>
+                <button
+                  class="benefits-tab active"
+                  onclick="switchBenefitsTab('scripts')"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+                    />
+                    <path d="M14 2v6h6" />
+                  </svg>
+                  Scripts
+                </button>
+                <button
+                  class="benefits-tab"
+                  onclick="switchBenefitsTab('plans')"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                  </svg>
+                  Plans
+                </button>
+                <button
+                  class="benefits-tab"
+                  onclick="switchBenefitsTab('objections')"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                  Rebuttals
+                </button>
+                <button
+                  class="benefits-tab"
+                  onclick="switchBenefitsTab('numbers')"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
+                    />
+                  </svg>
+                  Numbers
+                </button>
               </div>
               <div class="benefits-content" id="benefitsContent"></div>
             </div>
@@ -1356,25 +1869,67 @@
           <div id="page-callaudit" class="page" style="display: none"></div>
           <div id="page-docusign" class="page" style="display: none">
             <div class="ds-walkthrough-group">
-              <button class="ds-walkthrough-trigger" type="button" aria-expanded="true">
+              <button
+                class="ds-walkthrough-trigger"
+                type="button"
+                aria-expanded="true"
+              >
                 <span>SmartChoice DocuSign Walkthrough</span>
                 <span class="ds-chevron" aria-hidden="true"></span>
               </button>
               <div class="ds-walkthrough-body">
                 <div class="ds-walkthrough-search">
-                  <input type="text" id="dsSearchInput"
-                         placeholder="Search all tabs (typos OK)..."
-                         autocomplete="off">
+                  <input
+                    type="text"
+                    id="dsSearchInput"
+                    placeholder="Search all tabs (typos OK)..."
+                    autocomplete="off"
+                  />
                 </div>
                 <div class="ds-walkthrough-tabs" role="tablist">
-                  <button class="ds-tab is-active" data-tab="ask" role="tab" aria-selected="true">WHAT CLIENTS ASK MOST</button>
-                  <button class="ds-tab" data-tab="att" role="tab" aria-selected="false">10 ADDITIONAL MEMBER ATTESTATIONS</button>
-                  <button class="ds-tab" data-tab="full" role="tab" aria-selected="false">FULL WALKTHROUGH</button>
+                  <button
+                    class="ds-tab is-active"
+                    data-tab="ask"
+                    role="tab"
+                    aria-selected="true"
+                  >
+                    WHAT CLIENTS ASK MOST
+                  </button>
+                  <button
+                    class="ds-tab"
+                    data-tab="att"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    10 ADDITIONAL MEMBER ATTESTATIONS
+                  </button>
+                  <button
+                    class="ds-tab"
+                    data-tab="full"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    FULL WALKTHROUGH
+                  </button>
                 </div>
                 <div class="ds-tab-panels">
-                  <div class="ds-panel is-active" data-panel="ask"  role="tabpanel"></div>
-                  <div class="ds-panel"            data-panel="att" role="tabpanel" hidden></div>
-                  <div class="ds-panel"            data-panel="full" role="tabpanel" hidden></div>
+                  <div
+                    class="ds-panel is-active"
+                    data-panel="ask"
+                    role="tabpanel"
+                  ></div>
+                  <div
+                    class="ds-panel"
+                    data-panel="att"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                  <div
+                    class="ds-panel"
+                    data-panel="full"
+                    role="tabpanel"
+                    hidden
+                  ></div>
                 </div>
                 <div class="ds-search-results" hidden></div>
               </div>
@@ -1586,35 +2141,55 @@
         <button
           type="button"
           class="br-qbtn"
-          onclick="brQuick('What are all waiting periods on this plan (sickness, injury, hospitalization, and any service-specific waits)? List each with exact timing.')"
+          onclick="
+            brQuick(
+              'What are all waiting periods on this plan (sickness, injury, hospitalization, and any service-specific waits)? List each with exact timing.'
+            )
+          "
         >
           Waiting Periods
         </button>
         <button
           type="button"
           class="br-qbtn"
-          onclick="brQuick('What is the pre-existing condition rule on this plan? Include look-back period, exclusion length, and which benefits it applies to.')"
+          onclick="
+            brQuick(
+              'What is the pre-existing condition rule on this plan? Include look-back period, exclusion length, and which benefits it applies to.'
+            )
+          "
         >
           Pre-Ex Rule
         </button>
         <button
           type="button"
           class="br-qbtn"
-          onclick="brQuick('How does prescription drug coverage work on this plan? Include retail vs mail order, formulary tiers, copays, specialty drugs, discount programs, and any monthly limits.')"
+          onclick="
+            brQuick(
+              'How does prescription drug coverage work on this plan? Include retail vs mail order, formulary tiers, copays, specialty drugs, discount programs, and any monthly limits.'
+            )
+          "
         >
           RX Search
         </button>
         <button
           type="button"
           class="br-qbtn"
-          onclick="brQuick('How are emergency room visits covered versus urgent care on this plan? Include copays or benefit amounts, visit limits, and when the member should use ER vs urgent care per the plan document.')"
+          onclick="
+            brQuick(
+              'How are emergency room visits covered versus urgent care on this plan? Include copays or benefit amounts, visit limits, and when the member should use ER vs urgent care per the plan document.'
+            )
+          "
         >
           ER vs Urgent Care
         </button>
         <button
           type="button"
           class="br-qbtn"
-          onclick="brQuick('The prospect says their spouse does not want this plan. Based ONLY on this plan document, what are accurate, compliant points to review (covered benefits, limits, exclusions, and network rules) so the spouse can make an informed decision?')"
+          onclick="
+            brQuick(
+              'The prospect says their spouse does not want this plan. Based ONLY on this plan document, what are accurate, compliant points to review (covered benefits, limits, exclusions, and network rules) so the spouse can make an informed decision?'
+            )
+          "
         >
           Spouse Objection
         </button>
@@ -1692,7 +2267,7 @@
     <script src="js/sales-tracker.js?v=1780240000000"></script>
     <script src="js/app.js?v=1779700000000"></script>
     <script>
-      (function() {
+      (function () {
         var data = window.docusignWalkthroughData;
         if (!data) return;
         var SYN = data.searchSynonyms || {};
@@ -1700,7 +2275,7 @@
           if (!text) return '';
           var lower = String(text).toLowerCase();
           var extra = [];
-          Object.keys(SYN).forEach(function(key) {
+          Object.keys(SYN).forEach(function (key) {
             if (lower.indexOf(key) !== -1) {
               extra.push(SYN[key].join(' '));
             }
@@ -1710,15 +2285,21 @@
         function expandWithSynonyms(query) {
           var q = (query || '').trim().toLowerCase();
           if (!q) return [q];
-          var syn = (window.docusignWalkthroughData &&
-                     window.docusignWalkthroughData.searchSynonyms) || {};
+          var syn =
+            (window.docusignWalkthroughData &&
+              window.docusignWalkthroughData.searchSynonyms) ||
+            {};
           var terms = [q];
           if (syn[q]) {
-            syn[q].forEach(function(s) { terms.push(String(s).toLowerCase()); });
+            syn[q].forEach(function (s) {
+              terms.push(String(s).toLowerCase());
+            });
           }
-          Object.keys(syn).forEach(function(key) {
+          Object.keys(syn).forEach(function (key) {
             if (key !== q && q.indexOf(key) !== -1) {
-              syn[key].forEach(function(s) { terms.push(String(s).toLowerCase()); });
+              syn[key].forEach(function (s) {
+                terms.push(String(s).toLowerCase());
+              });
             }
           });
           return terms;
@@ -1735,7 +2316,11 @@
             var curr = [i];
             for (j = 1; j <= b.length; j++) {
               var cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
-              curr[j] = Math.min(curr[j - 1] + 1, prev[j] + 1, prev[j - 1] + cost);
+              curr[j] = Math.min(
+                curr[j - 1] + 1,
+                prev[j] + 1,
+                prev[j - 1] + cost
+              );
             }
             prev = curr;
           }
@@ -1768,8 +2353,16 @@
           att: group.querySelector('[data-panel="att"]'),
           full: group.querySelector('[data-panel="full"]')
         };
-        if (!trigger || !body || !search || !panels.ask || !panels.att || !panels.full) return;
-        trigger.addEventListener('click', function() {
+        if (
+          !trigger ||
+          !body ||
+          !search ||
+          !panels.ask ||
+          !panels.att ||
+          !panels.full
+        )
+          return;
+        trigger.addEventListener('click', function () {
           var open = trigger.getAttribute('aria-expanded') === 'true';
           trigger.setAttribute('aria-expanded', String(!open));
           if (open) {
@@ -1778,15 +2371,15 @@
             body.removeAttribute('hidden');
           }
         });
-        tabs.forEach(function(tab) {
-          tab.addEventListener('click', function() {
-            tabs.forEach(function(t) {
+        tabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            tabs.forEach(function (t) {
               t.classList.remove('is-active');
               t.setAttribute('aria-selected', 'false');
             });
             tab.classList.add('is-active');
             tab.setAttribute('aria-selected', 'true');
-            Object.keys(panels).forEach(function(k) {
+            Object.keys(panels).forEach(function (k) {
               panels[k].classList.remove('is-active');
               panels[k].setAttribute('hidden', '');
             });
@@ -1807,7 +2400,8 @@
         }
         function buildExpandableCard(opts) {
           var card = el('div', 'ds-card ds-sev-' + (opts.severity || 'green'));
-          if (opts.searchable) card.setAttribute('data-searchable', opts.searchable);
+          if (opts.searchable)
+            card.setAttribute('data-searchable', opts.searchable);
           var header = el('button', 'ds-card-header');
           header.setAttribute('type', 'button');
           header.setAttribute('aria-expanded', 'false');
@@ -1824,11 +2418,11 @@
           header.appendChild(el('span', 'ds-card-toggle', '+'));
           var content = el('div', 'ds-card-body');
           content.setAttribute('hidden', '');
-          (opts.sections || []).forEach(function(s) {
+          (opts.sections || []).forEach(function (s) {
             var box = el('div', 'ds-box ds-box-' + s.kind);
             box.appendChild(el('div', 'ds-box-label', s.label));
             if (s.kind === 'pushback' && Array.isArray(s.body)) {
-              s.body.forEach(function(qa) {
+              s.body.forEach(function (qa) {
                 var qaWrap = el('div', 'ds-qa');
                 qaWrap.appendChild(el('div', 'ds-qa-q', 'Q: ' + qa.q));
                 qaWrap.appendChild(el('div', 'ds-qa-a', 'A: ' + qa.a));
@@ -1839,7 +2433,7 @@
             }
             content.appendChild(box);
           });
-          header.addEventListener('click', function() {
+          header.addEventListener('click', function () {
             var open = header.getAttribute('aria-expanded') === 'true';
             header.setAttribute('aria-expanded', String(!open));
             if (open) {
@@ -1857,23 +2451,39 @@
         function renderAsk() {
           var p = panels.ask;
           p.innerHTML = '';
-          data.whatClientsAsk.forEach(function(item) {
+          data.whatClientsAsk.forEach(function (item) {
             var card = buildExpandableCard({
               severity: item.severity,
               title: item.title,
               oneLiner: item.oneLiner,
-              searchable: expandSearchableText(item.title + ' ' + item.oneLiner + ' ' + item.sayThis),
+              searchable: expandSearchableText(
+                item.title + ' ' + item.oneLiner + ' ' + item.sayThis
+              ),
               sections: [
-                { label: 'SAY THIS TO YOUR CLIENT', kind: 'sayThis', body: item.sayThis },
-                { label: 'IF THEY PUSH BACK', kind: 'pushback', body: item.pushback }
+                {
+                  label: 'SAY THIS TO YOUR CLIENT',
+                  kind: 'sayThis',
+                  body: item.sayThis
+                },
+                {
+                  label: 'IF THEY PUSH BACK',
+                  kind: 'pushback',
+                  body: item.pushback
+                }
               ]
             });
             p.appendChild(card);
           });
           var rfWrap = el('div', 'ds-redflags');
-          rfWrap.appendChild(el('div', 'ds-redflags-title', 'AGENT RED FLAGS -- CHECK BEFORE SUBMISSION'));
+          rfWrap.appendChild(
+            el(
+              'div',
+              'ds-redflags-title',
+              'AGENT RED FLAGS -- CHECK BEFORE SUBMISSION'
+            )
+          );
           var ul = el('ul', 'ds-redflags-list');
-          data.redFlagsChecklist.forEach(function(rf) {
+          data.redFlagsChecklist.forEach(function (rf) {
             var li = el('li', 'ds-redflags-item');
             li.setAttribute('data-searchable', expandSearchableText(rf));
             li.textContent = rf;
@@ -1885,17 +2495,32 @@
         function renderAttestations() {
           var p = panels.att;
           p.innerHTML = '';
-          var intro = el('div', 'ds-att-intro', 'Tap any number to see the DocuSign quote, plain-English meaning, what to say, and how to handle pushback.');
+          var intro = el(
+            'div',
+            'ds-att-intro',
+            'Tap any number to see the DocuSign quote, plain-English meaning, what to say, and how to handle pushback.'
+          );
           p.appendChild(intro);
           var grid = el('div', 'ds-att-grid');
           var details = el('div', 'ds-att-details');
-          data.attestations.forEach(function(a) {
+          data.attestations.forEach(function (a) {
             var tile = el('button', 'ds-att-tile ds-sev-' + a.severity);
             tile.setAttribute('type', 'button');
-            tile.setAttribute('data-searchable', expandSearchableText(a.title + ' ' + a.shortLabel + ' ' + a.whatItMeans + ' ' + a.docusignText));
+            tile.setAttribute(
+              'data-searchable',
+              expandSearchableText(
+                a.title +
+                  ' ' +
+                  a.shortLabel +
+                  ' ' +
+                  a.whatItMeans +
+                  ' ' +
+                  a.docusignText
+              )
+            );
             tile.appendChild(el('div', 'ds-att-num', String(a.number)));
             tile.appendChild(el('div', 'ds-att-label', a.shortLabel));
-            tile.addEventListener('click', function() {
+            tile.addEventListener('click', function () {
               renderAttDetail(a, details);
               details.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
@@ -1904,10 +2529,19 @@
           p.appendChild(grid);
           p.appendChild(details);
           var glossWrap = el('div', 'ds-glossary');
-          glossWrap.appendChild(el('div', 'ds-glossary-title', 'GLOSSARY -- TRANSLATE THE LEGAL STUFF'));
-          data.glossary.forEach(function(g) {
+          glossWrap.appendChild(
+            el(
+              'div',
+              'ds-glossary-title',
+              'GLOSSARY -- TRANSLATE THE LEGAL STUFF'
+            )
+          );
+          data.glossary.forEach(function (g) {
             var row = el('div', 'ds-glossary-row');
-            row.setAttribute('data-searchable', expandSearchableText(g.term + ' ' + g.def));
+            row.setAttribute(
+              'data-searchable',
+              expandSearchableText(g.term + ' ' + g.def)
+            );
             row.appendChild(el('div', 'ds-glossary-term', g.term));
             row.appendChild(el('div', 'ds-glossary-def', g.def));
             glossWrap.appendChild(row);
@@ -1917,10 +2551,25 @@
         function renderAttDetail(a, mount) {
           mount.innerHTML = '';
           var card = el('div', 'ds-att-detail ds-sev-' + a.severity);
-          card.setAttribute('data-searchable', expandSearchableText(a.title + ' ' + a.docusignText + ' ' + a.whatItMeans + ' ' + a.sayToClient));
-          card.appendChild(el('div', 'ds-att-detail-num', '#' + a.number + ' -- ' + a.title));
+          card.setAttribute(
+            'data-searchable',
+            expandSearchableText(
+              a.title +
+                ' ' +
+                a.docusignText +
+                ' ' +
+                a.whatItMeans +
+                ' ' +
+                a.sayToClient
+            )
+          );
+          card.appendChild(
+            el('div', 'ds-att-detail-num', '#' + a.number + ' -- ' + a.title)
+          );
           var quote = el('div', 'ds-box ds-box-quote');
-          quote.appendChild(el('div', 'ds-box-label', 'WHAT THE DOCUSIGN SAYS'));
+          quote.appendChild(
+            el('div', 'ds-box-label', 'WHAT THE DOCUSIGN SAYS')
+          );
           quote.appendChild(el('div', 'ds-box-text', a.docusignText));
           card.appendChild(quote);
           var means = el('div', 'ds-box ds-box-means');
@@ -1933,7 +2582,7 @@
           card.appendChild(say);
           var push = el('div', 'ds-box ds-box-pushback');
           push.appendChild(el('div', 'ds-box-label', 'IF THEY PUSH BACK'));
-          a.pushback.forEach(function(qa) {
+          a.pushback.forEach(function (qa) {
             var qaWrap = el('div', 'ds-qa');
             qaWrap.appendChild(el('div', 'ds-qa-q', 'Q: ' + qa.q));
             qaWrap.appendChild(el('div', 'ds-qa-a', 'A: ' + qa.a));
@@ -1950,54 +2599,78 @@
           woCard.appendChild(el('h3', 'ds-section-title', wo.title));
           woCard.appendChild(el('p', 'ds-section-summary', wo.summary));
           var woGrid = el('div', 'ds-twocol');
-          wo.cards.forEach(function(c) {
+          wo.cards.forEach(function (c) {
             var box = el('div', 'ds-section-card');
             box.appendChild(el('h4', 'ds-section-card-h', c.heading));
             if (c.body) box.appendChild(el('p', 'ds-section-card-p', c.body));
             if (c.bullets) {
               var ul = el('ul', 'ds-section-card-ul');
-              c.bullets.forEach(function(b) { ul.appendChild(el('li', null, b)); });
+              c.bullets.forEach(function (b) {
+                ul.appendChild(el('li', null, b));
+              });
               box.appendChild(ul);
             }
             woGrid.appendChild(box);
           });
           woCard.appendChild(woGrid);
-          woCard.setAttribute('data-searchable', expandSearchableText(wo.title + ' ' + wo.summary));
+          woCard.setAttribute(
+            'data-searchable',
+            expandSearchableText(wo.title + ' ' + wo.summary)
+          );
           p.appendChild(woCard);
           var pp = data.planPositioning;
           var ppCard = el('div', 'ds-section');
           ppCard.appendChild(el('h3', 'ds-section-title', pp.title));
           ppCard.appendChild(el('p', 'ds-section-summary', pp.intro));
           var ppGrid = el('div', 'ds-twocol');
-          pp.cards.forEach(function(c) {
+          pp.cards.forEach(function (c) {
             var box = el('div', 'ds-section-card');
             box.appendChild(el('h4', 'ds-section-card-h', c.heading));
             if (c.bullets) {
               var ul = el('ul', 'ds-section-card-ul');
-              c.bullets.forEach(function(b) { ul.appendChild(el('li', null, b)); });
+              c.bullets.forEach(function (b) {
+                ul.appendChild(el('li', null, b));
+              });
               box.appendChild(ul);
             }
             ppGrid.appendChild(box);
           });
           ppCard.appendChild(ppGrid);
-          ppCard.setAttribute('data-searchable', expandSearchableText(pp.title + ' ' + pp.intro));
+          ppCard.setAttribute(
+            'data-searchable',
+            expandSearchableText(pp.title + ' ' + pp.intro)
+          );
           p.appendChild(ppCard);
           var bp = data.bigPicture;
           var bpCard = el('div', 'ds-section');
           bpCard.appendChild(el('h3', 'ds-section-title', bp.title));
           bpCard.appendChild(el('p', 'ds-section-summary', bp.summary));
           var bpUl = el('ul', 'ds-section-card-ul');
-          bp.points.forEach(function(pt) { bpUl.appendChild(el('li', null, pt)); });
+          bp.points.forEach(function (pt) {
+            bpUl.appendChild(el('li', null, pt));
+          });
           bpCard.appendChild(bpUl);
-          bpCard.setAttribute('data-searchable', expandSearchableText(bp.title + ' ' + bp.summary));
+          bpCard.setAttribute(
+            'data-searchable',
+            expandSearchableText(bp.title + ' ' + bp.summary)
+          );
           p.appendChild(bpCard);
-          var secsHeader = el('h3', 'ds-section-title', 'Section-by-Section Breakdown (25)');
+          var secsHeader = el(
+            'h3',
+            'ds-section-title',
+            'Section-by-Section Breakdown (25)'
+          );
           p.appendChild(secsHeader);
-          data.sections.forEach(function(s) {
-            var card = el('div', 'ds-mini-section' + (s.warning ? ' ds-warn' : ''));
+          data.sections.forEach(function (s) {
+            var card = el(
+              'div',
+              'ds-mini-section' + (s.warning ? ' ds-warn' : '')
+            );
             var searchTxt = s.title + ' ';
             var head = el('div', 'ds-mini-section-h');
-            head.appendChild(el('span', 'ds-mini-section-num', String(s.number) + '.'));
+            head.appendChild(
+              el('span', 'ds-mini-section-num', String(s.number) + '.')
+            );
             head.appendChild(el('span', 'ds-mini-section-t', s.title));
             card.appendChild(head);
             if (s.body) {
@@ -2010,7 +2683,7 @@
             }
             if (s.bullets) {
               var ul = el('ul', 'ds-mini-section-ul');
-              s.bullets.forEach(function(b) {
+              s.bullets.forEach(function (b) {
                 ul.appendChild(el('li', null, b));
                 searchTxt += b + ' ';
               });
@@ -2020,21 +2693,27 @@
               card.appendChild(el('p', 'ds-mini-section-p', s.outro));
               searchTxt += s.outro + ' ';
             }
-            card.setAttribute('data-searchable', expandSearchableText(searchTxt));
+            card.setAttribute(
+              'data-searchable',
+              expandSearchableText(searchTxt)
+            );
             p.appendChild(card);
           });
           var faqHeader = el('h3', 'ds-section-title', 'Top Client Questions');
           p.appendChild(faqHeader);
-          data.faq.forEach(function(qa) {
+          data.faq.forEach(function (qa) {
             var card = el('div', 'ds-faq');
             card.appendChild(el('div', 'ds-faq-q', qa.q));
             card.appendChild(el('div', 'ds-faq-a', qa.a));
-            card.setAttribute('data-searchable', expandSearchableText(qa.q + ' ' + qa.a));
+            card.setAttribute(
+              'data-searchable',
+              expandSearchableText(qa.q + ' ' + qa.a)
+            );
             p.appendChild(card);
           });
         }
         function clearTabBadges() {
-          tabs.forEach(function(tab) {
+          tabs.forEach(function (tab) {
             var baseLabel = tab.getAttribute('data-base-label');
             if (baseLabel) tab.textContent = baseLabel;
           });
@@ -2048,7 +2727,7 @@
           var activeTab = group.querySelector('.ds-tab.is-active');
           var key = activeTab ? activeTab.getAttribute('data-tab') : 'ask';
           if (!panels[key]) key = 'ask';
-          Object.keys(panels).forEach(function(k) {
+          Object.keys(panels).forEach(function (k) {
             if (k === key) {
               panels[k].removeAttribute('hidden');
               panels[k].classList.add('is-active');
@@ -2057,7 +2736,7 @@
               panels[k].classList.remove('is-active');
             }
           });
-          tabs.forEach(function(t) {
+          tabs.forEach(function (t) {
             var tKey = t.getAttribute('data-tab');
             if (tKey === key) {
               t.classList.add('is-active');
@@ -2075,16 +2754,19 @@
           var terms = expandWithSynonyms(q);
           var results = group.querySelector('.ds-search-results');
           if (!results) return;
-          if (!q) { exitSearchMode(); return; }
+          if (!q) {
+            exitSearchMode();
+            return;
+          }
           var allMatches = { ask: [], att: [], full: [] };
-          Object.keys(panels).forEach(function(key) {
+          Object.keys(panels).forEach(function (key) {
             var panel = panels[key];
             if (!panel) return;
             var nodes = panel.querySelectorAll('[data-searchable]');
-            nodes.forEach(function(n) {
+            nodes.forEach(function (n) {
               var hay = (n.getAttribute('data-searchable') || '').toLowerCase();
               if (!hay) return;
-              var hit = terms.some(function(t) {
+              var hit = terms.some(function (t) {
                 if (!t) return false;
                 if (hay.indexOf(t) !== -1) return true;
                 return fuzzyIncludes(hay, t);
@@ -2094,14 +2776,16 @@
               }
             });
           });
-          Object.keys(panels).forEach(function(key) {
+          Object.keys(panels).forEach(function (key) {
             panels[key].setAttribute('hidden', '');
             panels[key].classList.remove('is-active');
           });
           if (tabsBar) tabsBar.style.display = 'none';
           results.innerHTML = '';
-          var totalCount = allMatches.ask.length + allMatches.att.length +
-                           allMatches.full.length;
+          var totalCount =
+            allMatches.ask.length +
+            allMatches.att.length +
+            allMatches.full.length;
           if (totalCount === 0) {
             var empty = document.createElement('div');
             empty.className = 'ds-search-empty';
@@ -2113,21 +2797,24 @@
               att: '10 ADDITIONAL MEMBER ATTESTATIONS',
               full: 'FULL WALKTHROUGH'
             };
-            Object.keys(allMatches).forEach(function(key) {
+            Object.keys(allMatches).forEach(function (key) {
               if (!allMatches[key].length) return;
               var groupBlock = document.createElement('div');
               groupBlock.className = 'ds-search-group';
               var h = document.createElement('div');
               h.className = 'ds-search-group-heading';
-              h.textContent = headings[key] + ' (' + allMatches[key].length + ')';
+              h.textContent =
+                headings[key] + ' (' + allMatches[key].length + ')';
               groupBlock.appendChild(h);
-              allMatches[key].forEach(function(node) { groupBlock.appendChild(node); });
+              allMatches[key].forEach(function (node) {
+                groupBlock.appendChild(node);
+              });
               results.appendChild(groupBlock);
             });
           }
           results.removeAttribute('hidden');
         }
-        search.addEventListener('input', function() {
+        search.addEventListener('input', function () {
           var v = (search.value || '').trim();
           if (!v) {
             exitSearchMode();
@@ -2178,9 +2865,3 @@
     </script>
   </body>
 </html>
-
-
-
-
-
-

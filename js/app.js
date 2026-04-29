@@ -577,7 +577,10 @@ function chaDashRecentSave(arr) {
     if (typeof chaSet === 'function') {
       chaSet(CHA_DASH_RECENT_KEY, arr.slice(0, 5));
     } else {
-      localStorage.setItem(CHA_DASH_RECENT_KEY, JSON.stringify(arr.slice(0, 5)));
+      localStorage.setItem(
+        CHA_DASH_RECENT_KEY,
+        JSON.stringify(arr.slice(0, 5))
+      );
     }
   } catch (_e3) {}
 }
@@ -616,11 +619,13 @@ function chaDashFmtMoney(n) {
 function chaDashWeeklyProgressHtml() {
   var tiers = window.CHA_BONUS_TIERS_FOR_DASH || [];
   var bundle =
-    typeof chaAnalyticsReadBundle === 'function' ? chaAnalyticsReadBundle() : null;
+    typeof chaAnalyticsReadBundle === 'function'
+      ? chaAnalyticsReadBundle()
+      : null;
   var deals = bundle && bundle.stats ? Number(bundle.stats.weekDeals) || 0 : 0;
-  var addons = bundle && bundle.stats ? Number(bundle.stats.weekAddons) || 0 : 0;
-  var prem =
-    bundle && bundle.stats ? Number(bundle.stats.weekSales || 0) : 0;
+  var addons =
+    bundle && bundle.stats ? Number(bundle.stats.weekAddons) || 0 : 0;
+  var prem = bundle && bundle.stats ? Number(bundle.stats.weekSales || 0) : 0;
   var next = null;
   var activeIdx = -1;
   var ti;
@@ -645,7 +650,9 @@ function chaDashWeeklyProgressHtml() {
   var pct = topTier
     ? Math.min(
         100,
-        Math.round(Math.min(deals / topTier.deals, addons / topTier.addons) * 100)
+        Math.round(
+          Math.min(deals / topTier.deals, addons / topTier.addons) * 100
+        )
       )
     : 0;
   var markerHtml = '<div class="dash-cc-tier-markers">';
@@ -716,7 +723,9 @@ function chaDashWidgetsHtml() {
     ic('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>') +
     '<span>Find a Plan</span></button>' +
     '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'scripts\',\'planscripts\')">' +
-    ic('<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/>') +
+    ic(
+      '<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/>'
+    ) +
     '<span>Scripts</span></button>' +
     '<button type="button" class="dash-cc-action" onclick="chaDashOpenPhcsSearch()">' +
     ic(globe) +
@@ -725,7 +734,9 @@ function chaDashWidgetsHtml() {
     ic(globe) +
     '<span>FirstHealth Search</span></button>' +
     '<button type="button" class="dash-cc-action ds-home-tile" onclick="goToDocusignWalkthrough(event)">' +
-    ic('<path d="M3 4h13a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z"/><path d="M7 8h7M7 12h7"/>') +
+    ic(
+      '<path d="M3 4h13a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z"/><path d="M7 8h7M7 12h7"/>'
+    ) +
     '<span>DocuSign Walkthrough</span></button>' +
     '</div></div>' +
     '</div>'
@@ -737,10 +748,12 @@ function goToDocusignWalkthrough(e) {
   if (typeof showPage === 'function') showPage('compliance');
   else if (typeof navigateTo === 'function') navigateTo('compliance');
   else {
-    var comp = document.querySelector('[data-page="compliance"], a[href="#compliance"]');
+    var comp = document.querySelector(
+      '[data-page="compliance"], a[href="#compliance"]'
+    );
     if (comp && typeof comp.click === 'function') comp.click();
   }
-  setTimeout(function() {
+  setTimeout(function () {
     var pill = document.querySelector('[data-subtab="docusign"]');
     if (pill && typeof pill.click === 'function') pill.click();
     var trigger = document.querySelector('.ds-walkthrough-trigger');
@@ -809,15 +822,16 @@ function chaDashSuggestUpdate(q) {
       scored.push({ p: p, sc: 0 });
       continue;
     }
-    if (typeof fuzzyMatch === 'function' && v.length >= 3 && fuzzyMatch(v, nm)) {
+    if (
+      typeof fuzzyMatch === 'function' &&
+      v.length >= 3 &&
+      fuzzyMatch(v, nm)
+    ) {
       scored.push({ p: p, sc: 1 });
     }
   }
   scored.sort(function (a, b) {
-    return (
-      a.sc - b.sc ||
-      String(a.p.name).length - String(b.p.name).length
-    );
+    return a.sc - b.sc || String(a.p.name).length - String(b.p.name).length;
   });
   var out = scored.slice(0, 8).map(function (x) {
     return x.p;
@@ -904,7 +918,10 @@ function chaDashWireLookupEnhancements() {
     }, 180);
   });
   si.addEventListener('keydown', function (e) {
-    if (!_dashSuggestList.length || !document.getElementById('dashLookupSuggest'))
+    if (
+      !_dashSuggestList.length ||
+      !document.getElementById('dashLookupSuggest')
+    )
       return;
     var box = document.getElementById('dashLookupSuggest');
     if (!box || box.style.display === 'none') return;
@@ -983,7 +1000,10 @@ function _dashLookupAllPlans() {
   if (typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return [];
   var out = POLICY_DOCS.filter(function (p) {
     if (!p || !String(p.name || '').trim()) return false;
-    if (typeof _pdIsDisplayablePlan === 'function' && !_pdIsDisplayablePlan(p)) {
+    if (
+      typeof _pdIsDisplayablePlan === 'function' &&
+      !_pdIsDisplayablePlan(p)
+    ) {
       return false;
     }
     return true;
@@ -996,10 +1016,16 @@ function _dashLookupAllPlans() {
 
 function _dashLookupFilteredPlans() {
   var all = _dashLookupAllPlans();
-  var q = String(_dashLookupState.searchQuery || '').trim().toLowerCase();
+  var q = String(_dashLookupState.searchQuery || '')
+    .trim()
+    .toLowerCase();
   if (!q) return all;
   return all.filter(function (p) {
-    return String(p.name || '').toLowerCase().indexOf(q) !== -1;
+    return (
+      String(p.name || '')
+        .toLowerCase()
+        .indexOf(q) !== -1
+    );
   });
 }
 
@@ -1067,7 +1093,9 @@ function _dashLookupGridInnerHtml(selected) {
 function _dashLookupSyncSelectAndGrid() {
   var sel = document.getElementById('dashPlanLookupSelect');
   var grid = document.getElementById('dashLookupGrid');
-  var provBtn = document.querySelector('#dashPlanLookupMount .dash-lookup-provider');
+  var provBtn = document.querySelector(
+    '#dashPlanLookupMount .dash-lookup-provider'
+  );
   var plans = _dashLookupFilteredPlans();
   if (!plans.length) {
     _dashLookupState.planId = '';
@@ -1123,7 +1151,8 @@ function renderDashboardLookupCard() {
   html += '</div>';
   html +=
     '<div id="dashLookupRecentChips" class="dash-lookup-recent-chips" style="display:none"></div>';
-  html += '<select id="dashPlanLookupSelect" class="dash-lookup-select" onchange="dashLookupSelectPlan(this.value)">';
+  html +=
+    '<select id="dashPlanLookupSelect" class="dash-lookup-select" onchange="dashLookupSelectPlan(this.value)">';
   plans.forEach(function (p) {
     html +=
       '<option value="' +
@@ -1203,7 +1232,9 @@ function dashLookupCopy() {
     'Association: ' + (selected.assoc || '—'),
     'Provider URL: ' + (providerUrl || '—')
   ].join('\n');
-  safeCopy(text).then(function () {}).catch(function () {});
+  safeCopy(text)
+    .then(function () {})
+    .catch(function () {});
 }
 
 function renderDashboard() {
@@ -1866,7 +1897,9 @@ if (document.readyState === 'loading') {
 // Auto-close mobile sidebar after navigation item click.
 (function _chaSidebarAutoClose() {
   function bind() {
-    var items = document.querySelectorAll('.sidebar a, .sidebar button, .sidebar .nav-item, .sidebar .nb');
+    var items = document.querySelectorAll(
+      '.sidebar a, .sidebar button, .sidebar .nav-item, .sidebar .nb'
+    );
     for (var i = 0; i < items.length; i++) {
       if (items[i].dataset.autoCloseBound === '1') continue;
       items[i].dataset.autoCloseBound = '1';
@@ -1898,7 +1931,8 @@ document.addEventListener('keydown', function (e) {
       } catch (_e) {
         /* no-op */
       }
-      if (typeof chaDashRenderRecentChips === 'function') chaDashRenderRecentChips();
+      if (typeof chaDashRenderRecentChips === 'function')
+        chaDashRenderRecentChips();
     } else {
       showPage('dashboard');
       setTimeout(function () {
@@ -1910,7 +1944,8 @@ document.addEventListener('keydown', function (e) {
         } catch (_e2) {
           /* no-op */
         }
-        if (typeof chaDashRenderRecentChips === 'function') chaDashRenderRecentChips();
+        if (typeof chaDashRenderRecentChips === 'function')
+          chaDashRenderRecentChips();
       }, 40);
     }
     return;

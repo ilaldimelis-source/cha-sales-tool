@@ -1,6 +1,7 @@
 # Supabase Vector Search Setup (AI Chat)
 
 This project now supports PDF vector search for AI Chat using:
+
 - Supabase pgvector (`plan_chunks` table)
 - OpenAI embeddings (`text-embedding-3-small`)
 - Groq answer generation with top matching PDF chunks
@@ -53,6 +54,7 @@ node scripts/embed-all-pdfs.js
 ```
 
 What it does:
+
 - Reads every PDF in `knowledge_base/`
 - Maps PDF files to plan IDs from `js/plan-pdf-map.js`
 - Chunks text to ~500-token segments with overlap
@@ -62,6 +64,7 @@ What it does:
 ## 5) Add env vars in Vercel
 
 Set these in your Vercel project:
+
 - `SUPABASE_URL`
 - `SUPABASE_ANON_KEY`
 - `OPENAI_API_KEY`
@@ -86,6 +89,7 @@ Set these in your Vercel project:
    - Groq answer grounded to those excerpts
 
 If no results return, verify:
+
 - `plan_chunks` contains rows
 - `match_plan_chunks` function exists
 - Vercel/local env vars are set

@@ -82,7 +82,9 @@ function loadPlanData() {
   vm.runInContext(readJs('js/plan-registry.js'), context, {
     filename: 'plan-registry.js'
   });
-  vm.runInContext(readJs('js/plan-data.js'), context, { filename: 'plan-data.js' });
+  vm.runInContext(readJs('js/plan-data.js'), context, {
+    filename: 'plan-data.js'
+  });
   vm.runInContext(readJs('js/plan-data-extended.js'), context, {
     filename: 'plan-data-extended.js'
   });
@@ -154,7 +156,9 @@ function buildCanonicalMap(registry, docs) {
       };
       mapById[doc.id] = existing;
     } else {
-      existing.aliases = uniq(existing.aliases.concat(buildAliasSet(doc.name || doc.id, doc.id)));
+      existing.aliases = uniq(
+        existing.aliases.concat(buildAliasSet(doc.name || doc.id, doc.id))
+      );
       if (doc.name && !existing.planName) existing.planName = doc.name;
     }
     if (doc.source && existing.pdfFiles.indexOf(doc.source) === -1) {
@@ -285,7 +289,10 @@ function writeKnowledgeArtifacts(mapById, docs) {
     };
     index.plans.push(artifact);
 
-    var planPayload = extractPlanKnowledge(doc || { id: id, name: mapEntry.planName, rawText: '' }, mapEntry);
+    var planPayload = extractPlanKnowledge(
+      doc || { id: id, name: mapEntry.planName, rawText: '' },
+      mapEntry
+    );
     planPayload.status = artifact.status;
     fs.writeFileSync(
       path.join(OUT_PLANS_DIR, id + '.json'),

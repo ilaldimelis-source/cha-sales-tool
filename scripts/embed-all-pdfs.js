@@ -189,9 +189,13 @@ function getPdfFiles() {
 async function upsertChunk(supabase, row) {
   // Keep columns minimal and explicit per request: chunks + embeddings in plan_chunks.
   const safeChunkText = sanitizeForSupabaseText(row.chunkText);
-  const safePlanName = row.planName ? sanitizeForSupabaseText(row.planName) : null;
+  const safePlanName = row.planName
+    ? sanitizeForSupabaseText(row.planName)
+    : null;
   const safeSourcePdf = sanitizeForSupabaseText(row.sourcePdf);
-  const safeCategory = row.category ? sanitizeForSupabaseText(row.category) : null;
+  const safeCategory = row.category
+    ? sanitizeForSupabaseText(row.category)
+    : null;
   const safeAliases = Array.isArray(row.aliases)
     ? row.aliases.map((a) => sanitizeForSupabaseText(a))
     : [];
@@ -220,12 +224,7 @@ async function upsertChunk(supabase, row) {
   }
 }
 
-async function processPdf({
-  fileName,
-  planMeta,
-  supabase,
-  openai
-}) {
+async function processPdf({ fileName, planMeta, supabase, openai }) {
   const abs = path.join(KB_DIR, fileName);
   const started = Date.now();
   console.log('\n------------------------------------------------------------');
@@ -262,9 +261,7 @@ async function processPdf({
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
     const label = '[' + (i + 1) + '/' + chunks.length + ']';
-    process.stdout.write(
-      label + ' embedding + insert... '
-    );
+    process.stdout.write(label + ' embedding + insert... ');
 
     try {
       const embedding = await embedChunkWithRetry(openai, chunk.text, {
@@ -343,7 +340,12 @@ async function main() {
   console.log('Embedding job started at', new Date().toISOString());
   console.log('knowledge_base PDFs:', pdfFiles.length);
   if (targetPdf) console.log('TARGET_PDF filter:', targetPdf);
-  console.log('Chunk target:', CHUNK_SIZE_TOKENS, 'overlap:', CHUNK_OVERLAP_TOKENS);
+  console.log(
+    'Chunk target:',
+    CHUNK_SIZE_TOKENS,
+    'overlap:',
+    CHUNK_OVERLAP_TOKENS
+  );
 
   const supabase = createClient(supabaseUrl, supabaseKey);
   const openai = new OpenAI({ apiKey: openAiApiKey });

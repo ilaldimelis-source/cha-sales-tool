@@ -22,7 +22,8 @@ function parseArgs() {
   var args = process.argv.slice(2);
   var out = { url: '' };
   for (var i = 0; i < args.length; i++) {
-    if (args[i] === '--url' && args[i + 1]) out.url = String(args[i + 1]).trim();
+    if (args[i] === '--url' && args[i + 1])
+      out.url = String(args[i + 1]).trim();
   }
   return out;
 }
@@ -60,10 +61,13 @@ console.log(color.bold('RAG verification'));
 console.log('');
 
 var args = parseArgs();
-var baseUrl = args.url || process.env.RAG_VERIFY_URL || process.env.RAG_BASE_URL || '';
+var baseUrl =
+  args.url || process.env.RAG_VERIFY_URL || process.env.RAG_BASE_URL || '';
 if (!baseUrl) {
   console.log(
-    color.red('[FAIL] Missing URL. Use --url https://your-deployment-url or set RAG_VERIFY_URL')
+    color.red(
+      '[FAIL] Missing URL. Use --url https://your-deployment-url or set RAG_VERIFY_URL'
+    )
   );
   process.exit(1);
 }
@@ -79,11 +83,19 @@ CASES.forEach(function (tcase, idx) {
       var err = validateResponse(data);
       if (err) {
         failures++;
-        console.log(color.red('[FAIL] [' + (idx + 1) + '/' + CASES.length + '] ' + tcase.query));
+        console.log(
+          color.red(
+            '[FAIL] [' + (idx + 1) + '/' + CASES.length + '] ' + tcase.query
+          )
+        );
         console.log(color.red('  ' + err));
         return;
       }
-      console.log(color.green('[OK] [' + (idx + 1) + '/' + CASES.length + '] ' + tcase.query));
+      console.log(
+        color.green(
+          '[OK] [' + (idx + 1) + '/' + CASES.length + '] ' + tcase.query
+        )
+      );
       console.log(
         color.green(
           '  status=' +
@@ -97,7 +109,11 @@ CASES.forEach(function (tcase, idx) {
     })
     .catch(function (err) {
       failures++;
-      console.log(color.red('[FAIL] [' + (idx + 1) + '/' + CASES.length + '] ' + tcase.query));
+      console.log(
+        color.red(
+          '[FAIL] [' + (idx + 1) + '/' + CASES.length + '] ' + tcase.query
+        )
+      );
       console.log(color.red('  API error: ' + err.message));
     });
 });
@@ -105,7 +121,11 @@ CASES.forEach(function (tcase, idx) {
 p.then(function () {
   console.log('');
   if (failures > 0) {
-    console.log(color.red(color.bold('Verification failed with ' + failures + ' failing case(s).')));
+    console.log(
+      color.red(
+        color.bold('Verification failed with ' + failures + ' failing case(s).')
+      )
+    );
     process.exit(1);
   }
   console.log(color.green(color.bold('[OK] Verification passed.')));

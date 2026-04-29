@@ -67,7 +67,9 @@ function assertEnv() {
     return !process.env[k];
   });
   if (missing.length) {
-    throw new Error('Missing required environment variables: ' + missing.join(', '));
+    throw new Error(
+      'Missing required environment variables: ' + missing.join(', ')
+    );
   }
 }
 
@@ -76,11 +78,17 @@ function main() {
   fs.writeFileSync(OUT_SQL, SQL + '\n', 'utf8');
   console.log('Wrote SQL schema file:', path.relative(ROOT, OUT_SQL));
 
-  const client = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY, {
-    auth: { persistSession: false }
-  });
+  const client = createClient(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY,
+    {
+      auth: { persistSession: false }
+    }
+  );
 
-  return client.from('plan_chunks').select('id', { count: 'exact', head: true })
+  return client
+    .from('plan_chunks')
+    .select('id', { count: 'exact', head: true })
     .then(function (test) {
       if (test.error) {
         console.log('\nSupabase check: table/function not ready yet.');

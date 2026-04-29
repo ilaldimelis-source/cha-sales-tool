@@ -75,12 +75,17 @@ function main() {
   printList('Registry plans with NO PDF map entry', missingPdfMap);
   printList('PDF map entries with NO registry plan (orphans)', orphanPdfMap);
 
-  console.log('\nDone. This is a reporting check only (no non-zero exit on mismatches).');
+  console.log(
+    '\nDone. This is a reporting check only (no non-zero exit on mismatches).'
+  );
 }
 
 try {
   main();
 } catch (err) {
-  console.error('plan-sync check failed:', err && err.message ? err.message : err);
+  console.error(
+    'plan-sync check failed:',
+    err && err.message ? err.message : err
+  );
   process.exitCode = 1;
 }

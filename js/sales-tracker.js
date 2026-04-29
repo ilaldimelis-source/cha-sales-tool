@@ -55,31 +55,71 @@ window.CHA_BONUS_TIERS_FOR_DASH = ST_BONUS_TIERS;
 // keeps the raw product name from the receipt instead of
 // falling back to "Unknown Plan".
 var CHA_CORE_PLAN_NAMES = [
-  'MedFirst 1', 'MedFirst 2', 'MedFirst 3', 'MedFirst 4', 'MedFirst 5',
-  'TrueHealth 1', 'TrueHealth 2', 'TrueHealth 3',
-  'Good Health Distribution Partner 1', 'Good Health Distribution Partner 2',
-  'Good Health Distribution Partner 3', 'Good Health Distribution Partner 4',
+  'MedFirst 1',
+  'MedFirst 2',
+  'MedFirst 3',
+  'MedFirst 4',
+  'MedFirst 5',
+  'TrueHealth 1',
+  'TrueHealth 2',
+  'TrueHealth 3',
+  'Good Health Distribution Partner 1',
+  'Good Health Distribution Partner 2',
+  'Good Health Distribution Partner 3',
+  'Good Health Distribution Partner 4',
   'Good Health Distribution Partner 5',
-  'SmartChoice 1500', 'SmartChoice 2500', 'SmartChoice 3000', 'SmartChoice 3500',
-  'TDK 1', 'TDK 2', 'TDK 3', 'TDK 4', 'TDK 5',
+  'SmartChoice 1500',
+  'SmartChoice 2500',
+  'SmartChoice 3000',
+  'SmartChoice 3500',
+  'TDK 1',
+  'TDK 2',
+  'TDK 3',
+  'TDK 4',
+  'TDK 5',
   'Pinnacle STM',
-  'Access Health Traditional STM', 'Access Health Lite STM',
-  'Smart Health STM Traditional', 'Smart Health STM Limited',
-  'Galena STM Elite', 'Galena STM Standard', 'Galena STM Economy',
-  'Allstate Enhanced STM PPO', 'Allstate Copay Enhanced STM PPO',
-  'Allstate Essentials STM PPO', 'Allstate Health Access',
-  'Harmony Care Plus 100', 'Harmony Care Plus 200', 'Harmony Care Plus 300',
-  'Harmony Care Plus 500', 'Harmony Care Plus 750', 'Harmony Care Plus 1000',
-  'Harmony Care 100', 'Harmony Care 200', 'Harmony Care 300',
-  'Harmony Care 500', 'Harmony Care 750', 'Harmony Care 1000',
-  'Sigma Care Plus 100', 'Sigma Care Plus 200', 'Sigma Care Plus 300',
-  'Sigma Care Plus 500', 'Sigma Care Plus 750', 'Sigma Care Plus 1000',
-  'Health Choice Silver', 'Everest Summit',
-  'Pinnacle Protect Plan 1', 'Pinnacle Protect Plan 2',
-  'Pinnacle Protect Plan 3', 'Pinnacle Protect Plan 4',
-  'BWA Americare Plan 2', 'BWA Americare Plan 3', 'BWA Americare Plan 4',
+  'Access Health Traditional STM',
+  'Access Health Lite STM',
+  'Smart Health STM Traditional',
+  'Smart Health STM Limited',
+  'Galena STM Elite',
+  'Galena STM Standard',
+  'Galena STM Economy',
+  'Allstate Enhanced STM PPO',
+  'Allstate Copay Enhanced STM PPO',
+  'Allstate Essentials STM PPO',
+  'Allstate Health Access',
+  'Harmony Care Plus 100',
+  'Harmony Care Plus 200',
+  'Harmony Care Plus 300',
+  'Harmony Care Plus 500',
+  'Harmony Care Plus 750',
+  'Harmony Care Plus 1000',
+  'Harmony Care 100',
+  'Harmony Care 200',
+  'Harmony Care 300',
+  'Harmony Care 500',
+  'Harmony Care 750',
+  'Harmony Care 1000',
+  'Sigma Care Plus 100',
+  'Sigma Care Plus 200',
+  'Sigma Care Plus 300',
+  'Sigma Care Plus 500',
+  'Sigma Care Plus 750',
+  'Sigma Care Plus 1000',
+  'Health Choice Silver',
+  'Everest Summit',
+  'Pinnacle Protect Plan 1',
+  'Pinnacle Protect Plan 2',
+  'Pinnacle Protect Plan 3',
+  'Pinnacle Protect Plan 4',
+  'BWA Americare Plan 2',
+  'BWA Americare Plan 3',
+  'BWA Americare Plan 4',
   'BWA Paramount',
-  'MyChoice Plan Low', 'MyChoice Plan Mid', 'MyChoice Plan High'
+  'MyChoice Plan Low',
+  'MyChoice Plan Mid',
+  'MyChoice Plan High'
 ];
 
 var CHA_ADDON_PLAN_NAMES = [
@@ -133,7 +173,9 @@ var CHA_ADDON_PLAN_NAMES = [
 // naturally when iterating. Built once at module load.
 var CHA_ALL_PLAN_NAMES = CHA_CORE_PLAN_NAMES.concat(CHA_ADDON_PLAN_NAMES)
   .slice()
-  .sort(function (a, b) { return b.length - a.length; });
+  .sort(function (a, b) {
+    return b.length - a.length;
+  });
 
 // Case-insensitive substring match, longest wins. If nothing
 // matches, returns '' so the caller can keep the raw receipt
@@ -146,12 +188,18 @@ function _stMatchPlanName(rawText) {
   // that print "BWA AmeriCare - Plan 4" still match the registry's
   // "BWA Americare Plan 4" form. Keeps $ and & since some plan
   // names rely on them ("AD&D $50k").
-  var hayLoose = hay.replace(/[^a-z0-9$&]+/g, ' ').replace(/\s+/g, ' ').trim();
+  var hayLoose = hay
+    .replace(/[^a-z0-9$&]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
   for (var i = 0; i < CHA_ALL_PLAN_NAMES.length; i++) {
     var candidate = CHA_ALL_PLAN_NAMES[i];
     var cLower = candidate.toLowerCase();
     if (hay.indexOf(cLower) !== -1) return candidate;
-    var cLoose = cLower.replace(/[^a-z0-9$&]+/g, ' ').replace(/\s+/g, ' ').trim();
+    var cLoose = cLower
+      .replace(/[^a-z0-9$&]+/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
     if (cLoose && hayLoose.indexOf(cLoose) !== -1) return candidate;
   }
   return '';
@@ -170,17 +218,17 @@ function _stMatchPlanName(rawText) {
 // cha_commission_rates.
 var CHA_DEFAULT_COMMISSION_RATES = {
   planTiers: [
-    { min: 0,   max: 299.99, rate: 0.30 },
+    { min: 0, max: 299.99, rate: 0.3 },
     { min: 300, max: 499.99, rate: 0.35 },
-    { min: 500, max: Infinity, rate: 0.40 }
+    { min: 500, max: Infinity, rate: 0.4 }
   ],
   addonTypes: {
     standard: 0.25,
-    dvh: 0.25,        // dental / vision / life / catastrophic
-    dvhDirect: 0.35,  // Direct Access DVH
-    accident: 0.7,    // AD&D, AccessCare Pro, NowCare, Continue Care, Wellness4U
-    rx: 0.2,          // SureScript, BestChoice
-    gap: 0.5           // GAP
+    dvh: 0.25, // dental / vision / life / catastrophic
+    dvhDirect: 0.35, // Direct Access DVH
+    accident: 0.7, // AD&D, AccessCare Pro, NowCare, Continue Care, Wellness4U
+    rx: 0.2, // SureScript, BestChoice
+    gap: 0.5 // GAP
   },
   enrollmentBonus: 20 // dollars per $125 enrollment
 };
@@ -214,7 +262,9 @@ function _stSaveCommissionRates(rates) {
 }
 
 function _stResetCommissionRates() {
-  try { localStorage.removeItem(_stKey('cha_commission_rates')); } catch (_e) {}
+  try {
+    localStorage.removeItem(_stKey('cha_commission_rates'));
+  } catch (_e) {}
 }
 
 function _stCloneRates(r) {
@@ -258,7 +308,11 @@ function _stClassifyAddon(name) {
     return 'accident';
   }
   // Rx / prescription discounts (SureScript, BestChoice; not RxSavers — flat $ in compute)
-  if (/\b(rx|prescription|surescript|bestchoice|prime health pass|assistpro|mdlive|telemed)\b/.test(n)) {
+  if (
+    /\b(rx|prescription|surescript|bestchoice|prime health pass|assistpro|mdlive|telemed)\b/.test(
+      n
+    )
+  ) {
     return 'rx';
   }
   return 'standard';
@@ -267,7 +321,8 @@ function _stClassifyAddon(name) {
 // Given a plan monthly amount, return the matching tier rate.
 function _stPlanTierRate(amount, rates) {
   var amt = Number(amount) || 0;
-  var tiers = (rates && rates.planTiers) || CHA_DEFAULT_COMMISSION_RATES.planTiers;
+  var tiers =
+    (rates && rates.planTiers) || CHA_DEFAULT_COMMISSION_RATES.planTiers;
   for (var i = 0; i < tiers.length; i++) {
     if (amt >= tiers[i].min && amt <= tiers[i].max) return tiers[i].rate;
   }
@@ -400,7 +455,7 @@ function _stSaveSales(sales) {
 function _stClearDateMs(sale) {
   var base = Number(sale && sale.ts);
   if (!base) return 0;
-  return base + (30 * 24 * 60 * 60 * 1000);
+  return base + 30 * 24 * 60 * 60 * 1000;
 }
 
 function _stNormalizeStatus(sale) {
@@ -520,7 +575,20 @@ function _stCurrentWeekStartMs() {
 
 function _stFmtMonthDay(ts) {
   var d = new Date(Number(ts) || Date.now());
-  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
   return months[d.getMonth()] + ' ' + d.getDate();
 }
 
@@ -533,7 +601,9 @@ function _stFmtWeekLabel(weekStartMs) {
 }
 
 function _stFmtCustomLabel(startMs, endMs) {
-  return 'Custom (' + _stFmtMonthDay(startMs) + ' - ' + _stFmtMonthDay(endMs) + ')';
+  return (
+    'Custom (' + _stFmtMonthDay(startMs) + ' - ' + _stFmtMonthDay(endMs) + ')'
+  );
 }
 
 function _stIsoToMsStart(iso) {
@@ -588,9 +658,7 @@ function _stEscape(s) {
 // ── RECEIPT NORMALIZE + GROQ (PRIMARY) ───────────────────────
 function _stNormalizeReceiptRaw(text) {
   if (!text) return '';
-  return String(text)
-    .replace(/\r\n/g, '\n')
-    .replace(/\r/g, '\n');
+  return String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 }
 
 function _stGroqApiKeyForReceipt() {
@@ -602,8 +670,7 @@ function _stGroqApiKeyForReceipt() {
     return _aiGroqFallbackKey;
   }
   try {
-    var ls =
-      typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
+    var ls = typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
     if (ls && ls !== 'skip' && ls.length >= 20) return ls;
   } catch (_k) {}
   return '';
@@ -666,11 +733,7 @@ function _stGroqSyncReceiptPrimary(raw) {
     'Use numbers only for prices. Never invent data; leave fields empty or 0 when absent.';
   try {
     var xhr = new XMLHttpRequest();
-    xhr.open(
-      'POST',
-      'https://api.groq.com/openai/v1/chat/completions',
-      false
-    );
+    xhr.open('POST', 'https://api.groq.com/openai/v1/chat/completions', false);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Authorization', 'Bearer ' + key);
     xhr.send(
@@ -694,7 +757,10 @@ function _stGroqSyncReceiptPrimary(raw) {
       body.choices[0].message.content
         ? String(body.choices[0].message.content).trim()
         : '';
-    txt = txt.replace(/^```(?:json)?\s*/i, '').replace(/```$/, '').trim();
+    txt = txt
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/```$/, '')
+      .trim();
     var gj = null;
     try {
       gj = JSON.parse(txt);
@@ -769,14 +835,35 @@ function _stGroqSyncReceiptPrimary(raw) {
 function _stParseConfirmationTimestampInRaw(raw) {
   var text = String(raw || '');
   var monthMap = {
-    january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
-    july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
-    jan: 0, feb: 1, mar: 2, apr: 3, jun: 5, jul: 6,
-    aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11
+    january: 0,
+    february: 1,
+    march: 2,
+    april: 3,
+    may: 4,
+    june: 5,
+    july: 6,
+    august: 7,
+    september: 8,
+    october: 9,
+    november: 10,
+    december: 11,
+    jan: 0,
+    feb: 1,
+    mar: 2,
+    apr: 3,
+    jun: 5,
+    jul: 6,
+    aug: 7,
+    sep: 8,
+    sept: 8,
+    oct: 9,
+    nov: 10,
+    dec: 11
   };
   var idx = text.search(/\bconfirmation\b/i);
   var slice = idx >= 0 ? text.slice(idx) : text;
-  var re = /\b([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})\s+at\s+\d{1,2}:\d{2}\s*(?:AM|PM)\b/i;
+  var re =
+    /\b([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})\s+at\s+\d{1,2}:\d{2}\s*(?:AM|PM)\b/i;
   var m = slice.match(re);
   if (!m) return null;
   var mIdx = monthMap[String(m[1]).toLowerCase()];
@@ -812,7 +899,10 @@ function _stReceiptLinesSplit(rawIn) {
       .replace(/\s+(Member\s+ID:)/g, '\nMember ID:')
       .replace(/\s+(Individual\s+-\s+ID:)/g, '\nIndividual - ID:')
       .replace(/(\bone[-\s]?time)\s+(\$)/g, '$1\n$2')
-      .replace(/(\$\s*[\d,.]+\s+Product\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
+      .replace(
+        /(\$\s*[\d,.]+\s+Product\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g,
+        '$1\n$2'
+      )
       .replace(/(\$\s*[\d,.]+\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
       .replace(/(\bProduct\s+\$\s*[\d,.]+)\s+([A-Z][A-Za-z])/g, '$1\n$2')
       .replace(/(\bEnrollment\s+\$\s*[\d,.]+)\s+(\bProduct\s+\$)/g, '$1\n$2');
@@ -824,7 +914,8 @@ function _stReceiptLinesSplit(rawIn) {
 // Premium on "Policy:… Active:… $125 Enrollment one-time $341 Product per Month…"
 // lines (skipLineRe skips Policy-led lines in later passes). Mutates out.products.
 function _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe) {
-  var _cpRe = /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:product\s+)?per\s*month/i;
+  var _cpRe =
+    /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*(?:product\s+)?per\s*month/i;
   var _dedRe = /\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)\s*deductible/i;
   for (var _cpI = 0; _cpI < lines.length; _cpI++) {
     var _cpL = lines[_cpI];
@@ -841,7 +932,12 @@ function _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe) {
     for (var _cpB = _cpI - 1; _cpB >= 0 && _cpB >= _cpI - 10; _cpB--) {
       var _cpPr = lines[_cpB].trim();
       if (!_cpPr) continue;
-      if (/^(?:confirmation|products?|summary|total|policy|active|address|phone|email|date|member|central|health|advisors)/i.test(_cpPr)) continue;
+      if (
+        /^(?:confirmation|products?|summary|total|policy|active|address|phone|email|date|member|central|health|advisors)/i.test(
+          _cpPr
+        )
+      )
+        continue;
       if (/^\$/.test(_cpPr)) continue;
       if (enrollmentRe.test(_cpPr)) continue;
       _cpName = _cpPr;
@@ -851,7 +947,11 @@ function _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe) {
     var _cpMatch = _stMatchPlanName(_cpName);
     var _cpFinal = _cpMatch || _cpName.substring(0, 120);
     var _cpPol = _cpL.match(/policy\s*:?\s*([A-Z0-9-]{4,})/i);
-    var _cpEntry = { name: _cpFinal, price: _cpP, policy: _cpPol ? _cpPol[1] : '' };
+    var _cpEntry = {
+      name: _cpFinal,
+      price: _cpP,
+      policy: _cpPol ? _cpPol[1] : ''
+    };
     // Check if a product with the same name already exists
     var _cpExistIdx = -1;
     for (var _cpD = 0; _cpD < out.products.length; _cpD++) {
@@ -999,10 +1099,30 @@ function _stParseReceipt(text, useGroq) {
   var confMatch = raw.match(confHeaderRe);
   if (confMatch) {
     var monthMap = {
-      january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
-      july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
-      jan: 0, feb: 1, mar: 2, apr: 3, jun: 5, jul: 6,
-      aug: 7, sep: 8, sept: 8, oct: 9, nov: 10, dec: 11
+      january: 0,
+      february: 1,
+      march: 2,
+      april: 3,
+      may: 4,
+      june: 5,
+      july: 6,
+      august: 7,
+      september: 8,
+      october: 9,
+      november: 10,
+      december: 11,
+      jan: 0,
+      feb: 1,
+      mar: 2,
+      apr: 3,
+      jun: 5,
+      jul: 6,
+      aug: 7,
+      sep: 8,
+      sept: 8,
+      oct: 9,
+      nov: 10,
+      dec: 11
     };
     var mKey = String(confMatch[1]).toLowerCase();
     var mIdx = monthMap[mKey];
@@ -1056,7 +1176,10 @@ function _stParseReceipt(text, useGroq) {
         var midInlineCand = midInlineM[1].trim();
         if (
           !cnSkipRe.test(midInlineCand) &&
-          !(typeof _stMatchPlanName === 'function' && _stMatchPlanName(midInlineCand))
+          !(
+            typeof _stMatchPlanName === 'function' &&
+            _stMatchPlanName(midInlineCand)
+          )
         ) {
           out.customer = midInlineCand.substring(0, 80);
         }
@@ -1078,10 +1201,7 @@ function _stParseReceipt(text, useGroq) {
         if (midCand.length < 2 || midCand.length > 50) continue;
         if (cnSkipRe.test(midCand)) continue;
         if (!cnNameRe.test(midCand)) continue;
-        if (
-          typeof _stMatchPlanName === 'function' &&
-          _stMatchPlanName(midCand)
-        )
+        if (typeof _stMatchPlanName === 'function' && _stMatchPlanName(midCand))
           continue;
         out.customer = midCand.substring(0, 80);
         break;
@@ -1151,8 +1271,7 @@ function _stParseReceipt(text, useGroq) {
   //
   // Signature: a line matching /^\s*product\s+\$\s*[0-9]/ — that
   // pattern is unique to this receipt layout.
-  var productLineRe =
-    /\bproduct\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
+  var productLineRe = /\bproduct\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
   var totalLineRe = /^\s*total\b/i;
   var addOnRe = /\badd[-\s]?on\b/i;
   var memberIdFormat = false;
@@ -1180,11 +1299,7 @@ function _stParseReceipt(text, useGroq) {
       // line, not a Total line, not a $-led line, not an
       // "Individual - ID: ..." detail line.
       var mfName = '';
-      for (
-        var mfBack = plI - 1;
-        mfBack >= 0 && mfBack >= plI - 10;
-        mfBack--
-      ) {
+      for (var mfBack = plI - 1; mfBack >= 0 && mfBack >= plI - 10; mfBack--) {
         var mfPrev = lines[mfBack].trim();
         if (!mfPrev) continue;
         if (skipLineRe.test(mfPrev)) continue;
@@ -1264,7 +1379,9 @@ function _stParseReceipt(text, useGroq) {
     for (var bb = 0; bb < blockStarts.length; bb++) {
       var blkStart = blockStarts[bb].lineIdx;
       var blkEnd =
-        bb + 1 < blockStarts.length ? blockStarts[bb + 1].lineIdx : lines.length;
+        bb + 1 < blockStarts.length
+          ? blockStarts[bb + 1].lineIdx
+          : lines.length;
       var blkPrice = 0;
       var blkPolicy = '';
       // Scan every line inside the block's range — INCLUDING
@@ -1407,7 +1524,11 @@ function _stParseReceipt(text, useGroq) {
       // the first meaningful line from the receipt as the raw
       // product name instead of "Unknown Plan".
       var guessedName = _stMatchPlanName(raw);
-      if (!guessedName && typeof POLICY_DOCS !== 'undefined' && Array.isArray(POLICY_DOCS)) {
+      if (
+        !guessedName &&
+        typeof POLICY_DOCS !== 'undefined' &&
+        Array.isArray(POLICY_DOCS)
+      ) {
         var lower = raw.toLowerCase();
         for (var k = 0; k < POLICY_DOCS.length; k++) {
           var pdName =
@@ -1468,10 +1589,7 @@ function _stParseReceipt(text, useGroq) {
         false
       );
       grqXhr.setRequestHeader('Content-Type', 'application/json');
-      grqXhr.setRequestHeader(
-        'Authorization',
-        'Bearer ' + grqKey
-      );
+      grqXhr.setRequestHeader('Authorization', 'Bearer ' + grqKey);
       grqXhr.send(
         JSON.stringify({
           model: 'llama-3.1-8b-instant',
@@ -1494,7 +1612,10 @@ function _stParseReceipt(text, useGroq) {
             ? String(grqBody.choices[0].message.content).trim()
             : '';
         // Strip any markdown code fences Groq may wrap the JSON in.
-        grqTxt = grqTxt.replace(/^```(?:json)?\s*/i, '').replace(/```$/, '').trim();
+        grqTxt = grqTxt
+          .replace(/^```(?:json)?\s*/i, '')
+          .replace(/```$/, '')
+          .trim();
         var grqJson = null;
         try {
           grqJson = JSON.parse(grqTxt);
@@ -1509,11 +1630,7 @@ function _stParseReceipt(text, useGroq) {
             }
           }
         }
-        if (
-          grqJson &&
-          grqJson.products &&
-          grqJson.products.length > 0
-        ) {
+        if (grqJson && grqJson.products && grqJson.products.length > 0) {
           if (!out.customer && grqJson.customer) {
             out.customer = String(grqJson.customer).substring(0, 80);
           }
@@ -1581,9 +1698,10 @@ function _stComputeLineCommission(sale, rates) {
       if (typeof rate !== 'number') rate = rates.addonTypes.standard;
     }
   } else {
-    rate = typeof sale.commissionRate === 'number'
-      ? sale.commissionRate
-      : _stPlanTierRate(amt, rates);
+    rate =
+      typeof sale.commissionRate === 'number'
+        ? sale.commissionRate
+        : _stPlanTierRate(amt, rates);
   }
   var commission = amt * rate;
   if (_stNormalizeStatus(sale) === 'chargeback') return -Math.abs(commission);
@@ -1600,12 +1718,14 @@ function _stStampDealCommission(sales, dealIdx, rates) {
   if (!deal) return;
   if (deal.type !== 'deal') return;
   var amt = Number(deal.amount) || 0;
-  var rate = typeof deal.commissionRate === 'number'
-    ? deal.commissionRate
-    : _stPlanTierRate(amt, rates);
+  var rate =
+    typeof deal.commissionRate === 'number'
+      ? deal.commissionRate
+      : _stPlanTierRate(amt, rates);
   deal.planCommissionRate = rate;
   var planCommission = amt * rate;
-  if (_stNormalizeStatus(deal) === 'chargeback') planCommission = -Math.abs(planCommission);
+  if (_stNormalizeStatus(deal) === 'chargeback')
+    planCommission = -Math.abs(planCommission);
   deal.planCommission = planCommission;
 
   // Sum add-on commissions that belong to this receipt.
@@ -1622,9 +1742,11 @@ function _stStampDealCommission(sales, dealIdx, rates) {
       if (/\brx\s*savers?\b/.test(planN)) {
         s.addonCommissionRate = null;
       } else {
-        s.addonCommissionRate = typeof s.addonCommissionRate === 'number'
-          ? s.addonCommissionRate
-          : (rates.addonTypes[_stClassifyAddon(s.plan)] || rates.addonTypes.standard);
+        s.addonCommissionRate =
+          typeof s.addonCommissionRate === 'number'
+            ? s.addonCommissionRate
+            : rates.addonTypes[_stClassifyAddon(s.plan)] ||
+              rates.addonTypes.standard;
       }
       s.addonCommission = lineCommAddon;
     }
@@ -1713,8 +1835,12 @@ function _stSetSaleTimingMode(mode) {
   if (hidden) hidden.value = target;
   var todayBtn = document.getElementById('st-timing-today');
   var pastBtn = document.getElementById('st-timing-past');
-  if (todayBtn) todayBtn.className = 'st-timing-pill' + (target === 'today' ? ' is-active' : '');
-  if (pastBtn) pastBtn.className = 'st-timing-pill' + (target === 'past' ? ' is-active' : '');
+  if (todayBtn)
+    todayBtn.className =
+      'st-timing-pill' + (target === 'today' ? ' is-active' : '');
+  if (pastBtn)
+    pastBtn.className =
+      'st-timing-pill' + (target === 'past' ? ' is-active' : '');
   var dateInput = document.getElementById('st-date-sold');
   if (dateInput) {
     if (target === 'past') {
@@ -1731,7 +1857,8 @@ function _stSetSaleTimingMode(mode) {
     }
   }
   var title = document.getElementById('st-add-sale-title');
-  if (title) title.textContent = target === 'past' ? 'Add Past Sale' : 'Add Sale';
+  if (title)
+    title.textContent = target === 'past' ? 'Add Past Sale' : 'Add Sale';
 }
 
 function _stValidateDateForMode() {
@@ -1746,7 +1873,6 @@ function _stValidateDateForMode() {
   }
   return false;
 }
-
 
 function _stDay3(ts) {
   var d = new Date(Number(ts) || Date.now());
@@ -1802,16 +1928,24 @@ function _stFlashSequence(items, idx) {
 }
 
 function _stFindDuplicateDeal(receiptId, customer, skipSaleId) {
-  var rid = String(receiptId || '').trim().toLowerCase();
-  var cust = String(customer || '').trim().toLowerCase();
+  var rid = String(receiptId || '')
+    .trim()
+    .toLowerCase();
+  var cust = String(customer || '')
+    .trim()
+    .toLowerCase();
   if (!rid || !cust) return null;
   var sales = _stLoadSales();
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s || s.type !== 'deal') continue;
     if (skipSaleId && s.id === skipSaleId) continue;
-    var srid = String(s.receiptId || '').trim().toLowerCase();
-    var scust = String(s.customer || '').trim().toLowerCase();
+    var srid = String(s.receiptId || '')
+      .trim()
+      .toLowerCase();
+    var scust = String(s.customer || '')
+      .trim()
+      .toLowerCase();
     if (srid === rid && scust === cust) return s;
   }
   return null;
@@ -1868,9 +2002,7 @@ function _stGetSaleMode() {
 // are discarded. Returns an array of trimmed receipt strings.
 function _stSplitReceipts(text) {
   if (!text) return [];
-  var raw = String(text)
-    .replace(/\r\n/g, '\n')
-    .replace(/\r/g, '\n');
+  var raw = String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   var lines = raw.split('\n');
   // Slack / browser sometimes collapses a receipt onto a single
   // line (no \n at all). When that happens, reconstruct line
@@ -1896,7 +2028,10 @@ function _stSplitReceipts(text) {
       .replace(/\s+(Individual\s+-\s+ID:)/g, '\nIndividual - ID:')
       // Standard (CHA confirmation) format splits
       .replace(/(\bone[-\s]?time)\s+(\$)/g, '$1\n$2')
-      .replace(/(\$\s*[\d,.]+\s+Product\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
+      .replace(
+        /(\$\s*[\d,.]+\s+Product\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g,
+        '$1\n$2'
+      )
       .replace(/(\$\s*[\d,.]+\s+per\s+Month\s+for\s+\w+)\s+([A-Z])/g, '$1\n$2')
       // Member ID format splits
       .replace(/(\bProduct\s+\$\s*[\d,.]+)\s+([A-Z][A-Za-z])/g, '$1\n$2')
@@ -2080,7 +2215,8 @@ function _stDealExistsForReceiptId(sales, receiptId) {
   var rid = String(receiptId);
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
-    if (s && s.type === 'deal' && String(s.receiptId || '') === rid) return true;
+    if (s && s.type === 'deal' && String(s.receiptId || '') === rid)
+      return true;
   }
   return false;
 }
@@ -2099,7 +2235,8 @@ function _stStampOrphanAddonReceiptCommissions(sales, receiptId, rates) {
       s.addonCommissionRate =
         typeof s.addonCommissionRate === 'number'
           ? s.addonCommissionRate
-          : rates.addonTypes[_stClassifyAddon(s.plan)] || rates.addonTypes.standard;
+          : rates.addonTypes[_stClassifyAddon(s.plan)] ||
+            rates.addonTypes.standard;
     }
     s.addonCommission = lineComm;
   }
@@ -2120,7 +2257,11 @@ function _stReceiptReviewLineIsJunk(name) {
 
 function _stReceiptReviewLineLooksAddonOnly(name) {
   var n = String(name || '').toLowerCase();
-  if (/short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|medfirst|goodhealth|tdk\b|access health/.test(n)) {
+  if (
+    /short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|medfirst|goodhealth|tdk\b|access health/.test(
+      n
+    )
+  ) {
     return false;
   }
   return (
@@ -2206,7 +2347,12 @@ function _stReceiptReviewShowPanes(reviewVisible) {
   if (fp) fp.style.display = reviewVisible ? 'none' : 'block';
   if (rp) rp.style.display = reviewVisible ? 'block' : 'none';
   var h = document.getElementById('st-add-sale-title');
-  if (h) h.textContent = reviewVisible ? 'Review sale' : (_stIsPastSaleMode() ? 'Add Past Sale' : 'Add Sale');
+  if (h)
+    h.textContent = reviewVisible
+      ? 'Review sale'
+      : _stIsPastSaleMode()
+        ? 'Add Past Sale'
+        : 'Add Sale';
 }
 
 function _stReceiptReviewPaint() {
@@ -2216,7 +2362,11 @@ function _stReceiptReviewPaint() {
   var html = '';
   var sub = '';
   if (st.chunks.length === 1) {
-    sub = _stEscape(String((st.chunks[0].parsed && st.chunks[0].parsed.customer) || '').trim() || '—');
+    sub = _stEscape(
+      String(
+        (st.chunks[0].parsed && st.chunks[0].parsed.customer) || ''
+      ).trim() || '—'
+    );
   } else {
     sub = st.chunks.length + ' receipts — review each section';
   }
@@ -2239,11 +2389,16 @@ function _stReceiptReviewPaint() {
     if (row.chunkIdx !== lastChunk) {
       lastChunk = row.chunkIdx;
       var cust = String(
-        (st.chunks[lastChunk].parsed && st.chunks[lastChunk].parsed.customer) || ''
+        (st.chunks[lastChunk].parsed && st.chunks[lastChunk].parsed.customer) ||
+          ''
       ).trim();
       html +=
         '<div class="st-review-chunk-h">' +
-        _stEscape(st.chunks.length > 1 ? 'Receipt ' + (lastChunk + 1) + (cust ? ' — ' + cust : '') : '') +
+        _stEscape(
+          st.chunks.length > 1
+            ? 'Receipt ' + (lastChunk + 1) + (cust ? ' — ' + cust : '')
+            : ''
+        ) +
         '</div>';
     }
     var indClass = 'st-review-ind st-review-ind-skip';
@@ -2263,12 +2418,18 @@ function _stReceiptReviewPaint() {
       _stEscape(indLabel) +
       '"></div>';
     html += '<div class="st-review-mid">';
-    html += '<div class="st-review-name">' + _stEscape(row.name || '—') + '</div>';
     html +=
-      '<div class="st-review-detected">Detected as ' + _stEscape(row.detected || '') + '</div>';
+      '<div class="st-review-name">' + _stEscape(row.name || '—') + '</div>';
+    html +=
+      '<div class="st-review-detected">Detected as ' +
+      _stEscape(row.detected || '') +
+      '</div>';
     html += '</div>';
     html += '<div class="st-review-right">';
-    html += '<div class="st-review-amt">$' + (Number(row.price) || 0).toFixed(2) + '</div>';
+    html +=
+      '<div class="st-review-amt">$' +
+      (Number(row.price) || 0).toFixed(2) +
+      '</div>';
     html +=
       '<select class="st-review-role-dd" data-review-idx="' +
       i +
@@ -2290,11 +2451,14 @@ function _stReceiptReviewPaint() {
 
   var monthly = 0;
   for (var t = 0; t < st.flatRows.length; t++) {
-    if (st.flatRows[t].role !== 'skip') monthly += Number(st.flatRows[t].price) || 0;
+    if (st.flatRows[t].role !== 'skip')
+      monthly += Number(st.flatRows[t].price) || 0;
   }
   var feeParts = [];
   for (var cj = 0; cj < st.chunks.length; cj++) {
-    var en = Number((st.chunks[cj].parsed && st.chunks[cj].parsed.enrollmentFee) || 0);
+    var en = Number(
+      (st.chunks[cj].parsed && st.chunks[cj].parsed.enrollmentFee) || 0
+    );
     if (en > 0) feeParts.push('Enrollment / one-time: $' + en.toFixed(2));
   }
   html += '<div class="st-review-foot">';
@@ -2304,7 +2468,10 @@ function _stReceiptReviewPaint() {
     monthly.toFixed(2) +
     '</div>';
   if (feeParts.length) {
-    html += '<div class="st-review-fees">' + _stEscape(feeParts.join(' · ')) + '</div>';
+    html +=
+      '<div class="st-review-fees">' +
+      _stEscape(feeParts.join(' · ')) +
+      '</div>';
   }
   html += '</div>';
   html += '<div class="st-review-foot-actions">';
@@ -2317,7 +2484,8 @@ function _stReceiptReviewPaint() {
   pane.innerHTML = html;
   pane.onchange = function (e) {
     var t = e.target;
-    if (!t || !t.classList || !t.classList.contains('st-review-role-dd')) return;
+    if (!t || !t.classList || !t.classList.contains('st-review-role-dd'))
+      return;
     var idx = parseInt(t.getAttribute('data-review-idx'), 10);
     if (isNaN(idx)) return;
     _stReceiptReviewSetRole(idx, t.value);
@@ -2370,7 +2538,11 @@ function _stReceiptReviewEditManually() {
 function _stReceiptReviewBuildManualInitial(st) {
   var out = {
     mode: 'create',
-    previewText: st.chunks.map(function (c) { return c.raw; }).join('\n\n---\n\n'),
+    previewText: st.chunks
+      .map(function (c) {
+        return c.raw;
+      })
+      .join('\n\n---\n\n'),
     initial: { dateSold: _stTodayIso(), enrollmentFee: 125 }
   };
   var coreRow = null;
@@ -2412,7 +2584,10 @@ function _stReceiptReviewSave() {
       var parsedA = st.chunks[rc].parsed;
       var rawA = st.chunks[rc].raw;
       var customerA = String(parsedA.customer || '').trim() || 'Customer';
-      var rcptIdA = _stResolveReceiptPolicy(parsedA, _stBuildUniqueReceiptId('rcpt_'));
+      var rcptIdA = _stResolveReceiptPolicy(
+        parsedA,
+        _stBuildUniqueReceiptId('rcpt_')
+      );
       if (!_stMaybeConfirmDuplicate(customerA, rcptIdA)) {
         _stFlash('Cancelled - ' + customerA + ' was not re-added', 'neutral');
         return;
@@ -2425,7 +2600,10 @@ function _stReceiptReviewSave() {
         return r.role !== 'skip';
       });
       if (!active.length) {
-        _stFlash('Select at least one line to save for ' + customerA + '.', 'error');
+        _stFlash(
+          'Select at least one line to save for ' + customerA + '.',
+          'error'
+        );
         return;
       }
       var coreRows = active.filter(function (r) {
@@ -2470,7 +2648,10 @@ function _stReceiptReviewSave() {
       var parsedB = st.chunks[rc2].parsed;
       var rawB = st.chunks[rc2].raw;
       var customerB = String(parsedB.customer || '').trim() || 'Customer';
-      var rcptIdB = _stResolveReceiptPolicy(parsedB, _stBuildUniqueReceiptId('rcpt_'));
+      var rcptIdB = _stResolveReceiptPolicy(
+        parsedB,
+        _stBuildUniqueReceiptId('rcpt_')
+      );
       if (!_stMaybeConfirmDuplicate(customerB, rcptIdB)) {
         _stFlash('Cancelled - ' + customerB + ' was not re-added', 'neutral');
         return;
@@ -2498,7 +2679,10 @@ function _stReceiptReviewSave() {
         return r.role !== 'skip';
       });
       if (!active2.length) {
-        _stFlash('Select at least one line to save for ' + customerB + '.', 'error');
+        _stFlash(
+          'Select at least one line to save for ' + customerB + '.',
+          'error'
+        );
         return;
       }
       var hasCore2 = active2.some(function (r) {
@@ -2707,7 +2891,7 @@ function _stAddSale(saleType) {
       notes: first.policy ? 'Policy: ' + first.policy : '',
       receiptId: '',
       receiptTotal: parsed.receiptTotal,
-      enrollmentFee: isDealManual ? (parsed.enrollmentFee || 0) : 0,
+      enrollmentFee: isDealManual ? parsed.enrollmentFee || 0 : 0,
       isBackfill: isBackfill
     });
     if (isDealManual) {
@@ -2853,10 +3037,18 @@ function _stRenderUnrecognizedPreview() {
   wrap.innerHTML =
     '<div id="st-unrecognized-preview" class="st-preview-card st-unrecognized-preview">' +
     '<div class="st-unrecognized-title">Plan not recognized - review before saving</div>' +
-    '<div>Client: ' + _stEscape(d.customer || 'Unknown') + '</div>' +
-    '<div>Plan: ' + _stEscape(d.plan || 'Unknown Plan') + '</div>' +
-    '<div>Premium: ' + _stFmtMoney(Number(d.amount) || 0) + '</div>' +
-    '<div>Add-ons detected: ' + (addonCount ? String(addonCount) : 'none') + '</div>' +
+    '<div>Client: ' +
+    _stEscape(d.customer || 'Unknown') +
+    '</div>' +
+    '<div>Plan: ' +
+    _stEscape(d.plan || 'Unknown Plan') +
+    '</div>' +
+    '<div>Premium: ' +
+    _stFmtMoney(Number(d.amount) || 0) +
+    '</div>' +
+    '<div>Add-ons detected: ' +
+    (addonCount ? String(addonCount) : 'none') +
+    '</div>' +
     '<div style="margin-top:10px;">' +
     '<button onclick="_stSaveUnrecognizedDeal()" style="background:#5175F1;color:white;border:none;padding:8px 16px;border-radius:10px;font-weight:600;cursor:pointer;">Save as deal (edit after)</button>' +
     '<button onclick="_stDismissPreview()" style="background:transparent;border:1px solid #999;padding:8px 16px;border-radius:10px;margin-left:8px;cursor:pointer;">Discard</button>' +
@@ -2890,15 +3082,18 @@ function _stSaveUnrecognizedDeal() {
   for (var ex = 0; ex < allExisting.length; ex++) {
     if (!allExisting[ex]) continue;
     if (allExisting[ex].id) existingIds[allExisting[ex].id] = true;
-    if (allExisting[ex].receiptId) existingReceiptIds[allExisting[ex].receiptId] = true;
+    if (allExisting[ex].receiptId)
+      existingReceiptIds[allExisting[ex].receiptId] = true;
   }
   while (existingReceiptIds[receiptId]) {
-    receiptId = 'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+    receiptId =
+      'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
   }
   var dealId = '';
   if (billDate) {
     var pds = _stLoadPostDates();
-    dealId = 'pd_' + Date.now() + '_0_' + Math.random().toString(36).slice(2, 6);
+    dealId =
+      'pd_' + Date.now() + '_0_' + Math.random().toString(36).slice(2, 6);
     pds.push({
       id: dealId,
       createdTs: Date.now(),
@@ -2917,7 +3112,13 @@ function _stSaveUnrecognizedDeal() {
     for (var pdi = 0; pdi < (d.addons || []).length; pdi++) {
       var ad = d.addons[pdi];
       pds.push({
-        id: 'pd_' + Date.now() + '_' + (pdi + 1) + '_' + Math.random().toString(36).slice(2, 6),
+        id:
+          'pd_' +
+          Date.now() +
+          '_' +
+          (pdi + 1) +
+          '_' +
+          Math.random().toString(36).slice(2, 6),
         createdTs: Date.now() + pdi + 1,
         billDate: billDate,
         customer: d.customer || 'Unknown',
@@ -2937,14 +3138,16 @@ function _stSaveUnrecognizedDeal() {
     if (inputPd) inputPd.value = '';
     _stResetPostDateInputs();
     _stRender();
-    _stFlash('Saved as post-dated deal. Confirm on billing date to edit.', 'ok');
+    _stFlash(
+      'Saved as post-dated deal. Confirm on billing date to edit.',
+      'ok'
+    );
     return;
   }
 
   var sales = _stLoadSales();
   var tsBase = _stReadDateSoldTs();
-  dealId =
-    'st_' + tsBase + '_u_0_' + Math.random().toString(36).slice(2, 6);
+  dealId = 'st_' + tsBase + '_u_0_' + Math.random().toString(36).slice(2, 6);
   if (existingIds[dealId]) return;
   sales.push({
     id: dealId,
@@ -2965,7 +3168,12 @@ function _stSaveUnrecognizedDeal() {
   for (var ai = 0; ai < (d.addons || []).length; ai++) {
     var addon = d.addons[ai];
     var addonId =
-      'st_' + tsBase + '_u_' + (ai + 1) + '_' + Math.random().toString(36).slice(2, 6);
+      'st_' +
+      tsBase +
+      '_u_' +
+      (ai + 1) +
+      '_' +
+      Math.random().toString(36).slice(2, 6);
     if (existingIds[addonId]) continue;
     sales.push({
       id: addonId,
@@ -3002,10 +3210,16 @@ function _stSaveUnrecognizedDeal() {
 }
 
 function _stValidateSalesIntegrity(sales) {
-  var deals = sales.filter(function (s) { return s && s.type === 'deal'; });
-  var addons = sales.filter(function (s) { return s && s.type === 'addon'; });
+  var deals = sales.filter(function (s) {
+    return s && s.type === 'deal';
+  });
+  var addons = sales.filter(function (s) {
+    return s && s.type === 'addon';
+  });
   if (deals.length === 0 && addons.length > 0) {
-    console.warn('[CHA SALES] Data integrity warning: add-ons exist without any deals');
+    console.warn(
+      '[CHA SALES] Data integrity warning: add-ons exist without any deals'
+    );
   }
   var ids = {};
   for (var i = 0; i < sales.length; i++) {
@@ -3060,7 +3274,7 @@ function _stConfirmPostDate(id) {
     notes: pd.notes || '',
     receiptId: pd.receiptId || '',
     receiptTotal: 0,
-    enrollmentFee: isDealPd ? (Number(pd.enrollmentFee) || 0) : 0,
+    enrollmentFee: isDealPd ? Number(pd.enrollmentFee) || 0 : 0,
     isBackfill: !!pd.isBackfill
   });
   if (isDealPd) {
@@ -3108,7 +3322,10 @@ function _stUpdateStatus(id, newStatus) {
         _stStampDealCommission(sales, i, rates);
       } else if (affected.receiptId) {
         for (var di = 0; di < sales.length; di++) {
-          if (sales[di].type === 'deal' && sales[di].receiptId === affected.receiptId) {
+          if (
+            sales[di].type === 'deal' &&
+            sales[di].receiptId === affected.receiptId
+          ) {
             _stStampDealCommission(sales, di, rates);
             break;
           }
@@ -3387,7 +3604,10 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
 function _stCurrentTierBonus(stats) {
   var bonus = 0;
   for (var i = 0; i < ST_BONUS_TIERS.length; i++) {
-    if (stats.weekDeals >= ST_BONUS_TIERS[i].deals && stats.weekAddons >= ST_BONUS_TIERS[i].addons) {
+    if (
+      stats.weekDeals >= ST_BONUS_TIERS[i].deals &&
+      stats.weekAddons >= ST_BONUS_TIERS[i].addons
+    ) {
       bonus = ST_BONUS_TIERS[i].bonus;
     }
   }
@@ -3425,7 +3645,8 @@ function _stPaycheckBreakdown(sales, stats) {
     if (!ad || ad.type !== 'addon') continue;
     if (ad.ts < ws || ad.ts >= we) continue;
     if (_stNormalizeStatus(ad) === 'chargeback') continue;
-    if (!ad.receiptId || _stDealExistsForReceiptId(sales, ad.receiptId)) continue;
+    if (!ad.receiptId || _stDealExistsForReceiptId(sales, ad.receiptId))
+      continue;
     var ac =
       typeof ad.addonCommission === 'number'
         ? ad.addonCommission
@@ -3461,9 +3682,12 @@ function _stBuildInput() {
   var today = _stTodayIso();
   var html = '<div class="st-input-section">';
   html += '<input type="hidden" id="st-entry-timing-mode" value="today">';
-  html += '<div class="st-timing-toggle" role="tablist" aria-label="Sale timing">';
-  html += '<button type="button" id="st-timing-today" class="st-timing-pill is-active" onclick="_stSetSaleTimingMode(\'today\')">Today\'s Sale</button>';
-  html += '<button type="button" id="st-timing-past" class="st-timing-pill" onclick="_stSetSaleTimingMode(\'past\')">Past Sale</button>';
+  html +=
+    '<div class="st-timing-toggle" role="tablist" aria-label="Sale timing">';
+  html +=
+    '<button type="button" id="st-timing-today" class="st-timing-pill is-active" onclick="_stSetSaleTimingMode(\'today\')">Today\'s Sale</button>';
+  html +=
+    '<button type="button" id="st-timing-past" class="st-timing-pill" onclick="_stSetSaleTimingMode(\'past\')">Past Sale</button>';
   html += '</div>';
   html +=
     '<label class="st-input-label" for="st-receipt-input">Paste enrollment receipt</label>';
@@ -3471,7 +3695,8 @@ function _stBuildInput() {
     '<textarea id="st-receipt-input" class="st-textarea" rows="4" ' +
     'oninput="_stReceiptInputChanged()" ' +
     'placeholder="Paste the full enrollment receipt here. Groq AI extracts plan premium, enrollment fee, and add-ons when you tap Add."></textarea>';
-  html += '<div id="st-receipt-preview" class="st-receipt-preview" aria-live="polite"></div>';
+  html +=
+    '<div id="st-receipt-preview" class="st-receipt-preview" aria-live="polite"></div>';
   html += '<div id="st-flash" class="st-flash" style="opacity:0;"></div>';
   // Sale timing: Same-Day vs Post-Date toggle buttons
   html += '<input type="hidden" id="st-sale-mode" value="same">';
@@ -3485,8 +3710,7 @@ function _stBuildInput() {
   // Billing" only visible when Post-Date mode is selected.
   html += '<div class="st-date-row">';
   html += '<div class="st-date-field">';
-  html +=
-    '<label for="st-date-sold" class="st-date-label">Date Sold</label>';
+  html += '<label for="st-date-sold" class="st-date-label">Date Sold</label>';
   html +=
     '<input type="date" id="st-date-sold" class="st-date-input" value="' +
     _stEscape(today) +
@@ -3612,7 +3836,8 @@ function _stOpenPaycheckBreakdownModal() {
       ? _stCalcStats(sales, view.start, view.endExclusive)
       : _stCalcStats(sales, view.start);
   var pb = _stPaycheckBreakdown(sales, stats);
-  var weekStart = Number(stats.weekStart) || _stStartOfWeek(new Date()).getTime();
+  var weekStart =
+    Number(stats.weekStart) || _stStartOfWeek(new Date()).getTime();
   var weekEnd =
     typeof stats.weekEndExclusive === 'number' && !isNaN(stats.weekEndExclusive)
       ? stats.weekEndExclusive
@@ -3681,7 +3906,8 @@ function _stOpenPaycheckBreakdownModal() {
     _stFmtMoney(Number(pb.estimated) || 0) +
     '</div><button type="button" class="st-pb-close" aria-label="Close paycheck breakdown" onclick="_stClosePaycheckBreakdownModal(event)">&times;</button></div>' +
     '</div>';
-  html += '<div class="st-pb-section"><div class="st-pb-section-label">By Deal</div>';
+  html +=
+    '<div class="st-pb-section"><div class="st-pb-section-label">By Deal</div>';
   if (!deals.length) {
     html += '<div class="st-pb-empty">No this-week deals to display.</div>';
   } else {
@@ -3705,7 +3931,8 @@ function _stOpenPaycheckBreakdownModal() {
     _stFmtMoney(plansSubtotal) +
     '</strong></div></div>';
   if (showCarrier) {
-    html += '<div class="st-pb-section"><div class="st-pb-section-label">By Carrier</div>';
+    html +=
+      '<div class="st-pb-section"><div class="st-pb-section-label">By Carrier</div>';
     for (i = 0; i < carrierOrder.length; i++) {
       var key = carrierOrder[i];
       var row = carrierAgg[key];
@@ -3971,7 +4198,9 @@ function _stApplyRangeDraft() {
     return;
   }
   var endExclusiveDraft = _stIsoToMsEndExclusive(_stRangeDraftEnd);
-  var spanDays = Math.ceil((endExclusiveDraft - startMs) / (24 * 60 * 60 * 1000));
+  var spanDays = Math.ceil(
+    (endExclusiveDraft - startMs) / (24 * 60 * 60 * 1000)
+  );
   if (spanDays > 31) {
     _stRangeError = 'Custom range max is 31 days.';
     _stRender();
@@ -4028,7 +4257,8 @@ function _stBulkToggleAll(checked) {
 function _stBulkDelete() {
   var ids = [];
   for (var k in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k]) ids.push(String(k));
+    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k])
+      ids.push(String(k));
   }
   if (!ids.length) return;
   if (!confirm('Delete ' + ids.length + ' selected sales?')) {
@@ -4088,9 +4318,7 @@ function _stBulkDeleteAll() {
   ) {
     return;
   }
-  if (
-    !confirm('Are you absolutely sure? This will wipe every logged sale.')
-  ) {
+  if (!confirm('Are you absolutely sure? This will wipe every logged sale.')) {
     return;
   }
   _stSaveSales([]);
@@ -4385,9 +4613,12 @@ function _stRenderSaleSegment(s, isAll, opts) {
   var typeClass = s.type === 'addon' ? 'st-type-addon' : 'st-type-deal';
   var typeLabel = s.type === 'addon' ? 'Add-on' : 'Deal';
   var customerCell =
-    '<div class="st-customer-name">' + _stEscape(s.customer || '\u2014') + '</div>';
+    '<div class="st-customer-name">' +
+    _stEscape(s.customer || '\u2014') +
+    '</div>';
   if (s.memberId) {
-    customerCell += '<div class="st-member-id">ID: ' + _stEscape(s.memberId) + '</div>';
+    customerCell +=
+      '<div class="st-member-id">ID: ' + _stEscape(s.memberId) + '</div>';
   }
   var enrollChip = '';
   if (s.type === 'deal' && Number(s.enrollmentFee) > 0) {
@@ -4457,7 +4688,8 @@ function _stRenderSaleSegment(s, isAll, opts) {
 function _stRenderSaleGroupCard(g, isAll) {
   var st = _stGroupListStatus(g);
   var dateStr = _stFormatSaleListDate(_stGroupListTs(g));
-  var isCombo = (g.deal && g.addons.length > 0) || (!g.deal && g.addons.length > 1);
+  var isCombo =
+    (g.deal && g.addons.length > 0) || (!g.deal && g.addons.length > 1);
   var isSolo = !isCombo;
   var parts = [];
   parts.push(
@@ -4533,7 +4765,9 @@ function _stRenderThisWeekSubRow(g) {
   var dateLabel = _stWeekCardDateLabel(ts);
   var lid = String(lead.id);
   var pillLabel = g.deal ? 'DEAL' : 'ADD-ON';
-  var pillClass = g.deal ? 'st-week-deal-pill' : 'st-week-deal-pill st-week-pill-addon';
+  var pillClass = g.deal
+    ? 'st-week-deal-pill'
+    : 'st-week-deal-pill st-week-pill-addon';
   var actions =
     '<div class="st-week-card-actions">' +
     '<button type="button" class="st-week-card-icon" title="Edit" aria-label="Edit" onclick="event.stopPropagation();_stOpenCommissionEditor(\'' +
@@ -4714,7 +4948,9 @@ function _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats) {
         '<span class="st-week-day-chev" aria-hidden="true">' +
         (expanded ? '\u25B2' : '\u25BC') +
         '</span></div></div>' +
-        (expanded ? '<div class="st-week-day-body">' + subHtml + '</div>' : '') +
+        (expanded
+          ? '<div class="st-week-day-body">' + subHtml + '</div>'
+          : '') +
         '</div>'
     );
   }
@@ -4725,7 +4961,8 @@ function _stBuildTable(sales, stTab, view, stats) {
   view = view || _stRangeInfo();
   stats = stats || _stCalcStats(sales);
   var weekStart = Number(view.start) || _stStartOfWeek(new Date()).getTime();
-  var weekEnd = Number(view.endExclusive) || weekStart + 7 * 24 * 60 * 60 * 1000;
+  var weekEnd =
+    Number(view.endExclusive) || weekStart + 7 * 24 * 60 * 60 * 1000;
   var weekRows = sales
     .filter(function (s) {
       return s && s.ts >= weekStart && s.ts < weekEnd;
@@ -4735,17 +4972,23 @@ function _stBuildTable(sales, stTab, view, stats) {
     });
   var weekGroups = _stGroupRowsForDisplay(weekRows);
   var wkMeta =
-    _stFmtMoney(stats.weekSales) + ' · ' + _stFmtMoney(stats.weekExpectedCommission) + ' comm';
+    _stFmtMoney(stats.weekSales) +
+    ' · ' +
+    _stFmtMoney(stats.weekExpectedCommission) +
+    ' comm';
   var html = '<div class="st-table-section st-sales-log">';
   html +=
-    '<div class="st-split-col-head"><span class="st-split-title">' + _stEscape(view.label) + ' (' +
+    '<div class="st-split-col-head"><span class="st-split-title">' +
+    _stEscape(view.label) +
+    ' (' +
     weekGroups.length +
     ')</span><span class="st-split-meta">' +
     _stEscape(wkMeta) +
     '</span></div>';
   html += '<div class="st-week-cards-scroller">';
   if (!weekGroups.length) {
-    html += '<div class="st-empty st-empty-tight">No sales logged yet this week.</div>';
+    html +=
+      '<div class="st-empty st-empty-tight">No sales logged yet this week.</div>';
   } else {
     html += _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats);
   }
@@ -4760,14 +5003,16 @@ function _stBuildAllSalesPane(sales) {
   var allGroups = _stGroupRowsForDisplay(allRowsSorted);
   var filteredAll = [];
   for (var fi = 0; fi < allGroups.length; fi++) {
-    if (_stGroupMatchesAllListFilters(allGroups[fi])) filteredAll.push(allGroups[fi]);
+    if (_stGroupMatchesAllListFilters(allGroups[fi]))
+      filteredAll.push(allGroups[fi]);
   }
   var totalFiltered = filteredAll.length;
   var pageLen = Math.min(Math.max(_stAllRowsShown || 10, 10), 50);
   var paged = filteredAll.slice(0, pageLen);
   var selectedCount = 0;
   for (var sid in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(sid) && _stSelectedIds[sid]) selectedCount++;
+    if (_stSelectedIds.hasOwnProperty(sid) && _stSelectedIds[sid])
+      selectedCount++;
   }
   var html = '<div class="st-table-section st-sales-log st-all-sales-pane">';
   html +=
@@ -4817,7 +5062,8 @@ function _stBuildAllSalesPane(sales) {
     '<input type="text" class="st-all-search" placeholder="Search client, plan, ID…" value="' +
     _stEscape(_stAllSearchQuery) +
     '">';
-  html += '<select class="st-all-status-dd" onchange="_stSetAllStatusFilter(this.value)">';
+  html +=
+    '<select class="st-all-status-dd" onchange="_stSetAllStatusFilter(this.value)">';
   var stOpts = [
     ['all', 'All status'],
     ['cleared', 'Cleared'],
@@ -4859,14 +5105,17 @@ function _stBuildAllSalesPane(sales) {
     html +=
       '<div class="st-empty st-empty-tight">No sales logged yet. Paste a receipt above to add one.</div>';
   } else if (!totalFiltered) {
-    html += '<div class="st-empty st-empty-tight">No sales match these filters.</div>';
+    html +=
+      '<div class="st-empty st-empty-tight">No sales match these filters.</div>';
   } else {
     for (var ri = 0; ri < paged.length; ri++) {
       var grp = paged[ri];
       var lead2 = grp.deal || grp.addons[0];
       if (!lead2) continue;
       var lid2 = String(lead2.id);
-      var prem = grp.deal ? Number(grp.deal.amount) || 0 : Number(lead2.amount) || 0;
+      var prem = grp.deal
+        ? Number(grp.deal.amount) || 0
+        : Number(lead2.amount) || 0;
       var abbr = _stStatusAbbrevForTable(lead2);
       var gst = _stGroupListStatus(grp);
       html += '<div class="st-compact-row st-row st-row-' + gst + '">';
@@ -4886,11 +5135,15 @@ function _stBuildAllSalesPane(sales) {
         '</span><span class="st-ccp-plan">' +
         _stEscape(lead2.plan || '—') +
         '</span>' +
-        (lead2.isBackfill ? '<span class="st-backfill-badge">Backfill</span>' : '') +
+        (lead2.isBackfill
+          ? '<span class="st-backfill-badge">Backfill</span>'
+          : '') +
         '</span>';
       html += '<span class="st-cpr">$' + prem.toFixed(2) + '</span>';
       html +=
-        '<span class="st-ccm">$' + _stGroupCommissionDisplay(grp).toFixed(2) + '</span>';
+        '<span class="st-ccm">$' +
+        _stGroupCommissionDisplay(grp).toFixed(2) +
+        '</span>';
       html +=
         '<span class="st-cst"><span class="st-pill-mini st-pill-' +
         gst +
@@ -4899,10 +5152,10 @@ function _stBuildAllSalesPane(sales) {
         '</span></span>';
       html +=
         '<span class="st-cac"><details class="st-row-menu" onclick="event.stopPropagation()"><summary aria-label="Actions">⋯</summary><div class="st-row-menu-pop">' +
-        '<button type="button" onclick="var d=this.closest(\'details\');if(d)d.removeAttribute(\'open\');_stOpenCommissionEditor(\'' +
+        "<button type=\"button\" onclick=\"var d=this.closest('details');if(d)d.removeAttribute('open');_stOpenCommissionEditor('" +
         lid2 +
         '\')">Edit</button>' +
-        '<button type="button" onclick="var d=this.closest(\'details\');if(d)d.removeAttribute(\'open\');_stDeleteSaleGroupByLeadId(\'' +
+        "<button type=\"button\" onclick=\"var d=this.closest('details');if(d)d.removeAttribute('open');_stDeleteSaleGroupByLeadId('" +
         lid2 +
         '\')">Delete</button></div></details></span>';
       html += '</div>';
@@ -4938,19 +5191,25 @@ function _stToggleAllSaleDetails(id) {
 }
 
 function _stExportAllSalesCsv() {
-  var sales = _stLoadSales().slice().sort(function (a, b) { return b.ts - a.ts; });
+  var sales = _stLoadSales()
+    .slice()
+    .sort(function (a, b) {
+      return b.ts - a.ts;
+    });
   var lines = ['Client,Member ID,Plan,Premium,Date,Status,Type'];
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
-    lines.push([
-      '"' + String(s.customer || '').replace(/"/g, '""') + '"',
-      '"' + String(s.memberId || '').replace(/"/g, '""') + '"',
-      '"' + String(s.plan || '').replace(/"/g, '""') + '"',
-      (Number(s.amount) || 0).toFixed(2),
-      '"' + _stFormatSaleListDate(s.ts) + '"',
-      '"' + _stNormalizeStatus(s) + '"',
-      '"' + String(s.type || '') + '"'
-    ].join(','));
+    lines.push(
+      [
+        '"' + String(s.customer || '').replace(/"/g, '""') + '"',
+        '"' + String(s.memberId || '').replace(/"/g, '""') + '"',
+        '"' + String(s.plan || '').replace(/"/g, '""') + '"',
+        (Number(s.amount) || 0).toFixed(2),
+        '"' + _stFormatSaleListDate(s.ts) + '"',
+        '"' + _stNormalizeStatus(s) + '"',
+        '"' + String(s.type || '') + '"'
+      ].join(',')
+    );
   }
   var blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
   var url = URL.createObjectURL(blob);
@@ -4958,7 +5217,9 @@ function _stExportAllSalesCsv() {
   a.href = url;
   a.download = 'all-sales.csv';
   a.click();
-  setTimeout(function () { URL.revokeObjectURL(url); }, 500);
+  setTimeout(function () {
+    URL.revokeObjectURL(url);
+  }, 500);
 }
 
 function _stDownloadWeeklyPdf() {
@@ -4993,7 +5254,8 @@ function _stDownloadWeeklyPdf() {
       agentName = String(window.CHA_USER.name);
     } else {
       var u = _stGetCurrentUser();
-      agentName = u && (u.name || u.firstName) ? String(u.name || u.firstName) : '';
+      agentName =
+        u && (u.name || u.firstName) ? String(u.name || u.firstName) : '';
     }
   } catch (_e) {}
   if (!agentName) agentName = 'Unknown Agent';
@@ -5021,12 +5283,24 @@ function _stDownloadWeeklyPdf() {
     }
     rowsHtml +=
       '<tr>' +
-      '<td>' + dDate + '</td>' +
-      '<td>' + _stEscape(agentName) + '</td>' +
-      '<td>' + _stEscape(d.customer || 'Unknown') + '</td>' +
-      '<td>' + _stEscape(d.plan || 'Unknown Plan') + '</td>' +
-      '<td>$' + (Number(d.enrollmentFee) || 0).toFixed(2) + '</td>' +
-      '<td>$' + dComm.toFixed(2) + '</td>' +
+      '<td>' +
+      dDate +
+      '</td>' +
+      '<td>' +
+      _stEscape(agentName) +
+      '</td>' +
+      '<td>' +
+      _stEscape(d.customer || 'Unknown') +
+      '</td>' +
+      '<td>' +
+      _stEscape(d.plan || 'Unknown Plan') +
+      '</td>' +
+      '<td>$' +
+      (Number(d.enrollmentFee) || 0).toFixed(2) +
+      '</td>' +
+      '<td>$' +
+      dComm.toFixed(2) +
+      '</td>' +
       '</tr>';
 
     var addons = [];
@@ -5051,20 +5325,29 @@ function _stDownloadWeeklyPdf() {
           : _stComputeLineCommission(ad, rates);
       rowsHtml +=
         '<tr style="background:#fafbff;">' +
-        '<td>' + dDate + '</td>' +
-        '<td>' + _stEscape(agentName) + '</td>' +
-        '<td>' + _stEscape(d.customer || 'Unknown') + '</td>' +
-        '<td style="padding-left:12px;">+ ' + _stEscape(ad.name || ad.plan || 'Add-on') + '</td>' +
+        '<td>' +
+        dDate +
+        '</td>' +
+        '<td>' +
+        _stEscape(agentName) +
+        '</td>' +
+        '<td>' +
+        _stEscape(d.customer || 'Unknown') +
+        '</td>' +
+        '<td style="padding-left:12px;">+ ' +
+        _stEscape(ad.name || ad.plan || 'Add-on') +
+        '</td>' +
         '<td>$0.00</td>' +
-        '<td>$' + Number(aComm).toFixed(2) + '</td>' +
+        '<td>$' +
+        Number(aComm).toFixed(2) +
+        '</td>' +
         '</tr>';
     }
   }
 
   var tierBonus = _stCurrentTierBonus(stats);
   var enrollmentFeeBonus = enrollQualified.length * 20;
-  var totalEstimated =
-    dealComm + addonComm + enrollmentFeeBonus + tierBonus;
+  var totalEstimated = dealComm + addonComm + enrollmentFeeBonus + tierBonus;
   var html =
     '<html><head><title>Weekly breakdown</title></head><body style="font-family:Inter,Arial,sans-serif;padding:24px;color:#0f172a;">';
   html +=
@@ -5077,7 +5360,9 @@ function _stDownloadWeeklyPdf() {
     _stEscape(
       view.mode === 'custom'
         ? _stFmtCustomLabel(weekStart, weekEndIncl)
-        : _stFormatSaleListDate(weekStart) + ' - ' + _stFormatSaleListDate(weekEndIncl)
+        : _stFormatSaleListDate(weekStart) +
+            ' - ' +
+            _stFormatSaleListDate(weekEndIncl)
     ) +
     '</div>';
   html +=
@@ -5094,14 +5379,23 @@ function _stDownloadWeeklyPdf() {
     '<th style="text-align:left;border:1px solid #dbe3ef;">Enrollment Fee</th>' +
     '<th style="text-align:left;border:1px solid #dbe3ef;">Commission</th>' +
     '</tr>' +
-    (rowsHtml || '<tr><td colspan="6" style="border:1px solid #dbe3ef;color:#94a3b8;">No deals this week.</td></tr>') +
+    (rowsHtml ||
+      '<tr><td colspan="6" style="border:1px solid #dbe3ef;color:#94a3b8;">No deals this week.</td></tr>') +
     '</table>';
   html +=
     '<div style="margin-top:12px;line-height:1.6;font-size:13px;">' +
-    '<div>Core Policies Sold: <strong>' + coreCount + '</strong></div>' +
-    '<div>Add-on Policies Sold: <strong>' + addonCount + '</strong></div>' +
-    '<div>Full Enrollment Fee Bonus: <strong>$' + enrollmentFeeBonus.toFixed(2) + '</strong></div>' +
-    '<div>Tier Bonus Amount: <strong>$' + tierBonus.toFixed(2) + '</strong></div>' +
+    '<div>Core Policies Sold: <strong>' +
+    coreCount +
+    '</strong></div>' +
+    '<div>Add-on Policies Sold: <strong>' +
+    addonCount +
+    '</strong></div>' +
+    '<div>Full Enrollment Fee Bonus: <strong>$' +
+    enrollmentFeeBonus.toFixed(2) +
+    '</strong></div>' +
+    '<div>Tier Bonus Amount: <strong>$' +
+    tierBonus.toFixed(2) +
+    '</strong></div>' +
     '</div>';
   html +=
     '<div style="margin-top:14px;font-size:14px;font-weight:700;">Total estimated commission: $' +
@@ -5117,8 +5411,6 @@ function _stDownloadWeeklyPdf() {
   w.print();
 }
 
-
-
 function _stOpenEntryModal(opts) {
   opts = opts || {};
   _stCloseEntryModal();
@@ -5130,13 +5422,15 @@ function _stOpenEntryModal(opts) {
   if (!isFinite(premiumVal)) premiumVal = 0;
   var enrollVal = Number(initial.enrollmentFee);
   if (!isFinite(enrollVal)) enrollVal = 125;
-  var defaultDealRate = _stPlanTierRate(premiumVal, _stLoadCommissionRates()) * 100;
+  var defaultDealRate =
+    _stPlanTierRate(premiumVal, _stLoadCommissionRates()) * 100;
   var dealRatePct =
     typeof initial.dealRatePct === 'number' && !isNaN(initial.dealRatePct)
       ? initial.dealRatePct
       : defaultDealRate;
   var addonRows = initial.addons && initial.addons.length ? initial.addons : [];
-  var addonOnlyDefault = !!initial.addonOnly || (mode === 'edit' && !initial.dealId);
+  var addonOnlyDefault =
+    !!initial.addonOnly || (mode === 'edit' && !initial.dealId);
 
   _stEntryModalState = {
     mode: mode,
@@ -5162,7 +5456,8 @@ function _stOpenEntryModal(opts) {
     html += '<pre class="st-entry-preview">' + _stEscape(preview) + '</pre>';
     html += '</div>';
   }
-  html += '<div class="st-entry-sale-type" role="tablist" aria-label="Sale type">';
+  html +=
+    '<div class="st-entry-sale-type" role="tablist" aria-label="Sale type">';
   html +=
     '<button type="button" id="st-entry-mode-core" class="st-entry-sale-pill" role="tab" aria-selected="' +
     (!addonOnlyDefault ? 'true' : 'false') +
@@ -5276,7 +5571,8 @@ function _stEntryAddAddonRow(addon) {
   var row = document.createElement('div');
   row.className = 'st-entry-addon-row';
   row.setAttribute('data-addon-id', addon && addon.id ? addon.id : '');
-  var amount = addon && typeof addon.amount !== 'undefined' ? Number(addon.amount) : 0;
+  var amount =
+    addon && typeof addon.amount !== 'undefined' ? Number(addon.amount) : 0;
   if (!isFinite(amount)) amount = 0;
   var ratePct =
     addon && typeof addon.ratePct === 'number' && !isNaN(addon.ratePct)
@@ -5300,7 +5596,10 @@ function _stCreateSaleGroupFromModal(payload) {
   var isBackfill = _stIsPastSaleMode();
   var receiptId = payload.receiptId || _stBuildUniqueReceiptId('rcpt_manual_');
   if (!_stMaybeConfirmDuplicate(payload.customer, receiptId)) {
-    _stFlash('Cancelled - ' + payload.customer + ' was not re-added', 'neutral');
+    _stFlash(
+      'Cancelled - ' + payload.customer + ' was not re-added',
+      'neutral'
+    );
     return false;
   }
   var sales = _stLoadSales();
@@ -5366,7 +5665,10 @@ function _stCreateAddonOnlyFromModal(payload) {
   var isBackfill = _stIsPastSaleMode();
   var receiptId = payload.receiptId || _stBuildUniqueReceiptId('rcpt_manual_');
   if (!_stMaybeConfirmDuplicate(payload.customer, receiptId)) {
-    _stFlash('Cancelled - ' + payload.customer + ' was not re-added', 'neutral');
+    _stFlash(
+      'Cancelled - ' + payload.customer + ' was not re-added',
+      'neutral'
+    );
     return false;
   }
   var sales = _stLoadSales();
@@ -5408,7 +5710,8 @@ function _stCreateAddonOnlyFromModal(payload) {
 function _stUpdateAddonOnlyGroupFromModal(payload, state) {
   var sales = _stLoadSales();
   var oldReceipt = String(state.receiptIdForEdit || '').trim();
-  var receiptId = payload.receiptId || oldReceipt || _stBuildUniqueReceiptId('rcpt_manual_');
+  var receiptId =
+    payload.receiptId || oldReceipt || _stBuildUniqueReceiptId('rcpt_manual_');
   var existingAddons = {};
   for (var a = 0; a < sales.length; a++) {
     var s = sales[a];
@@ -5463,14 +5766,25 @@ function _stUpdateAddonOnlyGroupFromModal(payload, state) {
   sales = sales.filter(function (s) {
     if (!s || s.type !== 'addon') return true;
     if (oldReceipt) {
-      if (String(s.receiptId || '') !== oldReceipt && String(s.receiptId || '') !== receiptId) return true;
-    } else if (s.id !== state.seedSaleId && String(s.receiptId || '') !== receiptId) {
+      if (
+        String(s.receiptId || '') !== oldReceipt &&
+        String(s.receiptId || '') !== receiptId
+      )
+        return true;
+    } else if (
+      s.id !== state.seedSaleId &&
+      String(s.receiptId || '') !== receiptId
+    ) {
       return true;
     }
     return keep[s.id] === true;
   });
 
-  _stStampOrphanAddonReceiptCommissions(sales, receiptId, _stLoadCommissionRates());
+  _stStampOrphanAddonReceiptCommissions(
+    sales,
+    receiptId,
+    _stLoadCommissionRates()
+  );
   _stSaveSales(sales);
   _stRender();
   _stFlash('Updated ' + payload.customer, 'ok');
@@ -5490,7 +5804,8 @@ function _stUpdateSaleGroupFromModal(payload, state) {
 
   var deal = sales[dealIdx];
   var oldReceipt = deal.receiptId || state.receiptIdForEdit || '';
-  var receiptId = payload.receiptId || oldReceipt || _stBuildUniqueReceiptId('rcpt_manual_');
+  var receiptId =
+    payload.receiptId || oldReceipt || _stBuildUniqueReceiptId('rcpt_manual_');
   deal.customer = payload.customer;
   deal.plan = payload.plan || 'Unknown Plan';
   deal.amount = payload.premium;
@@ -5567,31 +5882,50 @@ function _stUpdateSaleGroupFromModal(payload, state) {
 function _stSaveEntryModal() {
   var state = _stEntryModalState;
   if (!state) return;
-  var customer =
-    ((document.getElementById('st-entry-customer') || {}).value || '').trim();
+  var customer = (
+    (document.getElementById('st-entry-customer') || {}).value || ''
+  ).trim();
   if (!customer) {
     _stFlash('Customer name is required.', 'error');
     return;
   }
 
-  var receiptId =
-    ((document.getElementById('st-entry-receiptid') || {}).value || '').trim();
-  var soldIso = ((document.getElementById('st-entry-date') || {}).value || '').trim();
+  var receiptId = (
+    (document.getElementById('st-entry-receiptid') || {}).value || ''
+  ).trim();
+  var soldIso = (
+    (document.getElementById('st-entry-date') || {}).value || ''
+  ).trim();
   var soldDate = soldIso ? _stIsoToDate(soldIso) : null;
-  var ts = soldDate ? soldDate.getTime() + 9 * 60 * 60 * 1000 : _stReadDateSoldTs();
-  var plan = ((document.getElementById('st-entry-plan') || {}).value || '').trim();
-  var premium = parseFloat((document.getElementById('st-entry-premium') || {}).value);
-  var enrollmentFee = parseFloat((document.getElementById('st-entry-enroll') || {}).value);
-  var dealRatePct = parseFloat((document.getElementById('st-entry-deal-rate') || {}).value);
+  var ts = soldDate
+    ? soldDate.getTime() + 9 * 60 * 60 * 1000
+    : _stReadDateSoldTs();
+  var plan = (
+    (document.getElementById('st-entry-plan') || {}).value || ''
+  ).trim();
+  var premium = parseFloat(
+    (document.getElementById('st-entry-premium') || {}).value
+  );
+  var enrollmentFee = parseFloat(
+    (document.getElementById('st-entry-enroll') || {}).value
+  );
+  var dealRatePct = parseFloat(
+    (document.getElementById('st-entry-deal-rate') || {}).value
+  );
 
   var rows = document.querySelectorAll('#st-entry-addons .st-entry-addon-row');
   var addons = [];
   for (var i = 0; i < rows.length; i++) {
     var row = rows[i];
-    var name =
-      ((row.querySelector('.st-entry-addon-name') || {}).value || '').trim();
-    var amount = parseFloat((row.querySelector('.st-entry-addon-amt') || {}).value);
-    var ratePct = parseFloat((row.querySelector('.st-entry-addon-rate') || {}).value);
+    var name = (
+      (row.querySelector('.st-entry-addon-name') || {}).value || ''
+    ).trim();
+    var amount = parseFloat(
+      (row.querySelector('.st-entry-addon-amt') || {}).value
+    );
+    var ratePct = parseFloat(
+      (row.querySelector('.st-entry-addon-rate') || {}).value
+    );
     if (!name && (isNaN(amount) || amount <= 0)) continue;
     if (!name) name = 'Unknown Add-on';
     if (isNaN(amount) || amount < 0) amount = 0;
@@ -5613,7 +5947,10 @@ function _stSaveEntryModal() {
       }
     }
     if (!hasAddonAmt) {
-      _stFlash('Add at least one add-on with a premium for add-on-only sale.', 'error');
+      _stFlash(
+        'Add at least one add-on with a premium for add-on-only sale.',
+        'error'
+      );
       return;
     }
     var payloadAo = {
@@ -5689,7 +6026,11 @@ function _stOpenCommissionEditor(saleId) {
   var deal = seed;
   if (seed.type !== 'deal' && seed.receiptId) {
     for (var fi = 0; fi < sales.length; fi++) {
-      if (sales[fi] && sales[fi].type === 'deal' && sales[fi].receiptId === seed.receiptId) {
+      if (
+        sales[fi] &&
+        sales[fi].type === 'deal' &&
+        sales[fi].receiptId === seed.receiptId
+      ) {
         deal = sales[fi];
         break;
       }
@@ -5714,11 +6055,9 @@ function _stOpenCommissionEditor(saleId) {
       var arAo =
         typeof sales[ax].addonCommissionRate === 'number'
           ? sales[ax].addonCommissionRate * 100
-          :
-            (ratesAo.addonTypes[_stClassifyAddon(sales[ax].plan)] ||
+          : (ratesAo.addonTypes[_stClassifyAddon(sales[ax].plan)] ||
               ratesAo.addonTypes.standard ||
-              0.7) *
-            100;
+              0.7) * 100;
       addonsAo.push({
         id: sales[ax].id,
         name: sales[ax].plan || '',
@@ -5730,11 +6069,9 @@ function _stOpenCommissionEditor(saleId) {
       var seedRate =
         typeof seed.addonCommissionRate === 'number'
           ? seed.addonCommissionRate * 100
-          :
-            (ratesAo.addonTypes[_stClassifyAddon(seed.plan)] ||
+          : (ratesAo.addonTypes[_stClassifyAddon(seed.plan)] ||
               ratesAo.addonTypes.standard ||
-              0.7) *
-            100;
+              0.7) * 100;
       addonsAo.push({
         id: seed.id,
         name: seed.plan || '',
@@ -5785,11 +6122,9 @@ function _stOpenCommissionEditor(saleId) {
     var ar =
       typeof sales[ai].addonCommissionRate === 'number'
         ? sales[ai].addonCommissionRate * 100
-        :
-          (rates.addonTypes[_stClassifyAddon(sales[ai].plan)] ||
+        : (rates.addonTypes[_stClassifyAddon(sales[ai].plan)] ||
             rates.addonTypes.standard ||
-            0.7) *
-          100;
+            0.7) * 100;
     addons.push({
       id: sales[ai].id,
       name: sales[ai].plan || '',
@@ -5841,7 +6176,12 @@ function _stResetDealCommission(saleId) {
 
 // Reset GLOBAL commission rate defaults.
 function _stResetGlobalCommissionRates() {
-  if (!confirm('Reset all commission rate defaults? Existing per-deal overrides will be kept.')) return;
+  if (
+    !confirm(
+      'Reset all commission rate defaults? Existing per-deal overrides will be kept.'
+    )
+  )
+    return;
   _stResetCommissionRates();
   var sales = _stLoadSales();
   _stRestampAllCommissions(sales);
@@ -5879,7 +6219,10 @@ function _stTierProgressData(stats) {
     ? Math.min(
         100,
         Math.round(
-          Math.min(stats.weekDeals / targetDeals, stats.weekAddons / targetAddons) * 100
+          Math.min(
+            stats.weekDeals / targetDeals,
+            stats.weekAddons / targetAddons
+          ) * 100
         )
       )
     : 0;
@@ -5893,7 +6236,9 @@ function _stWeeklyPaycheckMomentum(sales, stats) {
   var thisPb = _stPaycheckBreakdown(sales, stats);
   var lastPb = _stPaycheckBreakdown(sales, prevStats);
   if (!lastPb || !lastPb.estimated) return null;
-  var delta = Math.round(((thisPb.estimated - lastPb.estimated) / lastPb.estimated) * 100);
+  var delta = Math.round(
+    ((thisPb.estimated - lastPb.estimated) / lastPb.estimated) * 100
+  );
   return { delta: delta, lastWeek: lastPb.estimated };
 }
 
@@ -5934,8 +6279,7 @@ function _stBuildWeekNavigator(view) {
     _stRangeMode === 'week' && !_stRangeDraftOpen && sel === lastWs;
   var pillCustomActive = _stRangeDraftOpen || _stRangeMode === 'custom';
 
-  var labelLeft =
-    view.mode === 'custom' ? view.label : _stFmtWeekLabel(sel);
+  var labelLeft = view.mode === 'custom' ? view.label : _stFmtWeekLabel(sel);
 
   var html = '<section class="st-week-nav-wrap">';
   html += '<div class="st-week-nav-row1">';
@@ -5989,7 +6333,10 @@ function _stBuildWeekNavigator(view) {
       '" onchange="_stSetRangeDraft(\'end\', this.value)">';
     html +=
       '<button type="button" class="st-custom-apply" onclick="_stApplyRangeDraft()">Apply</button>';
-    html += '<span class="st-week-nav-err">' + _stEscape(_stRangeError || '') + '</span>';
+    html +=
+      '<span class="st-week-nav-err">' +
+      _stEscape(_stRangeError || '') +
+      '</span>';
     html += '</div>';
   }
   html += '</section>';
@@ -6007,12 +6354,16 @@ function _stBuildKpiStrip(sales, stats) {
     current = _stKpiSnapshotForRange(sales, view.start, view.endExclusive);
     previous = _stKpiSnapshotForRange(sales, view.start - span, view.start);
   } else {
-    var currentStart = Number(stats && stats.weekStart) || _stStartOfWeek(new Date()).getTime();
+    var currentStart =
+      Number(stats && stats.weekStart) || _stStartOfWeek(new Date()).getTime();
     current = _stCalcWeekStatsFor(sales, currentStart);
     previous = _stCalcWeekStatsFor(sales, currentStart - weekMs);
   }
   var hasPreviousData =
-    previous.paycheck > 0 || previous.deals > 0 || previous.addons > 0 || previous.premium > 0;
+    previous.paycheck > 0 ||
+    previous.deals > 0 ||
+    previous.addons > 0 ||
+    previous.premium > 0;
 
   function pctDelta(nowVal, prevVal) {
     if (!hasPreviousData || !prevVal) return null;
@@ -6051,21 +6402,38 @@ function _stBuildKpiStrip(sales, stats) {
   var premiumDelta = pctDelta(current.premium, previous.premium);
 
   var html = '<section class="st-kpi-strip" aria-label="Weekly KPI strip">';
-  html += '<article class="st-kpi-card"><div class="st-kpi-label">PAYCHECK</div>';
-  html += '<div class="st-kpi-value">' + _stFmtMoney(current.paycheck) + '</div>';
-  html += '<div class="st-kpi-meta">' + deltaMarkup(paycheckDelta, '% vs last wk') + '</div></article>';
+  html +=
+    '<article class="st-kpi-card"><div class="st-kpi-label">PAYCHECK</div>';
+  html +=
+    '<div class="st-kpi-value">' + _stFmtMoney(current.paycheck) + '</div>';
+  html +=
+    '<div class="st-kpi-meta">' +
+    deltaMarkup(paycheckDelta, '% vs last wk') +
+    '</div></article>';
 
   html += '<article class="st-kpi-card"><div class="st-kpi-label">DEALS</div>';
   html += '<div class="st-kpi-value">' + (current.deals || 0) + '</div>';
-  html += '<div class="st-kpi-meta">' + deltaMarkup(dealsDelta, ' vs last wk') + '</div></article>';
+  html +=
+    '<div class="st-kpi-meta">' +
+    deltaMarkup(dealsDelta, ' vs last wk') +
+    '</div></article>';
 
-  html += '<article class="st-kpi-card"><div class="st-kpi-label">ADD-ONS</div>';
+  html +=
+    '<article class="st-kpi-card"><div class="st-kpi-label">ADD-ONS</div>';
   html += '<div class="st-kpi-value">' + (current.addons || 0) + '</div>';
-  html += '<div class="st-kpi-meta">' + deltaMarkup(addonsDelta, ' vs last wk') + '</div></article>';
+  html +=
+    '<div class="st-kpi-meta">' +
+    deltaMarkup(addonsDelta, ' vs last wk') +
+    '</div></article>';
 
-  html += '<article class="st-kpi-card"><div class="st-kpi-label">WK PREMIUM</div>';
-  html += '<div class="st-kpi-value">' + _stFmtMoney(current.premium) + '</div>';
-  html += '<div class="st-kpi-meta">' + deltaMarkup(premiumDelta, '% vs last wk') + '</div></article>';
+  html +=
+    '<article class="st-kpi-card"><div class="st-kpi-label">WK PREMIUM</div>';
+  html +=
+    '<div class="st-kpi-value">' + _stFmtMoney(current.premium) + '</div>';
+  html +=
+    '<div class="st-kpi-meta">' +
+    deltaMarkup(premiumDelta, '% vs last wk') +
+    '</div></article>';
   html += '</section>';
   return html;
 }
@@ -6100,7 +6468,8 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
   } else {
     statusLine = 'Keep selling to grow your paycheck';
   }
-  var html = '<section id="st-paycheck-hero" class="st-paycheck-hero st-paycheck-hero--compact">';
+  var html =
+    '<section id="st-paycheck-hero" class="st-paycheck-hero st-paycheck-hero--compact">';
   html += '<div class="st-paycheck-hero-head">';
   html +=
     '<div class="st-paycheck-hero-kicker">' +
@@ -6148,7 +6517,9 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
       (est > 0 ? tier.pct : 0) +
       '%"></span></div>';
     html +=
-      '<div class="st-paycheck-hero-progress-status">' + _stEscape(statusLine) + '</div>';
+      '<div class="st-paycheck-hero-progress-status">' +
+      _stEscape(statusLine) +
+      '</div>';
   }
   html += '<div class="st-paycheck-hero-days">';
   var dbLen = (stats.dayBuckets && stats.dayBuckets.length) || 0;
@@ -6170,7 +6541,7 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
     }
     var dateStr = '';
     if (bucket.date) {
-      dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
+      dateStr = bucket.date.getMonth() + 1 + '/' + bucket.date.getDate();
     }
     html +=
       '<div class="st-paycheck-day' +
@@ -6178,7 +6549,9 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
       '">' +
       '<div class="st-paycheck-day-label">' +
       (isToday ? 'TODAY' : dayAbbr) +
-      (dateStr ? ' <span class="st-paycheck-day-dt">' + dateStr + '</span>' : '') +
+      (dateStr
+        ? ' <span class="st-paycheck-day-dt">' + dateStr + '</span>'
+        : '') +
       '</div>' +
       '<div class="st-paycheck-day-deals">' +
       dealLine +
@@ -6213,7 +6586,8 @@ function _stBuildWeekAtGlanceSection(stats) {
     '-' +
     weekEnd.toLocaleDateString('en-US', { day: 'numeric' });
 
-  var html = '<section class="st-sec st-week-glance st-week-glance-unified" aria-labelledby="st-glance-h">';
+  var html =
+    '<section class="st-sec st-week-glance st-week-glance-unified" aria-labelledby="st-glance-h">';
   html +=
     '<div class="st-week-glance-head"><span id="st-glance-h" class="st-sec-title">THIS WEEK · ' +
     hdr.toUpperCase() +
@@ -6229,7 +6603,7 @@ function _stBuildWeekAtGlanceSection(stats) {
     var dealLine = dealN === 1 ? '1 deal' : dealN + ' deals';
     var dateStr = '';
     if (bucket.date) {
-      dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
+      dateStr = bucket.date.getMonth() + 1 + '/' + bucket.date.getDate();
     }
     html +=
       '<div class="st-glance-day' +
@@ -6239,7 +6613,9 @@ function _stBuildWeekAtGlanceSection(stats) {
     html +=
       '<div class="st-glance-day-label">' +
       (isToday ? 'TODAY' : dayNames[d]) +
-      (dateStr ? ' <span class="st-glance-day-dt">' + dateStr + '</span>' : '') +
+      (dateStr
+        ? ' <span class="st-glance-day-dt">' + dateStr + '</span>'
+        : '') +
       '</div>';
     html += '<div class="st-glance-day-deals">' + dealLine + '</div>';
     html += '<div class="st-glance-day-amt">' + _stFmtMoney(amt) + '</div>';
@@ -6276,7 +6652,9 @@ function _stBuildFloatingPaycheckBar(sales, stats) {
     ' deals · ' +
     stats.weekAddons +
     ' add-ons</div><div class="st-paycheck-float-meta2">' +
-    (tier.achieved ? '✓ $' + tier.achieved.bonus + ' tier' : 'Next: $' + (tier.next ? tier.next.bonus : 0)) +
+    (tier.achieved
+      ? '✓ $' + tier.achieved.bonus + ' tier'
+      : 'Next: $' + (tier.next ? tier.next.bonus : 0)) +
     '</div></div></div>' +
     '<div class="st-paycheck-float-right"><button type="button" class="st-paycheck-float-pdf" onclick="_stDownloadWeeklyPdf()">↓ PDF</button><button type="button" class="st-paycheck-float-break" onclick="_stTogglePaycheckBreakdown()">Breakdown</button></div>' +
     '</div>'
@@ -6496,7 +6874,9 @@ function _stBuildAnalyticsDashboard(sales, stats) {
     daysElapsed > 0 ? (stats.weekCommissionValid / daysElapsed) * 7 : 0;
   var paceMonth = paceWeek * 4.3;
 
-  var fourWeekStart = _stStartOfDay(new Date(now.getTime() - 27 * msDay)).getTime();
+  var fourWeekStart = _stStartOfDay(
+    new Date(now.getTime() - 27 * msDay)
+  ).getTime();
   var wdSum = [0, 0, 0, 0, 0, 0, 0];
   var wdCnt = [0, 0, 0, 0, 0, 0, 0];
   var t;
@@ -6528,12 +6908,15 @@ function _stBuildAnalyticsDashboard(sales, stats) {
     'Saturday'
   ];
 
-  var html = '<section class="st-analytics st-analytics-compact" aria-label="Sales analytics">';
-  html += '<div class="st-analytics-chart-card"><div class="st-analytics-card-title">Weekly premium</div>';
+  var html =
+    '<section class="st-analytics st-analytics-compact" aria-label="Sales analytics">';
+  html +=
+    '<div class="st-analytics-chart-card"><div class="st-analytics-card-title">Weekly premium</div>';
   html += chartBlock + '</div>';
 
   html += '<div class="st-analytics-cards-3">';
-  html += '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Monthly goal</div>';
+  html +=
+    '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Monthly goal</div>';
   html += '<div class="st-analytics-goal-row">';
   html +=
     '<span class="st-analytics-goal-line">$' +
@@ -6550,7 +6933,8 @@ function _stBuildAnalyticsDashboard(sales, stats) {
     pct +
     '%"></span></div></div>';
 
-  html += '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Commission forecast</div>';
+  html +=
+    '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Commission forecast</div>';
   html +=
     '<p class="st-analytics-one-line">This week: <strong>' +
     _stFmtMoney(paceWeek) +
@@ -6559,7 +6943,8 @@ function _stBuildAnalyticsDashboard(sales, stats) {
     '</strong></p>';
   html += '<p class="st-analytics-note">Based on current pace</p></div>';
 
-  html += '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Best day</div>';
+  html +=
+    '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Best day</div>';
   html +=
     '<p class="st-analytics-one-line"><strong>' +
     dayNames[bestWd] +
@@ -6608,14 +6993,16 @@ function _stRender() {
   html += _stBuildTable(scopedSales, stTab, view, stats);
   html += _stBuildPostDatesSection(postdates);
   html += _stBuildFloatingPaycheckBar(sales, stats);
-  html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
+  html +=
+    '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
   html += '</div>';
   html +=
     '<div id="stTabPanelAllSales" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'allsales' ? 'block' : 'none') +
     '">';
   html += _stBuildAllSalesPane(sales);
-  html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
+  html +=
+    '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
   html += '</div>';
   html +=
     '<div id="stTabPanelAnalytics" class="st-tab-panel" role="tabpanel" style="display:' +
@@ -6721,4 +7108,3 @@ function _stWirePaycheckObserver() {
   );
   window._stHeroObs.observe(hero);
 }
-
