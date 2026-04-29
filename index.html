@@ -728,6 +728,75 @@
         line-height: 1.6;
         color: #0f172a;
       }
+      /* === Sales Tracker: week nav (3-pill) + past sale/backfill === */
+      #page-salestracker .st-week-nav-wrap {
+        background: #eceef8;
+        border-radius: 16px;
+        padding: 10px 12px;
+        margin: 6px 0 12px;
+      }
+      #page-salestracker .st-week-nav-row1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      #page-salestracker .st-week-nav-display-label {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111827;
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+      #page-salestracker .st-week-nav-pills {
+        flex-shrink: 0;
+        margin-bottom: 0;
+        justify-content: flex-end;
+      }
+      #page-salestracker .st-week-nav-custom-range {
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+      #page-salestracker .st-week-nav-err {
+        font-size: 12px;
+        color: #b42318;
+        min-height: 16px;
+      }
+      #page-salestracker .st-timing-toggle {
+        display: inline-flex;
+        gap: 6px;
+        background: #f2f4f7;
+        border: 1px solid #e4e7ec;
+        border-radius: 999px;
+        padding: 4px;
+        margin: 0 0 10px;
+      }
+      #page-salestracker .st-timing-pill {
+        border: none;
+        border-radius: 999px;
+        background: transparent;
+        color: #475467;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 7px 12px;
+        cursor: pointer;
+      }
+      #page-salestracker .st-timing-pill.is-active {
+        background: #111;
+        color: #fff;
+      }
+      #page-salestracker .st-backfill-badge {
+        display: inline-block;
+        margin-left: 8px;
+        background: #eaecf0;
+        color: #475467;
+        border-radius: 999px;
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
       /* === Hide floating bubbles globally (chat + Academy Quick Reference) === */
       /* Visual-only hide. Both features stay fully wired up underneath. */
       /* To re-enable: remove relevant selectors from this rule. */
@@ -1619,7 +1688,7 @@
     <script src="js/compliance.js?v=1779700000000"></script>
     <script src="js/docusign-walkthrough.js?v=1779700000000"></script>
     <script src="js/myspace.js?v=1779700000000"></script>
-    <script src="js/sales-tracker.js?v=1779900000000"></script>
+    <script src="js/sales-tracker.js?v=1780230000000"></script>
     <script src="js/app.js?v=1779700000000"></script>
     <script>
       (function() {
