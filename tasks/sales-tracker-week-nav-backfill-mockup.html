@@ -58,7 +58,10 @@
       .arrow[disabled] {
         background: #d0d5dd;
         color: #667085;
-        cursor: not-allowed;
+        cursor: default;
+        opacity: 0.3;
+        box-shadow: none;
+        pointer-events: none;
       }
       .week-label {
         font-size: 15px;
@@ -146,6 +149,11 @@
         padding: 12px;
         background: #ffffff;
       }
+      .deal-list {
+        margin-top: 10px;
+        display: grid;
+        gap: 8px;
+      }
       .deal-top {
         display: flex;
         align-items: center;
@@ -168,6 +176,19 @@
         margin-top: 4px;
         color: #667085;
         font-size: 13px;
+      }
+      .row-actions {
+        margin-top: 8px;
+        display: flex;
+        gap: 8px;
+      }
+      .row-mini-btn {
+        border: 1px solid #d0d5dd;
+        border-radius: 8px;
+        padding: 5px 8px;
+        font-size: 12px;
+        background: #ffffff;
+        color: #344054;
       }
       .fab-row {
         display: flex;
@@ -294,13 +315,25 @@
       </div>
 
       <div class="card">
-        <div class="h">Deal row with Backfill badge</div>
-        <div class="deal-row">
-          <div class="deal-top">
-            <div class="deal-name">Maria S. - SmartChoice 2500</div>
-            <span class="badge-backfill">Backfill</span>
+        <div class="h">Deal list context with Backfill badge</div>
+        <div class="deal-list">
+          <div class="deal-row">
+            <div class="deal-top">
+              <div class="deal-name">Maria S. - SmartChoice 2500</div>
+              <span class="badge-backfill">Backfill</span>
+            </div>
+            <div class="meta">Date sold: 10/04/2026 · Premium $280.00 · Commission $196.00</div>
+            <div class="row-actions">
+              <button class="row-mini-btn">Edit</button>
+              <button class="row-mini-btn">Delete</button>
+            </div>
           </div>
-          <div class="meta">Date sold: 10/04/2026 · Premium $280.00 · Commission $196.00</div>
+          <div class="deal-row">
+            <div class="deal-top">
+              <div class="deal-name">Chris M. - MedFirst 3</div>
+            </div>
+            <div class="meta">Date sold: 10/22/2026 · Premium $341.00 · Commission $119.35</div>
+          </div>
         </div>
       </div>
     </div>
