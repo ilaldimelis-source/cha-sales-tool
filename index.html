@@ -728,86 +728,35 @@
         line-height: 1.6;
         color: #0f172a;
       }
-      /* === Sales Tracker: week nav + past sale/backfill === */
+      /* === Sales Tracker: week nav (3-pill) + past sale/backfill === */
       #page-salestracker .st-week-nav-wrap {
         background: #eceef8;
         border-radius: 16px;
         padding: 10px 12px;
         margin: 6px 0 12px;
       }
-      #page-salestracker .st-week-nav-main {
+      #page-salestracker .st-week-nav-row1 {
         display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: space-between;
+        gap: 12px;
         flex-wrap: wrap;
       }
-      #page-salestracker .st-week-nav-custom-mode {
-        justify-content: space-between;
-      }
-      #page-salestracker .st-week-nav-arrow {
-        width: 34px;
-        height: 34px;
-        border-radius: 999px;
-        border: none;
-        background: #111;
-        color: #fff;
-        font-size: 14px;
-        font-weight: 700;
-        box-shadow: 0 4px 10px rgba(17, 17, 17, 0.18);
-        cursor: pointer;
-      }
-      #page-salestracker .st-week-nav-arrow.is-disabled {
-        opacity: 0.3;
-        box-shadow: none;
-        cursor: default;
-        pointer-events: none;
-      }
-      #page-salestracker .st-week-nav-label {
+      #page-salestracker .st-week-nav-display-label {
         font-size: 14px;
         font-weight: 700;
         color: #111827;
-        margin-right: auto;
+        min-width: 0;
+        flex: 1 1 auto;
       }
-      #page-salestracker .st-week-nav-custom,
-      #page-salestracker .st-week-nav-apply,
-      #page-salestracker .st-week-nav-back {
-        border: none;
-        border-radius: 999px;
-        background: #111;
-        color: #fff;
-        padding: 8px 14px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
+      #page-salestracker .st-week-nav-pills {
+        flex-shrink: 0;
+        margin-bottom: 0;
+        justify-content: flex-end;
       }
-      #page-salestracker .st-week-nav-cancel {
-        border: 1px solid #d0d5dd;
-        border-radius: 999px;
-        background: #fff;
-        color: #344054;
-        padding: 8px 14px;
-        font-size: 12px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      #page-salestracker .st-week-nav-range-row {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 8px;
+      #page-salestracker .st-week-nav-custom-range {
         margin-top: 10px;
-      }
-      #page-salestracker .st-week-nav-range-row label {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        color: #475467;
-      }
-      #page-salestracker .st-week-nav-range-row input {
-        border: 1px solid #d0d5dd;
-        border-radius: 9px;
-        padding: 6px 8px;
+        margin-bottom: 0;
       }
       #page-salestracker .st-week-nav-err {
         font-size: 12px;
@@ -1739,7 +1688,7 @@
     <script src="js/compliance.js?v=1779700000000"></script>
     <script src="js/docusign-walkthrough.js?v=1779700000000"></script>
     <script src="js/myspace.js?v=1779700000000"></script>
-    <script src="js/sales-tracker.js?v=1780220000000"></script>
+    <script src="js/sales-tracker.js?v=1780230000000"></script>
     <script src="js/app.js?v=1779700000000"></script>
     <script>
       (function() {

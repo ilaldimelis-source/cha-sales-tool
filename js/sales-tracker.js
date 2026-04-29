@@ -528,7 +528,7 @@ function _stFmtWeekLabel(weekStartMs) {
   var ws = Number(weekStartMs) || _stCurrentWeekStartMs();
   var we = ws + 6 * 24 * 60 * 60 * 1000;
   var rangeText = _stFmtMonthDay(ws) + ' - ' + _stFmtMonthDay(we);
-  if (ws === _stCurrentWeekStartMs()) return 'This Week (' + rangeText + ')';
+  if (ws === _stCurrentWeekStartMs()) return 'This week (' + rangeText + ')';
   return 'Week of ' + rangeText;
 }
 
@@ -3902,40 +3902,41 @@ function _stSetTableFilter(mode) {
   _stRender();
 }
 
-function _stShiftWeek(offsetWeeks) {
-  var base = Number(_stSelectedWeekStart) || _stCurrentWeekStartMs();
-  var next = base + (Number(offsetWeeks) || 0) * 7 * 24 * 60 * 60 * 1000;
-  var now = _stCurrentWeekStartMs();
-  if (next > now) next = now;
-  _stRangeMode = 'week';
-  _stRangeDraftOpen = false;
-  _stRangeError = '';
-  _stSelectedWeekStart = next;
-  _stRender();
-}
-
-function _stOpenCustomRangeDraft() {
-  _stRangeMode = 'custom';
-  _stRangeDraftOpen = true;
-  _stRangeError = '';
-  _stRangeDraftStart = _stRangeAppliedStart || '';
-  _stRangeDraftEnd = _stRangeAppliedEnd || '';
-  _stRender();
-}
-
-function _stCancelCustomRangeDraft() {
-  _stRangeDraftOpen = false;
-  _stRangeError = '';
-  _stRender();
-}
-
-function _stBackToCurrentWeek() {
+function _stNavSelectThisWeek() {
   _stRangeMode = 'week';
   _stRangeDraftOpen = false;
   _stRangeError = '';
   _stRangeAppliedStart = '';
   _stRangeAppliedEnd = '';
+  _stRangeDraftStart = '';
+  _stRangeDraftEnd = '';
   _stSelectedWeekStart = _stCurrentWeekStartMs();
+  _stRender();
+}
+
+function _stNavSelectLastWeek() {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  _stRangeMode = 'week';
+  _stRangeDraftOpen = false;
+  _stRangeError = '';
+  _stRangeAppliedStart = '';
+  _stRangeAppliedEnd = '';
+  _stRangeDraftStart = '';
+  _stRangeDraftEnd = '';
+  _stSelectedWeekStart = _stCurrentWeekStartMs() - weekMs;
+  _stRender();
+}
+
+function _stNavClickCustom() {
+  _stRangeDraftOpen = true;
+  _stRangeError = '';
+  if (_stRangeMode === 'custom' && _stRangeAppliedStart && _stRangeAppliedEnd) {
+    _stRangeDraftStart = _stRangeAppliedStart;
+    _stRangeDraftEnd = _stRangeAppliedEnd;
+  } else {
+    _stRangeDraftStart = '';
+    _stRangeDraftEnd = '';
+  }
   _stRender();
 }
 
@@ -3980,6 +3981,8 @@ function _stApplyRangeDraft() {
   _stRangeAppliedEnd = _stRangeDraftEnd;
   _stRangeDraftOpen = false;
   _stRangeMode = 'custom';
+  _stRangeDraftStart = _stRangeAppliedStart;
+  _stRangeDraftEnd = _stRangeAppliedEnd;
   _stRender();
 }
 
@@ -5920,28 +5923,74 @@ function _stKpiSnapshotForRange(sales, t0, t1) {
 
 function _stBuildWeekNavigator(view) {
   var todayIso = _stTodayIso();
+  var nowWs = _stCurrentWeekStartMs();
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var lastWs = nowWs - weekMs;
+  var sel = Number(_stSelectedWeekStart) || nowWs;
+
+  var pillThisActive =
+    _stRangeMode === 'week' && !_stRangeDraftOpen && sel === nowWs;
+  var pillLastActive =
+    _stRangeMode === 'week' && !_stRangeDraftOpen && sel === lastWs;
+  var pillCustomActive = _stRangeDraftOpen || _stRangeMode === 'custom';
+
+  var labelLeft =
+    view.mode === 'custom' ? view.label : _stFmtWeekLabel(sel);
+
   var html = '<section class="st-week-nav-wrap">';
-  if (view.mode === 'week') {
-    html += '<div class="st-week-nav-main">';
-    html += '<button type="button" class="st-week-nav-arrow" aria-label="Previous week" onclick="_stShiftWeek(-1)">◀</button>';
-    html += '<div class="st-week-nav-label">' + _stEscape(view.label) + '</div>';
-    html += '<button type="button" class="st-week-nav-arrow' + (view.isCurrentWeek ? ' is-disabled' : '') + '" aria-label="Next week" onclick="_stShiftWeek(1)">▶</button>';
-    html += '<button type="button" class="st-week-nav-custom" onclick="_stOpenCustomRangeDraft()">Custom Range</button>';
-    html += '</div>';
-  } else {
-    html += '<div class="st-week-nav-main st-week-nav-custom-mode">';
-    html += '<div class="st-week-nav-label">' + _stEscape(view.label) + '</div>';
-    html += '<button type="button" class="st-week-nav-back" onclick="_stBackToCurrentWeek()">Back to This Week</button>';
-    html += '</div>';
-    if (_stRangeDraftOpen) {
-      html += '<div class="st-week-nav-range-row">';
-      html += '<label>Start <input type="date" max="' + _stEscape(todayIso) + '" value="' + _stEscape(_stRangeDraftStart) + '" onchange="_stSetRangeDraft(\'start\', this.value)"></label>';
-      html += '<label>End <input type="date" max="' + _stEscape(todayIso) + '" value="' + _stEscape(_stRangeDraftEnd) + '" onchange="_stSetRangeDraft(\'end\', this.value)"></label>';
-      html += '<button type="button" class="st-week-nav-apply" onclick="_stApplyRangeDraft()">Apply</button>';
-      html += '<button type="button" class="st-week-nav-cancel" onclick="_stCancelCustomRangeDraft()">Cancel</button>';
-      html += '<span class="st-week-nav-err">' + _stEscape(_stRangeError || '') + '</span>';
-      html += '</div>';
+  html += '<div class="st-week-nav-row1">';
+  html +=
+    '<div class="st-week-nav-display-label">' + _stEscape(labelLeft) + '</div>';
+  html += '<div class="st-date-chips st-week-nav-pills">';
+  html +=
+    '<button type="button" class="st-date-chip' +
+    (pillThisActive ? ' st-chip-active' : '') +
+    '" onclick="_stNavSelectThisWeek()">This week</button>';
+  html +=
+    '<button type="button" class="st-date-chip' +
+    (pillLastActive ? ' st-chip-active' : '') +
+    '" onclick="_stNavSelectLastWeek()">Last week</button>';
+  html +=
+    '<button type="button" class="st-date-chip' +
+    (pillCustomActive ? ' st-chip-active' : '') +
+    '" onclick="_stNavClickCustom()">Custom</button>';
+  html += '</div></div>';
+
+  var showCustomRow =
+    _stRangeDraftOpen ||
+    (_stRangeMode === 'custom' && _stRangeAppliedStart && _stRangeAppliedEnd);
+  if (showCustomRow) {
+    if (
+      _stRangeMode === 'custom' &&
+      _stRangeAppliedStart &&
+      _stRangeAppliedEnd &&
+      !_stRangeDraftStart &&
+      !_stRangeDraftEnd
+    ) {
+      _stRangeDraftStart = _stRangeAppliedStart;
+      _stRangeDraftEnd = _stRangeAppliedEnd;
     }
+    var ds = _stRangeDraftStart || '';
+    var de = _stRangeDraftEnd || '';
+    html += '<div class="st-custom-range-row st-week-nav-custom-range">';
+    html += '<span class="st-custom-label">Custom range:</span>';
+    html +=
+      '<input type="date" max="' +
+      _stEscape(todayIso) +
+      '" class="st-date-chip-input" value="' +
+      _stEscape(ds) +
+      '" onchange="_stSetRangeDraft(\'start\', this.value)">';
+    html += '<span class="st-custom-arrow" aria-hidden="true">\u2192</span>';
+    html +=
+      '<input type="date" max="' +
+      _stEscape(todayIso) +
+      '" class="st-date-chip-input" value="' +
+      _stEscape(de) +
+      '" onchange="_stSetRangeDraft(\'end\', this.value)">';
+    html +=
+      '<button type="button" class="st-custom-apply" onclick="_stApplyRangeDraft()">Apply</button>';
+    html += '<span class="st-week-nav-err">' + _stEscape(_stRangeError || '') + '</span>';
+    html += '</div>';
   }
   html += '</section>';
   return html;
