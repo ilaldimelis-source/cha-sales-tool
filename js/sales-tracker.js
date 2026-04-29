@@ -243,7 +243,7 @@ function _stLoadCommissionRates() {
     if (parsed && parsed.planTiers) base.planTiers = parsed.planTiers;
     if (parsed && parsed.addonTypes) {
       for (var k in parsed.addonTypes) {
-        if (parsed.addonTypes.hasOwnProperty(k)) {
+        if (Object.hasOwn(parsed.addonTypes, k)) {
           base.addonTypes[k] = parsed.addonTypes[k];
         }
       }
@@ -4235,7 +4235,7 @@ function _stToggleSaleSelection(id) {
 function _stBulkSelectionChanged() {
   var ids = [];
   for (var k in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k]) ids.push(k);
+    if (Object.hasOwn(_stSelectedIds, k) && _stSelectedIds[k]) ids.push(k);
   }
   var bar = document.getElementById('st-bulk-bar');
   var count = document.getElementById('st-bulk-count');
@@ -4257,7 +4257,7 @@ function _stBulkToggleAll(checked) {
 function _stBulkDelete() {
   var ids = [];
   for (var k in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k])
+    if (Object.hasOwn(_stSelectedIds, k) && _stSelectedIds[k])
       ids.push(String(k));
   }
   if (!ids.length) return;
@@ -4751,7 +4751,7 @@ function _stPruneThisWeekExpandedDays(validKeysArr) {
     ok[String(validKeysArr[i])] = true;
   }
   for (var ex in _stThisWeekExpandedDays) {
-    if (_stThisWeekExpandedDays.hasOwnProperty(ex) && !ok[ex]) {
+    if (Object.hasOwn(_stThisWeekExpandedDays, ex) && !ok[ex]) {
       delete _stThisWeekExpandedDays[ex];
     }
   }
@@ -4882,7 +4882,7 @@ function _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats) {
   }
   var dayAnchors = [];
   for (var dk in byDay) {
-    if (byDay.hasOwnProperty(dk)) dayAnchors.push(byDay[dk].anchorMs);
+    if (Object.hasOwn(byDay, dk)) dayAnchors.push(byDay[dk].anchorMs);
   }
   dayAnchors.sort(function (a, b) {
     return b - a;
@@ -5011,7 +5011,7 @@ function _stBuildAllSalesPane(sales) {
   var paged = filteredAll.slice(0, pageLen);
   var selectedCount = 0;
   for (var sid in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(sid) && _stSelectedIds[sid])
+    if (Object.hasOwn(_stSelectedIds, sid) && _stSelectedIds[sid])
       selectedCount++;
   }
   var html = '<div class="st-table-section st-sales-log st-all-sales-pane">';

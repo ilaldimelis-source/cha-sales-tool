@@ -1382,7 +1382,7 @@ function _caB64Encode(str) {
 function chaAcademyCopy(btn) {
   var b = btn.getAttribute('data-b64');
   if (!b) return;
-  var t = '';
+  var t;
   try {
     t = decodeURIComponent(escape(atob(b)));
   } catch (_e) {
