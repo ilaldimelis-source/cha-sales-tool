@@ -763,7 +763,8 @@
         color: #b42318;
         min-height: 16px;
       }
-      #page-salestracker .st-timing-toggle {
+      /* Add Sale panel is mounted on body (#st-add-sale-overlay-root), not under #page-salestracker */
+      #st-add-sale-panel .st-timing-toggle {
         display: inline-flex;
         gap: 6px;
         background: #f2f4f7;
@@ -772,7 +773,7 @@
         padding: 4px;
         margin: 0 0 10px;
       }
-      #page-salestracker .st-timing-pill {
+      #st-add-sale-panel .st-timing-pill {
         border: none;
         border-radius: 999px;
         background: transparent;
@@ -782,7 +783,7 @@
         padding: 7px 12px;
         cursor: pointer;
       }
-      #page-salestracker .st-timing-pill.is-active {
+      #st-add-sale-panel .st-timing-pill.is-active {
         background: #111;
         color: #fff;
       }
@@ -1688,7 +1689,7 @@
     <script src="js/compliance.js?v=1779700000000"></script>
     <script src="js/docusign-walkthrough.js?v=1779700000000"></script>
     <script src="js/myspace.js?v=1779700000000"></script>
-    <script src="js/sales-tracker.js?v=1780230000000"></script>
+    <script src="js/sales-tracker.js?v=1780240000000"></script>
     <script src="js/app.js?v=1779700000000"></script>
     <script>
       (function() {
