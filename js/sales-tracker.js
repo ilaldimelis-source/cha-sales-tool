@@ -331,6 +331,14 @@ var _stMigrated = false;
 var _stAllSalesRange = 'all';
 var _stCustomRangeFrom = '';
 var _stCustomRangeTo = '';
+var _stSelectedWeekStart = _stStartOfWeek(new Date()).getTime();
+var _stRangeMode = 'week';
+var _stRangeDraftOpen = false;
+var _stRangeDraftStart = '';
+var _stRangeDraftEnd = '';
+var _stRangeAppliedStart = '';
+var _stRangeAppliedEnd = '';
+var _stRangeError = '';
 var _stAllSearchQuery = '';
 var _stAllStatusFilter = 'all';
 var _stAllRowsShown = 10;
@@ -504,6 +512,62 @@ function _stStartOfWeek(d) {
   var diff = day === 0 ? -6 : 1 - day;
   x.setDate(x.getDate() + diff);
   return x;
+}
+
+function _stCurrentWeekStartMs() {
+  return _stStartOfWeek(new Date()).getTime();
+}
+
+function _stFmtMonthDay(ts) {
+  var d = new Date(Number(ts) || Date.now());
+  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return months[d.getMonth()] + ' ' + d.getDate();
+}
+
+function _stFmtWeekLabel(weekStartMs) {
+  var ws = Number(weekStartMs) || _stCurrentWeekStartMs();
+  var we = ws + 6 * 24 * 60 * 60 * 1000;
+  var rangeText = _stFmtMonthDay(ws) + ' - ' + _stFmtMonthDay(we);
+  if (ws === _stCurrentWeekStartMs()) return 'This Week (' + rangeText + ')';
+  return 'Week of ' + rangeText;
+}
+
+function _stFmtCustomLabel(startMs, endMs) {
+  return 'Custom (' + _stFmtMonthDay(startMs) + ' - ' + _stFmtMonthDay(endMs) + ')';
+}
+
+function _stIsoToMsStart(iso) {
+  var d = _stIsoToDate(iso);
+  return d ? d.getTime() : NaN;
+}
+
+function _stIsoToMsEndExclusive(iso) {
+  var d = _stIsoToDate(iso);
+  if (!d) return NaN;
+  return d.getTime() + 24 * 60 * 60 * 1000;
+}
+
+function _stRangeInfo() {
+  var nowWeekStart = _stCurrentWeekStartMs();
+  if (_stRangeMode === 'custom' && _stRangeAppliedStart && _stRangeAppliedEnd) {
+    var cs = _stIsoToMsStart(_stRangeAppliedStart);
+    var ceEx = _stIsoToMsEndExclusive(_stRangeAppliedEnd);
+    return {
+      mode: 'custom',
+      start: cs,
+      endExclusive: ceEx,
+      label: _stFmtCustomLabel(cs, ceEx - 24 * 60 * 60 * 1000),
+      isCurrentWeek: false
+    };
+  }
+  var ws = Number(_stSelectedWeekStart) || nowWeekStart;
+  return {
+    mode: 'week',
+    start: ws,
+    endExclusive: ws + 7 * 24 * 60 * 60 * 1000,
+    label: _stFmtWeekLabel(ws),
+    isCurrentWeek: ws === nowWeekStart
+  };
 }
 
 // ── HTML ESCAPING ───────────────────────────────────────────
@@ -1634,6 +1698,55 @@ function _stReadDateSoldTs() {
   return d.getTime();
 }
 
+function _stSaleTimingMode() {
+  var el = document.getElementById('st-entry-timing-mode');
+  return el && el.value === 'past' ? 'past' : 'today';
+}
+
+function _stIsPastSaleMode() {
+  return _stSaleTimingMode() === 'past';
+}
+
+function _stSetSaleTimingMode(mode) {
+  var target = mode === 'past' ? 'past' : 'today';
+  var hidden = document.getElementById('st-entry-timing-mode');
+  if (hidden) hidden.value = target;
+  var todayBtn = document.getElementById('st-timing-today');
+  var pastBtn = document.getElementById('st-timing-past');
+  if (todayBtn) todayBtn.className = 'st-timing-pill' + (target === 'today' ? ' is-active' : '');
+  if (pastBtn) pastBtn.className = 'st-timing-pill' + (target === 'past' ? ' is-active' : '');
+  var dateInput = document.getElementById('st-date-sold');
+  if (dateInput) {
+    if (target === 'past') {
+      dateInput.required = true;
+      dateInput.value = '';
+      setTimeout(function () {
+        try {
+          dateInput.focus();
+        } catch (_e) {}
+      }, 10);
+    } else {
+      dateInput.required = false;
+      if (!dateInput.value) dateInput.value = _stTodayIso();
+    }
+  }
+  var title = document.getElementById('st-add-sale-title');
+  if (title) title.textContent = target === 'past' ? 'Add Past Sale' : 'Add Sale';
+}
+
+function _stValidateDateForMode() {
+  if (!_stIsPastSaleMode()) return true;
+  var dateInput = document.getElementById('st-date-sold');
+  if (dateInput && dateInput.value) return true;
+  _stFlash('Pick a date for Past Sale.', 'error');
+  if (dateInput) {
+    try {
+      dateInput.focus();
+    } catch (_e) {}
+  }
+  return false;
+}
+
 
 function _stDay3(ts) {
   var d = new Date(Number(ts) || Date.now());
@@ -2093,7 +2206,7 @@ function _stReceiptReviewShowPanes(reviewVisible) {
   if (fp) fp.style.display = reviewVisible ? 'none' : 'block';
   if (rp) rp.style.display = reviewVisible ? 'block' : 'none';
   var h = document.getElementById('st-add-sale-title');
-  if (h) h.textContent = reviewVisible ? 'Review sale' : 'Add new sale';
+  if (h) h.textContent = reviewVisible ? 'Review sale' : (_stIsPastSaleMode() ? 'Add Past Sale' : 'Add Sale');
 }
 
 function _stReceiptReviewPaint() {
@@ -2289,6 +2402,7 @@ function _stReceiptReviewBuildManualInitial(st) {
 function _stReceiptReviewSave() {
   if (!_stReceiptReview) return;
   var st = _stReceiptReview;
+  var isBackfill = _stIsPastSaleMode();
   var billDate = st.billDate;
   var fallbackTs = st.fallbackTs;
 
@@ -2342,7 +2456,8 @@ function _stReceiptReviewSave() {
           type: typ,
           raw: rawA,
           notes: pp.policy ? 'Policy: ' + pp.policy : '',
-          receiptId: rcptIdA
+          receiptId: rcptIdA,
+          isBackfill: isBackfill
         });
       }
     }
@@ -2418,7 +2533,8 @@ function _stReceiptReviewSave() {
           notes: pp2.policy ? 'Policy: ' + pp2.policy : '',
           receiptId: rcptIdB,
           receiptTotal: parsedB.receiptTotal,
-          enrollmentFee: isDeal2 ? parsedB.enrollmentFee || 0 : 0
+          enrollmentFee: isDeal2 ? parsedB.enrollmentFee || 0 : 0,
+          isBackfill: isBackfill
         });
         if (isDeal2) newDealIdxs.push(sales.length - 1);
       }
@@ -2485,6 +2601,7 @@ function _stAutoDetectAndAdd() {
     _stFlash('Paste a receipt first.', 'error');
     return;
   }
+  if (!_stValidateDateForMode()) return;
 
   var billDate = _stReadPostDate();
   if (billDate === 'INVALID') {
@@ -2546,8 +2663,10 @@ function _stAddSale(saleType) {
     _stFlash('Paste a receipt or enter sale details first.', 'error');
     return;
   }
+  if (!_stValidateDateForMode()) return;
   var parsed = _stParseReceipt(text, true);
   var first = parsed.products[0] || { name: '', price: 0, policy: '' };
+  var isBackfill = _stIsPastSaleMode();
 
   var billDate = _stReadPostDate();
   if (billDate === 'INVALID') {
@@ -2567,7 +2686,8 @@ function _stAddSale(saleType) {
       type: saleType === 'addon' ? 'addon' : 'deal',
       raw: text,
       notes: first.policy ? 'Policy: ' + first.policy : '',
-      receiptId: ''
+      receiptId: '',
+      isBackfill: isBackfill
     });
     _stSavePostDates(pds);
   } else {
@@ -2587,7 +2707,8 @@ function _stAddSale(saleType) {
       notes: first.policy ? 'Policy: ' + first.policy : '',
       receiptId: '',
       receiptTotal: parsed.receiptTotal,
-      enrollmentFee: isDealManual ? (parsed.enrollmentFee || 0) : 0
+      enrollmentFee: isDealManual ? (parsed.enrollmentFee || 0) : 0,
+      isBackfill: isBackfill
     });
     if (isDealManual) {
       _stStampDealCommission(sales, sales.length - 1, _stLoadCommissionRates());
@@ -2609,6 +2730,7 @@ function _stAddSale(saleType) {
 }
 
 function _stResetPostDateInputs() {
+  _stSetSaleTimingMode('today');
   _stSetSaleMode('same');
   var billing = document.getElementById('st-postdate-billing');
   if (billing) billing.value = '';
@@ -2753,6 +2875,8 @@ function _stDismissPreview() {
 function _stSaveUnrecognizedDeal() {
   if (!_stUnrecognizedDraft) return;
   var d = _stUnrecognizedDraft;
+  if (!_stValidateDateForMode()) return;
+  var isBackfill = _stIsPastSaleMode();
   var billDate = _stReadPostDate();
   if (billDate === 'INVALID') {
     _stFlash('Pick a future bill date for the post-date.', 'error');
@@ -2787,7 +2911,8 @@ function _stSaveUnrecognizedDeal() {
       raw: d.raw || '',
       notes: '',
       receiptId: receiptId,
-      enrollmentFee: Number(d.enrollmentFee) || 0
+      enrollmentFee: Number(d.enrollmentFee) || 0,
+      isBackfill: isBackfill
     });
     for (var pdi = 0; pdi < (d.addons || []).length; pdi++) {
       var ad = d.addons[pdi];
@@ -2802,7 +2927,8 @@ function _stSaveUnrecognizedDeal() {
         type: 'addon',
         raw: d.raw || '',
         notes: '',
-        receiptId: receiptId
+        receiptId: receiptId,
+        isBackfill: isBackfill
       });
     }
     _stSavePostDates(pds);
@@ -2833,7 +2959,8 @@ function _stSaveUnrecognizedDeal() {
     notes: '',
     receiptId: receiptId,
     receiptTotal: 0,
-    enrollmentFee: Number(d.enrollmentFee) || 0
+    enrollmentFee: Number(d.enrollmentFee) || 0,
+    isBackfill: isBackfill
   });
   for (var ai = 0; ai < (d.addons || []).length; ai++) {
     var addon = d.addons[ai];
@@ -2853,7 +2980,8 @@ function _stSaveUnrecognizedDeal() {
       notes: '',
       receiptId: receiptId,
       receiptTotal: 0,
-      enrollmentFee: 0
+      enrollmentFee: 0,
+      isBackfill: isBackfill
     });
   }
   var rates = _stLoadCommissionRates();
@@ -2932,7 +3060,8 @@ function _stConfirmPostDate(id) {
     notes: pd.notes || '',
     receiptId: pd.receiptId || '',
     receiptTotal: 0,
-    enrollmentFee: isDealPd ? (Number(pd.enrollmentFee) || 0) : 0
+    enrollmentFee: isDealPd ? (Number(pd.enrollmentFee) || 0) : 0,
+    isBackfill: !!pd.isBackfill
   });
   if (isDealPd) {
     _stStampDealCommission(sales, sales.length - 1, _stLoadCommissionRates());
@@ -3054,29 +3183,64 @@ function _stFlash(msg, kind) {
  * - Week-at-a-glance day cells (`_stBuildWeekAtGlanceSection`) read
  *   `stats.dayBuckets` built here, so they use the same `s.ts` model.
  */
-function _stCalcStats(sales) {
+function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
+  var msDay = 24 * 60 * 60 * 1000;
+  var customEnd =
+    typeof rangeEndExclusiveMs === 'number' && !isNaN(rangeEndExclusiveMs);
+  var weekStartDate;
+  var weekStart;
+  var weekEndExclusive;
+  if (customEnd) {
+    weekStart = Number(weekStartOverrideMs);
+    weekEndExclusive = Number(rangeEndExclusiveMs);
+    weekStartDate = new Date(weekStart);
+  } else {
+    weekStartDate =
+      typeof weekStartOverrideMs === 'number'
+        ? new Date(Number(weekStartOverrideMs))
+        : _stStartOfWeek(new Date());
+    weekStartDate = _stStartOfWeek(weekStartDate);
+    weekStart = weekStartDate.getTime();
+    weekEndExclusive = weekStart + 7 * msDay;
+  }
   var now = new Date();
-  var weekStartDate = _stStartOfWeek(now);
-  var weekStart = weekStartDate.getTime();
   var todayStart = _stStartOfDay(now).getTime();
   var rates = _stLoadCommissionRates();
 
-  // Day buckets: index 0=Mon, 1=Tue, …, 4=Fri, 5=Sat, 6=Sun.
-  // Each bucket includes its actual calendar Date so the daily
-  // breakdown can render "MON 4/7" style real dates.
+  // Day buckets: week mode → 7 slots Mon–Sun. Custom range → one slot per
+  // calendar day (Apply enforces max 31 days; min(...,31) is a safety clamp).
   var dayBuckets = [];
-  for (var b = 0; b < 7; b++) {
-    var bd = new Date(weekStartDate);
-    bd.setDate(bd.getDate() + b);
-    dayBuckets.push({
-      amount: 0,
-      count: 0,
-      date: bd,
-      commission: 0,
-      dealCount: 0,
-      addonCount: 0,
-      addonCommission: 0
-    });
+  var rangeDaySpan = Math.ceil((weekEndExclusive - weekStart) / msDay);
+  if (rangeDaySpan < 1) rangeDaySpan = 1;
+  var bi;
+  if (customEnd) {
+    var cap = Math.min(rangeDaySpan, 31);
+    for (bi = 0; bi < cap; bi++) {
+      var bdC = new Date(weekStart + bi * msDay);
+      dayBuckets.push({
+        amount: 0,
+        count: 0,
+        date: bdC,
+        commission: 0,
+        dealCount: 0,
+        addonCount: 0,
+        addonCommission: 0
+      });
+    }
+  } else {
+    for (bi = 0; bi < 7; bi++) {
+      var bd = new Date(weekStartDate);
+      bd.setDate(bd.getDate() + bi);
+      dayBuckets.push({
+        amount: 0,
+        count: 0,
+        date: bd,
+        commission: 0,
+        dealCount: 0,
+        addonCount: 0,
+        addonCommission: 0
+      });
+    }
   }
   var stats = {
     todayCount: 0,
@@ -3094,6 +3258,7 @@ function _stCalcStats(sales) {
     weekAddons: 0,
     dayBuckets: dayBuckets,
     weekStart: weekStart,
+    weekEndExclusive: weekEndExclusive,
     weekExpectedCommission: 0,
     weekCommissionValid: 0,
     weekAddonCommissionOnly: 0
@@ -3110,7 +3275,7 @@ function _stCalcStats(sales) {
     var ds = sales[di];
     if (!ds) continue;
     if (ds.type !== 'deal') continue;
-    if (ds.ts < weekStart) continue;
+    if (ds.ts < weekStart || ds.ts >= weekEndExclusive) continue;
     if (_stNormalizeStatus(ds) !== 'chargeback' && ds.receiptId) {
       validDealReceiptIds[ds.receiptId] = true;
     }
@@ -3123,7 +3288,7 @@ function _stCalcStats(sales) {
     // Weekly expected commission includes cancelled (0) and
     // chargeback (negative) rows per the audit spec. So roll
     // up every DEAL this week regardless of status.
-    if (s.type === 'deal' && s.ts >= weekStart) {
+    if (s.type === 'deal' && s.ts >= weekStart && s.ts < weekEndExclusive) {
       if (typeof s.expectedDealTotal !== 'number') {
         // Lazy-stamp: old rows inserted before this version
         // won't have the fields yet.
@@ -3134,8 +3299,15 @@ function _stCalcStats(sales) {
 
     // Stats below only count VALID rows
     if (_stNormalizeStatus(s) === 'chargeback') continue;
-    if (s.ts >= todayStart) stats.todayCount++;
-    if (s.ts < weekStart) continue;
+    if (
+      s.ts >= todayStart &&
+      s.ts < todayStart + msDay &&
+      s.ts >= weekStart &&
+      s.ts < weekEndExclusive
+    ) {
+      stats.todayCount++;
+    }
+    if (s.ts < weekStart || s.ts >= weekEndExclusive) continue;
 
     stats.weekCount++;
 
@@ -3178,23 +3350,33 @@ function _stCalcStats(sales) {
     // the same "valid parent deal" rule so a cancelled deal
     // doesn't leave its add-ons inflating a day's total.
     if (includeInSales) {
-      var dt = new Date(s.ts);
-      var jsDay = dt.getDay(); // 0=Sun, 1=Mon, …
-      var idx = jsDay === 0 ? 6 : jsDay - 1;
       var lineAmt2 = Number(s.amount) || 0;
-      dayBuckets[idx].amount += lineAmt2;
-      dayBuckets[idx].count += 1;
       var lineComm = _stComputeLineCommission(s, rates);
       if (s.type === 'deal') {
         lineComm += Number(s.enrollmentBonus) || 0;
-        dayBuckets[idx].dealCount += 1;
       } else {
-        dayBuckets[idx].addonCount += 1;
-        dayBuckets[idx].addonCommission += lineComm;
         stats.weekAddonCommissionOnly += lineComm;
       }
-      dayBuckets[idx].commission += lineComm;
       stats.weekCommissionValid += lineComm;
+
+      var idx;
+      if (customEnd) {
+        idx = Math.floor((s.ts - weekStart) / msDay);
+      } else {
+        var jsDay = new Date(s.ts).getDay(); // 0=Sun, 1=Mon, …
+        idx = jsDay === 0 ? 6 : jsDay - 1;
+      }
+      if (idx >= 0 && idx < dayBuckets.length) {
+        dayBuckets[idx].amount += lineAmt2;
+        dayBuckets[idx].count += 1;
+        if (s.type === 'deal') {
+          dayBuckets[idx].dealCount += 1;
+        } else {
+          dayBuckets[idx].addonCount += 1;
+          dayBuckets[idx].addonCommission += lineComm;
+        }
+        dayBuckets[idx].commission += lineComm;
+      }
     }
   }
   stats.weekExpectedCommission += _stCurrentTierBonus(stats);
@@ -3225,10 +3407,15 @@ function _stPaycheckBreakdown(sales, stats) {
   var addonComm = 0;
   var enrollmentBonus = 0;
   var ratesOrphan = _stLoadCommissionRates();
+  var ws = Number(stats.weekStart) || 0;
+  var we =
+    typeof stats.weekEndExclusive === 'number' && !isNaN(stats.weekEndExclusive)
+      ? stats.weekEndExclusive
+      : ws + 7 * 24 * 60 * 60 * 1000;
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s || s.type !== 'deal') continue;
-    if (s.ts < stats.weekStart) continue;
+    if (s.ts < ws || s.ts >= we) continue;
     dealComm += Number(s.planCommission) || 0;
     addonComm += Number(s.totalAddonCommission) || 0;
     enrollmentBonus += Number(s.enrollmentBonus) || 0;
@@ -3236,7 +3423,7 @@ function _stPaycheckBreakdown(sales, stats) {
   for (var j = 0; j < sales.length; j++) {
     var ad = sales[j];
     if (!ad || ad.type !== 'addon') continue;
-    if (ad.ts < stats.weekStart) continue;
+    if (ad.ts < ws || ad.ts >= we) continue;
     if (_stNormalizeStatus(ad) === 'chargeback') continue;
     if (!ad.receiptId || _stDealExistsForReceiptId(sales, ad.receiptId)) continue;
     var ac =
@@ -3273,6 +3460,11 @@ function _stOpenCommissionEditorFromTracker() {
 function _stBuildInput() {
   var today = _stTodayIso();
   var html = '<div class="st-input-section">';
+  html += '<input type="hidden" id="st-entry-timing-mode" value="today">';
+  html += '<div class="st-timing-toggle" role="tablist" aria-label="Sale timing">';
+  html += '<button type="button" id="st-timing-today" class="st-timing-pill is-active" onclick="_stSetSaleTimingMode(\'today\')">Today\'s Sale</button>';
+  html += '<button type="button" id="st-timing-past" class="st-timing-pill" onclick="_stSetSaleTimingMode(\'past\')">Past Sale</button>';
+  html += '</div>';
   html +=
     '<label class="st-input-label" for="st-receipt-input">Paste enrollment receipt</label>';
   html +=
@@ -3338,13 +3530,14 @@ function _stSetAddSalePanelOpen(open) {
     var fp0 = document.getElementById('st-add-sale-form-pane');
     if (fp0) fp0.style.display = 'block';
     var h0 = document.getElementById('st-add-sale-title');
-    if (h0) h0.textContent = 'Add new sale';
+    if (h0) h0.textContent = _stIsPastSaleMode() ? 'Add Past Sale' : 'Add Sale';
   }
   _stAddSalePanelOpen = !!open;
   panel.classList.toggle('open', _stAddSalePanelOpen);
   backdrop.classList.toggle('open', _stAddSalePanelOpen);
   _stUpdateFabVisibility();
   if (open) {
+    _stSetSaleTimingMode('today');
     var ta = document.getElementById('st-receipt-input');
     if (ta) {
       setTimeout(function () {
@@ -3413,10 +3606,21 @@ function _stFmtWeekRangeMonSun(weekStartMs) {
 function _stOpenPaycheckBreakdownModal() {
   var sales = _stLoadSales();
   sales = _stValidateSalesIntegrity(sales);
-  var stats = _stCalcStats(sales);
+  var view = _stRangeInfo();
+  var stats =
+    view.mode === 'custom'
+      ? _stCalcStats(sales, view.start, view.endExclusive)
+      : _stCalcStats(sales, view.start);
   var pb = _stPaycheckBreakdown(sales, stats);
   var weekStart = Number(stats.weekStart) || _stStartOfWeek(new Date()).getTime();
-  var weekEnd = weekStart + 7 * 24 * 60 * 60 * 1000;
+  var weekEnd =
+    typeof stats.weekEndExclusive === 'number' && !isNaN(stats.weekEndExclusive)
+      ? stats.weekEndExclusive
+      : weekStart + 7 * 24 * 60 * 60 * 1000;
+  var rangeTitle =
+    view.mode === 'custom'
+      ? _stFmtCustomLabel(weekStart, weekEnd - 24 * 60 * 60 * 1000)
+      : _stFmtWeekRangeMonSun(weekStart);
   var rates = _stLoadCommissionRates();
   var deals = [];
   var carrierAgg = {};
@@ -3469,8 +3673,9 @@ function _stOpenPaycheckBreakdownModal() {
     '<div class="st-pb-backdrop" onclick="_stClosePaycheckBreakdownModal(event)">' +
     '<section class="st-pb-modal" role="dialog" aria-modal="true" aria-labelledby="st-pb-title" onclick="event.stopPropagation()">' +
     '<div class="st-pb-header">' +
-    '<div><h3 id="st-pb-title">Paycheck Breakdown</h3><div class="st-pb-subhead">This Week: ' +
-    _stEscape(_stFmtWeekRangeMonSun(weekStart)) +
+    '<div><h3 id="st-pb-title">Paycheck Breakdown</h3><div class="st-pb-subhead">' +
+    _stEscape(view.mode === 'custom' ? 'Custom range: ' : 'This Week: ') +
+    _stEscape(rangeTitle) +
     '</div></div>' +
     '<div class="st-pb-head-right"><div class="st-pb-head-total">' +
     _stFmtMoney(Number(pb.estimated) || 0) +
@@ -3553,7 +3758,7 @@ function _stBuildAddSaleSection() {
   return (
     '<div id="st-add-sale-backdrop" class="st-add-sale-backdrop" onclick="_stSetAddSalePanelOpen(false)" aria-hidden="true"></div>' +
     '<aside id="st-add-sale-panel" class="st-add-sale-panel" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="st-add-sale-title">' +
-    '<div class="st-add-sale-panel-head"><h3 id="st-add-sale-title">Add new sale</h3><button type="button" class="st-add-sale-close" aria-label="Close add sale panel" onclick="_stSetAddSalePanelOpen(false)">×</button></div>' +
+    '<div class="st-add-sale-panel-head"><h3 id="st-add-sale-title">Add Sale</h3><button type="button" class="st-add-sale-close" aria-label="Close add sale panel" onclick="_stSetAddSalePanelOpen(false)">×</button></div>' +
     '<div class="st-add-sale-panel-body">' +
     '<div id="st-add-sale-form-pane" class="st-add-sale-form-pane">' +
     _stBuildInput() +
@@ -3694,6 +3899,87 @@ var _stAddSalePanelOpen = false;
 function _stSetTableFilter(mode) {
   _stTableFilter = mode === 'all' ? 'all' : 'week';
   _stSelectedIds = {};
+  _stRender();
+}
+
+function _stShiftWeek(offsetWeeks) {
+  var base = Number(_stSelectedWeekStart) || _stCurrentWeekStartMs();
+  var next = base + (Number(offsetWeeks) || 0) * 7 * 24 * 60 * 60 * 1000;
+  var now = _stCurrentWeekStartMs();
+  if (next > now) next = now;
+  _stRangeMode = 'week';
+  _stRangeDraftOpen = false;
+  _stRangeError = '';
+  _stSelectedWeekStart = next;
+  _stRender();
+}
+
+function _stOpenCustomRangeDraft() {
+  _stRangeMode = 'custom';
+  _stRangeDraftOpen = true;
+  _stRangeError = '';
+  _stRangeDraftStart = _stRangeAppliedStart || '';
+  _stRangeDraftEnd = _stRangeAppliedEnd || '';
+  _stRender();
+}
+
+function _stCancelCustomRangeDraft() {
+  _stRangeDraftOpen = false;
+  _stRangeError = '';
+  _stRender();
+}
+
+function _stBackToCurrentWeek() {
+  _stRangeMode = 'week';
+  _stRangeDraftOpen = false;
+  _stRangeError = '';
+  _stRangeAppliedStart = '';
+  _stRangeAppliedEnd = '';
+  _stSelectedWeekStart = _stCurrentWeekStartMs();
+  _stRender();
+}
+
+function _stSetRangeDraft(field, value) {
+  if (field === 'start') _stRangeDraftStart = value || '';
+  if (field === 'end') _stRangeDraftEnd = value || '';
+}
+
+function _stApplyRangeDraft() {
+  _stRangeError = '';
+  if (!_stRangeDraftStart || !_stRangeDraftEnd) {
+    _stRangeError = 'Pick both start and end dates.';
+    _stRender();
+    return;
+  }
+  var startMs = _stIsoToMsStart(_stRangeDraftStart);
+  var endMs = _stIsoToMsStart(_stRangeDraftEnd);
+  var todayMs = _stStartOfDay(new Date()).getTime();
+  if (isNaN(startMs) || isNaN(endMs)) {
+    _stRangeError = 'Enter valid dates.';
+    _stRender();
+    return;
+  }
+  if (startMs > endMs) {
+    _stRangeError = 'Start date must be on or before end date.';
+    _stRender();
+    return;
+  }
+  if (startMs > todayMs || endMs > todayMs) {
+    _stRangeError = 'Dates must be today or earlier.';
+    _stRender();
+    return;
+  }
+  var endExclusiveDraft = _stIsoToMsEndExclusive(_stRangeDraftEnd);
+  var spanDays = Math.ceil((endExclusiveDraft - startMs) / (24 * 60 * 60 * 1000));
+  if (spanDays > 31) {
+    _stRangeError = 'Custom range max is 31 days.';
+    _stRender();
+    return;
+  }
+  _stRangeAppliedStart = _stRangeDraftStart;
+  _stRangeAppliedEnd = _stRangeDraftEnd;
+  _stRangeDraftOpen = false;
+  _stRangeMode = 'custom';
   _stRender();
 }
 
@@ -4320,6 +4606,7 @@ function _stRenderThisWeekSubRow(g) {
     '</span><span class="st-week-card-date">' +
     _stEscape(dateLabel) +
     '</span>' +
+    (lead.isBackfill ? '<span class="st-backfill-badge">Backfill</span>' : '') +
     actions +
     '</div><div class="st-week-card-client">' +
     _stEscape(lead.customer || '—') +
@@ -4431,12 +4718,14 @@ function _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats) {
   return parts.join('');
 }
 
-function _stBuildTable(sales, stTab) {
-  var stats = _stCalcStats(sales);
-  var weekStart = _stStartOfWeek(new Date()).getTime();
+function _stBuildTable(sales, stTab, view, stats) {
+  view = view || _stRangeInfo();
+  stats = stats || _stCalcStats(sales);
+  var weekStart = Number(view.start) || _stStartOfWeek(new Date()).getTime();
+  var weekEnd = Number(view.endExclusive) || weekStart + 7 * 24 * 60 * 60 * 1000;
   var weekRows = sales
     .filter(function (s) {
-      return s && s.ts >= weekStart;
+      return s && s.ts >= weekStart && s.ts < weekEnd;
     })
     .sort(function (a, b) {
       return b.ts - a.ts;
@@ -4446,7 +4735,7 @@ function _stBuildTable(sales, stTab) {
     _stFmtMoney(stats.weekSales) + ' · ' + _stFmtMoney(stats.weekExpectedCommission) + ' comm';
   var html = '<div class="st-table-section st-sales-log">';
   html +=
-    '<div class="st-split-col-head"><span class="st-split-title">This week (' +
+    '<div class="st-split-col-head"><span class="st-split-title">' + _stEscape(view.label) + ' (' +
     weekGroups.length +
     ')</span><span class="st-split-meta">' +
     _stEscape(wkMeta) +
@@ -4593,7 +4882,9 @@ function _stBuildAllSalesPane(sales) {
         _stEscape(lead2.customer || '—') +
         '</span><span class="st-ccp-plan">' +
         _stEscape(lead2.plan || '—') +
-        '</span></span>';
+        '</span>' +
+        (lead2.isBackfill ? '<span class="st-backfill-badge">Backfill</span>' : '') +
+        '</span>';
       html += '<span class="st-cpr">$' + prem.toFixed(2) + '</span>';
       html +=
         '<span class="st-ccm">$' + _stGroupCommissionDisplay(grp).toFixed(2) + '</span>';
@@ -4669,16 +4960,25 @@ function _stExportAllSalesCsv() {
 
 function _stDownloadWeeklyPdf() {
   var sales = _stLoadSales();
-  var stats = _stCalcStats(sales);
+  var view = _stRangeInfo();
+  var stats =
+    view.mode === 'custom'
+      ? _stCalcStats(sales, view.start, view.endExclusive)
+      : _stCalcStats(sales, view.start);
   var weekStart = stats.weekStart;
-  var weekEnd = weekStart + 6 * 24 * 60 * 60 * 1000;
+  var msDay = 24 * 60 * 60 * 1000;
+  var weekEndEx =
+    typeof stats.weekEndExclusive === 'number' && !isNaN(stats.weekEndExclusive)
+      ? stats.weekEndExclusive
+      : weekStart + 7 * msDay;
+  var weekEndIncl = weekEndEx - msDay;
   var rates = _stLoadCommissionRates();
   var deals = [];
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s || s.type !== 'deal') continue;
     if (_stNormalizeStatus(s) === 'chargeback') continue;
-    if (s.ts < weekStart || s.ts > weekEnd) continue;
+    if (s.ts < weekStart || s.ts >= weekEndEx) continue;
     deals.push(s);
   }
   deals.sort(function (a, b) {
@@ -4764,12 +5064,18 @@ function _stDownloadWeeklyPdf() {
     dealComm + addonComm + enrollmentFeeBonus + tierBonus;
   var html =
     '<html><head><title>Weekly breakdown</title></head><body style="font-family:Inter,Arial,sans-serif;padding:24px;color:#0f172a;">';
-  html += '<h2 style="margin:0 0 4px;">Weekly Breakdown</h2>';
   html +=
-    '<div style="font-size:13px;color:#64748b;margin-bottom:4px;">Week: ' +
-    _stEscape(_stFormatSaleListDate(weekStart)) +
-    ' - ' +
-    _stEscape(_stFormatSaleListDate(weekEnd)) +
+    '<h2 style="margin:0 0 4px;">' +
+    (view.mode === 'custom' ? 'Custom range breakdown' : 'Weekly Breakdown') +
+    '</h2>';
+  html +=
+    '<div style="font-size:13px;color:#64748b;margin-bottom:4px;">' +
+    (view.mode === 'custom' ? 'Range: ' : 'Week: ') +
+    _stEscape(
+      view.mode === 'custom'
+        ? _stFmtCustomLabel(weekStart, weekEndIncl)
+        : _stFormatSaleListDate(weekStart) + ' - ' + _stFormatSaleListDate(weekEndIncl)
+    ) +
     '</div>';
   html +=
     '<div style="font-size:13px;color:#64748b;margin-bottom:14px;">Agent: ' +
@@ -4988,6 +5294,7 @@ function _stEntryAddAddonRow(addon) {
 }
 
 function _stCreateSaleGroupFromModal(payload) {
+  var isBackfill = _stIsPastSaleMode();
   var receiptId = payload.receiptId || _stBuildUniqueReceiptId('rcpt_manual_');
   if (!_stMaybeConfirmDuplicate(payload.customer, receiptId)) {
     _stFlash('Cancelled - ' + payload.customer + ' was not re-added', 'neutral');
@@ -5010,7 +5317,8 @@ function _stCreateSaleGroupFromModal(payload) {
     receiptId: receiptId,
     receiptTotal: 0,
     enrollmentFee: payload.enrollmentFee,
-    commissionRate: payload.dealRatePct / 100
+    commissionRate: payload.dealRatePct / 100,
+    isBackfill: isBackfill
   });
   for (var i = 0; i < payload.addons.length; i++) {
     var ad = payload.addons[i];
@@ -5034,7 +5342,8 @@ function _stCreateSaleGroupFromModal(payload) {
       receiptId: receiptId,
       receiptTotal: 0,
       enrollmentFee: 0,
-      addonCommissionRate: ad.ratePct / 100
+      addonCommissionRate: ad.ratePct / 100,
+      isBackfill: isBackfill
     });
   }
   for (var si = 0; si < sales.length; si++) {
@@ -5051,6 +5360,7 @@ function _stCreateSaleGroupFromModal(payload) {
 }
 
 function _stCreateAddonOnlyFromModal(payload) {
+  var isBackfill = _stIsPastSaleMode();
   var receiptId = payload.receiptId || _stBuildUniqueReceiptId('rcpt_manual_');
   if (!_stMaybeConfirmDuplicate(payload.customer, receiptId)) {
     _stFlash('Cancelled - ' + payload.customer + ' was not re-added', 'neutral');
@@ -5080,7 +5390,8 @@ function _stCreateAddonOnlyFromModal(payload) {
       receiptId: receiptId,
       receiptTotal: 0,
       enrollmentFee: 0,
-      addonCommissionRate: ad.ratePct / 100
+      addonCommissionRate: ad.ratePct / 100,
+      isBackfill: isBackfill
     });
   }
   _stStampOrphanAddonReceiptCommissions(sales, receiptId, rates);
@@ -5573,13 +5884,9 @@ function _stTierProgressData(stats) {
 }
 
 function _stWeeklyPaycheckMomentum(sales, stats) {
+  if (_stRangeInfo().mode === 'custom') return null;
   var weekMs = 7 * 24 * 60 * 60 * 1000;
-  var prevStats = _stCalcStats(
-    sales.filter(function (s) {
-      return s && s.ts >= stats.weekStart - weekMs && s.ts < stats.weekStart;
-    })
-  );
-  prevStats.weekStart = stats.weekStart - weekMs;
+  var prevStats = _stCalcStats(sales, stats.weekStart - weekMs);
   var thisPb = _stPaycheckBreakdown(sales, stats);
   var lastPb = _stPaycheckBreakdown(sales, prevStats);
   if (!lastPb || !lastPb.estimated) return null;
@@ -5590,13 +5897,8 @@ function _stWeeklyPaycheckMomentum(sales, stats) {
 function _stCalcWeekStatsFor(sales, weekStartMs) {
   var weekMs = 7 * 24 * 60 * 60 * 1000;
   var t0 = Number(weekStartMs) || _stStartOfWeek(new Date()).getTime();
-  var t1 = t0 + weekMs;
-  var weekSalesRows = (sales || []).filter(function (s) {
-    return s && Number(s.ts) >= t0 && Number(s.ts) < t1;
-  });
-  var weekStats = _stCalcStats(weekSalesRows);
-  weekStats.weekStart = t0;
-  var pb = _stPaycheckBreakdown(weekSalesRows, weekStats);
+  var weekStats = _stCalcStats(sales, t0);
+  var pb = _stPaycheckBreakdown(sales, weekStats);
   return {
     paycheck: Number(pb.estimated) || 0,
     deals: Number(weekStats.weekDeals) || 0,
@@ -5605,11 +5907,61 @@ function _stCalcWeekStatsFor(sales, weekStartMs) {
   };
 }
 
+function _stKpiSnapshotForRange(sales, t0, t1) {
+  var st = _stCalcStats(sales, t0, t1);
+  var pb = _stPaycheckBreakdown(sales, st);
+  return {
+    paycheck: Number(pb.estimated) || 0,
+    deals: Number(st.weekDeals) || 0,
+    addons: Number(st.weekAddons) || 0,
+    premium: Number(st.weekSales) || 0
+  };
+}
+
+function _stBuildWeekNavigator(view) {
+  var todayIso = _stTodayIso();
+  var html = '<section class="st-week-nav-wrap">';
+  if (view.mode === 'week') {
+    html += '<div class="st-week-nav-main">';
+    html += '<button type="button" class="st-week-nav-arrow" aria-label="Previous week" onclick="_stShiftWeek(-1)">◀</button>';
+    html += '<div class="st-week-nav-label">' + _stEscape(view.label) + '</div>';
+    html += '<button type="button" class="st-week-nav-arrow' + (view.isCurrentWeek ? ' is-disabled' : '') + '" aria-label="Next week" onclick="_stShiftWeek(1)">▶</button>';
+    html += '<button type="button" class="st-week-nav-custom" onclick="_stOpenCustomRangeDraft()">Custom Range</button>';
+    html += '</div>';
+  } else {
+    html += '<div class="st-week-nav-main st-week-nav-custom-mode">';
+    html += '<div class="st-week-nav-label">' + _stEscape(view.label) + '</div>';
+    html += '<button type="button" class="st-week-nav-back" onclick="_stBackToCurrentWeek()">Back to This Week</button>';
+    html += '</div>';
+    if (_stRangeDraftOpen) {
+      html += '<div class="st-week-nav-range-row">';
+      html += '<label>Start <input type="date" max="' + _stEscape(todayIso) + '" value="' + _stEscape(_stRangeDraftStart) + '" onchange="_stSetRangeDraft(\'start\', this.value)"></label>';
+      html += '<label>End <input type="date" max="' + _stEscape(todayIso) + '" value="' + _stEscape(_stRangeDraftEnd) + '" onchange="_stSetRangeDraft(\'end\', this.value)"></label>';
+      html += '<button type="button" class="st-week-nav-apply" onclick="_stApplyRangeDraft()">Apply</button>';
+      html += '<button type="button" class="st-week-nav-cancel" onclick="_stCancelCustomRangeDraft()">Cancel</button>';
+      html += '<span class="st-week-nav-err">' + _stEscape(_stRangeError || '') + '</span>';
+      html += '</div>';
+    }
+  }
+  html += '</section>';
+  return html;
+}
+
 function _stBuildKpiStrip(sales, stats) {
+  var view = _stRangeInfo();
   var weekMs = 7 * 24 * 60 * 60 * 1000;
-  var currentStart = Number(stats && stats.weekStart) || _stStartOfWeek(new Date()).getTime();
-  var current = _stCalcWeekStatsFor(sales, currentStart);
-  var previous = _stCalcWeekStatsFor(sales, currentStart - weekMs);
+  var current;
+  var previous;
+  if (view.mode === 'custom') {
+    var span = view.endExclusive - view.start;
+    if (span < 1) span = 1;
+    current = _stKpiSnapshotForRange(sales, view.start, view.endExclusive);
+    previous = _stKpiSnapshotForRange(sales, view.start - span, view.start);
+  } else {
+    var currentStart = Number(stats && stats.weekStart) || _stStartOfWeek(new Date()).getTime();
+    current = _stCalcWeekStatsFor(sales, currentStart);
+    previous = _stCalcWeekStatsFor(sales, currentStart - weekMs);
+  }
   var hasPreviousData =
     previous.paycheck > 0 || previous.deals > 0 || previous.addons > 0 || previous.premium > 0;
 
@@ -5669,7 +6021,8 @@ function _stBuildKpiStrip(sales, stats) {
   return html;
 }
 
-function _stBuildPaycheckHeroSection(sales, stats) {
+function _stBuildPaycheckHeroSection(sales, stats, view) {
+  view = view || { mode: 'week' };
   var pb = _stPaycheckBreakdown(sales, stats);
   var tier = _stTierProgressData(stats);
   var momentum = _stWeeklyPaycheckMomentum(sales, stats);
@@ -5700,7 +6053,12 @@ function _stBuildPaycheckHeroSection(sales, stats) {
   }
   var html = '<section id="st-paycheck-hero" class="st-paycheck-hero st-paycheck-hero--compact">';
   html += '<div class="st-paycheck-hero-head">';
-  html += '<div class="st-paycheck-hero-kicker">ESTIMATED PAYCHECK · THIS WEEK</div>';
+  html +=
+    '<div class="st-paycheck-hero-kicker">' +
+    (view.mode === 'custom'
+      ? 'ESTIMATED PAYCHECK · CUSTOM RANGE'
+      : 'ESTIMATED PAYCHECK · THIS WEEK') +
+    '</div>';
   if (showWeekPdfBtn) {
     html += '<div class="st-paycheck-hero-actions">';
     html +=
@@ -5735,23 +6093,32 @@ function _stBuildPaycheckHeroSection(sales, stats) {
       '</span><span class="st-ph-lbl">Bonuses</span></div></div>';
   }
   html += '</div>';
-  html +=
-    '<div class="st-paycheck-hero-progress"><span style="width:' +
-    (est > 0 ? tier.pct : 0) +
-    '%"></span></div>';
-  html +=
-    '<div class="st-paycheck-hero-progress-status">' + _stEscape(statusLine) + '</div>';
+  if (view.mode !== 'custom') {
+    html +=
+      '<div class="st-paycheck-hero-progress"><span style="width:' +
+      (est > 0 ? tier.pct : 0) +
+      '%"></span></div>';
+    html +=
+      '<div class="st-paycheck-hero-progress-status">' + _stEscape(statusLine) + '</div>';
+  }
   html += '<div class="st-paycheck-hero-days">';
-  for (var d = 0; d < 5; d++) {
+  var dbLen = (stats.dayBuckets && stats.dayBuckets.length) || 0;
+  var maxHeroDays = Math.min(5, dbLen);
+  var dnWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+  var dnAll = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  var todayMs = _stStartOfDay(new Date()).getTime();
+  for (var d = 0; d < maxHeroDays; d++) {
     var bucket = stats.dayBuckets[d] || { date: null, amount: 0, dealCount: 0 };
-    var nowD = new Date();
-    var todayDayIdx = nowD.getDay();
-    var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
-    var isToday = d === todayBucketIdx;
+    var bucketDayMs =
+      bucket.date != null ? _stStartOfDay(bucket.date).getTime() : NaN;
+    var isToday = bucketDayMs === todayMs;
     var amt = Number(bucket.amount) || 0;
     var dealN = Number(bucket.dealCount) || 0;
     var dealLine = dealN === 1 ? '1 deal' : dealN + ' deals';
-    var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
+    var dayAbbr = dnWeek[d];
+    if (bucket.date) {
+      dayAbbr = dnAll[bucket.date.getDay()] || dayAbbr;
+    }
     var dateStr = '';
     if (bucket.date) {
       dateStr = (bucket.date.getMonth() + 1) + '/' + bucket.date.getDate();
@@ -5761,7 +6128,7 @@ function _stBuildPaycheckHeroSection(sales, stats) {
       (isToday ? ' st-paycheck-day-today' : '') +
       '">' +
       '<div class="st-paycheck-day-label">' +
-      (isToday ? 'TODAY' : dayNames[d]) +
+      (isToday ? 'TODAY' : dayAbbr) +
       (dateStr ? ' <span class="st-paycheck-day-dt">' + dateStr + '</span>' : '') +
       '</div>' +
       '<div class="st-paycheck-day-deals">' +
@@ -6167,7 +6534,14 @@ function _stRender() {
   var sales = _stLoadSales();
   sales = _stValidateSalesIntegrity(sales);
   var postdates = _stLoadPostDates();
-  var stats = _stCalcStats(sales);
+  var view = _stRangeInfo();
+  var scopedSales = sales.filter(function (s) {
+    return s && Number(s.ts) >= view.start && Number(s.ts) < view.endExclusive;
+  });
+  var stats =
+    view.mode === 'custom'
+      ? _stCalcStats(sales, view.start, view.endExclusive)
+      : _stCalcStats(sales, view.start);
   var stTab = _stGetSavedTab();
 
   var html = '';
@@ -6180,8 +6554,9 @@ function _stRender() {
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
-  html += _stBuildPaycheckHeroSection(sales, stats);
-  html += _stBuildTable(sales, stTab);
+  html += _stBuildWeekNavigator(view);
+  html += _stBuildPaycheckHeroSection(sales, stats, view);
+  html += _stBuildTable(scopedSales, stTab, view, stats);
   html += _stBuildPostDatesSection(postdates);
   html += _stBuildFloatingPaycheckBar(sales, stats);
   html += '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
