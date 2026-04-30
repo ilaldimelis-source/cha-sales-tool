@@ -154,7 +154,7 @@ function renderNotes() {
     chaMigrateMySpaceNotesScripts();
   }
   var saved = getSavedScripts();
-  var notesVal = '';
+  var notesVal;
   try {
     notesVal =
       typeof chaGet === 'function'
@@ -170,7 +170,7 @@ function renderNotes() {
     '<div class="ph"><div class="pt">My <span>Notes</span></div><div class="pd">Write your own scripts, custom phrasing, and reminders. Everything saves automatically.</div></div>';
 
   // Settings: Display Name
-  var savedName = '';
+  var savedName;
   try {
     savedName =
       (typeof chaGet === 'function'

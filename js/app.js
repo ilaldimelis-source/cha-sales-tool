@@ -110,7 +110,7 @@ function _buildGreetingText() {
   var hr = new Date().getHours();
   var gr =
     hr < 12 ? 'Good Morning' : hr < 17 ? 'Good Afternoon' : 'Good Evening';
-  var custom = '';
+  var custom;
   try {
     custom = (
       (typeof chaGet === 'function'
@@ -150,7 +150,7 @@ function _openTopbarGreetingEditor() {
   if (!el) return;
   if (el.querySelector && el.querySelector('input')) return;
 
-  var current = '';
+  var current;
   try {
     current = (
       (typeof chaGet === 'function'

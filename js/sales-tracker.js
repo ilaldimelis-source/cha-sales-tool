@@ -243,7 +243,7 @@ function _stLoadCommissionRates() {
     if (parsed && parsed.planTiers) base.planTiers = parsed.planTiers;
     if (parsed && parsed.addonTypes) {
       for (var k in parsed.addonTypes) {
-        if (parsed.addonTypes.hasOwnProperty(k)) {
+        if (Object.hasOwn(parsed.addonTypes, k)) {
           base.addonTypes[k] = parsed.addonTypes[k];
         }
       }
@@ -2360,7 +2360,7 @@ function _stReceiptReviewPaint() {
   if (!pane || !_stReceiptReview) return;
   var st = _stReceiptReview;
   var html = '';
-  var sub = '';
+  var sub;
   if (st.chunks.length === 1) {
     sub = _stEscape(
       String(
@@ -3089,7 +3089,7 @@ function _stSaveUnrecognizedDeal() {
     receiptId =
       'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
   }
-  var dealId = '';
+  var dealId;
   if (billDate) {
     var pds = _stLoadPostDates();
     dealId =
@@ -4235,7 +4235,7 @@ function _stToggleSaleSelection(id) {
 function _stBulkSelectionChanged() {
   var ids = [];
   for (var k in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k]) ids.push(k);
+    if (Object.hasOwn(_stSelectedIds, k) && _stSelectedIds[k]) ids.push(k);
   }
   var bar = document.getElementById('st-bulk-bar');
   var count = document.getElementById('st-bulk-count');
@@ -4257,7 +4257,7 @@ function _stBulkToggleAll(checked) {
 function _stBulkDelete() {
   var ids = [];
   for (var k in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(k) && _stSelectedIds[k])
+    if (Object.hasOwn(_stSelectedIds, k) && _stSelectedIds[k])
       ids.push(String(k));
   }
   if (!ids.length) return;
@@ -4751,7 +4751,7 @@ function _stPruneThisWeekExpandedDays(validKeysArr) {
     ok[String(validKeysArr[i])] = true;
   }
   for (var ex in _stThisWeekExpandedDays) {
-    if (_stThisWeekExpandedDays.hasOwnProperty(ex) && !ok[ex]) {
+    if (Object.hasOwn(_stThisWeekExpandedDays, ex) && !ok[ex]) {
       delete _stThisWeekExpandedDays[ex];
     }
   }
@@ -4781,7 +4781,7 @@ function _stRenderThisWeekSubRow(g) {
   var idLine =
     (lead.memberId ? 'ID: ' + _stEscape(String(lead.memberId)) + ' · ' : '') +
     _stEscape(lead.plan || '—');
-  var commBox = '';
+  var commBox;
   if (g.deal) {
     var d = g.deal;
     var rate = Math.round((Number(d.planCommissionRate) || 0) * 100);
@@ -4882,7 +4882,7 @@ function _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats) {
   }
   var dayAnchors = [];
   for (var dk in byDay) {
-    if (byDay.hasOwnProperty(dk)) dayAnchors.push(byDay[dk].anchorMs);
+    if (Object.hasOwn(byDay, dk)) dayAnchors.push(byDay[dk].anchorMs);
   }
   dayAnchors.sort(function (a, b) {
     return b - a;
@@ -5011,7 +5011,7 @@ function _stBuildAllSalesPane(sales) {
   var paged = filteredAll.slice(0, pageLen);
   var selectedCount = 0;
   for (var sid in _stSelectedIds) {
-    if (_stSelectedIds.hasOwnProperty(sid) && _stSelectedIds[sid])
+    if (Object.hasOwn(_stSelectedIds, sid) && _stSelectedIds[sid])
       selectedCount++;
   }
   var html = '<div class="st-table-section st-sales-log st-all-sales-pane">';
@@ -6452,7 +6452,7 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
     lastTier &&
     stats.weekDeals >= lastTier.deals &&
     stats.weekAddons >= lastTier.addons;
-  var statusLine = '';
+  var statusLine;
   if (est <= 0) {
     statusLine = 'Log your first sale to start earning';
   } else if (maxed) {
@@ -6815,7 +6815,7 @@ function _stBuildAnalyticsDashboard(sales, stats) {
   var barW = 48;
   var barGap = 10;
   var chartH = 132;
-  var chartBlock = '';
+  var chartBlock;
   if (allWeeksZero) {
     chartBlock =
       '<div class="st-analytics-chart-empty" role="status">No sales data yet. Start logging sales to see your weekly trend.</div>';

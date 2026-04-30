@@ -24,7 +24,9 @@ export default [
       'no-redeclare': 'off',
       'no-global-assign': 'off',
       'no-unreachable': 'error',
-      'no-constant-condition': ['error', { checkLoops: false }]
+      'no-constant-condition': ['error', { checkLoops: false }],
+      'no-empty': ['error', { allowEmptyCatch: true }],
+      'no-useless-escape': 'off'
     }
   },
   {
@@ -36,6 +38,14 @@ export default [
         ...globals.browser,
         ...globals.node
       }
+    },
+    rules: {
+      'no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ],
+      'no-empty': ['error', { allowEmptyCatch: true }],
+      'no-useless-escape': 'off'
     }
   }
 ];
