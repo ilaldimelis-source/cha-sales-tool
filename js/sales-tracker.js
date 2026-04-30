@@ -2360,7 +2360,7 @@ function _stReceiptReviewPaint() {
   if (!pane || !_stReceiptReview) return;
   var st = _stReceiptReview;
   var html = '';
-  var sub = '';
+  var sub;
   if (st.chunks.length === 1) {
     sub = _stEscape(
       String(
@@ -3089,7 +3089,7 @@ function _stSaveUnrecognizedDeal() {
     receiptId =
       'rcpt_unrec_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6);
   }
-  var dealId = '';
+  var dealId;
   if (billDate) {
     var pds = _stLoadPostDates();
     dealId =
@@ -4781,7 +4781,7 @@ function _stRenderThisWeekSubRow(g) {
   var idLine =
     (lead.memberId ? 'ID: ' + _stEscape(String(lead.memberId)) + ' · ' : '') +
     _stEscape(lead.plan || '—');
-  var commBox = '';
+  var commBox;
   if (g.deal) {
     var d = g.deal;
     var rate = Math.round((Number(d.planCommissionRate) || 0) * 100);
@@ -6452,7 +6452,7 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
     lastTier &&
     stats.weekDeals >= lastTier.deals &&
     stats.weekAddons >= lastTier.addons;
-  var statusLine = '';
+  var statusLine;
   if (est <= 0) {
     statusLine = 'Log your first sale to start earning';
   } else if (maxed) {
@@ -6815,7 +6815,7 @@ function _stBuildAnalyticsDashboard(sales, stats) {
   var barW = 48;
   var barGap = 10;
   var chartH = 132;
-  var chartBlock = '';
+  var chartBlock;
   if (allWeeksZero) {
     chartBlock =
       '<div class="st-analytics-chart-empty" role="status">No sales data yet. Start logging sales to see your weekly trend.</div>';

@@ -1235,7 +1235,7 @@ function brAIAnswer(query, planId) {
       });
     if (lines.length > 3) lines = lines.slice(0, 3);
     var factText = lines.join('\n');
-
+    // eslint-disable-next-line no-useless-assignment
     var sayText = '';
     if (lines.length > 0) {
       var firstLine = lines[0].split('—')[0].split(':');
@@ -3003,6 +3003,7 @@ function handleChatMessage(userMessage) {
         });
     })
     .then(function (result) {
+      // eslint-disable-next-line no-useless-assignment
       var msg = '';
       var debugMeta = {
         planName: planMeta.planName || '',
