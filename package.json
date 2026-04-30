@@ -29,6 +29,19 @@
     "postinstall": "node scripts/install-hooks.js",
     "revert": "git revert HEAD --no-edit && git push origin main"
   },
+  "lint-staged": {
+    "*.js": [
+      "prettier --check",
+      "eslint --max-warnings=999"
+    ],
+    "*.css": [
+      "prettier --check",
+      "stylelint"
+    ],
+    "*.html": [
+      "prettier --check"
+    ]
+  },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.55.0",
@@ -36,6 +49,7 @@
     "globals": "^17.4.0",
     "htmlhint": "^1.7.1",
     "http-server": "^14.1.1",
+    "lint-staged": "^16.4.0",
     "pdf-parse": "^1.1.1",
     "prettier": "^3.6.2",
     "stylelint": "^17.6.0",
