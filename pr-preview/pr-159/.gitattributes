@@ -1,0 +1,22 @@
+# Auto-detect text files and force LF line endings on commit
+* text=auto eol=lf
+# Explicitly mark code files as text with LF
+*.js text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.sh text eol=lf
+# Binary files - explicitly marked so Git never normalizes them
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary

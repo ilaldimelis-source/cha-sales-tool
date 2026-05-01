@@ -1,0 +1,2867 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https:; connect-src 'self' https:;"
+    />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>CHA Sales Command Center</title>
+    <meta
+      name="description"
+      content="Central Health Advisors Agent Sales Command Center"
+    />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta property="og:title" content="CHA Sales Command Center" />
+    <meta
+      property="og:description"
+      content="Central Health Advisors Agent Sales Command Center — live coverage lookup, rebuttals, compliance, and call tools."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="CHA Sales" />
+    <link rel="apple-touch-icon" href="logo.png" />
+    <meta name="theme-color" content="#635BFF" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23635BFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='7' width='20' height='14' rx='2' ry='2'/><path d='M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2'/></svg>"
+    />
+    <!-- CSS: external file for GitHub Pages, with inline fallback for local dev servers
+     that serve .css as text/plain (which browsers reject). The sync XHR runs only
+     if the <link> stylesheet has 0 rules after loading. -->
+    <link rel="stylesheet" href="css/tokens.css?v=1780600000000" />
+    <link rel="stylesheet" href="css/styles.css?v=1780600000000" id="mainCSS" />
+    <link rel="stylesheet" href="css/sales-tracker.css?v=1780600000000" />
+    <script>
+      // Groq API configuration for chat modules
+      window.GROQ_API_KEY = window.GROQ_API_KEY || '';
+      window.GROQ_API_URL =
+        window.GROQ_API_URL ||
+        'https://api.groq.com/openai/v1/chat/completions';
+    </script>
+    <script>
+      (function () {
+        // Give the <link> a moment, then check. If it failed (0 rules), inject via XHR.
+        var link = document.getElementById('mainCSS');
+        function check() {
+          try {
+            if (
+              link.sheet &&
+              link.sheet.cssRules &&
+              link.sheet.cssRules.length > 0
+            )
+              return; // CSS loaded fine
+          } catch (e) {
+            /* cross-origin or not ready */
+          }
+          // Fallback: fetch CSS as text and inject as <style>
+          var x = new XMLHttpRequest();
+          x.open('GET', 'css/styles.css', false);
+          x.send();
+          if (x.status === 200) {
+            var s = document.createElement('style');
+            s.textContent = x.responseText;
+            document.head.appendChild(s);
+          }
+        }
+        // Check after link fires load event (or immediately if already loaded)
+        if (link.sheet) {
+          check();
+        } else {
+          link.onload = check;
+          link.onerror = check;
+        }
+      })();
+    </script>
+    <style id="cha-command-center-overrides">
+      /* FIX 1: Live Assist (Live Call tab) - brighten SOA / script strip */
+      #page-live .la-soa-hud {
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        border: 1px solid var(--border-default);
+        border-radius: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      }
+      #page-live .la-soa-hud:hover {
+        background: var(--bg-surface-muted);
+      }
+      #page-live .la-soa-hud-txt {
+        color: var(--text-primary);
+      }
+      #page-live .script-line {
+        background: var(--bg-surface-muted);
+        color: var(--text-primary);
+        border: 1px solid var(--border-default);
+      }
+      #page-live .compliance-checklist {
+        background: var(--bg-surface-muted);
+        color: var(--text-primary);
+      }
+      #page-live .chat-container {
+        background: var(--bg-surface-muted);
+      }
+      #page-live .ai-message {
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        border: 1px solid var(--border-default);
+      }
+      /* FIX 3: Benefits Reference panel */
+      #br-panel .br-plan-bar {
+        max-height: 200px;
+        overflow-y: auto;
+      }
+      #br-panel .br-msgs {
+        flex: 1 1 auto;
+        min-height: 0;
+        font-size: 14px;
+      }
+      #br-panel .br-bub {
+        font-size: 14px;
+      }
+      #br-panel .br-plan-btn {
+        font-size: 13px;
+      }
+      #br-panel .br-head,
+      #br-panel .br-nav-section,
+      #br-panel .br-chips,
+      #br-panel .br-quick-actions,
+      #br-panel .br-input-bar {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      #br-panel .br-msgs {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .br-expand-btn {
+        flex-shrink: 0;
+        font-family: var(--font-ui, Inter, sans-serif);
+        font-size: 11px;
+        font-weight: 700;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.12);
+        color: #f1f5f9;
+        cursor: pointer;
+      }
+      .br-expand-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+      #br-panel.br-expanded {
+        width: 90vw;
+        max-width: 90vw;
+        height: 90vh;
+        max-height: 90vh;
+        top: 5vh;
+        right: 5vw;
+        left: auto;
+        bottom: auto;
+        border-radius: 16px;
+        border: 1px solid #e2e4eb;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      }
+      /* === DocuSign Walkthrough === */
+      .ds-walkthrough-group {
+        margin-top: 16px;
+      }
+      .ds-walkthrough-trigger {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 18px;
+        border: 1px solid #000;
+        border-radius: 14px;
+        background: #fff;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      }
+      .ds-walkthrough-trigger:hover {
+        background: #fafafa;
+      }
+      .ds-chevron::before {
+        content: '+';
+        font-weight: 700;
+      }
+      .ds-walkthrough-trigger[aria-expanded='true'] .ds-chevron::before {
+        content: '-';
+      }
+      .ds-walkthrough-body {
+        margin-top: 12px;
+      }
+      .ds-walkthrough-search {
+        margin-bottom: 12px;
+      }
+      .ds-walkthrough-search input {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
+        background: #e8eefb;
+        font-size: 15px;
+        outline: none;
+      }
+      .ds-walkthrough-search input:focus {
+        border-color: #1a4692;
+        background: #fff;
+      }
+      .ds-walkthrough-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .ds-tab {
+        padding: 10px 14px;
+        border: 1px solid #000;
+        border-radius: 999px;
+        background: #fff;
+        color: #000;
+        font-weight: 600;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        cursor: pointer;
+      }
+      .ds-tab.is-active {
+        background: #1a4692;
+        color: #fff;
+        border-color: #1a4692;
+      }
+      .ds-panel {
+        display: none;
+      }
+      .ds-panel.is-active {
+        display: block;
+      }
+      /* severity bar (left edge) */
+      .ds-card {
+        position: relative;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        background: #fff;
+        margin-bottom: 12px;
+        overflow: hidden;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+      .ds-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 5px;
+        background: #10b981;
+      }
+      .ds-card.ds-sev-amber::before {
+        background: #f59e0b;
+      }
+      .ds-card.ds-sev-red::before {
+        background: #ef4444;
+      }
+      .ds-card-header {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 14px 16px 14px 22px;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+      }
+      .ds-card-titlewrap {
+        flex: 1;
+      }
+      .ds-card-num {
+        display: inline-block;
+        min-width: 26px;
+        height: 26px;
+        line-height: 26px;
+        text-align: center;
+        border-radius: 999px;
+        background: #1a4692;
+        color: #fff;
+        font-weight: 700;
+        font-size: 13px;
+        margin-right: 8px;
+      }
+      .ds-card-title {
+        font-weight: 600;
+        font-size: 15px;
+        color: #0f172a;
+      }
+      .ds-card-oneliner {
+        margin-top: 4px;
+        font-size: 13px;
+        color: #475569;
+        line-height: 1.45;
+      }
+      .ds-card-toggle {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a4692;
+        margin-left: 12px;
+        line-height: 1;
+      }
+      .ds-card-body {
+        padding: 0 16px 14px 22px;
+      }
+      .ds-box {
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-top: 10px;
+        border: 1px solid transparent;
+      }
+      .ds-box-label {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        margin-bottom: 6px;
+        color: #334155;
+      }
+      .ds-box-text {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #0f172a;
+      }
+      .ds-box-quote {
+        background: #fff1f2;
+      }
+      .ds-box-means {
+        background: #f1f5f9;
+      }
+      .ds-box-sayThis {
+        background: #ecfdf5;
+      }
+      .ds-box-pushback {
+        background: #fef3c7;
+      }
+      .ds-qa {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .ds-qa:first-of-type {
+        border-top: none;
+        padding-top: 0;
+      }
+      .ds-qa-q {
+        font-weight: 600;
+        font-size: 13px;
+        color: #0f172a;
+      }
+      .ds-qa-a {
+        font-size: 13px;
+        color: #334155;
+        margin-top: 2px;
+        line-height: 1.5;
+      }
+      /* attestations grid */
+      .ds-att-intro {
+        font-size: 13px;
+        color: #475569;
+        margin-bottom: 14px;
+      }
+      .ds-att-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .ds-att-tile {
+        position: relative;
+        padding: 14px 8px;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        background: #fff;
+        cursor: pointer;
+        text-align: center;
+      }
+      .ds-att-tile::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 6px;
+        border-top-left-radius: 14px;
+        border-top-right-radius: 14px;
+        background: #10b981;
+      }
+      .ds-att-tile.ds-sev-amber::before {
+        background: #f59e0b;
+      }
+      .ds-att-tile.ds-sev-red::before {
+        background: #ef4444;
+      }
+      .ds-att-tile:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+      .ds-att-num {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a4692;
+        margin-top: 6px;
+      }
+      .ds-att-label {
+        font-size: 11px;
+        font-weight: 600;
+        color: #334155;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-top: 4px;
+      }
+      .ds-att-details {
+        margin-bottom: 18px;
+      }
+      .ds-att-detail {
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 16px 18px;
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        position: relative;
+        overflow: hidden;
+      }
+      .ds-att-detail::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        background: #10b981;
+      }
+      .ds-att-detail.ds-sev-amber::before {
+        background: #f59e0b;
+      }
+      .ds-att-detail.ds-sev-red::before {
+        background: #ef4444;
+      }
+      .ds-att-detail-num {
+        font-size: 16px;
+        font-weight: 700;
+        color: #1a4692;
+        margin-bottom: 10px;
+        padding-left: 4px;
+      }
+      /* red flags */
+      .ds-redflags {
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #fff1f2;
+        border: 1px solid #fecaca;
+      }
+      .ds-redflags-title {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: #991b1b;
+        margin-bottom: 10px;
+      }
+      .ds-redflags-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .ds-redflags-item {
+        padding: 8px 0;
+        font-size: 13px;
+        color: #0f172a;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        line-height: 1.5;
+      }
+      .ds-redflags-item:first-child {
+        border-top: none;
+      }
+      /* glossary */
+      .ds-glossary {
+        margin-top: 18px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+      }
+      .ds-glossary-title {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: #1a4692;
+        margin-bottom: 10px;
+      }
+      .ds-glossary-row {
+        padding: 10px 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .ds-glossary-row:first-of-type {
+        border-top: none;
+      }
+      .ds-glossary-term {
+        font-weight: 700;
+        font-size: 13px;
+        color: #0f172a;
+      }
+      .ds-glossary-def {
+        font-size: 13px;
+        color: #334155;
+        line-height: 1.5;
+        margin-top: 2px;
+      }
+      /* full walkthrough */
+      .ds-section {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 16px 18px;
+        margin-bottom: 14px;
+      }
+      .ds-section-title {
+        color: #1a4692;
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+      }
+      .ds-section-summary {
+        font-size: 14px;
+        color: #334155;
+        line-height: 1.55;
+        margin-bottom: 12px;
+      }
+      .ds-twocol {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .ds-section-card {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 12px 14px;
+      }
+      .ds-section-card-h {
+        margin: 0 0 6px 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: #1a4692;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .ds-section-card-p {
+        margin: 0;
+        font-size: 13px;
+        color: #0f172a;
+        line-height: 1.5;
+      }
+      .ds-section-card-ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 13px;
+        color: #0f172a;
+        line-height: 1.6;
+      }
+      .ds-mini-section {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+      }
+      .ds-mini-section.ds-warn {
+        border-color: #f59e0b;
+        background: #fffbeb;
+      }
+      .ds-mini-section-h {
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 4px;
+      }
+      .ds-mini-section-num {
+        color: #1a4692;
+        font-weight: 700;
+        margin-right: 6px;
+      }
+      .ds-warn-badge {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #f59e0b;
+        color: #fff;
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+      }
+      .ds-mini-section-p {
+        margin: 4px 0;
+        font-size: 13px;
+        color: #334155;
+        line-height: 1.55;
+      }
+      .ds-mini-section-ul {
+        margin: 4px 0;
+        padding-left: 18px;
+        font-size: 13px;
+        color: #0f172a;
+        line-height: 1.6;
+      }
+      .ds-faq {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+      }
+      .ds-faq-q {
+        font-weight: 600;
+        color: #0f172a;
+        font-size: 14px;
+      }
+      .ds-faq-a {
+        color: #334155;
+        font-size: 13px;
+        line-height: 1.55;
+        margin-top: 4px;
+      }
+      /* mobile */
+      @media (max-width: 720px) {
+        .ds-att-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .ds-twocol {
+          grid-template-columns: 1fr;
+        }
+        .ds-tab {
+          font-size: 11px;
+          padding: 8px 12px;
+        }
+      }
+      .dash-cc-action.ds-home-tile {
+        background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+        border: 1px solid #c4b5fd;
+        color: #5b21b6;
+      }
+      .dash-cc-action.ds-home-tile svg {
+        color: #7c3aed;
+      }
+      /* === DocuSign Walkthrough -- unified search results === */
+      .ds-search-results {
+        margin-top: 8px;
+      }
+      .ds-search-group {
+        margin-bottom: 18px;
+      }
+      .ds-search-group-heading {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: #1a4692;
+        padding: 6px 10px;
+        margin-bottom: 8px;
+        background: #e8eefb;
+        border-radius: 8px;
+        display: inline-block;
+      }
+      .ds-search-empty {
+        padding: 14px 16px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+        background: #f1f5f9;
+        border: 1px dashed #cbd5e1;
+        color: #475569;
+        font-size: 14px;
+        text-align: center;
+      }
+      /* === Network Guide theme cleanup === */
+      /* Injected markup uses inline styles; !important overrides inline where needed (not visibility). */
+      #page-networkexplainer > div:nth-child(2) {
+        background: #fff !important;
+        border: 1px solid rgba(0, 0, 0, 0.06) !important;
+        border-radius: 14px !important;
+        padding: 16px 18px !important;
+        margin-bottom: 14px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+      #page-networkexplainer
+        > div:nth-child(2)
+        > div:nth-child(2)
+        > div:nth-child(-n + 4) {
+        background: #fff !important;
+        border: 1px solid rgba(0, 0, 0, 0.06) !important;
+        border-radius: 14px !important;
+        padding: 12px 16px !important;
+        margin-bottom: 8px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        display: flex !important;
+        align-items: center !important;
+        gap: 14px !important;
+      }
+      #page-networkexplainer
+        > div:nth-child(2)
+        > div:nth-child(2)
+        > div:nth-child(-n + 4)
+        > div:first-child {
+        background: #1a4692 !important;
+        color: #fff !important;
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 50% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-weight: 500 !important;
+        font-size: 13px !important;
+        flex-shrink: 0 !important;
+        border: none !important;
+        box-sizing: border-box !important;
+      }
+      #page-networkexplainer
+        > div:nth-child(2)
+        > div:nth-child(2)
+        > div:nth-child(-n + 4)
+        > div:nth-child(2) {
+        font-size: 14px !important;
+        color: #0f172a !important;
+        line-height: 1.5 !important;
+        font-weight: 500 !important;
+      }
+      #page-networkexplainer
+        > div:nth-child(2)
+        > div:nth-child(2)
+        > div:nth-child(5) {
+        background: #e6f1fb !important;
+        border: 1px solid #b5d4f4 !important;
+        border-radius: 12px !important;
+        padding: 12px 14px !important;
+        color: #0c447c !important;
+        font-size: 13px !important;
+        line-height: 1.55 !important;
+        margin: 12px 0 0 !important;
+      }
+      #page-networkexplainer > div:nth-child(3),
+      #page-networkexplainer > div:nth-child(4),
+      #page-networkexplainer > div:nth-child(5),
+      #page-networkexplainer > div:nth-child(6) {
+        background: #fff !important;
+        border: 1px solid rgba(0, 0, 0, 0.06) !important;
+        border-radius: 14px !important;
+        padding: 16px 18px !important;
+        margin-bottom: 14px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+      #page-networkexplainer > div:nth-child(3) > div:first-child,
+      #page-networkexplainer > div:nth-child(4) > div:first-child,
+      #page-networkexplainer > div:nth-child(5) > div:first-child,
+      #page-networkexplainer > div:nth-child(6) > div:first-child {
+        font-size: 16px !important;
+        font-weight: 500 !important;
+        color: #0f172a !important;
+        margin: 0 0 10px !important;
+      }
+      #page-networkexplainer > div:nth-child(3) > div:nth-child(2),
+      #page-networkexplainer > div:nth-child(4) > div:nth-child(2),
+      #page-networkexplainer > div:nth-child(5) > div:nth-child(2),
+      #page-networkexplainer > div:nth-child(6) > div:nth-child(2) {
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        color: #64748b !important;
+        letter-spacing: 0.06em !important;
+        text-transform: uppercase !important;
+        margin: 12px 0 6px !important;
+      }
+      #page-networkexplainer > div:nth-child(3) > div:nth-child(3) span,
+      #page-networkexplainer > div:nth-child(4) > div:nth-child(3) span,
+      #page-networkexplainer > div:nth-child(5) > div:nth-child(3) span,
+      #page-networkexplainer > div:nth-child(6) > div:nth-child(3) span {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+        border: 1px solid rgba(0, 0, 0, 0.06) !important;
+        border-radius: 999px !important;
+        padding: 4px 12px !important;
+        font-size: 12px !important;
+        font-weight: 500 !important;
+        margin: 0 4px 6px 0 !important;
+        display: inline-block !important;
+      }
+      #page-networkexplainer > div:nth-child(3) > div:nth-child(4),
+      #page-networkexplainer > div:nth-child(4) > div:nth-child(4),
+      #page-networkexplainer > div:nth-child(5) > div:nth-child(4),
+      #page-networkexplainer > div:nth-child(6) > div:nth-child(4) {
+        background: #f8fafc !important;
+        border: 1px solid rgba(0, 0, 0, 0.06) !important;
+        border-radius: 10px !important;
+        padding: 12px 14px !important;
+        margin-top: 10px !important;
+      }
+      #page-networkexplainer
+        > div:nth-child(3)
+        > div:nth-child(4)
+        > div:first-child,
+      #page-networkexplainer
+        > div:nth-child(4)
+        > div:nth-child(4)
+        > div:first-child,
+      #page-networkexplainer
+        > div:nth-child(5)
+        > div:nth-child(4)
+        > div:first-child,
+      #page-networkexplainer
+        > div:nth-child(6)
+        > div:nth-child(4)
+        > div:first-child {
+        font-size: 11px !important;
+        font-weight: 500 !important;
+        color: #64748b !important;
+        letter-spacing: 0.06em !important;
+        text-transform: uppercase !important;
+        margin: 0 0 4px !important;
+      }
+      #page-networkexplainer
+        > div:nth-child(3)
+        > div:nth-child(4)
+        > div:nth-child(2),
+      #page-networkexplainer
+        > div:nth-child(4)
+        > div:nth-child(4)
+        > div:nth-child(2),
+      #page-networkexplainer
+        > div:nth-child(5)
+        > div:nth-child(4)
+        > div:nth-child(2),
+      #page-networkexplainer
+        > div:nth-child(6)
+        > div:nth-child(4)
+        > div:nth-child(2) {
+        font-size: 13px !important;
+        color: #334155 !important;
+        line-height: 1.55 !important;
+        margin: 0 0 10px !important;
+      }
+      #page-networkexplainer a[target='_blank'][href^='https://'] {
+        background: #000 !important;
+        color: #fff !important;
+        border: none !important;
+        border-radius: 999px !important;
+        padding: 8px 16px !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+        margin-top: 8px !important;
+      }
+      #page-networkexplainer a[target='_blank'][href^='https://']:hover {
+        background: #1a4692 !important;
+        color: #fff !important;
+      }
+      @media (max-width: 720px) {
+        #page-networkexplainer
+          > div:nth-child(2)
+          > div:nth-child(2)
+          > div:nth-child(-n + 4) {
+          padding: 10px 12px !important;
+        }
+        #page-networkexplainer > div:nth-child(3),
+        #page-networkexplainer > div:nth-child(4),
+        #page-networkexplainer > div:nth-child(5),
+        #page-networkexplainer > div:nth-child(6) {
+          padding: 14px !important;
+        }
+      }
+      /* === Network Guide -- bold blue section titles === */
+      /* Network names are divs (not headings) at top of each card; scope to cards only so .ph and How It Works stay unchanged. */
+      #page-networkexplainer > div:nth-child(3) > div:first-child,
+      #page-networkexplainer > div:nth-child(4) > div:first-child,
+      #page-networkexplainer > div:nth-child(5) > div:first-child,
+      #page-networkexplainer > div:nth-child(6) > div:first-child {
+        color: #1a4692 !important;
+        font-weight: 700 !important;
+      }
+      /* === Plan Fit & Framing card grid === */
+      .pff-filter-pills {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        margin: 0 0 16px;
+      }
+      .pff-pill {
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 999px;
+        padding: 8px 16px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #0f172a;
+        cursor: pointer;
+      }
+      .pff-pill:hover {
+        background: #fafafa;
+      }
+      .pff-pill.is-active {
+        background: #1a4692;
+        color: #fff;
+        border-color: #1a4692;
+      }
+      .pff-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      @media (max-width: 1024px) {
+        .pff-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 640px) {
+        .pff-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .pff-card {
+        background: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: 14px;
+        padding: 14px;
+        cursor: pointer;
+        text-align: left;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        transition:
+          box-shadow 0.15s,
+          transform 0.05s;
+      }
+      .pff-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+      .pff-card:active {
+        transform: translateY(1px);
+      }
+      .pff-card-name {
+        font-size: 15px;
+        font-weight: 500;
+        color: #0f172a;
+        margin: 0 0 6px;
+      }
+      .pff-card-badge {
+        display: inline-block;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        padding: 2px 8px;
+        border-radius: 999px;
+        margin-bottom: 10px;
+      }
+      .pff-badge-mec {
+        background: #e6f1fb;
+        color: #0c447c;
+      }
+      .pff-badge-stm {
+        background: #faeeda;
+        color: #854f0b;
+      }
+      .pff-badge-limited {
+        background: #eeedfe;
+        color: #3c3489;
+      }
+      .pff-badge-other {
+        background: #f1f5f9;
+        color: #334155;
+      }
+      .pff-card-best-label {
+        font-size: 10px;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 500;
+        margin: 0 0 2px;
+      }
+      .pff-card-best-summary {
+        font-size: 13px;
+        color: #0f172a;
+        line-height: 1.4;
+        margin: 0 0 10px;
+      }
+      .pff-card-cta {
+        font-size: 12px;
+        color: #1a4692;
+        font-weight: 500;
+      }
+      .pff-modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        z-index: 999;
+      }
+      .pff-modal-backdrop[hidden] {
+        display: none !important;
+      }
+      .pff-modal {
+        background: #fff;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 520px;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding: 20px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+      }
+      .pff-modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+      .pff-modal-titlewrap {
+        flex: 1;
+        min-width: 0;
+      }
+      .pff-modal-name {
+        font-size: 18px;
+        font-weight: 500;
+        color: #0f172a;
+        margin-bottom: 4px;
+      }
+      .pff-modal-x {
+        background: transparent;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #64748b;
+        cursor: pointer;
+      }
+      .pff-modal-x:hover {
+        background: #f1f5f9;
+      }
+      .pff-framing {
+        background: #f1f5f9;
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+        font-size: 13px;
+        line-height: 1.55;
+        color: #475569;
+      }
+      .pff-best-fit {
+        background: #eaf3de;
+        border-radius: 10px;
+        padding: 12px 14px;
+        margin-bottom: 8px;
+      }
+      .pff-not-fit {
+        background: #fcebeb;
+        border-radius: 10px;
+        padding: 12px 14px;
+      }
+      .pff-fit-label {
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 6px;
+      }
+      .pff-best-fit .pff-fit-label {
+        color: #27500a;
+      }
+      .pff-not-fit .pff-fit-label {
+        color: #791f1f;
+      }
+      .pff-best-fit ul,
+      .pff-not-fit ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: #0f172a;
+      }
+      /* === Sales Tracker: week nav (3-pill) + past sale/backfill === */
+      #page-salestracker .st-week-nav-wrap {
+        background: #eceef8;
+        border-radius: 16px;
+        padding: 10px 12px;
+        margin: 6px 0 12px;
+      }
+      #page-salestracker .st-week-nav-row1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      #page-salestracker .st-week-nav-display-label {
+        font-size: 14px;
+        font-weight: 700;
+        color: #111827;
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+      #page-salestracker .st-week-nav-pills {
+        flex-shrink: 0;
+        margin-bottom: 0;
+        justify-content: flex-end;
+      }
+      #page-salestracker .st-week-nav-custom-range {
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+      #page-salestracker .st-week-nav-err {
+        font-size: 12px;
+        color: #b42318;
+        min-height: 16px;
+      }
+      /* Add Sale panel is mounted on body (#st-add-sale-overlay-root), not under #page-salestracker */
+      #st-add-sale-panel .st-timing-toggle {
+        display: inline-flex;
+        gap: 6px;
+        background: #f2f4f7;
+        border: 1px solid #e4e7ec;
+        border-radius: 999px;
+        padding: 4px;
+        margin: 0 0 10px;
+      }
+      #st-add-sale-panel .st-timing-pill {
+        border: none;
+        border-radius: 999px;
+        background: transparent;
+        color: #475467;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 7px 12px;
+        cursor: pointer;
+      }
+      #st-add-sale-panel .st-timing-pill.is-active {
+        background: #111;
+        color: #fff;
+      }
+      #page-salestracker .st-backfill-badge {
+        display: inline-block;
+        margin-left: 8px;
+        background: #eaecf0;
+        color: #475467;
+        border-radius: 999px;
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+      /* === Hide floating bubbles globally (chat + Academy Quick Reference) === */
+      /* Visual-only hide. Both features stay fully wired up underneath. */
+      /* To re-enable: remove relevant selectors from this rule. */
+      /* - #br-toggle / #br-panel: chat assistant (PR #149) */
+      /* - .benefits-bubble / #benefitsPanel: Academy Quick Reference (PR following #149) */
+      #br-toggle,
+      #br-panel,
+      .benefits-bubble,
+      #benefitsPanel {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="cha-debug-stamp"
+      style="
+        position: fixed;
+        right: 6px;
+        bottom: 6px;
+        z-index: 999999;
+        background: #111827;
+        color: #fff;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-family: Inter, sans-serif;
+        opacity: 0.85;
+      "
+    >
+      dbg fb7e63
+    </div>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav
+      id="sidebar"
+      class="sidebar"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div class="logo">
+        <img src="./logo.png" alt="Central Health Advisors" class="logo-img" />
+        <div class="logo-text">
+          <span class="logo-text-top">CENTRAL HEALTH</span>
+          <span class="logo-text-bottom">ADVISORS</span>
+        </div>
+      </div>
+      <div class="nav">
+        <div class="nav-primary" aria-label="Primary navigation">
+          <button class="nb" onclick="showPage('dashboard')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" /></svg
+            ></span>
+            <span class="nb-label">Home</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
+          <button class="nb" onclick="showPage('livecall')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                /></svg
+            ></span>
+            <span class="nb-label">Live Call</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
+          <button class="nb" onclick="showPage('plans')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path
+                  d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"
+                />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" x2="8" y1="13" y2="13" />
+                <line x1="16" x2="8" y1="17" y2="17" />
+                <line x1="10" x2="8" y1="9" y2="9" /></svg
+            ></span>
+            <span class="nb-label">Plans</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
+          <button class="nb" onclick="showPage('salestracker')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+                <polyline points="16 7 22 7 22 13" /></svg
+            ></span>
+            <span class="nb-label">Sales Tracker</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
+        </div>
+        <div class="nav-divider" role="presentation"></div>
+        <button class="nb" onclick="showPage('scripts')">
+          <span class="nb-icon"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"
+              />
+              <path d="M19 17V5a2 2 0 0 0-2-2H4" />
+              <path d="M15 8h-5" />
+              <path d="M15 12h-5" /></svg
+          ></span>
+          <span class="nb-label">Scripts</span>
+          <span class="nb-dot" aria-hidden="true"></span>
+        </button>
+        <button class="nb" onclick="showPage('networkguide')">
+          <span class="nb-icon"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+              <path d="M2 12h20" /></svg
+          ></span>
+          <span class="nb-label">Network Guide</span>
+          <span class="nb-dot" aria-hidden="true"></span>
+        </button>
+        <button class="nb" onclick="showPage('cheatsheets')">
+          <span class="nb-icon"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+              <path
+                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+              />
+              <path d="M12 11h4" />
+              <path d="M12 16h4" />
+              <path d="M8 11h.01" />
+              <path d="M8 16h.01" /></svg
+          ></span>
+          <span class="nb-label">Cheat Sheet</span>
+          <span class="nb-dot" aria-hidden="true"></span>
+        </button>
+        <button class="nb" onclick="showPage('training')">
+          <span class="nb-icon"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+              <path d="M6 12v5c3 3 9 3 12 0v-5" /></svg
+          ></span>
+          <span class="nb-label">CHA Academy</span>
+          <span class="nb-dot" aria-hidden="true"></span>
+        </button>
+        <button class="nb" onclick="showPage('compliance')">
+          <span class="nb-icon"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
+              />
+              <path d="m9 12 2 2 4-4" /></svg
+          ></span>
+          <span class="nb-label">Compliance</span>
+          <span class="nb-dot" aria-hidden="true"></span>
+        </button>
+        <button class="nb" onclick="showPage('myspace')">
+          <span class="nb-icon"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="10" r="3" />
+              <path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662" /></svg
+          ></span>
+          <span class="nb-label">My Space</span>
+          <span class="nb-dot" aria-hidden="true"></span>
+        </button>
+      </div>
+      <button
+        class="sidebar-toggle"
+        onclick="toggleSidebar()"
+        aria-label="Toggle sidebar"
+        title="Collapse sidebar"
+      >
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+    </nav>
+
+    <div class="main">
+      <header class="topbar" role="banner">
+        <div
+          class="t-brand"
+          style="
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+          "
+        >
+          <div
+            style="
+              width: 9px;
+              height: 9px;
+              border-radius: 50%;
+              background: var(--accent-mid);
+              animation: pulse 2s infinite;
+            "
+          ></div>
+          COMMAND CENTER
+        </div>
+        <button
+          id="mobMenu"
+          onclick="document.querySelector('.sidebar').classList.toggle('open')"
+          aria-label="Toggle navigation menu"
+          style="
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px 14px;
+            color: var(--charcoal);
+          "
+        >
+          <svg
+            style="width: 24px; height: 24px"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="4" y1="6" x2="20" y2="6" />
+            <line x1="4" y1="12" x2="20" y2="12" />
+            <line x1="4" y1="18" x2="20" y2="18" />
+          </svg>
+        </button>
+        <div class="sw">
+          <span class="si"
+            ><svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" /></svg
+          ></span>
+          <input
+            type="text"
+            id="gs"
+            placeholder="Search objections, plans, closes, benefits..."
+            oninput="debouncedSearch(this.value)"
+            aria-label="Search the command center"
+          />
+          <span class="kb-hint">Ctrl+K</span>
+        </div>
+        <button
+          id="scBtn"
+          style="
+            display: none;
+            background: rgba(81, 117, 241, 0.1);
+            color: #5175f1;
+            border: 1px solid rgba(81, 117, 241, 0.2);
+            border-radius: 999px;
+            padding: 5px 14px;
+            font-family: var(--font-ui);
+            font-size: 0.76rem;
+            font-weight: 600;
+            cursor: pointer;
+          "
+          onclick="closeSearch()"
+        >
+          ✕ Clear
+        </button>
+        <div
+          class="font-toggle"
+          id="fontToggle"
+          role="group"
+          aria-label="Font size"
+        >
+          <button
+            type="button"
+            class="font-toggle-btn"
+            onclick="setFontSize('s')"
+            title="Small text"
+            aria-label="Small text size"
+            aria-pressed="false"
+          >
+            S
+          </button>
+          <button
+            type="button"
+            class="font-toggle-btn active"
+            onclick="setFontSize('m')"
+            title="Medium text"
+            aria-label="Medium text size"
+            aria-pressed="true"
+          >
+            M
+          </button>
+          <button
+            type="button"
+            class="font-toggle-btn"
+            onclick="setFontSize('l')"
+            title="Large text"
+            aria-label="Large text size"
+            aria-pressed="false"
+          >
+            L
+          </button>
+        </div>
+        <button
+          onclick="showPage('dashboard')"
+          style="
+            background: none;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 4px 8px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.15s;
+          "
+          onmouseover="
+            this.style.borderColor = '#5B8DEF';
+            this.style.color = '#5B8DEF';
+          "
+          onmouseout="
+            this.style.borderColor = '#E5E7EB';
+            this.style.color = 'var(--text-secondary)';
+          "
+          aria-label="Go to dashboard"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+        </button>
+        <div class="livebadge"><span class="ldot"></span>LIVE</div>
+      </header>
+
+      <main aria-live="polite" class="content" id="main-content">
+        <h1 class="sr-only">CHA Sales Command Center</h1>
+        <div id="page-dashboard" class="page"></div>
+
+        <!-- LIVE CALL -- Live Assist, Rebuttals, Q&A Rebuttals, Client Profiler -->
+        <div id="page-livecall" class="combo-page">
+          <div class="page-subtabs" id="subtabs-livecall"></div>
+          <div id="subcontent-livecall"></div>
+          <div id="page-live" class="page" style="display: none"></div>
+          <div id="page-objections" class="page" style="display: none"></div>
+          <div id="page-qarebuttals" class="page" style="display: none"></div>
+          <div id="page-psychprofile" class="page" style="display: none"></div>
+        </div>
+
+        <!-- PLANS — All Plans, Compare, Benefits -->
+        <div id="page-plans" class="combo-page">
+          <div class="page-subtabs" id="subtabs-plans"></div>
+          <div id="subcontent-plans"></div>
+          <div id="page-policydocs" class="page" style="display: none"></div>
+          <div id="page-allplans" class="page" style="display: none"></div>
+          <div id="page-compare" class="page" style="display: none"></div>
+          <div id="page-benefits" class="page" style="display: none"></div>
+        </div>
+
+        <!-- SCRIPTS — Closes, Call Flow, Plan Scripts, Control the Call -->
+        <div id="page-scripts" class="combo-page">
+          <div class="page-subtabs" id="subtabs-scripts"></div>
+          <div id="subcontent-scripts"></div>
+          <div id="page-closes" class="page" style="display: none"></div>
+          <div
+            id="page-callflow"
+            class="page page-gps"
+            style="display: none"
+          ></div>
+          <div id="page-planscripts" class="page" style="display: none"></div>
+          <div id="page-recovery" class="page" style="display: none"></div>
+        </div>
+
+        <!-- NETWORK GUIDE -->
+        <div id="page-networkguide" class="combo-page">
+          <div class="page-subtabs" id="subtabs-networkguide"></div>
+          <div id="subcontent-networkguide"></div>
+          <div
+            id="page-networkexplainer"
+            class="page"
+            style="display: none"
+          ></div>
+        </div>
+
+        <!-- CHEAT SHEET -->
+        <div id="page-cheatsheet" class="combo-page">
+          <div class="page-subtabs" id="subtabs-cheatsheet"></div>
+          <div id="subcontent-cheatsheet"></div>
+          <div id="page-cheatsheets" class="page" style="display: none"></div>
+        </div>
+
+        <!-- TRAINING -->
+        <div id="page-training" class="combo-page">
+          <div class="page-subtabs" id="subtabs-training"></div>
+          <div id="subcontent-training"></div>
+          <div id="page-traininghome" class="page" style="display: none">
+            <div class="academy-container" id="academyContainer">
+              <div class="academy-welcome">
+                <div class="welcome-text">
+                  <p style="font-size: 14px; opacity: 0.85; margin-bottom: 4px">
+                    Welcome to
+                  </p>
+                  <h2>CHA Academy</h2>
+                  <p>5 days to your first sale. One step at a time.</p>
+                </div>
+                <div class="progress-ring-container">
+                  <svg class="progress-ring" viewBox="0 0 100 100">
+                    <circle class="progress-ring-bg" cx="50" cy="50" r="42" />
+                    <circle
+                      class="progress-ring-fill"
+                      id="academyProgressRing"
+                      cx="50"
+                      cy="50"
+                      r="42"
+                    />
+                  </svg>
+                  <div class="progress-center">
+                    <span class="progress-percent" id="academyProgressPercent"
+                      >0%</span
+                    >
+                    <span class="progress-label">complete</span>
+                  </div>
+                </div>
+              </div>
+              <div class="days-grid" id="daysGrid"></div>
+              <div class="day-content" id="day1Content"></div>
+              <div class="day-content" id="day2Content"></div>
+              <div class="day-content" id="day3Content"></div>
+              <div class="day-content" id="day4Content"></div>
+              <div class="day-content" id="day5Content"></div>
+            </div>
+            <div class="benefits-bubble">
+              <button
+                class="benefits-bubble-btn"
+                id="benefitsBubbleBtn"
+                onclick="toggleBenefitsPanel()"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="2"
+                >
+                  <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                  <path
+                    d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div class="benefits-panel" id="benefitsPanel">
+              <div class="benefits-panel-header">
+                <h3>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2"
+                  >
+                    <path d="M4 19.5A2.5 2.5 0 016.5 17H20" />
+                    <path
+                      d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                    />
+                  </svg>
+                  Quick Reference
+                </h3>
+                <button
+                  class="benefits-panel-close"
+                  onclick="toggleBenefitsPanel()"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="white"
+                    stroke-width="2"
+                  >
+                    <path d="M18 6L6 18M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div class="benefits-tabs">
+                <button
+                  class="benefits-tab active"
+                  onclick="switchBenefitsTab('scripts')"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"
+                    />
+                    <path d="M14 2v6h6" />
+                  </svg>
+                  Scripts
+                </button>
+                <button
+                  class="benefits-tab"
+                  onclick="switchBenefitsTab('plans')"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35" />
+                  </svg>
+                  Plans
+                </button>
+                <button
+                  class="benefits-tab"
+                  onclick="switchBenefitsTab('objections')"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                  Rebuttals
+                </button>
+                <button
+                  class="benefits-tab"
+                  onclick="switchBenefitsTab('numbers')"
+                >
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"
+                    />
+                  </svg>
+                  Numbers
+                </button>
+              </div>
+              <div class="benefits-content" id="benefitsContent"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPLIANCE -->
+        <div id="page-compliance" class="combo-page">
+          <div class="page-subtabs" id="subtabs-compliance"></div>
+          <div id="subcontent-compliance"></div>
+          <div
+            id="page-compliancecenter"
+            class="page"
+            style="display: none"
+          ></div>
+          <div id="page-callaudit" class="page" style="display: none"></div>
+          <div id="page-docusign" class="page" style="display: none">
+            <div class="ds-walkthrough-group">
+              <button
+                class="ds-walkthrough-trigger"
+                type="button"
+                aria-expanded="true"
+              >
+                <span>SmartChoice DocuSign Walkthrough</span>
+                <span class="ds-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="ds-walkthrough-body">
+                <div class="ds-walkthrough-search">
+                  <input
+                    type="text"
+                    id="dsSearchInput"
+                    placeholder="Search all tabs (typos OK)..."
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="ds-walkthrough-tabs" role="tablist">
+                  <button
+                    class="ds-tab is-active"
+                    data-tab="ask"
+                    role="tab"
+                    aria-selected="true"
+                  >
+                    WHAT CLIENTS ASK MOST
+                  </button>
+                  <button
+                    class="ds-tab"
+                    data-tab="att"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    10 ADDITIONAL MEMBER ATTESTATIONS
+                  </button>
+                  <button
+                    class="ds-tab"
+                    data-tab="full"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    FULL WALKTHROUGH
+                  </button>
+                </div>
+                <div class="ds-tab-panels">
+                  <div
+                    class="ds-panel is-active"
+                    data-panel="ask"
+                    role="tabpanel"
+                  ></div>
+                  <div
+                    class="ds-panel"
+                    data-panel="att"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                  <div
+                    class="ds-panel"
+                    data-panel="full"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                </div>
+                <div class="ds-search-results" hidden></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MY SPACE -->
+        <div id="page-myspace" class="combo-page">
+          <div class="page-subtabs" id="subtabs-myspace"></div>
+          <div id="subcontent-myspace"></div>
+          <div id="page-myspacehub" class="page" style="display: none"></div>
+          <div id="page-salestracker" class="page" style="display: none"></div>
+          <div id="page-mindset" class="page" style="display: none"></div>
+          <div id="page-notes" class="page" style="display: none"></div>
+        </div>
+      </main>
+
+      <div
+        id="srOverlay"
+        class="sr-overlay"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search"
+        onclick="if (event.target === this) closeSearch();"
+      >
+        <div class="sr-container">
+          <div class="sr-searchbox">
+            <div class="sr-input-wrap">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                id="srInput"
+                placeholder="Search plans, objections, benefits, closes..."
+                oninput="debouncedOverlaySearch(this.value)"
+                autofocus
+              />
+              <button
+                class="sr-input-clear"
+                onclick="closeSearch()"
+                title="Close search (Esc)"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div class="sr-meta">
+              <div class="sr-match-count" id="srMatchCount"></div>
+              <div class="sr-meta-right">
+                <div class="sr-nav-hint">
+                  <kbd>↑</kbd><kbd>↓</kbd> results · <kbd>Enter</kbd> open
+                </div>
+                <div class="sr-esc-hint"><kbd>Esc</kbd> to close</div>
+              </div>
+            </div>
+          </div>
+          <div class="sr-results" id="srList"></div>
+        </div>
+      </div>
+    </div>
+    <!-- /main wrapper -->
+
+    <!-- Benefits Reference Chat Panel -->
+    <button
+      id="br-toggle"
+      aria-label="Policy Benefits AI"
+      aria-expanded="false"
+    >
+      <svg
+        class="ic-chat"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#EEF1F6"
+        stroke-width="1.9"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+        />
+      </svg>
+      <svg
+        class="ic-close"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#EEF1F6"
+        stroke-width="2.2"
+        stroke-linecap="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+
+    <div id="br-panel">
+      <!-- HEADER -->
+      <div class="br-head">
+        <div class="br-head-icon">
+          <svg
+            style="width: 16px; height: 16px"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="8" y="2" width="8" height="4" rx="1" />
+            <rect x="3" y="6" width="18" height="16" rx="2" />
+          </svg>
+        </div>
+        <div style="flex: 1; min-width: 0">
+          <div class="br-head-name">Benefits Reference</div>
+          <div id="br-ai-status" class="br-ai-status br-ai-local">
+            <span class="br-dot"></span
+            ><span id="br-ai-label">Plan Lookup</span>
+          </div>
+        </div>
+        <button class="br-clear" onclick="brClear()" title="Clear chat">
+          ↺ Clear
+        </button>
+        <button
+          type="button"
+          id="br-expand"
+          class="br-expand-btn"
+          title="Expand or shrink panel"
+          aria-pressed="false"
+        >
+          Expand
+        </button>
+        <button
+          class="br-close-btn"
+          onclick="_closeBenefitsSidebar()"
+          aria-label="Close"
+          title="Close"
+        >
+          &times;
+        </button>
+      </div>
+
+      <!-- FILTER + PLAN BAR (one section) -->
+      <div class="br-nav-section">
+        <div class="br-filter-bar" id="br-filter-bar"></div>
+        <div class="br-plan-bar" id="br-plan-bar"></div>
+      </div>
+
+      <!-- QUICK CHIPS (3 per row, cleaner) -->
+      <div class="br-chips">
+        <span class="br-chip cop" onclick="brQuick('What are the copays?')"
+          >💊 Copays</span
+        >
+        <span
+          class="br-chip exc"
+          onclick="brQuick('What is NOT covered? List all exclusions.')"
+          >✗ Exclusions</span
+        >
+        <span
+          class="br-chip drg"
+          onclick="brQuick('What is the prescription drug coverage?')"
+          >Rx Drug</span
+        >
+        <span
+          class="br-chip net"
+          onclick="brQuick('What is the network? Out-of-network benefits?')"
+          >🌐 Network</span
+        >
+        <span
+          class="br-chip wai"
+          onclick="
+            brQuick(
+              'What are the waiting periods and pre-existing condition rules?'
+            )
+          "
+          >⏱ Pre-Ex</span
+        >
+        <span
+          class="br-chip xry"
+          onclick="brQuick('Is x-ray and lab work covered?')"
+          >🔬 X-Ray / Labs</span
+        >
+      </div>
+
+      <div class="br-msgs" id="br-msgs"></div>
+
+      <div class="br-quick-actions" role="toolbar" aria-label="Quick questions">
+        <button
+          type="button"
+          class="br-qbtn"
+          onclick="
+            brQuick(
+              'What are all waiting periods on this plan (sickness, injury, hospitalization, and any service-specific waits)? List each with exact timing.'
+            )
+          "
+        >
+          Waiting Periods
+        </button>
+        <button
+          type="button"
+          class="br-qbtn"
+          onclick="
+            brQuick(
+              'What is the pre-existing condition rule on this plan? Include look-back period, exclusion length, and which benefits it applies to.'
+            )
+          "
+        >
+          Pre-Ex Rule
+        </button>
+        <button
+          type="button"
+          class="br-qbtn"
+          onclick="
+            brQuick(
+              'How does prescription drug coverage work on this plan? Include retail vs mail order, formulary tiers, copays, specialty drugs, discount programs, and any monthly limits.'
+            )
+          "
+        >
+          RX Search
+        </button>
+        <button
+          type="button"
+          class="br-qbtn"
+          onclick="
+            brQuick(
+              'How are emergency room visits covered versus urgent care on this plan? Include copays or benefit amounts, visit limits, and when the member should use ER vs urgent care per the plan document.'
+            )
+          "
+        >
+          ER vs Urgent Care
+        </button>
+        <button
+          type="button"
+          class="br-qbtn"
+          onclick="
+            brQuick(
+              'The prospect says their spouse does not want this plan. Based ONLY on this plan document, what are accurate, compliant points to review (covered benefits, limits, exclusions, and network rules) so the spouse can make an informed decision?'
+            )
+          "
+        >
+          Spouse Objection
+        </button>
+      </div>
+
+      <div class="br-input-bar">
+        <textarea
+          id="br-input"
+          rows="1"
+          aria-label="Search plan benefits"
+          placeholder="Ask anything… copays, exclusions, waiting periods"
+        ></textarea>
+        <button id="br-send" onclick="brSend()" aria-label="Send">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#EEF1F6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="22" y1="2" x2="11" y2="13" />
+            <polygon points="22 2 15 22 11 13 2 9 22 2" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+     SCRIPTS — Load order matters!
+     1. utils.js     — icons, escHTML, search engine (no dependencies)
+     2. data.js      — RECOVERY data (no dependencies)
+     3. objections   — OBJ_CATS, OBJECTIONS (uses icons from utils)
+     4. plans-benefits — PLANS, BENEFITS, Network Guide
+     5. call-playbook — CLOSES, CF_STEPS, PLAN_SCRIPTS
+     6. live-assist   — uses RECOVERY, OBJECTIONS
+     7. ai-tools      — AI tools tab
+     8. training      — ISA data + training renders + discovery + closing engine
+     9. compliance    — Compliance Hub tab
+     10. policy-docs  — POLICY_DOCS (biggest file)
+     11. myspace.js   — MINDSET + notes + saved scripts (My Space tab)
+     12. app.js       — PAGE_CONFIG, showPage, initApp, CLOSEABLE, SW
+     13. chat.js      — Benefits Reference panel (uses POLICY_DOCS)
+     ══════════════════════════════════════════════════════ -->
+    <script
+      crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA"
+      src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@4/dist/clerk.browser.js"
+      type="text/javascript"
+    ></script>
+    <script src="js/storage-utils.js?v=1780000000000"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/speed-insights.js"></script>
+    <script src="js/plan-registry.js?v=1779700000000"></script>
+    <script src="js/utils.js?v=1779700000000"></script>
+    <script src="js/recovery-data.js?v=1779700000000"></script>
+    <script src="js/objections.js?v=1779700000000"></script>
+    <script src="js/knowledge_base.js?v=1779700000000"></script>
+    <script src="js/plan-data.js?v=1779700000000"></script>
+    <script src="js/plan-data-extended.js?v=1779700000000"></script>
+    <script src="js/plan-data-pdf-raw.js?v=1779700000000"></script>
+    <script src="js/plan-pdf-map.js?v=1779700000000"></script>
+    <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
+    <script src="js/policy-docs.js?v=1779700000000"></script>
+    <script src="js/plans-benefits.js?v=1779700000000"></script>
+    <script src="js/call-playbook.js?v=1779700000000"></script>
+    <script src="js/live-assist.js?v=1779700000000"></script>
+    <script src="js/ai-tools.js?v=1779700000000"></script>
+    <script src="js/training.js?v=1780300000000"></script>
+    <script src="js/compliance.js?v=1779700000000"></script>
+    <script src="js/docusign-walkthrough.js?v=1779700000000"></script>
+    <script src="js/myspace.js?v=1780300000000"></script>
+    <script src="js/sales-tracker.js?v=1780300000000"></script>
+    <script src="js/app.js?v=1780300000000"></script>
+    <script>
+      (function () {
+        var data = window.docusignWalkthroughData;
+        if (!data) return;
+        var SYN = data.searchSynonyms || {};
+        function expandSearchableText(text) {
+          if (!text) return '';
+          var lower = String(text).toLowerCase();
+          var extra = [];
+          Object.keys(SYN).forEach(function (key) {
+            if (lower.indexOf(key) !== -1) {
+              extra.push(SYN[key].join(' '));
+            }
+          });
+          return (lower + ' ' + extra.join(' ')).trim();
+        }
+        function expandWithSynonyms(query) {
+          var q = (query || '').trim().toLowerCase();
+          if (!q) return [q];
+          var syn =
+            (window.docusignWalkthroughData &&
+              window.docusignWalkthroughData.searchSynonyms) ||
+            {};
+          var terms = [q];
+          if (syn[q]) {
+            syn[q].forEach(function (s) {
+              terms.push(String(s).toLowerCase());
+            });
+          }
+          Object.keys(syn).forEach(function (key) {
+            if (key !== q && q.indexOf(key) !== -1) {
+              syn[key].forEach(function (s) {
+                terms.push(String(s).toLowerCase());
+              });
+            }
+          });
+          return terms;
+        }
+        function levenshtein(a, b) {
+          if (a === b) return 0;
+          if (!a.length) return b.length;
+          if (!b.length) return a.length;
+          var prev = [];
+          var i;
+          var j;
+          for (i = 0; i <= b.length; i++) prev[i] = i;
+          for (i = 1; i <= a.length; i++) {
+            var curr = [i];
+            for (j = 1; j <= b.length; j++) {
+              var cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+              curr[j] = Math.min(
+                curr[j - 1] + 1,
+                prev[j] + 1,
+                prev[j - 1] + cost
+              );
+            }
+            prev = curr;
+          }
+          return prev[b.length];
+        }
+        function fuzzyIncludes(haystack, needle) {
+          if (!needle) return true;
+          if (haystack.indexOf(needle) !== -1) return true;
+          if (needle.length < 4) return false;
+          var maxDist = needle.length >= 8 ? 2 : 1;
+          var words = haystack.split(/\s+/);
+          for (var i = 0; i < words.length; i++) {
+            var w = words[i];
+            if (!w) continue;
+            if (Math.abs(w.length - needle.length) > maxDist) continue;
+            if (levenshtein(w, needle) <= maxDist) return true;
+          }
+          return false;
+        }
+        var group = document.querySelector('.ds-walkthrough-group');
+        if (!group) return;
+        var trigger = group.querySelector('.ds-walkthrough-trigger');
+        var body = group.querySelector('.ds-walkthrough-body');
+        var search = group.querySelector('#dsSearchInput');
+        var resultsContainer = group.querySelector('.ds-search-results');
+        var tabsBar = group.querySelector('.ds-walkthrough-tabs');
+        var tabs = group.querySelectorAll('.ds-tab');
+        var panels = {
+          ask: group.querySelector('[data-panel="ask"]'),
+          att: group.querySelector('[data-panel="att"]'),
+          full: group.querySelector('[data-panel="full"]')
+        };
+        if (
+          !trigger ||
+          !body ||
+          !search ||
+          !panels.ask ||
+          !panels.att ||
+          !panels.full
+        )
+          return;
+        trigger.addEventListener('click', function () {
+          var open = trigger.getAttribute('aria-expanded') === 'true';
+          trigger.setAttribute('aria-expanded', String(!open));
+          if (open) {
+            body.setAttribute('hidden', '');
+          } else {
+            body.removeAttribute('hidden');
+          }
+        });
+        tabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            tabs.forEach(function (t) {
+              t.classList.remove('is-active');
+              t.setAttribute('aria-selected', 'false');
+            });
+            tab.classList.add('is-active');
+            tab.setAttribute('aria-selected', 'true');
+            Object.keys(panels).forEach(function (k) {
+              panels[k].classList.remove('is-active');
+              panels[k].setAttribute('hidden', '');
+            });
+            var key = tab.getAttribute('data-tab');
+            panels[key].classList.add('is-active');
+            panels[key].removeAttribute('hidden');
+            if (search.value && search.value.trim()) {
+              search.value = '';
+              exitSearchMode();
+            }
+          });
+        });
+        function el(tag, cls, text) {
+          var n = document.createElement(tag);
+          if (cls) n.className = cls;
+          if (text != null) n.textContent = text;
+          return n;
+        }
+        function buildExpandableCard(opts) {
+          var card = el('div', 'ds-card ds-sev-' + (opts.severity || 'green'));
+          if (opts.searchable)
+            card.setAttribute('data-searchable', opts.searchable);
+          var header = el('button', 'ds-card-header');
+          header.setAttribute('type', 'button');
+          header.setAttribute('aria-expanded', 'false');
+          var titleWrap = el('div', 'ds-card-titlewrap');
+          if (opts.number != null) {
+            var numBadge = el('span', 'ds-card-num', String(opts.number));
+            titleWrap.appendChild(numBadge);
+          }
+          titleWrap.appendChild(el('div', 'ds-card-title', opts.title));
+          if (opts.oneLiner) {
+            titleWrap.appendChild(el('div', 'ds-card-oneliner', opts.oneLiner));
+          }
+          header.appendChild(titleWrap);
+          header.appendChild(el('span', 'ds-card-toggle', '+'));
+          var content = el('div', 'ds-card-body');
+          content.setAttribute('hidden', '');
+          (opts.sections || []).forEach(function (s) {
+            var box = el('div', 'ds-box ds-box-' + s.kind);
+            box.appendChild(el('div', 'ds-box-label', s.label));
+            if (s.kind === 'pushback' && Array.isArray(s.body)) {
+              s.body.forEach(function (qa) {
+                var qaWrap = el('div', 'ds-qa');
+                qaWrap.appendChild(el('div', 'ds-qa-q', 'Q: ' + qa.q));
+                qaWrap.appendChild(el('div', 'ds-qa-a', 'A: ' + qa.a));
+                box.appendChild(qaWrap);
+              });
+            } else {
+              box.appendChild(el('div', 'ds-box-text', s.body));
+            }
+            content.appendChild(box);
+          });
+          header.addEventListener('click', function () {
+            var open = header.getAttribute('aria-expanded') === 'true';
+            header.setAttribute('aria-expanded', String(!open));
+            if (open) {
+              content.setAttribute('hidden', '');
+              header.querySelector('.ds-card-toggle').textContent = '+';
+            } else {
+              content.removeAttribute('hidden');
+              header.querySelector('.ds-card-toggle').textContent = '-';
+            }
+          });
+          card.appendChild(header);
+          card.appendChild(content);
+          return card;
+        }
+        function renderAsk() {
+          var p = panels.ask;
+          p.innerHTML = '';
+          data.whatClientsAsk.forEach(function (item) {
+            var card = buildExpandableCard({
+              severity: item.severity,
+              title: item.title,
+              oneLiner: item.oneLiner,
+              searchable: expandSearchableText(
+                item.title + ' ' + item.oneLiner + ' ' + item.sayThis
+              ),
+              sections: [
+                {
+                  label: 'SAY THIS TO YOUR CLIENT',
+                  kind: 'sayThis',
+                  body: item.sayThis
+                },
+                {
+                  label: 'IF THEY PUSH BACK',
+                  kind: 'pushback',
+                  body: item.pushback
+                }
+              ]
+            });
+            p.appendChild(card);
+          });
+          var rfWrap = el('div', 'ds-redflags');
+          rfWrap.appendChild(
+            el(
+              'div',
+              'ds-redflags-title',
+              'AGENT RED FLAGS -- CHECK BEFORE SUBMISSION'
+            )
+          );
+          var ul = el('ul', 'ds-redflags-list');
+          data.redFlagsChecklist.forEach(function (rf) {
+            var li = el('li', 'ds-redflags-item');
+            li.setAttribute('data-searchable', expandSearchableText(rf));
+            li.textContent = rf;
+            ul.appendChild(li);
+          });
+          rfWrap.appendChild(ul);
+          p.appendChild(rfWrap);
+        }
+        function renderAttestations() {
+          var p = panels.att;
+          p.innerHTML = '';
+          var intro = el(
+            'div',
+            'ds-att-intro',
+            'Tap any number to see the DocuSign quote, plain-English meaning, what to say, and how to handle pushback.'
+          );
+          p.appendChild(intro);
+          var grid = el('div', 'ds-att-grid');
+          var details = el('div', 'ds-att-details');
+          data.attestations.forEach(function (a) {
+            var tile = el('button', 'ds-att-tile ds-sev-' + a.severity);
+            tile.setAttribute('type', 'button');
+            tile.setAttribute(
+              'data-searchable',
+              expandSearchableText(
+                a.title +
+                  ' ' +
+                  a.shortLabel +
+                  ' ' +
+                  a.whatItMeans +
+                  ' ' +
+                  a.docusignText
+              )
+            );
+            tile.appendChild(el('div', 'ds-att-num', String(a.number)));
+            tile.appendChild(el('div', 'ds-att-label', a.shortLabel));
+            tile.addEventListener('click', function () {
+              renderAttDetail(a, details);
+              details.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            grid.appendChild(tile);
+          });
+          p.appendChild(grid);
+          p.appendChild(details);
+          var glossWrap = el('div', 'ds-glossary');
+          glossWrap.appendChild(
+            el(
+              'div',
+              'ds-glossary-title',
+              'GLOSSARY -- TRANSLATE THE LEGAL STUFF'
+            )
+          );
+          data.glossary.forEach(function (g) {
+            var row = el('div', 'ds-glossary-row');
+            row.setAttribute(
+              'data-searchable',
+              expandSearchableText(g.term + ' ' + g.def)
+            );
+            row.appendChild(el('div', 'ds-glossary-term', g.term));
+            row.appendChild(el('div', 'ds-glossary-def', g.def));
+            glossWrap.appendChild(row);
+          });
+          p.appendChild(glossWrap);
+        }
+        function renderAttDetail(a, mount) {
+          mount.innerHTML = '';
+          var card = el('div', 'ds-att-detail ds-sev-' + a.severity);
+          card.setAttribute(
+            'data-searchable',
+            expandSearchableText(
+              a.title +
+                ' ' +
+                a.docusignText +
+                ' ' +
+                a.whatItMeans +
+                ' ' +
+                a.sayToClient
+            )
+          );
+          card.appendChild(
+            el('div', 'ds-att-detail-num', '#' + a.number + ' -- ' + a.title)
+          );
+          var quote = el('div', 'ds-box ds-box-quote');
+          quote.appendChild(
+            el('div', 'ds-box-label', 'WHAT THE DOCUSIGN SAYS')
+          );
+          quote.appendChild(el('div', 'ds-box-text', a.docusignText));
+          card.appendChild(quote);
+          var means = el('div', 'ds-box ds-box-means');
+          means.appendChild(el('div', 'ds-box-label', 'WHAT IT REALLY MEANS'));
+          means.appendChild(el('div', 'ds-box-text', a.whatItMeans));
+          card.appendChild(means);
+          var say = el('div', 'ds-box ds-box-sayThis');
+          say.appendChild(el('div', 'ds-box-label', 'SAY THIS TO YOUR CLIENT'));
+          say.appendChild(el('div', 'ds-box-text', a.sayToClient));
+          card.appendChild(say);
+          var push = el('div', 'ds-box ds-box-pushback');
+          push.appendChild(el('div', 'ds-box-label', 'IF THEY PUSH BACK'));
+          a.pushback.forEach(function (qa) {
+            var qaWrap = el('div', 'ds-qa');
+            qaWrap.appendChild(el('div', 'ds-qa-q', 'Q: ' + qa.q));
+            qaWrap.appendChild(el('div', 'ds-qa-a', 'A: ' + qa.a));
+            push.appendChild(qaWrap);
+          });
+          card.appendChild(push);
+          mount.appendChild(card);
+        }
+        function renderFull() {
+          var p = panels.full;
+          p.innerHTML = '';
+          var wo = data.workingOwnerOverview;
+          var woCard = el('div', 'ds-section');
+          woCard.appendChild(el('h3', 'ds-section-title', wo.title));
+          woCard.appendChild(el('p', 'ds-section-summary', wo.summary));
+          var woGrid = el('div', 'ds-twocol');
+          wo.cards.forEach(function (c) {
+            var box = el('div', 'ds-section-card');
+            box.appendChild(el('h4', 'ds-section-card-h', c.heading));
+            if (c.body) box.appendChild(el('p', 'ds-section-card-p', c.body));
+            if (c.bullets) {
+              var ul = el('ul', 'ds-section-card-ul');
+              c.bullets.forEach(function (b) {
+                ul.appendChild(el('li', null, b));
+              });
+              box.appendChild(ul);
+            }
+            woGrid.appendChild(box);
+          });
+          woCard.appendChild(woGrid);
+          woCard.setAttribute(
+            'data-searchable',
+            expandSearchableText(wo.title + ' ' + wo.summary)
+          );
+          p.appendChild(woCard);
+          var pp = data.planPositioning;
+          var ppCard = el('div', 'ds-section');
+          ppCard.appendChild(el('h3', 'ds-section-title', pp.title));
+          ppCard.appendChild(el('p', 'ds-section-summary', pp.intro));
+          var ppGrid = el('div', 'ds-twocol');
+          pp.cards.forEach(function (c) {
+            var box = el('div', 'ds-section-card');
+            box.appendChild(el('h4', 'ds-section-card-h', c.heading));
+            if (c.bullets) {
+              var ul = el('ul', 'ds-section-card-ul');
+              c.bullets.forEach(function (b) {
+                ul.appendChild(el('li', null, b));
+              });
+              box.appendChild(ul);
+            }
+            ppGrid.appendChild(box);
+          });
+          ppCard.appendChild(ppGrid);
+          ppCard.setAttribute(
+            'data-searchable',
+            expandSearchableText(pp.title + ' ' + pp.intro)
+          );
+          p.appendChild(ppCard);
+          var bp = data.bigPicture;
+          var bpCard = el('div', 'ds-section');
+          bpCard.appendChild(el('h3', 'ds-section-title', bp.title));
+          bpCard.appendChild(el('p', 'ds-section-summary', bp.summary));
+          var bpUl = el('ul', 'ds-section-card-ul');
+          bp.points.forEach(function (pt) {
+            bpUl.appendChild(el('li', null, pt));
+          });
+          bpCard.appendChild(bpUl);
+          bpCard.setAttribute(
+            'data-searchable',
+            expandSearchableText(bp.title + ' ' + bp.summary)
+          );
+          p.appendChild(bpCard);
+          var secsHeader = el(
+            'h3',
+            'ds-section-title',
+            'Section-by-Section Breakdown (25)'
+          );
+          p.appendChild(secsHeader);
+          data.sections.forEach(function (s) {
+            var card = el(
+              'div',
+              'ds-mini-section' + (s.warning ? ' ds-warn' : '')
+            );
+            var searchTxt = s.title + ' ';
+            var head = el('div', 'ds-mini-section-h');
+            head.appendChild(
+              el('span', 'ds-mini-section-num', String(s.number) + '.')
+            );
+            head.appendChild(el('span', 'ds-mini-section-t', s.title));
+            card.appendChild(head);
+            if (s.body) {
+              card.appendChild(el('p', 'ds-mini-section-p', s.body));
+              searchTxt += s.body + ' ';
+            }
+            if (s.intro) {
+              card.appendChild(el('p', 'ds-mini-section-p', s.intro));
+              searchTxt += s.intro + ' ';
+            }
+            if (s.bullets) {
+              var ul = el('ul', 'ds-mini-section-ul');
+              s.bullets.forEach(function (b) {
+                ul.appendChild(el('li', null, b));
+                searchTxt += b + ' ';
+              });
+              card.appendChild(ul);
+            }
+            if (s.outro) {
+              card.appendChild(el('p', 'ds-mini-section-p', s.outro));
+              searchTxt += s.outro + ' ';
+            }
+            card.setAttribute(
+              'data-searchable',
+              expandSearchableText(searchTxt)
+            );
+            p.appendChild(card);
+          });
+          var faqHeader = el('h3', 'ds-section-title', 'Top Client Questions');
+          p.appendChild(faqHeader);
+          data.faq.forEach(function (qa) {
+            var card = el('div', 'ds-faq');
+            card.appendChild(el('div', 'ds-faq-q', qa.q));
+            card.appendChild(el('div', 'ds-faq-a', qa.a));
+            card.setAttribute(
+              'data-searchable',
+              expandSearchableText(qa.q + ' ' + qa.a)
+            );
+            p.appendChild(card);
+          });
+        }
+        function clearTabBadges() {
+          tabs.forEach(function (tab) {
+            var baseLabel = tab.getAttribute('data-base-label');
+            if (baseLabel) tab.textContent = baseLabel;
+          });
+        }
+        function exitSearchMode() {
+          var results = group.querySelector('.ds-search-results');
+          if (results) {
+            results.innerHTML = '';
+            results.setAttribute('hidden', '');
+          }
+          var activeTab = group.querySelector('.ds-tab.is-active');
+          var key = activeTab ? activeTab.getAttribute('data-tab') : 'ask';
+          if (!panels[key]) key = 'ask';
+          Object.keys(panels).forEach(function (k) {
+            if (k === key) {
+              panels[k].removeAttribute('hidden');
+              panels[k].classList.add('is-active');
+            } else {
+              panels[k].setAttribute('hidden', '');
+              panels[k].classList.remove('is-active');
+            }
+          });
+          tabs.forEach(function (t) {
+            var tKey = t.getAttribute('data-tab');
+            if (tKey === key) {
+              t.classList.add('is-active');
+              t.setAttribute('aria-selected', 'true');
+            } else {
+              t.classList.remove('is-active');
+              t.setAttribute('aria-selected', 'false');
+            }
+          });
+          if (tabsBar) tabsBar.style.display = '';
+          clearTabBadges();
+        }
+        function enterSearchMode(query) {
+          var q = (query || '').trim().toLowerCase();
+          var terms = expandWithSynonyms(q);
+          var results = group.querySelector('.ds-search-results');
+          if (!results) return;
+          if (!q) {
+            exitSearchMode();
+            return;
+          }
+          var allMatches = { ask: [], att: [], full: [] };
+          Object.keys(panels).forEach(function (key) {
+            var panel = panels[key];
+            if (!panel) return;
+            var nodes = panel.querySelectorAll('[data-searchable]');
+            nodes.forEach(function (n) {
+              var hay = (n.getAttribute('data-searchable') || '').toLowerCase();
+              if (!hay) return;
+              var hit = terms.some(function (t) {
+                if (!t) return false;
+                if (hay.indexOf(t) !== -1) return true;
+                return fuzzyIncludes(hay, t);
+              });
+              if (hit) {
+                allMatches[key].push(n.cloneNode(true));
+              }
+            });
+          });
+          Object.keys(panels).forEach(function (key) {
+            panels[key].setAttribute('hidden', '');
+            panels[key].classList.remove('is-active');
+          });
+          if (tabsBar) tabsBar.style.display = 'none';
+          results.innerHTML = '';
+          var totalCount =
+            allMatches.ask.length +
+            allMatches.att.length +
+            allMatches.full.length;
+          if (totalCount === 0) {
+            var empty = document.createElement('div');
+            empty.className = 'ds-search-empty';
+            empty.textContent = 'No matches in any tab.';
+            results.appendChild(empty);
+          } else {
+            var headings = {
+              ask: 'WHAT CLIENTS ASK MOST',
+              att: '10 ADDITIONAL MEMBER ATTESTATIONS',
+              full: 'FULL WALKTHROUGH'
+            };
+            Object.keys(allMatches).forEach(function (key) {
+              if (!allMatches[key].length) return;
+              var groupBlock = document.createElement('div');
+              groupBlock.className = 'ds-search-group';
+              var h = document.createElement('div');
+              h.className = 'ds-search-group-heading';
+              h.textContent =
+                headings[key] + ' (' + allMatches[key].length + ')';
+              groupBlock.appendChild(h);
+              allMatches[key].forEach(function (node) {
+                groupBlock.appendChild(node);
+              });
+              results.appendChild(groupBlock);
+            });
+          }
+          results.removeAttribute('hidden');
+        }
+        search.addEventListener('input', function () {
+          var v = (search.value || '').trim();
+          if (!v) {
+            exitSearchMode();
+          } else {
+            enterSearchMode(v);
+          }
+        });
+        renderAsk();
+        renderAttestations();
+        renderFull();
+      })();
+    </script>
+    <script src="js/chat.js?v=1780300000000"></script>
+    <script>
+      (function () {
+        var required = [
+          'POLICY_DOCS',
+          'CHA_PLAN_REGISTRY',
+          'brInit',
+          'renderPolicydocs',
+          'showPage'
+        ];
+        var missing = [];
+        for (var i = 0; i < required.length; i++) {
+          if (typeof window[required[i]] === 'undefined')
+            missing.push(required[i]);
+        }
+        if (missing.length > 0) {
+          console.error('[CHA] Missing globals:', missing);
+          document.body.innerHTML =
+            '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;background:#eef1f6;font-family:sans-serif;gap:16px;">' +
+            '<img src="logo.png" style="width:60px;height:60px;border-radius:50%;" />' +
+            '<div style="font-size:18px;font-weight:600;color:#1e293b;">CHA Command Center</div>' +
+            '<div style="font-size:13px;color:#ef4444;background:#f0f4f8;padding:10px 16px;border-radius:8px;border:1px solid #cbd5e1;">Some files failed to load. Please refresh.</div>' +
+            '<button onclick="location.reload()" style="padding:10px 24px;background:#5175f1;color:white;border:none;border-radius:999px;font-size:13px;font-weight:500;cursor:pointer;">Refresh Now</button>' +
+            '<div style="font-size:11px;color:#94a3b8;">Missing: ' +
+            missing.join(', ') +
+            '</div></div>';
+        }
+      })();
+    </script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw2.js').catch(function () {});
+        });
+      }
+    </script>
+  </body>
+</html>
