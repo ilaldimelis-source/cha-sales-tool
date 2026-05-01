@@ -9,3 +9,14 @@ serve.js
 .env
 agents.txt
 .cursor/
+# Local / agent scratch files (PR bodies, lint logs, screenshots)
+.pr-body-*.md
+pr_body_*.md
+AUDIT_REPORT.md
+squash-merge-body.md
+merge-squash-body.txt
+lint-*.txt
+stylelint-full.txt
+stylelint-report.json
+stylelint-clean.json
+screenshots/

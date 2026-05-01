@@ -145,3 +145,77 @@ Run immediately: npm run revert
 4. Verify plan-registry.js is first script in index.html
 5. Bump sw.js cache version by 1
 6. Verify NO async/await in any JS file
+
+## CI and lint quality bar
+
+CI runs three steps in order via `.github/workflows/ci.yml`:
+`format:check` -> `lint` -> `verify`. All three must be green
+before merge.
+
+### Tools and scope
+
+- **Prettier** (`format:check`) - whole repo. Scoped via
+  `.prettierignore` to skip generated/scratch directories.
+  See `.prettierignore` for the canonical list.
+- **ESLint** (`lint:js`) - all .js files. Config in
+  `eslint.config.js`. `js/chat.js` and `js/plan-data.js` are
+  in `.prettierignore` and cannot be edited for lint fixes -
+  use inline `eslint-disable-next-line` comments instead.
+- **Stylelint** (`lint:css`) - css/*.css. Config in
+  `stylelint.config.mjs`. `selector-not-notation` and
+  `declaration-property-value-keyword-no-deprecated` are
+  intentionally disabled - both have unsafe auto-fixes that
+  could shift cascade behavior or break line-breaking.
+  Re-enable only after manual review.
+- **HTMLHint** (`lint:html`) - **/*.html.
+- **Project-specific** (`verify`) - `scripts/verify.js`.
+  Palette warm-hex check, plan-registry sanity, sw cache
+  version. Runs in about 2-3 seconds.
+
+### Rule of thumb
+
+- 0 errors required. Warnings allowed (currently 231 ESLint
+  warnings).
+- Formatting is Prettier's job. Don't add ESLint/Stylelint
+  rules that fight Prettier.
+- Inline styles in `index.html` (Mondly overrides, slide-over
+  styles, Sales Tracker UI) are NOT linted by Stylelint - that
+  only runs against `css/*.css`. Treat the inline `<style>`
+  block as canonical and review changes there manually.
+
+### Pre-commit hooks
+
+`scripts/install-hooks.js` (auto-runs on `npm install`) installs
+both `pre-commit` and `pre-push`. Each runs:
+
+    npx lint-staged && node scripts/verify.js
+
+`lint-staged` runs Prettier/ESLint/Stylelint on STAGED files only
+(fast). `verify.js` runs project-specific checks. Both must pass
+or the commit is blocked.
+
+### Emergency bypass
+
+If a critical hotfix needs to ship and a hook is being stubborn:
+
+    git commit --no-verify
+    git push --no-verify
+
+Use sparingly. CI will still run on the PR and catch anything
+real.
+
+### Scratch files
+
+The following file patterns are gitignored and must not be
+committed:
+
+- `.pr-body-*.md`, `pr_body_*.md` (PR body drafts for
+  `gh pr edit --body-file`)
+- `lint-*.txt`, `stylelint-full.txt`, `stylelint-report.json`,
+  `stylelint-clean.json` (lint output captures)
+- `screenshots/` (debug screenshots)
+- `AUDIT_REPORT.md`, `squash-merge-body.md`,
+  `merge-squash-body.txt` (one-off agent scratch)
+
+If you find these tracked in a future commit, add them back to
+.gitignore and `git rm --cached` them out.

@@ -1,11 +1,11 @@
 :root {
   --cha-bg-page: #eef1f6;
-  --cha-bg-card: #ffffff;
+  --cha-bg-card: #fff;
   --cha-bg-surface: #f1f5f9;
   --cha-bg-muted: #f8fafc;
-  --cha-border-subtle: rgba(15, 23, 42, 0.08);
-  --cha-border-default: rgba(15, 23, 42, 0.12);
-  --cha-border-strong: rgba(15, 23, 42, 0.2);
+  --cha-border-subtle: rgb(15, 23, 42, 0.08);
+  --cha-border-default: rgb(15, 23, 42, 0.12);
+  --cha-border-strong: rgb(15, 23, 42, 0.2);
   --cha-text-primary: #0f172a;
   --cha-text-secondary: #475569;
   --cha-text-tertiary: #64748b;
