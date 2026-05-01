@@ -161,13 +161,13 @@ before merge.
   `eslint.config.js`. `js/chat.js` and `js/plan-data.js` are
   in `.prettierignore` and cannot be edited for lint fixes -
   use inline `eslint-disable-next-line` comments instead.
-- **Stylelint** (`lint:css`) - css/*.css. Config in
+- **Stylelint** (`lint:css`) - `css/*.css`. Config in
   `stylelint.config.mjs`. `selector-not-notation` and
   `declaration-property-value-keyword-no-deprecated` are
   intentionally disabled - both have unsafe auto-fixes that
   could shift cascade behavior or break line-breaking.
   Re-enable only after manual review.
-- **HTMLHint** (`lint:html`) - **/*.html.
+- **HTMLHint** (`lint:html`) - `**/*.html`.
 - **Project-specific** (`verify`) - `scripts/verify.js`.
   Palette warm-hex check, plan-registry sanity, sw cache
   version. Runs in about 2-3 seconds.
