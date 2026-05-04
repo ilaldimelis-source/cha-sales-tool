@@ -1011,3 +1011,463 @@ window.docusignWalkthroughData = {
     attestations: ['checkboxes', 'agreements', 'i agree', 'acknowledge']
   }
 };
+
+var DOCUSIGN_ACK_BOXES = [
+  {
+    num: 1,
+    where:
+      "Page 1, just below the 'SmartChoice 1500' plan header, before the 'Health Plan Enrollment' section break.",
+    says: 'By checking the box, Applicant certifies you are not applying on behalf any other individuals other than those who are considered dependents.',
+    script:
+      "Scroll to the top of page 1. Right under the blue SmartChoice 1500 header you'll see one line of red text. Check the box right before that red sentence.",
+    context:
+      'Confirms the customer is signing up only themselves and dependents.'
+  },
+  {
+    num: 2,
+    where:
+      "End of the 'AUTHORIZATION TO USE AND DISCLOSE PROTECTED HEALTH INFORMATION' section, right after the 11-item numbered list.",
+    says: 'By checking the box, you agree to the terms of this Authorization.',
+    script:
+      "Scroll down past the 11-item HIPAA list. At the bottom you'll see one line of bold red text. The checkbox is right before it.",
+    context: 'HIPAA authorization to share health info with the underwriter.'
+  },
+  {
+    num: 3,
+    where:
+      "End of the 'Plan Type and Participant Coverage' section, in centered red text.",
+    says: 'Confirmation: I agree to the above disclosures',
+    script:
+      "Look for the section titled 'Plan Type and Participant Coverage'. Scroll to the bottom of that section. You'll see centered red text that says 'Confirmation: I agree to the above disclosures' - the checkbox is right after it.",
+    context:
+      'Acknowledges MyLiveDoc pharmacy limitations and pre-existing condition coverage.'
+  },
+  {
+    num: 4,
+    where: "Inside the 'Managed Care' section under PLAN TERMS AND CONDITIONS.",
+    says: 'I have read and understand the information set forth above:',
+    script:
+      "Scroll to the 'Managed Care' section. Inside it, in the middle of the paragraph, you'll see a line in bold red that says 'I have read and understand the information set forth above' - the checkbox is right after that red line.",
+    context: 'This one is in the middle of a paragraph, easy to miss.'
+  },
+  {
+    num: 5,
+    where:
+      "End of the 'Working Owner Personal Services Terms and Conditions' section, after the 11 lettered items.",
+    says: 'Working Owner Confirmation: I agree to the terms above',
+    script:
+      "Scroll down past the long Working Owner terms list (11 numbered items). At the very bottom you'll see centered red text 'Working Owner Confirmation: I agree to the terms above' - the checkbox is right after it.",
+    context: 'Locks in Working Owner status.'
+  },
+  {
+    num: 6,
+    where: "End of the 'Joinder Agreement' section.",
+    says: 'Working Owner Confirmation: I agree to the above joinder agreement',
+    script:
+      "Scroll to the 'Joinder Agreement' section. At the bottom of that section you'll see red bold text 'Working Owner Confirmation: I agree to the above joinder agreement' - the checkbox is right after it.",
+    context: 'Joinder Agreement makes the customer a Member of the LLC.'
+  },
+  {
+    num: 7,
+    where: "End of the 'Spousal Consent' section.",
+    says: 'Spouse Confirmation: I agree to the above joinder agreement (if applicable)',
+    script:
+      "Scroll to the 'Spousal Consent' section. At the bottom you'll see red bold 'Spouse Confirmation: I agree to the above joinder agreement (if applicable)' - the checkbox is right after it. Customer should still check this even if they are not married.",
+    context:
+      'Customers often skip this thinking it does not apply. They should still check it.'
+  },
+  {
+    num: 8,
+    where:
+      "End of the Member attestation list (5 items), just before the 'Additional Member Attestations' header.",
+    says: 'Working Owner Confirmation: I agree to the above attestation',
+    script:
+      "Scroll past the 5-item attestation list. Right before the next big header that says 'Additional Member Attestations' you'll see red text 'Working Owner Confirmation: I agree to the above attestation' - the checkbox is right after it.",
+    context: 'Confirms self-employed status and accuracy of info.'
+  },
+  {
+    num: 9,
+    where: "Item 1 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA?',
+    script:
+      "Scroll to the 'Additional Member Attestations' section. There are 10 numbered items here, each with its own checkbox at the start of the line. Check item number 1.",
+    context: 'Item 1 of 10 in the attestation list.'
+  },
+  {
+    num: 10,
+    where: "Item 2 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you understand that, as a Working Owner, you are expected to complete assigned activities, respond to Company requests, and maintain regular communication regarding Working Owner matters?',
+    script: 'Same Additional Member Attestations section. Check item number 2.',
+    context: 'Item 2 of 10.'
+  },
+  {
+    num: 11,
+    where: "Item 3 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you agree that the Company may assign projects to you at its discretion?',
+    script: 'Same section. Check item number 3.',
+    context: 'Item 3 of 10.'
+  },
+  {
+    num: 12,
+    where: "Item 4 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you understand that you will receive a Guaranteed Payment for each response to an information request, as defined under Internal Revenue Code Section 707(c)?',
+    script: 'Same section. Check item number 4.',
+    context: 'Item 4 of 10.'
+  },
+  {
+    num: 13,
+    where: "Item 5 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you acknowledge that you have been granted three (3) Preferred Units in the Company as compensation for your personal services?',
+    script: 'Same section. Check item number 5.',
+    context: 'Item 5 of 10.'
+  },
+  {
+    num: 14,
+    where: "Item 6 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you understand that the Preferred Units are not registered under the Securities Act of 1933 and that there is no public market for these units?',
+    script: 'Same section. Check item number 6.',
+    context: 'Item 6 of 10.'
+  },
+  {
+    num: 15,
+    where: "Item 7 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you understand that you are eligible to participate in Company benefit plans subject to eligibility requirements and timely payment of any required premiums?',
+    script: 'Same section. Check item number 7.',
+    context: 'Item 7 of 10.'
+  },
+  {
+    num: 16,
+    where: "Item 8 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you agree to maintain the confidentiality of all Company information and to comply with Section 14.03 of the LLC Agreement?',
+    script: 'Same section. Check item number 8.',
+    context: 'Item 8 of 10.'
+  },
+  {
+    num: 17,
+    where: "Item 9 of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you understand that if you fail to meet the conditions of Working Owner status, the Company may exercise its Call Right to repurchase your Membership Interest?',
+    script: 'Same section. Check item number 9.',
+    context: 'Item 9 of 10.'
+  },
+  {
+    num: 18,
+    where:
+      "Item 10 (last) of the 'Additional Member Attestations' numbered list.",
+    says: 'Do you confirm that you have read and understood all the Terms and Conditions and the LLC Agreement, and that you are legally able to provide services as a Working Owner?',
+    script: 'Same section. Check item number 10 - the last one in this list.',
+    context: 'Item 10 of 10. Last attestation list item.'
+  },
+  {
+    num: 19,
+    where:
+      "Final confirmation block at the bottom of the attestation page, in centered red text under 'penalty and perjury' language.",
+    says: 'Confirmation: I confirm that all of the above is true',
+    script:
+      "Scroll to the very bottom of the attestation page. You'll see bold red text saying 'By checking the boxes above and signing below, you certify under penalty and perjury of law...'. Right under that is the final checkbox labeled 'Confirmation: I confirm that all of the above is true'. This is the very last acknowledgment box.",
+    context:
+      'Final certification under penalty of perjury. After this they sign and submit.'
+  }
+];
+
+var __dsAckCoachIndex = 0;
+var __dsAckCoachDone = false;
+
+function __dsAckEsc(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+setTimeout(function () {
+  var group = document.querySelector('.ds-walkthrough-group');
+  if (!group) return;
+  var tabsBar = group.querySelector('.ds-walkthrough-tabs');
+  var panelsWrap = group.querySelector('.ds-tab-panels');
+  var search = group.querySelector('#dsSearchInput');
+  if (!tabsBar || !panelsWrap || !search) return;
+
+  if (!document.getElementById('ds-ack-coach-style')) {
+    var st = document.createElement('style');
+    st.id = 'ds-ack-coach-style';
+    st.textContent =
+      '.ds-ack-wrap{padding-bottom:8px}' +
+      '.ds-ack-header-strip{margin-bottom:14px}' +
+      '.ds-ack-title{font-size:18px;font-weight:700;color:#0f172a;margin:0 0 6px}' +
+      '.ds-ack-sub{font-size:13px;color:#64748b;line-height:1.45;margin:0}' +
+      '.ds-ack-summary{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px}' +
+      '.ds-ack-stat{flex:1;min-width:120px;border:1px solid #e2e8f0;border-radius:14px;background:#fff;padding:10px 12px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}' +
+      '.ds-ack-stat-label{font-size:10px;font-weight:700;letter-spacing:0.06em;color:#1a4692;text-transform:uppercase;margin-bottom:4px}' +
+      '.ds-ack-stat-val{font-size:13px;font-weight:600;color:#0f172a;line-height:1.35}' +
+      '.ds-ack-total-line{font-size:12px;color:#64748b;margin:0 0 12px}' +
+      '.ds-ack-progress-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:10px}' +
+      '.ds-ack-progress-label{font-size:12px;font-weight:600;color:#334155}' +
+      '.ds-ack-progress-track{flex:1;height:8px;background:#e2e8f0;border-radius:999px;overflow:hidden;min-width:80px}' +
+      '.ds-ack-progress-fill{height:100%;background:#1a4692;border-radius:999px;width:0}' +
+      '.ds-ack-coach-shell{position:relative;border:1px solid #e2e8f0;border-radius:14px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.04);padding:14px 16px;margin-bottom:12px}' +
+      '.ds-ack-section{margin-bottom:14px}' +
+      '.ds-ack-section:last-child{margin-bottom:0}' +
+      '.ds-ack-lbl{font-size:10px;font-weight:700;letter-spacing:0.06em;color:#1a4692;text-transform:uppercase;margin-bottom:6px}' +
+      '.ds-ack-body{font-size:14px;color:#1e293b;line-height:1.45}' +
+      '.ds-ack-says{background:var(--cha-danger-bg);color:var(--cha-danger-text);border:1px solid #fecaca;border-radius:10px;padding:10px 12px;font-size:14px;line-height:1.45}' +
+      '.ds-ack-context{font-size:12px;color:#64748b;line-height:1.4;margin-top:4px}' +
+      '.ds-ack-nav{display:flex;flex-wrap:wrap;align-items:center;gap:10px}' +
+      '.ds-ack-btn{padding:10px 16px;border-radius:999px;border:1px solid #000;background:#fff;font-weight:600;font-size:12px;cursor:pointer;color:#000}' +
+      '.ds-ack-btn:hover{background:var(--cha-bg-muted)}' +
+      '.ds-ack-btn:disabled{opacity:0.45;cursor:not-allowed}' +
+      '.ds-ack-btn.ds-ack-primary{background:#1a4692;color:#fff;border-color:#1a4692}' +
+      '.ds-ack-btn.ds-ack-primary:hover{background:#153a7a}' +
+      '.ds-ack-jump{display:flex;align-items:center;gap:8px;margin-left:auto;font-size:12px;color:#475569}' +
+      '.ds-ack-jump select{padding:8px 10px;border-radius:10px;border:1px solid #cbd5e1;font-size:12px;background:#fff}' +
+      '.ds-ack-success{border:1px solid #bbf7d0;border-radius:14px;background:#ecfdf5;padding:16px;text-align:center}' +
+      '.ds-ack-success-msg{font-size:15px;font-weight:600;color:#065f46;margin:0 0 12px}' +
+      '.ds-ack-success .ds-ack-btn{display:inline-block}';
+    document.head.appendChild(st);
+  }
+
+  var ackTab = document.createElement('button');
+  ackTab.type = 'button';
+  ackTab.className = 'ds-tab';
+  ackTab.setAttribute('data-tab', 'ack');
+  ackTab.setAttribute('role', 'tab');
+  ackTab.setAttribute('aria-selected', 'false');
+  ackTab.textContent = 'ACKNOWLEDGMENT BOXES';
+  tabsBar.appendChild(ackTab);
+
+  var ackPanel = document.createElement('div');
+  ackPanel.className = 'ds-panel';
+  ackPanel.setAttribute('data-panel', 'ack');
+  ackPanel.setAttribute('role', 'tabpanel');
+  ackPanel.setAttribute('hidden', '');
+  ackPanel.innerHTML = '<div class="ds-ack-root" id="dsAckCoachRoot"></div>';
+  panelsWrap.appendChild(ackPanel);
+
+  function renderAckCoach() {
+    var root = document.getElementById('dsAckCoachRoot');
+    if (!root) return;
+    var total = DOCUSIGN_ACK_BOXES.length;
+    var idx = __dsAckCoachIndex;
+    if (idx < 0) idx = 0;
+    if (idx >= total) idx = total - 1;
+    __dsAckCoachIndex = idx;
+    var pct = Math.round(((idx + 1) / total) * 100);
+    var box = DOCUSIGN_ACK_BOXES[idx];
+
+    var jumpOpts = '';
+    for (var j = 0; j < total; j++) {
+      jumpOpts +=
+        '<option value="' +
+        j +
+        '"' +
+        (j === idx ? ' selected' : '') +
+        '>Box ' +
+        (j + 1) +
+        '</option>';
+    }
+
+    var navNextLabel = idx >= total - 1 ? 'Done' : 'Next >';
+    var prevDisabled = idx <= 0 ? ' disabled' : '';
+
+    var coachInner;
+    if (__dsAckCoachDone) {
+      coachInner =
+        '<div class="ds-ack-success" role="status">' +
+        '<p class="ds-ack-success-msg">All 19 boxes covered. Customer can now sign and submit.</p>' +
+        '<button type="button" class="ds-ack-btn ds-ack-primary" id="dsAckStartOver">Start Over</button>' +
+        '</div>';
+    } else {
+      coachInner =
+        '<div class="ds-ack-coach-shell" id="dsAckCoachCard">' +
+        '<div class="ds-ack-section">' +
+        '<div class="ds-ack-lbl">WHERE IT IS</div>' +
+        '<div class="ds-ack-body">' +
+        __dsAckEsc(box.where) +
+        '</div></div>' +
+        '<div class="ds-ack-section">' +
+        '<div class="ds-ack-lbl">WHAT IT SAYS (verbatim from the form)</div>' +
+        '<div class="ds-ack-says">' +
+        __dsAckEsc(box.says) +
+        '</div></div>' +
+        '<div class="ds-ack-section">' +
+        '<div class="ds-ack-lbl">WHAT TO TELL THE CUSTOMER (script line)</div>' +
+        '<div class="ds-ack-body">' +
+        __dsAckEsc(box.script) +
+        '</div></div>' +
+        '<div class="ds-ack-section">' +
+        '<div class="ds-ack-lbl">CONTEXT</div>' +
+        '<div class="ds-ack-context">' +
+        __dsAckEsc(box.context) +
+        '</div></div>' +
+        '</div>';
+    }
+
+    var progRowHtml = '';
+    var navHtml = '';
+    if (!__dsAckCoachDone) {
+      progRowHtml =
+        '<div class="ds-ack-progress-row">' +
+        '<span class="ds-ack-progress-label">Box ' +
+        (idx + 1) +
+        ' of ' +
+        total +
+        '</span>' +
+        '<div class="ds-ack-progress-track"><div class="ds-ack-progress-fill" style="width:' +
+        pct +
+        '%"></div></div>' +
+        '</div>';
+      navHtml =
+        '<div class="ds-ack-nav">' +
+        '<button type="button" class="ds-ack-btn" id="dsAckPrev"' +
+        prevDisabled +
+        '>&lt; Previous</button>' +
+        '<button type="button" class="ds-ack-btn" id="dsAckReset">Reset</button>' +
+        '<button type="button" class="ds-ack-btn ds-ack-primary" id="dsAckNext">' +
+        navNextLabel +
+        '</button>' +
+        '<div class="ds-ack-jump"><label for="dsAckJump">Jump to box #</label>' +
+        '<select id="dsAckJump" aria-label="Jump to box number">' +
+        jumpOpts +
+        '</select></div>' +
+        '</div>';
+    }
+
+    root.innerHTML =
+      '<div class="ds-ack-wrap">' +
+      '<div class="ds-ack-header-strip">' +
+      '<h3 class="ds-ack-title">Acknowledgment Box Walk-Thru</h3>' +
+      '<p class="ds-ack-sub">Use this when the customer cannot find or is missing acknowledgment boxes. Walk them through one at a time.</p>' +
+      '</div>' +
+      '<div class="ds-ack-summary">' +
+      '<div class="ds-ack-stat">' +
+      '<div class="ds-ack-stat-val">8 scattered boxes</div>' +
+      '<div style="font-size:12px;color:#64748b;margin-top:4px">(health/wellness sections)</div></div>' +
+      '<div class="ds-ack-stat">' +
+      '<div class="ds-ack-stat-val">10 attestation boxes</div>' +
+      '<div style="font-size:12px;color:#64748b;margin-top:4px">(Working Owner LLC list)</div></div>' +
+      '<div class="ds-ack-stat">' +
+      '<div class="ds-ack-stat-val">1 final confirmation</div>' +
+      '<div style="font-size:12px;color:#64748b;margin-top:4px">(penalty of perjury box)</div></div>' +
+      '</div>' +
+      '<p class="ds-ack-total-line">19 total required boxes for a standard adult applicant.</p>' +
+      progRowHtml +
+      coachInner +
+      navHtml +
+      '</div>';
+
+    var prevBtn = document.getElementById('dsAckPrev');
+    var nextBtn = document.getElementById('dsAckNext');
+    var resetBtn = document.getElementById('dsAckReset');
+    var jumpSel = document.getElementById('dsAckJump');
+    var startOverBtn = document.getElementById('dsAckStartOver');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', function () {
+        if (__dsAckCoachDone) return;
+        if (__dsAckCoachIndex <= 0) return;
+        __dsAckCoachIndex--;
+        renderAckCoach();
+      });
+    }
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function () {
+        __dsAckCoachIndex = 0;
+        __dsAckCoachDone = false;
+        renderAckCoach();
+      });
+    }
+    if (nextBtn) {
+      nextBtn.addEventListener('click', function () {
+        if (__dsAckCoachDone) return;
+        if (idx >= total - 1) {
+          __dsAckCoachDone = true;
+          renderAckCoach();
+          return;
+        }
+        __dsAckCoachIndex++;
+        renderAckCoach();
+      });
+    }
+    if (jumpSel) {
+      jumpSel.addEventListener('change', function () {
+        var v = parseInt(jumpSel.value, 10);
+        if (isNaN(v)) return;
+        __dsAckCoachIndex = v;
+        __dsAckCoachDone = false;
+        renderAckCoach();
+      });
+    }
+    if (startOverBtn) {
+      startOverBtn.addEventListener('click', function () {
+        __dsAckCoachIndex = 0;
+        __dsAckCoachDone = false;
+        renderAckCoach();
+      });
+    }
+  }
+
+  function activateDsTab(key) {
+    var tabs = group.querySelectorAll('.ds-tab');
+    var i;
+    for (i = 0; i < tabs.length; i++) {
+      var t = tabs[i];
+      var k = t.getAttribute('data-tab');
+      var on = k === key;
+      if (on) {
+        t.classList.add('is-active');
+        t.setAttribute('aria-selected', 'true');
+      } else {
+        t.classList.remove('is-active');
+        t.setAttribute('aria-selected', 'false');
+      }
+    }
+    var keys = ['ask', 'att', 'full', 'ack'];
+    for (i = 0; i < keys.length; i++) {
+      var pk = keys[i];
+      var p = group.querySelector('[data-panel="' + pk + '"]');
+      if (!p) continue;
+      if (pk === key) {
+        p.classList.add('is-active');
+        p.removeAttribute('hidden');
+      } else {
+        p.classList.remove('is-active');
+        p.setAttribute('hidden', '');
+      }
+    }
+    if (key === 'ack') {
+      renderAckCoach();
+    }
+  }
+
+  tabsBar.addEventListener(
+    'click',
+    function (e) {
+      var tab = e.target.closest('.ds-tab');
+      if (!tab || !tabsBar.contains(tab)) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var key = tab.getAttribute('data-tab');
+      if (search.value && search.value.trim()) {
+        search.value = '';
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+      activateDsTab(key);
+    },
+    true
+  );
+
+  search.addEventListener(
+    'input',
+    function () {
+      var v = (search.value || '').trim();
+      var ackP = group.querySelector('[data-panel="ack"]');
+      if (ackP) {
+        if (v) {
+          ackP.setAttribute('hidden', '');
+        }
+      }
+    },
+    true
+  );
+}, 0);
