@@ -4085,6 +4085,14 @@ function _stOpenPaycheckBreakdownModal() {
     _stFmtMoney(bonuses) +
     '</div></div></div>' +
     '</div>';
+  var weekSales = [];
+  for (i = 0; i < sales.length; i++) {
+    var sw = sales[i];
+    if (!sw) continue;
+    if (sw.ts < weekStart || sw.ts >= weekEnd) continue;
+    weekSales.push(sw);
+  }
+  var cvao = _stBuildCoreVsAddOnLines(weekSales, rates);
   html += _stHtmlPaycheckCvaoSection(cvao);
   html +=
     '<div class="st-pb-total"><span>TOTAL ESTIMATED PAYCHECK</span><strong>' +
