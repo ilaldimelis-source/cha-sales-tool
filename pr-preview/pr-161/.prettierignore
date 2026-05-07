@@ -1,0 +1,16 @@
+node_modules
+coverage
+playwright-report
+js/chat.js
+js/plan-data.js
+
+# Generated / CI artifacts / drafts (not canonical app source)
+knowledge_base/
+test-results/
+tasks/
+
+# Ad-hoc PR, audit, or scratch markdown (canonical root docs stay IN: CLAUDE.md, README.md, etc.)
+.pr-body-*.md
+pr_body_*.md
+AUDIT_REPORT.md
+squash-merge-body.md
