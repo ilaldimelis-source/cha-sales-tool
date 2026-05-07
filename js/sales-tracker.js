@@ -3827,6 +3827,131 @@ function _stFmtWeekRangeMonSun(weekStartMs) {
   return a + ' - ' + b;
 }
 
+function _stFmtPaycheckCvaoCommSum(total) {
+  var n = Number(total) || 0;
+  var rounded = Math.round(n * 100) / 100;
+  var whole = Math.round(rounded);
+  if (Math.abs(rounded - whole) < 0.0005) {
+    return '$' + whole.toLocaleString('en-US');
+  }
+  return (
+    '$' +
+    rounded.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    })
+  );
+}
+
+// weekSales: sales rows already filtered to the paycheck window (deal + addon).
+// Core lines come from each deal row (same shape as products[0] on parse).
+// Add-on lines come from each addon row; commission matches the paycheck modal Mix row.
+function _stBuildCoreVsAddOnLines(weekSales, rates) {
+  var tmpCore = [];
+  var tmpAddon = [];
+  var i;
+  var s;
+  for (i = 0; i < weekSales.length; i++) {
+    s = weekSales[i];
+    if (!s) continue;
+    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (s.type === 'deal') {
+      tmpCore.push({
+        name: String(s.plan || '').trim() || 'Plan',
+        dateLabel: _stDay3(s.ts) + ' ' + _stMd(s.ts),
+        ts: Number(s.ts) || 0
+      });
+    } else if (s.type === 'addon') {
+      var addonCommCvao =
+        typeof s.addonCommission === 'number'
+          ? Number(s.addonCommission)
+          : Number(_stComputeLineCommission(s, rates));
+      tmpAddon.push({
+        name: String(s.plan || '').trim() || 'Add-on',
+        dateLabel: _stDay3(s.ts) + ' ' + _stMd(s.ts),
+        commission: addonCommCvao,
+        ts: Number(s.ts) || 0
+      });
+    }
+  }
+  tmpCore.sort(function (a, b) {
+    return a.ts - b.ts;
+  });
+  tmpAddon.sort(function (a, b) {
+    return a.ts - b.ts;
+  });
+  var core = [];
+  var addOns = [];
+  for (i = 0; i < tmpCore.length; i++) {
+    core.push({ name: tmpCore[i].name, dateLabel: tmpCore[i].dateLabel });
+  }
+  for (i = 0; i < tmpAddon.length; i++) {
+    addOns.push({
+      name: tmpAddon[i].name,
+      dateLabel: tmpAddon[i].dateLabel,
+      commission: tmpAddon[i].commission
+    });
+  }
+  return { core: core, addOns: addOns };
+}
+
+function _stHtmlPaycheckCvaoSection(cvao) {
+  var core = cvao && cvao.core ? cvao.core : [];
+  var addOns = cvao && cvao.addOns ? cvao.addOns : [];
+  var nC = core.length;
+  var nA = addOns.length;
+  var sumA = 0;
+  var i;
+  for (i = 0; i < addOns.length; i++) {
+    sumA += Number(addOns[i].commission) || 0;
+  }
+  var html =
+    '<div class="st-pb-section st-cvao-section"><div class="st-pb-section-label">This Week - Core vs Add-Ons</div>' +
+    '<div class="st-cvao-grid">' +
+    '<div class="st-cvao-card">' +
+    '<div class="st-cvao-card-head">Core Plans</div>' +
+    '<div class="st-cvao-card-body">';
+  if (!nC) {
+    html += '<div class="st-cvao-empty">No core plans this week</div>';
+  } else {
+    for (i = 0; i < core.length; i++) {
+      html +=
+        '<div class="st-cvao-row"><span class="st-cvao-row-name">' +
+        _stEscape(core[i].name) +
+        '</span><span class="st-cvao-row-date">' +
+        _stEscape(core[i].dateLabel) +
+        '</span></div>';
+    }
+  }
+  html +=
+    '</div><div class="st-cvao-card-foot">Total: ' +
+    nC +
+    (nC === 1 ? ' core plan' : ' core plans') +
+    '</div></div>' +
+    '<div class="st-cvao-card">' +
+    '<div class="st-cvao-card-head">Add-Ons</div>' +
+    '<div class="st-cvao-card-body">';
+  if (!nA) {
+    html += '<div class="st-cvao-empty">No add-ons this week</div>';
+  } else {
+    for (i = 0; i < addOns.length; i++) {
+      html +=
+        '<div class="st-cvao-row"><span class="st-cvao-row-name">' +
+        _stEscape(addOns[i].name) +
+        '</span><span class="st-cvao-row-date">' +
+        _stEscape(addOns[i].dateLabel) +
+        '</span></div>';
+    }
+  }
+  html +=
+    '</div><div class="st-cvao-card-foot">Total: ' +
+    nA +
+    (nA === 1 ? ' add-on - ' : ' add-ons - ') +
+    _stFmtPaycheckCvaoCommSum(sumA) +
+    '</div></div></div></div>';
+  return html;
+}
+
 function _stOpenPaycheckBreakdownModal() {
   var sales = _stLoadSales();
   sales = _stValidateSalesIntegrity(sales);
@@ -3960,6 +4085,7 @@ function _stOpenPaycheckBreakdownModal() {
     _stFmtMoney(bonuses) +
     '</div></div></div>' +
     '</div>';
+  html += _stHtmlPaycheckCvaoSection(cvao);
   html +=
     '<div class="st-pb-total"><span>TOTAL ESTIMATED PAYCHECK</span><strong>' +
     _stFmtMoney(Number(pb.estimated) || 0) +
