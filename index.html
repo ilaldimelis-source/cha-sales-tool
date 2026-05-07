@@ -1188,6 +1188,76 @@
       #benefitsPanel {
         display: none !important;
       }
+      /* Paycheck modal - Core vs Add-Ons (Mondly-style cards) */
+      .st-cvao-section .st-cvao-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 4px;
+      }
+      .st-cvao-card {
+        background: var(--cha-bg-card, #fff);
+        border-radius: 14px;
+        border: 1px solid var(--cha-border-subtle, rgb(15, 23, 42, 0.08));
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+        padding: 12px;
+        min-width: 0;
+      }
+      .st-cvao-card-head {
+        display: inline-block;
+        max-width: 100%;
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: var(--cha-accent, #5b8def);
+        color: #fff;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .st-cvao-card-body {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-height: 0;
+      }
+      .st-cvao-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: baseline;
+        font-size: 13px;
+        color: var(--cha-text-secondary, #475569);
+      }
+      .st-cvao-row-name {
+        min-width: 0;
+        word-break: break-word;
+      }
+      .st-cvao-row-date {
+        flex-shrink: 0;
+        color: var(--cha-text-tertiary, #64748b);
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .st-cvao-card-foot {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--cha-border-default, rgb(15, 23, 42, 0.12));
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cha-text-primary, #0f172a);
+      }
+      .st-cvao-empty {
+        font-size: 13px;
+        color: var(--cha-text-tertiary, #64748b);
+        padding: 4px 0;
+      }
+      @media (max-width: 519px) {
+        .st-cvao-section .st-cvao-grid {
+          grid-template-columns: 1fr;
+        }
+      }
     </style>
   </head>
   <body>
@@ -2264,7 +2334,7 @@
     <script src="js/compliance.js?v=1779700000000"></script>
     <script src="js/docusign-walkthrough.js?v=1780700000000"></script>
     <script src="js/myspace.js?v=1780300000000"></script>
-    <script src="js/sales-tracker.js?v=1780300000000"></script>
+    <script src="js/sales-tracker.js?v=1780900000000"></script>
     <script src="js/app.js?v=1780300000000"></script>
     <script>
       (function () {
