@@ -711,6 +711,25 @@ function renderLive() {
     html += '</div></div>';
   }
   html += '</div></div>';
+  html += '<div style="margin-top:24px;background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #DC2626;border-radius:12px;overflow:hidden;">';
+  html += '<div style="padding:14px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="this.parentElement.querySelector(\'.guardrails-body\').style.display=this.parentElement.querySelector(\'.guardrails-body\').style.display===\'none\'?\'block\':\'none\';this.querySelector(\'.guardrails-toggle\').textContent=this.parentElement.querySelector(\'.guardrails-body\').style.display===\'none\'?\'Show\':\'Hide\';">';
+  html += '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#DC2626;">Compliance Guardrails — Active Call Reminders</div>';
+  html += '<span class="guardrails-toggle" style="font-size:12px;color:#DC2626;font-weight:700;">Show</span></div>';
+  html += '<div class="guardrails-body" style="display:none;padding:0 20px 16px;">';
+  html += '<div style="font-size:12px;color:var(--text-primary);line-height:2;">';
+  html += '• <b>Never</b> guarantee a specific doctor is in-network — tell member to verify themselves<br>';
+  html += '• <b>Never</b> say "this is only good today" or use any urgency pressure<br>';
+  html += '• <b>Never</b> collect payment before all disclosures are complete<br>';
+  html += '• <b>Never</b> rush DocuSign — give member time to read every attestation<br>';
+  html += '• <b>Never</b> claim this plan works like major medical insurance<br>';
+  html += '• <b>Never</b> say labs or imaging are covered without checking the specific plan (NOT covered on TDK 1/2/3)<br>';
+  html += '• <b>Never</b> confirm prescriptions are covered without disclosing formulary limitations<br>';
+  html += '• <b>Never</b> discourage ACA without explaining actual eligibility process<br>';
+  html += '• <b>Always</b> state your full name and Central Health Advisors at call start<br>';
+  html += '• <b>Always</b> name the billing administrator by name before closing<br>';
+  html += '• <b>Always</b> state the 30-Day Free Look Period before disconnecting<br>';
+  html += '• <b>Always</b> give confirmation number CHA561337 and customer service number';
+  html += '</div></div></div>';
   var _page_live = document.getElementById('page-live');
   if (_page_live) _page_live.innerHTML = html;
 }
