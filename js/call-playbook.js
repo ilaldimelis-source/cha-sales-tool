@@ -1613,6 +1613,44 @@ function renderPlanScripts() {
   });
   html += '</div>';
 
+  // Compliance banner — keyed on activePlan.name exactly as it appears in PLAN_SCRIPTS
+  var _complianceBannerType = (function(n) {
+    var TDK = ['TDK 1,2,3', 'TDK 4,5'];
+    var MEC = ['TrueHealth / MedFirst / GoodHealth 1,2,3', 'MedFirst / GoodHealth 4,5', 'NEO Smart Choice', 'First Enroll MEDVALUE'];
+    var STM = ['Access Health STM', 'NEO Pinnacle STM Traditional', 'AFRP Galena STM Elite', 'AFRP Galena STM Standard', 'AFRP Galena STM Economy', 'Smart Health STM Traditional', 'Smart Health STM Limited'];
+    var LTD = ['Everest / HarmonyCare / SigmaCare', 'BWA Paramount 1-6', 'BWA Americare 2,3,4', 'Health Choice Silver', 'Pinnacle Protect Plan 1-4'];
+    if (TDK.indexOf(n) !== -1) return 'tdk';
+    if (MEC.indexOf(n) !== -1) return 'mec';
+    if (STM.indexOf(n) !== -1) return 'stm';
+    if (LTD.indexOf(n) !== -1) return 'limited';
+    return '';
+  })(activePlan.name);
+
+  var _complianceBanner = '';
+  if (_complianceBannerType === 'tdk') {
+    _complianceBanner = '<div style="background:#FFFBEB;border:1px solid #FCD34D;border-left:4px solid #F59E0B;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">';
+    _complianceBanner += '<span style="font-size:16px;flex-shrink:0;">⚠️</span>';
+    _complianceBanner += '<div style="font-size:12px;color:#92400E;line-height:1.6;"><b>TDK Audit Requirements apply.</b> State plan name verbally (TDK 1/2/3/4/5), Working Owner of HCDA, Detego Health as Benefits Administrator, visit limits per tier. TDK 1/2/3: ER, outpatient surgery, ambulance NOT COVERED. Billing: FirstEnroll AND NEO Insurance Solutions — both must be named. <span style="color:#5B8DEF;cursor:pointer;text-decoration:underline;" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View TDK Audit Guide &#8594;</span></div>';
+    _complianceBanner += '</div>';
+  } else if (_complianceBannerType === 'mec') {
+    _complianceBanner = '<div style="background:#EFF6FF;border:1px solid #BFDBFE;border-left:4px solid #5B8DEF;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">';
+    _complianceBanner += '<span style="font-size:16px;flex-shrink:0;">ℹ️</span>';
+    _complianceBanner += '<div style="font-size:12px;color:#1E40AF;line-height:1.6;"><b>MEC plan:</b> State group plan type, Working Owner disclosure, correct Benefits Administrator name, visit limits and dollar caps, full pre-ex legal definition required. <span style="color:#5B8DEF;cursor:pointer;text-decoration:underline;" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View MEC Requirements &#8594;</span></div>';
+    _complianceBanner += '</div>';
+  } else if (_complianceBannerType === 'stm') {
+    _complianceBanner = '<div style="background:#FFFBEB;border:1px solid #FDE68A;border-left:4px solid #D97706;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">';
+    _complianceBanner += '<span style="font-size:16px;flex-shrink:0;">ℹ️</span>';
+    _complianceBanner += '<div style="font-size:12px;color:#92400E;line-height:1.6;"><b>STM plan:</b> Read 15-condition underwriting list, state exact deductible/coinsurance/MOOP. Access Health: 5-day sickness wait, 36-month pre-ex lookback, out-of-network allowed. Galena Economy: doctor visits subject to deductible. <span style="color:#5B8DEF;cursor:pointer;text-decoration:underline;" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View STM Requirements &#8594;</span></div>';
+    _complianceBanner += '</div>';
+  } else if (_complianceBannerType === 'limited') {
+    _complianceBanner = '<div style="background:#F9FAFB;border:1px solid #E5E7EB;border-left:4px solid #6B7280;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">';
+    _complianceBanner += '<span style="font-size:16px;flex-shrink:0;">ℹ️</span>';
+    _complianceBanner += '<div style="font-size:12px;color:#374151;line-height:1.6;"><b>Limited benefit plan:</b> Explain fixed indemnity structure — plan pays fixed cash amount, not % of bill. No true out-of-pocket maximum. Member may still owe significant balance above the benefit. <span style="color:#5B8DEF;cursor:pointer;text-decoration:underline;" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View Limited Requirements &#8594;</span></div>';
+    _complianceBanner += '</div>';
+  }
+
+  html += _complianceBanner;
+
   // Render ALL sections as colored bubbles
   var bubbleStyles = [
     { label: 'OPENING', bg: '#EFF6FF', border: '#BFDBFE', color: '#1D4ED8' },
