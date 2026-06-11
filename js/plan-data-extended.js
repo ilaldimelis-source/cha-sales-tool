@@ -224,7 +224,7 @@
           category: 'Eligibility Note',
           items: ['Males over 300 lbs and females over 250 lbs NOT eligible']
         },
-        { category: 'Deductible', items: ['$0'] },
+        { category: 'Deductible', items: ['Deductible: $0 (no deductible)'] },
         {
           category: 'Waiting Period',
           items: ['3 months for preventive services only']

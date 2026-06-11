@@ -226,7 +226,7 @@ var CHA_DEFAULT_COMMISSION_RATES = {
     standard: 0.25,
     dvh: 0.25, // dental / vision / life / catastrophic
     dvhDirect: 0.35, // Direct Access DVH
-    accident: 0.7, // AD&D, AccessCare Pro, NowCare, Continue Care, Wellness4U
+    accident: 1.0, // AD&D, AccessCare Pro, NowCare, Continue Care, Wellness4U
     rx: 0.2, // SureScript, BestChoice
     gap: 0.5 // GAP
   },
