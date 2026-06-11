@@ -6,142 +6,6 @@
 (function () {
   var EXTENDED_PLANS = [
 
-    // TRUE HEALTH 2
-    {
-      id: 'trueh2',
-      name: 'TrueHealth 2',
-      group: 'MEC',
-      type: 'MEC',
-      carrier: 'Merchants Benefit Administration (MBA)',
-      network: 'First Health Network',
-      benefits: [
-        {
-          category: 'Primary Care Visit',
-          items: ['$25 copay / $150 max per visit — 4 visits per year']
-        },
-        {
-          category: 'Specialist / Urgent Care',
-          items: ['$50 copay / $300 max per visit — 2 visits per year']
-        },
-        {
-          category: 'Inpatient Hospitalization',
-          items: [
-            '$1,000 per day — $10,000 per year maximum — 12/12 pre-ex applies'
-          ]
-        },
-        { category: 'Telemedicine', items: ['$0 consult fee — unlimited'] },
-        {
-          category: 'Prescriptions Generic',
-          items: ['$0 copay — generic acute/preventive drugs on formulary']
-        },
-        {
-          category: 'Prescriptions Maintenance',
-          items: ['Preferred Generic $5 copay — 200 generic maintenance drugs']
-        },
-        {
-          category: 'Prescription Terms',
-          items: [
-            'Specialty drugs not covered — Prescription Assistance Program available income-based. Mail order optional.'
-          ]
-        },
-        {
-          category: 'Hospital Bill Reducer',
-          items: ['Advocacy service included']
-        }
-      ],
-      limitations: [
-        'MEC plan — covers preventive and limited physician services only',
-        'NOT comprehensive major medical coverage',
-        'Hospitalization subject to 12-month pre-existing condition exclusion',
-        '30-day waiting period for all sickness benefits',
-        'Outpatient physician services in-network only',
-        'Inpatient hospital indemnity not network-restricted',
-        'Specialty drugs not covered',
-        'Only 2 specialist visits per year',
-        'Does not cover services not listed in Schedule of Benefits'
-      ],
-      waitingPeriods: ['30-day waiting period for all sickness benefits'],
-      preEx:
-        '12/12 — 12-month look-back, 12-month exclusion for hospitalization benefits',
-      source: 'MEC_TrueHealth2_SPD_Jan25.pdf',
-      rawText:
-        'TrueHealth 2 MEC Minimum Essential Coverage. Physician services First Health Network. Primary care $25 copay $150 max per visit 4 visits per year. Specialist urgent care $50 copay $300 max per visit 2 visits per year. Inpatient hospitalization $1,000 per day $10,000 per year maximum 12 12 pre-existing exclusion. Telemedicine $0 consult fee unlimited. Prescriptions generic $0 copay acute preventive formulary. Preferred generic $5 copay 200 maintenance drugs. Specialty drugs not covered prescription assistance program income based. Mail order optional. Hospital bill reducer advocacy. 30 day waiting period sickness benefits. Outpatient physician services in-network only. Inpatient hospital indemnity not network restricted. MEC plan covers preventive limited physician services not comprehensive major medical. Group health plan ACA minimum essential coverage preventive wellness.'
-    },
-
-
-    // TRUE HEALTH 3
-    {
-      id: 'trueh3',
-      name: 'TrueHealth 3',
-      group: 'MEC',
-      type: 'MEC',
-      carrier: 'Merchants Benefit Administration (MBA)',
-      network: 'First Health Network',
-      benefits: [
-        {
-          category: 'Primary Care Visit',
-          items: ['$25 copay / $150 max per visit — 4 visits per year']
-        },
-        {
-          category: 'Specialist / Urgent Care',
-          items: ['$50 copay / $300 max per visit — 4 visits per year']
-        },
-        {
-          category: 'Inpatient Hospitalization',
-          items: [
-            '$1,000 per day — $15,000 per year maximum — 12/12 pre-ex applies'
-          ]
-        },
-        { category: 'Telemedicine', items: ['$0 consult fee — unlimited'] },
-        {
-          category: 'Prescriptions Generic',
-          items: ['$0 copay — generic acute/preventive drugs on formulary']
-        },
-        {
-          category: 'Prescriptions Maintenance',
-          items: ['Preferred Generic $5 copay — 200 generic maintenance drugs']
-        },
-        {
-          category: 'Prescriptions Non-preferred Generic',
-          items: ['Retail 30-day $5/$10 copay. Mail order 90-day $5/$20 copay']
-        },
-        {
-          category: 'Prescriptions Brand',
-          items: [
-            'Prior Authorization required — Retail 30-day $40. Mail order 90-day $80'
-          ]
-        },
-        {
-          category: 'Prescription Terms',
-          items: [
-            '$150 benefit limit per person per month for non-preventive maintenance Rx. Specialty drugs not covered.'
-          ]
-        },
-        {
-          category: 'Hospital Bill Reducer',
-          items: ['Advocacy service included']
-        }
-      ],
-      limitations: [
-        'MEC plan — covers preventive and limited physician services only',
-        'NOT comprehensive major medical coverage',
-        'Higher hospitalization max ($15,000/yr) vs TrueHealth 2 ($10,000/yr)',
-        'More specialist visits (4/yr) vs TrueHealth 2 (2/yr)',
-        'Brand prescriptions require prior authorization',
-        '$150/person/month benefit limit for non-preventive maintenance Rx',
-        'Specialty drugs not covered',
-        '30-day waiting period for all sickness benefits',
-        'Hospitalization subject to 12-month pre-existing condition exclusion',
-        'Outpatient physician services in-network only'
-      ],
-      waitingPeriods: ['30-day waiting period for all sickness benefits'],
-      preEx:
-        '12/12 — 12-month look-back, 12-month exclusion for hospitalization benefits',
-      source: 'MEC_TrueHealth3_SPD_Jan25.pdf',
-      rawText:
-        'TrueHealth 3 MEC Minimum Essential Coverage. Physician services First Health Network. Primary care $25 copay $150 max 4 visits per year. Specialist urgent care $50 copay $300 max 4 visits per year higher than TrueHealth 2. Inpatient hospitalization $1,000 per day $15,000 per year maximum 12 12 pre-existing exclusion. Telemedicine $0 unlimited. Prescriptions generic $0 copay formulary. Preferred generic maintenance $5 copay 200 drugs. Non-preferred generic retail 30 day $5 $10 mail order 90 day $5 $20. Brand prior authorization required retail 30 day $40 mail order 90 day $80. $150 benefit limit per person per month non-preventive maintenance prescriptions. Specialty drugs not covered prescription assistance income based. 30 day waiting period sickness. Outpatient physician in-network only. MEC not comprehensive major medical. Hospital bill reducer advocacy included.'
-    },
-
 
     // PINNACLE PROTECT PLAN 1
     {
@@ -237,6 +101,7 @@
     },
 
 
+
     // PINNACLE PROTECT PLAN 2
     {
       id: 'pinnacleprotect2',
@@ -275,6 +140,7 @@
       rawText:
         'Pinnacle Protect Plan 2 Limited Medical Guaranteed Issue. Higher benefit tier than Plan 1. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA minimum essential coverage. Member pays amounts above fixed benefit. PHCS network provides discounted billing.'
     },
+
 
 
     // PINNACLE PROTECT PLAN 3
@@ -316,6 +182,7 @@
     },
 
 
+
     // PINNACLE PROTECT PLAN 4
     {
       id: 'pinnacleprotect4',
@@ -355,6 +222,7 @@
     },
 
 
+
     // PINNACLE CRITICAL CARE PLAN 1
     {
       id: 'pinnaclecriticalcare1',
@@ -389,6 +257,7 @@
     },
 
 
+
     // PINNACLE CRITICAL CARE PLAN 2
     {
       id: 'pinnaclecriticalcare2',
@@ -415,6 +284,7 @@
       rawText:
         'Pinnacle Critical Care Plan 2. Supplemental critical care higher tier than Plan 1. Limited benefit not comprehensive. Does not satisfy ACA MEC. NEO Pinnacle network.'
     },
+
 
 
     // PINNACLE CRITICAL CARE PLAN 3
@@ -445,6 +315,7 @@
     },
 
 
+
     // PINNACLE CRITICAL CARE PLAN 4
     {
       id: 'pinnaclecriticalcare4',
@@ -473,6 +344,7 @@
       rawText:
         'Pinnacle Critical Care Plan 4. Supplemental critical care highest tier. Limited benefit not comprehensive. Does not satisfy ACA MEC. NEO Pinnacle network.'
     },
+
 
 
     // ALLSTATE ENHANCED STM PPO
@@ -552,6 +424,7 @@
     },
 
 
+
     // ALLSTATE COPAY ENHANCED STM PPO
     {
       id: 'allstatecopayenhancedstm',
@@ -617,6 +490,7 @@
       rawText:
         'Allstate Copay Enhanced STM PPO Plan Short Term Medical. Choose between $6,000 and $8,000 deductible. Coinsurance 0%. Coverage period maximum $5,000,000. Office visits copay $40 PCP $60 specialist including preventive. Pharmacy $10 copay on generic drugs maximum benefit $3,000. Outpatient services subject to deductible $5,000 limit joint neck spine connective tissue 30 visit limit PT OT ST cardiac pulmonary rehab. Adult screenings includes immunizations subject to deductible and coinsurance. Inpatient hospital stays subject to deductible. Emergency room $250 access fee waived if admitted deductible applies. Urgent care $50 access fee deductible waived remaining subject to coinsurance. Child immunizations first dollar benefit. Out-of-network deductibles doubled copays not applicable. Short term medical not ACA compliant. Pre-existing conditions subject to underwriting. No waiting period stated. NEO Insurance Solutions PPO network Allstate.'
     },
+
 
 
     // ALLSTATE ESSENTIALS STM PPO
@@ -692,6 +566,7 @@
     },
 
 
+
     // ALLSTATE HEALTH ACCESS
     {
       id: 'allstatehealthaccess',
@@ -764,6 +639,7 @@
     },
 
 
+
     // MYCHOICE PLAN LOW
     {
       id: 'mychoicelow',
@@ -796,6 +672,7 @@
     },
 
 
+
     // MYCHOICE PLAN MID
     {
       id: 'mychoicemid',
@@ -826,6 +703,7 @@
       rawText:
         'MyChoice Plan Mid Limited benefit mid tier moderate benefits of MyChoice series. BWA FirstEnroll. Not comprehensive health insurance not substitute for major medical does not satisfy ACA MEC. See certificate for exact benefit amounts.'
     },
+
 
 
     // MYCHOICE PLAN HIGH
