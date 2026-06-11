@@ -1,167 +1,151 @@
-// compliance.js — Compliance Hub tab
+﻿// compliance.js -- Compliance Hub tab
 
 function renderComplianceCenter() {
   var html =
-    '<div class="ph"><div class="pt">Compliance <span>Center</span></div><p class="ps">Required disclosures, red flags, and audit standards. Review before every shift.</p></div>';
+    '<div class="ph"><div class="pt">Compliance <span>Center</span></div><p class="ps">Required disclosures and audit standards. Review before every shift.</p></div>';
+
   html +=
-    '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #DC2626;border-radius:12px;padding:20px;margin-bottom:16px;">';
+    '<div id="comp-tab-bar" style="display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;">' +
+    '<button onclick="showCompTab(\'every-call\')" id="comp-tab-every-call" style="padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;border:none;cursor:pointer;background:#1e293b;color:#fff;">Every Call</button>' +
+    '<button onclick="showCompTab(\'plan-rules\')" id="comp-tab-plan-rules" style="padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;border:none;cursor:pointer;background:#f1f3f9;color:#64748b;">Plan Rules</button>' +
+    '<button onclick="showCompTab(\'red-flags\')" id="comp-tab-red-flags" style="padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;border:none;cursor:pointer;background:#f1f3f9;color:#64748b;">Red Flags</button>' +
+    '<button onclick="showCompTab(\'call-audit\')" id="comp-tab-call-audit" style="padding:7px 16px;border-radius:999px;font-size:13px;font-weight:600;border:none;cursor:pointer;background:#f1f3f9;color:#64748b;">Call Audit</button>' +
+    '</div>';
+
+  // TAB 1: every-call
+  html += '<div id="comp-panel-every-call" style="display:block;">';
+
   html +=
-    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#DC2626;margin-bottom:12px;">⚠️ MUST SAY ON EVERY CALL</div>';
+    '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #f59e0b;border-radius:12px;padding:20px;margin-bottom:16px;">';
   html +=
-    '<div style="font-size:14px;color:var(--text-primary);line-height:1.8;">• This is <b>NOT</b> ACA-compliant major medical insurance<br>• <b>Must disclose network, underwriter, association, and billing</b> — DISCLOSE.<br>• This is a <b>limited benefit</b> plan — it does not cover everything<br>• <b>Pre-existing conditions</b> are excluded for the first 12 months<br>• There is a <b>30-day waiting period</b> for sickness benefits (accidents are Day 1)<br>• <b>Maternity / pregnancy is NOT covered</b><br>• Benefits are <b>fixed dollar amounts</b> — the plan pays the scheduled amount, not the full bill<br>• <b>Mental health</b> is NOT covered on most plans (limited on select tiers)<br>• <b>Substance abuse</b> treatment is NOT covered<br>• Member is responsible for any <b>balance</b> after the plan pays</div></div>';
-  html +=
-    '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #F59E0B;border-radius:12px;padding:20px;margin-bottom:16px;">';
-  html +=
-    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#C2410C;margin-bottom:12px;"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/></svg> PLAN-SPECIFIC DISCLOSURES</div>';
-  html +=
-    '<div style="margin-bottom:12px;padding:12px;background:var(--bg-surface-raised);border-radius:8px;"><div style="font-weight:800;font-size:13px;margin-bottom:4px;">MEC Plans (MedFirst, TrueHealth, GoodHealth, TDK)</div><div style="font-size:12px;color:#848A9C;line-height:1.6;">• Outpatient physician/wellness: <b>in-network only</b><br>• Hospital indemnity: not network-restricted<br>• Rx varies by tier — some formulary, some discount-only<br>• Does NOT cover services unless listed in Schedule of Benefits</div></div>';
-  html +=
-    '<div style="margin-bottom:12px;padding:12px;background:var(--bg-surface-raised);border-radius:8px;"><div style="font-weight:800;font-size:13px;margin-bottom:4px;">STM Plans (Pinnacle, Access Health, SmartHealth, Galena)</div><div style="font-size:12px;color:#848A9C;line-height:1.6;">• <b>5-day sickness wait</b>, 30-day cancer wait, Day 1 injuries<br>• NOT renewable as permanent coverage<br>• Deductible/coinsurance structure — explain OOP clearly</div></div>';
-  html +=
-    '<div style="margin-bottom:12px;padding:12px;background:var(--bg-surface-raised);border-radius:8px;"><div style="font-weight:800;font-size:13px;margin-bottom:4px;">Fixed Indemnity (HarmonyCare, SigmaCare, Everest, Health Choice)</div><div style="font-size:12px;color:#848A9C;line-height:1.6;">• Benefits are <b>cash payments</b> to member, not providers<br>• <b>Balance billing</b> is likely<br>• Mental health only on 200–500 tiers (NOT 750/1000)<br>• Surgery starts at 200+ tier — 100A has NO surgery</div></div>';
-  html +=
-    '<div style="padding:12px;background:var(--bg-surface-raised);border-radius:8px;"><div style="font-weight:800;font-size:13px;margin-bottom:4px;">Smart Choice (EPO)</div><div style="font-size:12px;color:#848A9C;line-height:1.6;">• <b>EPO = zero out-of-network</b> — must use First Health<br>• Brand Rx NOT covered — generic only ($12)<br>• Maternity NOT covered<br>• Mental health: 8 days inpatient / 8 visits outpatient per year</div></div></div>';
-  html +=
-    '<div style="background:var(--bg-surface);border:1px solid var(--border-light, var(--border-default));border-left:3px solid #29A26A;border-radius:12px;padding:20px;margin-bottom:16px;">';
-  html +=
-    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#15803D;margin-bottom:12px;"><svg style="width:12px;height:12px;vertical-align:middle;margin-right:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> PRE-CALL CHECKLIST</div>';
-  html +=
-    '<div style="font-size:13px;color:var(--text-primary);line-height:2;">☐ State this is NOT major medical / NOT ACA-compliant<br>☐ Disclose the 30-day sickness waiting period<br>☐ Explain pre-existing condition exclusion (12/12)<br>☐ Confirm maternity is NOT covered<br>☐ Explain benefits are fixed dollar amounts<br>☐ Never guarantee coverage without verifying SOB<br>☐ Never compare these plans to ACA as equivalent<br>☐ Give prospect time to ask questions before closing<br>☐ Never use high-pressure or fear-based tactics</div></div>';
-  // ── Merged Call Disclosures ──
-  html +=
-    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#5B8DEF;margin:28px 0 14px;">CALL DISCLOSURE SCRIPTS</div>';
-  html +=
-    '<div style="background:var(--bg-surface);border:2px solid var(--border-light, var(--border-default));border-radius:20px;padding:20px;margin-bottom:16px;"><div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#5175F1;margin-bottom:10px;">OPENING DISCLOSURE (FIRST 2 MIN)</div><div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:16px;font-size:14px;color:var(--text-primary);line-height:1.8;font-style:italic;">"I do want to clarify that this is a <b>private, limited-benefit plan</b>, not an <b>ACA or major medical plan</b>, and it does not provide coverage for <b>maternity, substance abuse, or psychiatric services</b>."</div></div>';
-  html +=
-    '<div style="background:var(--bg-surface);border:2px solid var(--border-light, var(--border-default));border-radius:20px;padding:20px;margin-bottom:16px;"><div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#D97706;margin-bottom:10px;">⏳ PRE-EXISTING DISCLOSURE</div><div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:16px;font-size:14px;color:var(--text-primary);line-height:1.8;font-style:italic;">"If you have any conditions you\'ve been treated for in the last 12 months, those are <b>pre-existing</b> and <b>not covered</b> for the first 12 months. After that, they\'re covered. Do you have any conditions you\'re currently being treated for?"</div></div>';
-  html +=
-    '<div style="background:var(--bg-surface);border:2px solid var(--border-light, var(--border-default));border-radius:20px;padding:20px;margin-bottom:16px;"><div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#C2410C;margin-bottom:10px;">📅 WAITING PERIOD DISCLOSURE</div><div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:16px;font-size:14px;color:var(--text-primary);line-height:1.8;font-style:italic;">"There is a standard 30-day waiting period for any hospital, sickness and scheduled doctor visits."</div></div>';
-  html +=
-    '<div style="background:var(--bg-surface);border:2px solid var(--border-light, var(--border-default));border-radius:20px;padding:20px;margin-bottom:16px;"><div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#DC2626;margin-bottom:10px;">🚫 MATERNITY / EXCLUSIONS</div><div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:16px;font-size:14px;color:var(--text-primary);line-height:1.8;font-style:italic;">"This plan does <b>not cover maternity</b>, <b>substance abuse</b>, and <b>mental health</b> is limited or not included depending on the tier."</div></div>';
-  html +=
-    '<div style="background:var(--bg-surface);border:2px solid var(--border-light, var(--border-default));border-radius:20px;padding:20px;margin-bottom:16px;"><div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#15803D;margin-bottom:10px;">✓ CLOSING VERIFICATION</div><div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:16px;font-size:14px;color:var(--text-primary);line-height:1.8;font-style:italic;">"Before we finalize:<br>1. This is a <b>limited benefit plan</b>, not major medical<br>2. Pre-existing conditions <b>excluded 12 months</b><br>3. <b>30-day sickness waiting period</b><br>4. <b>Maternity not covered</b><br>5. <b>Must disclose network, underwriter, association, and billing</b><br><br>Do you understand and agree to move forward?"</div></div>';
-  html += '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:16px;">';
-  html += '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#1e293b;margin-bottom:12px;">UNIVERSAL REQUIREMENTS — EVERY CALL, EVERY PLAN</div>';
+    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#C2410C;margin-bottom:12px;">REQUIRED ON EVERY CALL</div>';
   html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
-  html += '• State your <b>full name</b> and <b>Central Health Advisors</b> within the first 30 seconds<br>';
-  html += '• State the <b>exact plan name</b> verbally (e.g. "TDK 1", "Access Health STM Plan 2", "Pinnacle Protect Plan 1")<br>';
-  html += '• State the <b>plan type</b> — MEC group plan, short-term medical, or fixed indemnity limited benefit<br>';
-  html += '• Name the <b>billing administrator</b> explicitly by name (FirstEnroll / Neo Health Solutions / both for TDK)<br>';
-  html += '• Tell member they will receive an email from the <b>billing administrator</b> with portal access and plan documents<br>';
-  html += '• Break down <b>first month cost AND ongoing monthly cost</b> separately — including enrollment fee<br>';
-  html += '• If enrolling <b>add-ons</b> (AssistPro, etc.) — identify each add-on by name and price separately<br>';
-  html += '• Tell member to <b>verify providers are in-network themselves</b> — never guarantee a specific doctor is covered<br>';
-  html += '• Collect SSN and payment <b>only after all material disclosures are complete</b><br>';
-  html += '• Give member time to <b>read DocuSign</b> — never rush or push for signature without allowing time to read<br>';
-  html += '• State the <b>30-Day Free Look Period</b> — member can cancel within 30 days for a full refund<br>';
-  html += '• Give member <b>confirmation number CHA561337</b> and customer service number before disconnecting';
+  html += '&#8226; State your full name and Central Health Advisors within the first 30 seconds<br>';
+  html += '&#8226; State the exact plan name verbally and the plan type (MEC group plan, short-term medical, or fixed indemnity limited benefit)<br>';
+  html += '&#8226; Name the billing administrator by name -- FirstEnroll or NEO Insurance Solutions (both for TDK)<br>';
+  html += '&#8226; State this is NOT ACA-compliant major medical insurance<br>';
+  html += '&#8226; State this is a limited benefit plan -- it does not cover everything<br>';
+  html += '&#8226; State the 30-day waiting period for sickness (accidents covered Day 1)<br>';
+  html += '&#8226; State pre-existing conditions are excluded for the first 12 months<br>';
+  html += '&#8226; State maternity, substance abuse, and psychiatric services are NOT covered<br>';
+  html += '&#8226; State benefits are fixed dollar amounts -- the plan pays the scheduled amount, not the full bill<br>';
+  html += '&#8226; State the member is responsible for any balance after the plan pays<br>';
+  html += '&#8226; Tell member to verify providers are in-network themselves -- never guarantee a specific doctor<br>';
+  html += '&#8226; Break down first month cost AND ongoing monthly cost separately including enrollment fee<br>';
+  html += '&#8226; Collect SSN and payment only after all material disclosures are complete<br>';
+  html += '&#8226; Give member time to read DocuSign -- never rush or push for signature<br>';
+  html += '&#8226; Give confirmation number CHA561337 and customer service number 855-736-1590 before disconnecting';
   html += '</div></div>';
-  html += '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #5B8DEF;border-radius:12px;padding:20px;margin-bottom:16px;">';
-  html += '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#5B8DEF;margin-bottom:12px;">MEC PLANS — REQUIRED DISCLOSURES</div>';
-  html += '<div style="font-size:12px;color:#848A9C;margin-bottom:8px;">Applies to: TrueHealth 1/2/3, MedFirst 1/2/3/4/5, GoodHealth 1/2/3/4/5, TDK 1/2/3/4/5, NEO Smart Choice, First Enroll MEDVALUE</div>';
+
+  html +=
+    '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #5B8DEF;border-radius:12px;padding:20px;margin-bottom:16px;">';
+  html +=
+    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#5B8DEF;margin-bottom:14px;">DISCLOSURE SCRIPTS</div>';
+
+  html +=
+    '<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:800;color:#5175F1;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">OPENING (first 2 min)</div>';
+  html +=
+    '<div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:14px;font-size:13px;color:var(--text-primary);line-height:1.8;font-style:italic;">"I do want to clarify that this is a private, limited-benefit plan, not an ACA or major medical plan, and it does not provide coverage for maternity, substance abuse, or psychiatric services."</div></div>';
+
+  html +=
+    '<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:800;color:#D97706;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">PRE-EXISTING</div>';
+  html +=
+    '<div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:14px;font-size:13px;color:var(--text-primary);line-height:1.8;font-style:italic;">"If you have any conditions you have been treated for in the last 12 months, those are pre-existing and not covered for the first 12 months. After that, they are covered. Do you have any conditions you are currently being treated for?"</div></div>';
+
+  html +=
+    '<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:800;color:#C2410C;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">WAITING PERIOD</div>';
+  html +=
+    '<div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:14px;font-size:13px;color:var(--text-primary);line-height:1.8;font-style:italic;">"There is a standard 30-day waiting period for any hospital, sickness and scheduled doctor visits."</div></div>';
+
+  html +=
+    '<div><div style="font-size:11px;font-weight:800;color:#1e293b;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.06em;">PRE-EX LEGAL DEFINITION (read verbatim)</div>';
+  html +=
+    '<div class="comp-script-block" style="background:var(--bg-surface-raised);border-radius:8px;padding:14px;font-size:13px;color:var(--text-primary);line-height:1.8;font-style:italic;">"An illness, injury, or condition for which medical advice, diagnosis, care, or treatment was recommended to, or received by, a covered person -- or that manifested symptoms which would cause an ordinarily prudent person to seek diagnosis or treatment -- within the 12 months immediately preceding the effective date."</div></div>';
+  html += '</div>';
+
+  html += '</div>';
+
+  // TAB 2: plan-rules
+  html += '<div id="comp-panel-plan-rules" style="display:none;">';
+
+  html +=
+    '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #5B8DEF;border-radius:12px;padding:20px;margin-bottom:16px;">';
+  html +=
+    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#5B8DEF;margin-bottom:8px;">MEC PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(91,141,239,0.12);color:#5B8DEF;margin-left:6px;letter-spacing:0;">MEC</span></div>';
+  html +=
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: TrueHealth 1-3, MedFirst 1-5, GoodHealth 1-5, TDK 1-5, NEO Smart Choice, First Enroll MEDVALUE</div>';
   html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
-  html += '• State this is a <b>group plan</b>, not individual insurance<br>';
-  html += '• State member becomes a <b>Working Owner</b> of the sponsoring organization<br>';
-  html += '• Name the correct <b>Benefits Administrator</b> for the plan enrolled:<br>';
-  html += '&nbsp;&nbsp;&nbsp;— TDK 1-5: <b>Detego Health</b> (Third-Party Administrator — NOT the underwriter)<br>';
-  html += '&nbsp;&nbsp;&nbsp;— MedFirst/GoodHealth 1-3: <b>Merchants Benefit Administration (MBA)</b><br>';
-  html += '&nbsp;&nbsp;&nbsp;— MedFirst/GoodHealth 4-5: <b>Merchants Benefit Administration (MBA)</b><br>';
-  html += '&nbsp;&nbsp;&nbsp;— NEO Smart Choice: <b>Population Science Management</b><br>';
-  html += '&nbsp;&nbsp;&nbsp;— First Enroll MEDVALUE: <b>HC Data Consulting, LLC</b><br>';
-  html += '• State the <b>exact visit limits and dollar caps</b> — never overstate benefits (see TDK card for TDK-specific limits)<br>';
-  html += '• State what is <b>NOT covered</b> for the specific plan (labs, imaging, outpatient surgery vary by tier)<br>';
-  html += '• TrueHealth/MedFirst/GoodHealth 1-3: <b>No surgery, no ER, no ambulance</b> — RX discount only on tier 1<br>';
-  html += '• MedFirst/GoodHealth 4-5: Surgery, ER (if admitted), and ambulance (if admitted) ARE covered with limits<br>';
-  html += '• MEDVALUE: Labs ($50, 3/yr), ER ($500, 1/yr), surgery covered with prior auth — NOT the same as TDK<br>';
-  html += '• Prescriptions: state <b>formulary type and limitations</b> — brand NOT covered on most plans<br>';
-  html += '• Read the <b>full pre-existing condition legal definition</b> verbatim:<br>';
-  html += '<div style="background:var(--bg-surface-raised);border-radius:8px;padding:12px;margin:8px 0;font-style:italic;font-size:12px;line-height:1.7;">"An illness, injury, or condition for which medical advice, diagnosis, care, or treatment was recommended to, or received by, a covered person — or that manifested symptoms which would cause an ordinarily prudent person to seek diagnosis or treatment — within the 12 months immediately preceding the effective date."</div>';
-  html += '• If member discloses a pre-existing condition — explicitly tell them it will <b>not be covered for the first 12 months</b><br>';
-  html += '• 30-day waiting period applies to <b>sickness only</b> — injury and emergency are covered from Day 1';
+  html += '&#8226; This is a group plan -- not individual insurance<br>';
+  html += '&#8226; Member becomes a Working Owner of the sponsoring organization<br>';
+  html += '&#8226; Name the correct Benefits Administrator: TDK = Detego Health | MedFirst/GoodHealth = MBA | NEO Smart Choice = Population Science Management | MEDVALUE = HC Data Consulting LLC<br>';
+  html += '&#8226; Name the billing admin: TDK = FirstEnroll AND NEO Insurance Solutions (both) | All others = FirstEnroll only<br>';
+  html += '&#8226; State exact visit limits and dollar caps -- never overstate benefits<br>';
+  html += '&#8226; Tiers 1-3 (MedFirst/GoodHealth/TrueHealth): NO surgery, NO ER, NO ambulance -- Rx discount only on tier 1<br>';
+  html += '&#8226; Tiers 4-5: Surgery, ER (if admitted), and ambulance (if admitted) ARE covered with limits<br>';
+  html += '&#8226; MEDVALUE: Labs $50 3/yr, ER $500 1/yr, surgery covered with prior auth<br>';
+  html += '&#8226; Prescriptions: state formulary type -- brand NOT covered on most plans<br>';
+  html += '&#8226; 30-day waiting period for sickness -- injury Day 1';
   html += '</div></div>';
-  html += '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #F59E0B;border-radius:12px;padding:20px;margin-bottom:16px;">';
-  html += '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#C2410C;margin-bottom:12px;">STM PLANS — REQUIRED DISCLOSURES</div>';
-  html += '<div style="font-size:12px;color:#848A9C;margin-bottom:8px;">Applies to: Access Health STM (Plans 1/2/3), NEO Pinnacle STM Traditional, AFRP Galena Elite/Standard/Economy, Smart Health Traditional/Limited</div>';
+
+  html +=
+    '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #F59E0B;border-radius:12px;padding:20px;margin-bottom:16px;">';
+  html +=
+    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#C2410C;margin-bottom:8px;">STM PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(245,158,11,0.12);color:#C2410C;margin-left:6px;letter-spacing:0;">STM</span></div>';
+  html +=
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Access Health STM, NEO Pinnacle STM, AFRP Galena Elite/Standard/Economy, Smart Health Traditional/Limited</div>';
   html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
-  html += '• State this is a <b>short-term medical plan</b> — not permanent coverage<br>';
-  html += '• State STM plans can only be held <b>up to 2 years (36 months)</b> depending on state<br>';
-  html += '• Read the <b>15-condition medical underwriting list</b> in full and document member answers<br>';
-  html += '• State the <b>exact deductible</b> the member selected<br>';
-  html += '• State the <b>coinsurance percentage</b> (80/20 for most plans, 50/70/80% options for Galena)<br>';
-  html += '• State the <b>coinsurance limit / max out-of-pocket</b> exactly<br>';
-  html += '• Doctor visits are <b>NOT subject to deductible</b> on most STM plans — state this clearly<br>';
-  html += '• <b>EXCEPTION — Galena Economy only</b>: doctor visits ARE subject to deductible — must state<br>';
-  html += '• Hospital, surgery, serious illness = <b>subject to deductible</b> — state this clearly<br>';
-  html += '• No maternity, no mental health inpatient, no substance abuse — state all three<br>';
-  html += '• Dependent changes can only be made on <b>annual anniversary</b> — not mid-term<br>';
-  html += '<br><b>Plan-specific variations to know:</b><br>';
-  html += '• <b>Access Health STM</b>: Sickness wait = <b>5 days</b> (NOT 30 days) | Pre-ex lookback = <b>36 months</b> (NOT 12) | Out-of-network IS allowed (PHCS network, no requirement to stay in-network) | Plan 2 has <b>unlimited PCP and Specialist visits</b><br>';
-  html += '• <b>NEO Pinnacle STM</b>: Deductible $500-$10,000 | MOOP $5,000 | Coverage max $1M | Doctor $50 copay | Additional deductible on ER ($500/visit, max 3) and outpatient surgery ($500/surgery, max 3)<br>';
-  html += '• <b>Galena Economy</b>: Deductible $5K-$10K | Coverage max $500K | Hospital $1,500/day<br>';
-  html += '• <b>Galena Standard</b>: Deductible $2.5K-$10K | Coverage max $1M | Hospital $2,500/day | OT/PT $50/day up to 10 days<br>';
-  html += '• <b>Galena Elite</b>: Deductible $2.5K-$10K | Coverage max $2M | Hospital $3,000/day | OT/PT $60/day<br>';
-  html += '• <b>Smart Health</b>: PCP/UC $25 copay max 2 | Specialist $40 copay max 2 | $2,000/period combined max | Hospital $1,500/day | ICU $2,000/day<br>';
-  html += '<br><b>Billing by plan:</b><br>';
-  html += '• FirstEnroll: Access Health STM<br>';
-  html += '• Neo Health Solutions: NEO Pinnacle STM, AFRP Galena (all tiers), Smart Health Traditional and Limited';
+  html += '&#8226; State this is short-term medical -- not permanent coverage<br>';
+  html += '&#8226; Read the 15-condition underwriting list in full and document member answers<br>';
+  html += '&#8226; State the exact deductible and coinsurance the member selected<br>';
+  html += '&#8226; Doctor visits NOT subject to deductible on most STM plans -- EXCEPTION: Galena Economy doctor visits ARE subject to deductible<br>';
+  html += '&#8226; Hospital, surgery, serious illness = subject to deductible<br>';
+  html += '&#8226; No maternity, no mental health inpatient, no substance abuse -- state all three<br>';
+  html += '&#8226; Dependent changes only on annual anniversary<br>';
+  html += '&#8226; Access Health STM: sickness wait = 5 days (NOT 30) | pre-ex lookback = 36 months (NOT 12)<br>';
+  html += '&#8226; Galena Economy: deductible $5K-$10K | coverage max $500K<br>';
+  html += '&#8226; Galena Standard: deductible $2.5K-$10K | coverage max $1M<br>';
+  html += '&#8226; Galena Elite: deductible $2.5K-$10K | coverage max $2M<br>';
+  html += '&#8226; NEO Pinnacle STM: deductible $500-$10K | MOOP $5K | coverage max $1M<br>';
+  html += '&#8226; Billing: FirstEnroll = Access Health STM | NEO = Pinnacle STM, Galena (all tiers), Smart Health';
   html += '</div></div>';
-  html += '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #7C3AED;border-radius:12px;padding:20px;margin-bottom:16px;">';
-  html += '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#7C3AED;margin-bottom:12px;">LIMITED BENEFIT PLANS — REQUIRED DISCLOSURES</div>';
-  html += '<div style="font-size:12px;color:#848A9C;margin-bottom:8px;">Applies to: Everest/HarmonyCare/SigmaCare (all tiers), BWA Paramount 1-6, BWA Americare 2/3/4, Health Choice Silver, Pinnacle Protect 1-4</div>';
+
+  html +=
+    '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #DC2626;border-radius:12px;padding:20px;margin-bottom:16px;">';
+  html +=
+    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#DC2626;margin-bottom:8px;">LIMITED BENEFIT PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(220,38,38,0.10);color:#DC2626;margin-left:6px;letter-spacing:0;">LIMITED</span></div>';
+  html +=
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Everest, HarmonyCare, SigmaCare, BWA Paramount 1-6, BWA Americare 2/3/4, Health Choice Silver, Pinnacle Protect 1-4</div>';
   html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
-  html += '• State this is a <b>fixed indemnity / limited benefit plan</b> — not major medical<br>';
-  html += '• Explain the plan <b>pays a fixed cash benefit</b> toward covered services — NOT a percentage of the bill<br>';
-  html += '• Member <b>may still owe significant out-of-pocket</b> costs above the fixed benefit after service<br>';
-  html += '• Network <b>reduces the bill first</b>, then the fixed benefit is applied — this does not equal full coverage<br>';
-  html += '• There is <b>no true out-of-pocket maximum</b> on any of these plans<br>';
-  html += '• No deductible — but do not imply this means full coverage<br>';
-  html += '• Pre-ex: 12/12 clause on Everest/HarmonyCare/Pinnacle Protect | <b>NOT applicable</b> on BWA Americare<br>';
-  html += '• Pregnancy: included on BWA Americare and BWA Paramount | not covered on Everest/HarmonyCare<br>';
-  html += '<br><b>Everest/HarmonyCare/SigmaCare — key tier differences:</b><br>';
-  html += '• Tiers 100A and 100: <b>NO surgery benefit</b> — must disclose<br>';
-  html += '• Mental health: only on tiers 200-500 ($150-$500/day inpatient, $50/day outpatient) — <b>NOT on 750 or 1000</b><br>';
-  html += '• ER: NOT on tier 100A | $50-$100/day, 1 day/yr on all other tiers<br>';
-  html += '• Surgery starts at tier 200 ($400/day, max 3 days/yr)<br>';
-  html += '<br><b>BWA Paramount (BCS EssentialCare) — tier summary:</b><br>';
-  html += '• Paramount 4 (BCS 1): Hospital $1,000 day 1 / $100 day 2+ | ICU $200 | ER $200 | Doctor $50 | UC $125<br>';
-  html += '• Paramount 5 (BCS 2): Hospital $1,000 day 1 / $300 day 2+ | ICU $500 | ER $200 | Doctor $50 | UC $125<br>';
-  html += '• Paramount 6 (BCS 3): Hospital $1,000 day 1 / $300 day 2+ | Surgery inpatient $1,500 / outpatient $500 | Doctor $75 | UC $150<br>';
-  html += '<br><b>BWA Americare — tier summary:</b><br>';
-  html += '• Plan 2: Hospital admission $750 | Confinement $200/day | ICU admission $1,500 | ER $200 max 2 days | UC $50 max 3 | Doctor $50 max 3<br>';
-  html += '• Plan 3: Hospital admission $1,000 | Confinement $300/day | ICU admission $2,000 | ER $300 max 2 days | UC $50 max 3 | Doctor $50 max 3<br>';
-  html += '<br><b>Pinnacle Protect Plan 1 (exact limits from carrier doc):</b><br>';
-  html += '• Hospital $400/day (10 days/confinement, 30 days/yr) | Surgery $500 (1/yr shared in/out) | ER $100 (1/yr) | Doctor $50 (2/yr) | UC $50 (1/yr) | Lab $30 (2/yr) | X-ray $25 (2/yr) | Advanced diagnostic $250 (1/yr)<br>';
-  html += '• Pinnacle Protect Plans 2-4: verify exact limits in plan SOB before enrolling<br>';
-  html += '• Health Choice Silver: verify exact limits in plan SOB before enrolling<br>';
-  html += '<br><b>Billing by plan:</b><br>';
-  html += '• FirstEnroll: Everest, HarmonyCare, SigmaCare, BWA Paramount, BWA Americare, Health Choice Silver<br>';
-  html += '• Neo Health Solutions: Pinnacle Protect 1-4';
+  html += '&#8226; State this is a fixed indemnity / limited benefit plan -- not major medical<br>';
+  html += '&#8226; Plan pays a fixed cash benefit -- NOT a percentage of the bill -- member may owe significant balance<br>';
+  html += '&#8226; No true out-of-pocket maximum on any of these plans<br>';
+  html += '&#8226; No deductible -- but do not imply this means full coverage<br>';
+  html += '&#8226; Everest/HarmonyCare/SigmaCare tiers 100A and 100: NO surgery -- must disclose<br>';
+  html += '&#8226; Mental health only on tiers 200-500 -- NOT on 750 or 1000<br>';
+  html += '&#8226; Surgery starts at tier 200+<br>';
+  html += '&#8226; BWA Americare: pregnancy IS included | Everest/HarmonyCare: pregnancy NOT covered<br>';
+  html += '&#8226; Pinnacle Protect Plans 2-4 and Health Choice Silver: verify exact limits in SOB before enrolling<br>';
+  html += '&#8226; Billing: FirstEnroll = Everest, HarmonyCare, SigmaCare, BWA Paramount, BWA Americare, Health Choice Silver | NEO = Pinnacle Protect 1-4';
   html += '</div></div>';
-  html += '<div style="background:var(--bg-surface);border:2px solid #DC2626;border-radius:12px;padding:0;margin-bottom:16px;overflow:hidden;">';
-  html += '<div style="background:#DC2626;padding:14px 20px;"><div style="font-size:.72rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:#fff;">TDK AUDIT REFERENCE — MOST AUDITED PLAN IN PORTFOLIO</div></div>';
-  html += '<div style="padding:20px;">';
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">';
-  html += '<div>';
-  html += '<div style="font-size:12px;font-weight:800;color:var(--text-primary);margin-bottom:8px;">IDENTITY & STRUCTURE</div>';
-  html += '<div style="font-size:12px;color:var(--text-primary);line-height:1.9;">';
-  html += '• State plan name verbally: <b>"TDK 1"</b> (or 2/3/4/5)<br>';
-  html += '• Member becomes <b>Working Owner of Healthcare Data Analytics (HCDA)</b><br>';
-  html += '• <b>Detego Health</b> = Third-Party Administrator (NOT underwriter)<br>';
-  html += '• Billing: <b>FirstEnroll AND NEO Insurance Solutions</b> — both must be named<br>';
-  html += '• This is a <b>group plan</b>, not individual insurance<br>';
-  html += '• Member must complete required <b>annual Working Owner activities</b>';
-  html += '</div></div>';
-  html += '<div>';
-  html += '<div style="font-size:12px;font-weight:800;color:var(--text-primary);margin-bottom:8px;">WHAT IS NOT COVERED — ALL TIERS</div>';
-  html += '<div style="font-size:12px;color:var(--text-primary);line-height:1.9;">';
-  html += '• Labs, X-rays, imaging: <b>NOT COVERED</b><br>';
-  html += '• Outpatient surgery: <b>NOT COVERED</b><br>';
-  html += '• Mental health inpatient: <b>NOT COVERED</b><br>';
-  html += '• Mental health outpatient: MyLiveDoc telehealth only (4 visits/yr)<br>';
-  html += '• Prescriptions: preferred generics via MyLiveDoc formulary ONLY — brand/specialty NOT covered<br>';
-  html += '• ScriptAide PAP/SPIP available for non-covered meds<br>';
-  html += '• <b>No out-of-pocket limit on any tier</b>';
-  html += '</div></div></div>';
+
+  html +=
+    '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #1e293b;border-radius:12px;padding:20px;margin-bottom:16px;">';
+  html +=
+    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#1e293b;margin-bottom:12px;">TDK SPECIFIC <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(30,41,59,0.10);color:#1e293b;margin-left:6px;letter-spacing:0;">TDK</span></div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;margin-bottom:16px;">';
+  html += '&#8226; State plan name verbally: "TDK 1" (or 2/3/4/5)<br>';
+  html += '&#8226; Member becomes Working Owner of Healthcare Data Analytics (HCDA)<br>';
+  html += '&#8226; Detego Health = Third-Party Administrator NOT the underwriter<br>';
+  html += '&#8226; Billing: Name the billing admin -- either FirstEnroll OR NEO Insurance Solutions depending on which portal was used to enroll. Do not name both unless both apply.<br>';
+  html += '&#8226; Labs, X-rays, imaging: NOT COVERED on any tier<br>';
+  html += '&#8226; Outpatient surgery: NOT COVERED on TDK 1/2/3 -- covered on TDK 4/5 only<br>';
+  html += '&#8226; ER: NOT COVERED on TDK 1/2/3 | TDK 4/5: ONLY if admitted -- no benefit if not admitted<br>';
+  html += '&#8226; Mental health inpatient: NOT COVERED -- MyLiveDoc telehealth only (4 visits/yr)<br>';
+  html += '&#8226; Prescriptions: MyLiveDoc formulary ONLY -- brand/specialty NOT covered<br>';
+  html += '&#8226; No out-of-pocket maximum on any tier<br>';
+  html += '&#8226; Member must complete required annual Working Owner activities';
+  html += '</div>';
+
   html += '<div style="font-size:12px;font-weight:800;color:var(--text-primary);margin-bottom:8px;">VISIT LIMITS BY TIER (from carrier plan comparison doc)</div>';
   html += '<div style="overflow-x:auto;margin-bottom:16px;">';
   html += '<table style="width:100%;border-collapse:collapse;font-size:11px;">';
@@ -194,90 +178,145 @@ function renderComplianceCenter() {
     html += '</tr>';
   });
   html += '</tbody></table></div>';
+
   html += '<div style="background:var(--cha-danger-bg);border:1px solid #FECACA;border-radius:8px;padding:12px;margin-bottom:12px;">';
-  html += '<div style="font-size:11px;font-weight:800;color:#DC2626;margin-bottom:6px;">ER RULE — MUST STATE ON EVERY TDK CALL</div>';
-  html += '<div style="font-size:12px;color:var(--text-primary);line-height:1.7;">TDK 1/2/3: ER is NOT COVERED — no benefit regardless of admission.<br>TDK 4/5: ER benefit pays ONLY if member is admitted to the hospital. If not admitted = no benefit. Member may still owe the full ER bill.</div>';
+  html += '<div style="font-size:11px;font-weight:800;color:#DC2626;margin-bottom:6px;">ER RULE -- MUST STATE ON EVERY TDK CALL</div>';
+  html += '<div style="font-size:12px;color:var(--text-primary);line-height:1.7;">TDK 1/2/3: ER is NOT COVERED -- no benefit regardless of admission. TDK 4/5: ER benefit pays ONLY if member is admitted. If not admitted = no benefit. Member may still owe the full ER bill.</div>';
   html += '</div>';
-  html += '<div style="background:var(--bg-surface-raised);border-radius:8px;padding:12px;margin-bottom:12px;">';
-  html += '<div style="font-size:11px;font-weight:800;color:var(--text-primary);margin-bottom:6px;">PRE-EXISTING CONDITION — FULL LEGAL DEFINITION (read verbatim)</div>';
-  html += '<div style="font-size:12px;color:var(--text-primary);font-style:italic;line-height:1.7;">"An illness, injury, or condition for which medical advice, diagnosis, care, or treatment was recommended to, or received by, a covered person — or that manifested symptoms which would cause an ordinarily prudent person to seek diagnosis or treatment — within the 12 months immediately preceding the effective date."</div>';
-  html += '</div>';
+
   html += '<div style="font-size:12px;font-weight:800;color:var(--text-primary);margin-bottom:8px;">8 WORKING OWNER ATTESTATIONS MEMBER SIGNS IN DOCUSIGN</div>';
   html += '<div style="font-size:12px;color:var(--text-primary);line-height:1.9;">';
   html += '1. Fully read and consent to the HCDA New Working Owner Joinder Agreement<br>';
   html += '2. HCDA plans are not major medical and should not substitute for major medical coverage<br>';
   html += '3. HCDA plans do not comply with the ACA<br>';
   html += '4. Hospital Indemnity Benefit does not cover pre-existing conditions<br>';
-  html += '5. HCDA Plans have a limited schedule of benefits — only pays items specifically listed<br>';
+  html += '5. HCDA Plans have a limited schedule of benefits -- only pays items specifically listed<br>';
   html += '6. There is a 30-day waiting period for sickness benefits<br>';
-  html += '7. This is a supplement, not a substitute for major medical — lack of major medical may result in additional tax obligation<br>';
+  html += '7. This is a supplement not a substitute for major medical -- lack of major medical may result in additional tax obligation<br>';
   html += '8. Working Owner must dedicate substantial time to the business and/or earn compensation exceeding the cost of the benefit program';
-  html += '</div>';
-  html += '<div style="margin-top:12px;font-size:12px;color:var(--text-primary);line-height:1.7;">30-Day Free Look Period: member can cancel within 30 days for a full refund. State this before disconnecting.</div>';
   html += '</div></div>';
-  html += '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #111827;border-radius:12px;padding:20px;margin-bottom:16px;">';
-  html += '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#111827;margin-bottom:12px;">RED FLAGS — NEVER DO THESE</div>';
-  html += '<div style="font-size:12px;color:#848A9C;margin-bottom:12px;">Any of the following = compliance violation. Every item below is a scored element on the call audit rubric.</div>';
-  var rfSections = [
-    {
-      title: 'OPENING / IDENTITY',
-      items: [
-        'Never identify as an enrollment center, government agent, ACA representative, or state exchange rep',
-        'Never imply the call is related to Healthcare.gov, a state marketplace, or any government program',
-        'Never confirm or allow member to believe this is "official" insurance or government-sponsored coverage',
-        'Never assume or reinforce that the member came from a government website'
-      ]
-    },
-    {
-      title: 'BENEFITS / COVERAGE',
-      items: [
-        'Never confirm a specific doctor is in-network — always tell member to verify themselves at the carrier website',
-        'Never confirm prescriptions are fully covered without disclosing all limitations and exclusions',
-        'Never claim nationwide coverage without clarifying out-of-network restrictions or network type',
-        'Never say the plan covers a service without stating visit limits and dollar caps',
-        'Never imply the plan has a true out-of-pocket maximum if it does not',
-        'Never describe TDK as covering ER, labs, imaging, or outpatient surgery — these are NOT covered on TDK 1/2/3'
-      ]
-    },
-    {
-      title: 'COMPARISON / STEERING',
-      items: [
-        'Never discourage ACA plans by claiming they are too expensive, deductibles are too high, or member does not qualify without explaining the actual eligibility process',
-        'Never steer a consumer away from ACA coverage toward a commission-based product',
-        'Never claim the offered plan is better or cheaper without factual side-by-side disclosures',
-        'Never use the term "PPO" to imply full PPO coverage — clarify it means access to negotiated network rates'
-      ]
-    },
-    {
-      title: 'ENROLLMENT PRESSURE',
-      items: [
-        'Never use urgency statements such as "price is only good today" or "coverage may not be available later"',
-        'Never claim easy cancellation without explaining the actual process and any restrictions',
-        'Never collect payment before all material disclosures are complete',
-        'Never rush member through DocuSign or push for electronic signature without allowing time to read',
-        'Never use verification language that implies comprehensive coverage after technically disclaiming major medical'
-      ]
-    },
-    {
-      title: 'POST-SALE',
-      items: [
-        'Never make it difficult for member to access their plan documents after enrollment',
-        'Always provide the confirmation number CHA561337 and customer service number before disconnecting',
-        'Never require member to cancel their card to stop billing — proper cancellation must be available through member services'
-      ]
-    }
-  ];
-  rfSections.forEach(function(section) {
-    html += '<div style="margin-bottom:12px;">';
-    html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">' + escHTML(section.title) + '</div>';
-    section.items.forEach(function(item) {
-      html += '<div style="display:flex;align-items:flex-start;gap:8px;padding:4px 0;"><span style="color:#DC2626;font-weight:900;flex-shrink:0;margin-top:1px;">!</span><span style="font-size:12px;color:var(--text-primary);line-height:1.6;">' + escHTML(item) + '</span></div>';
-    });
-    html += '</div>';
-  });
+
   html += '</div>';
+
+  // TAB 3: red-flags
+  html += '<div id="comp-panel-red-flags" style="display:none;">';
+  html +=
+    '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-left:4px solid #DC2626;border-radius:12px;padding:20px;margin-bottom:16px;">';
+  html +=
+    '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#DC2626;margin-bottom:8px;">RED FLAGS -- NEVER DO THESE</div>';
+  html +=
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:14px;">Any of the following = compliance violation.</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">IDENTITY</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;margin-bottom:14px;">';
+  html += '&#8226; Never identify as an enrollment center, government agent, ACA representative, or state exchange rep<br>';
+  html += '&#8226; Never imply the call is related to Healthcare.gov, a state marketplace, or any government program<br>';
+  html += '&#8226; Never confirm or allow member to believe this is official insurance or government-sponsored coverage';
+  html += '</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">BENEFITS</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;margin-bottom:14px;">';
+  html += '&#8226; Never confirm a specific doctor is in-network -- always tell member to verify at carrier website<br>';
+  html += '&#8226; Never confirm prescriptions are fully covered without disclosing all limitations<br>';
+  html += '&#8226; Never claim nationwide coverage without clarifying network type and out-of-network restrictions<br>';
+  html += '&#8226; Never say the plan covers a service without stating visit limits and dollar caps<br>';
+  html += '&#8226; Never imply the plan has a true out-of-pocket maximum if it does not<br>';
+  html += '&#8226; Never describe TDK as covering ER, labs, imaging, or outpatient surgery on tiers 1/2/3';
+  html += '</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">COMPARISON / STEERING</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;margin-bottom:14px;">';
+  html += '&#8226; Never discourage ACA plans or steer member away from ACA toward a commission-based product<br>';
+  html += '&#8226; Never claim the offered plan is better or cheaper without factual side-by-side disclosures<br>';
+  html += '&#8226; Never use the term PPO to imply full PPO coverage -- clarify it means negotiated network rates only';
+  html += '</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">ENROLLMENT</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;margin-bottom:14px;">';
+  html += '&#8226; Never use urgency statements like "price is only good today" or "coverage may not be available later"<br>';
+  html += '&#8226; Never collect payment before all material disclosures are complete<br>';
+  html += '&#8226; Never rush member through DocuSign or push for signature without allowing time to read';
+  html += '</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">POST-SALE</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
+  html += '&#8226; Always provide confirmation number CHA561337 and customer service number before disconnecting<br>';
+  html += '&#8226; Never make it difficult for member to access plan documents after enrollment<br>';
+  html += '&#8226; Never require member to cancel their card to stop billing -- proper cancellation must be available through member services';
+  html += '</div></div>';
+  html += '</div>';
+
+  // TAB 4: call-audit
+  html += '<div id="comp-panel-call-audit" style="display:none;">';
+  html +=
+    '<div style="background:var(--bg-surface);border:1px solid var(--border-light,var(--border-default));border-radius:12px;padding:0;margin-bottom:16px;overflow:hidden;">';
+  html +=
+    '<div style="background:#1e293b;padding:14px 20px;"><div style="font-size:.72rem;font-weight:900;letter-spacing:0.1em;text-transform:uppercase;color:#fff;">UNIVERSAL CALL AUDIT</div></div>';
+  html += '<div style="padding:20px;">';
+  html +=
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:16px;">Applies to every plan, every call. These are the scored items on the audit rubric.</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">OPENING</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:2;margin-bottom:14px;">';
+  html += '&#9744; Stated full name and Central Health Advisors within first 30 seconds<br>';
+  html += '&#9744; Stated exact plan name verbally<br>';
+  html += '&#9744; Stated plan type (MEC group plan / short-term medical / fixed indemnity limited benefit)<br>';
+  html += '&#9744; Did NOT imply government, ACA, or marketplace connection';
+  html += '</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">DISCLOSURES</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:2;margin-bottom:14px;">';
+  html += '&#9744; Stated NOT ACA-compliant / NOT major medical<br>';
+  html += '&#9744; Stated plan type limitations clearly (not full bill coverage)<br>';
+  html += '&#9744; Named billing administrator correctly by name<br>';
+  html += '&#9744; Named network correctly<br>';
+  html += '&#9744; Stated 30-day waiting period for sickness<br>';
+  html += '&#9744; Stated pre-existing condition exclusion (12 months)<br>';
+  html += '&#9744; Stated maternity, substance abuse, psychiatric NOT covered<br>';
+  html += '&#9744; Stated visit limits and dollar caps accurately -- did not overstate benefits';
+  html += '</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">ENROLLMENT</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:2;margin-bottom:14px;">';
+  html += '&#9744; Broke down first month cost and ongoing monthly cost separately<br>';
+  html += '&#9744; Collected SSN and payment AFTER all disclosures<br>';
+  html += '&#9744; Did not rush DocuSign -- gave member time to read<br>';
+  html += '&#9744; Sent verification link and walked member through correctly<br>';
+  html += '&#9744; Stated 30-day free look period';
+  html += '</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">POST-CLOSE</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:2;margin-bottom:14px;">';
+  html += '&#9744; Gave confirmation number CHA561337<br>';
+  html += '&#9744; Gave customer service number 855-736-1590<br>';
+  html += '&#9744; Did NOT ask if member is still there after close<br>';
+  html += '&#9744; Closed warmly -- referral ask made';
+  html += '</div>';
+
+  html += '<div style="font-size:11px;font-weight:800;color:#111827;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border-light,var(--border-default));">RED FLAGS CHECK</div>';
+  html += '<div style="font-size:13px;color:var(--text-primary);line-height:2;">';
+  html += '&#9744; No urgency / pressure language used<br>';
+  html += '&#9744; No ACA comparison or steering<br>';
+  html += '&#9744; No guaranteed doctor or prescription claims<br>';
+  html += '&#9744; No assumptive closing language';
+  html += '</div></div></div>';
+  html += '</div>';
+
   document.getElementById('page-compliancecenter').innerHTML = html;
 }
+
+window.showCompTab = function(tab) {
+  var panels = ['every-call', 'plan-rules', 'red-flags', 'call-audit'];
+  for (var i = 0; i < panels.length; i++) {
+    var panel = document.getElementById('comp-panel-' + panels[i]);
+    var btn = document.getElementById('comp-tab-' + panels[i]);
+    if (panel) panel.style.display = panels[i] === tab ? 'block' : 'none';
+    if (btn) {
+      btn.style.background = panels[i] === tab ? '#1e293b' : '#f1f3f9';
+      btn.style.color = panels[i] === tab ? '#fff' : '#64748b';
+    }
+  }
+};
 
 function renderCallAudit() {
   var html =
@@ -294,7 +333,7 @@ function renderCallAudit() {
     {
       heading: 'Plan Classification',
       items: [
-        'Plan is identified as a limited benefit or fixed indemnity plan — not major medical',
+        'Plan is identified as a limited benefit or fixed indemnity plan â€” not major medical',
         'Plan is identified as non-ACA and not a substitute for minimum essential coverage',
         'The term "PPO" is not used to describe network access arrangements',
         'The term "full coverage" is not used to describe capped benefit structures',
@@ -341,10 +380,10 @@ function renderCallAudit() {
     {
       heading: 'Required Disclosures',
       items: [
-        'Plan is not major medical or ACA-compliant — stated explicitly',
-        'Benefits are limited and subject to caps — stated explicitly',
-        'Waiting periods apply to sickness and certain services — stated explicitly',
-        'Pre-existing conditions are excluded during the exclusion period — stated explicitly',
+        'Plan is not major medical or ACA-compliant â€” stated explicitly',
+        'Benefits are limited and subject to caps â€” stated explicitly',
+        'Waiting periods apply to sickness and certain services â€” stated explicitly',
+        'Pre-existing conditions are excluded during the exclusion period â€” stated explicitly',
         'Cancellation and refund terms are disclosed before payment is collected'
       ]
     }
@@ -369,13 +408,13 @@ function renderCallAudit() {
   html +=
     '<div style="margin-top:24px;background:var(--bg-surface);border:2px solid var(--border-light, var(--border-default));border-radius:16px;padding:20px;">';
   html +=
-    '<div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">✦ AI Call Scorer</div>';
+    '<div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">âœ¦ AI Call Scorer</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">Paste a call transcript or a few sentences from a call. AI scores compliance 1-10 and flags every issue with fixes.</div>';
   html +=
     '<textarea id="auditTranscript" rows="5" placeholder="Paste call transcript here..." style="width:100%;background:var(--bg-surface-raised);border:1px solid var(--border-light, var(--border-default));border-radius:10px;padding:12px;font-size:13px;color:var(--text-secondary);resize:vertical;box-sizing:border-box;font-family:inherit;"></textarea>';
   html +=
-    '<button id="auditBtn" onclick="runCallAudit()" style="margin-top:10px;width:100%;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call ✦ AI</button>';
+    '<button id="auditBtn" onclick="runCallAudit()" style="margin-top:10px;width:100%;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call âœ¦ AI</button>';
   html += '<div id="auditResult" style="margin-top:14px;display:none;"></div>';
   html += '</div>';
 
@@ -404,14 +443,14 @@ function runCallAudit() {
           label:
             'Agent identified full name, license status, and agency within first 30 seconds',
           pass:
-            has(/my name is|this is .+ (with|from|calling)|i['’]?m .+ with/) &&
+            has(/my name is|this is .+ (with|from|calling)|i['â€™]?m .+ with/) &&
             has(/licens/) &&
             has(/agency|advisor|central health/)
         },
         {
           label: 'Call purpose stated clearly',
           pass: has(
-            /reason (for|i['’]?m calling)|calling (about|regarding)|reach(ing)? out (about|regarding)|the reason/
+            /reason (for|i['â€™]?m calling)|calling (about|regarding)|reach(ing)? out (about|regarding)|the reason/
           )
         },
         {
@@ -425,7 +464,7 @@ function runCallAudit() {
       checks: [
         {
           label:
-            'Plan identified as limited benefit or fixed indemnity — not major medical',
+            'Plan identified as limited benefit or fixed indemnity â€” not major medical',
           pass: has(
             /limited benefit|fixed indemnity|indemnity plan|not major medical/
           )
@@ -560,7 +599,7 @@ function runCallAudit() {
         {
           label: 'First payment stated separately from ongoing cost',
           pass: has(
-            /(first|initial|today['’]?s) (payment|charge|draft|cost)|first (month|payment) (is|will be|comes to)/
+            /(first|initial|today['â€™]?s) (payment|charge|draft|cost)|first (month|payment) (is|will be|comes to)/
           )
         }
       ]
@@ -570,24 +609,24 @@ function runCallAudit() {
       checks: [
         {
           label:
-            'Plan is not major medical / not ACA-compliant — stated explicitly',
+            'Plan is not major medical / not ACA-compliant â€” stated explicitly',
           pass: has(
             /not major medical|not aca|not affordable care|non[-\s]?aca/
           )
         },
         {
-          label: 'Benefits are limited and subject to caps — stated explicitly',
+          label: 'Benefits are limited and subject to caps â€” stated explicitly',
           pass: has(
             /limited benefit|subject to (cap|limit)|maximum|capped|benefit cap/
           )
         },
         {
-          label: 'Waiting periods apply — stated explicitly',
+          label: 'Waiting periods apply â€” stated explicitly',
           pass: has(/waiting period/)
         },
         {
           label:
-            'Pre-existing excluded during exclusion period — stated explicitly',
+            'Pre-existing excluded during exclusion period â€” stated explicitly',
           pass: has(
             /pre[-\s]?(existing|ex).*(exclud|not covered)|(exclud|not covered).*pre[-\s]?(existing|ex)/
           )
@@ -685,7 +724,7 @@ function runCallAudit() {
       catTotal +
       '</div></div>';
     cat.checks.forEach(function (c) {
-      var icon = c.pass ? '✓' : '✗';
+      var icon = c.pass ? 'âœ“' : 'âœ—';
       var iconColor = c.pass ? '#16a34a' : '#dc2626';
       var textColor = c.pass ? '#374151' : '#64748b';
       html +=
