@@ -1768,6 +1768,8 @@ function _closeBenefitsSidebar() {
 
 // ── INIT ──────────────────────────────────────────────
 function initApp() {
+  var dbgStamp = document.getElementById('cha-debug-stamp');
+  if (dbgStamp) dbgStamp.textContent = 'Melis Ilaldi';
   _initFontSize();
   _initTopbarExtras();
   // Clerk may set window.CHA_USER after initApp runs. Refresh
