@@ -5269,6 +5269,11 @@ function _stBuildAllSalesPane(sales) {
         '</span><span class="st-ccp-plan">' +
         _stEscape(lead2.plan || '—') +
         '</span>' +
+        (lead2.memberId
+          ? '<span class="st-member-id" style="display:block;">ID: ' +
+            _stEscape(lead2.memberId) +
+            '</span>'
+          : '') +
         (lead2.isBackfill
           ? '<span class="st-backfill-badge">Backfill</span>'
           : '') +
@@ -5607,9 +5612,9 @@ function _stOpenEntryModal(opts) {
     _stEscape(initial.customer || '') +
     '" required></label>';
   html +=
-    '<label>Policy ID / Receipt ID<input id="st-entry-receiptid" type="text" value="' +
+    '<label>Member ID<input id="st-entry-receiptid" type="text" placeholder="e.g. 687271841" value="' +
     _stEscape(initial.receiptId || '') +
-    '"></label>';
+    '"><span style="display:block;font-size:11px;font-weight:400;color:#94a3b8;line-height:1.4;margin-top:2px;">Enter the Member ID from your FirstEnroll or NEO confirmation</span></label>';
   html +=
     '<label>Date sold<input id="st-entry-date" type="date" value="' +
     _stEscape(soldIso) +
