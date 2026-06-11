@@ -1270,11 +1270,6 @@ function _renderLiveCallGpsHtml() {
   var stages = _lcBuildGpsHudStages();
   var html =
     '<section class="lc-gps-wrap lc-gps-hud-root" aria-label="Live Call GPS">' +
-    '<div class="lc-gps-head">' +
-    '<div class="lc-gps-kicker">Training / Scripts</div>' +
-    '<h2 class="lc-gps-title">Live Call <span>GPS</span></h2>' +
-    '<p class="lc-gps-sub">HUD: tap a stage to jump. Script lines are verbatim from your playbook.</p>' +
-    '</div>' +
     '<nav class="lc-gps-tracker" id="lc-gps-tracker" aria-label="Call stage tracker">';
   for (var ti = 0; ti < stages.length; ti++) {
     html +=
