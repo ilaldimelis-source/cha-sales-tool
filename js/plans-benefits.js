@@ -1503,7 +1503,8 @@ function renderPlanGroups() {
       '</span>' +
       '<span class="plan-group-expand-ind benefit-expand-indicator" aria-hidden="true">+</span>' +
       '</div>';
-    html += '<div class="plan-group-detail">';
+    html +=
+      '<div class="plan-group-detail" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;padding:10px 0;">';
 
     docs.forEach(function (doc) {
       var badgeBg =
@@ -1533,47 +1534,44 @@ function renderPlanGroups() {
         doc.group
       ).toLowerCase();
 
+      var networkPill = doc.network
+        ? '<span style="font-size:9px;padding:2px 6px;border-radius:999px;background:var(--cha-bg-muted,#f1f3f9);color:var(--text-secondary,#64748b);">' +
+          escHTML(doc.network) +
+          '</span>'
+        : '';
+      var carrierPill = doc.carrier
+        ? '<span style="font-size:9px;padding:2px 6px;border-radius:999px;background:var(--cha-bg-muted,#f1f3f9);color:var(--text-secondary,#64748b);">' +
+          escHTML(doc.carrier) +
+          '</span>'
+        : '';
+
       html +=
         '<div class="plan-card" data-plan-search="' +
         escHTML(planSearchStr) +
         '" id="pv-' +
         doc.id +
-        '" style="border-left:4px solid ' +
-        grp.borderColor +
-        ';margin-bottom:8px;">';
-
-      // ── COLLAPSED: header row only ──
-      html +=
-        '<div style="padding:14px 18px;display:flex;align-items:center;gap:10px;">';
-      // Name
-      html +=
-        '<div style="flex:1;min-width:0;">' +
-        '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);line-height:1.3;">' +
-        doc.name +
-        '</div>';
-      html += '</div>';
-      // Type pill
-      html +=
-        '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:' +
+        '" onclick="openPlanDrawer(\'' +
+        doc.id +
+        '\')" style="background:var(--cha-bg-card,#fff);border:1px solid var(--border-default,#e5e7eb);border-radius:16px;padding:16px 18px;cursor:pointer;transition:all 0.15s ease;display:flex;flex-direction:column;justify-content:space-between;min-height:100px;" onmouseover="this.style.borderColor=\'#5175f1\';this.style.boxShadow=\'0 0 0 2px rgba(81,117,241,0.15)\';this.style.transform=\'translateY(-1px)\'" onmouseout="this.style.borderColor=\'var(--border-default,#e5e7eb)\';this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
+        '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.3;">' +
+        escHTML(doc.name) +
+        '</span>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;">' +
+        '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:' +
         badgeBg +
         ';color:' +
         badgeColor +
-        ';white-space:nowrap;flex-shrink:0;">' +
+        ';">' +
         grp.key +
-        '</span>';
-      // View Details button
-      html +=
-        '<button id="pv-toggle-' +
-        doc.id +
-        '" onclick="openPlanDrawer(\'' +
-        doc.id +
-        '\')" style="padding:6px 14px;border-radius:8px;font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--accent);background:rgba(91,141,239,0.08);border:1px solid rgba(91,141,239,0.2);cursor:pointer;white-space:nowrap;display:flex;align-items:center;gap:4px;flex-shrink:0;">' +
-        '<span class="pv-toggle-text">View Details</span>' +
-        '<svg class="pv-chev" id="pv-chev-' +
-        doc.id +
-        '" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transition:transform 0.2s;"><polyline points="6 9 12 15 18 9"/></svg>' +
-        '</button>';
-      html += '</div>';
+        '</span>' +
+        '</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:3px;">' +
+        networkPill +
+        carrierPill +
+        '</div>' +
+        '</div>';
 
       // ── EXPANDED: flat sections ──
       html +=
@@ -1683,7 +1681,6 @@ function renderPlanGroups() {
         escHTML(doc.source) +
         '</a></div>';
       html += '</div>'; // close pv-detail
-      html += '</div>'; // close plan-card
     });
     html += '</div></div>';
   });
