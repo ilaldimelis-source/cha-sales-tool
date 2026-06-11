@@ -36,12 +36,12 @@ const OBJECTIONS = [
     obj: 'I Need to Think About It',
     diag: 'What specifically are you wanting to think through?',
     real: "One unresolved concern underneath. 'Think about it' is almost never about thinking — it's about one thing they haven't said yet.",
-    best: "Of course — you should feel comfortable. Usually when someone says that, there's just one thing that isn't fully clear yet.",
+    best: 'Of course -- what specifically is on your mind? Is it the rate, the coverage, or something else?',
     soft: "No pressure at all — I just want to make sure you're not stuck guessing later.",
     strong:
       'Totally — but usually when people wait, nothing actually changes except they stay uncovered.',
     bridge:
-      'If we clear that part up right now, would you feel good moving forward?',
+      'Let them answer. Address it. Then: So if that were handled, is there anything else stopping you from moving forward today?',
     close: "Let's go ahead and get this set up so you're not exposed.",
     avoid: [
       "Never say 'okay, call me back'",
@@ -55,11 +55,12 @@ const OBJECTIONS = [
     obj: 'I Need to Talk to My Spouse',
     diag: 'In your own mind — does this make sense for you?',
     real: "Sometimes true, sometimes a delay. Either way, they haven't fully committed personally yet.",
-    best: "Of course — that's important. If you feel good about it, it's much easier to explain it to them.",
+    best: "Totally makes sense -- what do you think she's going to want to know? The rate, how the coverage works, or something else?",
     soft: 'Totally respect that — I just want to make sure you feel confident about it first.',
     strong:
       'If it makes sense to you, usually the only thing your spouse wants is clarity — not delay.',
-    bridge: "Let's make sure you feel 100% solid explaining it.",
+    bridge:
+      "Handle whatever they say. If they still need to loop her in: That's fine -- what does tomorrow look like? I can call you at 10 or 11, gives you tonight to talk it over. Morning or afternoon work better?",
     close:
       "Worst case, they review it after — but at least you're protected starting today.",
     avoid: [
@@ -74,11 +75,12 @@ const OBJECTIONS = [
     obj: 'Send Me the Information',
     diag: 'What would you want to understand when you look at it?',
     real: "They want an exit from the call without saying no directly. 'Send me info' is almost always a polite stall.",
-    best: 'I can definitely send it — I just want to make sure it actually makes sense when you read it.',
+    best: "I can do that -- is there something specific you want to look over? Because if it's something I can just answer now, that's usually faster than waiting on an email.",
     soft: "No problem at all — I just don't want you looking at something confusing.",
     strong:
       "Most people I send it to don't end up moving forward because they don't understand it without context.",
-    bridge: "Let me walk you through the key part now — it'll take 2 minutes.",
+    bridge:
+      "If they still want it: Sending it now -- while it loads, let me just walk you through the main things so you know what you're looking at when you open it. Stay on the call.",
     close: 'That way you have both — coverage AND the info.',
     avoid: [
       "Don't just send information and hope for the best",
@@ -92,12 +94,12 @@ const OBJECTIONS = [
     obj: "I Don't Trust This",
     diag: 'Is it the plan itself, or just not seeing something like this before?',
     real: "They've been burned before, heard something negative, or don't know enough to feel safe.",
-    best: 'I actually respect that — you should question things like this.',
+    best: "That's fair -- what part feels off? I'd rather you tell me now. What specifically are you not sure about?",
     soft: 'Totally fair — especially with how confusing insurance is.',
     strong:
       "Everything I'm telling you is verifiable — I'd rather you check than just take my word.",
     bridge:
-      'This is administered by [administrator], uses [network], underwritten by [underwriter].',
+      "Let them say it, then address it directly. Pull up their doctor in real time while they're on the phone -- fastest trust builder available.",
     close:
       'Does that give you enough clarity to feel comfortable moving forward?',
     avoid: [
