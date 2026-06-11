@@ -1440,24 +1440,27 @@ var POLICY_DOCS = [
       {
         category: 'Preventive Care',
         items: [
-          'All tiers: 100% covered at $0 copay -- not subject to deductible',
-          'Includes annual physicals, routine screenings, mammograms, colonoscopies, pap smears'
+          'Preventive care only -- 100% covered at $0 copay, not subject to deductible'
         ]
       },
       {
         category: 'Telemedicine (relyMD)',
         items: [
-          'All tiers: $0 copay -- not subject to deductible',
+          'Telemedicine only -- $0 copay, not subject to deductible',
           'Virtual Primary Care, Urgent Care, Mental Health -- 24/7 access'
         ]
       },
       {
         category: 'PCP / Specialist / Urgent Care',
         items: [
-          'All tiers: 2 PCP visits per year -- $50 copay (before deductible)',
-          'All tiers: 2 Specialist visits per year -- $50 copay (before deductible)',
-          'All tiers: 2 Urgent Care visits per year -- $50 copay (before deductible)',
-          'After deductible met: 2 additional PCP, 2 Specialist, 2 Urgent Care visits',
+          'For office visits, each covered member receives:',
+          '2 Primary Care visits per calendar year -- $50 copay before the deductible',
+          '2 Specialist visits per calendar year -- $50 copay before the deductible',
+          '2 Urgent Care visits per calendar year -- $50 copay before the deductible',
+          'After the deductible has been met, each covered member receives an additional:',
+          '2 Primary Care visits',
+          '2 Specialist visits',
+          '2 Urgent Care visits',
           'No referral required'
         ]
       },
