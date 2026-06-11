@@ -10423,3 +10423,11 @@ html,
 body {
   background-color: var(--cha-bg-page) !important;
 }
+
+/* Plan Vault — uniform card height */
+.plan-card {
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
