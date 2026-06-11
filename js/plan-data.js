@@ -1,4 +1,4 @@
-﻿// plan-data.js â€” POLICY_DOCS array (pure data, no functions)
+﻿// plan-data.js -- POLICY_DOCS array (pure data, no functions)
 // Loaded before policy-docs.js which handles render/filter/toggle
 //
 // Text below is copied verbatim from knowledge_base/Plan_Reference_Table.pdf
@@ -782,17 +782,17 @@ var POLICY_DOCS = [
         category: 'Deductible & Coinsurance',
         items: [
           'Deductible options: $500 / $1,000 / $2,000 / $2,500 / $5,000 / $7,500 / $10,000',
-          'Coinsurance: 50/50 or 80/20 (options vary â€” plan pays 50% or 80%)',
+          'Coinsurance: 50/50 or 80/20 (options vary -- plan pays 50% or 80%)',
           'Out-of-pocket maximum: $5,000'
         ]
       },
       {
         category: 'Hospital & Surgery',
         items: [
-          'Inpatient hospital: average standard room rate â€” subject to deductible/coinsurance',
+          'Inpatient hospital: average standard room rate -- subject to deductible/coinsurance',
           'ICU: average standard room rate',
-          'Outpatient surgery: $500 deductible per surgery â€” max 3',
-          'ER: $500 deductible per visit â€” max 3 visits',
+          'Outpatient surgery: $500 deductible per surgery -- max 3',
+          'ER: $500 deductible per visit -- max 3 visits',
           'Advanced diagnostic: $500 per occurrence',
           'Ambulance: $250 per transport (injury and sickness)'
         ]
@@ -800,25 +800,25 @@ var POLICY_DOCS = [
       {
         category: 'Extended Benefits',
         items: [
-          'Extended care facility: $150/day â€” max 30 days',
-          'Home health care: $50/visit â€” max 30 days',
-          'Physical, occupational, speech therapy: $50/day â€” max 20 visits'
+          'Extended care facility: $150/day -- max 30 days',
+          'Home health care: $50/visit -- max 30 days',
+          'Physical, occupational, speech therapy: $50/day -- max 20 visits'
         ]
       },
       {
         category: 'Mental Health',
         items: [
-          'Inpatient mental health: $100/day â€” max 31 days',
-          'Outpatient mental health: $50/day â€” max 10 visits',
-          'Substance abuse inpatient: $100/day â€” max 31 days',
-          'Substance abuse outpatient: $50/day â€” max 10 visits'
+          'Inpatient mental health: $100/day -- max 31 days',
+          'Outpatient mental health: $50/day -- max 10 visits',
+          'Substance abuse inpatient: $100/day -- max 31 days',
+          'Substance abuse outpatient: $50/day -- max 10 visits'
         ]
       },
       {
         category: 'Coverage Terms',
         items: [
           'Coverage length: 6-month or 364-day terms',
-          'Consecutive terms available â€” up to 36 months max',
+          'Consecutive terms available -- up to 36 months max',
           'Next-day coverage effective date',
           'Benefits and deductibles RESET each policy block'
         ]
@@ -829,15 +829,15 @@ var POLICY_DOCS = [
           'Accidents: Covered from Day 1 (effective date)',
           'Sickness: Covered after 5-day waiting period from effective date',
           'Cancer: Covered after 30-day waiting period from effective date',
-          'Doctor visits and urgent care: Covered â€” subject to deductible and coinsurance',
-          'Inpatient hospitalization: Covered â€” subject to deductible and coinsurance',
-          'Surgery (inpatient and outpatient): Covered â€” subject to deductible and coinsurance',
-          'Emergency room: Covered â€” subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
-          'Ambulance: Covered â€” subject to deductible and coinsurance',
-          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses â€” subject to deductible and coinsurance',
-          'MRI and CT scans: Covered â€” subject to deductible and coinsurance',
-          'Network: PHCS Practitioner Plus Ancillary Network â€” members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
-          'Complications of pregnancy: Covered â€” standard maternity/childbirth NOT covered'
+          'Doctor visits and urgent care: Covered -- subject to deductible and coinsurance',
+          'Inpatient hospitalization: Covered -- subject to deductible and coinsurance',
+          'Surgery (inpatient and outpatient): Covered -- subject to deductible and coinsurance',
+          'Emergency room: Covered -- subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
+          'Ambulance: Covered -- subject to deductible and coinsurance',
+          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses -- subject to deductible and coinsurance',
+          'MRI and CT scans: Covered -- subject to deductible and coinsurance',
+          'Network: PHCS Practitioner Plus Ancillary Network -- members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
+          'Complications of pregnancy: Covered -- standard maternity/childbirth NOT covered'
         ]
       }
     ],
@@ -858,14 +858,14 @@ var POLICY_DOCS = [
       'Joint/tendon surgery capped per schedule',
       'Kidney stones, appendectomy: capped per schedule',
       'AIDS/HIV: benefit-capped per schedule',
-      'First 6 months: excluded â€” hysterectomy (unless cancer), tonsillectomy, adenoidectomy, hernia repair, gallbladder surgery, nasal/sinus surgery',
-      'Plan terminates â€” NOT a qualifying life event for ACA enrollment',
-      'Deductibles and limits RESET under new policy â€” any condition developed becomes pre-existing',
+      'First 6 months: excluded -- hysterectomy (unless cancer), tonsillectomy, adenoidectomy, hernia repair, gallbladder surgery, nasal/sinus surgery',
+      'Plan terminates -- NOT a qualifying life event for ACA enrollment',
+      'Deductibles and limits RESET under new policy -- any condition developed becomes pre-existing',
       'Pre-existing conditions: Not covered for conditions diagnosed or treated in the 12 months prior to effective date',
-      'Maternity, standard childbirth, prenatal care, delivery services: Not covered â€” complications of pregnancy only',
-      'Mental health and substance abuse: Not covered or very limited â€” check specific plan schedule',
+      'Maternity, standard childbirth, prenatal care, delivery services: Not covered -- complications of pregnancy only',
+      'Mental health and substance abuse: Not covered or very limited -- check specific plan schedule',
       'Dental and vision: Not covered',
-      'Prescription drugs (Pinnacle STM): Not covered as insurance â€” Rx Savers discount card included',
+      'Prescription drugs (Pinnacle STM): Not covered as insurance -- Rx Savers discount card included',
       'Cosmetic surgery: Not covered',
       'Weight loss and bariatric surgery: Not covered',
       'Infertility treatment: Not covered',
@@ -874,19 +874,19 @@ var POLICY_DOCS = [
       'Non-emergency care outside US: Not covered',
       'Workers compensation conditions: Not covered',
       'Hazardous activity injuries: Not covered',
-      'This plan is NOT ACA minimum essential coverage â€” not compliant with ACA requirements',
-      'This plan cannot be renewed â€” member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
+      'This plan is NOT ACA minimum essential coverage -- not compliant with ACA requirements',
+      'This plan cannot be renewed -- member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
       'Age limit: Coverage terminates at end of month member turns 65'
     ],
     waitingPeriods: [
-      'Day 1 â€” injuries',
-      '5 days â€” sickness',
-      '30 days â€” cancer'
+      'Day 1 -- injuries',
+      '5 days -- sickness',
+      '30 days -- cancer'
     ],
     preEx:
       'Conditions treated in prior 60 months excluded for first 12 months of coverage',
     planNotes:
-      'True STM with deductible/coinsurance. Has limited mental health and substance abuse coverage. Next-day effective. PHCS network access. Policy terminates â€” NOT renewable as permanent coverage. | STM plan â€” not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary â€” confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies â€” confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
+      'True STM with deductible/coinsurance. Has limited mental health and substance abuse coverage. Next-day effective. PHCS network access. Policy terminates -- NOT renewable as permanent coverage. | STM plan -- not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary -- confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies -- confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
   },
 {
     group: 'STM',
@@ -902,21 +902,21 @@ var POLICY_DOCS = [
       {
         category: 'Doctor Visits (Plan 1)',
         items: [
-          'PCP / Urgent Care: $25 copay â€” 2 visits â€” not subject to deductible',
-          'Specialist: $40 copay â€” not subject to deductible'
+          'PCP / Urgent Care: $25 copay -- 2 visits -- not subject to deductible',
+          'Specialist: $40 copay -- not subject to deductible'
         ]
       },
       {
         category: 'Doctor Visits (Plan 2)',
         items: [
-          'PCP: $15 copay â€” unlimited â€” not subject to deductible',
+          'PCP: $15 copay -- unlimited -- not subject to deductible',
           'Specialist: $25 copay'
         ]
       },
       {
         category: 'Doctor Visits (Plan 3)',
         items: [
-          'PCP / Urgent Care: $25 copay â€” 2 visits â€” not subject to deductible',
+          'PCP / Urgent Care: $25 copay -- 2 visits -- not subject to deductible',
           'Specialist: $40 copay'
         ]
       },
@@ -932,7 +932,7 @@ var POLICY_DOCS = [
       {
         category: 'Network',
         items: [
-          'PHCS network â€” voluntary access to in-network negotiated rates',
+          'PHCS network -- voluntary access to in-network negotiated rates',
           'Facility charges: plan pays up to 150% of Medicare allowable',
           'No requirement to use in-network providers'
         ]
@@ -951,15 +951,15 @@ var POLICY_DOCS = [
           'Accidents: Covered from Day 1 (effective date)',
           'Sickness: Covered after 5-day waiting period from effective date',
           'Cancer: Covered after 30-day waiting period from effective date',
-          'Doctor visits and urgent care: Covered â€” subject to deductible and coinsurance',
-          'Inpatient hospitalization: Covered â€” subject to deductible and coinsurance',
-          'Surgery (inpatient and outpatient): Covered â€” subject to deductible and coinsurance',
-          'Emergency room: Covered â€” subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
-          'Ambulance: Covered â€” subject to deductible and coinsurance',
-          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses â€” subject to deductible and coinsurance',
-          'MRI and CT scans: Covered â€” subject to deductible and coinsurance',
-          'Network: PHCS Practitioner Plus Ancillary Network â€” members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
-          'Complications of pregnancy: Covered â€” standard maternity/childbirth NOT covered'
+          'Doctor visits and urgent care: Covered -- subject to deductible and coinsurance',
+          'Inpatient hospitalization: Covered -- subject to deductible and coinsurance',
+          'Surgery (inpatient and outpatient): Covered -- subject to deductible and coinsurance',
+          'Emergency room: Covered -- subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
+          'Ambulance: Covered -- subject to deductible and coinsurance',
+          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses -- subject to deductible and coinsurance',
+          'MRI and CT scans: Covered -- subject to deductible and coinsurance',
+          'Network: PHCS Practitioner Plus Ancillary Network -- members can see any doctor but in-network avoids balance billing. Find providers at providersearch.multiplan.com',
+          'Complications of pregnancy: Covered -- standard maternity/childbirth NOT covered'
         ]
       },
       {
@@ -994,8 +994,8 @@ var POLICY_DOCS = [
       {
         category: 'Surgery (All Plans)',
         items: [
-          'Plan 1: $5,000 per surgery â€” max $10,000 per coverage period',
-          'Plans 2 & 3: $1,000 per surgery â€” max $2,000 per coverage period',
+          'Plan 1: $5,000 per surgery -- max $10,000 per coverage period',
+          'Plans 2 & 3: $1,000 per surgery -- max $2,000 per coverage period',
           'Assistant surgeon: subject to deductible and coinsurance',
           'Anesthesia: subject to deductible and coinsurance'
         ]
@@ -1016,10 +1016,10 @@ var POLICY_DOCS = [
       {
         category: 'Extended & Home Care (All Plans)',
         items: [
-          'Extended care facility: up to $100/day â€” max 30 days per coverage period',
+          'Extended care facility: up to $100/day -- max 30 days per coverage period',
           'Hospice care: up to $5,000 per coverage period',
-          'Home health care: up to $30/day â€” max 30 days per coverage period',
-          'Therapy (PT/speech/OT): up to $30/day â€” max 15 days per coverage period'
+          'Home health care: up to $30/day -- max 30 days per coverage period',
+          'Therapy (PT/speech/OT): up to $30/day -- max 15 days per coverage period'
         ]
       },
       {
@@ -1034,8 +1034,8 @@ var POLICY_DOCS = [
       {
         category: 'Prescription & Wellness',
         items: [
-          'Rx discount card: save up to 80% at 68,000+ pharmacies â€” NOT insurance',
-          'HealthWarehouse mail-order: save 30â€“90% on prescriptions',
+          'Rx discount card: save up to 80% at 68,000+ pharmacies -- NOT insurance',
+          'HealthWarehouse mail-order: save 30--90% on prescriptions',
           'NCE member discounts: dental, vision, hearing, chiropractic, labs'
         ]
       }
@@ -1049,12 +1049,12 @@ var POLICY_DOCS = [
       'NO waiting period for injuries',
       'NOT renewable as permanent coverage',
       'Temporary plan only',
-      'State variations apply â€” not available in all states',
+      'State variations apply -- not available in all states',
       'Pre-existing conditions: Not covered for conditions diagnosed or treated in the 12 months prior to effective date',
-      'Maternity, standard childbirth, prenatal care, delivery services: Not covered â€” complications of pregnancy only',
-      'Mental health and substance abuse: Not covered or very limited â€” check specific plan schedule',
+      'Maternity, standard childbirth, prenatal care, delivery services: Not covered -- complications of pregnancy only',
+      'Mental health and substance abuse: Not covered or very limited -- check specific plan schedule',
       'Dental and vision: Not covered',
-      'Prescription drugs (Pinnacle STM): Not covered as insurance â€” Rx Savers discount card included',
+      'Prescription drugs (Pinnacle STM): Not covered as insurance -- Rx Savers discount card included',
       'Cosmetic surgery: Not covered',
       'Weight loss and bariatric surgery: Not covered',
       'Infertility treatment: Not covered',
@@ -1063,25 +1063,25 @@ var POLICY_DOCS = [
       'Non-emergency care outside US: Not covered',
       'Workers compensation conditions: Not covered',
       'Hazardous activity injuries: Not covered',
-      'This plan is NOT ACA minimum essential coverage â€” not compliant with ACA requirements',
-      'This plan cannot be renewed â€” member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
+      'This plan is NOT ACA minimum essential coverage -- not compliant with ACA requirements',
+      'This plan cannot be renewed -- member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
       'Age limit: Coverage terminates at end of month member turns 65',
       'NO outpatient prescription drug coverage',
       'NO dental or vision coverage',
       'NO mental health or substance abuse coverage',
-      'Surgery caps vary by plan â€” Plan 1: $5K/surgery, Plans 2-3: $1K/surgery',
+      'Surgery caps vary by plan -- Plan 1: $5K/surgery, Plans 2-3: $1K/surgery',
       'ER visit cap: $250 per visit (Plans 1 & 3)',
-      'Rx is discount card only â€” NOT insurance benefit'
+      'Rx is discount card only -- NOT insurance benefit'
     ],
     waitingPeriods: [
-      'Day 1 â€” injuries',
-      '5 days â€” sickness',
-      '30 days â€” cancer'
+      'Day 1 -- injuries',
+      '5 days -- sickness',
+      '30 days -- cancer'
     ],
     preEx:
       '12/12 pre-existing exclusion (may be waived with consecutive enrollment rider)',
     planNotes:
-      'Three plan options. PHCS network access. Pre-ex waiver rider available for consecutive terms. Up to $1M policy max. | STM plan â€” not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary â€” confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies â€” confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
+      'Three plan options. PHCS network access. Pre-ex waiver rider available for consecutive terms. Up to $1M policy max. | STM plan -- not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary -- confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies -- confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
   },
 {
     group: 'STM',
@@ -1106,9 +1106,9 @@ var POLICY_DOCS = [
       {
         category: 'Doctor Visits (Both Plans)',
         items: [
-          'PCP / Urgent Care: $25 copay â€” max 2 visits â€” not subject to deductible',
-          'Specialist: $40 copay â€” max 2 visits',
-          'Wellness: $50 copay â€” max 1 visit',
+          'PCP / Urgent Care: $25 copay -- max 2 visits -- not subject to deductible',
+          'Specialist: $40 copay -- max 2 visits',
+          'Wellness: $50 copay -- max 1 visit',
           'Office/urgent care visits beyond copay limit: subject to deductible & coinsurance',
           'Office visit max benefit: $2,000 per coverage period (Limited plan only)'
         ]
@@ -1118,7 +1118,7 @@ var POLICY_DOCS = [
         items: [
           'Standard room: up to $1,500/day including inpatient misc (except professional fees)',
           'ICU/Critical Care: up to $2,000/day including inpatient misc (except professional fees)',
-          'In-hospital doctor visits: up to $50/day â€” max $500 per coverage period'
+          'In-hospital doctor visits: up to $50/day -- max $500 per coverage period'
         ]
       },
       {
@@ -1141,9 +1141,9 @@ var POLICY_DOCS = [
       {
         category: 'Surgery (Limited Plan)',
         items: [
-          'Surgical services: up to $5,000 per surgery â€” max $10,000 per coverage period',
-          'Assistant surgeon: up to $1,000 per surgery â€” max $2,000 per coverage period',
-          'Anesthesia: up to $1,000 per surgery â€” max $2,000 per coverage period',
+          'Surgical services: up to $5,000 per surgery -- max $10,000 per coverage period',
+          'Assistant surgeon: up to $1,000 per surgery -- max $2,000 per coverage period',
+          'Anesthesia: up to $1,000 per surgery -- max $2,000 per coverage period',
           'Joint/tendon surgery: up to $3,000 per coverage period (both knees)',
           'Gallbladder: up to $3,000; Appendectomy: up to $3,000; Kidney stones: up to $3,000'
         ]
@@ -1161,12 +1161,12 @@ var POLICY_DOCS = [
         category: 'Other Covered Expenses (Both Plans)',
         items: [
           'Organ/tissue/bone marrow transplants: Limited up to $50,000 / Traditional up to $100,000',
-          'Skilled nursing facility: up to $100/day â€” max 30 days',
+          'Skilled nursing facility: up to $100/day -- max 30 days',
           'Hospice care: up to $5,000 per coverage period',
           'AIDS: up to $10,000 per coverage period',
-          'Home health care: up to $30/day â€” max 30 days',
-          'Therapy (PT/speech/OT): up to $30/day â€” max 15 days',
-          'Ambulance: ground up to $500/trip â€” air up to $1,000/trip',
+          'Home health care: up to $30/day -- max 30 days',
+          'Therapy (PT/speech/OT): up to $30/day -- max 15 days',
+          'Ambulance: ground up to $500/trip -- air up to $1,000/trip',
           'DME and medical supplies: subject to deductible and coinsurance',
           'Bone density testing: up to $150 per coverage period'
         ]
@@ -1174,11 +1174,11 @@ var POLICY_DOCS = [
       {
         category: 'Network & Rx',
         items: [
-          'PHCS network â€” approximately 900,000 healthcare providers',
+          'PHCS network -- approximately 900,000 healthcare providers',
           'Facility charges: plan pays up to 150% of Medicare allowable',
           'RightWay Healthcare patient advisors for navigation assistance',
           'NCE Association member discounts: prescriptions, vision, hearing, dental, nutrition',
-          'Rx discount card available â€” NOT insurance benefit'
+          'Rx discount card available -- NOT insurance benefit'
         ]
       },
       {
@@ -1186,7 +1186,7 @@ var POLICY_DOCS = [
         items: [
           'Next-day coverage available',
           'Up to 36 months coverage depending on state',
-          'Eligibility: ages 18â€“64Â½ (children 2â€“17)',
+          'Eligibility: ages 18--64Â½ (children 2--17)',
           'Pre-existing waiver rider available for consecutive terms'
         ]
       }
@@ -1194,7 +1194,7 @@ var POLICY_DOCS = [
     limitations: [
       'NOT ACA-compliant insurance',
       'NO maternity coverage (complications of pregnancy covered)',
-      'Pre-existing conditions excluded â€” 36-month lookback period',
+      'Pre-existing conditions excluded -- 36-month lookback period',
       '5-day waiting period for sickness',
       '30-day waiting period for cancer',
       'No waiting period for injuries',
@@ -1206,15 +1206,15 @@ var POLICY_DOCS = [
       'NO allergy testing or injections',
       'Limited plan: hospital room capped at $1,500/day; surgery at $5,000/surgery',
       'Traditional plan: no specific dollar caps but subject to deductible/coinsurance/max',
-      'Association discounts are NOT insurance â€” no coverage guarantee'
+      'Association discounts are NOT insurance -- no coverage guarantee'
     ],
     waitingPeriods: [
-      'Day 1 â€” injuries',
-      '5 days â€” sickness',
-      '30 days â€” cancer'
+      'Day 1 -- injuries',
+      '5 days -- sickness',
+      '30 days -- cancer'
     ],
-    preEx: '36-month lookback â€” exclusion for conditions diagnosed or treated within 36 months prior to effective date',
-    planNotes: 'PHCS network STM with two sub-plans: Limited (capped benefits) and Traditional (subject to deductible/coinsurance). Includes RightWay patient advocacy. Pre-ex is 36-month lookback â€” longer than most STM plans. Up to $1M policy max.'
+    preEx: '36-month lookback -- exclusion for conditions diagnosed or treated within 36 months prior to effective date',
+    planNotes: 'PHCS network STM with two sub-plans: Limited (capped benefits) and Traditional (subject to deductible/coinsurance). Includes RightWay patient advocacy. Pre-ex is 36-month lookback -- longer than most STM plans. Up to $1M policy max.'
   },
 {
     group: 'STM',
@@ -1228,7 +1228,7 @@ var POLICY_DOCS = [
     source: 'NEOSGIC_AFRP_STM_LimitedElite_1.pdf',
     benefits: [
       {
-        category: 'ELITE â€” Deductible & Coinsurance',
+        category: 'ELITE -- Deductible & Coinsurance',
         items: [
           'Deductible: $2,500 / $5,000 / $7,500 / $10,000',
           'Coinsurance: SGIC pays 50% / 70% / 80%',
@@ -1237,38 +1237,38 @@ var POLICY_DOCS = [
         ]
       },
       {
-        category: 'ELITE â€” Doctor Visits',
+        category: 'ELITE -- Doctor Visits',
         items: [
-          'Office visit: PCP $30 copay / Specialty $45 copay â€” not subject to deductible',
-          'Wellness: $40 copay â€” not subject to deductible',
-          'Urgent care: $60 copay â€” not subject to deductible',
+          'Office visit: PCP $30 copay / Specialty $45 copay -- not subject to deductible',
+          'Wellness: $40 copay -- not subject to deductible',
+          'Urgent care: $60 copay -- not subject to deductible',
           'ER: Accident $500 copay / Sickness $750 copay'
         ]
       },
       {
-        category: 'ELITE â€” Hospital & Surgery',
+        category: 'ELITE -- Hospital & Surgery',
         items: [
           'Standard room & ICU: up to $3,000/day',
           'Inpatient doctor visits: up to $100/visit',
-          'Inpatient surgery: $8,000 per surgery â€” up to 3 per term',
-          'Outpatient surgery: $8,000 per surgery â€” up to 2 per term',
-          'Surgical office: $1,000 per surgery â€” up to 3 per term',
+          'Inpatient surgery: $8,000 per surgery -- up to 3 per term',
+          'Outpatient surgery: $8,000 per surgery -- up to 2 per term',
+          'Surgical office: $1,000 per surgery -- up to 3 per term',
           'Ambulance: Ground up to $1,000 / Air up to $2,500'
         ]
       },
       {
-        category: 'ELITE â€” Diagnostics & Therapy',
+        category: 'ELITE -- Diagnostics & Therapy',
         items: [
           'Outpatient diagnostics: Pathology $40 copay / Radiology $60 copay',
           'Advanced radiology: $250 copay',
           'PT/OT covered: up to $60/day',
           'Chiropractic: up to $60/day',
-          'Mental health inpatient: $100/day â€” up to 30 days',
-          'Mental health outpatient professional: $100/day â€” up to 10 days'
+          'Mental health inpatient: $100/day -- up to 30 days',
+          'Mental health outpatient professional: $100/day -- up to 10 days'
         ]
       },
       {
-        category: 'STANDARD â€” Deductible & Coinsurance',
+        category: 'STANDARD -- Deductible & Coinsurance',
         items: [
           'Deductible: $2,500 / $5,000 / $7,500 / $10,000',
           'Coinsurance: SGIC pays 50% / 70% / 80%',
@@ -1277,37 +1277,37 @@ var POLICY_DOCS = [
         ]
       },
       {
-        category: 'STANDARD â€” Doctor Visits & ER',
+        category: 'STANDARD -- Doctor Visits & ER',
         items: [
-          'Office visit: PCP $40 copay / Specialty $60 copay â€” not subject to deductible',
-          'Wellness: $40 copay â€” not subject to deductible',
-          'Urgent care: $60 copay â€” not subject to deductible',
+          'Office visit: PCP $40 copay / Specialty $60 copay -- not subject to deductible',
+          'Wellness: $40 copay -- not subject to deductible',
+          'Urgent care: $60 copay -- not subject to deductible',
           'ER: Accident $500 copay / Sickness $750 copay'
         ]
       },
       {
-        category: 'STANDARD â€” Hospital & Surgery',
+        category: 'STANDARD -- Hospital & Surgery',
         items: [
           'Standard room & ICU: up to $2,500/day',
           'Inpatient doctor visits: up to $80/visit',
-          'Inpatient surgery: $4,000 per surgery â€” up to 2 per term',
-          'Outpatient surgery: $4,000 per surgery â€” up to 1 per term',
-          'Surgical office: $1,000 per surgery â€” up to 2 per term',
+          'Inpatient surgery: $4,000 per surgery -- up to 2 per term',
+          'Outpatient surgery: $4,000 per surgery -- up to 1 per term',
+          'Surgical office: $1,000 per surgery -- up to 2 per term',
           'Ambulance: Ground up to $500 / Air up to $1,000'
         ]
       },
       {
-        category: 'STANDARD â€” Diagnostics & Therapy',
+        category: 'STANDARD -- Diagnostics & Therapy',
         items: [
           'Outpatient diagnostics: up to $1,000 per term',
           'Advanced radiology: up to $1,500 per term',
           'PT/OT: up to $60/day',
           'Chiropractic: NOT covered',
-          'Inpatient professional: $50/day â€” up to 10 days'
+          'Inpatient professional: $50/day -- up to 10 days'
         ]
       },
       {
-        category: 'ECONOMY â€” Deductible & Coinsurance',
+        category: 'ECONOMY -- Deductible & Coinsurance',
         items: [
           'Deductible: $5,000 / $7,500 / $10,000',
           'Coinsurance: SGIC pays 50% / 70% / 80%',
@@ -1316,7 +1316,7 @@ var POLICY_DOCS = [
         ]
       },
       {
-        category: 'ECONOMY â€” Doctor Visits & ER',
+        category: 'ECONOMY -- Doctor Visits & ER',
         items: [
           'Office visit: PCP $40 copay / Specialty $60 copay',
           'Wellness: up to $250 per term',
@@ -1325,18 +1325,18 @@ var POLICY_DOCS = [
         ]
       },
       {
-        category: 'ECONOMY â€” Hospital & Surgery',
+        category: 'ECONOMY -- Hospital & Surgery',
         items: [
           'Standard room & ICU: up to $1,500/day',
           'Inpatient doctor visits: up to $60/visit',
-          'Inpatient surgery: $2,000 per surgery â€” up to 1 per term',
-          'Outpatient surgery: $2,000 per surgery â€” up to 1 per term',
-          'Surgical office: $1,000 per surgery â€” up to 1 per term',
+          'Inpatient surgery: $2,000 per surgery -- up to 1 per term',
+          'Outpatient surgery: $2,000 per surgery -- up to 1 per term',
+          'Surgical office: $1,000 per surgery -- up to 1 per term',
           'Ambulance: Ground up to $250 / Air up to $1,000'
         ]
       },
       {
-        category: 'ECONOMY â€” Diagnostics',
+        category: 'ECONOMY -- Diagnostics',
         items: [
           'Outpatient diagnostics: up to $500 per term',
           'Advanced radiology: up to $1,000 per term',
@@ -1362,15 +1362,15 @@ var POLICY_DOCS = [
           'Accidents: Covered from Day 1 (effective date)',
           'Sickness: Covered after 5-day waiting period from effective date',
           'Cancer: Covered after 30-day waiting period from effective date',
-          'Doctor visits and urgent care: Covered â€” subject to deductible and coinsurance',
-          'Inpatient hospitalization: Covered â€” subject to deductible and coinsurance',
-          'Surgery (inpatient and outpatient): Covered â€” subject to deductible and coinsurance',
-          'Emergency room: Covered â€” subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
-          'Ambulance: Covered â€” subject to deductible and coinsurance',
-          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses â€” subject to deductible and coinsurance',
-          'MRI and CT scans: Covered â€” subject to deductible and coinsurance',
-          'Network: First Health + MultiPlan â€” members can see any doctor but in-network avoids balance billing. Find providers at myfirsthealth.com or multiplan.com',
-          'Complications of pregnancy: Covered â€” standard maternity/childbirth NOT covered'
+          'Doctor visits and urgent care: Covered -- subject to deductible and coinsurance',
+          'Inpatient hospitalization: Covered -- subject to deductible and coinsurance',
+          'Surgery (inpatient and outpatient): Covered -- subject to deductible and coinsurance',
+          'Emergency room: Covered -- subject to deductible and additional ER deductible (waived if admitted within 24 hours)',
+          'Ambulance: Covered -- subject to deductible and coinsurance',
+          'X-ray, lab work, blood work, diagnostic imaging: Covered as outpatient miscellaneous medical expenses -- subject to deductible and coinsurance',
+          'MRI and CT scans: Covered -- subject to deductible and coinsurance',
+          'Network: First Health + MultiPlan -- members can see any doctor but in-network avoids balance billing. Find providers at myfirsthealth.com or multiplan.com',
+          'Complications of pregnancy: Covered -- standard maternity/childbirth NOT covered'
         ]
       }
     ],
@@ -1383,14 +1383,14 @@ var POLICY_DOCS = [
       'Coverage period deductibles and limits RESET each 12-month term',
       'New illness under current policy becomes pre-existing under new policy',
       'First Health Network access NOT available in New Mexico for certain plans',
-      'Economy plan: doctor visits subject to deductible â€” no copay',
-      'Mental health: limited â€” Elite only has inpatient 30 days / outpatient 10 days',
-      'ReviveHealth pharmacy is a membership service â€” NOT insurance',
+      'Economy plan: doctor visits subject to deductible -- no copay',
+      'Mental health: limited -- Elite only has inpatient 30 days / outpatient 10 days',
+      'ReviveHealth pharmacy is a membership service -- NOT insurance',
       'Pre-existing conditions: Not covered for conditions diagnosed or treated in the 12 months prior to effective date',
-      'Maternity, standard childbirth, prenatal care, delivery services: Not covered â€” complications of pregnancy only',
-      'Mental health and substance abuse: Not covered or very limited â€” check specific plan schedule',
+      'Maternity, standard childbirth, prenatal care, delivery services: Not covered -- complications of pregnancy only',
+      'Mental health and substance abuse: Not covered or very limited -- check specific plan schedule',
       'Dental and vision: Not covered',
-      'Prescription drugs: Not covered as insurance â€” ReviveHealth pharmacy membership included',
+      'Prescription drugs: Not covered as insurance -- ReviveHealth pharmacy membership included',
       'Cosmetic surgery: Not covered',
       'Weight loss and bariatric surgery: Not covered',
       'Infertility treatment: Not covered',
@@ -1399,24 +1399,24 @@ var POLICY_DOCS = [
       'Non-emergency care outside US: Not covered',
       'Workers compensation conditions: Not covered',
       'Hazardous activity injuries: Not covered',
-      'This plan is NOT ACA minimum essential coverage â€” not compliant with ACA requirements',
-      'This plan cannot be renewed â€” member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
+      'This plan is NOT ACA minimum essential coverage -- not compliant with ACA requirements',
+      'This plan cannot be renewed -- member must reapply for new plan at end of term. New conditions developed under current plan become pre-existing on new plan',
       'Age limit: Coverage terminates at end of month member turns 65',
       'STANDARD: No chiropractic; Mental health inpatient only (no outpatient)',
       'ECONOMY: No chiropractic, no mental health, no inpatient professional',
-      'Pre-existing: 12-month lookback â€” conditions within 12 months prior excluded',
-      'Pharmacy through ReviveHealth is membership service â€” NOT insurance coverage',
+      'Pre-existing: 12-month lookback -- conditions within 12 months prior excluded',
+      'Pharmacy through ReviveHealth is membership service -- NOT insurance coverage',
       '6-month surgery waiting period for hysterectomy, tonsillectomy, hernia, gallbladder, sinus, deviated septum (unless cancer-related)'
     ],
     waitingPeriods: [
-      'Day 1 â€” injuries',
-      '5 days â€” sickness (state-specific)',
-      '30 days â€” cancer'
+      'Day 1 -- injuries',
+      '5 days -- sickness (state-specific)',
+      '30 days -- cancer'
     ],
     preEx:
       '12-month exclusion for conditions existing within 12 months prior to effective date',
     planNotes:
-      'Most comprehensive STM available. Elite tier has $2M max, $30/$45 copays, $3,000/day hospital. ReviveHealth pharmacy is a major value-add. Closest to major medical of all STM options. | STM plan â€” not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary â€” confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies â€” confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
+      'Most comprehensive STM available. Elite tier has $2M max, $30/$45 copays, $3,000/day hospital. ReviveHealth pharmacy is a major value-add. Closest to major medical of all STM options. | STM plan -- not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary -- confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies -- confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
   },
 {
     id: 'medvalue',
@@ -1554,36 +1554,36 @@ var POLICY_DOCS = [
       {
         category: 'Hospital Confinement',
         items: [
-          '100A tier: $100/day â€” max 30 days',
-          '200 tier: $200/day â€” max 30 days',
-          '300 tier: $300/day â€” max 30 days',
-          '500 tier: $500/day â€” max 30 days',
-          '750 tier: $750/day â€” max 30 days',
-          '1000 tier: $1,000/day â€” max 30 days'
+          '100A tier: $100/day -- max 30 days',
+          '200 tier: $200/day -- max 30 days',
+          '300 tier: $300/day -- max 30 days',
+          '500 tier: $500/day -- max 30 days',
+          '750 tier: $750/day -- max 30 days',
+          '1000 tier: $1,000/day -- max 30 days'
         ]
       },
       {
         category: 'Doctor Office Visits',
         items: [
-          'Primary Care: $50/day â€” tiers vary: 3 or 5 max days/yr',
-          '1000 tier: $75/day â€” 5 max days/yr',
-          'Specialty Care: $50/day â€” tiers 100Aâ€“1000',
+          'Primary Care: $50/day -- tiers vary: 3 or 5 max days/yr',
+          '1000 tier: $75/day -- 5 max days/yr',
+          'Specialty Care: $50/day -- tiers 100A--1000',
           '1000 tier: $75/day specialist'
         ]
       },
       {
         category: 'Emergency Room',
         items: [
-          'ER benefit (100 tier and above â€” NOT available on 100A): $50/day â€” max 1 day/yr',
-          '1000 tier: $100/day â€” max 1 day/yr'
+          'ER benefit (100 tier and above -- NOT available on 100A): $50/day -- max 1 day/yr',
+          '1000 tier: $100/day -- max 1 day/yr'
         ]
       },
       {
         category: 'Surgery & Procedures',
         items: [
-          '200/200+ tier: Surgery $400/day â€” max 3 days; Anesthesia 20%',
-          '300 tier: Surgery $750/day â€” 3 days; 500 tier: $1,000/day â€” 3 days',
-          '750 tier: Surgery $1,500/day â€” 3 days; 1000 tier: NO surgery benefit',
+          '200/200+ tier: Surgery $400/day -- max 3 days; Anesthesia 20%',
+          '300 tier: Surgery $750/day -- 3 days; 500 tier: $1,000/day -- 3 days',
+          '750 tier: Surgery $1,500/day -- 3 days; 1000 tier: NO surgery benefit',
           'Pathology & Radiology: 200 tier $50/day 1 day; 200+ $50/day 3 days; 500/750 $50/day 2 days; 1000 $75/day 3 days',
           'Advanced Studies: 200 tier $50/day 1 day; 200+ $50/day 3 days; 500/750 $50/day 2 days; 1000 $75/day 3 days'
         ]
@@ -1591,20 +1591,20 @@ var POLICY_DOCS = [
       {
         category: 'Mental Health',
         items: [
-          '200 tier: Inpatient $150/day â€” max 60 days',
-          '200+ tier: Inpatient $250/day â€” max 60 days',
-          '300 tier: Inpatient $375/day â€” max 60 days',
-          '500 tier: Inpatient $500/day â€” max 60 days',
+          '200 tier: Inpatient $150/day -- max 60 days',
+          '200+ tier: Inpatient $250/day -- max 60 days',
+          '300 tier: Inpatient $375/day -- max 60 days',
+          '500 tier: Inpatient $500/day -- max 60 days',
           '750 and 1000 tiers: NO mental health benefit',
-          '200â€“500 tiers: Outpatient $50/day â€” max 20 days',
+          '200--500 tiers: Outpatient $50/day -- max 20 days',
           '750 and 1000 tiers: NO outpatient mental health'
         ]
       },
       {
         category: 'Accident Benefits',
         items: [
-          '200â€“500 tiers: Supplemental Accident Inpatient Admission: $500/day â€” 1 day',
-          '200â€“500 tiers: Supplemental Accident ER: $250/day â€” 1 day',
+          '200--500 tiers: Supplemental Accident Inpatient Admission: $500/day -- 1 day',
+          '200--500 tiers: Supplemental Accident ER: $250/day -- 1 day',
           '750 and 1000 tiers: NO supplemental accident benefit'
         ]
       },
@@ -1613,42 +1613,42 @@ var POLICY_DOCS = [
         items: [
           'Accidental Death: $10,000 (all tiers except 100A)',
           'Critical Illness: $1,000 (100+ tiers)',
-          'No deductible â€” no coinsurance',
+          'No deductible -- no coinsurance',
           'Guaranteed issue underwriting'
         ]
       },
       {
         category: 'Plan Structure',
         items: [
-          'No deductible â€” fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
-          'No out-of-pocket maximum â€” plan pays fixed benefit amounts up to stated limits',
-          'Accidents: Covered from Day 1 â€” no waiting period for injury',
+          'No deductible -- fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum -- plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 -- no waiting period for injury',
           'Sickness: 30-day waiting period applies',
           'Pre-existing conditions: Not covered for first 12 months from effective date',
-          'Hospital confinement benefit: Pays fixed daily amount for each day admitted â€” see plan tier for amount',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted -- see plan tier for amount',
           'Accidental death benefit: $10,000 maximum on all tiers',
-          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day â€” NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
+          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day -- NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
           'Pre-negotiated network discounts: Members who use in-network providers (First Health or PHCS depending on plan) receive pre-negotiated discounted rates on services. This reduces the gap between the actual bill and the fixed benefit amount. Always verify the provider is in-network before the appointment at providersearch.multiplan.com.'
         ]
       },
       {
         category: 'Additional Benefits & Savings Programs',
         items: [
-          'Blood work and lab tests: QuestSelect Unlimited Lab Program â€” $0 copay for 1,000+ outpatient lab tests including blood tests, urinalysis, pap smears, biopsies, cultures. Use any Quest Diagnostics location nationwide. Present QuestSelect card at appointment.',
-          'Imaging savings: Average 60% off MRI and CT scans through Imaging Savings Program â€” discount only, not insurance',
-          'Chiropractic savings: Free initial consult, up to 50% off diagnostic services and x-rays, unlimited treatments at 30% savings â€” discount only',
-          'Mental health inpatient (tiers 200+ only): $150-$500/day up to 60 days â€” NOT available on tiers 100A and 100',
-          'Mental health outpatient (tiers 200+ only): $50/day up to 20 days â€” NOT available on tiers 100A and 100',
+          'Blood work and lab tests: QuestSelect Unlimited Lab Program -- $0 copay for 1,000+ outpatient lab tests including blood tests, urinalysis, pap smears, biopsies, cultures. Use any Quest Diagnostics location nationwide. Present QuestSelect card at appointment.',
+          'Imaging savings: Average 60% off MRI and CT scans through Imaging Savings Program -- discount only, not insurance',
+          'Chiropractic savings: Free initial consult, up to 50% off diagnostic services and x-rays, unlimited treatments at 30% savings -- discount only',
+          'Mental health inpatient (tiers 200+ only): $150-$500/day up to 60 days -- NOT available on tiers 100A and 100',
+          'Mental health outpatient (tiers 200+ only): $50/day up to 20 days -- NOT available on tiers 100A and 100',
           'Surgery benefit (tiers 200+ only): $400-$1,500 per day up to 3 days',
           'Critical illness benefit: $1,000 on all tiers except 100A',
-          'Emergency room benefit (tiers 100+ only): $50-$100 per day, 1 day maximum â€” NOT available on tier 100A'
+          'Emergency room benefit (tiers 100+ only): $50-$100 per day, 1 day maximum -- NOT available on tier 100A'
         ]
       }
     ],
     limitations: [
       'NOT ACA-compliant insurance',
-      'NOT major medical â€” does not pay full medical bills',
-      'Benefits are FIXED DOLLAR AMOUNTS per service â€” not percentage of actual charge',
+      'NOT major medical -- does not pay full medical bills',
+      'Benefits are FIXED DOLLAR AMOUNTS per service -- not percentage of actual charge',
       'Pre-existing conditions: NO coverage for 12 months following effective date (12/12)',
       '30-day waiting period immediately following Coverage Effective Date (does not apply to injury)',
       'Benefits based on annual period per insured from effective date',
@@ -1658,7 +1658,7 @@ var POLICY_DOCS = [
       'NOT intended to replace major medical coverage',
       'Maternity, pregnancy, childbirth, prenatal care: Not covered',
       'Dental and vision: Not covered',
-      'Prescription drugs: Not covered as insurance â€” discount savings program included',
+      'Prescription drugs: Not covered as insurance -- discount savings program included',
       'Physical therapy, speech therapy, occupational therapy: Not covered',
       'Home health care and hospice: Not covered',
       'Custodial care: Not covered',
@@ -1670,18 +1670,18 @@ var POLICY_DOCS = [
       'Voluntary sterilization reversal: Not covered',
       'Workers compensation conditions: Not covered',
       'This plan is NOT ACA compliant and is NOT major medical insurance',
-      'Plan pays fixed cash benefit amounts â€” member is responsible for any amount above the plan benefit',
-      'Mental health and substance abuse (tiers 100A and 100): Not covered on these tiers â€” available on tier 200 and above',
+      'Plan pays fixed cash benefit amounts -- member is responsible for any amount above the plan benefit',
+      'Mental health and substance abuse (tiers 100A and 100): Not covered on these tiers -- available on tier 200 and above',
       'Lab work during hospitalization: Not covered under QuestSelect program',
       'Emergency/STAT lab work: Not covered under QuestSelect',
       'Fertility testing, bone marrow, spinal fluid tests: Not covered under QuestSelect',
-      'X-ray as standalone benefit: Not covered as insurance â€” chiropractic savings program includes discounted x-rays'
+      'X-ray as standalone benefit: Not covered as insurance -- chiropractic savings program includes discounted x-rays'
     ],
-    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” injuries'],
+    waitingPeriods: ['30 days -- sickness', 'Day 1 -- injuries'],
     preEx:
       '12-month exclusion for conditions diagnosed/treated in prior 12 months',
     planNotes:
-      'Fixed indemnity with 8 tiers (100A through 1000). Higher tiers add surgery, mental health, accident benefits. Pays you directly â€” not the hospital. Guaranteed issue.'
+      'Fixed indemnity with 8 tiers (100A through 1000). Higher tiers add surgery, mental health, accident benefits. Pays you directly -- not the hospital. Guaranteed issue.'
   },
 {
     group: 'Limited',
@@ -1697,30 +1697,30 @@ var POLICY_DOCS = [
       {
         category: 'Hospital Confinement',
         items: [
-          '100A: $100/day â€” max 30 days',
-          '200+: $200/day â€” max 30 days',
-          '500: $500/day â€” max 30 days',
-          '1000: $1,000/day â€” max 30 days'
+          '100A: $100/day -- max 30 days',
+          '200+: $200/day -- max 30 days',
+          '500: $500/day -- max 30 days',
+          '1000: $1,000/day -- max 30 days'
         ]
       },
       {
         category: 'Doctor Office Visits',
         items: [
-          'Primary Care: $50/day â€” 3 days (100A/100) or 5 days (200+)',
-          '1000 tier: $75/day â€” 5 days',
-          'Specialty: $50/day â€” 3 days (100A/100) or 5 days (200+)'
+          'Primary Care: $50/day -- 3 days (100A/100) or 5 days (200+)',
+          '1000 tier: $75/day -- 5 days',
+          'Specialty: $50/day -- 3 days (100A/100) or 5 days (200+)'
         ]
       },
       {
         category: 'Emergency Room',
         items: [
-          '100 tier: $50/day â€” 1 day; 200+: $50/day â€” 1-2 days; 1000: $100/day'
+          '100 tier: $50/day -- 1 day; 200+: $50/day -- 1-2 days; 1000: $100/day'
         ]
       },
       {
         category: 'Surgery & Procedures',
         items: [
-          '200+ tiers: Surgery $400â€“$1,500/day â€” 3 days; Anesthesia 20%',
+          '200+ tiers: Surgery $400--$1,500/day -- 3 days; Anesthesia 20%',
           'Pathology & Radiology (200+ tiers): $50/day',
           'Advanced Studies (200+ tiers): $50/day'
         ]
@@ -1728,7 +1728,7 @@ var POLICY_DOCS = [
       {
         category: 'Mental Health',
         items: [
-          '200+ tiers: Inpatient $150/day â€” 60 days; Outpatient $50/day â€” 20 days'
+          '200+ tiers: Inpatient $150/day -- 60 days; Outpatient $50/day -- 20 days'
         ]
       },
       {
@@ -1736,28 +1736,28 @@ var POLICY_DOCS = [
         items: [
           'Accidental Death: $10,000 (100+ tiers)',
           'Critical Illness: $1,000 (200+ tiers)',
-          'No deductible â€” guaranteed issue'
+          'No deductible -- guaranteed issue'
         ]
       },
       {
         category: 'Plan Structure',
         items: [
-          'No deductible â€” fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
-          'No out-of-pocket maximum â€” plan pays fixed benefit amounts up to stated limits',
-          'Accidents: Covered from Day 1 â€” no waiting period for injury',
+          'No deductible -- fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum -- plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 -- no waiting period for injury',
           'Sickness: 30-day waiting period applies',
           'Pre-existing conditions: Not covered for first 12 months from effective date',
-          'Hospital confinement benefit: Pays fixed daily amount for each day admitted â€” see plan tier for amount',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted -- see plan tier for amount',
           'Accidental death benefit: $10,000 maximum on all tiers',
-          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day â€” NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
+          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day -- NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
           'Pre-negotiated network discounts: Members who use in-network providers (First Health or PHCS depending on plan) receive pre-negotiated discounted rates on services. This reduces the gap between the actual bill and the fixed benefit amount. Always verify the provider is in-network before the appointment at providersearch.multiplan.com.'
         ]
       },
       {
         category: 'Additional Benefits & Savings Programs',
         items: [
-          'Blood work and lab tests: Laboratory Savings Program â€” discounted rates at ncegapaffordplus.com. Not available in NY, NJ, RI.',
-          'Imaging savings: Average 60% off MRI and CT scans â€” discount only, not insurance',
+          'Blood work and lab tests: Laboratory Savings Program -- discounted rates at ncegapaffordplus.com. Not available in NY, NJ, RI.',
+          'Imaging savings: Average 60% off MRI and CT scans -- discount only, not insurance',
           'Mental health inpatient (tiers 200+ only): $150-$500/day up to 60 days',
           'Mental health outpatient (tiers 200+ only): $50/day up to 20 days',
           'Critical illness: $1,000 on tiers 200+',
@@ -1768,14 +1768,14 @@ var POLICY_DOCS = [
     limitations: [
       'NOT ACA-compliant insurance',
       'NOT major medical',
-      'Benefits are FIXED AMOUNTS â€” not actual bill payment',
+      'Benefits are FIXED AMOUNTS -- not actual bill payment',
       '12/12 pre-existing condition exclusion',
       '30-day waiting period for sickness (not applicable to injury)',
       'Balance billing risk for charges above fixed benefit',
       'NOT a substitute for major medical coverage',
       'Maternity, pregnancy, childbirth, prenatal care: Not covered',
       'Dental and vision: Not covered',
-      'Prescription drugs: Not covered as insurance â€” discount savings program included',
+      'Prescription drugs: Not covered as insurance -- discount savings program included',
       'Physical therapy, speech therapy, occupational therapy: Not covered',
       'Home health care and hospice: Not covered',
       'Custodial care: Not covered',
@@ -1787,9 +1787,9 @@ var POLICY_DOCS = [
       'Voluntary sterilization reversal: Not covered',
       'Workers compensation conditions: Not covered',
       'This plan is NOT ACA compliant and is NOT major medical insurance',
-      'Plan pays fixed cash benefit amounts â€” member is responsible for any amount above the plan benefit'
+      'Plan pays fixed cash benefit amounts -- member is responsible for any amount above the plan benefit'
     ],
-    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” injuries'],
+    waitingPeriods: ['30 days -- sickness', 'Day 1 -- injuries'],
     preEx: '12-month exclusion for prior 12-month conditions',
     planNotes:
       'Very similar structure to HarmonyCare. Same underwriter (AFSLIC), same association (NCE). Multiple tiers. Differentiated by plan name/branding.'
@@ -1808,69 +1808,69 @@ var POLICY_DOCS = [
       {
         category: 'Hospital Confinement',
         items: [
-          'Plan 100: $100/day â€” 30 days/confinement, 90 days/cert year',
-          'Plan 200: $200/day â€” 30 days/confinement, 90 days/cert year',
-          'Plan 200+: $200/day â€” same limits',
-          'Plan 300: $300/day â€” same limits',
+          'Plan 100: $100/day -- 30 days/confinement, 90 days/cert year',
+          'Plan 200: $200/day -- 30 days/confinement, 90 days/cert year',
+          'Plan 200+: $200/day -- same limits',
+          'Plan 300: $300/day -- same limits',
           'Plan 500: $500/day; Plan 1000: $1,000/day; Plan 1000+: $1,000/day'
         ]
       },
       {
         category: 'ICU Confinement',
         items: [
-          'Plan 100: $100/day â€” 30 days/confinement, 90 days/cert year',
-          'Plan 200: $200/day â€” 30 days/confinement, 90 days/cert year',
-          'Plan 200+: $200/day â€” same limits',
-          'Plan 300: $300/day â€” same limits',
+          'Plan 100: $100/day -- 30 days/confinement, 90 days/cert year',
+          'Plan 200: $200/day -- 30 days/confinement, 90 days/cert year',
+          'Plan 200+: $200/day -- same limits',
+          'Plan 300: $300/day -- same limits',
           'Plan 500: $500/day; Plan 750: $750/day; Plan 1000: $1,000/day; Plan 1000+: $1,000/day'
         ]
       },
       {
         category: 'Doctor Office (Outpatient)',
         items: [
-          'Plans 100â€“300: Physician $50/day â€” 3 visits/cert year',
-          'Plans 500â€“750: Physician $50/day â€” 5 visits/cert year',
-          'Plan 1000: Physician $75/day â€” 5 visits/cert year',
-          'Plan 1000+: Physician $75/day â€” 5 visits/cert year'
+          'Plans 100--300: Physician $50/day -- 3 visits/cert year',
+          'Plans 500--750: Physician $50/day -- 5 visits/cert year',
+          'Plan 1000: Physician $75/day -- 5 visits/cert year',
+          'Plan 1000+: Physician $75/day -- 5 visits/cert year'
         ]
       },
       {
         category: 'Emergency Room',
         items: [
-          'Plans 100â€“300: $50/day â€” 2/cert year',
-          'Plan 500: $50/day â€” 2/cert year',
-          'Plan 750: $75/day â€” 2/cert year',
-          'Plan 1000: $100/day â€” 2/cert year',
-          'Plan 1000+: $100/day â€” 2/cert year'
+          'Plans 100--300: $50/day -- 2/cert year',
+          'Plan 500: $50/day -- 2/cert year',
+          'Plan 750: $75/day -- 2/cert year',
+          'Plan 1000: $100/day -- 2/cert year',
+          'Plan 1000+: $100/day -- 2/cert year'
         ]
       },
       {
         category: 'Hospital Admission Benefit',
         items: [
-          'Plan 1000+ only: $1,000 per admission â€” up to 5 admissions/cert year'
+          'Plan 1000+ only: $1,000 per admission -- up to 5 admissions/cert year'
         ]
       },
       {
         category: 'Surgery & Procedures',
         items: [
-          'Plans 200+/300: Surgery $250/day combined inpatient & outpatient â€” 3 days',
-          'Plan 500: Surgery $350/day â€” 3 days',
-          'Plan 750: Surgery $400/day â€” 3 days',
-          'Plans 1000/1000+: Surgery $500/day â€” 3 days',
-          'Anesthesia: 25% â€” 3 days (all surgery-eligible plans)',
-          'Plans 200/200+/300: Labs $50/day â€” 4 days; X-Rays $50/day â€” 4 days',
-          'Plans 500/750: Labs $50/day â€” 8 days; X-Rays $50/day â€” 8 days',
-          'Plans 1000/1000+: Labs $75/day â€” 12 days; X-Rays $75/day â€” 12 days',
-          'Advanced Diagnostic: Plans 200â€“300 $50/day â€” 4 days; 500â€“750 $50/day â€” 6 days; 1000/1000+ $75/day â€” 6 days'
+          'Plans 200+/300: Surgery $250/day combined inpatient & outpatient -- 3 days',
+          'Plan 500: Surgery $350/day -- 3 days',
+          'Plan 750: Surgery $400/day -- 3 days',
+          'Plans 1000/1000+: Surgery $500/day -- 3 days',
+          'Anesthesia: 25% -- 3 days (all surgery-eligible plans)',
+          'Plans 200/200+/300: Labs $50/day -- 4 days; X-Rays $50/day -- 4 days',
+          'Plans 500/750: Labs $50/day -- 8 days; X-Rays $50/day -- 8 days',
+          'Plans 1000/1000+: Labs $75/day -- 12 days; X-Rays $75/day -- 12 days',
+          'Advanced Diagnostic: Plans 200--300 $50/day -- 4 days; 500--750 $50/day -- 6 days; 1000/1000+ $75/day -- 6 days'
         ]
       },
       {
         category: 'NCE Discount Benefits',
         items: [
-          'Dental discount: Aetna Dental Access network â€” 15-50% savings at 262,000+ locations',
-          'Vision discount: OUTLOOK Vision â€” 10-50% off at 12,000+ locations',
+          'Dental discount: Aetna Dental Access network -- 15-50% savings at 262,000+ locations',
+          'Vision discount: OUTLOOK Vision -- 10-50% off at 12,000+ locations',
           'Rx discount card: save up to 80% at participating pharmacies',
-          'Lab savings: DirectLabs â€” up to 80% off blood tests at CLIA-certified labs',
+          'Lab savings: DirectLabs -- up to 80% off blood tests at CLIA-certified labs',
           'Hearing savings: 20-50% off brand-name hearing aids',
           'Chiropractic discount: free initial consult + up to 50% on x-rays + 30% on treatments',
           'Medical bill negotiation: patient advocates negotiate on your behalf'
@@ -1882,7 +1882,7 @@ var POLICY_DOCS = [
           'Guaranteed issue underwriting',
           'Benefits paid directly to you',
           'Multiplan PPO network access for negotiated rates',
-          'Fast payment â€” simplified claims process',
+          'Fast payment -- simplified claims process',
           'ICU Confinement matches Hospital Confinement rate for each plan tier',
           'No chiropractic or acupuncture coverage',
           'No cancel age',
@@ -1892,40 +1892,40 @@ var POLICY_DOCS = [
       {
         category: 'Plan Structure',
         items: [
-          'No deductible â€” fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
-          'No out-of-pocket maximum â€” plan pays fixed benefit amounts up to stated limits',
-          'Accidents: Covered from Day 1 â€” no waiting period for injury',
+          'No deductible -- fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum -- plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 -- no waiting period for injury',
           'Sickness: 30-day waiting period applies',
           'Pre-existing conditions: Not covered for first 12 months from effective date',
-          'Hospital confinement benefit: Pays fixed daily amount for each day admitted â€” see plan tier for amount',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted -- see plan tier for amount',
           'Accidental death benefit: $10,000 maximum on all tiers',
-          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day â€” NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
+          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day -- NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
           'Pre-negotiated network discounts: Members who use in-network providers (First Health or PHCS depending on plan) receive pre-negotiated discounted rates on services. This reduces the gap between the actual bill and the fixed benefit amount. Always verify the provider is in-network before the appointment at providersearch.multiplan.com.'
         ]
       },
       {
         category: 'Additional Benefits & Savings Programs',
         items: [
-          'Blood work and lab tests: Laboratory Savings Program â€” discounted rates. Not available in NY, NJ, RI.',
+          'Blood work and lab tests: Laboratory Savings Program -- discounted rates. Not available in NY, NJ, RI.',
           'Chiropractic savings: Free consult, up to 50% off diagnostic services and x-rays, 30% off unlimited treatments',
-          'Imaging savings: Average 60% off MRI and CT scans â€” discount only'
+          'Imaging savings: Average 60% off MRI and CT scans -- discount only'
         ]
       }
     ],
     limitations: [
       'NOT ACA-compliant insurance',
-      'NOT major medical â€” not intended as a substitute for major medical',
-      'Benefits are FIXED DOLLAR AMOUNTS â€” not bill payment',
+      'NOT major medical -- not intended as a substitute for major medical',
+      'Benefits are FIXED DOLLAR AMOUNTS -- not bill payment',
       '12/12 pre-existing condition limitation applies to ALL plans',
       '30-day waiting period for sickness',
-      'ICU Confinement benefit available on ALL plans: Plans 100/200/200+/300 ($100/$200/$200/$300 per day) â€” Plans 500/750/1000/1000+ ($500/$750/$1,000/$1,000 per day) â€” 30 days per confinement, 90 days per cert year',
+      'ICU Confinement benefit available on ALL plans: Plans 100/200/200+/300 ($100/$200/$200/$300 per day) -- Plans 500/750/1000/1000+ ($500/$750/$1,000/$1,000 per day) -- 30 days per confinement, 90 days per cert year',
       'Hospital admission benefit only on 1000+ plan',
       'No surgery benefit on Plan 100',
       'Balance billing risk',
       'NOT a qualifying life event if coverage ends',
       'Maternity, pregnancy, childbirth, prenatal care: Not covered',
       'Dental and vision: Not covered',
-      'Prescription drugs: Not covered as insurance â€” discount savings program included',
+      'Prescription drugs: Not covered as insurance -- discount savings program included',
       'Physical therapy, speech therapy, occupational therapy: Not covered',
       'Home health care and hospice: Not covered',
       'Custodial care: Not covered',
@@ -1937,10 +1937,10 @@ var POLICY_DOCS = [
       'Voluntary sterilization reversal: Not covered',
       'Workers compensation conditions: Not covered',
       'This plan is NOT ACA compliant and is NOT major medical insurance',
-      'Plan pays fixed cash benefit amounts â€” member is responsible for any amount above the plan benefit',
+      'Plan pays fixed cash benefit amounts -- member is responsible for any amount above the plan benefit',
       'Mental illness and substance abuse: Not covered',
-      'Maternity and standard childbirth: Not covered â€” complications of pregnancy covered as any other sickness',
-      'Chiropractic care: Not covered as insurance â€” savings program available',
+      'Maternity and standard childbirth: Not covered -- complications of pregnancy covered as any other sickness',
+      'Chiropractic care: Not covered as insurance -- savings program available',
       'Acupuncture: Not covered',
       'Gender transformation services: Not covered',
       'Hazardous occupation injuries: Not covered',
@@ -1955,8 +1955,8 @@ var POLICY_DOCS = [
       'NCE discount benefits are NOT insurance'
     ],
     waitingPeriods: [
-      '30 days â€” sickness (30 days/confinement or 90 days/cert year)',
-      'Day 1 â€” injuries'
+      '30 days -- sickness (30 days/confinement or 90 days/cert year)',
+      'Day 1 -- injuries'
     ],
     preEx: '12-month exclusion for prior 12-month conditions',
     planNotes:
@@ -1984,8 +1984,8 @@ var POLICY_DOCS = [
       {
         category: 'Medical Bill Repricing (MBR)',
         items: [
-          'Bills repriced to 150%â€“200% of Medicare Allowable Rates',
-          'Reference-Based Pricing system used â€” over 70% of employer groups in US',
+          'Bills repriced to 150%--200% of Medicare Allowable Rates',
+          'Reference-Based Pricing system used -- over 70% of employer groups in US',
           'Doctor or hospital submits bills to MBR for repricing',
           'Member receives Explanation of Benefits (EOB) showing repriced amount',
           'MBR team provides claim forms and instructions'
@@ -1997,53 +1997,53 @@ var POLICY_DOCS = [
           'Hospital bill reducer and medical bill negotiation',
           'Concierge healthcare advocacy',
           'Financial assistance guidance',
-          'DirectLabs: discounted blood tests at major labs â€” no doctor visit required',
+          'DirectLabs: discounted blood tests at major labs -- no doctor visit required',
           'Savings up to 80% on lab tests'
         ]
       },
       {
         category: 'Plan Structure',
         items: [
-          'No deductible â€” fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
-          'No out-of-pocket maximum â€” plan pays fixed benefit amounts up to stated limits',
-          'Accidents: Covered from Day 1 â€” no waiting period for injury',
+          'No deductible -- fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum -- plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 -- no waiting period for injury',
           'Sickness: 30-day waiting period applies',
           'Pre-existing conditions: Not covered for first 12 months from effective date',
-          'Hospital confinement benefit: Pays fixed daily amount for each day admitted â€” see plan tier for amount',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted -- see plan tier for amount',
           'Accidental death benefit: $10,000 maximum on all tiers',
-          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day â€” NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
+          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day -- NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
           'Pre-negotiated network discounts: Members who use in-network providers (First Health or PHCS depending on plan) receive pre-negotiated discounted rates on services. This reduces the gap between the actual bill and the fixed benefit amount. Always verify the provider is in-network before the appointment at providersearch.multiplan.com.'
         ]
       },
       {
         category: 'Additional Benefits & Savings Programs',
         items: [
-          'Blood work and lab tests: DirectLabs program â€” up to 80% off blood tests, urine, saliva, hair and fecal tests. No doctor appointment needed. Access at directlabs.com/4members. Not available in NJ, NY, RI.',
-          'Prescription discount: Included â€” discount card for pharmacy savings'
+          'Blood work and lab tests: DirectLabs program -- up to 80% off blood tests, urine, saliva, hair and fecal tests. No doctor appointment needed. Access at directlabs.com/4members. Not available in NJ, NY, RI.',
+          'Prescription discount: Included -- discount card for pharmacy savings'
         ]
       },
       {
         category: 'Hospital Insurance (BCS EssentialCare)',
         items: [
-          'First Day Hospital Confinement: $1,000 â€” max 1 day/year',
-          'First Day ICU Confinement: $200 â€” max 1 day/year',
-          'Hospital Confinement (day 2+): $300/day â€” max 10 days/year',
-          'ICU Confinement (day 2+): $500/day â€” max 10 days/year',
-          'Emergency Room: $200/day â€” max 1 day/year',
-          'Doctor Office Visit: $50/day â€” max 3 days/year',
-          'Urgent Care: $125/day â€” max 2 days/year',
-          'Chiropractic: $25/day â€” max 5 days/year',
-          'Ambulance (Air): $200 â€” max 1/year',
-          'Ambulance (Ground/Water): $100 â€” max 1/year',
-          'Wellness Visit: $50 â€” max 1/year'
+          'First Day Hospital Confinement: $1,000 -- max 1 day/year',
+          'First Day ICU Confinement: $200 -- max 1 day/year',
+          'Hospital Confinement (day 2+): $300/day -- max 10 days/year',
+          'ICU Confinement (day 2+): $500/day -- max 10 days/year',
+          'Emergency Room: $200/day -- max 1 day/year',
+          'Doctor Office Visit: $50/day -- max 3 days/year',
+          'Urgent Care: $125/day -- max 2 days/year',
+          'Chiropractic: $25/day -- max 5 days/year',
+          'Ambulance (Air): $200 -- max 1/year',
+          'Ambulance (Ground/Water): $100 -- max 1/year',
+          'Wellness Visit: $50 -- max 1/year'
         ]
       },
       {
         category: 'Prescription & Lab Benefits',
         items: [
-          'Rx discount card: save up to 80% at 68,000+ pharmacies â€” NOT insurance',
-          'HealthWarehouse mail-order pharmacy: save 30â€“90%',
-          'DirectLabs: discounted blood tests â€” up to 80% off â€” no doctor visit required',
+          'Rx discount card: save up to 80% at 68,000+ pharmacies -- NOT insurance',
+          'HealthWarehouse mail-order pharmacy: save 30--90%',
+          'DirectLabs: discounted blood tests -- up to 80% off -- no doctor visit required',
           'Working Advantage employee perks program'
         ]
       }
@@ -2051,7 +2051,7 @@ var POLICY_DOCS = [
     limitations: [
       'NOT ACA-compliant insurance',
       'NOT major medical',
-      'Benefits are pre-pays + reference-based repricing â€” NOT guaranteed bill coverage',
+      'Benefits are pre-pays + reference-based repricing -- NOT guaranteed bill coverage',
       'Medical providers may DECLINE to honor Reference-Based Pricing',
       'MBR cannot guarantee outcome of any claim or savings amount',
       'Balance billing possible if provider does not accept repriced amount',
@@ -2059,10 +2059,10 @@ var POLICY_DOCS = [
       '30-day sickness waiting period',
       'NO substance abuse or psychiatric coverage',
       'NO maternity coverage',
-      'Managed Care network â€” verify provider availability',
+      'Managed Care network -- verify provider availability',
       'Maternity, pregnancy, childbirth, prenatal care: Not covered',
       'Dental and vision: Not covered',
-      'Prescription drugs: Not covered as insurance â€” discount savings program included',
+      'Prescription drugs: Not covered as insurance -- discount savings program included',
       'Physical therapy, speech therapy, occupational therapy: Not covered',
       'Home health care and hospice: Not covered',
       'Custodial care: Not covered',
@@ -2074,19 +2074,19 @@ var POLICY_DOCS = [
       'Voluntary sterilization reversal: Not covered',
       'Workers compensation conditions: Not covered',
       'This plan is NOT ACA compliant and is NOT major medical insurance',
-      'Plan pays fixed cash benefit amounts â€” member is responsible for any amount above the plan benefit',
-      'DirectLabs is NOT insurance â€” members prepay for tests at discounted rates',
-      'Prescription drugs: Not covered as insurance â€” discount card included',
+      'Plan pays fixed cash benefit amounts -- member is responsible for any amount above the plan benefit',
+      'DirectLabs is NOT insurance -- members prepay for tests at discounted rates',
+      'Prescription drugs: Not covered as insurance -- discount card included',
       'Hospital insurance: 12/12 pre-existing condition limitation',
       'Hospital insurance: 75% benefit reduction at age 70',
       'Hospital insurance: no portability option',
       'Hospital insurance: 0-day benefit waiting period',
       'Normal pregnancy included in hospital insurance (complications always covered)'
     ],
-    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” injuries'],
+    waitingPeriods: ['30 days -- sickness', 'Day 1 -- injuries'],
     preEx: '12-month exclusion',
     planNotes:
-      'Unique structure â€” uses Reference-Based Pricing instead of traditional network. MBR reprices bills to 150â€“200% of Medicare. Provider acceptance not guaranteed. Call MBR BEFORE visiting provider: 877-278-4668.'
+      'Unique structure -- uses Reference-Based Pricing instead of traditional network. MBR reprices bills to 150--200% of Medicare. Provider acceptance not guaranteed. Call MBR BEFORE visiting provider: 877-278-4668.'
   },
 {
     group: 'Limited',
@@ -2105,14 +2105,14 @@ var POLICY_DOCS = [
           'Primary Care: $25 pre-pay',
           'Urgent Care: $25 pre-pay',
           'Specialist: $50 pre-pay',
-          'PHCS network physicians â€” call 888-371-7427 or visit MultiPlan.com'
+          'PHCS network physicians -- call 888-371-7427 or visit MultiPlan.com'
         ]
       },
       {
         category: 'Medical Bill Assistance (MBR)',
         items: [
           'Bills submitted to MBR for repricing via Reference-Based Pricing',
-          'Repriced to 150%â€“200% Medicare Allowable Rates',
+          'Repriced to 150%--200% Medicare Allowable Rates',
           'EOB issued to member and provider',
           'Balance handled through negotiation with provider'
         ]
@@ -2120,45 +2120,45 @@ var POLICY_DOCS = [
       {
         category: 'Network',
         items: [
-          'PHCS network access â€” choose in-network for best savings',
+          'PHCS network access -- choose in-network for best savings',
           'MultiPlan: locate providers at 888-371-7427 or MultiPlan.com'
         ]
       },
       {
         category: 'Plan Structure',
         items: [
-          'No deductible â€” fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
-          'No out-of-pocket maximum â€” plan pays fixed benefit amounts up to stated limits',
-          'Accidents: Covered from Day 1 â€” no waiting period for injury',
+          'No deductible -- fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum -- plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 -- no waiting period for injury',
           'Sickness: 30-day waiting period applies',
           'Pre-existing conditions: Not covered for first 12 months from effective date',
-          'Hospital confinement benefit: Pays fixed daily amount for each day admitted â€” see plan tier for amount',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted -- see plan tier for amount',
           'Accidental death benefit: $10,000 maximum on all tiers',
-          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day â€” NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
+          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day -- NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
           'Pre-negotiated network discounts: Members who use in-network providers (First Health or PHCS depending on plan) receive pre-negotiated discounted rates on services. This reduces the gap between the actual bill and the fixed benefit amount. Always verify the provider is in-network before the appointment at providersearch.multiplan.com.'
         ]
       },
       {
         category: 'Additional Benefits & Savings Programs',
         items: [
-          'Blood work and lab tests: DirectLabs program â€” up to 80% off blood tests, urine, saliva, hair and fecal tests. No doctor appointment needed. Access at directlabs.com/4members. Not available in NJ, NY, RI.',
-          'Prescription discount: Included â€” discount card for pharmacy savings'
+          'Blood work and lab tests: DirectLabs program -- up to 80% off blood tests, urine, saliva, hair and fecal tests. No doctor appointment needed. Access at directlabs.com/4members. Not available in NJ, NY, RI.',
+          'Prescription discount: Included -- discount card for pharmacy savings'
         ]
       },
       {
         category: 'Hospital Indemnity (APL MedChoice Plan 3)',
         items: [
-          'Hospital Admission: $1,000/day â€” max 1 day',
-          'Hospital Confinement: $300/day â€” max 30 days',
-          'ICU Admission: $2,000/day â€” max 1 day',
-          'ICU Confinement: $500/day â€” max 30 days',
-          'Inpatient Surgery: $500/day â€” max 1 day',
-          'Outpatient Surgery: $300/day â€” max 1 day',
+          'Hospital Admission: $1,000/day -- max 1 day',
+          'Hospital Confinement: $300/day -- max 30 days',
+          'ICU Admission: $2,000/day -- max 1 day',
+          'ICU Confinement: $500/day -- max 30 days',
+          'Inpatient Surgery: $500/day -- max 1 day',
+          'Outpatient Surgery: $300/day -- max 1 day',
           'General Anesthesia: $125/day',
-          'ER: $300/day â€” max 2 days',
-          'Urgent Care: $50/day â€” max 3 days',
-          'Physician Office: $50/day â€” max 3 days',
-          'PT/Speech/OT: $15/day â€” max 5 days'
+          'ER: $300/day -- max 2 days',
+          'Urgent Care: $50/day -- max 3 days',
+          'Physician Office: $50/day -- max 3 days',
+          'PT/Speech/OT: $15/day -- max 5 days'
         ]
       },
       {
@@ -2167,16 +2167,16 @@ var POLICY_DOCS = [
           'Serious Mental Illness treatment: Included',
           'Alcohol/Drug Addiction treatment: Included',
           'Portability option: Included',
-          'Continuity of Coverage (Takeover): Included â€” credit for time served under prior coverage',
+          'Continuity of Coverage (Takeover): Included -- credit for time served under prior coverage',
           'Pregnancy: complications always covered; normal pregnancy included'
         ]
       },
       {
         category: 'Prescription & Lab Benefits',
         items: [
-          'Rx discount card: save up to 80% at 68,000+ pharmacies â€” NOT insurance',
-          'HealthWarehouse mail-order pharmacy: save 30â€“90%',
-          'DirectLabs: discounted blood tests â€” up to 80% off',
+          'Rx discount card: save up to 80% at 68,000+ pharmacies -- NOT insurance',
+          'HealthWarehouse mail-order pharmacy: save 30--90%',
+          'DirectLabs: discounted blood tests -- up to 80% off',
           'LetsGetChecked: 25% off home health tests'
         ]
       }
@@ -2184,7 +2184,7 @@ var POLICY_DOCS = [
     limitations: [
       'NOT ACA-compliant insurance',
       'NOT major medical',
-      'Pre-pays are for office visits â€” hospital bills repriced through MBR',
+      'Pre-pays are for office visits -- hospital bills repriced through MBR',
       'MBR cannot guarantee savings or claim outcomes',
       'Providers may decline Reference-Based Pricing',
       '12/12 pre-existing condition exclusion',
@@ -2195,7 +2195,7 @@ var POLICY_DOCS = [
       'Balance billing risk',
       'Maternity, pregnancy, childbirth, prenatal care: Not covered',
       'Dental and vision: Not covered',
-      'Prescription drugs: Not covered as insurance â€” discount savings program included',
+      'Prescription drugs: Not covered as insurance -- discount savings program included',
       'Physical therapy, speech therapy, occupational therapy: Not covered',
       'Home health care and hospice: Not covered',
       'Custodial care: Not covered',
@@ -2207,16 +2207,16 @@ var POLICY_DOCS = [
       'Voluntary sterilization reversal: Not covered',
       'Workers compensation conditions: Not covered',
       'This plan is NOT ACA compliant and is NOT major medical insurance',
-      'Plan pays fixed cash benefit amounts â€” member is responsible for any amount above the plan benefit',
-      'DirectLabs is NOT insurance â€” members prepay for tests at discounted rates',
-      'Prescription drugs: Not covered as insurance â€” discount card included',
+      'Plan pays fixed cash benefit amounts -- member is responsible for any amount above the plan benefit',
+      'DirectLabs is NOT insurance -- members prepay for tests at discounted rates',
+      'Prescription drugs: Not covered as insurance -- discount card included',
       'Hospital indemnity: no pre-existing condition limitation for Plan 3',
       'Hospital indemnity: pregnancy included (Plan 3)',
       'Hospital indemnity: occupational exclusion rider may apply',
       'Hospital indemnity benefits paid per day per calendar year',
       'Serious mental illness and addiction treatment included (Plan 3)'
     ],
-    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” injuries'],
+    waitingPeriods: ['30 days -- sickness', 'Day 1 -- injuries'],
     preEx: '12-month exclusion',
     planNotes: 'BWA plan using PHCS network + MBR bill repricing. Plan 3 includes APL MedChoice hospital indemnity with $1,000 admission, $300/day confinement, $2,000 ICU admission, mental health and addiction treatment included. $25 PCP / $50 specialist pre-pay. Call MBR at 877-278-4668.'
   },
@@ -2242,40 +2242,40 @@ var POLICY_DOCS = [
       {
         category: 'Doctor Office Visits',
         items: [
-          'Primary Care: $50/day â€” 3 days (100A/100) or 5 days (200+)',
-          '1000 tier: $75/day; 1000+ tier: $100/day â€” 5 days',
+          'Primary Care: $50/day -- 3 days (100A/100) or 5 days (200+)',
+          '1000 tier: $75/day; 1000+ tier: $100/day -- 5 days',
           'Specialty Care: same structure as PCP visits'
         ]
       },
       {
         category: 'Emergency Room',
         items: [
-          '100 tier+: $50â€“$200/day â€” 1-2 days per year',
+          '100 tier+: $50--$200/day -- 1-2 days per year',
           '1000+ tier: $200/day'
         ]
       },
       {
         category: 'Surgery & Procedures',
         items: [
-          '200+ tiers: Surgery benefit 50%â€“100% of charges â€” 3 days',
-          'Anesthesia: 20â€“25% â€” 3 days',
-          'Pathology & Radiology: $50â€“$200/day â€” 1-3 days',
-          'Advanced Studies: $50â€“$200/day â€” 1-3 days'
+          '200+ tiers: Surgery benefit 50%--100% of charges -- 3 days',
+          'Anesthesia: 20--25% -- 3 days',
+          'Pathology & Radiology: $50--$200/day -- 1-3 days',
+          'Advanced Studies: $50--$200/day -- 1-3 days'
         ]
       },
       {
         category: 'Mental Health',
         items: [
-          '300+ tiers: Inpatient $150â€“$500/day â€” 60 days',
-          '300+ tiers: Outpatient $50/day â€” 20 days'
+          '300+ tiers: Inpatient $150--$500/day -- 60 days',
+          '300+ tiers: Outpatient $50/day -- 20 days'
         ]
       },
       {
         category: 'Enhanced Benefits (1000+ only)',
         items: [
-          'Hospital ICU: $1,000/day â€” 15 days',
-          'Additional Hospital Admission: $1,000 â€” up to 5 admissions',
-          'Supplemental Accident Inpatient: $500/day â€” 3 days',
+          'Hospital ICU: $1,000/day -- 15 days',
+          'Additional Hospital Admission: $1,000 -- up to 5 admissions',
+          'Supplemental Accident Inpatient: $500/day -- 3 days',
           'Supplemental Accident ER: $250/day'
         ]
       },
@@ -2284,42 +2284,42 @@ var POLICY_DOCS = [
         items: [
           'Accidental Death: $10,000 (all tiers)',
           'Critical Illness: $1,000 (200+ tiers)',
-          'No deductible â€” no coinsurance'
+          'No deductible -- no coinsurance'
         ]
       },
       {
         category: 'Plan Structure',
         items: [
-          'No deductible â€” fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
-          'No out-of-pocket maximum â€” plan pays fixed benefit amounts up to stated limits',
-          'Accidents: Covered from Day 1 â€” no waiting period for injury',
+          'No deductible -- fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum -- plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 -- no waiting period for injury',
           'Sickness: 30-day waiting period applies',
           'Pre-existing conditions: Not covered for first 12 months from effective date',
-          'Hospital confinement benefit: Pays fixed daily amount for each day admitted â€” see plan tier for amount',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted -- see plan tier for amount',
           'Accidental death benefit: $10,000 maximum on all tiers',
-          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day â€” NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
+          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day -- NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
           'Pre-negotiated network discounts: Members who use in-network providers (First Health or PHCS depending on plan) receive pre-negotiated discounted rates on services. This reduces the gap between the actual bill and the fixed benefit amount. Always verify the provider is in-network before the appointment at providersearch.multiplan.com.'
         ]
       },
       {
         category: 'Additional Benefits & Savings Programs',
         items: [
-          'Blood work and lab tests: Laboratory Savings Program â€” discounted rates at ncegapaffordplus.com. Not available in NY, NJ, RI.',
-          'Imaging savings: Average 60% off MRI and CT scans â€” discount only',
+          'Blood work and lab tests: Laboratory Savings Program -- discounted rates at ncegapaffordplus.com. Not available in NY, NJ, RI.',
+          'Imaging savings: Average 60% off MRI and CT scans -- discount only',
           'Chiropractic savings: Free consult, up to 50% off x-rays, 30% off unlimited treatments',
           'Mental health inpatient (tiers 300+ only): $150-$500/day up to 60 days',
           'Mental health outpatient (tiers 300+ only): $50/day up to 20 days',
           'Critical illness: $1,000 on tiers 200+',
           'Surgery benefit (tiers 200+ only): 50%-100% per day up to 3 days',
           'Hospital ICU benefit (tier 1000+ only): $1,000/day up to 15 days',
-          'Additional hospital admission benefit (tier 1000+ only): $1,000 per admission â€” up to 5 admissions'
+          'Additional hospital admission benefit (tier 1000+ only): $1,000 per admission -- up to 5 admissions'
         ]
       }
     ],
     limitations: [
       'NOT ACA-compliant insurance',
       'NOT major medical',
-      'Benefits are FIXED AMOUNTS â€” not actual bill payment',
+      'Benefits are FIXED AMOUNTS -- not actual bill payment',
       '12/12 pre-existing condition exclusion',
       '30-day waiting period for sickness (injury exempt)',
       'Balance billing risk',
@@ -2327,7 +2327,7 @@ var POLICY_DOCS = [
       'NOT a substitute for major medical',
       'Maternity, pregnancy, childbirth, prenatal care: Not covered',
       'Dental and vision: Not covered',
-      'Prescription drugs: Not covered as insurance â€” discount savings program included',
+      'Prescription drugs: Not covered as insurance -- discount savings program included',
       'Physical therapy, speech therapy, occupational therapy: Not covered',
       'Home health care and hospice: Not covered',
       'Custodial care: Not covered',
@@ -2339,8 +2339,8 @@ var POLICY_DOCS = [
       'Voluntary sterilization reversal: Not covered',
       'Workers compensation conditions: Not covered',
       'This plan is NOT ACA compliant and is NOT major medical insurance',
-      'Plan pays fixed cash benefit amounts â€” member is responsible for any amount above the plan benefit',
-      'Mental health (tiers 100A, 100, 200): Not covered â€” available on tier 300 and above',
+      'Plan pays fixed cash benefit amounts -- member is responsible for any amount above the plan benefit',
+      'Mental health (tiers 100A, 100, 200): Not covered -- available on tier 300 and above',
       'Substance abuse disorders: Not covered',
       'Prescription drugs: Not covered',
       'NO pregnancy coverage',
@@ -2351,7 +2351,7 @@ var POLICY_DOCS = [
       'NO hospice or home health care',
       'Eligible ages: 65+ adults, dependents 1-25'
     ],
-    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” injuries'],
+    waitingPeriods: ['30 days -- sickness', 'Day 1 -- injuries'],
     preEx: '12-month exclusion for prior 12-month conditions',
     planNotes:
       'MultiPlan network (broader than First Health). 9 tiers including 1000+ with ICU and admission benefits. Surgery at 1000 tier pays 100% of charges up to benefit max.'
