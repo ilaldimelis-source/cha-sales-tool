@@ -3556,6 +3556,126 @@ var POLICY_DOCS = [
       'No traditional 12/12 pre-existing condition exclusion stated in this plan document. Benefits subject to Medical Necessity determination. Verify with carrier for any applicable pre-ex rules.',
     planNotes:
       'Smart Choice 2500 is a true EPO group health benefit plan — the most comprehensive plan in the CHA portfolio. Four deductible options: $1,500 / $2,500 / $3,000 / $3,500 individual with $9,200 OOP max. Includes real major services: inpatient hospital, outpatient surgery, ER, mental health, labs, imaging, transplants. KEY: EPO means ZERO out-of-network — always verify doctor is in First Health network before enrolling. Administered by Detego Health LLC. NOT traditional insurance. Preauthorization required for hospital, imaging, and many other services — failure to preauthorize = denied claim. | This is a limited medical plan — not ACA-compliant major medical | Preauthorization required for: inpatient stays, advanced imaging, DME, transplants, hospice, certain surgeries and drugs | In-network and out-of-network deductibles and OOP do not cross-accumulate | Copays do not apply toward deductible'
-  }
+  },
+    {
+      id: 'medvalue2000',
+      name: 'MedValue 2000',
+      group: 'Limited',
+      type: 'Limited Benefit / Fixed Indemnity',
+      carrier: 'HC Data Consulting / FirstEnroll',
+      network: 'First Health Network (National PPO)',
+      benefits: [
+        { category: 'Plan Type', items: ['High Deductible Value Plan -- limited day benefit plan (ERISA-sponsored)'] },
+        { category: 'Network', items: ['First Health Network -- 5,700+ hospitals, 52,000+ ancillary facilities, 993,000+ professional providers'] },
+        { category: 'Deductible', items: ['Individual $2,000 / Family $4,000'] },
+        { category: 'Out-of-Pocket Max', items: ['Individual $9,200 / Family $18,400'] },
+        { category: 'Preventive Care', items: ['Preventive & wellness services covered at 100% -- $0 copay, not subject to deductible (physicals, screenings, mammograms, colonoscopies, pap smears)'] },
+        { category: 'Telemedicine (relyMD)', items: ['$0 copay -- not subject to deductible', 'Virtual Primary Care, Urgent Care, Mental Health', '24/7 access'] },
+        { category: 'PCP / Specialist / Urgent Care', items: ['2 PCP visits per year -- $50 copay (before deductible)', '2 Specialist visits per year -- $50 copay (before deductible)', '2 Urgent Care visits per year -- $50 copay (before deductible)', 'After deductible met: 2 additional PCP, 2 Specialist, 2 Urgent Care visits', 'No referral required'] },
+        { category: 'Laboratory', items: ['3 per year -- $50 copay (after deductible)'] },
+        { category: 'Radiology', items: ['3 per year -- $100 copay (after deductible)'] },
+        { category: 'Advanced Imaging', items: ['$400 copay (after deductible)', 'Prior authorization required'] },
+        { category: 'Emergency Room', items: ['1 per year -- $500 copay (after deductible)'] },
+        { category: 'Outpatient Surgery', items: ['1 per year -- $500 copay (after deductible)', 'Prior auth required', 'Elective surgeries not covered'] },
+        { category: 'Inpatient Surgery & Hospital', items: ['1 per year -- $1,000 copay (after deductible)', 'Prior auth required', '5-day limit at semi-private room rate', 'Elective surgeries not covered'] },
+        { category: 'Physical & Occupational Therapy', items: ['8 visits/year combined -- $50 copay (after deductible)'] },
+        { category: 'Durable Medical Equipment', items: ['2 items/year -- $50 copay per item (after deductible)'] },
+        { category: 'Generic Rx', items: ['Preventive generics $0 copay before deductible', 'Standard generics $0 copay after deductible'] },
+        { category: 'Med Defender Pro', items: ['Medical Bill Negotiator included', 'Patient Assistance Program included'] }
+      ],
+      limitations: [
+        'NOT traditional major medical -- limited day benefit plan',
+        'Not ACA-compliant',
+        'No maternity, substance abuse, or psychiatric coverage',
+        'Elective surgeries not covered',
+        '1 hospitalization per year, 5-day limit',
+        '30-day waiting period for sickness, hospital, and scheduled visits',
+        'Out-of-network limited to emergencies only'
+      ],
+      waitingPeriods: ['30-day waiting period for sickness, hospitalization, and scheduled doctor visits'],
+      preEx: 'Check plan documents for pre-existing condition terms',
+      source: 'CARRIER_APPROVED_03112026_MEDVALUE_2000_03112026_LR.pdf',
+      rawText: 'MedValue 2000 High Deductible Value Plan limited benefit ERISA First Health Network PPO deductible individual 2000 family 4000 out of pocket max individual 9200 family 18400 preventive 100 percent zero copay telemedicine relyMD zero copay PCP specialist urgent care 4 visits combined 50 copay lab 50 copay radiology 100 copay advanced imaging 400 copay ER 500 copay outpatient surgery 500 copay inpatient surgery 1000 copay PT OT 8 visits DME 2 items generic rx zero copay med defender pro bill negotiator not ACA not major medical no maternity 30 day waiting period FirstEnroll HC Data Consulting ERISA'
+    },
+    {
+      id: 'medvalue4000',
+      name: 'MedValue 4000',
+      group: 'Limited',
+      type: 'Limited Benefit / Fixed Indemnity',
+      carrier: 'HC Data Consulting / FirstEnroll',
+      network: 'First Health Network (National PPO)',
+      benefits: [
+        { category: 'Plan Type', items: ['High Deductible Value Plan -- limited day benefit plan (ERISA-sponsored)'] },
+        { category: 'Network', items: ['First Health Network -- 5,700+ hospitals, 52,000+ ancillary facilities, 993,000+ professional providers'] },
+        { category: 'Deductible', items: ['Individual $4,000 / Family $8,000'] },
+        { category: 'Out-of-Pocket Max', items: ['Individual $9,200 / Family $18,400'] },
+        { category: 'Preventive Care', items: ['Preventive & wellness services covered at 100% -- $0 copay, not subject to deductible (physicals, screenings, mammograms, colonoscopies, pap smears)'] },
+        { category: 'Telemedicine (relyMD)', items: ['$0 copay -- not subject to deductible', 'Virtual Primary Care, Urgent Care, Mental Health', '24/7 access'] },
+        { category: 'PCP / Specialist / Urgent Care', items: ['2 PCP visits per year -- $50 copay (before deductible)', '2 Specialist visits per year -- $50 copay (before deductible)', '2 Urgent Care visits per year -- $50 copay (before deductible)', 'After deductible met: 2 additional PCP, 2 Specialist, 2 Urgent Care visits', 'No referral required'] },
+        { category: 'Laboratory', items: ['3 per year -- $50 copay (after deductible)'] },
+        { category: 'Radiology', items: ['3 per year -- $100 copay (after deductible)'] },
+        { category: 'Advanced Imaging', items: ['$400 copay (after deductible)', 'Prior authorization required'] },
+        { category: 'Emergency Room', items: ['1 per year -- $500 copay (after deductible)'] },
+        { category: 'Outpatient Surgery', items: ['1 per year -- $500 copay (after deductible)', 'Prior auth required', 'Elective surgeries not covered'] },
+        { category: 'Inpatient Surgery & Hospital', items: ['1 per year -- $1,000 copay (after deductible)', 'Prior auth required', '5-day limit at semi-private room rate', 'Elective surgeries not covered'] },
+        { category: 'Physical & Occupational Therapy', items: ['8 visits/year combined -- $50 copay (after deductible)'] },
+        { category: 'Durable Medical Equipment', items: ['2 items/year -- $50 copay per item (after deductible)'] },
+        { category: 'Generic Rx', items: ['Preventive generics $0 copay before deductible', 'Standard generics $0 copay after deductible'] },
+        { category: 'Med Defender Pro', items: ['Medical Bill Negotiator included', 'Patient Assistance Program included'] }
+      ],
+      limitations: [
+        'NOT traditional major medical -- limited day benefit plan',
+        'Not ACA-compliant',
+        'No maternity, substance abuse, or psychiatric coverage',
+        'Elective surgeries not covered',
+        '1 hospitalization per year, 5-day limit',
+        '30-day waiting period for sickness, hospital, and scheduled visits',
+        'Out-of-network limited to emergencies only'
+      ],
+      waitingPeriods: ['30-day waiting period for sickness, hospitalization, and scheduled doctor visits'],
+      preEx: 'Check plan documents for pre-existing condition terms',
+      source: 'CARRIER_APPROVED_031120206_MEDVALUE_4000_03112026_LR.pdf',
+      rawText: 'MedValue 4000 High Deductible Value Plan limited benefit ERISA First Health Network PPO deductible individual 4000 family 8000 out of pocket max individual 9200 family 18400 preventive 100 percent zero copay telemedicine relyMD zero copay PCP specialist urgent care 4 visits combined 50 copay lab 50 copay radiology 100 copay advanced imaging 400 copay ER 500 copay outpatient surgery 500 copay inpatient surgery 1000 copay PT OT 8 visits DME 2 items generic rx zero copay med defender pro bill negotiator not ACA not major medical no maternity 30 day waiting period FirstEnroll HC Data Consulting ERISA'
+    },
+    {
+      id: 'medvalue6000',
+      name: 'MedValue 6000',
+      group: 'Limited',
+      type: 'Limited Benefit / Fixed Indemnity',
+      carrier: 'HC Data Consulting / FirstEnroll',
+      network: 'First Health Network (National PPO)',
+      benefits: [
+        { category: 'Plan Type', items: ['High Deductible Value Plan -- limited day benefit plan (ERISA-sponsored)'] },
+        { category: 'Network', items: ['First Health Network -- 5,700+ hospitals, 52,000+ ancillary facilities, 993,000+ professional providers'] },
+        { category: 'Deductible', items: ['Individual $6,000 / Family $12,000'] },
+        { category: 'Out-of-Pocket Max', items: ['Individual $9,200 / Family $18,400'] },
+        { category: 'Preventive Care', items: ['Preventive & wellness services covered at 100% -- $0 copay, not subject to deductible (physicals, screenings, mammograms, colonoscopies, pap smears)'] },
+        { category: 'Telemedicine (relyMD)', items: ['$0 copay -- not subject to deductible', 'Virtual Primary Care, Urgent Care, Mental Health', '24/7 access'] },
+        { category: 'PCP / Specialist / Urgent Care', items: ['2 PCP visits per year -- $50 copay (before deductible)', '2 Specialist visits per year -- $50 copay (before deductible)', '2 Urgent Care visits per year -- $50 copay (before deductible)', 'After deductible met: 2 additional PCP, 2 Specialist, 2 Urgent Care visits', 'No referral required'] },
+        { category: 'Laboratory', items: ['3 per year -- $25 copay (after deductible)'] },
+        { category: 'Radiology', items: ['3 per year -- $50 copay (after deductible)'] },
+        { category: 'Advanced Imaging', items: ['$400 copay (after deductible)', 'Prior authorization required'] },
+        { category: 'Emergency Room', items: ['1 per year -- $500 copay (after deductible)'] },
+        { category: 'Outpatient Surgery', items: ['1 per year -- $500 copay (after deductible)', 'Prior auth required', 'Elective surgeries not covered'] },
+        { category: 'Inpatient Surgery & Hospital', items: ['1 per year -- $1,000 copay (after deductible)', 'Prior auth required', '5-day limit at semi-private room rate', 'Elective surgeries not covered'] },
+        { category: 'Physical & Occupational Therapy', items: ['8 visits/year combined -- $50 copay (after deductible)'] },
+        { category: 'Durable Medical Equipment', items: ['2 items/year -- $50 copay per item (after deductible)'] },
+        { category: 'Generic Rx', items: ['Preventive generics $0 copay before deductible', 'Standard generics $0 copay after deductible'] },
+        { category: 'Med Defender Pro', items: ['Medical Bill Negotiator included', 'Patient Assistance Program included'] }
+      ],
+      limitations: [
+        'NOT traditional major medical -- limited day benefit plan',
+        'Not ACA-compliant',
+        'No maternity, substance abuse, or psychiatric coverage',
+        'Elective surgeries not covered',
+        '1 hospitalization per year, 5-day limit',
+        '30-day waiting period for sickness, hospital, and scheduled visits',
+        'Out-of-network limited to emergencies only'
+      ],
+      waitingPeriods: ['30-day waiting period for sickness, hospitalization, and scheduled doctor visits'],
+      preEx: 'Check plan documents for pre-existing condition terms',
+      source: 'CARRIER_APPROVED_03112026_MEDVALUE_6000_03112026_LR.pdf',
+      rawText: 'MedValue 6000 High Deductible Value Plan limited benefit ERISA First Health Network PPO deductible individual 6000 family 12000 out of pocket max individual 9200 family 18400 preventive 100 percent zero copay telemedicine relyMD zero copay PCP specialist urgent care 4 visits combined 50 copay lab 25 copay radiology 50 copay advanced imaging 400 copay ER 500 copay outpatient surgery 500 copay inpatient surgery 1000 copay PT OT 8 visits DME 2 items generic rx zero copay med defender pro bill negotiator not ACA not major medical no maternity 30 day waiting period FirstEnroll HC Data Consulting ERISA'
+    }
 ];
 /* Knowledge-base PDF full text merges + reference table prepend: see js/plan-data-pdf-raw.js */
