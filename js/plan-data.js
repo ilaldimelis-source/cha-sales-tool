@@ -22,9 +22,7 @@ var CHA_KNOWLEDGE_BASE_REF_TEXT =
   'Access Health STM PHCS AFSLIC NCE\n' +
   'Smart Health STM PHCS Standard Life NCE\n' +
   'Galena STM MultiPlan Southern Guarantee AFRP\n' +
-  'SmartChoice 1500 First Health EPO Detego Health Population Science Mgmt\n' +
-  'SmartChoice 3000 First Health EPO Detego Health Population Science Mgmt\n' +
-  'SmartChoice 3500 First Health EPO Detego Health Population Science Mgmt\n' +
+  'SmartChoice First Health EPO Detego Health Population Science Mgmt\n' +
   'MEC\n' +
   'Plan Name Network Underwriter Association\n' +
   'MedFirst 1-5 First Health MBA TVP\n' +
@@ -123,12 +121,7 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
       p.network = 'PHCS';
       p.carrier = 'American Public Life';
       p.assoc = 'Business Workers of America (BWA)';
-    } else if (
-      id === 'smartchoice2500' ||
-      id === 'smartchoice1500' ||
-      id === 'smartchoice3000' ||
-      id === 'smartchoice3500'
-    ) {
+    } else if (id === 'smartchoice') {
       p.network = 'First Health EPO';
       p.carrier = 'Detego Health';
       p.assoc = 'Population Science Management';
@@ -137,6 +130,106 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
 }
 
 var POLICY_DOCS = [
+  {
+    group: 'MEC',
+    id: 'trueh1',
+    rawText: 'True Health 1 Physician Services1 (Utilizes the First Health Network)2 Primary Care Office Visit 3 visits / yr Specialist or Urgent Care Office Visit 1 visits / yr In-Patient Hospitalization Benefit Telemedicine $1,000 / Day Details Co-pay Maximum / Visit $25 $150 Co-pay Maximum / Visit $50 $300 $5,000 / Year Maximum 12/12 mo Pre-Ex3 Details $0 Consult Fee No Maximum Participating Pharmacies only Advocacy Discount Prescriptions Only Details Hospital Bill Reducer Plan Sponsor Plan Administrator (1) All sickness benefits are subject to a 30-day waiting period before benefits are payable under the plan. (2) Outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient Hospital indemnity benefits are not. (3) Hospitalization benefits are not payable for a Pre-Existing Condition as defined in Section 2.56 Definitions for the first Twelve [12] Months of coverage This Plan does not cover services unless listed in the Schedule of Benefits, so please review that list carefully. This group health plan is limited to covering preventive and wellness services as required by the Patient Protection and Affordable Care Act as well as other benefits noted in the Summary Plan Description, which describes the benefits covered by the Plan and how these benefits are covered, including information on copays, deductibles, and limitations. MEC/Preventive Health Services Summary of Benefits Preventive Health Services - Covered Benefits1 Benefits are automatically subject to 29 CFR ï¿½ 2590.715 -2713(a). Amendments to this section through legislative act or regulation are automatically incorporated into this document by reference. Preventive Services covered in this section are explained in more detail through the following official resources: ï¿½ Medical services with a rating of "A" or "B" from the current recommendations of the United States Preventive Services Task Force. See https://www.uspreventiveservicestaskforce.org ï¿½ Preventive care and screenings for infants, children, and adolescents provided for in the comprehensive guidelines supported by the Health Resources and Services Administration. Guidelines can be found in https://www.hrsa.gov ï¿½ Immunizations recommended by the Advisory Committee on Immunization Practices of the Centers for Disease Control and Prevention for certain individuals only. See https://www.cdc.gov/vaccines/acip Benefit Interval Requirements Abdominal Aortic Aneurysm Screening Adult Annual Standard Physical 1 per lifetime 1 per plan year Alcohol Misuse: Unhealthy Alcohol Use Screening and Counseling 1 per plan year Aspirin: Preventive Medication As prescribed Bacteriuria Screening 1 per plan year BRCA Risk Assessment and Genetic Counseling/Testing 1 per plan year Breast Cancer Preventive Medications As prescribed Breast Cancer Screening 1 time every 2 plan years By ultrasonography in men ages 65-75 years who have ever smoked. Adults, one (1) physical preventive exam per plan year. Screenings for unhealthy alcohol use in adults 18 years or older, including pregnant women, and providing persons engaged in risky or hazardous drinking with brief behavioral counseling interventions to reduce unhealthy alcohol use. Adults ages 50 to 59 with high risk of cardiovascular diseases and for the primary prevention of cardiovascular disease and colorectal cancer. Low-dose aspirin (81 mg/d) as preventive medication for women after 12 weeks of gestation who are at high risk for preeclampsia. Screening for asymptomatic bacteriuria with urine culture in pregnant women at 12 to 16 weeks\' gestation or at the first prenatal visit, if later. Screening to women who have family members with breast, ovarian, tubal, or peritoneal cancer with one of several screening tools designed to identify a family history that may be associated with an increased risk for potentially harmful mutations in breast cancer susceptibility genes (BRCA 1 or BRCA2 ). Women with positive screening results should receive genetic counseling and, if indicated after counseling, BRCA testing. Risk-reducing medications, such as tamoxifen, raloxifene, or aromatase inhibitors for women who are at increased risk for breast cancer and at low risk for adverse medication effects. Screening mammography for women age 50 years and older. Coverage limited to 2D mammograms only. 1None of the Preventive Health Services are covered if they are provided at a hospital. Page 1 MEC/Preventive Health Services Summary of Benefits Preventive Health Services Benefit Interval Requirements Breastfeeding Support, Supplies and Counseling In Conjunction with each birth Cervical Cancer Screening: with Cytology (Pap Smear) 1 time every 3 plan years Cervical Cancer Screening: with Combination of Cytology and Human Papilloma Virus (HPV) testing 1 time every 5 plan years Chlamydia Screening 1 per plan year Colorectal Cancer Screening 1 time every 5 plan years Contraceptive Methods and Counseling As prescribed Dental Caries Prevention: Infants and Children Up to Age 5 1 per plan year Depression Screening 1 per plan year Diabetes Screening Fall Prevention: Older Adults Folic Acid Supplementation 1 per plan year 1 per plan year As prescribed Interventions during pregnancy and after birth to support breastfeeding. Costs for renting breastfeeding equipment will be covered in conjunction with each birth. Women age 21 to 65 years with cervical cytology alone. Women age 30 to 65 years with high-risk papillomavirus (hrHPV) testing alone, or every 5 years with hrHPV testing in combination with cytology. Sexually active women age 24 and younger and in older women who are at increased risk infection. Starting in adults at age 50 years and continuing until age 75 years. Food and Drug Administration (FDA) approved contraceptive methods, sterilization procedures, and patient education and counseling for all women with reproductive capacity, not including abortifacient drugs. Application of fluoride varnish to the primary teeth of all infants and children starting at the age of primary tooth eruption and prescription of oral fluoride supplementation starting at age 6 months for children whose water supply is fluoride deficient. Screening for major depressive disorder (MDD) in adolescents aged 12 to 18 years. Screening should be implemented with adequate systems in place to ensure accurate diagnosis, effective treatment, and appropriate follow-up Screening for depression in the general adult population, including pregnant and postpartum women. Screening should be implemented with adequate systems in place to ensure accurate diagnosis, effective treatment, and appropriate follow- up. Pregnant and postpartum persons at increased risk of perinatal depression should be refer to counseling interventions. Screening for abnormal blood glucose as part of cardiovascular risk assessment in adults aged 40 to 70 years who are overweight or obese. Clinicians should offer or refer patients with abnormal blood glucose to intensive behavioral counseling interventions to promote a healthful diet and physical activity. Exercise interventions for community-dwelling adults age 65 years and older who are at increased risk for falls. Daily supplement containing 0.4 to 0.8 mg (400 to 800g) of folic acid for all women planning or capable of pregnancy. Gestational Diabetes Mellitus Screening 1 per plan year Asymptomatic pregnant women after 24 weeks of gestation. Page 2 MEC/Preventive Health Services Summary of Benefits Benefit Gonorrhea Prophylactic Medication Gonorrhea Screening Healthy Diet and Physical Activity Counseling to Prevent Cardiovascular Disease Hemoglobinopathies Screening Hepatitis B Screening Hepatitis C Virus (HCV) Infection Screening High Blood Pressure Screening HIV Preexposure Prophylaxis for the Prevention of HIV Infection HIV Screening Hypothyroidism Screening Intimate Partner Violence Screening Lung Cancer Screening Obesity screening and Counseling Osteoporosis Screening Phenylketonuria Screening Preventive H',
+    name: 'TrueHealth 1',
+    type: 'MEC â€” Minimum Essential Coverage',
+    carrier: 'Merchants Benefit Administration (MBA)',
+    assoc: 'VP Limited Partnership / The Vitamin Patch (TVP)',
+    network: 'First Health',
+    source: 'MEC_TrueHealth1_SPD_Jan25.pdf',
+    benefits: [
+      {
+        category: 'Doctor Visits',
+        items: [
+          'Primary Care Office Visit: $25 copay â€” 3 visits/yr â€” $150 max/visit',
+          'Specialist or Urgent Care: $50 copay â€” 1 visit/yr â€” $300 max/visit'
+        ]
+      },
+      {
+        category: 'Hospital',
+        items: [
+          'In-Patient Hospitalization: $1,000/day â€” $5,000/year maximum',
+          '12/12 pre-existing condition exclusion applies'
+        ]
+      },
+      {
+        category: 'Telemedicine',
+        items: ['$0 consult fee â€” No maximum']
+      },
+      {
+        category: 'Prescriptions',
+        items: ['Discount prescriptions only â€” participating pharmacies']
+      },
+      {
+        category: 'Preventive / MEC',
+        items: ['Full ACA preventive services', 'Annual physical 1/yr']
+      },
+      {
+        category: 'Plan Structure',
+        items: [
+          'No deductible â€” fixed dollar benefit plan, pays set amounts per service',
+          'No out-of-pocket maximum â€” benefits capped per visit/day per schedule',
+          'Telemedicine: $0 consult fee, unlimited visits â€” Opyn Live',
+          'Advocacy: Hospital Bill Reducer included â€” MyHealthcare Ninja',
+          'Accidents: Covered from Day 1 â€” no waiting period for injury',
+          'Preventive care: ACA-required preventive services covered at $0 cost'
+        ]
+      }
+    ],
+    limitations: [
+      'NOT ACA-compliant major medical insurance',
+      'NO maternity or pregnancy coverage',
+      'NO mental health coverage',
+      'NO substance abuse / drug rehabilitation coverage',
+      'Pre-existing conditions excluded first 12 months',
+      '30-day sickness waiting period',
+      'Rx is discount-only â€” no formulary coverage',
+      'Benefits are FIXED AMOUNTS â€” not full bill coverage',
+      'Same exclusions as MedFirst 1 â€” see MedFirst 1 full exclusions list',
+      'Deductible: None â€” this plan has no deductible, do not mislead members',
+      'Out-of-pocket maximum: None â€” benefits are fixed dollar amounts per service',
+      'Surgery: Not covered on Tier 1-3 â€” available on MedFirst/GoodHealth/TDK 4 and 5',
+      'Emergency Room: Not covered on Tier 1-3 â€” available on Tier 4 and 5',
+      'Ambulance: Not covered on Tier 1-3 â€” available on Tier 4 and 5',
+      'X-ray and diagnostic imaging: Not a covered insurance benefit â€” no reimbursement',
+      'MRI and CT scans: Not covered as insurance',
+      'Blood work and lab tests: Not a covered insurance benefit',
+      'Chiropractic care: Not covered',
+      'Acupuncture: Not covered',
+      'Alternative medicine and homeopathy: Not covered',
+      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
+      'Mental health and substance abuse treatment: Not covered',
+      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
+      'Newborn well-baby inpatient care: Not covered',
+      'Neonatal intensive care NICU: Not covered',
+      'Dental and vision: Not covered â€” discount only through plan add-ons',
+      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) â€” not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
+      'Radiation and chemotherapy: Not covered',
+      'Dialysis: Not covered',
+      'Organ transplants: Not covered',
+      'Durable medical equipment DME and prosthetics: Not covered',
+      'Skilled nursing facilities: Not covered',
+      'Hospice care, private duty nursing, long-term care: Not covered',
+      'Genetic testing: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss treatment and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Sexual dysfunction treatment: Not covered',
+      'TMJ temporomandibular joint syndrome: Not covered',
+      'Biofeedback training: Not covered',
+      'Aquatic therapy and massage therapy: Not covered',
+      'Hearing aids and hearing exams: Not covered',
+      'Non-emergency care outside the US: Not covered',
+      'Workers compensation conditions: Not covered'
+    ],
+    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” accidents'],
+    preEx: '12-month exclusion',
+    planNotes:
+      'Identical structure to MedFirst 1. Marketed under TrueHealth association. Good entry plan for healthy, budget-conscious prospects. | MEC Plan â€” not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization â€” conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO â€” members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
+  },
   {
     group: 'MEC',
     id: 'medf1',
@@ -678,106 +771,6 @@ var POLICY_DOCS = [
     preEx: '12-month exclusion',
     planNotes:
       'Top MedFirst tier. Hospital $1,500/day up to $15,000. Surgery $4,500/yr max. 5 PCP and specialist visits. Most comprehensive MEC option. | 30-day waiting period for all sickness benefits. Injuries Day 1. | 12/12 pre-existing condition rule applies to hospitalization, surgery, ER, and ambulance | Network: First Health PPO â€” outpatient physician and wellness in-network only. Find providers at providersearch.multiplan.com'
-  },
-  {
-    group: 'MEC',
-    id: 'trueh1',
-    rawText: 'True Health 1 Physician Services1 (Utilizes the First Health Network)2 Primary Care Office Visit 3 visits / yr Specialist or Urgent Care Office Visit 1 visits / yr In-Patient Hospitalization Benefit Telemedicine $1,000 / Day Details Co-pay Maximum / Visit $25 $150 Co-pay Maximum / Visit $50 $300 $5,000 / Year Maximum 12/12 mo Pre-Ex3 Details $0 Consult Fee No Maximum Participating Pharmacies only Advocacy Discount Prescriptions Only Details Hospital Bill Reducer Plan Sponsor Plan Administrator (1) All sickness benefits are subject to a 30-day waiting period before benefits are payable under the plan. (2) Outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient Hospital indemnity benefits are not. (3) Hospitalization benefits are not payable for a Pre-Existing Condition as defined in Section 2.56 Definitions for the first Twelve [12] Months of coverage This Plan does not cover services unless listed in the Schedule of Benefits, so please review that list carefully. This group health plan is limited to covering preventive and wellness services as required by the Patient Protection and Affordable Care Act as well as other benefits noted in the Summary Plan Description, which describes the benefits covered by the Plan and how these benefits are covered, including information on copays, deductibles, and limitations. MEC/Preventive Health Services Summary of Benefits Preventive Health Services - Covered Benefits1 Benefits are automatically subject to 29 CFR ï¿½ 2590.715 -2713(a). Amendments to this section through legislative act or regulation are automatically incorporated into this document by reference. Preventive Services covered in this section are explained in more detail through the following official resources: ï¿½ Medical services with a rating of "A" or "B" from the current recommendations of the United States Preventive Services Task Force. See https://www.uspreventiveservicestaskforce.org ï¿½ Preventive care and screenings for infants, children, and adolescents provided for in the comprehensive guidelines supported by the Health Resources and Services Administration. Guidelines can be found in https://www.hrsa.gov ï¿½ Immunizations recommended by the Advisory Committee on Immunization Practices of the Centers for Disease Control and Prevention for certain individuals only. See https://www.cdc.gov/vaccines/acip Benefit Interval Requirements Abdominal Aortic Aneurysm Screening Adult Annual Standard Physical 1 per lifetime 1 per plan year Alcohol Misuse: Unhealthy Alcohol Use Screening and Counseling 1 per plan year Aspirin: Preventive Medication As prescribed Bacteriuria Screening 1 per plan year BRCA Risk Assessment and Genetic Counseling/Testing 1 per plan year Breast Cancer Preventive Medications As prescribed Breast Cancer Screening 1 time every 2 plan years By ultrasonography in men ages 65-75 years who have ever smoked. Adults, one (1) physical preventive exam per plan year. Screenings for unhealthy alcohol use in adults 18 years or older, including pregnant women, and providing persons engaged in risky or hazardous drinking with brief behavioral counseling interventions to reduce unhealthy alcohol use. Adults ages 50 to 59 with high risk of cardiovascular diseases and for the primary prevention of cardiovascular disease and colorectal cancer. Low-dose aspirin (81 mg/d) as preventive medication for women after 12 weeks of gestation who are at high risk for preeclampsia. Screening for asymptomatic bacteriuria with urine culture in pregnant women at 12 to 16 weeks\' gestation or at the first prenatal visit, if later. Screening to women who have family members with breast, ovarian, tubal, or peritoneal cancer with one of several screening tools designed to identify a family history that may be associated with an increased risk for potentially harmful mutations in breast cancer susceptibility genes (BRCA 1 or BRCA2 ). Women with positive screening results should receive genetic counseling and, if indicated after counseling, BRCA testing. Risk-reducing medications, such as tamoxifen, raloxifene, or aromatase inhibitors for women who are at increased risk for breast cancer and at low risk for adverse medication effects. Screening mammography for women age 50 years and older. Coverage limited to 2D mammograms only. 1None of the Preventive Health Services are covered if they are provided at a hospital. Page 1 MEC/Preventive Health Services Summary of Benefits Preventive Health Services Benefit Interval Requirements Breastfeeding Support, Supplies and Counseling In Conjunction with each birth Cervical Cancer Screening: with Cytology (Pap Smear) 1 time every 3 plan years Cervical Cancer Screening: with Combination of Cytology and Human Papilloma Virus (HPV) testing 1 time every 5 plan years Chlamydia Screening 1 per plan year Colorectal Cancer Screening 1 time every 5 plan years Contraceptive Methods and Counseling As prescribed Dental Caries Prevention: Infants and Children Up to Age 5 1 per plan year Depression Screening 1 per plan year Diabetes Screening Fall Prevention: Older Adults Folic Acid Supplementation 1 per plan year 1 per plan year As prescribed Interventions during pregnancy and after birth to support breastfeeding. Costs for renting breastfeeding equipment will be covered in conjunction with each birth. Women age 21 to 65 years with cervical cytology alone. Women age 30 to 65 years with high-risk papillomavirus (hrHPV) testing alone, or every 5 years with hrHPV testing in combination with cytology. Sexually active women age 24 and younger and in older women who are at increased risk infection. Starting in adults at age 50 years and continuing until age 75 years. Food and Drug Administration (FDA) approved contraceptive methods, sterilization procedures, and patient education and counseling for all women with reproductive capacity, not including abortifacient drugs. Application of fluoride varnish to the primary teeth of all infants and children starting at the age of primary tooth eruption and prescription of oral fluoride supplementation starting at age 6 months for children whose water supply is fluoride deficient. Screening for major depressive disorder (MDD) in adolescents aged 12 to 18 years. Screening should be implemented with adequate systems in place to ensure accurate diagnosis, effective treatment, and appropriate follow-up Screening for depression in the general adult population, including pregnant and postpartum women. Screening should be implemented with adequate systems in place to ensure accurate diagnosis, effective treatment, and appropriate follow- up. Pregnant and postpartum persons at increased risk of perinatal depression should be refer to counseling interventions. Screening for abnormal blood glucose as part of cardiovascular risk assessment in adults aged 40 to 70 years who are overweight or obese. Clinicians should offer or refer patients with abnormal blood glucose to intensive behavioral counseling interventions to promote a healthful diet and physical activity. Exercise interventions for community-dwelling adults age 65 years and older who are at increased risk for falls. Daily supplement containing 0.4 to 0.8 mg (400 to 800g) of folic acid for all women planning or capable of pregnancy. Gestational Diabetes Mellitus Screening 1 per plan year Asymptomatic pregnant women after 24 weeks of gestation. Page 2 MEC/Preventive Health Services Summary of Benefits Benefit Gonorrhea Prophylactic Medication Gonorrhea Screening Healthy Diet and Physical Activity Counseling to Prevent Cardiovascular Disease Hemoglobinopathies Screening Hepatitis B Screening Hepatitis C Virus (HCV) Infection Screening High Blood Pressure Screening HIV Preexposure Prophylaxis for the Prevention of HIV Infection HIV Screening Hypothyroidism Screening Intimate Partner Violence Screening Lung Cancer Screening Obesity screening and Counseling Osteoporosis Screening Phenylketonuria Screening Preventive H',
-    name: 'TrueHealth 1',
-    type: 'MEC â€” Minimum Essential Coverage',
-    carrier: 'Merchants Benefit Administration (MBA)',
-    assoc: 'VP Limited Partnership / The Vitamin Patch (TVP)',
-    network: 'First Health',
-    source: 'MEC_TrueHealth1_SPD_Jan25.pdf',
-    benefits: [
-      {
-        category: 'Doctor Visits',
-        items: [
-          'Primary Care Office Visit: $25 copay â€” 3 visits/yr â€” $150 max/visit',
-          'Specialist or Urgent Care: $50 copay â€” 1 visit/yr â€” $300 max/visit'
-        ]
-      },
-      {
-        category: 'Hospital',
-        items: [
-          'In-Patient Hospitalization: $1,000/day â€” $5,000/year maximum',
-          '12/12 pre-existing condition exclusion applies'
-        ]
-      },
-      {
-        category: 'Telemedicine',
-        items: ['$0 consult fee â€” No maximum']
-      },
-      {
-        category: 'Prescriptions',
-        items: ['Discount prescriptions only â€” participating pharmacies']
-      },
-      {
-        category: 'Preventive / MEC',
-        items: ['Full ACA preventive services', 'Annual physical 1/yr']
-      },
-      {
-        category: 'Plan Structure',
-        items: [
-          'No deductible â€” fixed dollar benefit plan, pays set amounts per service',
-          'No out-of-pocket maximum â€” benefits capped per visit/day per schedule',
-          'Telemedicine: $0 consult fee, unlimited visits â€” Opyn Live',
-          'Advocacy: Hospital Bill Reducer included â€” MyHealthcare Ninja',
-          'Accidents: Covered from Day 1 â€” no waiting period for injury',
-          'Preventive care: ACA-required preventive services covered at $0 cost'
-        ]
-      }
-    ],
-    limitations: [
-      'NOT ACA-compliant major medical insurance',
-      'NO maternity or pregnancy coverage',
-      'NO mental health coverage',
-      'NO substance abuse / drug rehabilitation coverage',
-      'Pre-existing conditions excluded first 12 months',
-      '30-day sickness waiting period',
-      'Rx is discount-only â€” no formulary coverage',
-      'Benefits are FIXED AMOUNTS â€” not full bill coverage',
-      'Same exclusions as MedFirst 1 â€” see MedFirst 1 full exclusions list',
-      'Deductible: None â€” this plan has no deductible, do not mislead members',
-      'Out-of-pocket maximum: None â€” benefits are fixed dollar amounts per service',
-      'Surgery: Not covered on Tier 1-3 â€” available on MedFirst/GoodHealth/TDK 4 and 5',
-      'Emergency Room: Not covered on Tier 1-3 â€” available on Tier 4 and 5',
-      'Ambulance: Not covered on Tier 1-3 â€” available on Tier 4 and 5',
-      'X-ray and diagnostic imaging: Not a covered insurance benefit â€” no reimbursement',
-      'MRI and CT scans: Not covered as insurance',
-      'Blood work and lab tests: Not a covered insurance benefit',
-      'Chiropractic care: Not covered',
-      'Acupuncture: Not covered',
-      'Alternative medicine and homeopathy: Not covered',
-      'Physical therapy, occupational therapy, speech therapy, rehabilitative therapy: Not covered',
-      'Mental health and substance abuse treatment: Not covered',
-      'Maternity, pregnancy, childbirth, prenatal care, delivery: Not covered',
-      'Newborn well-baby inpatient care: Not covered',
-      'Neonatal intensive care NICU: Not covered',
-      'Dental and vision: Not covered â€” discount only through plan add-ons',
-      'Prescription drugs: Discount card only (BestChoiceRx on Tier 1) â€” not insurance. Tier 2-3 include actual Rx copay coverage per formulary',
-      'Radiation and chemotherapy: Not covered',
-      'Dialysis: Not covered',
-      'Organ transplants: Not covered',
-      'Durable medical equipment DME and prosthetics: Not covered',
-      'Skilled nursing facilities: Not covered',
-      'Hospice care, private duty nursing, long-term care: Not covered',
-      'Genetic testing: Not covered',
-      'Cosmetic surgery: Not covered',
-      'Weight loss treatment and bariatric surgery: Not covered',
-      'Infertility treatment: Not covered',
-      'Sexual dysfunction treatment: Not covered',
-      'TMJ temporomandibular joint syndrome: Not covered',
-      'Biofeedback training: Not covered',
-      'Aquatic therapy and massage therapy: Not covered',
-      'Hearing aids and hearing exams: Not covered',
-      'Non-emergency care outside the US: Not covered',
-      'Workers compensation conditions: Not covered'
-    ],
-    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” accidents'],
-    preEx: '12-month exclusion',
-    planNotes:
-      'Identical structure to MedFirst 1. Marketed under TrueHealth association. Good entry plan for healthy, budget-conscious prospects. | MEC Plan â€” not ACA major medical. Covers preventive services plus fixed dollar benefits listed in schedule only. If a service is not listed, it is not covered. | 30-day waiting period applies to all sickness benefits. Injuries covered Day 1. | 12/12 pre-existing condition rule applies to hospitalization â€” conditions diagnosed or treated in prior 12 months not covered for first 12 months. | Network: First Health PPO â€” members must use in-network providers for outpatient physician and wellness benefits. Find providers at providersearch.multiplan.com | For services not covered as insurance, members may access pre-negotiated discounted rates through First Health PPO network'
   },
   {
     group: 'MEC',
@@ -1844,6 +1837,66 @@ var POLICY_DOCS = [
       'Top-tier TDK plan. Highest benefits: $1,500/day hospital, $15,000/yr max. Adds outpatient surgery ($4,500/yr). 5 PCP and specialist visits. ER + ambulance included. Mirrors GoodHealth 5 structure. | 30-day waiting period for all sickness benefits. Injuries Day 1. | 12/12 pre-existing condition rule applies to hospitalization, surgery, ER, and ambulance | Network: First Health PPO â€” outpatient physician and wellness in-network only. Find providers at providersearch.multiplan.com'
   },
   {
+    id: 'smartchoice',
+    name: 'SmartChoice',
+    group: 'MEC',
+    type: 'MEC',
+    carrier: 'Detego Health',
+    network: 'First Health EPO',
+    assoc: 'Population Science Management',
+    planNotes: 'Four deductible tiers: 1500, 2500, 3000, 3500. EPO network -- members MUST use in-network providers. No out-of-network coverage except emergencies.',
+    benefits: [
+      {
+        category: 'Deductible Options',
+        items: [
+          'SmartChoice 1500: Individual $1,500 deductible',
+          'SmartChoice 2500: Individual $2,500 deductible',
+          'SmartChoice 3000: Individual $3,000 deductible',
+          'SmartChoice 3500: Individual $3,500 deductible'
+        ]
+      },
+      {
+        category: 'Network',
+        items: [
+          'First Health EPO -- in-network only',
+          'Members MUST verify their doctor is in-network before enrolling',
+          'No out-of-network coverage except emergencies'
+        ]
+      },
+      {
+        category: 'Preventive Care',
+        items: [
+          'All tiers: covered at $0 copay'
+        ]
+      },
+      {
+        category: 'Telemedicine',
+        items: [
+          'All tiers: $0 copay -- unlimited access'
+        ]
+      },
+      {
+        category: 'Plan Type',
+        items: [
+          'MEC group plan -- not individual insurance',
+          'Member becomes Working Owner of sponsoring organization',
+          'Benefits Administrator: Detego Health',
+          'Billed through FirstEnroll'
+        ]
+      }
+    ],
+    limitations: [
+      'EPO -- NO out-of-network coverage except emergencies',
+      'MEC plan -- not comprehensive major medical',
+      'Not ACA major medical compliant',
+      'Must use in-network providers only'
+    ],
+    waitingPeriods: ['30-day waiting period for sickness benefits'],
+    preEx: 'Check plan documents for pre-existing condition terms',
+    source: 'Smart_Choice_1500_Plan_Doc_2025.pdf',
+    rawText: 'SmartChoice MEC group plan First Health EPO Detego Health Population Science Management four tiers 1500 2500 3000 3500 deductible in-network only EPO no out of network preventive zero copay telemedicine zero copay working owner FirstEnroll not major medical not ACA'
+  },
+  {
     group: 'STM',
     id: 'pinnacle',
     rawText: 'PINNACLE SHORT TERM MEDICAL An EverestTM Product TABLE OF CONTENTS 03 State Availability 04 Plan Highlights 05 Eligibility 06 About Everest 07 Schedule of Benefits 08 Key Terms & Overview 10 FAQs 13 Network Info 14 About AWA 15 Rx Savers STATE AVAILABILITY State IL NV OH WI Reapply Rules 60 day wait before applying for another plan Cannot exceed 185 days in any 365 day period Not Allowed Must have 63 day break after 18 months coverage PLAN HIGHLIGHTS Length of Coverage Members may enroll for 6-month or 364-day policy terms, subject to state regulations. Refer to the information below on consecutive policy terms. PPO Access and Cost Savings Pinnacle STM is NOT a network plan. However, covered persons have access to physicians participating in the PHCS Practitioner & Ancillary network, which provides members with in-network negotiated rates.* PHCS contracted pricing does not apply to "facility" charges, which are covered up to 150% of Medicare allowable charges. * *Exception: In the State of Nebraska, all applicable provider, facility and ancillary charges are covered up to 150% of Medicare allowable charges. Coverage Effective Date Next day coverage; later effective date available, but not to exceed 60 days from date of transmission Waiting Period 5 days for sickness 30 days for cancer No waiting period for injuries How will consecutive policy terms work? At the end of their policy term, members may re-apply for another policy term, up to a maximum of 36 months of coverage, as allowed by the specific regulations set in their state. Will the plan benefits carry-over between terms? Deductible and coinsurance and all benefit limits will reset with each policy block (may be up to 12 month blocks). After your plan expires This Short Term Medical insurance is nonrenewable, and policy termination is not considered a qualifying life event for purposes of enrolling in a plan. Therefore, depending on your policy\'s termination date and state laws about reapplying for a new plan, when your Pinnacle STM Health Insurance expires, you may have a gap in insurance coverage until you can begin coverage with new Short Term Medical Insurance or an ACA or other comprehensive insurance plan. You must re-apply for a new STM policy if you want to remain covered after expiration of your existing policy. Your new plan is not an extension of your current plan. As a result, your deductibles, waiting periods, maximum benefit limits and maximum out-of-pocket obligations will reset under your new policy and any illness or condition you develop under your current policy will be considered a preexisting condition under your new plan. DISCLAIMER: This coverage is not required to comply with certain federal market requirements for health insurance, principally those contained in the Affordable Care Act. Be sure to check your Certificate carefully to make sure you are aware of any exclusions or limitations regarding coverage of preexisting conditions or health benefits (such as hospitalization, emergency services, maternity care, preventive care, prescription drugs, and mental health and substance use disorder services). Your Certificate might also have lifetime and/or annual dollar limits on health benefits. If this coverage expires or you lose eligibility for this coverage, you might have to wait until an open enrollment period to get other health insurance coverage. THIS PLAN PROVIDES LIMITED BENEFIT COVERAGE. IT IS NOT DESIGNED TO COVER ALL MEDICAL EXPENSES AND IT IS NOT A MAJOR MEDICAL OR COMPREHENSIVE HEALTHCARE POLICY. PLEASE READ YOUR POLICY CAREFULLY! IS PINNACLE RIGHT FOR YOU? Unexpected illnesses and accidents happen every day, and the resulting medical bills can be disastrous. Pinnacle STM Health Insurance helps to protect you from the medical bills that can result from unexpected Injuries and Sickness. Safeguard your financial future with Pinnacle STM Health Insurance. It provides the peace of mind and health care access you need at a price you can afford. Plans available up to 12 months* Simple application process Flexibility to choose your own physician and hospital Next Day Coverage Valuable Health Insurance Coverage for times of transition Between Jobs If you\'re between jobs, consider Short Term Medical. For about half the cost of COBRA 2, Short Term Medical offers next-day coverage to help you bridge the insurance gap. Waiting for Employer Benefits Often new employers impose a waiting period before you\'re eligible for health benefits. With Short Term Medical, you stay insured and can choose your own plan duration. Temporary Employees When your employment schedule is unpredictable, it\'s hard to maintain health coverage. Short Term Medical offers you flexible coverage options to suit your situation. New Graduates When your employment schedule is unpredictable, it\'s hard to maintain health coverage. Short Term Medical offers you flexible coverage options to suit your situation. This Pinnacle STM Health Insurance Plan does not qualify as the minimum essential coverage required by the Affordable Care Act (ACA). Unless you purchase a plan that provides minimum essential coverage in accordance with the ACA, you may be subject to a federal tax penalty. Underwritten by Everest Reinsurance Company, rated A+ Superior by the A.M. Best Company (5/7/21). A.M. Best is an independent global rating organization that examines insurance companies and publishes its opinion on their financial strength. Everest Reinsurance Company, 100 Everest Way, Warren, NJ 07059. Benefits not available in all states at this time. Members can be enrolled only once. Duplicate or multiple memberships are not allowed. Coverage is not provided for members age 65 or over, coverage will terminate at the end of the month insured turns age 65. If coverage is canceled, persons may not re-enroll in coverage with Everest Reinsurance Company until six months after their termination date. * States may vary ** Short Term Medical insurance is often a lower-cost alternative to COBRA. However, if you purchase Short Term Medical rather than maintaining COBRA coverage, you may give up your rights to coverage for pre-existing conditions or guaranteed health insurance in the future. Short Term Medical benefits may be limited compared to COBRA coverage. ABOUT EVEREST REINSURANCE A solid foundation to rely on Everest is a leading global reinsurance and insurance organization with extensive product and distribution capabilities, a strong balance sheet and an innovative culture. Throughout our history, Everest has maintained its discipline and focus on creating long term value through underwriting excellence and strong risk and capital management. A global leader in reinsurance and insurance For over 40 years, Everest has been a global leader in reinsurance with a broad footprint, deep client relationships, underwriting excellence, responsive service and customized solutions. Our insurance arm draws upon impressive global resources and financial strength to tailor each policy to meet the individual needs of our customers. Ascend with experienced leaders Our diverse leaders rely on deep knowledge and decades of industry experience to deliver long-term value for our shareholders. We aim to provide strength and stability through a smart, nimble, and disciplined approach. Recognized throughout the industry Everest Reinsurance Company is rated A+ Superior by the A.M. Best Company (5/7/21). A.M. Best is an independent global rating organization that examines insurance companies and publishes its opinion on their financial strength. Recognized throughout the industry Everest Re is a longstanding U.S. property and casualty reinsurer offering a diverse range of products. We rely on proven financial strength, underwriting excellence, and industry proficiency to customize smart solutions for our clients. We rank among the top reinsurers with locations around the world. Our approach is client-centered, and unique in each region. We have a ',
@@ -2304,7 +2357,7 @@ var POLICY_DOCS = [
     group: 'STM',
     id: 'galena',
     rawText: 'Short Term Medical Insurance Galena Plans Brought to you by Southern Guaranty Insurance Company ELITE w w w. s g i c i n s u r a n c e . c o m STC2000AFRP Dear Member, Thank you for choosing an Association for Responsible Planners (AFRP) membership plan, which includes an array of savings, service and insurance benefits. Included in the AFRP membership is access to the Short Term Medical (STM) policy. Your STM policy is insured by SGIC, a US based insurance company with its corporate headquarters in Clearwater, FL. The SGIC employees are excited to bring you personalized support to help you navigate your health insurance coverage. In the following pages, you will find a summary of your AFRP membership benefits and the SGIC Short Term Medical health insurance policy. We are committed to providing members with overall product satisfaction and superior customer service. For any membership or billing related questions please don\'t hesitate to contact us at 866-870-7730 Monday through Friday 9:00 a.m. to 6:00 p.m. EST. For any insurance benefits, eligibility and claims related questions, please contact us at (888) 304-7442. Sincerely, Who is SGIC? SGIC is an independently owned and operated insurance company offering a new Short Term Medical product suite: the "Galena Plans". Our mission is to bring affordable healthcare alternatives to the average American. Our vision is to provide peace of mind through a more personal approach to the difficult to navigate medical insurance industry. The Peace of Mind People. Why SGIC Galena Plans Low-Cost Plans | May be less than half the cost of major medical plans Anytime Enrollment | No qualifying event needed Flexibility | Multiple plan designs | Various policy lengths | Range of deductible and coinsurance options National PPO Network | No balance-billing with In-Network Providers Enroll once for insurance coverage that last 3 terms up to 36 months.* 3 Terms Term 1 12 months Term 2 12 months Term 3 12 months ***Pre-existing conditions and coverage limits disclosure. This coverage is not required to comply with certain federal market requirements, principally those contained in the Affordable Care Act (ACA). Review your Certificate carefully to be sure you are aware of and understand any exclusions and limitations regarding coverage of pre-existing conditions or health benefits. Your coverage may also have lifetime and/or annual limits on health benefits. First Health Network Through First Health you have access to providers, specialists, and hospitals nationwide at discounted rates 6,000 hospitals 1,046,000 professional providers 137,000 ancillary facilities Approximately 98% of hospital and 95% of physicians are retained each year Please visit www.sgicdualnetwork.com to verify your provider is in the network prior to receiving service. First Health Network access is not available in New Mexico for certain fully insured limited benefit plans due to state regulations. In addition to the First Health Network, you have access to participating providers in the MultiPlan Network First Health is a brand name of First Health Group Corp Galena Plans by SGIC - Summary of Benefits Per Person Deductible You pay up to Coinsurance % paid by SGIC Coinsurance Maximum You pay up to Coverage Period Maximum SGIC Pays up to Office Visit Wellness Visit Urgent Care Emergency Room Ambulance Services Inpatient Surgery Outpatient Surgery Surgical Office Standard Room & ICU Inpatient Doctor Visits Outpatient Diagnostics Advanced Radiology Professional Covered OT/PT Chiropractic Visits Inpatient Professional Pharmacy Solutions by ReviveHealth ECONOMY $5,000 / $7,500 / $10,000 50% / 70% / 80% $5,000 / $10,000 $500,000 Copay: Primary $40; Specialty $60 Up to $250 per term $60 Copay Accident: $500 Copay; Sickness: $750 Copay Ground: Up to $250; Air: Up to $1,000 $2,000 per Covered Surgery, up to 1 per term $2,000 per Covered Surgery, up to 1 per term $1,000 per Covered Surgery, up to 1 per term Up to $1,500 per day Up to $60 per visit Up to $500 per term Up to $1,000 per term Up to $40 per day Not Covered Not Covered Not Covered S TA N DA R D $2,500 / $5,000 / $7,500 / $10,000 50% / 70% / 80% $5,000 / $10,000 $1,000,000 *Copay: Primary $40; Specialty $60 *$40 Copay $60 Copay Accident: $500 Copay; Sickness: $750 Copay Ground: Up to $500; Air: Up to $1,000 $4,000 per Covered Surgery, up to 2 per term $4,000 per Covered Surgery, up to 1 per term $1,000 per Covered Surgery, up to 2 per term Up to $2,500 per day Up to $80 per visit Up to $1,000 per term Up to $1,500 per term Up to $60 per day Not Covered Not Covered $50 per day; up to 10 days ELITE $2,500 / $5,000 / $7,500 / $10,000 50% / 70% / 80% $2,500 / $5,000 / $10,000 $2,000,000 *Copay: Primary $30; Specialty $45 *$40 Copay *$60 Copay Accident: $500 Copay; Sickness: $750 Copay Ground: Up to $1,000; Air: Up to $2,500 $8,000 per Covered Surgery, up to 3 per term $8,000 per Covered Surgery, up to 2 per term $1,000 per Covered Surgery, up to 3 per term Up to $3,000 per day Up to $100 per visit *Copay: Pathology $40; Radiology $60 *$250 copay Up to $60 per day Up to $60 per day $100 per day; up to 30 days $100 per day; up to 10 days $0 Urgent Care Medications $0 Maintenance Medications with Free Home Delivery *Indicates copay only and not subject to deductible and plan coinsurance. All benefit limits listed above are per covered person. No benefits will be paid for a health condition that exists 12 months prior to the date your insurance takes effect. State rules may vary. Unless specified otherwise, the following benefits are for the Insured and each Covered Dependent subject to the plan Deductible, Coinsurance Percentage, Coinsurance Maximum, and Coverage Period Maximum chosen. Benefits are limited to the maximum allowable expense for each Covered Person, in addition to any specific limits stated in the policy. Pharmacy benefits are provided through a membership service with ReviveHealth. See ReviveHealth materials for full details. Savings and out of pocket costs may vary please see your ReviveHealth plan. Pharmacy Solutions No claims or copays All 50 states Free Home Delivery Easy transfers and refills 1,000 MEDICATIONS Access to over 1,000 medications for both routine/maintenance needs and acute/urgent needs -- all at no extra cost! PHARMACIST CONSULTATION Speak with one of their licensed, registered pharmacists at your convenience to learn more about your medications and options. RX SAVINGS CARD Save up to 80% on all other medications at your local pharmacy. MEDICATIONS FOR.... ï¿½ High Cholesterol ï¿½ Diabetes ï¿½ Mental Health ï¿½ Allergies ï¿½ Thyroid ï¿½ Asthma ï¿½ Men\'s Health ï¿½ Women\'s Health ï¿½ High Blood Pressure ï¿½ and more! SGIC is excited to offer a prescription membership service through our partnership with ReviveHealth that will provide access to a variety of no-cost medications, pharmacy support, and discounts. ReviveHealth is a non-insurance prescription solution and provider. Solution is not dependant on injury or illness being covered by one of the plans and may be used for current or pre-existing prescriptions. How Does Your Pharmacy Program Work? $0 at the Pharmacy for Urgent Care Prescriptions See your primary care physician or urgent care provider. If prescribed one of the program\'s 70 listed medications, go to one of the 70,000 participating retail pharmacies including Walgreens and CVS. $0 Home Delivery on Your Maintenance Medications through ManifestRx Pharmacy ï¿½ 425 Maintenance Medications ï¿½ 3 Month Supply 80% off not Covered Prescriptions If for any reason your prescription is not covered, you will have access to a discount card with up to 80% off retail costs. See next page for more details Pharmacy Solutions If your medication has refills left - simply transfer your medication to Revive. Transferring a Medication 1. Select the `My Medication\' tab in your Member Portal. 2. Type in the search bar the name of the medication you wish to have transferred. 3. Complete the required fi',
-    name: 'Galena STM Elite / Standard / Economy',
+    name: 'Galena STM',
     type: 'Short-Term Medical',
     carrier: 'Southern Guaranty Insurance Company (SGIC)',
     assoc: 'Association for Responsible Planners (AFRP)',
@@ -2501,6 +2554,128 @@ var POLICY_DOCS = [
       '12-month exclusion for conditions existing within 12 months prior to effective date',
     planNotes:
       'Most comprehensive STM available. Elite tier has $2M max, $30/$45 copays, $3,000/day hospital. ReviveHealth pharmacy is a major value-add. Closest to major medical of all STM options. | STM plan â€” not ACA compliant. Designed as temporary bridge coverage during life transitions. | Deductible options vary â€” confirm deductible chosen at enrollment ($500 to $10,000 options available) | Coinsurance: Plan pays percentage after deductible is met | Coverage period maximum applies â€” confirm at enrollment | Next-day coverage available if applied online with credit card or bank debit'
+  },
+  {
+    id: 'medvalue',
+    name: 'MedValue',
+    group: 'Limited',
+    type: 'Limited Benefit / Fixed Indemnity',
+    carrier: 'HC Data Consulting, LLC',
+    network: 'First Health Network (National PPO)',
+    assoc: 'ERISA',
+    planNotes: 'Three deductible tiers: 2000, 4000, 6000. All tiers share same copay structure except 6000 tier has lower lab/radiology copays. Billed through FirstEnroll.',
+    benefits: [
+      {
+        category: 'Deductible Options',
+        items: [
+          'MedValue 2000: Individual $2,000 / Family $4,000',
+          'MedValue 4000: Individual $4,000 / Family $8,000',
+          'MedValue 6000: Individual $6,000 / Family $12,000',
+          'Out-of-Pocket Max (all tiers): Individual $9,200 / Family $18,400'
+        ]
+      },
+      {
+        category: 'Preventive Care',
+        items: [
+          'All tiers: 100% covered at $0 copay -- not subject to deductible',
+          'Includes annual physicals, routine screenings, mammograms, colonoscopies, pap smears'
+        ]
+      },
+      {
+        category: 'Telemedicine (relyMD)',
+        items: [
+          'All tiers: $0 copay -- not subject to deductible',
+          'Virtual Primary Care, Urgent Care, Mental Health -- 24/7 access'
+        ]
+      },
+      {
+        category: 'PCP / Specialist / Urgent Care',
+        items: [
+          'All tiers: 2 PCP visits per year -- $50 copay (before deductible)',
+          'All tiers: 2 Specialist visits per year -- $50 copay (before deductible)',
+          'All tiers: 2 Urgent Care visits per year -- $50 copay (before deductible)',
+          'After deductible met: 2 additional PCP, 2 Specialist, 2 Urgent Care visits',
+          'No referral required'
+        ]
+      },
+      {
+        category: 'Laboratory',
+        items: [
+          'MedValue 2000 / 4000: $50 copay -- 3 per year (after deductible)',
+          'MedValue 6000: $25 copay -- 3 per year (after deductible)'
+        ]
+      },
+      {
+        category: 'Radiology',
+        items: [
+          'MedValue 2000 / 4000: $100 copay -- 3 per year (after deductible)',
+          'MedValue 6000: $50 copay -- 3 per year (after deductible)'
+        ]
+      },
+      {
+        category: 'Advanced Imaging',
+        items: [
+          'All tiers: $400 copay (after deductible)',
+          'Prior authorization required'
+        ]
+      },
+      {
+        category: 'Emergency Room',
+        items: [
+          'All tiers: 1 per year -- $500 copay (after deductible)'
+        ]
+      },
+      {
+        category: 'Surgery',
+        items: [
+          'Outpatient Surgery: 1 per year -- $500 copay (after deductible)',
+          'Inpatient Surgery: 1 per year -- $1,000 copay (after deductible)',
+          'Inpatient Hospital: 5-day limit at semi-private room rate',
+          'Prior authorization required for all surgery',
+          'Elective surgeries not covered'
+        ]
+      },
+      {
+        category: 'Physical & Occupational Therapy',
+        items: [
+          'All tiers: 8 visits/year combined -- $50 copay (after deductible)'
+        ]
+      },
+      {
+        category: 'Durable Medical Equipment',
+        items: [
+          'All tiers: 2 items/year -- $50 copay per item (after deductible)'
+        ]
+      },
+      {
+        category: 'Generic Rx',
+        items: [
+          'Preventive generics: $0 copay before deductible',
+          'Standard generics: $0 copay after deductible',
+          'Brand-name: prescription savings card provided'
+        ]
+      },
+      {
+        category: 'Med Defender Pro',
+        items: [
+          'Medical Bill Negotiator included',
+          'Patient Assistance Program included'
+        ]
+      }
+    ],
+    limitations: [
+      'NOT traditional major medical -- limited day benefit plan',
+      'Not ACA-compliant',
+      'No maternity, substance abuse, or psychiatric coverage',
+      'Elective surgeries not covered',
+      '1 hospitalization per year, 5-day limit',
+      '30-day waiting period for sickness, hospital, and scheduled visits',
+      'Out-of-network limited to emergencies only'
+    ],
+    waitingPeriods: ['30-day waiting period for sickness, hospitalization, and scheduled doctor visits'],
+    preEx: 'Check plan documents for pre-existing condition terms',
+    source: 'CARRIER_APPROVED_03112026_MEDVALUE_2000_03112026_LR.pdf',
+    rawText: 'MedValue High Deductible Value Plan limited benefit ERISA First Health Network PPO three tiers 2000 4000 6000 deductible out of pocket max 9200 individual 18400 family preventive 100 percent zero copay telemedicine relyMD zero copay PCP specialist urgent care 4 visits combined 50 copay lab 50 copay 2000 4000 tier 25 copay 6000 tier radiology 100 copay 2000 4000 tier 50 copay 6000 tier advanced imaging 400 copay ER 500 copay outpatient surgery 500 copay inpatient surgery 1000 copay PT OT 8 visits DME 2 items generic rx zero copay med defender pro bill negotiator not ACA not major medical no maternity 30 day waiting period FirstEnroll HC Data Consulting ERISA'
   },
   {
     group: 'Limited',
@@ -2758,145 +2933,9 @@ var POLICY_DOCS = [
   },
   {
     group: 'Limited',
-    id: 'healthchoicesilver',
-    rawText: 'NCE Health Choice Silver Limited Benefit Health Insurance Plans Limited Benefit Insurance underwritten by: American Financial Security Life Insurance Co. Limited Medical Benefit Cash Policy v1 NCE Health Choice Plus ï¿½ 1 NCE Health Choice Silver Benefit Decription Hospital Confinement Benefit Per Day Max Day Primary Care Doctors Office Visit Benefit Per Day Max Day Specialty Care Doctors\' Office Visit Benefit Per Day Max Day Emergency Room Benefit Per Day Max Day Basic Pathology & Radiology Benefit* Per Day Max Day Advance Studies Benefit* Per Day Max Day Surgery Benefit Per Day Max Day Anesthesia Benefit Per Day Max Day Mental Health Inpatient Benefit Per Day Max Day Mental Health Outpatient Benefit Per Day Max Day Supplemental Accident Inpatient Admission Benefit Per Day Max Day Supplemental Accident Emergency Room Benefit Per Day Max Day Hospital Intensive Care Unit Benefit Per Day Max Day Additional Hospital Admission Benefit Per Admission Max Day Accidental Death Benefit Critical Illness Maximum Benefit * Benefits are based on an annual period per insured from effective date. 100A 100 200 200+ 300 500 750 1000 1000+ $100 30 $50 3 $50 3 - $100 30 $50 3 $50 3 $50 1 1 1 - $200 30 $50 5 $50 5 $50 1 $50 1 $50 1 - $200 30 $50 5 $50 5 $50 2 $50 3 $50 3 50% 3 20% 3 - $300 30 $50 5 $50 5 $50 1 50% 3 20% 3 $150 60 $50 20 $500 1 $250 1 - $500 30 $50 5 $50 5 $50 1 $50 2 $50 2 70% 3 20% 3 $250 60 $50 20 $500 1 $250 1 - $750 30 $50 5 $50 5 $75 1 $50 2 $50 2 80% 3 20% 3 $375 60 $50 20 $500 2 $250 1 - $1000 30 $75 5 $75 5 $100 1 $75 3 $75 3 100% 3 20% 3 $500 60 $50 20 $500 3 $250 1 - $1000 30 $100 5 $100 5 $200 1 $100 3 $200 3 100% 3 25% 3 $500 60 $50 20 $500 3 $250 1 $1000 15 $1000 5 $10,000 $10,000 $10,000 $10,000 $10,000 $10,000 $10,000 $10,000 $10,000 n/a n/a n/a $1,000 $1,000 $1,000 $1,000 $1,000 $1,000 *There is a 30 day waiting period immediately following the Coverage Effective Date; does not apply to an injury. 2 ï¿½ NCE Health Choice Silver Limited Medical Benefit Policyv1 NCE Health Choice Silver What is NCE? NCE is the National Congress of Employers, a national association that represents America\'s small and medium sized businesses via networking, advocacy, and information sharing. The NCE seeks to provide it\'s members with reliable services, resources, and benefits regardless of one\'s circumstances or means. The NCE is committed to providing members with valuable benefits and superior customer service. Membership and insurance enrollment opportunities are offered to individuals and families. Membership Packet and ID Cards Once a successful payment has been processed with an application, members will instantly receive a Purchase Confirmation E-mail from NCE Member Services. The e-mail includes the NCE Membership Handbook, a sample certificate of insurance and additional information. Registration and login instructions for your individualized Member Services Portal will be received in a secondary e-mail. Pending Carrier approval of your application, your fulfillment packet will be placed in the mail by the carrier which will include the hard copy of the handbook and personalized Certificate of Insurance within 7-10 business days from enrollment. Monthly Membership The rates reflect the monthly premium for health benefits as well as the NCE association membership. Rates do not include an association one-time, non-refundable enrollment fee, which is processed at the time of enrollment. Effective dates vary based on enrollment date. The initial premium draft, inclusive of the non-refundable, one-time enrollment fee, is processed the day of enrollment. Future drafts occur once a month, approximately every 30 days. Please make sure you have sufficient funds before you enroll. Credit cards and bank automatic draft is available. What is Limited Medical Coverage? A Limited Benefit Medical plan is not a comprehensive major medical plan, nor is it intended to replace a major medical plan. The plan is intended to provide you, and your covered dependents, with basic insurance coverage that is capped at specific amounts for specific services. Great When: ï¿½ Major Medical is not an option ï¿½ Major Medical is too costly ï¿½ Looking to supplement a higher deductible Major Medical plan Who is Eligible? ï¿½ Adults, 65 and older ï¿½ Dependent Children, age 1-25 Limited Medical Benefit Cash Policy v1 NCE Health Choice Silver ï¿½ 3 NCE Health Choice Silver GapAfford Plus - NCE Membership Benefits GapAfford Plus The GapAfford Plus Program is a great way for individuals and families to save money on out-of-pocket medical expenses. Your savings start from the first dollar, with no limits. Our cost savings program gives members access to pre-negotiated, lowered rates. There are no: ï¿½ Deductibles ï¿½ Pre-existing condition limitations ï¿½ Medical exams ï¿½ Claim forms ï¿½ Limitation on usage ï¿½ Age restrictions The OUTLOOK Vision Network We have contracted with over 10,000 eye care locations nationwide. The OUTLOOK Vision provider panel includes ophthalmologists, optometrists, independent optical centers and national chain locations. The vision program provides: ï¿½ Savings of 10% to 50% on most prescription eyeglasses, frames, and lenses, through a national network of over 10,000 independent and chain vision optical centers. ï¿½ 10% to 30% discounts on medical eye exams and surgical procedures, such as PRK and LASIK (where available and approved). Prescription Discount Benefits Use our discount Rx card and save an average of 15% on brand-name and 55% on generic medications at participating pharmacies. All FDA approved drugs are discounted with the card. Even lifestyle drugs can be obtained at greatly reduced rates. ï¿½ The pharmacy network is national in scope. ï¿½ Cards can be used for all family members. There is no limit on the number of prescriptions filled. ï¿½ No forms to fill out. You do not have to activate the card. The card can be used over and over. Simply present your member ID card to the pharmacist, along with your prescription to receive the discounts. The Aetna Dental Access Network As a member of the GapAfford Plus program, you and your family have access to a national network of over 132,000 available dental practice locations through one of the largest dental discount networks in America, the Aetna Dental Access Network. Participating dental locations provide savings that range from 15-50% per visit, on average, on dental services including cleanings, x-rays, fillings, root canals, crowns, bridges and orthodontia. Advantages of this discount program: ï¿½ No pre-existing condition exclusions ï¿½ No benefit maximum ï¿½ Cosmetic dentistry included ï¿½ Orthodontia always included ï¿½ Can be use in addition to dental insurance or enhance existing dental insurance Pet Rx About 50% of the medications prescribed by your vet are actually the same medications prescribed to people, only in different dosages. You can fill these prescriptions at your neighborhood pharmacy. We have even made arrangements with a US FDA-approved specialty, mail-order pharmacy to fill those special medications and compounds not available at your local pharmacy. Alternative Medicine Save an average of 25% at over 8,000 trained, qualified, and fully credentialed providers nationwide including acupuncture, massage and other integrated wellness therapies. Chiropractic Care Program offers a free initial consultation and up to 50% savings on diagnostic services and x-rays (if necessary), and unlimited treatments at 30% savings from a national network of over 12,000 chiropractors. Hearing Savings Program Receive customized care and, if needed, purchase brand name hearing aids at substantial savings. Save 20% to 50% off Manufacturer\'s Suggested Retail Pricing. Imaging Savings Program Our network providers can save members an average of 60% off of the usual cost for advanced radiology testing, such as Magnetic Resonance Imaging (MRI) and Computerized Tomography (CT) scans. Medical Bill Negotiations Members can save on their existing medi',
-    name: 'NCE Health Choice Silver',
-    type: 'Limited Benefit / Fixed Indemnity',
-    carrier: 'American Financial Security Life Insurance Co.',
-    assoc: 'National Congress of Employers (NCE)',
-    network: 'MultiPlan',
-    source: 'HealthChoiceSilverBrochure2.pdf',
-    benefits: [
-      {
-        category: 'Hospital Confinement',
-        items: [
-          'All tiers: 30-day maximum confinement',
-          '100A/100: $100/day; 200/200+: $200/day; 300: $300/day',
-          '500: $500/day; 750: $750/day; 1000: $1,000/day; 1000+: $1,000/day'
-        ]
-      },
-      {
-        category: 'Doctor Office Visits',
-        items: [
-          'Primary Care: $50/day â€” 3 days (100A/100) or 5 days (200+)',
-          '1000 tier: $75/day; 1000+ tier: $100/day â€” 5 days',
-          'Specialty Care: same structure as PCP visits'
-        ]
-      },
-      {
-        category: 'Emergency Room',
-        items: [
-          '100 tier+: $50â€“$200/day â€” 1-2 days per year',
-          '1000+ tier: $200/day'
-        ]
-      },
-      {
-        category: 'Surgery & Procedures',
-        items: [
-          '200+ tiers: Surgery benefit 50%â€“100% of charges â€” 3 days',
-          'Anesthesia: 20â€“25% â€” 3 days',
-          'Pathology & Radiology: $50â€“$200/day â€” 1-3 days',
-          'Advanced Studies: $50â€“$200/day â€” 1-3 days'
-        ]
-      },
-      {
-        category: 'Mental Health',
-        items: [
-          '300+ tiers: Inpatient $150â€“$500/day â€” 60 days',
-          '300+ tiers: Outpatient $50/day â€” 20 days'
-        ]
-      },
-      {
-        category: 'Enhanced Benefits (1000+ only)',
-        items: [
-          'Hospital ICU: $1,000/day â€” 15 days',
-          'Additional Hospital Admission: $1,000 â€” up to 5 admissions',
-          'Supplemental Accident Inpatient: $500/day â€” 3 days',
-          'Supplemental Accident ER: $250/day'
-        ]
-      },
-      {
-        category: 'Additional',
-        items: [
-          'Accidental Death: $10,000 (all tiers)',
-          'Critical Illness: $1,000 (200+ tiers)',
-          'No deductible â€” no coinsurance'
-        ]
-      },
-      {
-        category: 'Plan Structure',
-        items: [
-          'No deductible â€” fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
-          'No out-of-pocket maximum â€” plan pays fixed benefit amounts up to stated limits',
-          'Accidents: Covered from Day 1 â€” no waiting period for injury',
-          'Sickness: 30-day waiting period applies',
-          'Pre-existing conditions: Not covered for first 12 months from effective date',
-          'Hospital confinement benefit: Pays fixed daily amount for each day admitted â€” see plan tier for amount',
-          'Accidental death benefit: $10,000 maximum on all tiers',
-          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day â€” NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
-          'Pre-negotiated network discounts: Members who use in-network providers (First Health or PHCS depending on plan) receive pre-negotiated discounted rates on services. This reduces the gap between the actual bill and the fixed benefit amount. Always verify the provider is in-network before the appointment at providersearch.multiplan.com.'
-        ]
-      },
-      {
-        category: 'Additional Benefits & Savings Programs',
-        items: [
-          'Blood work and lab tests: Laboratory Savings Program â€” discounted rates at ncegapaffordplus.com. Not available in NY, NJ, RI.',
-          'Imaging savings: Average 60% off MRI and CT scans â€” discount only',
-          'Chiropractic savings: Free consult, up to 50% off x-rays, 30% off unlimited treatments',
-          'Mental health inpatient (tiers 300+ only): $150-$500/day up to 60 days',
-          'Mental health outpatient (tiers 300+ only): $50/day up to 20 days',
-          'Critical illness: $1,000 on tiers 200+',
-          'Surgery benefit (tiers 200+ only): 50%-100% per day up to 3 days',
-          'Hospital ICU benefit (tier 1000+ only): $1,000/day up to 15 days',
-          'Additional hospital admission benefit (tier 1000+ only): $1,000 per admission â€” up to 5 admissions'
-        ]
-      }
-    ],
-    limitations: [
-      'NOT ACA-compliant insurance',
-      'NOT major medical',
-      'Benefits are FIXED AMOUNTS â€” not actual bill payment',
-      '12/12 pre-existing condition exclusion',
-      '30-day waiting period for sickness (injury exempt)',
-      'Balance billing risk',
-      'NO Mental Health coverage below 300 tier',
-      'NOT a substitute for major medical',
-      'Maternity, pregnancy, childbirth, prenatal care: Not covered',
-      'Dental and vision: Not covered',
-      'Prescription drugs: Not covered as insurance â€” discount savings program included',
-      'Physical therapy, speech therapy, occupational therapy: Not covered',
-      'Home health care and hospice: Not covered',
-      'Custodial care: Not covered',
-      'Cosmetic surgery: Not covered',
-      'Weight loss and bariatric surgery: Not covered',
-      'Infertility treatment: Not covered',
-      'Routine foot care: Not covered',
-      'Hearing aids: Not covered',
-      'Voluntary sterilization reversal: Not covered',
-      'Workers compensation conditions: Not covered',
-      'This plan is NOT ACA compliant and is NOT major medical insurance',
-      'Plan pays fixed cash benefit amounts â€” member is responsible for any amount above the plan benefit',
-      'Mental health (tiers 100A, 100, 200): Not covered â€” available on tier 300 and above',
-      'Substance abuse disorders: Not covered',
-      'Prescription drugs: Not covered',
-      'NO pregnancy coverage',
-      'NO outpatient prescription drugs',
-      'NO dental services',
-      'NO speech, physical or occupational therapy',
-      'NO substance abuse coverage',
-      'NO hospice or home health care',
-      'Eligible ages: 65+ adults, dependents 1-25'
-    ],
-    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” injuries'],
-    preEx: '12-month exclusion for prior 12-month conditions',
-    planNotes:
-      'MultiPlan network (broader than First Health). 9 tiers including 1000+ with ICU and admission benefits. Surgery at 1000 tier pays 100% of charges up to benefit max.'
-  },
-  {
-    group: 'Limited',
     id: 'everest',
     rawText: 'Everest Reinsurance Company Offered Through: NCE Carrier: Everest Insurance Type: Group Fixed Indemnity Insurance Provider Options: Multiplan PPO Network For Agent Use Only MEDICAL EXPENSES CAN ADD UP QUICK. IS YOUR CLIENT PROTECTED? Accidents and illnesses can happen when they least expect it. Their focus should be on their health--not their wallet. But even after their medical insurance pays its portion, they could be facing unplanned bills for deductibles, copays, and coinsurance. Everest provides fixed payments that can help them manage these costs by providing a cash benefit for covered expenses. They can use the money however they wish, so they can focus on their recovery, not their bills. How does Group Indemnity Insurance Work? Group Indemnity Insurance can supplement existing coverage and provide cash to help cover medical and living expenses. Below is an example of how benefits might be paid under Plan 1000+.* Indemnity A 35-year-old woman gets into an accident and must go to Insurance the Emergency Room. She spends 2 days in the Hospital and Provides fixed upon release, a follow up appointment with her doctor. payments to help manage Hospital admission benefit expenses arising ER admission benefit $1,000 $100 from a medical Hospital confinement benefit $2000 cost. Physician office benefit $75 TOTAL $3,175 *Payouts are estimates and not guaranteed. The examples shown may vary from the plan offering. Your individual experience may also vary. Benefits paid are determined based on individual situations. Terms, conditions, and exclusions apply. See full policy for details. How might they use these benefits? Payments can be used for major medical copays and deductibles, or even things like transportation, child care, housekeeping help, or whatever else you may need. How they use the money is up to them! Why Everest Group Indemnity Insurance ? Multiplan PPO Network Benefits are paid directly to you to spend as you see fit Fast payment with simplified claims process Some states may have minimum coverage requirements. See policy documents for a complete description of benefits, exclusions, limitations, and conditions of coverage. Features and availability vary by location, and are subject to change. EVEREST PRODUCTS ARE LIMITED BENEFIT POLICIES--READ YOUR POLICY CAREFULLY. THESE POLICIES ARE NOT MAJOR MEDICAL INSURANCE AND ARE NOT INTENDED TO BE A SUBSTITUTE FOR MAJOR MEDICAL COVERAGE. For Agent Use Only Group Fixed Indemnity Plan Details Benefit Eligibility Pre-existing Condition Limitation Underwriting Level Confinement Benefits Hospital Confinement ICU Confinement Hospital Benefits Hospital Admission Emergency Room Plan 100 12-12 Pre-Existing Conditions Guaranteed Issue 30 Days Per Confinement/ 90 Days Per Certificate Year $100 $100 Emergency Room 2 per certificate year N/A $50 N/A Plan 200 Plan 200+ Plan 300 12-12 Pre-Existing Conditions Guaranteed Issue 30 Days Per Confinement/ 90 Days Per Certificate Year $200 $200 Emergency Room 2 per certificate year N/A $50 N/A 12-12 Pre-Existing Conditions 12-12 Pre-Existing Conditions Guaranteed Issue Guaranteed Issue 30 Days Per 30 Days Per Confinement/ 90 Days Per Confinement/ 90 Days Per Certificate Year Certificate Year $200 $300 $200 $300 Emergency Room 2 per Emergency Room 2 per certificate year N/A certificate year N/A $50 $50 Surgery-3 maximum days per certificate year (maximum Surgery-3 maximum days per certificate year (maximum days are shared between inpatient days are shared between inpatient and outpatient) and outpatient) Procedure Benefits Surgery Anesthesia Outpatient Benefits Lab X-Rays Advanced Diagnostic Physician\'s Office N/A N/A Physicians\'s Office-3 per certificate year N/A N/A N/A $50 N/A N/A X-Rays & Labs-4 covered days per certificate year/Advanced Diagnosticcovered days per certificate year/Physicians\'s Office- 3 per certificate year Combined Inpatient & Outpatient $250 per day 25% X-Rays & Labs-4 covered days per certificate year/Advanced Diagnosticcovered days per certificate year/Physicians\'s Office- 3 per certificate year Combined Inpatient & Outpatient $250 per day 25% Physicians\'s Office-3 per certificate year $50 $50 N/A $50 $50 N/A $50 $50 N/A $50 $50 $50 This coverage contains a Pre-Existing Condition Exclusion. Pre-Existing Condition means a condition for which a Covered Person received medical treatment, diagnosis, care or advice, including diagnostic tests or medications, during the months prior to the Covered Person\'s effective date of coverage. There is no cancel age. There is not chiropractic or acupuncture coverage. Benefits are per person. Policy terms, conditions, exclusions and limitations may vary by state. This product may not be available in all states. See Certificate for details. For Agent Use Only Group Fixed Indemnity Plan Details Benefit Eligiblity Pre-existing Condition Limitation Underwriting Level Confinement Benefits Hospital Confinement ICU Confinement Hospital Benefits Hospital Admission Emergency Room Procedure Benefits Surgery Anesthesia Outpatient Benefits Lab X-Rays Advanced Diagnostic Physician\'s Office Plan 500 Plan 750 Plan 1000 Plan 1000+ 12-12 Pre-Existing Conditions Guaranteed Issue 30 Days Per Confinement/ 90 Days Per Certificate Year $500 $500 Emergency Room 2 per certificate year N/A $50 Surgery-3 maximum days per certificate year (maximum days are shared between inpatient and outpatient) 12-12 Pre-Existing Conditions Guaranteed Issue 30 Days Per Confinement/ 90 Days Per Certificate Year $750 $750 12-12 Pre-Existing Conditions Guaranteed Issue 30 Days Per Confinement/ 90 Days Per Certificate Year $1000 $1000 Emergency Room 2 per certificate year Emergency Room 2 per certificate year N/A $75 Surgery-3 maximum days per certificate year (maximum days are shared between inpatient and outpatient) N/A $100 Surgery-3 maximum days per certificate year (maximum days are shared between inpatient and outpatient) 12-12 Pre-Existing Conditions Guaranteed Issue 30 Days Per Confinement/ 90 Days Per Certificate Year $1000 $1000 Hospital Admission-5 per certificate year/Emergency Room- 2 per certificate year $1,000 $100 Surgery-3 maximum days per certificate year (maximum days are shared between inpatient and outpatient) Combined Inpatient & Outpatient, $350 per day 25% X-Rays & Labs-8 covered days per certificate year/Advanced Diagnostic-6 covered days per certificate year/Physicians\'s Office- per certificate year Combined Inpatient & Outpatient, $400 per day 25% X-Rays & Labs-8 covered days per certificate year/Advanced Diagnostic-6 covered days per certificate year/Physicians\'s Office5 per certificate year Combined Inpatient & Outpatient, $500 per day 25% Combined Inpatient & Outpatient, $500 per day 25% X-Rays & Labs-12 covered days per X-Rays & Labs-12 covered days per certificate year/Advanced Diagnostic- certificate year/Advanced Diagnostic- 6 covered days per certificate 6 covered days per certificate year/Physicians\'s Office-5 per year/Physicians\'s Office-5 per certificate year certificate year $50 $50 $75 $100 $50 $50 $75 $100 $50 $50 $75 $100 $50 $50 $75 $75 This coverage contains a Pre-Existing Condition Exclusion. Pre-Existing Condition means a condition for which a Covered Person received medical treatment, diagnosis, care or advice, including diagnostic tests or medications, during the months prior to the Covered Person\'s effective date of coverage. There is no cancel age. There is not chiropractic or acupuncture coverage. Benefits are per person. Policy terms, conditions, exclusions and limitations may vary by state. This product may not be available in all states. See Certificate for details.. For Agent Use Only Everest FAQ\'s What is Group Fixed Indemnity Insurance? A group fixed indemnity insurance policy is a supplemental health plan that pays a set amount of money for specific covered medical expenses. It\'s also known as indemnity insurance, fixed benefit insurance, or fee for service insurance. Where can I find participating pr',
-    name: 'Everest Fixed Indemnity (100-1000+)',
+    name: 'Everest Fixed Indemnity',
     type: 'Limited Benefit / Fixed Indemnity',
     carrier: 'Everest Reinsurance Company',
     assoc: 'National Congress of Employers (NCE)',
@@ -3064,7 +3103,7 @@ var POLICY_DOCS = [
     group: 'Limited',
     id: 'bwapara',
     rawText: 'MBR is a service that combines medical bill repricing, healthcare advocacy, and bill negotiation into one. With MBR PLUS, members have the flexibility to seek medical care from any licensed healthcare provider. Members pay a $25 Pre-Pay for Primary Care Office Visits. (See page 2 for details) Concierge Style Healthcare Advocacy Medical Bill Repricing and Direct Bill Negotiations Guidance on how to obtain Financial Assistance. At MBR, our mission is to serve as a concierge-style service, helping our members navigate the complex and often overwhelming healthcare system. We strive to ensure that you receive the highest quality care at the most competitive prices. To that end, we offer bill negotiation services to assist our members in lowering their medical bills. Our dedicated support team is committed to guiding you through the entire process, from financial aid to negotiating your bills directly. While we cannot guarantee the outcome of any claim or bill, our team of experts is dedicated to making your experience as stress-free and enjoyable as possible. Our system, known as the Reference Based Pricing System, reprices healthcare bills to between 150% to 200% of the "Medicare Allowable Rates." This approach is widely accepted in the Healthcare Self-Insured Group Marketplace, with over 70% of employer groups in America using it to lower medical service rates. By utilizing this costcontainment method, we can typically achieve even lower provider fees and reduce out-of-pocket medical expenses for our members, often surpassing the savings offered by common PPO networks. MBR PLUS Members receive significant discounts on all medical bills submitted by doctors or hospitals who agree to participate in our Referenced Based Pricing system. HOW IT WORKS FIRST we recommend that you call MBR prior to visiting a provider, so our team can provide all necessary documents and instructions. This is not required. SECOND Visit your provider and show them your MBR card at the time of service. THIRD Pay a $25 Pre-Pay for Primary Care Office Visits and $50 Pre-Pay for Specialist Office Visits and then your provider should mail all remaining medical bills to MBR for repricing. FOURTH You should complete your insurance claim forms to receive Insured Benefits. The MBR team can provide those forms and provide instructions on how to complete them. FIFTH Once bills are submitted for repricing, both you and your healthcare provider will receive a detailed Explanation of Benefits (EOB) from MBR through traditional mail. This document will specify the billed amount and any discounts applied. LASTLY You should expect to receive a final bill from your medical provider, which should align with the amount due on the EOB you have already received. Additionally, your insurance company may provide you with additional funds to help cover any outstanding balances. Remember, the MBR team is here to help you through the entire process. If you require assistance, feel free to contact MBR\'s dedicated support team at 877-278-4668. MBR helps lower medical bills by utilizing PPO Networks, Referenced Based Pricing, and Direct Bill Negotiation. Please note that while we strive to help, we cannot guarantee the outcome of any claim or the amount of savings on any bill. Medical providers may decline to honor this service. BWA BUSINESS WORKERS OF AMERICA ASSOCIATK>N C Directlabs SERIOUS MEDICAL CONDITIONS SUCH AS HEART DISEASE, PROSTATE CANCER, DIABETES, THYROID DISEASE AND MORE, CAN GO UNDETECTED FOR UP TO TWO YEARS-WITHOUT NOTICEABLE SYMPTOMS. THE EARLIER A PROBLEM IS DETECTED, THE EASIER AND MORE LIKELY IT IS TO BE TREATABLE. YOU NOW HAVE DIRECT ACCESS TO MAJOR CLINICAL LABS ACROSS THE USA* FOR THOSE IMPORTANT BLOOD TESTS - AND AT DISCOUNTED PRICES. TAKE CHARGE OF YOUR HEALTH AND FITNESS TODAY! IT IS SIMPLE: A DOCTOR\'S APPOINTMENT IS NOT NECESSARY. ALL BLOOD TESTS ARE OFFERED AT A SAVINGS OF UP TO 80% OFF TYPICAL LAB COSTS AND THROUGH THE SAME CUA-CERTIFIED ACCREDITED LABS USED BY YOUR PHYSICIAN. DIRECTLABS SERVICES INCLUDE: BLOOD, URINE, SALIVA, HAIR AND FECAL TESTS. ORDERING ONLINE 0 Create Account: Go to https://directlabs.com/4members and click Register at the top right corner. Complete the information and submit your registration. 0 Your MyDLS account will allow you to place orders, sign HIPAA forms. print requisitions. and view and print results, all online. Keep your username and password that you created in a safe place. 0 Print your Documents: After ordering your tests, DirectLabsï¿½ will generate a requisition and upload it to your online account. An email will be sent notifying you that it is available for you to print. If an "at home" kit is ordered, it will be mailed to the address provided in the order. 0 Go to Lab Location: Using the Lab Locator**. find a patient service center location convenient to your home or work. 0 Results: Results are available online withing 24-48 hours for most tests. You will receive an email letting you know when they are available. If you would like your results sent to yourHealth Care Provider, you must log into your account and submit the HIPAA form. ORDERING BY PHONE 0 Call l-800-908-0000 and provide code R-CALSTAR. 0 Your MyDLS account will be created for you automatically and you will receive an email with your username and password to access your account. You will provide your personal information for your order along with your credit card information for payment. 0 Print your Documents: After ordering your tests, DirectLabsï¿½ will generate a requisition and upload it to your online account. An email will be sent notifying you that it is available for you to print. If an "at home" kit is ordered, it will be mailed to the address provided in the order. G) Go to Lab Location: Using the Lab Locator**, find a patient service center location convenient to your home or work. 0 Results: Results are available online withing 24-48 hours for most tests. You will receive an email letting you know when they are available. If you would like your results sent to your Health Care Provider, you must log into your account and submit the HIPAA form. . PRESCRIPTION SAVINGS! Free Rx Coupon Card Free Rx Drug Card,CCoommplpimliemntes noft:s of: PROGRAM HIGHLIGHTS Save up to 80% on prescriptions Free pharmacy coupon card Accepted at over 68,000 pharmacies nationwide Discounts on brand & generic drugs No restrictions & HIPAA compliant The card below is pre-activated and can be used immediately to save up to 80% on your prescription drugs. ï¿½ Bring the discount coupon card to your pharmacy. ï¿½ ï¿½ Present the coupon card to the pharmacist when paying. ï¿½ ï¿½ Save on your prescriptions! ï¿½ FRONT THIS PROGRAM IS NOT INSURANCE. BACK Health Wearhouse.com America\'s Trusted Online Pharmacy BWA is proud to partner with HealthWarehouse to provide affordable prices on prescription medications SAVE 30 TO 90% ON YOUR PRESCRIPTION MEDICATION HOW TO ORDER: CHECK YOUR MEDICATION PRICES ONLINE OR GIVE US A CALL 888 - 706 - 7608 HTTPS://TRY.HEALTHWAREHOUSE.COM/BWA/ With our focus on technology and sourcing, we are able to remove layers of cost between the manufacturer and the customer. Our proprietary software allows us to process prescription products efficiently and cost effectively. We don\'t have the substantial overhead costs of traditional retail pharmacy chains, nor the requirement to artificially keep prescription drug costs higher in order to maintain insurance reimbursements. Therefore, we are able to keep our cost low, and pass along the savings to our patients! HealthWarehouse is here for you through Compassion, Convenience, and Transparency. ï¿½ Hospital Indemnity Insurance Prepared for: Business Workers of America ï¿½ Group Hospital Insurance A hospital stay can be expensive. Are you protected? Accidents and illnesses can happen when you least expect it. Your focus should be on your health--not your wallet. But even after your medical insurance pays its portion, you could be facing unplanned',
-    name: 'BWA Paramount (MBR)',
+    name: 'BWA Paramount',
     type: 'Limited Benefit / Reference-Based Pricing',
     carrier: 'BCS Insurance Company',
     assoc: 'Business Workers of America (BWA)',
@@ -3190,7 +3229,7 @@ var POLICY_DOCS = [
     group: 'Limited',
     id: 'bwaamericare',
     rawText: 'MEMBERSHIP PACKAGE OUR MISSION The mission of the Business Workers of America Association, a not-for-profit member association founded in 2001, is to assist in improving the lives of American workers and their families. The association will accomplish this mission through thefollowing activities and/or services: Providing valuable information and education about their trade or profession Representing American Worker\'s interest in influencing both Federal and State legislation that will directly benefit the individuals and their families in attaining a better lifestyle, higher incomes, lower cost of health care or supplemental health benefits Supporting trade colleges or institutions that provide free or low cost higher education and skill training programs Providing scholarships or grants to members or family members who want to attend a college or trade school that will teach them a skill or trade and allow them to enter an apprentice or startup professional program Directing and assisting members to federal or state programs available to them that would aid in acquiring financial assistance and improving their life opportunities Making available health care, supplemental benefits and wellness programs that would improve their family\'s overall health and wellness Supporting institutions that educate and train workers to better accomplish the demands of their workplace or profession Supporting the charities that are dedicated to accomplishing the same goals and mission of the association ASSOCATION BENEFITS AS A MEMBER OF BWA you and your family are entitled to a package of benefits and services. This booklet outlines the benefits included with your membership. MBR simplifies the process when visiting a Primary Care Doctor or Specialist. $25 pre-pay for Primary Care Office Visits. $25 pre-pay for Urgent Care Facility Visits. Most Urgent Care Facilities provide consultations, lab testing, x-rays and more. $50 pre-pay for Specialist Doctor Visits. *Choose a network physician for maximum savings To locate a PHCS network provider, call 888-371-7427 or visit www.MultiPlan.com MBR helps lower medical bills by utilizing PPO Networks, Reference-Based Pricing, and Direct Bill Negotiation. Please note that while we strive to assist, we cannot guarantee the outcome of any claim or the amount of savings on any bill. *A majority of the time, MBR reprices bills to amounts exceeding Medicare\'s allowable rate, but medical providers may still decline to honor this service. Please have your provider call MBR at 877-278-4668 with any questions they may have. MBR-062524-198 Members receive significant discounts on all medical bills submitted by doctors or hospitals who agree to participate in our Referenced Based Pricing system. HOW IT WORKS 1st FIRST we recommend that you call MBR prior to visiting a provider, so our team can provide all necessary documents and instructions. This is not required. 2nd SECOND Visit your provider and show them your MBR card at the time of service. 3rd THIRD Pay a $25 Pre-Pay for Primary Care Office Visits and $50 Pre-Pay for Specialist Office Visits and then your provider should mail all remaining medical bills to MBR for repricing. 4th 5th FOURTH You should complete your insurance claim forms to receive Insured Benefits. The MBR team can provide those forms and provide instructions on how to complete them. FIFTH Once bills are submitted for repricing, both you and your healthcare provider will receive a detailed Explanation of Benefits (EOB) from MBR through traditional mail. This document will specify the billed amount and any discounts applied. 6th SIXTH You should expect to receive a final bill from your medical provider, which should align with the amount due on the EOB you have already received. Additionally, your insurance company may provide you with additional funds to help cover any outstanding balances. Remember, the MBR team is here to help you through the entire process MBR-062524-198 Additional MBR Services MANAGED CARE Q. What is the Primary Service Managed Care Provides? A. MBR will help reprice and reduce medical providers bills. Q. How Does MBR Reprice Medical Bills? A. MBR uses one of the nation\'s largest provider networks to provide members with access to quality, affordable health care. Members have access to more than 5,500 hospitals, over 164,000 ancillary facilities, and over 1.3 million health care providers in the United States, including Puerto Rico. The network covers over 95% of the US population. Q. What are the Advantages for the Member? A. Helps reduce out of pocket cost for the member. WHITE GLOVE ADVOCACY Q. What is the Primary Service White Glove Advocacy Provides? A. Advocacy medical specialists assists members both before and after visiting a provider. Q. How Does Advocacy Assist Members? A. MBR Advocacy Specialists can help members find a low-cost provider in advance of their visit. For members who have a remaining balance on their medical bills after discounts and insurance benefits are applied, MBR Advocates negotiate with hospital or providers to help reduce the balance. Q. What Other Service Does White Glove Advocacy Perform? A. Advocates negotiate to reduce any medical bill balance after insurance is applied. They use advanced software technology, and their expertise in billing rules and financial assistance to sometimes even eliminate the remaining balance completely. To locate a PHCS network provider, call 888-371-7427 or visit www.MultiPlan.com MBR-062524-198 Are you financially prepared? Hospital indemnity insurance may help cover the costs of an unexpected illness or serious accident that results in a hospital stay, outpatient surgery or treatment in a doctor\'s office. Focus on recovery, not your finances, with a hospital indemnity plan from APL. How it works 1 CHOOSE the plan that best helps protect you and your family. 12 RECEIVE treatment in a covered facility. 3 FILE your claim online or mail it in. You\'ll receive benefit funds to use however you wish. Key features ï¿½ You may be covered for doctor\'s office visits, urgent care, outpatient surgery, hospital stays and more! ï¿½ You decide how to use the benefit funds-for medical and non-medical expenses ï¿½ Guarantee Issue with no medical questions or exams ï¿½ Cost-effective premiums with convenient payroll deduction THE INSURANCE POLICY UNDER WHICH THIS CERTIFICATE IS ISSUED IS NOT A POLICY OF WORKERS\' COMPENSATION INSURANCE. YOU SHOULD CONSULT YOUR EMPLOYER TO DETERMINE WHETHER YOUR EMPLOYER IS A SUBSCRIBER TO THE WORKERS\' COMPENSATION SYSTEM. I Summary of Benefits for Business Workers of America Assn. HSA Compatible Spouse Coverage Dependent Child(ren) Coverage Pre-Existing Condition Period/Pre-Existing Condition Exclusion Period Pregnancy Coverage Hospital Admission Benefit Hospital Confinement Benefit Intensive Care Unit Admission Benefit Intensive Care Unit Benefit No Available Available Not applicable Plan 2 Included $750 per day; max of 1 day(s) $200 per day; max of 30 day(s) $1,500 per day; max of 1 day(s) $350 per day; max of 30 day(s) Accident & Sickness Surgery Benefit Inpatient Surgery Outpatient Surgery in a Hospital, Outpatient Facility or Freestanding Outpatient Surgery Center General Anesthesia Benefit $500 per day; max of 1 day(s) $300 per day; max of 1 days(s) $125 per day Outpatient Accident & Sickness Treatment Benefit Emergency Room $200 per day; max of 2 day(s) Urgent Care Facility Physician\'s Office $50 per day; max of 3 day(s) $50 per day; max of 3 day(s) Physical, Speech or Occupational Therapy Facility $15 per day; max of 5 days(s) APSB-22552(TXas)-0122 MedChoiceTM Group Hospital Indemnity Insurance APL. Additional Rider(s) Portability Option Rider Occupational Exclusion Rider Continuity of Coverage Amendment Rider (Takeover) Plan 2 Included Not included Included, credit given for time served under prior coverage for: Pre-Existing Condition Period Additional Treatment Treatment for Serious Mental Illness Treatment for',
-    name: 'BWA Americare (2, 3, 4)',
+    name: 'BWA Americare',
     type: 'Limited Benefit / Fixed Indemnity',
     carrier: 'American Public Life',
     assoc: 'Business Workers of America (BWA)',
@@ -3319,186 +3358,140 @@ var POLICY_DOCS = [
     planNotes: 'BWA plan using PHCS network + MBR bill repricing. Plan 3 includes APL MedChoice hospital indemnity with $1,000 admission, $300/day confinement, $2,000 ICU admission, mental health and addiction treatment included. $25 PCP / $50 specialist pre-pay. Call MBR at 877-278-4668.'
   },
   {
-    id: 'smartchoice',
-    name: 'SmartChoice',
-    group: 'MEC',
-    type: 'MEC',
-    carrier: 'Detego Health',
-    network: 'First Health EPO',
-    assoc: 'Population Science Management',
-    planNotes: 'Four deductible tiers: 1500, 2500, 3000, 3500. EPO network -- members MUST use in-network providers. No out-of-network coverage except emergencies.',
-    benefits: [
-      {
-        category: 'Deductible Options',
-        items: [
-          'SmartChoice 1500: Individual $1,500 deductible',
-          'SmartChoice 2500: Individual $2,500 deductible',
-          'SmartChoice 3000: Individual $3,000 deductible',
-          'SmartChoice 3500: Individual $3,500 deductible'
-        ]
-      },
-      {
-        category: 'Network',
-        items: [
-          'First Health EPO -- in-network only',
-          'Members MUST verify their doctor is in-network before enrolling',
-          'No out-of-network coverage except emergencies'
-        ]
-      },
-      {
-        category: 'Preventive Care',
-        items: [
-          'All tiers: covered at $0 copay'
-        ]
-      },
-      {
-        category: 'Telemedicine',
-        items: [
-          'All tiers: $0 copay -- unlimited access'
-        ]
-      },
-      {
-        category: 'Plan Type',
-        items: [
-          'MEC group plan -- not individual insurance',
-          'Member becomes Working Owner of sponsoring organization',
-          'Benefits Administrator: Detego Health',
-          'Billed through FirstEnroll'
-        ]
-      }
-    ],
-    limitations: [
-      'EPO -- NO out-of-network coverage except emergencies',
-      'MEC plan -- not comprehensive major medical',
-      'Not ACA major medical compliant',
-      'Must use in-network providers only'
-    ],
-    waitingPeriods: ['30-day waiting period for sickness benefits'],
-    preEx: 'Check plan documents for pre-existing condition terms',
-    source: 'Smart_Choice_1500_Plan_Doc_2025.pdf',
-    rawText: 'SmartChoice MEC group plan First Health EPO Detego Health Population Science Management four tiers 1500 2500 3000 3500 deductible in-network only EPO no out of network preventive zero copay telemedicine zero copay working owner FirstEnroll not major medical not ACA'
-  },
-  {
-    id: 'medvalue',
-    name: 'MedValue',
     group: 'Limited',
+    id: 'healthchoicesilver',
+    rawText: 'NCE Health Choice Silver Limited Benefit Health Insurance Plans Limited Benefit Insurance underwritten by: American Financial Security Life Insurance Co. Limited Medical Benefit Cash Policy v1 NCE Health Choice Plus ï¿½ 1 NCE Health Choice Silver Benefit Decription Hospital Confinement Benefit Per Day Max Day Primary Care Doctors Office Visit Benefit Per Day Max Day Specialty Care Doctors\' Office Visit Benefit Per Day Max Day Emergency Room Benefit Per Day Max Day Basic Pathology & Radiology Benefit* Per Day Max Day Advance Studies Benefit* Per Day Max Day Surgery Benefit Per Day Max Day Anesthesia Benefit Per Day Max Day Mental Health Inpatient Benefit Per Day Max Day Mental Health Outpatient Benefit Per Day Max Day Supplemental Accident Inpatient Admission Benefit Per Day Max Day Supplemental Accident Emergency Room Benefit Per Day Max Day Hospital Intensive Care Unit Benefit Per Day Max Day Additional Hospital Admission Benefit Per Admission Max Day Accidental Death Benefit Critical Illness Maximum Benefit * Benefits are based on an annual period per insured from effective date. 100A 100 200 200+ 300 500 750 1000 1000+ $100 30 $50 3 $50 3 - $100 30 $50 3 $50 3 $50 1 1 1 - $200 30 $50 5 $50 5 $50 1 $50 1 $50 1 - $200 30 $50 5 $50 5 $50 2 $50 3 $50 3 50% 3 20% 3 - $300 30 $50 5 $50 5 $50 1 50% 3 20% 3 $150 60 $50 20 $500 1 $250 1 - $500 30 $50 5 $50 5 $50 1 $50 2 $50 2 70% 3 20% 3 $250 60 $50 20 $500 1 $250 1 - $750 30 $50 5 $50 5 $75 1 $50 2 $50 2 80% 3 20% 3 $375 60 $50 20 $500 2 $250 1 - $1000 30 $75 5 $75 5 $100 1 $75 3 $75 3 100% 3 20% 3 $500 60 $50 20 $500 3 $250 1 - $1000 30 $100 5 $100 5 $200 1 $100 3 $200 3 100% 3 25% 3 $500 60 $50 20 $500 3 $250 1 $1000 15 $1000 5 $10,000 $10,000 $10,000 $10,000 $10,000 $10,000 $10,000 $10,000 $10,000 n/a n/a n/a $1,000 $1,000 $1,000 $1,000 $1,000 $1,000 *There is a 30 day waiting period immediately following the Coverage Effective Date; does not apply to an injury. 2 ï¿½ NCE Health Choice Silver Limited Medical Benefit Policyv1 NCE Health Choice Silver What is NCE? NCE is the National Congress of Employers, a national association that represents America\'s small and medium sized businesses via networking, advocacy, and information sharing. The NCE seeks to provide it\'s members with reliable services, resources, and benefits regardless of one\'s circumstances or means. The NCE is committed to providing members with valuable benefits and superior customer service. Membership and insurance enrollment opportunities are offered to individuals and families. Membership Packet and ID Cards Once a successful payment has been processed with an application, members will instantly receive a Purchase Confirmation E-mail from NCE Member Services. The e-mail includes the NCE Membership Handbook, a sample certificate of insurance and additional information. Registration and login instructions for your individualized Member Services Portal will be received in a secondary e-mail. Pending Carrier approval of your application, your fulfillment packet will be placed in the mail by the carrier which will include the hard copy of the handbook and personalized Certificate of Insurance within 7-10 business days from enrollment. Monthly Membership The rates reflect the monthly premium for health benefits as well as the NCE association membership. Rates do not include an association one-time, non-refundable enrollment fee, which is processed at the time of enrollment. Effective dates vary based on enrollment date. The initial premium draft, inclusive of the non-refundable, one-time enrollment fee, is processed the day of enrollment. Future drafts occur once a month, approximately every 30 days. Please make sure you have sufficient funds before you enroll. Credit cards and bank automatic draft is available. What is Limited Medical Coverage? A Limited Benefit Medical plan is not a comprehensive major medical plan, nor is it intended to replace a major medical plan. The plan is intended to provide you, and your covered dependents, with basic insurance coverage that is capped at specific amounts for specific services. Great When: ï¿½ Major Medical is not an option ï¿½ Major Medical is too costly ï¿½ Looking to supplement a higher deductible Major Medical plan Who is Eligible? ï¿½ Adults, 65 and older ï¿½ Dependent Children, age 1-25 Limited Medical Benefit Cash Policy v1 NCE Health Choice Silver ï¿½ 3 NCE Health Choice Silver GapAfford Plus - NCE Membership Benefits GapAfford Plus The GapAfford Plus Program is a great way for individuals and families to save money on out-of-pocket medical expenses. Your savings start from the first dollar, with no limits. Our cost savings program gives members access to pre-negotiated, lowered rates. There are no: ï¿½ Deductibles ï¿½ Pre-existing condition limitations ï¿½ Medical exams ï¿½ Claim forms ï¿½ Limitation on usage ï¿½ Age restrictions The OUTLOOK Vision Network We have contracted with over 10,000 eye care locations nationwide. The OUTLOOK Vision provider panel includes ophthalmologists, optometrists, independent optical centers and national chain locations. The vision program provides: ï¿½ Savings of 10% to 50% on most prescription eyeglasses, frames, and lenses, through a national network of over 10,000 independent and chain vision optical centers. ï¿½ 10% to 30% discounts on medical eye exams and surgical procedures, such as PRK and LASIK (where available and approved). Prescription Discount Benefits Use our discount Rx card and save an average of 15% on brand-name and 55% on generic medications at participating pharmacies. All FDA approved drugs are discounted with the card. Even lifestyle drugs can be obtained at greatly reduced rates. ï¿½ The pharmacy network is national in scope. ï¿½ Cards can be used for all family members. There is no limit on the number of prescriptions filled. ï¿½ No forms to fill out. You do not have to activate the card. The card can be used over and over. Simply present your member ID card to the pharmacist, along with your prescription to receive the discounts. The Aetna Dental Access Network As a member of the GapAfford Plus program, you and your family have access to a national network of over 132,000 available dental practice locations through one of the largest dental discount networks in America, the Aetna Dental Access Network. Participating dental locations provide savings that range from 15-50% per visit, on average, on dental services including cleanings, x-rays, fillings, root canals, crowns, bridges and orthodontia. Advantages of this discount program: ï¿½ No pre-existing condition exclusions ï¿½ No benefit maximum ï¿½ Cosmetic dentistry included ï¿½ Orthodontia always included ï¿½ Can be use in addition to dental insurance or enhance existing dental insurance Pet Rx About 50% of the medications prescribed by your vet are actually the same medications prescribed to people, only in different dosages. You can fill these prescriptions at your neighborhood pharmacy. We have even made arrangements with a US FDA-approved specialty, mail-order pharmacy to fill those special medications and compounds not available at your local pharmacy. Alternative Medicine Save an average of 25% at over 8,000 trained, qualified, and fully credentialed providers nationwide including acupuncture, massage and other integrated wellness therapies. Chiropractic Care Program offers a free initial consultation and up to 50% savings on diagnostic services and x-rays (if necessary), and unlimited treatments at 30% savings from a national network of over 12,000 chiropractors. Hearing Savings Program Receive customized care and, if needed, purchase brand name hearing aids at substantial savings. Save 20% to 50% off Manufacturer\'s Suggested Retail Pricing. Imaging Savings Program Our network providers can save members an average of 60% off of the usual cost for advanced radiology testing, such as Magnetic Resonance Imaging (MRI) and Computerized Tomography (CT) scans. Medical Bill Negotiations Members can save on their existing medi',
+    name: 'NCE Health Choice Silver',
     type: 'Limited Benefit / Fixed Indemnity',
-    carrier: 'HC Data Consulting, LLC',
-    network: 'First Health Network (National PPO)',
-    assoc: 'ERISA',
-    planNotes: 'Three deductible tiers: 2000, 4000, 6000. All tiers share same copay structure except 6000 tier has lower lab/radiology copays. Billed through FirstEnroll.',
+    carrier: 'American Financial Security Life Insurance Co.',
+    assoc: 'National Congress of Employers (NCE)',
+    network: 'MultiPlan',
+    source: 'HealthChoiceSilverBrochure2.pdf',
     benefits: [
       {
-        category: 'Deductible Options',
+        category: 'Hospital Confinement',
         items: [
-          'MedValue 2000: Individual $2,000 / Family $4,000',
-          'MedValue 4000: Individual $4,000 / Family $8,000',
-          'MedValue 6000: Individual $6,000 / Family $12,000',
-          'Out-of-Pocket Max (all tiers): Individual $9,200 / Family $18,400'
+          'All tiers: 30-day maximum confinement',
+          '100A/100: $100/day; 200/200+: $200/day; 300: $300/day',
+          '500: $500/day; 750: $750/day; 1000: $1,000/day; 1000+: $1,000/day'
         ]
       },
       {
-        category: 'Preventive Care',
+        category: 'Doctor Office Visits',
         items: [
-          'All tiers: 100% covered at $0 copay -- not subject to deductible',
-          'Includes annual physicals, routine screenings, mammograms, colonoscopies, pap smears'
-        ]
-      },
-      {
-        category: 'Telemedicine (relyMD)',
-        items: [
-          'All tiers: $0 copay -- not subject to deductible',
-          'Virtual Primary Care, Urgent Care, Mental Health -- 24/7 access'
-        ]
-      },
-      {
-        category: 'PCP / Specialist / Urgent Care',
-        items: [
-          'All tiers: 2 PCP visits per year -- $50 copay (before deductible)',
-          'All tiers: 2 Specialist visits per year -- $50 copay (before deductible)',
-          'All tiers: 2 Urgent Care visits per year -- $50 copay (before deductible)',
-          'After deductible met: 2 additional PCP, 2 Specialist, 2 Urgent Care visits',
-          'No referral required'
-        ]
-      },
-      {
-        category: 'Laboratory',
-        items: [
-          'MedValue 2000 / 4000: $50 copay -- 3 per year (after deductible)',
-          'MedValue 6000: $25 copay -- 3 per year (after deductible)'
-        ]
-      },
-      {
-        category: 'Radiology',
-        items: [
-          'MedValue 2000 / 4000: $100 copay -- 3 per year (after deductible)',
-          'MedValue 6000: $50 copay -- 3 per year (after deductible)'
-        ]
-      },
-      {
-        category: 'Advanced Imaging',
-        items: [
-          'All tiers: $400 copay (after deductible)',
-          'Prior authorization required'
+          'Primary Care: $50/day â€” 3 days (100A/100) or 5 days (200+)',
+          '1000 tier: $75/day; 1000+ tier: $100/day â€” 5 days',
+          'Specialty Care: same structure as PCP visits'
         ]
       },
       {
         category: 'Emergency Room',
         items: [
-          'All tiers: 1 per year -- $500 copay (after deductible)'
+          '100 tier+: $50â€“$200/day â€” 1-2 days per year',
+          '1000+ tier: $200/day'
         ]
       },
       {
-        category: 'Surgery',
+        category: 'Surgery & Procedures',
         items: [
-          'Outpatient Surgery: 1 per year -- $500 copay (after deductible)',
-          'Inpatient Surgery: 1 per year -- $1,000 copay (after deductible)',
-          'Inpatient Hospital: 5-day limit at semi-private room rate',
-          'Prior authorization required for all surgery',
-          'Elective surgeries not covered'
+          '200+ tiers: Surgery benefit 50%â€“100% of charges â€” 3 days',
+          'Anesthesia: 20â€“25% â€” 3 days',
+          'Pathology & Radiology: $50â€“$200/day â€” 1-3 days',
+          'Advanced Studies: $50â€“$200/day â€” 1-3 days'
         ]
       },
       {
-        category: 'Physical & Occupational Therapy',
+        category: 'Mental Health',
         items: [
-          'All tiers: 8 visits/year combined -- $50 copay (after deductible)'
+          '300+ tiers: Inpatient $150â€“$500/day â€” 60 days',
+          '300+ tiers: Outpatient $50/day â€” 20 days'
         ]
       },
       {
-        category: 'Durable Medical Equipment',
+        category: 'Enhanced Benefits (1000+ only)',
         items: [
-          'All tiers: 2 items/year -- $50 copay per item (after deductible)'
+          'Hospital ICU: $1,000/day â€” 15 days',
+          'Additional Hospital Admission: $1,000 â€” up to 5 admissions',
+          'Supplemental Accident Inpatient: $500/day â€” 3 days',
+          'Supplemental Accident ER: $250/day'
         ]
       },
       {
-        category: 'Generic Rx',
+        category: 'Additional',
         items: [
-          'Preventive generics: $0 copay before deductible',
-          'Standard generics: $0 copay after deductible',
-          'Brand-name: prescription savings card provided'
+          'Accidental Death: $10,000 (all tiers)',
+          'Critical Illness: $1,000 (200+ tiers)',
+          'No deductible â€” no coinsurance'
         ]
       },
       {
-        category: 'Med Defender Pro',
+        category: 'Plan Structure',
         items: [
-          'Medical Bill Negotiator included',
-          'Patient Assistance Program included'
+          'No deductible â€” fixed cash indemnity plan that pays set dollar amounts per service regardless of actual cost',
+          'No out-of-pocket maximum â€” plan pays fixed benefit amounts up to stated limits',
+          'Accidents: Covered from Day 1 â€” no waiting period for injury',
+          'Sickness: 30-day waiting period applies',
+          'Pre-existing conditions: Not covered for first 12 months from effective date',
+          'Hospital confinement benefit: Pays fixed daily amount for each day admitted â€” see plan tier for amount',
+          'Accidental death benefit: $10,000 maximum on all tiers',
+          'HOW THE BENEFIT WORKS: This plan pays a FIXED DOLLAR AMOUNT per service per day â€” NOT the actual bill. Example: If a doctor visit costs $200 and the plan pays $50/day, the member receives $50 and is responsible for the remaining $150. The benefit is paid directly to the member. Using in-network providers reduces the gap because of pre-negotiated discounted rates.',
+          'Pre-negotiated network discounts: Members who use in-network providers (First Health or PHCS depending on plan) receive pre-negotiated discounted rates on services. This reduces the gap between the actual bill and the fixed benefit amount. Always verify the provider is in-network before the appointment at providersearch.multiplan.com.'
+        ]
+      },
+      {
+        category: 'Additional Benefits & Savings Programs',
+        items: [
+          'Blood work and lab tests: Laboratory Savings Program â€” discounted rates at ncegapaffordplus.com. Not available in NY, NJ, RI.',
+          'Imaging savings: Average 60% off MRI and CT scans â€” discount only',
+          'Chiropractic savings: Free consult, up to 50% off x-rays, 30% off unlimited treatments',
+          'Mental health inpatient (tiers 300+ only): $150-$500/day up to 60 days',
+          'Mental health outpatient (tiers 300+ only): $50/day up to 20 days',
+          'Critical illness: $1,000 on tiers 200+',
+          'Surgery benefit (tiers 200+ only): 50%-100% per day up to 3 days',
+          'Hospital ICU benefit (tier 1000+ only): $1,000/day up to 15 days',
+          'Additional hospital admission benefit (tier 1000+ only): $1,000 per admission â€” up to 5 admissions'
         ]
       }
     ],
     limitations: [
-      'NOT traditional major medical -- limited day benefit plan',
-      'Not ACA-compliant',
-      'No maternity, substance abuse, or psychiatric coverage',
-      'Elective surgeries not covered',
-      '1 hospitalization per year, 5-day limit',
-      '30-day waiting period for sickness, hospital, and scheduled visits',
-      'Out-of-network limited to emergencies only'
+      'NOT ACA-compliant insurance',
+      'NOT major medical',
+      'Benefits are FIXED AMOUNTS â€” not actual bill payment',
+      '12/12 pre-existing condition exclusion',
+      '30-day waiting period for sickness (injury exempt)',
+      'Balance billing risk',
+      'NO Mental Health coverage below 300 tier',
+      'NOT a substitute for major medical',
+      'Maternity, pregnancy, childbirth, prenatal care: Not covered',
+      'Dental and vision: Not covered',
+      'Prescription drugs: Not covered as insurance â€” discount savings program included',
+      'Physical therapy, speech therapy, occupational therapy: Not covered',
+      'Home health care and hospice: Not covered',
+      'Custodial care: Not covered',
+      'Cosmetic surgery: Not covered',
+      'Weight loss and bariatric surgery: Not covered',
+      'Infertility treatment: Not covered',
+      'Routine foot care: Not covered',
+      'Hearing aids: Not covered',
+      'Voluntary sterilization reversal: Not covered',
+      'Workers compensation conditions: Not covered',
+      'This plan is NOT ACA compliant and is NOT major medical insurance',
+      'Plan pays fixed cash benefit amounts â€” member is responsible for any amount above the plan benefit',
+      'Mental health (tiers 100A, 100, 200): Not covered â€” available on tier 300 and above',
+      'Substance abuse disorders: Not covered',
+      'Prescription drugs: Not covered',
+      'NO pregnancy coverage',
+      'NO outpatient prescription drugs',
+      'NO dental services',
+      'NO speech, physical or occupational therapy',
+      'NO substance abuse coverage',
+      'NO hospice or home health care',
+      'Eligible ages: 65+ adults, dependents 1-25'
     ],
-    waitingPeriods: ['30-day waiting period for sickness, hospitalization, and scheduled doctor visits'],
-    preEx: 'Check plan documents for pre-existing condition terms',
-    source: 'CARRIER_APPROVED_03112026_MEDVALUE_2000_03112026_LR.pdf',
-    rawText: 'MedValue High Deductible Value Plan limited benefit ERISA First Health Network PPO three tiers 2000 4000 6000 deductible out of pocket max 9200 individual 18400 family preventive 100 percent zero copay telemedicine relyMD zero copay PCP specialist urgent care 4 visits combined 50 copay lab 50 copay 2000 4000 tier 25 copay 6000 tier radiology 100 copay 2000 4000 tier 50 copay 6000 tier advanced imaging 400 copay ER 500 copay outpatient surgery 500 copay inpatient surgery 1000 copay PT OT 8 visits DME 2 items generic rx zero copay med defender pro bill negotiator not ACA not major medical no maternity 30 day waiting period FirstEnroll HC Data Consulting ERISA'
-  },
+    waitingPeriods: ['30 days â€” sickness', 'Day 1 â€” injuries'],
+    preEx: '12-month exclusion for prior 12-month conditions',
+    planNotes:
+      'MultiPlan network (broader than First Health). 9 tiers including 1000+ with ICU and admission benefits. Surgery at 1000 tier pays 100% of charges up to benefit max.'
+  }
 ];
 /* Knowledge-base PDF full text merges + reference table prepend: see js/plan-data-pdf-raw.js */
