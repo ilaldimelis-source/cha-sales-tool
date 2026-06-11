@@ -125,7 +125,7 @@
     },
     {
       id: 'allstatestm',
-      name: 'Allstate STM',
+      name: 'Allstate STM (Enhanced / Copay Enhanced / Essentials)',
       group: 'STM',
       type: 'STM',
       carrier: 'Allstate / NEO Insurance Solutions',
@@ -283,7 +283,7 @@
     },
     {
       id: 'mychoice',
-      name: 'MyChoice',
+      name: 'MyChoice (Low / Mid / High)',
       group: 'Limited',
       type: 'Limited Benefit / Fixed Indemnity',
       carrier: 'BWA / FirstEnroll',
