@@ -10427,7 +10427,16 @@ body {
 /* Plan Vault — uniform card height */
 .plan-card {
   min-height: 110px;
+  height: 110px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+.plan-card .plan-card-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
