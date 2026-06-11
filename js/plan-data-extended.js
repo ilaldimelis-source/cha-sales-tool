@@ -5,365 +5,148 @@
 
 (function () {
   var EXTENDED_PLANS = [
-    // SMART CHOICE 1500
+
+    // TRUE HEALTH 2
     {
-      id: 'smartchoice1500',
-      name: 'Smart Choice 1500',
+      id: 'trueh2',
+      name: 'TrueHealth 2',
       group: 'MEC',
       type: 'MEC',
-      carrier: 'NEO Insurance Solutions / Population Science Management',
+      carrier: 'Merchants Benefit Administration (MBA)',
       network: 'First Health Network',
       benefits: [
         {
-          category: 'Deductible',
-          items: ['Individual $1,500 / Family $3,000 (Embedded)']
-        },
-        {
-          category: 'Out-of-Pocket Max',
-          items: ['Individual $9,200 / Family $18,400']
-        },
-        {
           category: 'Primary Care Visit',
-          items: ['$40 copay — 12 visit limit per year']
+          items: ['$25 copay / $150 max per visit — 4 visits per year']
         },
         {
-          category: 'Specialist Visit',
-          items: ['$50 copay — 12 visit limit per year']
+          category: 'Specialist / Urgent Care',
+          items: ['$50 copay / $300 max per visit — 2 visits per year']
         },
         {
-          category: 'Urgent Care',
-          items: ['$250 copay after deductible — 5 visit limit']
-        },
-        {
-          category: 'Emergency Room',
+          category: 'Inpatient Hospitalization',
           items: [
-            '$1,500 max payment after deductible — 4 per family per benefit period'
+            '$1,000 per day — $10,000 per year maximum — 12/12 pre-ex applies'
+          ]
+        },
+        { category: 'Telemedicine', items: ['$0 consult fee — unlimited'] },
+        {
+          category: 'Prescriptions Generic',
+          items: ['$0 copay — generic acute/preventive drugs on formulary']
+        },
+        {
+          category: 'Prescriptions Maintenance',
+          items: ['Preferred Generic $5 copay — 200 generic maintenance drugs']
+        },
+        {
+          category: 'Prescription Terms',
+          items: [
+            'Specialty drugs not covered — Prescription Assistance Program available income-based. Mail order optional.'
           ]
         },
         {
-          category: 'Inpatient Hospital',
-          items: ['$2,500 copay after deductible — 1 per family, up to 7 days']
-        },
-        {
-          category: 'Outpatient Hospital',
-          items: [
-            '$60 copay after deductible — 4 per family (elective surgeries excluded)'
-          ]
-        },
-        {
-          category: 'Telehealth',
-          items: ['$0 copay — Primary Care, Mental Health, Urgent Care']
-        },
-        {
-          category: 'Ambulance',
-          items: [
-            'Ground: $750 copay after deductible. Air: $2,500 copay after deductible'
-          ]
-        },
-        {
-          category: 'Advanced Imaging',
-          items: ['$250 copay after deductible — 4 per benefit period']
-        },
-        {
-          category: 'Radiology/X-ray',
-          items: [
-            '$75 copay after deductible — 4 per family per benefit period'
-          ]
-        },
-        {
-          category: 'Mental Health Inpatient',
-          items: ['$250 copay after deductible — 10 day limit']
-        },
-        {
-          category: 'Mental Health Outpatient',
-          items: ['$50 copay after deductible — 10 visit limit']
-        },
-        {
-          category: 'Preventive Care',
-          items: ['ACA required services — Plan pays 100%']
-        },
-        {
-          category: 'Prescriptions',
-          items: [
-            'Generic $12 copay retail 30-day. Specialty via ScriptAide patient assistance'
-          ]
-        },
-        {
-          category: 'Rehabilitation',
-          items: ['$50 copay after deductible — 10 visit combined limit']
-        },
-        {
-          category: 'Home Health / Hospice / Skilled Nursing',
-          items: ['$50 copay after deductible — 10 visit limit each']
-        },
-        {
-          category: 'DME',
-          items: [
-            '$50 copay after deductible — 10 visit limit (precertification required if $500+)'
-          ]
-        },
-        {
-          category: 'Maternity',
-          items: ['Not covered (except ACA preventive services)']
-        },
-        { category: 'Infertility', items: ['Not covered'] },
-        {
-          category: 'Out-of-Network',
-          items: ['Not covered (emergency at in-network level)']
+          category: 'Hospital Bill Reducer',
+          items: ['Advocacy service included']
         }
       ],
       limitations: [
-        'Supplement to health insurance — NOT a substitute for major medical',
-        'Does not satisfy ACA minimum essential coverage requirement',
-        'Out-of-network services not covered except emergencies',
-        'Elective surgeries excluded from outpatient facility benefit',
-        'Maternity not covered except ACA preventive',
-        'No infertility coverage',
-        'Mental health inpatient limited to 10 days',
-        'Preauthorization required for home health, skilled nursing, DME $500+',
-        'Outpatient joint/spine/connective tissue limited to $5,000',
-        'PT/OT/ST/Cardiac/Pulmonary rehab limited to 30 visits',
-        'Brand name and specialty Rx not covered — generic only at $12 copay',
-        'Network: First Health — in-network only for most benefits'
+        'MEC plan — covers preventive and limited physician services only',
+        'NOT comprehensive major medical coverage',
+        'Hospitalization subject to 12-month pre-existing condition exclusion',
+        '30-day waiting period for all sickness benefits',
+        'Outpatient physician services in-network only',
+        'Inpatient hospital indemnity not network-restricted',
+        'Specialty drugs not covered',
+        'Only 2 specialist visits per year',
+        'Does not cover services not listed in Schedule of Benefits'
       ],
-      waitingPeriods: [
-        'No waiting period for acute conditions; standard plan effective date applies'
-      ],
+      waitingPeriods: ['30-day waiting period for all sickness benefits'],
       preEx:
-        '12-month look-back / 12-month exclusion period for pre-existing conditions',
-      source: 'Smart_Choice_1500_Plan_Doc_2025.pdf',
+        '12/12 — 12-month look-back, 12-month exclusion for hospitalization benefits',
+      source: 'MEC_TrueHealth2_SPD_Jan25.pdf',
       rawText:
-        'Smart Choice 1500 Limited Medical. Individual deductible $1,500 family $3,000 embedded. Out-of-pocket max individual $9,200 family $18,400. Network First Health. Primary care $40 copay 12 visit limit. Specialist $50 copay 12 visit limit. Urgent care $250 copay after deductible 5 visit limit. Emergency room $1,500 max payment after deductible 4 per family per benefit period. Inpatient hospital $2,500 copay after deductible 1 per family up to 7 days. Outpatient hospital $60 copay after deductible 4 per family elective surgeries excluded. Telehealth $0 copay primary care mental health urgent care. Ambulance ground $750 air $2,500 copay after deductible. Advanced diagnostic imaging CT MRI $250 copay after deductible 4 per benefit period. Radiology x-ray $75 copay after deductible 4 per family. Mental health inpatient $250 copay 10 day limit. Mental health outpatient $50 copay 10 visit limit. Preventive care ACA required plan pays 100%. Prescriptions generic $12 copay 30-day retail ventegra formulary. Specialty drugs ScriptAide patient assistance program income based. Rehabilitation $50 copay 10 visit combined limit. Home health hospice skilled nursing $50 copay 10 visit limit. DME $50 copay 10 visit limit precertification required if over $500. Maternity not covered except ACA preventive. Infertility not covered. Out-of-network not covered. Pre-existing condition 12 month look-back 12 month exclusion period. Supplement to health insurance not a substitute for major medical does not satisfy ACA minimum essential coverage. Preauthorization required for home health skilled nursing DME over $500. Failure to obtain preauthorization results in denial of benefits. Outpatient joint spine connective tissue $5,000 benefit limit. PT OT ST cardiac pulmonary rehab 30 visit limit. Member services 886-815-6001 memberservices@detegohealth.com www.detegohealth.com. GuideCM precertification 866-837-1714. NaviClaim member advocates 866-837-1436. ScriptAide patient assistance 866-837-1515. Green Imaging advanced diagnostics 844-968-4647. Pharmacy benefit manager Ventegra 30-day retail ScriptCo 90-day mail order.'
+        'TrueHealth 2 MEC Minimum Essential Coverage. Physician services First Health Network. Primary care $25 copay $150 max per visit 4 visits per year. Specialist urgent care $50 copay $300 max per visit 2 visits per year. Inpatient hospitalization $1,000 per day $10,000 per year maximum 12 12 pre-existing exclusion. Telemedicine $0 consult fee unlimited. Prescriptions generic $0 copay acute preventive formulary. Preferred generic $5 copay 200 maintenance drugs. Specialty drugs not covered prescription assistance program income based. Mail order optional. Hospital bill reducer advocacy. 30 day waiting period sickness benefits. Outpatient physician services in-network only. Inpatient hospital indemnity not network restricted. MEC plan covers preventive limited physician services not comprehensive major medical. Group health plan ACA minimum essential coverage preventive wellness.'
     },
 
-    // SMART CHOICE 3000
+
+    // TRUE HEALTH 3
     {
-      id: 'smartchoice3000',
-      name: 'Smart Choice 3000',
+      id: 'trueh3',
+      name: 'TrueHealth 3',
       group: 'MEC',
       type: 'MEC',
-      carrier: 'NEO Insurance Solutions / Population Science Management',
+      carrier: 'Merchants Benefit Administration (MBA)',
       network: 'First Health Network',
       benefits: [
         {
-          category: 'Deductible',
-          items: ['Individual $3,000 / Family $6,000 (Embedded)']
-        },
-        {
-          category: 'Out-of-Pocket Max',
-          items: ['Individual $9,200 / Family $18,400']
-        },
-        {
           category: 'Primary Care Visit',
-          items: ['$40 copay — 7 visit limit per year']
+          items: ['$25 copay / $150 max per visit — 4 visits per year']
         },
         {
-          category: 'Specialist Visit',
-          items: ['$50 copay — 7 visit limit per year']
+          category: 'Specialist / Urgent Care',
+          items: ['$50 copay / $300 max per visit — 4 visits per year']
         },
         {
-          category: 'Urgent Care',
-          items: ['$250 copay after deductible — 3 visit limit']
-        },
-        {
-          category: 'Emergency Room',
+          category: 'Inpatient Hospitalization',
           items: [
-            '$1,500 max payment after deductible — 2 per family per benefit period'
+            '$1,000 per day — $15,000 per year maximum — 12/12 pre-ex applies'
+          ]
+        },
+        { category: 'Telemedicine', items: ['$0 consult fee — unlimited'] },
+        {
+          category: 'Prescriptions Generic',
+          items: ['$0 copay — generic acute/preventive drugs on formulary']
+        },
+        {
+          category: 'Prescriptions Maintenance',
+          items: ['Preferred Generic $5 copay — 200 generic maintenance drugs']
+        },
+        {
+          category: 'Prescriptions Non-preferred Generic',
+          items: ['Retail 30-day $5/$10 copay. Mail order 90-day $5/$20 copay']
+        },
+        {
+          category: 'Prescriptions Brand',
+          items: [
+            'Prior Authorization required — Retail 30-day $40. Mail order 90-day $80'
           ]
         },
         {
-          category: 'Inpatient Hospital',
-          items: ['$2,500 copay after deductible — 1 per family, up to 4 days']
-        },
-        {
-          category: 'Outpatient Hospital',
+          category: 'Prescription Terms',
           items: [
-            '$60 copay after deductible — 2 per family (elective surgeries excluded)'
+            '$150 benefit limit per person per month for non-preventive maintenance Rx. Specialty drugs not covered.'
           ]
         },
         {
-          category: 'Telehealth',
-          items: ['$0 copay — Primary Care, Mental Health, Urgent Care']
-        },
-        {
-          category: 'Ambulance',
-          items: [
-            'Ground: $750 copay after deductible. Air: $2,500 copay after deductible'
-          ]
-        },
-        {
-          category: 'Advanced Imaging',
-          items: ['$250 copay after deductible — 2 per benefit period']
-        },
-        {
-          category: 'Radiology/X-ray',
-          items: [
-            '$75 copay after deductible — 2 per family per benefit period'
-          ]
-        },
-        {
-          category: 'Mental Health Inpatient',
-          items: ['$250 copay after deductible — 5 day limit']
-        },
-        {
-          category: 'Mental Health Outpatient',
-          items: ['$50 copay after deductible — 5 visit limit']
-        },
-        {
-          category: 'Preventive Care',
-          items: ['ACA required services — Plan pays 100%']
-        },
-        {
-          category: 'Prescriptions',
-          items: ['Generic $12 copay retail 30-day via Ventegra formulary']
-        },
-        {
-          category: 'Rehabilitation',
-          items: ['$50 copay after deductible — 5 visit combined limit']
-        },
-        {
-          category: 'Home Health / Hospice / Skilled Nursing',
-          items: ['$50 copay after deductible — 5 visit limit each']
-        },
-        {
-          category: 'DME',
-          items: ['$50 copay after deductible — 5 visit combined limit']
-        },
-        { category: 'Maternity', items: ['Not covered'] },
-        {
-          category: 'Out-of-Network',
-          items: ['Not covered (emergency at in-network level)']
+          category: 'Hospital Bill Reducer',
+          items: ['Advocacy service included']
         }
       ],
       limitations: [
-        'Supplement to health insurance — NOT major medical',
-        'Does not satisfy ACA minimum essential coverage',
-        'Fewer visits than Smart Choice 1500 — lower tier plan',
-        'Inpatient limited to 4 days vs 7 days on SC1500',
-        'Only 7 PCP/specialist visits vs 12 on SC1500',
-        'Elective surgeries excluded',
-        'Preauthorization required for home health, skilled nursing, DME $500+',
-        'Outpatient joint/spine/connective tissue limited to $5,000',
-        'PT/OT/ST/Cardiac/Pulmonary rehab limited to 30 visits'
+        'MEC plan — covers preventive and limited physician services only',
+        'NOT comprehensive major medical coverage',
+        'Higher hospitalization max ($15,000/yr) vs TrueHealth 2 ($10,000/yr)',
+        'More specialist visits (4/yr) vs TrueHealth 2 (2/yr)',
+        'Brand prescriptions require prior authorization',
+        '$150/person/month benefit limit for non-preventive maintenance Rx',
+        'Specialty drugs not covered',
+        '30-day waiting period for all sickness benefits',
+        'Hospitalization subject to 12-month pre-existing condition exclusion',
+        'Outpatient physician services in-network only'
       ],
-      waitingPeriods: ['Standard plan effective date applies'],
-      preEx: '12-month look-back / 12-month exclusion period',
-      source: 'Smart_Choice_3000_Plan_Doc_2025.pdf',
+      waitingPeriods: ['30-day waiting period for all sickness benefits'],
+      preEx:
+        '12/12 — 12-month look-back, 12-month exclusion for hospitalization benefits',
+      source: 'MEC_TrueHealth3_SPD_Jan25.pdf',
       rawText:
-        'Smart Choice 3000 Limited Medical. Individual deductible $3,000 family $6,000 embedded. Out-of-pocket max individual $9,200 family $18,400. Network First Health. Primary care $40 copay 7 visit limit. Specialist $50 copay 7 visit limit. Urgent care $250 copay after deductible 3 visit limit. Emergency room $1,500 max payment after deductible 2 per family per benefit period. Inpatient hospital $2,500 copay after deductible 1 per family up to 4 days. Outpatient hospital $60 copay after deductible 2 per family elective surgeries excluded. Telehealth $0 copay. Ambulance ground $750 air $2,500 after deductible. Advanced imaging $250 copay 2 per benefit period. Radiology x-ray $75 copay 2 per family. Mental health inpatient $250 copay 5 day limit. Mental health outpatient $50 copay 5 visit limit. Preventive ACA plan pays 100%. Prescriptions generic $12 copay ventegra formulary. Rehabilitation $50 copay 5 visit limit. Home health hospice skilled nursing $50 copay 5 visit limit. DME $50 copay 5 visit limit. Maternity not covered. Out-of-network not covered. Pre-existing 12 month look-back 12 month exclusion. Supplement not substitute for major medical does not satisfy ACA MEC requirement. Preauthorization required failure results in denial. Member services 886-815-6001 memberservices@detegohealth.com.'
+        'TrueHealth 3 MEC Minimum Essential Coverage. Physician services First Health Network. Primary care $25 copay $150 max 4 visits per year. Specialist urgent care $50 copay $300 max 4 visits per year higher than TrueHealth 2. Inpatient hospitalization $1,000 per day $15,000 per year maximum 12 12 pre-existing exclusion. Telemedicine $0 unlimited. Prescriptions generic $0 copay formulary. Preferred generic maintenance $5 copay 200 drugs. Non-preferred generic retail 30 day $5 $10 mail order 90 day $5 $20. Brand prior authorization required retail 30 day $40 mail order 90 day $80. $150 benefit limit per person per month non-preventive maintenance prescriptions. Specialty drugs not covered prescription assistance income based. 30 day waiting period sickness. Outpatient physician in-network only. MEC not comprehensive major medical. Hospital bill reducer advocacy included.'
     },
 
-    // SMART CHOICE 3500
-    {
-      id: 'smartchoice3500',
-      name: 'Smart Choice 3500',
-      group: 'MEC',
-      type: 'MEC',
-      carrier: 'NEO Insurance Solutions / Population Science Management',
-      network: 'First Health Network',
-      benefits: [
-        {
-          category: 'Deductible',
-          items: ['Individual $3,500 / Family $7,000 (Embedded)']
-        },
-        {
-          category: 'Out-of-Pocket Max',
-          items: ['Individual $9,200 / Family $18,400']
-        },
-        {
-          category: 'Primary Care Visit',
-          items: ['$40 copay — 5 visit limit per year']
-        },
-        {
-          category: 'Specialist Visit',
-          items: ['$50 copay — 5 visit limit per year']
-        },
-        {
-          category: 'Urgent Care',
-          items: ['$250 copay after deductible — 2 visit limit']
-        },
-        {
-          category: 'Emergency Room',
-          items: [
-            '$1,500 max payment after deductible — 1 per family per benefit period'
-          ]
-        },
-        {
-          category: 'Inpatient Hospital',
-          items: ['$2,500 copay after deductible — 1 per family, up to 3 days']
-        },
-        {
-          category: 'Outpatient Hospital',
-          items: [
-            '$60 copay after deductible — 1 per family (elective surgeries excluded)'
-          ]
-        },
-        {
-          category: 'Telehealth',
-          items: ['$0 copay — Primary Care, Mental Health, Urgent Care']
-        },
-        {
-          category: 'Advanced Imaging',
-          items: ['$250 copay after deductible — 1 per benefit period']
-        },
-        {
-          category: 'Radiology/X-ray',
-          items: [
-            '$75 copay after deductible — 1 per family per benefit period'
-          ]
-        },
-        {
-          category: 'Mental Health Inpatient',
-          items: ['$250 copay after deductible — 3 day limit']
-        },
-        {
-          category: 'Mental Health Outpatient',
-          items: ['$50 copay after deductible — 3 visit limit']
-        },
-        {
-          category: 'Preventive Care',
-          items: ['ACA required services — Plan pays 100%']
-        },
-        {
-          category: 'Prescriptions',
-          items: ['Generic $12 copay retail 30-day via Ventegra formulary']
-        },
-        {
-          category: 'Rehabilitation',
-          items: ['$50 copay after deductible — 3 visit combined limit']
-        },
-        {
-          category: 'Home Health / Hospice / Skilled Nursing',
-          items: ['$50 copay after deductible — 3 visit limit each']
-        },
-        {
-          category: 'DME',
-          items: ['$50 copay after deductible — 3 visit combined limit']
-        },
-        { category: 'Maternity', items: ['Not covered'] },
-        { category: 'Out-of-Network', items: ['Not covered'] }
-      ],
-      limitations: [
-        'Lowest tier Smart Choice plan — most limited visit counts',
-        'Only 5 PCP/specialist visits per year',
-        'Only 1 ER visit per family per benefit period',
-        'Only 1 outpatient facility visit per family',
-        'Inpatient limited to 3 days',
-        'Supplement to health insurance — NOT major medical',
-        'Does not satisfy ACA minimum essential coverage',
-        'Preauthorization required for home health, skilled nursing, DME $500+'
-      ],
-      waitingPeriods: ['Standard plan effective date applies'],
-      preEx: '12-month look-back / 12-month exclusion period',
-      source: 'Smart_Choice_3500_Plan_Doc_2025.pdf',
-      rawText:
-        'Smart Choice 3500 Limited Medical. Individual deductible $3,500 family $7,000 embedded. Out-of-pocket max individual $9,200 family $18,400. Network First Health. Primary care $40 copay 5 visit limit. Specialist $50 copay 5 visit limit. Urgent care $250 copay 2 visit limit. Emergency room $1,500 max payment 1 per family per benefit period. Inpatient hospital $2,500 copay 1 per family up to 3 days. Outpatient hospital $60 copay 1 per family elective surgeries excluded. Telehealth $0 copay. Advanced imaging $250 copay 1 per benefit period. Radiology $75 copay 1 per family. Mental health inpatient $250 copay 3 day limit. Mental health outpatient $50 copay 3 visit limit. Preventive ACA 100%. Prescriptions generic $12 copay ventegra formulary. Rehab $50 copay 3 visit limit. Home health hospice skilled nursing $50 copay 3 visit limit. DME $50 copay 3 visit limit. Maternity not covered. Out-of-network not covered. Pre-existing 12 month look-back 12 month exclusion. Supplement not major medical does not satisfy ACA MEC. Member services 886-815-6001 memberservices@detegohealth.com.'
-    },
 
     // PINNACLE PROTECT PLAN 1
     {
       id: 'pinnacleprotect1',
-      name: 'Pinnacle Protect Plan 1',
+      name: 'Pinnacle Protect 1',
       group: 'Limited',
       type: 'Limited',
       carrier: 'Pinnacle / NEO Insurance Solutions',
@@ -453,10 +236,11 @@
         'Pinnacle Protect Plan 1 Limited Medical. Guaranteed Issue. Pre-existing 12 month look-back 12 month exclusion 12-12. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Hospital confinement $400 per day 10 days per confinement 30 days per certificate year. ICU confinement $400 per day 10 days per confinement 30 days per certificate year. Hospital admission $400 2 per certificate year. In-hospital physician visit $50 3 days per certificate year. Surgery inpatient $500 outpatient $500 1 maximum day per certificate year shared between inpatient and outpatient. Anesthesia 25%. Outpatient surgery center $500 1 day per certificate year. Blood products $35 3 days per certificate year. Lab $30 2 per certificate year. X-rays $25 2 per certificate year. Advanced diagnostic $250 1 per certificate year. Physicians office $50 2 per certificate year. Urgent care $50 1 per certificate year. Emergency room $100 1 per certificate year. Wellness $75 1 per certificate year. This product is a supplement to health insurance and is not a substitute for major medical coverage. Benefits provided are not intended to cover all medical expenses. Does not satisfy ACA minimum essential coverage requirement. Fixed cash benefit member pays amounts above benefit. PHCS network may provide discounted bill for covered services. Pre-existing condition excluded for first 12 months from effective date.'
     },
 
+
     // PINNACLE PROTECT PLAN 2
     {
       id: 'pinnacleprotect2',
-      name: 'Pinnacle Protect Plan 2',
+      name: 'Pinnacle Protect 2',
       group: 'Limited',
       type: 'Limited',
       carrier: 'Pinnacle / NEO Insurance Solutions',
@@ -492,10 +276,11 @@
         'Pinnacle Protect Plan 2 Limited Medical Guaranteed Issue. Higher benefit tier than Plan 1. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA minimum essential coverage. Member pays amounts above fixed benefit. PHCS network provides discounted billing.'
     },
 
+
     // PINNACLE PROTECT PLAN 3
     {
       id: 'pinnacleprotect3',
-      name: 'Pinnacle Protect Plan 3',
+      name: 'Pinnacle Protect 3',
       group: 'Limited',
       type: 'Limited',
       carrier: 'Pinnacle / NEO Insurance Solutions',
@@ -530,10 +315,11 @@
         'Pinnacle Protect Plan 3 Limited Medical Guaranteed Issue. Higher benefit tier than Plan 2. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA MEC requirement.'
     },
 
+
     // PINNACLE PROTECT PLAN 4
     {
       id: 'pinnacleprotect4',
-      name: 'Pinnacle Protect Plan 4',
+      name: 'Pinnacle Protect 4',
       group: 'Limited',
       type: 'Limited',
       carrier: 'Pinnacle / NEO Insurance Solutions',
@@ -568,10 +354,11 @@
         'Pinnacle Protect Plan 4 Limited Medical Guaranteed Issue. Highest Pinnacle Protect tier. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA MEC requirement.'
     },
 
+
     // PINNACLE CRITICAL CARE PLAN 1
     {
       id: 'pinnaclecriticalcare1',
-      name: 'Pinnacle Critical Care Plan 1',
+      name: 'Pinnacle Critical Care 1',
       group: 'Limited',
       type: 'Limited',
       carrier: 'Pinnacle / NEO Insurance Solutions',
@@ -601,10 +388,11 @@
         'Pinnacle Critical Care Plan 1. Supplemental critical care plan. Designed as add-on coverage. Limited benefit not comprehensive health insurance. Does not satisfy ACA minimum essential coverage. Pairs with STM or other primary coverage. NEO Pinnacle network.'
     },
 
+
     // PINNACLE CRITICAL CARE PLAN 2
     {
       id: 'pinnaclecriticalcare2',
-      name: 'Pinnacle Critical Care Plan 2',
+      name: 'Pinnacle Critical Care 2',
       group: 'Limited',
       type: 'Limited',
       carrier: 'Pinnacle / NEO Insurance Solutions',
@@ -628,10 +416,11 @@
         'Pinnacle Critical Care Plan 2. Supplemental critical care higher tier than Plan 1. Limited benefit not comprehensive. Does not satisfy ACA MEC. NEO Pinnacle network.'
     },
 
+
     // PINNACLE CRITICAL CARE PLAN 3
     {
       id: 'pinnaclecriticalcare3',
-      name: 'Pinnacle Critical Care Plan 3',
+      name: 'Pinnacle Critical Care 3',
       group: 'Limited',
       type: 'Limited',
       carrier: 'Pinnacle / NEO Insurance Solutions',
@@ -655,10 +444,11 @@
         'Pinnacle Critical Care Plan 3. Supplemental critical care higher tier than Plan 2. Limited benefit not comprehensive. Does not satisfy ACA MEC. NEO Pinnacle network.'
     },
 
+
     // PINNACLE CRITICAL CARE PLAN 4
     {
       id: 'pinnaclecriticalcare4',
-      name: 'Pinnacle Critical Care Plan 4',
+      name: 'Pinnacle Critical Care 4',
       group: 'Limited',
       type: 'Limited',
       carrier: 'Pinnacle / NEO Insurance Solutions',
@@ -683,6 +473,7 @@
       rawText:
         'Pinnacle Critical Care Plan 4. Supplemental critical care highest tier. Limited benefit not comprehensive. Does not satisfy ACA MEC. NEO Pinnacle network.'
     },
+
 
     // ALLSTATE ENHANCED STM PPO
     {
@@ -760,6 +551,7 @@
         'Allstate Enhanced STM PPO Plan Short Term Medical. Deductibles from $2,500 to $25,000. Coinsurance from 0% to 50%. Coverage period maximum $1,000,000. Office visits including preventive subject to deductible and coinsurance. Outpatient services subject to deductible and coinsurance $5,000 benefit limit on joint neck spine connective tissue tendons ligaments cartilage. 30 visit limit for PT OT ST cardiac pulmonary rehabilitation. Adult screenings subject to deductible and coinsurance. Inpatient hospital stays subject to deductible and coinsurance. Emergency room $250 access fee waived if admitted subject to deductible and coinsurance. Diagnostic x-ray lab subject to deductible and coinsurance. Urgent care $50 access fee deductible waived remaining subject to coinsurance. Child immunizations first dollar benefit no deductible. Out-of-network deductibles and coinsurance doubled. Family deductible capped at 3x individual. Copays not applicable out-of-network. Short term medical not ACA compliant. Pre-existing conditions subject to underwriting review. No waiting period stated. NEO Insurance Solutions PPO network Allstate.'
     },
 
+
     // ALLSTATE COPAY ENHANCED STM PPO
     {
       id: 'allstatecopayenhancedstm',
@@ -825,6 +617,7 @@
       rawText:
         'Allstate Copay Enhanced STM PPO Plan Short Term Medical. Choose between $6,000 and $8,000 deductible. Coinsurance 0%. Coverage period maximum $5,000,000. Office visits copay $40 PCP $60 specialist including preventive. Pharmacy $10 copay on generic drugs maximum benefit $3,000. Outpatient services subject to deductible $5,000 limit joint neck spine connective tissue 30 visit limit PT OT ST cardiac pulmonary rehab. Adult screenings includes immunizations subject to deductible and coinsurance. Inpatient hospital stays subject to deductible. Emergency room $250 access fee waived if admitted deductible applies. Urgent care $50 access fee deductible waived remaining subject to coinsurance. Child immunizations first dollar benefit. Out-of-network deductibles doubled copays not applicable. Short term medical not ACA compliant. Pre-existing conditions subject to underwriting. No waiting period stated. NEO Insurance Solutions PPO network Allstate.'
     },
+
 
     // ALLSTATE ESSENTIALS STM PPO
     {
@@ -898,6 +691,7 @@
         'Allstate Essentials STM PPO Plan Short Term Medical. Deductibles $5,000 $10,000 $25,000. Coinsurance 40% member pays 40% after deductible. Coinsurance OOP max $7,500. Coverage period maximum $250,000. Office visits including preventive subject to deductible and coinsurance. Outpatient services $15,000 limit $5,000 limit joint neck spine connective tissue 30 visit limit PT OT ST cardiac pulmonary rehab. Inpatient hospital subject to deductible and coinsurance. Emergency room $250 access fee waived if admitted. Urgent care $50 access fee deductible waived. Child immunizations first dollar. Out-of-network deductibles doubled. Entry level STM lowest coverage max $250,000. 40% coinsurance. Not ACA compliant. Pre-existing conditions subject to underwriting. NEO Insurance Solutions Allstate PPO.'
     },
 
+
     // ALLSTATE HEALTH ACCESS
     {
       id: 'allstatehealthaccess',
@@ -969,10 +763,11 @@
         'Allstate Health Access Limited Medical Metal Gap indemnity three tiers CORE VALUE PLUS. Weight restriction males over 300 lbs females over 250 lbs not eligible. Deductible $0. Waiting period 3 months preventive only. Pre-existing condition exclusion 12 months from effective date 1 year look-back for signs symptoms treatment diagnosis. Hospital admission PLUS year 1 $6,000 year 2 $9,000 year 3 $12,000. Hospital confinement sickness PLUS $6,000 unlimited days. Hospital confinement injury PLUS $6,000 unlimited days. ICU PLUS $6,000 60 days. Emergency room PLUS $300. Surgery tier 1 PLUS $10,000 3 days. Surgery tier 2 PLUS $5,000 4 days. Outpatient surgery PLUS $5,000 4 days. Anesthesia PLUS $5,000. Ambulatory surgical center PLUS $3,000 3 days. Office visit PLUS $200 4 visits. Urgent care PLUS $150 4 visits. Inpatient physician PLUS $200 4 visits. Preventive office visit PLUS $175 2 visits. Radiology PLUS $200. Laboratory test PLUS $35 10 visits. Chemotherapy PLUS $4,000 monthly max. Observation unit PLUS $1,500 3 days. Ambulance ground water PLUS $25,000. Ambulance air PLUS $1,500 2 days. Office visit increasing benefit year 1 $4,000 year 2 $6,000 year 3 $8,000 PLUS. Exclusions mental illness substance abuse hazardous activities eye exams hearing cosmetic gastric bypass chronic pain foot conditions outside US war self-inflicted injury felony. Not ACA compliant limited benefit fixed indemnity. NEO Insurance Solutions Allstate.'
     },
 
+
     // MYCHOICE PLAN LOW
     {
       id: 'mychoicelow',
-      name: 'MyChoice - Plan Low',
+      name: 'MyChoice Low',
       group: 'Limited',
       type: 'Limited',
       carrier: 'BWA / FirstEnroll',
@@ -1000,10 +795,11 @@
         'MyChoice Plan Low Limited benefit entry level lowest tier of MyChoice series. BWA FirstEnroll. Not comprehensive health insurance not substitute for major medical does not satisfy ACA MEC. See certificate for exact benefit amounts waiting periods pre-existing condition terms network details.'
     },
 
+
     // MYCHOICE PLAN MID
     {
       id: 'mychoicemid',
-      name: 'MyChoice - Plan Mid',
+      name: 'MyChoice Mid',
       group: 'Limited',
       type: 'Limited',
       carrier: 'BWA / FirstEnroll',
@@ -1031,10 +827,11 @@
         'MyChoice Plan Mid Limited benefit mid tier moderate benefits of MyChoice series. BWA FirstEnroll. Not comprehensive health insurance not substitute for major medical does not satisfy ACA MEC. See certificate for exact benefit amounts.'
     },
 
+
     // MYCHOICE PLAN HIGH
     {
       id: 'mychoicehigh',
-      name: 'MyChoice - Plan High',
+      name: 'MyChoice High',
       group: 'Limited',
       type: 'Limited',
       carrier: 'BWA / FirstEnroll',
@@ -1060,141 +857,6 @@
       source: 'MyChoice_High_Brochure_1.pdf',
       rawText:
         'MyChoice Plan High Limited benefit highest tier best benefits of MyChoice series. BWA FirstEnroll. Not comprehensive health insurance not substitute for major medical does not satisfy ACA MEC. See certificate for exact benefit amounts.'
-    },
-
-    // TRUE HEALTH 2
-    {
-      id: 'trueh2',
-      name: 'TrueHealth 2',
-      group: 'MEC',
-      type: 'MEC',
-      carrier: 'Merchants Benefit Administration (MBA)',
-      network: 'First Health Network',
-      benefits: [
-        {
-          category: 'Primary Care Visit',
-          items: ['$25 copay / $150 max per visit — 4 visits per year']
-        },
-        {
-          category: 'Specialist / Urgent Care',
-          items: ['$50 copay / $300 max per visit — 2 visits per year']
-        },
-        {
-          category: 'Inpatient Hospitalization',
-          items: [
-            '$1,000 per day — $10,000 per year maximum — 12/12 pre-ex applies'
-          ]
-        },
-        { category: 'Telemedicine', items: ['$0 consult fee — unlimited'] },
-        {
-          category: 'Prescriptions Generic',
-          items: ['$0 copay — generic acute/preventive drugs on formulary']
-        },
-        {
-          category: 'Prescriptions Maintenance',
-          items: ['Preferred Generic $5 copay — 200 generic maintenance drugs']
-        },
-        {
-          category: 'Prescription Terms',
-          items: [
-            'Specialty drugs not covered — Prescription Assistance Program available income-based. Mail order optional.'
-          ]
-        },
-        {
-          category: 'Hospital Bill Reducer',
-          items: ['Advocacy service included']
-        }
-      ],
-      limitations: [
-        'MEC plan — covers preventive and limited physician services only',
-        'NOT comprehensive major medical coverage',
-        'Hospitalization subject to 12-month pre-existing condition exclusion',
-        '30-day waiting period for all sickness benefits',
-        'Outpatient physician services in-network only',
-        'Inpatient hospital indemnity not network-restricted',
-        'Specialty drugs not covered',
-        'Only 2 specialist visits per year',
-        'Does not cover services not listed in Schedule of Benefits'
-      ],
-      waitingPeriods: ['30-day waiting period for all sickness benefits'],
-      preEx:
-        '12/12 — 12-month look-back, 12-month exclusion for hospitalization benefits',
-      source: 'MEC_TrueHealth2_SPD_Jan25.pdf',
-      rawText:
-        'TrueHealth 2 MEC Minimum Essential Coverage. Physician services First Health Network. Primary care $25 copay $150 max per visit 4 visits per year. Specialist urgent care $50 copay $300 max per visit 2 visits per year. Inpatient hospitalization $1,000 per day $10,000 per year maximum 12 12 pre-existing exclusion. Telemedicine $0 consult fee unlimited. Prescriptions generic $0 copay acute preventive formulary. Preferred generic $5 copay 200 maintenance drugs. Specialty drugs not covered prescription assistance program income based. Mail order optional. Hospital bill reducer advocacy. 30 day waiting period sickness benefits. Outpatient physician services in-network only. Inpatient hospital indemnity not network restricted. MEC plan covers preventive limited physician services not comprehensive major medical. Group health plan ACA minimum essential coverage preventive wellness.'
-    },
-
-    // TRUE HEALTH 3
-    {
-      id: 'trueh3',
-      name: 'TrueHealth 3',
-      group: 'MEC',
-      type: 'MEC',
-      carrier: 'Merchants Benefit Administration (MBA)',
-      network: 'First Health Network',
-      benefits: [
-        {
-          category: 'Primary Care Visit',
-          items: ['$25 copay / $150 max per visit — 4 visits per year']
-        },
-        {
-          category: 'Specialist / Urgent Care',
-          items: ['$50 copay / $300 max per visit — 4 visits per year']
-        },
-        {
-          category: 'Inpatient Hospitalization',
-          items: [
-            '$1,000 per day — $15,000 per year maximum — 12/12 pre-ex applies'
-          ]
-        },
-        { category: 'Telemedicine', items: ['$0 consult fee — unlimited'] },
-        {
-          category: 'Prescriptions Generic',
-          items: ['$0 copay — generic acute/preventive drugs on formulary']
-        },
-        {
-          category: 'Prescriptions Maintenance',
-          items: ['Preferred Generic $5 copay — 200 generic maintenance drugs']
-        },
-        {
-          category: 'Prescriptions Non-preferred Generic',
-          items: ['Retail 30-day $5/$10 copay. Mail order 90-day $5/$20 copay']
-        },
-        {
-          category: 'Prescriptions Brand',
-          items: [
-            'Prior Authorization required — Retail 30-day $40. Mail order 90-day $80'
-          ]
-        },
-        {
-          category: 'Prescription Terms',
-          items: [
-            '$150 benefit limit per person per month for non-preventive maintenance Rx. Specialty drugs not covered.'
-          ]
-        },
-        {
-          category: 'Hospital Bill Reducer',
-          items: ['Advocacy service included']
-        }
-      ],
-      limitations: [
-        'MEC plan — covers preventive and limited physician services only',
-        'NOT comprehensive major medical coverage',
-        'Higher hospitalization max ($15,000/yr) vs TrueHealth 2 ($10,000/yr)',
-        'More specialist visits (4/yr) vs TrueHealth 2 (2/yr)',
-        'Brand prescriptions require prior authorization',
-        '$150/person/month benefit limit for non-preventive maintenance Rx',
-        'Specialty drugs not covered',
-        '30-day waiting period for all sickness benefits',
-        'Hospitalization subject to 12-month pre-existing condition exclusion',
-        'Outpatient physician services in-network only'
-      ],
-      waitingPeriods: ['30-day waiting period for all sickness benefits'],
-      preEx:
-        '12/12 — 12-month look-back, 12-month exclusion for hospitalization benefits',
-      source: 'MEC_TrueHealth3_SPD_Jan25.pdf',
-      rawText:
-        'TrueHealth 3 MEC Minimum Essential Coverage. Physician services First Health Network. Primary care $25 copay $150 max 4 visits per year. Specialist urgent care $50 copay $300 max 4 visits per year higher than TrueHealth 2. Inpatient hospitalization $1,000 per day $15,000 per year maximum 12 12 pre-existing exclusion. Telemedicine $0 unlimited. Prescriptions generic $0 copay formulary. Preferred generic maintenance $5 copay 200 drugs. Non-preferred generic retail 30 day $5 $10 mail order 90 day $5 $20. Brand prior authorization required retail 30 day $40 mail order 90 day $80. $150 benefit limit per person per month non-preventive maintenance prescriptions. Specialty drugs not covered prescription assistance income based. 30 day waiting period sickness. Outpatient physician in-network only. MEC not comprehensive major medical. Hospital bill reducer advocacy included.'
     }
   ];
 
