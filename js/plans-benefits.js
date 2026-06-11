@@ -546,6 +546,14 @@ const PLANS = [
   },
 
   {
+    group: 'Limited',
+    name: 'MedValue 2000 / 4000 / 6000',
+    network: 'First Health Network',
+    admin: 'HC Data Consulting, LLC',
+    assoc: 'ERISA'
+  },
+
+  {
     group: 'MEC',
     name: 'SmartChoice',
     type: 'MEC — Structured EPO Plan',
@@ -2090,6 +2098,7 @@ function renderNetworkexplainer() {
         'TrueHealth 1–3',
         'GoodHealth 1–5',
         'TDK 1–5',
+        'MedValue 2000/4000/6000',
         'SmartChoice (EPO — in-network only)',
         'HarmonyCare / SigmaCare'
       ],
