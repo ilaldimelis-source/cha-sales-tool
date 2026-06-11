@@ -113,8 +113,7 @@ const CF_STEPS = [
     title: 'Opening',
     goal: 'Open the call with confidence. Set the frame and earn the next 60 seconds.',
     lines: [
-      "Hey [Name], this is [Your Name] calling about your health coverage inquiry. I've got a couple of questions for you before I recommend anything.",
-      "[Name], this is [Your Name]. I'm looking at your inquiry right now — before I walk you through your options, tell me: what's your coverage situation like right now?"
+      'Central Health Advisors, this is (FIRST AND LAST NAME). I\'ll be your licensed health insurance agent assisting you today. Please note that this call may be recorded for training and quality assurance.'
     ],
     listen:
       'Wait for their pace. Match their tone. Move into Discovery the moment they engage.',
