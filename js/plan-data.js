@@ -1186,7 +1186,7 @@ var POLICY_DOCS = [
         items: [
           'Next-day coverage available',
           'Up to 36 months coverage depending on state',
-          'Eligibility: ages 18--64Â½ (children 2--17)',
+          'Eligibility: ages 18--64 1/2 (children 2--17)',
           'Pre-existing waiver rider available for consecutive terms'
         ]
       }
