@@ -1534,16 +1534,8 @@ function renderPlanGroups() {
         doc.group
       ).toLowerCase();
 
-      var networkPill = doc.network
-        ? '<span style="font-size:9px;padding:2px 6px;border-radius:999px;background:var(--cha-bg-muted,#f1f3f9);color:var(--text-secondary,#64748b);">' +
-          escHTML(doc.network) +
-          '</span>'
-        : '';
-      var carrierPill = doc.carrier
-        ? '<span style="font-size:9px;padding:2px 6px;border-radius:999px;background:var(--cha-bg-muted,#f1f3f9);color:var(--text-secondary,#64748b);">' +
-          escHTML(doc.carrier) +
-          '</span>'
-        : '';
+      var networkPill = doc.network ? '<span style="font-size:9px;padding:2px 7px;border-radius:999px;background:#f1f3f9;color:#64748b;font-weight:500;border:1px solid #e2e8f0;">' + escHTML(doc.network) + '</span>' : '';
+      var carrierPill = doc.carrier ? '<span style="font-size:9px;padding:2px 7px;border-radius:999px;background:#f1f3f9;color:#64748b;font-weight:500;border:1px solid #e2e8f0;">' + escHTML(doc.carrier) + '</span>' : '';
 
       html +=
         '<div class="plan-card" data-plan-search="' +
@@ -1552,7 +1544,7 @@ function renderPlanGroups() {
         doc.id +
         '" onclick="openPlanDrawer(\'' +
         doc.id +
-        '\')" style="background:var(--cha-bg-card,#fff);border:1px solid var(--border-default,#e5e7eb);border-radius:16px;padding:16px 18px;cursor:pointer;transition:all 0.15s ease;display:flex;flex-direction:column;justify-content:space-between;min-height:100px;" onmouseover="this.style.borderColor=\'#5175f1\';this.style.boxShadow=\'0 0 0 2px rgba(81,117,241,0.15)\';this.style.transform=\'translateY(-1px)\'" onmouseout="this.style.borderColor=\'var(--border-default,#e5e7eb)\';this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
+        '\')" style="background:var(--cha-bg-card,#fff);border:1px solid var(--border-default,#e5e7eb);border-radius:16px;padding:16px 18px;cursor:pointer;transition:all 0.15s ease;display:flex;flex-direction:column;justify-content:space-between;min-height:120px;align-self:stretch;" onmouseover="this.style.borderColor=\'#5175f1\';this.style.boxShadow=\'0 0 0 2px rgba(81,117,241,0.15)\';this.style.transform=\'translateY(-1px)\'" onmouseout="this.style.borderColor=\'var(--border-default,#e5e7eb)\';this.style.boxShadow=\'none\';this.style.transform=\'none\'">' +
         '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
         '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.3;">' +
         escHTML(doc.name) +
