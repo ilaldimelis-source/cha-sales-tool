@@ -1346,6 +1346,10 @@ function _renderLiveCallGpsHtml() {
 // RENDER: CALL FLOW
 // ══════════════════════════════════════════════════════
 function renderCallFlow() {
+  if (typeof _showComboPage === 'function') {
+    _showComboPage('scripts', 'planscripts');
+    return;
+  }
   var html = _renderLiveCallGpsHtml();
   var _page_callflow = document.getElementById('page-callflow');
   if (_page_callflow) {

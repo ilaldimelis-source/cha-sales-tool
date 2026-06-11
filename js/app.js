@@ -327,7 +327,6 @@ var PAGE_CONFIG = {
     label: 'Scripts',
     subs: [
       { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
-      { id: 'callflow', label: 'Call Flow', render: renderCallFlow },
       { id: 'closes', label: 'Closing Lines', render: renderCloses },
       { id: 'recovery', label: 'Rebuttals', render: renderRecovery }
     ]
@@ -448,6 +447,10 @@ function showPage(id) {
     return;
   }
   window._spRetry = 0;
+  if (id === 'callflow') {
+    _showComboPage('scripts', 'planscripts');
+    return;
+  }
   if (PAGE_CONFIG[id]) {
     _showComboPage(id, PAGE_CONFIG[id].subs[0].id);
     return;
@@ -1279,6 +1282,9 @@ function renderDashboard() {
 }
 
 function _showComboPage(parentId, subId) {
+  if (parentId === 'scripts' && subId === 'callflow') {
+    subId = 'planscripts';
+  }
   document.querySelectorAll('.page, .combo-page').forEach(function (p) {
     p.classList.remove('active');
     if (p.classList.contains('page')) p.style.display = '';
