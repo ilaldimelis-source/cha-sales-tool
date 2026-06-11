@@ -10424,14 +10424,13 @@ body {
   background-color: var(--cha-bg-page) !important;
 }
 
-/* Plan Vault — uniform card height */
+/* Plan Vault — uniform card height via grid row stretch */
 .plan-card {
-  min-height: 110px;
-  height: 110px;
-  overflow: hidden;
+  min-height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-self: stretch;
 }
 
 .plan-card .plan-card-name {
@@ -10439,4 +10438,5 @@ body {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;
 }
