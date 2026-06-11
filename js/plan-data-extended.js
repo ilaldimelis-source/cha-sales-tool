@@ -7,7 +7,7 @@
   var EXTENDED_PLANS = [
     {
       id: 'pinnacleprotect',
-      name: 'Pinnacle Protect',
+      name: 'Pinnacle Protect 1-4',
       group: 'Limited',
       type: 'Limited Benefit / Fixed Indemnity',
       carrier: 'Everest Reinsurance Company',
@@ -82,7 +82,7 @@
     },
     {
       id: 'pinnaclecriticalcare',
-      name: 'Pinnacle Critical Care',
+      name: 'Pinnacle Critical Care 1-4',
       group: 'Limited',
       type: 'Limited Benefit / Fixed Indemnity',
       carrier: 'Everest Reinsurance Company',
