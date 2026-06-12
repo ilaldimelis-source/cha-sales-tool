@@ -273,6 +273,29 @@
   border-bottom: 1px solid #f3f4f6;
 }
 
+#cha-course215-root .c215-brain-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#cha-course215-root .c215-brain-list li {
+  font-size: 0.8rem;
+  color: #6b7280;
+  line-height: 1.6;
+  padding: 6px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+#cha-course215-root .c215-brain-list li:last-child {
+  border-bottom: none;
+}
+
+#cha-course215-root .c215-brain-list li strong {
+  font-weight: 600;
+  color: #111827;
+}
+
 /* Mnemonics */
 #cha-course215-root .c215-mnem-card {
   background: #fff;

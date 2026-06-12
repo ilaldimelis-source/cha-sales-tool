@@ -441,6 +441,7 @@ var C215_TABS = [
   { id: "quiz", label: "Quiz", type: "quiz" },
   { id: "topics", label: "All Topics", type: "topics" },
   { id: "cheats", label: "Cheat Sheets", type: "cheats" },
+  { id: "quickref", label: "Quick Ref", type: "quickref" },
   { id: "progress", label: "My Progress", type: "progress" }
 ];
 
@@ -635,11 +636,46 @@ function c215RenderTab(container) {
   if (id === "quiz") { c215RenderQuiz(container); return; }
   if (id === "topics") { c215RenderTopics(container); return; }
   if (id === "cheats") { c215RenderCheats(container); return; }
+  if (id === "quickref") { c215RenderQuickRef(container); return; }
   if (id === "progress") { c215RenderProgress(container); return; }
 }
 
+function c215FormatBrainDumpLine(text) {
+  var idx = text.indexOf(":");
+  if (idx > 0) {
+    return "<li><strong>" + text.substring(0, idx) + "</strong>" + text.substring(idx) + "</li>";
+  }
+  return "<li><strong>" + text + "</strong></li>";
+}
+
+function c215BuildMnemonicsHtml() {
+  var html = "", mi, m, hidden;
+  for (mi = 0; mi < C215_MNEMONICS.length; mi++) {
+    m = C215_MNEMONICS[mi];
+    hidden = !!c215State.mnemHide[m.id];
+    html += "<div class=\"c215-mnem-card\"><div class=\"c215-mnem-top\">";
+    html += "<div class=\"c215-mnem-phrase\">" + m.phrase + "</div>";
+    html += "<button type=\"button\" class=\"c215-btn-sm\" onclick=\"c215ToggleMnem('" + m.id + "')\">" + (hidden ? "Show" : "Test Yourself") + "</button></div>";
+    html += "<div class=\"c215-mnem-body" + (hidden ? " hidden" : "") + "\">" + m.html + "</div></div>";
+  }
+  return html;
+}
+
+function c215RenderQuickRef(container) {
+  var html = "", bi;
+  html += "<div class=\"c215-card-block\"><h2 class=\"c215-card-hd\">Brain Dump -- Write These Before Question 1</h2>";
+  html += "<ul class=\"c215-brain-list\">";
+  for (bi = 0; bi < C215_BRAIN_DUMP.length; bi++) {
+    html += c215FormatBrainDumpLine(C215_BRAIN_DUMP[bi]);
+  }
+  html += "</ul></div>";
+  html += "<div class=\"c215-divider\">Mnemonics</div>";
+  html += c215BuildMnemonicsHtml();
+  container.innerHTML = html;
+}
+
 function c215RenderExamMap(container) {
-  var html = "", wi, so, mi, m, mastered = c215MasteredCount();
+  var html = "", wi, so, mastered = c215MasteredCount();
   html += "<div class=\"c215-exam-top\">";
   html += "<div class=\"c215-stats\">";
   html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">150</span><span class=\"c215-stat-l\">Scored questions</span></div>";
@@ -668,14 +704,7 @@ function c215RenderExamMap(container) {
   }
   html += "</div>";
   html += "<div class=\"c215-divider\">Mnemonics</div>";
-  for (mi = 0; mi < C215_MNEMONICS.length; mi++) {
-    m = C215_MNEMONICS[mi];
-    var hidden = !!c215State.mnemHide[m.id];
-    html += "<div class=\"c215-mnem-card\"><div class=\"c215-mnem-top\">";
-    html += "<div class=\"c215-mnem-phrase\">" + m.phrase + "</div>";
-    html += "<button type=\"button\" class=\"c215-btn-sm\" onclick=\"c215ToggleMnem('" + m.id + "')\">" + (hidden ? "Show" : "Test Yourself") + "</button></div>";
-    html += "<div class=\"c215-mnem-body" + (hidden ? " hidden" : "") + "\">" + m.html + "</div></div>";
-  }
+  html += c215BuildMnemonicsHtml();
   html += "<button type=\"button\" class=\"c215-brain-btn\" onclick=\"c215OpenBrain(true)\">Brain Dump -- Write These Before Question 1</button>";
   container.innerHTML = html;
 }
