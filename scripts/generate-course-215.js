@@ -21,23 +21,24 @@ var SECTION_IDS = [
 ];
 
 var C215_TABS = [
-  { id: 'blueprint', label: 'Blueprint', type: 'content' },
-  { id: 'priority', label: 'Priority', type: 'content' },
-  { id: 'examtraps', label: 'Exam Traps', type: 'content' },
-  { id: 'strategy', label: 'Strategy', type: 'content' },
-  { id: 'cheatsheet', label: 'Cheat Sheets', type: 'content' },
-  { id: 'mnemonics', label: 'Mnemonics', type: 'mnemonics' },
-  { id: 'flashcards', label: 'Flashcards', type: 'flashcards' },
-  { id: 'life', label: 'Life Insurance', type: 'content' },
-  { id: 'annuities', label: 'Annuities', type: 'content' },
-  { id: 'provisions', label: 'Provisions', type: 'content' },
-  { id: 'health', label: 'Health', type: 'content' },
-  { id: 'disability', label: 'Disability', type: 'content' },
-  { id: 'medicare', label: 'Medicare', type: 'content' },
-  { id: 'florida', label: 'FL Statutes', type: 'content' },
-  { id: 'numbers', label: 'All Numbers', type: 'numbers' },
-  { id: 'illegal', label: 'Illegal Practices', type: 'content' },
-  { id: 'quiz', label: 'Quiz', type: 'quiz' }
+  { id: 'exammap', label: 'Exam Map', type: 'exammap' },
+  { id: 'cards', label: 'Study Cards', type: 'cards' },
+  { id: 'quiz', label: 'Quiz', type: 'quiz' },
+  { id: 'topics', label: 'All Topics', type: 'topics' },
+  { id: 'cheats', label: 'Cheat Sheets', type: 'cheats' },
+  { id: 'progress', label: 'My Progress', type: 'progress' }
+];
+
+var ALL_TOPIC_MAP = [
+  { id: 'life', title: 'Life Insurance', sectionId: 'life' },
+  { id: 'annuities', title: 'Annuities', sectionId: 'annuities' },
+  { id: 'provisions', title: 'Provisions & Contracts', sectionId: 'provisions' },
+  { id: 'health', title: 'Health Insurance', sectionId: 'health' },
+  { id: 'disability', title: 'Disability Income', sectionId: 'disability' },
+  { id: 'medicare', title: 'Medicare & Social Insurance', sectionId: 'medicare' },
+  { id: 'florida', title: 'FL Statutes & Regulations', sectionId: 'florida' },
+  { id: 'illegal', title: 'Illegal Practices', sectionId: 'illegal' },
+  { id: 'numbers', title: 'Key Numbers', sectionId: 'numbers' }
 ];
 
 var EMOJI_RE = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{200D}\u{20E3}\u{E0020}-\u{E007F}]/gu;
@@ -64,47 +65,54 @@ function removeEmTags(html) {
   return html.replace(/<\/?em>/gi, '');
 }
 
-function transformHtml(html) {
+function stripTags(html) {
+  return html.replace(/<span class="tag[^"]*">[^<]*<\/span>/gi, '');
+}
+
+function transformTopicsHtml(html) {
   var result = replaceEmDash(html);
-
-  result = result.replace(/class="card"/g, 'class="c215-ref-card"');
-  result = result.replace(/class="box red"/g, 'class="c215-ref-trap"');
-  result = result.replace(/class="box green"/g, 'class="c215-ref-tip"');
-  result = result.replace(/class="box yellow"/g, 'class="c215-ref-warn"');
-  result = result.replace(/class="box blue"/g, 'class="c215-ref-info"');
-  result = result.replace(/class="box orange"/g, 'class="c215-ref-warn"');
-  result = result.replace(/class="box purple"/g, 'class="c215-ref-info"');
-  result = result.replace(/class="box dark"/g, 'class="c215-ref-note"');
-  result = result.replace(/class="mnemonic"/g, 'class="c215-ref-mnem"');
-  result = result.replace(/table class="t"/g, 'table class="c215-ref-tbl"');
-  result = result.replace(/class="compare"/g, 'class="c215-ref-compare"');
-  result = result.replace(/class="numgrid"/g, 'class="c215-ref-numgrid"');
-  result = result.replace(/class="numcard"/g, 'class="c215-ref-numcard"');
-  result = result.replace(/class="exam-tip"/g, 'class="c215-ref-tip"');
-  result = result.replace(/class="trap-tip"/g, 'class="c215-ref-trap"');
-  result = result.replace(/class="big-tip"/g, 'class="c215-ref-brain"');
-
+  result = stripTags(result);
+  result = result.replace(/class="card"/g, 'class="c215-card"');
+  result = result.replace(/class="box[^"]*"/g, 'class="c215-note"');
+  result = result.replace(/class="exam-tip"/g, 'class="c215-note"');
+  result = result.replace(/class="trap-tip"/g, 'class="c215-note"');
+  result = result.replace(/class="big-tip"/g, 'class="c215-note"');
+  result = result.replace(/table class="t"/g, 'table class="c215-table"');
+  result = result.replace(/class="compare"/g, 'class="c215-compare"');
+  result = result.replace(/class="compare-side left"/g, 'class="c215-compare-side"');
+  result = result.replace(/class="compare-side right"/g, 'class="c215-compare-side"');
+  result = result.replace(/class="compare-side"/g, 'class="c215-compare-side"');
+  result = result.replace(/class="numgrid"/g, 'class="c215-numgrid"');
+  result = result.replace(/class="numcard"/g, 'class="c215-numcard"');
   result = result.replace(/class="grid2"/g, 'class="c215-grid"');
   result = result.replace(/class="grid3"/g, 'class="c215-grid"');
-
-  result = result.replace(
-    /(<div class="c215-ref-card)([^"]*)">([\s\S]*?<span class="tag tag-hot")/gi,
-    function (m, prefix, extra, rest) {
-      if (m.indexOf('c215-hot-card') >= 0) { return m; }
-      return prefix + extra + ' c215-hot-card">' + rest;
-    }
-  );
-  result = result.replace(
-    /<span class="tag tag-hot">[^<]*<\/span>/gi,
-    '<span class="c215-hot-ribbon">HOT</span>'
-  );
-  result = result.replace(/<span class="tag tag-[^"]*">([^<]*)<\/span>/gi, '<span class="c215-card-tag">$1</span>');
-
+  result = result.replace(/class="sec-head"/g, 'class="c215-sec-head"');
+  result = result.replace(/class="tlabel"/g, 'class="c215-tlabel"');
   result = removeEmTags(result);
   return result.trim();
 }
 
-function splitAccordions(sectionHtml) {
+function transformCheatsHtml(html) {
+  var result = replaceEmDash(html);
+  result = stripTags(result);
+  result = result.replace(/class="card"/g, 'class="c215-card"');
+  result = result.replace(/class="box[^"]*"/g, 'class="c215-note"');
+  result = result.replace(/class="exam-tip"/g, 'class="c215-cheat-tip"');
+  result = result.replace(/class="trap-tip"/g, 'class="c215-cheat-trap"');
+  result = result.replace(/table class="t"/g, 'table class="c215-table"');
+  result = result.replace(/class="compare"/g, 'class="c215-compare"');
+  result = result.replace(/class="compare-side left"/g, 'class="c215-compare-side"');
+  result = result.replace(/class="compare-side right"/g, 'class="c215-compare-side"');
+  result = result.replace(/class="compare-side"/g, 'class="c215-compare-side"');
+  result = result.replace(/class="grid2"/g, 'class="c215-grid"');
+  result = result.replace(/class="grid3"/g, 'class="c215-grid"');
+  result = result.replace(/class="sec-head"/g, 'class="c215-sec-head"');
+  result = result.replace(/class="tlabel"/g, 'class="c215-tlabel"');
+  result = removeEmTags(result);
+  return result.trim();
+}
+
+function splitAccordions(sectionHtml, transformFn) {
   var groups = [];
   var re = /<div class="tlabel">([^<]*)<\/div>/gi;
   var matches = [];
@@ -114,13 +122,13 @@ function splitAccordions(sectionHtml) {
   }
 
   if (matches.length === 0) {
-    groups.push({ id: 'content', title: 'Content', html: transformHtml(sectionHtml) });
+    groups.push({ id: 'content', title: 'Content', html: transformFn(sectionHtml) });
     return groups;
   }
 
   var pre = sectionHtml.slice(0, matches[0].index).trim();
   if (pre) {
-    groups.push({ id: 'intro', title: 'Overview', html: transformHtml(pre) });
+    groups.push({ id: 'intro', title: 'Overview', html: transformFn(pre) });
   }
 
   var usedIds = {};
@@ -137,14 +145,14 @@ function splitAccordions(sectionHtml) {
     } else {
       usedIds[id] = 1;
     }
-    groups.push({ id: id, title: title, html: transformHtml(content) });
+    groups.push({ id: id, title: title, html: transformFn(content) });
   }
   return groups;
 }
 
 function extractSections(html) {
   var sections = {};
-  var i, sid, re, match, inner;
+  var i, sid, re, match, inner, transformFn;
   for (i = 0; i < SECTION_IDS.length; i++) {
     sid = SECTION_IDS[i];
     re = new RegExp('<section id="' + sid + '"[^>]*>([\\s\\S]*?)<\\/section>', 'i');
@@ -155,7 +163,8 @@ function extractSections(html) {
       continue;
     }
     inner = match[1];
-    sections[sid] = splitAccordions(inner);
+    transformFn = sid === 'cheatsheet' ? transformCheatsHtml : transformTopicsHtml;
+    sections[sid] = splitAccordions(inner, transformFn);
   }
   return sections;
 }
@@ -175,14 +184,17 @@ function extractMnemonics(html) {
     var breakdownMatch = block.match(/<div class="breakdown">([\s\S]*?)<\/div>/i);
     if (!phraseMatch) continue;
     var phrase = replaceEmDash(stripEmoji(phraseMatch[1]));
-    var breakdownHtml = breakdownMatch ? transformHtml(breakdownMatch[1]) : '';
-    breakdownHtml = breakdownHtml
-      .replace(/class="word"/g, '')
-      .replace(/class="breakdown"/g, '');
+    var breakdownHtml = '';
+    if (breakdownMatch) {
+      breakdownHtml = breakdownMatch[1]
+        .replace(/<span>/gi, '<strong>')
+        .replace(/<\/span>/gi, '</strong>');
+      breakdownHtml = replaceEmDash(breakdownHtml);
+    }
     items.push({
       id: slugify(phrase.split(' ')[0] || phrase),
       phrase: phrase,
-      html: '<div class="c215-mnemonic-line">' + breakdownHtml + '</div>'
+      html: '<div class="c215-mnem-lines">' + breakdownHtml + '</div>'
     });
   }
   return items;
@@ -204,10 +216,6 @@ function extractBrainDump(html) {
     var text = lm[1].replace(/<[^>]+>/g, '').trim();
     text = replaceEmDash(stripEmoji(text));
     if (text) items.push(text);
-  }
-
-  if (items.length > 6) {
-    return items.slice(0, 6);
   }
   return items;
 }
@@ -240,6 +248,41 @@ function serializeSections(sections) {
     lines.push('  ]' + (ki < keys.length - 1 ? ',' : ''));
   }
   lines.push('};');
+  return lines.join('\n');
+}
+
+function serializeAllTopics(sections) {
+  var lines = ['var C215_ALL_TOPICS = ['];
+  var i, map, groups;
+  for (i = 0; i < ALL_TOPIC_MAP.length; i++) {
+    map = ALL_TOPIC_MAP[i];
+    groups = sections[map.sectionId] || [];
+    lines.push('  { id: ' + jsString(map.id) +
+      ', title: ' + jsString(map.title) +
+      ', groups: [');
+    var gi;
+    for (gi = 0; gi < groups.length; gi++) {
+      lines.push('    { id: ' + jsString(groups[gi].id) +
+        ', title: ' + jsString(groups[gi].title) +
+        ', html: ' + jsString(groups[gi].html) + ' }' +
+        (gi < groups.length - 1 ? ',' : ''));
+    }
+    lines.push('  ] }' + (i < ALL_TOPIC_MAP.length - 1 ? ',' : ''));
+  }
+  lines.push('];');
+  return lines.join('\n');
+}
+
+function serializeCheatSheets(groups) {
+  var lines = ['var C215_CHEAT_SHEETS = ['];
+  var gi;
+  for (gi = 0; gi < groups.length; gi++) {
+    lines.push('  { id: ' + jsString(groups[gi].id) +
+      ', title: ' + jsString(groups[gi].title) +
+      ', html: ' + jsString(groups[gi].html) + ' }' +
+      (gi < groups.length - 1 ? ',' : ''));
+  }
+  lines.push('];');
   return lines.join('\n');
 }
 
@@ -304,8 +347,8 @@ function main() {
   if (mnemonics.length !== 16) {
     issues.push('Expected 16 mnemonics, got ' + mnemonics.length);
   }
-  if (brainDump.length !== 6) {
-    issues.push('Expected 6 brain dump items, got ' + brainDump.length);
+  if (brainDump.length < 1) {
+    issues.push('Expected brain dump items, got 0');
   }
 
   var parts = [];
@@ -320,6 +363,10 @@ function main() {
   parts.push('');
   parts.push(serializeSections(sections));
   parts.push('');
+  parts.push(serializeAllTopics(sections));
+  parts.push('');
+  parts.push(serializeCheatSheets(sections.cheatsheet || []));
+  parts.push('');
   parts.push(serializeMnemonics(mnemonics));
   parts.push('');
   parts.push(serializeBrainDump(brainDump));
@@ -333,18 +380,11 @@ function main() {
   var output = parts.join('\n');
   fs.writeFileSync(OUT_PATH, output, 'utf8');
 
-  var sectionCounts = {};
-  var sid;
-  for (sid in sections) {
-    if (sections.hasOwnProperty(sid)) {
-      sectionCounts[sid] = sections[sid].length;
-    }
-  }
-
   console.log('Generated: ' + OUT_PATH);
   console.log('Line count: ' + countLines(output));
   console.log('QA200: preserved from existing file');
-  console.log('C215_SECTIONS accordion groups: ' + JSON.stringify(sectionCounts));
+  console.log('C215_ALL_TOPICS: ' + ALL_TOPIC_MAP.length);
+  console.log('C215_CHEAT_SHEETS groups: ' + (sections.cheatsheet || []).length);
   console.log('C215_MNEMONICS: ' + mnemonics.length);
   console.log('C215_BRAIN_DUMP: ' + brainDump.length);
   console.log('C215_TABS: ' + C215_TABS.length);
