@@ -333,7 +333,7 @@ function renderCallAudit() {
     {
       heading: 'Plan Classification',
       items: [
-        'Plan is identified as a limited benefit or fixed indemnity plan -- not major medical',
+        'Plan is identified as a limited benefit or fixed indemnity plan â€” not major medical',
         'Plan is identified as non-ACA and not a substitute for minimum essential coverage',
         'The term "PPO" is not used to describe network access arrangements',
         'The term "full coverage" is not used to describe capped benefit structures',
@@ -380,10 +380,10 @@ function renderCallAudit() {
     {
       heading: 'Required Disclosures',
       items: [
-        'Plan is not major medical or ACA-compliant -- stated explicitly',
-        'Benefits are limited and subject to caps -- stated explicitly',
-        'Waiting periods apply to sickness and certain services -- stated explicitly',
-        'Pre-existing conditions are excluded during the exclusion period -- stated explicitly',
+        'Plan is not major medical or ACA-compliant â€” stated explicitly',
+        'Benefits are limited and subject to caps â€” stated explicitly',
+        'Waiting periods apply to sickness and certain services â€” stated explicitly',
+        'Pre-existing conditions are excluded during the exclusion period â€” stated explicitly',
         'Cancellation and refund terms are disclosed before payment is collected'
       ]
     }
@@ -408,13 +408,13 @@ function renderCallAudit() {
   html +=
     '<div style="margin-top:24px;background:var(--bg-surface);border:2px solid var(--border-light, var(--border-default));border-radius:16px;padding:20px;">';
   html +=
-    '<div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">[AI] AI Call Scorer</div>';
+    '<div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">âœ¦ AI Call Scorer</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">Paste a call transcript or a few sentences from a call. AI scores compliance 1-10 and flags every issue with fixes.</div>';
   html +=
     '<textarea id="auditTranscript" rows="5" placeholder="Paste call transcript here..." style="width:100%;background:var(--bg-surface-raised);border:1px solid var(--border-light, var(--border-default));border-radius:10px;padding:12px;font-size:13px;color:var(--text-secondary);resize:vertical;box-sizing:border-box;font-family:inherit;"></textarea>';
   html +=
-    '<button id="auditBtn" onclick="runCallAudit()" style="margin-top:10px;width:100%;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call [AI] AI</button>';
+    '<button id="auditBtn" onclick="runCallAudit()" style="margin-top:10px;width:100%;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call âœ¦ AI</button>';
   html += '<div id="auditResult" style="margin-top:14px;display:none;"></div>';
   html += '</div>';
 
@@ -443,14 +443,14 @@ function runCallAudit() {
           label:
             'Agent identified full name, license status, and agency within first 30 seconds',
           pass:
-            has(/my name is|this is .+ (with|from|calling)|i['']?m .+ with/) &&
+            has(/my name is|this is .+ (with|from|calling)|i['â€™]?m .+ with/) &&
             has(/licens/) &&
             has(/agency|advisor|central health/)
         },
         {
           label: 'Call purpose stated clearly',
           pass: has(
-            /reason (for|i['']?m calling)|calling (about|regarding)|reach(ing)? out (about|regarding)|the reason/
+            /reason (for|i['â€™]?m calling)|calling (about|regarding)|reach(ing)? out (about|regarding)|the reason/
           )
         },
         {
@@ -464,7 +464,7 @@ function runCallAudit() {
       checks: [
         {
           label:
-            'Plan identified as limited benefit or fixed indemnity -- not major medical',
+            'Plan identified as limited benefit or fixed indemnity â€” not major medical',
           pass: has(
             /limited benefit|fixed indemnity|indemnity plan|not major medical/
           )
@@ -599,7 +599,7 @@ function runCallAudit() {
         {
           label: 'First payment stated separately from ongoing cost',
           pass: has(
-            /(first|initial|today['']?s) (payment|charge|draft|cost)|first (month|payment) (is|will be|comes to)/
+            /(first|initial|today['â€™]?s) (payment|charge|draft|cost)|first (month|payment) (is|will be|comes to)/
           )
         }
       ]
@@ -609,24 +609,24 @@ function runCallAudit() {
       checks: [
         {
           label:
-            'Plan is not major medical / not ACA-compliant -- stated explicitly',
+            'Plan is not major medical / not ACA-compliant â€” stated explicitly',
           pass: has(
             /not major medical|not aca|not affordable care|non[-\s]?aca/
           )
         },
         {
-          label: 'Benefits are limited and subject to caps -- stated explicitly',
+          label: 'Benefits are limited and subject to caps â€” stated explicitly',
           pass: has(
             /limited benefit|subject to (cap|limit)|maximum|capped|benefit cap/
           )
         },
         {
-          label: 'Waiting periods apply -- stated explicitly',
+          label: 'Waiting periods apply â€” stated explicitly',
           pass: has(/waiting period/)
         },
         {
           label:
-            'Pre-existing excluded during exclusion period -- stated explicitly',
+            'Pre-existing excluded during exclusion period â€” stated explicitly',
           pass: has(
             /pre[-\s]?(existing|ex).*(exclud|not covered)|(exclud|not covered).*pre[-\s]?(existing|ex)/
           )
@@ -724,7 +724,7 @@ function runCallAudit() {
       catTotal +
       '</div></div>';
     cat.checks.forEach(function (c) {
-      var icon = c.pass ? '[OK]' : '[X]';
+      var icon = c.pass ? 'âœ“' : 'âœ—';
       var iconColor = c.pass ? '#16a34a' : '#dc2626';
       var textColor = c.pass ? '#374151' : '#64748b';
       html +=
