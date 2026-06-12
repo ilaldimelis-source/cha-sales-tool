@@ -477,45 +477,85 @@
   margin-bottom: 6px;
 }
 
+#cha-course215-root .c215-fc-area {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#cha-course215-root .c215-fc-topic {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 3;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+  background: #dbeafe;
+  color: #1e40af;
+}
+
 #cha-course215-root .c215-stack {
   position: relative;
+  width: 100%;
+  padding-bottom: 14px;
   margin-bottom: 6px;
 }
 
 #cha-course215-root .c215-stack-1,
 #cha-course215-root .c215-stack-2 {
   position: absolute;
-  left: 6px;
-  right: 6px;
   height: 100%;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-}
-
-#cha-course215-root .c215-stack-2 {
-  top: 10px;
-  z-index: 0;
+  border-radius: 14px;
+  pointer-events: none;
 }
 
 #cha-course215-root .c215-stack-1 {
-  top: 5px;
+  background: #f0f4ff;
+  border: 1px solid #dde3f0;
+  bottom: -6px;
+  left: 10px;
+  right: 10px;
   z-index: 1;
+}
+
+#cha-course215-root .c215-stack-2 {
+  background: #e8edf8;
+  border: 1px solid #d5dcee;
+  bottom: -12px;
+  left: 20px;
+  right: 20px;
+  z-index: 0;
 }
 
 #cha-course215-root .c215-study-card {
   position: relative;
   z-index: 2;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-radius: 16px;
-  min-height: 160px;
-  padding: 28px 24px;
+  width: 100%;
   cursor: pointer;
+}
+
+#cha-course215-root .c215-study-front {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2d5186 100%);
+  border-radius: 16px;
+  padding: 28px 24px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #fff;
 }
 
 #cha-course215-root .c215-study-back {
   display: none;
+  background: #fff;
+  border: 2px solid #1e3a5f;
+  border-radius: 16px;
+  padding: 28px 24px;
+  min-height: 160px;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: center;
 }
 
@@ -524,30 +564,52 @@
 }
 
 #cha-course215-root .c215-study-card.flipped .c215-study-back {
+  display: flex;
+}
+
+#cha-course215-root .c215-study-label {
   display: block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+#cha-course215-root .c215-study-front .c215-study-label {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+#cha-course215-root .c215-study-back .c215-study-label {
+  color: #1e3a5f;
 }
 
 #cha-course215-root .c215-study-q {
   font-size: 16px;
   font-weight: 600;
-  color: #111827;
+  color: #fff;
   line-height: 1.5;
   text-align: center;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 12px 0;
 }
 
 #cha-course215-root .c215-study-hint {
-  font-size: 0.65rem;
-  color: #9ca3af;
-  margin-top: 0.75rem;
+  display: block;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
 }
 
 #cha-course215-root .c215-study-a {
-  font-size: 14px;
-  font-weight: 400;
-  color: #374151;
+  font-size: 15px;
+  font-weight: 500;
+  color: #111827;
   line-height: 1.6;
   text-align: center;
-  margin-bottom: 0.5rem;
+  margin: 12px 0 8px;
 }
 
 #cha-course215-root .c215-study-e {
@@ -561,16 +623,19 @@
 #cha-course215-root .c215-rate-row {
   display: flex;
   justify-content: center;
-  gap: 0.4rem;
+  gap: 8px;
   flex-wrap: wrap;
+  width: 100%;
 }
 
 #cha-course215-root .c215-rate {
+  flex: 1;
+  max-width: 120px;
   border: none;
-  border-radius: 99px;
-  padding: 0.4rem 0.85rem;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.72rem;
+  border-radius: 10px;
+  padding: 10px 0;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -581,8 +646,8 @@
 }
 
 #cha-course215-root .c215-rate-almost {
-  background: #fef9c3;
-  color: #854d0e;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 #cha-course215-root .c215-rate-missed {
@@ -1033,7 +1098,105 @@
   font-weight: 600;
 }
 
-/* Tables */
+#cha-course215-root .c215-table .partial {
+  color: #92400e;
+  font-weight: 600;
+}
+
+/* Cheat sheet table wrappers */
+#cha-course215-root .c215-cheat-table-wrap {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+#cha-course215-root .c215-cheat-table-hd {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+#cha-course215-root .c215-cheat-table-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #111827;
+}
+
+#cha-course215-root .c215-cheat-table-sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  border: none;
+  border-radius: 0;
+  margin: 0;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table thead {
+  background: #1e3a5f;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table th {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  text-align: left;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #1e3a5f;
+  border-bottom: none;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table td {
+  padding: 11px 16px;
+  font-size: 13px;
+  color: #374151;
+  vertical-align: top;
+  line-height: 1.5;
+  border-bottom: none;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table td:first-child {
+  font-weight: 600;
+  color: #111827;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table .yes {
+  color: #166534;
+  font-weight: 600;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table .no {
+  color: #991b1b;
+  font-weight: 600;
+}
+
+#cha-course215-root .c215-cheat-table-wrap .c215-table .partial {
+  color: #92400e;
+  font-weight: 600;
+}
+
+/* Tables (All Topics and elsewhere) */
 #cha-course215-root .c215-table {
   width: 100%;
   table-layout: auto;
@@ -1074,15 +1237,63 @@
   font-weight: 600;
 }
 
-/* Compare */
+/* Comparison cards */
 #cha-course215-root .c215-compare {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   width: 100%;
-  margin: 10px 0;
+  margin-bottom: 16px;
 }
 
+#cha-course215-root .c215-compare-card {
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  width: 100%;
+}
+
+#cha-course215-root .c215-compare-hd {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+#cha-course215-root .c215-compare-hd-left {
+  background: #1e3a5f;
+}
+
+#cha-course215-root .c215-compare-hd-right {
+  background: #166534;
+}
+
+#cha-course215-root .c215-compare-body {
+  padding: 12px 16px;
+  background: #fff;
+}
+
+#cha-course215-root .c215-compare-row {
+  display: flex;
+  gap: 6px;
+  font-size: 12px;
+  color: #374151;
+  padding: 5px 0;
+  border-bottom: 1px solid #f3f4f6;
+  line-height: 1.5;
+}
+
+#cha-course215-root .c215-compare-row::before {
+  content: "--";
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+#cha-course215-root .c215-compare-row:last-child {
+  border-bottom: none;
+}
+
+/* Legacy compare markup (All Topics) */
 #cha-course215-root .c215-compare-side {
   background: #ffffff;
   border: 1px solid #e5e7eb;

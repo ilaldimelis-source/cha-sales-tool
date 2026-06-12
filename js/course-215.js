@@ -648,6 +648,51 @@ function c215FormatBrainDumpLine(text) {
   return "<li><strong>" + text + "</strong></li>";
 }
 
+function c215FcTopicLabel(topicId) {
+  var labels = { life: "Life", health: "Health", fl: "FL", annuity: "Annuities", provisions: "Provisions", disability: "Disability", medicare: "Medicare", trade: "Trade" };
+  return labels[topicId] || topicId;
+}
+
+function c215TransformCompareHtml(html) {
+  if (html.indexOf("c215-compare") < 0) { return html; }
+  return html.replace(/<div class="c215-compare">([\s\S]*?)<\/div>/g, function(_, inner) {
+    var sides = [], sideRe = /<div class="c215-compare-side">([\s\S]*?)<\/div>/g, m, out = "<div class=\"c215-compare\">", si, sideHtml, titleMatch, title, hdClass, rowsHtml, liRe, lm;
+    while ((m = sideRe.exec(inner)) !== null) { sides.push(m[1]); }
+    for (si = 0; si < sides.length; si++) {
+      sideHtml = sides[si];
+      titleMatch = sideHtml.match(/<h4>([\s\S]*?)<\/h4>/);
+      title = titleMatch ? titleMatch[1] : "";
+      hdClass = si === 0 ? "c215-compare-hd c215-compare-hd-left" : "c215-compare-hd c215-compare-hd-right";
+      rowsHtml = "";
+      liRe = /<li>([\s\S]*?)<\/li>/g;
+      while ((lm = liRe.exec(sideHtml)) !== null) {
+        rowsHtml += "<div class=\"c215-compare-row\">" + lm[1] + "</div>";
+      }
+      out += "<div class=\"c215-compare-card\"><div class=\"" + hdClass + "\">" + title + "</div>";
+      out += "<div class=\"c215-compare-body\">" + rowsHtml + "</div></div>";
+    }
+    return out + "</div>";
+  });
+}
+
+function c215WrapCheatTables(html, title) {
+  if (html.indexOf("c215-table") < 0) { return html; }
+  return html.replace(/<table class="c215-table">([\s\S]*?)<\/table>/g, function(_, inner) {
+    var thead = "", tbody = inner, firstTrMatch = inner.match(/^\s*<tr>[\s\S]*?<\/tr>/);
+    if (firstTrMatch && (firstTrMatch[0].indexOf("<th>") >= 0 || firstTrMatch[0].indexOf("<th ") >= 0)) {
+      thead = "<thead>" + firstTrMatch[0] + "</thead>";
+      tbody = inner.slice(firstTrMatch[0].length);
+    }
+    return "<div class=\"c215-cheat-table-wrap\"><div class=\"c215-cheat-table-hd\">"
+      + "<div class=\"c215-cheat-table-title\">" + title + "</div></div>"
+      + "<table class=\"c215-table\">" + thead + "<tbody>" + tbody + "</tbody></table></div>";
+  });
+}
+
+function c215EnhanceCheatHtml(html, title) {
+  return c215WrapCheatTables(c215TransformCompareHtml(html), title);
+}
+
 function c215BuildMnemonicsHtml() {
   var html = "", mi, m, hidden;
   for (mi = 0; mi < C215_MNEMONICS.length; mi++) {
@@ -723,14 +768,26 @@ function c215RenderCards(container) {
   html += "<div class=\"c215-prog\"><div class=\"c215-prog-fill\" style=\"width:" + progPct + "%\"></div></div>";
   html += "<div class=\"c215-fc-count\">Card " + (c215State.fc.queue.length > 0 ? c215State.fc.idx + 1 : 0) + " of " + c215State.fc.queue.length + "</div>";
   var card = c215State.fc.queue.length > 0 ? c215State.fc.queue[c215State.fc.idx] : null;
+  html += "<div class=\"c215-fc-area\">";
+  if (card) { html += "<span class=\"c215-fc-topic\">" + c215FcTopicLabel(card.t) + "</span>"; }
   html += "<div class=\"c215-stack\">";
   html += "<div class=\"c215-stack-2\"></div><div class=\"c215-stack-1\"></div>";
   html += "<div class=\"c215-study-card\" id=\"c215StudyCard\" onclick=\"c215FcFlip()\">";
   if (card) {
-    html += "<div class=\"c215-study-front\"><div class=\"c215-study-q\">" + card.q + "</div><div class=\"c215-study-hint\">Tap to flip</div></div>";
-    html += "<div class=\"c215-study-back\"><div class=\"c215-study-a\">" + card.a + "</div><div class=\"c215-study-e\">" + card.e + "</div></div>";
-  } else { html += "<div class=\"c215-study-front\"><div class=\"c215-study-hint\">No cards in this filter.</div></div>"; }
-  html += "</div></div>";
+    html += "<div class=\"c215-study-front\">";
+    html += "<span class=\"c215-study-label\">Question</span>";
+    html += "<div class=\"c215-study-q\">" + card.q + "</div>";
+    html += "<span class=\"c215-study-hint\">Tap to reveal answer</span>";
+    html += "</div>";
+    html += "<div class=\"c215-study-back\">";
+    html += "<span class=\"c215-study-label\">Answer</span>";
+    html += "<div class=\"c215-study-a\">" + card.a + "</div>";
+    html += "<div class=\"c215-study-e\">" + card.e + "</div>";
+    html += "</div>";
+  } else {
+    html += "<div class=\"c215-study-front\"><span class=\"c215-study-hint\">No cards in this filter.</span></div>";
+  }
+  html += "</div></div></div>";
   html += "<div class=\"c215-rate-row\">";
   html += "<button type=\"button\" class=\"c215-rate c215-rate-got\" id=\"c215RateGot\" style=\"display:none\" onclick=\"c215FcRate('got')\">Got It</button>";
   html += "<button type=\"button\" class=\"c215-rate c215-rate-almost\" id=\"c215RateAlmost\" style=\"display:none\" onclick=\"c215FcRate('almost')\">Almost</button>";
@@ -932,10 +989,10 @@ function c215RenderCheats(container) {
   html += c215BuildMnemonicsHtml();
   for (gi = 0; gi < C215_CHEAT_SHEETS.length; gi++) {
     g = C215_CHEAT_SHEETS[gi];
-    if (g.title && g.title !== "Overview") {
+    if (g.title && g.title !== "Overview" && g.html.indexOf("c215-table") < 0 && g.html.indexOf("c215-compare") < 0) {
       html += "<div class=\"c215-subhd\">" + g.title + "</div>";
     }
-    html += g.html;
+    html += c215EnhanceCheatHtml(g.html, g.title && g.title !== "Overview" ? g.title : "");
   }
   container.innerHTML = html;
 }
