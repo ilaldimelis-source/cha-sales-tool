@@ -265,7 +265,7 @@
 #cha-course215-root .c215-divider {
   font-size: 0.68rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: #374151;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin: 10px 0 6px;
@@ -693,6 +693,51 @@
   text-align: left;
 }
 
+#cha-course215-root .c215-acc-hd-life {
+  border-left: 3px solid #3b82f6;
+  background: #f8f9ff;
+}
+
+#cha-course215-root .c215-acc-hd-health {
+  border-left: 3px solid #22c55e;
+  background: #f8fff8;
+}
+
+#cha-course215-root .c215-acc-hd-annuities {
+  border-left: 3px solid #f59e0b;
+  background: #fffdf8;
+}
+
+#cha-course215-root .c215-acc-hd-florida {
+  border-left: 3px solid #8b5cf6;
+  background: #faf8ff;
+}
+
+#cha-course215-root .c215-acc-hd-disability {
+  border-left: 3px solid #06b6d4;
+  background: #f8feff;
+}
+
+#cha-course215-root .c215-acc-hd-medicare {
+  border-left: 3px solid #ec4899;
+  background: #fff8fc;
+}
+
+#cha-course215-root .c215-acc-hd-illegal {
+  border-left: 3px solid #ef4444;
+  background: #fff8f8;
+}
+
+#cha-course215-root .c215-acc-hd-numbers {
+  border-left: 3px solid #f59e0b;
+  background: #fffdf8;
+}
+
+#cha-course215-root .c215-acc-hd-provisions {
+  border-left: 3px solid #6b7280;
+  background: #f9f9f9;
+}
+
 #cha-course215-root .c215-chev {
   color: #9ca3af;
   font-size: 0.75rem;
@@ -742,10 +787,11 @@
   padding: 12px;
 }
 
-#cha-course215-root .c215-card .term {
+#cha-course215-root .c215-card .term,
+#cha-course215-root .c215-card-term {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #111827;
+  color: #1e3a5f;
   margin-bottom: 0.3rem;
 }
 
@@ -810,8 +856,8 @@
 }
 
 #cha-course215-root .c215-table th {
-  background: #f9fafb;
-  color: #111827;
+  background: #f0f4ff;
+  color: #1e3a5f;
   font-weight: 600;
   padding: 0.5rem 0.75rem;
   text-align: left;
