@@ -620,7 +620,7 @@ function c215Render() {
   body.id = "c215Body";
   root.appendChild(body);
   c215RenderTab(body);
-  c215RenderBrainFab(root);
+  c215RenderBrainModal(root);
 }
 
 function c215SwitchTab(id) {
@@ -979,6 +979,7 @@ function c215WireNumCards(container) {
 
 function c215RenderCheats(container) {
   var html = "", gi, g, bi;
+  html += "<button type=\"button\" class=\"c215-brain-btn c215-brain-btn-top\" onclick=\"c215OpenBrain(true)\">Brain Dump -- Write These Before Question 1</button>";
   html += "<div class=\"c215-card-block\"><h2 class=\"c215-card-hd\">Brain Dump -- Write These Before Question 1</h2>";
   html += "<ul class=\"c215-brain-list\">";
   for (bi = 0; bi < C215_BRAIN_DUMP.length; bi++) {
@@ -1040,11 +1041,7 @@ function c215ResetProgress() {
   c215SwitchTab("progress");
 }
 
-function c215RenderBrainFab(root) {
-  var fab = c215El("button", "c215-fab", "Brain Dump");
-  fab.type = "button";
-  fab.onclick = function() { c215OpenBrain(true); };
-  root.appendChild(fab);
+function c215RenderBrainModal(root) {
   var overlay = c215El("div", "c215-modal-bg" + (c215State.brainOpen ? " show" : ""));
   overlay.id = "c215BrainOverlay";
   overlay.onclick = function(e) { if (e.target === overlay) { c215OpenBrain(false); } };

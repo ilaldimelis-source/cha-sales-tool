@@ -398,6 +398,11 @@
   margin-top: 6px;
 }
 
+#cha-course215-root .c215-brain-btn-top {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
 #cha-course215-root .c215-reset-btn {
   width: 100%;
   background: #fff;
@@ -1405,28 +1410,12 @@
   color: #6b7280;
 }
 
-/* Brain dump FAB + modal */
-#cha-course215-root .c215-fab {
-  position: fixed;
-  bottom: 80px;
-  right: 1.25rem;
-  z-index: 900;
-  background: #111827;
-  color: #fff;
-  border: none;
-  border-radius: 99px;
-  padding: 10px 18px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
+/* Brain dump modal */
 #cha-course215-root .c215-modal-bg {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(17, 24, 39, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 950;
   align-items: center;
   justify-content: center;
@@ -1439,14 +1428,15 @@
 
 #cha-course215-root .c215-modal {
   background: #fff;
-  border: 0.5px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
-  max-width: 440px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 520px;
   width: 100%;
   max-height: 80vh;
   overflow-y: auto;
   position: relative;
+  margin: auto;
 }
 
 #cha-course215-root .c215-modal-x {
