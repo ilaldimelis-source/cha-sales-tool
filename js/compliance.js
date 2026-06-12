@@ -414,11 +414,40 @@ function renderCallAudit() {
   html +=
     '<textarea id="auditTranscript" rows="5" placeholder="Paste call transcript here..." style="width:100%;background:var(--bg-surface-raised);border:1px solid var(--border-light, var(--border-default));border-radius:10px;padding:12px;font-size:13px;color:var(--text-secondary);resize:vertical;box-sizing:border-box;font-family:inherit;"></textarea>';
   html +=
-    '<button id="auditBtn" onclick="runCallAudit()" style="margin-top:10px;width:100%;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call [AI] AI</button>';
+    '<div style="margin-top:10px;display:flex;gap:10px;align-items:stretch;">';
+  html +=
+    '<button id="auditBtn" type="button" onclick="runCallAudit()" style="flex:1;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call [AI] AI</button>';
+  html +=
+    '<button id="auditClearBtn" type="button" onclick="clearCallAudit()" style="flex:0 0 auto;background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border-light, var(--border-default));border-radius:10px;padding:12px 18px;font-weight:700;font-size:14px;cursor:pointer;">Clear</button>';
+  html += '</div>';
   html += '<div id="auditResult" style="margin-top:14px;display:none;"></div>';
   html += '</div>';
 
   document.getElementById('page-callaudit').innerHTML = html;
+  var auditTranscriptEl = document.getElementById('auditTranscript');
+  if (auditTranscriptEl) {
+    auditTranscriptEl.oninput = function () {
+      hideCallAuditResults();
+    };
+  }
+}
+
+function hideCallAuditResults() {
+  var result = document.getElementById('auditResult');
+  if (!result) return;
+  result.style.display = 'none';
+  result.innerHTML = '';
+}
+
+function clearCallAudit() {
+  var transcript = document.getElementById('auditTranscript');
+  if (transcript) transcript.value = '';
+  hideCallAuditResults();
+  var btn = document.getElementById('auditBtn');
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = 'Score This Call [AI] AI';
+  }
 }
 
 function runCallAudit() {
