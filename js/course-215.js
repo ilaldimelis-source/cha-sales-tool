@@ -593,17 +593,9 @@ function c215Render() {
   var root = document.getElementById("cha-course215-root");
   if (!root) { return; }
   root.innerHTML = "";
-  var mastered = c215MasteredCount();
   var hdr = c215El("div", "c215-hdr");
   hdr.innerHTML = "<h1 class=\"c215-title\">2-15 Crash Course</h1>"
-    + "<p class=\"c215-subtitle\">Florida Life &amp; Health Insurance -- Official 2026 Exam</p>"
-    + "<div class=\"c215-stats\">"
-    + "<div class=\"c215-stat\"><span class=\"c215-stat-n\">150</span><span class=\"c215-stat-l\">Scored questions</span></div>"
-    + "<div class=\"c215-stat\"><span class=\"c215-stat-n\">2h 45m</span><span class=\"c215-stat-l\">Time limit</span></div>"
-    + "<div class=\"c215-stat\"><span class=\"c215-stat-n\">70%</span><span class=\"c215-stat-l\">To pass</span></div>"
-    + "<div class=\"c215-stat\"><span class=\"c215-stat-n\">105</span><span class=\"c215-stat-l\">Correct needed</span></div></div>"
-    + "<div class=\"c215-prog-wrap\"><div class=\"c215-prog\"><div class=\"c215-prog-fill\" style=\"width:" + Math.round(mastered / 200 * 100) + "%\"></div></div>"
-    + "<div class=\"c215-prog-lbl\">" + mastered + " of 200 mastered</div></div>";
+    + "<p class=\"c215-subtitle\">Florida Life &amp; Health Insurance -- Official 2026 Exam</p>";
   root.appendChild(hdr);
   var tabBar = c215El("div", "c215-tabs");
   var ti, tab, btn, dot;
@@ -647,7 +639,15 @@ function c215RenderTab(container) {
 }
 
 function c215RenderExamMap(container) {
-  var html = "", wi, so, mi, m;
+  var html = "", wi, so, mi, m, mastered = c215MasteredCount();
+  html += "<div class=\"c215-exam-top\">";
+  html += "<div class=\"c215-stats\">";
+  html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">150</span><span class=\"c215-stat-l\">Scored questions</span></div>";
+  html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">2h 45m</span><span class=\"c215-stat-l\">Time limit</span></div>";
+  html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">70%</span><span class=\"c215-stat-l\">To pass</span></div>";
+  html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">105</span><span class=\"c215-stat-l\">Correct needed</span></div></div>";
+  html += "<div class=\"c215-prog-wrap\"><div class=\"c215-prog\"><div class=\"c215-prog-fill\" style=\"width:" + Math.round(mastered / 200 * 100) + "%\"></div></div>";
+  html += "<div class=\"c215-prog-lbl\">" + mastered + " of 200 mastered</div></div></div>";
   html += "<div class=\"c215-card-block\"><h2 class=\"c215-card-hd\">2026 Official Exam Weights</h2>";
   html += "<p class=\"c215-card-sub\">Spend your study time where the most questions are</p>";
   for (wi = 0; wi < C215_EXAM_WEIGHTS.length; wi++) {
