@@ -465,18 +465,43 @@ var C215_STUDY_ORDER = [
   { n: 5, title: "Riders & Provisions", pct: 12, desc: "Waiver of premium, ADB, GIO, incontestability, suicide clause, misstatement of age." }
 ];
 
-var C215_FC_FILTERS = [
-  { id: "all", label: "All" },
-  { id: "life", label: "Life" },
-  { id: "health", label: "Health" },
-  { id: "fl", label: "FL" },
-  { id: "annuity", label: "Annuities" },
-  { id: "provisions", label: "Provisions" },
-  { id: "disability", label: "Disability" },
-  { id: "medicare", label: "Medicare" },
-  { id: "trick", label: "Tricks" }
-];
+var C215_TOPIC_LABELS = {
+  life: "Life",
+  health: "Health",
+  fl: "FL",
+  annuity: "Annuities",
+  trade: "Trade"
+};
 
+var C215_TOPIC_FILTER_ORDER = ["life", "health", "fl", "annuity", "trade"];
+
+function c215BuildTopicFilters() {
+  var tags = {}, i, filters = [{ id: "all", label: "All" }], seen = {}, oi, tag;
+  for (i = 0; i < QA200.length; i++) { tags[QA200[i].t] = true; }
+  for (oi = 0; oi < C215_TOPIC_FILTER_ORDER.length; oi++) {
+    tag = C215_TOPIC_FILTER_ORDER[oi];
+    if (tags[tag]) {
+      filters.push({ id: tag, label: C215_TOPIC_LABELS[tag] || tag });
+      seen[tag] = true;
+    }
+  }
+  for (tag in tags) {
+    if (tags.hasOwnProperty(tag) && !seen[tag]) {
+      filters.push({ id: tag, label: C215_TOPIC_LABELS[tag] || tag });
+    }
+  }
+  return filters;
+}
+
+function c215FilterIsValid(filterId) {
+  var fi;
+  for (fi = 0; fi < C215_FC_FILTERS.length; fi++) {
+    if (C215_FC_FILTERS[fi].id === filterId) { return true; }
+  }
+  return false;
+}
+
+var C215_FC_FILTERS = c215BuildTopicFilters();
 var C215_QZ_FILTERS = C215_FC_FILTERS.slice();
 
 var C215_FC = [];
@@ -747,9 +772,9 @@ function c215ToggleMnem(id) {
 }
 
 function c215FcApplyFilter(filter) {
+  if (!c215FilterIsValid(filter)) { filter = "all"; }
   c215State.fc.filter = filter;
   if (filter === "all") { c215State.fc.queue = C215_FC.slice(); }
-  else if (filter === "trick") { c215State.fc.queue = C215_FC.filter(function(c) { return c.trick; }); }
   else { c215State.fc.queue = C215_FC.filter(function(c) { return c.t === filter; }); }
   c215State.fc.idx = 0;
 }
@@ -833,10 +858,10 @@ function c215FcRate(result) {
 function c215FcFilter(filter) { c215FcApplyFilter(filter); c215SwitchTab("cards"); }
 
 function c215QzApplyFilter(filter) {
+  if (!c215FilterIsValid(filter)) { filter = "all"; }
   c215State.qz.filter = filter;
   var pool, i;
   if (filter === "all") { pool = C215_QZ.slice(); }
-  else if (filter === "trick") { pool = C215_QZ.filter(function(q) { return q.trick; }); }
   else { pool = C215_QZ.filter(function(q) { return q.t === filter; }); }
   if (c215State.qz.missedOnly) {
     var missedPool = [];
@@ -853,14 +878,6 @@ function c215QzApplyFilter(filter) {
   c215State.qz.answered = false;
 }
 
-function c215QzFilterLabel(id) {
-  var i;
-  for (i = 0; i < C215_QZ_FILTERS.length; i++) {
-    if (C215_QZ_FILTERS[i].id === id) { return C215_QZ_FILTERS[i].label; }
-  }
-  return id;
-}
-
 function c215RenderQuiz(container) {
   if (c215State.qz.queue.length === 0) { c215QzApplyFilter("all"); }
   var html = "<div class=\"c215-quiz-wrap\">";
@@ -871,7 +888,7 @@ function c215RenderQuiz(container) {
     badge = "";
     sc = c215State.qz.topicScores[f.id];
     if (sc && sc.total > 0) {
-      badge = " <span class=\"c215-filter-badge\">" + c215QzFilterLabel(f.id) + ": " + sc.correct + "/" + sc.total + "</span>";
+      badge = " <span class=\"c215-filter-badge\">" + sc.correct + "/" + sc.total + "</span>";
     }
     html += "<button type=\"button\" class=\"c215-filter" + (c215State.qz.filter === f.id ? " active" : "") + "\" onclick=\"c215QzFilter('" + f.id + "')\">" + f.label + badge + "</button>";
   }
