@@ -8777,7 +8777,7 @@ body.plan-drawer-lock {
 .st-status-filter,
 .st-clearance-label,
 #st-status-dropdown,
-select[onchange*='Status'],
+.st-sale-bubble-status select,
 .st-deal-status-row,
 .st-sale-bubble-status {
   display: none !important;
