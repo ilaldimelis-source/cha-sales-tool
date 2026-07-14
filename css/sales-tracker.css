@@ -4484,3 +4484,305 @@ body.st-pb-modal-open {
   color: #334155;
   background: #fff;
 }
+
+/* -- Reconcile view (pay sheet match + chargeback search) -- */
+.st-recon-chip.st-chip-active {
+  background: var(--cha-accent);
+  border-color: var(--cha-accent);
+  color: #fff;
+}
+
+.st-recon-pane {
+  margin: 12px 0 24px;
+  padding: 14px;
+  background: var(--cha-bg-card);
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 12px;
+}
+
+.st-recon-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.st-recon-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--cha-text-primary);
+}
+
+.st-recon-sub {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+  max-width: 42em;
+}
+
+.st-recon-paste-btn {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--cha-accent);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 6px 4px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.st-recon-paste-btn:hover {
+  color: #3b5bdb;
+}
+
+.st-recon-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.st-recon-stat {
+  background: var(--cha-bg-muted);
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.st-recon-stat-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.st-recon-stat-val {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--cha-text-primary);
+}
+
+.st-recon-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.st-recon-problem-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.st-recon-problem-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.st-recon-problem-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cha-text-primary);
+}
+
+.st-recon-problem-meta {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.st-recon-status-pill {
+  display: inline-block;
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+.st-recon-pill-missing {
+  background: var(--cha-danger-bg);
+  color: var(--cha-danger-text);
+}
+
+.st-recon-pill-mislabeled {
+  background: var(--cha-warning-bg);
+  color: var(--cha-warning-text);
+}
+
+.st-recon-pill-notonsheet {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+.st-recon-problems-wrap {
+  margin-bottom: 20px;
+}
+
+.st-recon-cb-wrap {
+  border-top: 1px solid var(--cha-border-subtle);
+  padding-top: 14px;
+}
+
+.st-recon-cb-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.st-recon-cb-search {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #334155;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.st-recon-cb-mark {
+  flex-shrink: 0;
+  border: none;
+  border-radius: 8px;
+  background: var(--cha-danger-text);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.st-recon-cb-mark:hover {
+  opacity: 0.92;
+}
+
+.st-recon-cb-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.st-recon-cb-empty {
+  font-size: 12px;
+  color: #94a3b8;
+  padding: 8px 2px;
+}
+
+.st-recon-cb-hit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 10px;
+  background: #fff;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+
+.st-recon-cb-hit:hover {
+  border-color: #cbd5e1;
+}
+
+.st-recon-cb-hit.is-selected {
+  border-color: var(--cha-accent);
+  box-shadow: 0 0 0 1px var(--cha-accent);
+}
+
+.st-recon-cb-hit-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cha-text-primary);
+}
+
+.st-recon-cb-hit-meta {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.st-paysheet-modal .st-paysheet-card {
+  width: min(640px, 96vw);
+}
+
+.st-paysheet-hint {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.st-paysheet-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 180px;
+  padding: 10px 12px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  background: var(--cha-bg-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  color: #334155;
+  resize: vertical;
+  margin-bottom: 12px;
+}
+
+/* Defend against status/onchange wildcard hide rules (PR #193 pattern) */
+.st-date-chip.st-recon-chip {
+  display: inline-flex !important;
+  visibility: visible !important;
+}
+
+.st-recon-pane,
+.st-recon-problem-row,
+.st-recon-cb-hit,
+.st-paysheet-modal {
+  visibility: visible !important;
+}
+
+.st-recon-status-pill {
+  display: inline-block !important;
+  visibility: visible !important;
+}
+
+.st-paysheet-modal {
+  display: flex !important;
+}
+
+@media (width <= 720px) {
+  .st-recon-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .st-recon-head {
+    flex-direction: column;
+  }
+
+  .st-recon-cb-row {
+    flex-direction: column;
+  }
+}
