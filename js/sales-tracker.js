@@ -461,6 +461,7 @@ function _stClearDateMs(sale) {
 function _stNormalizeStatus(sale) {
   var raw = String((sale && sale.status) || '').toLowerCase();
   if (raw === 'chargeback') return 'chargeback';
+  if (raw === 'samecancel') return 'samecancel';
   if (raw === 'cleared') return 'cleared';
   if (raw === 'cancel') return 'chargeback';
   var clearMs = _stClearDateMs(sale);
@@ -468,9 +469,15 @@ function _stNormalizeStatus(sale) {
   return 'pending';
 }
 
+function _stIsReversalStatus(sale) {
+  var st = _stNormalizeStatus(sale);
+  return st === 'chargeback' || st === 'samecancel';
+}
+
 function _stStatusText(sale) {
   var st = _stNormalizeStatus(sale);
   if (st === 'chargeback') return 'Chargeback';
+  if (st === 'samecancel') return 'Same-week cancel';
   if (st === 'cleared') return 'Cleared';
   var clearMs = _stClearDateMs(sale);
   if (!clearMs) return 'Pending';
@@ -1687,7 +1694,7 @@ function _stComputeLineCommission(sale, rates) {
     var planN = String(sale.plan || '').toLowerCase();
     if (/\brx\s*savers?\b/.test(planN)) {
       var flatRx = 10;
-      if (_stNormalizeStatus(sale) === 'chargeback') return -Math.abs(flatRx);
+      if (_stIsReversalStatus(sale)) return -Math.abs(flatRx);
       return flatRx;
     }
     if (typeof sale.addonCommissionRate === 'number') {
@@ -1704,7 +1711,7 @@ function _stComputeLineCommission(sale, rates) {
         : _stPlanTierRate(amt, rates);
   }
   var commission = amt * rate;
-  if (_stNormalizeStatus(sale) === 'chargeback') return -Math.abs(commission);
+  if (_stIsReversalStatus(sale)) return -Math.abs(commission);
   return commission;
 }
 
@@ -1724,8 +1731,7 @@ function _stStampDealCommission(sales, dealIdx, rates) {
       : _stPlanTierRate(amt, rates);
   deal.planCommissionRate = rate;
   var planCommission = amt * rate;
-  if (_stNormalizeStatus(deal) === 'chargeback')
-    planCommission = -Math.abs(planCommission);
+  if (_stIsReversalStatus(deal)) planCommission = -Math.abs(planCommission);
   deal.planCommission = planCommission;
 
   // Sum add-on commissions that belong to this receipt.
@@ -1756,12 +1762,12 @@ function _stStampDealCommission(sales, dealIdx, rates) {
   // Enrollment bonus: only paid when enrollmentFee is exactly $125
   var bonus = 0;
   if (Number(deal.enrollmentFee) === 125) bonus = rates.enrollmentBonus;
-  if (_stNormalizeStatus(deal) === 'chargeback') bonus = -Math.abs(bonus);
+  if (_stIsReversalStatus(deal)) bonus = -Math.abs(bonus);
   deal.enrollmentBonus = bonus;
 
   // Expected total = plan + add-ons + bonus (with status logic already applied)
   var expected = planCommission + totalAddon + bonus;
-  if (_stNormalizeStatus(deal) === 'chargeback') expected = -Math.abs(expected);
+  if (_stIsReversalStatus(deal)) expected = -Math.abs(expected);
   deal.expectedDealTotal = expected;
 
   // Preserve any existing audit fields; initialize if missing
@@ -1772,7 +1778,7 @@ function _stStampDealCommission(sales, dealIdx, rates) {
   // Auto-flag common audit issues on the deal itself
   var flags = [];
   if (!deal.memberId) flags.push('missing_member_id');
-  if (_stNormalizeStatus(deal) !== 'chargeback') {
+  if (!_stIsReversalStatus(deal)) {
     if (Number(deal.enrollmentFee) === 125 && bonus === 0) {
       flags.push('missing_enrollment_bonus');
     }
@@ -3338,6 +3344,115 @@ function _stUpdateStatus(id, newStatus) {
   }
 }
 
+function _stFindSaleIndexById(sales, id) {
+  for (var i = 0; i < sales.length; i++) {
+    if (sales[i] && sales[i].id === id) return i;
+  }
+  return -1;
+}
+
+function _stRecomputeSaleGroupCommission(sales, idx) {
+  var rates = _stLoadCommissionRates();
+  var affected = sales[idx];
+  if (!affected) return;
+  if (affected.type === 'deal') {
+    _stStampDealCommission(sales, idx, rates);
+  } else if (affected.receiptId) {
+    for (var di = 0; di < sales.length; di++) {
+      if (
+        sales[di].type === 'deal' &&
+        sales[di].receiptId === affected.receiptId
+      ) {
+        _stStampDealCommission(sales, di, rates);
+        break;
+      }
+    }
+  }
+}
+
+function _stApplyWeekStatusSelectStyle(sel, status) {
+  if (!sel) return;
+  sel.className =
+    'st-week-status-select st-week-status-' + String(status || 'pending');
+}
+
+function _stRefreshWeekCardCommissionDom(card, sale) {
+  if (!card || !sale) return;
+  if (sale.type === 'deal') {
+    var planComm = Number(sale.planCommission) || 0;
+    var addonComm = Number(sale.totalAddonCommission) || 0;
+    var expected = Number(sale.expectedDealTotal) || 0;
+    var rows = card.querySelectorAll('.st-week-comm-row');
+    for (var ri = 0; ri < rows.length; ri++) {
+      var row = rows[ri];
+      var spans = row.querySelectorAll('span');
+      if (spans.length < 2) continue;
+      if (row.classList.contains('st-week-comm-total')) {
+        spans[1].textContent = '$' + expected.toFixed(2);
+      } else if (spans[0].textContent.indexOf('plan') === 0) {
+        spans[1].textContent = '$' + planComm.toFixed(2);
+      } else if (spans[0].textContent.indexOf('add-ons') !== -1) {
+        spans[1].textContent = '$' + addonComm.toFixed(2);
+      }
+    }
+  } else {
+    var expAddon = _stAddonLineCommission(sale);
+    var totalRow = card.querySelector('.st-week-comm-total span:last-child');
+    if (totalRow) totalRow.textContent = '$' + expAddon.toFixed(2);
+  }
+}
+
+function _stUpdateSaleStatus(id, newStatus) {
+  if (
+    newStatus !== 'pending' &&
+    newStatus !== 'cleared' &&
+    newStatus !== 'chargeback' &&
+    newStatus !== 'samecancel'
+  ) {
+    return;
+  }
+  var sales = _stLoadSales();
+  var idx = _stFindSaleIndexById(sales, id);
+  if (idx < 0) return;
+  sales[idx].status = newStatus;
+  _stRecomputeSaleGroupCommission(sales, idx);
+  _stSaveSales(sales);
+  var card = document.querySelector(
+    '.st-week-compact-card[data-sale-id="' + id + '"]'
+  );
+  if (!card) return;
+  var stNorm = _stNormalizeStatus(sales[idx]);
+  card.className = 'st-week-compact-card st-row st-row-' + stNorm;
+  card.setAttribute('data-sale-id', id);
+  var sel = card.querySelector('.st-week-status-select');
+  if (sel) {
+    sel.value = stNorm;
+    _stApplyWeekStatusSelectStyle(sel, stNorm);
+  }
+  var reasonWrap = card.querySelector('.st-week-status-reason-wrap');
+  if (reasonWrap) {
+    reasonWrap.style.display =
+      stNorm === 'chargeback' || stNorm === 'samecancel' ? 'block' : 'none';
+  }
+  _stRefreshWeekCardCommissionDom(card, sales[idx]);
+}
+
+function _stToggleReviewed(id) {
+  var sales = _stLoadSales();
+  var idx = _stFindSaleIndexById(sales, id);
+  if (idx < 0) return;
+  sales[idx].reviewed = sales[idx].reviewed === true ? false : true;
+  _stSaveSales(sales);
+}
+
+function _stSaveStatusReason(id, value) {
+  var sales = _stLoadSales();
+  var idx = _stFindSaleIndexById(sales, id);
+  if (idx < 0) return;
+  sales[idx].statusReason = String(value || '');
+  _stSaveSales(sales);
+}
+
 function _stDeleteSale(id) {
   if (!confirm('Permanently delete this sale? This cannot be undone.')) {
     return;
@@ -3493,7 +3608,7 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
     if (!ds) continue;
     if (ds.type !== 'deal') continue;
     if (ds.ts < weekStart || ds.ts >= weekEndExclusive) continue;
-    if (_stNormalizeStatus(ds) !== 'chargeback' && ds.receiptId) {
+    if (!_stIsReversalStatus(ds) && ds.receiptId) {
       validDealReceiptIds[ds.receiptId] = true;
     }
   }
@@ -3515,7 +3630,7 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
     }
 
     // Stats below only count VALID rows
-    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (_stIsReversalStatus(s)) continue;
     if (
       s.ts >= todayStart &&
       s.ts < todayStart + msDay &&
@@ -3644,7 +3759,7 @@ function _stPaycheckBreakdown(sales, stats) {
     var ad = sales[j];
     if (!ad || ad.type !== 'addon') continue;
     if (ad.ts < ws || ad.ts >= we) continue;
-    if (_stNormalizeStatus(ad) === 'chargeback') continue;
+    if (_stIsReversalStatus(ad)) continue;
     if (!ad.receiptId || _stDealExistsForReceiptId(sales, ad.receiptId))
       continue;
     var ac =
@@ -3854,7 +3969,7 @@ function _stBuildCoreVsAddOnLines(weekSales, rates) {
   for (i = 0; i < weekSales.length; i++) {
     s = weekSales[i];
     if (!s) continue;
-    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (_stIsReversalStatus(s)) continue;
     if (s.type === 'deal') {
       tmpCore.push({
         name: String(s.plan || '').trim() || 'Plan',
@@ -3982,7 +4097,7 @@ function _stOpenPaycheckBreakdownModal() {
     var s = sales[i];
     if (!s) continue;
     if (s.ts < weekStart || s.ts >= weekEnd) continue;
-    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (_stIsReversalStatus(s)) continue;
     if (s.type === 'deal') {
       var dealComm =
         typeof s.planCommission === 'number'
@@ -4251,6 +4366,7 @@ var _stSelectedIds = {};
 // This Week day-group expand: day anchor ms -> true when expanded.
 // Bootstrapped once on first This Week paint; reset when switching subtabs.
 var _stThisWeekExpandedDays = {};
+var _stScrollToDayAfterRender = null;
 var _stThisWeekExpandBootstrapped = false;
 var _stActiveTab = 'thisweek';
 var _stAddSalePanelOpen = false;
@@ -4515,6 +4631,7 @@ function _stStatusAbbrevForTable(sale) {
   var st = _stNormalizeStatus(sale);
   if (st === 'cleared') return 'Clr';
   if (st === 'chargeback') return 'Cbk';
+  if (st === 'samecancel') return 'SwC';
   return 'Pnd';
 }
 
@@ -4576,7 +4693,7 @@ function _stGroupMatchesAllListFilters(grp) {
 function _stAddonLineCommission(s) {
   if (typeof s.addonCommission === 'number') {
     var c = Number(s.addonCommission);
-    if (_stNormalizeStatus(s) === 'chargeback') c = -Math.abs(c);
+    if (_stIsReversalStatus(s)) c = -Math.abs(c);
     return c;
   }
   var r =
@@ -4584,7 +4701,7 @@ function _stAddonLineCommission(s) {
       ? s.addonCommissionRate
       : _stLoadCommissionRates().addonTypes[_stClassifyAddon(s.plan)] || 0.25;
   var c = (Number(s.amount) || 0) * r;
-  if (_stNormalizeStatus(s) === 'chargeback') c = -Math.abs(c);
+  if (_stIsReversalStatus(s)) c = -Math.abs(c);
   return c;
 }
 
@@ -4723,7 +4840,7 @@ function _stCommissionCellHtml(s) {
       ? s.addonCommissionRate
       : _stLoadCommissionRates().addonTypes[_stClassifyAddon(s.plan)] || 0.25;
   var aComm = (Number(s.amount) || 0) * aRate;
-  if (_stNormalizeStatus(s) === 'chargeback') aComm = -Math.abs(aComm);
+  if (_stIsReversalStatus(s)) aComm = -Math.abs(aComm);
   return (
     '<div class="st-comm-cell">' +
     '<div class="st-comm-total">$' +
@@ -4863,6 +4980,29 @@ function _stDayAnchorMs(ts) {
   return _stStartOfDay(new Date(ts)).getTime();
 }
 
+function _stScrollThisWeekDayHeadIntoView(anchorMs) {
+  var page = document.getElementById('page-salestracker');
+  if (!page) return;
+  var anchorStr = String(anchorMs);
+  var head = page.querySelector(
+    '.st-week-day-head[data-day-anchor="' + anchorStr + '"]'
+  );
+  if (head && head.scrollIntoView) {
+    head.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+function _stHeroPaycheckDayClick(anchorMs) {
+  _stScrollToDayAfterRender = anchorMs;
+  _stToggleThisWeekDay(anchorMs);
+}
+
+function _stHeroPaycheckDayKeyDown(e, anchorMs) {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  e.preventDefault();
+  _stHeroPaycheckDayClick(anchorMs);
+}
+
 function _stToggleThisWeekDay(anchorMs) {
   var k = String(anchorMs);
   if (_stThisWeekExpandedDays[k]) {
@@ -4967,9 +5107,50 @@ function _stRenderThisWeekSubRow(g) {
         '</span></div>';
     }
   }
+  var saleStatus = _stNormalizeStatus(lead);
+  var reviewed = lead.reviewed === true;
+  var reasonVal = lead.statusReason ? String(lead.statusReason) : '';
+  var showReason =
+    saleStatus === 'chargeback' || saleStatus === 'samecancel';
+  var reconcileSec =
+    '<div class="st-week-reconcile">' +
+    '<div class="st-week-reconcile-row">' +
+    '<label class="st-week-reviewed-label">' +
+    '<input type="checkbox" class="st-week-reviewed-cb"' +
+    (reviewed ? ' checked' : '') +
+    ' onchange="_stToggleReviewed(\'' +
+    lid +
+    '\')"> Reviewed</label>' +
+    '<select class="st-week-status-select st-week-status-' +
+    saleStatus +
+    '" onchange="_stUpdateSaleStatus(\'' +
+    lid +
+    '\', this.value)">' +
+    '<option value="pending"' +
+    (saleStatus === 'pending' ? ' selected' : '') +
+    '>Pending</option>' +
+    '<option value="cleared"' +
+    (saleStatus === 'cleared' ? ' selected' : '') +
+    '>Cleared</option>' +
+    '<option value="chargeback"' +
+    (saleStatus === 'chargeback' ? ' selected' : '') +
+    '>Chargeback</option>' +
+    '<option value="samecancel"' +
+    (saleStatus === 'samecancel' ? ' selected' : '') +
+    '>Same-week cancel</option>' +
+    '</select></div>' +
+    '<div class="st-week-status-reason-wrap"' +
+    (showReason ? '' : ' style="display:none"') +
+    '><input type="text" class="st-week-status-reason" placeholder="Reason (optional)" value="' +
+    _stEscape(reasonVal) +
+    '" onblur="_stSaveStatusReason(\'' +
+    lid +
+    '\', this.value)"></div></div>';
   return (
     '<article class="st-week-compact-card st-row st-row-' +
     st +
+    '" data-sale-id="' +
+    lid +
     '"><div class="st-week-card-toprow"><span class="' +
     pillClass +
     '">' +
@@ -4988,6 +5169,7 @@ function _stRenderThisWeekSubRow(g) {
     '<span>/mo</span></div>' +
     commBox +
     addonSec +
+    reconcileSec +
     '</article>'
   );
 }
@@ -5061,6 +5243,8 @@ function _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats) {
       '<div class="st-week-day-wrap">' +
         '<div class="st-week-day-head' +
         (expanded ? ' st-week-day-head-expanded' : '') +
+        '" data-day-anchor="' +
+        anchor +
         '" role="button" tabindex="0" aria-expanded="' +
         (expanded ? 'true' : 'false') +
         '" onclick="_stToggleThisWeekDay(' +
@@ -5380,7 +5564,7 @@ function _stDownloadWeeklyPdf() {
   for (var i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s || s.type !== 'deal') continue;
-    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (_stIsReversalStatus(s)) continue;
     if (s.ts < weekStart || s.ts >= weekEndEx) continue;
     deals.push(s);
   }
@@ -5449,7 +5633,7 @@ function _stDownloadWeeklyPdf() {
       for (var ai = 0; ai < sales.length; ai++) {
         var a = sales[ai];
         if (!a || a.type !== 'addon') continue;
-        if (_stNormalizeStatus(a) === 'chargeback') continue;
+        if (_stIsReversalStatus(a)) continue;
         if (a.receiptId !== d.receiptId) continue;
         addons.push(a);
       }
@@ -6682,9 +6866,22 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
     if (bucket.date) {
       dateStr = bucket.date.getMonth() + 1 + '/' + bucket.date.getDate();
     }
+    var chipAnchor = bucket.date
+      ? _stDayAnchorMs(bucket.date.getTime())
+      : 0;
     html +=
       '<div class="st-paycheck-day' +
       (isToday ? ' st-paycheck-day-today' : '') +
+      '"' +
+      (chipAnchor
+        ? ' role="button" tabindex="0" data-day-anchor="' +
+          chipAnchor +
+          '" onclick="_stHeroPaycheckDayClick(' +
+          chipAnchor +
+          ')" onkeydown="_stHeroPaycheckDayKeyDown(event,' +
+          chipAnchor +
+          ')"'
+        : '') +
       '">' +
       '<div class="st-paycheck-day-label">' +
       (isToday ? 'TODAY' : dayAbbr) +
@@ -6815,7 +7012,7 @@ function _stSumPremiumInRange(sales, t0, t1) {
     var ds = sales[di];
     if (!ds || ds.type !== 'deal') continue;
     if (ds.ts < t0 || ds.ts >= t1) continue;
-    if (_stNormalizeStatus(ds) !== 'chargeback' && ds.receiptId) {
+    if (!_stIsReversalStatus(ds) && ds.receiptId) {
       validDealReceiptIds[ds.receiptId] = true;
     }
   }
@@ -6824,7 +7021,7 @@ function _stSumPremiumInRange(sales, t0, t1) {
   for (i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s) continue;
-    if (_stNormalizeStatus(s) === 'chargeback') continue;
+    if (_stIsReversalStatus(s)) continue;
     if (s.ts < t0 || s.ts >= t1) continue;
     var include = false;
     if (s.type === 'deal') include = true;
@@ -7177,6 +7374,13 @@ function _stRender() {
   _stWireSalesBulkDelegation(page);
   _stWireAllSalesSearchDelegation(page);
   _stWirePaycheckObserver();
+  if (_stScrollToDayAfterRender != null) {
+    var scrollAnchor = _stScrollToDayAfterRender;
+    _stScrollToDayAfterRender = null;
+    setTimeout(function () {
+      _stScrollThisWeekDayHeadIntoView(scrollAnchor);
+    }, 0);
+  }
 }
 
 // One delegated click/change listener on #page-salestracker so bulk

@@ -8770,14 +8770,14 @@ body.plan-drawer-lock {
 .st-status-badge,
 .st-status-select,
 .st-status-label,
-[class*='status-pending'],
-[class*='status-cleared'],
-[class*='status-chargeback'],
+.st-sale-bubble-status [class*='status-pending'],
+.st-sale-bubble-status [class*='status-cleared'],
+.st-sale-bubble-status [class*='status-chargeback'],
 .st-status-column,
 .st-status-filter,
 .st-clearance-label,
 #st-status-dropdown,
-select[onchange*='Status'],
+.st-sale-bubble-status select,
 .st-deal-status-row,
 .st-sale-bubble-status {
   display: none !important;
