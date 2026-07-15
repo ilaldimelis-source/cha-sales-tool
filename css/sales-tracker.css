@@ -4522,6 +4522,11 @@ body.st-pb-modal-open {
   max-width: 42em;
 }
 
+.st-recon-sub strong {
+  color: var(--cha-text-primary);
+  font-weight: 700;
+}
+
 .st-recon-paste-btn {
   flex-shrink: 0;
   border: none;
