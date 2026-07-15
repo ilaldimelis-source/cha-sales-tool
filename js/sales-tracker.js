@@ -4375,6 +4375,7 @@ var _stAddSalePanelOpen = false;
 var _stReconcileMode = false;
 var _stPaySheetRows = [];
 var _stReconcileResult = null;
+var _stReconcileMatchView = null;
 var _stCbSearchQuery = '';
 var _stCbSelectedId = '';
 
@@ -6652,16 +6653,99 @@ function _stReconSheetTypeToLocal(t) {
   return '';
 }
 
+function _stReconDateToTs(month, day, year) {
+  if (isNaN(month) || isNaN(day) || isNaN(year)) return 0;
+  if (month < 1 || month > 12 || day < 1 || day > 31) return 0;
+  var d = new Date(year, month - 1, day);
+  if (
+    d.getFullYear() !== year ||
+    d.getMonth() !== month - 1 ||
+    d.getDate() !== day
+  ) {
+    return 0;
+  }
+  return _stStartOfDay(d).getTime();
+}
+
+function _stReconParseSheetDateFromLine(line) {
+  var s = String(line || '');
+  var m = s.match(/\b(\d{1,2})\/(\d{1,2})\/(\d{4})\b/);
+  if (m) {
+    return _stReconDateToTs(
+      parseInt(m[1], 10),
+      parseInt(m[2], 10),
+      parseInt(m[3], 10)
+    );
+  }
+  m = s.match(/\b(\d{1,2})\/(\d{1,2})\/(\d{2})\b/);
+  if (m) {
+    var yy = parseInt(m[3], 10);
+    var fullY = yy >= 70 ? 1900 + yy : 2000 + yy;
+    return _stReconDateToTs(parseInt(m[1], 10), parseInt(m[2], 10), fullY);
+  }
+  m = s.match(/\b(\d{1,2})\/(\d{1,2})\b/);
+  if (m) {
+    return _stReconDateToTs(
+      parseInt(m[1], 10),
+      parseInt(m[2], 10),
+      new Date().getFullYear()
+    );
+  }
+  return 0;
+}
+
+function _stReconDetectWeekFromRows(rows) {
+  var counts = {};
+  var bestWs = null;
+  var bestN = 0;
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var ts = Number(rows[i].dateTs) || 0;
+    if (!ts) continue;
+    var ws = _stStartOfWeek(new Date(ts)).getTime();
+    var n = (counts[ws] || 0) + 1;
+    counts[ws] = n;
+    if (n > bestN) {
+      bestN = n;
+      bestWs = ws;
+    }
+  }
+  return bestWs;
+}
+
+function _stReconViewForWeekStart(weekStartMs) {
+  var ws = Number(weekStartMs) || 0;
+  if (!ws) return null;
+  var nowWs = _stCurrentWeekStartMs();
+  return {
+    mode: 'week',
+    start: ws,
+    endExclusive: ws + 7 * 24 * 60 * 60 * 1000,
+    label: _stFmtWeekLabel(ws),
+    isCurrentWeek: ws === nowWs
+  };
+}
+
+function _stReconMatchedWeekLabel(view) {
+  if (!view || !view.start) return '';
+  var ws = Number(view.start);
+  var we = ws + 6 * 24 * 60 * 60 * 1000;
+  return _stFmtMonthDay(ws) + ' - ' + _stFmtMonthDay(we);
+}
+
 function _stParsePaySheet(text) {
   var rows = [];
   var raw = String(text || '')
     .replace(/\r\n/g, '\n')
     .replace(/\r/g, '\n');
   var lines = raw.split('\n');
+  var lastSeenDateTs = 0;
   var i;
   for (i = 0; i < lines.length; i++) {
     var line = String(lines[i] || '').trim();
     if (!line) continue;
+    var lineDateTs = _stReconParseSheetDateFromLine(line);
+    if (lineDateTs) lastSeenDateTs = lineDateTs;
     var midMatch = line.match(/\b(\d{9})\b/);
     if (!midMatch) continue;
     var memberId = midMatch[1];
@@ -6676,6 +6760,7 @@ function _stParsePaySheet(text) {
     var productName = '';
     var customer = '';
     var amount = 0;
+    var rowDateTs = lineDateTs || lastSeenDateTs || 0;
     var amtMatch = line.match(/\$\s*([0-9]+(?:\.[0-9]{1,2})?)/);
     if (amtMatch) amount = parseFloat(amtMatch[1]) || 0;
 
@@ -6707,6 +6792,7 @@ function _stParsePaySheet(text) {
         if (/^\$?\s*[0-9]+(\.[0-9]{1,2})?$/.test(cell.replace(/,/g, ''))) {
           continue;
         }
+        if (_stReconParseSheetDateFromLine(cell)) continue;
         afterType.push(cell);
       }
       if (afterType.length) {
@@ -6720,6 +6806,7 @@ function _stParsePaySheet(text) {
         .replace(midMatch[0], ' ')
         .replace(typeMatch[0], ' ')
         .replace(/\$\s*[0-9]+(?:\.[0-9]{1,2})?/g, ' ')
+        .replace(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g, ' ')
         .replace(/[|,;]+/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
@@ -6742,7 +6829,8 @@ function _stParsePaySheet(text) {
       typeLocal: typeLocal,
       productName: productName,
       customer: customer,
-      amount: amount
+      amount: amount,
+      dateTs: rowDateTs
     });
   }
   return rows;
@@ -6856,7 +6944,7 @@ function _stMatchPaySheetRows(payRows, weekSales) {
       sale: null,
       customer: row.customer || '',
       productName: row.productName || '',
-      dateTs: 0,
+      dateTs: Number(row.dateTs) || 0,
       amount: Number(row.amount) || 0
     });
   }
@@ -6941,7 +7029,14 @@ function _stSubmitPaySheetMatch() {
   var rows = _stParsePaySheet(text);
   _stPaySheetRows = rows;
   var sales = _stLoadSales();
-  var view = _stRangeInfo();
+  var detectedWs = _stReconDetectWeekFromRows(rows);
+  var view;
+  if (detectedWs) {
+    view = _stReconViewForWeekStart(detectedWs);
+  } else {
+    view = _stRangeInfo();
+  }
+  _stReconcileMatchView = view;
   var weekSales = _stReconWeekSales(sales, view);
   _stReconcileResult = _stMatchPaySheetRows(rows, weekSales);
   _stClosePaySheetModal();
@@ -7118,10 +7213,11 @@ function _stReconcileMarkChargeback() {
 }
 
 function _stBuildReconcilePane(sales, view) {
+  var matchView = _stReconcileMatchView || view;
   if (_stPaySheetRows && _stPaySheetRows.length) {
     _stReconcileResult = _stMatchPaySheetRows(
       _stPaySheetRows,
-      _stReconWeekSales(sales, view)
+      _stReconWeekSales(sales, matchView)
     );
   }
   var result = _stReconcileResult;
@@ -7129,13 +7225,22 @@ function _stBuildReconcilePane(sales, view) {
   var missN = result && result.missing ? result.missing.length : 0;
   var misN = result && result.mislabeled ? result.mislabeled.length : 0;
   var gap = result ? Number(result.gap) || 0 : 0;
+  var subText =
+    'Compare logged sales to your official pay sheet, or mark a past sale as a chargeback.';
+  var subHtml = _stEscape(subText);
+  if (_stReconcileMatchView && _stPaySheetRows.length && result) {
+    subHtml =
+      'Matched against week of <strong>' +
+      _stEscape(_stReconMatchedWeekLabel(_stReconcileMatchView)) +
+      '</strong>. ' +
+      _stEscape(subText);
+  }
 
   var html = '<section class="st-recon-pane" aria-label="Reconcile">';
   html += '<div class="st-recon-head">';
   html += '<div class="st-recon-head-text">';
   html += '<div class="st-recon-title">Reconcile</div>';
-  html +=
-    '<div class="st-recon-sub">Compare this week\'s logged sales to your official pay sheet, or mark a past sale as a chargeback.</div>';
+  html += '<div class="st-recon-sub">' + subHtml + '</div>';
   html += '</div>';
   html +=
     '<button type="button" class="st-recon-paste-btn" onclick="_stOpenPaySheetModal()">Paste pay sheet</button>';
