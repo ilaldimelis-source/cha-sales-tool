@@ -5770,6 +5770,7 @@ function _stOpenEntryModal(opts) {
     mode: mode,
     dealId: initial.dealId || '',
     receiptIdForEdit: initial.receiptId || '',
+    existingMemberId: String(initial.memberId || '').trim(),
     previewText: preview,
     addonOnly: addonOnlyDefault,
     seedSaleId: initial.seedSaleId || ''
@@ -5806,10 +5807,24 @@ function _stOpenEntryModal(opts) {
     '<label>Customer name<input id="st-entry-customer" type="text" value="' +
     _stEscape(initial.customer || '') +
     '" required></label>';
+  var memberIdVal = String(initial.memberId || '').trim();
+  var memberIdMissing = !memberIdVal;
   html +=
-    '<label>Member ID<input id="st-entry-receiptid" type="text" placeholder="e.g. 687271841" value="' +
+    '<label class="st-entry-memberid-label' +
+    (memberIdMissing ? ' st-entry-memberid-missing' : '') +
+    '">Member ID<input id="st-entry-memberid" type="text" class="st-entry-memberid' +
+    (memberIdMissing ? ' st-entry-memberid-input-missing' : '') +
+    '" placeholder="e.g. 687271841" value="' +
+    _stEscape(memberIdVal) +
+    '"><span class="st-entry-field-hint">Enter the Member ID from your FirstEnroll or NEO confirmation</span>' +
+    (memberIdMissing
+      ? '<span class="st-entry-memberid-warn">No Member ID on this sale yet. Add the 9-digit ID so Reconcile can match it.</span>'
+      : '') +
+    '</label>';
+  html +=
+    '<label>Receipt reference<input id="st-entry-receiptid" type="text" placeholder="Auto-generated if blank" value="' +
     _stEscape(initial.receiptId || '') +
-    '"><span style="display:block;font-size:11px;font-weight:400;color:#94a3b8;line-height:1.4;margin-top:2px;">Enter the Member ID from your FirstEnroll or NEO confirmation</span></label>';
+    '"><span class="st-entry-field-hint">Internal grouping id for this sale group (not the Member ID)</span></label>';
   html +=
     '<label>Date sold<input id="st-entry-date" type="date" value="' +
     _stEscape(soldIso) +
@@ -5939,11 +5954,12 @@ function _stCreateSaleGroupFromModal(payload) {
   var sales = _stLoadSales();
   var dealId =
     'st_' + payload.ts + '_manual_0_' + Math.random().toString(36).slice(2, 6);
+  var mid = String(payload.memberId || '').trim();
   sales.push({
     id: dealId,
     ts: payload.ts,
     customer: payload.customer,
-    memberId: '',
+    memberId: mid,
     plan: payload.plan || 'Unknown Plan',
     amount: payload.premium,
     type: 'deal',
@@ -5968,7 +5984,7 @@ function _stCreateSaleGroupFromModal(payload) {
         Math.random().toString(36).slice(2, 6),
       ts: payload.ts + i + 1,
       customer: payload.customer,
-      memberId: '',
+      memberId: mid,
       plan: ad.name,
       amount: ad.amount,
       type: 'addon',
@@ -6007,6 +6023,7 @@ function _stCreateAddonOnlyFromModal(payload) {
   }
   var sales = _stLoadSales();
   var rates = _stLoadCommissionRates();
+  var midAo = String(payload.memberId || '').trim();
   for (var i = 0; i < payload.addons.length; i++) {
     var ad = payload.addons[i];
     sales.push({
@@ -6019,7 +6036,7 @@ function _stCreateAddonOnlyFromModal(payload) {
         Math.random().toString(36).slice(2, 6),
       ts: payload.ts + i,
       customer: payload.customer,
-      memberId: '',
+      memberId: midAo,
       plan: ad.name,
       amount: ad.amount,
       type: 'addon',
@@ -6059,6 +6076,7 @@ function _stUpdateAddonOnlyGroupFromModal(payload, state) {
   }
 
   var keep = {};
+  var midEditAo = String(payload.memberId || '').trim();
   for (var r = 0; r < payload.addons.length; r++) {
     var ad = payload.addons[r];
     var adId = ad.id && existingAddons[ad.id] ? ad.id : '';
@@ -6074,7 +6092,7 @@ function _stUpdateAddonOnlyGroupFromModal(payload, state) {
           Math.random().toString(36).slice(2, 6),
         ts: payload.ts + r,
         customer: payload.customer,
-        memberId: '',
+        memberId: midEditAo,
         plan: ad.name,
         amount: ad.amount,
         type: 'addon',
@@ -6088,6 +6106,7 @@ function _stUpdateAddonOnlyGroupFromModal(payload, state) {
       sales.push(rowSale);
     }
     rowSale.customer = payload.customer;
+    if (midEditAo) rowSale.memberId = midEditAo;
     rowSale.plan = ad.name;
     rowSale.amount = ad.amount;
     rowSale.ts = payload.ts + r;
@@ -6140,7 +6159,9 @@ function _stUpdateSaleGroupFromModal(payload, state) {
   var oldReceipt = deal.receiptId || state.receiptIdForEdit || '';
   var receiptId =
     payload.receiptId || oldReceipt || _stBuildUniqueReceiptId('rcpt_manual_');
+  var midDeal = String(payload.memberId || '').trim();
   deal.customer = payload.customer;
+  if (midDeal) deal.memberId = midDeal;
   deal.plan = payload.plan || 'Unknown Plan';
   deal.amount = payload.premium;
   deal.enrollmentFee = payload.enrollmentFee;
@@ -6157,6 +6178,7 @@ function _stUpdateSaleGroupFromModal(payload, state) {
   }
 
   var keep = {};
+  var groupMemberId = String(deal.memberId || '').trim();
   for (var r = 0; r < payload.addons.length; r++) {
     var ad = payload.addons[r];
     var adId = ad.id && existingAddons[ad.id] ? ad.id : '';
@@ -6172,7 +6194,7 @@ function _stUpdateSaleGroupFromModal(payload, state) {
           Math.random().toString(36).slice(2, 6),
         ts: payload.ts + r + 1,
         customer: payload.customer,
-        memberId: deal.memberId || '',
+        memberId: groupMemberId,
         plan: ad.name,
         amount: ad.amount,
         type: 'addon',
@@ -6186,6 +6208,7 @@ function _stUpdateSaleGroupFromModal(payload, state) {
       sales.push(rowSale);
     }
     rowSale.customer = payload.customer;
+    if (groupMemberId) rowSale.memberId = groupMemberId;
     rowSale.plan = ad.name;
     rowSale.amount = ad.amount;
     rowSale.ts = payload.ts + r + 1;
@@ -6227,6 +6250,14 @@ function _stSaveEntryModal() {
   var receiptId = (
     (document.getElementById('st-entry-receiptid') || {}).value || ''
   ).trim();
+  var memberId = (
+    (document.getElementById('st-entry-memberid') || {}).value || ''
+  ).trim();
+  // On edit, blank Member ID must not wipe a value the parser
+  // (or a prior save) already captured correctly.
+  if (!memberId && state.mode === 'edit') {
+    memberId = String(state.existingMemberId || '').trim();
+  }
   var soldIso = (
     (document.getElementById('st-entry-date') || {}).value || ''
   ).trim();
@@ -6289,6 +6320,7 @@ function _stSaveEntryModal() {
     }
     var payloadAo = {
       customer: customer,
+      memberId: memberId,
       receiptId: receiptId,
       ts: ts,
       addons: addons,
@@ -6319,6 +6351,7 @@ function _stSaveEntryModal() {
 
   var payload = {
     customer: customer,
+    memberId: memberId,
     receiptId: receiptId,
     ts: ts,
     plan: plan,
@@ -6418,6 +6451,7 @@ function _stOpenCommissionEditor(saleId) {
       initial: {
         dealId: '',
         customer: seed.customer || '',
+        memberId: seed.memberId || '',
         receiptId: seed.receiptId || '',
         dateSold: yAo + '-' + mAo + '-' + ddAo,
         plan: '',
@@ -6472,6 +6506,7 @@ function _stOpenCommissionEditor(saleId) {
     initial: {
       dealId: deal.id,
       customer: deal.customer || '',
+      memberId: deal.memberId || '',
       receiptId: deal.receiptId || '',
       dateSold: y + '-' + m + '-' + dd,
       plan: deal.plan || '',
