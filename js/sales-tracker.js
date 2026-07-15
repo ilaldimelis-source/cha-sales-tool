@@ -6784,33 +6784,80 @@ function _stParsePaySheet(text) {
           typeIdx = pi;
         }
       }
-      var afterType = [];
-      for (pi = 0; pi < parts.length; pi++) {
-        if (pi === midIdx || pi === typeIdx) continue;
-        var cell = String(parts[pi] || '').trim();
-        if (!cell) continue;
-        if (/^\$?\s*[0-9]+(\.[0-9]{1,2})?$/.test(cell.replace(/,/g, ''))) {
-          continue;
+      // Real Central Health pay sheet column order:
+      // Date | Customer | Member ID | Type | Product Name | Commission
+      // Prefer cells by position relative to Type, not left-to-right order.
+      if (typeIdx >= 0) {
+        var beforeType = [];
+        var afterType = [];
+        for (pi = 0; pi < parts.length; pi++) {
+          if (pi === midIdx || pi === typeIdx) continue;
+          var cellRel = String(parts[pi] || '').trim();
+          if (!cellRel) continue;
+          if (/^\$?\s*[0-9]+(\.[0-9]{1,2})?$/.test(cellRel.replace(/,/g, ''))) {
+            continue;
+          }
+          if (_stReconParseSheetDateFromLine(cellRel)) continue;
+          if (pi < typeIdx) beforeType.push(cellRel);
+          else if (pi > typeIdx) afterType.push(cellRel);
         }
-        if (_stReconParseSheetDateFromLine(cell)) continue;
-        afterType.push(cell);
-      }
-      if (afterType.length) {
-        productName = afterType[0];
-        if (afterType.length > 1) customer = afterType[1];
+        if (afterType.length) productName = afterType[0];
+        if (beforeType.length) customer = beforeType[0];
+      } else {
+        // Fallback when Type column index was not found: prior left-to-right
+        // assignment (product then customer) for already-working formats.
+        var leftover = [];
+        for (pi = 0; pi < parts.length; pi++) {
+          if (pi === midIdx) continue;
+          var cellFb = String(parts[pi] || '').trim();
+          if (!cellFb) continue;
+          if (/^\$?\s*[0-9]+(\.[0-9]{1,2})?$/.test(cellFb.replace(/,/g, ''))) {
+            continue;
+          }
+          if (_stReconParseSheetDateFromLine(cellFb)) continue;
+          leftover.push(cellFb);
+        }
+        if (leftover.length) {
+          productName = leftover[0];
+          if (leftover.length > 1) customer = leftover[1];
+        }
       }
     }
 
     if (!productName) {
-      var cleaned = line
-        .replace(midMatch[0], ' ')
-        .replace(typeMatch[0], ' ')
-        .replace(/\$\s*[0-9]+(?:\.[0-9]{1,2})?/g, ' ')
-        .replace(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g, ' ')
-        .replace(/[|,;]+/g, ' ')
-        .replace(/\s+/g, ' ')
-        .trim();
-      productName = cleaned;
+      // Untabulated single-line paste: customer usually sits before Type,
+      // product name after it. Split on the Type match position.
+      var typeAt = typeof typeMatch.index === 'number' ? typeMatch.index : -1;
+      if (typeAt >= 0) {
+        var beforeClean = String(line.substring(0, typeAt) || '')
+          .replace(midMatch[0], ' ')
+          .replace(/\$\s*[0-9]+(?:\.[0-9]{1,2})?/g, ' ')
+          .replace(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g, ' ')
+          .replace(/[|,;]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+        var afterClean = String(
+          line.substring(typeAt + typeMatch[0].length) || ''
+        )
+          .replace(midMatch[0], ' ')
+          .replace(/\$\s*[0-9]+(?:\.[0-9]{1,2})?/g, ' ')
+          .replace(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g, ' ')
+          .replace(/[|,;]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+        if (afterClean) productName = afterClean;
+        if (beforeClean && !customer) customer = beforeClean;
+      } else {
+        var cleaned = line
+          .replace(midMatch[0], ' ')
+          .replace(typeMatch[0], ' ')
+          .replace(/\$\s*[0-9]+(?:\.[0-9]{1,2})?/g, ' ')
+          .replace(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g, ' ')
+          .replace(/[|,;]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+        productName = cleaned;
+      }
     }
 
     // Drop header-ish false positives (e.g. "Member ID" lines)
