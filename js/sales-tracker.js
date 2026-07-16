@@ -6942,11 +6942,23 @@ function _stReconSaleAmount(sale) {
   return Math.abs(n);
 }
 
+function _stReconSaleHasMemberId(sale) {
+  return !!_stReconNormMemberId(sale && sale.memberId);
+}
+
+function _stReconSameCalendarDay(tsA, tsB) {
+  var a = Number(tsA) || 0;
+  var b = Number(tsB) || 0;
+  if (!a || !b) return false;
+  return _stDayAnchorMs(a) === _stDayAnchorMs(b);
+}
+
 function _stMatchPaySheetRows(payRows, weekSales) {
   var matched = 0;
   var missing = [];
   var mislabeled = [];
   var notOnSheet = [];
+  var attach = [];
   var usedLocal = {};
   var payMids = {};
   var i;
@@ -7020,6 +7032,37 @@ function _stMatchPaySheetRows(payRows, weekSales) {
       continue;
     }
 
+    // Fallback: name + date match against a local sale that is missing
+    // a real Member ID. Only when exactly one candidate qualifies.
+    var attachHits = [];
+    if (rowMid) {
+      for (j = 0; j < weekSales.length; j++) {
+        var blankSale = weekSales[j];
+        if (!blankSale || usedLocal[blankSale.id]) continue;
+        if (_stReconSaleHasMemberId(blankSale)) continue;
+        if (!_stReconNamesAlign(blankSale.customer, row.customer)) continue;
+        if (!_stReconSameCalendarDay(blankSale.ts, row.dateTs)) continue;
+        attachHits.push(blankSale);
+      }
+    }
+
+    if (attachHits.length === 1) {
+      var attachSale = attachHits[0];
+      usedLocal[attachSale.id] = true;
+      attach.push({
+        kind: 'attach',
+        pay: row,
+        sale: attachSale,
+        customer: attachSale.customer || row.customer || '',
+        productName: attachSale.plan || row.productName || '',
+        dateTs: Number(attachSale.ts) || Number(row.dateTs) || 0,
+        amount: _stReconSaleAmount(attachSale),
+        attachSaleId: String(attachSale.id || ''),
+        attachMemberId: rowMid
+      });
+      continue;
+    }
+
     missing.push({
       kind: 'missing',
       pay: row,
@@ -7053,14 +7096,16 @@ function _stMatchPaySheetRows(payRows, weekSales) {
   for (i = 0; i < mislabeled.length; i++) {
     gap += Number(mislabeled[i].amount) || 0;
   }
+  for (i = 0; i < attach.length; i++) gap += Number(attach[i].amount) || 0;
 
   return {
     matched: matched,
     missing: missing,
     mislabeled: mislabeled,
     notOnSheet: notOnSheet,
+    attach: attach,
     gap: gap,
-    problems: missing.concat(mislabeled, notOnSheet)
+    problems: missing.concat(attach, mislabeled, notOnSheet)
   };
 }
 
@@ -7105,6 +7150,20 @@ function _stPaySheetModalIsOpen() {
   return !!document.getElementById('st-paysheet-modal');
 }
 
+function _stRerunPaySheetMatch(opts) {
+  opts = opts || {};
+  if (!_stPaySheetRows || !_stPaySheetRows.length) return false;
+  var sales = _stLoadSales();
+  var view = _stReconcileMatchView || _stRangeInfo();
+  var weekSales = _stReconWeekSales(sales, view);
+  _stReconcileResult = _stMatchPaySheetRows(_stPaySheetRows, weekSales);
+  _stRender();
+  if (opts.flashMsg) {
+    _stFlash(opts.flashMsg, opts.flashKind || 'ok');
+  }
+  return true;
+}
+
 function _stSubmitPaySheetMatch() {
   var ta = document.getElementById('st-paysheet-textarea');
   var text = ta ? String(ta.value || '') : '';
@@ -7143,6 +7202,7 @@ function _stReconKindLabel(kind) {
   if (kind === 'missing') return 'Missing';
   if (kind === 'mislabeled') return 'Mislabeled';
   if (kind === 'not_on_sheet') return 'Not on pay sheet';
+  if (kind === 'attach') return 'Attach ID';
   return kind || '';
 }
 
@@ -7152,6 +7212,7 @@ function _stReconKindPillClass(kind) {
   if (kind === 'not_on_sheet') {
     return 'st-recon-status-pill st-recon-pill-notonsheet';
   }
+  if (kind === 'attach') return 'st-recon-status-pill st-recon-pill-attach';
   return 'st-recon-status-pill';
 }
 
@@ -7181,6 +7242,20 @@ function _stBuildReconcileProblemsHtml(result) {
   var i;
   for (i = 0; i < result.problems.length; i++) {
     var p = result.problems[i];
+    var actionHtml = '';
+    if (p.kind === 'attach' && p.attachSaleId && p.attachMemberId) {
+      actionHtml =
+        '<button type="button" class="st-recon-attach-btn" onclick="_stOpenAttachMemberIdConfirm(\'' +
+        _stEscape(String(p.attachSaleId)).replace(/'/g, '') +
+        '\')">Attach ID</button>';
+    } else {
+      actionHtml =
+        '<span class="' +
+        _stReconKindPillClass(p.kind) +
+        '">' +
+        _stEscape(_stReconKindLabel(p.kind)) +
+        '</span>';
+    }
     html +=
       '<div class="st-recon-problem-row">' +
       '<div class="st-recon-problem-main">' +
@@ -7192,14 +7267,125 @@ function _stBuildReconcileProblemsHtml(result) {
       ' · ' +
       _stEscape(_stReconFormatDate(p.dateTs)) +
       '</div></div>' +
-      '<span class="' +
-      _stReconKindPillClass(p.kind) +
-      '">' +
-      _stEscape(_stReconKindLabel(p.kind)) +
-      '</span></div>';
+      actionHtml +
+      '</div>';
   }
   html += '</div>';
   return html;
+}
+
+function _stFindAttachProblemBySaleId(saleId) {
+  var sid = String(saleId || '');
+  var problems =
+    _stReconcileResult && _stReconcileResult.problems
+      ? _stReconcileResult.problems
+      : [];
+  var i;
+  for (i = 0; i < problems.length; i++) {
+    var p = problems[i];
+    if (!p || p.kind !== 'attach') continue;
+    if (String(p.attachSaleId || '') === sid) return p;
+  }
+  return null;
+}
+
+function _stCloseAttachMemberIdConfirm() {
+  var modal = document.getElementById('st-recon-attach-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stAttachMemberIdConfirmIsOpen() {
+  return !!document.getElementById('st-recon-attach-modal');
+}
+
+function _stOpenAttachMemberIdConfirm(saleId) {
+  _stCloseAttachMemberIdConfirm();
+  var problem = _stFindAttachProblemBySaleId(saleId);
+  if (!problem) {
+    _stFlash('Attach candidate not found. Re-run Match and try again.', 'warn');
+    return;
+  }
+  var sid = String(problem.attachSaleId || '');
+  var mid = _stReconNormMemberId(problem.attachMemberId);
+  var name = String(problem.customer || 'Unknown');
+  var dateLabel = _stReconFormatDate(problem.dateTs);
+  if (!sid || !mid) {
+    _stFlash('Cannot attach Member ID - missing sale or ID.', 'warn');
+    return;
+  }
+  var modal = document.createElement('div');
+  modal.id = 'st-recon-attach-modal';
+  modal.className = 'st-entry-modal st-recon-attach-modal';
+  var html = '';
+  html +=
+    '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-attach-title" onclick="event.stopPropagation()">';
+  html +=
+    '<div class="st-entry-title" id="st-recon-attach-title">Attach Member ID</div>';
+  html +=
+    '<p class="st-recon-attach-msg">Attach ' +
+    _stEscape(mid) +
+    ' to ' +
+    _stEscape(name) +
+    ' (' +
+    _stEscape(dateLabel) +
+    ')?</p>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" onclick="_stCloseAttachMemberIdConfirm()">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save" onclick="_stConfirmAttachMemberId(\'' +
+    _stEscape(sid).replace(/'/g, '') +
+    '\')">Confirm</button>';
+  html += '</div></div>';
+  modal.innerHTML = html;
+  modal.addEventListener('click', function (ev) {
+    if (ev.target === modal) _stCloseAttachMemberIdConfirm();
+  });
+  document.body.appendChild(modal);
+}
+
+function _stConfirmAttachMemberId(saleId) {
+  var problem = _stFindAttachProblemBySaleId(saleId);
+  var sid = String(saleId || '');
+  var mid = problem
+    ? _stReconNormMemberId(problem.attachMemberId)
+    : '';
+  if (!sid || !mid) {
+    _stCloseAttachMemberIdConfirm();
+    _stFlash('Cannot attach Member ID - missing sale or ID.', 'warn');
+    return;
+  }
+  var sales = _stLoadSales();
+  var idx = -1;
+  var i;
+  for (i = 0; i < sales.length; i++) {
+    if (sales[i] && String(sales[i].id) === sid) {
+      idx = i;
+      break;
+    }
+  }
+  if (idx < 0) {
+    _stCloseAttachMemberIdConfirm();
+    _stFlash('Sale not found.', 'error');
+    return;
+  }
+  sales[idx].memberId = mid;
+  var rid = sales[idx].receiptId ? String(sales[idx].receiptId) : '';
+  if (rid && sales[idx].type === 'deal') {
+    for (i = 0; i < sales.length; i++) {
+      if (!sales[i] || sales[i].type !== 'addon') continue;
+      if (String(sales[i].receiptId || '') !== rid) continue;
+      if (!_stReconSaleHasMemberId(sales[i])) {
+        sales[i].memberId = mid;
+      }
+    }
+  }
+  _stSaveSales(sales);
+  _stCloseAttachMemberIdConfirm();
+  _stRerunPaySheetMatch({
+    flashMsg: 'Attached Member ID ' + mid + '.',
+    flashKind: 'ok'
+  });
 }
 
 function _stReconcileChargebackCandidates(query) {
@@ -8162,6 +8348,10 @@ function _stRender() {
     document.body.dataset.stAddSaleEscDoc = '1';
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
+      if (_stAttachMemberIdConfirmIsOpen()) {
+        _stCloseAttachMemberIdConfirm();
+        return;
+      }
       if (_stPaySheetModalIsOpen()) {
         _stClosePaySheetModal();
         return;
