@@ -4791,3 +4791,47 @@ body.st-pb-modal-open {
     flex-direction: column;
   }
 }
+
+/* Reconcile: Attach Member ID from pay sheet */
+.st-recon-attach-btn {
+  flex-shrink: 0;
+  border: 1px solid #c6e6d3;
+  border-radius: 999px;
+  background: #eafaf0;
+  color: #1a7a4c;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+.st-recon-attach-btn:hover {
+  background: #d8f5e5;
+}
+
+.st-recon-pill-attach {
+  background: #eafaf0;
+  color: #1a7a4c;
+  border: 1px solid #c6e6d3;
+}
+
+.st-recon-attach-msg {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--cha-text-primary);
+}
+
+.st-recon-attach-modal .st-recon-attach-card {
+  width: min(420px, 96vw);
+}
+
+.st-recon-attach-btn,
+.st-recon-attach-modal {
+  visibility: visible !important;
+}
+
+.st-recon-attach-modal {
+  display: flex !important;
+}
