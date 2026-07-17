@@ -6796,8 +6796,11 @@ function _stParsePaySheet(text) {
     var customer = '';
     var amount = 0;
     var rowDateTs = lineDateTs || lastSeenDateTs || 0;
-    var amtMatch = line.match(/\$\s*([0-9]+(?:\.[0-9]{1,2})?)/);
-    if (amtMatch) amount = parseFloat(amtMatch[1]) || 0;
+    var amtMatch = line.match(/(-\s*)?\$\s*([0-9]+(?:\.[0-9]{1,2})?)/);
+    if (amtMatch) {
+      amount = parseFloat(amtMatch[2]) || 0;
+      if (amtMatch[1]) amount = -Math.abs(amount);
+    }
 
     var parts;
     if (line.indexOf('\t') !== -1) {
@@ -6829,7 +6832,9 @@ function _stParsePaySheet(text) {
           if (pi === midIdx || pi === typeIdx) continue;
           var cellRel = String(parts[pi] || '').trim();
           if (!cellRel) continue;
-          if (/^\$?\s*[0-9]+(\.[0-9]{1,2})?$/.test(cellRel.replace(/,/g, ''))) {
+          if (
+            /^-?\$?\s*[0-9]+(\.[0-9]{1,2})?$/.test(cellRel.replace(/,/g, ''))
+          ) {
             continue;
           }
           if (_stReconParseSheetDateFromLine(cellRel)) continue;
@@ -6846,7 +6851,9 @@ function _stParsePaySheet(text) {
           if (pi === midIdx) continue;
           var cellFb = String(parts[pi] || '').trim();
           if (!cellFb) continue;
-          if (/^\$?\s*[0-9]+(\.[0-9]{1,2})?$/.test(cellFb.replace(/,/g, ''))) {
+          if (
+            /^-?\$?\s*[0-9]+(\.[0-9]{1,2})?$/.test(cellFb.replace(/,/g, ''))
+          ) {
             continue;
           }
           if (_stReconParseSheetDateFromLine(cellFb)) continue;
@@ -6959,14 +6966,43 @@ function _stMatchPaySheetRows(payRows, weekSales) {
   var mislabeled = [];
   var notOnSheet = [];
   var attach = [];
+  var chargebackCandidates = [];
   var usedLocal = {};
   var payMids = {};
+  var allSales = null;
   var i;
   var j;
 
   for (i = 0; i < payRows.length; i++) {
     var mid = _stReconNormMemberId(payRows[i].memberId);
     if (mid) payMids[mid] = true;
+  }
+
+  function _stReconLoadAllSalesOnce() {
+    if (!allSales) allSales = _stLoadSales() || [];
+    return allSales;
+  }
+
+  function _stReconFindHistoryByMemberId(memberId, typeLocal) {
+    var hits = [];
+    var typed = [];
+    var hist = _stReconLoadAllSalesOnce();
+    var hi;
+    for (hi = 0; hi < hist.length; hi++) {
+      var hs = hist[hi];
+      if (!hs) continue;
+      if (_stIsReversalStatus(hs)) continue;
+      if (_stReconNormMemberId(hs.memberId) !== memberId) continue;
+      hits.push(hs);
+      var ht = hs.type === 'addon' ? 'addon' : 'deal';
+      if (typeLocal && ht === typeLocal) typed.push(hs);
+    }
+    var pool = typed.length ? typed : hits;
+    if (!pool.length) return null;
+    pool.sort(function (a, b) {
+      return (Number(b.ts) || 0) - (Number(a.ts) || 0);
+    });
+    return pool[0];
   }
 
   for (i = 0; i < payRows.length; i++) {
@@ -7065,6 +7101,26 @@ function _stMatchPaySheetRows(payRows, weekSales) {
       continue;
     }
 
+    // Negative pay-sheet amount = chargeback deduction. Look up the
+    // original sale across all history by Member ID (not week-scoped).
+    if (rowMid && Number(row.amount) < 0) {
+      var cbSale = _stReconFindHistoryByMemberId(rowMid, row.typeLocal);
+      if (cbSale) {
+        chargebackCandidates.push({
+          kind: 'chargeback_candidate',
+          pay: row,
+          sale: cbSale,
+          customer: cbSale.customer || row.customer || '',
+          productName: cbSale.plan || row.productName || '',
+          dateTs: Number(cbSale.ts) || 0,
+          amount: Number(row.amount) || 0,
+          chargebackSaleId: String(cbSale.id || ''),
+          attachMemberId: rowMid
+        });
+        continue;
+      }
+    }
+
     missing.push({
       kind: 'missing',
       pay: row,
@@ -7106,8 +7162,14 @@ function _stMatchPaySheetRows(payRows, weekSales) {
     mislabeled: mislabeled,
     notOnSheet: notOnSheet,
     attach: attach,
+    chargebackCandidates: chargebackCandidates,
     gap: gap,
-    problems: missing.concat(attach, mislabeled, notOnSheet)
+    problems: missing.concat(
+      attach,
+      chargebackCandidates,
+      mislabeled,
+      notOnSheet
+    )
   };
 }
 
@@ -7205,6 +7267,7 @@ function _stReconKindLabel(kind) {
   if (kind === 'mislabeled') return 'Mislabeled';
   if (kind === 'not_on_sheet') return 'Not on pay sheet';
   if (kind === 'attach') return 'Attach ID';
+  if (kind === 'chargeback_candidate') return 'Mark Chargeback';
   return kind || '';
 }
 
@@ -7215,6 +7278,9 @@ function _stReconKindPillClass(kind) {
     return 'st-recon-status-pill st-recon-pill-notonsheet';
   }
   if (kind === 'attach') return 'st-recon-status-pill st-recon-pill-attach';
+  if (kind === 'chargeback_candidate') {
+    return 'st-recon-status-pill st-recon-pill-chargeback';
+  }
   return 'st-recon-status-pill';
 }
 
@@ -7250,6 +7316,11 @@ function _stBuildReconcileProblemsHtml(result) {
         '<button type="button" class="st-recon-attach-btn" onclick="_stOpenAttachMemberIdConfirm(\'' +
         _stEscape(String(p.attachSaleId)).replace(/'/g, '') +
         '\')">Attach ID</button>';
+    } else if (p.kind === 'chargeback_candidate' && p.chargebackSaleId) {
+      actionHtml =
+        '<button type="button" class="st-recon-chargeback-btn" onclick="_stOpenReconcileChargebackConfirm(\'' +
+        _stEscape(String(p.chargebackSaleId)).replace(/'/g, '') +
+        '\')">Mark Chargeback</button>';
     } else {
       actionHtml =
         '<span class="' +
@@ -7291,6 +7362,21 @@ function _stFindAttachProblemBySaleId(saleId) {
   return null;
 }
 
+function _stFindChargebackProblemBySaleId(saleId) {
+  var sid = String(saleId || '');
+  var problems =
+    _stReconcileResult && _stReconcileResult.problems
+      ? _stReconcileResult.problems
+      : [];
+  var i;
+  for (i = 0; i < problems.length; i++) {
+    var p = problems[i];
+    if (!p || p.kind !== 'chargeback_candidate') continue;
+    if (String(p.chargebackSaleId || '') === sid) return p;
+  }
+  return null;
+}
+
 function _stCloseAttachMemberIdConfirm() {
   var modal = document.getElementById('st-recon-attach-modal');
   if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
@@ -7298,6 +7384,15 @@ function _stCloseAttachMemberIdConfirm() {
 
 function _stAttachMemberIdConfirmIsOpen() {
   return !!document.getElementById('st-recon-attach-modal');
+}
+
+function _stCloseReconcileChargebackConfirm() {
+  var modal = document.getElementById('st-recon-chargeback-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stReconcileChargebackConfirmIsOpen() {
+  return !!document.getElementById('st-recon-chargeback-modal');
 }
 
 function _stOpenAttachMemberIdConfirm(saleId) {
@@ -7344,6 +7439,67 @@ function _stOpenAttachMemberIdConfirm(saleId) {
     if (ev.target === modal) _stCloseAttachMemberIdConfirm();
   });
   document.body.appendChild(modal);
+}
+
+function _stOpenReconcileChargebackConfirm(saleId) {
+  _stCloseReconcileChargebackConfirm();
+  var problem = _stFindChargebackProblemBySaleId(saleId);
+  if (!problem) {
+    _stFlash(
+      'Chargeback candidate not found. Re-run Match and try again.',
+      'warn'
+    );
+    return;
+  }
+  var sid = String(problem.chargebackSaleId || '');
+  var name = String(problem.customer || 'Unknown');
+  var dateLabel = _stReconFormatDate(problem.dateTs);
+  if (!sid) {
+    _stFlash('Cannot mark chargeback - missing sale.', 'warn');
+    return;
+  }
+  var modal = document.createElement('div');
+  modal.id = 'st-recon-chargeback-modal';
+  modal.className = 'st-entry-modal st-recon-attach-modal';
+  var html = '';
+  html +=
+    '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-cb-title" onclick="event.stopPropagation()">';
+  html +=
+    '<div class="st-entry-title" id="st-recon-cb-title">Mark Chargeback</div>';
+  html +=
+    '<p class="st-recon-attach-msg">Mark ' +
+    _stEscape(name) +
+    ' (' +
+    _stEscape(dateLabel) +
+    ') as chargeback?</p>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" onclick="_stCloseReconcileChargebackConfirm()">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save st-recon-cb-confirm" onclick="_stConfirmReconcileChargeback(\'' +
+    _stEscape(sid).replace(/'/g, '') +
+    '\')">Confirm</button>';
+  html += '</div></div>';
+  modal.innerHTML = html;
+  modal.addEventListener('click', function (ev) {
+    if (ev.target === modal) _stCloseReconcileChargebackConfirm();
+  });
+  document.body.appendChild(modal);
+}
+
+function _stConfirmReconcileChargeback(saleId) {
+  var sid = String(saleId || '');
+  var problem = _stFindChargebackProblemBySaleId(sid);
+  _stCloseReconcileChargebackConfirm();
+  if (!sid || !problem) {
+    _stFlash('Cannot mark chargeback - missing sale.', 'warn');
+    return;
+  }
+  _stUpdateSaleStatus(sid, 'chargeback');
+  _stRerunPaySheetMatch({
+    flashMsg: 'Marked ' + (problem.customer || 'sale') + ' as chargeback.',
+    flashKind: 'ok'
+  });
 }
 
 function _stConfirmAttachMemberId(saleId) {
@@ -8350,6 +8506,10 @@ function _stRender() {
     document.body.dataset.stAddSaleEscDoc = '1';
     document.addEventListener('keydown', function (e) {
       if (e.key !== 'Escape') return;
+      if (_stReconcileChargebackConfirmIsOpen()) {
+        _stCloseReconcileChargebackConfirm();
+        return;
+      }
       if (_stAttachMemberIdConfirmIsOpen()) {
         _stCloseAttachMemberIdConfirm();
         return;
