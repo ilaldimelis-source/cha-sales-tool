@@ -5157,5 +5157,5 @@ body.st-pb-modal-open {
   text-align: center;
   box-shadow: 0 8px 24px rgb(15, 23, 42, 0.12);
   pointer-events: none;
-  visibility: visible !important;
+  visibility: visible;
 }
