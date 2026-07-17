@@ -5134,21 +5134,15 @@ body.st-pb-modal-open {
   color: #c4622a;
 }
 
-.st-recon-quicklog-btn,
-.st-recon-quicklog-modal,
-.st-recon-ql-status-btn {
-  visibility: visible !important;
-}
-
 .st-recon-quicklog-modal {
-  display: flex !important;
+  display: flex;
 }
 
 /* Reconcile modals must sit above Add Sale FAB (z-index 9999) */
 .st-recon-attach-modal,
 .st-recon-chargeback-modal,
 .st-recon-quicklog-modal {
-  z-index: 10050 !important;
+  z-index: 10050;
 }
 
 /* Body-level flash when Add Sale panel is closed (Reconcile, etc.) */
