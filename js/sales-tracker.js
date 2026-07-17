@@ -7487,6 +7487,14 @@ function _stBuildReconcileProblemsHtml(result, opts) {
     );
   }
   var html = '<div class="st-recon-problem-list">';
+  var attachN = result.attach ? result.attach.length : 0;
+  if (!readOnly && attachN >= 2) {
+    html +=
+      '<div class="st-recon-attach-all-bar">' +
+      '<button type="button" class="st-recon-attach-all-btn" onclick="_stOpenAttachAllMemberIdConfirm()">Attach All (' +
+      attachN +
+      ')</button></div>';
+  }
   var i;
   for (i = 0; i < result.problems.length; i++) {
     var p = result.problems[i];
@@ -7691,6 +7699,128 @@ function _stConfirmReconcileChargeback(saleId) {
   });
 }
 
+function _stCollectAttachProblems() {
+  var attach =
+    _stReconcileResult && _stReconcileResult.attach
+      ? _stReconcileResult.attach
+      : [];
+  var out = [];
+  var i;
+  for (i = 0; i < attach.length; i++) {
+    var p = attach[i];
+    if (!p || p.kind !== 'attach') continue;
+    if (!p.attachSaleId) continue;
+    if (!_stReconNormMemberId(p.attachMemberId)) continue;
+    out.push(p);
+  }
+  return out;
+}
+
+// Shared per-row attach write used by single Confirm and Attach All.
+// Mutates sales in place. Returns false when the target sale is gone.
+function _stApplyAttachMemberIdToSales(sales, saleId, mid) {
+  var sid = String(saleId || '');
+  var normMid = _stReconNormMemberId(mid);
+  if (!sid || !normMid || !sales || !sales.length) return false;
+  var idx = -1;
+  var i;
+  for (i = 0; i < sales.length; i++) {
+    if (sales[i] && String(sales[i].id) === sid) {
+      idx = i;
+      break;
+    }
+  }
+  if (idx < 0) return false;
+  sales[idx].memberId = normMid;
+  var rid = sales[idx].receiptId ? String(sales[idx].receiptId) : '';
+  if (rid && sales[idx].type === 'deal') {
+    for (i = 0; i < sales.length; i++) {
+      if (!sales[i] || sales[i].type !== 'addon') continue;
+      if (String(sales[i].receiptId || '') !== rid) continue;
+      if (!_stReconSaleHasMemberId(sales[i])) {
+        sales[i].memberId = normMid;
+      }
+    }
+  }
+  return true;
+}
+
+function _stOpenAttachAllMemberIdConfirm() {
+  _stCloseAttachMemberIdConfirm();
+  var items = _stCollectAttachProblems();
+  if (items.length < 2) {
+    _stFlash('Need at least 2 Attach ID rows for Attach All.', 'warn');
+    return;
+  }
+  var modal = document.createElement('div');
+  modal.id = 'st-recon-attach-modal';
+  modal.className = 'st-entry-modal st-recon-attach-modal';
+  var html = '';
+  html +=
+    '<div class="st-entry-card st-recon-attach-card st-recon-attach-all-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-attach-all-title" onclick="event.stopPropagation()">';
+  html +=
+    '<div class="st-entry-title" id="st-recon-attach-all-title">Attach All Member IDs</div>';
+  html +=
+    '<p class="st-recon-attach-msg">Attach Member IDs to ' +
+    items.length +
+    ' sales?</p>';
+  html += '<div class="st-recon-attach-all-list">';
+  var i;
+  for (i = 0; i < items.length; i++) {
+    var p = items[i];
+    html +=
+      '<div class="st-recon-attach-all-item">' +
+      '<div class="st-recon-attach-all-name">' +
+      _stEscape(p.customer || 'Unknown') +
+      '</div>' +
+      '<div class="st-recon-attach-all-meta">' +
+      _stEscape(_stReconNormMemberId(p.attachMemberId)) +
+      ' · ' +
+      _stEscape(_stReconFormatDate(p.dateTs)) +
+      '</div></div>';
+  }
+  html += '</div>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" onclick="_stCloseAttachMemberIdConfirm()">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save" onclick="_stConfirmAttachAllMemberIds()">Confirm</button>';
+  html += '</div></div>';
+  modal.innerHTML = html;
+  modal.addEventListener('click', function (ev) {
+    if (ev.target === modal) _stCloseAttachMemberIdConfirm();
+  });
+  document.body.appendChild(modal);
+}
+
+function _stConfirmAttachAllMemberIds() {
+  var items = _stCollectAttachProblems();
+  _stCloseAttachMemberIdConfirm();
+  if (!items.length) {
+    _stFlash('No Attach ID rows remaining.', 'warn');
+    return;
+  }
+  var sales = _stLoadSales();
+  var attached = 0;
+  var i;
+  for (i = 0; i < items.length; i++) {
+    var p = items[i];
+    var sid = String(p.attachSaleId || '');
+    var mid = _stReconNormMemberId(p.attachMemberId);
+    if (_stApplyAttachMemberIdToSales(sales, sid, mid)) attached++;
+  }
+  if (attached > 0) _stSaveSales(sales);
+  _stRerunPaySheetMatch({
+    flashMsg:
+      'Attached ' +
+      attached +
+      ' Member ID' +
+      (attached === 1 ? '' : 's') +
+      '.',
+    flashKind: 'ok'
+  });
+}
+
 function _stConfirmAttachMemberId(saleId) {
   var problem = _stFindAttachProblemBySaleId(saleId);
   var sid = String(saleId || '');
@@ -7703,29 +7833,10 @@ function _stConfirmAttachMemberId(saleId) {
     return;
   }
   var sales = _stLoadSales();
-  var idx = -1;
-  var i;
-  for (i = 0; i < sales.length; i++) {
-    if (sales[i] && String(sales[i].id) === sid) {
-      idx = i;
-      break;
-    }
-  }
-  if (idx < 0) {
+  if (!_stApplyAttachMemberIdToSales(sales, sid, mid)) {
     _stCloseAttachMemberIdConfirm();
     _stFlash('Sale not found.', 'error');
     return;
-  }
-  sales[idx].memberId = mid;
-  var rid = sales[idx].receiptId ? String(sales[idx].receiptId) : '';
-  if (rid && sales[idx].type === 'deal') {
-    for (i = 0; i < sales.length; i++) {
-      if (!sales[i] || sales[i].type !== 'addon') continue;
-      if (String(sales[i].receiptId || '') !== rid) continue;
-      if (!_stReconSaleHasMemberId(sales[i])) {
-        sales[i].memberId = mid;
-      }
-    }
   }
   _stSaveSales(sales);
   _stCloseAttachMemberIdConfirm();

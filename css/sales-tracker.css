@@ -4981,3 +4981,72 @@ body.st-pb-modal-open {
 .st-date-chip.st-history-chip {
   display: inline-flex !important;
 }
+
+/* Reconcile: Attach All batch confirm */
+.st-recon-attach-all-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 4px;
+}
+
+.st-recon-attach-all-btn {
+  flex-shrink: 0;
+  border: 1px solid #9fd4b5;
+  border-radius: 999px;
+  background: #d8f5e5;
+  color: #146b42;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 12px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+.st-recon-attach-all-btn:hover {
+  background: #c5eed9;
+}
+
+.st-recon-attach-modal .st-recon-attach-all-card {
+  width: min(480px, 96vw);
+}
+
+.st-recon-attach-all-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: min(42vh, 280px);
+  overflow-y: auto;
+  margin: 0 0 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 10px;
+  background: var(--cha-bg-muted);
+}
+
+.st-recon-attach-all-item {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--cha-border-subtle);
+}
+
+.st-recon-attach-all-item:last-child {
+  border-bottom: none;
+}
+
+.st-recon-attach-all-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cha-text-primary);
+}
+
+.st-recon-attach-all-meta {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.35;
+}
+
+.st-recon-attach-all-bar,
+.st-recon-attach-all-btn,
+.st-recon-attach-all-list {
+  visibility: visible !important;
+}
