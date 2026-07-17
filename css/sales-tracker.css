@@ -4861,3 +4861,41 @@ body.st-pb-modal-open {
 .st-recon-attach-modal {
   display: flex !important;
 }
+
+/* Reconcile: Mark Chargeback from negative pay-sheet rows */
+.st-recon-chargeback-btn {
+  flex-shrink: 0;
+  border: 1px solid #f0c1c1;
+  border-radius: 999px;
+  background: #fdeaea;
+  color: #a32d2d;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+.st-recon-chargeback-btn:hover {
+  background: #fbdada;
+}
+
+.st-recon-pill-chargeback {
+  background: #fdeaea;
+  color: #a32d2d;
+  border: 1px solid #f0c1c1;
+}
+
+.st-recon-cb-confirm {
+  background: #a32d2d !important;
+  border-color: #a32d2d !important;
+}
+
+.st-recon-chargeback-btn,
+.st-recon-chargeback-modal {
+  visibility: visible !important;
+}
+
+.st-recon-chargeback-modal {
+  display: flex !important;
+}
