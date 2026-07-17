@@ -5963,6 +5963,10 @@ function _stCreateSaleGroupFromModal(payload) {
   var dealId =
     'st_' + payload.ts + '_manual_0_' + Math.random().toString(36).slice(2, 6);
   var mid = String(payload.memberId || '').trim();
+  var rowStatus = 'pending';
+  if (payload.status === 'chargeback' || payload.status === 'samecancel') {
+    rowStatus = payload.status;
+  }
   sales.push({
     id: dealId,
     ts: payload.ts,
@@ -5971,7 +5975,7 @@ function _stCreateSaleGroupFromModal(payload) {
     plan: payload.plan || 'Unknown Plan',
     amount: payload.premium,
     type: 'deal',
-    status: 'pending',
+    status: rowStatus,
     raw: payload.rawText || '',
     notes: receiptId ? 'Policy: ' + receiptId : '',
     receiptId: receiptId,
@@ -6013,9 +6017,11 @@ function _stCreateSaleGroupFromModal(payload) {
     }
   }
   _stSaveSales(sales);
-  _stRender();
-  var addedFlash = _stBuildAddedFlash(payload.customer, payload.ts);
-  _stFlash(addedFlash.msg, addedFlash.kind);
+  if (!payload.skipFlash) {
+    _stRender();
+    var addedFlash = _stBuildAddedFlash(payload.customer, payload.ts);
+    _stFlash(addedFlash.msg, addedFlash.kind);
+  }
   return true;
 }
 
@@ -7143,7 +7149,7 @@ function _stMatchPaySheetRows(payRows, weekSales) {
     return allSales;
   }
 
-  function _stReconFindHistoryByMemberId(memberId, typeLocal) {
+  function _stReconFindHistoryByMemberId(memberId, typeLocal, includeReversals) {
     var hits = [];
     var typed = [];
     var hist = _stReconLoadAllSalesOnce();
@@ -7151,7 +7157,7 @@ function _stMatchPaySheetRows(payRows, weekSales) {
     for (hi = 0; hi < hist.length; hi++) {
       var hs = hist[hi];
       if (!hs) continue;
-      if (_stIsReversalStatus(hs)) continue;
+      if (!includeReversals && _stIsReversalStatus(hs)) continue;
       if (_stReconNormMemberId(hs.memberId) !== memberId) continue;
       hits.push(hs);
       var ht = hs.type === 'addon' ? 'addon' : 'deal';
@@ -7261,10 +7267,12 @@ function _stMatchPaySheetRows(payRows, weekSales) {
       continue;
     }
 
-    // Negative pay-sheet amount = chargeback deduction. Look up the
-    // original sale across all history by Member ID (not week-scoped).
+    // Negative pay-sheet amount = chargeback or same-week cancel
+    // deduction. Look up the original sale across all history by
+    // Member ID (not week-scoped). Already-marked reversals count
+    // as matched so re-run after Mark status / Log this sale clears.
     if (rowMid && Number(row.amount) < 0) {
-      var cbSale = _stReconFindHistoryByMemberId(rowMid, row.typeLocal);
+      var cbSale = _stReconFindHistoryByMemberId(rowMid, row.typeLocal, false);
       if (cbSale) {
         chargebackCandidates.push({
           kind: 'chargeback_candidate',
@@ -7279,6 +7287,16 @@ function _stMatchPaySheetRows(payRows, weekSales) {
         });
         continue;
       }
+      var resolvedSale = _stReconFindHistoryByMemberId(
+        rowMid,
+        row.typeLocal,
+        true
+      );
+      if (resolvedSale && _stIsReversalStatus(resolvedSale)) {
+        matched += 1;
+        usedLocal[resolvedSale.id] = true;
+        continue;
+      }
       // External deduction with nothing local to mark - not a
       // commission gap or Missing tracking error.
       untrackedChargebacks.push({
@@ -7288,7 +7306,8 @@ function _stMatchPaySheetRows(payRows, weekSales) {
         customer: row.customer || '',
         productName: row.productName || '',
         dateTs: Number(row.dateTs) || 0,
-        amount: Number(row.amount) || 0
+        amount: Number(row.amount) || 0,
+        attachMemberId: rowMid
       });
       continue;
     }
@@ -7444,7 +7463,7 @@ function _stReconKindLabel(kind) {
   if (kind === 'mislabeled') return 'Mislabeled';
   if (kind === 'not_on_sheet') return 'Not on pay sheet';
   if (kind === 'attach') return 'Attach ID';
-  if (kind === 'chargeback_candidate') return 'Mark Chargeback';
+  if (kind === 'chargeback_candidate') return 'Mark status';
   if (kind === 'untracked_chargeback') return 'No local record';
   return kind || '';
 }
@@ -7517,7 +7536,18 @@ function _stBuildReconcileProblemsHtml(result, opts) {
       actionHtml =
         '<button type="button" class="st-recon-chargeback-btn" onclick="_stOpenReconcileChargebackConfirm(\'' +
         _stEscape(String(p.chargebackSaleId)).replace(/'/g, '') +
-        '\')">Mark Chargeback</button>';
+        '\')">Mark status</button>';
+    } else if (
+      !readOnly &&
+      p.kind === 'untracked_chargeback' &&
+      _stReconNormMemberId(p.attachMemberId || (p.pay && p.pay.memberId))
+    ) {
+      actionHtml =
+        '<button type="button" class="st-recon-quicklog-btn" onclick="_stOpenReconcileQuickLog(\'' +
+        _stEscape(
+          _stReconNormMemberId(p.attachMemberId || (p.pay && p.pay.memberId))
+        ).replace(/'/g, '') +
+        '\')">Log this sale</button>';
     } else {
       actionHtml =
         '<span class="' +
@@ -7652,7 +7682,7 @@ function _stOpenReconcileChargebackConfirm(saleId) {
   var name = String(problem.customer || 'Unknown');
   var dateLabel = _stReconFormatDate(problem.dateTs);
   if (!sid) {
-    _stFlash('Cannot mark chargeback - missing sale.', 'warn');
+    _stFlash('Cannot mark status - missing sale.', 'warn');
     return;
   }
   var modal = document.createElement('div');
@@ -7662,20 +7692,24 @@ function _stOpenReconcileChargebackConfirm(saleId) {
   html +=
     '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-cb-title" onclick="event.stopPropagation()">';
   html +=
-    '<div class="st-entry-title" id="st-recon-cb-title">Mark Chargeback</div>';
+    '<div class="st-entry-title" id="st-recon-cb-title">Mark status</div>';
   html +=
     '<p class="st-recon-attach-msg">Mark ' +
     _stEscape(name) +
     ' (' +
     _stEscape(dateLabel) +
-    ') as chargeback?</p>';
-  html += '<div class="st-entry-actions">';
+    ') as chargeback or same-week cancel?</p>';
+  html += '<div class="st-entry-actions st-recon-status-choice-actions">';
   html +=
     '<button type="button" class="st-entry-cancel" onclick="_stCloseReconcileChargebackConfirm()">Cancel</button>';
   html +=
     '<button type="button" class="st-entry-save st-recon-cb-confirm" onclick="_stConfirmReconcileChargeback(\'' +
     _stEscape(sid).replace(/'/g, '') +
-    '\')">Confirm</button>';
+    '\',\'chargeback\')">Chargeback</button>';
+  html +=
+    '<button type="button" class="st-entry-save st-recon-swc-confirm" onclick="_stConfirmReconcileChargeback(\'' +
+    _stEscape(sid).replace(/'/g, '') +
+    '\',\'samecancel\')">Same-week cancel</button>';
   html += '</div></div>';
   modal.innerHTML = html;
   modal.addEventListener('click', function (ev) {
@@ -7684,17 +7718,238 @@ function _stOpenReconcileChargebackConfirm(saleId) {
   document.body.appendChild(modal);
 }
 
-function _stConfirmReconcileChargeback(saleId) {
+function _stConfirmReconcileChargeback(saleId, newStatus) {
   var sid = String(saleId || '');
+  var st = String(newStatus || '');
   var problem = _stFindChargebackProblemBySaleId(sid);
   _stCloseReconcileChargebackConfirm();
   if (!sid || !problem) {
-    _stFlash('Cannot mark chargeback - missing sale.', 'warn');
+    _stFlash('Cannot mark status - missing sale.', 'warn');
     return;
   }
-  _stUpdateSaleStatus(sid, 'chargeback');
+  if (st !== 'chargeback' && st !== 'samecancel') {
+    _stFlash('Choose Chargeback or Same-week cancel.', 'warn');
+    return;
+  }
+  _stUpdateSaleStatus(sid, st);
   _stRerunPaySheetMatch({
-    flashMsg: 'Marked ' + (problem.customer || 'sale') + ' as chargeback.',
+    flashMsg:
+      st === 'samecancel' ? 'Marked same-week cancel.' : 'Marked chargeback.',
+    flashKind: 'ok'
+  });
+}
+
+function _stFindUntrackedProblemByMemberId(memberId) {
+  var mid = _stReconNormMemberId(memberId);
+  if (!mid) return null;
+  var problems =
+    _stReconcileResult && _stReconcileResult.problems
+      ? _stReconcileResult.problems
+      : [];
+  var i;
+  for (i = 0; i < problems.length; i++) {
+    var p = problems[i];
+    if (!p || p.kind !== 'untracked_chargeback') continue;
+    var pMid = _stReconNormMemberId(
+      p.attachMemberId || (p.pay && p.pay.memberId)
+    );
+    if (pMid === mid) return p;
+  }
+  return null;
+}
+
+function _stSaleExistsWithMemberId(memberId) {
+  var mid = _stReconNormMemberId(memberId);
+  if (!mid) return false;
+  var sales = _stLoadSales() || [];
+  var i;
+  for (i = 0; i < sales.length; i++) {
+    if (!sales[i]) continue;
+    if (_stReconNormMemberId(sales[i].memberId) === mid) return true;
+  }
+  return false;
+}
+
+function _stTsToDateIso(ts) {
+  var n = Number(ts) || 0;
+  if (!n) return _stTodayIso();
+  var d = new Date(n);
+  if (isNaN(d.getTime())) return _stTodayIso();
+  var mm = String(d.getMonth() + 1);
+  if (mm.length < 2) mm = '0' + mm;
+  var dd = String(d.getDate());
+  if (dd.length < 2) dd = '0' + dd;
+  return d.getFullYear() + '-' + mm + '-' + dd;
+}
+
+var _stReconcileQuickLogState = null;
+
+function _stCloseReconcileQuickLog() {
+  _stReconcileQuickLogState = null;
+  var modal = document.getElementById('st-recon-quicklog-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stReconcileQuickLogSetStatus(st) {
+  if (!_stReconcileQuickLogState) return;
+  if (st !== 'chargeback' && st !== 'samecancel') return;
+  _stReconcileQuickLogState.status = st;
+  var cbBtn = document.getElementById('st-recon-ql-status-cb');
+  var swBtn = document.getElementById('st-recon-ql-status-swc');
+  if (cbBtn) {
+    cbBtn.classList.toggle('is-selected', st === 'chargeback');
+    cbBtn.setAttribute('aria-pressed', st === 'chargeback' ? 'true' : 'false');
+  }
+  if (swBtn) {
+    swBtn.classList.toggle('is-selected', st === 'samecancel');
+    swBtn.setAttribute('aria-pressed', st === 'samecancel' ? 'true' : 'false');
+  }
+}
+
+function _stOpenReconcileQuickLog(memberId) {
+  _stCloseReconcileQuickLog();
+  var problem = _stFindUntrackedProblemByMemberId(memberId);
+  if (!problem) {
+    _stFlash('Untracked row not found. Re-run Match and try again.', 'warn');
+    return;
+  }
+  var mid = _stReconNormMemberId(
+    problem.attachMemberId || (problem.pay && problem.pay.memberId)
+  );
+  if (!mid) {
+    _stFlash('Cannot log sale - missing Member ID.', 'warn');
+    return;
+  }
+  var premiumAbs = Math.abs(Number(problem.amount) || 0);
+  var dateIso = _stTsToDateIso(problem.dateTs);
+  _stReconcileQuickLogState = {
+    memberId: mid,
+    status: ''
+  };
+  var modal = document.createElement('div');
+  modal.id = 'st-recon-quicklog-modal';
+  modal.className = 'st-entry-modal st-recon-quicklog-modal';
+  var html = '';
+  html +=
+    '<div class="st-entry-card st-recon-quicklog-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-ql-title" onclick="event.stopPropagation()">';
+  html +=
+    '<div class="st-entry-title" id="st-recon-ql-title">Log this sale</div>';
+  html +=
+    '<p class="st-recon-attach-msg">Create a local deal from this pay-sheet deduction, then mark its status.</p>';
+  html += '<div class="st-entry-grid">';
+  html +=
+    '<label>Customer name<input id="st-recon-ql-customer" type="text" value="' +
+    _stEscape(problem.customer || '') +
+    '" required></label>';
+  html +=
+    '<label>Plan name<input id="st-recon-ql-plan" type="text" value="' +
+    _stEscape(problem.productName || '') +
+    '"></label>';
+  html +=
+    '<label>Member ID<input id="st-recon-ql-memberid" type="text" value="' +
+    _stEscape(mid) +
+    '"></label>';
+  html +=
+    '<label>Date sold<input id="st-recon-ql-date" type="date" value="' +
+    _stEscape(dateIso) +
+    '"></label>';
+  html +=
+    '<label>Monthly premium $<input id="st-recon-ql-premium" type="number" step="0.01" value="' +
+    _stEscape(premiumAbs) +
+    '"></label>';
+  html += '</div>';
+  html +=
+    '<div class="st-recon-ql-status" role="group" aria-label="Status">';
+  html += '<div class="st-recon-ql-status-label">Status (required)</div>';
+  html +=
+    '<div class="st-recon-ql-status-tog">';
+  html +=
+    '<button type="button" id="st-recon-ql-status-cb" class="st-recon-ql-status-btn" aria-pressed="false" onclick="_stReconcileQuickLogSetStatus(\'chargeback\')">Chargeback</button>';
+  html +=
+    '<button type="button" id="st-recon-ql-status-swc" class="st-recon-ql-status-btn" aria-pressed="false" onclick="_stReconcileQuickLogSetStatus(\'samecancel\')">Same-week cancel</button>';
+  html += '</div></div>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" onclick="_stCloseReconcileQuickLog()">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save" onclick="_stSaveReconcileQuickLog()">Save</button>';
+  html += '</div></div>';
+  modal.innerHTML = html;
+  modal.addEventListener('click', function (ev) {
+    if (ev.target === modal) _stCloseReconcileQuickLog();
+  });
+  document.body.appendChild(modal);
+}
+
+function _stSaveReconcileQuickLog() {
+  var state = _stReconcileQuickLogState;
+  if (!state) return;
+  var customer = (
+    (document.getElementById('st-recon-ql-customer') || {}).value || ''
+  ).trim();
+  if (!customer) {
+    _stFlash('Customer name is required.', 'error');
+    return;
+  }
+  var st = String(state.status || '');
+  if (st !== 'chargeback' && st !== 'samecancel') {
+    _stFlash('Choose Chargeback or Same-week cancel before saving.', 'warn');
+    return;
+  }
+  var memberId = _stReconNormMemberId(
+    (document.getElementById('st-recon-ql-memberid') || {}).value
+  );
+  if (!memberId) {
+    _stFlash('Member ID is required.', 'error');
+    return;
+  }
+  if (_stSaleExistsWithMemberId(memberId)) {
+    _stFlash(
+      'A sale with Member ID ' + memberId + ' already exists.',
+      'warn'
+    );
+    return;
+  }
+  var plan = (
+    (document.getElementById('st-recon-ql-plan') || {}).value || ''
+  ).trim();
+  var soldIso = (
+    (document.getElementById('st-recon-ql-date') || {}).value || ''
+  ).trim();
+  var soldDate = soldIso ? _stIsoToDate(soldIso) : null;
+  var ts = soldDate
+    ? soldDate.getTime() + 9 * 60 * 60 * 1000
+    : Date.now();
+  var premium = parseFloat(
+    (document.getElementById('st-recon-ql-premium') || {}).value
+  );
+  if (isNaN(premium) || premium < 0) {
+    _stFlash('Enter a valid monthly premium.', 'error');
+    return;
+  }
+  var dealRatePct =
+    _stPlanTierRate(premium, _stLoadCommissionRates()) * 100;
+  var ok = _stCreateSaleGroupFromModal({
+    customer: customer,
+    memberId: memberId,
+    receiptId: '',
+    ts: ts,
+    plan: plan || 'Unknown Plan',
+    premium: premium,
+    enrollmentFee: 0,
+    dealRatePct: dealRatePct,
+    addons: [],
+    rawText: '',
+    status: st,
+    skipFlash: true
+  });
+  if (!ok) return;
+  _stCloseReconcileQuickLog();
+  _stRerunPaySheetMatch({
+    flashMsg:
+      st === 'samecancel'
+        ? 'Logged sale as same-week cancel.'
+        : 'Logged sale as chargeback.',
     flashKind: 'ok'
   });
 }

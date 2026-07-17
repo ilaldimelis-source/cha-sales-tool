@@ -5050,3 +5050,96 @@ body.st-pb-modal-open {
 .st-recon-attach-all-list {
   visibility: visible !important;
 }
+
+/* Reconcile: status choice + quick log */
+.st-recon-status-choice-actions {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.st-recon-swc-confirm {
+  background: #c4622a !important;
+  border-color: #c4622a !important;
+}
+
+.st-recon-swc-confirm:hover {
+  background: #a85220 !important;
+}
+
+.st-recon-quicklog-btn {
+  flex-shrink: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: var(--cha-bg-muted);
+  color: var(--cha-text-primary);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+}
+
+.st-recon-quicklog-btn:hover {
+  border-color: #94a3b8;
+  background: #e8eef5;
+}
+
+.st-recon-quicklog-modal .st-recon-quicklog-card {
+  width: min(460px, 96vw);
+}
+
+.st-recon-ql-status {
+  margin: 4px 0 14px;
+}
+
+.st-recon-ql-status-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cha-text-primary);
+  margin-bottom: 8px;
+}
+
+.st-recon-ql-status-tog {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.st-recon-ql-status-btn {
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--cha-text-primary);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.st-recon-ql-status-btn.is-selected {
+  border-color: var(--cha-accent);
+  background: #e8eefc;
+  color: #243b55;
+}
+
+#st-recon-ql-status-cb.is-selected {
+  border-color: #f0c1c1;
+  background: #fdeaea;
+  color: #a32d2d;
+}
+
+#st-recon-ql-status-swc.is-selected {
+  border-color: #ddb892;
+  background: #fef3e8;
+  color: #c4622a;
+}
+
+.st-recon-quicklog-btn,
+.st-recon-quicklog-modal,
+.st-recon-ql-status-btn {
+  visibility: visible !important;
+}
+
+.st-recon-quicklog-modal {
+  display: flex !important;
+}
