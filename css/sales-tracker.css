@@ -4965,6 +4965,42 @@ body.st-pb-modal-open {
   border-color: #94a3b8;
 }
 
+.st-recon-history-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.st-recon-history-delete {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #f0c1c1;
+  border-radius: 999px;
+  background: #fdeaea;
+  color: #a32d2d;
+  cursor: pointer;
+  padding: 0;
+}
+
+.st-recon-history-delete:hover {
+  background: #fbdada;
+}
+
+.st-entry-save.st-recon-history-del-confirm {
+  background: #a32d2d;
+  border-color: #a32d2d;
+}
+
+.st-entry-save.st-recon-history-del-confirm:hover {
+  background: #8a2424;
+  border-color: #8a2424;
+}
+
 .st-recon-pill-samecancel {
   background: #fef3e8;
   color: #c4622a;
