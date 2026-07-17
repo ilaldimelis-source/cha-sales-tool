@@ -3484,16 +3484,33 @@ function _stDeleteSale(id) {
   _stFlash('Sale deleted.', 'ok');
 }
 
-// Transient flash message at the top of the input section.
+// Transient flash message. Prefer the Add Sale panel flash when that
+// panel is open; otherwise use a body-level toast so Reconcile (and
+// other views with the panel closed) still surface feedback.
 function _stFlash(msg, kind) {
+  var panel = document.getElementById('st-add-sale-panel');
+  var panelOpen = !!(panel && panel.classList.contains('open'));
   var el = document.getElementById('st-flash');
-  if (!el) return;
+  if (el && panel && panel.contains(el) && !panelOpen) {
+    el = null;
+  }
+  if (!el) {
+    el = document.getElementById('st-flash-global');
+  }
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'st-flash-global';
+    document.body.appendChild(el);
+  }
   el.textContent = msg;
   var cls = 'ok';
   if (kind === 'error') cls = 'error';
   else if (kind === 'warn') cls = 'warn';
   else if (kind === 'neutral') cls = 'neutral';
-  el.className = 'st-flash st-flash-' + cls;
+  el.className =
+    'st-flash st-flash-' +
+    cls +
+    (el.id === 'st-flash-global' ? ' st-flash-global' : '');
   el.style.opacity = '1';
   clearTimeout(window._stFlashT);
   window._stFlashT = setTimeout(function () {
@@ -7525,29 +7542,42 @@ function _stBuildReconcileProblemsHtml(result, opts) {
       p.attachMemberId
     ) {
       actionHtml =
-        '<button type="button" class="st-recon-attach-btn" onclick="_stOpenAttachMemberIdConfirm(\'' +
-        _stEscape(String(p.attachSaleId)).replace(/'/g, '') +
-        '\')">Attach ID</button>';
+        '<button type="button" class="st-recon-attach-btn" data-st-recon-action="attach" data-sale-id="' +
+        _stEscape(String(p.attachSaleId)) +
+        '">Attach ID</button>';
     } else if (
       !readOnly &&
       p.kind === 'chargeback_candidate' &&
       p.chargebackSaleId
     ) {
       actionHtml =
-        '<button type="button" class="st-recon-chargeback-btn" onclick="_stOpenReconcileChargebackConfirm(\'' +
-        _stEscape(String(p.chargebackSaleId)).replace(/'/g, '') +
-        '\')">Mark status</button>';
+        '<button type="button" class="st-recon-chargeback-btn" data-st-recon-action="mark-status" data-sale-id="' +
+        _stEscape(String(p.chargebackSaleId)) +
+        '" data-customer="' +
+        _stEscape(p.customer || 'Unknown') +
+        '" data-date-ts="' +
+        _stEscape(String(Number(p.dateTs) || 0)) +
+        '">Mark status</button>';
     } else if (
       !readOnly &&
       p.kind === 'untracked_chargeback' &&
       _stReconNormMemberId(p.attachMemberId || (p.pay && p.pay.memberId))
     ) {
+      var utMid = _stReconNormMemberId(
+        p.attachMemberId || (p.pay && p.pay.memberId)
+      );
       actionHtml =
-        '<button type="button" class="st-recon-quicklog-btn" onclick="_stOpenReconcileQuickLog(\'' +
-        _stEscape(
-          _stReconNormMemberId(p.attachMemberId || (p.pay && p.pay.memberId))
-        ).replace(/'/g, '') +
-        '\')">Log this sale</button>';
+        '<button type="button" class="st-recon-quicklog-btn" data-st-recon-action="quick-log" data-member-id="' +
+        _stEscape(utMid) +
+        '" data-customer="' +
+        _stEscape(p.customer || '') +
+        '" data-plan="' +
+        _stEscape(p.productName || '') +
+        '" data-date-ts="' +
+        _stEscape(String(Number(p.dateTs) || 0)) +
+        '" data-amount="' +
+        _stEscape(String(Number(p.amount) || 0)) +
+        '">Log this sale</button>';
     } else {
       actionHtml =
         '<span class="' +
@@ -7591,15 +7621,34 @@ function _stFindAttachProblemBySaleId(saleId) {
 
 function _stFindChargebackProblemBySaleId(saleId) {
   var sid = String(saleId || '');
-  var problems =
-    _stReconcileResult && _stReconcileResult.problems
-      ? _stReconcileResult.problems
-      : [];
+  if (!sid) return null;
+  var lists = [];
+  if (_stReconcileResult && _stReconcileResult.problems) {
+    lists.push(_stReconcileResult.problems);
+  }
+  if (_stReconcileResult && _stReconcileResult.chargebackCandidates) {
+    lists.push(_stReconcileResult.chargebackCandidates);
+  }
+  var li;
+  for (li = 0; li < lists.length; li++) {
+    var problems = lists[li];
+    var i;
+    for (i = 0; i < problems.length; i++) {
+      var p = problems[i];
+      if (!p || p.kind !== 'chargeback_candidate') continue;
+      if (String(p.chargebackSaleId || '') === sid) return p;
+    }
+  }
+  return null;
+}
+
+function _stFindSaleById(saleId) {
+  var sid = String(saleId || '');
+  if (!sid) return null;
+  var sales = _stLoadSales() || [];
   var i;
-  for (i = 0; i < problems.length; i++) {
-    var p = problems[i];
-    if (!p || p.kind !== 'chargeback_candidate') continue;
-    if (String(p.chargebackSaleId || '') === sid) return p;
+  for (i = 0; i < sales.length; i++) {
+    if (sales[i] && String(sales[i].id) === sid) return sales[i];
   }
   return null;
 }
@@ -7668,26 +7717,47 @@ function _stOpenAttachMemberIdConfirm(saleId) {
   document.body.appendChild(modal);
 }
 
-function _stOpenReconcileChargebackConfirm(saleId) {
+function _stOpenReconcileChargebackConfirm(saleId, meta) {
   _stCloseReconcileChargebackConfirm();
+  meta = meta || {};
   var problem = _stFindChargebackProblemBySaleId(saleId);
+  var sid = String(
+    (problem && problem.chargebackSaleId) || saleId || meta.saleId || ''
+  );
+  var name = String(
+    (problem && problem.customer) ||
+      meta.customer ||
+      'Unknown'
+  );
+  var dateTs =
+    (problem && problem.dateTs) ||
+    Number(meta.dateTs) ||
+    0;
   if (!problem) {
-    _stFlash(
-      'Chargeback candidate not found. Re-run Match and try again.',
-      'warn'
-    );
-    return;
+    var sale = _stFindSaleById(sid);
+    if (sale) {
+      if (!meta.customer) name = String(sale.customer || name);
+      if (!dateTs) dateTs = Number(sale.ts) || 0;
+    } else if (!sid) {
+      _stFlash(
+        'Chargeback candidate not found. Re-run Match and try again.',
+        'warn'
+      );
+      return;
+    } else {
+      _stFlash('Cannot mark status - missing sale.', 'warn');
+      return;
+    }
   }
-  var sid = String(problem.chargebackSaleId || '');
-  var name = String(problem.customer || 'Unknown');
-  var dateLabel = _stReconFormatDate(problem.dateTs);
+  var dateLabel = _stReconFormatDate(dateTs);
   if (!sid) {
     _stFlash('Cannot mark status - missing sale.', 'warn');
     return;
   }
   var modal = document.createElement('div');
   modal.id = 'st-recon-chargeback-modal';
-  modal.className = 'st-entry-modal st-recon-attach-modal';
+  modal.className =
+    'st-entry-modal st-recon-attach-modal st-recon-chargeback-modal';
   var html = '';
   html +=
     '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-cb-title" onclick="event.stopPropagation()">';
@@ -7701,15 +7771,15 @@ function _stOpenReconcileChargebackConfirm(saleId) {
     ') as chargeback or same-week cancel?</p>';
   html += '<div class="st-entry-actions st-recon-status-choice-actions">';
   html +=
-    '<button type="button" class="st-entry-cancel" onclick="_stCloseReconcileChargebackConfirm()">Cancel</button>';
+    '<button type="button" class="st-entry-cancel" data-st-recon-action="close-mark-status">Cancel</button>';
   html +=
-    '<button type="button" class="st-entry-save st-recon-cb-confirm" onclick="_stConfirmReconcileChargeback(\'' +
-    _stEscape(sid).replace(/'/g, '') +
-    '\',\'chargeback\')">Chargeback</button>';
+    '<button type="button" class="st-entry-save st-recon-cb-confirm" data-st-recon-action="confirm-status" data-sale-id="' +
+    _stEscape(sid) +
+    '" data-status="chargeback">Chargeback</button>';
   html +=
-    '<button type="button" class="st-entry-save st-recon-swc-confirm" onclick="_stConfirmReconcileChargeback(\'' +
-    _stEscape(sid).replace(/'/g, '') +
-    '\',\'samecancel\')">Same-week cancel</button>';
+    '<button type="button" class="st-entry-save st-recon-swc-confirm" data-st-recon-action="confirm-status" data-sale-id="' +
+    _stEscape(sid) +
+    '" data-status="samecancel">Same-week cancel</button>';
   html += '</div></div>';
   modal.innerHTML = html;
   modal.addEventListener('click', function (ev) {
@@ -7721,14 +7791,17 @@ function _stOpenReconcileChargebackConfirm(saleId) {
 function _stConfirmReconcileChargeback(saleId, newStatus) {
   var sid = String(saleId || '');
   var st = String(newStatus || '');
-  var problem = _stFindChargebackProblemBySaleId(sid);
   _stCloseReconcileChargebackConfirm();
-  if (!sid || !problem) {
+  if (!sid) {
     _stFlash('Cannot mark status - missing sale.', 'warn');
     return;
   }
   if (st !== 'chargeback' && st !== 'samecancel') {
     _stFlash('Choose Chargeback or Same-week cancel.', 'warn');
+    return;
+  }
+  if (!_stFindSaleById(sid)) {
+    _stFlash('Cannot mark status - missing sale.', 'warn');
     return;
   }
   _stUpdateSaleStatus(sid, st);
@@ -7806,22 +7879,36 @@ function _stReconcileQuickLogSetStatus(st) {
   }
 }
 
-function _stOpenReconcileQuickLog(memberId) {
+function _stOpenReconcileQuickLog(memberId, meta) {
   _stCloseReconcileQuickLog();
+  meta = meta || {};
   var problem = _stFindUntrackedProblemByMemberId(memberId);
-  if (!problem) {
-    _stFlash('Untracked row not found. Re-run Match and try again.', 'warn');
-    return;
-  }
   var mid = _stReconNormMemberId(
-    problem.attachMemberId || (problem.pay && problem.pay.memberId)
+    (problem &&
+      (problem.attachMemberId || (problem.pay && problem.pay.memberId))) ||
+      memberId ||
+      meta.memberId
   );
   if (!mid) {
     _stFlash('Cannot log sale - missing Member ID.', 'warn');
     return;
   }
-  var premiumAbs = Math.abs(Number(problem.amount) || 0);
-  var dateIso = _stTsToDateIso(problem.dateTs);
+  var customer =
+    (problem && problem.customer) || meta.customer || '';
+  var productName =
+    (problem && problem.productName) || meta.plan || '';
+  var dateTs =
+    (problem && problem.dateTs) || Number(meta.dateTs) || 0;
+  var amount =
+    (problem && problem.amount) != null
+      ? Number(problem.amount)
+      : Number(meta.amount) || 0;
+  if (!problem && !meta.memberId && !customer && !amount) {
+    _stFlash('Untracked row not found. Re-run Match and try again.', 'warn');
+    return;
+  }
+  var premiumAbs = Math.abs(amount || 0);
+  var dateIso = _stTsToDateIso(dateTs);
   _stReconcileQuickLogState = {
     memberId: mid,
     status: ''
@@ -7839,11 +7926,11 @@ function _stOpenReconcileQuickLog(memberId) {
   html += '<div class="st-entry-grid">';
   html +=
     '<label>Customer name<input id="st-recon-ql-customer" type="text" value="' +
-    _stEscape(problem.customer || '') +
+    _stEscape(customer) +
     '" required></label>';
   html +=
     '<label>Plan name<input id="st-recon-ql-plan" type="text" value="' +
-    _stEscape(problem.productName || '') +
+    _stEscape(productName) +
     '"></label>';
   html +=
     '<label>Member ID<input id="st-recon-ql-memberid" type="text" value="' +
@@ -7861,18 +7948,17 @@ function _stOpenReconcileQuickLog(memberId) {
   html +=
     '<div class="st-recon-ql-status" role="group" aria-label="Status">';
   html += '<div class="st-recon-ql-status-label">Status (required)</div>';
+  html += '<div class="st-recon-ql-status-tog">';
   html +=
-    '<div class="st-recon-ql-status-tog">';
+    '<button type="button" id="st-recon-ql-status-cb" class="st-recon-ql-status-btn" aria-pressed="false" data-st-recon-action="ql-status" data-status="chargeback">Chargeback</button>';
   html +=
-    '<button type="button" id="st-recon-ql-status-cb" class="st-recon-ql-status-btn" aria-pressed="false" onclick="_stReconcileQuickLogSetStatus(\'chargeback\')">Chargeback</button>';
-  html +=
-    '<button type="button" id="st-recon-ql-status-swc" class="st-recon-ql-status-btn" aria-pressed="false" onclick="_stReconcileQuickLogSetStatus(\'samecancel\')">Same-week cancel</button>';
+    '<button type="button" id="st-recon-ql-status-swc" class="st-recon-ql-status-btn" aria-pressed="false" data-st-recon-action="ql-status" data-status="samecancel">Same-week cancel</button>';
   html += '</div></div>';
   html += '<div class="st-entry-actions">';
   html +=
-    '<button type="button" class="st-entry-cancel" onclick="_stCloseReconcileQuickLog()">Cancel</button>';
+    '<button type="button" class="st-entry-cancel" data-st-recon-action="close-quick-log">Cancel</button>';
   html +=
-    '<button type="button" class="st-entry-save" onclick="_stSaveReconcileQuickLog()">Save</button>';
+    '<button type="button" class="st-entry-save" data-st-recon-action="save-quick-log">Save</button>';
   html += '</div></div>';
   modal.innerHTML = html;
   modal.addEventListener('click', function (ev) {
@@ -9256,6 +9342,10 @@ function _stRender() {
         _stCloseReconcileChargebackConfirm();
         return;
       }
+      if (document.getElementById('st-recon-quicklog-modal')) {
+        _stCloseReconcileQuickLog();
+        return;
+      }
       if (_stAttachMemberIdConfirmIsOpen()) {
         _stCloseAttachMemberIdConfirm();
         return;
@@ -9275,6 +9365,7 @@ function _stRender() {
   }
   _stUpdateFabVisibility();
   _stWireSalesBulkDelegation(page);
+  _stWireReconcileActionDelegation();
   _stWireAllSalesSearchDelegation(page);
   _stWirePaycheckObserver();
   if (_stScrollToDayAfterRender != null) {
@@ -9303,6 +9394,12 @@ function _stWireSalesBulkDelegation(page) {
     if (t.closest('.st-bulk-can')) {
       e.preventDefault();
       _stBulkClear();
+      return;
+    }
+    var reconBtn = t.closest('[data-st-recon-action]');
+    if (reconBtn) {
+      e.preventDefault();
+      _stHandleReconcileActionClick(reconBtn);
     }
   });
   page.addEventListener('change', function (e) {
@@ -9316,6 +9413,72 @@ function _stWireSalesBulkDelegation(page) {
       _stBulkToggleAll(!!el.checked);
     }
   });
+}
+
+// Body-level delegation for Reconcile modals (appended outside #page-salestracker)
+// and problem-row actions (also works when inline onclick is blocked by CSP).
+function _stWireReconcileActionDelegation() {
+  if (document.body.dataset.stReconActionDeleg) return;
+  document.body.dataset.stReconActionDeleg = '1';
+  document.body.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var btn = t.closest('[data-st-recon-action]');
+    if (!btn) return;
+    // Page-level listener already handles in-page buttons when present.
+    if (btn.closest('#page-salestracker')) return;
+    e.preventDefault();
+    _stHandleReconcileActionClick(btn);
+  });
+}
+
+function _stHandleReconcileActionClick(btn) {
+  if (!btn) return;
+  var action = btn.getAttribute('data-st-recon-action') || '';
+  if (action === 'attach') {
+    _stOpenAttachMemberIdConfirm(btn.getAttribute('data-sale-id') || '');
+    return;
+  }
+  if (action === 'mark-status') {
+    _stOpenReconcileChargebackConfirm(btn.getAttribute('data-sale-id') || '', {
+      saleId: btn.getAttribute('data-sale-id') || '',
+      customer: btn.getAttribute('data-customer') || '',
+      dateTs: btn.getAttribute('data-date-ts') || '0'
+    });
+    return;
+  }
+  if (action === 'quick-log') {
+    _stOpenReconcileQuickLog(btn.getAttribute('data-member-id') || '', {
+      memberId: btn.getAttribute('data-member-id') || '',
+      customer: btn.getAttribute('data-customer') || '',
+      plan: btn.getAttribute('data-plan') || '',
+      dateTs: btn.getAttribute('data-date-ts') || '0',
+      amount: btn.getAttribute('data-amount') || '0'
+    });
+    return;
+  }
+  if (action === 'close-mark-status') {
+    _stCloseReconcileChargebackConfirm();
+    return;
+  }
+  if (action === 'confirm-status') {
+    _stConfirmReconcileChargeback(
+      btn.getAttribute('data-sale-id') || '',
+      btn.getAttribute('data-status') || ''
+    );
+    return;
+  }
+  if (action === 'ql-status') {
+    _stReconcileQuickLogSetStatus(btn.getAttribute('data-status') || '');
+    return;
+  }
+  if (action === 'close-quick-log') {
+    _stCloseReconcileQuickLog();
+    return;
+  }
+  if (action === 'save-quick-log') {
+    _stSaveReconcileQuickLog();
+  }
 }
 
 // Delegated input on #page-salestracker so All Sales search works when
