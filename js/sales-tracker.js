@@ -6967,6 +6967,7 @@ function _stMatchPaySheetRows(payRows, weekSales) {
   var notOnSheet = [];
   var attach = [];
   var chargebackCandidates = [];
+  var untrackedChargebacks = [];
   var usedLocal = {};
   var payMids = {};
   var allSales = null;
@@ -7119,6 +7120,18 @@ function _stMatchPaySheetRows(payRows, weekSales) {
         });
         continue;
       }
+      // External deduction with nothing local to mark - not a
+      // commission gap or Missing tracking error.
+      untrackedChargebacks.push({
+        kind: 'untracked_chargeback',
+        pay: row,
+        sale: null,
+        customer: row.customer || '',
+        productName: row.productName || '',
+        dateTs: Number(row.dateTs) || 0,
+        amount: Number(row.amount) || 0
+      });
+      continue;
     }
 
     missing.push({
@@ -7163,10 +7176,12 @@ function _stMatchPaySheetRows(payRows, weekSales) {
     notOnSheet: notOnSheet,
     attach: attach,
     chargebackCandidates: chargebackCandidates,
+    untrackedChargebacks: untrackedChargebacks,
     gap: gap,
     problems: missing.concat(
       attach,
       chargebackCandidates,
+      untrackedChargebacks,
       mislabeled,
       notOnSheet
     )
@@ -7268,13 +7283,14 @@ function _stReconKindLabel(kind) {
   if (kind === 'not_on_sheet') return 'Not on pay sheet';
   if (kind === 'attach') return 'Attach ID';
   if (kind === 'chargeback_candidate') return 'Mark Chargeback';
+  if (kind === 'untracked_chargeback') return 'No local record';
   return kind || '';
 }
 
 function _stReconKindPillClass(kind) {
   if (kind === 'missing') return 'st-recon-status-pill st-recon-pill-missing';
   if (kind === 'mislabeled') return 'st-recon-status-pill st-recon-pill-mislabeled';
-  if (kind === 'not_on_sheet') {
+  if (kind === 'not_on_sheet' || kind === 'untracked_chargeback') {
     return 'st-recon-status-pill st-recon-pill-notonsheet';
   }
   if (kind === 'attach') return 'st-recon-status-pill st-recon-pill-attach';
