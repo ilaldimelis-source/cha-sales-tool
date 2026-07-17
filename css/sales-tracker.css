@@ -5143,3 +5143,25 @@ body.st-pb-modal-open {
 .st-recon-quicklog-modal {
   display: flex !important;
 }
+
+/* Reconcile modals must sit above Add Sale FAB (z-index 9999) */
+.st-recon-attach-modal,
+.st-recon-chargeback-modal,
+.st-recon-quicklog-modal {
+  z-index: 10050 !important;
+}
+
+/* Body-level flash when Add Sale panel is closed (Reconcile, etc.) */
+.st-flash-global {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10060;
+  margin-top: 0;
+  min-width: min(420px, 92vw);
+  text-align: center;
+  box-shadow: 0 8px 24px rgb(15, 23, 42, 0.12);
+  pointer-events: none;
+  visibility: visible !important;
+}
