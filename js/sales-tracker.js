@@ -7040,6 +7040,8 @@ function _stMatchPaySheetRows(payRows, weekSales) {
         var blankSale = weekSales[j];
         if (!blankSale || usedLocal[blankSale.id]) continue;
         if (_stReconSaleHasMemberId(blankSale)) continue;
+        var blankType = blankSale.type === 'addon' ? 'addon' : 'deal';
+        if (blankType !== row.typeLocal) continue;
         if (!_stReconNamesAlign(blankSale.customer, row.customer)) continue;
         if (!_stReconSameCalendarDay(blankSale.ts, row.dateTs)) continue;
         attachHits.push(blankSale);
