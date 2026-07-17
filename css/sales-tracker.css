@@ -4818,6 +4818,8 @@ body.st-pb-modal-open {
 
 .st-entry-memberid-label.st-entry-memberid-missing {
   color: #92400e;
+}
+
 /* Reconcile: Attach Member ID from pay sheet */
 .st-recon-attach-btn {
   flex-shrink: 0;
@@ -4898,4 +4900,84 @@ body.st-pb-modal-open {
 
 .st-recon-chargeback-modal {
   display: flex !important;
+}
+
+/* Reconcile History pane */
+.st-history-chip.st-chip-active {
+  background: var(--cha-accent);
+  border-color: var(--cha-accent);
+  color: #fff;
+}
+
+.st-recon-history-section {
+  margin-top: 4px;
+  margin-bottom: 18px;
+}
+
+.st-recon-history-log {
+  border-top: 1px solid var(--cha-border-subtle);
+  padding-top: 14px;
+}
+
+.st-recon-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.st-recon-history-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 10px;
+  background: #fff;
+}
+
+.st-recon-history-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cha-text-primary);
+}
+
+.st-recon-history-meta {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.35;
+}
+
+.st-recon-history-view {
+  flex-shrink: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: var(--cha-bg-muted);
+  color: var(--cha-text-primary);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 12px;
+  cursor: pointer;
+}
+
+.st-recon-history-view:hover {
+  border-color: #94a3b8;
+}
+
+.st-recon-pill-samecancel {
+  background: #fef3e8;
+  color: #c4622a;
+  border: 1px solid #ddb892;
+}
+
+.st-date-chip.st-history-chip,
+.st-recon-history-pane,
+.st-recon-history-row,
+.st-recon-pill-samecancel {
+  visibility: visible !important;
+}
+
+.st-date-chip.st-history-chip {
+  display: inline-flex !important;
 }
