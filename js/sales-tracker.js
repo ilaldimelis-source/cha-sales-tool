@@ -6751,12 +6751,16 @@ function _stSaveReconcileHistory(list) {
 
 function _stSnapshotReconcileProblem(p) {
   if (!p) return null;
+  var mid = _stReconNormMemberId(
+    p.memberId || (p.pay && p.pay.memberId) || ''
+  );
   return {
     kind: p.kind || '',
     customer: p.customer || '',
     productName: p.productName || '',
     dateTs: Number(p.dateTs) || 0,
     amount: Number(p.amount) || 0,
+    memberId: mid,
     attachSaleId: p.attachSaleId ? String(p.attachSaleId) : '',
     attachMemberId: p.attachMemberId ? String(p.attachMemberId) : '',
     chargebackSaleId: p.chargebackSaleId ? String(p.chargebackSaleId) : ''
@@ -7614,19 +7618,22 @@ function _stReconKindLabel(kind) {
   if (kind === 'not_on_sheet') return 'Not on pay sheet';
   if (kind === 'attach') return 'Attach ID';
   if (kind === 'chargeback_candidate') return 'Mark status';
-  if (kind === 'untracked_chargeback') return 'No local record';
+  if (kind === 'untracked_chargeback') return 'Chargeback deduction, not in your tracker.';
   return kind || '';
 }
 
 function _stReconKindPillClass(kind) {
   if (kind === 'missing') return 'st-recon-status-pill st-recon-pill-missing';
   if (kind === 'mislabeled') return 'st-recon-status-pill st-recon-pill-mislabeled';
-  if (kind === 'not_on_sheet' || kind === 'untracked_chargeback') {
+  if (kind === 'not_on_sheet') {
     return 'st-recon-status-pill st-recon-pill-notonsheet';
   }
   if (kind === 'attach') return 'st-recon-status-pill st-recon-pill-attach';
   if (kind === 'chargeback_candidate') {
     return 'st-recon-status-pill st-recon-pill-chargeback';
+  }
+  if (kind === 'untracked_chargeback') {
+    return 'st-recon-status-pill st-recon-pill-untracked';
   }
   return 'st-recon-status-pill';
 }
@@ -7642,76 +7649,80 @@ function _stReconFormatDate(ts) {
   }
 }
 
-function _stBuildReconcileProblemRowHtml(p, opts) {
-  opts = opts || {};
-  var readOnly = !!opts.readOnly;
+function _stReconProblemMemberId(p) {
   if (!p) return '';
-  var actionHtml = '';
-  if (
-    !readOnly &&
-    p.kind === 'attach' &&
-    p.attachSaleId &&
-    p.attachMemberId
-  ) {
-    actionHtml =
-      '<button type="button" class="st-recon-attach-btn" data-st-recon-action="attach" data-sale-id="' +
-      _stEscape(String(p.attachSaleId)) +
-      '">Attach ID</button>';
-  } else if (
-    !readOnly &&
-    p.kind === 'chargeback_candidate' &&
-    p.chargebackSaleId
-  ) {
-    actionHtml =
-      '<button type="button" class="st-recon-chargeback-btn" data-st-recon-action="mark-status" data-sale-id="' +
-      _stEscape(String(p.chargebackSaleId)) +
-      '" data-customer="' +
-      _stEscape(p.customer || 'Unknown') +
-      '" data-date-ts="' +
-      _stEscape(String(Number(p.dateTs) || 0)) +
-      '">Mark status</button>';
-  } else if (
-    !readOnly &&
-    p.kind === 'untracked_chargeback' &&
-    _stReconNormMemberId(p.attachMemberId || (p.pay && p.pay.memberId))
-  ) {
-    var utMid = _stReconNormMemberId(
-      p.attachMemberId || (p.pay && p.pay.memberId)
-    );
-    actionHtml =
-      '<button type="button" class="st-recon-quicklog-btn" data-st-recon-action="quick-log" data-member-id="' +
-      _stEscape(utMid) +
-      '" data-customer="' +
-      _stEscape(p.customer || '') +
-      '" data-plan="' +
-      _stEscape(p.productName || '') +
-      '" data-date-ts="' +
-      _stEscape(String(Number(p.dateTs) || 0)) +
-      '" data-amount="' +
-      _stEscape(String(Number(p.amount) || 0)) +
-      '">Log this sale</button>';
-  } else {
-    actionHtml =
-      '<span class="' +
-      _stReconKindPillClass(p.kind) +
-      '">' +
-      _stEscape(_stReconKindLabel(p.kind)) +
-      '</span>';
-  }
-  return (
-    '<div class="st-recon-problem-row">' +
-    '<div class="st-recon-problem-main">' +
-    '<div class="st-recon-problem-name">' +
-    _stEscape(p.customer || 'Unknown') +
-    '</div>' +
-    '<div class="st-recon-problem-meta">' +
-    _stEscape(p.productName || 'Product') +
-    ' · ' +
-    _stEscape(_stReconFormatDate(p.dateTs)) +
-    '</div></div>' +
-    actionHtml +
-    '</div>'
+  return _stReconNormMemberId(
+    p.memberId ||
+      p.attachMemberId ||
+      (p.pay && p.pay.memberId) ||
+      ''
   );
+}
+
+// Prior saved snapshot with the same Member ID + negative
+// chargeback-style problem in an earlier week. Snapshots saved
+// before memberId was added will not match (see PR note).
+function _stFindPriorChargebackDeduction(memberId, currentWeekStart) {
+  var mid = _stReconNormMemberId(memberId);
+  var curWs = Number(currentWeekStart) || 0;
+  if (!mid || !curWs) return null;
+  var hist = _stLoadReconcileHistory() || [];
+  var i;
+  var j;
+  for (i = 0; i < hist.length; i++) {
+    var rec = hist[i];
+    if (!rec) continue;
+    var ws = Number(rec.weekStart) || 0;
+    if (!ws || ws >= curWs) continue;
+    var problems = rec.problems || [];
+    for (j = 0; j < problems.length; j++) {
+      var sp = problems[j];
+      if (!sp) continue;
+      if (
+        sp.kind !== 'chargeback_candidate' &&
+        sp.kind !== 'untracked_chargeback'
+      ) {
+        continue;
+      }
+      if (_stReconNormMemberId(sp.memberId) !== mid) continue;
+      if (!(Number(sp.amount) < 0)) continue;
+      return rec;
+    }
+  }
+  return null;
+}
+
+function _stReconProblemReasonText(p) {
+  if (!p) return '';
+  if (p.kind === 'mislabeled') {
+    var payName =
+      (p.pay && p.pay.productName) || p.productName || 'Unknown';
+    var localName =
+      (p.sale && p.sale.plan) || p.productName || 'Unknown';
+    return (
+      "Pay sheet shows core as '" +
+      payName +
+      "', your tracker has '" +
+      localName +
+      "'."
+    );
+  }
+  if (p.kind === 'missing') {
+    return 'No sale logged for this customer this week.';
+  }
+  if (p.kind === 'attach') {
+    return 'Matches your tracker but has no Member ID saved.';
+  }
+  if (p.kind === 'chargeback_candidate') {
+    return 'Deduction matches a sale in your tracker. Confirm what it was.';
+  }
+  if (p.kind === 'untracked_chargeback') {
+    return 'Chargeback deduction, not in your tracker.';
+  }
+  if (p.kind === 'not_on_sheet') {
+    return 'Logged in your tracker, not on this pay sheet.';
+  }
+  return _stReconKindLabel(p.kind);
 }
 
 function _stReconCollectActionRows(result) {
@@ -7721,14 +7732,19 @@ function _stReconCollectActionRows(result) {
   for (i = 0; i < attach.length; i++) {
     if (attach[i]) out.push(attach[i]);
   }
-  var cbs = result && result.chargebackCandidates ? result.chargebackCandidates : [];
+  var cbs =
+    result && result.chargebackCandidates
+      ? result.chargebackCandidates
+      : [];
   for (i = 0; i < cbs.length; i++) {
     if (cbs[i]) out.push(cbs[i]);
   }
-  var ut = result && result.untrackedChargebacks ? result.untrackedChargebacks : [];
+  var ut =
+    result && result.untrackedChargebacks
+      ? result.untrackedChargebacks
+      : [];
   for (i = 0; i < ut.length; i++) {
     if (!ut[i]) continue;
-    // Log-this-sale rows: negative pay-sheet amount, no local match
     if (Number(ut[i].amount) < 0) out.push(ut[i]);
   }
   return out;
@@ -7776,8 +7792,7 @@ function _stBuildPayrollErrorsCopyText(result) {
   for (i = 0; i < rows.length; i++) {
     var p = rows[i];
     if (!p) continue;
-    var kind =
-      p.kind === 'mislabeled' ? 'mislabeled' : 'missing';
+    var kind = p.kind === 'mislabeled' ? 'mislabeled' : 'missing';
     lines.push(
       (p.customer || 'Unknown') +
         ' (' +
@@ -7840,109 +7855,251 @@ function _stCopyReconcilePayrollSummary() {
   _stCopyTextFallback(text, onOk, onFail);
 }
 
-function _stBuildReconcileGroupedProblemsHtml(result, opts) {
+function _stBuildReconcileOneLineSummaryHtml(result) {
+  if (!result || typeof result.matched !== 'number') return '';
+  var matched = Number(result.matched) || 0;
+  var needsN = _stReconCollectActionRows(result).length;
+  var reportN = _stReconCollectPayrollErrorRows(result).length;
+  var notN = result.notOnSheet ? result.notOnSheet.length : 0;
+  if (needsN + reportN + notN === 0) {
+    return (
+      '<div class="st-recon-one-line st-recon-one-line-clear" role="status">' +
+      '<span class="st-recon-one-line-check" aria-hidden="true">&#10003;</span>' +
+      'Everything matched. Nothing to report.' +
+      '</div>'
+    );
+  }
+  var parts = [];
+  if (matched > 0) parts.push(matched + ' matched');
+  if (needsN > 0) parts.push(needsN + ' needs your click');
+  if (reportN > 0) parts.push(reportN + ' to report to manager');
+  if (!parts.length) return '';
+  return (
+    '<div class="st-recon-one-line" role="status">' +
+    _stEscape(parts.join(' - ') + '.') +
+    '</div>'
+  );
+}
+
+function _stReconBuildPriorityListItems(result) {
+  var items = [];
+  var i;
+  function pushRow(p) {
+    if (!p) return;
+    items.push({
+      type: 'row',
+      problem: p,
+      sortAmt: Math.abs(Number(p.amount) || 0)
+    });
+  }
+  var lists = [
+    result.attach,
+    result.chargebackCandidates,
+    result.untrackedChargebacks,
+    result.missing,
+    result.mislabeled
+  ];
+  var li;
+  for (li = 0; li < lists.length; li++) {
+    var arr = lists[li] || [];
+    for (i = 0; i < arr.length; i++) pushRow(arr[i]);
+  }
+  var notOnSheet = result.notOnSheet || [];
+  var groups = _stReconGroupNotOnSheetByCustomer(notOnSheet);
+  for (i = 0; i < groups.length; i++) {
+    var g = groups[i];
+    var gRows = g.rows || [];
+    if (!gRows.length) continue;
+    if (gRows.length === 1) {
+      pushRow(gRows[0]);
+      continue;
+    }
+    var sum = 0;
+    var ri;
+    for (ri = 0; ri < gRows.length; ri++) {
+      sum += Math.abs(Number(gRows[ri].amount) || 0);
+    }
+    items.push({
+      type: 'not_on_sheet_group',
+      customer: g.customer,
+      rows: gRows,
+      sortAmt: sum
+    });
+  }
+  items.sort(function (a, b) {
+    return (b.sortAmt || 0) - (a.sortAmt || 0);
+  });
+  return items;
+}
+
+function _stBuildReconcileProblemActionHtml(p, opts) {
   opts = opts || {};
   var readOnly = !!opts.readOnly;
-  var html = '';
+  if (!p || readOnly) return '';
+  if (p.kind === 'attach' && p.attachSaleId && p.attachMemberId) {
+    return (
+      '<button type="button" class="st-recon-attach-btn" data-st-recon-action="attach" data-sale-id="' +
+      _stEscape(String(p.attachSaleId)) +
+      '">Attach ID</button>'
+    );
+  }
+  if (p.kind === 'chargeback_candidate' && p.chargebackSaleId) {
+    return (
+      '<button type="button" class="st-recon-chargeback-btn" data-st-recon-action="mark-status" data-sale-id="' +
+      _stEscape(String(p.chargebackSaleId)) +
+      '" data-customer="' +
+      _stEscape(p.customer || 'Unknown') +
+      '" data-date-ts="' +
+      _stEscape(String(Number(p.dateTs) || 0)) +
+      '">Mark status</button>'
+    );
+  }
+  if (
+    p.kind === 'untracked_chargeback' &&
+    _stReconProblemMemberId(p)
+  ) {
+    var utMid = _stReconProblemMemberId(p);
+    return (
+      '<button type="button" class="st-recon-quicklog-btn st-recon-btn-secondary" data-st-recon-action="quick-log" data-member-id="' +
+      _stEscape(utMid) +
+      '" data-customer="' +
+      _stEscape(p.customer || '') +
+      '" data-plan="' +
+      _stEscape(p.productName || '') +
+      '" data-date-ts="' +
+      _stEscape(String(Number(p.dateTs) || 0)) +
+      '" data-amount="' +
+      _stEscape(String(Number(p.amount) || 0)) +
+      '">Log this sale (optional)</button>'
+    );
+  }
+  return '';
+}
+
+function _stBuildReconcileProblemRowHtml(p, opts) {
+  opts = opts || {};
+  var readOnly = !!opts.readOnly;
+  if (!p) return '';
+  var reason = _stReconProblemReasonText(p);
+  var reasonClass = 'st-recon-priority-reason';
+  if (p.kind === 'untracked_chargeback') {
+    reasonClass += ' st-recon-reason-danger';
+  }
+  var actionHtml = _stBuildReconcileProblemActionHtml(p, opts);
+  var dupHtml = '';
+  if (
+    !readOnly &&
+    (p.kind === 'chargeback_candidate' ||
+      p.kind === 'untracked_chargeback')
+  ) {
+    var curWs =
+      (_stReconcileMatchView && _stReconcileMatchView.start) || 0;
+    var prior = _stFindPriorChargebackDeduction(
+      _stReconProblemMemberId(p),
+      curWs
+    );
+    if (prior) {
+      var weekLab =
+        prior.weekLabel || _stFmtWeekLabel(prior.weekStart) || 'a prior week';
+      dupHtml =
+        '<div class="st-recon-priority-dup">Possible duplicate: also deducted in ' +
+        _stEscape(weekLab) +
+        '.</div>';
+    }
+  }
+  var amt = Number(p.amount) || 0;
+  return (
+    '<div class="st-recon-priority-row">' +
+    '<div class="st-recon-priority-main">' +
+    '<div class="st-recon-priority-top">' +
+    '<span class="st-recon-priority-name">' +
+    _stEscape(p.customer || 'Unknown') +
+    '</span>' +
+    '<span class="st-recon-priority-amt">' +
+    _stEscape(_stFmtMoney(amt)) +
+    '</span></div>' +
+    '<div class="st-recon-priority-meta">' +
+    _stEscape(p.productName || 'Product') +
+    ' · ' +
+    _stEscape(_stReconFormatDate(p.dateTs)) +
+    '</div>' +
+    '<div class="' +
+    reasonClass +
+    '">' +
+    _stEscape(reason) +
+    '</div>' +
+    dupHtml +
+    '</div>' +
+    (actionHtml
+      ? '<div class="st-recon-priority-actions">' + actionHtml + '</div>'
+      : '') +
+    '</div>'
+  );
+}
+
+function _stBuildReconcileNotOnSheetGroupHtml(item) {
+  if (!item || !item.rows || !item.rows.length) return '';
+  var html =
+    '<details class="st-recon-priority-group">' +
+    '<summary class="st-recon-priority-group-summary">' +
+    _stEscape(item.customer || 'Unknown') +
+    ' - ' +
+    item.rows.length +
+    ' line items, ' +
+    _stEscape(_stFmtMoney(item.sortAmt || 0)) +
+    '</summary>' +
+    '<div class="st-recon-priority-group-body">';
   var i;
-
-  var actionRows = _stReconCollectActionRows(result);
-  if (actionRows.length) {
-    var attachN = result && result.attach ? result.attach.length : 0;
-    html += '<div class="st-recon-group st-recon-group-action">';
-    html +=
-      '<div class="st-recon-group-head">' +
-      '<div class="st-recon-group-title">Needs your action (' +
-      actionRows.length +
-      ')</div></div>';
-    if (!readOnly && attachN >= 2) {
-      html +=
-        '<div class="st-recon-attach-all-bar">' +
-        '<button type="button" class="st-recon-attach-all-btn" onclick="_stOpenAttachAllMemberIdConfirm()">Attach All (' +
-        attachN +
-        ')</button></div>';
-    }
-    html += '<div class="st-recon-problem-list">';
-    for (i = 0; i < actionRows.length; i++) {
-      html += _stBuildReconcileProblemRowHtml(actionRows[i], opts);
-    }
-    html += '</div></div>';
+  for (i = 0; i < item.rows.length; i++) {
+    html += _stBuildReconcileProblemRowHtml(item.rows[i], {
+      readOnly: true
+    });
   }
+  html += '</div></details>';
+  return html;
+}
 
-  var payrollRows = _stReconCollectPayrollErrorRows(result);
-  if (payrollRows.length) {
-    var payrollTotal = 0;
-    for (i = 0; i < payrollRows.length; i++) {
-      payrollTotal += Number(payrollRows[i].amount) || 0;
-    }
-    html += '<div class="st-recon-group st-recon-group-payroll">';
-    html +=
-      '<div class="st-recon-group-head">' +
-      '<div class="st-recon-group-title">Payroll errors to report (' +
-      payrollRows.length +
-      ') - ' +
-      _stEscape(_stFmtMoney(payrollTotal)) +
-      '</div>';
-    if (!readOnly) {
-      html +=
-        '<button type="button" class="st-recon-copy-summary-btn" data-st-recon-action="copy-payroll-summary">Copy summary for manager</button>';
-    }
-    html += '</div>';
-    html += '<div class="st-recon-problem-list">';
-    for (i = 0; i < payrollRows.length; i++) {
-      html += _stBuildReconcileProblemRowHtml(payrollRows[i], opts);
-    }
-    html += '</div></div>';
-  }
-
-  var notOnSheet =
-    result && result.notOnSheet ? result.notOnSheet : [];
-  if (notOnSheet.length) {
-    var groups = _stReconGroupNotOnSheetByCustomer(notOnSheet);
-    html +=
-      '<details class="st-recon-group st-recon-group-fyi">' +
-      '<summary class="st-recon-group-summary">Not on your pay sheet, FYI only (' +
-      notOnSheet.length +
-      ')</summary>' +
-      '<div class="st-recon-fyi-body">';
-    var gi;
-    for (gi = 0; gi < groups.length; gi++) {
-      var g = groups[gi];
-      var gRows = g.rows || [];
-      if (gRows.length > 1) {
-        html +=
-          '<details class="st-recon-fyi-customer">' +
-          '<summary class="st-recon-fyi-customer-summary">' +
-          _stEscape(g.customer) +
-          ' - ' +
-          gRows.length +
-          ' line items</summary>' +
-          '<div class="st-recon-problem-list st-recon-fyi-lines">';
-        for (i = 0; i < gRows.length; i++) {
-          html += _stBuildReconcileProblemRowHtml(gRows[i], {
-            readOnly: true
-          });
-        }
-        html += '</div></details>';
-      } else if (gRows.length === 1) {
-        html += _stBuildReconcileProblemRowHtml(gRows[0], {
-          readOnly: true
-        });
-      }
-    }
-    html += '</div></details>';
-  }
-
-  if (!html) {
-    if (result && typeof result.matched === 'number') {
-      return (
-        '<div class="st-empty st-empty-tight">No problems found. All pay-sheet rows matched.</div>'
-      );
-    }
+function _stBuildReconcilePriorityListHtml(result, opts) {
+  opts = opts || {};
+  var readOnly = !!opts.readOnly;
+  if (!result) {
     return (
       '<div class="st-empty st-empty-tight">Paste a pay sheet to see mismatches.</div>'
     );
   }
+  var needsN = _stReconCollectActionRows(result).length;
+  var reportN = _stReconCollectPayrollErrorRows(result).length;
+  var notN = result.notOnSheet ? result.notOnSheet.length : 0;
+  if (needsN + reportN + notN === 0) {
+    return '';
+  }
+  var html = '';
+  var attachN = result.attach ? result.attach.length : 0;
+  if (!readOnly && (attachN >= 2 || reportN > 0)) {
+    html += '<div class="st-recon-priority-toolbar">';
+    if (attachN >= 2) {
+      html +=
+        '<button type="button" class="st-recon-attach-all-btn" data-st-recon-action="attach-all">Attach All (' +
+        attachN +
+        ')</button>';
+    }
+    if (reportN > 0) {
+      html +=
+        '<button type="button" class="st-recon-copy-summary-btn" data-st-recon-action="copy-payroll-summary">Copy summary for manager</button>';
+    }
+    html += '</div>';
+  }
+  var items = _stReconBuildPriorityListItems(result);
+  html += '<div class="st-recon-priority-list">';
+  var i;
+  for (i = 0; i < items.length; i++) {
+    if (items[i].type === 'not_on_sheet_group') {
+      html += _stBuildReconcileNotOnSheetGroupHtml(items[i]);
+    } else {
+      html += _stBuildReconcileProblemRowHtml(items[i].problem, opts);
+    }
+  }
+  html += '</div>';
   return html;
 }
 
@@ -7950,14 +8107,15 @@ function _stBuildReconcileProblemsHtml(result, opts) {
   opts = opts || {};
   var readOnly = !!opts.readOnly;
   // Live Match results always include categorized arrays - use
-  // the grouped layout. History snapshots only have flat problems.
+  // the dollar-sorted priority list. History snapshots only have
+  // flat problems.
   if (
     !readOnly &&
     result &&
     Array.isArray(result.missing) &&
     Array.isArray(result.attach)
   ) {
-    return _stBuildReconcileGroupedProblemsHtml(result, opts);
+    return _stBuildReconcilePriorityListHtml(result, opts);
   }
   if (!result || !result.problems || !result.problems.length) {
     if (result && typeof result.matched === 'number') {
@@ -7969,21 +8127,7 @@ function _stBuildReconcileProblemsHtml(result, opts) {
       '<div class="st-empty st-empty-tight">Paste a pay sheet to see mismatches.</div>'
     );
   }
-  var html = '<div class="st-recon-problem-list">';
-  var attachN = 0;
-  var ai;
-  for (ai = 0; ai < result.problems.length; ai++) {
-    if (result.problems[ai] && result.problems[ai].kind === 'attach') {
-      attachN += 1;
-    }
-  }
-  if (!readOnly && attachN >= 2) {
-    html +=
-      '<div class="st-recon-attach-all-bar">' +
-      '<button type="button" class="st-recon-attach-all-btn" onclick="_stOpenAttachAllMemberIdConfirm()">Attach All (' +
-      attachN +
-      ')</button></div>';
-  }
+  var html = '<div class="st-recon-priority-list">';
   var i;
   for (i = 0; i < result.problems.length; i++) {
     html += _stBuildReconcileProblemRowHtml(result.problems[i], opts);
@@ -8745,6 +8889,8 @@ function _stBuildReconcilePane(sales, view) {
   html +=
     '<button type="button" class="st-recon-paste-btn" onclick="_stOpenPaySheetModal()">Paste pay sheet</button>';
   html += '</div>';
+
+  html += _stBuildReconcileOneLineSummaryHtml(result);
 
   var gapClass = gap > 0 ? ' is-gap' : ' is-zero';
   html += '<div class="st-recon-gap-hero">';
@@ -9892,6 +10038,10 @@ function _stHandleReconcileActionClick(btn) {
   var action = btn.getAttribute('data-st-recon-action') || '';
   if (action === 'attach') {
     _stOpenAttachMemberIdConfirm(btn.getAttribute('data-sale-id') || '');
+    return;
+  }
+  if (action === 'attach-all') {
+    _stOpenAttachAllMemberIdConfirm();
     return;
   }
   if (action === 'mark-status') {
