@@ -7691,7 +7691,7 @@ function _stOpenAttachMemberIdConfirm(saleId) {
   modal.className = 'st-entry-modal st-recon-attach-modal';
   var html = '';
   html +=
-    '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-attach-title" onclick="event.stopPropagation()">';
+    '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-attach-title">';
   html +=
     '<div class="st-entry-title" id="st-recon-attach-title">Attach Member ID</div>';
   html +=
@@ -7760,7 +7760,7 @@ function _stOpenReconcileChargebackConfirm(saleId, meta) {
     'st-entry-modal st-recon-attach-modal st-recon-chargeback-modal';
   var html = '';
   html +=
-    '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-cb-title" onclick="event.stopPropagation()">';
+    '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-cb-title">';
   html +=
     '<div class="st-entry-title" id="st-recon-cb-title">Mark status</div>';
   html +=
@@ -7918,7 +7918,7 @@ function _stOpenReconcileQuickLog(memberId, meta) {
   modal.className = 'st-entry-modal st-recon-quicklog-modal';
   var html = '';
   html +=
-    '<div class="st-entry-card st-recon-quicklog-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-ql-title" onclick="event.stopPropagation()">';
+    '<div class="st-entry-card st-recon-quicklog-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-ql-title">';
   html +=
     '<div class="st-entry-title" id="st-recon-ql-title">Log this sale</div>';
   html +=
@@ -8098,7 +8098,7 @@ function _stOpenAttachAllMemberIdConfirm() {
   modal.className = 'st-entry-modal st-recon-attach-modal';
   var html = '';
   html +=
-    '<div class="st-entry-card st-recon-attach-card st-recon-attach-all-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-attach-all-title" onclick="event.stopPropagation()">';
+    '<div class="st-entry-card st-recon-attach-card st-recon-attach-all-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-attach-all-title">';
   html +=
     '<div class="st-entry-title" id="st-recon-attach-all-title">Attach All Member IDs</div>';
   html +=
