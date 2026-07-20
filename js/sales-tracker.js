@@ -4431,6 +4431,9 @@ var _stReconcileResult = null;
 var _stReconcileMatchView = null;
 var _stCbSearchQuery = '';
 var _stCbSelectedId = '';
+// In-memory only: attach / mark-status / log-this-sale confirms since
+// the last paste-Match. Reset on new Match; never persisted.
+var _stReconcileSessionResolved = [];
 
 // Toggle handler: called from the This Week / All Sales
 // buttons at the top of the sales table.
@@ -7556,11 +7559,23 @@ function _stRerunPaySheetMatch(opts) {
   return true;
 }
 
+function _stReconcileSessionReset() {
+  _stReconcileSessionResolved = [];
+}
+
+function _stReconcileSessionPush(label) {
+  var s = String(label || '').trim();
+  if (!s) return;
+  if (!_stReconcileSessionResolved) _stReconcileSessionResolved = [];
+  _stReconcileSessionResolved.push(s);
+}
+
 function _stSubmitPaySheetMatch() {
   var ta = document.getElementById('st-paysheet-textarea');
   var text = ta ? String(ta.value || '') : '';
   var rows = _stParsePaySheet(text);
   _stPaySheetRows = rows;
+  _stReconcileSessionReset();
   var sales = _stLoadSales();
   var detectedWs = _stReconDetectWeekFromRows(rows);
   var view;
@@ -7627,9 +7642,323 @@ function _stReconFormatDate(ts) {
   }
 }
 
+function _stBuildReconcileProblemRowHtml(p, opts) {
+  opts = opts || {};
+  var readOnly = !!opts.readOnly;
+  if (!p) return '';
+  var actionHtml = '';
+  if (
+    !readOnly &&
+    p.kind === 'attach' &&
+    p.attachSaleId &&
+    p.attachMemberId
+  ) {
+    actionHtml =
+      '<button type="button" class="st-recon-attach-btn" data-st-recon-action="attach" data-sale-id="' +
+      _stEscape(String(p.attachSaleId)) +
+      '">Attach ID</button>';
+  } else if (
+    !readOnly &&
+    p.kind === 'chargeback_candidate' &&
+    p.chargebackSaleId
+  ) {
+    actionHtml =
+      '<button type="button" class="st-recon-chargeback-btn" data-st-recon-action="mark-status" data-sale-id="' +
+      _stEscape(String(p.chargebackSaleId)) +
+      '" data-customer="' +
+      _stEscape(p.customer || 'Unknown') +
+      '" data-date-ts="' +
+      _stEscape(String(Number(p.dateTs) || 0)) +
+      '">Mark status</button>';
+  } else if (
+    !readOnly &&
+    p.kind === 'untracked_chargeback' &&
+    _stReconNormMemberId(p.attachMemberId || (p.pay && p.pay.memberId))
+  ) {
+    var utMid = _stReconNormMemberId(
+      p.attachMemberId || (p.pay && p.pay.memberId)
+    );
+    actionHtml =
+      '<button type="button" class="st-recon-quicklog-btn" data-st-recon-action="quick-log" data-member-id="' +
+      _stEscape(utMid) +
+      '" data-customer="' +
+      _stEscape(p.customer || '') +
+      '" data-plan="' +
+      _stEscape(p.productName || '') +
+      '" data-date-ts="' +
+      _stEscape(String(Number(p.dateTs) || 0)) +
+      '" data-amount="' +
+      _stEscape(String(Number(p.amount) || 0)) +
+      '">Log this sale</button>';
+  } else {
+    actionHtml =
+      '<span class="' +
+      _stReconKindPillClass(p.kind) +
+      '">' +
+      _stEscape(_stReconKindLabel(p.kind)) +
+      '</span>';
+  }
+  return (
+    '<div class="st-recon-problem-row">' +
+    '<div class="st-recon-problem-main">' +
+    '<div class="st-recon-problem-name">' +
+    _stEscape(p.customer || 'Unknown') +
+    '</div>' +
+    '<div class="st-recon-problem-meta">' +
+    _stEscape(p.productName || 'Product') +
+    ' · ' +
+    _stEscape(_stReconFormatDate(p.dateTs)) +
+    '</div></div>' +
+    actionHtml +
+    '</div>'
+  );
+}
+
+function _stReconCollectActionRows(result) {
+  var out = [];
+  var i;
+  var attach = result && result.attach ? result.attach : [];
+  for (i = 0; i < attach.length; i++) {
+    if (attach[i]) out.push(attach[i]);
+  }
+  var cbs = result && result.chargebackCandidates ? result.chargebackCandidates : [];
+  for (i = 0; i < cbs.length; i++) {
+    if (cbs[i]) out.push(cbs[i]);
+  }
+  var ut = result && result.untrackedChargebacks ? result.untrackedChargebacks : [];
+  for (i = 0; i < ut.length; i++) {
+    if (!ut[i]) continue;
+    // Log-this-sale rows: negative pay-sheet amount, no local match
+    if (Number(ut[i].amount) < 0) out.push(ut[i]);
+  }
+  return out;
+}
+
+function _stReconCollectPayrollErrorRows(result) {
+  var out = [];
+  var i;
+  var miss = result && result.missing ? result.missing : [];
+  for (i = 0; i < miss.length; i++) {
+    if (miss[i]) out.push(miss[i]);
+  }
+  var mis = result && result.mislabeled ? result.mislabeled : [];
+  for (i = 0; i < mis.length; i++) {
+    if (mis[i]) out.push(mis[i]);
+  }
+  return out;
+}
+
+function _stReconGroupNotOnSheetByCustomer(rows) {
+  var map = {};
+  var order = [];
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var p = rows[i];
+    if (!p) continue;
+    var key = String(p.customer || '').trim() || 'Unknown';
+    if (!map[key]) {
+      map[key] = [];
+      order.push(key);
+    }
+    map[key].push(p);
+  }
+  var groups = [];
+  for (i = 0; i < order.length; i++) {
+    groups.push({ customer: order[i], rows: map[order[i]] });
+  }
+  return groups;
+}
+
+function _stBuildPayrollErrorsCopyText(result) {
+  var rows = _stReconCollectPayrollErrorRows(result);
+  var lines = [];
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var p = rows[i];
+    if (!p) continue;
+    var kind =
+      p.kind === 'mislabeled' ? 'mislabeled' : 'missing';
+    lines.push(
+      (p.customer || 'Unknown') +
+        ' (' +
+        _stReconFormatDate(p.dateTs) +
+        ') - ' +
+        (p.productName || 'Product') +
+        ' - ' +
+        kind +
+        ' - ' +
+        _stFmtMoney(Number(p.amount) || 0)
+    );
+  }
+  return lines.join('\n');
+}
+
+function _stCopyTextFallback(text, onOk, onFail) {
+  var ta = document.createElement('textarea');
+  ta.value = String(text || '');
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'absolute';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  var ok = false;
+  try {
+    ok = document.execCommand('copy');
+  } catch (_e) {
+    ok = false;
+  }
+  if (ta.parentNode) ta.parentNode.removeChild(ta);
+  if (ok) {
+    if (typeof onOk === 'function') onOk();
+  } else if (typeof onFail === 'function') {
+    onFail();
+  }
+}
+
+function _stCopyReconcilePayrollSummary() {
+  var text = _stBuildPayrollErrorsCopyText(_stReconcileResult);
+  if (!text) {
+    _stFlash('Nothing to copy in Payroll errors.', 'warn');
+    return;
+  }
+  function onOk() {
+    _stFlash('Copied summary for manager.', 'ok');
+  }
+  function onFail() {
+    _stFlash('Could not copy to clipboard.', 'warn');
+  }
+  if (
+    typeof navigator !== 'undefined' &&
+    navigator.clipboard &&
+    typeof navigator.clipboard.writeText === 'function'
+  ) {
+    navigator.clipboard.writeText(text).then(onOk).catch(function () {
+      _stCopyTextFallback(text, onOk, onFail);
+    });
+    return;
+  }
+  _stCopyTextFallback(text, onOk, onFail);
+}
+
+function _stBuildReconcileGroupedProblemsHtml(result, opts) {
+  opts = opts || {};
+  var readOnly = !!opts.readOnly;
+  var html = '';
+  var i;
+
+  var actionRows = _stReconCollectActionRows(result);
+  if (actionRows.length) {
+    var attachN = result && result.attach ? result.attach.length : 0;
+    html += '<div class="st-recon-group st-recon-group-action">';
+    html +=
+      '<div class="st-recon-group-head">' +
+      '<div class="st-recon-group-title">Needs your action (' +
+      actionRows.length +
+      ')</div></div>';
+    if (!readOnly && attachN >= 2) {
+      html +=
+        '<div class="st-recon-attach-all-bar">' +
+        '<button type="button" class="st-recon-attach-all-btn" onclick="_stOpenAttachAllMemberIdConfirm()">Attach All (' +
+        attachN +
+        ')</button></div>';
+    }
+    html += '<div class="st-recon-problem-list">';
+    for (i = 0; i < actionRows.length; i++) {
+      html += _stBuildReconcileProblemRowHtml(actionRows[i], opts);
+    }
+    html += '</div></div>';
+  }
+
+  var payrollRows = _stReconCollectPayrollErrorRows(result);
+  if (payrollRows.length) {
+    var payrollTotal = 0;
+    for (i = 0; i < payrollRows.length; i++) {
+      payrollTotal += Number(payrollRows[i].amount) || 0;
+    }
+    html += '<div class="st-recon-group st-recon-group-payroll">';
+    html +=
+      '<div class="st-recon-group-head">' +
+      '<div class="st-recon-group-title">Payroll errors to report (' +
+      payrollRows.length +
+      ') - ' +
+      _stEscape(_stFmtMoney(payrollTotal)) +
+      '</div>';
+    if (!readOnly) {
+      html +=
+        '<button type="button" class="st-recon-copy-summary-btn" data-st-recon-action="copy-payroll-summary">Copy summary for manager</button>';
+    }
+    html += '</div>';
+    html += '<div class="st-recon-problem-list">';
+    for (i = 0; i < payrollRows.length; i++) {
+      html += _stBuildReconcileProblemRowHtml(payrollRows[i], opts);
+    }
+    html += '</div></div>';
+  }
+
+  var notOnSheet =
+    result && result.notOnSheet ? result.notOnSheet : [];
+  if (notOnSheet.length) {
+    var groups = _stReconGroupNotOnSheetByCustomer(notOnSheet);
+    html +=
+      '<details class="st-recon-group st-recon-group-fyi">' +
+      '<summary class="st-recon-group-summary">Not on your pay sheet, FYI only (' +
+      notOnSheet.length +
+      ')</summary>' +
+      '<div class="st-recon-fyi-body">';
+    var gi;
+    for (gi = 0; gi < groups.length; gi++) {
+      var g = groups[gi];
+      var gRows = g.rows || [];
+      if (gRows.length > 1) {
+        html +=
+          '<details class="st-recon-fyi-customer">' +
+          '<summary class="st-recon-fyi-customer-summary">' +
+          _stEscape(g.customer) +
+          ' - ' +
+          gRows.length +
+          ' line items</summary>' +
+          '<div class="st-recon-problem-list st-recon-fyi-lines">';
+        for (i = 0; i < gRows.length; i++) {
+          html += _stBuildReconcileProblemRowHtml(gRows[i], {
+            readOnly: true
+          });
+        }
+        html += '</div></details>';
+      } else if (gRows.length === 1) {
+        html += _stBuildReconcileProblemRowHtml(gRows[0], {
+          readOnly: true
+        });
+      }
+    }
+    html += '</div></details>';
+  }
+
+  if (!html) {
+    if (result && typeof result.matched === 'number') {
+      return (
+        '<div class="st-empty st-empty-tight">No problems found. All pay-sheet rows matched.</div>'
+      );
+    }
+    return (
+      '<div class="st-empty st-empty-tight">Paste a pay sheet to see mismatches.</div>'
+    );
+  }
+  return html;
+}
+
 function _stBuildReconcileProblemsHtml(result, opts) {
   opts = opts || {};
   var readOnly = !!opts.readOnly;
+  // Live Match results always include categorized arrays - use
+  // the grouped layout. History snapshots only have flat problems.
+  if (
+    !readOnly &&
+    result &&
+    Array.isArray(result.missing) &&
+    Array.isArray(result.attach)
+  ) {
+    return _stBuildReconcileGroupedProblemsHtml(result, opts);
+  }
   if (!result || !result.problems || !result.problems.length) {
     if (result && typeof result.matched === 'number') {
       return (
@@ -7641,7 +7970,13 @@ function _stBuildReconcileProblemsHtml(result, opts) {
     );
   }
   var html = '<div class="st-recon-problem-list">';
-  var attachN = result.attach ? result.attach.length : 0;
+  var attachN = 0;
+  var ai;
+  for (ai = 0; ai < result.problems.length; ai++) {
+    if (result.problems[ai] && result.problems[ai].kind === 'attach') {
+      attachN += 1;
+    }
+  }
   if (!readOnly && attachN >= 2) {
     html +=
       '<div class="st-recon-attach-all-bar">' +
@@ -7651,73 +7986,30 @@ function _stBuildReconcileProblemsHtml(result, opts) {
   }
   var i;
   for (i = 0; i < result.problems.length; i++) {
-    var p = result.problems[i];
-    var actionHtml = '';
-    if (
-      !readOnly &&
-      p.kind === 'attach' &&
-      p.attachSaleId &&
-      p.attachMemberId
-    ) {
-      actionHtml =
-        '<button type="button" class="st-recon-attach-btn" data-st-recon-action="attach" data-sale-id="' +
-        _stEscape(String(p.attachSaleId)) +
-        '">Attach ID</button>';
-    } else if (
-      !readOnly &&
-      p.kind === 'chargeback_candidate' &&
-      p.chargebackSaleId
-    ) {
-      actionHtml =
-        '<button type="button" class="st-recon-chargeback-btn" data-st-recon-action="mark-status" data-sale-id="' +
-        _stEscape(String(p.chargebackSaleId)) +
-        '" data-customer="' +
-        _stEscape(p.customer || 'Unknown') +
-        '" data-date-ts="' +
-        _stEscape(String(Number(p.dateTs) || 0)) +
-        '">Mark status</button>';
-    } else if (
-      !readOnly &&
-      p.kind === 'untracked_chargeback' &&
-      _stReconNormMemberId(p.attachMemberId || (p.pay && p.pay.memberId))
-    ) {
-      var utMid = _stReconNormMemberId(
-        p.attachMemberId || (p.pay && p.pay.memberId)
-      );
-      actionHtml =
-        '<button type="button" class="st-recon-quicklog-btn" data-st-recon-action="quick-log" data-member-id="' +
-        _stEscape(utMid) +
-        '" data-customer="' +
-        _stEscape(p.customer || '') +
-        '" data-plan="' +
-        _stEscape(p.productName || '') +
-        '" data-date-ts="' +
-        _stEscape(String(Number(p.dateTs) || 0)) +
-        '" data-amount="' +
-        _stEscape(String(Number(p.amount) || 0)) +
-        '">Log this sale</button>';
-    } else {
-      actionHtml =
-        '<span class="' +
-        _stReconKindPillClass(p.kind) +
-        '">' +
-        _stEscape(_stReconKindLabel(p.kind)) +
-        '</span>';
-    }
-    html +=
-      '<div class="st-recon-problem-row">' +
-      '<div class="st-recon-problem-main">' +
-      '<div class="st-recon-problem-name">' +
-      _stEscape(p.customer || 'Unknown') +
-      '</div>' +
-      '<div class="st-recon-problem-meta">' +
-      _stEscape(p.productName || 'Product') +
-      ' · ' +
-      _stEscape(_stReconFormatDate(p.dateTs)) +
-      '</div></div>' +
-      actionHtml +
-      '</div>';
+    html += _stBuildReconcileProblemRowHtml(result.problems[i], opts);
   }
+  html += '</div>';
+  return html;
+}
+
+function _stBuildReconcileResolvedStripHtml() {
+  var items = _stReconcileSessionResolved || [];
+  if (!items.length) return '';
+  var html =
+    '<div class="st-recon-resolved-strip" aria-label="Resolved this session">';
+  html +=
+    '<div class="st-recon-resolved-label">Resolved this session</div>';
+  html += '<ul class="st-recon-resolved-list">';
+  var i;
+  for (i = 0; i < items.length; i++) {
+    html +=
+      '<li class="st-recon-resolved-item">' +
+      _stEscape(items[i]) +
+      '</li>';
+  }
+  html += '</ul>';
+  html +=
+    '<button type="button" class="st-recon-resolved-history" data-st-recon-action="goto-history">View History</button>';
   html += '</div>';
   return html;
 }
@@ -7918,11 +8210,19 @@ function _stConfirmReconcileChargeback(saleId, newStatus) {
     _stFlash('Choose Chargeback or Same-week cancel.', 'warn');
     return;
   }
-  if (!_stFindSaleById(sid)) {
+  var sale = _stFindSaleById(sid);
+  if (!sale) {
     _stFlash('Cannot mark status - missing sale.', 'warn');
     return;
   }
+  var custName = String(sale.customer || 'Unknown');
   _stUpdateSaleStatus(sid, st);
+  _stReconcileSessionPush(
+    custName +
+      (st === 'samecancel'
+        ? ' - marked same-week cancel'
+        : ' - marked chargeback')
+  );
   _stRerunPaySheetMatch({
     flashMsg:
       st === 'samecancel' ? 'Marked same-week cancel.' : 'Marked chargeback.',
@@ -8149,6 +8449,12 @@ function _stSaveReconcileQuickLog() {
   });
   if (!ok) return;
   _stCloseReconcileQuickLog();
+  _stReconcileSessionPush(
+    customer +
+      (st === 'samecancel'
+        ? ' - logged same-week cancel'
+        : ' - logged chargeback')
+  );
   _stRerunPaySheetMatch({
     flashMsg:
       st === 'samecancel'
@@ -8266,7 +8572,12 @@ function _stConfirmAttachAllMemberIds() {
     var p = items[i];
     var sid = String(p.attachSaleId || '');
     var mid = _stReconNormMemberId(p.attachMemberId);
-    if (_stApplyAttachMemberIdToSales(sales, sid, mid)) attached++;
+    if (_stApplyAttachMemberIdToSales(sales, sid, mid)) {
+      attached++;
+      _stReconcileSessionPush(
+        String(p.customer || 'Unknown') + ' - attached Member ID'
+      );
+    }
   }
   if (attached > 0) _stSaveSales(sales);
   _stRerunPaySheetMatch({
@@ -8299,6 +8610,10 @@ function _stConfirmAttachMemberId(saleId) {
   }
   _stSaveSales(sales);
   _stCloseAttachMemberIdConfirm();
+  _stReconcileSessionPush(
+    String((problem && problem.customer) || 'Unknown') +
+      ' - attached Member ID'
+  );
   _stRerunPaySheetMatch({
     flashMsg: 'Attached Member ID ' + mid + '.',
     flashKind: 'ok'
@@ -8431,6 +8746,18 @@ function _stBuildReconcilePane(sales, view) {
     '<button type="button" class="st-recon-paste-btn" onclick="_stOpenPaySheetModal()">Paste pay sheet</button>';
   html += '</div>';
 
+  var gapClass = gap > 0 ? ' is-gap' : ' is-zero';
+  html += '<div class="st-recon-gap-hero">';
+  html +=
+    '<span class="st-recon-gap-label">Est. commission gap</span>';
+  html +=
+    '<strong class="st-recon-gap-val' +
+    gapClass +
+    '">' +
+    _stFmtMoney(gap) +
+    '</strong>';
+  html += '</div>';
+
   html += '<div class="st-recon-stats">';
   html +=
     '<div class="st-recon-stat"><span class="st-recon-stat-label">Deals matched</span><strong class="st-recon-stat-val">' +
@@ -8444,14 +8771,11 @@ function _stBuildReconcilePane(sales, view) {
     '<div class="st-recon-stat"><span class="st-recon-stat-label">Mislabeled</span><strong class="st-recon-stat-val">' +
     misN +
     '</strong></div>';
-  html +=
-    '<div class="st-recon-stat"><span class="st-recon-stat-label">Est. commission gap</span><strong class="st-recon-stat-val">' +
-    _stFmtMoney(gap) +
-    '</strong></div>';
   html += '</div>';
 
+  html += _stBuildReconcileResolvedStripHtml();
+
   html += '<div class="st-recon-problems-wrap">';
-  html += '<div class="st-recon-section-label">Problem rows</div>';
   html += _stBuildReconcileProblemsHtml(result);
   html += '</div>';
 
@@ -9630,6 +9954,14 @@ function _stHandleReconcileActionClick(btn) {
     _stConfirmDeleteReconcileHistory(
       btn.getAttribute('data-history-id') || ''
     );
+    return;
+  }
+  if (action === 'copy-payroll-summary') {
+    _stCopyReconcilePayrollSummary();
+    return;
+  }
+  if (action === 'goto-history') {
+    if (!_stHistoryMode) _stToggleHistoryMode();
   }
 }
 
