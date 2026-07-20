@@ -6801,6 +6801,90 @@ function _stCloseReconcileHistoryRecord() {
   _stRender();
 }
 
+function _stCloseDeleteReconcileHistoryConfirm() {
+  var modal = document.getElementById('st-recon-history-delete-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stDeleteReconcileHistoryConfirmIsOpen() {
+  return !!document.getElementById('st-recon-history-delete-modal');
+}
+
+function _stOpenDeleteReconcileHistoryConfirm(id, weekLabel) {
+  _stCloseDeleteReconcileHistoryConfirm();
+  var sid = String(id || '');
+  if (!sid) {
+    _stFlash('Saved pay sheet not found.', 'warn');
+    return;
+  }
+  var rec = _stFindReconcileHistoryRecord(sid);
+  if (!rec) {
+    _stFlash('Saved pay sheet not found.', 'warn');
+    return;
+  }
+  var label =
+    String(weekLabel || '') ||
+    rec.weekLabel ||
+    _stFmtWeekLabel(rec.weekStart) ||
+    'unknown week';
+  var modal = document.createElement('div');
+  modal.id = 'st-recon-history-delete-modal';
+  modal.className = 'st-entry-modal st-recon-attach-modal';
+  var html = '';
+  html +=
+    '<div class="st-entry-card st-recon-attach-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-hist-del-title">';
+  html +=
+    '<div class="st-entry-title" id="st-recon-hist-del-title">Delete saved pay sheet</div>';
+  html +=
+    '<p class="st-recon-attach-msg">Delete saved pay sheet for week of ' +
+    _stEscape(label) +
+    '?</p>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" data-st-recon-action="close-delete-history">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save st-recon-history-del-confirm" data-st-recon-action="confirm-delete-history" data-history-id="' +
+    _stEscape(sid) +
+    '">Confirm</button>';
+  html += '</div></div>';
+  modal.innerHTML = html;
+  modal.addEventListener('click', function (ev) {
+    if (ev.target === modal) _stCloseDeleteReconcileHistoryConfirm();
+  });
+  document.body.appendChild(modal);
+}
+
+function _stConfirmDeleteReconcileHistory(id) {
+  var sid = String(id || '');
+  _stCloseDeleteReconcileHistoryConfirm();
+  if (!sid) {
+    _stFlash('Saved pay sheet not found.', 'warn');
+    return;
+  }
+  if (String(_stHistoryViewingId || '') === sid) {
+    _stHistoryViewingId = '';
+  }
+  var list = _stLoadReconcileHistory();
+  var next = [];
+  var i;
+  var removed = false;
+  for (i = 0; i < list.length; i++) {
+    if (!list[i]) continue;
+    if (String(list[i].id || '') === sid) {
+      removed = true;
+      continue;
+    }
+    next.push(list[i]);
+  }
+  if (!removed) {
+    _stFlash('Saved pay sheet not found.', 'warn');
+    return;
+  }
+  _stSaveReconcileHistory(next);
+  _stFlash('Saved pay sheet deleted.', 'ok');
+  _stRender();
+}
+
 function _stSaleStatusChangedTs(sale) {
   if (!sale) return 0;
   var n =
@@ -8472,6 +8556,7 @@ function _stBuildReconcileHistoryPane(sales) {
         (Number(c.untrackedChargebacks) || 0) +
         ' untracked';
       var weekLabel = rec.weekLabel || _stFmtWeekLabel(rec.weekStart);
+      var hid = String(rec.id || '');
       html +=
         '<div class="st-recon-history-row">' +
         '<div class="st-recon-history-main">' +
@@ -8484,9 +8569,17 @@ function _stBuildReconcileHistoryPane(sales) {
           ? ' · saved ' + _stEscape(_stFmtHistorySavedAt(rec.savedAt))
           : '') +
         '</div></div>' +
-        '<button type="button" class="st-recon-history-view" onclick="_stViewReconcileHistoryRecord(\'' +
-        _stEscape(String(rec.id || '')).replace(/'/g, '') +
-        '\')">View</button></div>';
+        '<div class="st-recon-history-actions">' +
+        '<button type="button" class="st-recon-history-view" data-st-recon-action="view-history" data-history-id="' +
+        _stEscape(hid) +
+        '">View</button>' +
+        '<button type="button" class="st-recon-history-delete" data-st-recon-action="delete-history" data-history-id="' +
+        _stEscape(hid) +
+        '" data-week-label="' +
+        _stEscape(weekLabel) +
+        '" title="Delete" aria-label="Delete saved pay sheet">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>' +
+        '</button></div></div>';
     }
     html += '</div>';
   }
@@ -9346,6 +9439,10 @@ function _stRender() {
         _stCloseReconcileQuickLog();
         return;
       }
+      if (_stDeleteReconcileHistoryConfirmIsOpen()) {
+        _stCloseDeleteReconcileHistoryConfirm();
+        return;
+      }
       if (_stAttachMemberIdConfirmIsOpen()) {
         _stCloseAttachMemberIdConfirm();
         return;
@@ -9478,6 +9575,27 @@ function _stHandleReconcileActionClick(btn) {
   }
   if (action === 'save-quick-log') {
     _stSaveReconcileQuickLog();
+    return;
+  }
+  if (action === 'view-history') {
+    _stViewReconcileHistoryRecord(btn.getAttribute('data-history-id') || '');
+    return;
+  }
+  if (action === 'delete-history') {
+    _stOpenDeleteReconcileHistoryConfirm(
+      btn.getAttribute('data-history-id') || '',
+      btn.getAttribute('data-week-label') || ''
+    );
+    return;
+  }
+  if (action === 'close-delete-history') {
+    _stCloseDeleteReconcileHistoryConfirm();
+    return;
+  }
+  if (action === 'confirm-delete-history') {
+    _stConfirmDeleteReconcileHistory(
+      btn.getAttribute('data-history-id') || ''
+    );
   }
 }
 
