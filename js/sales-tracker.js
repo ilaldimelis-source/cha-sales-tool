@@ -1678,6 +1678,24 @@ function _stParseReceipt(text, useGroq) {
   return out;
 }
 
+// High-confidence Member ID from a FirstEnroll/NEO confirmation
+// header line, e.g.:
+//   "July 20, 2026 at 1:20 PM - 687439223 - Mario Aucacama"
+// Requires the date/time + " - " + 9 digits + " - " + name
+// structure so policy numbers, phones, and amounts elsewhere
+// are not mistaken for the member ID. Returns '' when absent.
+// Callers should prefer this over parsed.memberId when they
+// differ (add-on-only receipts can otherwise pick up a Policy).
+function _stExtractHeaderMemberId(text) {
+  if (!text) return '';
+  var m = String(text).match(
+    /[A-Za-z]+\s+\d{1,2},\s*\d{4}\s+at\s+\d{1,2}:\d{2}\s*(?:am|pm)?\s*-\s*(\d{9})\s*-\s*\S/i
+  );
+  if (!m || !m[1]) return '';
+  if (!/^\d{9}$/.test(m[1])) return '';
+  return m[1];
+}
+
 // ── COMMISSION COMPUTATION ──────────────────────────────────
 // Given a single sale (deal or addon) and current rate config,
 // returns the commission dollar amount for that individual
@@ -2804,6 +2822,10 @@ function _stAutoDetectAndAdd() {
   for (var ci = 0; ci < chunks.length; ci++) {
     var chunk = chunks[ci];
     var pc = _stParseReceipt(chunk, true);
+    var headerMidChunk = _stExtractHeaderMemberId(chunk);
+    if (headerMidChunk && pc && headerMidChunk !== pc.memberId) {
+      pc.memberId = headerMidChunk;
+    }
     if (!pc || !pc.products.length) continue;
     parsedChunks.push({ parsed: pc, raw: chunk });
   }
@@ -2855,6 +2877,10 @@ function _stAddSale(saleType) {
   }
   if (!_stValidateDateForMode()) return;
   var parsed = _stParseReceipt(text, true);
+  var headerMidAdd = _stExtractHeaderMemberId(text);
+  if (headerMidAdd && parsed && headerMidAdd !== parsed.memberId) {
+    parsed.memberId = headerMidAdd;
+  }
   var first = parsed.products[0] || { name: '', price: 0, policy: '' };
   var isBackfill = _stIsPastSaleMode();
 
@@ -2961,6 +2987,10 @@ function _stReceiptInputChanged() {
     return;
   }
   var parsed = _stParseReceipt(input.value, false);
+  var headerMidLive = _stExtractHeaderMemberId(input.value);
+  if (headerMidLive && parsed && headerMidLive !== parsed.memberId) {
+    parsed.memberId = headerMidLive;
+  }
   _stUpdateReceiptPreview();
   if (!parsed || !parsed.saleDate) return;
   var f = document.getElementById('st-date-sold');
@@ -2994,6 +3024,10 @@ function _stUpdateReceiptPreview() {
   var anyContent = false;
   for (var ci = 0; ci < chunks.length; ci++) {
     var p = _stParseReceipt(chunks[ci], false);
+    var headerMidPrev = _stExtractHeaderMemberId(chunks[ci]);
+    if (headerMidPrev && p && headerMidPrev !== p.memberId) {
+      p.memberId = headerMidPrev;
+    }
     if (!p) continue;
     for (var i = 0; i < p.products.length; i++) {
       var pr = p.products[i];
