@@ -301,8 +301,11 @@ function _stClassifyAddon(name) {
   var n = String(name).toLowerCase();
   // GAP support products
   if (/\bgap(support)?\b/.test(n)) return 'gap';
-  // Compass VAB only (100%) — must run before Rx/telemed
+  // Compass VAB only (100%) — must run before telemed / Rx
   if (/\bcompass\b/.test(n) && /\bvab\b/.test(n)) return 'compassVab';
+  // Telemed (25% standard) — Compass Telemed, Better TeleMed, etc.
+  // Independent of Compass VAB (100%) and Rx (20%)
+  if (/\btelemed\b/.test(n)) return 'standard';
   // Direct Access DVH (35%)
   if (/\bdirect access\b/.test(n) && /\bdvh\b/.test(n)) return 'dvhDirect';
   // Dental / Vision / Life / Catastrophic / generic DVH (25%)
@@ -327,9 +330,9 @@ function _stClassifyAddon(name) {
     return 'accident';
   }
   // Rx / prescription discounts (SureScript, BestChoice, Better Rx;
-  // not RxSavers — flat $ in compute; not Compass VAB)
+  // not RxSavers — flat $ in compute; not Telemed / Compass VAB)
   if (
-    /\b(rx|prescription|surescript|bestchoice|prime health pass|assistpro|mdlive|telemed)\b/.test(
+    /\b(rx|prescription|surescript|bestchoice|prime health pass|assistpro|mdlive)\b/.test(
       n
     )
   ) {
