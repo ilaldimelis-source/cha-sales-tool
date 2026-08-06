@@ -226,8 +226,12 @@ var CHA_DEFAULT_COMMISSION_RATES = {
     standard: 0.25,
     dvh: 0.25, // dental / vision / life / catastrophic
     dvhDirect: 0.35, // Direct Access DVH
-    accident: 1.0, // AD&D, AccessCare Pro, NowCare, Continue Care, Wellness4U
-    rx: 0.2, // SureScript, BestChoice
+    accident: 1.0, // AccessCare Pro, NowCare, Continue Care, Wellness4U
+    ame: 0.7, // AME $500, AME $1,000
+    adnd: 1.0, // AD&D coverage amounts (was incorrectly lumped with AME at 70%)
+    criticalIllness: 0.7, // American Financial Critical Illness
+    compassVab: 1.0, // Compass VAB only (not Telemed / Better Rx)
+    rx: 0.2, // SureScript, BestChoice, Better Rx
     gap: 0.5 // GAP
   },
   enrollmentBonus: 20 // dollars per $125 enrollment
@@ -277,6 +281,10 @@ function _stCloneRates(r) {
       dvh: r.addonTypes.dvh,
       dvhDirect: r.addonTypes.dvhDirect,
       accident: r.addonTypes.accident,
+      ame: r.addonTypes.ame,
+      adnd: r.addonTypes.adnd,
+      criticalIllness: r.addonTypes.criticalIllness,
+      compassVab: r.addonTypes.compassVab,
       rx: r.addonTypes.rx,
       gap: r.addonTypes.gap
     },
@@ -284,13 +292,17 @@ function _stCloneRates(r) {
   };
 }
 
-// Classify an add-on plan name into one of the 5 commission
-// categories. Falls back to 'standard' if nothing matches.
+// Classify an add-on plan name into a commission category.
+// Falls back to 'standard' if nothing matches. Order is
+// intentional: AME before AD&D (no cross-match), Compass VAB
+// before Rx/telemed keywords, Critical Illness as its own bucket.
 function _stClassifyAddon(name) {
   if (!name) return 'standard';
   var n = String(name).toLowerCase();
   // GAP support products
   if (/\bgap(support)?\b/.test(n)) return 'gap';
+  // Compass VAB only (100%) — must run before Rx/telemed
+  if (/\bcompass\b/.test(n) && /\bvab\b/.test(n)) return 'compassVab';
   // Direct Access DVH (35%)
   if (/\bdirect access\b/.test(n) && /\bdvh\b/.test(n)) return 'dvhDirect';
   // Dental / Vision / Life / Catastrophic / generic DVH (25%)
@@ -299,15 +311,23 @@ function _stClassifyAddon(name) {
   ) {
     return 'dvh';
   }
-  // AD&D, AccessCare Pro, NowCare, Continue Care, Wellness4U
+  // AME (70%) — check before AD&D; \bame\b does not match "AD&D"
+  if (/\bame\b/.test(n)) return 'ame';
+  // AD&D (100%) — require & or "and" so "Add-on" / AME never match
+  if (/\bad\s*&\s*d\b|\bad and d\b/.test(n)) return 'adnd';
+  // Critical Illness (70%) — explicit category (was uncategorized /
+  // lumped into accident)
+  if (/\bcritical illness\b/.test(n)) return 'criticalIllness';
+  // Other accident-family products (AccessCare Pro, NowCare, etc.)
   if (
-    /\b(accesscare pro|nowcare|continue care|wellness4u|accident|ad&?d|ad and d|ame|critical illness|critical care|hospital expense|cancer)\b/.test(
+    /\b(accesscare pro|nowcare|continue care|wellness4u|accident|critical care|hospital expense|cancer)\b/.test(
       n
     )
   ) {
     return 'accident';
   }
-  // Rx / prescription discounts (SureScript, BestChoice; not RxSavers — flat $ in compute)
+  // Rx / prescription discounts (SureScript, BestChoice, Better Rx;
+  // not RxSavers — flat $ in compute; not Compass VAB)
   if (
     /\b(rx|prescription|surescript|bestchoice|prime health pass|assistpro|mdlive|telemed)\b/.test(
       n
