@@ -831,6 +831,33 @@ function _stGroqSyncReceiptPrimary(raw) {
         });
       }
     }
+    // Literal-price override: this receipt layout ("Product $X.XX" lines)
+    // already prints the true monthly amount as plain text. Groq is asked
+    // for a MONTHLY premium but can misread a printed dollar figure as an
+    // annual one and divide it down. When this layout's signature is
+    // present and the count of literal prices matches the count of
+    // products Groq returned, trust the literal printed amounts (in
+    // document order) over Groq's guess.
+    var litProductRe = /\bproduct\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
+    var litEnrollmentRe = /enrollment|one[-\s]?time|sign[-\s]?up\s+fee/i;
+    var litTotalRe = /^\s*total\b/i;
+    var litLines = raw.split(/\r?\n/);
+    var litPrices = [];
+    for (var lli = 0; lli < litLines.length; lli++) {
+      var llLine = litLines[lli];
+      if (litEnrollmentRe.test(llLine)) continue;
+      if (litTotalRe.test(llLine)) continue;
+      var llM = llLine.match(litProductRe);
+      if (!llM) continue;
+      var llPrice = parseFloat(llM[1].replace(/,/g, ''));
+      if (isNaN(llPrice) || llPrice <= 0) continue;
+      litPrices.push(llPrice);
+    }
+    if (litPrices.length === products.length) {
+      for (var lpi = 0; lpi < products.length; lpi++) {
+        products[lpi].price = litPrices[lpi];
+      }
+    }
     if (!products.length) return null;
     var enr = parseFloat(gj.enrollmentFee);
     if (isNaN(enr) || enr < 0) enr = 0;
