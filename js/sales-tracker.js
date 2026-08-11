@@ -119,7 +119,10 @@ var CHA_CORE_PLAN_NAMES = [
   'BWA Paramount',
   'MyChoice Plan Low',
   'MyChoice Plan Mid',
-  'MyChoice Plan High'
+  'MyChoice Plan High',
+  'MedValue 2000+',
+  'MedValue 4000+',
+  'MedValue 6000+'
 ];
 
 var CHA_ADDON_PLAN_NAMES = [
@@ -1078,7 +1081,15 @@ function _stParseReceipt(text, useGroq) {
 
   // Groq is only used on explicit add actions — not on every
   // keystroke in the receipt textarea (would sync-block the UI).
-  if (useGroq === true) {
+  // Some receipts print the literal recurring price on a dedicated
+  // "Product  $X.XX" line (Member ID / GHDP style) instead of a
+  // "... per Month" marker. The local line-by-line parser further
+  // down in this function reads this format correctly regardless
+  // of product order or count, so skip the Groq AI call entirely
+  // when this signature is present and let local parsing run.
+  var _literalProductLineRe = /\bproduct\s+\$\s*[0-9][0-9,]*(?:\.[0-9]{1,2})?/i;
+  var _hasLiteralProductFormat = _literalProductLineRe.test(raw);
+  if (useGroq === true && !_hasLiteralProductFormat) {
     var groqPrim = _stGroqSyncReceiptPrimary(raw);
     if (groqPrim) {
       out.products = groqPrim.products;
@@ -1361,7 +1372,13 @@ function _stParseReceipt(text, useGroq) {
         if (!mfPrev) continue;
         if (skipLineRe.test(mfPrev)) continue;
         if (/^\$/.test(mfPrev)) continue;
-        if (/^individual\s*-/i.test(mfPrev)) continue;
+        // Broader than "Individual -": matches ANY coverage-tier wording
+        // (Employee, Employee + Children, Employee + Spouse, Employee +
+        // Family, Individual, Member, etc., with or without an age
+        // bracket) as long as it's followed by "- ID: <digits> -
+        // Payment:". This is the fixed vocabulary MedValue/GHDP receipts
+        // use for coverage-detail lines, which are never plan names.
+        if (/-\s*id\s*:\s*\d+\s*-\s*payment\s*:/i.test(mfPrev)) continue;
         if (enrollmentRe.test(mfPrev)) continue;
         if (totalLineRe.test(mfPrev)) continue;
         mfName = mfPrev;
