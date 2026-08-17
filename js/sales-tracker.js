@@ -7037,6 +7037,51 @@ function _stReconNormName(s) {
     .trim();
 }
 
+var _ST_PLAN_ALIASES = {
+  'medvalue 2000': 'medvalue 2000 plus',
+  'medvalue 4000': 'medvalue 4000 plus',
+  'medvalue 6000': 'medvalue 6000 plus',
+  'tdk1': 'tdk 1',
+  'tdk2': 'tdk 2',
+  'tdk3': 'tdk 3',
+  'tdk4': 'tdk 4',
+  'tdk5': 'tdk 5',
+  'assistpro': 'assistpro discount',
+  'gapsupport': 'gapsupport discount',
+  'prime health pass': 'prime health pass discount',
+  'access health lite': 'access health lite stm',
+  'access health traditional': 'access health traditional stm',
+  'pinnacle stm': 'pinnacle stm traditional',
+  'ghdp dental 1500 add on': 'ghdp dental vision 1500 add on',
+  'ghdp dental 5000 add on': 'ghdp dental vision 5000 add on',
+  'nce wellguard ad d 250 000 member': 'nce wellguard ad d 250 000',
+  'nce wellguard ad d 250 000 ad d': 'nce wellguard ad d 250 000',
+  'nce fusion dental plan a sa': 'fusion dental plan a sa',
+  'nce fusion dental plan b sa': 'fusion dental plan b sa'
+};
+function _stReconNormPlanName(s) {
+  return String(s || '')
+    .toLowerCase()
+    .replace(/\+/g, ' plus ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\b([0-9]+)k\b/g, '$1000')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+function _stReconPlanKey(s) {
+  var k = _stReconNormPlanName(s);
+  if (Object.prototype.hasOwnProperty.call(_ST_PLAN_ALIASES, k)) {
+    return _ST_PLAN_ALIASES[k];
+  }
+  return k;
+}
+function _stReconPlansAlign(a, b) {
+  var ka = _stReconPlanKey(a);
+  var kb = _stReconPlanKey(b);
+  if (!ka || !kb) return false;
+  return ka === kb;
+}
+
 function _stReconNamesAlign(a, b) {
   var na = _stReconNormName(a);
   var nb = _stReconNormName(b);
@@ -7454,7 +7499,7 @@ function _stMatchPaySheetRows(payRows, weekSales) {
       var c = candidates[j];
       var localType = c.type === 'addon' ? 'addon' : 'deal';
       if (localType !== row.typeLocal) continue;
-      if (!_stReconNamesAlign(c.plan, row.productName)) continue;
+      if (!_stReconPlansAlign(c.plan, row.productName)) continue;
       exact = c;
       break;
     }
