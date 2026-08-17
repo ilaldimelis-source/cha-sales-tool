@@ -7170,9 +7170,9 @@ function _stParsePaySheet(text) {
     var customer = '';
     var amount = 0;
     var rowDateTs = lineDateTs || lastSeenDateTs || 0;
-    var amtMatch = line.match(/(-\s*)?\$\s*([0-9]+(?:\.[0-9]{1,2})?)/);
+    var amtMatch = line.match(/([-\u2212\u2013]\s*)?\$\s*([0-9,]+(?:\.[0-9]{1,2})?)/);
     if (amtMatch) {
-      amount = parseFloat(amtMatch[2]) || 0;
+      amount = parseFloat(String(amtMatch[2]).replace(/,/g, '')) || 0;
       if (amtMatch[1]) amount = -Math.abs(amount);
     }
 
@@ -7334,7 +7334,49 @@ function _stReconSameCalendarDay(tsA, tsB) {
   return _stDayAnchorMs(a) === _stDayAnchorMs(b);
 }
 
+function _stReconStripCancelPairs(payRows) {
+  var drop = {};
+  var i;
+  var j;
+  for (i = 0; i < payRows.length; i++) {
+    if (drop[i]) continue;
+    if ((Number(payRows[i].amount) || 0) >= 0) continue;
+    for (j = 0; j < payRows.length; j++) {
+      if (j === i || drop[j]) continue;
+      var pos = payRows[j];
+      if ((Number(pos.amount) || 0) <= 0) continue;
+      if (
+        _stReconNormMemberId(pos.memberId) !==
+        _stReconNormMemberId(payRows[i].memberId)
+      )
+        continue;
+      if (pos.typeLocal !== payRows[i].typeLocal) continue;
+      if (
+        _stReconNormName(pos.productName) !==
+        _stReconNormName(payRows[i].productName)
+      )
+        continue;
+      if (
+        Math.abs(
+          Math.abs(Number(pos.amount)) - Math.abs(Number(payRows[i].amount))
+        ) > 0.005
+      )
+        continue;
+      drop[i] = true;
+      drop[j] = true;
+      break;
+    }
+  }
+  var out = [];
+  for (i = 0; i < payRows.length; i++) {
+    if (drop[i]) continue;
+    out.push(payRows[i]);
+  }
+  return out;
+}
+
 function _stMatchPaySheetRows(payRows, weekSales) {
+  payRows = _stReconStripCancelPairs(payRows || []);
   var matched = 0;
   var missing = [];
   var mislabeled = [];
