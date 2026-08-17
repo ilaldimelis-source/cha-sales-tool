@@ -7069,7 +7069,7 @@ function _stReconNormPlanName(s) {
     .trim();
 }
 function _stReconPlanKey(s) {
-  var k = _stReconNormPlanName(s);
+  var k = _stReconNormPlanName(s).replace(/\s+add on$/, '');
   if (Object.prototype.hasOwnProperty.call(_ST_PLAN_ALIASES, k)) {
     return _ST_PLAN_ALIASES[k];
   }
