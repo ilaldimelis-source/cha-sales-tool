@@ -7149,6 +7149,7 @@ function _stParsePaySheet(text) {
     .replace(/\r/g, '\n');
   var lines = raw.split('\n');
   var lastSeenDateTs = 0;
+  var lastSeenMemberId = '';
   var i;
   for (i = 0; i < lines.length; i++) {
     var line = String(lines[i] || '').trim();
@@ -7156,8 +7157,6 @@ function _stParsePaySheet(text) {
     var lineDateTs = _stReconParseSheetDateFromLine(line);
     if (lineDateTs) lastSeenDateTs = lineDateTs;
     var midMatch = line.match(/\b(\d{9})\b/);
-    if (!midMatch) continue;
-    var memberId = midMatch[1];
     var typeMatch = line.match(
       /\b(Core|Ancillary|Add[\s\-]?ons?|Deal|Plan)\b/i
     );
@@ -7165,12 +7164,25 @@ function _stParsePaySheet(text) {
     var typeRaw = typeMatch[1];
     var typeLocal = _stReconSheetTypeToLocal(typeRaw);
     if (!typeLocal) continue;
+    var memberId = '';
+    if (midMatch) {
+      memberId = midMatch[1];
+      lastSeenMemberId = memberId;
+    } else if (typeLocal === 'addon' && lastSeenMemberId) {
+      memberId = lastSeenMemberId;
+    }
+    if (!memberId) continue;
 
     var productName = '';
     var customer = '';
     var amount = 0;
     var rowDateTs = lineDateTs || lastSeenDateTs || 0;
-    var amtMatch = line.match(/([-\u2212\u2013]\s*)?\$\s*([0-9,]+(?:\.[0-9]{1,2})?)/);
+    var amtRe = /([-\u2212\u2013]\s*)?\$\s*([0-9,]+(?:\.[0-9]{1,2})?)/g;
+    var amtMatch = null;
+    var amtScan;
+    while ((amtScan = amtRe.exec(line)) !== null) {
+      amtMatch = amtScan;
+    }
     if (amtMatch) {
       amount = parseFloat(String(amtMatch[2]).replace(/,/g, '')) || 0;
       if (amtMatch[1]) amount = -Math.abs(amount);
