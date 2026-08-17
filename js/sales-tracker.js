@@ -7437,7 +7437,9 @@ function _stReconStripCancelPairs(payRows, cancelledMids) {
 
 function _stMatchPaySheetRows(payRows, weekSales) {
   var cancelledMids = {};
-  payRows = _stReconStripCancelPairs(payRows || [], cancelledMids);
+  var payRowsIn = payRows || [];
+  payRows = _stReconStripCancelPairs(payRowsIn, cancelledMids);
+  var cancelPairRows = payRowsIn.length - payRows.length;
   var matched = 0;
   var missing = [];
   var mislabeled = [];
@@ -7661,6 +7663,7 @@ function _stMatchPaySheetRows(payRows, weekSales) {
 
   return {
     matched: matched,
+    cancelPairRows: cancelPairRows,
     missing: missing,
     mislabeled: mislabeled,
     notOnSheet: notOnSheet,
@@ -7769,13 +7772,22 @@ function _stSubmitPaySheetMatch() {
   if (!rows.length) {
     _stFlash('No pay-sheet rows with Member ID + Type found.', 'warn');
   } else {
+    var cancelN = Number(_stReconcileResult.cancelPairRows) || 0;
+    var realN = rows.length - cancelN;
     _stFlash(
       'Matched ' +
         _stReconcileResult.matched +
         ' of ' +
-        rows.length +
+        realN +
         ' pay-sheet row' +
-        (rows.length === 1 ? '' : 's') +
+        (realN === 1 ? '' : 's') +
+        (cancelN
+          ? ' (' +
+            cancelN +
+            ' same-week cancel row' +
+            (cancelN === 1 ? '' : 's') +
+            ' set aside)'
+          : '') +
         '.',
       'ok'
     );
