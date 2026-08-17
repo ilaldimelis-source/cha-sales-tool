@@ -7346,7 +7346,7 @@ function _stReconSameCalendarDay(tsA, tsB) {
   return _stDayAnchorMs(a) === _stDayAnchorMs(b);
 }
 
-function _stReconStripCancelPairs(payRows) {
+function _stReconStripCancelPairs(payRows, cancelledMids) {
   var drop = {};
   var i;
   var j;
@@ -7376,6 +7376,9 @@ function _stReconStripCancelPairs(payRows) {
         continue;
       drop[i] = true;
       drop[j] = true;
+      if (cancelledMids) {
+        cancelledMids[_stReconNormMemberId(payRows[i].memberId)] = true;
+      }
       break;
     }
   }
@@ -7388,7 +7391,8 @@ function _stReconStripCancelPairs(payRows) {
 }
 
 function _stMatchPaySheetRows(payRows, weekSales) {
-  payRows = _stReconStripCancelPairs(payRows || []);
+  var cancelledMids = {};
+  payRows = _stReconStripCancelPairs(payRows || [], cancelledMids);
   var matched = 0;
   var missing = [];
   var mislabeled = [];
@@ -7593,7 +7597,7 @@ function _stMatchPaySheetRows(payRows, weekSales) {
     if (!locMid) continue;
     if (payMids[locMid]) continue;
     notOnSheet.push({
-      kind: 'not_on_sheet',
+      kind: cancelledMids[locMid] ? 'same_week_cancel' : 'not_on_sheet',
       pay: null,
       sale: loc,
       customer: loc.customer || '',
@@ -7736,6 +7740,7 @@ function _stSubmitPaySheetMatch() {
 function _stReconKindLabel(kind) {
   if (kind === 'missing') return 'Missing';
   if (kind === 'mislabeled') return 'Mislabeled';
+  if (kind === 'same_week_cancel') return 'Same-week cancel';
   if (kind === 'not_on_sheet') return 'Not on pay sheet';
   if (kind === 'attach') return 'Attach ID';
   if (kind === 'chargeback_candidate') return 'Mark status';
@@ -7746,6 +7751,9 @@ function _stReconKindLabel(kind) {
 function _stReconKindPillClass(kind) {
   if (kind === 'missing') return 'st-recon-status-pill st-recon-pill-missing';
   if (kind === 'mislabeled') return 'st-recon-status-pill st-recon-pill-mislabeled';
+  if (kind === 'same_week_cancel') {
+    return 'st-recon-status-pill st-recon-pill-notonsheet';
+  }
   if (kind === 'not_on_sheet') {
     return 'st-recon-status-pill st-recon-pill-notonsheet';
   }
@@ -7839,6 +7847,9 @@ function _stReconProblemReasonText(p) {
   }
   if (p.kind === 'untracked_chargeback') {
     return 'Chargeback deduction, not in your tracker.';
+  }
+  if (p.kind === 'same_week_cancel') {
+    return 'Sold and cancelled the same week. Never paid, no action needed.';
   }
   if (p.kind === 'not_on_sheet') {
     return 'Logged in your tracker, not on this pay sheet.';
