@@ -1,8 +1,8 @@
 // office.js - Office tab (manager-only inbound call tracker)
 // Must load BEFORE js/app.js so PAGE_CONFIG can reference renderOfficeCalls.
 var OFFICE_STORE_KEY = 'cha_office_calls_v1';
-var OFFICE_RETAIN_DAYS = 400;
-var OFFICE_ID_RETAIN_DAYS = 60;
+var OFFICE_RETAIN_DAYS = 730;
+var OFFICE_ID_RETAIN_DAYS = 365;
 // contact = counts toward Contacts (denominator of close rate)
 // sold = counts toward Sold
 // pin = shown as one of the 9 main tiles
@@ -49,6 +49,9 @@ var _ofcPeriod = 'day';
 var _ofcMoreOpen = false;
 var _ofcNoteTimer = null;
 var _ofcPhone = '';
+var _ofcRangeStart = '';
+var _ofcRangeEnd = '';
+var _ofcQuotaHit = false;
 function _ofcEsc(s) {
   if (typeof escHTML === 'function') {
     return escHTML(String(s == null ? '' : s));
@@ -90,6 +93,14 @@ function _ofcRange() {
   } else if (_ofcPeriod === 'month') {
     start = new Date(d.getFullYear(), d.getMonth(), 1);
     end = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  } else if (_ofcPeriod === 'range') {
+    start = _ofcParse(_ofcRangeStart || _ofcToday());
+    end = _ofcParse(_ofcRangeEnd || _ofcToday());
+    if (end < start) {
+      var swap = start;
+      start = end;
+      end = swap;
+    }
   } else {
     start = d;
     end = d;
@@ -121,6 +132,17 @@ function _ofcRangeLabel() {
   }
   if (_ofcPeriod === 'month') {
     return mons[s.getMonth()] + ' ' + s.getFullYear();
+  }
+  if (_ofcPeriod === 'range') {
+    return (
+      mons[s.getMonth()] +
+      ' ' +
+      s.getDate() +
+      ' - ' +
+      mons[e.getMonth()] +
+      ' ' +
+      e.getDate()
+    );
   }
   return (
     mons[s.getMonth()] +
@@ -156,7 +178,25 @@ function _ofcLoad() {
   } catch (_e) {
     o = null;
   }
-  if (!o || typeof o !== 'object') return {};
+  if (!o || typeof o !== 'object') return { _v: 2 };
+  if (o._v === 2) return o;
+  var keys = Object.keys(o);
+  var i, j, rows, out;
+  for (i = 0; i < keys.length; i++) {
+    if (keys[i] === '_v') continue;
+    rows = o[keys[i]];
+    if (Object.prototype.toString.call(rows) !== '[object Array]') continue;
+    out = [];
+    for (j = 0; j < rows.length; j++) {
+      if (_ofcIsEncoded(rows[j])) {
+        out.push(rows[j]);
+      } else {
+        out.push(_ofcEncode(rows[j]));
+      }
+    }
+    o[keys[i]] = out;
+  }
+  o._v = 2;
   return o;
 }
 function _ofcSave(store) {
@@ -173,16 +213,22 @@ function _ofcSave(store) {
       rows = store[keys[i]];
       if (Object.prototype.toString.call(rows) === '[object Array]') {
         for (j = 0; j < rows.length; j++) {
-          if (rows[j].p) rows[j].p = '';
-          if (rows[j].lid) rows[j].lid = '';
+          if (_ofcIsEncoded(rows[j])) {
+            if (rows[j].length > 2) rows[j] = [rows[j][0], rows[j][1]];
+          } else {
+            if (rows[j].p) rows[j].p = '';
+            if (rows[j].lid) rows[j].lid = '';
+            if (rows[j].n) rows[j].n = '';
+          }
         }
       }
     }
   }
   try {
     if (typeof chaSet === 'function') chaSet(OFFICE_STORE_KEY, store);
+    _ofcQuotaHit = false;
   } catch (_e) {
-    /* ignore quota errors */
+    _ofcQuotaHit = true;
   }
 }
 function _ofcDigits(v) {
@@ -192,9 +238,68 @@ function _ofcIsPhone(v) {
   var n = _ofcDigits(v).length;
   return n === 10 || n === 11;
 }
-function _ofcDayRows(store, iso) {
+function _ofcDispoIndex(label) {
+  var i;
+  for (i = 0; i < OFFICE_DISPOS.length; i++) {
+    if (OFFICE_DISPOS[i].d === label) return i;
+  }
+  return -1;
+}
+function _ofcEncode(row) {
+  var mins = 0;
+  var dt;
+  if (typeof row.t === 'number') {
+    dt = new Date(row.t);
+    mins = dt.getHours() * 60 + dt.getMinutes();
+  }
+  var out = [
+    mins,
+    _ofcDispoIndex(row.d),
+    String(row.lid || ''),
+    String(row.p || ''),
+    String(row.n || '')
+  ];
+  while (out.length > 2 && out[out.length - 1] === '') {
+    out.pop();
+  }
+  return out;
+}
+function _ofcDecode(arr, iso) {
+  var mins = Number(arr[0]) || 0;
+  var di = Number(arr[1]);
+  var d = _ofcParse(iso);
+  d.setHours(Math.floor(mins / 60), mins % 60, 0, 0);
+  return {
+    t: d.getTime(),
+    d: OFFICE_DISPOS[di] ? OFFICE_DISPOS[di].d : '',
+    lid: arr[2] || '',
+    p: arr[3] || '',
+    n: arr[4] || ''
+  };
+}
+function _ofcIsEncoded(r) {
+  return Object.prototype.toString.call(r) === '[object Array]';
+}
+function _ofcEncodeAll(rows) {
+  var out = [];
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    out.push(_ofcEncode(rows[i]));
+  }
+  return out;
+}
+function _ofcRawDay(store, iso) {
   var rows = store[iso];
   return Object.prototype.toString.call(rows) === '[object Array]' ? rows : [];
+}
+function _ofcDayRows(store, iso) {
+  var raw = _ofcRawDay(store, iso);
+  var out = [];
+  var i;
+  for (i = 0; i < raw.length; i++) {
+    out.push(_ofcIsEncoded(raw[i]) ? _ofcDecode(raw[i], iso) : raw[i]);
+  }
+  return out;
 }
 function _ofcRangeRows(store) {
   var r = _ofcRange();
@@ -203,6 +308,7 @@ function _ofcRangeRows(store) {
   var i, j, rows;
   keys.sort();
   for (i = 0; i < keys.length; i++) {
+    if (keys[i] === '_v') continue;
     if (keys[i] < r.s || keys[i] > r.e) continue;
     rows = _ofcDayRows(store, keys[i]);
     for (j = 0; j < rows.length; j++) out.push(rows[j]);
@@ -224,7 +330,7 @@ function _ofcLog(label) {
     }
   }
   rows.push(prow);
-  store[iso] = rows;
+  store[iso] = _ofcRawDay(store, iso).concat([_ofcEncode(prow)]);
   _ofcPhone = '';
   _ofcSave(store);
   _ofcRender();
@@ -234,7 +340,7 @@ function _ofcDelete(idx) {
   var rows = _ofcDayRows(store, _ofcDate).slice();
   if (idx < 0 || idx >= rows.length) return;
   rows.splice(idx, 1);
-  store[_ofcDate] = rows;
+  store[_ofcDate] = _ofcEncodeAll(rows);
   _ofcSave(store);
   _ofcRender();
 }
@@ -243,7 +349,7 @@ function _ofcSetNote(idx, val) {
   var rows = _ofcDayRows(store, _ofcDate).slice();
   if (idx < 0 || idx >= rows.length) return;
   rows[idx].n = String(val || '').slice(0, 120);
-  store[_ofcDate] = rows;
+  store[_ofcDate] = _ofcEncodeAll(rows);
   _ofcSave(store);
 }
 function _ofcSetField(idx, field, val) {
@@ -251,7 +357,7 @@ function _ofcSetField(idx, field, val) {
   var rows = _ofcDayRows(store, _ofcDate).slice();
   if (idx < 0 || idx >= rows.length) return;
   rows[idx][field] = String(val || '').slice(0, 40);
-  store[_ofcDate] = rows;
+  store[_ofcDate] = _ofcEncodeAll(rows);
   _ofcSave(store);
 }
 function _ofcStats(rows) {
@@ -325,7 +431,8 @@ function _ofcRender() {
   periods = [
     ['day', 'Today'],
     ['week', 'Week'],
-    ['month', 'Month']
+    ['month', 'Month'],
+    ['range', 'Range']
   ];
   for (i = 0; i < periods.length; i++) {
     p = periods[i];
@@ -340,13 +447,33 @@ function _ofcRender() {
   }
   html += '</div>';
   html += '<div class="ofc-datenav">';
-  html +=
-    '<button type="button" class="ofc-navbtn" data-office-nav="-1" aria-label="Previous">&#8592;</button>';
+  if (_ofcPeriod !== 'range') {
+    html +=
+      '<button type="button" class="ofc-navbtn" data-office-nav="-1" aria-label="Previous">&#8592;</button>';
+  }
   html +=
     '<span class="ofc-datelabel">' + _ofcEsc(_ofcRangeLabel()) + '</span>';
-  html +=
-    '<button type="button" class="ofc-navbtn" data-office-nav="1" aria-label="Next">&#8594;</button>';
+  if (_ofcPeriod !== 'range') {
+    html +=
+      '<button type="button" class="ofc-navbtn" data-office-nav="1" aria-label="Next">&#8594;</button>';
+  }
   html += '</div></div>';
+  if (_ofcPeriod === 'range') {
+    html +=
+      '<div class="ofc-rangebar">' +
+      '<input type="date" class="ofc-range-in" data-office-rangestart="1" value="' +
+      _ofcEsc(_ofcRangeStart || _ofcToday()) +
+      '" />' +
+      '<span class="ofc-range-to">to</span>' +
+      '<input type="date" class="ofc-range-in" data-office-rangeend="1" value="' +
+      _ofcEsc(_ofcRangeEnd || _ofcToday()) +
+      '" />' +
+      '</div>';
+  }
+  if (_ofcQuotaHit) {
+    html +=
+      '<div class="ofc-quota-warn">Storage is full. Recent calls are not being saved. Delete old entries or clear space.</div>';
+  }
   html += '<div class="ofc-metrics">';
   html +=
     '<div class="ofc-metric"><div class="ofc-metric-k">Calls</div><div class="ofc-metric-v">' +
@@ -479,6 +606,10 @@ function _ofcOnClick(e) {
   if (v !== null) {
     _ofcPeriod = v;
     _ofcDate = _ofcToday();
+    if (v === 'range' && !_ofcRangeStart) {
+      _ofcRangeStart = _ofcShift(_ofcToday(), -6);
+      _ofcRangeEnd = _ofcToday();
+    }
     _ofcRender();
     return;
   }
@@ -520,6 +651,16 @@ function _ofcOnInput(e) {
           : 'lead ID'
         : '';
     }
+    return;
+  }
+  if (t.getAttribute('data-office-rangestart') !== null) {
+    _ofcRangeStart = String(val || '');
+    _ofcRender();
+    return;
+  }
+  if (t.getAttribute('data-office-rangeend') !== null) {
+    _ofcRangeEnd = String(val || '');
+    _ofcRender();
     return;
   }
   var lidx = t.getAttribute('data-office-lid');
