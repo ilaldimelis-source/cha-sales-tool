@@ -381,6 +381,12 @@ var PAGE_CONFIG = {
       { id: 'mindset', label: 'Mindset', render: renderMindset },
       { id: 'notes', label: 'Notes', render: renderNotes }
     ]
+  },
+  office: {
+    label: 'Office',
+    subs: [
+      { id: 'officecalls', label: 'Call Tracker', render: renderOfficeCalls }
+    ]
   }
 };
 
