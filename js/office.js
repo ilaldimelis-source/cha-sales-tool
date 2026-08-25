@@ -2,6 +2,7 @@
 // Must load BEFORE js/app.js so PAGE_CONFIG can reference renderOfficeCalls.
 var OFFICE_STORE_KEY = 'cha_office_calls_v1';
 var OFFICE_RETAIN_DAYS = 400;
+var OFFICE_ID_RETAIN_DAYS = 60;
 // contact = counts toward Contacts (denominator of close rate)
 // sold = counts toward Sold
 // pin = shown as one of the 9 main tiles
@@ -47,6 +48,7 @@ var _ofcDate = '';
 var _ofcPeriod = 'day';
 var _ofcMoreOpen = false;
 var _ofcNoteTimer = null;
+var _ofcPhone = '';
 function _ofcEsc(s) {
   if (typeof escHTML === 'function') {
     return escHTML(String(s == null ? '' : s));
@@ -159,16 +161,36 @@ function _ofcLoad() {
 }
 function _ofcSave(store) {
   var cutoff = _ofcShift(_ofcToday(), -OFFICE_RETAIN_DAYS);
+  var idCutoff = _ofcShift(_ofcToday(), -OFFICE_ID_RETAIN_DAYS);
   var keys = Object.keys(store);
-  var i;
+  var i, j, rows;
   for (i = 0; i < keys.length; i++) {
-    if (keys[i] < cutoff) delete store[keys[i]];
+    if (keys[i] < cutoff) {
+      delete store[keys[i]];
+      continue;
+    }
+    if (keys[i] < idCutoff) {
+      rows = store[keys[i]];
+      if (Object.prototype.toString.call(rows) === '[object Array]') {
+        for (j = 0; j < rows.length; j++) {
+          if (rows[j].p) rows[j].p = '';
+          if (rows[j].lid) rows[j].lid = '';
+        }
+      }
+    }
   }
   try {
     if (typeof chaSet === 'function') chaSet(OFFICE_STORE_KEY, store);
   } catch (_e) {
     /* ignore quota errors */
   }
+}
+function _ofcDigits(v) {
+  return String(v || '').replace(/[^0-9]/g, '');
+}
+function _ofcIsPhone(v) {
+  var n = _ofcDigits(v).length;
+  return n === 10 || n === 11;
 }
 function _ofcDayRows(store, iso) {
   var rows = store[iso];
@@ -192,8 +214,18 @@ function _ofcLog(label) {
   var store = _ofcLoad();
   var iso = _ofcPeriod === 'day' ? _ofcDate : _ofcToday();
   var rows = _ofcDayRows(store, iso).slice();
-  rows.push({ t: Date.now(), d: label, n: '' });
+  var pv = String(_ofcPhone || '').slice(0, 40);
+  var prow = { t: Date.now(), d: label, n: '', lid: '', p: '' };
+  if (pv) {
+    if (_ofcIsPhone(pv)) {
+      prow.p = pv;
+    } else {
+      prow.lid = pv;
+    }
+  }
+  rows.push(prow);
   store[iso] = rows;
+  _ofcPhone = '';
   _ofcSave(store);
   _ofcRender();
 }
@@ -211,6 +243,14 @@ function _ofcSetNote(idx, val) {
   var rows = _ofcDayRows(store, _ofcDate).slice();
   if (idx < 0 || idx >= rows.length) return;
   rows[idx].n = String(val || '').slice(0, 120);
+  store[_ofcDate] = rows;
+  _ofcSave(store);
+}
+function _ofcSetField(idx, field, val) {
+  var store = _ofcLoad();
+  var rows = _ofcDayRows(store, _ofcDate).slice();
+  if (idx < 0 || idx >= rows.length) return;
+  rows[idx][field] = String(val || '').slice(0, 40);
   store[_ofcDate] = rows;
   _ofcSave(store);
 }
@@ -329,6 +369,17 @@ function _ofcRender() {
     _ofcEsc(s.rate) +
     '</div><div class="ofc-metric-sub">of contacts</div></div>';
   html += '</div>';
+  html +=
+    '<div class="ofc-phonebar">' +
+    '<input type="text" class="ofc-phone-in" data-office-phone="1" ' +
+    'placeholder="Paste Lead ID or phone, then tap a dispo" value="' +
+    _ofcEsc(_ofcPhone) +
+    '" />' +
+    '<span class="ofc-paste-hint">' +
+    (_ofcPhone ? (_ofcIsPhone(_ofcPhone) ? 'phone' : 'lead ID') : '') +
+    '</span>' +
+    '<button type="button" class="ofc-phone-clr" data-office-phoneclear="1">Clear</button>' +
+    '</div>';
   html += '<div class="ofc-tiles">';
   for (i = 0; i < OFFICE_DISPOS.length; i++) {
     dsp = OFFICE_DISPOS[i];
@@ -364,9 +415,21 @@ function _ofcRender() {
           '</span>';
         html += '<span class="ofc-log-d">' + _ofcEsc(dayRows[i].d) + '</span>';
         html +=
+          '<input type="text" class="ofc-log-id" data-office-lid="' +
+          i +
+          '" placeholder="Lead ID" value="' +
+          _ofcEsc(dayRows[i].lid || '') +
+          '" />';
+        html +=
+          '<input type="text" class="ofc-log-phone" data-office-rowphone="' +
+          i +
+          '" placeholder="Phone" value="' +
+          _ofcEsc(dayRows[i].p || '') +
+          '" />';
+        html +=
           '<input type="text" class="ofc-log-note" data-office-note="' +
           i +
-          '" placeholder="Note or lead ID" value="' +
+          '" placeholder="Note" value="' +
           _ofcEsc(dayRows[i].n) +
           '" />';
         html +=
@@ -389,7 +452,8 @@ function _ofcFind(t) {
     'data-office-nav',
     'data-office-del',
     'data-office-period',
-    'data-office-more'
+    'data-office-more',
+    'data-office-phoneclear'
   ];
   var i;
   while (t && t !== document) {
@@ -430,6 +494,12 @@ function _ofcOnClick(e) {
     _ofcRender();
     return;
   }
+  v = el.getAttribute('data-office-phoneclear');
+  if (v !== null) {
+    _ofcPhone = '';
+    _ofcRender();
+    return;
+  }
   v = el.getAttribute('data-office-del');
   if (v !== null) {
     _ofcDelete(Number(v));
@@ -438,9 +508,38 @@ function _ofcOnClick(e) {
 function _ofcOnInput(e) {
   var t = e.target;
   if (!t || !t.getAttribute) return;
+  var val = t.value;
+  var hint;
+  if (t.getAttribute('data-office-phone') !== null) {
+    _ofcPhone = String(val || '').slice(0, 40);
+    hint = document.querySelector('#page-officecalls .ofc-paste-hint');
+    if (hint) {
+      hint.textContent = _ofcPhone
+        ? _ofcIsPhone(_ofcPhone)
+          ? 'phone'
+          : 'lead ID'
+        : '';
+    }
+    return;
+  }
+  var lidx = t.getAttribute('data-office-lid');
+  if (lidx !== null) {
+    clearTimeout(_ofcNoteTimer);
+    _ofcNoteTimer = setTimeout(function () {
+      _ofcSetField(Number(lidx), 'lid', val);
+    }, 400);
+    return;
+  }
+  var pidx = t.getAttribute('data-office-rowphone');
+  if (pidx !== null) {
+    clearTimeout(_ofcNoteTimer);
+    _ofcNoteTimer = setTimeout(function () {
+      _ofcSetField(Number(pidx), 'p', val);
+    }, 400);
+    return;
+  }
   var idx = t.getAttribute('data-office-note');
   if (idx === null) return;
-  var val = t.value;
   clearTimeout(_ofcNoteTimer);
   _ofcNoteTimer = setTimeout(function () {
     _ofcSetNote(Number(idx), val);
