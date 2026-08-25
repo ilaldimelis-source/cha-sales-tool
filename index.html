@@ -1461,6 +1461,57 @@
         flex-shrink: 0;
         padding: 2px 4px;
       }
+      /* Office Call Tracker - phone field */
+      #page-officecalls .ofc-phonebar {
+        display: flex;
+        gap: 7px;
+        margin: 0 0 10px;
+      }
+      #page-officecalls .ofc-phone-in {
+        flex: 1;
+        min-width: 0;
+        background: #ffffff;
+        border: 1px solid #e8ebf5;
+        border-radius: 12px;
+        padding: 12px 13px;
+        font-size: 13px;
+        color: var(--charcoal3);
+        font-family: inherit;
+      }
+      #page-officecalls .ofc-phone-in:focus {
+        outline: none;
+        border-color: #5175f1;
+      }
+      #page-officecalls .ofc-phone-clr {
+        background: #ffffff;
+        border: 1px solid #e8ebf5;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 12px;
+        color: var(--warmgray3);
+        cursor: pointer;
+        font-family: inherit;
+        flex-shrink: 0;
+      }
+      #page-officecalls .ofc-phone-clr:hover {
+        border-color: #c9d0e8;
+      }
+      #page-officecalls .ofc-log-phone {
+        width: 118px;
+        flex-shrink: 0;
+        background: #f7f8fc;
+        border: 1px solid #e8ebf5;
+        border-radius: 10px;
+        padding: 6px 9px;
+        font-size: 12px;
+        color: var(--charcoal3);
+        font-family: inherit;
+      }
+      @media (max-width: 760px) {
+        #page-officecalls .ofc-log-phone {
+          width: 96px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -2568,7 +2619,7 @@
     <script src="js/docusign-walkthrough.js?v=1780700000000"></script>
     <script src="js/myspace.js?v=1780300000000"></script>
     <script src="js/sales-tracker.js?v=1787002800000"></script>
-    <script src="js/office.js?v=1787700000000"></script>
+    <script src="js/office.js?v=1787800000000"></script>
     <script src="js/app.js?v=1780300000000"></script>
     <script>
       (function () {
