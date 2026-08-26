@@ -3520,7 +3520,11 @@ function _stUpdateSaleStatus(id, newStatus) {
   if (idx < 0) return;
   var originalCommissionUs = _stSaleUnsignedCommission(sales[idx]);
   sales[idx].status = newStatus;
-  _stApplySaleReversal(sales[idx], newStatus, originalCommissionUs);
+  if (newStatus === 'chargeback' || newStatus === 'samecancel') {
+    _stApplySaleReversal(sales[idx], newStatus, originalCommissionUs);
+  } else if (sales[idx].reversal) {
+    delete sales[idx].reversal;
+  }
   _stRecomputeSaleGroupCommission(sales, idx);
   _stSaveSales(sales);
   var card = document.querySelector(
@@ -4499,10 +4503,16 @@ var _stReconcileMode = false;
 var _stHistoryMode = false;
 var _stHistoryViewingId = '';
 var _stPaySheetRows = [];
+var _stPaySheetRawText = '';
+var _stPaySheetAnalyzedAt = 0;
 var _stReconcileResult = null;
 var _stReconcileMatchView = null;
+var _stReconcileTableFilter = 'needs';
+var _stReconcileIgnoredKeys = {};
+var _stReconcileTableRows = [];
 var _stCbSearchQuery = '';
 var _stCbSelectedId = '';
+var _stMarkModalStatus = '';
 // In-memory only: attach / mark-status / log-this-sale confirms since
 // the last paste-Match. Reset on new Match; never persisted.
 var _stReconcileSessionResolved = [];
@@ -7270,14 +7280,37 @@ function _stTryWriteReconcileHistory(list) {
 function _stSaveReconcileHistory(list) {
   list = _stApplyReconcileHistoryRetention(list || []);
   var attempts = 0;
-  while (!_stTryWriteReconcileHistory(list) && attempts < 200) {
+  var ok = _stTryWriteReconcileHistory(list);
+  while (!ok && attempts < 200) {
     attempts += 1;
-    if (!_stTrimOldestReconcileRawText(list)) {
-      _stSet(_stKey('cha_reconcile_history'), JSON.stringify(list || []));
-      break;
-    }
+    if (!_stTrimOldestReconcileRawText(list)) break;
+    ok = _stTryWriteReconcileHistory(list);
   }
   window._stLastReconcileRetention = _stCountReconcileTiers(list);
+  return ok;
+}
+
+function _stResetPaycheckDerive() {
+  _stPaycheckHistoryBackfillDone = false;
+  var flagKey = _stKey('cha_paycheck_derive_v1');
+  try {
+    localStorage.removeItem(flagKey);
+  } catch (_eRm) {
+    _stSet(flagKey, '');
+  }
+  var list = _stLoadReconcileHistory();
+  var i;
+  var changed = false;
+  for (i = 0; i < list.length; i++) {
+    if (!list[i] || !list[i].paycheck) continue;
+    if (list[i].paycheck.source === 'derived') {
+      list[i].paycheck = null;
+      changed = true;
+    }
+  }
+  if (changed) _stSaveReconcileHistory(list);
+  _stRunPaycheckHistoryBackfill(_stLoadSales());
+  return window._stPaycheckDeriveStats || null;
 }
 
 function _stRunPaycheckHistoryBackfill(sales) {
@@ -7369,10 +7402,10 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
 }
 
 function _stPersistReconcileHistoryAfterMatch(rawText, view, result) {
-  if (!result) return;
+  if (!result) return false;
   var list = _stLoadReconcileHistory();
   list.unshift(_stBuildReconcileHistoryRecord(rawText, view, result));
-  _stSaveReconcileHistory(list);
+  return !!_stSaveReconcileHistory(list);
 }
 
 function _stFindReconcileHistoryRecord(id) {
@@ -8188,7 +8221,7 @@ function _stOpenPaySheetModal() {
   modal.className = 'st-entry-modal st-paysheet-modal';
   var html = '';
   html +=
-    '<div class="st-entry-card st-paysheet-card" role="dialog" aria-modal="true" aria-labelledby="st-paysheet-title" onclick="event.stopPropagation()">';
+    '<div class="st-entry-card st-paysheet-card" role="dialog" aria-modal="true" aria-labelledby="st-paysheet-title">';
   html +=
     '<div class="st-entry-title" id="st-paysheet-title">Paste pay sheet</div>';
   html +=
@@ -8197,9 +8230,9 @@ function _stOpenPaySheetModal() {
     '<textarea id="st-paysheet-textarea" class="st-paysheet-textarea" rows="12" placeholder="Member ID  Type  Product Name..."></textarea>';
   html += '<div class="st-entry-actions">';
   html +=
-    '<button type="button" class="st-entry-cancel" onclick="_stClosePaySheetModal()">Cancel</button>';
+    '<button type="button" class="st-entry-cancel" data-st-recon-action="close-paysheet">Cancel</button>';
   html +=
-    '<button type="button" class="st-entry-save" onclick="_stSubmitPaySheetMatch()">Match</button>';
+    '<button type="button" class="st-entry-save" data-st-recon-action="submit-paysheet">Match</button>';
   html += '</div></div>';
   modal.innerHTML = html;
   modal.addEventListener('click', function (ev) {
@@ -8248,12 +8281,26 @@ function _stReconcileSessionPush(label) {
   _stReconcileSessionResolved.push(s);
 }
 
-function _stSubmitPaySheetMatch() {
-  var ta = document.getElementById('st-paysheet-textarea');
-  var text = ta ? String(ta.value || '') : '';
-  var rows = _stParsePaySheet(text);
-  _stPaySheetRows = rows;
+function _stClearPaySheetSession() {
+  _stPaySheetRows = [];
+  _stPaySheetRawText = '';
+  _stPaySheetAnalyzedAt = 0;
+  _stReconcileResult = null;
+  _stReconcileMatchView = null;
+  _stReconcileTableRows = [];
+  _stReconcileIgnoredKeys = {};
   _stReconcileSessionReset();
+}
+
+function _stApplyPaySheetText(text) {
+  text = String(text || '');
+  var rows = _stParsePaySheet(text);
+  _stPaySheetRawText = text;
+  _stPaySheetRows = rows;
+  _stPaySheetAnalyzedAt = Date.now();
+  _stReconcileSessionReset();
+  _stReconcileIgnoredKeys = {};
+  _stReconcileTableFilter = 'needs';
   var sales = _stLoadSales();
   var detectedWs = _stReconDetectWeekFromRows(rows);
   var view;
@@ -8265,34 +8312,38 @@ function _stSubmitPaySheetMatch() {
   _stReconcileMatchView = view;
   var weekSales = _stReconWeekSales(sales, view);
   _stReconcileResult = _stMatchPaySheetRows(rows, weekSales);
-  if (rows.length && _stReconcileResult) {
-    _stPersistReconcileHistoryAfterMatch(text, view, _stReconcileResult);
-  }
   _stClosePaySheetModal();
   _stRender();
   if (!rows.length) {
     _stFlash('No pay-sheet rows with Member ID + Type found.', 'warn');
-  } else {
-    var cancelN = Number(_stReconcileResult.cancelPairRows) || 0;
-    var realN = rows.length - cancelN;
-    _stFlash(
-      'Matched ' +
-        _stReconcileResult.matched +
-        ' of ' +
-        realN +
-        ' pay-sheet row' +
-        (realN === 1 ? '' : 's') +
-        (cancelN
-          ? ' (' +
-            cancelN +
-            ' same-week cancel row' +
-            (cancelN === 1 ? '' : 's') +
-            ' set aside)'
-          : '') +
-        '.',
-      'ok'
-    );
+    return;
   }
+  var cancelN = Number(_stReconcileResult.cancelPairRows) || 0;
+  var realN = rows.length - cancelN;
+  _stFlash(
+    'Matched ' +
+      _stReconcileResult.matched +
+      ' of ' +
+      realN +
+      ' pay-sheet row' +
+      (realN === 1 ? '' : 's') +
+      (cancelN
+        ? ' (' +
+          cancelN +
+          ' same-week cancel row' +
+          (cancelN === 1 ? '' : 's') +
+          ' set aside)'
+        : '') +
+      '.',
+    'ok'
+  );
+}
+
+function _stSubmitPaySheetMatch() {
+  var ta =
+    document.getElementById('st-paysheet-textarea') ||
+    document.getElementById('st-recon-sheet-ta');
+  _stApplyPaySheetText(ta ? String(ta.value || '') : '');
 }
 
 function _stReconKindLabel(kind) {
@@ -8499,10 +8550,10 @@ function _stCopyTextFallback(text, onOk, onFail) {
   ta.style.left = '-9999px';
   document.body.appendChild(ta);
   ta.select();
-  var ok = false;
+  var ok;
   try {
     ok = document.execCommand('copy');
-  } catch (_e) {
+  } catch (_eCopy) {
     ok = false;
   }
   if (ta.parentNode) ta.parentNode.removeChild(ta);
@@ -9506,6 +9557,590 @@ function _stReconcileMarkChargeback() {
   _stRender();
 }
 
+function _stSumPaySheetCommission(rows) {
+  var sum = 0;
+  var i;
+  for (i = 0; i < (rows || []).length; i++) {
+    sum += Number(rows[i] && rows[i].amount) || 0;
+  }
+  return _stMoney2(sum);
+}
+
+function _stFmtReconcileAnalyzedAt(ts) {
+  var n = Number(ts) || 0;
+  if (!n) return '';
+  var d = new Date(n);
+  if (isNaN(d.getTime())) return '';
+  try {
+    return d.toLocaleString(undefined, {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+  } catch (_eFmt) {
+    return _stFmtHistorySavedAt(n);
+  }
+}
+
+function _stReconFindExactWeekSale(payRow, weekSales, usedLocal) {
+  var rowMid = _stReconNormMemberId(payRow && payRow.memberId);
+  if (!rowMid) return null;
+  var j;
+  for (j = 0; j < (weekSales || []).length; j++) {
+    var c = weekSales[j];
+    if (!c || (usedLocal && usedLocal[c.id])) continue;
+    if (_stReconNormMemberId(c.memberId) !== rowMid) continue;
+    var localType = c.type === 'addon' ? 'addon' : 'deal';
+    if (localType !== payRow.typeLocal) continue;
+    if (!_stReconPlansAlign(c.plan, payRow.productName)) continue;
+    return c;
+  }
+  return null;
+}
+
+function _stReconAmountsMismatch(payRow, sale) {
+  var payAmt = Math.abs(Number(payRow && payRow.amount) || 0);
+  var comm = _stSaleUnsignedCommission(sale);
+  return Math.abs(payAmt - comm) > 0.049;
+}
+
+function _stReconcileRowKey(row) {
+  return [
+    (row && row.status) || '',
+    (row && row.saleId) || '',
+    (row && row.memberId) || '',
+    String((row && row.dateTs) || 0),
+    (row && row.product) || '',
+    String(
+      row && row.sheetAmount != null
+        ? row.sheetAmount
+        : (row && row.amount) || 0
+    )
+  ].join('|');
+}
+
+function _stMakeReconTableRow(opts) {
+  opts = opts || {};
+  var amount = Number(opts.amount) || 0;
+  var isLoss = !!opts.isLoss || amount < 0;
+  var row = {
+    status: opts.status || 'matched',
+    customer: opts.customer || 'Unknown',
+    dateTs: Number(opts.dateTs) || 0,
+    product: opts.product || '',
+    productNote: opts.productNote || '',
+    amount: amount,
+    isLoss: isLoss,
+    saleId: opts.saleId ? String(opts.saleId) : '',
+    memberId: opts.memberId ? String(opts.memberId) : '',
+    sheetProduct: opts.sheetProduct || '',
+    sheetAmount: opts.sheetAmount != null ? Number(opts.sheetAmount) : amount,
+    kind: opts.kind || '',
+    typeLocal: opts.typeLocal || '',
+    attachMemberId: opts.attachMemberId || ''
+  };
+  row.key = _stReconcileRowKey(row);
+  row.ignored = !!_stReconcileIgnoredKeys[row.key];
+  return row;
+}
+
+function _stBuildReconcileTableRows(result, payRows, weekSales) {
+  var rows = [];
+  var usedSale = {};
+  var usedPay = [];
+
+  function markPay(pay) {
+    if (pay) usedPay.push(pay);
+  }
+  function payUsed(pay) {
+    var pi;
+    for (pi = 0; pi < usedPay.length; pi++) {
+      if (usedPay[pi] === pay) return true;
+    }
+    return false;
+  }
+
+  function pushProblem(p, status, extra) {
+    extra = extra || {};
+    if (!p) return;
+    var sale = p.sale || extra.sale || null;
+    var pay = p.pay || extra.pay || null;
+    if (sale && sale.id) usedSale[sale.id] = true;
+    markPay(pay);
+    var trackerPlan = sale ? sale.plan || '' : '';
+    var sheetPlan = pay ? pay.productName || '' : '';
+    var product = trackerPlan || sheetPlan || p.productName || '';
+    var productNote = extra.productNote || '';
+    if (!productNote) {
+      if (sale && !pay) productNote = 'not on sheet';
+      else if (
+        sheetPlan &&
+        trackerPlan &&
+        !_stReconPlansAlign(trackerPlan, sheetPlan)
+      ) {
+        productNote = 'sheet: ' + sheetPlan;
+      }
+    }
+    var amount = extra.amount != null ? extra.amount : Number(p.amount) || 0;
+    var isLoss = extra.isLoss;
+    if (isLoss == null) {
+      isLoss = status === 'chargeback' || status === 'samecancel' || amount < 0;
+    }
+    rows.push(
+      _stMakeReconTableRow({
+        status: status,
+        customer: p.customer || extra.customer || '',
+        dateTs: p.dateTs || extra.dateTs || 0,
+        product: product,
+        productNote: productNote,
+        amount: amount,
+        isLoss: isLoss,
+        saleId: sale && sale.id ? String(sale.id) : extra.saleId || '',
+        memberId:
+          _stReconNormMemberId(
+            (pay && pay.memberId) ||
+              (sale && sale.memberId) ||
+              p.memberId ||
+              p.attachMemberId ||
+              ''
+          ) || '',
+        sheetProduct: sheetPlan,
+        sheetAmount: pay ? Number(pay.amount) || 0 : amount,
+        kind: extra.kind || p.kind || '',
+        typeLocal: (pay && pay.typeLocal) || extra.typeLocal || '',
+        attachMemberId: p.attachMemberId || extra.attachMemberId || ''
+      })
+    );
+  }
+
+  var i;
+  if (result) {
+    for (i = 0; i < (result.missing || []).length; i++) {
+      pushProblem(result.missing[i], 'missing');
+    }
+    for (i = 0; i < (result.mislabeled || []).length; i++) {
+      var mis = result.mislabeled[i];
+      pushProblem(mis, 'mislabeled', {
+        productNote:
+          mis.pay && mis.pay.productName ? 'sheet: ' + mis.pay.productName : ''
+      });
+    }
+    for (i = 0; i < (result.attach || []).length; i++) {
+      var at = result.attach[i];
+      pushProblem(at, 'mislabeled', {
+        productNote:
+          at.pay && at.pay.productName ? 'sheet: ' + at.pay.productName : '',
+        kind: 'attach'
+      });
+    }
+    for (i = 0; i < (result.chargebackCandidates || []).length; i++) {
+      pushProblem(result.chargebackCandidates[i], 'chargeback', {
+        isLoss: true
+      });
+    }
+    for (i = 0; i < (result.untrackedChargebacks || []).length; i++) {
+      pushProblem(result.untrackedChargebacks[i], 'chargeback', {
+        isLoss: true
+      });
+    }
+    for (i = 0; i < (result.notOnSheet || []).length; i++) {
+      var nos = result.notOnSheet[i];
+      if (nos.kind === 'same_week_cancel') {
+        pushProblem(nos, 'samecancel', {
+          isLoss: true,
+          productNote: 'not on sheet'
+        });
+      } else {
+        pushProblem(nos, 'missing', { productNote: 'not on sheet' });
+      }
+    }
+  }
+
+  var cancelledMids = {};
+  var stripped = _stReconStripCancelPairs(payRows || [], cancelledMids);
+  for (i = 0; i < stripped.length; i++) {
+    var prow = stripped[i];
+    if (payUsed(prow)) continue;
+    var exact = _stReconFindExactWeekSale(prow, weekSales, usedSale);
+    if (!exact) continue;
+    usedSale[exact.id] = true;
+    markPay(prow);
+    if (_stReconAmountsMismatch(prow, exact)) {
+      rows.push(
+        _stMakeReconTableRow({
+          status: 'amountmismatch',
+          customer: exact.customer || prow.customer || '',
+          dateTs: Number(exact.ts) || Number(prow.dateTs) || 0,
+          product: exact.plan || '',
+          productNote: prow.productName ? 'sheet: ' + prow.productName : '',
+          amount: Number(prow.amount) || 0,
+          isLoss: Number(prow.amount) < 0,
+          saleId: String(exact.id || ''),
+          memberId: _stReconNormMemberId(prow.memberId || exact.memberId),
+          sheetProduct: prow.productName || '',
+          sheetAmount: Number(prow.amount) || 0,
+          kind: 'amountmismatch',
+          typeLocal: prow.typeLocal || ''
+        })
+      );
+    } else {
+      rows.push(
+        _stMakeReconTableRow({
+          status: 'matched',
+          customer: exact.customer || prow.customer || '',
+          dateTs: Number(exact.ts) || Number(prow.dateTs) || 0,
+          product: exact.plan || prow.productName || '',
+          productNote: '',
+          amount: Number(prow.amount) || 0,
+          isLoss: false,
+          saleId: String(exact.id || ''),
+          memberId: _stReconNormMemberId(prow.memberId || exact.memberId),
+          sheetProduct: prow.productName || '',
+          sheetAmount: Number(prow.amount) || 0,
+          kind: 'matched',
+          typeLocal: prow.typeLocal || ''
+        })
+      );
+    }
+  }
+  return rows;
+}
+
+function _stReconcileCountRows(rows) {
+  var c = {
+    needs: 0,
+    all: 0,
+    missing: 0,
+    mislabeled: 0,
+    amountmismatch: 0,
+    chargeback: 0,
+    samecancel: 0,
+    matched: 0,
+    unresolved: 0
+  };
+  var i;
+  for (i = 0; i < (rows || []).length; i++) {
+    var r = rows[i];
+    if (!r) continue;
+    c.all += 1;
+    if (r.ignored) continue;
+    if (r.status === 'matched') {
+      c.matched += 1;
+    } else {
+      c.needs += 1;
+      c.unresolved += Math.abs(Number(r.amount) || 0);
+      if (typeof c[r.status] === 'number') c[r.status] += 1;
+    }
+  }
+  c.unresolved = _stMoney2(c.unresolved);
+  return c;
+}
+
+function _stReconcileRowVisible(row, filter) {
+  if (!row) return false;
+  if (filter === 'all') return true;
+  if (row.ignored) return false;
+  if (filter === 'needs') return row.status !== 'matched';
+  return row.status === filter;
+}
+
+function _stReconcileRowHasActions(row) {
+  if (!row || row.ignored || row.status === 'matched') return false;
+  if (row.status === 'chargeback' || row.status === 'samecancel') {
+    return !!row.saleId;
+  }
+  return true;
+}
+
+function _stReconcileStatusLabel(status) {
+  if (status === 'missing') return 'Missing';
+  if (status === 'mislabeled') return 'Mislabeled';
+  if (status === 'amountmismatch') return 'Amount mismatch';
+  if (status === 'chargeback') return 'Chargeback';
+  if (status === 'samecancel') return 'Same-week cancel';
+  return 'Matched';
+}
+
+function _stReconcileCollectViewState(sales, view) {
+  var matchView = _stReconcileMatchView || view;
+  var weekStart = matchView && matchView.start ? Number(matchView.start) : 0;
+  var live = _stComputeLivePaycheck(sales || [], weekStart);
+  var trackerNet =
+    live && live.netCommission != null ? Number(live.netCommission) : 0;
+  var sheetNet = _stSumPaySheetCommission(_stPaySheetRows);
+  var loaded = !!(_stPaySheetRows && _stPaySheetRows.length);
+  var counts = _stReconcileCountRows(_stReconcileTableRows);
+  var phase = 'notstarted';
+  if (loaded) phase = counts.needs ? 'needsreview' : 'reconciled';
+  return {
+    matchView: matchView,
+    trackerNet: trackerNet,
+    sheetNet: sheetNet,
+    diff: _stMoney2(trackerNet - sheetNet),
+    loaded: loaded,
+    phase: phase,
+    needsN: counts.needs,
+    unresolved: counts.unresolved,
+    counts: counts,
+    rowN: _stPaySheetRows ? _stPaySheetRows.length : 0
+  };
+}
+
+function _stReconcileFmtCommissionCell(row) {
+  var n = Number(row && row.amount) || 0;
+  if (row && (row.isLoss || n < 0)) {
+    return '-' + _stFmtMoney(Math.abs(n));
+  }
+  return _stFmtMoney(n);
+}
+
+function _stBuildReconcileHeadlineHtml(state) {
+  if (!state || state.phase === 'notstarted') {
+    return (
+      '<div id="st-recon-headline" class="st-recon-v2-headline is-idle">' +
+      'Paste a pay sheet to reconcile this week</div>'
+    );
+  }
+  if (state.phase === 'reconciled') {
+    return (
+      '<div id="st-recon-headline" class="st-recon-v2-headline is-ok">' +
+      'Reconciled - your tracker matches your pay sheet</div>'
+    );
+  }
+  var itemWord = state.needsN === 1 ? 'item needs' : 'items need';
+  return (
+    '<div id="st-recon-headline" class="st-recon-v2-headline is-warn">' +
+    state.needsN +
+    ' ' +
+    itemWord +
+    ' review · ' +
+    _stEscape(_stFmtMoney(state.unresolved)) +
+    ' unresolved</div>'
+  );
+}
+
+function _stBuildReconcileStatusPillHtml(state) {
+  var phase = (state && state.phase) || 'notstarted';
+  var label = 'Not started';
+  var cls = 'is-idle';
+  if (phase === 'needsreview') {
+    label = 'Needs review';
+    cls = 'is-warn';
+  } else if (phase === 'reconciled') {
+    label = 'Reconciled';
+    cls = 'is-ok';
+  }
+  return (
+    '<span id="st-recon-status-pill" class="st-recon-v2-status-pill ' +
+    cls +
+    '">' +
+    label +
+    '</span>'
+  );
+}
+
+function _stBuildReconcileCountLineHtml(state) {
+  var c = (state && state.counts) || _stReconcileCountRows([]);
+  return (
+    '<div id="st-recon-count-line" class="st-recon-v2-counts">' +
+    c.matched +
+    ' matched · ' +
+    c.missing +
+    ' missing · ' +
+    c.mislabeled +
+    ' mislabeled · ' +
+    c.amountmismatch +
+    ' amount mismatch · ' +
+    c.chargeback +
+    ' chargeback · ' +
+    c.samecancel +
+    ' same-week cancel' +
+    (c.samecancel === 1 ? '' : 's') +
+    '</div>'
+  );
+}
+
+function _stBuildReconcileFooterSummaryHtml(state) {
+  var c = (state && state.counts) || _stReconcileCountRows([]);
+  var diff = state ? Number(state.diff) || 0 : 0;
+  return (
+    '<span id="st-recon-footer-summary" class="st-recon-v2-footer-summary">' +
+    c.matched +
+    ' matched · ' +
+    c.mislabeled +
+    ' mislabeled · ' +
+    c.chargeback +
+    ' chargeback · ' +
+    _stEscape(_stFmtMoney(Math.abs(diff))) +
+    ' diff</span>'
+  );
+}
+
+function _stBuildReconcileChipsHtml(state) {
+  var c = (state && state.counts) || _stReconcileCountRows([]);
+  var filter = _stReconcileTableFilter || 'needs';
+  var chips = [
+    { id: 'needs', label: 'Needs attention', n: c.needs },
+    { id: 'all', label: 'All', n: c.all },
+    { id: 'missing', label: 'Missing', n: c.missing },
+    { id: 'mislabeled', label: 'Mislabeled', n: c.mislabeled },
+    { id: 'amountmismatch', label: 'Amount mismatch', n: c.amountmismatch },
+    { id: 'chargeback', label: 'Chargebacks', n: c.chargeback },
+    { id: 'samecancel', label: 'Same-week cancels', n: c.samecancel },
+    { id: 'matched', label: 'Matched', n: c.matched }
+  ];
+  var html =
+    '<div id="st-recon-chips" class="st-recon-v2-chips" role="tablist">';
+  var i;
+  for (i = 0; i < chips.length; i++) {
+    var chip = chips[i];
+    html +=
+      '<button type="button" class="st-recon-chip st-recon-v2-chip' +
+      (filter === chip.id ? ' st-chip-active' : '') +
+      '" data-st-recon-action="filter" data-filter="' +
+      chip.id +
+      '">' +
+      _stEscape(chip.label) +
+      ' <span class="st-recon-v2-chip-n">' +
+      chip.n +
+      '</span></button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function _stBuildReconcileTableRowHtml(row) {
+  if (!row) return '';
+  var muted = row.status === 'matched' || row.ignored;
+  var amtClass = 'st-recon-v2-amt';
+  if (row.isLoss || Number(row.amount) < 0) amtClass += ' is-loss';
+  var actionHtml = '';
+  if (_stReconcileRowHasActions(row)) {
+    actionHtml =
+      '<button type="button" class="st-recon-v2-resolve" data-st-recon-action="open-resolve" data-row-key="' +
+      _stEscape(row.key) +
+      '">Resolve</button>';
+  }
+  return (
+    '<tr class="st-recon-v2-tr' +
+    (muted ? ' is-muted' : '') +
+    '" data-row-key="' +
+    _stEscape(row.key) +
+    '">' +
+    '<td><div class="st-recon-v2-cust">' +
+    _stEscape(row.customer || 'Unknown') +
+    '</div><div class="st-recon-v2-sub">' +
+    _stEscape(_stReconFormatDate(row.dateTs)) +
+    '</div></td>' +
+    '<td><div class="st-recon-v2-prod">' +
+    _stEscape(row.product || 'Product') +
+    '</div>' +
+    (row.productNote
+      ? '<div class="st-recon-v2-sub">' + _stEscape(row.productNote) + '</div>'
+      : '') +
+    '</td>' +
+    '<td class="' +
+    amtClass +
+    '">' +
+    _stEscape(_stReconcileFmtCommissionCell(row)) +
+    '</td>' +
+    '<td><span class="st-recon-v2-pill st-recon-v2-pill-' +
+    _stEscape(row.status) +
+    '">' +
+    _stEscape(_stReconcileStatusLabel(row.status)) +
+    '</span></td>' +
+    '<td class="st-recon-v2-action">' +
+    actionHtml +
+    '</td></tr>'
+  );
+}
+
+function _stBuildReconcileTableBodyHtml(rows, filter) {
+  var html = '';
+  var n = 0;
+  var i;
+  for (i = 0; i < (rows || []).length; i++) {
+    var r = rows[i];
+    if (!_stReconcileRowVisible(r, filter)) continue;
+    n += 1;
+    html += _stBuildReconcileTableRowHtml(r);
+  }
+  if (!n) {
+    return (
+      '<tr><td colspan="5" class="st-recon-v2-empty">' +
+      (rows && rows.length
+        ? 'No rows for this filter.'
+        : 'Paste a pay sheet to see results.') +
+      '</td></tr>'
+    );
+  }
+  return html;
+}
+
+function _stBuildReconcileSheetRowHtml(state) {
+  if (state && state.loaded) {
+    return (
+      '<div class="st-recon-v2-sheet is-loaded">' +
+      '<div class="st-recon-v2-sheet-copy"><strong>Pay sheet loaded</strong>' +
+      '<span>Analyzed ' +
+      _stEscape(_stFmtReconcileAnalyzedAt(_stPaySheetAnalyzedAt)) +
+      ' · ' +
+      state.rowN +
+      ' row' +
+      (state.rowN === 1 ? '' : 's') +
+      '</span></div>' +
+      '<div class="st-recon-v2-sheet-actions">' +
+      '<button type="button" class="st-recon-v2-btn-ghost" data-st-recon-action="replace-sheet">Replace</button>' +
+      '<button type="button" class="st-recon-v2-btn-ghost" data-st-recon-action="rerun-sheet">Re-run</button>' +
+      '</div></div>'
+    );
+  }
+  return (
+    '<div class="st-recon-v2-sheet is-empty" id="st-recon-sheet-drop">' +
+    '<textarea id="st-recon-sheet-ta" class="st-recon-v2-sheet-ta" rows="2" ' +
+    'placeholder="Paste pay sheet text here, or drop it on this row"></textarea>' +
+    '</div>'
+  );
+}
+
+function _stRefreshReconcileView() {
+  var page = document.getElementById('page-salestracker');
+  if (!page || !_stReconcileMode) return;
+  var sales = _stLoadSales();
+  var view = _stRangeInfo();
+  var state = _stReconcileCollectViewState(sales, view);
+  var el;
+  el = document.getElementById('st-recon-headline');
+  if (el) {
+    el.outerHTML = _stBuildReconcileHeadlineHtml(state);
+  }
+  el = document.getElementById('st-recon-status-pill');
+  if (el) {
+    el.outerHTML = _stBuildReconcileStatusPillHtml(state);
+  }
+  el = document.getElementById('st-recon-count-line');
+  if (el) {
+    el.outerHTML = _stBuildReconcileCountLineHtml(state);
+  }
+  el = document.getElementById('st-recon-chips');
+  if (el) {
+    el.outerHTML = _stBuildReconcileChipsHtml(state);
+  }
+  el = document.getElementById('st-recon-table-body');
+  if (el) {
+    el.innerHTML = _stBuildReconcileTableBodyHtml(
+      _stReconcileTableRows,
+      _stReconcileTableFilter || 'needs'
+    );
+  }
+  el = document.getElementById('st-recon-footer-summary');
+  if (el) {
+    el.outerHTML = _stBuildReconcileFooterSummaryHtml(state);
+  }
+}
+
 function _stBuildReconcilePane(sales, view) {
   var matchView = _stReconcileMatchView || view;
   if (_stPaySheetRows && _stPaySheetRows.length) {
@@ -9515,79 +10150,77 @@ function _stBuildReconcilePane(sales, view) {
     );
   }
   var result = _stReconcileResult;
-  var matched = result ? Number(result.matched) || 0 : 0;
-  var missN = result && result.missing ? result.missing.length : 0;
-  var misN = result && result.mislabeled ? result.mislabeled.length : 0;
-  var gap = result ? Number(result.gap) || 0 : 0;
-  var subText =
-    'Compare logged sales to your official pay sheet, or mark a past sale as a chargeback.';
-  var subHtml = _stEscape(subText);
-  if (_stReconcileMatchView && _stPaySheetRows.length && result) {
-    subHtml =
-      'Matched against week of <strong>' +
-      _stEscape(_stReconMatchedWeekLabel(_stReconcileMatchView)) +
-      '</strong>. ' +
-      _stEscape(subText);
+  _stReconcileTableRows = _stBuildReconcileTableRows(
+    result,
+    _stPaySheetRows,
+    _stReconWeekSales(sales, matchView)
+  );
+  var state = _stReconcileCollectViewState(sales, view);
+  var weekLabel = '';
+  if (state.matchView && state.matchView.start) {
+    weekLabel = 'Week of ' + _stReconMatchedWeekLabel(state.matchView);
   }
+  var diffClass =
+    Math.abs(Number(state.diff) || 0) > 0.005 ? ' is-diff' : ' is-zero';
 
-  var html = '<section class="st-recon-pane" aria-label="Reconcile">';
-  html += '<div class="st-recon-head">';
-  html += '<div class="st-recon-head-text">';
-  html += '<div class="st-recon-title">Reconcile</div>';
-  html += '<div class="st-recon-sub">' + subHtml + '</div>';
+  var html =
+    '<section class="st-recon-pane st-recon-v2" aria-label="Reconcile">';
+  html += '<div class="st-recon-v2-header">';
+  html += _stBuildReconcileHeadlineHtml(state);
+  html += '<div class="st-recon-v2-meta">';
+  if (weekLabel) {
+    html +=
+      '<span class="st-recon-v2-week">' + _stEscape(weekLabel) + '</span>';
+  }
+  html += _stBuildReconcileStatusPillHtml(state);
   html += '</div>';
+  html += '<div class="st-recon-v2-figures">';
   html +=
-    '<button type="button" class="st-recon-paste-btn" onclick="_stOpenPaySheetModal()">Paste pay sheet</button>';
-  html += '</div>';
-
-  html += _stBuildReconcileOneLineSummaryHtml(result);
-
-  var gapClass = gap > 0 ? ' is-gap' : ' is-zero';
-  html += '<div class="st-recon-gap-hero">';
-  html += '<span class="st-recon-gap-label">Est. commission gap</span>';
-  html +=
-    '<strong class="st-recon-gap-val' +
-    gapClass +
-    '">' +
-    _stFmtMoney(gap) +
-    '</strong>';
-  html += '</div>';
-
-  html += '<div class="st-recon-stats">';
-  html +=
-    '<div class="st-recon-stat"><span class="st-recon-stat-label">Deals matched</span><strong class="st-recon-stat-val">' +
-    matched +
+    '<div class="st-recon-v2-fig"><span>Tracker commission</span><strong>' +
+    _stEscape(_stFmtMoney(state.trackerNet)) +
     '</strong></div>';
   html +=
-    '<div class="st-recon-stat"><span class="st-recon-stat-label">Missing</span><strong class="st-recon-stat-val">' +
-    missN +
+    '<div class="st-recon-v2-fig"><span>Pay sheet commission</span><strong>' +
+    _stEscape(_stFmtMoney(state.sheetNet)) +
     '</strong></div>';
   html +=
-    '<div class="st-recon-stat"><span class="st-recon-stat-label">Mislabeled</span><strong class="st-recon-stat-val">' +
-    misN +
+    '<div class="st-recon-v2-fig' +
+    diffClass +
+    '"><span>Difference</span><strong>' +
+    _stEscape(_stFmtMoney(state.diff)) +
     '</strong></div>';
   html += '</div>';
-
-  html += _stBuildReconcileResolvedStripHtml();
-
-  html += '<div class="st-recon-problems-wrap">';
-  html += _stBuildReconcileProblemsHtml(result);
+  html += _stBuildReconcileCountLineHtml(state);
   html += '</div>';
 
-  html += '<div class="st-recon-cb-wrap">';
-  html += '<div class="st-recon-section-label">Mark chargeback</div>';
+  html += _stBuildReconcileSheetRowHtml(state);
+  html += _stBuildReconcileChipsHtml(state);
+
+  html += '<div class="st-recon-v2-table-wrap">';
   html +=
-    '<div class="st-recon-cb-row">' +
-    '<input type="text" class="st-recon-cb-search" placeholder="Search customer or member ID" value="' +
-    _stEscape(_stCbSearchQuery) +
-    '" oninput="_stOnReconcileCbSearch(this.value)">' +
-    '<button type="button" class="st-recon-cb-mark" onclick="_stReconcileMarkChargeback()">Mark chargeback</button>' +
-    '</div>';
+    '<table class="st-recon-v2-table"><colgroup>' +
+    '<col class="st-recon-v2-col-cust">' +
+    '<col class="st-recon-v2-col-prod">' +
+    '<col class="st-recon-v2-col-amt">' +
+    '<col class="st-recon-v2-col-status">' +
+    '<col class="st-recon-v2-col-action">' +
+    '</colgroup><thead><tr>' +
+    '<th>Customer</th><th>Product</th><th>Commission</th><th>Status</th><th>Action</th>' +
+    '</tr></thead><tbody id="st-recon-table-body">';
+  html += _stBuildReconcileTableBodyHtml(
+    _stReconcileTableRows,
+    _stReconcileTableFilter || 'needs'
+  );
+  html += '</tbody></table></div>';
+
+  html += '<div class="st-recon-v2-footer">';
   html +=
-    '<div id="st-recon-cb-results" class="st-recon-cb-results">' +
-    _stBuildReconcileCbResultsHtml() +
-    '</div>';
-  html += '</div>';
+    '<button type="button" class="st-recon-v2-mark" data-st-recon-action="open-mark">+ Mark chargeback / cancel</button>';
+  html += '<div class="st-recon-v2-footer-right">';
+  html += _stBuildReconcileFooterSummaryHtml(state);
+  html +=
+    '<button type="button" class="st-recon-v2-save" data-st-recon-action="save-recon">Save reconciliation</button>';
+  html += '</div></div>';
 
   html += '</section>';
   return html;
@@ -9688,7 +10321,7 @@ function _stBuildReconcileHistoryPane(sales) {
   html += '<div class="st-recon-section-label">Saved pay sheets</div>';
   if (!saved.length) {
     html +=
-      '<div class="st-empty st-empty-tight">No saved pay sheets yet. Complete a Match in Reconcile to store one.</div>';
+      '<div class="st-empty st-empty-tight">No saved pay sheets yet. Save a reconciliation in Reconcile to store one.</div>';
   } else {
     html += '<div class="st-recon-history-list">';
     var i;
@@ -10603,6 +11236,14 @@ function _stRender() {
         _stClosePaySheetModal();
         return;
       }
+      if (_stMarkReversalModalIsOpen()) {
+        _stCloseMarkReversalModal();
+        return;
+      }
+      if (document.getElementById('st-recon-resolve-menu')) {
+        _stCloseReconcileResolveMenu();
+        return;
+      }
       if (_stPaycheckBreakdownModalIsOpen()) {
         _stClosePaycheckBreakdownModal();
         return;
@@ -10617,6 +11258,8 @@ function _stRender() {
   _stWireReconcileActionDelegation();
   _stWireAllSalesSearchDelegation(page);
   _stWirePaycheckObserver();
+  _stWireReconcileSheetControls();
+  window._stResetPaycheckDerive = _stResetPaycheckDerive;
   if (_stScrollToDayAfterRender != null) {
     var scrollAnchor = _stScrollToDayAfterRender;
     _stScrollToDayAfterRender = null;
@@ -10635,6 +11278,13 @@ function _stWireSalesBulkDelegation(page) {
   page.addEventListener('click', function (e) {
     var t = e.target;
     if (!t || !t.closest) return;
+    if (
+      document.getElementById('st-recon-resolve-menu') &&
+      !t.closest('#st-recon-resolve-menu') &&
+      !t.closest('[data-st-recon-action="open-resolve"]')
+    ) {
+      _stCloseReconcileResolveMenu();
+    }
     if (t.closest('.st-bulk-del')) {
       e.preventDefault();
       _stBulkDelete();
@@ -10672,6 +11322,13 @@ function _stWireReconcileActionDelegation() {
   document.body.addEventListener('click', function (e) {
     var t = e.target;
     if (!t || !t.closest) return;
+    if (
+      document.getElementById('st-recon-resolve-menu') &&
+      !t.closest('#st-recon-resolve-menu') &&
+      !t.closest('[data-st-recon-action="open-resolve"]')
+    ) {
+      _stCloseReconcileResolveMenu();
+    }
     var btn = t.closest('[data-st-recon-action]');
     if (!btn) return;
     // Page-level listener already handles in-page buttons when present.
@@ -10679,6 +11336,426 @@ function _stWireReconcileActionDelegation() {
     e.preventDefault();
     _stHandleReconcileActionClick(btn);
   });
+  document.body.addEventListener('input', function (e) {
+    var el = e.target;
+    if (!el || el.id !== 'st-recon-mark-search') return;
+    _stCbSearchQuery = String(el.value || '');
+    _stCbSelectedId = '';
+    _stPaintMarkReversalModal();
+  });
+}
+
+function _stWireReconcileSheetControls() {
+  var zone = document.getElementById('st-recon-sheet-drop');
+  if (!zone) return;
+  zone.addEventListener('dragover', function (e) {
+    e.preventDefault();
+    zone.classList.add('is-drag');
+  });
+  zone.addEventListener('dragleave', function () {
+    zone.classList.remove('is-drag');
+  });
+  zone.addEventListener('drop', function (e) {
+    e.preventDefault();
+    zone.classList.remove('is-drag');
+    var text = '';
+    var files = e.dataTransfer ? e.dataTransfer.files : null;
+    if (e.dataTransfer) text = e.dataTransfer.getData('text') || '';
+    if ((!text || !String(text).trim()) && files && files[0]) {
+      var reader = new FileReader();
+      reader.onload = function () {
+        _stApplyPaySheetText(String(reader.result || ''));
+      };
+      reader.readAsText(files[0]);
+      return;
+    }
+    if (text && String(text).trim()) _stApplyPaySheetText(text);
+  });
+  var ta = document.getElementById('st-recon-sheet-ta');
+  if (ta) {
+    ta.addEventListener('paste', function (e) {
+      var clip = e.clipboardData || window.clipboardData;
+      var text = clip ? clip.getData('text') : '';
+      if (!text || !String(text).trim()) return;
+      e.preventDefault();
+      _stApplyPaySheetText(text);
+    });
+  }
+}
+
+function _stFindReconcileTableRowByKey(key) {
+  var k = String(key || '');
+  if (!k) return null;
+  var i;
+  for (i = 0; i < (_stReconcileTableRows || []).length; i++) {
+    if (_stReconcileTableRows[i] && _stReconcileTableRows[i].key === k) {
+      return _stReconcileTableRows[i];
+    }
+  }
+  return null;
+}
+
+function _stCloseReconcileResolveMenu() {
+  var menu = document.getElementById('st-recon-resolve-menu');
+  if (menu && menu.parentNode) menu.parentNode.removeChild(menu);
+}
+
+function _stOpenReconcileResolveMenu(btn) {
+  _stCloseReconcileResolveMenu();
+  if (!btn) return;
+  var key = btn.getAttribute('data-row-key') || '';
+  var row = _stFindReconcileTableRowByKey(key);
+  if (!row || !_stReconcileRowHasActions(row)) return;
+  var items = [];
+  if (row.status === 'missing') {
+    items.push({ id: 'add-sale', label: 'Add sale' });
+    items.push({ id: 'ignore', label: 'Not a sale / ignore' });
+  } else if (row.status === 'mislabeled') {
+    items.push({ id: 'confirm-sheet', label: 'Confirm pay sheet is right' });
+    items.push({ id: 'fix-sale', label: 'Fix sale' });
+    items.push({ id: 'ignore', label: 'Ignore' });
+  } else if (row.status === 'amountmismatch') {
+    items.push({ id: 'accept-amount', label: 'Accept pay sheet amount' });
+    items.push({ id: 'fix-sale', label: 'Fix sale' });
+    items.push({ id: 'ignore', label: 'Ignore' });
+  } else if (row.status === 'chargeback') {
+    items.push({ id: 'view-sale', label: 'View sale' });
+    items.push({ id: 'undo-chargeback', label: 'Undo chargeback' });
+  } else if (row.status === 'samecancel') {
+    items.push({ id: 'view-sale', label: 'View sale' });
+    items.push({ id: 'undo-cancel', label: 'Undo cancel' });
+  }
+  if (!items.length) return;
+  var menu = document.createElement('div');
+  menu.id = 'st-recon-resolve-menu';
+  menu.className = 'st-recon-v2-menu';
+  menu.setAttribute('role', 'menu');
+  var html = '';
+  var i;
+  for (i = 0; i < items.length; i++) {
+    html +=
+      '<button type="button" role="menuitem" data-st-recon-action="resolve" data-resolve="' +
+      items[i].id +
+      '" data-row-key="' +
+      _stEscape(row.key) +
+      '">' +
+      _stEscape(items[i].label) +
+      '</button>';
+  }
+  menu.innerHTML = html;
+  document.body.appendChild(menu);
+  var rect = btn.getBoundingClientRect();
+  var top = rect.bottom + (window.scrollY || 0) + 4;
+  var left = rect.right + (window.scrollX || 0) - 220;
+  if (left < 8) left = 8;
+  menu.style.top = top + 'px';
+  menu.style.left = left + 'px';
+}
+
+function _stReconcileIgnoreRow(row) {
+  if (!row || !row.key) return;
+  _stReconcileIgnoredKeys[row.key] = true;
+  row.ignored = true;
+  _stCloseReconcileResolveMenu();
+  _stRefreshReconcileView();
+}
+
+function _stReconcileOpenAddSale(row) {
+  if (!row) return;
+  var initial = {
+    customer: row.customer || '',
+    memberId: row.memberId || '',
+    dateSold: _stTsToDateIso(row.dateTs),
+    plan: row.sheetProduct || row.product || '',
+    premium: Math.abs(
+      Number(row.sheetAmount != null ? row.sheetAmount : row.amount) || 0
+    ),
+    enrollmentFee: row.typeLocal === 'addon' ? 0 : 125,
+    addonOnly: row.typeLocal === 'addon'
+  };
+  if (row.typeLocal === 'addon') {
+    initial.plan = '';
+    initial.addons = [
+      {
+        name: row.sheetProduct || row.product || '',
+        amount: Math.abs(Number(row.sheetAmount) || 0),
+        ratePct: 70
+      }
+    ];
+  }
+  _stCloseReconcileResolveMenu();
+  _stOpenEntryModal({ mode: 'create', initial: initial });
+}
+
+function _stReconcileConfirmSheet(row) {
+  if (!row) return;
+  if (row.kind === 'attach' && row.saleId) {
+    _stCloseReconcileResolveMenu();
+    _stOpenAttachMemberIdConfirm(row.saleId);
+    return;
+  }
+  var sales = _stLoadSales();
+  var idx = _stFindSaleIndexById(sales, row.saleId);
+  if (idx < 0) {
+    _stFlash('Sale not found.', 'warn');
+    return;
+  }
+  if (row.sheetProduct) sales[idx].plan = row.sheetProduct;
+  if (row.memberId && !_stReconSaleHasMemberId(sales[idx])) {
+    sales[idx].memberId = row.memberId;
+  }
+  _stSaveSales(sales);
+  _stCloseReconcileResolveMenu();
+  _stRerunPaySheetMatch({
+    flashMsg: 'Sale updated to match the pay sheet.',
+    flashKind: 'ok'
+  });
+}
+
+function _stReconcileAcceptAmount(row) {
+  if (!row || !row.saleId) {
+    _stFlash('Sale not found.', 'warn');
+    return;
+  }
+  var sales = _stLoadSales();
+  var idx = _stFindSaleIndexById(sales, row.saleId);
+  if (idx < 0) {
+    _stFlash('Sale not found.', 'warn');
+    return;
+  }
+  sales[idx].amount = Math.abs(Number(row.sheetAmount) || 0);
+  _stRecomputeSaleGroupCommission(sales, idx);
+  _stSaveSales(sales);
+  _stCloseReconcileResolveMenu();
+  _stRerunPaySheetMatch({
+    flashMsg: 'Accepted pay sheet amount.',
+    flashKind: 'ok'
+  });
+}
+
+function _stRunReconcileResolveAction(resolveId, rowKey) {
+  var row = _stFindReconcileTableRowByKey(rowKey);
+  if (!row) {
+    _stCloseReconcileResolveMenu();
+    return;
+  }
+  if (resolveId === 'ignore') {
+    _stReconcileIgnoreRow(row);
+    return;
+  }
+  if (resolveId === 'add-sale') {
+    _stReconcileOpenAddSale(row);
+    return;
+  }
+  if (resolveId === 'confirm-sheet') {
+    _stReconcileConfirmSheet(row);
+    return;
+  }
+  if (resolveId === 'accept-amount') {
+    _stReconcileAcceptAmount(row);
+    return;
+  }
+  if (resolveId === 'fix-sale' || resolveId === 'view-sale') {
+    _stCloseReconcileResolveMenu();
+    if (!row.saleId) {
+      _stFlash('Sale not found.', 'warn');
+      return;
+    }
+    _stOpenCommissionEditor(row.saleId);
+    return;
+  }
+  if (resolveId === 'undo-chargeback' || resolveId === 'undo-cancel') {
+    if (!row.saleId) {
+      _stFlash('Sale not found.', 'warn');
+      return;
+    }
+    _stUpdateSaleStatus(row.saleId, 'pending');
+    _stCloseReconcileResolveMenu();
+    _stRerunPaySheetMatch({
+      flashMsg:
+        resolveId === 'undo-cancel'
+          ? 'Same-week cancel undone.'
+          : 'Chargeback undone.',
+      flashKind: 'ok'
+    });
+  }
+}
+
+function _stSaveReconcileFromFooter() {
+  if (!_stPaySheetRows || !_stPaySheetRows.length || !_stReconcileResult) {
+    _stFlash('Paste a pay sheet before saving.', 'warn');
+    return;
+  }
+  var view = _stReconcileMatchView || _stRangeInfo();
+  var ok = _stPersistReconcileHistoryAfterMatch(
+    _stPaySheetRawText,
+    view,
+    _stReconcileResult
+  );
+  if (!ok) {
+    _stFlash(
+      'Reconciliation did not save. Storage may be full - free space and try again.',
+      'error'
+    );
+    return;
+  }
+  _stFlash('Reconciliation saved to History.', 'ok');
+}
+
+function _stCloseMarkReversalModal() {
+  _stMarkModalStatus = '';
+  _stCbSelectedId = '';
+  var modal = document.getElementById('st-recon-mark-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stMarkReversalModalIsOpen() {
+  return !!document.getElementById('st-recon-mark-modal');
+}
+
+function _stBuildMarkReversalHitsHtml() {
+  var hits = _stReconcileChargebackCandidates(_stCbSearchQuery);
+  if (!_stCbSearchQuery.trim()) {
+    return '<div class="st-recon-cb-empty">Type a customer name or member ID.</div>';
+  }
+  if (!hits.length) {
+    return '<div class="st-recon-cb-empty">No matching sales.</div>';
+  }
+  var html = '';
+  var i;
+  for (i = 0; i < hits.length; i++) {
+    var s = hits[i];
+    var sid = String(s.id || '');
+    var sel = sid && sid === _stCbSelectedId;
+    html +=
+      '<button type="button" class="st-recon-cb-hit' +
+      (sel ? ' is-selected' : '') +
+      '" data-st-recon-action="mark-pick" data-sale-id="' +
+      _stEscape(sid) +
+      '">' +
+      '<div class="st-recon-cb-hit-main">' +
+      '<div class="st-recon-cb-hit-name">' +
+      _stEscape(s.customer || 'Unknown') +
+      '</div>' +
+      '<div class="st-recon-cb-hit-meta">' +
+      _stEscape(s.plan || 'Product') +
+      ' · ' +
+      _stEscape(_stReconFormatDate(s.ts)) +
+      '</div></div>' +
+      '<span class="st-recon-cb-hit-amt">' +
+      _stEscape(_stFmtMoney(_stSaleUnsignedCommission(s))) +
+      '</span></button>';
+  }
+  return html;
+}
+
+function _stPaintMarkReversalModal() {
+  var box = document.getElementById('st-recon-mark-hits');
+  if (box) box.innerHTML = _stBuildMarkReversalHitsHtml();
+  var choice = document.getElementById('st-recon-mark-choice');
+  if (choice) {
+    choice.style.display = _stCbSelectedId ? 'block' : 'none';
+  }
+  var cbBtn = document.getElementById('st-recon-mark-type-cb');
+  var swBtn = document.getElementById('st-recon-mark-type-swc');
+  if (cbBtn) {
+    cbBtn.classList.toggle('is-selected', _stMarkModalStatus === 'chargeback');
+  }
+  if (swBtn) {
+    swBtn.classList.toggle('is-selected', _stMarkModalStatus === 'samecancel');
+  }
+}
+
+function _stOpenMarkReversalModal() {
+  _stCloseMarkReversalModal();
+  _stCbSearchQuery = '';
+  _stCbSelectedId = '';
+  _stMarkModalStatus = '';
+  var modal = document.createElement('div');
+  modal.id = 'st-recon-mark-modal';
+  modal.className = 'st-entry-modal st-recon-mark-modal';
+  var html = '';
+  html +=
+    '<div class="st-entry-card st-recon-mark-card" role="dialog" aria-modal="true" aria-labelledby="st-recon-mark-title">';
+  html +=
+    '<div class="st-entry-title" id="st-recon-mark-title">Mark chargeback / cancel</div>';
+  html +=
+    '<input type="search" id="st-recon-mark-search" class="st-recon-v2-mark-search" placeholder="Search customer or member ID" autocomplete="off">';
+  html += '<div id="st-recon-mark-hits" class="st-recon-cb-results">';
+  html += _stBuildMarkReversalHitsHtml();
+  html += '</div>';
+  html +=
+    '<div id="st-recon-mark-choice" class="st-recon-v2-mark-choice" style="display:none">';
+  html += '<div class="st-recon-v2-mark-types">';
+  html +=
+    '<button type="button" id="st-recon-mark-type-cb" class="st-recon-v2-type-btn" data-st-recon-action="mark-type" data-status="chargeback">Chargeback</button>';
+  html +=
+    '<button type="button" id="st-recon-mark-type-swc" class="st-recon-v2-type-btn" data-st-recon-action="mark-type" data-status="samecancel">Same-week cancel</button>';
+  html += '</div>';
+  html +=
+    '<p class="st-recon-v2-mark-help">Chargeback: deducted on a later paycheck. Same-week cancel: dropped in the same week it was sold, so it never paid.</p>';
+  html +=
+    '<label class="st-recon-v2-mark-reason">Reason (optional)<input id="st-recon-mark-reason" type="text" maxlength="120"></label>';
+  html += '</div>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" data-st-recon-action="close-mark">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save" data-st-recon-action="confirm-mark">Confirm</button>';
+  html += '</div></div>';
+  modal.innerHTML = html;
+  modal.addEventListener('click', function (ev) {
+    if (ev.target === modal) _stCloseMarkReversalModal();
+  });
+  document.body.appendChild(modal);
+  var search = document.getElementById('st-recon-mark-search');
+  if (search) {
+    try {
+      search.focus();
+    } catch (_eF) {}
+  }
+}
+
+function _stSelectMarkReversalSale(saleId) {
+  _stCbSelectedId = String(saleId || '');
+  _stPaintMarkReversalModal();
+}
+
+function _stSetMarkReversalType(status) {
+  if (status !== 'chargeback' && status !== 'samecancel') return;
+  _stMarkModalStatus = status;
+  _stPaintMarkReversalModal();
+}
+
+function _stConfirmMarkReversalModal() {
+  var sid = String(_stCbSelectedId || '');
+  var st = String(_stMarkModalStatus || '');
+  if (!sid) {
+    _stFlash('Select a sale first.', 'warn');
+    return;
+  }
+  if (st !== 'chargeback' && st !== 'samecancel') {
+    _stFlash('Choose Chargeback or Same-week cancel.', 'warn');
+    return;
+  }
+  var reasonEl = document.getElementById('st-recon-mark-reason');
+  var reason = reasonEl ? String(reasonEl.value || '').trim() : '';
+  if (reason) _stSaveStatusReason(sid, reason);
+  _stCloseMarkReversalModal();
+  _stUpdateSaleStatus(sid, st);
+  if (_stPaySheetRows && _stPaySheetRows.length) {
+    _stRerunPaySheetMatch({
+      flashMsg:
+        st === 'samecancel' ? 'Marked same-week cancel.' : 'Marked chargeback.',
+      flashKind: 'ok'
+    });
+  } else {
+    _stFlash(
+      st === 'samecancel' ? 'Marked same-week cancel.' : 'Marked chargeback.',
+      'ok'
+    );
+    _stRender();
+  }
 }
 
 function _stHandleReconcileActionClick(btn) {
@@ -10758,6 +11835,66 @@ function _stHandleReconcileActionClick(btn) {
   }
   if (action === 'goto-history') {
     if (!_stHistoryMode) _stToggleHistoryMode();
+    return;
+  }
+  if (action === 'close-paysheet') {
+    _stClosePaySheetModal();
+    return;
+  }
+  if (action === 'submit-paysheet') {
+    _stSubmitPaySheetMatch();
+    return;
+  }
+  if (action === 'filter') {
+    _stReconcileTableFilter = btn.getAttribute('data-filter') || 'needs';
+    _stRefreshReconcileView();
+    return;
+  }
+  if (action === 'replace-sheet') {
+    _stClearPaySheetSession();
+    _stRender();
+    return;
+  }
+  if (action === 'rerun-sheet') {
+    _stRerunPaySheetMatch({
+      flashMsg: 'Pay sheet re-checked.',
+      flashKind: 'ok'
+    });
+    return;
+  }
+  if (action === 'open-resolve') {
+    _stOpenReconcileResolveMenu(btn);
+    return;
+  }
+  if (action === 'resolve') {
+    _stRunReconcileResolveAction(
+      btn.getAttribute('data-resolve') || '',
+      btn.getAttribute('data-row-key') || ''
+    );
+    return;
+  }
+  if (action === 'save-recon') {
+    _stSaveReconcileFromFooter();
+    return;
+  }
+  if (action === 'open-mark') {
+    _stOpenMarkReversalModal();
+    return;
+  }
+  if (action === 'close-mark') {
+    _stCloseMarkReversalModal();
+    return;
+  }
+  if (action === 'mark-pick') {
+    _stSelectMarkReversalSale(btn.getAttribute('data-sale-id') || '');
+    return;
+  }
+  if (action === 'mark-type') {
+    _stSetMarkReversalType(btn.getAttribute('data-status') || '');
+    return;
+  }
+  if (action === 'confirm-mark') {
+    _stConfirmMarkReversalModal();
   }
 }
 
