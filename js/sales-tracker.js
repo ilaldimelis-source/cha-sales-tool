@@ -4052,7 +4052,7 @@ function _stPaycheckCarrierName(sale) {
   return String(raw || '').trim();
 }
 
-function _stFmtWeekRangeMonSun(weekStartMs) {
+function _stFmtWeekRangeSunSat(weekStartMs) {
   var ws = Number(weekStartMs) || _stStartOfWeek(new Date()).getTime();
   var start = new Date(ws);
   var end = new Date(ws + 6 * 24 * 60 * 60 * 1000);
@@ -4212,7 +4212,7 @@ function _stOpenPaycheckBreakdownModal() {
   var rangeTitle =
     view.mode === 'custom'
       ? _stFmtCustomLabel(weekStart, weekEnd - 24 * 60 * 60 * 1000)
-      : _stFmtWeekRangeMonSun(weekStart);
+      : _stFmtWeekRangeSunSat(weekStart);
   var rates = _stLoadCommissionRates();
   var deals = [];
   var carrierAgg = {};
