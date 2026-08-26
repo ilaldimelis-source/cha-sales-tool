@@ -8312,6 +8312,7 @@ function _stClearPaySheetSession() {
   _stReconcileMatchView = null;
   _stReconcileTableRows = [];
   _stReconcileIgnoredKeys = {};
+  _stReconcileTableFilter = 'needs';
   _stReconcileSessionReset();
 }
 
@@ -10047,18 +10048,23 @@ function _stBuildReconcileCountLineHtml(state) {
 
 function _stBuildReconcileFooterSummaryHtml(state) {
   var c = (state && state.counts) || _stReconcileCountRows([]);
-  var diff = state ? Number(state.diff) || 0 : 0;
-  return (
+  var loaded = !!(state && state.loaded);
+  var html =
     '<span id="st-recon-footer-summary" class="st-recon-v2-footer-summary">' +
     c.matched +
     ' matched · ' +
     c.mislabeled +
     ' mislabeled · ' +
     c.chargeback +
-    ' chargeback · ' +
-    _stEscape(_stFmtMoney(Math.abs(diff))) +
-    ' diff</span>'
-  );
+    ' chargeback';
+  if (loaded) {
+    html +=
+      ' · ' +
+      _stEscape(_stFmtMoney(Math.abs(Number(state.diff) || 0))) +
+      ' diff';
+  }
+  html += '</span>';
+  return html;
 }
 
 function _stBuildReconcileChipsHtml(state) {
@@ -10201,6 +10207,10 @@ function _stBuildReconcileSheetRowHtml(state) {
       '<div class="st-recon-v2-sheet-actions">' +
       '<button type="button" class="st-recon-v2-btn-ghost" data-st-recon-action="replace-sheet">Replace</button>' +
       '<button type="button" class="st-recon-v2-btn-ghost" data-st-recon-action="rerun-sheet">Re-run</button>' +
+      '<button type="button" class="st-recon-v2-btn-clear" data-st-recon-action="clear-sheet" aria-label="Clear pay sheet">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M18 6L6 18M6 6l12 12"/>' +
+      '</svg></button>' +
       '</div></div>'
     );
   }
@@ -10267,8 +10277,13 @@ function _stBuildReconcilePane(sales, view) {
   if (state.matchView && state.matchView.start) {
     weekLabel = 'Week of ' + _stReconMatchedWeekLabel(state.matchView);
   }
-  var diffClass =
-    Math.abs(Number(state.diff) || 0) > 0.005 ? ' is-diff' : ' is-zero';
+  var sheetDisp = state.loaded ? _stFmtMoney(state.sheetNet) : '-';
+  var diffDisp = state.loaded ? _stFmtMoney(state.diff) : '-';
+  var diffClass = state.loaded
+    ? Math.abs(Number(state.diff) || 0) > 0.005
+      ? ' is-diff'
+      : ' is-zero'
+    : ' is-idle';
 
   var html =
     '<section class="st-recon-pane st-recon-v2" aria-label="Reconcile">';
@@ -10287,14 +10302,16 @@ function _stBuildReconcilePane(sales, view) {
     _stEscape(_stFmtMoney(state.trackerNet)) +
     '</strong></div>';
   html +=
-    '<div class="st-recon-v2-fig"><span>Pay sheet commission</span><strong>' +
-    _stEscape(_stFmtMoney(state.sheetNet)) +
+    '<div class="st-recon-v2-fig' +
+    (state.loaded ? '' : ' is-idle') +
+    '"><span>Pay sheet commission</span><strong>' +
+    _stEscape(sheetDisp) +
     '</strong></div>';
   html +=
     '<div class="st-recon-v2-fig' +
     diffClass +
     '"><span>Difference</span><strong>' +
-    _stEscape(_stFmtMoney(state.diff)) +
+    _stEscape(diffDisp) +
     '</strong></div>';
   html += '</div>';
   html += _stBuildReconcileCountLineHtml(state);
@@ -12703,6 +12720,11 @@ function _stHandleReconcileActionClick(btn) {
       flashMsg: 'Pay sheet re-checked.',
       flashKind: 'ok'
     });
+    return;
+  }
+  if (action === 'clear-sheet') {
+    _stClearPaySheetSession();
+    _stRender();
     return;
   }
   if (action === 'open-resolve') {

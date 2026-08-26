@@ -6303,3 +6303,26 @@ body.st-pb-modal-open {
     width: auto;
   }
 }
+
+/* Stage B.2 - idle hyphen figures and clear pay sheet */
+.st-recon-v2-fig.is-idle strong {
+  color: var(--cha-text-tertiary);
+  font-weight: 600;
+}
+
+.st-recon-v2-btn-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--cha-text-tertiary);
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.st-recon-v2-btn-clear:hover,
+.st-recon-v2-btn-clear:focus {
+  color: var(--cha-text-secondary);
+}
