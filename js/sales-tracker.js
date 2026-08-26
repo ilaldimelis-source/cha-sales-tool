@@ -4517,6 +4517,13 @@ var _stMarkModalStatus = '';
 // the last paste-Match. Reset on new Match; never persisted.
 var _stReconcileSessionResolved = [];
 
+// Chargebacks & Cancels tab (in-memory UI state)
+var _stCbcTimeFilter = 'all';
+var _stCbcTypeFilter = 'all';
+var _stCbcCustomStart = '';
+var _stCbcCustomEnd = '';
+var _stCbcCachedEvents = [];
+
 // Toggle handler: called from the This Week / All Sales
 // buttons at the top of the sales table.
 function _stSetTableFilter(mode) {
@@ -10918,11 +10925,675 @@ function _stEditMonthlyGoal() {
   _stFlash('Monthly goal updated.', 'ok');
 }
 
+function _stCbcEventTs(sale) {
+  if (!sale) return 0;
+  var rev =
+    sale.reversal && typeof sale.reversal === 'object' ? sale.reversal : null;
+  var n = 0;
+  if (rev) n = Number(rev.eventTs) || 0;
+  if (!n) n = _stSaleStatusChangedTs(sale);
+  return n && isFinite(n) ? n : 0;
+}
+
+function _stCbcPaycheckWeekValue(raw) {
+  var n = Number(raw);
+  if (!n || !isFinite(n) || n < 0) return 0;
+  return n;
+}
+
+function _stCbcEventFromSale(sale) {
+  if (!sale) return null;
+  var st = _stNormalizeStatus(sale);
+  if (st !== 'chargeback' && st !== 'samecancel') return null;
+  var rev =
+    sale.reversal && typeof sale.reversal === 'object' ? sale.reversal : null;
+  var origComm = rev
+    ? Math.abs(Number(rev.originalCommission) || 0)
+    : _stSaleUnsignedCommission(sale);
+  var lost = rev ? Math.abs(Number(rev.amountLost) || 0) : origComm;
+  var origWeek = rev ? _stCbcPaycheckWeekValue(rev.originalPaycheckWeek) : 0;
+  var deductWeek = rev ? _stCbcPaycheckWeekValue(rev.deductionPaycheckWeek) : 0;
+  return {
+    saleId: String(sale.id || ''),
+    customer: sale.customer || 'Unknown',
+    memberId: String(sale.memberId || '').trim(),
+    plan: sale.plan || 'Product',
+    premium: Number(sale.amount) || 0,
+    saleTs: Number(sale.ts) || 0,
+    type: st,
+    eventTs: _stCbcEventTs(sale),
+    amountLost: lost,
+    originalCommission: origComm,
+    originalPaycheckWeek: origWeek,
+    deductionPaycheckWeek: deductWeek,
+    reason: rev ? String(rev.reason || '') : String(sale.statusReason || '')
+  };
+}
+
+function _stCbcCollectEvents(sales) {
+  var rows = _stCollectChargebackCancelLog(sales);
+  var out = [];
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var ev = _stCbcEventFromSale(rows[i]);
+    if (ev) out.push(ev);
+  }
+  out.sort(function (a, b) {
+    var aKey = a.eventTs || a.saleTs || 0;
+    var bKey = b.eventTs || b.saleTs || 0;
+    return bKey - aKey;
+  });
+  return out;
+}
+
+function _stCbcTomorrowStartMs() {
+  var d = _stStartOfDay(new Date());
+  d.setDate(d.getDate() + 1);
+  return d.getTime();
+}
+
+function _stCbcTimeBounds() {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var ws = _stCurrentWeekStartMs();
+  var now = new Date();
+  var filter = _stCbcTimeFilter || 'all';
+  if (filter === 'week') {
+    return { start: ws, endExclusive: ws + weekMs };
+  }
+  if (filter === 'last4') {
+    return { start: ws - 3 * weekMs, endExclusive: ws + weekMs };
+  }
+  if (filter === 'month') {
+    return {
+      start: new Date(now.getFullYear(), now.getMonth(), 1).getTime(),
+      endExclusive: _stCbcTomorrowStartMs()
+    };
+  }
+  if (filter === 'last3') {
+    return {
+      start: new Date(now.getFullYear(), now.getMonth() - 2, 1).getTime(),
+      endExclusive: _stCbcTomorrowStartMs()
+    };
+  }
+  if (filter === 'ytd') {
+    return {
+      start: new Date(now.getFullYear(), 0, 1).getTime(),
+      endExclusive: _stCbcTomorrowStartMs()
+    };
+  }
+  if (filter === 'custom') {
+    var from = _stIsoToDate(_stCbcCustomStart);
+    var to = _stIsoToDate(_stCbcCustomEnd);
+    if (!from || !to) return { start: 0, endExclusive: 0, incomplete: true };
+    var start = _stStartOfDay(from).getTime();
+    var endD = _stStartOfDay(to);
+    endD.setDate(endD.getDate() + 1);
+    if (endD.getTime() <= start) {
+      return { start: 0, endExclusive: 0, incomplete: true };
+    }
+    return { start: start, endExclusive: endD.getTime() };
+  }
+  return null;
+}
+
+function _stCbcTsInBounds(ts, bounds) {
+  if (!bounds) return true;
+  if (bounds.incomplete) return false;
+  var n = Number(ts) || 0;
+  if (!n) return false;
+  return n >= bounds.start && n < bounds.endExclusive;
+}
+
+function _stCbcFilterByTime(events) {
+  var bounds = _stCbcTimeBounds();
+  var out = [];
+  var i;
+  for (i = 0; i < (events || []).length; i++) {
+    var ev = events[i];
+    if (!ev) continue;
+    var when = ev.eventTs || ev.saleTs || 0;
+    if (!_stCbcTsInBounds(when, bounds)) continue;
+    out.push(ev);
+  }
+  return out;
+}
+
+function _stCbcFilterEvents(events) {
+  var type = _stCbcTypeFilter || 'all';
+  var out = [];
+  var timed = _stCbcFilterByTime(events);
+  var i;
+  for (i = 0; i < timed.length; i++) {
+    var ev = timed[i];
+    if (type === 'chargeback' && ev.type !== 'chargeback') continue;
+    if (type === 'samecancel' && ev.type !== 'samecancel') continue;
+    out.push(ev);
+  }
+  return out;
+}
+
+function _stCbcCountSalesWritten(sales, bounds) {
+  var n = 0;
+  var i;
+  for (i = 0; i < (sales || []).length; i++) {
+    var s = sales[i];
+    if (!s) continue;
+    if (!_stCbcTsInBounds(Number(s.ts) || 0, bounds)) continue;
+    n += 1;
+  }
+  return n;
+}
+
+function _stCbcFmtPaycheckWeek(weekStartMs) {
+  var ws = _stCbcPaycheckWeekValue(weekStartMs);
+  if (!ws) return 'Unknown';
+  var we = ws + 6 * 24 * 60 * 60 * 1000;
+  return _stFmtMonthDay(ws) + ' - ' + _stFmtMonthDay(we);
+}
+
+function _stCbcFmtDate(ts) {
+  var n = Number(ts) || 0;
+  if (!n) return '-';
+  return _stReconFormatDate(n);
+}
+
+function _stCbcRateLabel(count, salesN) {
+  if (!salesN) return '-';
+  var pct = Math.round((count / salesN) * 1000) / 10;
+  return pct + '% of ' + salesN + ' sales';
+}
+
+function _stCbcSummarize(events) {
+  var cbN = 0;
+  var swN = 0;
+  var cbLost = 0;
+  var swLost = 0;
+  var i;
+  for (i = 0; i < (events || []).length; i++) {
+    var ev = events[i];
+    if (!ev) continue;
+    if (ev.type === 'samecancel') {
+      swN += 1;
+      swLost += Number(ev.amountLost) || 0;
+    } else {
+      cbN += 1;
+      cbLost += Number(ev.amountLost) || 0;
+    }
+  }
+  return {
+    cbN: cbN,
+    swN: swN,
+    cbLost: _stMoney2(cbLost),
+    swLost: _stMoney2(swLost),
+    totalLost: _stMoney2(cbLost + swLost)
+  };
+}
+
+function _stCbcMonthKey(ts) {
+  var n = Number(ts) || 0;
+  if (!n) return '';
+  var d = new Date(n);
+  if (isNaN(d.getTime())) return '';
+  var m = d.getMonth() + 1;
+  return d.getFullYear() + '-' + (m < 10 ? '0' : '') + m;
+}
+
+function _stCbcMonthLabel(key) {
+  var parts = String(key || '').split('-');
+  if (parts.length !== 2) return '-';
+  var months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
+  var mi = Number(parts[1]) - 1;
+  if (mi < 0 || mi > 11) return '-';
+  return months[mi] + ' ' + parts[0];
+}
+
+function _stCbcAnalytics(events, salesN) {
+  var sum = _stCbcSummarize(events);
+  var evN = (events || []).length;
+  var avg = evN ? _stMoney2(sum.totalLost / evN) : 0;
+  var monthLost = {};
+  var cbPlan = {};
+  var swPlan = {};
+  var i;
+  for (i = 0; i < (events || []).length; i++) {
+    var ev = events[i];
+    if (!ev) continue;
+    var mk = _stCbcMonthKey(ev.eventTs || ev.saleTs);
+    if (mk) monthLost[mk] = (monthLost[mk] || 0) + (Number(ev.amountLost) || 0);
+    var plan = ev.plan || 'Product';
+    if (ev.type === 'samecancel') {
+      swPlan[plan] = (swPlan[plan] || 0) + 1;
+    } else {
+      cbPlan[plan] = (cbPlan[plan] || 0) + 1;
+    }
+  }
+  var topMonth = '';
+  var topMonthAmt = 0;
+  for (mk in monthLost) {
+    if (!Object.prototype.hasOwnProperty.call(monthLost, mk)) continue;
+    if (monthLost[mk] > topMonthAmt) {
+      topMonthAmt = monthLost[mk];
+      topMonth = mk;
+    }
+  }
+  function topPlan(map) {
+    var name = '';
+    var best = 0;
+    var k;
+    for (k in map) {
+      if (!Object.prototype.hasOwnProperty.call(map, k)) continue;
+      if (map[k] > best) {
+        best = map[k];
+        name = k;
+      }
+    }
+    return name ? name + ' (' + best + ')' : '-';
+  }
+  var now = new Date();
+  var ytdBounds = {
+    start: new Date(now.getFullYear(), 0, 1).getTime(),
+    endExclusive: _stCbcTomorrowStartMs()
+  };
+  var ytdLost = 0;
+  for (i = 0; i < (_stCbcCachedEvents || []).length; i++) {
+    var ye = _stCbcCachedEvents[i];
+    if (!ye) continue;
+    if (!_stCbcTsInBounds(ye.eventTs || ye.saleTs, ytdBounds)) continue;
+    ytdLost += Number(ye.amountLost) || 0;
+  }
+  return {
+    cbRate: _stCbcRateLabel(sum.cbN, salesN),
+    swRate: _stCbcRateLabel(sum.swN, salesN),
+    ytdLost: _stMoney2(ytdLost),
+    avgLost: evN ? avg : 0,
+    hasAvg: evN > 0,
+    topMonth: topMonth ? _stCbcMonthLabel(topMonth) : '-',
+    topCbPlan: topPlan(cbPlan),
+    topSwPlan: topPlan(swPlan),
+    salesN: salesN
+  };
+}
+
+function _stBuildCbcSummaryHtml(sum) {
+  return (
+    '<div id="st-cbc-summary" class="st-cbc-figures">' +
+    '<div class="st-cbc-fig"><span>Chargebacks</span><strong>' +
+    sum.cbN +
+    '</strong><em class="st-cbc-lost">' +
+    _stEscape('-' + _stFmtMoney(sum.cbLost)) +
+    '</em></div>' +
+    '<div class="st-cbc-fig"><span>Same-week cancels</span><strong>' +
+    sum.swN +
+    '</strong><em class="st-cbc-lost">' +
+    _stEscape('-' + _stFmtMoney(sum.swLost)) +
+    '</em></div>' +
+    '<div class="st-cbc-fig"><span>Total commission lost</span><strong class="st-cbc-lost">' +
+    _stEscape('-' + _stFmtMoney(sum.totalLost)) +
+    '</strong></div>' +
+    '<div class="st-cbc-fig"><span>Net impact on earnings</span><strong class="st-cbc-lost">' +
+    _stEscape('-' + _stFmtMoney(sum.totalLost)) +
+    '</strong></div>' +
+    '</div>'
+  );
+}
+
+function _stBuildCbcTimeChipsHtml() {
+  var chips = [
+    { id: 'week', label: 'This week' },
+    { id: 'last4', label: 'Last 4 weeks' },
+    { id: 'month', label: 'This month' },
+    { id: 'last3', label: 'Last 3 months' },
+    { id: 'ytd', label: 'YTD' },
+    { id: 'all', label: 'All time' },
+    { id: 'custom', label: 'Custom' }
+  ];
+  var html =
+    '<div id="st-cbc-time-chips" class="st-cbc-chips" role="tablist" aria-label="Time range">';
+  var i;
+  for (i = 0; i < chips.length; i++) {
+    html +=
+      '<button type="button" class="st-cbc-chip' +
+      (_stCbcTimeFilter === chips[i].id ? ' is-active' : '') +
+      '" data-st-cbc-action="time" data-filter="' +
+      chips[i].id +
+      '">' +
+      _stEscape(chips[i].label) +
+      '</button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function _stBuildCbcTypeChipsHtml() {
+  var chips = [
+    { id: 'all', label: 'All' },
+    { id: 'chargeback', label: 'Chargebacks' },
+    { id: 'samecancel', label: 'Same-week cancels' }
+  ];
+  var html =
+    '<div id="st-cbc-type-chips" class="st-cbc-chips" role="tablist" aria-label="Type">';
+  var i;
+  for (i = 0; i < chips.length; i++) {
+    html +=
+      '<button type="button" class="st-cbc-chip' +
+      (_stCbcTypeFilter === chips[i].id ? ' is-active' : '') +
+      '" data-st-cbc-action="type" data-filter="' +
+      chips[i].id +
+      '">' +
+      _stEscape(chips[i].label) +
+      '</button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function _stBuildCbcCustomRowHtml() {
+  var show = _stCbcTimeFilter === 'custom';
+  return (
+    '<div id="st-cbc-custom-wrap" class="st-cbc-custom"' +
+    (show ? '' : ' style="display:none"') +
+    '>' +
+    '<label>From <input type="date" id="st-cbc-custom-start" class="st-cbc-date" value="' +
+    _stEscape(_stCbcCustomStart) +
+    '"></label>' +
+    '<label>To <input type="date" id="st-cbc-custom-end" class="st-cbc-date" value="' +
+    _stEscape(_stCbcCustomEnd) +
+    '"></label>' +
+    '<button type="button" class="st-cbc-apply" data-st-cbc-action="apply-custom">Apply</button>' +
+    '</div>'
+  );
+}
+
+function _stBuildCbcTableRowHtml(ev) {
+  if (!ev) return '';
+  var typeLabel = ev.type === 'samecancel' ? 'Same-week cancel' : 'Chargeback';
+  var typeCls =
+    ev.type === 'samecancel'
+      ? 'st-cbc-pill-samecancel'
+      : 'st-cbc-pill-chargeback';
+  var mid = ev.memberId || '-';
+  return (
+    '<tr class="st-cbc-tr">' +
+    '<td><div class="st-cbc-primary">' +
+    _stEscape(ev.customer) +
+    '</div><div class="st-cbc-sub">' +
+    _stEscape(mid) +
+    '</div></td>' +
+    '<td><div class="st-cbc-primary">' +
+    _stEscape(ev.plan) +
+    '</div></td>' +
+    '<td><div class="st-cbc-primary">' +
+    _stEscape(_stCbcFmtDate(ev.eventTs)) +
+    '</div><div class="st-cbc-sub">' +
+    _stEscape(_stCbcFmtDate(ev.saleTs)) +
+    '</div></td>' +
+    '<td><span class="st-cbc-pill ' +
+    typeCls +
+    '">' +
+    _stEscape(typeLabel) +
+    '</span></td>' +
+    '<td class="st-cbc-amt"><div class="st-cbc-lost">' +
+    _stEscape('-' + _stFmtMoney(ev.amountLost)) +
+    '</div><div class="st-cbc-sub">' +
+    _stEscape(_stFmtMoney(ev.originalCommission)) +
+    '</div></td>' +
+    '<td><div class="st-cbc-primary">' +
+    _stEscape(_stCbcFmtPaycheckWeek(ev.deductionPaycheckWeek)) +
+    '</div><div class="st-cbc-sub">' +
+    _stEscape(_stCbcFmtPaycheckWeek(ev.originalPaycheckWeek)) +
+    '</div><button type="button" class="st-cbc-view" data-st-cbc-action="view" data-sale-id="' +
+    _stEscape(ev.saleId) +
+    '">View</button></td>' +
+    '</tr>'
+  );
+}
+
+function _stBuildCbcTableBodyHtml(events) {
+  if (!events || !events.length) {
+    return '<tr><td colspan="6" class="st-cbc-empty">No chargebacks or same-week cancels in this range.</td></tr>';
+  }
+  var html = '';
+  var i;
+  for (i = 0; i < events.length; i++) {
+    html += _stBuildCbcTableRowHtml(events[i]);
+  }
+  return html;
+}
+
+function _stBuildCbcAnalyticsHtml(an) {
+  function cell(label, value) {
+    return (
+      '<div class="st-cbc-an-cell"><span>' +
+      _stEscape(label) +
+      '</span><strong>' +
+      _stEscape(value) +
+      '</strong></div>'
+    );
+  }
+  return (
+    '<div id="st-cbc-analytics" class="st-cbc-analytics">' +
+    '<div class="st-cbc-an-title">Analytics</div>' +
+    '<div class="st-cbc-an-grid">' +
+    cell('Chargeback rate', an.cbRate) +
+    cell('Same-week cancel rate', an.swRate) +
+    cell('Total commission lost YTD', '-' + _stFmtMoney(an.ytdLost)) +
+    cell(
+      'Average commission lost per event',
+      an.hasAvg ? '-' + _stFmtMoney(an.avgLost) : '-'
+    ) +
+    cell('Month with highest losses', an.topMonth) +
+    cell('Product with most chargebacks', an.topCbPlan) +
+    cell('Product with most same-week cancels', an.topSwPlan) +
+    '</div></div>'
+  );
+}
+
+function _stCbcVisibleState(sales) {
+  var filtered = _stCbcFilterEvents(_stCbcCachedEvents);
+  var timed = _stCbcFilterByTime(_stCbcCachedEvents);
+  var bounds = _stCbcTimeBounds();
+  var salesN = _stCbcCountSalesWritten(sales, bounds);
+  return {
+    filtered: filtered,
+    sum: _stCbcSummarize(timed),
+    analytics: _stCbcAnalytics(timed, salesN)
+  };
+}
+
+function _stRefreshCbcView() {
+  var page = document.getElementById('page-salestracker');
+  if (!page || _stActiveTab !== 'chargebacks') return;
+  var sales = _stLoadSales();
+  var state = _stCbcVisibleState(sales);
+  var el;
+  el = document.getElementById('st-cbc-summary');
+  if (el) el.outerHTML = _stBuildCbcSummaryHtml(state.sum);
+  el = document.getElementById('st-cbc-time-chips');
+  if (el) el.outerHTML = _stBuildCbcTimeChipsHtml();
+  el = document.getElementById('st-cbc-type-chips');
+  if (el) el.outerHTML = _stBuildCbcTypeChipsHtml();
+  el = document.getElementById('st-cbc-custom-wrap');
+  if (el) el.outerHTML = _stBuildCbcCustomRowHtml();
+  el = document.getElementById('st-cbc-table-body');
+  if (el) el.innerHTML = _stBuildCbcTableBodyHtml(state.filtered);
+  el = document.getElementById('st-cbc-analytics');
+  if (el) el.outerHTML = _stBuildCbcAnalyticsHtml(state.analytics);
+}
+
+function _stBuildCbcPane(sales) {
+  _stCbcCachedEvents = _stCbcCollectEvents(sales);
+  var state = _stCbcVisibleState(sales);
+  var html =
+    '<section class="st-cbc-pane" aria-label="Chargebacks and cancels">';
+  html += '<div class="st-cbc-header">';
+  html += '<div class="st-cbc-headline">Chargebacks and Cancels</div>';
+  html +=
+    '<div class="st-cbc-lede">All-time audit of chargebacks and same-week cancels. These two types are never combined.</div>';
+  html += _stBuildCbcSummaryHtml(state.sum);
+  html += '</div>';
+  html += _stBuildCbcTimeChipsHtml();
+  html += _stBuildCbcTypeChipsHtml();
+  html += _stBuildCbcCustomRowHtml();
+  html += '<div class="st-cbc-table-wrap">';
+  html +=
+    '<table class="st-cbc-table"><colgroup>' +
+    '<col class="st-cbc-col-cust">' +
+    '<col class="st-cbc-col-prod">' +
+    '<col class="st-cbc-col-dates">' +
+    '<col class="st-cbc-col-type">' +
+    '<col class="st-cbc-col-amt">' +
+    '<col class="st-cbc-col-pay">' +
+    '</colgroup><thead><tr>' +
+    '<th>Customer</th><th>Product</th><th>Dates</th><th>Type</th><th>Amount</th><th>Paychecks</th>' +
+    '</tr></thead><tbody id="st-cbc-table-body">';
+  html += _stBuildCbcTableBodyHtml(state.filtered);
+  html += '</tbody></table></div>';
+  html += _stBuildCbcAnalyticsHtml(state.analytics);
+  html += '</section>';
+  return html;
+}
+
+function _stFindCbcEventBySaleId(saleId) {
+  var sid = String(saleId || '');
+  var i;
+  for (i = 0; i < (_stCbcCachedEvents || []).length; i++) {
+    if (_stCbcCachedEvents[i] && _stCbcCachedEvents[i].saleId === sid) {
+      return _stCbcCachedEvents[i];
+    }
+  }
+  var sale = _stFindSaleById(sid);
+  return sale ? _stCbcEventFromSale(sale) : null;
+}
+
+function _stCloseCbcDetail() {
+  var modal = document.getElementById('st-cbc-detail-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stCbcDetailIsOpen() {
+  return !!document.getElementById('st-cbc-detail-modal');
+}
+
+function _stOpenCbcDetail(saleId) {
+  _stCloseCbcDetail();
+  var ev = _stFindCbcEventBySaleId(saleId);
+  if (!ev) {
+    _stFlash('Sale not found.', 'warn');
+    return;
+  }
+  var typeLabel = ev.type === 'samecancel' ? 'Same-week cancel' : 'Chargeback';
+  var knownWeeks =
+    _stCbcPaycheckWeekValue(ev.originalPaycheckWeek) &&
+    _stCbcPaycheckWeekValue(ev.deductionPaycheckWeek);
+  var html = '';
+  html +=
+    '<div class="st-entry-card st-cbc-detail-card" role="dialog" aria-modal="true" aria-labelledby="st-cbc-detail-title">';
+  html +=
+    '<div class="st-entry-title" id="st-cbc-detail-title">' +
+    _stEscape(typeLabel) +
+    '</div>';
+  html += '<div class="st-cbc-detail-grid">';
+  function row(label, value) {
+    html +=
+      '<div class="st-cbc-detail-row"><span>' +
+      _stEscape(label) +
+      '</span><strong>' +
+      _stEscape(value) +
+      '</strong></div>';
+  }
+  row('Customer', ev.customer);
+  row('Member ID', ev.memberId || '-');
+  row('Original sale date', _stCbcFmtDate(ev.saleTs));
+  row('Product', ev.plan);
+  row('Premium', _stFmtMoney(ev.premium));
+  row('Original commission', _stFmtMoney(ev.originalCommission));
+  row('Original paycheck', _stCbcFmtPaycheckWeek(ev.originalPaycheckWeek));
+  row('Event date', _stCbcFmtDate(ev.eventTs));
+  row('Type', typeLabel);
+  row('Amount lost', '-' + _stFmtMoney(ev.amountLost));
+  if (ev.reason) row('Reason', ev.reason);
+  row('Deduction paycheck', _stCbcFmtPaycheckWeek(ev.deductionPaycheckWeek));
+  row('Final net impact', '-' + _stFmtMoney(ev.amountLost));
+  html += '</div>';
+  if (knownWeeks) {
+    html += '<div class="st-cbc-timeline" aria-label="Paycheck timeline">';
+    html +=
+      '<span>Original sale</span> -> <span>Original paycheck</span> -> <span>' +
+      _stEscape(typeLabel) +
+      '</span> -> <span>Deduction paycheck</span>';
+    html += '</div>';
+  } else {
+    html +=
+      '<p class="st-cbc-week-note">Paycheck link was not recorded for this event. Week values are left blank rather than guessed.</p>';
+  }
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" data-st-cbc-action="close-detail">Close</button>';
+  html += '</div></div>';
+  var modal = document.createElement('div');
+  modal.id = 'st-cbc-detail-modal';
+  modal.className = 'st-entry-modal st-cbc-modal';
+  modal.innerHTML = html;
+  modal.addEventListener('click', function (evClick) {
+    if (evClick.target === modal) _stCloseCbcDetail();
+  });
+  document.body.appendChild(modal);
+}
+
+function _stHandleCbcActionClick(btn) {
+  if (!btn) return;
+  var action = btn.getAttribute('data-st-cbc-action') || '';
+  if (action === 'goto') {
+    _stSwitchTab('chargebacks');
+    return;
+  }
+  if (action === 'time') {
+    _stCbcTimeFilter = btn.getAttribute('data-filter') || 'all';
+    _stRefreshCbcView();
+    return;
+  }
+  if (action === 'type') {
+    _stCbcTypeFilter = btn.getAttribute('data-filter') || 'all';
+    _stRefreshCbcView();
+    return;
+  }
+  if (action === 'apply-custom') {
+    var startEl = document.getElementById('st-cbc-custom-start');
+    var endEl = document.getElementById('st-cbc-custom-end');
+    _stCbcCustomStart = startEl ? String(startEl.value || '') : '';
+    _stCbcCustomEnd = endEl ? String(endEl.value || '') : '';
+    _stCbcTimeFilter = 'custom';
+    _stRefreshCbcView();
+    return;
+  }
+  if (action === 'view') {
+    _stOpenCbcDetail(btn.getAttribute('data-sale-id') || '');
+    return;
+  }
+  if (action === 'close-detail') {
+    _stCloseCbcDetail();
+  }
+}
+
 function _stGetSavedTab() {
   if (
     _stActiveTab === 'thisweek' ||
     _stActiveTab === 'allsales' ||
-    _stActiveTab === 'analytics'
+    _stActiveTab === 'analytics' ||
+    _stActiveTab === 'chargebacks'
   ) {
     return _stActiveTab;
   }
@@ -10933,6 +11604,7 @@ function _stBuildInternalSubtabs(activeTab) {
   var tw = activeTab === 'thisweek' ? ' active' : '';
   var as = activeTab === 'allsales' ? ' active' : '';
   var an = activeTab === 'analytics' ? ' active' : '';
+  var cb = activeTab === 'chargebacks' ? ' active' : '';
   return (
     '<div class="page-subtabs st-internal-subtabs" id="stInternalSubtabs" role="tablist">' +
     '<div class="page-subtabs-inner">' +
@@ -10951,12 +11623,22 @@ function _stBuildInternalSubtabs(activeTab) {
     '" role="tab" aria-selected="' +
     (activeTab === 'analytics' ? 'true' : 'false') +
     '" onclick="_stSwitchTab(\'analytics\')">Analytics</button>' +
+    '<button type="button" class="stab' +
+    cb +
+    '" role="tab" aria-selected="' +
+    (activeTab === 'chargebacks' ? 'true' : 'false') +
+    '" data-st-cbc-action="goto">Chargebacks</button>' +
     '</div></div>'
   );
 }
 
 function _stSwitchTab(tabId) {
-  if (tabId !== 'analytics' && tabId !== 'thisweek' && tabId !== 'allsales') {
+  if (
+    tabId !== 'analytics' &&
+    tabId !== 'thisweek' &&
+    tabId !== 'allsales' &&
+    tabId !== 'chargebacks'
+  ) {
     tabId = 'thisweek';
   }
   var prev = _stGetSavedTab();
@@ -11201,6 +11883,12 @@ function _stRender() {
     '">';
   html += _stBuildAnalyticsDashboard(sales, stats);
   html += '</div>';
+  html +=
+    '<div id="stTabPanelChargebacks" class="st-tab-panel" role="tabpanel" style="display:' +
+    (stTab === 'chargebacks' ? 'block' : 'none') +
+    '">';
+  html += _stBuildCbcPane(sales);
+  html += '</div>';
   page.innerHTML = html;
   _stMountAddSaleOverlay();
   if (!page.dataset.stAddSaleEsc) {
@@ -11242,6 +11930,10 @@ function _stRender() {
       }
       if (document.getElementById('st-recon-resolve-menu')) {
         _stCloseReconcileResolveMenu();
+        return;
+      }
+      if (_stCbcDetailIsOpen()) {
+        _stCloseCbcDetail();
         return;
       }
       if (_stPaycheckBreakdownModalIsOpen()) {
@@ -11299,6 +11991,12 @@ function _stWireSalesBulkDelegation(page) {
     if (reconBtn) {
       e.preventDefault();
       _stHandleReconcileActionClick(reconBtn);
+      return;
+    }
+    var cbcBtn = t.closest('[data-st-cbc-action]');
+    if (cbcBtn) {
+      e.preventDefault();
+      _stHandleCbcActionClick(cbcBtn);
     }
   });
   page.addEventListener('change', function (e) {
@@ -11330,11 +12028,18 @@ function _stWireReconcileActionDelegation() {
       _stCloseReconcileResolveMenu();
     }
     var btn = t.closest('[data-st-recon-action]');
-    if (!btn) return;
-    // Page-level listener already handles in-page buttons when present.
-    if (btn.closest('#page-salestracker')) return;
+    if (btn) {
+      // Page-level listener already handles in-page buttons when present.
+      if (btn.closest('#page-salestracker')) return;
+      e.preventDefault();
+      _stHandleReconcileActionClick(btn);
+      return;
+    }
+    var cbcBtn = t.closest('[data-st-cbc-action]');
+    if (!cbcBtn) return;
+    if (cbcBtn.closest('#page-salestracker')) return;
     e.preventDefault();
-    _stHandleReconcileActionClick(btn);
+    _stHandleCbcActionClick(cbcBtn);
   });
   document.body.addEventListener('input', function (e) {
     var el = e.target;
