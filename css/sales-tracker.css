@@ -5939,3 +5939,319 @@ body.st-pb-modal-open {
     justify-content: space-between;
   }
 }
+
+/* Stage C - Chargebacks and Cancels tab */
+.st-cbc-pane {
+  margin: 12px 0 24px;
+  padding: 14px;
+  background: var(--cha-bg-card);
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 12px;
+}
+
+.st-cbc-header {
+  margin-bottom: 12px;
+}
+
+.st-cbc-headline {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: var(--cha-text-primary);
+}
+
+.st-cbc-lede {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--cha-text-secondary);
+  line-height: 1.4;
+}
+
+.st-cbc-figures {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.st-cbc-fig {
+  min-width: 120px;
+}
+
+.st-cbc-fig span {
+  display: block;
+  font-size: 11px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-cbc-fig strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 15px;
+  color: var(--cha-text-primary);
+}
+
+.st-cbc-fig em {
+  display: block;
+  margin-top: 2px;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.st-cbc-lost {
+  color: var(--cha-danger-text);
+}
+
+.st-cbc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 8px;
+}
+
+.st-cbc-chip {
+  border: 1px solid var(--cha-border-default);
+  background: #fff;
+  color: var(--cha-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.st-cbc-chip.is-active {
+  background: var(--cha-accent);
+  border-color: var(--cha-accent);
+  color: #fff;
+}
+
+.st-cbc-custom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--cha-text-secondary);
+}
+
+.st-cbc-date {
+  margin-left: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--cha-border-default);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.st-cbc-apply {
+  border: 1px solid var(--cha-border-default);
+  background: #fff;
+  color: var(--cha-text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.st-cbc-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 10px;
+}
+
+.st-cbc-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.st-cbc-col-cust {
+  width: 18%;
+}
+
+.st-cbc-col-prod {
+  width: 16%;
+}
+
+.st-cbc-col-dates {
+  width: 16%;
+}
+
+.st-cbc-col-type {
+  width: 16%;
+}
+
+.st-cbc-col-amt {
+  width: 16%;
+}
+
+.st-cbc-col-pay {
+  width: 18%;
+}
+
+.st-cbc-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cha-text-tertiary);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--cha-border-subtle);
+  background: var(--cha-bg-muted);
+}
+
+.st-cbc-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--cha-border-subtle);
+  vertical-align: top;
+  color: var(--cha-text-primary);
+  overflow: hidden;
+}
+
+.st-cbc-primary {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.st-cbc-sub {
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-cbc-amt {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.st-cbc-empty {
+  text-align: center;
+  color: var(--cha-text-tertiary);
+  padding: 18px 10px;
+}
+
+.st-cbc-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.st-cbc-pill-chargeback,
+.st-cbc-pill-samecancel {
+  background: var(--cha-danger-bg);
+  color: var(--cha-danger-text);
+}
+
+.st-cbc-view {
+  margin-top: 6px;
+  border: 1px solid var(--cha-border-default);
+  background: #fff;
+  color: var(--cha-text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.st-cbc-analytics {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--cha-border-subtle);
+}
+
+.st-cbc-an-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--cha-text-primary);
+  margin-bottom: 8px;
+}
+
+.st-cbc-an-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+}
+
+.st-cbc-an-cell {
+  min-width: 140px;
+}
+
+.st-cbc-an-cell span {
+  display: block;
+  font-size: 11px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-cbc-an-cell strong {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  color: var(--cha-text-primary);
+}
+
+.st-cbc-modal {
+  z-index: 10050;
+}
+
+.st-cbc-detail-card {
+  max-width: 480px;
+}
+
+.st-cbc-detail-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 8px 0 12px;
+}
+
+.st-cbc-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.st-cbc-detail-row span {
+  color: var(--cha-text-tertiary);
+}
+
+.st-cbc-detail-row strong {
+  color: var(--cha-text-primary);
+  text-align: right;
+}
+
+.st-cbc-timeline {
+  margin: 0 0 12px;
+  padding: 8px 10px;
+  background: var(--cha-bg-muted);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--cha-text-secondary);
+  line-height: 1.4;
+}
+
+.st-cbc-week-note {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--cha-text-secondary);
+  line-height: 1.4;
+}
+
+@media (width <= 800px) {
+  .st-cbc-col-cust,
+  .st-cbc-col-prod,
+  .st-cbc-col-dates,
+  .st-cbc-col-type,
+  .st-cbc-col-amt,
+  .st-cbc-col-pay {
+    width: auto;
+  }
+}
