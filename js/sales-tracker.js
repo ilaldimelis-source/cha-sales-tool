@@ -4262,8 +4262,8 @@ function _stOpenPaycheckBreakdownModal() {
   var showCarrier = carrierOrder.length > 0;
   var html = '';
   html +=
-    '<div class="st-pb-backdrop" onclick="_stClosePaycheckBreakdownModal(event)">' +
-    '<section class="st-pb-modal" role="dialog" aria-modal="true" aria-labelledby="st-pb-title" onclick="event.stopPropagation()">' +
+    '<div class="st-pb-backdrop" onclick="_stOnPaycheckBackdropClick(event)">' +
+    '<section class="st-pb-modal" role="dialog" aria-modal="true" aria-labelledby="st-pb-title">' +
     '<div class="st-pb-header">' +
     '<div><h3 id="st-pb-title">Paycheck Breakdown</h3><div class="st-pb-subhead">' +
     _stEscape(view.mode === 'custom' ? 'Custom range: ' : 'This Week: ') +
@@ -4343,6 +4343,11 @@ function _stOpenPaycheckBreakdownModal() {
   var root = _stPaycheckBreakdownRoot();
   root.innerHTML = html;
   document.body.classList.add('st-pb-modal-open');
+}
+
+function _stOnPaycheckBackdropClick(ev) {
+  if (!ev || ev.target !== ev.currentTarget) return;
+  _stClosePaycheckBreakdownModal();
 }
 
 function _stClosePaycheckBreakdownModal(ev) {
@@ -9005,11 +9010,11 @@ function _stOpenAttachMemberIdConfirm(saleId) {
     ')?</p>';
   html += '<div class="st-entry-actions">';
   html +=
-    '<button type="button" class="st-entry-cancel" onclick="_stCloseAttachMemberIdConfirm()">Cancel</button>';
+    '<button type="button" class="st-entry-cancel" data-st-recon-action="close-attach">Cancel</button>';
   html +=
-    '<button type="button" class="st-entry-save" onclick="_stConfirmAttachMemberId(\'' +
-    _stEscape(sid).replace(/'/g, '') +
-    '\')">Confirm</button>';
+    '<button type="button" class="st-entry-save" data-st-recon-action="confirm-attach" data-sale-id="' +
+    _stEscape(sid) +
+    '">Confirm</button>';
   html += '</div></div>';
   modal.innerHTML = html;
   modal.addEventListener('click', function (ev) {
@@ -9423,9 +9428,9 @@ function _stOpenAttachAllMemberIdConfirm() {
   html += '</div>';
   html += '<div class="st-entry-actions">';
   html +=
-    '<button type="button" class="st-entry-cancel" onclick="_stCloseAttachMemberIdConfirm()">Cancel</button>';
+    '<button type="button" class="st-entry-cancel" data-st-recon-action="close-attach">Cancel</button>';
   html +=
-    '<button type="button" class="st-entry-save" onclick="_stConfirmAttachAllMemberIds()">Confirm</button>';
+    '<button type="button" class="st-entry-save" data-st-recon-action="confirm-attach-all">Confirm</button>';
   html += '</div></div>';
   modal.innerHTML = html;
   modal.addEventListener('click', function (ev) {
@@ -9546,9 +9551,9 @@ function _stBuildReconcileCbResultsHtml() {
     html +=
       '<button type="button" class="st-recon-cb-hit' +
       (sel ? ' is-selected' : '') +
-      '" onclick="_stSelectReconcileCbSale(\'' +
-      _stEscape(sid).replace(/'/g, '') +
-      '\')">' +
+      '" data-st-recon-action="select-cb-sale" data-sale-id="' +
+      _stEscape(sid) +
+      '">' +
       '<div class="st-recon-cb-hit-main">' +
       '<div class="st-recon-cb-hit-name">' +
       _stEscape(s.customer || 'Unknown') +
@@ -10354,6 +10359,156 @@ function _stBuildReconcilePane(sales, view) {
   return html;
 }
 
+function _stHistProblemStatus(kind) {
+  if (kind === 'missing' || kind === 'not_on_sheet') return 'missing';
+  if (kind === 'mislabeled' || kind === 'attach') return 'mislabeled';
+  if (kind === 'amountmismatch') return 'amountmismatch';
+  if (kind === 'same_week_cancel') return 'samecancel';
+  if (kind === 'chargeback_candidate' || kind === 'untracked_chargeback') {
+    return 'chargeback';
+  }
+  return '';
+}
+
+function _stHistProblemSides(p) {
+  var kind = (p && p.kind) || '';
+  var amt = p && p.amount != null ? Number(p.amount) : null;
+  var hasAmt = amt != null && isFinite(amt);
+  var sides = {
+    hasTracker: false,
+    hasSheet: false,
+    trackerAmount: null,
+    sheetAmount: null,
+    isLoss: false
+  };
+  if (kind === 'missing' || kind === 'untracked_chargeback') {
+    sides.hasSheet = hasAmt;
+    sides.sheetAmount = hasAmt ? amt : null;
+  } else if (
+    kind === 'not_on_sheet' ||
+    kind === 'same_week_cancel' ||
+    kind === 'chargeback_candidate' ||
+    kind === 'mislabeled' ||
+    kind === 'attach'
+  ) {
+    sides.hasTracker = hasAmt;
+    sides.trackerAmount = hasAmt ? amt : null;
+  } else if (hasAmt) {
+    sides.hasTracker = true;
+    sides.trackerAmount = amt;
+  }
+  if (kind === 'same_week_cancel' || kind === 'chargeback_candidate') {
+    sides.isLoss = true;
+  }
+  if (kind === 'untracked_chargeback') sides.isLoss = true;
+  return sides;
+}
+
+function _stHistCountText(counts, key) {
+  if (!counts || !Object.prototype.hasOwnProperty.call(counts, key)) {
+    return '-';
+  }
+  return String(Number(counts[key]) || 0);
+}
+
+function _stHistChargebackCountText(counts) {
+  if (!counts) return '-';
+  var hasCb = Object.prototype.hasOwnProperty.call(
+    counts,
+    'chargebackCandidates'
+  );
+  var hasUn = Object.prototype.hasOwnProperty.call(
+    counts,
+    'untrackedChargebacks'
+  );
+  if (!hasCb && !hasUn) return '-';
+  return String(
+    (Number(counts.chargebackCandidates) || 0) +
+      (Number(counts.untrackedChargebacks) || 0)
+  );
+}
+
+function _stHistCountSameWeek(problems) {
+  var n = 0;
+  var i;
+  for (i = 0; i < (problems || []).length; i++) {
+    if (problems[i] && problems[i].kind === 'same_week_cancel') n += 1;
+  }
+  return n;
+}
+
+function _stHistGroupProblems(problems) {
+  var groups = [];
+  var i;
+  for (i = 0; i < (problems || []).length; i++) {
+    var p = problems[i];
+    if (!p) continue;
+    var key =
+      String(p.customer || '').toLowerCase() +
+      '|' +
+      String(Number(p.dateTs) || 0);
+    var last = groups.length ? groups[groups.length - 1] : null;
+    if (last && last.key === key) {
+      last.rows.push(p);
+    } else {
+      groups.push({ key: key, rows: [p] });
+    }
+  }
+  return groups;
+}
+
+function _stBuildHistSnapshotRowHtml(p, opts) {
+  opts = opts || {};
+  var status = _stHistProblemStatus(p && p.kind) || 'missing';
+  var sides = _stHistProblemSides(p);
+  var isLoss = !!sides.isLoss;
+  var trackerClass =
+    'st-recon-v2-amt' + (isLoss && sides.hasTracker ? ' is-loss' : '');
+  var sheetClass =
+    'st-recon-v2-amt' + (isLoss && sides.hasSheet ? ' is-loss' : '');
+  var custHtml = '';
+  if (!opts.skipCustomer) {
+    custHtml =
+      '<div class="st-recon-v2-cust">' +
+      _stEscape((p && p.customer) || 'Unknown') +
+      '</div><div class="st-recon-v2-sub">' +
+      _stEscape(_stReconFormatDate(p && p.dateTs)) +
+      '</div>';
+    if (opts.itemCount > 1) {
+      custHtml +=
+        '<div class="st-recon-v2-sub">' + opts.itemCount + ' items</div>';
+    }
+  }
+  var rowspan = opts.rowspan > 1 ? ' rowspan="' + opts.rowspan + '"' : '';
+  var custCell = opts.skipCustomer
+    ? ''
+    : '<td' + rowspan + '>' + custHtml + '</td>';
+  return (
+    '<tr class="st-recon-v2-tr">' +
+    custCell +
+    '<td><div class="st-recon-v2-prod">' +
+    _stEscape((p && p.productName) || 'Product') +
+    '</div></td>' +
+    '<td class="' +
+    trackerClass +
+    '">' +
+    _stEscape(
+      _stReconcileFmtSideAmount(sides.hasTracker, sides.trackerAmount)
+    ) +
+    '</td>' +
+    '<td class="' +
+    sheetClass +
+    '">' +
+    _stEscape(_stReconcileFmtSideAmount(sides.hasSheet, sides.sheetAmount)) +
+    '</td>' +
+    '<td><span class="st-recon-v2-pill st-recon-v2-pill-' +
+    _stEscape(status) +
+    '">' +
+    _stEscape(_stReconcileStatusLabel(status)) +
+    '</span></td></tr>'
+  );
+}
+
 function _stFmtHistorySavedAt(ts) {
   var n = Number(ts) || 0;
   if (!n) return '';
@@ -10380,54 +10535,118 @@ function _stFmtHistorySavedAt(ts) {
 function _stBuildReconcileHistorySnapshotHtml(rec) {
   if (!rec) return '';
   var counts = rec.counts || {};
-  var matched = Number(counts.matched) || 0;
-  var missN = Number(counts.missing) || 0;
-  var misN = Number(counts.mislabeled) || 0;
-  var gap = Number(rec.gap) || 0;
-  var weekLabel = rec.weekLabel || _stFmtWeekLabel(rec.weekStart);
-  var snapResult = {
-    matched: matched,
-    problems: rec.problems || []
-  };
+  var problems = rec.problems || [];
+  var weekLabel = rec.weekLabel || '';
+  if (!weekLabel && rec.weekStart) {
+    weekLabel = _stReconMatchedWeekLabel({ start: rec.weekStart }) || '';
+  }
+  if (!weekLabel) weekLabel = '-';
+  var savedLabel = rec.savedAt ? _stFmtHistorySavedAt(rec.savedAt) : '';
+  var pb = rec.paycheck || {};
+  var trackerDisp =
+    pb.netCommission != null ? _stFmtMoney(pb.netCommission) : '-';
+  var sheetDisp = rec.sheetNet != null ? _stFmtMoney(rec.sheetNet) : '-';
+  var hasGap = rec.gap != null && rec.gap !== '';
+  var gapN = hasGap ? Number(rec.gap) || 0 : 0;
+  var gapDisp = hasGap ? _stFmtMoney(gapN) : '-';
+  var gapClass = hasGap && Math.abs(gapN) > 0.005 ? ' is-diff' : '';
+  var cbDisp = _stHistChargebackCountText(counts);
+  var swcDisp = Array.isArray(rec.problems)
+    ? String(_stHistCountSameWeek(problems))
+    : '-';
+  var swcSuffix = swcDisp === '1' ? '' : 's';
   var html =
-    '<section class="st-recon-pane st-recon-history-pane" aria-label="Saved pay sheet">';
-  html += '<div class="st-recon-head">';
-  html += '<div class="st-recon-head-text">';
-  html += '<div class="st-recon-title">Saved pay sheet</div>';
+    '<section class="st-recon-pane st-recon-v2 st-recon-history-pane" aria-label="Saved reconciliation">';
+  html += '<div class="st-recon-v2-header">';
+  html += '<div class="st-recon-v2-snap-top">';
+  html += '<div class="st-recon-v2-snap-text">';
+  html += '<div class="st-recon-v2-headline">Saved reconciliation</div>';
   html +=
-    '<div class="st-recon-sub">Read-only snapshot for week of <strong>' +
+    '<div class="st-recon-v2-week">' +
     _stEscape(weekLabel) +
-    '</strong>' +
-    (rec.weekMode === 'legacy-mon'
-      ? ' <span class="st-recon-history-weekmode">legacy Mon-Sun week</span>'
-      : '') +
-    '. Counts do not update if sales change later.</div>';
+    (savedLabel ? ' · saved ' + _stEscape(savedLabel) : '') +
+    '</div>';
+  html += '</div>';
+  html += '<div class="st-recon-v2-snap-pills">';
+  html += '<span class="st-recon-v2-status-pill is-idle">Read only</span>';
+  if (rec.weekMode === 'legacy-mon') {
+    html +=
+      '<span class="st-recon-v2-status-pill is-idle">Legacy Mon-Sun</span>';
+  }
+  html +=
+    '<button type="button" class="st-recon-v2-btn-ghost" data-st-recon-action="close-history-record">Back</button>';
+  html += '</div></div>';
+  html += '<div class="st-recon-v2-figures">';
+  html +=
+    '<div class="st-recon-v2-fig' +
+    (trackerDisp === '-' ? ' is-idle' : '') +
+    '"><span>Tracker commission</span><strong>' +
+    _stEscape(trackerDisp) +
+    '</strong></div>';
+  html +=
+    '<div class="st-recon-v2-fig' +
+    (sheetDisp === '-' ? ' is-idle' : '') +
+    '"><span>Pay sheet commission</span><strong>' +
+    _stEscape(sheetDisp) +
+    '</strong></div>';
+  html +=
+    '<div class="st-recon-v2-fig' +
+    (gapDisp === '-' ? ' is-idle' : gapClass) +
+    '"><span>Gap at save</span><strong>' +
+    _stEscape(gapDisp) +
+    '</strong></div>';
   html += '</div>';
   html +=
-    '<button type="button" class="st-recon-paste-btn" onclick="_stCloseReconcileHistoryRecord()">Back</button>';
+    '<div class="st-recon-v2-counts">' +
+    _stEscape(_stHistCountText(counts, 'matched')) +
+    ' matched · ' +
+    _stEscape(_stHistCountText(counts, 'missing')) +
+    ' missing · ' +
+    _stEscape(_stHistCountText(counts, 'mislabeled')) +
+    ' mislabeled · ' +
+    _stEscape(_stHistCountText(counts, 'amountmismatch')) +
+    ' amount mismatch · ' +
+    _stEscape(cbDisp) +
+    ' chargeback · ' +
+    _stEscape(swcDisp) +
+    ' same-week cancel' +
+    swcSuffix +
+    '</div>';
   html += '</div>';
-  html += '<div class="st-recon-stats">';
+
+  html += '<div class="st-recon-v2-table-wrap">';
   html +=
-    '<div class="st-recon-stat"><span class="st-recon-stat-label">Deals matched</span><strong class="st-recon-stat-val">' +
-    matched +
-    '</strong></div>';
-  html +=
-    '<div class="st-recon-stat"><span class="st-recon-stat-label">Missing</span><strong class="st-recon-stat-val">' +
-    missN +
-    '</strong></div>';
-  html +=
-    '<div class="st-recon-stat"><span class="st-recon-stat-label">Mislabeled</span><strong class="st-recon-stat-val">' +
-    misN +
-    '</strong></div>';
-  html +=
-    '<div class="st-recon-stat"><span class="st-recon-stat-label">Est. commission gap</span><strong class="st-recon-stat-val">' +
-    _stFmtMoney(gap) +
-    '</strong></div>';
-  html += '</div>';
-  html += '<div class="st-recon-problems-wrap">';
-  html += '<div class="st-recon-section-label">Saved problem rows</div>';
-  html += _stBuildReconcileProblemsHtml(snapResult, { readOnly: true });
-  html += '</div></section>';
+    '<table class="st-recon-v2-table st-recon-v2-table-snap"><colgroup>' +
+    '<col class="st-recon-v2-col-cust">' +
+    '<col class="st-recon-v2-col-prod">' +
+    '<col class="st-recon-v2-col-amt">' +
+    '<col class="st-recon-v2-col-sheet">' +
+    '<col class="st-recon-v2-col-status">' +
+    '</colgroup><thead><tr>' +
+    '<th>Customer</th><th>Product</th>' +
+    '<th class="st-recon-v2-num">Tracker</th>' +
+    '<th class="st-recon-v2-num">Pay sheet</th>' +
+    '<th>Status</th>' +
+    '</tr></thead><tbody>';
+  if (!problems.length) {
+    html +=
+      '<tr><td colspan="5" class="st-recon-v2-empty">No saved problem rows.</td></tr>';
+  } else {
+    var groups = _stHistGroupProblems(problems);
+    var gi;
+    for (gi = 0; gi < groups.length; gi++) {
+      var rows = groups[gi].rows;
+      var ri;
+      for (ri = 0; ri < rows.length; ri++) {
+        html += _stBuildHistSnapshotRowHtml(rows[ri], {
+          skipCustomer: ri > 0,
+          rowspan: ri === 0 ? rows.length : 1,
+          itemCount: rows.length
+        });
+      }
+    }
+  }
+  html += '</tbody></table></div></section>';
   return html;
 }
 
@@ -10461,6 +10680,9 @@ function _stBuildReconcileHistoryPane(sales) {
       var rec = saved[i];
       if (!rec) continue;
       var c = rec.counts || {};
+      var swcList = Array.isArray(rec.problems)
+        ? _stHistCountSameWeek(rec.problems)
+        : null;
       var summary =
         (Number(c.matched) || 0) +
         ' matched · ' +
@@ -10468,13 +10690,18 @@ function _stBuildReconcileHistoryPane(sales) {
         ' missing · ' +
         (Number(c.mislabeled) || 0) +
         ' mislabeled · ' +
-        (Number(c.notOnSheet) || 0) +
-        ' not on sheet · ' +
-        (Number(c.chargebackCandidates) || 0) +
+        _stHistCountText(c, 'amountmismatch') +
+        ' amount mismatch · ' +
+        _stHistChargebackCountText(c) +
         ' chargeback · ' +
-        (Number(c.untrackedChargebacks) || 0) +
-        ' untracked';
-      var weekLabel = rec.weekLabel || _stFmtWeekLabel(rec.weekStart);
+        (swcList === null ? '-' : String(swcList)) +
+        ' same-week cancel' +
+        (swcList === 1 ? '' : 's');
+      var weekLabel = rec.weekLabel || '';
+      if (!weekLabel && rec.weekStart) {
+        weekLabel = _stReconMatchedWeekLabel({ start: rec.weekStart }) || '';
+      }
+      if (!weekLabel) weekLabel = '-';
       var hid = String(rec.id || '');
       html +=
         '<div class="st-recon-history-row">' +
@@ -12668,6 +12895,26 @@ function _stHandleReconcileActionClick(btn) {
   }
   if (action === 'save-quick-log') {
     _stSaveReconcileQuickLog();
+    return;
+  }
+  if (action === 'close-history-record') {
+    _stCloseReconcileHistoryRecord();
+    return;
+  }
+  if (action === 'close-attach') {
+    _stCloseAttachMemberIdConfirm();
+    return;
+  }
+  if (action === 'confirm-attach') {
+    _stConfirmAttachMemberId(btn.getAttribute('data-sale-id') || '');
+    return;
+  }
+  if (action === 'confirm-attach-all') {
+    _stConfirmAttachAllMemberIds();
+    return;
+  }
+  if (action === 'select-cb-sale') {
+    _stSelectReconcileCbSale(btn.getAttribute('data-sale-id') || '');
     return;
   }
   if (action === 'view-history') {

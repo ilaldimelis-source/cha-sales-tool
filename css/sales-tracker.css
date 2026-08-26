@@ -4527,65 +4527,6 @@ body.st-pb-modal-open {
   font-weight: 700;
 }
 
-.st-recon-paste-btn {
-  flex-shrink: 0;
-  border: none;
-  background: transparent;
-  color: var(--cha-accent);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  padding: 6px 4px;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.st-recon-paste-btn:hover {
-  color: #3b5bdb;
-}
-
-.st-recon-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.st-recon-gap-hero {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 12px;
-  padding: 14px 16px;
-  background: var(--cha-bg-muted);
-  border: 1px solid var(--cha-border-subtle);
-  border-radius: 12px;
-}
-
-.st-recon-gap-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--cha-text-tertiary);
-}
-
-.st-recon-gap-val {
-  font-size: 32px;
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--cha-text-primary);
-}
-
-.st-recon-gap-val.is-gap {
-  color: var(--cha-danger-text);
-}
-
-.st-recon-gap-val.is-zero {
-  color: var(--cha-success-text);
-}
-
 .st-recon-resolved-strip {
   display: flex;
   flex-wrap: wrap;
@@ -4830,30 +4771,6 @@ body.st-pb-modal-open {
   color: var(--cha-danger-text);
 }
 
-.st-recon-stat {
-  background: var(--cha-bg-muted);
-  border: 1px solid var(--cha-border-subtle);
-  border-radius: 10px;
-  padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.st-recon-stat-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #64748b;
-}
-
-.st-recon-stat-val {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--cha-text-primary);
-}
-
 .st-recon-section-label {
   font-size: 11px;
   font-weight: 700;
@@ -4861,35 +4778,6 @@ body.st-pb-modal-open {
   text-transform: uppercase;
   color: #64748b;
   margin-bottom: 8px;
-}
-
-.st-recon-problem-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.st-recon-problem-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 12px;
-  border: 1px solid var(--cha-border-subtle);
-  border-radius: 10px;
-  background: #fff;
-}
-
-.st-recon-problem-name {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--cha-text-primary);
-}
-
-.st-recon-problem-meta {
-  margin-top: 2px;
-  font-size: 11px;
-  color: #64748b;
 }
 
 .st-recon-status-pill {
@@ -4915,49 +4803,6 @@ body.st-pb-modal-open {
 .st-recon-pill-notonsheet {
   background: #e2e8f0;
   color: #475569;
-}
-
-.st-recon-problems-wrap {
-  margin-bottom: 20px;
-}
-
-.st-recon-cb-wrap {
-  border-top: 1px solid var(--cha-border-subtle);
-  padding-top: 14px;
-}
-
-.st-recon-cb-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.st-recon-cb-search {
-  flex: 1;
-  min-width: 0;
-  font-size: 13px;
-  padding: 8px 10px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  color: #334155;
-  background: #fff;
-  box-sizing: border-box;
-}
-
-.st-recon-cb-mark {
-  flex-shrink: 0;
-  border: none;
-  border-radius: 8px;
-  background: var(--cha-danger-text);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
-.st-recon-cb-mark:hover {
-  opacity: 0.92;
 }
 
 .st-recon-cb-results {
@@ -5037,36 +4882,22 @@ body.st-pb-modal-open {
 
 /* Defend against status/onchange wildcard hide rules (PR #193 pattern) */
 .st-date-chip.st-recon-chip {
-  display: inline-flex !important;
-  visibility: visible !important;
+  display: inline-flex;
+  visibility: visible;
 }
 
 .st-recon-pane,
-.st-recon-problem-row,
-.st-recon-cb-hit,
-.st-paysheet-modal {
-  visibility: visible !important;
+.st-recon-cb-hit {
+  visibility: visible;
 }
 
 .st-recon-status-pill {
-  display: inline-block !important;
-  visibility: visible !important;
-}
-
-.st-paysheet-modal {
-  display: flex !important;
+  display: inline-block;
+  visibility: visible;
 }
 
 @media (width <= 720px) {
-  .st-recon-stats {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .st-recon-head {
-    flex-direction: column;
-  }
-
-  .st-recon-cb-row {
     flex-direction: column;
   }
 }
@@ -5134,15 +4965,6 @@ body.st-pb-modal-open {
   width: min(420px, 96vw);
 }
 
-.st-recon-attach-btn,
-.st-recon-attach-modal {
-  visibility: visible !important;
-}
-
-.st-recon-attach-modal {
-  display: flex !important;
-}
-
 /* Reconcile: Mark Chargeback from negative pay-sheet rows */
 .st-recon-chargeback-btn {
   flex-shrink: 0;
@@ -5168,17 +4990,8 @@ body.st-pb-modal-open {
 }
 
 .st-recon-cb-confirm {
-  background: #a32d2d !important;
-  border-color: #a32d2d !important;
-}
-
-.st-recon-chargeback-btn,
-.st-recon-chargeback-modal {
-  visibility: visible !important;
-}
-
-.st-recon-chargeback-modal {
-  display: flex !important;
+  background: #a32d2d;
+  border-color: #a32d2d;
 }
 
 /* Reconcile History pane */
@@ -5290,11 +5103,11 @@ body.st-pb-modal-open {
 .st-recon-history-pane,
 .st-recon-history-row,
 .st-recon-pill-samecancel {
-  visibility: visible !important;
+  visibility: visible;
 }
 
 .st-date-chip.st-history-chip {
-  display: inline-flex !important;
+  display: inline-flex;
 }
 
 /* Reconcile: Attach All batch confirm */
@@ -5363,7 +5176,7 @@ body.st-pb-modal-open {
 .st-recon-attach-all-bar,
 .st-recon-attach-all-btn,
 .st-recon-attach-all-list {
-  visibility: visible !important;
+  visibility: visible;
 }
 
 /* Reconcile: status choice + quick log */
@@ -6325,4 +6138,51 @@ body.st-pb-modal-open {
 .st-recon-v2-btn-clear:hover,
 .st-recon-v2-btn-clear:focus {
   color: var(--cha-text-secondary);
+}
+
+/* Stage B.3 - saved snapshot layout and modal visibility without !important */
+.st-recon-v2-snap-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.st-recon-v2-snap-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.st-recon-v2-table-snap td[rowspan] {
+  vertical-align: top;
+}
+
+.st-entry-modal.st-paysheet-modal,
+.st-entry-modal.st-recon-attach-modal,
+.st-entry-modal.st-recon-chargeback-modal {
+  display: flex;
+  visibility: visible;
+}
+
+.st-recon-pane .st-recon-status-pill,
+.st-recon-history-pane .st-recon-status-pill {
+  display: inline-block;
+  visibility: visible;
+}
+
+.st-date-chip.st-history-chip {
+  display: inline-flex;
+  visibility: visible;
+}
+
+.st-recon-history-pane,
+.st-recon-history-row,
+.st-recon-pill-samecancel,
+.st-recon-attach-all-bar,
+.st-recon-attach-all-btn,
+.st-recon-attach-all-list {
+  visibility: visible;
 }
