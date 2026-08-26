@@ -6186,3 +6186,368 @@ body.st-pb-modal-open {
 .st-recon-attach-all-list {
   visibility: visible;
 }
+
+/* Stage D - Paychecks tab */
+.st-pc-pane {
+  padding: 4px 0 24px;
+}
+
+.st-pc-header {
+  margin-bottom: 12px;
+}
+
+.st-pc-headline {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--cha-text-primary);
+}
+
+.st-pc-lede,
+.st-pc-week {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-pc-figures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.st-pc-fig span {
+  display: block;
+  font-size: 11px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-pc-fig strong {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--cha-text-primary);
+}
+
+.st-pc-fig-hero strong {
+  font-size: 22px;
+  color: var(--cha-text-primary);
+}
+
+.st-pc-lost {
+  color: var(--cha-danger-text);
+}
+
+.st-pc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 10px;
+}
+
+.st-pc-chip {
+  border: 1px solid var(--cha-border-default);
+  background: #fff;
+  color: var(--cha-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+.st-pc-chip.is-active {
+  border-color: var(--cha-accent);
+  color: var(--cha-accent);
+  background: var(--cha-bg-muted);
+}
+
+.st-pc-custom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--cha-text-secondary);
+}
+
+.st-pc-date {
+  margin-left: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--cha-border-default);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.st-pc-apply,
+.st-pc-btn-ghost,
+.st-pc-btn-save {
+  border: 1px solid var(--cha-border-default);
+  background: #fff;
+  color: var(--cha-text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.st-pc-btn-save {
+  background: var(--cha-accent);
+  border-color: var(--cha-accent);
+  color: #fff;
+}
+
+.st-pc-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 10px;
+}
+
+.st-pc-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+
+.st-pc-col-period {
+  width: 16%;
+}
+
+.st-pc-col-amt {
+  width: 9%;
+}
+
+.st-pc-col-deals {
+  width: 7%;
+}
+
+.st-pc-col-status {
+  width: 13%;
+}
+
+.st-pc-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cha-text-tertiary);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--cha-border-subtle);
+  background: var(--cha-bg-muted);
+}
+
+.st-pc-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--cha-border-subtle);
+  vertical-align: top;
+  color: var(--cha-text-primary);
+}
+
+.st-pc-tr {
+  cursor: pointer;
+}
+
+.st-pc-tr:hover td {
+  background: var(--cha-bg-muted);
+}
+
+.st-pc-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.st-pc-primary {
+  font-weight: 700;
+}
+
+.st-pc-empty,
+.st-pc-muted,
+.st-pc-chart-empty {
+  color: var(--cha-text-tertiary);
+  font-size: 13px;
+}
+
+.st-pc-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+  background: var(--cha-bg-muted);
+  color: var(--cha-text-secondary);
+}
+
+.st-pc-pill-verified {
+  background: var(--cha-success-bg);
+  color: var(--cha-success-text);
+}
+
+.st-pc-pill-estimated {
+  background: var(--cha-bg-muted);
+  color: var(--cha-text-secondary);
+}
+
+.st-pc-pill-needs {
+  background: var(--cha-warning-bg);
+  color: var(--cha-warning-text);
+}
+
+.st-pc-chart {
+  margin-top: 16px;
+}
+
+.st-pc-chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.st-pc-chart-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--cha-text-primary);
+}
+
+.st-pc-chart-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.st-pc-chart-svg {
+  width: 100%;
+  height: 120px;
+  display: block;
+}
+
+.st-pc-detail-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.st-pc-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.st-pc-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 18px;
+  margin-bottom: 16px;
+}
+
+.st-pc-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.st-pc-detail-row span {
+  color: var(--cha-text-tertiary);
+}
+
+.st-pc-subblock {
+  margin-bottom: 14px;
+}
+
+.st-pc-subhead {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--cha-text-secondary);
+  margin-bottom: 6px;
+}
+
+.st-pc-cust-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--cha-text-primary);
+}
+
+.st-pc-lifetime {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.st-pc-lifetime span {
+  display: block;
+  font-size: 11px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-pc-lifetime strong {
+  font-size: 15px;
+}
+
+.st-pc-verify-lede {
+  font-size: 13px;
+  color: var(--cha-text-secondary);
+  margin: 0 0 12px;
+}
+
+.st-pc-verify-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.st-pc-verify-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--cha-text-secondary);
+}
+
+.st-pc-verify-input {
+  padding: 6px 8px;
+  border: 1px solid var(--cha-border-default);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.st-pc-verify-totals {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 12px;
+}
+
+.st-pc-verify-totals span {
+  display: block;
+  font-size: 11px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-entry-modal.st-pc-modal {
+  display: flex;
+  visibility: visible;
+  z-index: 10050;
+}
+
+@media (width <= 800px) {
+  .st-pc-col-period,
+  .st-pc-col-amt,
+  .st-pc-col-deals,
+  .st-pc-col-status {
+    width: auto;
+  }
+
+  .st-pc-detail-grid,
+  .st-pc-verify-grid {
+    grid-template-columns: 1fr;
+  }
+}
