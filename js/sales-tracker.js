@@ -466,6 +466,7 @@ function _stLoadSales() {
         s.status = normalized;
         changed = true;
       }
+      if (_stBackfillSaleReversal(s)) changed = true;
     }
     if (changed) _stSaveSales(parsed);
     return parsed;
@@ -3419,7 +3420,9 @@ function _stUpdateStatus(id, newStatus) {
   var sales = _stLoadSales();
   for (var i = 0; i < sales.length; i++) {
     if (sales[i].id === id) {
+      var originalCommissionUs = _stSaleUnsignedCommission(sales[i]);
       sales[i].status = newStatus;
+      _stApplySaleReversal(sales[i], newStatus, originalCommissionUs);
       // Recompute commission for the affected deal (or the
       // deal parent if this is an add-on) so expectedDealTotal
       // reflects the new status.
@@ -3515,7 +3518,9 @@ function _stUpdateSaleStatus(id, newStatus) {
   var sales = _stLoadSales();
   var idx = _stFindSaleIndexById(sales, id);
   if (idx < 0) return;
+  var originalCommissionUs = _stSaleUnsignedCommission(sales[idx]);
   sales[idx].status = newStatus;
+  _stApplySaleReversal(sales[idx], newStatus, originalCommissionUs);
   _stRecomputeSaleGroupCommission(sales, idx);
   _stSaveSales(sales);
   var card = document.querySelector(
@@ -5250,8 +5255,7 @@ function _stRenderThisWeekSubRow(g) {
   var saleStatus = _stNormalizeStatus(lead);
   var reviewed = lead.reviewed === true;
   var reasonVal = lead.statusReason ? String(lead.statusReason) : '';
-  var showReason =
-    saleStatus === 'chargeback' || saleStatus === 'samecancel';
+  var showReason = saleStatus === 'chargeback' || saleStatus === 'samecancel';
   var reconcileSec =
     '<div class="st-week-reconcile">' +
     '<div class="st-week-reconcile-row">' +
@@ -6134,6 +6138,13 @@ function _stCreateSaleGroupFromModal(payload) {
   for (var si = 0; si < sales.length; si++) {
     if (sales[si].id === dealId) {
       _stStampDealCommission(sales, si, _stLoadCommissionRates());
+      if (rowStatus === 'chargeback' || rowStatus === 'samecancel') {
+        _stApplySaleReversal(
+          sales[si],
+          rowStatus,
+          _stSaleUnsignedCommission(sales[si])
+        );
+      }
       break;
     }
   }
@@ -6812,15 +6823,502 @@ function _stLoadReconcileHistory() {
   }
 }
 
+var _ST_RECONCILE_FULL_CAP = 60;
+var _stPaycheckHistoryBackfillDone = false;
+
+function _stMoney2(n) {
+  var x = Number(n);
+  if (!isFinite(x)) return 0;
+  return Math.round(x * 100) / 100;
+}
+
+function _stWeekStartFromTs(ts) {
+  var n = Number(ts) || 0;
+  if (!n) return 0;
+  var d = new Date(n);
+  if (isNaN(d.getTime())) return 0;
+  return _stStartOfWeek(d).getTime();
+}
+
+function _stSaleUnsignedCommission(sale) {
+  if (!sale) return 0;
+  if (sale.type === 'deal') {
+    var expected = Math.abs(Number(sale.expectedDealTotal) || 0);
+    if (expected) return expected;
+    return _stMoney2(
+      Math.abs(Number(sale.planCommission) || 0) +
+        Math.abs(Number(sale.totalAddonCommission) || 0) +
+        Math.abs(Number(sale.enrollmentBonus) || 0)
+    );
+  }
+  if (typeof sale.addonCommission === 'number') {
+    return Math.abs(Number(sale.addonCommission) || 0);
+  }
+  return Math.abs(_stComputeLineCommission(sale, _stLoadCommissionRates()));
+}
+
+function _stEmptyPaycheck(source) {
+  return {
+    grossCommission: null,
+    salesCommission: null,
+    addonCommission: null,
+    chargebacks: null,
+    sameWeekCancels: null,
+    adjustments: null,
+    netCommission: null,
+    dealsPaid: null,
+    source: source || 'derived',
+    verifiedAt: 0,
+    computedAt: 0
+  };
+}
+
+function _stPaycheckNetFromParts(pb) {
+  if (!pb) return null;
+  if (
+    pb.grossCommission == null ||
+    pb.chargebacks == null ||
+    pb.sameWeekCancels == null ||
+    pb.adjustments == null
+  ) {
+    return null;
+  }
+  return _stMoney2(
+    pb.grossCommission - pb.chargebacks - pb.sameWeekCancels + pb.adjustments
+  );
+}
+
+function _stFillPaycheckNulls(target, src) {
+  if (!target || !src) return target;
+  var keys = [
+    'grossCommission',
+    'salesCommission',
+    'addonCommission',
+    'chargebacks',
+    'sameWeekCancels',
+    'adjustments',
+    'netCommission',
+    'dealsPaid'
+  ];
+  var k;
+  for (k = 0; k < keys.length; k++) {
+    var key = keys[k];
+    if (target[key] == null && src[key] != null) target[key] = src[key];
+  }
+  return target;
+}
+
+function _stMarkDerivedPaycheck(pb) {
+  if (!pb) return _stEmptyPaycheck('derived');
+  pb.source = 'derived';
+  pb.verifiedAt = 0;
+  if (!pb.computedAt) pb.computedAt = Date.now();
+  if (pb.netCommission == null) {
+    pb.netCommission = _stPaycheckNetFromParts(pb);
+  }
+  return pb;
+}
+
+function _stApplySaleReversal(sale, newStatus, originalCommission) {
+  if (!sale) return;
+  if (newStatus !== 'chargeback' && newStatus !== 'samecancel') return;
+  var origWeek = _stWeekStartFromTs(sale.ts);
+  var deductWeek = 0;
+  if (newStatus === 'samecancel') {
+    deductWeek = origWeek;
+  } else if (_stReconcileMatchView && Number(_stReconcileMatchView.start)) {
+    deductWeek = Number(_stReconcileMatchView.start) || 0;
+  }
+  var orig =
+    typeof originalCommission === 'number' && isFinite(originalCommission)
+      ? Math.abs(originalCommission)
+      : _stSaleUnsignedCommission(sale);
+  sale.reversal = {
+    type: newStatus,
+    eventTs: Date.now(),
+    amountLost: orig,
+    originalCommission: orig,
+    originalPaycheckWeek: origWeek,
+    deductionPaycheckWeek: deductWeek,
+    reason: String(sale.statusReason || '')
+  };
+  sale.statusChangedTs = sale.reversal.eventTs;
+}
+
+function _stBackfillSaleReversal(sale) {
+  if (!sale) return false;
+  var st = _stNormalizeStatus(sale);
+  if (st !== 'chargeback' && st !== 'samecancel') return false;
+  if (sale.reversal && typeof sale.reversal === 'object') return false;
+  var origWeek = _stWeekStartFromTs(sale.ts);
+  var deductWeek = 0;
+  if (st === 'samecancel') deductWeek = origWeek;
+  var orig = _stSaleUnsignedCommission(sale);
+  sale.reversal = {
+    type: st,
+    eventTs: _stSaleStatusChangedTs(sale) || 0,
+    amountLost: orig,
+    originalCommission: orig,
+    originalPaycheckWeek: origWeek,
+    deductionPaycheckWeek: deductWeek,
+    reason: String(sale.statusReason || '')
+  };
+  return true;
+}
+
+function _stComputeLivePaycheck(sales, weekStartMs) {
+  sales = sales || [];
+  var stats = _stCalcStats(sales, weekStartMs);
+  var pb = _stPaycheckBreakdown(sales, stats);
+  var ws = Number(stats.weekStart) || 0;
+  var we =
+    typeof stats.weekEndExclusive === 'number' && !isNaN(stats.weekEndExclusive)
+      ? stats.weekEndExclusive
+      : ws + 7 * 24 * 60 * 60 * 1000;
+  var salesCommission = 0;
+  var addonCommission = 0;
+  var enrollmentGross = 0;
+  var chargebacks = 0;
+  var sameWeekCancels = 0;
+  var rates = _stLoadCommissionRates();
+  var i;
+
+  for (i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'deal') continue;
+    if (s.ts < ws || s.ts >= we) continue;
+    var dealSt = _stNormalizeStatus(s);
+    var planC = Math.abs(Number(s.planCommission) || 0);
+    var addonC = Math.abs(Number(s.totalAddonCommission) || 0);
+    var enr = Math.abs(Number(s.enrollmentBonus) || 0);
+    if (dealSt === 'samecancel') {
+      sameWeekCancels += planC + addonC + enr;
+    } else if (dealSt === 'chargeback') {
+      chargebacks += planC + addonC + enr;
+    } else {
+      salesCommission += planC;
+      addonCommission += addonC;
+      enrollmentGross += enr;
+    }
+  }
+  for (i = 0; i < sales.length; i++) {
+    var ad = sales[i];
+    if (!ad || ad.type !== 'addon') continue;
+    if (ad.ts < ws || ad.ts >= we) continue;
+    if (!ad.receiptId || _stDealExistsForReceiptId(sales, ad.receiptId)) {
+      continue;
+    }
+    var ac =
+      typeof ad.addonCommission === 'number'
+        ? ad.addonCommission
+        : _stComputeLineCommission(ad, rates);
+    var acAbs = Math.abs(Number(ac) || 0);
+    var adSt = _stNormalizeStatus(ad);
+    if (adSt === 'samecancel') {
+      sameWeekCancels += acAbs;
+    } else if (adSt === 'chargeback') {
+      chargebacks += acAbs;
+    } else {
+      addonCommission += acAbs;
+    }
+  }
+
+  var tierBonus = Number(pb.tierBonus) || 0;
+  var grossCommission =
+    salesCommission + addonCommission + enrollmentGross + tierBonus;
+  var netKpi = Number(pb.estimated) || 0;
+  var adjustments = _stMoney2(
+    netKpi - (grossCommission - chargebacks - sameWeekCancels)
+  );
+  return {
+    grossCommission: _stMoney2(grossCommission),
+    salesCommission: _stMoney2(salesCommission),
+    addonCommission: _stMoney2(addonCommission),
+    chargebacks: _stMoney2(chargebacks),
+    sameWeekCancels: _stMoney2(sameWeekCancels),
+    adjustments: adjustments,
+    netCommission: _stMoney2(netKpi),
+    dealsPaid: Number(stats.weekDeals) || 0,
+    source: 'live',
+    verifiedAt: 0,
+    computedAt: Date.now()
+  };
+}
+
+function _stPaycheckFromSnapshot(rec) {
+  if (!rec) return null;
+  var problems = rec.problems || [];
+  var chargebacks = 0;
+  var sameWeekCancels = 0;
+  var sawCb = false;
+  var sawSwc = false;
+  var i;
+  for (i = 0; i < problems.length; i++) {
+    var p = problems[i];
+    if (!p) continue;
+    var kind = p.kind || '';
+    var amt = Math.abs(Number(p.amount) || 0);
+    if (kind === 'chargeback_candidate' || kind === 'untracked_chargeback') {
+      sawCb = true;
+      chargebacks += amt;
+    } else if (kind === 'same_week_cancel') {
+      sawSwc = true;
+      sameWeekCancels += amt;
+    }
+  }
+  if (!sawCb && !sawSwc) return null;
+  var out = _stEmptyPaycheck('derived');
+  if (sawCb) out.chargebacks = _stMoney2(chargebacks);
+  if (sawSwc) out.sameWeekCancels = _stMoney2(sameWeekCancels);
+  out.computedAt = Date.now();
+  return out;
+}
+
+function _stPaycheckFromRawText(rawText) {
+  var text = String(rawText || '');
+  if (!text.replace(/\s+/g, '')) return null;
+  var rows = _stParsePaySheet(text);
+  if (!rows || !rows.length) return null;
+  var hasAmt = false;
+  var signedNet = 0;
+  var origPos = 0;
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var amt = Number(rows[i].amount) || 0;
+    if (amt) hasAmt = true;
+    signedNet += amt;
+    if (amt >= 0) origPos += amt;
+  }
+  if (!hasAmt) return null;
+  var cancelledMids = {};
+  var stripped = _stReconStripCancelPairs(rows, cancelledMids);
+  var chargebacks = 0;
+  var strippedPos = 0;
+  var strippedSales = 0;
+  var strippedAddon = 0;
+  var dealsPaid = 0;
+  for (i = 0; i < stripped.length; i++) {
+    var a = Number(stripped[i].amount) || 0;
+    if (a < 0) {
+      chargebacks += Math.abs(a);
+    } else {
+      strippedPos += a;
+      if (stripped[i].typeLocal === 'addon') {
+        strippedAddon += a;
+      } else {
+        strippedSales += a;
+        dealsPaid += 1;
+      }
+    }
+  }
+  var sameWeekCancels = _stMoney2(origPos - strippedPos);
+  if (sameWeekCancels < 0) sameWeekCancels = 0;
+  return _stMarkDerivedPaycheck({
+    grossCommission: _stMoney2(origPos),
+    salesCommission: _stMoney2(strippedSales),
+    addonCommission: _stMoney2(strippedAddon),
+    chargebacks: _stMoney2(chargebacks),
+    sameWeekCancels: sameWeekCancels,
+    adjustments: 0,
+    netCommission: _stMoney2(signedNet),
+    dealsPaid: dealsPaid,
+    source: 'derived',
+    verifiedAt: 0,
+    computedAt: Date.now()
+  });
+}
+
+function _stPaycheckFromWeekSales(sales, weekStart) {
+  var ws = Number(weekStart) || 0;
+  if (!ws) return null;
+  var we = ws + 7 * 24 * 60 * 60 * 1000;
+  var i;
+  var found = false;
+  for (i = 0; i < (sales || []).length; i++) {
+    var s = sales[i];
+    if (!s) continue;
+    var ts = Number(s.ts) || 0;
+    if (ts >= ws && ts < we) {
+      found = true;
+      break;
+    }
+  }
+  if (!found) return null;
+  var pb = _stComputeLivePaycheck(sales, ws);
+  return _stMarkDerivedPaycheck(pb);
+}
+
+function _stPaycheckLossesFromLog(sales, weekStart) {
+  var ws = Number(weekStart) || 0;
+  if (!ws) return null;
+  var rows = _stCollectChargebackCancelLog(sales);
+  var chargebacks = 0;
+  var sameWeekCancels = 0;
+  var saw = false;
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var s = rows[i];
+    var st = _stNormalizeStatus(s);
+    var rev = s.reversal;
+    var deduct = 0;
+    var origWeek;
+    if (rev && typeof rev === 'object') {
+      deduct = Number(rev.deductionPaycheckWeek) || 0;
+      origWeek = Number(rev.originalPaycheckWeek) || 0;
+    } else {
+      origWeek = _stWeekStartFromTs(s.ts);
+      if (st === 'samecancel') deduct = origWeek;
+    }
+    var weekHit;
+    if (st === 'samecancel') {
+      weekHit = origWeek === ws || deduct === ws;
+    } else {
+      weekHit = deduct === ws;
+    }
+    if (!weekHit) continue;
+    saw = true;
+    var lost;
+    if (rev && typeof rev.amountLost === 'number') {
+      lost = Math.abs(Number(rev.amountLost) || 0);
+    } else {
+      lost = _stSaleUnsignedCommission(s);
+    }
+    if (st === 'samecancel') sameWeekCancels += lost;
+    else chargebacks += lost;
+  }
+  if (!saw) return null;
+  var pb = _stEmptyPaycheck('derived');
+  pb.chargebacks = _stMoney2(chargebacks);
+  pb.sameWeekCancels = _stMoney2(sameWeekCancels);
+  pb.computedAt = Date.now();
+  return pb;
+}
+
+function _stDerivePaycheckForRecord(rec, sales) {
+  if (rec && rec.paycheck && rec.paycheck.source === 'verified') {
+    return rec.paycheck;
+  }
+  var fromSnap = _stPaycheckFromSnapshot(rec);
+  var fromRaw = _stPaycheckFromRawText(rec && rec.rawText);
+  var weekStart = rec ? Number(rec.weekStart) || 0 : 0;
+  var fromSales = weekStart ? _stPaycheckFromWeekSales(sales, weekStart) : null;
+  var fromLog = weekStart ? _stPaycheckLossesFromLog(sales, weekStart) : null;
+  if (fromRaw && fromRaw.netCommission != null) {
+    if (fromRaw.dealsPaid == null && fromSales && fromSales.dealsPaid != null) {
+      fromRaw.dealsPaid = fromSales.dealsPaid;
+    }
+    return fromRaw;
+  }
+  if (fromSales && fromSales.netCommission != null) {
+    return fromSales;
+  }
+  var pb = _stEmptyPaycheck('derived');
+  pb.computedAt = Date.now();
+  if (fromLog) _stFillPaycheckNulls(pb, fromLog);
+  if (fromSnap) _stFillPaycheckNulls(pb, fromSnap);
+  pb.netCommission = _stPaycheckNetFromParts(pb);
+  return pb;
+}
+
+function _stCountReconcileTiers(list) {
+  var tier1 = 0;
+  var tier2 = 0;
+  var i;
+  for (i = 0; i < (list || []).length; i++) {
+    if (i < _ST_RECONCILE_FULL_CAP) tier1 += 1;
+    else tier2 += 1;
+  }
+  return { tier1: tier1, tier2: tier2, total: (list || []).length };
+}
+
+function _stApplyReconcileHistoryRetention(list) {
+  var i;
+  for (i = 0; i < (list || []).length; i++) {
+    if (i < _ST_RECONCILE_FULL_CAP) continue;
+    if (!list[i]) continue;
+    if (list[i].rawText) {
+      list[i].rawText = '';
+      list[i].rawTextTrimmed = true;
+    }
+  }
+  return list;
+}
+
+function _stTrimOldestReconcileRawText(list) {
+  var i;
+  for (i = (list || []).length - 1; i >= 0; i--) {
+    if (list[i] && list[i].rawText) {
+      list[i].rawText = '';
+      list[i].rawTextTrimmed = true;
+      return true;
+    }
+  }
+  return false;
+}
+
+function _stTryWriteReconcileHistory(list) {
+  var key = _stKey('cha_reconcile_history');
+  var payload = JSON.stringify(list || []);
+  try {
+    localStorage.setItem(key, payload);
+    return true;
+  } catch (_e) {
+    return false;
+  }
+}
+
 function _stSaveReconcileHistory(list) {
-  _stSet(_stKey('cha_reconcile_history'), JSON.stringify(list || []));
+  list = _stApplyReconcileHistoryRetention(list || []);
+  var attempts = 0;
+  while (!_stTryWriteReconcileHistory(list) && attempts < 200) {
+    attempts += 1;
+    if (!_stTrimOldestReconcileRawText(list)) {
+      _stSet(_stKey('cha_reconcile_history'), JSON.stringify(list || []));
+      break;
+    }
+  }
+  window._stLastReconcileRetention = _stCountReconcileTiers(list);
+}
+
+function _stRunPaycheckHistoryBackfill(sales) {
+  if (_stPaycheckHistoryBackfillDone) return;
+  _stPaycheckHistoryBackfillDone = true;
+  var flagKey = _stKey('cha_paycheck_derive_v1');
+  if (_stGet(flagKey) === '1') return;
+  var list = _stLoadReconcileHistory();
+  var derived = 0;
+  var insufficient = 0;
+  var i;
+  var changed = false;
+  for (i = 0; i < list.length; i++) {
+    var rec = list[i];
+    if (!rec) continue;
+    if (rec.paycheck && rec.paycheck.source === 'verified') continue;
+    if (rec.paycheck) continue;
+    rec.paycheck = _stDerivePaycheckForRecord(rec, sales);
+    changed = true;
+    derived += 1;
+    if (!rec.paycheck || rec.paycheck.netCommission == null) {
+      insufficient += 1;
+    }
+  }
+  if (changed) _stSaveReconcileHistory(list);
+  _stSet(flagKey, '1');
+  var tiers = _stCountReconcileTiers(list);
+  window._stPaycheckDeriveStats = {
+    derived: derived,
+    insufficient: insufficient,
+    tier1: tiers.tier1,
+    tier2: tiers.tier2
+  };
+  try {
+    console.info('[CHA] paycheck derive', window._stPaycheckDeriveStats);
+  } catch (_eInfo) {}
 }
 
 function _stSnapshotReconcileProblem(p) {
   if (!p) return null;
-  var mid = _stReconNormMemberId(
-    p.memberId || (p.pay && p.pay.memberId) || ''
-  );
+  var mid = _stReconNormMemberId(p.memberId || (p.pay && p.pay.memberId) || '');
   return {
     kind: p.kind || '',
     customer: p.customer || '',
@@ -6842,17 +7340,12 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
     var snap = _stSnapshotReconcileProblem(src[i]);
     if (snap) problems.push(snap);
   }
+  var weekStart = view && view.start ? Number(view.start) : 0;
+  var paycheck = _stComputeLivePaycheck(_stLoadSales(), weekStart);
   return {
-    id:
-      'rh_' +
-      Date.now() +
-      '_' +
-      Math.random().toString(36).slice(2, 8),
-    weekStart: view && view.start ? Number(view.start) : 0,
-    weekLabel:
-      view && view.start
-        ? _stReconMatchedWeekLabel(view)
-        : '',
+    id: 'rh_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+    weekStart: weekStart,
+    weekLabel: view && view.start ? _stReconMatchedWeekLabel(view) : '',
     rawText: String(rawText || ''),
     savedAt: Date.now(),
     counts: {
@@ -6870,7 +7363,8 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
           : 0
     },
     gap: result ? Number(result.gap) || 0 : 0,
-    problems: problems
+    problems: problems,
+    paycheck: paycheck
   };
 }
 
@@ -6878,7 +7372,6 @@ function _stPersistReconcileHistoryAfterMatch(rawText, view, result) {
   if (!result) return;
   var list = _stLoadReconcileHistory();
   list.unshift(_stBuildReconcileHistoryRecord(rawText, view, result));
-  if (list.length > 40) list = list.slice(0, 40);
   _stSaveReconcileHistory(list);
 }
 
@@ -7041,13 +7534,13 @@ var _ST_PLAN_ALIASES = {
   'medvalue 2000': 'medvalue 2000 plus',
   'medvalue 4000': 'medvalue 4000 plus',
   'medvalue 6000': 'medvalue 6000 plus',
-  'tdk1': 'tdk 1',
-  'tdk2': 'tdk 2',
-  'tdk3': 'tdk 3',
-  'tdk4': 'tdk 4',
-  'tdk5': 'tdk 5',
-  'assistpro': 'assistpro discount',
-  'gapsupport': 'gapsupport discount',
+  tdk1: 'tdk 1',
+  tdk2: 'tdk 2',
+  tdk3: 'tdk 3',
+  tdk4: 'tdk 4',
+  tdk5: 'tdk 5',
+  assistpro: 'assistpro discount',
+  gapsupport: 'gapsupport discount',
   'prime health pass': 'prime health pass discount',
   'access health lite': 'access health lite stm',
   'access health traditional': 'access health traditional stm',
@@ -7249,7 +7742,10 @@ function _stParsePaySheet(text) {
       for (pi = 0; pi < parts.length; pi++) {
         var p = String(parts[pi] || '').trim();
         if (midIdx < 0 && /\b\d{9}\b/.test(p)) midIdx = pi;
-        if (typeIdx < 0 && /\b(Core|Ancillary|Add[\s\-]?ons?|Deal|Plan)\b/i.test(p)) {
+        if (
+          typeIdx < 0 &&
+          /\b(Core|Ancillary|Add[\s\-]?ons?|Deal|Plan)\b/i.test(p)
+        ) {
           typeIdx = pi;
         }
       }
@@ -7463,7 +7959,11 @@ function _stMatchPaySheetRows(payRows, weekSales) {
     return allSales;
   }
 
-  function _stReconFindHistoryByMemberId(memberId, typeLocal, includeReversals) {
+  function _stReconFindHistoryByMemberId(
+    memberId,
+    typeLocal,
+    includeReversals
+  ) {
     var hits = [];
     var typed = [];
     var hist = _stReconLoadAllSalesOnce();
@@ -7689,7 +8189,8 @@ function _stOpenPaySheetModal() {
   var html = '';
   html +=
     '<div class="st-entry-card st-paysheet-card" role="dialog" aria-modal="true" aria-labelledby="st-paysheet-title" onclick="event.stopPropagation()">';
-  html += '<div class="st-entry-title" id="st-paysheet-title">Paste pay sheet</div>';
+  html +=
+    '<div class="st-entry-title" id="st-paysheet-title">Paste pay sheet</div>';
   html +=
     '<p class="st-paysheet-hint">Paste the official weekly pay sheet text. Rows need a 9-digit Member ID and a Type (Core or Ancillary).</p>';
   html +=
@@ -7801,13 +8302,15 @@ function _stReconKindLabel(kind) {
   if (kind === 'not_on_sheet') return 'Not on pay sheet';
   if (kind === 'attach') return 'Attach ID';
   if (kind === 'chargeback_candidate') return 'Mark status';
-  if (kind === 'untracked_chargeback') return 'Chargeback deduction, not in your tracker.';
+  if (kind === 'untracked_chargeback')
+    return 'Chargeback deduction, not in your tracker.';
   return kind || '';
 }
 
 function _stReconKindPillClass(kind) {
   if (kind === 'missing') return 'st-recon-status-pill st-recon-pill-missing';
-  if (kind === 'mislabeled') return 'st-recon-status-pill st-recon-pill-mislabeled';
+  if (kind === 'mislabeled')
+    return 'st-recon-status-pill st-recon-pill-mislabeled';
   if (kind === 'same_week_cancel') {
     return 'st-recon-status-pill st-recon-pill-notonsheet';
   }
@@ -7838,10 +8341,7 @@ function _stReconFormatDate(ts) {
 function _stReconProblemMemberId(p) {
   if (!p) return '';
   return _stReconNormMemberId(
-    p.memberId ||
-      p.attachMemberId ||
-      (p.pay && p.pay.memberId) ||
-      ''
+    p.memberId || p.attachMemberId || (p.pay && p.pay.memberId) || ''
   );
 }
 
@@ -7881,10 +8381,8 @@ function _stFindPriorChargebackDeduction(memberId, currentWeekStart) {
 function _stReconProblemReasonText(p) {
   if (!p) return '';
   if (p.kind === 'mislabeled') {
-    var payName =
-      (p.pay && p.pay.productName) || p.productName || 'Unknown';
-    var localName =
-      (p.sale && p.sale.plan) || p.productName || 'Unknown';
+    var payName = (p.pay && p.pay.productName) || p.productName || 'Unknown';
+    var localName = (p.sale && p.sale.plan) || p.productName || 'Unknown';
     return (
       "Pay sheet shows core as '" +
       payName +
@@ -7922,16 +8420,12 @@ function _stReconCollectActionRows(result) {
     if (attach[i]) out.push(attach[i]);
   }
   var cbs =
-    result && result.chargebackCandidates
-      ? result.chargebackCandidates
-      : [];
+    result && result.chargebackCandidates ? result.chargebackCandidates : [];
   for (i = 0; i < cbs.length; i++) {
     if (cbs[i]) out.push(cbs[i]);
   }
   var ut =
-    result && result.untrackedChargebacks
-      ? result.untrackedChargebacks
-      : [];
+    result && result.untrackedChargebacks ? result.untrackedChargebacks : [];
   for (i = 0; i < ut.length; i++) {
     if (!ut[i]) continue;
     if (Number(ut[i].amount) < 0) out.push(ut[i]);
@@ -8036,9 +8530,12 @@ function _stCopyReconcilePayrollSummary() {
     navigator.clipboard &&
     typeof navigator.clipboard.writeText === 'function'
   ) {
-    navigator.clipboard.writeText(text).then(onOk).catch(function () {
-      _stCopyTextFallback(text, onOk, onFail);
-    });
+    navigator.clipboard
+      .writeText(text)
+      .then(onOk)
+      .catch(function () {
+        _stCopyTextFallback(text, onOk, onFail);
+      });
     return;
   }
   _stCopyTextFallback(text, onOk, onFail);
@@ -8143,10 +8640,7 @@ function _stBuildReconcileProblemActionHtml(p, opts) {
       '">Mark status</button>'
     );
   }
-  if (
-    p.kind === 'untracked_chargeback' &&
-    _stReconProblemMemberId(p)
-  ) {
+  if (p.kind === 'untracked_chargeback' && _stReconProblemMemberId(p)) {
     var utMid = _stReconProblemMemberId(p);
     return (
       '<button type="button" class="st-recon-quicklog-btn st-recon-btn-secondary" data-st-recon-action="quick-log" data-member-id="' +
@@ -8178,11 +8672,9 @@ function _stBuildReconcileProblemRowHtml(p, opts) {
   var dupHtml = '';
   if (
     !readOnly &&
-    (p.kind === 'chargeback_candidate' ||
-      p.kind === 'untracked_chargeback')
+    (p.kind === 'chargeback_candidate' || p.kind === 'untracked_chargeback')
   ) {
-    var curWs =
-      (_stReconcileMatchView && _stReconcileMatchView.start) || 0;
+    var curWs = (_stReconcileMatchView && _stReconcileMatchView.start) || 0;
     var prior = _stFindPriorChargebackDeduction(
       _stReconProblemMemberId(p),
       curWs
@@ -8252,9 +8744,7 @@ function _stBuildReconcilePriorityListHtml(result, opts) {
   opts = opts || {};
   var readOnly = !!opts.readOnly;
   if (!result) {
-    return (
-      '<div class="st-empty st-empty-tight">Paste a pay sheet to see mismatches.</div>'
-    );
+    return '<div class="st-empty st-empty-tight">Paste a pay sheet to see mismatches.</div>';
   }
   var needsN = _stReconCollectActionRows(result).length;
   var reportN = _stReconCollectPayrollErrorRows(result).length;
@@ -8308,13 +8798,9 @@ function _stBuildReconcileProblemsHtml(result, opts) {
   }
   if (!result || !result.problems || !result.problems.length) {
     if (result && typeof result.matched === 'number') {
-      return (
-        '<div class="st-empty st-empty-tight">No problems found. All pay-sheet rows matched.</div>'
-      );
+      return '<div class="st-empty st-empty-tight">No problems found. All pay-sheet rows matched.</div>';
     }
-    return (
-      '<div class="st-empty st-empty-tight">Paste a pay sheet to see mismatches.</div>'
-    );
+    return '<div class="st-empty st-empty-tight">Paste a pay sheet to see mismatches.</div>';
   }
   var html = '<div class="st-recon-priority-list">';
   var i;
@@ -8330,15 +8816,12 @@ function _stBuildReconcileResolvedStripHtml() {
   if (!items.length) return '';
   var html =
     '<div class="st-recon-resolved-strip" aria-label="Resolved this session">';
-  html +=
-    '<div class="st-recon-resolved-label">Resolved this session</div>';
+  html += '<div class="st-recon-resolved-label">Resolved this session</div>';
   html += '<ul class="st-recon-resolved-list">';
   var i;
   for (i = 0; i < items.length; i++) {
     html +=
-      '<li class="st-recon-resolved-item">' +
-      _stEscape(items[i]) +
-      '</li>';
+      '<li class="st-recon-resolved-item">' + _stEscape(items[i]) + '</li>';
   }
   html += '</ul>';
   html +=
@@ -8468,14 +8951,9 @@ function _stOpenReconcileChargebackConfirm(saleId, meta) {
     (problem && problem.chargebackSaleId) || saleId || meta.saleId || ''
   );
   var name = String(
-    (problem && problem.customer) ||
-      meta.customer ||
-      'Unknown'
+    (problem && problem.customer) || meta.customer || 'Unknown'
   );
-  var dateTs =
-    (problem && problem.dateTs) ||
-    Number(meta.dateTs) ||
-    0;
+  var dateTs = (problem && problem.dateTs) || Number(meta.dateTs) || 0;
   if (!problem) {
     var sale = _stFindSaleById(sid);
     if (sale) {
@@ -8644,12 +9122,9 @@ function _stOpenReconcileQuickLog(memberId, meta) {
     _stFlash('Cannot log sale - missing Member ID.', 'warn');
     return;
   }
-  var customer =
-    (problem && problem.customer) || meta.customer || '';
-  var productName =
-    (problem && problem.productName) || meta.plan || '';
-  var dateTs =
-    (problem && problem.dateTs) || Number(meta.dateTs) || 0;
+  var customer = (problem && problem.customer) || meta.customer || '';
+  var productName = (problem && problem.productName) || meta.plan || '';
+  var dateTs = (problem && problem.dateTs) || Number(meta.dateTs) || 0;
   var amount =
     (problem && problem.amount) != null
       ? Number(problem.amount)
@@ -8696,8 +9171,7 @@ function _stOpenReconcileQuickLog(memberId, meta) {
     _stEscape(premiumAbs) +
     '"></label>';
   html += '</div>';
-  html +=
-    '<div class="st-recon-ql-status" role="group" aria-label="Status">';
+  html += '<div class="st-recon-ql-status" role="group" aria-label="Status">';
   html += '<div class="st-recon-ql-status-label">Status (required)</div>';
   html += '<div class="st-recon-ql-status-tog">';
   html +=
@@ -8741,10 +9215,7 @@ function _stSaveReconcileQuickLog() {
     return;
   }
   if (_stSaleExistsWithMemberId(memberId)) {
-    _stFlash(
-      'A sale with Member ID ' + memberId + ' already exists.',
-      'warn'
-    );
+    _stFlash('A sale with Member ID ' + memberId + ' already exists.', 'warn');
     return;
   }
   var plan = (
@@ -8754,9 +9225,7 @@ function _stSaveReconcileQuickLog() {
     (document.getElementById('st-recon-ql-date') || {}).value || ''
   ).trim();
   var soldDate = soldIso ? _stIsoToDate(soldIso) : null;
-  var ts = soldDate
-    ? soldDate.getTime() + 9 * 60 * 60 * 1000
-    : Date.now();
+  var ts = soldDate ? soldDate.getTime() + 9 * 60 * 60 * 1000 : Date.now();
   var premium = parseFloat(
     (document.getElementById('st-recon-ql-premium') || {}).value
   );
@@ -8764,8 +9233,7 @@ function _stSaveReconcileQuickLog() {
     _stFlash('Enter a valid monthly premium.', 'error');
     return;
   }
-  var dealRatePct =
-    _stPlanTierRate(premium, _stLoadCommissionRates()) * 100;
+  var dealRatePct = _stPlanTierRate(premium, _stLoadCommissionRates()) * 100;
   var ok = _stCreateSaleGroupFromModal({
     customer: customer,
     memberId: memberId,
@@ -8915,11 +9383,7 @@ function _stConfirmAttachAllMemberIds() {
   if (attached > 0) _stSaveSales(sales);
   _stRerunPaySheetMatch({
     flashMsg:
-      'Attached ' +
-      attached +
-      ' Member ID' +
-      (attached === 1 ? '' : 's') +
-      '.',
+      'Attached ' + attached + ' Member ID' + (attached === 1 ? '' : 's') + '.',
     flashKind: 'ok'
   });
 }
@@ -8927,9 +9391,7 @@ function _stConfirmAttachAllMemberIds() {
 function _stConfirmAttachMemberId(saleId) {
   var problem = _stFindAttachProblemBySaleId(saleId);
   var sid = String(saleId || '');
-  var mid = problem
-    ? _stReconNormMemberId(problem.attachMemberId)
-    : '';
+  var mid = problem ? _stReconNormMemberId(problem.attachMemberId) : '';
   if (!sid || !mid) {
     _stCloseAttachMemberIdConfirm();
     _stFlash('Cannot attach Member ID - missing sale or ID.', 'warn');
@@ -8944,8 +9406,7 @@ function _stConfirmAttachMemberId(saleId) {
   _stSaveSales(sales);
   _stCloseAttachMemberIdConfirm();
   _stReconcileSessionPush(
-    String((problem && problem.customer) || 'Unknown') +
-      ' - attached Member ID'
+    String((problem && problem.customer) || 'Unknown') + ' - attached Member ID'
   );
   _stRerunPaySheetMatch({
     flashMsg: 'Attached Member ID ' + mid + '.',
@@ -9083,8 +9544,7 @@ function _stBuildReconcilePane(sales, view) {
 
   var gapClass = gap > 0 ? ' is-gap' : ' is-zero';
   html += '<div class="st-recon-gap-hero">';
-  html +=
-    '<span class="st-recon-gap-label">Est. commission gap</span>';
+  html += '<span class="st-recon-gap-label">Est. commission gap</span>';
   html +=
     '<strong class="st-recon-gap-val' +
     gapClass +
@@ -9168,7 +9628,8 @@ function _stBuildReconcileHistorySnapshotHtml(rec) {
     matched: matched,
     problems: rec.problems || []
   };
-  var html = '<section class="st-recon-pane st-recon-history-pane" aria-label="Saved pay sheet">';
+  var html =
+    '<section class="st-recon-pane st-recon-history-pane" aria-label="Saved pay sheet">';
   html += '<div class="st-recon-head">';
   html += '<div class="st-recon-head-text">';
   html += '<div class="st-recon-title">Saved pay sheet</div>';
@@ -9279,8 +9740,7 @@ function _stBuildReconcileHistoryPane(sales) {
   html += '</div>';
 
   html += '<div class="st-recon-history-section st-recon-history-log">';
-  html +=
-    '<div class="st-recon-section-label">Chargebacks and cancels</div>';
+  html += '<div class="st-recon-section-label">Chargebacks and cancels</div>';
   if (!logRows.length) {
     html +=
       '<div class="st-empty st-empty-tight">No chargebacks or same-week cancels logged yet.</div>';
@@ -9618,9 +10078,7 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
     if (bucket.date) {
       dateStr = bucket.date.getMonth() + 1 + '/' + bucket.date.getDate();
     }
-    var chipAnchor = bucket.date
-      ? _stDayAnchorMs(bucket.date.getTime())
-      : 0;
+    var chipAnchor = bucket.date ? _stDayAnchorMs(bucket.date.getTime()) : 0;
     html +=
       '<div class="st-paycheck-day' +
       (isToday ? ' st-paycheck-day-today' : '') +
@@ -10059,6 +10517,7 @@ function _stRender() {
     _stAddSalePanelOpen = false;
   }
   var sales = _stLoadSales();
+  _stRunPaycheckHistoryBackfill(sales);
   sales = _stValidateSalesIntegrity(sales);
   var postdates = _stLoadPostDates();
   var view = _stRangeInfo();
@@ -10290,9 +10749,7 @@ function _stHandleReconcileActionClick(btn) {
     return;
   }
   if (action === 'confirm-delete-history') {
-    _stConfirmDeleteReconcileHistory(
-      btn.getAttribute('data-history-id') || ''
-    );
+    _stConfirmDeleteReconcileHistory(btn.getAttribute('data-history-id') || '');
     return;
   }
   if (action === 'copy-payroll-summary') {
