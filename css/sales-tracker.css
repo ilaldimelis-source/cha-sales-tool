@@ -6255,3 +6255,51 @@ body.st-pb-modal-open {
     width: auto;
   }
 }
+
+/* Stage B.1 - week boundary and reconcile display */
+.st-recon-v2-col-cust {
+  width: 18%;
+}
+
+.st-recon-v2-col-prod {
+  width: 22%;
+}
+
+.st-recon-v2-col-amt,
+.st-recon-v2-col-sheet {
+  width: 12%;
+}
+
+.st-recon-v2-col-status {
+  width: 18%;
+}
+
+.st-recon-v2-col-action {
+  width: 18%;
+}
+
+.st-recon-v2-table th.st-recon-v2-num {
+  text-align: right;
+}
+
+.st-recon-v2-delta {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--cha-text-tertiary);
+}
+
+.st-recon-history-weekmode {
+  display: inline;
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--cha-text-tertiary);
+}
+
+@media (width <= 800px) {
+  .st-recon-v2-col-sheet {
+    width: auto;
+  }
+}
