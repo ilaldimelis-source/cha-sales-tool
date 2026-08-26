@@ -588,7 +588,7 @@ function _stFormatBillDate(iso) {
   return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
 }
 
-// ── DATE HELPERS (week is Monday → Sunday) ──────────────────
+// ── DATE HELPERS (week is Sunday → Saturday) ──────────────────
 function _stStartOfDay(d) {
   var x = new Date(d);
   x.setHours(0, 0, 0, 0);
@@ -598,7 +598,7 @@ function _stStartOfDay(d) {
 function _stStartOfWeek(d) {
   var x = _stStartOfDay(d);
   var day = x.getDay();
-  var diff = day === 0 ? -6 : 1 - day;
+  var diff = -day;
   x.setDate(x.getDate() + diff);
   return x;
 }
@@ -3666,7 +3666,7 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
   var todayStart = _stStartOfDay(now).getTime();
   var rates = _stLoadCommissionRates();
 
-  // Day buckets: week mode → 7 slots Mon–Sun. Custom range → one slot per
+  // Day buckets: week mode → 7 slots Sun–Sat. Custom range → one slot per
   // calendar day (Apply enforces max 31 days; min(...,31) is a safety clamp).
   var dayBuckets = [];
   var rangeDaySpan = Math.ceil((weekEndExclusive - weekStart) / msDay);
@@ -3823,7 +3823,7 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
         idx = Math.floor((s.ts - weekStart) / msDay);
       } else {
         var jsDay = new Date(s.ts).getDay(); // 0=Sun, 1=Mon, …
-        idx = jsDay === 0 ? 6 : jsDay - 1;
+        idx = jsDay;
       }
       if (idx >= 0 && idx < dayBuckets.length) {
         dayBuckets[idx].amount += lineAmt2;
@@ -4052,7 +4052,7 @@ function _stPaycheckCarrierName(sale) {
   return String(raw || '').trim();
 }
 
-function _stFmtWeekRangeMonSun(weekStartMs) {
+function _stFmtWeekRangeSunSat(weekStartMs) {
   var ws = Number(weekStartMs) || _stStartOfWeek(new Date()).getTime();
   var start = new Date(ws);
   var end = new Date(ws + 6 * 24 * 60 * 60 * 1000);
@@ -4212,7 +4212,7 @@ function _stOpenPaycheckBreakdownModal() {
   var rangeTitle =
     view.mode === 'custom'
       ? _stFmtCustomLabel(weekStart, weekEnd - 24 * 60 * 60 * 1000)
-      : _stFmtWeekRangeMonSun(weekStart);
+      : _stFmtWeekRangeSunSat(weekStart);
   var rates = _stLoadCommissionRates();
   var deals = [];
   var carrierAgg = {};
@@ -6832,16 +6832,31 @@ function _stToggleHistoryMode() {
 
 function _stLoadReconcileHistory() {
   var raw = _stGet(_stKey('cha_reconcile_history')) || '[]';
+  var parsed;
   try {
-    var parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    parsed = JSON.parse(raw);
   } catch (_e) {
     return [];
   }
+  if (!Array.isArray(parsed)) return [];
+  var changed = false;
+  var i;
+  for (i = 0; i < parsed.length; i++) {
+    if (!parsed[i] || parsed[i].weekMode) continue;
+    parsed[i].weekMode = 'legacy-mon';
+    changed = true;
+  }
+  if (changed && !_stReconWeekModeStampLock) {
+    _stReconWeekModeStampLock = true;
+    _stSaveReconcileHistory(parsed);
+    _stReconWeekModeStampLock = false;
+  }
+  return parsed;
 }
 
 var _ST_RECONCILE_FULL_CAP = 60;
 var _stPaycheckHistoryBackfillDone = false;
+var _stReconWeekModeStampLock = false;
 
 function _stMoney2(n) {
   var x = Number(n);
@@ -7404,7 +7419,8 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
     },
     gap: result ? Number(result.gap) || 0 : 0,
     problems: problems,
-    paycheck: paycheck
+    paycheck: paycheck,
+    weekMode: 'sun'
   };
 }
 
@@ -9613,6 +9629,44 @@ function _stReconAmountsMismatch(payRow, sale) {
   return Math.abs(payAmt - comm) > 0.049;
 }
 
+function _stReconcileSheetProductNote(trackerPlan, sheetPlan) {
+  if (trackerPlan && sheetPlan && !_stReconPlansAlign(trackerPlan, sheetPlan)) {
+    return 'sheet: ' + sheetPlan;
+  }
+  return '';
+}
+
+function _stReconcileFmtSideAmount(has, n) {
+  if (!has) return '-';
+  var x = Number(n) || 0;
+  if (x < 0) return '-' + _stFmtMoney(Math.abs(x));
+  return _stFmtMoney(x);
+}
+
+function _stReconcileRowDiscrepancy(row) {
+  if (!row || row.ignored || row.status === 'matched') return 0;
+  var tOk = !!row.hasTracker;
+  var sOk = !!row.hasSheet;
+  var t = tOk ? Math.abs(Number(row.trackerAmount) || 0) : null;
+  var s = sOk ? Math.abs(Number(row.sheetAmount) || 0) : null;
+  if (row.status === 'amountmismatch' || row.status === 'mislabeled') {
+    if (t == null && s == null) return 0;
+    if (t == null) return s;
+    if (s == null) return t;
+    return Math.abs(t - s);
+  }
+  if (row.status === 'missing') {
+    if (tOk && !sOk) return t || 0;
+    if (sOk && !tOk) return s || 0;
+    if (tOk && sOk) return Math.abs((t || 0) - (s || 0));
+    return Math.abs(Number(row.amount) || 0);
+  }
+  if (row.status === 'chargeback' || row.status === 'samecancel') {
+    return Math.abs(Number(row.amount) || 0);
+  }
+  return 0;
+}
+
 function _stReconcileRowKey(row) {
   return [
     (row && row.status) || '',
@@ -9620,17 +9674,26 @@ function _stReconcileRowKey(row) {
     (row && row.memberId) || '',
     String((row && row.dateTs) || 0),
     (row && row.product) || '',
-    String(
-      row && row.sheetAmount != null
-        ? row.sheetAmount
-        : (row && row.amount) || 0
-    )
+    String(row && row.hasSheet ? row.sheetAmount : '')
   ].join('|');
 }
 
 function _stMakeReconTableRow(opts) {
   opts = opts || {};
-  var amount = Number(opts.amount) || 0;
+  var hasTracker = opts.hasTracker === true;
+  var hasSheet = opts.hasSheet === true;
+  var trackerAmount = hasTracker ? Number(opts.trackerAmount) || 0 : null;
+  var sheetAmount = hasSheet ? Number(opts.sheetAmount) || 0 : null;
+  var amount;
+  if (opts.amount != null) {
+    amount = Number(opts.amount) || 0;
+  } else if (hasSheet) {
+    amount = Number(sheetAmount) || 0;
+  } else if (hasTracker) {
+    amount = Number(trackerAmount) || 0;
+  } else {
+    amount = 0;
+  }
   var isLoss = !!opts.isLoss || amount < 0;
   var row = {
     status: opts.status || 'matched',
@@ -9640,10 +9703,13 @@ function _stMakeReconTableRow(opts) {
     productNote: opts.productNote || '',
     amount: amount,
     isLoss: isLoss,
+    hasTracker: hasTracker,
+    hasSheet: hasSheet,
+    trackerAmount: trackerAmount,
     saleId: opts.saleId ? String(opts.saleId) : '',
     memberId: opts.memberId ? String(opts.memberId) : '',
     sheetProduct: opts.sheetProduct || '',
-    sheetAmount: opts.sheetAmount != null ? Number(opts.sheetAmount) : amount,
+    sheetAmount: sheetAmount,
     kind: opts.kind || '',
     typeLocal: opts.typeLocal || '',
     attachMemberId: opts.attachMemberId || ''
@@ -9680,15 +9746,9 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
     var sheetPlan = pay ? pay.productName || '' : '';
     var product = trackerPlan || sheetPlan || p.productName || '';
     var productNote = extra.productNote || '';
-    if (!productNote) {
-      if (sale && !pay) productNote = 'not on sheet';
-      else if (
-        sheetPlan &&
-        trackerPlan &&
-        !_stReconPlansAlign(trackerPlan, sheetPlan)
-      ) {
-        productNote = 'sheet: ' + sheetPlan;
-      }
+    if (productNote !== 'not on sheet') {
+      productNote = _stReconcileSheetProductNote(trackerPlan, sheetPlan);
+      if (!productNote && sale && !pay) productNote = 'not on sheet';
     }
     var amount = extra.amount != null ? extra.amount : Number(p.amount) || 0;
     var isLoss = extra.isLoss;
@@ -9704,6 +9764,9 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
         productNote: productNote,
         amount: amount,
         isLoss: isLoss,
+        hasTracker: !!sale,
+        hasSheet: !!pay,
+        trackerAmount: sale ? _stSaleUnsignedCommission(sale) : null,
         saleId: sale && sale.id ? String(sale.id) : extra.saleId || '',
         memberId:
           _stReconNormMemberId(
@@ -9714,7 +9777,7 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
               ''
           ) || '',
         sheetProduct: sheetPlan,
-        sheetAmount: pay ? Number(pay.amount) || 0 : amount,
+        sheetAmount: pay ? Number(pay.amount) : null,
         kind: extra.kind || p.kind || '',
         typeLocal: (pay && pay.typeLocal) || extra.typeLocal || '',
         attachMemberId: p.attachMemberId || extra.attachMemberId || ''
@@ -9729,16 +9792,11 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
     }
     for (i = 0; i < (result.mislabeled || []).length; i++) {
       var mis = result.mislabeled[i];
-      pushProblem(mis, 'mislabeled', {
-        productNote:
-          mis.pay && mis.pay.productName ? 'sheet: ' + mis.pay.productName : ''
-      });
+      pushProblem(mis, 'mislabeled');
     }
     for (i = 0; i < (result.attach || []).length; i++) {
       var at = result.attach[i];
       pushProblem(at, 'mislabeled', {
-        productNote:
-          at.pay && at.pay.productName ? 'sheet: ' + at.pay.productName : '',
         kind: 'attach'
       });
     }
@@ -9781,9 +9839,15 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
           customer: exact.customer || prow.customer || '',
           dateTs: Number(exact.ts) || Number(prow.dateTs) || 0,
           product: exact.plan || '',
-          productNote: prow.productName ? 'sheet: ' + prow.productName : '',
+          productNote: _stReconcileSheetProductNote(
+            exact.plan,
+            prow.productName
+          ),
           amount: Number(prow.amount) || 0,
           isLoss: Number(prow.amount) < 0,
+          hasTracker: true,
+          hasSheet: true,
+          trackerAmount: _stSaleUnsignedCommission(exact),
           saleId: String(exact.id || ''),
           memberId: _stReconNormMemberId(prow.memberId || exact.memberId),
           sheetProduct: prow.productName || '',
@@ -9799,9 +9863,15 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
           customer: exact.customer || prow.customer || '',
           dateTs: Number(exact.ts) || Number(prow.dateTs) || 0,
           product: exact.plan || prow.productName || '',
-          productNote: '',
+          productNote: _stReconcileSheetProductNote(
+            exact.plan,
+            prow.productName
+          ),
           amount: Number(prow.amount) || 0,
           isLoss: false,
+          hasTracker: true,
+          hasSheet: true,
+          trackerAmount: _stSaleUnsignedCommission(exact),
           saleId: String(exact.id || ''),
           memberId: _stReconNormMemberId(prow.memberId || exact.memberId),
           sheetProduct: prow.productName || '',
@@ -9837,7 +9907,7 @@ function _stReconcileCountRows(rows) {
       c.matched += 1;
     } else {
       c.needs += 1;
-      c.unresolved += Math.abs(Number(r.amount) || 0);
+      c.unresolved += _stReconcileRowDiscrepancy(r);
       if (typeof c[r.status] === 'number') c[r.status] += 1;
     }
   }
@@ -9881,26 +9951,32 @@ function _stReconcileCollectViewState(sales, view) {
   var counts = _stReconcileCountRows(_stReconcileTableRows);
   var phase = 'notstarted';
   if (loaded) phase = counts.needs ? 'needsreview' : 'reconciled';
+  var diff = _stMoney2(trackerNet - sheetNet);
+  var unresolved = counts.unresolved;
+  if (loaded && Math.abs(unresolved - Math.abs(diff)) > 0.02) {
+    if (typeof console !== 'undefined' && console.log) {
+      console.log(
+        '[reconcile] unresolved ' +
+          unresolved +
+          ' diverges from Difference ' +
+          diff +
+          '; using Difference in headline'
+      );
+    }
+    unresolved = Math.abs(diff);
+  }
   return {
     matchView: matchView,
     trackerNet: trackerNet,
     sheetNet: sheetNet,
-    diff: _stMoney2(trackerNet - sheetNet),
+    diff: diff,
     loaded: loaded,
     phase: phase,
     needsN: counts.needs,
-    unresolved: counts.unresolved,
+    unresolved: unresolved,
     counts: counts,
     rowN: _stPaySheetRows ? _stPaySheetRows.length : 0
   };
-}
-
-function _stReconcileFmtCommissionCell(row) {
-  var n = Number(row && row.amount) || 0;
-  if (row && (row.isLoss || n < 0)) {
-    return '-' + _stFmtMoney(Math.abs(n));
-  }
-  return _stFmtMoney(n);
 }
 
 function _stBuildReconcileHeadlineHtml(state) {
@@ -10021,8 +10097,26 @@ function _stBuildReconcileChipsHtml(state) {
 function _stBuildReconcileTableRowHtml(row) {
   if (!row) return '';
   var muted = row.status === 'matched' || row.ignored;
-  var amtClass = 'st-recon-v2-amt';
-  if (row.isLoss || Number(row.amount) < 0) amtClass += ' is-loss';
+  var trackerClass = 'st-recon-v2-amt';
+  var sheetClass = 'st-recon-v2-amt';
+  if (row.hasTracker && Number(row.trackerAmount) < 0) {
+    trackerClass += ' is-loss';
+  }
+  if (row.isLoss || (row.hasSheet && Number(row.sheetAmount) < 0)) {
+    sheetClass += ' is-loss';
+  }
+  var deltaHtml = '';
+  if (row.status === 'amountmismatch' && row.hasTracker && row.hasSheet) {
+    var delta = _stMoney2(
+      Math.abs(Number(row.trackerAmount) || 0) -
+        Math.abs(Number(row.sheetAmount) || 0)
+    );
+    var deltaStr = _stFmtMoney(Math.abs(delta));
+    if (delta > 0) deltaStr = '+' + deltaStr;
+    else if (delta < 0) deltaStr = '-' + deltaStr;
+    deltaHtml =
+      '<div class="st-recon-v2-delta">' + _stEscape(deltaStr) + '</div>';
+  }
   var actionHtml = '';
   if (_stReconcileRowHasActions(row)) {
     actionHtml =
@@ -10049,9 +10143,15 @@ function _stBuildReconcileTableRowHtml(row) {
       : '') +
     '</td>' +
     '<td class="' +
-    amtClass +
+    trackerClass +
     '">' +
-    _stEscape(_stReconcileFmtCommissionCell(row)) +
+    _stEscape(_stReconcileFmtSideAmount(row.hasTracker, row.trackerAmount)) +
+    '</td>' +
+    '<td class="' +
+    sheetClass +
+    '">' +
+    _stEscape(_stReconcileFmtSideAmount(row.hasSheet, row.sheetAmount)) +
+    deltaHtml +
     '</td>' +
     '<td><span class="st-recon-v2-pill st-recon-v2-pill-' +
     _stEscape(row.status) +
@@ -10076,7 +10176,7 @@ function _stBuildReconcileTableBodyHtml(rows, filter) {
   }
   if (!n) {
     return (
-      '<tr><td colspan="5" class="st-recon-v2-empty">' +
+      '<tr><td colspan="6" class="st-recon-v2-empty">' +
       (rows && rows.length
         ? 'No rows for this filter.'
         : 'Paste a pay sheet to see results.') +
@@ -10209,10 +10309,14 @@ function _stBuildReconcilePane(sales, view) {
     '<col class="st-recon-v2-col-cust">' +
     '<col class="st-recon-v2-col-prod">' +
     '<col class="st-recon-v2-col-amt">' +
+    '<col class="st-recon-v2-col-sheet">' +
     '<col class="st-recon-v2-col-status">' +
     '<col class="st-recon-v2-col-action">' +
     '</colgroup><thead><tr>' +
-    '<th>Customer</th><th>Product</th><th>Commission</th><th>Status</th><th>Action</th>' +
+    '<th>Customer</th><th>Product</th>' +
+    '<th class="st-recon-v2-num">Tracker</th>' +
+    '<th class="st-recon-v2-num">Pay sheet</th>' +
+    '<th>Status</th><th>Action</th>' +
     '</tr></thead><tbody id="st-recon-table-body">';
   html += _stBuildReconcileTableBodyHtml(
     _stReconcileTableRows,
@@ -10276,7 +10380,11 @@ function _stBuildReconcileHistorySnapshotHtml(rec) {
   html +=
     '<div class="st-recon-sub">Read-only snapshot for week of <strong>' +
     _stEscape(weekLabel) +
-    '</strong>. Counts do not update if sales change later.</div>';
+    '</strong>' +
+    (rec.weekMode === 'legacy-mon'
+      ? ' <span class="st-recon-history-weekmode">legacy Mon-Sun week</span>'
+      : '') +
+    '. Counts do not update if sales change later.</div>';
   html += '</div>';
   html +=
     '<button type="button" class="st-recon-paste-btn" onclick="_stCloseReconcileHistoryRecord()">Back</button>';
@@ -10356,6 +10464,9 @@ function _stBuildReconcileHistoryPane(sales) {
         '<div class="st-recon-history-main">' +
         '<div class="st-recon-history-name">Week of ' +
         _stEscape(weekLabel) +
+        (rec.weekMode === 'legacy-mon'
+          ? ' <span class="st-recon-history-weekmode">legacy Mon-Sun week</span>'
+          : '') +
         '</div>' +
         '<div class="st-recon-history-meta">' +
         _stEscape(summary) +
@@ -10613,6 +10724,23 @@ function _stBuildKpiStrip(sales, stats) {
   return html;
 }
 
+function _stWeekdayBucketsMonFri(dayBuckets) {
+  var out = [];
+  var i;
+  var dnAll = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  for (i = 0; i < (dayBuckets || []).length; i++) {
+    var b = dayBuckets[i];
+    var gd = b && b.date ? b.date.getDay() : -1;
+    if (gd >= 1 && gd <= 5) {
+      out.push({
+        bucket: b,
+        abbr: dnAll[gd] || 'DAY'
+      });
+    }
+  }
+  return out;
+}
+
 function _stBuildPaycheckHeroSection(sales, stats, view) {
   view = view || { mode: 'week' };
   var pb = _stPaycheckBreakdown(sales, stats);
@@ -10697,23 +10825,21 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
       '</div>';
   }
   html += '<div class="st-paycheck-hero-days">';
-  var dbLen = (stats.dayBuckets && stats.dayBuckets.length) || 0;
-  var maxHeroDays = Math.min(5, dbLen);
-  var dnWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-  var dnAll = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+  var weekdayChips = _stWeekdayBucketsMonFri(stats.dayBuckets);
   var todayMs = _stStartOfDay(new Date()).getTime();
-  for (var d = 0; d < maxHeroDays; d++) {
-    var bucket = stats.dayBuckets[d] || { date: null, amount: 0, dealCount: 0 };
+  for (var d = 0; d < weekdayChips.length; d++) {
+    var bucket = weekdayChips[d].bucket || {
+      date: null,
+      amount: 0,
+      dealCount: 0
+    };
     var bucketDayMs =
       bucket.date != null ? _stStartOfDay(bucket.date).getTime() : NaN;
     var isToday = bucketDayMs === todayMs;
     var amt = Number(bucket.amount) || 0;
     var dealN = Number(bucket.dealCount) || 0;
     var dealLine = dealN === 1 ? '1 deal' : dealN + ' deals';
-    var dayAbbr = dnWeek[d];
-    if (bucket.date) {
-      dayAbbr = dnAll[bucket.date.getDay()] || dayAbbr;
-    }
+    var dayAbbr = weekdayChips[d].abbr;
     var dateStr = '';
     if (bucket.date) {
       dateStr = bucket.date.getMonth() + 1 + '/' + bucket.date.getDate();
@@ -10761,16 +10887,22 @@ function _stBuildPaycheckHeroSection(sales, stats, view) {
  * not modeled as their own persisted field on sales rows.
  */
 function _stBuildWeekAtGlanceSection(stats) {
-  var dayNames = ['MON', 'TUE', 'WED', 'THU', 'FRI'];
-  var today = new Date();
-  var todayDayIdx = today.getDay();
-  var todayBucketIdx = todayDayIdx === 0 ? 6 : todayDayIdx - 1;
-  var weekStart = new Date(stats.weekStart);
-  var weekEnd = new Date(stats.weekStart + 4 * 24 * 60 * 60 * 1000);
+  var weekdayChips = _stWeekdayBucketsMonFri(stats.dayBuckets);
+  var todayMs = _stStartOfDay(new Date()).getTime();
+  var hdrStart =
+    weekdayChips[0] && weekdayChips[0].bucket && weekdayChips[0].bucket.date
+      ? weekdayChips[0].bucket.date
+      : new Date(stats.weekStart);
+  var hdrEnd =
+    weekdayChips.length &&
+    weekdayChips[weekdayChips.length - 1].bucket &&
+    weekdayChips[weekdayChips.length - 1].bucket.date
+      ? weekdayChips[weekdayChips.length - 1].bucket.date
+      : hdrStart;
   var hdr =
-    weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
+    hdrStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) +
     '-' +
-    weekEnd.toLocaleDateString('en-US', { day: 'numeric' });
+    hdrEnd.toLocaleDateString('en-US', { day: 'numeric' });
 
   var html =
     '<section class="st-sec st-week-glance st-week-glance-unified" aria-labelledby="st-glance-h">';
@@ -10781,9 +10913,15 @@ function _stBuildWeekAtGlanceSection(stats) {
     stats.weekDeals +
     ' deals logged</span></div>';
   html += '<div class="st-glance-days">';
-  for (var d = 0; d < 5; d++) {
-    var bucket = stats.dayBuckets[d] || { date: null, amount: 0, dealCount: 0 };
-    var isToday = d === todayBucketIdx;
+  for (var d = 0; d < weekdayChips.length; d++) {
+    var bucket = weekdayChips[d].bucket || {
+      date: null,
+      amount: 0,
+      dealCount: 0
+    };
+    var bucketDayMs =
+      bucket.date != null ? _stStartOfDay(bucket.date).getTime() : NaN;
+    var isToday = bucketDayMs === todayMs;
     var amt = Number(bucket.amount) || 0;
     var dealN = Number(bucket.dealCount) || 0;
     var dealLine = dealN === 1 ? '1 deal' : dealN + ' deals';
@@ -10798,7 +10936,7 @@ function _stBuildWeekAtGlanceSection(stats) {
       '">';
     html +=
       '<div class="st-glance-day-label">' +
-      (isToday ? 'TODAY' : dayNames[d]) +
+      (isToday ? 'TODAY' : weekdayChips[d].abbr) +
       (dateStr
         ? ' <span class="st-glance-day-dt">' + dateStr + '</span>'
         : '') +
@@ -11753,13 +11891,13 @@ function _stBuildAnalyticsDashboard(sales, stats) {
     wdCnt[wd]++;
     wdSum[wd] += dayTot;
   }
-  var bestWd = 1;
+  var bestWd = -1;
   var bestAvg = 0;
   var wdx;
   for (wdx = 0; wdx < 7; wdx++) {
     if (wdCnt[wdx] === 0) continue;
     var av = wdSum[wdx] / wdCnt[wdx];
-    if (av > bestAvg) {
+    if (bestWd < 0 || av > bestAvg) {
       bestAvg = av;
       bestWd = wdx;
     }
@@ -11813,7 +11951,7 @@ function _stBuildAnalyticsDashboard(sales, stats) {
     '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Best day</div>';
   html +=
     '<p class="st-analytics-one-line"><strong>' +
-    dayNames[bestWd] +
+    (bestWd < 0 ? '-' : dayNames[bestWd]) +
     '</strong> · $' +
     Math.round(bestAvg).toLocaleString() +
     ' avg</p>';
