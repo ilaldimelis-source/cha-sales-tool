@@ -6792,3 +6792,36 @@ body.st-pb-modal-open {
 .st-rates-edit-card {
   max-width: 420px;
 }
+
+.st-recalc-box {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--cha-border-subtle);
+}
+
+.st-recalc-title {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--cha-text-primary);
+}
+
+.st-recalc-summary,
+.st-recalc-skipped {
+  margin: 8px 0;
+  font-size: 12px;
+  color: var(--cha-text-secondary);
+}
+
+.st-recalc-skip-list {
+  margin: 0 0 10px;
+  padding-left: 18px;
+  font-size: 12px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-recalc-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
