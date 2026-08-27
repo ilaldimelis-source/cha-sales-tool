@@ -8,7 +8,9 @@ serve.js
 .vercel
 .env
 agents.txt
-.cursor/
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
 # Local / agent scratch files (PR bodies, lint logs, screenshots)
 .pr-body-*.md
 pr_body_*.md
