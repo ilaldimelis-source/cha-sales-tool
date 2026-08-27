@@ -6825,3 +6825,16 @@ body.st-pb-modal-open {
   flex-wrap: wrap;
   margin-top: 8px;
 }
+
+.st-rates-noncomm {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid var(--cha-border-subtle);
+}
+
+.st-rates-noncomm summary {
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cha-text-secondary);
+}
