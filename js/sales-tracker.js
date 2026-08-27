@@ -4529,6 +4529,10 @@ var _stCbcTypeFilter = 'all';
 var _stCbcCustomStart = '';
 var _stCbcCustomEnd = '';
 var _stCbcCachedEvents = [];
+var _stCbcPinnedSaleIds = null;
+var _stCbcPinNote = '';
+var _stNavBack = null;
+var _stNavPaycheckExistCache = null;
 
 var _ST_PAYCHECK_SALARY_DEFAULT = 300;
 var _stPcTimeFilter = 'last4';
@@ -4546,9 +4550,6 @@ function _stSetTableFilter(mode) {
 }
 
 function _stNavSelectThisWeek() {
-  _stReconcileMode = false;
-  _stHistoryMode = false;
-  _stHistoryViewingId = '';
   _stRangeMode = 'week';
   _stRangeDraftOpen = false;
   _stRangeError = '';
@@ -4561,9 +4562,6 @@ function _stNavSelectThisWeek() {
 }
 
 function _stNavSelectLastWeek() {
-  _stReconcileMode = false;
-  _stHistoryMode = false;
-  _stHistoryViewingId = '';
   var weekMs = 7 * 24 * 60 * 60 * 1000;
   _stRangeMode = 'week';
   _stRangeDraftOpen = false;
@@ -4577,9 +4575,6 @@ function _stNavSelectLastWeek() {
 }
 
 function _stNavClickCustom() {
-  _stReconcileMode = false;
-  _stHistoryMode = false;
-  _stHistoryViewingId = '';
   _stRangeDraftOpen = true;
   _stRangeError = '';
   if (_stRangeMode === 'custom' && _stRangeAppliedStart && _stRangeAppliedEnd) {
@@ -6817,30 +6812,11 @@ function _stKpiSnapshotForRange(sales, t0, t1) {
 // snapshotted into cha_reconcile_history for the History pane.
 
 function _stToggleReconcileMode() {
-  if (_stReconcileMode) {
-    _stReconcileMode = false;
-  } else {
-    _stReconcileMode = true;
-    _stHistoryMode = false;
-    _stHistoryViewingId = '';
-    _stRangeDraftOpen = false;
-    _stActiveTab = 'thisweek';
-  }
-  _stRender();
+  _stSwitchTab('reconcile');
 }
 
 function _stToggleHistoryMode() {
-  if (_stHistoryMode) {
-    _stHistoryMode = false;
-    _stHistoryViewingId = '';
-  } else {
-    _stHistoryMode = true;
-    _stReconcileMode = false;
-    _stHistoryViewingId = '';
-    _stRangeDraftOpen = false;
-    _stActiveTab = 'thisweek';
-  }
-  _stRender();
+  _stSwitchTab('history');
 }
 
 function _stLoadReconcileHistory() {
@@ -7547,10 +7523,13 @@ function _stViewReconcileHistoryRecord(id) {
     _stFlash('Saved pay sheet not found.', 'warn');
     return;
   }
-  _stHistoryMode = true;
-  _stReconcileMode = false;
   _stHistoryViewingId = String(rec.id);
-  _stRender();
+  if (_stGetSavedTab() === 'history') {
+    _stHistoryMode = true;
+    _stRender();
+    return;
+  }
+  _stSwitchTab('history', { keepBack: true });
 }
 
 function _stCloseReconcileHistoryRecord() {
@@ -10360,7 +10339,14 @@ function _stBuildReconcileTableRowHtml(row) {
     _stEscape(row.key) +
     '">' +
     '<td><div class="st-recon-v2-cust">' +
-    _stEscape(row.customer || 'Unknown') +
+    (row.saleId && _stFindSaleById(row.saleId)
+      ? _stNavBtnHtml(
+          'sale',
+          ' data-sale-id="' + _stEscape(String(row.saleId)) + '"',
+          row.customer || 'Unknown',
+          'Open original sale for ' + (row.customer || 'Unknown')
+        )
+      : _stEscape(row.customer || 'Unknown')) +
     '</div><div class="st-recon-v2-sub">' +
     _stEscape(_stReconFormatDate(row.dateTs)) +
     '</div></td>' +
@@ -10447,7 +10433,7 @@ function _stBuildReconcileSheetRowHtml(state) {
 
 function _stRefreshReconcileView() {
   var page = document.getElementById('page-salestracker');
-  if (!page || !_stReconcileMode) return;
+  if (!page || _stActiveTab !== 'reconcile') return;
   var sales = _stLoadSales();
   var view = _stRangeInfo();
   var state = _stReconcileCollectViewState(sales, view);
@@ -10793,6 +10779,14 @@ function _stBuildReconcileHistorySnapshotHtml(rec) {
   }
   html +=
     '<button type="button" class="st-recon-v2-btn-ghost" data-st-recon-action="close-history-record">Back</button>';
+  if (_stNavPaycheckExists(rec.weekStart)) {
+    html += _stNavBtnHtml(
+      'paycheck-from-history',
+      ' data-week-start="' + String(Number(rec.weekStart) || 0) + '"',
+      'Paycheck',
+      'Open paycheck for ' + weekLabel
+    );
+  }
   html += '</div></div>';
   html += '<div class="st-recon-v2-figures">';
   html +=
@@ -10937,6 +10931,14 @@ function _stBuildReconcileHistoryPane(sales) {
           : '') +
         '</div></div>' +
         '<div class="st-recon-history-actions">' +
+        (_stNavPaycheckExists(rec.weekStart)
+          ? _stNavBtnHtml(
+              'paycheck-from-history',
+              ' data-week-start="' + String(Number(rec.weekStart) || 0) + '"',
+              'Paycheck',
+              'Open paycheck for ' + weekLabel
+            )
+          : '') +
         '<button type="button" class="st-recon-history-view" data-st-recon-action="view-history" data-history-id="' +
         _stEscape(hid) +
         '">View</button>' +
@@ -10993,101 +10995,49 @@ function _stBuildReconcileHistoryPane(sales) {
   return html;
 }
 
-function _stBuildWeekNavigator(view) {
+function _stBuildWeekNavigator(_view) {
   var todayIso = _stTodayIso();
-  var nowWs = _stCurrentWeekStartMs();
-  var weekMs = 7 * 24 * 60 * 60 * 1000;
-  var lastWs = nowWs - weekMs;
-  var sel = Number(_stSelectedWeekStart) || nowWs;
-
-  var pillThisActive =
-    !_stReconcileMode &&
-    !_stHistoryMode &&
-    _stRangeMode === 'week' &&
-    !_stRangeDraftOpen &&
-    sel === nowWs;
-  var pillLastActive =
-    !_stReconcileMode &&
-    !_stHistoryMode &&
-    _stRangeMode === 'week' &&
-    !_stRangeDraftOpen &&
-    sel === lastWs;
-  var pillCustomActive =
-    !_stReconcileMode &&
-    !_stHistoryMode &&
-    (_stRangeDraftOpen || _stRangeMode === 'custom');
-  var pillReconcileActive = !!_stReconcileMode;
-  var pillHistoryActive = !!_stHistoryMode;
-
-  var labelLeft = view.mode === 'custom' ? view.label : _stFmtWeekLabel(sel);
-
-  var html = '<section class="st-week-nav-wrap">';
-  html += '<div class="st-week-nav-row1">';
-  html +=
-    '<div class="st-week-nav-display-label">' + _stEscape(labelLeft) + '</div>';
-  html += '<div class="st-date-chips st-week-nav-pills">';
-  html +=
-    '<button type="button" class="st-date-chip' +
-    (pillThisActive ? ' st-chip-active' : '') +
-    '" onclick="_stNavSelectThisWeek()">This week</button>';
-  html +=
-    '<button type="button" class="st-date-chip' +
-    (pillLastActive ? ' st-chip-active' : '') +
-    '" onclick="_stNavSelectLastWeek()">Last week</button>';
-  html +=
-    '<button type="button" class="st-date-chip' +
-    (pillCustomActive ? ' st-chip-active' : '') +
-    '" onclick="_stNavClickCustom()">Custom</button>';
-  html +=
-    '<button type="button" class="st-date-chip st-recon-chip' +
-    (pillReconcileActive ? ' st-chip-active' : '') +
-    '" onclick="_stToggleReconcileMode()">Reconcile</button>';
-  html +=
-    '<button type="button" class="st-date-chip st-recon-chip st-history-chip' +
-    (pillHistoryActive ? ' st-chip-active' : '') +
-    '" onclick="_stToggleHistoryMode()">History</button>';
-  html += '</div></div>';
-
   var showCustomRow =
-    _stRangeDraftOpen ||
-    (_stRangeMode === 'custom' && _stRangeAppliedStart && _stRangeAppliedEnd);
-  if (showCustomRow) {
-    if (
-      _stRangeMode === 'custom' &&
-      _stRangeAppliedStart &&
-      _stRangeAppliedEnd &&
-      !_stRangeDraftStart &&
-      !_stRangeDraftEnd
-    ) {
-      _stRangeDraftStart = _stRangeAppliedStart;
-      _stRangeDraftEnd = _stRangeAppliedEnd;
-    }
-    var ds = _stRangeDraftStart || '';
-    var de = _stRangeDraftEnd || '';
-    html += '<div class="st-custom-range-row st-week-nav-custom-range">';
-    html += '<span class="st-custom-label">Custom range:</span>';
-    html +=
-      '<input type="date" max="' +
-      _stEscape(todayIso) +
-      '" class="st-date-chip-input" value="' +
-      _stEscape(ds) +
-      '" onchange="_stSetRangeDraft(\'start\', this.value)">';
-    html += '<span class="st-custom-arrow" aria-hidden="true">\u2192</span>';
-    html +=
-      '<input type="date" max="' +
-      _stEscape(todayIso) +
-      '" class="st-date-chip-input" value="' +
-      _stEscape(de) +
-      '" onchange="_stSetRangeDraft(\'end\', this.value)">';
-    html +=
-      '<button type="button" class="st-custom-apply" onclick="_stApplyRangeDraft()">Apply</button>';
-    html +=
-      '<span class="st-week-nav-err">' +
-      _stEscape(_stRangeError || '') +
-      '</span>';
-    html += '</div>';
+    _stNavShowWeekSelector(_stGetSavedTab()) &&
+    (_stRangeDraftOpen ||
+      (_stRangeMode === 'custom' &&
+        _stRangeAppliedStart &&
+        _stRangeAppliedEnd));
+  if (!showCustomRow) return '';
+  if (
+    _stRangeMode === 'custom' &&
+    _stRangeAppliedStart &&
+    _stRangeAppliedEnd &&
+    !_stRangeDraftStart &&
+    !_stRangeDraftEnd
+  ) {
+    _stRangeDraftStart = _stRangeAppliedStart;
+    _stRangeDraftEnd = _stRangeAppliedEnd;
   }
-  html += '</section>';
+  var ds = _stRangeDraftStart || '';
+  var de = _stRangeDraftEnd || '';
+  var html = '<div class="st-custom-range-row st-week-nav-custom-range">';
+  html += '<span class="st-custom-label">Custom range:</span>';
+  html +=
+    '<input type="date" max="' +
+    _stEscape(todayIso) +
+    '" class="st-date-chip-input" data-st-nav-field="start" value="' +
+    _stEscape(ds) +
+    '">';
+  html += '<span class="st-custom-arrow" aria-hidden="true">\u2192</span>';
+  html +=
+    '<input type="date" max="' +
+    _stEscape(todayIso) +
+    '" class="st-date-chip-input" data-st-nav-field="end" value="' +
+    _stEscape(de) +
+    '">';
+  html +=
+    '<button type="button" class="st-custom-apply" data-st-nav-action="week-apply">Apply</button>';
+  html +=
+    '<span class="st-week-nav-err">' +
+    _stEscape(_stRangeError || '') +
+    '</span>';
+  html += '</div>';
   return html;
 }
 
@@ -11660,11 +11610,24 @@ function _stCbcFilterByTime(events) {
 
 function _stCbcFilterEvents(events) {
   var type = _stCbcTypeFilter || 'all';
-  var out = [];
-  var timed = _stCbcFilterByTime(events);
+  var pin = _stCbcPinnedSaleIds;
+  var pinMap = null;
+  var source;
   var i;
-  for (i = 0; i < timed.length; i++) {
-    var ev = timed[i];
+  if (pin && pin.length) {
+    pinMap = {};
+    for (i = 0; i < pin.length; i++) {
+      pinMap[String(pin[i])] = true;
+    }
+    source = events || [];
+  } else {
+    source = _stCbcFilterByTime(events);
+  }
+  var out = [];
+  for (i = 0; i < source.length; i++) {
+    var ev = source[i];
+    if (!ev) continue;
+    if (pinMap && !pinMap[String(ev.saleId || '')]) continue;
     if (type === 'chargeback' && ev.type !== 'chargeback') continue;
     if (type === 'samecancel' && ev.type !== 'samecancel') continue;
     out.push(ev);
@@ -11925,10 +11888,19 @@ function _stBuildCbcTableRowHtml(ev) {
       ? 'st-cbc-pill-samecancel'
       : 'st-cbc-pill-chargeback';
   var mid = ev.memberId || '-';
+  var sale = ev.saleId ? _stFindSaleById(ev.saleId) : null;
+  var custHtml = sale
+    ? _stNavBtnHtml(
+        'sale',
+        ' data-sale-id="' + _stEscape(String(sale.id)) + '"',
+        ev.customer,
+        'Open original sale for ' + (ev.customer || 'Unknown')
+      )
+    : _stEscape(ev.customer);
   return (
     '<tr class="st-cbc-tr">' +
     '<td><div class="st-cbc-primary">' +
-    _stEscape(ev.customer) +
+    custHtml +
     '</div><div class="st-cbc-sub">' +
     _stEscape(mid) +
     '</div></td>' +
@@ -11951,9 +11923,9 @@ function _stBuildCbcTableRowHtml(ev) {
     _stEscape(_stFmtMoney(ev.originalCommission)) +
     '</div></td>' +
     '<td><div class="st-cbc-primary">' +
-    _stEscape(_stCbcFmtPaycheckWeek(ev.deductionPaycheckWeek)) +
+    _stNavPaycheckWeekHtml(ev.deductionPaycheckWeek, 'deduction') +
     '</div><div class="st-cbc-sub">' +
-    _stEscape(_stCbcFmtPaycheckWeek(ev.originalPaycheckWeek)) +
+    _stNavPaycheckWeekHtml(ev.originalPaycheckWeek, 'original') +
     '</div><button type="button" class="st-cbc-view" data-st-cbc-action="view" data-sale-id="' +
     _stEscape(ev.saleId) +
     '">View</button></td>' +
@@ -12003,9 +11975,10 @@ function _stBuildCbcAnalyticsHtml(an) {
 
 function _stCbcVisibleState(sales) {
   var filtered = _stCbcFilterEvents(_stCbcCachedEvents);
-  var timed = _stCbcFilterByTime(_stCbcCachedEvents);
+  var pinned = _stCbcPinnedSaleIds && _stCbcPinnedSaleIds.length;
+  var timed = pinned ? filtered : _stCbcFilterByTime(_stCbcCachedEvents);
   var bounds = _stCbcTimeBounds();
-  var salesN = _stCbcCountSalesWritten(sales, bounds);
+  var salesN = pinned ? 0 : _stCbcCountSalesWritten(sales, bounds);
   return {
     filtered: filtered,
     sum: _stCbcSummarize(timed),
@@ -12019,6 +11992,8 @@ function _stRefreshCbcView() {
   var sales = _stLoadSales();
   var state = _stCbcVisibleState(sales);
   var el;
+  el = document.getElementById('st-cbc-pin-note');
+  if (el) el.outerHTML = _stBuildCbcPinNoteHtml();
   el = document.getElementById('st-cbc-summary');
   if (el) el.outerHTML = _stBuildCbcSummaryHtml(state.sum);
   el = document.getElementById('st-cbc-time-chips');
@@ -12033,6 +12008,18 @@ function _stRefreshCbcView() {
   if (el) el.outerHTML = _stBuildCbcAnalyticsHtml(state.analytics);
 }
 
+function _stBuildCbcPinNoteHtml() {
+  var note = String(_stCbcPinNote || '');
+  var show = !!(note && _stCbcPinnedSaleIds && _stCbcPinnedSaleIds.length);
+  return (
+    '<div id="st-cbc-pin-note" class="st-nav-pin-note"' +
+    (show ? '' : ' hidden') +
+    '>' +
+    (show ? 'Showing events from ' + _stEscape(note) + '.' : '') +
+    '</div>'
+  );
+}
+
 function _stBuildCbcPane(sales) {
   _stCbcCachedEvents = _stCbcCollectEvents(sales);
   var state = _stCbcVisibleState(sales);
@@ -12042,6 +12029,7 @@ function _stBuildCbcPane(sales) {
   html += '<div class="st-cbc-headline">Chargebacks and Cancels</div>';
   html +=
     '<div class="st-cbc-lede">All-time audit of chargebacks and same-week cancels. These two types are never combined.</div>';
+  html += _stBuildCbcPinNoteHtml();
   html += _stBuildCbcSummaryHtml(state.sum);
   html += '</div>';
   html += _stBuildCbcTimeChipsHtml();
@@ -12161,16 +12149,19 @@ function _stHandleCbcActionClick(btn) {
     return;
   }
   if (action === 'time') {
+    _stCbcClearPin();
     _stCbcTimeFilter = btn.getAttribute('data-filter') || 'all';
     _stRefreshCbcView();
     return;
   }
   if (action === 'type') {
+    _stCbcClearPin();
     _stCbcTypeFilter = btn.getAttribute('data-filter') || 'all';
     _stRefreshCbcView();
     return;
   }
   if (action === 'apply-custom') {
+    _stCbcClearPin();
     var startEl = document.getElementById('st-cbc-custom-start');
     var endEl = document.getElementById('st-cbc-custom-end');
     _stCbcCustomStart = startEl ? String(startEl.value || '') : '';
@@ -12619,25 +12610,44 @@ function _stBuildPcTableRowHtml(rec) {
     pb.tierBonus != null ||
     pb.enrollmentFeeBonus != null ||
     pb.spiffBonus != null;
+  var weekLabel = rec.weekLabel || _stPcWeekRangeLabel(rec.weekStart);
+  var hist = _stPcHistoryForWeek(rec.weekStart);
+  var periodHtml =
+    '<div class="st-pc-primary">' + _stEscape(weekLabel) + '</div>';
+  if (hist && hist.id) {
+    periodHtml +=
+      '<div class="st-pc-sub">' +
+      _stNavBtnHtml(
+        'recon-from-pc',
+        ' data-week-start="' +
+          String(Number(rec.weekStart) || 0) +
+          '" data-history-id="' +
+          _stEscape(String(hist.id)) +
+          '"',
+        'Recon',
+        'Open saved reconciliation for ' + weekLabel
+      ) +
+      '</div>';
+  }
   return (
     '<tr class="st-pc-tr" data-st-pc-action="open-detail" data-week-start="' +
     rec.weekStart +
     '">' +
-    '<td><div class="st-pc-primary">' +
-    _stEscape(rec.weekLabel || _stPcWeekRangeLabel(rec.weekStart)) +
-    '</div></td>' +
+    '<td>' +
+    periodHtml +
+    '</td>' +
     '<td class="st-pc-num">' +
     _stEscape(_stPcFmtAmt(pb.grossCommission)) +
     '</td>' +
     '<td class="st-pc-num' +
     (cbN > 0 ? ' st-pc-lost' : '') +
     '">' +
-    _stEscape(_stPcFmtAmt(pb.chargebacks)) +
+    _stNavPcAmtHtml(rec.weekStart, 'chargeback', pb.chargebacks) +
     '</td>' +
     '<td class="st-pc-num' +
     (swN > 0 ? ' st-pc-lost' : '') +
     '">' +
-    _stEscape(_stPcFmtAmt(pb.sameWeekCancels)) +
+    _stNavPcAmtHtml(rec.weekStart, 'samecancel', pb.sameWeekCancels) +
     '</td>' +
     '<td class="st-pc-num">' +
     _stEscape(hasBonus ? _stFmtMoney(bonusN) : '-') +
@@ -12845,16 +12855,18 @@ function _stBuildPcDetailHtml(sales, rec) {
   row('Gross commission', _stPcFmtAmt(pb.grossCommission));
   row('Sales commission', _stPcFmtAmt(pb.salesCommission));
   row('Add-on commission', _stPcFmtAmt(pb.addonCommission));
-  row(
-    'Chargebacks',
-    _stPcFmtAmt(pb.chargebacks),
-    Number(pb.chargebacks) > 0 ? 'st-pc-lost' : ''
-  );
-  row(
-    'Same-week cancels',
-    _stPcFmtAmt(pb.sameWeekCancels),
-    Number(pb.sameWeekCancels) > 0 ? 'st-pc-lost' : ''
-  );
+  html +=
+    '<div class="st-pc-detail-row"><span>Chargebacks</span><strong class="' +
+    (Number(pb.chargebacks) > 0 ? 'st-pc-lost' : '') +
+    '">' +
+    _stNavPcAmtHtml(rec.weekStart, 'chargeback', pb.chargebacks) +
+    '</strong></div>';
+  html +=
+    '<div class="st-pc-detail-row"><span>Same-week cancels</span><strong class="' +
+    (Number(pb.sameWeekCancels) > 0 ? 'st-pc-lost' : '') +
+    '">' +
+    _stNavPcAmtHtml(rec.weekStart, 'samecancel', pb.sameWeekCancels) +
+    '</strong></div>';
   row('Tier bonus', _stPcFmtAmt(pb.tierBonus));
   row('Enrollment fee bonus', _stPcFmtAmt(pb.enrollmentFeeBonus));
   row('Spiff bonus', _stPcFmtAmt(pb.spiffBonus));
@@ -12863,10 +12875,25 @@ function _stBuildPcDetailHtml(sales, rec) {
   row('Salary', _stPcFmtAmt(pb.salary));
   row('Total earned', _stPcFmtAmt(pb.totalEarned));
   row('Deals paid', pb.dealsPaid == null ? '-' : String(pb.dealsPaid));
-  row(
-    'Saved reconciliation',
-    rec.reconSavedAt ? _stFmtHistorySavedAt(rec.reconSavedAt) : '-'
-  );
+  var histSaved = _stPcHistoryForWeek(rec.weekStart);
+  html +=
+    '<div class="st-pc-detail-row"><span>Saved reconciliation</span><strong>' +
+    (histSaved && histSaved.id
+      ? _stNavBtnHtml(
+          'recon-from-pc',
+          ' data-week-start="' +
+            String(Number(rec.weekStart) || 0) +
+            '" data-history-id="' +
+            _stEscape(String(histSaved.id)) +
+            '"',
+          rec.reconSavedAt ? _stFmtHistorySavedAt(rec.reconSavedAt) : 'View',
+          'Open saved reconciliation for ' +
+            (rec.weekLabel || _stPcWeekRangeLabel(rec.weekStart))
+        )
+      : _stEscape(
+          rec.reconSavedAt ? _stFmtHistorySavedAt(rec.reconSavedAt) : '-'
+        )) +
+    '</strong></div>';
   row('Reconciliation status', _stPcStatusLabel(status));
   html += '</div>';
   html += _stBuildPcDeductionsHtml(weekDed, 'Deductions on this paycheck');
@@ -13148,78 +13175,181 @@ function _stHandlePcActionClick(btn) {
   }
 }
 
-function _stGetSavedTab() {
-  if (
-    _stActiveTab === 'thisweek' ||
-    _stActiveTab === 'allsales' ||
-    _stActiveTab === 'analytics' ||
-    _stActiveTab === 'chargebacks' ||
-    _stActiveTab === 'paychecks'
-  ) {
-    return _stActiveTab;
-  }
-  return 'thisweek';
+function _stCbcClearPin() {
+  _stCbcPinnedSaleIds = null;
+  _stCbcPinNote = '';
 }
 
-function _stBuildInternalSubtabs(activeTab) {
-  var tw = activeTab === 'thisweek' ? ' active' : '';
-  var as = activeTab === 'allsales' ? ' active' : '';
-  var an = activeTab === 'analytics' ? ' active' : '';
-  var cb = activeTab === 'chargebacks' ? ' active' : '';
-  var pc = activeTab === 'paychecks' ? ' active' : '';
+function _stNavValidTab(tabId) {
   return (
-    '<div class="page-subtabs st-internal-subtabs" id="stInternalSubtabs" role="tablist">' +
-    '<div class="page-subtabs-inner">' +
-    '<button type="button" class="stab' +
-    tw +
-    '" role="tab" aria-selected="' +
-    (activeTab === 'thisweek' ? 'true' : 'false') +
-    '" onclick="_stSwitchTab(\'thisweek\')">This Week</button>' +
-    '<button type="button" class="stab' +
-    as +
-    '" role="tab" aria-selected="' +
-    (activeTab === 'allsales' ? 'true' : 'false') +
-    '" onclick="_stSwitchTab(\'allsales\')">All Sales</button>' +
-    '<button type="button" class="stab' +
-    an +
-    '" role="tab" aria-selected="' +
-    (activeTab === 'analytics' ? 'true' : 'false') +
-    '" onclick="_stSwitchTab(\'analytics\')">Analytics</button>' +
-    '<button type="button" class="stab' +
-    cb +
-    '" role="tab" aria-selected="' +
-    (activeTab === 'chargebacks' ? 'true' : 'false') +
-    '" data-st-cbc-action="goto">Chargebacks</button>' +
-    '<button type="button" class="stab' +
-    pc +
-    '" role="tab" aria-selected="' +
-    (activeTab === 'paychecks' ? 'true' : 'false') +
-    '" data-st-pc-action="goto">Paychecks</button>' +
-    '</div></div>'
+    tabId === 'thisweek' ||
+    tabId === 'allsales' ||
+    tabId === 'analytics' ||
+    tabId === 'reconcile' ||
+    tabId === 'paychecks' ||
+    tabId === 'chargebacks' ||
+    tabId === 'history'
   );
 }
 
-function _stSwitchTab(tabId) {
-  if (
-    tabId !== 'analytics' &&
-    tabId !== 'thisweek' &&
-    tabId !== 'allsales' &&
-    tabId !== 'chargebacks' &&
-    tabId !== 'paychecks'
-  ) {
-    tabId = 'thisweek';
+function _stNavShowWeekSelector(tabId) {
+  return tabId === 'thisweek' || tabId === 'reconcile' || tabId === 'history';
+}
+
+function _stSyncPaneFlagsFromTab() {
+  var tab = _stGetSavedTab();
+  _stReconcileMode = tab === 'reconcile';
+  _stHistoryMode = tab === 'history';
+}
+
+function _stNavBtnHtml(action, extraAttrs, text, aria) {
+  return (
+    '<button type="button" class="st-nav-link" data-st-nav-action="' +
+    _stEscape(action) +
+    '"' +
+    (extraAttrs || '') +
+    ' aria-label="' +
+    _stEscape(aria || text) +
+    '">' +
+    _stEscape(text) +
+    '</button>'
+  );
+}
+
+function _stNavPaycheckExists(weekStart) {
+  var ws = Number(weekStart) || 0;
+  if (!ws) return false;
+  if (!_stNavPaycheckExistCache) _stNavPaycheckExistCache = {};
+  var key = String(ws);
+  if (_stNavPaycheckExistCache[key] != null) {
+    return _stNavPaycheckExistCache[key];
   }
+  var ok = !!_stFindPaycheckRecord(ws);
+  if (!ok) {
+    ok = !!_stPaycheckFromWeekSales(_stLoadSales() || [], ws);
+  }
+  _stNavPaycheckExistCache[key] = ok;
+  return ok;
+}
+
+function _stNavPaycheckWeekHtml(weekStart, kind) {
+  var ws = _stCbcPaycheckWeekValue(weekStart);
+  var text = _stCbcFmtPaycheckWeek(weekStart);
+  if (!ws || !_stNavPaycheckExists(ws)) return _stEscape(text);
+  var label =
+    (kind === 'original'
+      ? 'Open original paycheck for '
+      : 'Open paycheck for ') + text;
+  return _stNavBtnHtml(
+    'paycheck-from-cbc',
+    ' data-week-start="' + String(ws) + '"',
+    text,
+    label
+  );
+}
+
+function _stNavPcDeductionEvents(weekStart, type) {
+  var all = _stPcWeekNamedDeductions(_stLoadSales() || [], weekStart);
+  var out = [];
+  var i;
+  for (i = 0; i < all.length; i++) {
+    if (all[i] && all[i].type === type) out.push(all[i]);
+  }
+  return out;
+}
+
+function _stNavPcFigureMatches(amount, events) {
+  if (amount == null || !(Number(amount) > 0)) return false;
+  if (!events || !events.length) return false;
+  var sum = 0;
+  var i;
+  for (i = 0; i < events.length; i++) {
+    sum += Number(events[i].amountLost) || 0;
+  }
+  return _stMoney2(sum) === _stMoney2(Number(amount) || 0);
+}
+
+function _stNavPcAmtHtml(weekStart, type, amount) {
+  var text = _stPcFmtAmt(amount);
+  var events = _stNavPcDeductionEvents(weekStart, type);
+  if (!_stNavPcFigureMatches(amount, events)) return _stEscape(text);
+  var kind = type === 'samecancel' ? 'same-week cancel' : 'chargeback';
+  return _stNavBtnHtml(
+    'cbc-from-pc',
+    ' data-week-start="' +
+      String(Number(weekStart) || 0) +
+      '" data-cbc-type="' +
+      _stEscape(type) +
+      '" data-amount="' +
+      String(_stMoney2(Number(amount) || 0)) +
+      '"',
+    text,
+    'Open ' + kind + ' events for ' + _stPcWeekRangeLabel(weekStart)
+  );
+}
+
+function _stNavCapture() {
+  return {
+    tab: _stGetSavedTab(),
+    label: '',
+    selectedWeekStart: _stSelectedWeekStart,
+    rangeMode: _stRangeMode,
+    rangeDraftOpen: _stRangeDraftOpen,
+    rangeError: _stRangeError,
+    rangeAppliedStart: _stRangeAppliedStart,
+    rangeAppliedEnd: _stRangeAppliedEnd,
+    rangeDraftStart: _stRangeDraftStart,
+    rangeDraftEnd: _stRangeDraftEnd,
+    historyViewingId: _stHistoryViewingId,
+    pcViewingWeek: _stPcViewingWeek,
+    pcTimeFilter: _stPcTimeFilter,
+    pcCustomStart: _stPcCustomStart,
+    pcCustomEnd: _stPcCustomEnd,
+    cbcTimeFilter: _stCbcTimeFilter,
+    cbcTypeFilter: _stCbcTypeFilter,
+    cbcCustomStart: _stCbcCustomStart,
+    cbcCustomEnd: _stCbcCustomEnd,
+    cbcPinnedSaleIds: _stCbcPinnedSaleIds ? _stCbcPinnedSaleIds.slice() : null,
+    cbcPinNote: _stCbcPinNote
+  };
+}
+
+function _stNavRestore(snap) {
+  if (!snap) return;
+  _stSelectedWeekStart = snap.selectedWeekStart;
+  _stRangeMode = snap.rangeMode;
+  _stRangeDraftOpen = !!snap.rangeDraftOpen;
+  _stRangeError = snap.rangeError || '';
+  _stRangeAppliedStart = snap.rangeAppliedStart || '';
+  _stRangeAppliedEnd = snap.rangeAppliedEnd || '';
+  _stRangeDraftStart = snap.rangeDraftStart || '';
+  _stRangeDraftEnd = snap.rangeDraftEnd || '';
+  _stHistoryViewingId = snap.historyViewingId || '';
+  _stPcViewingWeek = Number(snap.pcViewingWeek) || 0;
+  _stPcTimeFilter = snap.pcTimeFilter || 'last4';
+  _stPcCustomStart = snap.pcCustomStart || '';
+  _stPcCustomEnd = snap.pcCustomEnd || '';
+  _stCbcTimeFilter = snap.cbcTimeFilter || 'all';
+  _stCbcTypeFilter = snap.cbcTypeFilter || 'all';
+  _stCbcCustomStart = snap.cbcCustomStart || '';
+  _stCbcCustomEnd = snap.cbcCustomEnd || '';
+  _stCbcPinnedSaleIds = snap.cbcPinnedSaleIds
+    ? snap.cbcPinnedSaleIds.slice()
+    : null;
+  _stCbcPinNote = snap.cbcPinNote || '';
+  _stActiveTab = _stNavValidTab(snap.tab) ? snap.tab : 'thisweek';
+  _stSyncPaneFlagsFromTab();
+}
+
+function _stNavApplyTab(tabId) {
+  if (!_stNavValidTab(tabId)) tabId = 'thisweek';
   var prev = _stGetSavedTab();
-  if (prev === tabId) return;
   if (tabId !== 'paychecks') {
     _stPcViewingWeek = 0;
     _stClosePcVerify();
   }
-  if (tabId !== 'thisweek') {
-    _stReconcileMode = false;
-    _stHistoryMode = false;
-    _stHistoryViewingId = '';
-  }
+  if (tabId !== 'history') _stHistoryViewingId = '';
+  if (tabId !== 'chargebacks') _stCbcClearPin();
   if (prev === 'thisweek' && tabId !== 'thisweek') {
     _stThisWeekExpandedDays = {};
     _stThisWeekExpandBootstrapped = false;
@@ -13229,7 +13359,234 @@ function _stSwitchTab(tabId) {
     _stThisWeekExpandBootstrapped = true;
   }
   _stActiveTab = tabId;
+  _stSyncPaneFlagsFromTab();
+}
+
+function _stNavFollow(label, applyFn) {
+  _stNavBack = _stNavCapture();
+  _stNavBack.label = 'Back to ' + label;
+  applyFn();
   _stRender();
+}
+
+function _stNavGoBack() {
+  var snap = _stNavBack;
+  _stNavBack = null;
+  if (!snap) return;
+  _stNavRestore(snap);
+  _stRender();
+}
+
+function _stBuildNavBackHtml() {
+  if (!_stNavBack || !_stNavBack.label) return '';
+  return (
+    '<div class="st-nav-back-wrap">' +
+    '<button type="button" class="st-nav-back" data-st-nav-action="back" aria-label="' +
+    _stEscape(_stNavBack.label) +
+    '">\u2190 ' +
+    _stEscape(_stNavBack.label) +
+    '</button></div>'
+  );
+}
+
+function _stNavTabBtnHtml(tabId, activeTab, label, title) {
+  var selected = activeTab === tabId;
+  return (
+    '<button type="button" class="stab' +
+    (selected ? ' active' : '') +
+    '" role="tab" aria-selected="' +
+    (selected ? 'true' : 'false') +
+    '" data-st-nav-action="tab" data-tab="' +
+    tabId +
+    '"' +
+    (title
+      ? ' title="' +
+        _stEscape(title) +
+        '" aria-label="' +
+        _stEscape(title) +
+        '"'
+      : '') +
+    '>' +
+    _stEscape(label) +
+    '</button>'
+  );
+}
+
+function _stGetSavedTab() {
+  if (_stNavValidTab(_stActiveTab)) return _stActiveTab;
+  return 'thisweek';
+}
+
+function _stBuildInternalSubtabs(activeTab) {
+  var nowWs = _stCurrentWeekStartMs();
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var lastWs = nowWs - weekMs;
+  var sel = Number(_stSelectedWeekStart) || nowWs;
+  var pillThis = _stRangeMode === 'week' && !_stRangeDraftOpen && sel === nowWs;
+  var pillLast =
+    _stRangeMode === 'week' && !_stRangeDraftOpen && sel === lastWs;
+  var pillCustom = _stRangeDraftOpen || _stRangeMode === 'custom';
+  var showWeek = _stNavShowWeekSelector(activeTab);
+  var html =
+    '<div class="page-subtabs st-internal-subtabs" id="stInternalSubtabs">';
+  html +=
+    '<div class="page-subtabs-inner" role="tablist" aria-label="Sales Tracker">';
+  html += _stNavTabBtnHtml('thisweek', activeTab, 'This Week');
+  html += _stNavTabBtnHtml('allsales', activeTab, 'All Sales');
+  html += _stNavTabBtnHtml('analytics', activeTab, 'Analytics');
+  html += _stNavTabBtnHtml('reconcile', activeTab, 'Reconcile');
+  html += _stNavTabBtnHtml('paychecks', activeTab, 'Paychecks');
+  html += _stNavTabBtnHtml(
+    'chargebacks',
+    activeTab,
+    'Chargebacks',
+    'Chargebacks & Cancels'
+  );
+  html += _stNavTabBtnHtml('history', activeTab, 'History');
+  html += '</div>';
+  html +=
+    '<div class="st-nav-week' +
+    (showWeek ? '' : ' is-parked') +
+    '" role="group" aria-label="Week range"' +
+    (showWeek ? '' : ' aria-hidden="true"') +
+    '>';
+  html += '<div class="st-date-chips st-week-nav-pills">';
+  html +=
+    '<button type="button" class="st-date-chip' +
+    (pillThis ? ' st-chip-active' : '') +
+    '" data-st-nav-action="week-this"' +
+    (showWeek ? '' : ' tabindex="-1"') +
+    '>This week</button>';
+  html +=
+    '<button type="button" class="st-date-chip' +
+    (pillLast ? ' st-chip-active' : '') +
+    '" data-st-nav-action="week-last"' +
+    (showWeek ? '' : ' tabindex="-1"') +
+    '>Last week</button>';
+  html +=
+    '<button type="button" class="st-date-chip' +
+    (pillCustom ? ' st-chip-active' : '') +
+    '" data-st-nav-action="week-custom"' +
+    (showWeek ? '' : ' tabindex="-1"') +
+    '>Custom</button>';
+  html += '</div></div></div>';
+  return html;
+}
+
+function _stSwitchTab(tabId, opts) {
+  opts = opts || {};
+  if (!_stNavValidTab(tabId)) tabId = 'thisweek';
+  var prev = _stGetSavedTab();
+  if (prev === tabId && !opts.force) return;
+  if (!opts.keepBack) _stNavBack = null;
+  _stNavApplyTab(tabId);
+  if (!opts.keepPin) _stCbcClearPin();
+  _stRender();
+}
+
+function _stHandleNavActionClick(btn) {
+  if (!btn) return;
+  var action = btn.getAttribute('data-st-nav-action') || '';
+  if (action === 'tab') {
+    _stSwitchTab(btn.getAttribute('data-tab') || '');
+    return;
+  }
+  if (action === 'week-this') {
+    _stNavSelectThisWeek();
+    return;
+  }
+  if (action === 'week-last') {
+    _stNavSelectLastWeek();
+    return;
+  }
+  if (action === 'week-custom') {
+    _stNavClickCustom();
+    return;
+  }
+  if (action === 'week-apply') {
+    _stApplyRangeDraft();
+    return;
+  }
+  if (action === 'back') {
+    _stNavGoBack();
+    return;
+  }
+  if (action === 'cbc-from-pc') {
+    _stNavOpenCbcFromPaycheck(btn);
+    return;
+  }
+  if (action === 'recon-from-pc') {
+    _stNavOpenReconFromPaycheck(btn);
+    return;
+  }
+  if (action === 'paycheck-from-history') {
+    _stNavOpenPaycheckFromHistory(btn);
+    return;
+  }
+  if (action === 'paycheck-from-cbc') {
+    _stNavOpenPaycheckFromCbc(btn);
+    return;
+  }
+  if (action === 'sale') {
+    _stNavOpenSale(btn);
+  }
+}
+
+function _stNavOpenCbcFromPaycheck(btn) {
+  var week = Number(btn.getAttribute('data-week-start')) || 0;
+  var type = btn.getAttribute('data-cbc-type') || 'chargeback';
+  var amount = Number(btn.getAttribute('data-amount'));
+  var events = _stNavPcDeductionEvents(week, type);
+  if (!_stNavPcFigureMatches(amount, events)) return;
+  var ids = [];
+  var i;
+  for (i = 0; i < events.length; i++) {
+    if (events[i] && events[i].saleId) ids.push(String(events[i].saleId));
+  }
+  if (!ids.length) return;
+  var label = _stPcWeekRangeLabel(week) + ' paycheck';
+  _stNavFollow(label, function () {
+    _stNavApplyTab('chargebacks');
+    _stCbcPinnedSaleIds = ids;
+    _stCbcTypeFilter = type;
+    _stCbcTimeFilter = 'all';
+    _stCbcPinNote = label;
+  });
+}
+
+function _stNavOpenReconFromPaycheck(btn) {
+  var week = Number(btn.getAttribute('data-week-start')) || 0;
+  var hist = _stPcHistoryForWeek(week);
+  if (!hist || !hist.id) return;
+  var label = _stPcWeekRangeLabel(week) + ' paycheck';
+  _stNavFollow(label, function () {
+    _stNavApplyTab('history');
+    _stHistoryViewingId = String(hist.id);
+  });
+}
+
+function _stNavOpenPaycheckFromHistory(btn) {
+  var week = Number(btn.getAttribute('data-week-start')) || 0;
+  if (!_stNavPaycheckExists(week)) return;
+  _stNavFollow('History', function () {
+    _stNavApplyTab('paychecks');
+    _stPcViewingWeek = week;
+  });
+}
+
+function _stNavOpenPaycheckFromCbc(btn) {
+  var week = _stCbcPaycheckWeekValue(btn.getAttribute('data-week-start'));
+  if (!week || !_stNavPaycheckExists(week)) return;
+  _stNavFollow('Chargebacks & Cancels', function () {
+    _stNavApplyTab('paychecks');
+    _stPcViewingWeek = week;
+  });
+}
+
+function _stNavOpenSale(btn) {
+  var sale = _stFindSaleById(btn.getAttribute('data-sale-id') || '');
+  if (!sale) return;
+  _stOpenCommissionEditor(sale.id);
 }
 
 function _stBuildAnalyticsDashboard(sales, stats) {
@@ -13399,6 +13756,8 @@ function _stBuildAnalyticsDashboard(sales, stats) {
 function _stRender() {
   var page = document.getElementById('page-salestracker');
   if (!page) return;
+  _stNavPaycheckExistCache = null;
+  _stSyncPaneFlagsFromTab();
   var stPreserveReceiptReview = _stReceiptReview && _stReceiptReview.active;
   if (!stPreserveReceiptReview) {
     _stAddSalePanelOpen = false;
@@ -13423,21 +13782,16 @@ function _stRender() {
     '<div class="ph ph-st-compact"><div class="pt">Sales <span>Tracker</span></div></div>';
   html += _stBuildKpiStrip(sales, stats);
   html += _stBuildInternalSubtabs(stTab);
+  html += _stBuildWeekNavigator(view);
+  html += _stBuildNavBackHtml();
   html +=
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
-  html += _stBuildWeekNavigator(view);
-  if (_stHistoryMode) {
-    html += _stBuildReconcileHistoryPane(sales);
-  } else if (_stReconcileMode) {
-    html += _stBuildReconcilePane(sales, view);
-  } else {
-    html += _stBuildPaycheckHeroSection(sales, stats, view);
-    html += _stBuildTable(scopedSales, stTab, view, stats);
-    html += _stBuildPostDatesSection(postdates);
-    html += _stBuildFloatingPaycheckBar(sales, stats);
-  }
+  html += _stBuildPaycheckHeroSection(sales, stats, view);
+  html += _stBuildTable(scopedSales, stTab, view, stats);
+  html += _stBuildPostDatesSection(postdates);
+  html += _stBuildFloatingPaycheckBar(sales, stats);
   html +=
     '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
   html += '</div>';
@@ -13456,16 +13810,28 @@ function _stRender() {
   html += _stBuildAnalyticsDashboard(sales, stats);
   html += '</div>';
   html +=
-    '<div id="stTabPanelChargebacks" class="st-tab-panel" role="tabpanel" style="display:' +
-    (stTab === 'chargebacks' ? 'block' : 'none') +
+    '<div id="stTabPanelReconcile" class="st-tab-panel" role="tabpanel" style="display:' +
+    (stTab === 'reconcile' ? 'block' : 'none') +
     '">';
-  html += _stBuildCbcPane(sales);
+  if (stTab === 'reconcile') html += _stBuildReconcilePane(sales, view);
   html += '</div>';
   html +=
     '<div id="stTabPanelPaychecks" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'paychecks' ? 'block' : 'none') +
     '">';
   html += _stBuildPcPane(sales);
+  html += '</div>';
+  html +=
+    '<div id="stTabPanelChargebacks" class="st-tab-panel" role="tabpanel" style="display:' +
+    (stTab === 'chargebacks' ? 'block' : 'none') +
+    '">';
+  html += _stBuildCbcPane(sales);
+  html += '</div>';
+  html +=
+    '<div id="stTabPanelHistory" class="st-tab-panel" role="tabpanel" style="display:' +
+    (stTab === 'history' ? 'block' : 'none') +
+    '">';
+  if (stTab === 'history') html += _stBuildReconcileHistoryPane(sales);
   html += '</div>';
   page.innerHTML = html;
   _stMountAddSaleOverlay();
@@ -13569,6 +13935,12 @@ function _stWireSalesBulkDelegation(page) {
       _stBulkClear();
       return;
     }
+    var navBtn = t.closest('[data-st-nav-action]');
+    if (navBtn) {
+      e.preventDefault();
+      _stHandleNavActionClick(navBtn);
+      return;
+    }
     var reconBtn = t.closest('[data-st-recon-action]');
     if (reconBtn) {
       e.preventDefault();
@@ -13590,6 +13962,10 @@ function _stWireSalesBulkDelegation(page) {
   page.addEventListener('change', function (e) {
     var el = e.target;
     if (!el || !el.classList) return;
+    if (el.getAttribute && el.getAttribute('data-st-nav-field')) {
+      _stSetRangeDraft(el.getAttribute('data-st-nav-field'), el.value);
+      return;
+    }
     if (el.classList.contains('st-bulk-cb')) {
       _stToggleSaleSelectionFromCb(el);
       return;
@@ -13615,12 +13991,19 @@ function _stWireReconcileActionDelegation() {
     ) {
       _stCloseReconcileResolveMenu();
     }
-    var btn = t.closest('[data-st-recon-action]');
+    var btn = t.closest('[data-st-nav-action]');
     if (btn) {
-      // Page-level listener already handles in-page buttons when present.
       if (btn.closest('#page-salestracker')) return;
       e.preventDefault();
-      _stHandleReconcileActionClick(btn);
+      _stHandleNavActionClick(btn);
+      return;
+    }
+    var reconBtn = t.closest('[data-st-recon-action]');
+    if (reconBtn) {
+      // Page-level listener already handles in-page buttons when present.
+      if (reconBtn.closest('#page-salestracker')) return;
+      e.preventDefault();
+      _stHandleReconcileActionClick(reconBtn);
       return;
     }
     var cbcBtn = t.closest('[data-st-cbc-action]');
@@ -14160,7 +14543,7 @@ function _stHandleReconcileActionClick(btn) {
     return;
   }
   if (action === 'goto-history') {
-    if (!_stHistoryMode) _stToggleHistoryMode();
+    _stSwitchTab('history');
     return;
   }
   if (action === 'close-paysheet') {

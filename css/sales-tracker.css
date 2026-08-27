@@ -6551,3 +6551,99 @@ body.st-pb-modal-open {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Stage E: single nav row, week selector, cross-links ── */
+#page-salestracker .st-internal-subtabs {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  margin: 0 0 14px;
+}
+
+#page-salestracker .st-internal-subtabs .page-subtabs-inner {
+  display: flex;
+  flex-wrap: nowrap;
+  width: auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 4px;
+}
+
+#page-salestracker .st-internal-subtabs .stab {
+  padding: 6px 10px;
+  font-size: 12px;
+  transition: none;
+}
+
+#page-salestracker .st-nav-week {
+  display: flex;
+  flex-wrap: nowrap;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+#page-salestracker .st-nav-week .st-date-chips {
+  flex-wrap: nowrap;
+  margin: 0;
+  gap: 4px;
+}
+
+#page-salestracker .st-nav-week .st-date-chip {
+  padding: 5px 8px;
+}
+
+#page-salestracker .st-nav-week.is-parked {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.st-nav-back-wrap {
+  margin: 0 0 10px;
+}
+
+.st-nav-back {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--cha-text-tertiary);
+  cursor: pointer;
+}
+
+.st-nav-back:hover,
+.st-nav-back:focus {
+  color: var(--cha-text-primary);
+}
+
+.st-nav-pin-note {
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--cha-text-tertiary);
+}
+
+.st-nav-link {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--cha-border-subtle);
+  text-underline-offset: 2px;
+}
+
+.st-nav-link:hover,
+.st-nav-link:focus {
+  color: var(--cha-text-primary);
+  text-decoration-color: var(--cha-text-primary);
+}
+
+.st-pc-sub {
+  margin-top: 2px;
+  font-size: 11px;
+}
