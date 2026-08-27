@@ -270,24 +270,36 @@ function _stProductRateSeedList() {
   var inferred = 'inferred';
   var out = [];
   var i;
-  var adnd = [
-    'AD&D $50k',
-    'AD&D $50K',
-    'AD&D $100K',
-    'AD&D $125K',
-    'AD&D $175K',
-    'AD&D $200K',
-    'AD&D $250K',
-    'AD&D $50,000',
-    'AD&D $100,000',
-    'AD&D $125,000',
-    'AD&D $175,000',
-    'AD&D $200,000',
-    'AD&D $250,000'
-  ];
-  for (i = 0; i < adnd.length; i++) {
-    out.push(rec(adnd[i], 1, confirmed));
-  }
+  out.push(
+    rec('AD&D $50,000', 1, confirmed, {
+      aliases: ['AD&D $50k', 'AD&D $50K', 'AD&D $50k - Add-on']
+    })
+  );
+  out.push(
+    rec('AD&D $100,000', 1, confirmed, {
+      aliases: ['AD&D $100K', 'AD&D $100k', 'AD&D $100k - Add-on']
+    })
+  );
+  out.push(
+    rec('AD&D $125,000', 1, confirmed, {
+      aliases: ['AD&D $125K', 'AD&D $125k', 'AD&D $125k - Add-on']
+    })
+  );
+  out.push(
+    rec('AD&D $175,000', 1, confirmed, {
+      aliases: ['AD&D $175K', 'AD&D $175k', 'AD&D $175k - Add-on']
+    })
+  );
+  out.push(
+    rec('AD&D $200,000', 1, confirmed, {
+      aliases: ['AD&D $200K', 'AD&D $200k', 'AD&D $200k - Add-on']
+    })
+  );
+  out.push(
+    rec('AD&D $250,000', 1, confirmed, {
+      aliases: ['AD&D $250K', 'AD&D $250k', 'AD&D $250k - Add-on']
+    })
+  );
   out.push(rec('NCE WellGuard AD&D $100,000', 1, confirmed));
   out.push(rec('NCE WellGuard AD&D $250,000', 1, confirmed));
   out.push(rec('Compass VAB Add-on', 1, confirmed));
@@ -345,23 +357,33 @@ function _stProductRateSeedList() {
     })
   );
   var nonComm = [
-    'Association fee',
-    'Association fees',
-    'Association enrollment fee',
-    'Association enrollment fees',
-    'Payment fee',
-    'Payment fees',
-    'Enrollment fee',
-    'Enrollment fees',
-    'Allstate ID Plus',
-    'Allstate ID Pro 3',
-    'NCE GapAfford Plus',
-    'Premier Business Plus Membership',
-    'Extra Value',
-    'ExtraPerks'
+    rec('Association fee', 0, confirmed, {
+      nonCommissionable: true,
+      aliases: ['Association fees']
+    }),
+    rec('Association enrollment fee', 0, confirmed, {
+      nonCommissionable: true,
+      aliases: ['Association enrollment fees']
+    }),
+    rec('Payment fee', 0, confirmed, {
+      nonCommissionable: true,
+      aliases: ['Payment fees']
+    }),
+    rec('Enrollment fee', 0, confirmed, {
+      nonCommissionable: true,
+      aliases: ['Enrollment fees']
+    }),
+    rec('Allstate ID Plus', 0, confirmed, { nonCommissionable: true }),
+    rec('Allstate ID Pro 3', 0, confirmed, { nonCommissionable: true }),
+    rec('NCE GapAfford Plus', 0, confirmed, { nonCommissionable: true }),
+    rec('Premier Business Plus Membership', 0, confirmed, {
+      nonCommissionable: true
+    }),
+    rec('Extra Value', 0, confirmed, { nonCommissionable: true }),
+    rec('ExtraPerks', 0, confirmed, { nonCommissionable: true })
   ];
   for (i = 0; i < nonComm.length; i++) {
-    out.push(rec(nonComm[i], 0, confirmed, { nonCommissionable: true }));
+    out.push(nonComm[i]);
   }
   out.push(rec('Critical Illness $5,000', 0.7, inferred));
   out.push(rec('Critical Illness $7,500', 0.7, inferred));
@@ -640,10 +662,26 @@ function _stClassifyAddon(name) {
 }
 
 function _stLookupNamedProduct(name, rates) {
-  var key = _stNormProductKey(name);
-  if (!key) return null;
   var products = (rates && rates.products) || {};
-  if (products[key] && !products[key].deleted) return products[key];
+  function hit(key) {
+    if (!key) return null;
+    if (products[key] && !products[key].deleted) return products[key];
+    return null;
+  }
+  var key = _stNormProductKey(name);
+  var found = hit(key);
+  if (found) return found;
+  var stripped = key.replace(/ add on$/, '');
+  if (stripped !== key) {
+    found = hit(stripped);
+    if (found) return found;
+  }
+  var base = stripped || key;
+  var expanded = base.replace(/\b(\d+)k\b/g, '$1 000');
+  if (expanded !== base) {
+    found = hit(expanded);
+    if (found) return found;
+  }
   return null;
 }
 
@@ -945,15 +983,17 @@ function _stLearnRatesFromReconcileRows(rows) {
   }
 }
 
-function _stProductRateRowsForUi() {
+function _stProductRateRowsForUi(kind) {
   var rates = _stLoadCommissionRates();
   var map = rates.products || {};
+  var wantNonComm = kind === 'noncomm';
   var out = [];
   var key;
   for (key in map) {
     if (!Object.prototype.hasOwnProperty.call(map, key)) continue;
     var rec = map[key];
     if (!rec || rec.deleted) continue;
+    if (!!rec.nonCommissionable !== wantNonComm) continue;
     if (
       rec.name &&
       _stNormProductKey(rec.name) !== key &&
@@ -1448,33 +1488,12 @@ function _stBuildRecalcPreviewHtml(preview) {
   return html;
 }
 
-function _stBuildProductRatesPanelHtml() {
-  var rows = _stProductRateRowsForUi();
-  var rates = _stLoadCommissionRates();
-  var conflicts = rates.conflicts || [];
-  var html =
-    '<details class="st-rates-panel"' +
-    (_stRecalcPreview ? ' open' : '') +
-    '><summary>Product commission rates</summary>';
-  html +=
-    '<p class="st-rates-help">Named rates override keyword buckets. Manual rates are permanent. Confirmed, Inferred, and Unknown stay visually distinct.</p>';
-  if (conflicts.length) {
-    html += '<div class="st-rates-conflicts" role="status">';
-    html +=
-      '<strong>Rate conflicts to review</strong> (' +
-      conflicts.length +
-      '). Stored values were not overwritten.';
-    html += '</div>';
-  }
-  html += '<div class="st-rates-add-row">';
-  html +=
-    '<button type="button" class="st-rates-add" data-st-rates-action="add">Add product</button>';
-  html += '</div>';
-  html += '<div class="st-rates-table-wrap"><table class="st-rates-table">';
+function _stBuildProductRateTableHtml(rows) {
+  var html = '<div class="st-rates-table-wrap"><table class="st-rates-table">';
   html +=
     '<thead><tr><th>Product</th><th>Rate</th><th>Confidence</th><th></th></tr></thead><tbody>';
   var i;
-  for (i = 0; i < rows.length; i++) {
+  for (i = 0; i < (rows || []).length; i++) {
     var rec = rows[i].rec;
     var info = {
       confidence: rec.confidence || 'unknown',
@@ -1498,7 +1517,42 @@ function _stBuildProductRatesPanelHtml() {
     html += '</tr>';
   }
   html += '</tbody></table></div>';
+  return html;
+}
+
+function _stBuildProductRatesPanelHtml() {
+  var rows = _stProductRateRowsForUi();
+  var nonComm = _stProductRateRowsForUi('noncomm');
+  var rates = _stLoadCommissionRates();
+  var conflicts = rates.conflicts || [];
+  var html =
+    '<details class="st-rates-panel"' +
+    (_stRecalcPreview ? ' open' : '') +
+    '><summary>Product commission rates</summary>';
+  html +=
+    '<p class="st-rates-help">Named rates override keyword buckets. Manual rates are permanent. Confirmed, Inferred, and Unknown stay visually distinct.</p>';
+  if (conflicts.length) {
+    html += '<div class="st-rates-conflicts" role="status">';
+    html +=
+      '<strong>Rate conflicts to review</strong> (' +
+      conflicts.length +
+      '). Stored values were not overwritten.';
+    html += '</div>';
+  }
+  html += '<div class="st-rates-add-row">';
+  html +=
+    '<button type="button" class="st-rates-add" data-st-rates-action="add">Add product</button>';
+  html += '</div>';
+  html += _stBuildProductRateTableHtml(rows);
   html += _stBuildRecalcPreviewHtml(_stRecalcPreview);
+  if (nonComm.length) {
+    html +=
+      '<details class="st-rates-noncomm"><summary>Non-commissionable items</summary>';
+    html +=
+      '<p class="st-rates-help">These amounts are excluded from the commission premium base. They are not products.</p>';
+    html += _stBuildProductRateTableHtml(nonComm);
+    html += '</details>';
+  }
   html += '</details>';
   return html;
 }
@@ -8715,6 +8769,28 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
     if (snap) problems.push(snap);
   }
   var weekStart = view && view.start ? Number(view.start) : 0;
+  var ignoredSet = {};
+  var ti;
+  for (ti = 0; ti < (_stReconcileTableRows || []).length; ti++) {
+    var tr = _stReconcileTableRows[ti];
+    if (!tr || !tr.ignored) continue;
+    ignoredSet[
+      _stReconNormMemberId(tr.memberId) +
+        '|' +
+        String(Number(tr.dateTs) || 0) +
+        '|' +
+        String(tr.product || '').toLowerCase()
+    ] = true;
+  }
+  for (i = 0; i < problems.length; i++) {
+    var pk =
+      _stReconNormMemberId(problems[i].memberId) +
+      '|' +
+      String(Number(problems[i].dateTs) || 0) +
+      '|' +
+      String(problems[i].productName || '').toLowerCase();
+    problems[i].ignored = !!ignoredSet[pk];
+  }
   var paycheck = _stComputeLivePaycheck(_stLoadSales(), weekStart);
   _stPaycheckApplySheetSummary(paycheck, _stPaySheetSummary);
   return {
@@ -8739,6 +8815,7 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
     },
     gap: result ? Number(result.gap) || 0 : 0,
     problems: problems,
+    ignoredKeys: _stReconcileIgnoredKeyList(),
     paycheck: paycheck,
     weekMode: 'sun'
   };
@@ -9746,6 +9823,69 @@ function _stPaySheetModalIsOpen() {
   return !!document.getElementById('st-paysheet-modal');
 }
 
+function _stReconcileIgnoredStoreKey() {
+  return _stKey('cha_recon_ignored_v1');
+}
+
+function _stLoadReconcileIgnoredAll() {
+  var raw = _stGet(_stReconcileIgnoredStoreKey());
+  if (!raw) return {};
+  try {
+    var parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+      ? parsed
+      : {};
+  } catch (_eIgnLoad) {
+    return {};
+  }
+}
+
+function _stSaveReconcileIgnoredAll(all) {
+  _stSet(_stReconcileIgnoredStoreKey(), JSON.stringify(all || {}));
+}
+
+function _stReconcileIgnoreWeekId(weekStart) {
+  var n = Number(weekStart) || 0;
+  return n ? String(n) : '';
+}
+
+function _stActiveReconcileWeekStart() {
+  if (_stReconcileMatchView && Number(_stReconcileMatchView.start)) {
+    return Number(_stReconcileMatchView.start);
+  }
+  var view = _stRangeInfo();
+  return view && view.start ? Number(view.start) : 0;
+}
+
+function _stHydrateReconcileIgnoredKeys(weekStart) {
+  var wk = _stReconcileIgnoreWeekId(weekStart);
+  var all = _stLoadReconcileIgnoredAll();
+  var map = wk && all[wk] && typeof all[wk] === 'object' ? all[wk] : {};
+  _stReconcileIgnoredKeys = map || {};
+}
+
+function _stPersistReconcileIgnoredKeys() {
+  var wk = _stReconcileIgnoreWeekId(_stActiveReconcileWeekStart());
+  if (!wk) return;
+  var all = _stLoadReconcileIgnoredAll();
+  all[wk] = _stReconcileIgnoredKeys || {};
+  _stSaveReconcileIgnoredAll(all);
+}
+
+function _stReconcileIgnoredKeyList() {
+  var keys = [];
+  var k;
+  for (k in _stReconcileIgnoredKeys) {
+    if (
+      Object.prototype.hasOwnProperty.call(_stReconcileIgnoredKeys, k) &&
+      _stReconcileIgnoredKeys[k]
+    ) {
+      keys.push(k);
+    }
+  }
+  return keys;
+}
+
 function _stRerunPaySheetMatch(opts) {
   opts = opts || {};
   if (!_stPaySheetRows || !_stPaySheetRows.length) return false;
@@ -9793,7 +9933,6 @@ function _stApplyPaySheetText(text) {
     rows && rows.summary ? rows.summary : _stEmptyPaySheetSummary(false);
   _stPaySheetAnalyzedAt = Date.now();
   _stReconcileSessionReset();
-  _stReconcileIgnoredKeys = {};
   _stReconcileTableFilter = 'needs';
   var sales = _stLoadSales();
   var detectedWs = _stReconDetectWeekFromRows(rows);
@@ -9804,6 +9943,7 @@ function _stApplyPaySheetText(text) {
     view = _stRangeInfo();
   }
   _stReconcileMatchView = view;
+  _stHydrateReconcileIgnoredKeys(view && view.start);
   var weekSales = _stReconWeekSales(sales, view);
   _stReconcileResult = _stMatchPaySheetRows(rows, weekSales);
   _stClosePaySheetModal();
@@ -11900,6 +12040,8 @@ function _stBuildReconcilePane(sales, view) {
     '<button type="button" class="st-recon-v2-save" data-st-recon-action="save-recon">Save reconciliation</button>';
   html += '</div></div>';
 
+  html += _stBuildProductRatesPanelHtml();
+
   html += '</section>';
   return html;
 }
@@ -12185,17 +12327,28 @@ function _stBuildReconcileHistorySnapshotHtml(rec) {
     html +=
       '<tr><td colspan="5" class="st-recon-v2-empty">No saved problem rows.</td></tr>';
   } else {
-    var groups = _stHistGroupProblems(problems);
-    var gi;
-    for (gi = 0; gi < groups.length; gi++) {
-      var rows = groups[gi].rows;
-      var ri;
-      for (ri = 0; ri < rows.length; ri++) {
-        html += _stBuildHistSnapshotRowHtml(rows[ri], {
-          skipCustomer: ri > 0,
-          rowspan: ri === 0 ? rows.length : 1,
-          itemCount: rows.length
-        });
+    var visible = [];
+    var pi;
+    for (pi = 0; pi < problems.length; pi++) {
+      if (problems[pi] && problems[pi].ignored) continue;
+      visible.push(problems[pi]);
+    }
+    if (!visible.length) {
+      html +=
+        '<tr><td colspan="5" class="st-recon-v2-empty">No saved problem rows.</td></tr>';
+    } else {
+      var groups = _stHistGroupProblems(visible);
+      var gi;
+      for (gi = 0; gi < groups.length; gi++) {
+        var rows = groups[gi].rows;
+        var ri;
+        for (ri = 0; ri < rows.length; ri++) {
+          html += _stBuildHistSnapshotRowHtml(rows[ri], {
+            skipCustomer: ri > 0,
+            rowspan: ri === 0 ? rows.length : 1,
+            itemCount: rows.length
+          });
+        }
       }
     }
   }
@@ -15090,7 +15243,6 @@ function _stBuildAnalyticsDashboard(sales, stats) {
   html += '<p class="st-analytics-note">Last 4 weeks</p></div>';
 
   html += '</div>';
-  html += _stBuildProductRatesPanelHtml();
   html += '</section>';
   return html;
 }
@@ -15509,6 +15661,7 @@ function _stReconcileIgnoreRow(row) {
   if (!row || !row.key) return;
   _stReconcileIgnoredKeys[row.key] = true;
   row.ignored = true;
+  _stPersistReconcileIgnoredKeys();
   _stCloseReconcileResolveMenu();
   _stRefreshReconcileView();
 }
