@@ -237,20 +237,307 @@ var CHA_DEFAULT_COMMISSION_RATES = {
     rx: 0.2, // SureScript, BestChoice, Better Rx
     gap: 0.5 // GAP
   },
-  enrollmentBonus: 20 // dollars per $125 enrollment
+  enrollmentBonus: 20, // dollars per $125 enrollment
+  products: {},
+  conflicts: []
 };
+
+function _stNormProductKey(name) {
+  return String(name || '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/\$/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function _stProductRateSeedList() {
+  function rec(name, rate, confidence, extra) {
+    extra = extra || {};
+    return {
+      name: name,
+      rate: rate,
+      kind: extra.kind || 'percent',
+      confidence: confidence,
+      source: extra.source || 'seed',
+      lowConfidence: extra.lowConfidence === true,
+      nonCommissionable: extra.nonCommissionable === true,
+      aliases: extra.aliases || []
+    };
+  }
+  var confirmed = 'confirmed';
+  var inferred = 'inferred';
+  var out = [];
+  var i;
+  var adnd = [
+    'AD&D $50k',
+    'AD&D $50K',
+    'AD&D $100K',
+    'AD&D $125K',
+    'AD&D $175K',
+    'AD&D $200K',
+    'AD&D $250K',
+    'AD&D $50,000',
+    'AD&D $100,000',
+    'AD&D $125,000',
+    'AD&D $175,000',
+    'AD&D $200,000',
+    'AD&D $250,000'
+  ];
+  for (i = 0; i < adnd.length; i++) {
+    out.push(rec(adnd[i], 1, confirmed));
+  }
+  out.push(rec('NCE WellGuard AD&D $100,000', 1, confirmed));
+  out.push(rec('NCE WellGuard AD&D $250,000', 1, confirmed));
+  out.push(rec('Compass VAB Add-on', 1, confirmed));
+  out.push(rec('New York Life $50,000 Term Life', 1, confirmed));
+  out.push(rec('AWA Safe Guard 100', 0.7, confirmed));
+  out.push(
+    rec('AWA Safeguard ADD/AME/CI', 0.7, confirmed, {
+      aliases: ['AWA Safeguard ADD/AME/CI', 'AWA Safe Guard ADD/AME/CI']
+    })
+  );
+  out.push(rec('GapSupport Discount', 0.7, confirmed));
+  out.push(rec('American Financial Critical Illness $2,500', 0.7, confirmed));
+  out.push(rec('Prime Health Pass Discount', 0.65, confirmed));
+  out.push(rec('AssistPro Discount', 0.6, confirmed));
+  out.push(
+    rec('AME $500 Add-on', 0.6, confirmed, { aliases: ['AME $500 Add-on'] })
+  );
+  out.push(
+    rec('AME $1000 Add-on', 0.6, confirmed, {
+      aliases: ['AME $1000 - Add-on', 'AME $1,000 Add-on', 'AME $1000 Add-on']
+    })
+  );
+  out.push(rec('Complete Care Plus', 0.6, confirmed));
+  out.push(rec('Pinnacle Critical Care Plan 2', 0.52, confirmed));
+  out.push(
+    rec('Better Vision Add-on', 0.35, confirmed, {
+      aliases: ['Better Vision Add-on']
+    })
+  );
+  out.push(rec('Better Dental Add-on', 0.35, confirmed));
+  out.push(
+    rec('Better Guard Add-on', 0.35, confirmed, {
+      aliases: ['Better Guard - Add-on', 'Better Guard Add-on']
+    })
+  );
+  out.push(
+    rec('GHDP Dental-Vision 1500 Add-on', 0.35, confirmed, {
+      aliases: ['GHDP Dental-Vision 1500', 'GHDP Dental-Vision 1500 Add-on']
+    })
+  );
+  out.push(
+    rec('GHDP Dental-Vision 5000 Add-on', 0.35, confirmed, {
+      aliases: ['GHDP Dental-Vision 5000', 'GHDP Dental-Vision 5000 Add-on']
+    })
+  );
+  out.push(rec('NCE Fusion Dental - Plan B', 0.35, confirmed));
+  out.push(rec('Fusion Dental - Plan B SA', 0.35, confirmed));
+  out.push(rec('Fusion Dental - Plan A SA', 0.3, confirmed));
+  out.push(rec('BestChoice Rx', 0.3, confirmed));
+  out.push(rec('AWA SureScript Rx', 0.2, confirmed));
+  out.push(
+    rec('RXSavers Tier 1', 10, confirmed, {
+      kind: 'flat',
+      aliases: ['RXSavers', 'RxSavers Tier 1']
+    })
+  );
+  var nonComm = [
+    'Association fee',
+    'Association fees',
+    'Association enrollment fee',
+    'Association enrollment fees',
+    'Payment fee',
+    'Payment fees',
+    'Enrollment fee',
+    'Enrollment fees',
+    'Allstate ID Plus',
+    'Allstate ID Pro 3',
+    'NCE GapAfford Plus',
+    'Premier Business Plus Membership',
+    'Extra Value',
+    'ExtraPerks'
+  ];
+  for (i = 0; i < nonComm.length; i++) {
+    out.push(rec(nonComm[i], 0, confirmed, { nonCommissionable: true }));
+  }
+  out.push(rec('Critical Illness $5,000', 0.7, inferred));
+  out.push(rec('Critical Illness $7,500', 0.7, inferred));
+  out.push(rec('Critical Illness $10,000', 0.7, inferred));
+  out.push(rec('GHDP Dental-Vision 3000 Add-on', 0.35, inferred));
+  out.push(rec('Complete Care Select', 0.6, inferred));
+  out.push(rec('Complete Care Pro', 0.6, inferred));
+  out.push(rec('Complete Care Max', 0.6, inferred));
+  out.push(rec('NCE Fusion Dental - Plan A', 0.35, inferred));
+  out.push(rec('New York Life $50,000 Term Life SA', 1, inferred));
+  out.push(rec('Health Essential Care DVH Plus', 0.35, inferred));
+  out.push(rec('AWA Safe Guard AH Membership $5000/$500', 0.7, inferred));
+  out.push(rec('AWA Safe Guard AH Membership $5000/$1000', 0.7, inferred));
+  out.push(rec('AWA Safe Guard AH Membership $5000/$500 SA', 0.7, inferred));
+  out.push(rec('AWA Safe Guard AH Membership $5000/$1000 SA', 0.7, inferred));
+  out.push(
+    rec('AWA Safe Guard Accident Membership $100,000 SA', 0.7, inferred)
+  );
+  out.push(
+    rec('Pinnacle Critical Care Plan 1', 0.52, inferred, {
+      lowConfidence: true
+    })
+  );
+  out.push(
+    rec('Pinnacle Critical Care Plan 3', 0.52, inferred, {
+      lowConfidence: true
+    })
+  );
+  out.push(
+    rec('Pinnacle Critical Care Plan 4', 0.52, inferred, {
+      lowConfidence: true
+    })
+  );
+  out.push(
+    rec('Pinnacle Critical Care Plan 1 SA', 0.52, inferred, {
+      lowConfidence: true
+    })
+  );
+  out.push(
+    rec('Pinnacle Critical Care Plan 3 SA', 0.52, inferred, {
+      lowConfidence: true
+    })
+  );
+  out.push(
+    rec('Pinnacle Critical Care Plan 4 SA', 0.52, inferred, {
+      lowConfidence: true
+    })
+  );
+  var premier = [
+    ['AWA SecureElite AD&D', 0.7],
+    ['HD SecureShield AD&D', 0.7],
+    ['NowCare', 0.7],
+    ['Continue Care', 0.7],
+    ['Wellness4You', 0.7],
+    ['AccessCare Pro', 0.7],
+    ['AWA Life', 0.5],
+    ['Direct Access DVH', 0.35],
+    ['AWA Dental Plus', 0.25],
+    ['AWA Dental Premier', 0.25],
+    ['AWA Clearview', 0.25],
+    ['AdvantCare Catastrophic', 0.25],
+    ['HD Ideal Dental', 0.25],
+    ['HD InSight Vision', 0.25],
+    ['GAP', 0.6]
+  ];
+  for (i = 0; i < premier.length; i++) {
+    out.push(
+      rec(premier[i][0], premier[i][1], confirmed, { source: 'schedule' })
+    );
+  }
+  return out;
+}
+
+function _stEmptyProductRate(name) {
+  return {
+    name: name || '',
+    rate: null,
+    kind: 'percent',
+    confidence: 'unknown',
+    source: '',
+    manual: false,
+    sampleCount: 0,
+    learnedRate: null,
+    lowConfidence: false,
+    nonCommissionable: false,
+    conflict: null
+  };
+}
+
+function _stSeedProductMap() {
+  var map = {};
+  var list = _stProductRateSeedList();
+  var i;
+  var a;
+  function put(key, rec) {
+    if (!key || map[key]) return;
+    map[key] = {
+      name: rec.name,
+      rate: rec.rate,
+      kind: rec.kind || 'percent',
+      confidence: rec.confidence,
+      source: rec.source || 'seed',
+      manual: false,
+      sampleCount: rec.confidence === 'confirmed' ? 2 : 0,
+      learnedRate: null,
+      lowConfidence: !!rec.lowConfidence,
+      nonCommissionable: !!rec.nonCommissionable,
+      conflict: null
+    };
+  }
+  for (i = 0; i < list.length; i++) {
+    put(_stNormProductKey(list[i].name), list[i]);
+    for (a = 0; a < (list[i].aliases || []).length; a++) {
+      put(_stNormProductKey(list[i].aliases[a]), list[i]);
+    }
+  }
+  return map;
+}
+
+function _stMergeProductRates(stored) {
+  var map = _stSeedProductMap();
+  var key;
+  if (!stored || typeof stored !== 'object') return map;
+  for (key in stored) {
+    if (!Object.prototype.hasOwnProperty.call(stored, key)) continue;
+    var row = stored[key];
+    if (!row || typeof row !== 'object') continue;
+    if (row.deleted) {
+      map[key] = {
+        name: row.name || key,
+        deleted: true,
+        rate: null,
+        kind: 'percent',
+        confidence: 'unknown',
+        source: '',
+        manual: false
+      };
+      continue;
+    }
+    if (row.manual) {
+      map[key] = row;
+      continue;
+    }
+    if (!map[key]) {
+      map[key] = row;
+      continue;
+    }
+    if (row.source === 'learned' || row.sampleCount || row.conflict) {
+      map[key].sampleCount = Number(row.sampleCount) || map[key].sampleCount;
+      map[key].learnedRate = row.learnedRate;
+      map[key].conflict = row.conflict || null;
+      map[key].lastSaleId = row.lastSaleId || map[key].lastSaleId || '';
+      if (row.confidence === 'confirmed' && row.source === 'learned') {
+        map[key].confidence = 'confirmed';
+        map[key].source = 'learned';
+        map[key].rate = row.rate;
+      }
+    }
+  }
+  return map;
+}
 
 function _stLoadCommissionRates() {
   try {
     var raw = _stGet(_stKey('cha_commission_rates'));
-    if (!raw) return _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
+    if (!raw) {
+      var fresh = _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
+      fresh.products = _stSeedProductMap();
+      return fresh;
+    }
     var parsed = JSON.parse(raw);
-    // Shallow merge in case new keys were added
     var base = _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
     if (parsed && parsed.planTiers) base.planTiers = parsed.planTiers;
     if (parsed && parsed.addonTypes) {
       for (var k in parsed.addonTypes) {
-        if (Object.hasOwn(parsed.addonTypes, k)) {
+        if (Object.prototype.hasOwnProperty.call(parsed.addonTypes, k)) {
           base.addonTypes[k] = parsed.addonTypes[k];
         }
       }
@@ -258,9 +545,15 @@ function _stLoadCommissionRates() {
     if (parsed && typeof parsed.enrollmentBonus === 'number') {
       base.enrollmentBonus = parsed.enrollmentBonus;
     }
+    base.products = _stMergeProductRates(parsed && parsed.products);
+    base.conflicts = Array.isArray(parsed && parsed.conflicts)
+      ? parsed.conflicts
+      : [];
     return base;
   } catch (_e) {
-    return _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
+    var fallback = _stCloneRates(CHA_DEFAULT_COMMISSION_RATES);
+    fallback.products = _stSeedProductMap();
+    return fallback;
   }
 }
 
@@ -291,7 +584,9 @@ function _stCloneRates(r) {
       rx: r.addonTypes.rx,
       gap: r.addonTypes.gap
     },
-    enrollmentBonus: r.enrollmentBonus
+    enrollmentBonus: r.enrollmentBonus,
+    products: r.products ? r.products : {},
+    conflicts: r.conflicts ? r.conflicts.slice() : []
   };
 }
 
@@ -342,6 +637,583 @@ function _stClassifyAddon(name) {
     return 'rx';
   }
   return 'standard';
+}
+
+function _stLookupNamedProduct(name, rates) {
+  var key = _stNormProductKey(name);
+  if (!key) return null;
+  var products = (rates && rates.products) || {};
+  if (products[key] && !products[key].deleted) return products[key];
+  return null;
+}
+
+function _stResolveProductRate(name, opts) {
+  opts = opts || {};
+  var rates = opts.rates || _stLoadCommissionRates();
+  var named = _stLookupNamedProduct(name, rates);
+  if (named && named.rate != null && !named.nonCommissionable) {
+    return {
+      rate: Number(named.rate),
+      kind: named.kind || 'percent',
+      confidence: named.confidence || 'unknown',
+      source: named.source || '',
+      named: true,
+      lowConfidence: !!named.lowConfidence,
+      conflict: named.conflict || null,
+      name: named.name || name
+    };
+  }
+  if (named && named.nonCommissionable) {
+    return {
+      rate: 0,
+      kind: 'percent',
+      confidence: 'confirmed',
+      source: named.source || 'seed',
+      named: true,
+      nonCommissionable: true,
+      name: named.name || name
+    };
+  }
+  var cat = _stClassifyAddon(name);
+  var bucket = rates.addonTypes[cat];
+  if (typeof bucket !== 'number') bucket = rates.addonTypes.standard;
+  return {
+    rate: bucket,
+    kind: 'percent',
+    confidence: 'unknown',
+    source: 'bucket',
+    named: false,
+    bucket: cat,
+    name: name
+  };
+}
+
+function _stRatePctForProductName(name) {
+  var info = _stResolveProductRate(name, {});
+  if (info.kind === 'flat') return info.rate;
+  return Math.round(Number(info.rate) * 10000) / 100;
+}
+
+function _stConfidenceBadgeHtml(info) {
+  if (!info) return '';
+  var label = 'Unknown';
+  var cls = 'is-unknown';
+  if (info.confidence === 'confirmed') {
+    label = 'Confirmed';
+    cls = 'is-confirmed';
+  } else if (info.confidence === 'inferred') {
+    label = info.lowConfidence ? 'Inferred (low)' : 'Inferred';
+    cls = 'is-inferred';
+  }
+  return (
+    '<span class="st-rate-badge ' +
+    cls +
+    '" title="' +
+    _stEscape(label) +
+    '">' +
+    _stEscape(label) +
+    '</span>'
+  );
+}
+
+function _stRoundRate4(n) {
+  return Math.round(Number(n) * 10000) / 10000;
+}
+
+function _stRatesCloseEnough(a, b) {
+  return Math.abs(Number(a) - Number(b)) <= 0.005;
+}
+
+function _stFormatProductRateLabel(rec) {
+  if (!rec || rec.rate == null) return 'Unknown';
+  if (rec.kind === 'flat')
+    return '$' + _stMoney2(rec.rate).toFixed(2) + ' flat';
+  return Math.round(Number(rec.rate) * 10000) / 100 + '%';
+}
+
+function _stPremierCorePlanNames() {
+  return [
+    'HealthyShield',
+    'EliteCare',
+    'AdvancedHealth',
+    'HealthGuard Max',
+    'PrimeProtect',
+    'HD Classic Protect',
+    'AdvantCare',
+    'NexusCare STM',
+    'Thrive STM',
+    'Summit STM',
+    'Altrua HealthShare'
+  ];
+}
+
+function _stShowPremierChargebackNote(name) {
+  var n = String(name || '');
+  if (!n) return false;
+  var cores = _stPremierCorePlanNames();
+  var i;
+  var key = _stNormProductKey(n);
+  for (i = 0; i < cores.length; i++) {
+    if (_stNormProductKey(cores[i]) === key) return true;
+    if (n.toLowerCase().indexOf(cores[i].toLowerCase()) !== -1) return true;
+  }
+  var info = _stResolveProductRate(n, {});
+  if (info.source !== 'schedule') return false;
+  if (key === _stNormProductKey('BestChoice Rx')) return false;
+  if (key === _stNormProductKey('AWA SureScript Rx')) return false;
+  return true;
+}
+
+function _stPremierChargebackNoteHtml(name) {
+  if (!_stShowPremierChargebackNote(name)) return '';
+  return '<div class="st-premier-note">Premier policies can charge back if the second month is unpaid (up to 59 days).</div>';
+}
+
+function _stSaleHasCommissionDiscrepancy(s) {
+  if (!s) return false;
+  var rates = _stLoadCommissionRates();
+  var live = _stComputeLineCommission(s, rates);
+  if (s.type === 'deal') {
+    if (typeof s.planCommission !== 'number') return false;
+    return Math.abs(live - Number(s.planCommission)) > 0.02;
+  }
+  if (typeof s.addonCommission !== 'number') return false;
+  return Math.abs(live - Number(s.addonCommission)) > 0.02;
+}
+
+function _stCommissionDiscrepancyHtml(s) {
+  if (!_stSaleHasCommissionDiscrepancy(s)) return '';
+  return '<div class="st-comm-discrepancy">Stored commission differs from the current rate table. Review before changing it.</div>';
+}
+
+function _stPushRateConflict(rates, rec, stored, seen, saleId) {
+  rec.conflict = {
+    stored: stored,
+    seen: seen,
+    at: Date.now(),
+    saleId: saleId || ''
+  };
+  if (!Array.isArray(rates.conflicts)) rates.conflicts = [];
+  rates.conflicts.push({
+    name: rec.name || '',
+    stored: stored,
+    seen: seen,
+    at: Date.now(),
+    saleId: saleId || ''
+  });
+}
+
+function _stLearnProductRateFromPayout(
+  productName,
+  premium,
+  paidCommission,
+  saleId
+) {
+  var prem = Number(premium) || 0;
+  var paid = Number(paidCommission) || 0;
+  if (!(prem > 0) || !(paid > 0)) return;
+  var derived = _stRoundRate4(paid / prem);
+  var key = _stNormProductKey(productName);
+  if (!key) return;
+  var rates = _stLoadCommissionRates();
+  if (!rates.products) rates.products = {};
+  var rec = rates.products[key];
+  if (rec && rec.deleted) rec = null;
+  if (!rec) rec = _stEmptyProductRate(productName);
+  if (rec.manual) return;
+  var sid = String(saleId || '');
+  if (sid && rec.lastSaleId && rec.lastSaleId === sid) return;
+
+  if (rec.conflict) {
+    rec.lastSaleId = sid || rec.lastSaleId;
+    rates.products[key] = rec;
+    _stSaveCommissionRates(rates);
+    return;
+  }
+
+  if (rec.sampleCount >= 1 && rec.learnedRate != null) {
+    if (!_stRatesCloseEnough(rec.learnedRate, derived)) {
+      _stPushRateConflict(rates, rec, rec.learnedRate, derived, sid);
+      rec.lastSaleId = sid;
+      rec.name = rec.name || productName;
+      rates.products[key] = rec;
+      _stSaveCommissionRates(rates);
+      return;
+    }
+    rec.sampleCount = Number(rec.sampleCount) + 1;
+    rec.rate = derived;
+    rec.learnedRate = derived;
+    rec.confidence = 'confirmed';
+    rec.source = 'learned';
+    rec.lastSaleId = sid;
+    rec.name = rec.name || productName;
+    rates.products[key] = rec;
+    _stSaveCommissionRates(rates);
+    return;
+  }
+
+  if (
+    rec.rate != null &&
+    rec.confidence === 'confirmed' &&
+    rec.source !== 'learned'
+  ) {
+    if (!_stRatesCloseEnough(rec.rate, derived)) {
+      _stPushRateConflict(rates, rec, rec.rate, derived, sid);
+    } else {
+      rec.sampleCount = Math.max(Number(rec.sampleCount) || 0, 1) + 1;
+    }
+    rec.lastSaleId = sid;
+    rec.name = rec.name || productName;
+    rates.products[key] = rec;
+    _stSaveCommissionRates(rates);
+    return;
+  }
+
+  if (rec.rate != null && rec.confidence === 'inferred') {
+    if (!_stRatesCloseEnough(rec.rate, derived)) {
+      _stPushRateConflict(rates, rec, rec.rate, derived, sid);
+      rec.lastSaleId = sid;
+      rec.name = rec.name || productName;
+      rates.products[key] = rec;
+      _stSaveCommissionRates(rates);
+      return;
+    }
+    rec.sampleCount = 1;
+    rec.learnedRate = derived;
+    rec.lastSaleId = sid;
+    rec.name = rec.name || productName;
+    rates.products[key] = rec;
+    _stSaveCommissionRates(rates);
+    return;
+  }
+
+  rec.name = rec.name || productName;
+  rec.sampleCount = 1;
+  rec.learnedRate = derived;
+  rec.rate = derived;
+  rec.kind = rec.kind || 'percent';
+  rec.confidence = 'unknown';
+  rec.source = 'learned';
+  rec.lastSaleId = sid;
+  rec.deleted = false;
+  rates.products[key] = rec;
+  _stSaveCommissionRates(rates);
+}
+
+function _stLearnRatesFromReconcileRows(rows) {
+  if (!rows || !rows.length) return;
+  var sales = _stLoadSales();
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var row = rows[i];
+    if (!row || row.status !== 'matched') continue;
+    if (!row.hasTracker || !row.hasSheet) continue;
+    if (row.isLoss) continue;
+    if (row.typeLocal === 'deal') continue;
+    var paid = Number(row.sheetAmount);
+    if (!(paid > 0)) continue;
+    var sale = null;
+    var si;
+    if (row.saleId) {
+      for (si = 0; si < sales.length; si++) {
+        if (sales[si] && String(sales[si].id) === String(row.saleId)) {
+          sale = sales[si];
+          break;
+        }
+      }
+    }
+    if (!sale || sale.type === 'deal') continue;
+    var premium = Number(sale.amount) || 0;
+    if (!(premium > 0)) continue;
+    var productName = row.sheetProduct || sale.plan || row.product || '';
+    _stLearnProductRateFromPayout(productName, premium, paid, sale.id);
+  }
+}
+
+function _stProductRateRowsForUi() {
+  var rates = _stLoadCommissionRates();
+  var map = rates.products || {};
+  var out = [];
+  var key;
+  for (key in map) {
+    if (!Object.prototype.hasOwnProperty.call(map, key)) continue;
+    var rec = map[key];
+    if (!rec || rec.deleted) continue;
+    if (
+      rec.name &&
+      _stNormProductKey(rec.name) !== key &&
+      rec.source !== 'learned' &&
+      rec.source !== 'manual' &&
+      !rec.manual
+    ) {
+      continue;
+    }
+    out.push({ key: key, rec: rec });
+  }
+  out.sort(function (a, b) {
+    return String(a.rec.name || a.key).localeCompare(
+      String(b.rec.name || b.key)
+    );
+  });
+  return out;
+}
+
+function _stUpsertManualProductRate(name, rateValue, kind) {
+  var key = _stNormProductKey(name);
+  if (!key) return false;
+  var rates = _stLoadCommissionRates();
+  if (!rates.products) rates.products = {};
+  var rec =
+    rates.products[key] && !rates.products[key].deleted
+      ? rates.products[key]
+      : _stEmptyProductRate(name);
+  rec.name = String(name || rec.name || '').trim() || rec.name;
+  rec.rate = Number(rateValue);
+  rec.kind = kind === 'flat' ? 'flat' : 'percent';
+  rec.manual = true;
+  rec.deleted = false;
+  rec.confidence = 'confirmed';
+  rec.source = 'manual';
+  rec.conflict = null;
+  rates.products[key] = rec;
+  _stSaveCommissionRates(rates);
+  return true;
+}
+
+function _stDeleteProductRate(nameOrKey) {
+  var key = _stNormProductKey(nameOrKey) || String(nameOrKey || '');
+  if (!key) return false;
+  var rates = _stLoadCommissionRates();
+  if (!rates.products) rates.products = {};
+  var rec = rates.products[key] || _stEmptyProductRate(nameOrKey);
+  var nameKey = rec.name ? _stNormProductKey(rec.name) : key;
+  var k;
+  for (k in rates.products) {
+    if (!Object.prototype.hasOwnProperty.call(rates.products, k)) continue;
+    var row = rates.products[k];
+    if (!row) continue;
+    var rowNameKey = row.name ? _stNormProductKey(row.name) : k;
+    if (k !== key && k !== nameKey && rowNameKey !== nameKey) continue;
+    row.deleted = true;
+    row.manual = false;
+    row.rate = null;
+    row.confidence = 'unknown';
+    row.source = '';
+    row.conflict = null;
+    rates.products[k] = row;
+  }
+  rec.deleted = true;
+  rec.manual = false;
+  rec.rate = null;
+  rec.confidence = 'unknown';
+  rec.source = '';
+  rec.conflict = null;
+  rates.products[key] = rec;
+  _stSaveCommissionRates(rates);
+  return true;
+}
+
+function _stCloseProductRateEditor() {
+  var modal = document.getElementById('st-rates-edit-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stOpenProductRateEditor(productKey, isNew) {
+  _stCloseProductRateEditor();
+  var rec = null;
+  if (!isNew && productKey) {
+    var rates = _stLoadCommissionRates();
+    rec = (rates.products || {})[productKey] || null;
+    if (rec && rec.deleted) rec = null;
+  }
+  var nameVal = rec ? rec.name || '' : '';
+  var rateVal = '';
+  if (rec && rec.rate != null) {
+    rateVal =
+      rec.kind === 'flat'
+        ? String(_stMoney2(rec.rate))
+        : String(Math.round(Number(rec.rate) * 10000) / 100);
+  }
+  var modal = document.createElement('div');
+  modal.id = 'st-rates-edit-modal';
+  modal.className = 'st-entry-modal';
+  var html = '<div class="st-entry-card st-rates-edit-card">';
+  html +=
+    '<div class="st-entry-title">' +
+    (isNew ? 'Add product rate' : 'Edit product rate') +
+    '</div>';
+  html += '<label class="st-entry-label">Product name';
+  html +=
+    '<input id="st-rates-edit-name" type="text" value="' +
+    _stEscape(nameVal) +
+    '"' +
+    (isNew ? '' : ' readonly') +
+    '></label>';
+  html +=
+    '<label class="st-entry-label">Rate (' +
+    (rec && rec.kind === 'flat' ? 'dollars, flat' : 'percent') +
+    ')';
+  html +=
+    '<input id="st-rates-edit-rate" type="number" step="0.01" value="' +
+    _stEscape(rateVal) +
+    '"></label>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" data-st-rates-action="close-edit">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save" data-st-rates-action="save-edit" data-product-key="' +
+    _stEscape(productKey || '') +
+    '" data-rate-kind="' +
+    _stEscape((rec && rec.kind) || 'percent') +
+    '" data-is-new="' +
+    (isNew ? '1' : '0') +
+    '">Save</button>';
+  html += '</div></div>';
+  modal.innerHTML = html;
+  modal.onclick = function (ev) {
+    if (ev.target === modal) _stCloseProductRateEditor();
+  };
+  document.body.appendChild(modal);
+}
+
+function _stSaveProductRateEditor(btn) {
+  var nameEl = document.getElementById('st-rates-edit-name');
+  var rateEl = document.getElementById('st-rates-edit-rate');
+  var name = nameEl ? String(nameEl.value || '').trim() : '';
+  var raw = rateEl ? parseFloat(rateEl.value) : NaN;
+  var kind = btn ? btn.getAttribute('data-rate-kind') || 'percent' : 'percent';
+  var isNew = btn && btn.getAttribute('data-is-new') === '1';
+  if (!name) {
+    _stFlash('Enter a product name.', 'error');
+    return;
+  }
+  if (isNaN(raw) || raw < 0) {
+    _stFlash('Enter a valid rate.', 'error');
+    return;
+  }
+  var stored = kind === 'flat' ? raw : raw / 100;
+  if (_stUpsertManualProductRate(name, stored, kind)) {
+    _stCloseProductRateEditor();
+    _stFlash(isNew ? 'Product rate added.' : 'Product rate saved.', 'ok');
+    _stRender();
+  }
+}
+
+function _stHandleRatesActionClick(btn) {
+  var action = btn.getAttribute('data-st-rates-action') || '';
+  var key = btn.getAttribute('data-product-key') || '';
+  if (action === 'add') {
+    _stOpenProductRateEditor('', true);
+    return;
+  }
+  if (action === 'edit') {
+    _stOpenProductRateEditor(key, false);
+    return;
+  }
+  if (action === 'delete') {
+    if (
+      !confirm('Delete this product rate? It will return to the unknown path.')
+    ) {
+      return;
+    }
+    _stDeleteProductRate(key);
+    _stFlash('Product rate deleted.', 'ok');
+    _stRender();
+    return;
+  }
+  if (action === 'close-edit') {
+    _stCloseProductRateEditor();
+    return;
+  }
+  if (action === 'save-edit') {
+    _stSaveProductRateEditor(btn);
+  }
+}
+
+function _stBuildProductRatesPanelHtml() {
+  var rows = _stProductRateRowsForUi();
+  var rates = _stLoadCommissionRates();
+  var conflicts = rates.conflicts || [];
+  var html =
+    '<details class="st-rates-panel"><summary>Product commission rates</summary>';
+  html +=
+    '<p class="st-rates-help">Named rates override keyword buckets. Manual rates are permanent. Confirmed, Inferred, and Unknown stay visually distinct.</p>';
+  if (conflicts.length) {
+    html += '<div class="st-rates-conflicts" role="status">';
+    html +=
+      '<strong>Rate conflicts to review</strong> (' +
+      conflicts.length +
+      '). Stored values were not overwritten.';
+    html += '</div>';
+  }
+  html += '<div class="st-rates-add-row">';
+  html +=
+    '<button type="button" class="st-rates-add" data-st-rates-action="add">Add product</button>';
+  html += '</div>';
+  html += '<div class="st-rates-table-wrap"><table class="st-rates-table">';
+  html +=
+    '<thead><tr><th>Product</th><th>Rate</th><th>Confidence</th><th></th></tr></thead><tbody>';
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var rec = rows[i].rec;
+    var info = {
+      confidence: rec.confidence || 'unknown',
+      lowConfidence: !!rec.lowConfidence
+    };
+    html += '<tr>';
+    html +=
+      '<td>' +
+      _stEscape(rec.name || rows[i].key) +
+      (rec.manual ? ' <span class="st-rate-manual">Manual</span>' : '') +
+      (rec.conflict ? ' <span class="st-rate-conflict">Conflict</span>' : '') +
+      '</td>';
+    html += '<td>' + _stEscape(_stFormatProductRateLabel(rec)) + '</td>';
+    html += '<td>' + _stConfidenceBadgeHtml(info) + '</td>';
+    html +=
+      '<td class="st-rates-actions"><button type="button" class="st-rates-edit" data-st-rates-action="edit" data-product-key="' +
+      _stEscape(rows[i].key) +
+      '">Edit</button> <button type="button" class="st-rates-del" data-st-rates-action="delete" data-product-key="' +
+      _stEscape(rows[i].key) +
+      '">Delete</button></td>';
+    html += '</tr>';
+  }
+  html += '</tbody></table></div></details>';
+  return html;
+}
+
+function _stSaleHasRxSavers(sales, deal) {
+  if (!deal) return false;
+  var planN = String(deal.plan || '');
+  if (/\brx\s*savers?\b/i.test(planN)) return true;
+  if (!deal.receiptId) return false;
+  var i;
+  for (i = 0; i < (sales || []).length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'addon') continue;
+    if (s.receiptId !== deal.receiptId) continue;
+    if (/\brx\s*savers?\b/i.test(String(s.plan || ''))) return true;
+  }
+  return false;
+}
+
+function _stSaleQualifiesEnrollmentBonus(sale, sales) {
+  if (!sale || sale.type !== 'deal') return false;
+  if (Number(sale.enrollmentFee) !== 125) return false;
+  if (_stNormalizeStatus(sale) === 'samecancel') return false;
+  if (_stSaleHasRxSavers(sales, sale)) return false;
+  return true;
+}
+
+function _stWeekEnrollmentBonus(sales, ws, we) {
+  var n = 0;
+  var i;
+  for (i = 0; i < (sales || []).length; i++) {
+    var s = sales[i];
+    if (!s || s.type !== 'deal') continue;
+    if (s.ts < ws || s.ts >= we) continue;
+    if (_stSaleQualifiesEnrollmentBonus(s, sales)) n += 1;
+  }
+  return n * 20;
 }
 
 // Given a plan monthly amount, return the matching tier rate.
@@ -1775,20 +2647,25 @@ function _stExtractHeaderMemberId(text) {
 function _stComputeLineCommission(sale, rates) {
   if (!sale) return 0;
   var amt = Number(sale.amount) || 0;
+  rates = rates || _stLoadCommissionRates();
   var rate;
+  var info;
   if (sale.type === 'addon') {
-    var planN = String(sale.plan || '').toLowerCase();
-    if (/\brx\s*savers?\b/.test(planN)) {
-      var flatRx = 10;
-      if (_stIsReversalStatus(sale)) return -Math.abs(flatRx);
-      return flatRx;
-    }
     if (typeof sale.addonCommissionRate === 'number') {
       rate = sale.addonCommissionRate;
-    } else {
-      var cat = _stClassifyAddon(sale.plan);
-      rate = rates.addonTypes[cat];
-      if (typeof rate !== 'number') rate = rates.addonTypes.standard;
+      var commissionOv = amt * rate;
+      if (_stIsReversalStatus(sale)) return -Math.abs(commissionOv);
+      return commissionOv;
+    }
+    info = _stResolveProductRate(sale.plan, { rates: rates });
+    if (info.kind === 'flat') {
+      var flat = Number(info.rate) || 0;
+      if (_stIsReversalStatus(sale)) return -Math.abs(flat);
+      return flat;
+    }
+    rate = Number(info.rate);
+    if (typeof rate !== 'number' || !isFinite(rate)) {
+      rate = rates.addonTypes.standard;
     }
   } else {
     rate =
@@ -1829,30 +2706,27 @@ function _stStampDealCommission(sales, dealIdx, rates) {
       if (s.receiptId !== deal.receiptId) continue;
       var lineCommAddon = _stComputeLineCommission(s, rates);
       totalAddon += lineCommAddon;
-      // Also stamp the add-on so its own fields stay in sync
-      var planN = String(s.plan || '').toLowerCase();
-      if (/\brx\s*savers?\b/.test(planN)) {
-        s.addonCommissionRate = null;
+      var infoAd = _stResolveProductRate(s.plan, { rates: rates });
+      if (infoAd.kind === 'flat') {
+        s.addonCommissionRate =
+          typeof s.addonCommissionRate === 'number'
+            ? s.addonCommissionRate
+            : null;
       } else {
         s.addonCommissionRate =
           typeof s.addonCommissionRate === 'number'
             ? s.addonCommissionRate
-            : rates.addonTypes[_stClassifyAddon(s.plan)] ||
-              rates.addonTypes.standard;
+            : Number(infoAd.rate);
       }
       s.addonCommission = lineCommAddon;
     }
   }
   deal.totalAddonCommission = totalAddon;
 
-  // Enrollment bonus: only paid when enrollmentFee is exactly $125
-  var bonus = 0;
-  if (Number(deal.enrollmentFee) === 125) bonus = rates.enrollmentBonus;
-  if (_stIsReversalStatus(deal)) bonus = -Math.abs(bonus);
-  deal.enrollmentBonus = bonus;
+  // Enrollment bonus is a weekly lump, not part of the sale.
+  deal.enrollmentBonus = 0;
 
-  // Expected total = plan + add-ons + bonus (with status logic already applied)
-  var expected = planCommission + totalAddon + bonus;
+  var expected = planCommission + totalAddon;
   if (_stIsReversalStatus(deal)) expected = -Math.abs(expected);
   deal.expectedDealTotal = expected;
 
@@ -1865,8 +2739,11 @@ function _stStampDealCommission(sales, dealIdx, rates) {
   var flags = [];
   if (!deal.memberId) flags.push('missing_member_id');
   if (!_stIsReversalStatus(deal)) {
-    if (Number(deal.enrollmentFee) === 125 && bonus === 0) {
-      flags.push('missing_enrollment_bonus');
+    if (
+      Number(deal.enrollmentFee) === 125 &&
+      !_stSaleQualifiesEnrollmentBonus(deal, sales)
+    ) {
+      flags.push('enrollment_bonus_excluded');
     }
   }
   deal.errorFlags = flags;
@@ -1875,13 +2752,11 @@ function _stStampDealCommission(sales, dealIdx, rates) {
 // Recompute commission for EVERY deal in the sales array in
 // place. Used after a rate-config change so every row reflects
 // the new defaults immediately.
-function _stRestampAllCommissions(sales) {
-  var rates = _stLoadCommissionRates();
-  for (var i = 0; i < sales.length; i++) {
-    if (sales[i] && sales[i].type === 'deal') {
-      _stStampDealCommission(sales, i, rates);
-    }
-  }
+function _stRestampAllCommissions(_sales) {
+  // Historical integrity: never bulk-rewrite stored sale commissions
+  // when the default table changes. New rates apply to live
+  // recomputation and newly saved sales only.
+  return _sales;
 }
 
 // ── ADD / UPDATE / DELETE ───────────────────────────────────
@@ -2320,15 +3195,17 @@ function _stStampOrphanAddonReceiptCommissions(sales, receiptId, rates) {
     var s = sales[i];
     if (!s || s.type !== 'addon' || String(s.receiptId || '') !== rid) continue;
     var lineComm = _stComputeLineCommission(s, rates);
-    var planN = String(s.plan || '').toLowerCase();
-    if (/\brx\s*savers?\b/.test(planN)) {
-      s.addonCommissionRate = null;
+    var infoAd = _stResolveProductRate(s.plan, { rates: rates });
+    if (infoAd.kind === 'flat') {
+      s.addonCommissionRate =
+        typeof s.addonCommissionRate === 'number'
+          ? s.addonCommissionRate
+          : null;
     } else {
       s.addonCommissionRate =
         typeof s.addonCommissionRate === 'number'
           ? s.addonCommissionRate
-          : rates.addonTypes[_stClassifyAddon(s.plan)] ||
-            rates.addonTypes.standard;
+          : Number(infoAd.rate);
     }
     s.addonCommission = lineComm;
   }
@@ -2644,7 +3521,11 @@ function _stReceiptReviewBuildManualInitial(st) {
     if (r.role === 'skip') continue;
     if (r.role === 'core') coreRow = r;
     else if (r.role === 'addon')
-      addons.push({ name: r.name, amount: r.price, ratePct: 70 });
+      addons.push({
+        name: r.name,
+        amount: r.price,
+        ratePct: _stRatePctForProductName(r.name)
+      });
   }
   var parsed0 = st.chunks[0].parsed || {};
   out.initial.customer = String(parsed0.customer || '').trim();
@@ -3749,11 +4630,10 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
     // up every DEAL this week regardless of status.
     if (s.type === 'deal' && s.ts >= weekStart && s.ts < weekEndExclusive) {
       if (typeof s.expectedDealTotal !== 'number') {
-        // Lazy-stamp: old rows inserted before this version
-        // won't have the fields yet.
         _stStampDealCommission(sales, i, rates);
       }
-      stats.weekExpectedCommission += Number(s.expectedDealTotal) || 0;
+      stats.weekExpectedCommission += Number(s.planCommission) || 0;
+      stats.weekExpectedCommission += Number(s.totalAddonCommission) || 0;
     }
 
     // Stats below only count VALID rows
@@ -3811,9 +4691,7 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
     if (includeInSales) {
       var lineAmt2 = Number(s.amount) || 0;
       var lineComm = _stComputeLineCommission(s, rates);
-      if (s.type === 'deal') {
-        lineComm += Number(s.enrollmentBonus) || 0;
-      } else {
+      if (s.type !== 'deal') {
         stats.weekAddonCommissionOnly += lineComm;
       }
       stats.weekCommissionValid += lineComm;
@@ -3839,6 +4717,17 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
     }
   }
   stats.weekExpectedCommission += _stCurrentTierBonus(stats);
+  stats.weekExpectedCommission += _stWeekEnrollmentBonus(
+    sales,
+    weekStart,
+    weekEndExclusive
+  );
+  stats.weekCommissionValid += _stWeekEnrollmentBonus(
+    sales,
+    weekStart,
+    weekEndExclusive
+  );
+  stats.weekCommissionValid += _stCurrentTierBonus(stats);
   return stats;
 }
 
@@ -3867,23 +4756,22 @@ function _stCurrentTierBonus(stats) {
 function _stPaycheckBreakdown(sales, stats) {
   var dealComm = 0;
   var addonComm = 0;
-  var enrollmentBonus = 0;
   var ratesOrphan = _stLoadCommissionRates();
   var ws = Number(stats.weekStart) || 0;
   var we =
     typeof stats.weekEndExclusive === 'number' && !isNaN(stats.weekEndExclusive)
       ? stats.weekEndExclusive
       : ws + 7 * 24 * 60 * 60 * 1000;
-  for (var i = 0; i < sales.length; i++) {
+  var i;
+  for (i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s || s.type !== 'deal') continue;
     if (s.ts < ws || s.ts >= we) continue;
     dealComm += Number(s.planCommission) || 0;
     addonComm += Number(s.totalAddonCommission) || 0;
-    enrollmentBonus += Number(s.enrollmentBonus) || 0;
   }
-  for (var j = 0; j < sales.length; j++) {
-    var ad = sales[j];
+  for (i = 0; i < sales.length; i++) {
+    var ad = sales[i];
     if (!ad || ad.type !== 'addon') continue;
     if (ad.ts < ws || ad.ts >= we) continue;
     if (_stIsReversalStatus(ad)) continue;
@@ -3895,6 +4783,7 @@ function _stPaycheckBreakdown(sales, stats) {
         : _stComputeLineCommission(ad, ratesOrphan);
     addonComm += ac;
   }
+  var enrollmentBonus = _stWeekEnrollmentBonus(sales, ws, we);
   var tierBonus = _stCurrentTierBonus(stats);
   var estimated = dealComm + addonComm + enrollmentBonus + tierBonus;
   return {
@@ -4866,13 +5755,7 @@ function _stAddonLineCommission(s) {
     if (_stIsReversalStatus(s)) c = -Math.abs(c);
     return c;
   }
-  var r =
-    typeof s.addonCommissionRate === 'number'
-      ? s.addonCommissionRate
-      : _stLoadCommissionRates().addonTypes[_stClassifyAddon(s.plan)] || 0.25;
-  var c = (Number(s.amount) || 0) * r;
-  if (_stIsReversalStatus(s)) c = -Math.abs(c);
-  return c;
+  return _stComputeLineCommission(s, _stLoadCommissionRates());
 }
 
 function _stGroupCommissionDisplay(grp) {
@@ -4979,12 +5862,18 @@ function _stGroupListStatus(g) {
 }
 
 function _stCommissionCellHtml(s) {
+  var info = _stResolveProductRate(s.plan, {});
+  var disc = _stCommissionDiscrepancyHtml(s);
+  var premier = _stPremierChargebackNoteHtml(s.plan);
   if (s.type === 'deal') {
     var expected = Number(s.expectedDealTotal) || 0;
     var planComm = Number(s.planCommission) || 0;
     var addonComm = Number(s.totalAddonCommission) || 0;
-    var bonus = Number(s.enrollmentBonus) || 0;
     var rate = Number(s.planCommissionRate) || 0;
+    var dealInfo = {
+      confidence: 'confirmed',
+      lowConfidence: false
+    };
     return (
       '<div class="st-comm-cell">' +
       '<div class="st-comm-total">$' +
@@ -4997,30 +5886,42 @@ function _stCommissionCellHtml(s) {
       Math.round(rate * 100) +
       '%' +
       (addonComm !== 0 ? ' + addons $' + addonComm.toFixed(2) : '') +
-      (bonus !== 0 ? ' + bonus $' + bonus.toFixed(2) : '') +
       '</div>' +
+      _stConfidenceBadgeHtml(dealInfo) +
+      premier +
+      disc +
       '<button type="button" class="st-comm-edit" title="Edit commission rates for this deal" onclick="_stOpenCommissionEditor(\'' +
       s.id +
       '\')">Edit</button>' +
       '</div>'
     );
   }
-  var aRate =
-    typeof s.addonCommissionRate === 'number'
-      ? s.addonCommissionRate
-      : _stLoadCommissionRates().addonTypes[_stClassifyAddon(s.plan)] || 0.25;
-  var aComm = (Number(s.amount) || 0) * aRate;
-  if (_stIsReversalStatus(s)) aComm = -Math.abs(aComm);
+  var shown =
+    typeof s.addonCommission === 'number'
+      ? Number(s.addonCommission)
+      : _stComputeLineCommission(s, _stLoadCommissionRates());
+  if (_stIsReversalStatus(s)) shown = -Math.abs(shown);
+  var rateLabel;
+  if (info.kind === 'flat' && typeof s.addonCommissionRate !== 'number') {
+    rateLabel = '$' + (Number(info.rate) || 0).toFixed(2) + ' flat';
+  } else {
+    var aRate =
+      typeof s.addonCommissionRate === 'number'
+        ? s.addonCommissionRate
+        : Number(info.rate) || 0;
+    rateLabel = Math.round(aRate * 10000) / 100 + '%';
+  }
   return (
     '<div class="st-comm-cell">' +
     '<div class="st-comm-total">$' +
-    aComm.toFixed(2) +
+    shown.toFixed(2) +
     '</div>' +
     '<div class="st-comm-breakdown">' +
-    Math.round(aRate * 100) +
-    '% (' +
-    _stClassifyAddon(s.plan) +
-    ')</div>' +
+    rateLabel +
+    '</div>' +
+    _stConfidenceBadgeHtml(info) +
+    premier +
+    disc +
     '<button type="button" class="st-comm-edit" title="Edit sale group" onclick="_stOpenCommissionEditor(\'' +
     s.id +
     '\')">Edit</button>' +
@@ -5757,20 +6658,16 @@ function _stDownloadWeeklyPdf() {
   var enrollQualified = [];
   var dealComm = 0;
   var addonComm = 0;
-  var enrollmentBonus = 0;
   var rowsHtml = '';
 
   for (var di = 0; di < deals.length; di++) {
     var d = deals[di];
     var dDate = _stEscape(_stFormatSaleListDate(d.ts));
     var dComm =
-      (Number(d.planCommission) || 0) +
-      (Number(d.totalAddonCommission) || 0) +
-      (Number(d.enrollmentBonus) || 0);
+      (Number(d.planCommission) || 0) + (Number(d.totalAddonCommission) || 0);
     dealComm += Number(d.planCommission) || 0;
     addonComm += Number(d.totalAddonCommission) || 0;
-    enrollmentBonus += Number(d.enrollmentBonus) || 0;
-    if (Number(d.enrollmentAmount || d.enrollmentFee || 0) === 125) {
+    if (_stSaleQualifiesEnrollmentBonus(d, sales)) {
       enrollQualified.push(d);
     }
     rowsHtml +=
@@ -6084,7 +6981,7 @@ function _stEntryAddAddonRow(addon) {
   var ratePct =
     addon && typeof addon.ratePct === 'number' && !isNaN(addon.ratePct)
       ? addon.ratePct
-      : 70;
+      : _stRatePctForProductName((addon && addon.name) || '');
   row.innerHTML =
     '<input class="st-entry-addon-name" type="text" placeholder="Add-on name" value="' +
     _stEscape((addon && addon.name) || '') +
@@ -6092,7 +6989,7 @@ function _stEntryAddAddonRow(addon) {
     '<input class="st-entry-addon-amt" type="number" step="0.01" placeholder="0.00" value="' +
     _stEscape(amount) +
     '">' +
-    '<input class="st-entry-addon-rate" type="number" step="1" placeholder="70" value="' +
+    '<input class="st-entry-addon-rate" type="number" step="1" placeholder="25" value="' +
     _stEscape(Math.round(ratePct)) +
     '">' +
     '<button type="button" class="st-entry-addon-remove" onclick="this.parentNode.remove()">Remove</button>';
@@ -6465,7 +7362,9 @@ function _stSaveEntryModal() {
     if (!name && (isNaN(amount) || amount <= 0)) continue;
     if (!name) name = 'Unknown Add-on';
     if (isNaN(amount) || amount < 0) amount = 0;
-    if (isNaN(ratePct) || ratePct < 0) ratePct = 70;
+    if (isNaN(ratePct) || ratePct < 0) {
+      ratePct = _stRatePctForProductName(name);
+    }
     addons.push({
       id: row.getAttribute('data-addon-id') || '',
       name: name,
@@ -6593,9 +7492,7 @@ function _stOpenCommissionEditor(saleId) {
       var arAo =
         typeof sales[ax].addonCommissionRate === 'number'
           ? sales[ax].addonCommissionRate * 100
-          : (ratesAo.addonTypes[_stClassifyAddon(sales[ax].plan)] ||
-              ratesAo.addonTypes.standard ||
-              0.7) * 100;
+          : _stRatePctForProductName(sales[ax].plan);
       addonsAo.push({
         id: sales[ax].id,
         name: sales[ax].plan || '',
@@ -6607,9 +7504,7 @@ function _stOpenCommissionEditor(saleId) {
       var seedRate =
         typeof seed.addonCommissionRate === 'number'
           ? seed.addonCommissionRate * 100
-          : (ratesAo.addonTypes[_stClassifyAddon(seed.plan)] ||
-              ratesAo.addonTypes.standard ||
-              0.7) * 100;
+          : _stRatePctForProductName(seed.plan);
       addonsAo.push({
         id: seed.id,
         name: seed.plan || '',
@@ -6661,9 +7556,7 @@ function _stOpenCommissionEditor(saleId) {
     var ar =
       typeof sales[ai].addonCommissionRate === 'number'
         ? sales[ai].addonCommissionRate * 100
-        : (rates.addonTypes[_stClassifyAddon(sales[ai].plan)] ||
-            rates.addonTypes.standard ||
-            0.7) * 100;
+        : _stRatePctForProductName(sales[ai].plan);
     addons.push({
       id: sales[ai].id,
       name: sales[ai].plan || '',
@@ -6723,9 +7616,6 @@ function _stResetGlobalCommissionRates() {
   )
     return;
   _stResetCommissionRates();
-  var sales = _stLoadSales();
-  _stRestampAllCommissions(sales);
-  _stSaveSales(sales);
   _stRender();
   _stFlash('Commission defaults reset.', 'ok');
 }
@@ -7064,7 +7954,6 @@ function _stComputeLivePaycheck(sales, weekStartMs) {
       : ws + 7 * 24 * 60 * 60 * 1000;
   var salesCommission = 0;
   var addonCommission = 0;
-  var enrollmentGross = 0;
   var chargebacks = 0;
   var sameWeekCancels = 0;
   var rates = _stLoadCommissionRates();
@@ -7077,15 +7966,13 @@ function _stComputeLivePaycheck(sales, weekStartMs) {
     var dealSt = _stNormalizeStatus(s);
     var planC = Math.abs(Number(s.planCommission) || 0);
     var addonC = Math.abs(Number(s.totalAddonCommission) || 0);
-    var enr = Math.abs(Number(s.enrollmentBonus) || 0);
     if (dealSt === 'samecancel') {
-      sameWeekCancels += planC + addonC + enr;
+      sameWeekCancels += planC + addonC;
     } else if (dealSt === 'chargeback') {
-      chargebacks += planC + addonC + enr;
+      chargebacks += planC + addonC;
     } else {
       salesCommission += planC;
       addonCommission += addonC;
-      enrollmentGross += enr;
     }
   }
   for (i = 0; i < sales.length; i++) {
@@ -7111,6 +7998,7 @@ function _stComputeLivePaycheck(sales, weekStartMs) {
   }
 
   var tierBonus = Number(pb.tierBonus) || 0;
+  var enrollmentGross = Number(pb.enrollmentBonus) || 0;
   var grossCommission =
     salesCommission + addonCommission + enrollmentGross + tierBonus;
   var netKpi = Number(pb.estimated) || 0;
@@ -7503,7 +8391,10 @@ function _stPersistReconcileHistoryAfterMatch(rawText, view, result) {
   var rec = _stBuildReconcileHistoryRecord(rawText, view, result);
   list.unshift(rec);
   var ok = !!_stSaveReconcileHistory(list);
-  if (ok) _stUpsertPaycheckFromHistory(rec, true);
+  if (ok) {
+    _stUpsertPaycheckFromHistory(rec, true);
+    _stLearnRatesFromReconcileRows(_stReconcileTableRows);
+  }
   return ok;
 }
 
@@ -7856,8 +8747,8 @@ function _stPaySheetSummaryLineKind(line) {
     .trim();
   if (!t) return '';
   if (
-    /\b\d{9}\b/.test(t) &&
-    /\b(Core|Ancillary|Add[\s\-]?ons?|Deal|Plan)\b/i.test(t)
+    /\b(Core|Ancillary|Add[\s\-]?ons?|Deal|Plan)\b/i.test(t) &&
+    /\$\s*[0-9]/.test(t)
   ) {
     return '';
   }
@@ -7934,6 +8825,7 @@ function _stParsePaySheet(text) {
   var lines = raw.split('\n');
   var lastSeenDateTs = 0;
   var lastSeenMemberId = '';
+  var lastSeenCustomer = '';
   var i;
   for (i = 0; i < lines.length; i++) {
     var line = String(lines[i] || '').trim();
@@ -7954,6 +8846,7 @@ function _stParsePaySheet(text) {
     var typeLocal = _stReconSheetTypeToLocal(typeRaw);
     if (!typeLocal) continue;
     var memberId = '';
+    var isContinuation = !midMatch;
     if (midMatch) {
       memberId = midMatch[1];
       lastSeenMemberId = memberId;
@@ -8047,10 +8940,12 @@ function _stParsePaySheet(text) {
     if (!productName) {
       // Untabulated single-line paste: customer usually sits before Type,
       // product name after it. Split on the Type match position.
+      var midToken = midMatch ? midMatch[0] : '';
       var typeAt = typeof typeMatch.index === 'number' ? typeMatch.index : -1;
       if (typeAt >= 0) {
-        var beforeClean = String(line.substring(0, typeAt) || '')
-          .replace(midMatch[0], ' ')
+        var beforeClean = String(line.substring(0, typeAt) || '');
+        if (midToken) beforeClean = beforeClean.replace(midToken, ' ');
+        beforeClean = beforeClean
           .replace(/\$\s*[0-9]+(?:\.[0-9]{1,2})?/g, ' ')
           .replace(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g, ' ')
           .replace(/[|,;]+/g, ' ')
@@ -8058,8 +8953,9 @@ function _stParsePaySheet(text) {
           .trim();
         var afterClean = String(
           line.substring(typeAt + typeMatch[0].length) || ''
-        )
-          .replace(midMatch[0], ' ')
+        );
+        if (midToken) afterClean = afterClean.replace(midToken, ' ');
+        afterClean = afterClean
           .replace(/\$\s*[0-9]+(?:\.[0-9]{1,2})?/g, ' ')
           .replace(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g, ' ')
           .replace(/[|,;]+/g, ' ')
@@ -8068,8 +8964,9 @@ function _stParsePaySheet(text) {
         if (afterClean) productName = afterClean;
         if (beforeClean && !customer) customer = beforeClean;
       } else {
-        var cleaned = line
-          .replace(midMatch[0], ' ')
+        var cleaned = line;
+        if (midToken) cleaned = cleaned.replace(midToken, ' ');
+        cleaned = cleaned
           .replace(typeMatch[0], ' ')
           .replace(/\$\s*[0-9]+(?:\.[0-9]{1,2})?/g, ' ')
           .replace(/\b\d{1,2}\/\d{1,2}(?:\/\d{2,4})?\b/g, ' ')
@@ -8079,6 +8976,9 @@ function _stParsePaySheet(text) {
         productName = cleaned;
       }
     }
+
+    if (customer) lastSeenCustomer = customer;
+    else if (isContinuation && lastSeenCustomer) customer = lastSeenCustomer;
 
     // Drop header-ish false positives (e.g. "Member ID" lines)
     var low = line.toLowerCase();
@@ -8099,6 +8999,9 @@ function _stParsePaySheet(text) {
       amount: amount,
       dateTs: rowDateTs
     });
+    if (amount < 0) {
+      rows[rows.length - 1].amountLost = Math.abs(amount);
+    }
   }
   rows.summary = summary;
   return rows;
@@ -13748,7 +14651,9 @@ function _stBuildAnalyticsDashboard(sales, stats) {
     ' avg</p>';
   html += '<p class="st-analytics-note">Last 4 weeks</p></div>';
 
-  html += '</div></section>';
+  html += '</div>';
+  html += _stBuildProductRatesPanelHtml();
+  html += '</section>';
   return html;
 }
 
@@ -13896,6 +14801,7 @@ function _stRender() {
   _stUpdateFabVisibility();
   _stWireSalesBulkDelegation(page);
   _stWireReconcileActionDelegation();
+  _stWireRatesActionDelegation();
   _stWireAllSalesSearchDelegation(page);
   _stWirePaycheckObserver();
   _stWireReconcileSheetControls();
@@ -13907,6 +14813,20 @@ function _stRender() {
       _stScrollThisWeekDayHeadIntoView(scrollAnchor);
     }, 0);
   }
+}
+
+function _stWireRatesActionDelegation() {
+  if (document.body.dataset.stRatesActionDeleg) return;
+  document.body.dataset.stRatesActionDeleg = '1';
+  document.body.addEventListener('click', function (e) {
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var btn = t.closest('[data-st-rates-action]');
+    if (!btn) return;
+    if (btn.closest('#page-salestracker')) return;
+    e.preventDefault();
+    _stHandleRatesActionClick(btn);
+  });
 }
 
 // One delegated click/change listener on #page-salestracker so bulk
@@ -13945,6 +14865,12 @@ function _stWireSalesBulkDelegation(page) {
     if (reconBtn) {
       e.preventDefault();
       _stHandleReconcileActionClick(reconBtn);
+      return;
+    }
+    var ratesBtn = t.closest('[data-st-rates-action]');
+    if (ratesBtn) {
+      e.preventDefault();
+      _stHandleRatesActionClick(ratesBtn);
       return;
     }
     var cbcBtn = t.closest('[data-st-cbc-action]');
@@ -14168,7 +15094,7 @@ function _stReconcileOpenAddSale(row) {
       {
         name: row.sheetProduct || row.product || '',
         amount: Math.abs(Number(row.sheetAmount) || 0),
-        ratePct: 70
+        ratePct: _stRatePctForProductName(row.sheetProduct || row.product || '')
       }
     ];
   }
