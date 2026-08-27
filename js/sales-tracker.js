@@ -647,6 +647,21 @@ function _stLookupNamedProduct(name, rates) {
   return null;
 }
 
+// Named products in the rate table are ancillaries, including
+// standalone (SA) lines the carrier export sometimes types as Core.
+function _stProductIsAncillary(name, rates) {
+  var rec = _stLookupNamedProduct(name, rates || _stLoadCommissionRates());
+  if (rec) return !rec.nonCommissionable;
+  var key = _stNormProductKey(name);
+  return !!(key && / sa$/.test(key));
+}
+
+function _stSaleCountsAsAddon(sale) {
+  if (!sale) return false;
+  if (sale.type === 'addon') return true;
+  return _stProductIsAncillary(sale.plan);
+}
+
 function _stResolveProductRate(name, opts) {
   opts = opts || {};
   var rates = opts.rates || _stLoadCommissionRates();
@@ -4989,7 +5004,7 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
     ) {
       stats.enrollments++;
     }
-    if (s.type === 'addon') stats.weekAddons++;
+    if (_stSaleCountsAsAddon(s)) stats.weekAddons++;
     else stats.weekDeals++;
 
     // Daily breakdown also uses raw amounts only, and respects
@@ -5293,21 +5308,23 @@ function _stBuildCoreVsAddOnLines(weekSales, rates) {
     s = weekSales[i];
     if (!s) continue;
     if (_stIsReversalStatus(s)) continue;
-    if (s.type === 'deal') {
-      tmpCore.push({
-        name: String(s.plan || '').trim() || 'Plan',
-        dateLabel: _stDay3(s.ts) + ' ' + _stMd(s.ts),
-        ts: Number(s.ts) || 0
-      });
-    } else if (s.type === 'addon') {
+    if (_stSaleCountsAsAddon(s)) {
       var addonCommCvao =
         typeof s.addonCommission === 'number'
           ? Number(s.addonCommission)
-          : Number(_stComputeLineCommission(s, rates));
+          : typeof s.planCommission === 'number'
+            ? Number(s.planCommission)
+            : Number(_stComputeLineCommission(s, rates));
       tmpAddon.push({
         name: String(s.plan || '').trim() || 'Add-on',
         dateLabel: _stDay3(s.ts) + ' ' + _stMd(s.ts),
         commission: addonCommCvao,
+        ts: Number(s.ts) || 0
+      });
+    } else if (s.type === 'deal') {
+      tmpCore.push({
+        name: String(s.plan || '').trim() || 'Plan',
+        dateLabel: _stDay3(s.ts) + ' ' + _stMd(s.ts),
         ts: Number(s.ts) || 0
       });
     }
@@ -8414,6 +8431,7 @@ function _stPaycheckFromRawText(rawText) {
   var strippedSales = 0;
   var strippedAddon = 0;
   var dealsPaid = 0;
+  var addonPaid = 0;
   for (i = 0; i < stripped.length; i++) {
     var a = Number(stripped[i].amount) || 0;
     if (a < 0) {
@@ -8422,6 +8440,7 @@ function _stPaycheckFromRawText(rawText) {
       strippedPos += a;
       if (stripped[i].typeLocal === 'addon') {
         strippedAddon += a;
+        addonPaid += 1;
       } else {
         strippedSales += a;
         dealsPaid += 1;
@@ -8439,6 +8458,10 @@ function _stPaycheckFromRawText(rawText) {
     adjustments: 0,
     netCommission: _stMoney2(signedNet),
     dealsPaid: dealsPaid,
+    tierBonus: _stCurrentTierBonus({
+      weekDeals: dealsPaid,
+      weekAddons: addonPaid
+    }),
     source: 'derived',
     verifiedAt: 0,
     computedAt: Date.now()
@@ -9320,6 +9343,10 @@ function _stParsePaySheet(text) {
 
     if (customer) lastSeenCustomer = customer;
     else if (isContinuation && lastSeenCustomer) customer = lastSeenCustomer;
+
+    if (typeLocal === 'deal' && _stProductIsAncillary(productName)) {
+      typeLocal = 'addon';
+    }
 
     // Drop header-ish false positives (e.g. "Member ID" lines)
     var low = line.toLowerCase();
