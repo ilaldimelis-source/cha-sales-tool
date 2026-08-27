@@ -26,16 +26,16 @@ Enforced by scripts/verify.js. Do not bypass.
 ## Project
 
 Static SPA — vanilla HTML/CSS/JS, no framework, no build step.
-Hosted on GitHub Pages from main branch.
-Live URL: https://ilaldimelis-source.github.io/cha-sales-tool/
+Deployed on Vercel, auto-deploys on merge to `main`.
+Live URL: https://cha-sales-tool.vercel.app/
 
 ## Sales Tracker architecture (current)
 
 - Sales Tracker page has a page-level KPI strip above the internal tab bar.
-- Internal tabs: `This Week`, `All Sales`, `Analytics`.
+- Internal tabs: `This Week`, `All Sales`, `Analytics`, `Reconcile`, `Paychecks`, `Chargebacks`, `History`.
 - Add Sale uses a fixed FAB + slide-over panel mounted as a body-level overlay root.
 - Dark mode has been permanently removed from this app and should not be reintroduced.
-- Service worker cache name is currently `cha-command-center-v379` in `sw2.js`.
+- Service worker cache: read `CACHE_NAME` from `sw2.js` and bump by exactly +1. Never assume the version.
 
 ## Protected Sales Tracker functions
 
@@ -50,44 +50,73 @@ Live URL: https://ilaldimelis-source.github.io/cha-sales-tool/
 
 - index.html — app shell
 - css/tokens.css — **FIRST stylesheet** in index.html; shared CHA palette tokens (`--cha-*`)
-- css/styles.css — all styling
+- css/styles.css — shared app styling
+- css/sales-tracker.css — Sales Tracker styles
+- css/course-215.css — Course 215 styles (loaded after chat.js)
+- js/storage-utils.js — scoped localStorage helpers
+- js/auth.js — Clerk session
+- js/speed-insights.js — Vercel Speed Insights
 - js/plan-registry.js — MASTER PLAN LIST (edit this to add new plans)
-- js/plan-data.js — POLICY_DOCS array (27 plan benefit data objects)
-- js/policy-docs.js — plan card render functions
-- js/plans-benefits.js — Plans tab, Compare, Benefits
-- js/chat.js — Benefits Reference chatbot
 - js/utils.js — search engine, synonyms, fuzzy match
-- js/training.js — Training tab
-- js/call-playbook.js — Scripts tab, Plan Scripts
-- js/ai-tools.js — AI Tools tab
-- js/live-assist.js — Live Assist tab
-- js/compliance.js — Compliance tab
 - js/recovery-data.js — recovery data
 - js/objections.js — objections tab
+- js/knowledge_base.js — knowledge base
+- js/plan-data.js — POLICY_DOCS array (plan benefit data objects)
+- js/plan-data-extended.js — extended plan data
+- js/plan-data-pdf-raw.js — extracted plan PDF text
+- js/plan-pdf-map.js — plan-to-PDF map
+- js/pdf-knowledge-runtime.js — PDF knowledge runtime
+- js/policy-docs.js — plan card render functions
+- js/plans-benefits.js — Plans tab, Compare, Benefits
+- js/call-playbook.js — Scripts tab, Plan Scripts
+- js/live-assist.js — Live Assist tab
+- js/ai-tools.js — AI Tools tab
+- js/training.js — Training tab
+- js/compliance.js — Compliance tab
+- js/docusign-walkthrough.js — DocuSign walkthrough
 - js/myspace.js — My Space tab
-- js/app.js — routing, navigation, initApp (LOADS LAST)
+- js/sales-tracker.js — Sales Tracker
+- js/office.js — Office tab
+- js/app.js — routing, navigation, initApp
+- js/chat.js — Benefits Reference chatbot
+- js/course-215.js — Course 215 (loads after chat.js)
 
 ## Stylesheet load order in index.html (NEVER CHANGE)
 
 1. css/tokens.css (FIRST — defines `--cha-*` tokens used by the rest of the CSS)
+2. css/styles.css
+3. css/sales-tracker.css
+4. css/course-215.css (after chat.js)
 
 ## Script Load Order in index.html (NEVER CHANGE)
 
-1. js/plan-registry.js (FIRST)
-2. js/utils.js
-3. js/recovery-data.js
-4. js/objections.js
-5. js/plan-data.js
-6. js/policy-docs.js
-7. js/plans-benefits.js
-8. js/call-playbook.js
-9. js/live-assist.js
-10. js/ai-tools.js
-11. js/training.js
-12. js/compliance.js
-13. js/myspace.js
-14. js/app.js (LAST — no exceptions)
-15. js/chat.js (after app.js)
+1. js/storage-utils.js
+2. js/auth.js
+3. js/speed-insights.js
+4. js/plan-registry.js
+5. js/utils.js
+6. js/recovery-data.js
+7. js/objections.js
+8. js/knowledge_base.js
+9. js/plan-data.js
+10. js/plan-data-extended.js
+11. js/plan-data-pdf-raw.js
+12. js/plan-pdf-map.js
+13. js/pdf-knowledge-runtime.js
+14. js/policy-docs.js
+15. js/plans-benefits.js
+16. js/call-playbook.js
+17. js/live-assist.js
+18. js/ai-tools.js
+19. js/training.js
+20. js/compliance.js
+21. js/docusign-walkthrough.js
+22. js/myspace.js
+23. js/sales-tracker.js
+24. js/office.js
+25. js/app.js
+26. js/chat.js (after app.js)
+27. js/course-215.js (after chat.js)
 
 ## Color System
 
