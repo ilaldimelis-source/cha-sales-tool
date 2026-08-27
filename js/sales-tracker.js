@@ -1196,6 +1196,30 @@ function _stHandleRatesActionClick(btn) {
   if (action === 'recalc-clear') {
     _stRecalcPreview = null;
     _stRender();
+    return;
+  }
+  if (action === 'reset-ask') {
+    _stRatesResetConfirm = true;
+    _stRender();
+    return;
+  }
+  if (action === 'reset-cancel') {
+    _stRatesResetConfirm = false;
+    _stRender();
+    return;
+  }
+  if (action === 'reset-apply') {
+    var restored = _stApplyProductRatesReset();
+    if (restored == null) return;
+    _stFlash(
+      'Rates reset. Restored ' +
+        restored +
+        ' product' +
+        (restored === 1 ? '' : 's') +
+        ' from the built-in list.',
+      'ok'
+    );
+    _stRender();
   }
 }
 
@@ -1520,6 +1544,69 @@ function _stBuildProductRateTableHtml(rows) {
   return html;
 }
 
+function _stCountCustomProductRates() {
+  var rates = _stLoadCommissionRates();
+  var map = rates.products || {};
+  var seen = {};
+  var n = 0;
+  var key;
+  for (key in map) {
+    if (!Object.prototype.hasOwnProperty.call(map, key)) continue;
+    var rec = map[key];
+    if (!rec || rec.deleted) continue;
+    var custom = !!(
+      rec.manual ||
+      rec.source === 'manual' ||
+      rec.source === 'learned'
+    );
+    if (!custom) continue;
+    var id = rec.name ? _stNormProductKey(rec.name) : key;
+    if (!id || seen[id]) continue;
+    seen[id] = true;
+    n++;
+  }
+  return n;
+}
+
+function _stCountSeedProductDisplayRows() {
+  return (
+    _stProductRateRowsForUi().length + _stProductRateRowsForUi('noncomm').length
+  );
+}
+
+function _stApplyProductRatesReset() {
+  if (!_stRatesResetConfirm) return null;
+  _stResetCommissionRates();
+  _stRatesResetConfirm = false;
+  _stRecalcPreview = null;
+  return _stCountSeedProductDisplayRows();
+}
+
+function _stBuildRatesResetConfirmHtml() {
+  if (!_stRatesResetConfirm) return '';
+  var n = _stCountCustomProductRates();
+  var html = '<div class="st-rates-reset-confirm" role="status">';
+  html +=
+    '<p>Resets all product rates to the built-in defaults. Any rates you edited or added will be lost. Learned rates and conflict flags are cleared too.</p>';
+  if (n) {
+    html +=
+      '<p>' +
+      n +
+      ' edited or learned rate' +
+      (n === 1 ? '' : 's') +
+      ' would be discarded.</p>';
+  } else {
+    html += '<p>No edited or learned rates to discard. Reset is harmless.</p>';
+  }
+  html += '<div class="st-rates-reset-actions">';
+  html +=
+    '<button type="button" class="st-rates-reset-apply" data-st-rates-action="reset-apply">Confirm reset</button>';
+  html +=
+    '<button type="button" class="st-rates-add" data-st-rates-action="reset-cancel">Cancel</button>';
+  html += '</div></div>';
+  return html;
+}
+
 function _stBuildProductRatesPanelHtml() {
   var rows = _stProductRateRowsForUi();
   var nonComm = _stProductRateRowsForUi('noncomm');
@@ -1527,7 +1614,7 @@ function _stBuildProductRatesPanelHtml() {
   var conflicts = rates.conflicts || [];
   var html =
     '<details class="st-rates-panel"' +
-    (_stRecalcPreview ? ' open' : '') +
+    (_stRecalcPreview || _stRatesResetConfirm ? ' open' : '') +
     '><summary>Product commission rates</summary>';
   html +=
     '<p class="st-rates-help">Named rates override keyword buckets. Manual rates are permanent. Confirmed, Inferred, and Unknown stay visually distinct.</p>';
@@ -1542,7 +1629,10 @@ function _stBuildProductRatesPanelHtml() {
   html += '<div class="st-rates-add-row">';
   html +=
     '<button type="button" class="st-rates-add" data-st-rates-action="add">Add product</button>';
+  html +=
+    '<button type="button" class="st-rates-reset" data-st-rates-action="reset-ask">Reset rates</button>';
   html += '</div>';
+  html += _stBuildRatesResetConfirmHtml();
   html += _stBuildProductRateTableHtml(rows);
   html += _stBuildRecalcPreviewHtml(_stRecalcPreview);
   if (nonComm.length) {
@@ -5790,6 +5880,7 @@ var _stMarkModalStatus = '';
 // the last paste-Match. Reset on new Match; never persisted.
 var _stReconcileSessionResolved = [];
 var _stRecalcPreview = null;
+var _stRatesResetConfirm = false;
 
 // Chargebacks & Cancels tab (in-memory UI state)
 var _stCbcTimeFilter = 'all';
