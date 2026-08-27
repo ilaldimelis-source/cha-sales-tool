@@ -4508,6 +4508,7 @@ var _stReconcileMode = false;
 var _stHistoryMode = false;
 var _stHistoryViewingId = '';
 var _stPaySheetRows = [];
+var _stPaySheetSummary = null;
 var _stPaySheetRawText = '';
 var _stPaySheetAnalyzedAt = 0;
 var _stReconcileResult = null;
@@ -4528,6 +4529,13 @@ var _stCbcTypeFilter = 'all';
 var _stCbcCustomStart = '';
 var _stCbcCustomEnd = '';
 var _stCbcCachedEvents = [];
+
+var _ST_PAYCHECK_SALARY_DEFAULT = 300;
+var _stPcTimeFilter = 'last4';
+var _stPcCustomStart = '';
+var _stPcCustomEnd = '';
+var _stPcChartMetric = 'netpay';
+var _stPcViewingWeek = 0;
 
 // Toggle handler: called from the This Week / All Sales
 // buttons at the top of the sales table.
@@ -6904,6 +6912,12 @@ function _stEmptyPaycheck(source) {
     adjustments: null,
     netCommission: null,
     dealsPaid: null,
+    tierBonus: null,
+    enrollmentFeeBonus: null,
+    spiffBonus: null,
+    salary: null,
+    netPay: null,
+    totalEarned: null,
     source: source || 'derived',
     verifiedAt: 0,
     computedAt: 0
@@ -6925,6 +6939,63 @@ function _stPaycheckNetFromParts(pb) {
   );
 }
 
+function _stPaycheckBonusSum(pb) {
+  if (!pb) return 0;
+  return (
+    (Number(pb.tierBonus) || 0) +
+    (Number(pb.enrollmentFeeBonus) || 0) +
+    (Number(pb.spiffBonus) || 0)
+  );
+}
+
+function _stPaycheckNetPayFromParts(pb) {
+  if (!pb) return null;
+  if (
+    pb.grossCommission == null ||
+    pb.chargebacks == null ||
+    pb.sameWeekCancels == null ||
+    pb.adjustments == null
+  ) {
+    return null;
+  }
+  return _stMoney2(
+    pb.grossCommission -
+      pb.chargebacks -
+      pb.sameWeekCancels +
+      _stPaycheckBonusSum(pb) +
+      (Number(pb.adjustments) || 0)
+  );
+}
+
+function _stPaycheckFinishNumbers(pb) {
+  if (!pb || pb.source === 'verified') return pb;
+  if (pb.netCommission == null) {
+    pb.netCommission = _stPaycheckNetFromParts(pb);
+  }
+  if (pb.netPay == null) {
+    var np = _stPaycheckNetPayFromParts(pb);
+    if (np == null && pb.netCommission != null) np = pb.netCommission;
+    pb.netPay = np;
+  }
+  if (pb.totalEarned == null && pb.netPay != null && pb.salary != null) {
+    pb.totalEarned = _stMoney2(Number(pb.netPay) + Number(pb.salary));
+  }
+  return pb;
+}
+
+function _stPaycheckApplySheetSummary(pb, summary) {
+  if (!pb || !summary || !summary.found) return pb;
+  if (pb.source === 'verified') return pb;
+  pb.tierBonus = _stMoney2(summary.tierBonus);
+  pb.enrollmentFeeBonus = _stMoney2(summary.enrollmentFeeBonus);
+  pb.spiffBonus = _stMoney2(summary.spiffBonus);
+  pb.netPay = _stMoney2(summary.netPay);
+  if (pb.salary != null) {
+    pb.totalEarned = _stMoney2(Number(pb.netPay) + Number(pb.salary));
+  }
+  return pb;
+}
+
 function _stFillPaycheckNulls(target, src) {
   if (!target || !src) return target;
   var keys = [
@@ -6935,7 +7006,13 @@ function _stFillPaycheckNulls(target, src) {
     'sameWeekCancels',
     'adjustments',
     'netCommission',
-    'dealsPaid'
+    'dealsPaid',
+    'tierBonus',
+    'enrollmentFeeBonus',
+    'spiffBonus',
+    'salary',
+    'netPay',
+    'totalEarned'
   ];
   var k;
   for (k = 0; k < keys.length; k++) {
@@ -6950,10 +7027,7 @@ function _stMarkDerivedPaycheck(pb) {
   pb.source = 'derived';
   pb.verifiedAt = 0;
   if (!pb.computedAt) pb.computedAt = Date.now();
-  if (pb.netCommission == null) {
-    pb.netCommission = _stPaycheckNetFromParts(pb);
-  }
-  return pb;
+  return _stPaycheckFinishNumbers(pb);
 }
 
 function _stApplySaleReversal(sale, newStatus, originalCommission) {
@@ -7076,6 +7150,12 @@ function _stComputeLivePaycheck(sales, weekStartMs) {
     adjustments: adjustments,
     netCommission: _stMoney2(netKpi),
     dealsPaid: Number(stats.weekDeals) || 0,
+    tierBonus: _stMoney2(tierBonus),
+    enrollmentFeeBonus: _stMoney2(enrollmentGross),
+    spiffBonus: null,
+    salary: null,
+    netPay: _stMoney2(netKpi),
+    totalEarned: null,
     source: 'live',
     verifiedAt: 0,
     computedAt: Date.now()
@@ -7150,7 +7230,7 @@ function _stPaycheckFromRawText(rawText) {
   }
   var sameWeekCancels = _stMoney2(origPos - strippedPos);
   if (sameWeekCancels < 0) sameWeekCancels = 0;
-  return _stMarkDerivedPaycheck({
+  var pb = _stMarkDerivedPaycheck({
     grossCommission: _stMoney2(origPos),
     salesCommission: _stMoney2(strippedSales),
     addonCommission: _stMoney2(strippedAddon),
@@ -7163,6 +7243,17 @@ function _stPaycheckFromRawText(rawText) {
     verifiedAt: 0,
     computedAt: Date.now()
   });
+  if (rows.summary && rows.summary.found) {
+    if (rows.summary.totalsCommission) {
+      pb.grossCommission = _stMoney2(rows.summary.totalsCommission);
+    }
+    if (rows.summary.chargebackAmount) {
+      pb.chargebacks = _stMoney2(rows.summary.chargebackAmount);
+    }
+    _stPaycheckApplySheetSummary(pb, rows.summary);
+    _stPaycheckFinishNumbers(pb);
+  }
+  return pb;
 }
 
 function _stPaycheckFromWeekSales(sales, weekStart) {
@@ -7402,6 +7493,7 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
   }
   var weekStart = view && view.start ? Number(view.start) : 0;
   var paycheck = _stComputeLivePaycheck(_stLoadSales(), weekStart);
+  _stPaycheckApplySheetSummary(paycheck, _stPaySheetSummary);
   return {
     id: 'rh_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
     weekStart: weekStart,
@@ -7432,8 +7524,11 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
 function _stPersistReconcileHistoryAfterMatch(rawText, view, result) {
   if (!result) return false;
   var list = _stLoadReconcileHistory();
-  list.unshift(_stBuildReconcileHistoryRecord(rawText, view, result));
-  return !!_stSaveReconcileHistory(list);
+  var rec = _stBuildReconcileHistoryRecord(rawText, view, result);
+  list.unshift(rec);
+  var ok = !!_stSaveReconcileHistory(list);
+  if (ok) _stUpsertPaycheckFromHistory(rec, true);
+  return ok;
 }
 
 function _stFindReconcileHistoryRecord(id) {
@@ -7741,8 +7836,119 @@ function _stReconMatchedWeekLabel(view) {
   return _stFmtMonthDay(ws) + ' - ' + _stFmtMonthDay(we);
 }
 
+function _stEmptyPaySheetSummary(found) {
+  return {
+    found: !!found,
+    totalsCommission: 0,
+    coreCount: 0,
+    ancillaryCount: 0,
+    chargebackCount: 0,
+    chargebackAmount: 0,
+    tierBonus: 0,
+    enrollmentFeeBonus: 0,
+    spiffBonus: 0,
+    netPay: 0
+  };
+}
+
+function _stPaySheetLineLastMoney(line) {
+  var s = String(line || '');
+  var amtRe = /([-\u2212\u2013]\s*)?\$\s*([0-9,]+(?:\.[0-9]{1,2})?)/g;
+  var amtMatch = null;
+  var amtScan;
+  while ((amtScan = amtRe.exec(s)) !== null) {
+    amtMatch = amtScan;
+  }
+  if (!amtMatch) return null;
+  var n = parseFloat(String(amtMatch[2]).replace(/,/g, '')) || 0;
+  if (amtMatch[1]) n = -Math.abs(n);
+  return n;
+}
+
+function _stPaySheetLineFirstInt(line) {
+  var m = String(line || '').match(/(\d+)/);
+  if (!m) return 0;
+  return parseInt(m[1], 10) || 0;
+}
+
+function _stPaySheetSummaryLineKind(line) {
+  var t = String(line || '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (!t) return '';
+  if (
+    /\b\d{9}\b/.test(t) &&
+    /\b(Core|Ancillary|Add[\s\-]?ons?|Deal|Plan)\b/i.test(t)
+  ) {
+    return '';
+  }
+  var low = t.toLowerCase();
+  if (/^totals\b/.test(low)) return 'totals';
+  if (/^core plans\b/.test(low)) return 'coreCount';
+  if (/^ancillar/.test(low)) return 'ancillaryCount';
+  if (/^chargebacks\b/.test(low)) return 'chargebacks';
+  if (/^tier bonus\b/.test(low)) return 'tierBonus';
+  if (/^enrollment fee bonus\b/.test(low)) return 'enrollmentFeeBonus';
+  if (/^spiff bonus\b/.test(low)) return 'spiffBonus';
+  if (/^net pay\b/.test(low)) return 'netPay';
+  return '';
+}
+
+function _stApplyPaySheetSummaryLine(summary, kind, line) {
+  if (!summary || !kind) return;
+  summary.found = true;
+  var money = _stPaySheetLineLastMoney(line);
+  var n = money == null ? 0 : money;
+  if (kind === 'totals') {
+    summary.totalsCommission = _stMoney2(Math.abs(n));
+    var cm = String(line || '').match(/(\d+)\s*core\s*\/\s*(\d+)\s*anc/i);
+    if (cm) {
+      if (!summary.coreCount) summary.coreCount = parseInt(cm[1], 10) || 0;
+      if (!summary.ancillaryCount) {
+        summary.ancillaryCount = parseInt(cm[2], 10) || 0;
+      }
+    }
+    return;
+  }
+  if (kind === 'coreCount') {
+    summary.coreCount = _stPaySheetLineFirstInt(
+      String(line || '').replace(/^core plans\b/i, '')
+    );
+    return;
+  }
+  if (kind === 'ancillaryCount') {
+    summary.ancillaryCount = _stPaySheetLineFirstInt(
+      String(line || '').replace(/^ancillar\w*/i, '')
+    );
+    return;
+  }
+  if (kind === 'chargebacks') {
+    summary.chargebackAmount = _stMoney2(Math.abs(n));
+    summary.chargebackCount = _stPaySheetLineFirstInt(
+      String(line || '').replace(/^chargebacks\b/i, '')
+    );
+    return;
+  }
+  if (kind === 'tierBonus') {
+    summary.tierBonus = _stMoney2(n < 0 ? 0 : n);
+    return;
+  }
+  if (kind === 'enrollmentFeeBonus') {
+    summary.enrollmentFeeBonus = _stMoney2(n < 0 ? 0 : n);
+    return;
+  }
+  if (kind === 'spiffBonus') {
+    summary.spiffBonus = _stMoney2(n < 0 ? 0 : n);
+    return;
+  }
+  if (kind === 'netPay') {
+    summary.netPay = _stMoney2(n < 0 ? 0 : n);
+  }
+}
+
 function _stParsePaySheet(text) {
   var rows = [];
+  var summary = _stEmptyPaySheetSummary(false);
   var raw = String(text || '')
     .replace(/\r\n/g, '\n')
     .replace(/\r/g, '\n');
@@ -7753,6 +7959,11 @@ function _stParsePaySheet(text) {
   for (i = 0; i < lines.length; i++) {
     var line = String(lines[i] || '').trim();
     if (!line) continue;
+    var summaryKind = _stPaySheetSummaryLineKind(line);
+    if (summaryKind) {
+      _stApplyPaySheetSummaryLine(summary, summaryKind, line);
+      continue;
+    }
     var lineDateTs = _stReconParseSheetDateFromLine(line);
     if (lineDateTs) lastSeenDateTs = lineDateTs;
     var midMatch = line.match(/\b(\d{9})\b/);
@@ -7910,6 +8121,7 @@ function _stParsePaySheet(text) {
       dateTs: rowDateTs
     });
   }
+  rows.summary = summary;
   return rows;
 }
 
@@ -8311,6 +8523,7 @@ function _stReconcileSessionPush(label) {
 
 function _stClearPaySheetSession() {
   _stPaySheetRows = [];
+  _stPaySheetSummary = _stEmptyPaySheetSummary(false);
   _stPaySheetRawText = '';
   _stPaySheetAnalyzedAt = 0;
   _stReconcileResult = null;
@@ -8326,6 +8539,8 @@ function _stApplyPaySheetText(text) {
   var rows = _stParsePaySheet(text);
   _stPaySheetRawText = text;
   _stPaySheetRows = rows;
+  _stPaySheetSummary =
+    rows && rows.summary ? rows.summary : _stEmptyPaySheetSummary(false);
   _stPaySheetAnalyzedAt = Date.now();
   _stReconcileSessionReset();
   _stReconcileIgnoredKeys = {};
@@ -9953,6 +10168,9 @@ function _stReconcileCollectViewState(sales, view) {
   var trackerNet =
     live && live.netCommission != null ? Number(live.netCommission) : 0;
   var sheetNet = _stSumPaySheetCommission(_stPaySheetRows);
+  if (_stPaySheetSummary && _stPaySheetSummary.found) {
+    sheetNet = _stMoney2(_stPaySheetSummary.totalsCommission);
+  }
   var loaded = !!(_stPaySheetRows && _stPaySheetRows.length);
   var counts = _stReconcileCountRows(_stReconcileTableRows);
   var phase = 'notstarted';
@@ -11970,12 +12188,973 @@ function _stHandleCbcActionClick(btn) {
   }
 }
 
+function _stPcWeekRangeLabel(weekStart) {
+  var ws = Number(weekStart) || 0;
+  if (!ws) return '-';
+  var we = ws + 6 * 24 * 60 * 60 * 1000;
+  return _stFmtMonthDay(ws) + ' - ' + _stFmtMonthDay(we);
+}
+
+function _stPcFmtAmt(v) {
+  if (v == null || v === '') return '-';
+  return _stFmtMoney(v);
+}
+
+function _stPcStatusOf(pb) {
+  if (pb && pb.source === 'verified') return 'verified';
+  if (
+    pb &&
+    (pb.netPay != null ||
+      pb.netCommission != null ||
+      pb.grossCommission != null)
+  ) {
+    return 'estimated';
+  }
+  return 'needs';
+}
+
+function _stPcStatusLabel(status) {
+  if (status === 'verified') return 'Verified';
+  if (status === 'estimated') return 'Estimated';
+  return 'Needs verification';
+}
+
+function _stLoadPaychecks() {
+  var raw = _stGet(_stKey('cha_paychecks_v1')) || '[]';
+  var parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch (_ePcLoad) {
+    return [];
+  }
+  return Array.isArray(parsed) ? parsed : [];
+}
+
+function _stSavePaychecks(list) {
+  _stSet(_stKey('cha_paychecks_v1'), JSON.stringify(list || []));
+}
+
+function _stFindPaycheckRecord(weekStart) {
+  var ws = Number(weekStart) || 0;
+  if (!ws) return null;
+  var list = _stLoadPaychecks();
+  var i;
+  for (i = 0; i < list.length; i++) {
+    if (list[i] && Number(list[i].weekStart) === ws) return list[i];
+  }
+  return null;
+}
+
+function _stUpsertPaycheckFromHistory(histRec, allowReplace) {
+  if (!histRec) return;
+  var ws = Number(histRec.weekStart) || 0;
+  if (!ws) return;
+  var list = _stLoadPaychecks();
+  var i;
+  var idx = -1;
+  for (i = 0; i < list.length; i++) {
+    if (list[i] && Number(list[i].weekStart) === ws) {
+      idx = i;
+      break;
+    }
+  }
+  var existing = idx >= 0 ? list[idx] : null;
+  if (
+    existing &&
+    existing.paycheck &&
+    existing.paycheck.source === 'verified'
+  ) {
+    return;
+  }
+  if (existing && existing.paycheck && !allowReplace) return;
+  var rec = {
+    weekStart: ws,
+    weekLabel: histRec.weekLabel || _stPcWeekRangeLabel(ws),
+    paycheck: histRec.paycheck || _stEmptyPaycheck('derived'),
+    reconId: histRec.id || '',
+    reconSavedAt: histRec.savedAt || 0
+  };
+  if (idx >= 0) list[idx] = rec;
+  else list.push(rec);
+  _stSavePaychecks(list);
+}
+
+function _stSyncPaychecksFromHistory() {
+  var hist = _stLoadReconcileHistory() || [];
+  var i;
+  for (i = 0; i < hist.length; i++) {
+    _stUpsertPaycheckFromHistory(hist[i], false);
+  }
+}
+
+function _stPcHistoryForWeek(weekStart) {
+  var ws = Number(weekStart) || 0;
+  var hist = _stLoadReconcileHistory() || [];
+  var i;
+  var best = null;
+  for (i = 0; i < hist.length; i++) {
+    if (!hist[i] || Number(hist[i].weekStart) !== ws) continue;
+    if (!best || Number(hist[i].savedAt) > Number(best.savedAt)) best = hist[i];
+  }
+  return best;
+}
+
+function _stPcRecordForWeek(sales, weekStart) {
+  var ws = Number(weekStart) || 0;
+  var stored = _stFindPaycheckRecord(ws);
+  if (stored && stored.paycheck && stored.paycheck.source === 'verified') {
+    return stored;
+  }
+  var hist = _stPcHistoryForWeek(ws);
+  var live = ws ? _stPaycheckFromWeekSales(sales, ws) : null;
+  var pb = _stEmptyPaycheck('derived');
+  if (stored && stored.paycheck) _stFillPaycheckNulls(pb, stored.paycheck);
+  if (hist && hist.paycheck) _stFillPaycheckNulls(pb, hist.paycheck);
+  if (live) _stFillPaycheckNulls(pb, live);
+  _stPaycheckFinishNumbers(pb);
+  return {
+    weekStart: ws,
+    weekLabel:
+      (stored && stored.weekLabel) ||
+      (hist && hist.weekLabel) ||
+      _stPcWeekRangeLabel(ws),
+    paycheck: pb,
+    reconId: (stored && stored.reconId) || (hist && hist.id) || '',
+    reconSavedAt: (stored && stored.reconSavedAt) || (hist && hist.savedAt) || 0
+  };
+}
+
+function _stWriteVerifiedPaycheck(weekStart, pb, meta) {
+  var ws = Number(weekStart) || 0;
+  if (!ws || !pb) return;
+  pb.source = 'verified';
+  pb.verifiedAt = Date.now();
+  pb.computedAt = pb.verifiedAt;
+  var list = _stLoadPaychecks();
+  var i;
+  var idx = -1;
+  for (i = 0; i < list.length; i++) {
+    if (list[i] && Number(list[i].weekStart) === ws) {
+      idx = i;
+      break;
+    }
+  }
+  var rec = {
+    weekStart: ws,
+    weekLabel: (meta && meta.weekLabel) || _stPcWeekRangeLabel(ws),
+    paycheck: pb,
+    reconId: (meta && meta.reconId) || '',
+    reconSavedAt: (meta && meta.reconSavedAt) || 0
+  };
+  if (idx >= 0) list[idx] = rec;
+  else list.push(rec);
+  _stSavePaychecks(list);
+  var hist = _stLoadReconcileHistory() || [];
+  var changed = false;
+  for (i = 0; i < hist.length; i++) {
+    if (!hist[i] || Number(hist[i].weekStart) !== ws) continue;
+    if (hist[i].paycheck && hist[i].paycheck.source === 'verified') continue;
+    hist[i].paycheck = pb;
+    changed = true;
+  }
+  if (changed) _stSaveReconcileHistory(hist);
+}
+
+function _stPcTimeBounds() {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var ws = _stCurrentWeekStartMs();
+  var now = new Date();
+  var filter = _stPcTimeFilter || 'last4';
+  if (filter === 'last4') {
+    return { start: ws - 3 * weekMs, endExclusive: ws + weekMs, fill: true };
+  }
+  if (filter === 'last8') {
+    return { start: ws - 7 * weekMs, endExclusive: ws + weekMs, fill: true };
+  }
+  if (filter === 'month') {
+    return {
+      start: new Date(now.getFullYear(), now.getMonth(), 1).getTime(),
+      endExclusive: _stCbcTomorrowStartMs(),
+      fill: true
+    };
+  }
+  if (filter === 'last3') {
+    return {
+      start: new Date(now.getFullYear(), now.getMonth() - 2, 1).getTime(),
+      endExclusive: _stCbcTomorrowStartMs(),
+      fill: true
+    };
+  }
+  if (filter === 'ytd') {
+    return {
+      start: new Date(now.getFullYear(), 0, 1).getTime(),
+      endExclusive: _stCbcTomorrowStartMs(),
+      fill: true
+    };
+  }
+  if (filter === 'custom') {
+    var from = _stIsoToDate(_stPcCustomStart);
+    var to = _stIsoToDate(_stPcCustomEnd);
+    if (!from || !to) return { start: 0, endExclusive: 0, incomplete: true };
+    var start = _stStartOfDay(from).getTime();
+    var endD = _stStartOfDay(to);
+    endD.setDate(endD.getDate() + 1);
+    if (endD.getTime() <= start) {
+      return { start: 0, endExclusive: 0, incomplete: true };
+    }
+    return { start: start, endExclusive: endD.getTime(), fill: true };
+  }
+  return { start: 0, endExclusive: ws + weekMs, fill: false };
+}
+
+function _stPcCollectWeekStarts(sales, bounds) {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var map = {};
+  function add(ts) {
+    var n = Number(ts) || 0;
+    if (!n) return;
+    var ws = _stWeekStartFromTs(n);
+    if (!ws) return;
+    if (bounds && !bounds.incomplete && bounds.start) {
+      if (ws + weekMs <= bounds.start || ws >= bounds.endExclusive) return;
+    }
+    map[String(ws)] = ws;
+  }
+  var i;
+  for (i = 0; i < (sales || []).length; i++) {
+    if (sales[i]) add(sales[i].ts);
+  }
+  var stored = _stLoadPaychecks();
+  for (i = 0; i < stored.length; i++) {
+    if (stored[i]) add(stored[i].weekStart);
+  }
+  var hist = _stLoadReconcileHistory() || [];
+  for (i = 0; i < hist.length; i++) {
+    if (hist[i]) add(hist[i].weekStart);
+  }
+  if (bounds && bounds.fill && !bounds.incomplete) {
+    var cursor = _stWeekStartFromTs(bounds.start) || bounds.start;
+    var end = Number(bounds.endExclusive) || 0;
+    while (cursor && cursor < end) {
+      map[String(cursor)] = cursor;
+      cursor += weekMs;
+    }
+  }
+  var out = [];
+  var k;
+  for (k in map) {
+    if (Object.prototype.hasOwnProperty.call(map, k)) out.push(map[k]);
+  }
+  out.sort(function (a, b) {
+    return b - a;
+  });
+  return out;
+}
+
+function _stPcLaterAdjustments(sales, weekStart) {
+  var ws = Number(weekStart) || 0;
+  var events = _stCbcCollectEvents(sales);
+  var out = [];
+  var i;
+  for (i = 0; i < events.length; i++) {
+    var ev = events[i];
+    if (!ev) continue;
+    var orig = Number(ev.originalPaycheckWeek) || 0;
+    var deduct = Number(ev.deductionPaycheckWeek) || 0;
+    if (orig === ws && deduct && deduct !== ws) out.push(ev);
+  }
+  return out;
+}
+
+function _stPcWeekNamedDeductions(sales, weekStart) {
+  var ws = Number(weekStart) || 0;
+  var events = _stCbcCollectEvents(sales);
+  var out = [];
+  var i;
+  for (i = 0; i < events.length; i++) {
+    var ev = events[i];
+    if (!ev) continue;
+    var orig = Number(ev.originalPaycheckWeek) || 0;
+    var deduct = Number(ev.deductionPaycheckWeek) || 0;
+    var hit;
+    if (ev.type === 'samecancel') {
+      hit = orig === ws || deduct === ws;
+    } else {
+      hit = deduct === ws;
+    }
+    if (hit) out.push(ev);
+  }
+  return out;
+}
+
+function _stBuildPcSummaryHtml(records) {
+  var gross = 0;
+  var cb = 0;
+  var swc = 0;
+  var bonuses = 0;
+  var salary = 0;
+  var earned = 0;
+  var nPay = 0;
+  var hasGross = false;
+  var hasCb = false;
+  var hasSwc = false;
+  var hasBonus = false;
+  var hasSalary = false;
+  var hasEarned = false;
+  var i;
+  for (i = 0; i < (records || []).length; i++) {
+    var pb = records[i] && records[i].paycheck;
+    if (!pb) continue;
+    nPay += 1;
+    if (pb.grossCommission != null) {
+      hasGross = true;
+      gross += Number(pb.grossCommission) || 0;
+    }
+    if (pb.chargebacks != null) {
+      hasCb = true;
+      cb += Number(pb.chargebacks) || 0;
+    }
+    if (pb.sameWeekCancels != null) {
+      hasSwc = true;
+      swc += Number(pb.sameWeekCancels) || 0;
+    }
+    if (
+      pb.tierBonus != null ||
+      pb.enrollmentFeeBonus != null ||
+      pb.spiffBonus != null
+    ) {
+      hasBonus = true;
+      bonuses += _stPaycheckBonusSum(pb);
+    }
+    if (pb.salary != null) {
+      hasSalary = true;
+      salary += Number(pb.salary) || 0;
+    }
+    if (pb.totalEarned != null) {
+      hasEarned = true;
+      earned += Number(pb.totalEarned) || 0;
+    }
+  }
+  return (
+    '<div class="st-pc-figures">' +
+    '<div class="st-pc-fig"><span>Gross commission</span><strong>' +
+    _stEscape(hasGross ? _stFmtMoney(gross) : '-') +
+    '</strong></div>' +
+    '<div class="st-pc-fig"><span>Chargebacks</span><strong class="' +
+    (hasCb && cb > 0 ? 'st-pc-lost' : '') +
+    '">' +
+    _stEscape(hasCb ? (cb ? '-' : '') + _stFmtMoney(cb) : '-') +
+    '</strong></div>' +
+    '<div class="st-pc-fig"><span>Same-week cancels</span><strong class="' +
+    (hasSwc && swc > 0 ? 'st-pc-lost' : '') +
+    '">' +
+    _stEscape(hasSwc ? (swc ? '-' : '') + _stFmtMoney(swc) : '-') +
+    '</strong></div>' +
+    '<div class="st-pc-fig"><span>Bonuses</span><strong>' +
+    _stEscape(hasBonus ? _stFmtMoney(bonuses) : '-') +
+    '</strong></div>' +
+    '<div class="st-pc-fig"><span>Salary</span><strong>' +
+    _stEscape(hasSalary ? _stFmtMoney(salary) : '-') +
+    '</strong></div>' +
+    '<div class="st-pc-fig st-pc-fig-hero"><span>Net earned</span><strong>' +
+    _stEscape(hasEarned ? _stFmtMoney(earned) : '-') +
+    '</strong></div>' +
+    '<div class="st-pc-fig"><span>Paychecks</span><strong>' +
+    nPay +
+    '</strong></div>' +
+    '</div>'
+  );
+}
+
+function _stBuildPcTimeChipsHtml() {
+  var chips = [
+    { id: 'last4', label: 'Last 4 weeks' },
+    { id: 'last8', label: 'Last 8 weeks' },
+    { id: 'month', label: 'This month' },
+    { id: 'last3', label: 'Last 3 months' },
+    { id: 'ytd', label: 'YTD' },
+    { id: 'all', label: 'All time' },
+    { id: 'custom', label: 'Custom' }
+  ];
+  var html = '<div class="st-pc-chips" role="tablist" aria-label="Time range">';
+  var i;
+  for (i = 0; i < chips.length; i++) {
+    html +=
+      '<button type="button" class="st-pc-chip' +
+      (_stPcTimeFilter === chips[i].id ? ' is-active' : '') +
+      '" data-st-pc-action="time" data-filter="' +
+      chips[i].id +
+      '">' +
+      _stEscape(chips[i].label) +
+      '</button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function _stBuildPcCustomRowHtml() {
+  var show = _stPcTimeFilter === 'custom';
+  return (
+    '<div class="st-pc-custom"' +
+    (show ? '' : ' hidden') +
+    '>' +
+    '<label>From <input type="date" id="st-pc-custom-start" class="st-pc-date" value="' +
+    _stEscape(_stPcCustomStart) +
+    '"></label>' +
+    '<label>To <input type="date" id="st-pc-custom-end" class="st-pc-date" value="' +
+    _stEscape(_stPcCustomEnd) +
+    '"></label>' +
+    '<button type="button" class="st-pc-apply" data-st-pc-action="apply-custom">Apply</button>' +
+    '</div>'
+  );
+}
+
+function _stBuildPcTableRowHtml(rec) {
+  var pb = rec.paycheck || _stEmptyPaycheck('derived');
+  var status = _stPcStatusOf(pb);
+  var cbN = Number(pb.chargebacks) || 0;
+  var swN = Number(pb.sameWeekCancels) || 0;
+  var bonusN = _stPaycheckBonusSum(pb);
+  var hasBonus =
+    pb.tierBonus != null ||
+    pb.enrollmentFeeBonus != null ||
+    pb.spiffBonus != null;
+  return (
+    '<tr class="st-pc-tr" data-st-pc-action="open-detail" data-week-start="' +
+    rec.weekStart +
+    '">' +
+    '<td><div class="st-pc-primary">' +
+    _stEscape(rec.weekLabel || _stPcWeekRangeLabel(rec.weekStart)) +
+    '</div></td>' +
+    '<td class="st-pc-num">' +
+    _stEscape(_stPcFmtAmt(pb.grossCommission)) +
+    '</td>' +
+    '<td class="st-pc-num' +
+    (cbN > 0 ? ' st-pc-lost' : '') +
+    '">' +
+    _stEscape(_stPcFmtAmt(pb.chargebacks)) +
+    '</td>' +
+    '<td class="st-pc-num' +
+    (swN > 0 ? ' st-pc-lost' : '') +
+    '">' +
+    _stEscape(_stPcFmtAmt(pb.sameWeekCancels)) +
+    '</td>' +
+    '<td class="st-pc-num">' +
+    _stEscape(hasBonus ? _stFmtMoney(bonusN) : '-') +
+    '</td>' +
+    '<td class="st-pc-num">' +
+    _stEscape(_stPcFmtAmt(pb.netPay != null ? pb.netPay : pb.netCommission)) +
+    '</td>' +
+    '<td class="st-pc-num">' +
+    _stEscape(_stPcFmtAmt(pb.salary)) +
+    '</td>' +
+    '<td class="st-pc-num">' +
+    _stEscape(_stPcFmtAmt(pb.totalEarned)) +
+    '</td>' +
+    '<td class="st-pc-num">' +
+    (pb.dealsPaid == null ? '-' : String(pb.dealsPaid)) +
+    '</td>' +
+    '<td><span class="st-pc-pill st-pc-pill-' +
+    status +
+    '">' +
+    _stEscape(_stPcStatusLabel(status)) +
+    '</span></td></tr>'
+  );
+}
+
+function _stBuildPcChartHtml(records) {
+  var metric = _stPcChartMetric || 'netpay';
+  var toggles = [
+    { id: 'netpay', label: 'Net pay' },
+    { id: 'gross', label: 'Gross' },
+    { id: 'chargebacks', label: 'Chargebacks' },
+    { id: 'total', label: 'Total earned' }
+  ];
+  var html = '<div class="st-pc-chart">';
+  html += '<div class="st-pc-chart-head">';
+  html += '<div class="st-pc-chart-title">Net commission by paycheck</div>';
+  html += '<div class="st-pc-chart-toggles">';
+  var ti;
+  for (ti = 0; ti < toggles.length; ti++) {
+    html +=
+      '<button type="button" class="st-pc-chip' +
+      (metric === toggles[ti].id ? ' is-active' : '') +
+      '" data-st-pc-action="chart" data-metric="' +
+      toggles[ti].id +
+      '">' +
+      _stEscape(toggles[ti].label) +
+      '</button>';
+  }
+  html += '</div></div>';
+  var pts = [];
+  var i;
+  for (i = (records || []).length - 1; i >= 0; i--) {
+    var rec = records[i];
+    if (!rec || !rec.paycheck) continue;
+    var pb = rec.paycheck;
+    var v;
+    if (metric === 'gross') v = pb.grossCommission;
+    else if (metric === 'chargebacks') v = pb.chargebacks;
+    else if (metric === 'total') v = pb.totalEarned;
+    else v = pb.netPay != null ? pb.netPay : pb.netCommission;
+    if (v == null) continue;
+    pts.push({
+      y: Number(v) || 0,
+      label: rec.weekLabel || _stPcWeekRangeLabel(rec.weekStart)
+    });
+  }
+  if (!pts.length) {
+    html +=
+      '<div class="st-pc-chart-empty">No paycheck figures in this range to chart.</div></div>';
+    return html;
+  }
+  var w = 640;
+  var h = 120;
+  var padL = 8;
+  var padR = 8;
+  var padT = 10;
+  var padB = 18;
+  var minY = pts[0].y;
+  var maxY = pts[0].y;
+  for (i = 1; i < pts.length; i++) {
+    if (pts[i].y < minY) minY = pts[i].y;
+    if (pts[i].y > maxY) maxY = pts[i].y;
+  }
+  if (minY === maxY) {
+    minY -= 1;
+    maxY += 1;
+  }
+  var innerW = w - padL - padR;
+  var innerH = h - padT - padB;
+  var d = '';
+  for (i = 0; i < pts.length; i++) {
+    var x =
+      pts.length === 1
+        ? padL + innerW / 2
+        : padL + (i * innerW) / (pts.length - 1);
+    var y = padT + innerH - ((pts[i].y - minY) / (maxY - minY)) * innerH;
+    d += (i ? ' L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+  }
+  html +=
+    '<svg class="st-pc-chart-svg" viewBox="0 0 ' +
+    w +
+    ' ' +
+    h +
+    '" role="img" aria-label="Paycheck trend">' +
+    '<path d="' +
+    d +
+    '" fill="none" stroke="#5175f1" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+  for (i = 0; i < pts.length; i++) {
+    var cx =
+      pts.length === 1
+        ? padL + innerW / 2
+        : padL + (i * innerW) / (pts.length - 1);
+    var cy = padT + innerH - ((pts[i].y - minY) / (maxY - minY)) * innerH;
+    html +=
+      '<circle cx="' +
+      cx.toFixed(1) +
+      '" cy="' +
+      cy.toFixed(1) +
+      '" r="3" fill="#5175f1"><title>' +
+      _stEscape(pts[i].label + ': ' + _stFmtMoney(pts[i].y)) +
+      '</title></circle>';
+  }
+  html += '</svg></div>';
+  return html;
+}
+
+function _stBuildPcDeductionsHtml(events, title) {
+  if (!events || !events.length) {
+    return (
+      '<div class="st-pc-subblock"><div class="st-pc-subhead">' +
+      _stEscape(title) +
+      '</div><div class="st-pc-muted">None recorded.</div></div>'
+    );
+  }
+  var html =
+    '<div class="st-pc-subblock"><div class="st-pc-subhead">' +
+    _stEscape(title) +
+    '</div><ul class="st-pc-cust-list">';
+  var i;
+  for (i = 0; i < events.length; i++) {
+    var ev = events[i];
+    var typeLabel =
+      ev.type === 'samecancel' ? 'Same-week cancel' : 'Chargeback';
+    html +=
+      '<li><strong>' +
+      _stEscape(ev.customer || 'Unknown') +
+      '</strong> · ' +
+      _stEscape(ev.plan || 'Product') +
+      ' · ' +
+      _stEscape(typeLabel) +
+      ' · ' +
+      _stEscape('-' + _stFmtMoney(ev.amountLost)) +
+      (ev.eventTs ? ' · ' + _stEscape(_stFmtMonthDay(ev.eventTs)) : '') +
+      '</li>';
+  }
+  html += '</ul></div>';
+  return html;
+}
+
+function _stBuildPcDetailHtml(sales, rec) {
+  var pb = rec.paycheck || _stEmptyPaycheck('derived');
+  var status = _stPcStatusOf(pb);
+  var later = _stPcLaterAdjustments(sales, rec.weekStart);
+  var weekDed = _stPcWeekNamedDeductions(sales, rec.weekStart);
+  var laterSum = 0;
+  var li;
+  for (li = 0; li < later.length; li++) {
+    laterSum += Number(later[li].amountLost) || 0;
+  }
+  var origNet = pb.netPay != null ? pb.netPay : pb.netCommission;
+  var lifetime = origNet != null ? _stMoney2(Number(origNet) - laterSum) : null;
+  var html = '<section class="st-pc-pane" aria-label="Paycheck detail">';
+  html += '<div class="st-pc-detail-top">';
+  html += '<div>';
+  html += '<div class="st-pc-headline">Paycheck</div>';
+  html +=
+    '<div class="st-pc-week">' +
+    _stEscape(rec.weekLabel || _stPcWeekRangeLabel(rec.weekStart)) +
+    '</div></div>';
+  html +=
+    '<div class="st-pc-detail-actions"><span class="st-pc-pill st-pc-pill-' +
+    status +
+    '">' +
+    _stEscape(_stPcStatusLabel(status)) +
+    '</span>';
+  html +=
+    '<button type="button" class="st-pc-btn-ghost" data-st-pc-action="close-detail">Back</button>';
+  if (status !== 'verified') {
+    html +=
+      '<button type="button" class="st-pc-btn-save" data-st-pc-action="open-verify" data-week-start="' +
+      rec.weekStart +
+      '">Verify paycheck</button>';
+  }
+  html += '</div></div>';
+  html += '<div class="st-pc-detail-grid">';
+  function row(label, value, cls) {
+    html +=
+      '<div class="st-pc-detail-row"><span>' +
+      _stEscape(label) +
+      '</span><strong class="' +
+      (cls || '') +
+      '">' +
+      _stEscape(value) +
+      '</strong></div>';
+  }
+  row('Gross commission', _stPcFmtAmt(pb.grossCommission));
+  row('Sales commission', _stPcFmtAmt(pb.salesCommission));
+  row('Add-on commission', _stPcFmtAmt(pb.addonCommission));
+  row(
+    'Chargebacks',
+    _stPcFmtAmt(pb.chargebacks),
+    Number(pb.chargebacks) > 0 ? 'st-pc-lost' : ''
+  );
+  row(
+    'Same-week cancels',
+    _stPcFmtAmt(pb.sameWeekCancels),
+    Number(pb.sameWeekCancels) > 0 ? 'st-pc-lost' : ''
+  );
+  row('Tier bonus', _stPcFmtAmt(pb.tierBonus));
+  row('Enrollment fee bonus', _stPcFmtAmt(pb.enrollmentFeeBonus));
+  row('Spiff bonus', _stPcFmtAmt(pb.spiffBonus));
+  row('Adjustments', _stPcFmtAmt(pb.adjustments));
+  row('Net pay', _stPcFmtAmt(origNet));
+  row('Salary', _stPcFmtAmt(pb.salary));
+  row('Total earned', _stPcFmtAmt(pb.totalEarned));
+  row('Deals paid', pb.dealsPaid == null ? '-' : String(pb.dealsPaid));
+  row(
+    'Saved reconciliation',
+    rec.reconSavedAt ? _stFmtHistorySavedAt(rec.reconSavedAt) : '-'
+  );
+  row('Reconciliation status', _stPcStatusLabel(status));
+  html += '</div>';
+  html += _stBuildPcDeductionsHtml(weekDed, 'Deductions on this paycheck');
+  html +=
+    '<div class="st-pc-subblock"><div class="st-pc-subhead">Lifetime from these earnings</div>';
+  html +=
+    '<div class="st-pc-lifetime"><div><span>Original paycheck</span><strong>' +
+    _stEscape(_stPcFmtAmt(origNet)) +
+    '</strong></div>';
+  html +=
+    '<div><span>Later adjustments</span><strong class="' +
+    (laterSum > 0 ? 'st-pc-lost' : '') +
+    '">' +
+    _stEscape(later.length ? '-' + _stFmtMoney(laterSum) : '-') +
+    '</strong></div>';
+  html +=
+    '<div><span>Adjusted lifetime net</span><strong>' +
+    _stEscape(_stPcFmtAmt(lifetime)) +
+    '</strong></div></div></div>';
+  html += _stBuildPcDeductionsHtml(
+    later,
+    'Later reversals against these sales'
+  );
+  html += '</section>';
+  return html;
+}
+
+function _stClosePcVerify() {
+  var modal = document.getElementById('st-pc-verify-modal');
+  if (modal && modal.parentNode) modal.parentNode.removeChild(modal);
+}
+
+function _stPcVerifyIsOpen() {
+  return !!document.getElementById('st-pc-verify-modal');
+}
+
+function _stPcVerifyReadNumber(id) {
+  var el = document.getElementById(id);
+  if (!el) return 0;
+  var raw = String(el.value || '').replace(/[^0-9.-]/g, '');
+  if (!raw) return 0;
+  var n = parseFloat(raw);
+  return isFinite(n) ? n : 0;
+}
+
+function _stPaintPcVerifyTotals() {
+  var gross = _stPcVerifyReadNumber('st-pc-v-gross');
+  var cb = _stPcVerifyReadNumber('st-pc-v-cb');
+  var swc = _stPcVerifyReadNumber('st-pc-v-swc');
+  var tier = _stPcVerifyReadNumber('st-pc-v-tier');
+  var enr = _stPcVerifyReadNumber('st-pc-v-enr');
+  var spiff = _stPcVerifyReadNumber('st-pc-v-spiff');
+  var salary = _stPcVerifyReadNumber('st-pc-v-salary');
+  var adj = _stPcVerifyReadNumber('st-pc-v-adj');
+  var net = _stMoney2(gross - cb - swc + tier + enr + spiff + adj);
+  var total = _stMoney2(net + salary);
+  var netEl = document.getElementById('st-pc-v-net');
+  var totEl = document.getElementById('st-pc-v-total');
+  if (netEl) netEl.textContent = _stFmtMoney(net);
+  if (totEl) totEl.textContent = _stFmtMoney(total);
+}
+
+function _stOpenPcVerify(weekStart) {
+  _stClosePcVerify();
+  var ws = Number(weekStart) || 0;
+  if (!ws) return;
+  var sales = _stLoadSales();
+  var rec = _stPcRecordForWeek(sales, ws);
+  var pb = rec.paycheck || _stEmptyPaycheck('derived');
+  if (pb.source === 'verified') {
+    _stFlash('This paycheck is already verified.', 'ok');
+    return;
+  }
+  function val(n, fallback) {
+    if (n == null || n === '') return fallback == null ? '' : String(fallback);
+    return String(n);
+  }
+  var html = '';
+  html +=
+    '<div class="st-entry-card st-pc-verify-card" role="dialog" aria-modal="true" aria-labelledby="st-pc-verify-title">';
+  html +=
+    '<div class="st-entry-title" id="st-pc-verify-title">Verify paycheck</div>';
+  html +=
+    '<p class="st-pc-verify-lede">' +
+    _stEscape(rec.weekLabel || _stPcWeekRangeLabel(ws)) +
+    '. Net pay and total earned update as you type.</p>';
+  html += '<div class="st-pc-verify-grid">';
+  function field(id, label, value) {
+    html +=
+      '<label class="st-pc-verify-field">' +
+      _stEscape(label) +
+      '<input type="number" step="0.01" id="' +
+      id +
+      '" class="st-pc-verify-input" value="' +
+      _stEscape(value) +
+      '"></label>';
+  }
+  field('st-pc-v-gross', 'Gross commission', val(pb.grossCommission, '0'));
+  field('st-pc-v-cb', 'Chargebacks', val(pb.chargebacks, '0'));
+  field('st-pc-v-swc', 'Same-week cancels', val(pb.sameWeekCancels, '0'));
+  field('st-pc-v-tier', 'Tier bonus', val(pb.tierBonus, '0'));
+  field('st-pc-v-enr', 'Enrollment fee bonus', val(pb.enrollmentFeeBonus, '0'));
+  field('st-pc-v-spiff', 'Spiff bonus', val(pb.spiffBonus, '0'));
+  field(
+    'st-pc-v-salary',
+    'Salary',
+    val(pb.salary, String(_ST_PAYCHECK_SALARY_DEFAULT))
+  );
+  field('st-pc-v-adj', 'Adjustments', val(pb.adjustments, '0'));
+  html += '</div>';
+  html +=
+    '<div class="st-pc-verify-totals"><div><span>Net pay</span><strong id="st-pc-v-net">-</strong></div>' +
+    '<div><span>Total earned</span><strong id="st-pc-v-total">-</strong></div></div>';
+  html += '<div class="st-entry-actions">';
+  html +=
+    '<button type="button" class="st-entry-cancel" data-st-pc-action="close-verify">Cancel</button>';
+  html +=
+    '<button type="button" class="st-entry-save" data-st-pc-action="confirm-verify" data-week-start="' +
+    ws +
+    '">Verify and save</button>';
+  html += '</div></div>';
+  var modal = document.createElement('div');
+  modal.id = 'st-pc-verify-modal';
+  modal.className = 'st-entry-modal st-pc-modal';
+  modal.innerHTML = html;
+  modal.addEventListener('click', function (ev) {
+    if (ev.target === modal) _stClosePcVerify();
+  });
+  document.body.appendChild(modal);
+  _stPaintPcVerifyTotals();
+}
+
+function _stConfirmPcVerify(weekStart) {
+  var ws = Number(weekStart) || 0;
+  if (!ws) return;
+  var sales = _stLoadSales();
+  var rec = _stPcRecordForWeek(sales, ws);
+  var pb = rec.paycheck ? rec.paycheck : _stEmptyPaycheck('derived');
+  if (pb.source === 'verified') {
+    _stClosePcVerify();
+    return;
+  }
+  var gross = _stPcVerifyReadNumber('st-pc-v-gross');
+  var cb = _stPcVerifyReadNumber('st-pc-v-cb');
+  var swc = _stPcVerifyReadNumber('st-pc-v-swc');
+  var tier = _stPcVerifyReadNumber('st-pc-v-tier');
+  var enr = _stPcVerifyReadNumber('st-pc-v-enr');
+  var spiff = _stPcVerifyReadNumber('st-pc-v-spiff');
+  var salary = _stPcVerifyReadNumber('st-pc-v-salary');
+  var adj = _stPcVerifyReadNumber('st-pc-v-adj');
+  var net = _stMoney2(gross - cb - swc + tier + enr + spiff + adj);
+  var total = _stMoney2(net + salary);
+  var frozen = {
+    grossCommission: _stMoney2(gross),
+    salesCommission: pb.salesCommission,
+    addonCommission: pb.addonCommission,
+    chargebacks: _stMoney2(cb),
+    sameWeekCancels: _stMoney2(swc),
+    adjustments: _stMoney2(adj),
+    netCommission: _stMoney2(net),
+    dealsPaid: pb.dealsPaid,
+    tierBonus: _stMoney2(tier),
+    enrollmentFeeBonus: _stMoney2(enr),
+    spiffBonus: _stMoney2(spiff),
+    salary: _stMoney2(salary),
+    netPay: net,
+    totalEarned: total,
+    source: 'verified',
+    verifiedAt: Date.now(),
+    computedAt: Date.now()
+  };
+  _stWriteVerifiedPaycheck(ws, frozen, rec);
+  _stClosePcVerify();
+  _stFlash('Paycheck verified.', 'ok');
+  _stRender();
+}
+
+function _stBuildPcPane(sales) {
+  _stSyncPaychecksFromHistory();
+  if (_stPcViewingWeek) {
+    var viewing = _stPcRecordForWeek(sales, _stPcViewingWeek);
+    return _stBuildPcDetailHtml(sales, viewing);
+  }
+  var bounds = _stPcTimeBounds();
+  var weeks = bounds.incomplete ? [] : _stPcCollectWeekStarts(sales, bounds);
+  var records = [];
+  var i;
+  for (i = 0; i < weeks.length; i++) {
+    records.push(_stPcRecordForWeek(sales, weeks[i]));
+  }
+  var html = '<section class="st-pc-pane" aria-label="Paychecks">';
+  html += '<div class="st-pc-header">';
+  html += '<div class="st-pc-headline">Paychecks</div>';
+  html +=
+    '<div class="st-pc-lede">Weekly pay, bonuses, and salary. Verified paychecks never change.</div>';
+  html += _stBuildPcSummaryHtml(records);
+  html += '</div>';
+  html += _stBuildPcTimeChipsHtml();
+  html += _stBuildPcCustomRowHtml();
+  html += '<div class="st-pc-table-wrap">';
+  html +=
+    '<table class="st-pc-table"><colgroup>' +
+    '<col class="st-pc-col-period">' +
+    '<col class="st-pc-col-amt">' +
+    '<col class="st-pc-col-amt">' +
+    '<col class="st-pc-col-amt">' +
+    '<col class="st-pc-col-amt">' +
+    '<col class="st-pc-col-amt">' +
+    '<col class="st-pc-col-amt">' +
+    '<col class="st-pc-col-amt">' +
+    '<col class="st-pc-col-deals">' +
+    '<col class="st-pc-col-status">' +
+    '</colgroup><thead><tr>' +
+    '<th>Pay period</th><th>Gross</th><th>Chargebacks</th><th>Cancels</th>' +
+    '<th>Bonuses</th><th>Net pay</th><th>Salary</th><th>Total earned</th>' +
+    '<th>Deals</th><th>Status</th></tr></thead><tbody>';
+  if (!records.length) {
+    html +=
+      '<tr><td colspan="10" class="st-pc-empty">No paychecks in this range.</td></tr>';
+  } else {
+    for (i = 0; i < records.length; i++) {
+      html += _stBuildPcTableRowHtml(records[i]);
+    }
+  }
+  html += '</tbody></table></div>';
+  html += _stBuildPcChartHtml(records);
+  html += '</section>';
+  return html;
+}
+
+function _stHandlePcActionClick(btn) {
+  if (!btn) return;
+  var action = btn.getAttribute('data-st-pc-action') || '';
+  if (action === 'goto') {
+    _stSwitchTab('paychecks');
+    return;
+  }
+  if (action === 'time') {
+    _stPcTimeFilter = btn.getAttribute('data-filter') || 'last4';
+    _stPcViewingWeek = 0;
+    _stRender();
+    return;
+  }
+  if (action === 'apply-custom') {
+    var startEl = document.getElementById('st-pc-custom-start');
+    var endEl = document.getElementById('st-pc-custom-end');
+    _stPcCustomStart = startEl ? String(startEl.value || '') : '';
+    _stPcCustomEnd = endEl ? String(endEl.value || '') : '';
+    _stPcTimeFilter = 'custom';
+    _stPcViewingWeek = 0;
+    _stRender();
+    return;
+  }
+  if (action === 'chart') {
+    _stPcChartMetric = btn.getAttribute('data-metric') || 'netpay';
+    _stRender();
+    return;
+  }
+  if (action === 'open-detail') {
+    _stPcViewingWeek = Number(btn.getAttribute('data-week-start')) || 0;
+    _stRender();
+    return;
+  }
+  if (action === 'close-detail') {
+    _stPcViewingWeek = 0;
+    _stRender();
+    return;
+  }
+  if (action === 'open-verify') {
+    _stOpenPcVerify(btn.getAttribute('data-week-start') || '');
+    return;
+  }
+  if (action === 'close-verify') {
+    _stClosePcVerify();
+    return;
+  }
+  if (action === 'confirm-verify') {
+    _stConfirmPcVerify(btn.getAttribute('data-week-start') || '');
+  }
+}
+
 function _stGetSavedTab() {
   if (
     _stActiveTab === 'thisweek' ||
     _stActiveTab === 'allsales' ||
     _stActiveTab === 'analytics' ||
-    _stActiveTab === 'chargebacks'
+    _stActiveTab === 'chargebacks' ||
+    _stActiveTab === 'paychecks'
   ) {
     return _stActiveTab;
   }
@@ -11987,6 +13166,7 @@ function _stBuildInternalSubtabs(activeTab) {
   var as = activeTab === 'allsales' ? ' active' : '';
   var an = activeTab === 'analytics' ? ' active' : '';
   var cb = activeTab === 'chargebacks' ? ' active' : '';
+  var pc = activeTab === 'paychecks' ? ' active' : '';
   return (
     '<div class="page-subtabs st-internal-subtabs" id="stInternalSubtabs" role="tablist">' +
     '<div class="page-subtabs-inner">' +
@@ -12010,6 +13190,11 @@ function _stBuildInternalSubtabs(activeTab) {
     '" role="tab" aria-selected="' +
     (activeTab === 'chargebacks' ? 'true' : 'false') +
     '" data-st-cbc-action="goto">Chargebacks</button>' +
+    '<button type="button" class="stab' +
+    pc +
+    '" role="tab" aria-selected="' +
+    (activeTab === 'paychecks' ? 'true' : 'false') +
+    '" data-st-pc-action="goto">Paychecks</button>' +
     '</div></div>'
   );
 }
@@ -12019,12 +13204,17 @@ function _stSwitchTab(tabId) {
     tabId !== 'analytics' &&
     tabId !== 'thisweek' &&
     tabId !== 'allsales' &&
-    tabId !== 'chargebacks'
+    tabId !== 'chargebacks' &&
+    tabId !== 'paychecks'
   ) {
     tabId = 'thisweek';
   }
   var prev = _stGetSavedTab();
   if (prev === tabId) return;
+  if (tabId !== 'paychecks') {
+    _stPcViewingWeek = 0;
+    _stClosePcVerify();
+  }
   if (tabId !== 'thisweek') {
     _stReconcileMode = false;
     _stHistoryMode = false;
@@ -12271,6 +13461,12 @@ function _stRender() {
     '">';
   html += _stBuildCbcPane(sales);
   html += '</div>';
+  html +=
+    '<div id="stTabPanelPaychecks" class="st-tab-panel" role="tabpanel" style="display:' +
+    (stTab === 'paychecks' ? 'block' : 'none') +
+    '">';
+  html += _stBuildPcPane(sales);
+  html += '</div>';
   page.innerHTML = html;
   _stMountAddSaleOverlay();
   if (!page.dataset.stAddSaleEsc) {
@@ -12316,6 +13512,10 @@ function _stRender() {
       }
       if (_stCbcDetailIsOpen()) {
         _stCloseCbcDetail();
+        return;
+      }
+      if (_stPcVerifyIsOpen()) {
+        _stClosePcVerify();
         return;
       }
       if (_stPaycheckBreakdownModalIsOpen()) {
@@ -12379,6 +13579,12 @@ function _stWireSalesBulkDelegation(page) {
     if (cbcBtn) {
       e.preventDefault();
       _stHandleCbcActionClick(cbcBtn);
+      return;
+    }
+    var pcBtn = t.closest('[data-st-pc-action]');
+    if (pcBtn) {
+      e.preventDefault();
+      _stHandlePcActionClick(pcBtn);
     }
   });
   page.addEventListener('change', function (e) {
@@ -12418,14 +13624,27 @@ function _stWireReconcileActionDelegation() {
       return;
     }
     var cbcBtn = t.closest('[data-st-cbc-action]');
-    if (!cbcBtn) return;
-    if (cbcBtn.closest('#page-salestracker')) return;
+    if (cbcBtn) {
+      if (!cbcBtn.closest('#page-salestracker')) {
+        e.preventDefault();
+        _stHandleCbcActionClick(cbcBtn);
+      }
+      return;
+    }
+    var pcBtn = t.closest('[data-st-pc-action]');
+    if (!pcBtn) return;
+    if (pcBtn.closest('#page-salestracker')) return;
     e.preventDefault();
-    _stHandleCbcActionClick(cbcBtn);
+    _stHandlePcActionClick(pcBtn);
   });
   document.body.addEventListener('input', function (e) {
     var el = e.target;
-    if (!el || el.id !== 'st-recon-mark-search') return;
+    if (!el) return;
+    if (el.id && String(el.id).indexOf('st-pc-v-') === 0) {
+      _stPaintPcVerifyTotals();
+      return;
+    }
+    if (el.id !== 'st-recon-mark-search') return;
     _stCbSearchQuery = String(el.value || '');
     _stCbSelectedId = '';
     _stPaintMarkReversalModal();
