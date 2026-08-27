@@ -1127,7 +1127,310 @@ function _stHandleRatesActionClick(btn) {
   }
   if (action === 'save-edit') {
     _stSaveProductRateEditor(btn);
+    return;
   }
+  if (action === 'recalc-preview') {
+    _stRecalcPreview = _stBuildRecalcPreview(_stLoadSales());
+    _stRender();
+    return;
+  }
+  if (action === 'recalc-apply') {
+    _stApplyRecalcPreview();
+    return;
+  }
+  if (action === 'recalc-clear') {
+    _stRecalcPreview = null;
+    _stRender();
+  }
+}
+
+function _stPaycheckWeekIsVerified(ts) {
+  var ws = _stWeekStartFromTs(ts);
+  if (!ws) return false;
+  var rec = _stFindPaycheckRecord(ws);
+  return !!(rec && rec.paycheck && rec.paycheck.source === 'verified');
+}
+
+function _stTableCommissionForSale(sale, rates) {
+  if (!sale) return 0;
+  return _stComputeLineCommission(
+    {
+      type: sale.type,
+      plan: sale.plan,
+      amount: sale.amount,
+      status: sale.status
+    },
+    rates
+  );
+}
+
+function _stStoredLineCommission(sale) {
+  if (!sale) return 0;
+  if (sale.type === 'deal') return Number(sale.planCommission) || 0;
+  if (typeof sale.addonCommission === 'number') {
+    return Number(sale.addonCommission) || 0;
+  }
+  return 0;
+}
+
+function _stBuildRecalcPreview(sales) {
+  var rates = _stLoadCommissionRates();
+  var items = [];
+  var skipped = [];
+  var i;
+  for (i = 0; i < (sales || []).length; i++) {
+    var s = sales[i];
+    if (!s) continue;
+    var stored = _stMoney2(_stStoredLineCommission(s));
+    var next = _stMoney2(_stTableCommissionForSale(s, rates));
+    var bonus = Number(s.enrollmentBonus) || 0;
+    var wouldChange =
+      Math.abs(next - stored) > 0.02 || (s.type === 'deal' && bonus !== 0);
+    if (_stIsReversalStatus(s)) {
+      if (wouldChange) {
+        skipped.push({
+          saleId: String(s.id || ''),
+          customer: s.customer || '',
+          product: s.plan || '',
+          reason: 'Chargeback or same-week cancel'
+        });
+      }
+      continue;
+    }
+    if (_stPaycheckWeekIsVerified(s.ts)) {
+      if (wouldChange) {
+        skipped.push({
+          saleId: String(s.id || ''),
+          customer: s.customer || '',
+          product: s.plan || '',
+          reason: 'Paycheck for this week is verified'
+        });
+      }
+      continue;
+    }
+    if (Math.abs(next - stored) > 0.02) {
+      items.push({
+        saleId: String(s.id || ''),
+        customer: s.customer || '',
+        product: s.plan || '',
+        stored: stored,
+        next: next,
+        diff: _stMoney2(next - stored),
+        kind: 'rate'
+      });
+    }
+    if (s.type === 'deal' && bonus !== 0) {
+      items.push({
+        saleId: String(s.id || ''),
+        customer: s.customer || '',
+        product: s.plan || '',
+        stored: _stMoney2(bonus),
+        next: 0,
+        diff: _stMoney2(-bonus),
+        kind: 'enrollment'
+      });
+    }
+  }
+  var net = 0;
+  var bonusNet = 0;
+  for (i = 0; i < items.length; i++) {
+    if (items[i].kind === 'enrollment') bonusNet += items[i].diff;
+    else net += items[i].diff;
+  }
+  return {
+    applied: false,
+    items: items,
+    skipped: skipped,
+    net: _stMoney2(net),
+    bonusNet: _stMoney2(bonusNet),
+    updated: 0
+  };
+}
+
+function _stApplyRecalcPreview() {
+  var preview = _stRecalcPreview;
+  if (!preview || preview.applied) return;
+  if (!preview.items || !preview.items.length) {
+    _stFlash('Nothing to recalculate.', 'neutral');
+    return;
+  }
+  var sales = _stLoadSales();
+  var rates = _stLoadCommissionRates();
+  var ids = {};
+  var i;
+  for (i = 0; i < preview.items.length; i++) {
+    if (preview.items[i] && preview.items[i].saleId) {
+      ids[preview.items[i].saleId] = true;
+    }
+  }
+  var updated = 0;
+  for (i = 0; i < sales.length; i++) {
+    var s = sales[i];
+    if (!s || !ids[String(s.id || '')]) continue;
+    if (_stIsReversalStatus(s)) continue;
+    if (_stPaycheckWeekIsVerified(s.ts)) continue;
+    if (s.commissionBeforeRecalc == null) {
+      s.commissionBeforeRecalc = _stStoredLineCommission(s);
+    }
+    if (s.type === 'addon') {
+      if (
+        typeof s.addonCommissionRate === 'number' &&
+        s.addonRateBeforeRecalc == null
+      ) {
+        s.addonRateBeforeRecalc = s.addonCommissionRate;
+      }
+      delete s.addonCommissionRate;
+      s.addonCommission = _stTableCommissionForSale(s, rates);
+    } else {
+      if (
+        typeof s.commissionRate === 'number' &&
+        s.planRateBeforeRecalc == null
+      ) {
+        s.planRateBeforeRecalc = s.commissionRate;
+      }
+      delete s.commissionRate;
+      if (
+        (Number(s.enrollmentBonus) || 0) !== 0 &&
+        s.enrollmentBonusBeforeRecalc == null
+      ) {
+        s.enrollmentBonusBeforeRecalc = Number(s.enrollmentBonus) || 0;
+      }
+      s.enrollmentBonus = 0;
+    }
+    updated += 1;
+  }
+  for (i = 0; i < sales.length; i++) {
+    if (
+      sales[i] &&
+      sales[i].type === 'deal' &&
+      ids[String(sales[i].id || '')]
+    ) {
+      _stStampDealCommission(sales, i, rates);
+    }
+  }
+  for (i = 0; i < sales.length; i++) {
+    if (
+      sales[i] &&
+      sales[i].type === 'addon' &&
+      ids[String(sales[i].id || '')]
+    ) {
+      _stRecomputeSaleGroupCommission(sales, i);
+    }
+  }
+  _stSaveSales(sales);
+  _stRecalcPreview = {
+    applied: true,
+    items: preview.items,
+    skipped: preview.skipped || [],
+    net: preview.net,
+    bonusNet: preview.bonusNet,
+    updated: updated
+  };
+  _stFlash(
+    'Updated ' +
+      updated +
+      ' sales. Skipped ' +
+      (_stRecalcPreview.skipped.length || 0) +
+      '. Net change ' +
+      _stFmtMoney(_stRecalcPreview.net + _stRecalcPreview.bonusNet) +
+      '.',
+    'ok'
+  );
+  _stRender();
+}
+
+function _stBuildRecalcPreviewHtml(preview) {
+  if (!preview) {
+    return (
+      '<div class="st-recalc-box">' +
+      '<div class="st-recalc-title">Recalculate old sales</div>' +
+      '<p class="st-rates-help">Preview first. Nothing is saved until you confirm.</p>' +
+      '<button type="button" class="st-rates-add" data-st-rates-action="recalc-preview">Preview recalculation</button>' +
+      '</div>'
+    );
+  }
+  var html = '<div class="st-recalc-box">';
+  html += '<div class="st-recalc-title">Recalculate old sales</div>';
+  if (preview.applied) {
+    html +=
+      '<p class="st-recalc-summary">Updated ' +
+      preview.updated +
+      ' sales. Skipped ' +
+      ((preview.skipped && preview.skipped.length) || 0) +
+      '. Rate-table net ' +
+      _stEscape(_stFmtMoney(preview.net)) +
+      '. Enrollment bonus relocated ' +
+      _stEscape(_stFmtMoney(preview.bonusNet)) +
+      '.</p>';
+    html +=
+      '<button type="button" class="st-rates-add" data-st-rates-action="recalc-clear">Close summary</button>';
+    html += '</div>';
+    return html;
+  }
+  if (!preview.items.length) {
+    html +=
+      '<p class="st-recalc-summary">Nothing would change. Stored commissions already match the current rate table.</p>';
+    html +=
+      '<button type="button" class="st-rates-add" data-st-rates-action="recalc-clear">Close</button>';
+    html += '</div>';
+    return html;
+  }
+  html +=
+    '<p class="st-recalc-summary">' +
+    preview.items.length +
+    ' line' +
+    (preview.items.length === 1 ? '' : 's') +
+    ' would change. Rate-table net ' +
+    _stEscape(_stFmtMoney(preview.net)) +
+    '. Enrollment bonus relocated ' +
+    _stEscape(_stFmtMoney(preview.bonusNet)) +
+    '.</p>';
+  html += '<div class="st-rates-table-wrap"><table class="st-rates-table">';
+  html +=
+    '<thead><tr><th>Customer</th><th>Product</th><th>Stored</th><th>New</th><th>Difference</th></tr></thead><tbody>';
+  var i;
+  for (i = 0; i < preview.items.length; i++) {
+    var it = preview.items[i];
+    html += '<tr>';
+    html += '<td>' + _stEscape(it.customer || '') + '</td>';
+    html +=
+      '<td>' +
+      _stEscape(it.product || '') +
+      (it.kind === 'enrollment'
+        ? ' <span class="st-rate-manual">Enrollment bonus</span>'
+        : '') +
+      '</td>';
+    html += '<td>' + _stEscape(_stFmtMoney(it.stored)) + '</td>';
+    html += '<td>' + _stEscape(_stFmtMoney(it.next)) + '</td>';
+    html += '<td>' + _stEscape(_stFmtMoney(it.diff)) + '</td>';
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+  if (preview.skipped && preview.skipped.length) {
+    html +=
+      '<p class="st-recalc-skipped">' +
+      preview.skipped.length +
+      ' skipped:</p><ul class="st-recalc-skip-list">';
+    for (i = 0; i < preview.skipped.length; i++) {
+      var sk = preview.skipped[i];
+      html +=
+        '<li>' +
+        _stEscape(sk.customer || 'Sale') +
+        ' - ' +
+        _stEscape(sk.product || '') +
+        ' (' +
+        _stEscape(sk.reason || '') +
+        ')</li>';
+    }
+    html += '</ul>';
+  }
+  html += '<div class="st-recalc-actions">';
+  html +=
+    '<button type="button" class="st-entry-save" data-st-rates-action="recalc-apply">Apply recalculation</button>';
+  html +=
+    '<button type="button" class="st-rates-add" data-st-rates-action="recalc-clear">Cancel</button>';
+  html += '</div></div>';
+  return html;
 }
 
 function _stBuildProductRatesPanelHtml() {
@@ -1135,7 +1438,9 @@ function _stBuildProductRatesPanelHtml() {
   var rates = _stLoadCommissionRates();
   var conflicts = rates.conflicts || [];
   var html =
-    '<details class="st-rates-panel"><summary>Product commission rates</summary>';
+    '<details class="st-rates-panel"' +
+    (_stRecalcPreview ? ' open' : '') +
+    '><summary>Product commission rates</summary>';
   html +=
     '<p class="st-rates-help">Named rates override keyword buckets. Manual rates are permanent. Confirmed, Inferred, and Unknown stay visually distinct.</p>';
   if (conflicts.length) {
@@ -1177,7 +1482,9 @@ function _stBuildProductRatesPanelHtml() {
       '">Delete</button></td>';
     html += '</tr>';
   }
-  html += '</tbody></table></div></details>';
+  html += '</tbody></table></div>';
+  html += _stBuildRecalcPreviewHtml(_stRecalcPreview);
+  html += '</details>';
   return html;
 }
 
@@ -5411,6 +5718,7 @@ var _stMarkModalStatus = '';
 // In-memory only: attach / mark-status / log-this-sale confirms since
 // the last paste-Match. Reset on new Match; never persisted.
 var _stReconcileSessionResolved = [];
+var _stRecalcPreview = null;
 
 // Chargebacks & Cancels tab (in-memory UI state)
 var _stCbcTimeFilter = 'all';
@@ -7849,14 +8157,26 @@ function _stPaycheckFinishNumbers(pb) {
   return pb;
 }
 
+function _stSummaryPositiveMoney(n) {
+  var x = Number(n);
+  if (!(x > 0)) return null;
+  return _stMoney2(x);
+}
+
 function _stPaycheckApplySheetSummary(pb, summary) {
   if (!pb || !summary || !summary.found) return pb;
   if (pb.source === 'verified') return pb;
-  pb.tierBonus = _stMoney2(summary.tierBonus);
-  pb.enrollmentFeeBonus = _stMoney2(summary.enrollmentFeeBonus);
-  pb.spiffBonus = _stMoney2(summary.spiffBonus);
-  pb.netPay = _stMoney2(summary.netPay);
-  if (pb.salary != null) {
+  var tier = _stSummaryPositiveMoney(summary.tierBonus);
+  var enr = _stSummaryPositiveMoney(summary.enrollmentFeeBonus);
+  var spiff = _stSummaryPositiveMoney(summary.spiffBonus);
+  var net = _stSummaryPositiveMoney(summary.netPay);
+  var totals = _stSummaryPositiveMoney(summary.totalsCommission);
+  if (tier != null) pb.tierBonus = tier;
+  if (enr != null) pb.enrollmentFeeBonus = enr;
+  if (spiff != null) pb.spiffBonus = spiff;
+  if (net != null) pb.netPay = net;
+  if (totals != null) pb.grossCommission = totals;
+  if (pb.salary != null && pb.netPay != null) {
     pb.totalEarned = _stMoney2(Number(pb.netPay) + Number(pb.salary));
   }
   return pb;
@@ -8108,7 +8428,7 @@ function _stPaycheckFromRawText(rawText) {
     computedAt: Date.now()
   });
   if (rows.summary && rows.summary.found) {
-    if (rows.summary.totalsCommission) {
+    if (Number(rows.summary.totalsCommission) > 0) {
       pb.grossCommission = _stMoney2(rows.summary.totalsCommission);
     }
     if (rows.summary.chargebackAmount) {
@@ -8746,21 +9066,26 @@ function _stPaySheetSummaryLineKind(line) {
     .replace(/\s+/g, ' ')
     .trim();
   if (!t) return '';
+  var low = t.toLowerCase();
+  // Totals / bonus / net-pay labels first. A Totals line like
+  // "Totals  11 core / 14 anc.  -  $2,560.78" contains both
+  // "core" and a dollar amount, and must not be treated as a deal row.
+  if (/^totals\b/.test(low)) return 'totals';
+  if (/^core plans\b/.test(low)) return 'coreCount';
+  if (/^chargebacks\b/.test(low)) return 'chargebacks';
+  if (/^tier bonus\b/.test(low)) return 'tierBonus';
+  if (/^enrollment fee bonus\b/.test(low)) return 'enrollmentFeeBonus';
+  if (/^spiff bonus\b/.test(low)) return 'spiffBonus';
+  if (/^net pay\b/.test(low)) return 'netPay';
+  // Ancillary deal rows also start with "Ancillary" and have a $.
+  // Keep those as deal rows; only bare count lines become summary.
   if (
     /\b(Core|Ancillary|Add[\s\-]?ons?|Deal|Plan)\b/i.test(t) &&
     /\$\s*[0-9]/.test(t)
   ) {
     return '';
   }
-  var low = t.toLowerCase();
-  if (/^totals\b/.test(low)) return 'totals';
-  if (/^core plans\b/.test(low)) return 'coreCount';
   if (/^ancillar/.test(low)) return 'ancillaryCount';
-  if (/^chargebacks\b/.test(low)) return 'chargebacks';
-  if (/^tier bonus\b/.test(low)) return 'tierBonus';
-  if (/^enrollment fee bonus\b/.test(low)) return 'enrollmentFeeBonus';
-  if (/^spiff bonus\b/.test(low)) return 'spiffBonus';
-  if (/^net pay\b/.test(low)) return 'netPay';
   return '';
 }
 
@@ -10932,6 +11257,38 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
     var prow = stripped[i];
     if (payUsed(prow)) continue;
     var exact = _stReconFindExactWeekSale(prow, weekSales, usedSale);
+    // Remaining negatives after cancel-pair stripping are chargebacks,
+    // even when the original sale is still sitting in this week's tracker.
+    if (Number(prow.amount) < 0) {
+      if (exact) usedSale[exact.id] = true;
+      markPay(prow);
+      rows.push(
+        _stMakeReconTableRow({
+          status: 'chargeback',
+          customer: (exact && exact.customer) || prow.customer || '',
+          dateTs: Number((exact && exact.ts) || prow.dateTs) || 0,
+          product: (exact && exact.plan) || prow.productName || '',
+          productNote: _stReconcileSheetProductNote(
+            (exact && exact.plan) || '',
+            prow.productName
+          ),
+          amount: Number(prow.amount) || 0,
+          isLoss: true,
+          hasTracker: !!exact,
+          hasSheet: true,
+          trackerAmount: exact ? _stSaleUnsignedCommission(exact) : null,
+          saleId: exact && exact.id ? String(exact.id) : '',
+          memberId: _stReconNormMemberId(
+            prow.memberId || (exact && exact.memberId)
+          ),
+          sheetProduct: prow.productName || '',
+          sheetAmount: Number(prow.amount) || 0,
+          kind: exact ? 'chargeback_candidate' : 'untracked_chargeback',
+          typeLocal: prow.typeLocal || ''
+        })
+      );
+      continue;
+    }
     if (!exact) continue;
     usedSale[exact.id] = true;
     markPay(prow);
@@ -11050,7 +11407,11 @@ function _stReconcileCollectViewState(sales, view) {
   var trackerNet =
     live && live.netCommission != null ? Number(live.netCommission) : 0;
   var sheetNet = _stSumPaySheetCommission(_stPaySheetRows);
-  if (_stPaySheetSummary && _stPaySheetSummary.found) {
+  if (
+    _stPaySheetSummary &&
+    _stPaySheetSummary.found &&
+    Number(_stPaySheetSummary.totalsCommission) > 0
+  ) {
     sheetNet = _stMoney2(_stPaySheetSummary.totalsCommission);
   }
   var loaded = !!(_stPaySheetRows && _stPaySheetRows.length);
