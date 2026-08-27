@@ -8076,6 +8076,22 @@ function _stSaleUnsignedCommission(sale) {
   return Math.abs(_stComputeLineCommission(sale, _stLoadCommissionRates()));
 }
 
+// Reconcile compares itemized pay-sheet lines, so a core row must
+// use only that plan's commission. The bundled sale total lives on
+// expectedDealTotal and is still used by chargebacks / CBC.
+function _stReconLineCommission(sale) {
+  if (!sale) return 0;
+  if (sale.type === 'deal') {
+    return Math.abs(Number(sale.planCommission) || 0);
+  }
+  if (typeof sale.addonCommission === 'number') {
+    return Math.abs(Number(sale.addonCommission) || 0);
+  }
+  var stored = Math.abs(_stStoredLineCommission(sale));
+  if (stored) return stored;
+  return Math.abs(_stComputeLineCommission(sale, _stLoadCommissionRates()));
+}
+
 function _stEmptyPaycheck(source) {
   return {
     grossCommission: null,
@@ -11053,7 +11069,7 @@ function _stReconFindExactWeekSale(payRow, weekSales, usedLocal) {
 
 function _stReconAmountsMismatch(payRow, sale) {
   var payAmt = Math.abs(Number(payRow && payRow.amount) || 0);
-  var comm = _stSaleUnsignedCommission(sale);
+  var comm = _stReconLineCommission(sale);
   return Math.abs(payAmt - comm) > 0.049;
 }
 
@@ -11194,7 +11210,7 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
         isLoss: isLoss,
         hasTracker: !!sale,
         hasSheet: !!pay,
-        trackerAmount: sale ? _stSaleUnsignedCommission(sale) : null,
+        trackerAmount: sale ? _stReconLineCommission(sale) : null,
         saleId: sale && sale.id ? String(sale.id) : extra.saleId || '',
         memberId:
           _stReconNormMemberId(
@@ -11276,7 +11292,7 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
           isLoss: true,
           hasTracker: !!exact,
           hasSheet: true,
-          trackerAmount: exact ? _stSaleUnsignedCommission(exact) : null,
+          trackerAmount: exact ? _stReconLineCommission(exact) : null,
           saleId: exact && exact.id ? String(exact.id) : '',
           memberId: _stReconNormMemberId(
             prow.memberId || (exact && exact.memberId)
@@ -11307,7 +11323,7 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
           isLoss: Number(prow.amount) < 0,
           hasTracker: true,
           hasSheet: true,
-          trackerAmount: _stSaleUnsignedCommission(exact),
+          trackerAmount: _stReconLineCommission(exact),
           saleId: String(exact.id || ''),
           memberId: _stReconNormMemberId(prow.memberId || exact.memberId),
           sheetProduct: prow.productName || '',
@@ -11331,7 +11347,7 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
           isLoss: false,
           hasTracker: true,
           hasSheet: true,
-          trackerAmount: _stSaleUnsignedCommission(exact),
+          trackerAmount: _stReconLineCommission(exact),
           saleId: String(exact.id || ''),
           memberId: _stReconNormMemberId(prow.memberId || exact.memberId),
           sheetProduct: prow.productName || '',
@@ -11367,7 +11383,13 @@ function _stReconcileCountRows(rows) {
       c.matched += 1;
     } else {
       c.needs += 1;
-      c.unresolved += _stReconcileRowDiscrepancy(r);
+      if (
+        r.status === 'amountmismatch' ||
+        r.status === 'missing' ||
+        r.status === 'mislabeled'
+      ) {
+        c.unresolved += _stReconcileRowDiscrepancy(r);
+      }
       if (typeof c[r.status] === 'number') c[r.status] += 1;
     }
   }
@@ -11400,12 +11422,36 @@ function _stReconcileStatusLabel(status) {
   return 'Matched';
 }
 
+// Itemized tracker column for Totals comparison: skip clawbacks
+// so the header matches the pay sheet Totals line, not bonuses
+// and not chargeback tracker cells.
+function _stSumReconcileTrackerCommission(rows) {
+  var sum = 0;
+  var i;
+  for (i = 0; i < (rows || []).length; i++) {
+    var r = rows[i];
+    if (!r || r.ignored || !r.hasTracker) continue;
+    if (r.isLoss || r.status === 'chargeback' || r.status === 'samecancel') {
+      continue;
+    }
+    sum += Number(r.trackerAmount) || 0;
+  }
+  return _stMoney2(sum);
+}
+
 function _stReconcileCollectViewState(sales, view) {
   var matchView = _stReconcileMatchView || view;
   var weekStart = matchView && matchView.start ? Number(matchView.start) : 0;
-  var live = _stComputeLivePaycheck(sales || [], weekStart);
-  var trackerNet =
-    live && live.netCommission != null ? Number(live.netCommission) : 0;
+  var trackerNet = _stSumReconcileTrackerCommission(_stReconcileTableRows);
+  if (!(_stReconcileTableRows || []).length) {
+    var live = _stComputeLivePaycheck(sales || [], weekStart);
+    if (live) {
+      trackerNet = _stMoney2(
+        (Number(live.salesCommission) || 0) +
+          (Number(live.addonCommission) || 0)
+      );
+    }
+  }
   var sheetNet = _stSumPaySheetCommission(_stPaySheetRows);
   if (
     _stPaySheetSummary &&
@@ -11420,7 +11466,11 @@ function _stReconcileCollectViewState(sales, view) {
   if (loaded) phase = counts.needs ? 'needsreview' : 'reconciled';
   var diff = _stMoney2(trackerNet - sheetNet);
   var unresolved = counts.unresolved;
-  if (loaded && Math.abs(unresolved - Math.abs(diff)) > 0.02) {
+  if (
+    loaded &&
+    (_stReconcileTableRows || []).length &&
+    Math.abs(unresolved - Math.abs(diff)) > 0.02
+  ) {
     if (typeof console !== 'undefined' && console.log) {
       console.log(
         '[reconcile] unresolved ' +

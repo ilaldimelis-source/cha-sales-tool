@@ -3,7 +3,12 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['node_modules/**', 'playwright-report/**', 'test-results/**']
+    ignores: [
+      'node_modules/**',
+      'playwright-report/**',
+      'test-results/**',
+      'scripts/test-stage-*.js'
+    ]
   },
   js.configs.recommended,
   {
