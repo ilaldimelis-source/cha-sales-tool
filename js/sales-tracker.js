@@ -1328,7 +1328,8 @@ function _stProjectedReversalCommission(sale, sales, rates) {
       for (ai = 0; ai < sales.length; ai++) {
         var ad = sales[ai];
         if (!ad || ad.type !== 'addon') continue;
-        if (String(ad.receiptId || '') !== String(sale.receiptId || '')) continue;
+        if (String(ad.receiptId || '') !== String(sale.receiptId || ''))
+          continue;
         linked = true;
         nextAddons += Math.abs(_stTableCommissionForSale(ad, rates));
       }
@@ -8294,8 +8295,7 @@ function _stBuildTabHeroHtml(opts) {
     headline +
     '</div>';
   if (period) {
-    html +=
-      '<div class="st-tab-hero-period">' + _stEscape(period) + '</div>';
+    html += '<div class="st-tab-hero-period">' + _stEscape(period) + '</div>';
   }
   html += '</div>';
   if (support) {
@@ -11871,8 +11871,9 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
             prow.customer ||
             '',
           dateTs:
-            Number((cbSale && cbSale.ts) || (exact && exact.ts) || prow.dateTs) ||
-            0,
+            Number(
+              (cbSale && cbSale.ts) || (exact && exact.ts) || prow.dateTs
+            ) || 0,
           product:
             (cbSale && cbSale.plan) ||
             (exact && exact.plan) ||
@@ -12214,22 +12215,18 @@ function _stBuildReconcileFooterSummaryHtml(state) {
 function _stBuildReconcileChipsHtml(state) {
   var c = (state && state.counts) || _stReconcileCountRows([]);
   var filter = _stReconcileTableFilter || 'needs';
-  var chips = [
-    { id: 'needs', label: 'Needs attention', n: c.needs },
+  var primary = { id: 'needs', label: 'Needs attention', n: c.needs };
+  var secondary = [
     { id: 'all', label: 'All', n: c.all },
+    { id: 'matched', label: 'Matched', n: c.matched },
     { id: 'missing', label: 'Missing', n: c.missing },
     { id: 'mislabeled', label: 'Mislabeled', n: c.mislabeled },
     { id: 'amountmismatch', label: 'Amount mismatch', n: c.amountmismatch },
     { id: 'chargeback', label: 'Chargebacks', n: c.chargeback },
-    { id: 'samecancel', label: 'Same-week cancels', n: c.samecancel },
-    { id: 'matched', label: 'Matched', n: c.matched }
+    { id: 'samecancel', label: 'Cancels', n: c.samecancel }
   ];
-  var html =
-    '<div id="st-recon-chips" class="st-recon-v2-chips" role="tablist">';
-  var i;
-  for (i = 0; i < chips.length; i++) {
-    var chip = chips[i];
-    html +=
+  function chipHtml(chip) {
+    return (
       '<button type="button" class="st-recon-chip st-recon-v2-chip' +
       (filter === chip.id ? ' st-chip-active' : '') +
       '" data-st-recon-action="filter" data-filter="' +
@@ -12238,7 +12235,16 @@ function _stBuildReconcileChipsHtml(state) {
       _stEscape(chip.label) +
       ' <span class="st-recon-v2-chip-n">' +
       chip.n +
-      '</span></button>';
+      '</span></button>'
+    );
+  }
+  var html =
+    '<div id="st-recon-chips" class="st-recon-v2-chips st-tab-filter-row" role="tablist">';
+  html += chipHtml(primary);
+  html += '<span class="st-filter-sep" aria-hidden="true">·</span>';
+  var i;
+  for (i = 0; i < secondary.length; i++) {
+    html += chipHtml(secondary[i]);
   }
   html += '</div>';
   return html;
@@ -12806,13 +12812,15 @@ function _stBuildReconcileHistoryPane(sales) {
   }
   var histSupport = 'Read-only snapshots';
   if (oldestTs) {
-    histSupport += ', oldest ' + _stFmtMonthDay(oldestTs);
+    histSupport += ' · oldest ' + _stFmtMonthDay(oldestTs);
   }
+  var histHeadline =
+    saved.length + ' saved reconciliation' + (saved.length === 1 ? '' : 's');
   var html =
     '<section class="st-recon-pane st-recon-history-pane" aria-label="Reconcile history">';
   html += '<div class="st-recon-head">';
   html += _stBuildTabHeroHtml({
-    headline: String(saved.length),
+    headline: _stEscape(histHeadline),
     support: _stEscape(histSupport),
     period: 'History'
   });
@@ -12854,30 +12862,32 @@ function _stBuildReconcileHistoryPane(sales) {
       if (!weekLabel) weekLabel = '-';
       var hid = String(rec.id || '');
       var pb = rec.paycheck || {};
-      var figure =
-        pb.totalEarned != null
-          ? _stFmtMoney(pb.totalEarned)
-          : pb.netPay != null
-            ? _stFmtMoney(pb.netPay)
-            : String(Number(c.matched) || 0) + ' matched';
+      var figure = '-';
+      if (pb.totalEarned != null) {
+        figure = _stFmtMoney(pb.totalEarned);
+      } else if (pb.netPay != null) {
+        figure = _stFmtMoney(pb.netPay);
+      }
       html +=
         '<article class="st-record-card st-hist-card">' +
-        '<div class="st-record-card-top">' +
+        '<div class="st-record-card-body">' +
         '<div class="st-record-card-label">Week of ' +
         _stEscape(weekLabel) +
         (rec.weekMode === 'legacy-mon'
           ? ' <span class="st-recon-history-weekmode">legacy Mon-Sun week</span>'
           : '') +
         '</div>' +
-        '<div class="st-record-card-figure">' +
-        _stEscape(figure) +
-        '</div></div>' +
         '<div class="st-record-card-meta">' +
         _stEscape(summary) +
         (rec.savedAt
-          ? '<span class="st-record-card-sep" aria-hidden="true"></span>saved ' +
-            _stEscape(_stFmtHistorySavedAt(rec.savedAt))
+          ? '<span class="st-record-card-sep" aria-hidden="true"></span><span class="st-record-card-helper">saved ' +
+            _stEscape(_stFmtHistorySavedAt(rec.savedAt)) +
+            '</span>'
           : '') +
+        '</div></div>' +
+        '<div class="st-record-card-side">' +
+        '<div class="st-record-card-figure">' +
+        _stEscape(figure) +
         '</div>' +
         '<div class="st-record-card-actions">' +
         (_stNavPaycheckExists(rec.weekStart)
@@ -12891,13 +12901,13 @@ function _stBuildReconcileHistoryPane(sales) {
         '<button type="button" class="st-recon-history-view" data-st-recon-action="view-history" data-history-id="' +
         _stEscape(hid) +
         '">View</button>' +
-        '<button type="button" class="st-recon-history-delete" data-st-recon-action="delete-history" data-history-id="' +
+        '<span class="st-filter-sep" aria-hidden="true">·</span>' +
+        '<button type="button" class="st-delete st-recon-history-delete" data-st-recon-action="delete-history" data-history-id="' +
         _stEscape(hid) +
         '" data-week-label="' +
         _stEscape(weekLabel) +
-        '" title="Delete" aria-label="Delete saved pay sheet">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>' +
-        '</button></div></article>';
+        '" title="Delete" aria-label="Delete saved pay sheet">Delete</button>' +
+        '</div></div></article>';
     }
     html += '</div>';
   }
@@ -12922,23 +12932,24 @@ function _stBuildReconcileHistoryPane(sales) {
       var lost = _stSaleReversalCommission(s);
       html +=
         '<article class="st-record-card st-hist-card">' +
-        '<div class="st-record-card-top">' +
-        '<div class="st-record-card-label">' +
+        '<div class="st-record-card-body">' +
+        '<div class="st-record-card-line">' +
         _stEscape(s.customer || 'Unknown') +
-        '</div>' +
-        '<div class="st-record-card-figure st-cbc-lost">' +
-        _stEscape('-' + _stFmtMoney(lost)) +
-        '</div></div>' +
-        '<div class="st-record-card-meta">' +
-        _stEscape(s.plan || 'Plan') +
         '<span class="st-record-card-sep" aria-hidden="true"></span>' +
-        _stEscape(_stReconFormatDate(s.ts)) +
+        _stEscape(s.plan || 'Plan') +
         '<span class="st-record-card-sep" aria-hidden="true"></span>' +
         '<span class="' +
         pillClass +
         '">' +
         _stEscape(pillLabel) +
-        '</span></div></article>';
+        '</span></div>' +
+        '<div class="st-record-card-meta">' +
+        _stEscape(_stReconFormatDate(s.ts)) +
+        '</div></div>' +
+        '<div class="st-record-card-side">' +
+        '<div class="st-record-card-figure st-cbc-lost">' +
+        _stEscape('-' + _stFmtMoney(lost)) +
+        '</div></div></article>';
     }
     html += '</div>';
   }
@@ -13755,14 +13766,7 @@ function _stBuildCbcSummaryHtml(sum) {
   var cbWord = sum.cbN === 1 ? 'chargeback' : 'chargebacks';
   var swWord = sum.swN === 1 ? 'same-week cancel' : 'same-week cancels';
   var support =
-    'Lost to ' +
-    sum.cbN +
-    ' ' +
-    cbWord +
-    ' and ' +
-    sum.swN +
-    ' ' +
-    swWord;
+    'Lost to ' + sum.cbN + ' ' + cbWord + ' and ' + sum.swN + ' ' + swWord;
   return _stBuildTabHeroHtml({
     headline:
       '<span class="st-cbc-lost">' +
@@ -13776,37 +13780,42 @@ function _stBuildCbcSummaryHtml(sum) {
 }
 
 function _stBuildCbcTimeChipsHtml() {
-  var chips = [
+  var timeChips = [
     { id: 'week', label: 'This week' },
     { id: 'last4', label: 'Last 4 weeks' },
     { id: 'month', label: 'This month' },
     { id: 'last3', label: 'Last 3 months' },
     { id: 'ytd', label: 'YTD' },
     { id: 'all', label: 'All time' },
-    { id: 'custom', label: 'Custom' },
-    { id: 'type:all', label: 'All types', type: true },
-    { id: 'type:chargeback', label: 'Chargebacks', type: true },
-    { id: 'type:samecancel', label: 'Same-week cancels', type: true }
+    { id: 'custom', label: 'Custom' }
+  ];
+  var typeChips = [
+    { id: 'all', label: 'All types' },
+    { id: 'chargeback', label: 'Chargebacks' },
+    { id: 'samecancel', label: 'Same-week cancels' }
   ];
   var html =
     '<div id="st-cbc-filter-row" class="st-cbc-chips st-tab-filter-row" role="tablist" aria-label="Filters">';
   var i;
-  for (i = 0; i < chips.length; i++) {
-    var chip = chips[i];
-    var isType = !!chip.type;
-    var filterId = isType ? chip.id.slice(5) : chip.id;
-    var active = isType
-      ? _stCbcTypeFilter === filterId
-      : _stCbcTimeFilter === filterId;
+  for (i = 0; i < timeChips.length; i++) {
     html +=
       '<button type="button" class="st-cbc-chip' +
-      (active ? ' is-active' : '') +
-      '" data-st-cbc-action="' +
-      (isType ? 'type' : 'time') +
-      '" data-filter="' +
-      filterId +
+      (_stCbcTimeFilter === timeChips[i].id ? ' is-active' : '') +
+      '" data-st-cbc-action="time" data-filter="' +
+      timeChips[i].id +
       '">' +
-      _stEscape(chip.label) +
+      _stEscape(timeChips[i].label) +
+      '</button>';
+  }
+  html += '<span class="st-filter-sep" aria-hidden="true">·</span>';
+  for (i = 0; i < typeChips.length; i++) {
+    html +=
+      '<button type="button" class="st-cbc-chip' +
+      (_stCbcTypeFilter === typeChips[i].id ? ' is-active' : '') +
+      '" data-st-cbc-action="type" data-filter="' +
+      typeChips[i].id +
+      '">' +
+      _stEscape(typeChips[i].label) +
       '</button>';
   }
   html += '</div>';
@@ -13851,39 +13860,47 @@ function _stBuildCbcTableRowHtml(ev) {
         'Open original sale for ' + (ev.customer || 'Unknown')
       )
     : _stEscape(ev.customer);
-  var meta =
+  var line1 =
+    '<div class="st-record-card-line">' +
+    custHtml +
+    '<span class="st-record-card-sep" aria-hidden="true"></span>' +
     _stEscape(ev.plan) +
     '<span class="st-record-card-sep" aria-hidden="true"></span>' +
     '<span class="st-cbc-pill ' +
     typeCls +
     '">' +
     _stEscape(typeLabel) +
+    '</span></div>';
+  var meta =
+    'Sold ' +
+    _stEscape(_stCbcFmtDate(ev.saleTs)) +
+    '<span class="st-record-card-sep" aria-hidden="true"></span>' +
+    '<span class="st-cbc-lost">Lost ' +
+    _stEscape(_stFmtMoney(ev.amountLost)) +
     '</span>' +
     '<span class="st-record-card-sep" aria-hidden="true"></span>' +
-    _stEscape(_stCbcFmtDate(ev.eventTs)) +
+    'ID ' +
+    _stEscape(mid) +
     '<span class="st-record-card-sep" aria-hidden="true"></span>' +
-    _stEscape(mid);
+    'Orig ' +
+    _stEscape(_stFmtMoney(ev.originalCommission)) +
+    '<span class="st-record-card-sep" aria-hidden="true"></span>' +
+    _stNavPaycheckWeekHtml(ev.deductionPaycheckWeek, 'deduction');
   return (
     '<article class="st-record-card st-cbc-card">' +
-    '<div class="st-record-card-top">' +
-    '<div class="st-record-card-label">' +
-    custHtml +
-    '</div>' +
-    '<div class="st-record-card-figure st-cbc-lost">' +
-    _stEscape('-' + _stFmtMoney(ev.amountLost)) +
-    '</div></div>' +
+    '<div class="st-record-card-body">' +
+    line1 +
     '<div class="st-record-card-meta">' +
     meta +
+    '</div></div>' +
+    '<div class="st-record-card-side">' +
+    '<div class="st-record-card-figure st-cbc-lost">' +
+    _stEscape('-' + _stFmtMoney(ev.amountLost)) +
     '</div>' +
     '<div class="st-record-card-actions">' +
-    '<span class="st-cbc-sub">Orig ' +
-    _stEscape(_stFmtMoney(ev.originalCommission)) +
-    '</span>' +
-    '<span class="st-record-card-sep" aria-hidden="true"></span>' +
-    _stNavPaycheckWeekHtml(ev.deductionPaycheckWeek, 'deduction') +
     '<button type="button" class="st-cbc-view" data-st-cbc-action="view" data-sale-id="' +
     _stEscape(ev.saleId) +
-    '">View</button></div></article>'
+    '">View</button></div></div></article>'
   );
 }
 
@@ -14547,6 +14564,7 @@ function _stBuildPcTableRowHtml(rec) {
   var cbN = Number(pb.chargebacks) || 0;
   var swN = Number(pb.sameWeekCancels) || 0;
   var lostN = cbN + swN;
+  var hasLost = pb.chargebacks != null || pb.sameWeekCancels != null;
   var bonusN = _stPaycheckBonusSum(pb);
   var hasBonus =
     pb.tierBonus != null ||
@@ -14559,49 +14577,53 @@ function _stBuildPcTableRowHtml(rec) {
   supportBits.push('Gross ' + _stPcFmtAmt(pb.grossCommission));
   supportBits.push(
     '<span class="st-pc-lost">Lost ' +
-      (lostN ? _stFmtMoney(lostN) : '-') +
+      (hasLost ? _stFmtMoney(lostN) : '-') +
       '</span>'
   );
   supportBits.push('Bonus ' + (hasBonus ? _stFmtMoney(bonusN) : '-'));
   supportBits.push(
     (pb.dealsPaid == null ? '-' : String(pb.dealsPaid)) + ' deals'
   );
+  supportBits.push(
+    '<span class="st-pc-pill st-pc-pill-' +
+      status +
+      '">' +
+      _stEscape(_stPcStatusLabel(status)) +
+      '</span>'
+  );
   var actions = '';
   if (hist && hist.id) {
-    actions =
-      _stNavBtnHtml(
-        'recon-from-pc',
-        ' data-week-start="' +
-          String(Number(rec.weekStart) || 0) +
-          '" data-history-id="' +
-          _stEscape(String(hist.id)) +
-          '"',
-        'Recon',
-        'Open saved reconciliation for ' + weekLabel
-      ) + ' ';
+    actions = _stNavBtnHtml(
+      'recon-from-pc',
+      ' data-week-start="' +
+        String(Number(rec.weekStart) || 0) +
+        '" data-history-id="' +
+        _stEscape(String(hist.id)) +
+        '"',
+      'Recon',
+      'Open saved reconciliation for ' + weekLabel
+    );
   }
-  actions +=
-    '<span class="st-pc-pill st-pc-pill-' +
-    status +
-    '">' +
-    _stEscape(_stPcStatusLabel(status)) +
-    '</span>';
   return (
     '<article class="st-record-card st-pc-card" data-st-pc-action="open-detail" data-week-start="' +
     rec.weekStart +
     '">' +
-    '<div class="st-record-card-top">' +
+    '<div class="st-record-card-body">' +
     '<div class="st-record-card-label">' +
     _stEscape(weekLabel) +
     '</div>' +
+    '<div class="st-record-card-meta">' +
+    supportBits.join(
+      '<span class="st-record-card-sep" aria-hidden="true"></span>'
+    ) +
+    '</div></div>' +
+    '<div class="st-record-card-side">' +
     '<div class="st-record-card-figure">' +
     _stEscape(_stPcFmtAmt(earned)) +
-    '</div></div>' +
-    '<div class="st-record-card-meta">' +
-    supportBits.join('<span class="st-record-card-sep" aria-hidden="true"></span>') +
     '</div>' +
-    '<div class="st-record-card-actions">' +
-    actions +
+    (actions
+      ? '<div class="st-record-card-actions">' + actions + '</div>'
+      : '') +
     '</div></article>'
   );
 }
