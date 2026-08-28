@@ -6932,3 +6932,163 @@ body.st-pb-modal-open {
   border-color: var(--cha-border-strong);
   color: var(--cha-text-primary);
 }
+
+/* Stage N — tab heroes, single filter row, record cards */
+.st-tab-hero {
+  margin-bottom: 14px;
+}
+
+.st-tab-hero-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.st-tab-hero-headline {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--cha-text-primary);
+}
+
+.st-tab-hero-headline.is-ok {
+  color: var(--cha-success-text);
+}
+
+.st-tab-hero-headline.is-warn {
+  color: var(--cha-warning-text);
+}
+
+.st-tab-hero-headline.is-idle {
+  color: var(--cha-text-secondary);
+}
+
+.st-tab-hero-period {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cha-text-tertiary);
+  text-align: right;
+}
+
+.st-tab-hero-support {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--cha-text-tertiary);
+}
+
+.st-tab-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.st-tab-custom-row {
+  margin-bottom: 12px;
+}
+
+.st-record-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.st-record-card {
+  background: var(--cha-bg-card);
+  border: 0.5px solid var(--cha-border-subtle);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.st-record-card-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.st-record-card-label,
+.st-record-card-figure {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cha-text-primary);
+  line-height: 1.3;
+}
+
+.st-record-card-figure {
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.st-record-card-meta {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--cha-text-tertiary);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+}
+
+.st-record-card-sep {
+  display: inline-block;
+  width: 14px;
+  height: 1px;
+  flex-shrink: 0;
+}
+
+.st-record-card-actions {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.st-pc-card {
+  cursor: pointer;
+}
+
+.st-pc-card:hover {
+  border-color: var(--cha-border-default);
+}
+
+.st-pc-pane .st-pc-header,
+.st-cbc-pane .st-cbc-header,
+.st-recon-history-pane .st-recon-head {
+  margin-bottom: 4px;
+}
+
+.st-recon-v2-header .st-tab-hero {
+  margin-bottom: 0;
+}
+
+.st-recon-chips.st-tab-filter-row,
+.st-recon-v2-chips {
+  margin-top: 10px;
+  margin-bottom: 12px;
+}
+
+.st-hist-card .st-recon-history-view,
+.st-hist-card .st-recon-history-delete {
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .st-tab-hero-headline {
+    font-size: 22px;
+  }
+
+  .st-tab-hero-row {
+    flex-wrap: wrap;
+  }
+
+  .st-tab-hero-period {
+    width: 100%;
+    text-align: left;
+  }
+}
