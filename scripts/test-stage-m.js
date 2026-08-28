@@ -277,6 +277,110 @@ assert(
   'verified paycheck reversal was not touched'
 );
 
+var goodAddon = {
+  id: 'good-addon',
+  type: 'addon',
+  customer: 'Already Correct',
+  plan: 'AssistPro Discount',
+  amount: 22.99,
+  addonCommission: 13.79,
+  status: 'pending',
+  ts: week16 + 24 * 60 * 60 * 1000
+};
+ctx._stSaveSales([goodAddon, oluchi, andranik, verifiedRev]);
+var reversalOnlyPreview = ctx._stBuildRecalcPreview(ctx._stLoadSales());
+assert(
+  reversalOnlyPreview.items.length === 0,
+  'ordinary sales already match the rate table'
+);
+assert(
+  reversalOnlyPreview.reversals.length >= 2,
+  'pending reversals remain when ordinary sales are clean'
+);
+var reversalOnlyHtml = ctx._stBuildRecalcPreviewHtml(reversalOnlyPreview);
+assert(
+  reversalOnlyHtml.indexOf('Nothing would change') === -1,
+  'empty state waits until both ordinary and reversal groups are empty'
+);
+assert(
+  reversalOnlyHtml.indexOf('Chargebacks and cancels logged at old rates') !== -1,
+  'reversal group still renders when ordinary sales are clean'
+);
+assert(
+  reversalOnlyHtml.indexOf('recalc-apply') !== -1,
+  'Apply stays available for reversal-only previews'
+);
+
+var staleDealReceipt = 'stale-deal-rcpt';
+var staleDealPlan = Math.abs(
+  ctx._stTableCommissionForSale(
+    {
+      type: 'deal',
+      plan: 'MEDVALUE 6000+',
+      amount: 399,
+      status: 'chargeback'
+    },
+    ctx._stLoadCommissionRates()
+  )
+);
+var staleDeal = {
+  id: 'stale-deal',
+  type: 'deal',
+  customer: 'Arash Sarvghad',
+  plan: 'MEDVALUE 6000+',
+  amount: 399,
+  planCommission: staleDealPlan,
+  totalAddonCommission: 28.52,
+  enrollmentBonus: 0,
+  status: 'chargeback',
+  ts: week16 + 2 * 24 * 60 * 60 * 1000,
+  receiptId: staleDealReceipt,
+  reversal: {
+    type: 'chargeback',
+    amountLost: 228.52,
+    originalCommission: 228.52
+  }
+};
+var freshAddon = {
+  id: 'stale-addon',
+  type: 'addon',
+  customer: 'Arash Sarvghad',
+  plan: 'Compass VAB',
+  amount: 34.99,
+  addonCommission: 34.99,
+  status: 'chargeback',
+  ts: week16 + 2 * 24 * 60 * 60 * 1000,
+  receiptId: staleDealReceipt
+};
+ctx._stSaveSales([staleDeal, freshAddon]);
+var staleDealPreview = ctx._stBuildRecalcPreview(ctx._stLoadSales());
+function findRevByCustomer(name) {
+  var ri;
+  for (ri = 0; ri < staleDealPreview.reversals.length; ri++) {
+    if (staleDealPreview.reversals[ri].customer === name) {
+      return staleDealPreview.reversals[ri];
+    }
+  }
+  return null;
+}
+var arashPrev = findRevByCustomer('Arash Sarvghad');
+assert(!!arashPrev, 'stale deal chargeback stays in the reversal group');
+assert(
+  money(arashPrev.stored) === money(ctx._stSaleReversalCommission(staleDeal)),
+  'reversal preview uses full reversal commission as stored'
+);
+assert(
+  money(arashPrev.next) ===
+    money(
+      ctx._stProjectedReversalCommission(
+        staleDeal,
+        ctx._stLoadSales(),
+        ctx._stLoadCommissionRates()
+      )
+    ),
+  'reversal preview projects linked add-on totals'
+);
+
 function deal(id, status, week, fee) {
   return {
     id: id,

@@ -1284,6 +1284,33 @@ function _stPushRecalcLine(list, s, stored, next, bonus) {
   }
 }
 
+function _stProjectedReversalCommission(sale, sales, rates) {
+  if (!sale) return 0;
+  if (sale.type === 'addon') {
+    return _stMoney2(Math.abs(_stTableCommissionForSale(sale, rates)));
+  }
+  if (sale.type === 'deal') {
+    var nextPlan = Math.abs(_stTableCommissionForSale(sale, rates));
+    var nextAddons = 0;
+    var linked = false;
+    if (sale.receiptId && sales && sales.length) {
+      var ai;
+      for (ai = 0; ai < sales.length; ai++) {
+        var ad = sales[ai];
+        if (!ad || ad.type !== 'addon') continue;
+        if (String(ad.receiptId || '') !== String(sale.receiptId || '')) continue;
+        linked = true;
+        nextAddons += Math.abs(_stTableCommissionForSale(ad, rates));
+      }
+    }
+    if (!linked) {
+      nextAddons = Math.abs(Number(sale.totalAddonCommission) || 0);
+    }
+    return _stMoney2(nextPlan + nextAddons);
+  }
+  return _stMoney2(Math.abs(_stTableCommissionForSale(sale, rates)));
+}
+
 function _stBuildRecalcPreview(sales) {
   var rates = _stLoadCommissionRates();
   var items = [];
@@ -1296,13 +1323,13 @@ function _stBuildRecalcPreview(sales) {
     var stored = _stMoney2(_stStoredLineCommission(s));
     var next = _stMoney2(_stTableCommissionForSale(s, rates));
     var bonus = Number(s.enrollmentBonus) || 0;
-    if (_stIsReversalStatus(s)) {
-      stored = Math.abs(stored);
-      next = Math.abs(next);
-    }
     var wouldChange =
       Math.abs(next - stored) > 0.02 || (s.type === 'deal' && bonus !== 0);
     if (_stIsReversalStatus(s)) {
+      stored = _stMoney2(_stSaleReversalCommission(s));
+      next = _stMoney2(_stProjectedReversalCommission(s, sales, rates));
+      wouldChange =
+        Math.abs(next - stored) > 0.02 || (s.type === 'deal' && bonus !== 0);
       if (_stReversalPaycheckWeekIsVerified(s)) {
         if (wouldChange) {
           skipped.push({
