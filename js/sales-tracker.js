@@ -1198,6 +1198,13 @@ function _stHandleRatesActionClick(btn) {
     _stRender();
     return;
   }
+  if (action === 'recalc-toggle-reversals') {
+    if (_stRecalcPreview && !_stRecalcPreview.applied) {
+      _stRecalcPreview.includeReversals = !_stRecalcPreview.includeReversals;
+      _stRender();
+    }
+    return;
+  }
   if (action === 'reset-ask') {
     _stRatesResetConfirm = true;
     _stRender();
@@ -1252,9 +1259,35 @@ function _stStoredLineCommission(sale) {
   return 0;
 }
 
+function _stPushRecalcLine(list, s, stored, next, bonus) {
+  if (Math.abs(next - stored) > 0.02) {
+    list.push({
+      saleId: String(s.id || ''),
+      customer: s.customer || '',
+      product: s.plan || '',
+      stored: stored,
+      next: next,
+      diff: _stMoney2(next - stored),
+      kind: 'rate'
+    });
+  }
+  if (s.type === 'deal' && bonus !== 0) {
+    list.push({
+      saleId: String(s.id || ''),
+      customer: s.customer || '',
+      product: s.plan || '',
+      stored: _stMoney2(bonus),
+      next: 0,
+      diff: _stMoney2(-bonus),
+      kind: 'enrollment'
+    });
+  }
+}
+
 function _stBuildRecalcPreview(sales) {
   var rates = _stLoadCommissionRates();
   var items = [];
+  var reversals = [];
   var skipped = [];
   var i;
   for (i = 0; i < (sales || []).length; i++) {
@@ -1263,17 +1296,25 @@ function _stBuildRecalcPreview(sales) {
     var stored = _stMoney2(_stStoredLineCommission(s));
     var next = _stMoney2(_stTableCommissionForSale(s, rates));
     var bonus = Number(s.enrollmentBonus) || 0;
+    if (_stIsReversalStatus(s)) {
+      stored = Math.abs(stored);
+      next = Math.abs(next);
+    }
     var wouldChange =
       Math.abs(next - stored) > 0.02 || (s.type === 'deal' && bonus !== 0);
     if (_stIsReversalStatus(s)) {
-      if (wouldChange) {
-        skipped.push({
-          saleId: String(s.id || ''),
-          customer: s.customer || '',
-          product: s.plan || '',
-          reason: 'Chargeback or same-week cancel'
-        });
+      if (_stReversalPaycheckWeekIsVerified(s)) {
+        if (wouldChange) {
+          skipped.push({
+            saleId: String(s.id || ''),
+            customer: s.customer || '',
+            product: s.plan || '',
+            reason: 'Paycheck for this week is verified'
+          });
+        }
+        continue;
       }
+      _stPushRecalcLine(reversals, s, stored, next, bonus);
       continue;
     }
     if (_stPaycheckWeekIsVerified(s.ts)) {
@@ -1287,41 +1328,27 @@ function _stBuildRecalcPreview(sales) {
       }
       continue;
     }
-    if (Math.abs(next - stored) > 0.02) {
-      items.push({
-        saleId: String(s.id || ''),
-        customer: s.customer || '',
-        product: s.plan || '',
-        stored: stored,
-        next: next,
-        diff: _stMoney2(next - stored),
-        kind: 'rate'
-      });
-    }
-    if (s.type === 'deal' && bonus !== 0) {
-      items.push({
-        saleId: String(s.id || ''),
-        customer: s.customer || '',
-        product: s.plan || '',
-        stored: _stMoney2(bonus),
-        next: 0,
-        diff: _stMoney2(-bonus),
-        kind: 'enrollment'
-      });
-    }
+    _stPushRecalcLine(items, s, stored, next, bonus);
   }
   var net = 0;
   var bonusNet = 0;
+  var reversalNet = 0;
   for (i = 0; i < items.length; i++) {
     if (items[i].kind === 'enrollment') bonusNet += items[i].diff;
     else net += items[i].diff;
   }
+  for (i = 0; i < reversals.length; i++) {
+    reversalNet += reversals[i].diff;
+  }
   return {
     applied: false,
     items: items,
+    reversals: reversals,
+    includeReversals: false,
     skipped: skipped,
     net: _stMoney2(net),
     bonusNet: _stMoney2(bonusNet),
+    reversalNet: _stMoney2(reversalNet),
     updated: 0
   };
 }
@@ -1329,25 +1356,52 @@ function _stBuildRecalcPreview(sales) {
 function _stApplyRecalcPreview() {
   var preview = _stRecalcPreview;
   if (!preview || preview.applied) return;
-  if (!preview.items || !preview.items.length) {
+  var includeRev = !!preview.includeReversals;
+  var hasItems = preview.items && preview.items.length;
+  var hasRevs = includeRev && preview.reversals && preview.reversals.length;
+  if (!hasItems && !hasRevs) {
     _stFlash('Nothing to recalculate.', 'neutral');
     return;
   }
   var sales = _stLoadSales();
   var rates = _stLoadCommissionRates();
   var ids = {};
+  var reversalIds = {};
   var i;
-  for (i = 0; i < preview.items.length; i++) {
-    if (preview.items[i] && preview.items[i].saleId) {
-      ids[preview.items[i].saleId] = true;
+  if (hasItems) {
+    for (i = 0; i < preview.items.length; i++) {
+      if (preview.items[i] && preview.items[i].saleId) {
+        ids[preview.items[i].saleId] = true;
+      }
+    }
+  }
+  if (hasRevs) {
+    for (i = 0; i < preview.reversals.length; i++) {
+      if (preview.reversals[i] && preview.reversals[i].saleId) {
+        reversalIds[preview.reversals[i].saleId] = true;
+        ids[preview.reversals[i].saleId] = true;
+      }
     }
   }
   var updated = 0;
   for (i = 0; i < sales.length; i++) {
     var s = sales[i];
     if (!s || !ids[String(s.id || '')]) continue;
-    if (_stIsReversalStatus(s)) continue;
-    if (_stPaycheckWeekIsVerified(s.ts)) continue;
+    if (_stIsReversalStatus(s)) {
+      if (!reversalIds[String(s.id || '')]) continue;
+      if (_stReversalPaycheckWeekIsVerified(s)) continue;
+      if (s.reversal && typeof s.reversal === 'object') {
+        if (s.reversal.amountLostBeforeRecalc == null) {
+          s.reversal.amountLostBeforeRecalc = s.reversal.amountLost;
+        }
+        if (s.reversal.originalCommissionBeforeRecalc == null) {
+          s.reversal.originalCommissionBeforeRecalc =
+            s.reversal.originalCommission;
+        }
+      }
+    } else if (_stPaycheckWeekIsVerified(s.ts)) {
+      continue;
+    }
     if (s.commissionBeforeRecalc == null) {
       s.commissionBeforeRecalc = _stStoredLineCommission(s);
     }
@@ -1360,6 +1414,9 @@ function _stApplyRecalcPreview() {
       }
       delete s.addonCommissionRate;
       s.addonCommission = _stTableCommissionForSale(s, rates);
+      if (_stIsReversalStatus(s)) {
+        s.addonCommission = Math.abs(Number(s.addonCommission) || 0);
+      }
     } else {
       if (
         typeof s.commissionRate === 'number' &&
@@ -1396,26 +1453,58 @@ function _stApplyRecalcPreview() {
       _stRecomputeSaleGroupCommission(sales, i);
     }
   }
+  for (i = 0; i < sales.length; i++) {
+    if (sales[i] && reversalIds[String(sales[i].id || '')]) {
+      _stRefreshSaleReversalAmount(sales[i]);
+    }
+  }
   _stSaveSales(sales);
   _stRecalcPreview = {
     applied: true,
     items: preview.items,
+    reversals: preview.reversals || [],
+    includeReversals: includeRev,
     skipped: preview.skipped || [],
     net: preview.net,
     bonusNet: preview.bonusNet,
+    reversalNet: preview.reversalNet,
     updated: updated
   };
+  var netChange = preview.net + preview.bonusNet;
+  if (includeRev) netChange += Number(preview.reversalNet) || 0;
   _stFlash(
     'Updated ' +
       updated +
       ' sales. Skipped ' +
       (_stRecalcPreview.skipped.length || 0) +
       '. Net change ' +
-      _stFmtMoney(_stRecalcPreview.net + _stRecalcPreview.bonusNet) +
+      _stFmtMoney(netChange) +
       '.',
     'ok'
   );
   _stRender();
+}
+
+function _stBuildRecalcLineRowsHtml(list) {
+  var html = '';
+  var i;
+  for (i = 0; i < (list || []).length; i++) {
+    var it = list[i];
+    html += '<tr>';
+    html += '<td>' + _stEscape(it.customer || '') + '</td>';
+    html +=
+      '<td>' +
+      _stEscape(it.product || '') +
+      (it.kind === 'enrollment'
+        ? ' <span class="st-rate-manual">Enrollment bonus</span>'
+        : '') +
+      '</td>';
+    html += '<td>' + _stEscape(_stFmtMoney(it.stored)) + '</td>';
+    html += '<td>' + _stEscape(_stFmtMoney(it.next)) + '</td>';
+    html += '<td>' + _stEscape(_stFmtMoney(it.diff)) + '</td>';
+    html += '</tr>';
+  }
+  return html;
 }
 
 function _stBuildRecalcPreviewHtml(preview) {
@@ -1446,7 +1535,9 @@ function _stBuildRecalcPreviewHtml(preview) {
     html += '</div>';
     return html;
   }
-  if (!preview.items.length) {
+  var hasItems = preview.items && preview.items.length;
+  var hasRevs = preview.reversals && preview.reversals.length;
+  if (!hasItems && !hasRevs) {
     html +=
       '<p class="st-recalc-summary">Nothing would change. Stored commissions already match the current rate table.</p>';
     html +=
@@ -1454,42 +1545,52 @@ function _stBuildRecalcPreviewHtml(preview) {
     html += '</div>';
     return html;
   }
-  html +=
-    '<p class="st-recalc-summary">' +
-    preview.items.length +
-    ' line' +
-    (preview.items.length === 1 ? '' : 's') +
-    ' would change. Rate-table net ' +
-    _stEscape(_stFmtMoney(preview.net)) +
-    '. Enrollment bonus relocated ' +
-    _stEscape(_stFmtMoney(preview.bonusNet)) +
-    '.</p>';
-  html += '<div class="st-rates-table-wrap"><table class="st-rates-table">';
-  html +=
-    '<thead><tr><th>Customer</th><th>Product</th><th>Stored</th><th>New</th><th>Difference</th></tr></thead><tbody>';
-  var i;
-  for (i = 0; i < preview.items.length; i++) {
-    var it = preview.items[i];
-    html += '<tr>';
-    html += '<td>' + _stEscape(it.customer || '') + '</td>';
+  if (hasItems) {
     html +=
-      '<td>' +
-      _stEscape(it.product || '') +
-      (it.kind === 'enrollment'
-        ? ' <span class="st-rate-manual">Enrollment bonus</span>'
-        : '') +
-      '</td>';
-    html += '<td>' + _stEscape(_stFmtMoney(it.stored)) + '</td>';
-    html += '<td>' + _stEscape(_stFmtMoney(it.next)) + '</td>';
-    html += '<td>' + _stEscape(_stFmtMoney(it.diff)) + '</td>';
-    html += '</tr>';
+      '<p class="st-recalc-summary">' +
+      preview.items.length +
+      ' line' +
+      (preview.items.length === 1 ? '' : 's') +
+      ' would change. Rate-table net ' +
+      _stEscape(_stFmtMoney(preview.net)) +
+      '. Enrollment bonus relocated ' +
+      _stEscape(_stFmtMoney(preview.bonusNet)) +
+      '.</p>';
+    html += '<div class="st-rates-table-wrap"><table class="st-rates-table">';
+    html +=
+      '<thead><tr><th>Customer</th><th>Product</th><th>Stored</th><th>New</th><th>Difference</th></tr></thead><tbody>';
+    html += _stBuildRecalcLineRowsHtml(preview.items);
+    html += '</tbody></table></div>';
   }
-  html += '</tbody></table></div>';
+  if (hasRevs) {
+    html += '<div class="st-recalc-reversals">';
+    html +=
+      '<div class="st-recalc-title">Chargebacks and cancels logged at old rates</div>';
+    html +=
+      '<p class="st-rates-help">These reversals are separate from ordinary sales. Include them only if the original sale was logged at the wrong rate. Verified paycheck weeks stay frozen.</p>';
+    html += '<div class="st-rates-table-wrap"><table class="st-rates-table">';
+    html +=
+      '<thead><tr><th>Customer</th><th>Product</th><th>Stored</th><th>New</th><th>Difference</th></tr></thead><tbody>';
+    html += _stBuildRecalcLineRowsHtml(preview.reversals);
+    html += '</tbody></table></div>';
+    html +=
+      '<button type="button" class="st-recalc-reversals-toggle' +
+      (preview.includeReversals ? ' is-on' : '') +
+      '" data-st-rates-action="recalc-toggle-reversals" aria-pressed="' +
+      (preview.includeReversals ? 'true' : 'false') +
+      '">' +
+      (preview.includeReversals
+        ? 'Included in this recalculation (click to exclude)'
+        : 'Excluded from this recalculation (click to include)') +
+      '</button>';
+    html += '</div>';
+  }
   if (preview.skipped && preview.skipped.length) {
     html +=
       '<p class="st-recalc-skipped">' +
       preview.skipped.length +
       ' skipped:</p><ul class="st-recalc-skip-list">';
+    var i;
     for (i = 0; i < preview.skipped.length; i++) {
       var sk = preview.skipped[i];
       html +=
@@ -1664,8 +1765,14 @@ function _stSaleHasRxSavers(sales, deal) {
 
 function _stSaleQualifiesEnrollmentBonus(sale, sales) {
   if (!sale || sale.type !== 'deal') return false;
-  if (Number(sale.enrollmentFee) !== 125) return false;
-  if (_stNormalizeStatus(sale) === 'samecancel') return false;
+  var fee = Number(sale.enrollmentFee);
+  if (fee !== 125 && Number(sale.enrollmentAmount) !== 125) return false;
+  // Same-week cancels and chargebacks both reverse the sale in
+  // tracker data. The $20 is paid only when the deal still stands
+  // that week. `cancel` normalizes to chargeback, so excluding
+  // only `samecancel` left one extra $20 on weeks that stored a
+  // same-week reversal as a chargeback.
+  if (_stIsReversalStatus(sale)) return false;
   if (_stSaleHasRxSavers(sales, sale)) return false;
   return true;
 }
@@ -4767,7 +4874,7 @@ function _stUpdateStatus(id, newStatus) {
   var sales = _stLoadSales();
   for (var i = 0; i < sales.length; i++) {
     if (sales[i].id === id) {
-      var originalCommissionUs = _stSaleUnsignedCommission(sales[i]);
+      var originalCommissionUs = _stSaleReversalCommission(sales[i]);
       sales[i].status = newStatus;
       _stApplySaleReversal(sales[i], newStatus, originalCommissionUs);
       // Recompute commission for the affected deal (or the
@@ -4865,7 +4972,7 @@ function _stUpdateSaleStatus(id, newStatus) {
   var sales = _stLoadSales();
   var idx = _stFindSaleIndexById(sales, id);
   if (idx < 0) return;
-  var originalCommissionUs = _stSaleUnsignedCommission(sales[idx]);
+  var originalCommissionUs = _stSaleReversalCommission(sales[idx]);
   sales[idx].status = newStatus;
   if (newStatus === 'chargeback' || newStatus === 'samecancel') {
     _stApplySaleReversal(sales[idx], newStatus, originalCommissionUs);
@@ -7534,7 +7641,7 @@ function _stCreateSaleGroupFromModal(payload) {
         _stApplySaleReversal(
           sales[si],
           rowStatus,
-          _stSaleUnsignedCommission(sales[si])
+          _stSaleReversalCommission(sales[si])
         );
       }
       break;
@@ -8238,9 +8345,57 @@ function _stSaleUnsignedCommission(sale) {
   return Math.abs(_stComputeLineCommission(sale, _stLoadCommissionRates()));
 }
 
+// Commission actually reversed: core + add-ons, never the weekly
+// $20 enrollment bonus. Older expectedDealTotal values still
+// include that bonus; planCommission + totalAddonCommission do not.
+function _stSaleReversalCommission(sale) {
+  if (!sale) return 0;
+  if (sale.type === 'deal') {
+    var plan = Math.abs(Number(sale.planCommission) || 0);
+    var addons = Math.abs(Number(sale.totalAddonCommission) || 0);
+    if (plan > 0 || addons > 0) return _stMoney2(plan + addons);
+    var expected = Math.abs(Number(sale.expectedDealTotal) || 0);
+    var bonus = Math.abs(Number(sale.enrollmentBonus) || 0);
+    if (expected) return _stMoney2(Math.max(0, expected - bonus));
+    return 0;
+  }
+  if (typeof sale.addonCommission === 'number') {
+    return Math.abs(Number(sale.addonCommission) || 0);
+  }
+  return Math.abs(_stComputeLineCommission(sale, _stLoadCommissionRates()));
+}
+
+function _stReversalPaycheckWeekIsVerified(sale) {
+  if (!sale) return false;
+  if (_stPaycheckWeekIsVerified(sale.ts)) return true;
+  var rev =
+    sale.reversal && typeof sale.reversal === 'object' ? sale.reversal : null;
+  if (!rev) return false;
+  if (
+    Number(rev.originalPaycheckWeek) &&
+    _stPaycheckWeekIsVerified(rev.originalPaycheckWeek)
+  ) {
+    return true;
+  }
+  if (
+    Number(rev.deductionPaycheckWeek) &&
+    _stPaycheckWeekIsVerified(rev.deductionPaycheckWeek)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+function _stRefreshSaleReversalAmount(sale) {
+  if (!sale || !sale.reversal || typeof sale.reversal !== 'object') return;
+  var amt = _stSaleReversalCommission(sale);
+  sale.reversal.amountLost = amt;
+  sale.reversal.originalCommission = amt;
+}
+
 // Reconcile compares itemized pay-sheet lines, so a core row must
-// use only that plan's commission. The bundled sale total lives on
-// expectedDealTotal and is still used by chargebacks / CBC.
+// use only that plan's commission. Chargeback / CBC amounts use
+// _stSaleReversalCommission (core + add-ons, no enrollment bonus).
 function _stReconLineCommission(sale) {
   if (!sale) return 0;
   if (sale.type === 'deal') {
@@ -8321,6 +8476,7 @@ function _stPaycheckNetPayFromParts(pb) {
 
 function _stPaycheckFinishNumbers(pb) {
   if (!pb || pb.source === 'verified') return pb;
+  if (pb.salary == null) pb.salary = _ST_PAYCHECK_SALARY_DEFAULT;
   if (pb.netCommission == null) {
     pb.netCommission = _stPaycheckNetFromParts(pb);
   }
@@ -8329,7 +8485,7 @@ function _stPaycheckFinishNumbers(pb) {
     if (np == null && pb.netCommission != null) np = pb.netCommission;
     pb.netPay = np;
   }
-  if (pb.totalEarned == null && pb.netPay != null && pb.salary != null) {
+  if (pb.netPay != null && pb.salary != null) {
     pb.totalEarned = _stMoney2(Number(pb.netPay) + Number(pb.salary));
   }
   return pb;
@@ -8407,7 +8563,7 @@ function _stApplySaleReversal(sale, newStatus, originalCommission) {
   var orig =
     typeof originalCommission === 'number' && isFinite(originalCommission)
       ? Math.abs(originalCommission)
-      : _stSaleUnsignedCommission(sale);
+      : _stSaleReversalCommission(sale);
   sale.reversal = {
     type: newStatus,
     eventTs: Date.now(),
@@ -8428,7 +8584,7 @@ function _stBackfillSaleReversal(sale) {
   var origWeek = _stWeekStartFromTs(sale.ts);
   var deductWeek = 0;
   if (st === 'samecancel') deductWeek = origWeek;
-  var orig = _stSaleUnsignedCommission(sale);
+  var orig = _stSaleReversalCommission(sale);
   sale.reversal = {
     type: st,
     eventTs: _stSaleStatusChangedTs(sale) || 0,
@@ -8673,12 +8829,7 @@ function _stPaycheckLossesFromLog(sales, weekStart) {
     }
     if (!weekHit) continue;
     saw = true;
-    var lost;
-    if (rev && typeof rev.amountLost === 'number') {
-      lost = Math.abs(Number(rev.amountLost) || 0);
-    } else {
-      lost = _stSaleUnsignedCommission(s);
-    }
+    var lost = _stSaleReversalCommission(s);
     if (st === 'samecancel') sameWeekCancels += lost;
     else chargebacks += lost;
   }
@@ -13082,10 +13233,8 @@ function _stCbcEventFromSale(sale) {
   if (st !== 'chargeback' && st !== 'samecancel') return null;
   var rev =
     sale.reversal && typeof sale.reversal === 'object' ? sale.reversal : null;
-  var origComm = rev
-    ? Math.abs(Number(rev.originalCommission) || 0)
-    : _stSaleUnsignedCommission(sale);
-  var lost = rev ? Math.abs(Number(rev.amountLost) || 0) : origComm;
+  var origComm = _stSaleReversalCommission(sale);
+  var lost = origComm;
   var origWeek = rev ? _stCbcPaycheckWeekValue(rev.originalPaycheckWeek) : 0;
   var deductWeek = rev ? _stCbcPaycheckWeekValue(rev.deductionPaycheckWeek) : 0;
   return {
@@ -15940,7 +16089,7 @@ function _stBuildMarkReversalHitsHtml() {
       _stEscape(_stReconFormatDate(s.ts)) +
       '</div></div>' +
       '<span class="st-recon-cb-hit-amt">' +
-      _stEscape(_stFmtMoney(_stSaleUnsignedCommission(s))) +
+      _stEscape(_stFmtMoney(_stSaleReversalCommission(s))) +
       '</span></button>';
   }
   return html;

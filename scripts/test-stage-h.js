@@ -354,8 +354,21 @@ assert(
   'verified-week sale is skipped: ' + skippedReasons
 );
 assert(
-  skippedReasons.indexOf('Chargeback') !== -1,
-  'chargeback sale is skipped: ' + skippedReasons
+  skippedReasons.indexOf('Chargeback') === -1,
+  'chargebacks are not lumped into skipped: ' + skippedReasons
+);
+assert(
+  preview.reversals && preview.reversals.length === 1,
+  'chargeback is in the reversals group, got ' +
+    ((preview.reversals && preview.reversals.length) || 0)
+);
+assert(
+  preview.reversals[0].customer === 'Chargeback Person',
+  'reversal group names the chargeback sale'
+);
+assert(
+  preview.includeReversals === false,
+  'reversals start excluded from apply'
 );
 
 ctx._stRecalcPreview = preview;
