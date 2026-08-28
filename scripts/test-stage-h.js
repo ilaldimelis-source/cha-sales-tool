@@ -210,6 +210,65 @@ assert(
   money(Math.abs(Number(cbRow.sheetAmount))) === 208.52,
   'chargeback amount $208.52'
 );
+assert(!cbRow.confirmed, 'pending tracker sale stays unconfirmed');
+assert(counts.needs >= 1, 'unconfirmed chargeback needs attention');
+
+var confirmedSales = [
+  {
+    id: 'sale-arash-cb',
+    type: 'deal',
+    memberId: '687430611',
+    customer: 'Arash Sarvghad',
+    plan: 'MEDVALUE 6000+',
+    amount: 599,
+    ts: arashTs,
+    status: 'chargeback',
+    planCommission: 180,
+    totalAddonCommission: 28.52,
+    expectedDealTotal: 208.52,
+    reversal: {
+      type: 'chargeback',
+      amountLost: 208.52,
+      originalCommission: 208.52
+    }
+  }
+];
+ctx._stSaveSales(confirmedSales);
+var confirmedSheet = ctx._stParsePaySheet(
+  '8/18/2026\tArash Sarvghad\t687430611\tCore\tMEDVALUE 6000+\t-$208.52'
+);
+var confirmedMatch = ctx._stMatchPaySheetRows(confirmedSheet, confirmedSales);
+var confirmedTable = ctx._stBuildReconcileTableRows(
+  confirmedMatch,
+  confirmedSheet,
+  confirmedSales
+);
+var confirmedCounts = ctx._stReconcileCountRows(confirmedTable);
+assert(
+  confirmedCounts.needs === 0,
+  'confirmed matching chargeback leaves needs at 0, got ' +
+    confirmedCounts.needs
+);
+assert(
+  confirmedCounts.matched === 1,
+  'confirmed chargeback counts as matched, got ' + confirmedCounts.matched
+);
+assert(
+  confirmedCounts.chargeback === 1,
+  'Chargebacks chip still 1 after confirm, got ' + confirmedCounts.chargeback
+);
+var confirmedRow = confirmedTable.filter(function (r) {
+  return r.status === 'chargeback';
+})[0];
+assert(!!confirmedRow && confirmedRow.confirmed, 'chargeback row is confirmed');
+assert(
+  !ctx._stReconcileRowHasActions(confirmedRow),
+  'confirmed chargeback has no Resolve action'
+);
+assert(
+  money(Math.abs(Number(confirmedRow.trackerAmount))) === 208.52,
+  'confirmed chargeback tracker amount is full reversal'
+);
 
 var swcSheet = ctx._stParsePaySheet(
   [

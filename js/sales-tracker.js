@@ -661,6 +661,31 @@ function _stClassifyAddon(name) {
   return 'standard';
 }
 
+// Carrier-prefixed fee names ("AWA Association Fee") must resolve to
+// the seeded non-commissionable fee type, not fall through as add-ons.
+var _ST_NONCOMM_FEE_TYPES = [
+  'association enrollment fee',
+  'association fee',
+  'payment fee',
+  'enrollment fee'
+];
+
+function _stLookupNonCommissionableFee(normKey, products) {
+  if (!normKey || !products) return null;
+  var i;
+  for (i = 0; i < _ST_NONCOMM_FEE_TYPES.length; i++) {
+    var ft = _ST_NONCOMM_FEE_TYPES[i];
+    var isFee =
+      normKey === ft ||
+      (normKey.length > ft.length &&
+        normKey.slice(-(ft.length + 1)) === ' ' + ft);
+    if (!isFee) continue;
+    var rec = products[ft];
+    if (rec && !rec.deleted && rec.nonCommissionable) return rec;
+  }
+  return null;
+}
+
 function _stLookupNamedProduct(name, rates) {
   var products = (rates && rates.products) || {};
   function hit(key) {
@@ -682,6 +707,8 @@ function _stLookupNamedProduct(name, rates) {
     found = hit(expanded);
     if (found) return found;
   }
+  found = _stLookupNonCommissionableFee(base, products);
+  if (found) return found;
   return null;
 }
 
@@ -696,8 +723,11 @@ function _stProductIsAncillary(name, rates) {
 
 function _stSaleCountsAsAddon(sale) {
   if (!sale) return false;
+  var rates = _stLoadCommissionRates();
+  var rec = _stLookupNamedProduct(sale.plan, rates);
+  if (rec && rec.nonCommissionable) return false;
   if (sale.type === 'addon') return true;
-  return _stProductIsAncillary(sale.plan);
+  return _stProductIsAncillary(sale.plan, rates);
 }
 
 function _stResolveProductRate(name, opts) {
@@ -5282,8 +5312,11 @@ function _stCalcStats(sales, weekStartOverrideMs, rangeEndExclusiveMs) {
     ) {
       stats.enrollments++;
     }
-    if (_stSaleCountsAsAddon(s)) stats.weekAddons++;
-    else stats.weekDeals++;
+    if (_stSaleCountsAsAddon(s)) {
+      stats.weekAddons++;
+    } else if (s.type === 'deal') {
+      stats.weekDeals++;
+    }
 
     // Daily breakdown also uses raw amounts only, and respects
     // the same "valid parent deal" rule so a cancelled deal
@@ -11503,10 +11536,54 @@ function _stReconFindExactWeekSale(payRow, weekSales, usedLocal) {
   return null;
 }
 
+function _stReconFindConfirmedReversalSale(payRow) {
+  var rowMid = _stReconNormMemberId(payRow && payRow.memberId);
+  if (!rowMid) return null;
+  var typeLocal = payRow && payRow.typeLocal;
+  var hist = _stLoadSales() || [];
+  var hits = [];
+  var i;
+  for (i = 0; i < hist.length; i++) {
+    var s = hist[i];
+    if (!s || !_stIsReversalStatus(s)) continue;
+    if (_stReconNormMemberId(s.memberId) !== rowMid) continue;
+    var ht = s.type === 'addon' ? 'addon' : 'deal';
+    if (typeLocal && ht !== typeLocal) continue;
+    if (
+      payRow.productName &&
+      s.plan &&
+      !_stReconPlansAlign(s.plan, payRow.productName)
+    ) {
+      continue;
+    }
+    if (_stReconReversalAmountsMismatch(payRow, s)) continue;
+    hits.push(s);
+  }
+  if (!hits.length) return null;
+  hits.sort(function (a, b) {
+    return (Number(b.ts) || 0) - (Number(a.ts) || 0);
+  });
+  return hits[0];
+}
+
 function _stReconAmountsMismatch(payRow, sale) {
   var payAmt = Math.abs(Number(payRow && payRow.amount) || 0);
   var comm = _stReconLineCommission(sale);
   return Math.abs(payAmt - comm) > 0.049;
+}
+
+function _stReconReversalAmountsMismatch(payRow, sale) {
+  var payAmt = Math.abs(Number(payRow && payRow.amount) || 0);
+  var lost = _stSaleReversalCommission(sale);
+  return Math.abs(payAmt - lost) > 0.049;
+}
+
+function _stReconTrackerAmountForRow(sale, isReversalRow) {
+  if (!sale) return null;
+  if (isReversalRow || _stIsReversalStatus(sale)) {
+    return _stSaleReversalCommission(sale);
+  }
+  return _stReconLineCommission(sale);
 }
 
 function _stReconcileSheetProductNote(trackerPlan, sheetPlan) {
@@ -11524,7 +11601,9 @@ function _stReconcileFmtSideAmount(has, n) {
 }
 
 function _stReconcileRowDiscrepancy(row) {
-  if (!row || row.ignored || row.status === 'matched') return 0;
+  if (!row || row.ignored || row.status === 'matched' || row.confirmed) {
+    return 0;
+  }
   var tOk = !!row.hasTracker;
   var sOk = !!row.hasSheet;
   var t = tOk ? Math.abs(Number(row.trackerAmount) || 0) : null;
@@ -11577,6 +11656,7 @@ function _stMakeReconTableRow(opts) {
   var isLoss = !!opts.isLoss || amount < 0;
   var row = {
     status: opts.status || 'matched',
+    confirmed: !!opts.confirmed,
     customer: opts.customer || 'Unknown',
     dateTs: Number(opts.dateTs) || 0,
     product: opts.product || '',
@@ -11714,28 +11794,59 @@ function _stBuildReconcileTableRows(result, payRows, weekSales) {
     if (Number(prow.amount) < 0) {
       if (exact) usedSale[exact.id] = true;
       markPay(prow);
+      var cbSale = exact;
+      if (!cbSale) {
+        cbSale = _stReconFindConfirmedReversalSale(prow);
+      }
+      var confirmed =
+        !!cbSale &&
+        _stIsReversalStatus(cbSale) &&
+        !_stReconReversalAmountsMismatch(prow, cbSale);
+      if (cbSale && _stIsReversalStatus(cbSale)) {
+        usedSale[cbSale.id] = true;
+      }
       rows.push(
         _stMakeReconTableRow({
           status: 'chargeback',
-          customer: (exact && exact.customer) || prow.customer || '',
-          dateTs: Number((exact && exact.ts) || prow.dateTs) || 0,
-          product: (exact && exact.plan) || prow.productName || '',
+          confirmed: confirmed,
+          customer:
+            (cbSale && cbSale.customer) ||
+            (exact && exact.customer) ||
+            prow.customer ||
+            '',
+          dateTs:
+            Number((cbSale && cbSale.ts) || (exact && exact.ts) || prow.dateTs) ||
+            0,
+          product:
+            (cbSale && cbSale.plan) ||
+            (exact && exact.plan) ||
+            prow.productName ||
+            '',
           productNote: _stReconcileSheetProductNote(
-            (exact && exact.plan) || '',
+            (cbSale && cbSale.plan) || (exact && exact.plan) || '',
             prow.productName
           ),
           amount: Number(prow.amount) || 0,
           isLoss: true,
-          hasTracker: !!exact,
+          hasTracker: !!(cbSale || exact),
           hasSheet: true,
-          trackerAmount: exact ? _stReconLineCommission(exact) : null,
-          saleId: exact && exact.id ? String(exact.id) : '',
+          trackerAmount: _stReconTrackerAmountForRow(cbSale || exact, true),
+          saleId:
+            (cbSale && cbSale.id) || (exact && exact.id)
+              ? String((cbSale && cbSale.id) || exact.id)
+              : '',
           memberId: _stReconNormMemberId(
-            prow.memberId || (exact && exact.memberId)
+            prow.memberId ||
+              (cbSale && cbSale.memberId) ||
+              (exact && exact.memberId)
           ),
           sheetProduct: prow.productName || '',
           sheetAmount: Number(prow.amount) || 0,
-          kind: exact ? 'chargeback_candidate' : 'untracked_chargeback',
+          kind: confirmed
+            ? 'confirmed_chargeback'
+            : exact
+              ? 'chargeback_candidate'
+              : 'untracked_chargeback',
           typeLocal: prow.typeLocal || ''
         })
       );
@@ -11815,8 +11926,11 @@ function _stReconcileCountRows(rows) {
     if (!r) continue;
     c.all += 1;
     if (r.ignored) continue;
-    if (r.status === 'matched') {
+    if (r.status === 'matched' || r.confirmed) {
       c.matched += 1;
+      if (r.confirmed && typeof c[r.status] === 'number') {
+        c[r.status] += 1;
+      }
     } else {
       c.needs += 1;
       if (
@@ -11837,12 +11951,15 @@ function _stReconcileRowVisible(row, filter) {
   if (!row) return false;
   if (filter === 'all') return true;
   if (row.ignored) return false;
-  if (filter === 'needs') return row.status !== 'matched';
+  if (filter === 'needs') return row.status !== 'matched' && !row.confirmed;
+  if (filter === 'matched') return row.status === 'matched' || !!row.confirmed;
   return row.status === filter;
 }
 
 function _stReconcileRowHasActions(row) {
-  if (!row || row.ignored || row.status === 'matched') return false;
+  if (!row || row.ignored || row.status === 'matched' || row.confirmed) {
+    return false;
+  }
   if (row.status === 'chargeback' || row.status === 'samecancel') {
     return !!row.saleId;
   }
@@ -12054,7 +12171,7 @@ function _stBuildReconcileChipsHtml(state) {
 
 function _stBuildReconcileTableRowHtml(row) {
   if (!row) return '';
-  var muted = row.status === 'matched' || row.ignored;
+  var muted = row.status === 'matched' || row.ignored || !!row.confirmed;
   var trackerClass = 'st-recon-v2-amt';
   var sheetClass = 'st-recon-v2-amt';
   if (row.hasTracker && Number(row.trackerAmount) < 0) {

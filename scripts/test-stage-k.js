@@ -141,6 +141,94 @@ assert(
   !ctx._stProductIsAncillary('Association fee'),
   'non-commissionable fees are not counted as ancillaries'
 );
+var awaFee = ctx._stResolveProductRate('AWA Association Fee', {});
+assert(
+  awaFee.nonCommissionable === true,
+  'AWA Association Fee resolves as non-commissionable'
+);
+assert(Number(awaFee.rate) === 0, 'AWA Association Fee rate is 0');
+assert(
+  !ctx._stProductIsAncillary('AWA Association Fee'),
+  'AWA Association Fee is not an ancillary'
+);
+assert(
+  !ctx._stSaleCountsAsAddon({
+    type: 'addon',
+    plan: 'AWA Association Fee',
+    amount: 10
+  }),
+  'AWA Association Fee does not count toward add-on totals'
+);
+assert(
+  ctx._stResolveProductRate('NCE Payment Fee', {}).nonCommissionable === true,
+  'carrier-prefixed Payment fee resolves'
+);
+assert(
+  ctx._stResolveProductRate('AWA Enrollment Fee', {}).nonCommissionable ===
+    true,
+  'carrier-prefixed Enrollment fee resolves'
+);
+assert(
+  ctx._stResolveProductRate('AWA Association enrollment fee', {})
+    .nonCommissionable === true,
+  'carrier-prefixed Association enrollment fee resolves'
+);
+
+var feeWeek = ctx._stStartOfWeek(new Date(2026, 7, 23, 12, 0, 0)).getTime();
+var feeTs = feeWeek + 24 * 60 * 60 * 1000;
+var feeStats = ctx._stCalcStats(
+  [
+    {
+      id: 'fee-deal',
+      type: 'deal',
+      plan: 'SmartChoice 1500',
+      amount: 100,
+      planCommission: 70,
+      status: 'pending',
+      ts: feeTs,
+      receiptId: 'fee-rcpt'
+    },
+    {
+      id: 'fee-awa',
+      type: 'addon',
+      plan: 'AWA Association Fee',
+      amount: 10,
+      addonCommission: 0,
+      status: 'pending',
+      ts: feeTs,
+      receiptId: 'fee-rcpt'
+    },
+    {
+      id: 'fee-awa-2',
+      type: 'addon',
+      plan: 'AWA Association Fee',
+      amount: 10,
+      addonCommission: 0,
+      status: 'pending',
+      ts: feeTs,
+      receiptId: 'fee-rcpt'
+    },
+    {
+      id: 'fee-assist',
+      type: 'addon',
+      plan: 'AssistPro Discount',
+      amount: 22.99,
+      addonCommission: 13.79,
+      status: 'pending',
+      ts: feeTs,
+      receiptId: 'fee-rcpt'
+    }
+  ],
+  feeWeek
+);
+assert(
+  feeStats.weekAddons === 1,
+  'association fees excluded from add-on count, got ' + feeStats.weekAddons
+);
+assert(
+  feeStats.weekDeals === 1,
+  'core deal still counts, got ' + feeStats.weekDeals
+);
 
 var panel = ctx._stBuildProductRatesPanelHtml();
 assert(
