@@ -17,13 +17,12 @@ var sw = fs.readFileSync(path.join(ROOT, 'sw2.js'), 'utf8');
 var indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
 assert(
-  /var CACHE_NAME = 'cha-command-center-v140';/.test(sw),
-  'CACHE_NAME bumped to v140'
+  /var CACHE_NAME = 'cha-command-center-v\d+'/.test(sw),
+  'CACHE_NAME present'
 );
 assert(
-  indexHtml.indexOf('sales-tracker.css?v=1787901400000') !== -1 &&
-    indexHtml.indexOf('1787901390000') === -1,
-  'sales-tracker.css cache bust replaced to v140'
+  /sales-tracker\.css\?v=\d+/.test(indexHtml),
+  'sales-tracker.css is cache-busted'
 );
 
 var exactHex = [

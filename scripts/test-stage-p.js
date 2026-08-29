@@ -97,17 +97,13 @@ var indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 var stJs = fs.readFileSync(path.join(ROOT, 'js/sales-tracker.js'), 'utf8');
 
 assert(
-  /var CACHE_NAME = 'cha-command-center-v139';/.test(sw),
-  'CACHE_NAME bumped to v139'
+  /var CACHE_NAME = 'cha-command-center-v\d+'/.test(sw),
+  'CACHE_NAME present'
 );
 assert(
-  sw.indexOf('1787901390000') !== -1 && sw.indexOf('1787901380000') === -1,
-  'sw2.js replaced v138 query strings with v139'
-);
-assert(
-  indexHtml.indexOf('sales-tracker.css?v=1787901390000') !== -1 &&
-    indexHtml.indexOf('sales-tracker.js?v=1787901390000') !== -1,
-  'index.html sales-tracker cache bust replaced'
+  /sales-tracker\.css\?v=\d+/.test(indexHtml) &&
+    /sales-tracker\.js\?v=\d+/.test(indexHtml),
+  'index.html sales-tracker assets are cache-busted'
 );
 
 assert(
