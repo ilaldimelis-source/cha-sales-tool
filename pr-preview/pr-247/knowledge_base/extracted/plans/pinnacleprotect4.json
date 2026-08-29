@@ -1,0 +1,27 @@
+{
+  "planId": "pinnacleprotect4",
+  "planName": "Pinnacle Protect Plan 4",
+  "status": "missing_pdf",
+  "documents": [
+    {
+      "fileName": "Pinnacle_Protect_Plan4_Brochure.pdf",
+      "sourceType": "brochure",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "Pinnacle Protect Plan 4 Limited Medical Guaranteed Issue. Highest Pinnacle Protect tier. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA MEC requirement.",
+          "normalizedText": "pinnacle protect plan 4 limited medical guaranteed issue highest pinnacle protect tier phcs practitioner ancillary network multiplan fixed cash benefit per covered service pre existing 12 month look back 12 month exclusion supplement to health insurance not substitute for major medical does not satisfy aca mec requirement"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "pinnacleprotect4-c1",
+      "text": "Pinnacle Protect Plan 4 Limited Medical Guaranteed Issue. Highest Pinnacle Protect tier. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA MEC requirement.",
+      "tokenEstimate": 83,
+      "pageRange": "1-1",
+      "normalizedText": "pinnacle protect plan 4 limited medical guaranteed issue highest pinnacle protect tier phcs practitioner ancillary network multiplan fixed cash benefit per covered service pre existing 12 month look back 12 month exclusion supplement to health insurance not substitute for major medical does not satisfy aca mec requirement"
+    }
+  ]
+}
