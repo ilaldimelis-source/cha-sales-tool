@@ -6934,8 +6934,11 @@ body.st-pb-modal-open {
 }
 
 /* Stage N — tab heroes, single filter row, record cards */
+
+/* Stage O — density, type scale, alignment, filter polish */
+
 .st-tab-hero {
-  margin-bottom: 14px;
+  margin-bottom: 13px;
 }
 
 .st-tab-hero-row {
@@ -6976,42 +6979,101 @@ body.st-pb-modal-open {
   margin-top: 4px;
   font-size: 12px;
   line-height: 1.4;
-  color: var(--cha-text-tertiary);
+  color: var(--cha-text-secondary);
 }
 
-.st-tab-filter-row {
+.st-tab-filter-row,
+.st-recon-v2-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 10px;
+  align-items: center;
+  gap: 2px 4px;
+  margin: 0 0 10px;
 }
 
 .st-tab-custom-row {
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+}
+
+.st-filter-sep {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  color: var(--cha-text-tertiary);
+  font-size: 12px;
+  font-weight: 600;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Quiet secondary chips; active keeps existing blue treatments */
+.st-tab-filter-row .st-pc-chip,
+.st-tab-filter-row .st-cbc-chip,
+.st-recon-v2-chips .st-recon-v2-chip {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--cha-text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 999px;
+  padding: 4px 9px;
+  cursor: pointer;
+}
+
+.st-tab-filter-row .st-pc-chip:hover,
+.st-tab-filter-row .st-cbc-chip:hover,
+.st-recon-v2-chips .st-recon-v2-chip:hover {
+  color: var(--cha-text-primary);
+  background: var(--cha-bg-muted);
+}
+
+.st-tab-filter-row .st-pc-chip.is-active,
+.st-tab-filter-row .st-cbc-chip.is-active,
+.st-recon-v2-chips .st-recon-v2-chip.st-chip-active {
+  background: var(--cha-accent);
+  border-color: var(--cha-accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.st-tab-filter-row .st-pc-chip.is-active:hover,
+.st-tab-filter-row .st-cbc-chip.is-active:hover,
+.st-recon-v2-chips .st-recon-v2-chip.st-chip-active:hover {
+  background: var(--cha-accent);
+  border-color: var(--cha-accent);
+  color: #fff;
 }
 
 .st-record-card-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 7px;
 }
 
 .st-record-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
   background: var(--cha-bg-card);
   border: 0.5px solid var(--cha-border-subtle);
   border-radius: 12px;
-  padding: 14px 16px;
+  padding: 10px 13px;
 }
 
-.st-record-card-top {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
+.st-record-card-body {
+  min-width: 0;
+  flex: 1;
 }
 
-.st-record-card-label,
-.st-record-card-figure {
+.st-record-card-side {
+  width: 118px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.st-record-card-label {
   font-size: 14px;
   font-weight: 500;
   color: var(--cha-text-primary);
@@ -7019,34 +7081,68 @@ body.st-pb-modal-open {
 }
 
 .st-record-card-figure {
-  flex-shrink: 0;
-  text-align: right;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--cha-text-primary);
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
 }
 
 .st-record-card-meta {
-  margin-top: 6px;
+  margin-top: 3px;
   font-size: 12px;
-  line-height: 1.45;
-  color: var(--cha-text-tertiary);
+  line-height: 1.4;
+  color: var(--cha-text-secondary);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0;
 }
 
 .st-record-card-sep {
-  display: inline-block;
-  width: 14px;
-  height: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
   flex-shrink: 0;
+  color: var(--cha-text-tertiary);
+  font-size: 12px;
+  font-weight: 600;
+  user-select: none;
+  pointer-events: none;
+}
+
+.st-record-card-sep::before {
+  content: '\00b7';
 }
 
 .st-record-card-actions {
-  margin-top: 8px;
+  margin-top: 4px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  justify-content: flex-end;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.st-record-card-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--cha-text-primary);
+  line-height: 1.3;
+}
+
+.st-record-card-line .st-cbc-pill,
+.st-record-card-line .st-recon-status-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 999px;
+  line-height: 1.4;
 }
 
 .st-pc-card {
@@ -7060,25 +7156,74 @@ body.st-pb-modal-open {
 .st-pc-pane .st-pc-header,
 .st-cbc-pane .st-cbc-header,
 .st-recon-history-pane .st-recon-head {
-  margin-bottom: 4px;
+  margin-bottom: 0;
 }
 
 .st-recon-v2-header .st-tab-hero {
   margin-bottom: 0;
 }
 
-.st-recon-chips.st-tab-filter-row,
-.st-recon-v2-chips {
-  margin-top: 10px;
-  margin-bottom: 12px;
+.st-recon-v2-sheet.is-loaded {
+  padding: 6px 10px;
 }
 
-.st-hist-card .st-recon-history-view,
-.st-hist-card .st-recon-history-delete {
-  margin: 0;
+.st-recon-v2-sheet-copy {
+  flex-flow: row wrap;
+  align-items: baseline;
+  gap: 6px 10px;
+  font-size: 12px;
 }
 
-@media (max-width: 720px) {
+.st-recon-v2-sheet-copy strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.st-recon-v2-tr.is-muted td,
+.st-recon-v2-tr.is-muted .st-recon-v2-sub {
+  color: var(--cha-text-secondary);
+}
+
+.st-hist-card .st-recon-history-view {
+  border: 0;
+  background: transparent;
+  color: var(--cha-accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 0;
+  cursor: pointer;
+}
+
+.st-hist-card .st-recon-history-view:hover {
+  text-decoration: underline;
+}
+
+.st-hist-card .st-delete {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 4px;
+}
+
+.st-cbc-card .st-cbc-view {
+  border: 0;
+  background: transparent;
+  color: var(--cha-accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 0;
+  cursor: pointer;
+}
+
+.st-cbc-card .st-cbc-view:hover {
+  text-decoration: underline;
+}
+
+.st-record-card-helper {
+  font-size: 11px;
+  color: var(--cha-text-tertiary);
+}
+
+@media (width <= 720px) {
   .st-tab-hero-headline {
     font-size: 22px;
   }
@@ -7090,5 +7235,9 @@ body.st-pb-modal-open {
   .st-tab-hero-period {
     width: 100%;
     text-align: left;
+  }
+
+  .st-record-card-side {
+    width: 104px;
   }
 }
