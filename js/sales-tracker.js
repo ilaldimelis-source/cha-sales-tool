@@ -6065,7 +6065,6 @@ var _ST_PAYCHECK_SALARY_DEFAULT = 300;
 var _stPcTimeFilter = 'last4';
 var _stPcCustomStart = '';
 var _stPcCustomEnd = '';
-var _stPcChartMetric = 'netpay';
 var _stPcViewingWeek = 0;
 
 // Toggle handler: called from the This Week / All Sales
@@ -6606,7 +6605,7 @@ function _stRenderSaleSegment(s, isAll, opts) {
     '<button type="button" class="st-delete" title="Delete permanently" aria-label="Delete permanently" onclick="_stDeleteSale(\'' +
     s.id +
     '\')">' +
-    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+    '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
     '<polyline points="3 6 5 6 21 6"/>' +
     '<path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>' +
     '<path d="M10 11v6"/><path d="M14 11v6"/>' +
@@ -6753,12 +6752,12 @@ function _stRenderThisWeekSubRow(g) {
     : 'st-week-deal-pill st-week-pill-addon';
   var actions =
     '<div class="st-week-card-actions">' +
-    '<button type="button" class="st-week-card-icon" title="Edit" aria-label="Edit" onclick="event.stopPropagation();_stOpenCommissionEditor(\'' +
+    '<button type="button" class="st-week-card-icon" title="Edit" aria-label="Edit sale" onclick="event.stopPropagation();_stOpenCommissionEditor(\'' +
     lid +
-    '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>' +
-    '<button type="button" class="st-week-card-icon" title="Delete" aria-label="Delete" onclick="event.stopPropagation();_stDeleteSaleGroupByLeadId(\'' +
+    '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>' +
+    '<button type="button" class="st-week-card-icon" title="Delete" aria-label="Delete sale" onclick="event.stopPropagation();_stDeleteSaleGroupByLeadId(\'' +
     lid +
-    '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
+    '\')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>' +
     '</div>';
   var premAmt = g.deal ? Number(g.deal.amount) || 0 : Number(lead.amount) || 0;
   var idLine =
@@ -7044,7 +7043,7 @@ function _stBuildAllSalesPane(sales) {
   html +=
     '<div class="st-split-col-head st-split-col-head-row2"><span class="st-split-title">All sales (' +
     totalFiltered +
-    ')</span><button type="button" class="st-export-link" onclick="_stExportAllSalesCsv()">↓ Export</button></div>';
+    ')</span><button type="button" class="st-export-link" aria-label="Export all sales as CSV" onclick="_stExportAllSalesCsv()">↓ Export</button></div>';
 
   function chip(val, label) {
     var act = _stAllSalesRange === val ? ' st-chip-active' : '';
@@ -7182,7 +7181,7 @@ function _stBuildAllSalesPane(sales) {
         abbr +
         '</span></span>';
       html +=
-        '<span class="st-cac"><details class="st-row-menu" onclick="event.stopPropagation()"><summary aria-label="Actions">⋯</summary><div class="st-row-menu-pop">' +
+        '<span class="st-cac"><details class="st-row-menu" onclick="event.stopPropagation()"><summary aria-label="Row actions">⋯</summary><div class="st-row-menu-pop">' +
         "<button type=\"button\" onclick=\"var d=this.closest('details');if(d)d.removeAttribute('open');_stOpenCommissionEditor('" +
         lid2 +
         '\')">Edit</button>' +
@@ -14628,107 +14627,6 @@ function _stBuildPcTableRowHtml(rec) {
   );
 }
 
-function _stBuildPcChartHtml(records) {
-  var metric = _stPcChartMetric || 'netpay';
-  var toggles = [
-    { id: 'netpay', label: 'Net pay' },
-    { id: 'gross', label: 'Gross' },
-    { id: 'chargebacks', label: 'Chargebacks' },
-    { id: 'total', label: 'Total earned' }
-  ];
-  var html = '<div class="st-pc-chart">';
-  html += '<div class="st-pc-chart-head">';
-  html += '<div class="st-pc-chart-title">Net commission by paycheck</div>';
-  html += '<div class="st-pc-chart-toggles">';
-  var ti;
-  for (ti = 0; ti < toggles.length; ti++) {
-    html +=
-      '<button type="button" class="st-pc-chip' +
-      (metric === toggles[ti].id ? ' is-active' : '') +
-      '" data-st-pc-action="chart" data-metric="' +
-      toggles[ti].id +
-      '">' +
-      _stEscape(toggles[ti].label) +
-      '</button>';
-  }
-  html += '</div></div>';
-  var pts = [];
-  var i;
-  for (i = (records || []).length - 1; i >= 0; i--) {
-    var rec = records[i];
-    if (!rec || !rec.paycheck) continue;
-    var pb = rec.paycheck;
-    var v;
-    if (metric === 'gross') v = pb.grossCommission;
-    else if (metric === 'chargebacks') v = pb.chargebacks;
-    else if (metric === 'total') v = pb.totalEarned;
-    else v = pb.netPay != null ? pb.netPay : pb.netCommission;
-    if (v == null) continue;
-    pts.push({
-      y: Number(v) || 0,
-      label: rec.weekLabel || _stPcWeekRangeLabel(rec.weekStart)
-    });
-  }
-  if (!pts.length) {
-    html +=
-      '<div class="st-pc-chart-empty">No paycheck figures in this range to chart.</div></div>';
-    return html;
-  }
-  var w = 640;
-  var h = 120;
-  var padL = 8;
-  var padR = 8;
-  var padT = 10;
-  var padB = 18;
-  var minY = pts[0].y;
-  var maxY = pts[0].y;
-  for (i = 1; i < pts.length; i++) {
-    if (pts[i].y < minY) minY = pts[i].y;
-    if (pts[i].y > maxY) maxY = pts[i].y;
-  }
-  if (minY === maxY) {
-    minY -= 1;
-    maxY += 1;
-  }
-  var innerW = w - padL - padR;
-  var innerH = h - padT - padB;
-  var d = '';
-  for (i = 0; i < pts.length; i++) {
-    var x =
-      pts.length === 1
-        ? padL + innerW / 2
-        : padL + (i * innerW) / (pts.length - 1);
-    var y = padT + innerH - ((pts[i].y - minY) / (maxY - minY)) * innerH;
-    d += (i ? ' L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
-  }
-  html +=
-    '<svg class="st-pc-chart-svg" viewBox="0 0 ' +
-    w +
-    ' ' +
-    h +
-    '" role="img" aria-label="Paycheck trend">' +
-    '<path d="' +
-    d +
-    '" fill="none" stroke="#5175f1" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
-  for (i = 0; i < pts.length; i++) {
-    var cx =
-      pts.length === 1
-        ? padL + innerW / 2
-        : padL + (i * innerW) / (pts.length - 1);
-    var cy = padT + innerH - ((pts[i].y - minY) / (maxY - minY)) * innerH;
-    html +=
-      '<circle cx="' +
-      cx.toFixed(1) +
-      '" cy="' +
-      cy.toFixed(1) +
-      '" r="3" fill="#5175f1"><title>' +
-      _stEscape(pts[i].label + ': ' + _stFmtMoney(pts[i].y)) +
-      '</title></circle>';
-  }
-  html += '</svg></div>';
-  return html;
-}
-
 function _stBuildPcDeductionsHtml(events, title) {
   if (!events || !events.length) {
     return (
@@ -15055,7 +14953,6 @@ function _stBuildPcPane(sales) {
     }
   }
   html += '</div>';
-  html += _stBuildPcChartHtml(records);
   html += '</section>';
   return html;
 }
@@ -15080,11 +14977,6 @@ function _stHandlePcActionClick(btn) {
     _stPcCustomEnd = endEl ? String(endEl.value || '') : '';
     _stPcTimeFilter = 'custom';
     _stPcViewingWeek = 0;
-    _stRender();
-    return;
-  }
-  if (action === 'chart') {
-    _stPcChartMetric = btn.getAttribute('data-metric') || 'netpay';
     _stRender();
     return;
   }

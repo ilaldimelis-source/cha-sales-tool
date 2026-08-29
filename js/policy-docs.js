@@ -74,7 +74,7 @@ function _renderPolicydocsInner() {
     escHTML(policyDocSearch) +
     '" aria-label="Search plans, benefits, exclusions" oninput="policyDocSearchTyping(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'">';
   html +=
-    '<button id="pdSearchClear" onclick="clearPdSearch()" style="display:' +
+    '<button id="pdSearchClear" type="button" aria-label="Clear plan search" onclick="clearPdSearch()" style="display:' +
     (policyDocSearch ? 'block' : 'none') +
     ';position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
