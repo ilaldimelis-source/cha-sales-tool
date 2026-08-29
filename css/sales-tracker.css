@@ -7212,6 +7212,18 @@ body.st-pb-modal-open {
   color: var(--cha-text-tertiary);
 }
 
+.st-hist-meta-matched {
+  color: var(--cha-text-secondary);
+}
+
+.st-hist-meta-warn {
+  color: var(--cha-warning-text);
+}
+
+.st-hist-meta-danger {
+  color: var(--cha-danger-text);
+}
+
 @media (width <= 720px) {
   .st-tab-hero-headline {
     font-size: 22px;

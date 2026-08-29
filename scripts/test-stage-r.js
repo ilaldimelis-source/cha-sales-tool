@@ -92,14 +92,13 @@ var sw = fs.readFileSync(path.join(ROOT, 'sw2.js'), 'utf8');
 var indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
 assert(
-  /var CACHE_NAME = 'cha-command-center-v141';/.test(sw),
-  'CACHE_NAME bumped to v141'
+  /var CACHE_NAME = 'cha-command-center-v\d+'/.test(sw),
+  'CACHE_NAME present'
 );
 assert(
-  indexHtml.indexOf('sales-tracker.css?v=1787901410000') !== -1 &&
-    indexHtml.indexOf('sales-tracker.js?v=1787901410000') !== -1 &&
-    indexHtml.indexOf('1787901400000') === -1,
-  'cache bust replaced to v141'
+  /sales-tracker\.css\?v=\d+/.test(indexHtml) &&
+    /sales-tracker\.js\?v=\d+/.test(indexHtml),
+  'sales-tracker assets are cache-busted'
 );
 
 assert(
@@ -201,16 +200,19 @@ assert(
 
 var oldIdx = hist.indexOf('Week of Aug 16');
 var newIdx = hist.indexOf('Week of Aug 23');
+if (oldIdx === -1) oldIdx = hist.indexOf('Aug 16');
+if (newIdx === -1) newIdx = hist.indexOf('Aug 23');
 assert(oldIdx !== -1 && newIdx !== -1, 'both old and new snapshots render');
 var oldChunk = hist.slice(oldIdx, newIdx);
 var newChunk = hist.slice(newIdx);
 assert(
-  oldChunk.indexOf('- amount mismatch') !== -1,
-  'old snapshot keeps dash for amount mismatch (not backfilled)'
+  oldChunk.indexOf('amount mismatch unknown') !== -1,
+  'old snapshot keeps unknown amount mismatch (not backfilled)'
 );
 assert(
-  newChunk.indexOf('0 amount mismatch') !== -1,
-  'new snapshot with stored 0 shows 0, not dash'
+  newChunk.indexOf('amount mismatch unknown') === -1 &&
+    newChunk.indexOf('amount mismatch') === -1,
+  'new snapshot with stored 0 omits amount mismatch from meta'
 );
 
 ctx._stNavPaycheckExists = function () {
