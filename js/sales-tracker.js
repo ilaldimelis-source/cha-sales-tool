@@ -9150,6 +9150,7 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
   }
   var paycheck = _stComputeLivePaycheck(_stLoadSales(), weekStart);
   _stPaycheckApplySheetSummary(paycheck, _stPaySheetSummary);
+  var rowCounts = _stReconcileCountRows(_stReconcileTableRows);
   return {
     id: 'rh_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
     weekStart: weekStart,
@@ -9160,6 +9161,7 @@ function _stBuildReconcileHistoryRecord(rawText, view, result) {
       matched: result ? Number(result.matched) || 0 : 0,
       missing: result && result.missing ? result.missing.length : 0,
       mislabeled: result && result.mislabeled ? result.mislabeled.length : 0,
+      amountmismatch: Number(rowCounts.amountmismatch) || 0,
       notOnSheet: result && result.notOnSheet ? result.notOnSheet.length : 0,
       chargebackCandidates:
         result && result.chargebackCandidates
@@ -12900,7 +12902,6 @@ function _stBuildReconcileHistoryPane(sales) {
         '<button type="button" class="st-recon-history-view" data-st-recon-action="view-history" data-history-id="' +
         _stEscape(hid) +
         '">View</button>' +
-        '<span class="st-filter-sep" aria-hidden="true">·</span>' +
         '<button type="button" class="st-delete st-recon-history-delete" data-st-recon-action="delete-history" data-history-id="' +
         _stEscape(hid) +
         '" data-week-label="' +

@@ -7075,6 +7075,40 @@ body.st-pb-modal-open {
   font-size: 12px;
 }
 
+.st-hist-card .st-record-card-side {
+  width: auto;
+  min-width: 118px;
+  max-width: none;
+}
+
+.st-hist-card .st-record-card-actions {
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 10px;
+}
+
+.st-hist-card .st-nav-link,
+.st-hist-card .st-recon-history-view {
+  border: 0;
+  background: transparent;
+  color: var(--cha-accent);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 0;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.st-hist-card .st-nav-link:hover,
+.st-hist-card .st-nav-link:focus,
+.st-hist-card .st-recon-history-view:hover {
+  color: var(--cha-accent);
+  text-decoration: underline;
+  text-decoration-color: var(--cha-accent);
+}
+
 .st-record-card-line {
   display: flex;
   flex-wrap: wrap;
@@ -7134,20 +7168,6 @@ body.st-pb-modal-open {
   color: var(--cha-text-secondary);
 }
 
-.st-hist-card .st-recon-history-view {
-  border: 0;
-  background: transparent;
-  color: var(--cha-accent);
-  font-size: 12px;
-  font-weight: 600;
-  padding: 2px 0;
-  cursor: pointer;
-}
-
-.st-hist-card .st-recon-history-view:hover {
-  text-decoration: underline;
-}
-
 .st-hist-card .st-delete,
 .st-hist-card .st-recon-history-delete {
   border: 0;
@@ -7161,6 +7181,8 @@ body.st-pb-modal-open {
   border-radius: 0;
   width: auto;
   height: auto;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .st-hist-card .st-delete:hover,
@@ -7206,5 +7228,10 @@ body.st-pb-modal-open {
 
   .st-record-card-side {
     width: 104px;
+  }
+
+  .st-hist-card .st-record-card-side {
+    width: auto;
+    min-width: 104px;
   }
 }
