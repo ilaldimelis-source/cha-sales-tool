@@ -6934,6 +6934,7 @@ body.st-pb-modal-open {
 }
 
 /* Stage N — tab heroes, single filter row, record cards */
+
 /* Stage O — density, type scale, alignment, filter polish */
 
 .st-tab-hero {
@@ -7167,8 +7168,7 @@ body.st-pb-modal-open {
 }
 
 .st-recon-v2-sheet-copy {
-  flex-direction: row;
-  flex-wrap: wrap;
+  flex-flow: row wrap;
   align-items: baseline;
   gap: 6px 10px;
   font-size: 12px;
@@ -7223,7 +7223,7 @@ body.st-pb-modal-open {
   color: var(--cha-text-tertiary);
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .st-tab-hero-headline {
     font-size: 22px;
   }

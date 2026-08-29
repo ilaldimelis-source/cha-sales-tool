@@ -303,7 +303,8 @@ assert(
   'empty state waits until both ordinary and reversal groups are empty'
 );
 assert(
-  reversalOnlyHtml.indexOf('Chargebacks and cancels logged at old rates') !== -1,
+  reversalOnlyHtml.indexOf('Chargebacks and cancels logged at old rates') !==
+    -1,
   'reversal group still renders when ordinary sales are clean'
 );
 assert(

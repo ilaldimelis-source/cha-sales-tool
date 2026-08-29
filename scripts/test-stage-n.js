@@ -98,10 +98,7 @@ assert(
   typeof ctx._stBuildTabHeroHtml === 'function',
   'shared tab hero builder exists'
 );
-assert(
-  ctx._stFmtDiffApart(0.02) === '2c apart',
-  '2 cents formats as 2c apart'
-);
+assert(ctx._stFmtDiffApart(0.02) === '2c apart', '2 cents formats as 2c apart');
 assert(
   ctx._stFmtDiffApart(0) === '0c apart',
   'zero difference formats as 0c apart'
@@ -109,10 +106,22 @@ assert(
 
 var pcHtml = ctx._stBuildPcPane([]);
 assert(pcHtml.indexOf('st-tab-hero') !== -1, 'Paychecks has a tab hero');
-assert(pcHtml.indexOf('st-pc-figures') === -1, 'Paychecks dropped multi-figure strip');
-assert(pcHtml.indexOf('st-pc-table') === -1, 'Paychecks no longer uses a table');
-assert(pcHtml.indexOf('st-record-card-list') !== -1, 'Paychecks uses a card list');
-assert(pcHtml.indexOf('st-tab-filter-row') !== -1, 'Paychecks has one filter row');
+assert(
+  pcHtml.indexOf('st-pc-figures') === -1,
+  'Paychecks dropped multi-figure strip'
+);
+assert(
+  pcHtml.indexOf('st-pc-table') === -1,
+  'Paychecks no longer uses a table'
+);
+assert(
+  pcHtml.indexOf('st-record-card-list') !== -1,
+  'Paychecks uses a card list'
+);
+assert(
+  pcHtml.indexOf('st-tab-filter-row') !== -1,
+  'Paychecks has one filter row'
+);
 assert(
   pcHtml.indexOf('st-pc-custom') !== -1 && pcHtml.indexOf('hidden') !== -1,
   'Paychecks custom dates stay hidden until Custom'
@@ -120,9 +129,18 @@ assert(
 
 var cbcHtml = ctx._stBuildCbcPane([]);
 assert(cbcHtml.indexOf('st-tab-hero') !== -1, 'Chargebacks has a tab hero');
-assert(cbcHtml.indexOf('st-cbc-figures') === -1, 'Chargebacks dropped multi-figure strip');
-assert(cbcHtml.indexOf('st-cbc-table') === -1, 'Chargebacks no longer uses a table');
-assert(cbcHtml.indexOf('st-cbc-card-list') !== -1, 'Chargebacks uses a card list');
+assert(
+  cbcHtml.indexOf('st-cbc-figures') === -1,
+  'Chargebacks dropped multi-figure strip'
+);
+assert(
+  cbcHtml.indexOf('st-cbc-table') === -1,
+  'Chargebacks no longer uses a table'
+);
+assert(
+  cbcHtml.indexOf('st-cbc-card-list') !== -1,
+  'Chargebacks uses a card list'
+);
 assert(
   cbcHtml.indexOf('data-st-cbc-action="type"') !== -1,
   'Chargebacks type filters live in the same filter row'
@@ -147,13 +165,22 @@ var recon = ctx._stBuildReconcilePane([], {
   endExclusive: weekStart + 7 * 24 * 60 * 60 * 1000
 });
 assert(recon.indexOf('st-tab-hero') !== -1, 'Reconcile has a tab hero');
-assert(recon.indexOf('st-recon-v2-figures') === -1, 'Reconcile dropped figure strip');
-assert(recon.indexOf('st-recon-v2-table') !== -1, 'Reconcile keeps its results table');
+assert(
+  recon.indexOf('st-recon-v2-figures') === -1,
+  'Reconcile dropped figure strip'
+);
+assert(
+  recon.indexOf('st-recon-v2-table') !== -1,
+  'Reconcile keeps its results table'
+);
 assert(
   recon.indexOf('Product commission rates') !== -1,
   'rates panel still on Reconcile'
 );
-assert(recon.indexOf('recalc-preview') !== -1, 'Recalculate still on Reconcile');
+assert(
+  recon.indexOf('recalc-preview') !== -1,
+  'Recalculate still on Reconcile'
+);
 
 if (failures.length) {
   console.error('STAGE N TESTS FAILED:');

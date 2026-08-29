@@ -486,7 +486,10 @@ function c215BuildTopicFilters() {
     }
   }
   for (tag in tags) {
-    if (tags.hasOwnProperty(tag) && !seen[tag]) {
+    if (
+      Object.prototype.hasOwnProperty.call(tags, tag) &&
+      !seen[tag]
+    ) {
       filters.push({ id: tag, label: C215_TOPIC_LABELS[tag] || tag });
     }
   }
@@ -578,7 +581,12 @@ function c215SaveStore() {
 function c215MasteredCount() {
   var n = 0, k;
   for (k in c215State.mastered) {
-    if (c215State.mastered.hasOwnProperty(k) && c215State.mastered[k]) { n++; }
+    if (
+      Object.prototype.hasOwnProperty.call(c215State.mastered, k) &&
+      c215State.mastered[k]
+    ) {
+      n++;
+    }
   }
   return n;
 }

@@ -96,24 +96,27 @@ var sw = fs.readFileSync(path.join(ROOT, 'sw2.js'), 'utf8');
 var indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
 assert(
-  /var CACHE_NAME = 'cha-command-center-v137';/.test(sw),
-  'CACHE_NAME bumped to v137'
+  /var CACHE_NAME = 'cha-command-center-v138';/.test(sw),
+  'CACHE_NAME bumped to v138'
 );
 assert(
-  sw.indexOf('1787901370000') !== -1 && sw.indexOf('1787901360000') === -1,
-  'sw2.js replaced v136 query strings with v137'
+  sw.indexOf('1787901380000') !== -1 &&
+    sw.indexOf('1787901370000') === -1 &&
+    sw.indexOf('1787901360000') === -1,
+  'sw2.js replaced older query strings with v138'
 );
 assert(
-  indexHtml.indexOf('sales-tracker.css?v=1787901370000') !== -1,
+  indexHtml.indexOf('sales-tracker.css?v=1787901380000') !== -1,
   'index.html sales-tracker.css cache bust replaced'
 );
 assert(
-  indexHtml.indexOf('sales-tracker.js?v=1787901370000') !== -1,
+  indexHtml.indexOf('sales-tracker.js?v=1787901380000') !== -1,
   'index.html sales-tracker.js cache bust replaced'
 );
 assert(
-  indexHtml.indexOf('1787901360000') === -1,
-  'index.html no leftover v136 query strings'
+  indexHtml.indexOf('1787901370000') === -1 &&
+    indexHtml.indexOf('1787901360000') === -1,
+  'index.html no leftover older query strings'
 );
 
 assert(
