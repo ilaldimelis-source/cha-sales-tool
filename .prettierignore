@@ -15,11 +15,10 @@ js/course-215.js
 remixed-51a5fde9.html
 scripts/remixed-51a5fde9.html
 scripts/plan-scripts-replacement.js
+scripts/generate-course-215.js
 
 # Ad-hoc PR, audit, or scratch markdown (canonical root docs stay IN: CLAUDE.md, README.md, etc.)
 .pr-body-*.md
 pr_body_*.md
 AUDIT_REPORT.md
 squash-merge-body.md
-
-scripts/generate-course-215.js
