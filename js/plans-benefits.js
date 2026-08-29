@@ -1127,7 +1127,7 @@ function renderBenefits() {
   html +=
     '<input type="text" id="benefitSearchInput" placeholder="Search benefits — e.g. copay, pre-existing, telemedicine..." oninput="_filterBenefitCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid var(--cha-border-default);padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:var(--cha-bg-muted);color:var(--cha-text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'var(--cha-border-default)\'" />';
   html +=
-    '<button id="benefitSearchClear" onclick="_clearBenefitSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
+    '<button id="benefitSearchClear" type="button" aria-label="Clear benefit search" onclick="_clearBenefitSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
   html +=
     '<div id="benefitNoResults" style="display:none;text-align:center;padding:24px 0;color:var(--text-secondary);font-size:14px;">No benefits match your search.</div>';
@@ -1341,7 +1341,7 @@ function renderPlans() {
   html +=
     '<input type="text" id="planSearchInput" placeholder="Search by plan name, benefit, or coverage type..." oninput="filterPlanSearch(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid var(--cha-border-default);padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:var(--cha-bg-muted);color:var(--cha-text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'var(--cha-border-default)\'" />';
   html +=
-    '<button id="planSearchClear" onclick="clearPlanSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
+    '<button id="planSearchClear" type="button" aria-label="Clear plan search" onclick="clearPlanSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
   html += '</div>';
   html += '</div>'; // close .plans-filter-bar
   html +=

@@ -664,7 +664,7 @@ function renderLive() {
     '<div id="la-panel-overlay" class="la-panel-overlay" onclick="closeLaPanel()"></div>';
   html += '<div id="la-panel" class="la-panel">';
   html +=
-    '<div class="la-panel-header"><div id="la-panel-title" class="la-panel-title"></div><button class="la-panel-close" onclick="closeLaPanel()">&times;</button></div>';
+    '<div class="la-panel-header"><div id="la-panel-title" class="la-panel-title"></div><button type="button" class="la-panel-close" aria-label="Close live assist panel" onclick="closeLaPanel()">&times;</button></div>';
   html += '<div id="la-panel-body" class="la-panel-body"></div>';
   html += '</div>';
   // Objection quick list (compact rows — same expand/collapse behavior)

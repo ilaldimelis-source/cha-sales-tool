@@ -5064,33 +5064,15 @@ body.st-pb-modal-open {
   flex-shrink: 0;
 }
 
-.st-recon-history-delete {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 30px;
-  border: 1px solid #f0c1c1;
-  border-radius: 999px;
-  background: #fdeaea;
-  color: #a32d2d;
-  cursor: pointer;
-  padding: 0;
-}
-
-.st-recon-history-delete:hover {
-  background: #fbdada;
-}
-
 .st-entry-save.st-recon-history-del-confirm {
-  background: #a32d2d;
-  border-color: #a32d2d;
+  background: var(--cha-danger-text);
+  border-color: var(--cha-danger-text);
 }
 
 .st-entry-save.st-recon-history-del-confirm:hover {
-  background: #8a2424;
-  border-color: #8a2424;
+  background: var(--cha-danger-text);
+  border-color: var(--cha-danger-text);
+  opacity: 0.9;
 }
 
 .st-recon-pill-samecancel {
@@ -6362,8 +6344,7 @@ body.st-pb-modal-open {
 }
 
 .st-pc-empty,
-.st-pc-muted,
-.st-pc-chart-empty {
+.st-pc-muted {
   color: var(--cha-text-tertiary);
   font-size: 13px;
 }
@@ -6392,37 +6373,6 @@ body.st-pb-modal-open {
 .st-pc-pill-needs {
   background: var(--cha-warning-bg);
   color: var(--cha-warning-text);
-}
-
-.st-pc-chart {
-  margin-top: 16px;
-}
-
-.st-pc-chart-head {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.st-pc-chart-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--cha-text-primary);
-}
-
-.st-pc-chart-toggles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.st-pc-chart-svg {
-  width: 100%;
-  height: 120px;
-  display: block;
 }
 
 .st-pc-detail-top {
@@ -7198,10 +7148,27 @@ body.st-pb-modal-open {
   text-decoration: underline;
 }
 
-.st-hist-card .st-delete {
+.st-hist-card .st-delete,
+.st-hist-card .st-recon-history-delete {
+  border: 0;
+  background: transparent;
+  color: var(--cha-danger-text);
   font-size: 12px;
   font-weight: 600;
-  padding: 2px 4px;
+  padding: 2px 0;
+  cursor: pointer;
+  line-height: inherit;
+  border-radius: 0;
+  width: auto;
+  height: auto;
+}
+
+.st-hist-card .st-delete:hover,
+.st-hist-card .st-recon-history-delete:hover {
+  color: var(--cha-danger-text);
+  background: transparent;
+  border-color: transparent;
+  text-decoration: underline;
 }
 
 .st-cbc-card .st-cbc-view {

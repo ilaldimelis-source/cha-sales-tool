@@ -1419,7 +1419,7 @@ function _renderPlanPill() {
     escHTML(p.type.toUpperCase()) +
     '</span>' +
     escHTML(p.name) +
-    '<button class="plan-pill-x" onclick="clearActivePlan()" title="Clear plan">&times;</button>';
+    '<button type="button" class="plan-pill-x" onclick="clearActivePlan()" title="Clear plan" aria-label="Clear plan">&times;</button>';
   var topbar = document.querySelector('.topbar');
   var livebadge = topbar ? topbar.querySelector('.livebadge') : null;
   if (livebadge) {

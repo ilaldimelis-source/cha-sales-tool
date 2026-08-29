@@ -1071,7 +1071,7 @@ function c215RenderBrainModal(root) {
   overlay.id = "c215BrainOverlay";
   overlay.onclick = function(e) { if (e.target === overlay) { c215OpenBrain(false); } };
   var modal = c215El("div", "c215-modal");
-  var mh = "<button type=\"button\" class=\"c215-modal-x\" onclick=\"c215OpenBrain(false)\">&times;</button>";
+  var mh = "<button type=\"button\" class=\"c215-modal-x\" aria-label=\"Close\" onclick=\"c215OpenBrain(false)\">&times;</button>";
   mh += "<h3>Brain Dump</h3><p class=\"c215-modal-sub\">Write on scratch paper before Question 1</p><ul>";
   var bi;
   for (bi = 0; bi < C215_BRAIN_DUMP.length; bi++) { mh += "<li>" + C215_BRAIN_DUMP[bi] + "</li>"; }

@@ -223,9 +223,9 @@ function renderNotes() {
           '<div class="fav-card-preview">' + escHTML(f.preview) + '</div>';
       html += '</div>';
       html +=
-        '<button class="fav-remove" onclick="removeFavorite(' +
+        '<button type="button" class="fav-remove" onclick="removeFavorite(' +
         idx +
-        ')" title="Remove">&times;</button>';
+        ')" title="Remove" aria-label="Remove favorite">&times;</button>';
       html += '</div>';
     });
   }
