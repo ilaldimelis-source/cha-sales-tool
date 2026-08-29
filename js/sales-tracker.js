@@ -12658,6 +12658,131 @@ function _stFmtHistorySavedAt(ts) {
   );
 }
 
+function _stFmtHistoryListSavedAt(ts) {
+  var n = Number(ts) || 0;
+  if (!n) return '';
+  var d = new Date(n);
+  if (isNaN(d.getTime())) return '';
+  var months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec'
+  ];
+  var h = d.getHours();
+  var m = d.getMinutes();
+  var ampm = h >= 12 ? 'PM' : 'AM';
+  var h12 = h % 12;
+  if (!h12) h12 = 12;
+  return (
+    months[d.getMonth()] +
+    ' ' +
+    d.getDate() +
+    ', ' +
+    h12 +
+    ':' +
+    (m < 10 ? '0' : '') +
+    m +
+    ' ' +
+    ampm
+  );
+}
+
+function _stBuildHistMetaCountHtml(n, singular, plural, tone) {
+  var count = Number(n) || 0;
+  if (!count) return '';
+  var label = count === 1 ? singular : plural;
+  var cls =
+    tone === 'danger'
+      ? 'st-hist-meta-danger'
+      : tone === 'warn'
+        ? 'st-hist-meta-warn'
+        : 'st-hist-meta-matched';
+  return (
+    '<span class="' + cls + '">' + count + ' ' + _stEscape(label) + '</span>'
+  );
+}
+
+function _stBuildHistCardMetaHtml(rec) {
+  if (!rec) return '';
+  var c = rec.counts || {};
+  var parts = [];
+  var matched = Number(c.matched) || 0;
+  parts.push(
+    '<span class="st-hist-meta-matched">' + matched + ' matched</span>'
+  );
+  var missingHtml = _stBuildHistMetaCountHtml(
+    c.missing,
+    'missing',
+    'missing',
+    'warn'
+  );
+  if (missingHtml) parts.push(missingHtml);
+  var misHtml = _stBuildHistMetaCountHtml(
+    c.mislabeled,
+    'mislabeled',
+    'mislabeled',
+    'warn'
+  );
+  if (misHtml) parts.push(misHtml);
+  if (!Object.prototype.hasOwnProperty.call(c, 'amountmismatch')) {
+    parts.push(
+      '<span class="st-hist-meta-warn">amount mismatch unknown</span>'
+    );
+  } else {
+    var amHtml = _stBuildHistMetaCountHtml(
+      c.amountmismatch,
+      'amount mismatch',
+      'amount mismatches',
+      'warn'
+    );
+    if (amHtml) parts.push(amHtml);
+  }
+  var hasCb =
+    Object.prototype.hasOwnProperty.call(c, 'chargebackCandidates') ||
+    Object.prototype.hasOwnProperty.call(c, 'untrackedChargebacks');
+  if (hasCb) {
+    var cbN =
+      (Number(c.chargebackCandidates) || 0) +
+      (Number(c.untrackedChargebacks) || 0);
+    var cbHtml = _stBuildHistMetaCountHtml(
+      cbN,
+      'chargeback',
+      'chargebacks',
+      'danger'
+    );
+    if (cbHtml) parts.push(cbHtml);
+  }
+  if (Array.isArray(rec.problems)) {
+    var swc = _stHistCountSameWeek(rec.problems);
+    var swHtml = _stBuildHistMetaCountHtml(
+      swc,
+      'same-week cancel',
+      'same-week cancels',
+      'warn'
+    );
+    if (swHtml) parts.push(swHtml);
+  }
+  if (rec.savedAt) {
+    parts.push(
+      '<span class="st-record-card-helper">saved ' +
+        _stEscape(_stFmtHistoryListSavedAt(rec.savedAt)) +
+        '</span>'
+    );
+  }
+  return parts.join(
+    '<span class="st-record-card-sep" aria-hidden="true"></span>'
+  );
+}
+
 function _stBuildReconcileHistorySnapshotHtml(rec) {
   if (!rec) return '';
   var counts = rec.counts || {};
@@ -12822,13 +12947,11 @@ function _stBuildReconcileHistoryPane(sales) {
   html += '<div class="st-recon-head">';
   html += _stBuildTabHeroHtml({
     headline: _stEscape(histHeadline),
-    support: _stEscape(histSupport),
-    period: 'History'
+    support: _stEscape(histSupport)
   });
   html += '</div>';
 
   html += '<div class="st-recon-history-section">';
-  html += '<div class="st-recon-section-label">Saved pay sheets</div>';
   if (!saved.length) {
     html +=
       '<div class="st-empty st-empty-tight">No saved pay sheets yet. Save a reconciliation in Reconcile to store one.</div>';
@@ -12838,24 +12961,6 @@ function _stBuildReconcileHistoryPane(sales) {
     for (i = 0; i < saved.length; i++) {
       var rec = saved[i];
       if (!rec) continue;
-      var c = rec.counts || {};
-      var swcList = Array.isArray(rec.problems)
-        ? _stHistCountSameWeek(rec.problems)
-        : null;
-      var summary =
-        (Number(c.matched) || 0) +
-        ' matched · ' +
-        (Number(c.missing) || 0) +
-        ' missing · ' +
-        (Number(c.mislabeled) || 0) +
-        ' mislabeled · ' +
-        _stHistCountText(c, 'amountmismatch') +
-        ' amount mismatch · ' +
-        _stHistChargebackCountText(c) +
-        ' chargeback · ' +
-        (swcList === null ? '-' : String(swcList)) +
-        ' same-week cancel' +
-        (swcList === 1 ? '' : 's');
       var weekLabel = rec.weekLabel || '';
       if (!weekLabel && rec.weekStart) {
         weekLabel = _stReconMatchedWeekLabel({ start: rec.weekStart }) || '';
@@ -12872,19 +12977,14 @@ function _stBuildReconcileHistoryPane(sales) {
       html +=
         '<article class="st-record-card st-hist-card">' +
         '<div class="st-record-card-body">' +
-        '<div class="st-record-card-label">Week of ' +
+        '<div class="st-record-card-label">' +
         _stEscape(weekLabel) +
         (rec.weekMode === 'legacy-mon'
           ? ' <span class="st-recon-history-weekmode">legacy Mon-Sun week</span>'
           : '') +
         '</div>' +
         '<div class="st-record-card-meta">' +
-        _stEscape(summary) +
-        (rec.savedAt
-          ? '<span class="st-record-card-sep" aria-hidden="true"></span><span class="st-record-card-helper">saved ' +
-            _stEscape(_stFmtHistorySavedAt(rec.savedAt)) +
-            '</span>'
-          : '') +
+        _stBuildHistCardMetaHtml(rec) +
         '</div></div>' +
         '<div class="st-record-card-side">' +
         '<div class="st-record-card-figure">' +
