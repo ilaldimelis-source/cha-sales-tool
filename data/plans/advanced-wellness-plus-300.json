@@ -585,6 +585,55 @@
       },
       "verified_fact": "The product is Limited Benefit Health Insurance. The NCE page states a Limited Benefit Medical plan is not comprehensive major medical, is not intended to replace one, and is capped at specific amounts for specific services.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never tell a client that moving up to the Advanced Wellness PLUS 300 keeps everything they have. It removes the pathology/radiology and advance-studies (imaging) benefits. Compare the two specific tier columns on the call before recommending the step, and quote each tier only from its own column.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-182",
+      "safe_wording": "",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/information/product.cfm?id=974358"
+      },
+      "verified_fact": "Advanced Wellness PLUS: the 300 tier carries NO Basic Pathology & Radiology and NO Advance Studies benefit. Both are present on the 200 and 200+ tiers below it and present again on 500, 750 and 1000 above it. The 300 column prints a dash, which is nowhere defined on the page, so the ledger records NOT_FOUND_IN_SOURCE - but there is no benefit figure to quote on that tier. Cheaper tier cited at F-04057 and F-04058 (source 113, brochure) and F-00501 (source 88, portal); dearer tier cited at F-04073 and F-04074 (source 113) and F-00537 (source 88).",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "When a client on 200+ asks about moving up, disclose that the emergency room allowance halves from two days a year to one and does not recover at any higher tier.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-183",
+      "safe_wording": "",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/information/product.cfm?id=974358"
+      },
+      "verified_fact": "Advanced Wellness PLUS: the emergency room benefit pays a maximum of 2 days on the 200+ tier and only 1 day on the 300 tier and every tier above it. The 200+ variant is the only one in the family that pays a second ER day.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -674,8 +723,11 @@
     "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
     "In those eight states the discount layer delivers nothing. Do not present it as part of the value in a client's state without checking.",
     "Never read the GapAfford bullet list as describing the insurance. If a client asks about pre-existing conditions the answer is the 12-month exclusion, full stop.",
+    "Never tell a client that moving up to the Advanced Wellness PLUS 300 keeps everything they have. It removes the pathology/radiology and advance-studies (imaging) benefits. Compare the two specific tier columns on the call before recommending the step, and quote each tier only from its own column.",
     "Never type or describe a product from its name. Read the Info page.",
-    "State the 30-day sickness wait AND the 12-month pre-existing exclusion together. They are separate provisions and both bite."
+    "State the 30-day sickness wait AND the 12-month pre-existing exclusion together. They are separate provisions and both bite.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+    "When a client on 200+ asks about moving up, disclose that the emergency room allowance halves from two days a year to one and does not recover at any higher tier."
   ],
   "doc_completeness": "PARTIAL_DOCS",
   "documentation": {
@@ -1090,6 +1142,18 @@
       "field": "",
       "gap_id": "G-161",
       "what_is_unknown": "What does the Anesthesia Benefit's '20%' apply to?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "advanced-wellness-plus-300",

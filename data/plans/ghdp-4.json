@@ -428,6 +428,39 @@
       },
       "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Present GHDP 3 to 4 as a TRADE, never as an upgrade. The client gains a wellness exam and surgery cover and gives up $5,000 of inpatient annual maximum and pays higher copays on every visit.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-196",
+      "safe_wording": "",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/information/product.cfm?id=974358"
+      },
+      "verified_fact": "GHDP: GHDP 4 carries a LOWER inpatient hospitalization annual maximum than GHDP 3 - $10,000 against $15,000 (F-01823 vs F-01831) - and higher copays: primary care $50 against $25 (F-01820 vs F-01828), specialist and urgent care $75 against $50 (F-01821 vs F-01829). GHDP 4 DOES gain what GHDP 3 lacks: a wellness exam benefit and an in/outpatient surgery benefit. All citations source 88.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -511,7 +544,9 @@
   "do_not_say": [
     "Do not tell a client the agreement names their agent.",
     "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
-    "Never type or describe a product from its name. Read the Info page."
+    "Never type or describe a product from its name. Read the Info page.",
+    "Present GHDP 3 to 4 as a TRADE, never as an upgrade. The client gains a wellness exam and surgery cover and gives up $5,000 of inpatient annual maximum and pays higher copays on every visit.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
@@ -798,6 +833,18 @@
       "field": "",
       "gap_id": "G-089",
       "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "ghdp-4",

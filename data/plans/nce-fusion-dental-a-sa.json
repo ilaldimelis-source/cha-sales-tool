@@ -700,6 +700,23 @@
       },
       "verified_fact": "Accumulated rewards are applied to covered dental services only after the dental annual maximum has been exceeded, and remain subject to deductible, coinsurance and plan provisions.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -862,6 +879,7 @@
     "Present both as discounts. Note the brochure extends the Rx discount to pets, which underlines that it is a retail programme rather than a benefit.",
     "Read the price off the exact page being enrolled.",
     "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
     "When Dental Rewards are used as a selling point, state the use-it-or-lose-it condition: one claim per year is required to keep the accumulated bank."
   ],
   "doc_completeness": "PARTIAL_DOCS",
@@ -1240,6 +1258,18 @@
       "field": "",
       "gap_id": "G-164",
       "what_is_unknown": "What is the 'highlight sheet' the brochure refers members to?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "nce-fusion-dental-a-sa",

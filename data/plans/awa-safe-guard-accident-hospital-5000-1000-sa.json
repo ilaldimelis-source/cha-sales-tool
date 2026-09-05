@@ -616,6 +616,23 @@
       },
       "verified_fact": "AWA Safe Guard 100 and AWA Safe Guard Accident Membership Plan $100,000 SA have byte-identical NEO pages and the same price, but their carrier brochures carry different benefit schedules - paralysis benefits and a doubled hearing benefit on the SA product only.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -733,6 +750,7 @@
     "Never type or describe a product from its name. Read the Info page.",
     "State the seven-day waiting period whenever the daily benefit is quoted. A three-day accident admission pays $0.",
     "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
     "Worth naming on the call for any client whose licence is suspended or expired."
   ],
   "doc_completeness": "PARTIAL_DOCS",
@@ -1094,6 +1112,18 @@
       "field": "",
       "gap_id": "G-155",
       "what_is_unknown": "Why do two products with identical portal pages and identical prices have different benefit schedules?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "awa-safe-guard-accident-hospital-5000-1000-sa",

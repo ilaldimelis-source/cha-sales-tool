@@ -485,6 +485,55 @@
       },
       "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never tell a client that moving up to the Sigma Care PLUS 300 keeps everything they have. It removes the pathology/radiology and advance-studies (imaging) benefits. Compare the two specific tier columns on the call before recommending the step, and quote each tier only from its own column.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-184",
+      "safe_wording": "",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/information/product.cfm?id=974358"
+      },
+      "verified_fact": "Sigma Care PLUS: the 300 tier carries NO Basic Pathology & Radiology and NO Advance Studies benefit. Both are present on the 200 and 200+ tiers below it and present again on 500, 750 and 1000 above it. The 300 column prints a dash, which is nowhere defined on the page, so the ledger records NOT_FOUND_IN_SOURCE - but there is no benefit figure to quote on that tier. Cheaper tier cited at F-01328 (source 88); dearer tier cited at F-01344 (source 88).",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "When a client on 200+ asks about moving up, disclose that the emergency room allowance halves from two days a year to one and does not recover at any higher tier.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-185",
+      "safe_wording": "",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/information/product.cfm?id=974358"
+      },
+      "verified_fact": "Sigma Care PLUS: the emergency room benefit pays a maximum of 2 days on the 200+ tier and only 1 day on the 300 tier and every tier above it. The 200+ variant is the only one in the family that pays a second ER day.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -569,7 +618,10 @@
     "Do not describe Harmony Care PLUS as having more benefits than Harmony Care. Do not describe any tier of one family as better than the same tier of another. Do not quote a Harmony Care benefit from the PLUS brochure.",
     "Do not tell a client the agreement names their agent.",
     "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
-    "Never type or describe a product from its name. Read the Info page."
+    "Never tell a client that moving up to the Sigma Care PLUS 300 keeps everything they have. It removes the pathology/radiology and advance-studies (imaging) benefits. Compare the two specific tier columns on the call before recommending the step, and quote each tier only from its own column.",
+    "Never type or describe a product from its name. Read the Info page.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+    "When a client on 200+ asks about moving up, disclose that the emergency room allowance halves from two days a year to one and does not recover at any higher tier."
   ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
@@ -854,6 +906,18 @@
       "field": "",
       "gap_id": "G-089",
       "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "sigma-care-plus-300",

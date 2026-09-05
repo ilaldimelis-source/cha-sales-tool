@@ -117,6 +117,28 @@ function familyPrefix(token) {
   return t.slice(0, dash + 1);
 }
 
+function aliasToken(token) {
+  const t = cleanToken(token);
+  if (!t) return t;
+  if (/UNREGISTERED/i.test(t)) return t;
+  const colon = t.indexOf('::');
+  if (colon > 0) return t.slice(0, colon);
+  if (/\d\+$/.test(t)) return t.slice(0, -1) + '-plus';
+  return t;
+}
+
+function plusTierSlug(token) {
+  const aliased = aliasToken(token);
+  if (/^\d+-plus$/.test(aliased)) return aliased;
+  return '';
+}
+
+function planHasPlusTier(plan, slug) {
+  if (!plan || !plan.plan_id || !slug) return false;
+  const id = plan.plan_id;
+  return id === slug || id.slice(-(slug.length + 1)) === '-' + slug;
+}
+
 function resolveShorthandTokens(tokens, idSet) {
   const list = Array.isArray(tokens) ? tokens : [];
   const ids = idSet || new Set();
@@ -124,15 +146,21 @@ function resolveShorthandTokens(tokens, idSet) {
   let prefix = '';
   for (let i = 0; i < list.length; i++) {
     const token = list[i];
+    const aliased = aliasToken(token);
     const known =
       ids.has(token) ||
+      ids.has(aliased) ||
       isClassWildcard(token) ||
       token.slice(-1) === '*' ||
       token.indexOf('..') !== -1;
     if (known) {
-      out.push(token);
-      if (!isClassWildcard(token) && token.slice(-1) !== '*') {
-        const nextPrefix = familyPrefix(token);
+      out.push(ids.has(aliased) && aliased !== token ? aliased : token);
+      if (
+        !isClassWildcard(token) &&
+        token.slice(-1) !== '*' &&
+        token.indexOf('::') === -1
+      ) {
+        const nextPrefix = familyPrefix(ids.has(token) ? token : aliased);
         if (nextPrefix) prefix = nextPrefix;
       }
       continue;
@@ -140,6 +168,23 @@ function resolveShorthandTokens(tokens, idSet) {
     if (prefix && ids.has(prefix + token)) {
       out.push(prefix + token);
       continue;
+    }
+    if (prefix && ids.has(prefix + aliased)) {
+      out.push(prefix + aliased);
+      continue;
+    }
+    const slug = plusTierSlug(token);
+    if (slug && !prefix) {
+      let any = false;
+      ids.forEach(function (id) {
+        if (id === slug || id.slice(-(slug.length + 1)) === '-' + slug) {
+          any = true;
+        }
+      });
+      if (any) {
+        out.push(aliased);
+        continue;
+      }
     }
     out.push(token);
   }
@@ -166,10 +211,34 @@ function recordApplies(record, plan) {
   let prefix = '';
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
+    const aliased = aliasToken(token);
     if (isClassWildcard(token)) portfolio = true;
-    if (planMatchesToken(plan, token)) matches = true;
-    else if (prefix && planMatchesToken(plan, prefix + token)) matches = true;
-    if (!isClassWildcard(token) && token.slice(-1) !== '*') {
+    if (planMatchesToken(plan, token) || planMatchesToken(plan, aliased)) {
+      matches = true;
+    }
+    if (prefix) {
+      if (
+        planMatchesToken(plan, prefix + token) ||
+        planMatchesToken(plan, prefix + aliased)
+      ) {
+        matches = true;
+      }
+    }
+    const slug = plusTierSlug(token);
+    if (slug) {
+      if (prefix) {
+        if (plan.plan_id === prefix + slug) matches = true;
+      } else if (planHasPlusTier(plan, slug)) {
+        matches = true;
+        portfolio = true;
+      }
+    }
+    if (
+      !isClassWildcard(token) &&
+      token.slice(-1) !== '*' &&
+      token.indexOf('::') === -1 &&
+      !plusTierSlug(token)
+    ) {
       const nextPrefix = familyPrefix(token);
       if (nextPrefix) prefix = nextPrefix;
     }
@@ -194,8 +263,13 @@ function unregisteredTokens(records, registryPlans, kind) {
     for (let t = 0; t < tokens.length; t++) {
       const token = tokens[t];
       let matched = false;
+      const slug = plusTierSlug(token);
       for (let p = 0; p < plans.length; p++) {
         if (planMatchesToken(plans[p], token)) {
+          matched = true;
+          break;
+        }
+        if (slug && planHasPlusTier(plans[p], slug)) {
           matched = true;
           break;
         }
@@ -393,6 +467,8 @@ module.exports = {
   expandRangeToken,
   isClassWildcard,
   planMatchesToken,
+  aliasToken,
+  plusTierSlug,
   recordTokens,
   resolveShorthandTokens,
   recordApplies,

@@ -511,6 +511,23 @@
       },
       "verified_fact": "Every saving on these pages is expressed as a range or an 'up to' figure - up to 85% on pharmacy, 40-75% on imaging, 15-50% on dental, 10-60% on eyewear.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -619,7 +636,8 @@
     "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
     "Never type or describe a product from its name. Read the Info page.",
     "Never use the words covered, benefit, claim, deductible or copay about this product. Never repeat 'no pre-existing exclusions and no waiting period' without 'because it is not insurance' in the same breath. Do not quote the average discount percentages as guaranteed savings - the page says the range varies by provider and service. Do not present the nurse line to a New York client or the lab programme to a NJ, NY or RI client - the page excludes those states.",
-    "Quote the range, never the top of it. Saying 'you save 85% on prescriptions' misstates a maximum as an expectation."
+    "Quote the range, never the top of it. Saying 'you save 85% on prescriptions' misstates a maximum as an expectation.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
@@ -895,6 +913,18 @@
       "field": "",
       "gap_id": "G-131",
       "what_is_unknown": "Which vendors operate each programme, and what are their own terms?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "complete-care-max",

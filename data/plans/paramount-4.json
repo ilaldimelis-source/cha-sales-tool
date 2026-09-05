@@ -522,6 +522,39 @@
       },
       "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never present Paramount 4, 5 or 6 as an upgrade from Plan 2 or Plan 3. They are a DIFFERENT design - lower fixed indemnity plus a sharing layer with a $1,500 Unshared Amount and a five-year phase-in. State both sides: what the indemnity drops to, and what the sharing layer adds.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-194",
+      "safe_wording": "",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/information/product.cfm?id=974358"
+      },
+      "verified_fact": "Paramount: Plans 4, 5 and 6 revert to Plan 1 indemnity levels on five benefit lines while adding the ShareWELL health care sharing layer. Moving a client from Plan 3 to Plan 4 cuts hospital confinement day 2 forward from $300 to $100 per day (F-01133 vs F-01152), air ambulance from $300 to $100 (F-01139 vs F-01158), ICU confinement day 2 forward from $300 to $200 (F-01134 vs F-01153), the doctor's office benefit from $75 to $50 (F-01137 vs F-01156) and urgent care from $150 to $125 (F-01138 vs F-01157). All citations source 88. Separately, ICU day 2 forward falls from $500 on Plan 2 to $300 on Plan 3 (F-01117 vs F-01134).",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -608,8 +641,10 @@
     "Do not say there is no maximum. Do not omit the age-70 reduction to a caller near or over seventy. Do not describe the membership discount benefits as insurance.",
     "Do not tell a client the agreement names their agent.",
     "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never present Paramount 4, 5 or 6 as an upgrade from Plan 2 or Plan 3. They are a DIFFERENT design - lower fixed indemnity plus a sharing layer with a $1,500 Unshared Amount and a five-year phase-in. State both sides: what the indemnity drops to, and what the sharing layer adds.",
     "Never say covered, paid, claim, benefit or policy about the sharing component. Never quote 'no annual or lifetime limit' without the pre-existing phase-in caps in the same breath. Never quote the Info tab's 12/12 pre-existing figure for these three plans. Never present Plan 4, 5 or 6 as an upgrade of Plan 1 - it is a different product class.",
-    "Never type or describe a product from its name. Read the Info page."
+    "Never type or describe a product from its name. Read the Info page.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
@@ -929,6 +964,24 @@
       "field": "",
       "gap_id": "G-089",
       "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-168",
+      "what_is_unknown": "Why do Paramount Plans 4, 5 and 6 carry lower indemnity benefits than Plans 2 and 3?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "paramount-4",
