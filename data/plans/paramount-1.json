@@ -1,0 +1,1036 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "'Are my benefits taxable? If you pay premiums under a flexible benefits plan with pre-tax dollars, or if your employer pays part or all your premiums, some of the benefits you receive may be taxable. In addition, A 1099 FORM WILL BE SENT TO THE INSURED IF A BENEFIT OF MORE THAN $10,000 IS PROVIDED.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "STATES panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "States Available: DC, FL, TN, VA, WY (5 states only).",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$25 per day, up to 5 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$200 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$1,000 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$200 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "Normal Pregnancy Coverage: Included. Complications of Pregnancy are always covered. Normal Pregnancy Waiting Period: None (does not apply to Complications).",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$50 per day, up to 3 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$125 per day, up to 2 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$50 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "Paramount Plan 1",
+  "doc_completeness": "PARTIAL_DOCS",
+  "documentation": {
+    "brochure": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "BROCHURE panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "A brochure is linked: BCS_Brochure_1.pdf - already held in Drive.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "'Can I enroll without having to take a medical exam? YES. EssentialCare Group Hospital Insurance is GUARANTEED ISSUE, which means your acceptance is guaranteed, regardless of your health. You just need to be ACTIVELY AT WORK for your coverage to be effective. There are no medical exams to take and no health questions to answer. THERE ARE EXCLUSIONS FOR PRE-EXISTING CONDITIONS.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "Paramount",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "'BCS EssentialCare insurance is underwritten by BCS INSURANCE COMPANY, Worthington, OH (Administrative Offices: Oakbrook Terrace, IL).' Document code BCSI-05-011. The insured component is 'EssentialCare Group Hospital Insurance'.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "No benefits for a Covered Illness or Injury resulting from: intentionally self-inflicted injuries, suicide or attempted suicide 'while sane or insane'; voluntary intoxication or being under the influence of any narcotic, drug or controlled substance unless taken as directed by a Doctor; voluntary intoxication through poison, gas or fumes; commission or attempted commission of a felony, or voluntary participation in a riot or insurrection; incarceration or imprisonment following conviction; participation in any organized sport in a professional or semi-professional capacity; base jumping, bungee jumping, cliff jumping, kite surfing, kiteboarding, luging, mixed climbing, mountain boarding, mountain climbing, mountaineering, parachuting, paragliding, parakiting, parasailing, Parkour, rock climbing, scuba diving, ski jumping, skydiving, spelunking, tricking, wingsuit flying 'or other similar extreme sports or high risk activities'; TRAVEL OR ACTIVITY OUTSIDE THE UNITED STATES OR CANADA; flying as pilot or crew, or travel in any vehicle used for test or experimental purposes or under military direction other than MAC; riding in or on any motor vehicle or aircraft engaged in acrobatic tricks or stunts, endurance tests, off-road activities or racing. AND, separately, no benefits for: pregnancy or childbirth except Complications of Pregnancy unless covered under the plan; elective abortion or complications thereof; artificial insemination, in vitro or test tube fertilization; gender change, sterilization, tubal ligation or vasectomy and reversals; military active duty or training beyond 31 days; war or act of war (NOT INCLUDING ACTS OF TERRORISM) while serving in the military or working in an area of war; aroma therapeutic, herbal therapeutic or homeopathic services; any Mental and Nervous Disorder unless specifically allowed by a benefit provision; Substance Abuse unless specifically allowed; treatment provided by or on behalf of any government agency or program; Custodial Care unless specifically allowed; elective or cosmetic surgery except reconstructive surgery incidental to or following surgery for disease, infection or trauma, or for a Dependent Child's congenital anomaly resulting in a functional defect; dental care except treatment due to injury to sound natural teeth within 12 months of the accident and treatment necessary due to congenital disease or anomaly.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "Pre-Existing Condition Limitations (months): 12/12",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "field": "identity.product_type",
+      "source_ids": [
+        88,
+        93
+      ]
+    },
+    {
+      "conflict_id": "C-020",
+      "field": "benefit_schedule (all fields)",
+      "source_ids": [
+        88
+      ]
+    }
+  ],
+  "plan_id": "paramount-1",
+  "plan_variant": "1",
+  "profile_confidence": "HIGH",
+  "profile_confidence_reasons": [],
+  "status": "ACTIVE",
+  "unmapped": {
+    "addons.bwa_membership": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "BWA membership non-insurance benefits documented in this brochure: DIRECTLABS - direct access to CLIA-certified clinical labs, no doctor's appointment necessary, blood, urine, saliva, hair and fecal tests, 'savings of up to 80% off typical lab costs', order at directlabs.com/4members or by phone 1-800-908-0000 with code R-CALSTAR, results online in 24-48 hours, HIPAA form required to send results to a provider. FREE RX COUPON CARD - 'THIS PROGRAM IS NOT INSURANCE', save up to 80%, accepted at over 68,000 pharmacies, pre-activated, no restrictions, brand and generic. HEALTHWAREHOUSE online pharmacy - 'SAVE 30 TO 90% ON YOUR PRESCRIPTION MEDICATION', 888-706-7608, try.healthwarehouse.com/BWA. WORKING ADVANTAGE perks programme - discounts on electronics, appliances, apparel, cars, theme parks, gift cards, groceries, hotels, movie tickets, flowers, fitness memberships, rental cars and special events, company code BWAAPERKS. Administrative address: PO Box 985, Camden TN 38320, 877-256-8001.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "addons.mbr_plus": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "MBR PLUS - 'a service that combines medical bill repricing, healthcare advocacy, and bill negotiation into one. With MBR PLUS, members have the flexibility to seek medical care from any licensed healthcare provider.' Members pay a $25 Pre-Pay for Primary Care Office Visits and $50 Pre-Pay for Specialist Office Visits, then the provider mails remaining bills to MBR for repricing. 'Our system, known as the REFERENCE BASED PRICING SYSTEM, reprices healthcare bills to between 150% TO 200% OF THE MEDICARE ALLOWABLE RATES.' Both member and provider receive an Explanation of Benefits from MBR by post. Support: 877-278-4668. DISCLAIMER: 'while we strive to help, we cannot guarantee the outcome of any claim or the amount of savings on any bill. MEDICAL PROVIDERS MAY DECLINE TO HONOR THIS SERVICE.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.example": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "Worked example printed in the brochure: 'A 55-year-old woman suffers a heart attack and is admitted to hospital and ICU.' Hospital admission benefit $1,000; ICU admission benefit $200; Hospital confinement benefit ($100/day for six days) $600; ICU confinement benefit ($200/day for two days) $400. TOTAL $2,200. Footnote: 'Payouts are estimates and not guaranteed. The examples shown may vary from the plan offering. Your individual experience may also vary. Benefits paid are determined based on individual situations.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.ambulance_air": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$100 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.ambulance_ground_or_water": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$100 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.hospital_confinement_day_2_forward": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$100 per day, up to 10 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.icu_confinement_day_2_forward": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "$200 per day, up to 10 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "billing.authorization": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - BWA membership terms",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "Payments falling on a weekend or holiday 'may be executed on the PRIOR business day'. Authorization remains in effect until cancelled IN WRITING with at least 15 days notice before the next billing date. The client agrees to receive account text messages (reply STOP to disable) and certifies they will not dispute the scheduled payments.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "compliance.not_medicare_supplement": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "'The coverage offered is limited benefit supplemental insurance as described in the policy and certificate. IT IS NOT MEDICARE SUPPLEMENT INSURANCE. A certificate holder eligible for Medicare should review the guide to health insurance for people with Medicare available from BCS Insurance Company.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "documentation.audience_and_status": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "This document is a GROUP PROPOSAL, not a client brochure. It is headed 'Prepared for: Business Workers of America' and carries a PROPOSAL DISCLOSURE: 'This proposal is being provided to you in reliance upon the accuracy and completeness of the data provided to BCS by you... BCS may modify or withdraw this proposal, or declare the policy null and void, based upon incorrect, false, or [incomplete] information provided to us. The proposed rates were based on proposal data submitted to BCS. Final premium rates will be determined on the basis of the actual composition and participation levels of the employer group. BCS reserves the right to reassess rates if participation levels fall below original assumptions.' It also states: 'This illustration highlights some features of the policy but is not the insurance contract. Only the actual policy and certificate provisions control.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "exclusions.pre_existing_source": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - BWA membership terms",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "The TERMS panel for this variant contains ZERO occurrences of 'pre-existing'. The ONLY source for this product's pre-existing rule is the Info tab's Plan Features row: 'Pre-Existing Condition Limitations (months) 12/12'. No definition of 'pre-existing condition' is published anywhere on the storefront for this product.",
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "features.other": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "Portability: Not Included. Annual Benefit Maximum: None. Benefit Waiting Period: 0 Days. Reduction in Benefits at Older Ages: 75% at Age 70.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "portability_and_changes": {
+      "app": "FAMILY_WIDE",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT_LINKED",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "brochure / BCS EssentialCare proposal",
+      "src": 93,
+      "url": null,
+      "v": "'Your plan does not include a Portability option.' 'Can I increase my coverage at any time...? NO. The option to change your coverage is only available during open enrollment.' Cancellation: 'You can cancel at any time. Call our Customer Service Center at 877-697-0026.' Claims are submitted by calling the same number, 877-697-0026. Benefits 'will be paid directly to you, the insured, unless otherwise required by law or otherwise assigned.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "terms.bwa_membership": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - BWA membership terms and conditions (11,291 characters)",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "TERMS AND CONDITIONS - BWA MEMBERSHIP. FirstEnroll charges 'on behalf of the Business Workers of America, Inc.' Statements show 'FirstEnroll'. Payments falling on a weekend or holiday may be executed on the prior business day. The authorization remains in effect until cancelled IN WRITING, with at least 15 days notice before the next billing date. An ENROLLMENT FEE is charged, described as 'the cost of the administrators who assist you with your application for membership in the Association'. Client checkboxes include: 'You understand this Membership nor the Hospital Indemnity Insurance provide minimum essential benefits under the Affordable Care Act, is not a substitute for major medical insurance coverage, nor is it intended to replace existing Health Insurance'; 'You attest that you are currently working'; and an agreement to call (732) 876-9733 immediately if no email arrives within 24 hours. Refund: review the membership booklet and supporting documents in the Member Portal within 30 days of the confirmation email; if not happy, contact customer service within 30 days for a full refund - ENROLLMENT FEES ARE NOT REFUNDED.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  }
+}

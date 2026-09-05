@@ -1,0 +1,641 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "Allstate Health Access",
+  "doc_completeness": "PORTAL_ONLY",
+  "documentation": {
+    "brochure": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "Allstate",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "conflict_id": "C-037",
+      "field": "benefit.laboratory_test",
+      "source_ids": [
+        98
+      ]
+    }
+  ],
+  "plan_id": "allstate-health-access",
+  "plan_variant": "Health Access",
+  "profile_confidence": "MEDIUM",
+  "profile_confidence_reasons": [
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "eligibility.weight",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    }
+  ],
+  "status": "ACTIVE",
+  "unmapped": {
+    "benefit.tiers": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "NEO product Info page, printed to PDF 2026-04-08",
+      "src": 98,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=767303",
+      "v": "Three tiers: VALUE (Metal Gap), CORE and PLUS. Benefit amount and number of days per tier. HOSPITAL ADMISSION $6,000/1 day | $2,000/2 | $2,000/3. HOSPITAL CONFINEMENT SICKNESS $100/unlimited | $3,000/unlimited | $4,000/unlimited. HOSPITAL CONFINEMENT INJURY $100/unlimited | Year 1 $4,000, Year 2 $6,000, Year 3 $8,000 /unlimited | Year 1 $6,000, Year 2 $9,000, Year 3 $12,000 /unlimited. ICU CONFINEMENT SICKNESS and INJURY $100/60 | $5,000/60 | $6,000/60. EMERGENCY ROOM $250/1 | $300/2 | $300/3. TIER 1 SURGERY $8,000/2 | $9,000/3 | $10,000/4. TIER 2 SURGERY $3,000/2 | $4,000/3 | $5,000/4. OUTPATIENT SURGERY $3,000/2 | $4,000/2 | $5,000/3. ASSISTANT SURGEON Tier 1 $2,500/2 | $4,500/3 | $5,000/4; Tier 2 $1,000/2 | $2,000/3 | $3,000/4; Outpatient $1,000/2 | $1,500/2 | $2,000/3. ANESTHESIA Tier 1 $1,000/2 | $1,500/3 | $2,000/4; Tier 2 $500/2 | $750/2 | $1,000/3; Outpatient $250/2 | $500/3 | $1,000/4. AMBULATORY SURGICAL CENTER $500/2 | $500/2 | $500/3. OFFICE VISIT $100/4 | $150/7 | $175/10. URGENT CARE $200/2 | $150/3 | $200/4. INPATIENT PHYSICIAN VISIT $100/5 | $100/10 | $150/10. PREVENTATIVE OFFICE VISIT $0/0 | $150/2 | $200/2. RADIOLOGY $0/0 | $100/5 | $125/5. LABORATORY TEST $0/0 | $35/7 | $35/10. CHEMOTHERAPY $0/0 | $3,000 monthly max | $4,000 monthly max. AMBULANCE GROUND AND WATER $1,000/1 | $1,000/2 | $1,000/3. AMBULANCE AIR $25,000/1 on all three tiers. OBSERVATION UNIT $1,500/1 | $1,500/1 | $1,500/2. WAITING PERIOD: 3 months (preventive) on all three. DEDUCTIBLE $0 on all three.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "eligibility.weight": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "NEO product Info page, printed to PDF 2026-04-08",
+      "src": 98,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=767303",
+      "v": "'Note: Male customers over 300 LBS of weight, and Female customer over 250 LBS of weight are not eligibile for coverage.' (transcribed including the source's spelling)",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  }
+}

@@ -1,0 +1,976 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "1-855-6RECURO, info@recurohealth.com",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "STATES tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "AK, AL, AR, AZ, CA, CO, DC, DE, FL, GA, IA, ID, IL, IN, KS, KY, LA, MI, MN, MO, MS, MT, NC, ND, NE, NM, NV, NY, OH, OK, PA, RI, SC, SD, TN, TX, UT, VA, VT, WI, WV, WY",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "PRICING tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "$39.99 per month",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "price_member": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "PRICING tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "$39.99 per month",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "Recuro 2 SA (Virtual Urgent Care + Virtual Therapy)",
+  "doc_completeness": "PORTAL_ONLY",
+  "documentation": {
+    "brochure": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "Recuro",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "non_insurance_virtual_care_service",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [],
+  "plan_id": "recuro-2-sa",
+  "plan_variant": "2 SA",
+  "profile_confidence": "HIGH",
+  "profile_confidence_reasons": [],
+  "status": "ACTIVE",
+  "unmapped": {
+    "benefit.24/7_board_certified_access": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.at_home_labs": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Not included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.chronic_care_management": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Not included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.consult_transcription": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.dedicated_physician": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Not included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.health_risk_assessment": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.integrated_urgent_care_through_primary_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Not included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.phone_video_mobile_web_desktop": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.primary_care_coordination": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.primary_care_services": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Not included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.risk_stratification": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.therapy_and_counselling_by_licensed_counsellors_": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.therapy_available_in_all_50_states": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.therapy_consults_within_48_72_hours": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.virtual_primary_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Not included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.virtual_therapy": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.virtual_urgent_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Included",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "package": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Urgent + Therapy",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "platform": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Members register and sign in at member.recurohealth.com or through the Recuro app",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "security": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "HITRUST-certified platform across all services",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "service_provider": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52698&id=974021",
+      "v": "Recuro Health",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "variant.standalone_relationship": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-2-sa"
+      ],
+      "pg": null,
+      "sec": "catalogue listing",
+      "src": 82,
+      "url": "https://www.1enrollment.com/index.cfm?id=974021",
+      "v": "This is the STAND-ALONE ('SA') listing of a product that NEO also sells as a bundled add-on. The bundled counterpart in this registry is 'recuro-2'.",
+      "vs": "NOT_ATTEMPTED"
+    }
+  }
+}
