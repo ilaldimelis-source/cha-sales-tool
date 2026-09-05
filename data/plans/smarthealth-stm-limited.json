@@ -631,6 +631,23 @@
       },
       "verified_fact": "RightWay patient advocacy is expressly not insurance and provides no coverage. PHCS is a discount network that does not process claims and is not affiliated with either underwriter.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -729,7 +746,8 @@
     "Present both as services attached to the policy, never as benefits of it.",
     "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
     "Three years is longer than most clients expect. Disclose the length AND the manifestation prong: a condition never diagnosed can still be pre-existing.",
-    "Treat every figure in it as requiring confirmation against a current certificate before it is quoted on a recorded call."
+    "Treat every figure in it as requiring confirmation against a current certificate before it is quoted on a recorded call.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
   "doc_completeness": "PARTIAL_DOCS",
   "documentation": {
@@ -1101,6 +1119,18 @@
       "field": "",
       "gap_id": "G-138",
       "what_is_unknown": "Is there a current version of this brochure?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "smarthealth-stm-limited",

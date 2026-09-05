@@ -569,6 +569,23 @@
       },
       "verified_fact": "The product is Limited Benefit Health Insurance. The NCE page states a Limited Benefit Medical plan is not comprehensive major medical, is not intended to replace one, and is capped at specific amounts for specific services.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -658,7 +675,8 @@
     "In those eight states the discount layer delivers nothing. Do not present it as part of the value in a client's state without checking.",
     "Never read the GapAfford bullet list as describing the insurance. If a client asks about pre-existing conditions the answer is the 12-month exclusion, full stop.",
     "Never type or describe a product from its name. Read the Info page.",
-    "State the 30-day sickness wait AND the 12-month pre-existing exclusion together. They are separate provisions and both bite."
+    "State the 30-day sickness wait AND the 12-month pre-existing exclusion together. They are separate provisions and both bite.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
   "doc_completeness": "PARTIAL_DOCS",
   "documentation": {
@@ -1067,6 +1085,18 @@
       "field": "",
       "gap_id": "G-161",
       "what_is_unknown": "What does the Anesthesia Benefit's '20%' apply to?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "advanced-wellness-plus-750",

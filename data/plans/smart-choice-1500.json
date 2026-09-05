@@ -827,6 +827,40 @@
       },
       "verified_fact": "Four different NEO enrolment agreements are in simultaneous circulation on the storefront, and most product pages show none at all.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "A client 'moving from the 1500 to the 3500' is moving DOWN, and roughly halves their visit limits. Say plainly which direction the change goes before they agree to it.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-197",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "MEDIUM",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/information/product.cfm?id=974358"
+      },
+      "verified_fact": "Smart Choice 1500 / 2500 / 3000 / 3500 are DEDUCTIBLES, so the lowest number is the richest plan - the reverse of the numbering convention used by every other tiered family in this catalogue. Read in the correct direction Smart Choice is perfectly monotonic: PCP visits 12 / 10 / 7 / 5, emergency room 4 / 3 / 2 / 1 per family per benefit period, inpatient mental health 10 / 8 / 5 / 3 days, home health 10 / 7 / 5 / 3 visits. No anomaly - recorded because the naming inverts the intuition.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -931,6 +965,7 @@
   },
   "display_name": "SmartChoice 1500",
   "do_not_say": [
+    "A client 'moving from the 1500 to the 3500' is moving DOWN, and roughly halves their visit limits. Say plainly which direction the change goes before they agree to it.",
     "Disclose the 3.5% card/ACH processing fee on every sale regardless of which page the client was shown. Do not rely on the panel a given product page happens to display.",
     "Disclose to any client on a tight account that a single failed draft can end the plan.",
     "Do not carry a visit limit from one Smart Choice variant to another. Do not say the plans are 'the same except for the deductible'. Do not quote a limit without first confirming which exact variant the client is on.",
@@ -948,7 +983,8 @@
     "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
     "Never describe NEO as the insurance company. Name the carrier for the specific product.",
     "Never type or describe a product from its name. Read the Info page.",
-    "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged."
+    "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
   "doc_completeness": "PARTIAL_DOCS",
   "documentation": {
@@ -1336,6 +1372,18 @@
       "field": "",
       "gap_id": "G-095",
       "what_is_unknown": "Does 'this coverage is not renewable or extendable' apply to every NEO product or only to short-term products?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "smart-choice-1500",

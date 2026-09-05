@@ -728,6 +728,23 @@
       },
       "verified_fact": "Member Services is open Monday to Thursday 9-6 EST and Friday 9-5 EST - closed weekends and every evening.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -842,6 +859,7 @@
     "Set the expectation at point of sale, particularly for clients in Pacific time, for whom the line closes at 2pm on Fridays.",
     "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
     "This is the single most important disclosure on this product. A client who has a heart attack in term one and renews without the rider may find it excluded in term two. State it before close on every consecutive-term sale.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
     "When a client asks who to call, the answer depends on the question: billing to NEO Member Services, claims to Administrative Concepts. Do not send a claims question to the billing line."
   ],
   "doc_completeness": "PARTIAL_DOCS",
@@ -1283,6 +1301,18 @@
       "field": "",
       "gap_id": "G-166",
       "what_is_unknown": "What are Administrative Concepts, Inc.'s claims contact details?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "harbor-stm-secure",

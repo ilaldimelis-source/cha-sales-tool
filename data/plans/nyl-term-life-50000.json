@@ -565,6 +565,23 @@
       },
       "verified_fact": "Four different NEO enrolment agreements are in simultaneous circulation on the storefront, and most product pages show none at all.",
       "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
     }
   ],
   "cost_sharing": {
@@ -669,7 +686,8 @@
     "Never quote $200,000. The maximum achievable common carrier benefit under this programme is $100,000, and only for a member who bought the full $50,000.",
     "Never type or describe a product from its name. Read the Info page.",
     "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
-    "This must be disclosed before close. A client buying life cover who dies of an illness in month eight receives nothing. Do not describe this product as life insurance that pays from day one without stating the sickness limitation."
+    "This must be disclosed before close. A client buying life cover who dies of an illness in month eight receives nothing. Do not describe this product as life insurance that pays from day one without stating the sickness limitation.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
@@ -994,6 +1012,18 @@
       "field": "",
       "gap_id": "G-123",
       "what_is_unknown": "What is the full exclusion list?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "nyl-term-life-50000",

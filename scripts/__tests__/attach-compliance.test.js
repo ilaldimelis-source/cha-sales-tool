@@ -138,6 +138,70 @@ describe('plan id matching', function () {
       false
     );
   });
+
+  it('aliases 200+ to the family 200-plus when the pipe list names the family', function () {
+    const record = {
+      compliance_id: 'K-031',
+      plan_id:
+        'advanced-wellness-plus-100a | 100 | 200 | 200+ | 300 | 500 | 750 | 1000'
+    };
+    const onFamily = recordApplies(
+      record,
+      core('advanced-wellness-plus-200-plus')
+    );
+    const onOther = recordApplies(record, core('harmony-care-200-plus'));
+    const onSibling = recordApplies(
+      record,
+      core('advanced-wellness-plus-100a')
+    );
+    assert.equal(onFamily.matches, true);
+    assert.equal(onFamily.portfolio, false);
+    assert.equal(onOther.matches, false);
+    assert.equal(onSibling.matches, true);
+  });
+
+  it('attaches a bare 200+ to every 200-plus tier as PORTFOLIO', function () {
+    const record = { plan_id: '200+' };
+    const applied = recordApplies(record, core('harmony-care-200-plus'));
+    assert.equal(applied.matches, true);
+    assert.equal(applied.portfolio, true);
+    assert.equal(
+      recordApplies(record, core('harmony-care-200')).matches,
+      false
+    );
+  });
+
+  it('aliases allstate-plan-enhancer::chs to the parent plan', function () {
+    const record = {
+      compliance_id: 'K-075',
+      plan_id: 'allstate-plan-enhancer::chs'
+    };
+    const applied = recordApplies(record, core('allstate-plan-enhancer'));
+    assert.equal(applied.matches, true);
+    assert.equal(applied.portfolio, false);
+    assert.equal(
+      recordApplies(record, core('allstate-cancer-heart-stroke')).matches,
+      false
+    );
+  });
+
+  it('leaves premchoice-UNREGISTERED unattached', function () {
+    const record = {
+      gap_id: 'G-021',
+      plan_ids: ['premchoice-UNREGISTERED']
+    };
+    assert.equal(
+      recordApplies(record, core('smart-choice-1500')).matches,
+      false
+    );
+    const rows = unregisteredTokens(
+      [record],
+      [core('smart-choice-1500')],
+      'gap'
+    );
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].plan_id, 'premchoice-UNREGISTERED');
+  });
 });
 
 describe('compliance mapping', function () {

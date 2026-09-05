@@ -487,6 +487,38 @@
       "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
     },
     {
+      "could_misstate": "Reassuring a caller that a condition is covered because it was never formally diagnosed. Under this wording a prescription written in the past twelve months is enough to trigger the exclusion. Also: telling a client chiropractic is covered because the membership lists Chiropractic Care - that is a discount, and the insurance specifically excludes musculoskeletal manipulation.",
+      "do_not_say": "Do not say 'as long as you haven't been diagnosed'. Do not say chiropractic is covered. Do not imply the plan pays anything toward pregnancy.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-038",
+      "safe_wording": "There is a twelve-month pre-existing condition limitation. If you have received any care from a doctor, or been prescribed anything, in the twelve months before your start date, claims related to that will not be covered for the first twelve months. Pregnancy is not covered. Work-related injuries are not covered.",
+      "severity": "",
+      "source": {
+        "pg": 32339,
+        "sec": "679 chars, identical on all eight variants)",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "12-month pre-existing exclusion, defined by the disclosure as ANY care rendered OR PRESCRIBED by a physician in the 12 months before the effective date - not diagnosis, not treatment of a named condition. Pregnancy is excluded outright. Work-related injury or sickness is excluded whether or not workers' compensation pays. Chiropractic-type musculoskeletal manipulation is excluded from the insurance while a chiropractic DISCOUNT is bundled in the same membership.",
+      "verify_before_saying": "Read from the disclosure wording, not from memory - the breadth of 'rendered or prescribed' is the whole point."
+    },
+    {
+      "could_misstate": "Quoting these plans to an under-65 caller as ordinary hospital indemnity, or to an over-65 caller without addressing Medicare. Both directions are unsupported.",
+      "do_not_say": "Do not tell a caller of any age that they are eligible or ineligible for Health Choice Silver. Do not describe it as a Medicare supplement, a Medicare companion, or a gap plan for Medicare - nothing in any source held supports any of those.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-039",
+      "safe_wording": "Do not position this product on age until the eligibility question is answered.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "agent 974358",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The storefront describes every variant of this family with the single phrase 'Over 65'. No source states any issue age.",
+      "verify_before_saying": "See C-016 and G-043. This one needs an answer from FirstEnroll before the family is sold at all."
+    },
+    {
       "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
       "do_not_say": "Do not tell a client the agreement names their agent.",
       "fact_class": "verified_plan_fact",
@@ -552,6 +584,23 @@
         "url": ""
       },
       "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
       "verify_before_saying": ""
     }
   ],
@@ -653,10 +702,13 @@
   "do_not_say": [
     "Do not present it to an under-65 caller. Do not describe it as a Medicare supplement, a Medigap plan or a Medicare Advantage alternative - nothing in any source supports any of those, and it is not one.",
     "Do not quote Health Choice Silver to an under-65 client on the assumption the 'Over 65' label is a portal error.",
+    "Do not say 'as long as you haven't been diagnosed'. Do not say chiropractic is covered. Do not imply the plan pays anything toward pregnancy.",
+    "Do not tell a caller of any age that they are eligible or ineligible for Health Choice Silver. Do not describe it as a Medicare supplement, a Medicare companion, or a gap plan for Medicare - nothing in any source held supports any of those.",
     "Do not tell a client the agreement names their agent.",
     "Do not tell a client the brochure sets out the limitations. Do not repeat the GapAfford 'no pre-existing condition limitations' line without saying it applies to the discount programme and not to the insurance.",
     "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
-    "Never type or describe a product from its name. Read the Info page."
+    "Never type or describe a product from its name. Read the Info page.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
   "doc_completeness": "PARTIAL_DOCS",
   "documentation": {
@@ -1127,6 +1179,18 @@
       "field": "",
       "gap_id": "G-089",
       "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
     }
   ],
   "plan_id": "health-choice-silver-200-plus",
