@@ -295,8 +295,8 @@ describe('G8 not-found ratio', function () {
     'identity.network',
     'identity.product_type',
     'benefits.pcp',
-    'limitations.maternity',
-    'administration.claims'
+    'limitations.pre_existing',
+    'administration.customer_service'
   ];
 
   it('does not warn at or below 40%', function () {
@@ -304,8 +304,8 @@ describe('G8 not-found ratio', function () {
       'identity.network': leaf(),
       'identity.product_type': leaf(),
       'benefits.pcp': leaf(),
-      'limitations.maternity': emptyNotFoundLeaf(),
-      'administration.claims': leaf()
+      'limitations.pre_existing': emptyNotFoundLeaf(),
+      'administration.customer_service': leaf()
     };
     const profile = profileWith(fields);
     assert.ok(notFoundRatio(profile, keys) <= 0.4);
@@ -323,8 +323,8 @@ describe('G8 not-found ratio', function () {
       'identity.network': leaf(),
       'identity.product_type': emptyNotFoundLeaf(),
       'benefits.pcp': emptyNotFoundLeaf(),
-      'limitations.maternity': emptyNotFoundLeaf(),
-      'administration.claims': emptyNotFoundLeaf()
+      'limitations.pre_existing': emptyNotFoundLeaf(),
+      'administration.customer_service': emptyNotFoundLeaf()
     };
     const profile = profileWith(fields);
     assert.ok(notFoundRatio(profile, keys) > 0.4);
