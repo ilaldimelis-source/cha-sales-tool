@@ -1,0 +1,1477 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "STATES tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "AL, AR, AZ, CA, DC, DE, FL, GA, IA, IL, IN, KY, LA, MI, MS, ND, NE, OH, OK, SC, TN, TX, VA, WI, WV, WY",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "$100,000",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance_risks": [
+    {
+      "could_misstate": "Describing any of these as insurance. Describing a discount program as insurance is a material misrepresentation. Six are named as discount programs; the rest are simply unknown, including products whose names sound insured such as AD&D, Critical Care, Term Life and Fusion Dental.",
+      "do_not_say": "Do not describe AssistPro, GapSupport, Ameriguard, Prime Health Pass, Express Health Tools or HealthAssist as insurance or as coverage - the portal names each of them a Discount. Do not describe the remaining 36 at all until typed. Do not say 'PPO' about Allstate Dental PPO in a way implying major medical.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-011",
+      "safe_wording": "Nothing product-specific. An add-on should not be described until its type is established.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "NEO product list; registry entries with product_type NEEDS_MANUAL_VERIFICATION",
+        "src": 68,
+        "url": ""
+      },
+      "verified_fact": "43 add-on products are listed on the NEO platform. NONE has a document in Drive. 36 of them could not be assigned a product type from any available source. Six are typed as discount programs solely because the portal's own product name contains the word 'Discount'.",
+      "verify_before_saying": "Before mentioning any add-on by name on a recorded call."
+    },
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-096",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A 3.5% credit-card or ACH processing fee applies to every payment and appears only in the platform TERMS panel, which more than half the product pages do not display at all.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Do not tell a client a scheduled benefit amount will be paid in full without qualifying it by the URC limit.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-097",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A platform-level usual, reasonable and customary cap applies on top of every product's stated benefits and appears only in the TERMS panel.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Every recorded verification must cover all four elements. Omitting the recurring monthly amount or the automatic draft is a breach of the platform agreement, not only a compliance risk.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-098",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "The platform agreement requires an electronic signature or a recorded verification script with every sale, and specifies the four things the member must be shown to understand: the product, its benefits, the initial payment, and the recurring monthly amount drafted automatically.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Disclose to any client on a tight account that a single failed draft can end the plan.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-099",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A dishonoured payment can result in forfeiture of the plan with no liability on anyone's part, expressly including where the dishonour was inadvertent or without cause.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never describe NEO as the insurance company. Name the carrier for the specific product.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-100",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "MEDIUM",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "Neo Insurance Solutions is an agency and platform, not the insurer, and disclaims liability for agents' conduct and representations.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Disclose the 3.5% card/ACH processing fee on every sale regardless of which page the client was shown. Do not rely on the panel a given product page happens to display.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-110",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=26837&id=974021"
+      },
+      "verified_fact": "The storefront serves two different versions of the NEO enrolment agreement. The shorter one, on the MDLive pages, omits the 3.5% processing fee, the contact and electronic-document consents, the HIPAA statement and the member signature block.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Do not tell a client 'the terms are on the page'. Establish which agreement governs their enrolment, and disclose the 3.5% processing fee regardless of which panel their product displays.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-128",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Four different NEO enrolment agreements are in simultaneous circulation on the storefront, and most product pages show none at all.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never quote one of these two products from the other's material. Establish which product is being enrolled by its page id, then quote from that product's own brochure. Do not tell a Safe Guard 100 client they have paralysis cover.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-169",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://sales.neoinsurancesolutions.com/media/1367/Brochures/AWA_Brochure 100 v3.pdf"
+      },
+      "verified_fact": "AWA Safe Guard 100 and AWA Safe Guard Accident Membership Plan $100,000 SA have byte-identical NEO pages and the same price, but their carrier brochures carry different benefit schedules - paralysis benefits and a doubled hearing benefit on the SA product only.",
+      "verify_before_saying": ""
+    }
+  ],
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "PRICING tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "$99.99 per month",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "price_member": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "PRICING tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "$74.99 per month",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "AWA Safe Guard Accident Membership Plan $100,000 SA",
+  "do_not_say": [
+    "Disclose the 3.5% card/ACH processing fee on every sale regardless of which page the client was shown. Do not rely on the panel a given product page happens to display.",
+    "Disclose to any client on a tight account that a single failed draft can end the plan.",
+    "Do not describe AssistPro, GapSupport, Ameriguard, Prime Health Pass, Express Health Tools or HealthAssist as insurance or as coverage - the portal names each of them a Discount. Do not describe the remaining 36 at all until typed. Do not say 'PPO' about Allstate Dental PPO in a way implying major medical.",
+    "Do not tell a client 'the terms are on the page'. Establish which agreement governs their enrolment, and disclose the 3.5% processing fee regardless of which panel their product displays.",
+    "Do not tell a client a scheduled benefit amount will be paid in full without qualifying it by the URC limit.",
+    "Every recorded verification must cover all four elements. Omitting the recurring monthly amount or the automatic draft is a breach of the platform agreement, not only a compliance risk.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never describe NEO as the insurance company. Name the carrier for the specific product.",
+    "Never quote one of these two products from the other's material. Establish which product is being enrolled by its page id, then quote from that product's own brochure. Do not tell a Safe Guard 100 client they have paralysis cover.",
+    "Never type or describe a product from its name. Read the Info page.",
+    "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged."
+  ],
+  "doc_completeness": "PARTIAL_DOCS",
+  "documentation": {
+    "brochure": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "AWA Safe Guard",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "AWA - American Workers Association, a non-profit providing membership for the independently employed, founded 1995",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "Guarantee Trust Life Insurance Company",
+      "vs": "CONFLICTED"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "policy_form": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "Policy Form Series MP-1400; brochure also references Policy Form Series MP-1300/MP-1400 and Certificate Form Series GC-1300/GC-1400",
+      "vs": "CONFLICTED"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "group_accident_only_add",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "field": "identity.carrier",
+      "source_ids": [
+        101,
+        110
+      ]
+    },
+    {
+      "field": "identity.policy_form",
+      "source_ids": [
+        101,
+        110
+      ]
+    },
+    {
+      "conflict_id": "C-065",
+      "field": "benefit_schedule",
+      "source_ids": []
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-058",
+      "what_is_unknown": "NEO Info pages for the last twenty ACTIVE variants without extracted benefit facts. Six are distinct products - Allstate Cancer and Heart/Stroke, Allstate Plan Enhancer, Allstate Dental PPO, two AWA Safe Guard Accident & Hospital designs, and New York Life Term Life $50,000. The other fourteen are stand-alone ('SA') listings of products whose BUNDLED counterpart already has extracted facts."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-093",
+      "what_is_unknown": "Which NEO products carry the platform TERMS panel, and which do not?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-094",
+      "what_is_unknown": "What is the amount of the one-time association membership processing fee?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-095",
+      "what_is_unknown": "Does 'this coverage is not renewable or extendable' apply to every NEO product or only to short-term products?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-129",
+      "what_is_unknown": "What is in the 8,743-character TERMS panel on the Safe Guard 100 pages?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-155",
+      "what_is_unknown": "Why do two products with identical portal pages and identical prices have different benefit schedules?"
+    }
+  ],
+  "plan_id": "awa-safe-guard-accident-100000-sa",
+  "plan_variant": "AWA Safe Guard Accident Plan $100,000 SA",
+  "profile_confidence": "MEDIUM",
+  "profile_confidence_reasons": [
+    {
+      "cur": "UNKNOWN",
+      "field": "addon.disclaimer",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=UNKNOWN"
+    },
+    {
+      "cur": "UNKNOWN",
+      "field": "eligibility",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=UNKNOWN"
+    },
+    {
+      "cur": "UNKNOWN",
+      "field": "product_title",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=UNKNOWN"
+    },
+    {
+      "field": "schedule.add.hearing_in_one_ear",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "cur": "UNKNOWN",
+      "field": "schedule.add.loss_due_to_hemiplegia",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=UNKNOWN"
+    },
+    {
+      "cur": "UNKNOWN",
+      "field": "schedule.add.loss_due_to_paraplegia",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=UNKNOWN"
+    },
+    {
+      "cur": "UNKNOWN",
+      "field": "schedule.add.loss_due_to_quadriplegia",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=UNKNOWN"
+    },
+    {
+      "field": "schedule.add.loss_of_both_feet",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "schedule.add.loss_of_both_hands",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "schedule.add.loss_of_entire_sight_of_one_eye",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "schedule.add.loss_of_life",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "schedule.add.loss_of_one_hand_and_one_foot",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "schedule.add.loss_of_one_hand_or_one_foot",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "schedule.add.loss_of_one_hand_or_one_foot_and_entire_sight_of_one_eye",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "schedule.add.loss_of_speech_and_hearing",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "schedule.add.loss_of_speech_or_hearing",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "cur": "UNKNOWN",
+      "field": "schedule.add.loss_of_the_entire_sight_of_both_eyes",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=UNKNOWN"
+    },
+    {
+      "cur": "UNKNOWN",
+      "field": "schedule.add.loss_of_thumb_and_index_finger_of_the_same_hand",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=UNKNOWN"
+    },
+    {
+      "field": "identity.carrier",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "identity.policy_form",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    }
+  ],
+  "status": "ACTIVE",
+  "unmapped": {
+    "addon.awa_membership": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "Non-insurance member discounts: Office Depot/OfficeMax up to 75% off over 93,000 products with free next-day delivery over $50; Constant Contact email marketing; Motel 6 10%; Red Roof Inn 15%; Wyndham 25% off best available rate; TNT Vacations 5%; Choice Hotels up to 15% off with code 00308300; Prioritize Wellness information and discounts; eye care 10-60% off eyewear, 10-30% off exams, 40-50% off the national average on LASIK across 20,000+ professionals",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "addon.disclaimer": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "UNKNOWN",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 110,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/AWA_Brochure1-2.pdf",
+      "v": "GTL does not provide nor is affiliated with the discount programs provided as a part of membership in AWA",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "brochure_code": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "AAD27.8-20",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "contact": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "AWA customer service 866-870-7730, www.americanworkersassociation.com",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "eligibility": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "UNKNOWN",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 110,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/AWA_Brochure1-2.pdf",
+      "v": "All members of AWA are eligible to receive these benefits",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "exclusions.partial": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "Acts of war; air travel or flying except as a fare-paying passenger on a regularly scheduled commercial airline; injury covered by Workers' Compensation, Employer Liability or Occupational Disease law; dental treatment except as specifically stated; felony participation or attempt; prescription drugs except as specifically stated; suicide, attempted suicide or intentionally self-inflicted injury; legal intoxication or influence of alcohol; drugs or narcotics unless on a doctor's advice; professional or intercollegiate sports unless specifically provided; active duty armed forces with reserve and National Guard exceptions; high-risk activities including hang gliding, parachuting, bungee jumping, off-road vehicles, motor and water sports competitions, cave exploration, dangerous animals, snow sports, skate activities and rodeo",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "premium_rights": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "GTL has the right to increase premium rates",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "product_title": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "UNKNOWN",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 110,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/AWA_Brochure1-2.pdf",
+      "v": "Safe Guard Accident Plan",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "schedule.add.hearing_in_one_ear": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "25% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_due_to_hemiplegia": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "UNKNOWN",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 110,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/AWA_Brochure1-2.pdf",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "schedule.add.loss_due_to_paraplegia": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "UNKNOWN",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 110,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/AWA_Brochure1-2.pdf",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "schedule.add.loss_due_to_quadriplegia": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "UNKNOWN",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 110,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/AWA_Brochure1-2.pdf",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "schedule.add.loss_of_both_feet": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_both_hands": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_entire_sight_of_both_eyes": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "schedule.add.loss_of_entire_sight_of_one_eye": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "50% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_life": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_one_hand_and_one_foot": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_one_hand_or_one_foot": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "50% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_one_hand_or_one_foot_and_entire_sight_of_one_eye": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "50% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_speech_and_hearing": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_speech_or_hearing": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "50% of the $100,000 principal sum",
+      "vs": "CONFLICTED"
+    },
+    "schedule.add.loss_of_the_entire_sight_of_both_eyes": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "UNKNOWN",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 110,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/AWA_Brochure1-2.pdf",
+      "v": "100% of the $100,000 principal sum",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "schedule.add.loss_of_thumb_and_index_finger_of_the_same_hand": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "UNKNOWN",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 110,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/AWA_Brochure1-2.pdf",
+      "v": "25% of the $100,000 principal sum",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "schedule.level": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32200&id=974021",
+      "v": "Level 1 benefit schedule",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "variant.standalone_relationship": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-safe-guard-accident-100000-sa"
+      ],
+      "pg": null,
+      "sec": "catalogue listing",
+      "src": 82,
+      "url": "https://www.1enrollment.com/index.cfm?id=974021",
+      "v": "This is a STAND-ALONE ('SA') listing on the NEO catalogue. Its bundled counterpart has not been identified in this registry.",
+      "vs": "NOT_ATTEMPTED"
+    }
+  }
+}
