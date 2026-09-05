@@ -32,6 +32,7 @@
   "benefits.ambulance",
   "benefits.hospital_admission",
   "benefits.hospital_daily",
+  "benefits.hospital_confinement_supplemental",
   "benefits.icu",
   "benefits.surgery_inpatient",
   "benefits.surgery_outpatient",
