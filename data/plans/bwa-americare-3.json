@@ -1,0 +1,895 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-2",
+        "bwa-americare-3",
+        "bwa-americare-4"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39559&id=974358",
+      "v": "'You understand that a copy of your Membership Booklet, Benefit Details, Policies, Member ID Cards, and any supporting documents will be in your Member Portal. The User ID and Password for your Member Portal will arrive via email once enrollment has been completed.' The panel also carries a capitalised instruction: 'IF YOU DO NOT RECEIVE AN EMAIL AFTER COMPLETING THIS APPLICATION, CALL THIS NUMBER IMMEDIATELY: (732) 876-9733.'",
+      "vs": "VERIFIED_MULTI_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-2",
+        "bwa-americare-3",
+        "bwa-americare-4"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39559&id=974358",
+      "v": "'You agree to review the membership booklet and all supporting documents in your Member Portal that sets forth the insured benefit coverages and Limitations and Exclusions within 30-days of receipt of your confirmation email. If for any reason You are not happy with your benefits package, You will contact customer service within 30 days for a full refund (ENROLLMENT FEES ARE NOT REFUNDABLE).' Described elsewhere in the same panel as a '30-Day Money Back Guarantee'. Customer service (732) 876-9733, Monday-Friday 9am-5:30pm EST. 'You understand if you cancel your membership or if we are unable to collect your payment on your billing date, your BWA membership and all benefits of your membership will be canceled.'",
+      "vs": "VERIFIED_MULTI_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "STATES panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "States Available: AK, AL, AR, AZ, CA, CO, DC, DE, FL, GA, HI, IA, ID, IL, IN, KS, KY, LA, MD, MI, MN, MS, NE, NM, NV, OH, OK, PA, RI, SC, TN, TX, UT, VA, WI, WV, WY (37 states).",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$125 per day",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$300 per day, max 2 days",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$1,000 per day, max 1 day",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$300 per day, max 30 days",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "icu": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "Pregnancy Coverage: Included.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$50 per day, max 3 days",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$500 per day, max 1 day",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "surgery_outpatient": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$300 per day, max 1 day",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$50 per day, max 3 days",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "BWA AmeriCare - Plan 3",
+  "doc_completeness": "PORTAL_ONLY",
+  "documentation": {
+    "brochure": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "BWA AmeriCare",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "Business Workers of America membership built around a MEDICAL BILL REPRICER (MBR) plus a scheduled accident and sickness indemnity benefit. The Info page headline is 'MEDICAL BILL REPRICER'. Components: exceptional customer support coordinating benefits for members and providers; a $25/$50 pre-pay - 'Customers pay only $25 for Primary Care and $50 for Specialist, at time of service. No Limit to the number of visits'; PHCS PPO Network - 'All In-Network medical bills are repriced to the PHCS Network rate'; and Advocacy - 'MBR's support team will assist in lowering medical bills and help members access Financial Assistance'.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "field": "benefits.icu",
+      "source_ids": [
+        88
+      ]
+    },
+    {
+      "conflict_id": "C-021",
+      "field": "exclusions.pre_existing",
+      "source_ids": [
+        88
+      ]
+    }
+  ],
+  "plan_id": "bwa-americare-3",
+  "plan_variant": "3",
+  "profile_confidence": "HIGH",
+  "profile_confidence_reasons": [],
+  "status": "ACTIVE",
+  "unmapped": {
+    "benefit.prepay_visit_cost": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "'Customers pay only $25 for Primary Care and $50 for Specialist, at time of service. No Limit to the number of visits.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.physical_speech_or_occupational_therapy_facility": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "$15 per day, max 5 days",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "eligibility.working_attestation": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-2",
+        "bwa-americare-3",
+        "bwa-americare-4"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39559&id=974358",
+      "v": "Client checkboxes: 'You attest that you are currently working'; 'You understand this Membership nor the Hospital Indemnity Insurance provide minimum essential benefits under the Affordable Care Act, is not a substitute for major medical insurance coverage, or intended to replace existing Health Insurance'; 'You agree to save this phone number: (732) 876-9733 and to call it immediately, if you do not receive an email within 24 hours.'",
+      "vs": "VERIFIED_MULTI_SOURCE"
+    },
+    "exclusions.pre_existing_source": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-2",
+        "bwa-americare-3",
+        "bwa-americare-4"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39559&id=974358",
+      "v": "The TERMS panel contains ZERO occurrences of 'pre-existing'. It offers no help with C-021 - the Info-tab contradiction between 'Pre-Existing Condition Exclusion Period: Not applicable' and a Continuity of Coverage (Takeover) Rider crediting 'time served under prior coverage for: Pre-Existing Condition Period' stands unresolved.",
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "features.eligibility_and_hsa": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "HSA Compatible: No. Spouse Coverage: Available. Dependent Child(ren) Coverage: Available.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "product_type.mbr_disclaimer": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-2",
+        "bwa-americare-3",
+        "bwa-americare-4"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39559&id=974358",
+      "v": "'You understand this Membership includes the Medical Bill Repricing (MBR) service... utilize In-Network providers to receive network rates. MBR provides only Medical Bill Repricing and Healthcare Advocacy Services. MBR IS NOT INSURANCE AND PROVIDES NO GUARANTEE TO PAY, NOR GUARANTEES THE OUTCOME OF ANY CLAIM.'",
+      "vs": "VERIFIED_MULTI_SOURCE"
+    },
+    "riders": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "Portability Option Rider: Included. Occupational Exclusion Rider: Not included. Continuity of Coverage Amendment Rider (Takeover): Included, credit given for time served under prior coverage for the Pre-Existing Condition Period. Treatment for Serious Mental Illness: INCLUDED (Hospital Admission Required). Treatment for Alcohol or Drug Addiction: Not included.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "terms.enrollment_terms_panel": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39559&id=974358",
+      "v": "The TERMS panel is 11,127 characters (page 39559). NOT read verbatim in this pass.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "terms.scanned_findings": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - targeted scan",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39559&id=974358",
+      "v": "TERMS panel, 11,133 characters. Targeted scan confirms it is the same BWA membership agreement served on the Paramount pages: FirstEnroll charges 'on behalf of Business Workers of America'; an Enrollment Fee described as the cost of the administrators assisting with the application for membership in the Association; 'contact customer service within 30 days for a full refund (enrollment fees are not refundable)'; client checkboxes including 'You attest that you are currently working' and an agreement to call (732) 876-9733 if no email arrives within 24 hours.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    }
+  }
+}

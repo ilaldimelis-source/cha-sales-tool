@@ -1,0 +1,1383 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 11,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "(866) 870-7730; Monday-Thursday 9:00 AM to 6:00 PM EST, Friday 9:00 AM to 5:00 PM EST",
+      "vs": "CONFLICTED"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Coverage is not renewable and does not guarantee coverage of pre-existing conditions unless the optional Pre-Existing Conditions Rider is elected",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "One annual wellness visit; deductible waived, coinsurance applies",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "This program provides supplemental health insurance only. It does not provide basic medical, or comprehensive/major medical coverage, and does not satisfy the minimum essential coverage requirements of the Patient Protection and Affordable Care Act",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "app": "FAMILY_WIDE",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "Plan Benefits table",
+      "src": 34,
+      "url": null,
+      "v": "The brochure states a Coinsurance Out-of-Pocket Maximum of $5,000. The word Coinsurance is part of the printed label - it is NOT a general out-of-pocket maximum. Whether deductibles, copays or the access fee accumulate toward it is NOT STATED in this document. A footnote adds that for the 0% coinsurance option the maximum is satisfied once the deductible is met.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "Harbor STM Access",
+  "doc_completeness": "PARTIAL_DOCS",
+  "documentation": {
+    "brochure": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Coverage is not provided for members age 65 or over; coverage terminates at the end of the month the insured turns 65",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "Harbor STM",
+  "identity": {
+    "administrator": {
+      "app": "FAMILY_WIDE",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "Disclosures",
+      "src": 34,
+      "url": null,
+      "v": "Everest Reinsurance is underwriter and plan administrator. Neo Insurance Solutions is the billing administrator. Claims are handled by InsuranceTPA.com. The brochure states Neo Insurance Solutions is not affiliated with Everest.",
+      "vs": "VERIFIED"
+    },
+    "association": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "American Workers Association (AWA) membership provides access to the Harbor short term medical plan in select states",
+      "vs": "CONFLICTED"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Everest Reinsurance Company, or Everest Denali Insurance Company depending on jurisdiction",
+      "vs": "CONFLICTED"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 7,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Cigna Healthcare PPO Network, Shared Administration - approximately 1.6 million health care providers and nearly 6,400 hospitals",
+      "vs": "CONFLICTED"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 1,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "short_term_medical",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "Information tab",
+      "src": 82,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=767303",
+      "v": "The NEO portal page confirms the brochure. Without the optional rider, pre-existing limitations apply separately to each new coverage period, so a condition treated in an earlier period may be pre-existing under a later certificate. The rider does not provide immediate or complete coverage for all pre-existing conditions, and state-specific terms apply.",
+      "vs": "CONFLICTED"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "field": "administration.customer_service",
+      "source_ids": [
+        34,
+        104
+      ]
+    },
+    {
+      "field": "identity.association",
+      "source_ids": [
+        34,
+        104
+      ]
+    },
+    {
+      "field": "identity.carrier",
+      "source_ids": [
+        34,
+        104
+      ]
+    },
+    {
+      "field": "identity.network",
+      "source_ids": [
+        34,
+        82,
+        104
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        34,
+        82
+      ]
+    },
+    {
+      "conflict_id": "C-008",
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        34
+      ]
+    },
+    {
+      "conflict_id": "C-061",
+      "field": "wellness_benefit",
+      "source_ids": []
+    },
+    {
+      "conflict_id": "C-062",
+      "field": "pre_existing_rider_name",
+      "source_ids": []
+    }
+  ],
+  "plan_id": "harbor-stm-access",
+  "plan_variant": "Access",
+  "profile_confidence": "MEDIUM",
+  "profile_confidence_reasons": [
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "cost_sharing.access_fee",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "cost_sharing.coverage_period_maximum",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "cost_sharing.deductible_options",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "identity.carrier",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "identity.administrator",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "identity.association",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "identity.network",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "limitations.pre_existing",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "administration.customer_service",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    }
+  ],
+  "status": "ACTIVE",
+  "unmapped": {
+    "addon.awa_discounts": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 9,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "AWA member discount benefits include CareGuide healthcare navigation and bill negotiation, Kells Dental, Coast to Coast Vision, Allstate Identity Protection Core, Go Lexi Virtual Pet Care and a 24 Hour Nurse Line",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.coverage_period_maximum": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "$1,000,000",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.diagnostic_lab": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Subject to deductible and coinsurance",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.emergency_outpatient_surgery_access_fee": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "No Access Fee; subject to deductible and coinsurance",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.hospital_inpatient_surgery": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Subject to deductible and coinsurance",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.office_visits_primary_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "3 visits at $40 copay",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.office_visits_specialist": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "3 visits at $40 copay",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.office_visits_urgent_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "3 visits at $40 copay",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.out_of_network_office_visits": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Out-of-network coverage is NOT available for primary care, specialist or urgent care office visits",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefits.office_visits": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": null,
+      "sec": "Plan Benefits table",
+      "src": 34,
+      "url": null,
+      "v": "3 visits at a $40 copayment, covering primary care, specialist and urgent care. Out-of-network coverage is not available for office visits.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "carrier.corporate": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 12,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Everest common stock (NYSE: EG) is a component of the S&P 500 index; Everest describes a 50-year track record of disciplined underwriting",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "carrier.group": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Everest Insurance markets on behalf of Everest Group, Ltd. and its affiliated companies",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "carrier.neo_relationship": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Neo Insurance Solutions is not affiliated with Everest; no employees, agents or representatives of Everest are involved in the operation of Companies",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "cobra_disclosure": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Short Term Medical is often a lower-cost alternative to COBRA, but purchasing it rather than maintaining COBRA may give up rights to coverage for pre-existing conditions or guaranteed health insurance in the future; benefits may be limited compared to COBRA",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "coinsurance": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "30%, 20%, or 0% member pays",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "coinsurance_out_of_pocket_maximum": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "$5,000",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "cost_sharing.access_fee": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": null,
+      "sec": "Plan Benefits table",
+      "src": 34,
+      "url": null,
+      "v": "Emergency room, outpatient surgery and advanced diagnostics access fee: No Access Fee.",
+      "vs": "VERIFIED"
+    },
+    "cost_sharing.coverage_period_maximum": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": null,
+      "sec": "Plan Benefits table",
+      "src": 34,
+      "url": null,
+      "v": "Coverage Period Maximum Benefit $1,000,000.",
+      "vs": "VERIFIED"
+    },
+    "cost_sharing.deductible_options": {
+      "app": "FAMILY_WIDE",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "Plan Benefits table",
+      "src": 34,
+      "url": null,
+      "v": "Deductible options of $2,500, $5,000, $7,500 and $10,000 are offered. Coinsurance options are 30%, 20% or 0% member-paid. These are configuration choices, identical across all three variants.",
+      "vs": "VERIFIED"
+    },
+    "deductible_options": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "$2,500, $5,000, $7,500 or $10,000",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "distributor.corporate": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 12,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Neo Insurance Solutions, LLC and Neo Insurance Advisors, DBA Neo Insurance Agents, are related companies under common ownership",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "enrolment.once_only": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Members can be enrolled only once; duplicate or multiple memberships are not allowed",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "exclusions.summary": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 10,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Not covered: preventive treatment, routine physical examinations and routine wellness services except where expressly listed; maternity, pregnancy, routine newborn care and related services except where required by law or modified by a state-specific rider; dental, vision and other routine ancillary services except where specifically provided; cosmetic or elective procedures except where specifically provided; experimental or investigational treatments; services not medically necessary; custodial, domiciliary, long-term care and similar non-medically necessary supportive services; pre-existing conditions except as modified by an approved rider",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "network.cigna_relationship": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 8,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Cigna Healthcare is an independent company and not affiliated with Neo Insurance Solutions; access to the Cigna Healthcare PPO Network is available through the contractual relationship between Neo Insurance Solutions and Cigna Healthcare; all Cigna Healthcare products are provided exclusively by or through operating subsidiaries of The Cigna Group, including Cigna Health and Life Insurance Company",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "network.definition": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "The Cigna Healthcare PPO Network refers to the health care providers contracted as part of the Cigna Healthcare PPO for Shared Administration",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "network.discount_basis": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 8,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "The 58.8% average in-network discount is based on actual Cigna Healthcare PPO Network paid claims for the period 1/1/24 to 12/31/24, analysed September 2025, and actual results may vary based on utilization, plan design and geography",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "network.provider_count_basis": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 8,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "The 1.6 million providers and 6,400 hospitals figures are a Cigna Healthcare analysis of actual providers contracted as part of the Cigna Healthcare PPO for Shared Administration as of July 2025, and are subject to change",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "network.provider_lookup": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 8,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "https://hcpdirectory.cigna.com/web/public/consumer/directory/search - search by address, state or ZIP, then Doctor by Type, Doctor by Name, or Health Facilities and Group Practices; the website and phone number also appear on the member ID card",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "plan_administration.billing": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 12,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Neo Insurance Solutions is the billing administrator",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "plan_administration.claims": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 12,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Claims are handled by Administrative Concepts, Inc.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "plan_administration.underwriter": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 12,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Everest Reinsurance is the underwriter and plan administrator",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "pre_existing.definition": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Coverage generally does not pay benefits for a sickness, injury, pregnancy or other medical condition that existed before coverage began. This may include conditions for which the member previously received or was advised to receive medical care, consultation, testing, diagnosis or treatment; received a prescription medication; or experienced signs or symptoms significant enough that a medical provider could have diagnosed the condition or a reasonable person would have sought medical care",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "pre_existing.without_rider": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Without the optional rider the pre-existing limitations are applied separately to each new coverage period, so a condition that develops or is treated during an earlier coverage period may be considered pre-existing under a later Certificate",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "reenrolment_bar": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "If coverage is cancelled, the person may not re-enroll in coverage with Everest Reinsurance Company until six months after their termination date",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "rider.pre_existing": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Optional Pre-Existing Conditions Rider, for an additional premium. It modifies how the pre-existing-conditions limitation applies AFTER the initial coverage period for qualifying consecutive coverage purchased together. It does not provide immediate or complete coverage for all pre-existing conditions",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "rider.pre_existing.availability": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Optional add-on, not available in all states; expressly not available in Ohio",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "rider.prescription_drugs": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
+      "v": "Optional Outpatient Prescription Drug Rider: $5,000 maximum benefit per covered person per coverage period; generic drugs subject to a $25 copay; covered brand-name and specialty drugs subject to a $500 prescription drug deductible followed by plan coinsurance; prescriptions filled outside the participating pharmacy network are not covered; coverage limited to drugs on the plan's approved drug list",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  }
+}
