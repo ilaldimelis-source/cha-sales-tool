@@ -594,7 +594,7 @@ function renderCallAudit() {
   html +=
     '<div style="margin-top:24px;background:var(--bg-surface);border:2px solid var(--border-light, var(--border-default));border-radius:16px;padding:20px;">';
   html +=
-    '<div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">[AI] AI Call Scorer</div>';
+    '<div style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">AI Call Scorer</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:14px;">Paste a call transcript or a few sentences from a call. AI scores compliance 1-10 and flags every issue with fixes.</div>';
   html +=
@@ -602,7 +602,7 @@ function renderCallAudit() {
   html +=
     '<div style="margin-top:10px;display:flex;gap:10px;align-items:stretch;">';
   html +=
-    '<button id="auditBtn" type="button" onclick="runCallAudit()" style="flex:1;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call [AI] AI</button>';
+    '<button id="auditBtn" type="button" onclick="runCallAudit()" style="flex:1;background:#5175f1;color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">Score This Call</button>';
   html +=
     '<button id="auditClearBtn" type="button" onclick="clearCallAudit()" style="flex:0 0 auto;background:var(--bg-surface);color:var(--text-secondary);border:1px solid var(--border-light, var(--border-default));border-radius:10px;padding:12px 18px;font-weight:700;font-size:14px;cursor:pointer;">Clear</button>';
   html += '</div>';
@@ -632,7 +632,7 @@ function clearCallAudit() {
   var btn = document.getElementById('auditBtn');
   if (btn) {
     btn.disabled = false;
-    btn.textContent = 'Score This Call [AI] AI';
+    btn.textContent = 'Score This Call';
   }
 }
 
