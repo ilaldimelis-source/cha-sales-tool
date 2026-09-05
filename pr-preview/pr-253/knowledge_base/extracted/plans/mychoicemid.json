@@ -1,0 +1,27 @@
+{
+  "planId": "mychoicemid",
+  "planName": "MyChoice - Plan Mid",
+  "status": "excluded",
+  "documents": [
+    {
+      "fileName": "MyChoice_Mid_Brochure_1.pdf",
+      "sourceType": "brochure",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "MyChoice Plan Mid Limited benefit mid tier moderate benefits of MyChoice series. BWA FirstEnroll. Not comprehensive health insurance not substitute for major medical does not satisfy ACA MEC. See certificate for exact benefit amounts.",
+          "normalizedText": "mychoice plan mid limited benefit mid tier moderate benefits of mychoice series bwa firstenroll not comprehensive health insurance not substitute for major medical does not satisfy aca mec see certificate for exact benefit amounts"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "mychoicemid-c1",
+      "text": "MyChoice Plan Mid Limited benefit mid tier moderate benefits of MyChoice series. BWA FirstEnroll. Not comprehensive health insurance not substitute for major medical does not satisfy ACA MEC. See certificate for exact benefit amounts.",
+      "tokenEstimate": 59,
+      "pageRange": "1-1",
+      "normalizedText": "mychoice plan mid limited benefit mid tier moderate benefits of mychoice series bwa firstenroll not comprehensive health insurance not substitute for major medical does not satisfy aca mec see certificate for exact benefit amounts"
+    }
+  ]
+}
