@@ -168,28 +168,6 @@ function validateLeaf(leaf, field, planId) {
     );
   }
 
-  if (
-    isProtectedField(field) &&
-    leaf.conf === 'HIGH' &&
-    Number.isInteger(leaf.auth) &&
-    leaf.auth >= 6 &&
-    leaf.vs !== 'CONFLICTED'
-  ) {
-    fails.push(
-      issue(
-        'G4',
-        'FAIL',
-        planId,
-        field,
-        'conf=HIGH under ' +
-          field +
-          ' with auth>=6 as sole source (auth=' +
-          leaf.auth +
-          ')'
-      )
-    );
-  }
-
   if (leaf.cur === 'UNKNOWN' && leaf.conf === 'HIGH') {
     fails.push(
       issue('G5', 'FAIL', planId, field, 'cur=UNKNOWN caps conf at MEDIUM')
@@ -210,16 +188,58 @@ function notFoundRatio(profile, fieldKeys) {
   return missing / keys.length;
 }
 
+function needsG4Cap(leaf, field) {
+  return Boolean(
+    leaf &&
+    isProtectedField(field) &&
+    leaf.vs !== 'NOT_FOUND_IN_SOURCE' &&
+    leaf.conf === 'HIGH' &&
+    Number.isInteger(leaf.auth) &&
+    leaf.auth >= 6 &&
+    leaf.vs !== 'CONFLICTED'
+  );
+}
+
+function applyG4Cap(leaf, field, planId) {
+  if (!needsG4Cap(leaf, field)) return null;
+  const originalConf = leaf.conf;
+  const sourceId = leaf.src;
+  const auth = leaf.auth;
+  leaf.conf = 'MEDIUM';
+  leaf.vs = 'NEEDS_MANUAL_VERIFICATION';
+  return {
+    gate: 'G4',
+    severity: 'WARN',
+    plan_id: planId || null,
+    field: field || null,
+    source_id: sourceId,
+    auth: auth,
+    original_conf: originalConf,
+    message:
+      'capped conf ' +
+      originalConf +
+      ' to MEDIUM and vs to NEEDS_MANUAL_VERIFICATION (auth=' +
+      auth +
+      ' sole source on protected field)'
+  };
+}
+
 function validateProfile(profile, options) {
   const opts = options || {};
   const fieldKeys = opts.fieldKeys || [];
   const planId = profile && profile.plan_id ? profile.plan_id : null;
   const fails = [];
   const warns = [];
+  const g4Caps = [];
   const leaves = collectLeaves(profile || {});
 
   for (let i = 0; i < leaves.length; i++) {
     const item = leaves[i];
+    const cap = applyG4Cap(item.leaf, item.field, planId);
+    if (cap) {
+      warns.push(cap);
+      g4Caps.push(cap);
+    }
     const leafFails = validateLeaf(item.leaf, item.field, planId);
     for (let j = 0; j < leafFails.length; j++) fails.push(leafFails[j]);
   }
@@ -238,7 +258,7 @@ function validateProfile(profile, options) {
     );
   }
 
-  return { fails: fails, warns: warns };
+  return { fails: fails, warns: warns, g4Caps: g4Caps };
 }
 
 function validateRegistryCoverage(facts, registryIds) {
@@ -385,5 +405,7 @@ module.exports = {
   notFoundRatio,
   compareFactRank,
   lowestVerifiedConfidence,
-  capUnknownConfidence
+  capUnknownConfidence,
+  needsG4Cap,
+  applyG4Cap
 };

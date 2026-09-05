@@ -147,31 +147,58 @@ describe('G3 superseded high confidence', function () {
 
 describe('G4 sole high-auth on protected fields', function () {
   it('passes HIGH benefits fact from rank 1', function () {
-    const fails = validateLeaf(
-      leaf({ conf: 'HIGH', auth: 1, field: 'benefits.pcp' }),
-      'benefits.pcp',
-      'p1'
-    );
+    const item = leaf({ conf: 'HIGH', auth: 1 });
+    const profile = profileWith({ 'benefits.pcp': item }, { plan_id: 'p1' });
+    const result = validateProfile(profile, { fieldKeys: ['benefits.pcp'] });
     assert.equal(
-      fails.filter(function (x) {
+      result.fails.filter(function (x) {
         return x.gate === 'G4';
       }).length,
       0
     );
+    assert.equal(
+      result.warns.filter(function (x) {
+        return x.gate === 'G4';
+      }).length,
+      0
+    );
+    assert.equal(item.conf, 'HIGH');
+    assert.equal(item.vs, 'VERIFIED');
   });
 
-  it('fails HIGH benefits fact from sole auth>=6 source', function () {
-    const fails = validateLeaf(
-      leaf({ conf: 'HIGH', auth: 7, vs: 'VERIFIED' }),
-      'benefits.office_visits',
-      'p1'
+  it('warns and caps HIGH benefits fact from sole auth>=6 source', function () {
+    const item = leaf({
+      conf: 'HIGH',
+      auth: 7,
+      vs: 'VERIFIED',
+      src: 34
+    });
+    const profile = profileWith(
+      { 'benefits.office_visits': item },
+      { plan_id: 'p1' }
     );
+    const result = validateProfile(profile, {
+      fieldKeys: ['benefits.office_visits']
+    });
     assert.equal(
-      fails.filter(function (x) {
+      result.fails.filter(function (x) {
+        return x.gate === 'G4';
+      }).length,
+      0
+    );
+    assert.equal(result.g4Caps.length, 1);
+    assert.equal(
+      result.warns.filter(function (x) {
         return x.gate === 'G4';
       }).length,
       1
     );
+    assert.equal(result.warns[0].severity, 'WARN');
+    assert.equal(item.conf, 'MEDIUM');
+    assert.equal(item.vs, 'NEEDS_MANUAL_VERIFICATION');
+    assert.equal(result.g4Caps[0].source_id, 34);
+    assert.equal(result.g4Caps[0].auth, 7);
+    assert.equal(result.g4Caps[0].original_conf, 'HIGH');
   });
 });
 

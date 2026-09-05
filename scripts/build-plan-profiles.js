@@ -12,7 +12,8 @@ const {
   collectLeaves,
   compareFactRank,
   lowestVerifiedConfidence,
-  capUnknownConfidence
+  capUnknownConfidence,
+  applyG4Cap
 } = require('./lib/validate-profile.js');
 const FIELD_MAP = require('./lib/field-map.json');
 
@@ -421,6 +422,34 @@ function renderReport(report) {
   section('FAILs', report.fails);
   section('WARNs', report.warns);
 
+  lines.push('## G4 confidence caps');
+  lines.push('');
+  if (!report.g4Caps.length) {
+    lines.push('- none');
+  } else {
+    const rows = report.g4Caps.slice().sort(function (a, b) {
+      const p = String(a.plan_id || '').localeCompare(String(b.plan_id || ''));
+      if (p !== 0) return p;
+      return String(a.field || '').localeCompare(String(b.field || ''));
+    });
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      lines.push(
+        '- `' +
+          row.plan_id +
+          '` `' +
+          row.field +
+          '` source_id=' +
+          String(row.source_id) +
+          ' auth=' +
+          String(row.auth) +
+          ' original conf=' +
+          String(row.original_conf)
+      );
+    }
+  }
+  lines.push('');
+
   lines.push('## SOB_ONLY / PORTAL_ONLY limitations overrides');
   lines.push('');
   if (!report.overrides.length) {
@@ -514,7 +543,15 @@ function citedTypesForFacts(facts, typeById) {
   return types;
 }
 
-function buildProfile(plan, planFacts, typeById, conflicts, warns, overrides) {
+function buildProfile(
+  plan,
+  planFacts,
+  typeById,
+  conflicts,
+  warns,
+  overrides,
+  g4Caps
+) {
   const profile = {
     open_conflicts: [],
     unmapped: {}
@@ -621,6 +658,16 @@ function buildProfile(plan, planFacts, typeById, conflicts, warns, overrides) {
     return String(a.field || '').localeCompare(String(b.field || ''));
   });
 
+  const leaves = collectLeaves(profile);
+  for (let i = 0; i < leaves.length; i++) {
+    const item = leaves[i];
+    const cap = applyG4Cap(item.leaf, item.field, plan.plan_id);
+    if (cap) {
+      warns.push(cap);
+      g4Caps.push(cap);
+    }
+  }
+
   profile.profile_confidence = lowestVerifiedConfidence(collectLeaves(profile));
   profile.plan_id = plan.plan_id;
   profile.family = plan.family;
@@ -665,6 +712,7 @@ function main() {
   const fails = validateRegistryCoverage(loaded.facts, registryIds);
   const warns = [];
   const overrides = [];
+  const g4Caps = [];
   let factsRejected = 0;
   const acceptedByPlan = new Map();
 
@@ -690,7 +738,8 @@ function main() {
       typeById,
       loaded.conflicts,
       warns,
-      overrides
+      overrides,
+      g4Caps
     );
     profiles.push(profile);
     const result = validateProfile(profile, { fieldKeys: FIELD_KEYS });
@@ -716,6 +765,7 @@ function main() {
     fails: fails,
     warns: warns,
     overrides: overrides,
+    g4Caps: g4Caps,
     zeroFacts: zeroFacts
   };
 
