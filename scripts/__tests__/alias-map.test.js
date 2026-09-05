@@ -8,8 +8,8 @@ const ARCHIVE = require('../lib/derived-keys-archive.json');
 
 describe('frozen base schema', function () {
   it('has the contracted destination count', function () {
-    assert.equal(BASE_SCHEMA.length, 100);
-    assert.equal(new Set(BASE_SCHEMA).size, 100);
+    assert.equal(BASE_SCHEMA.length, 110);
+    assert.equal(new Set(BASE_SCHEMA).size, 110);
   });
 
   it('does not use the derived-keys archive as the contract', function () {
@@ -44,5 +44,16 @@ describe('alias-map destinations stay inside the contract', function () {
       ALIAS_MAP['administration.claims_and_contacts'],
       'administration.claims_administrator'
     );
+  });
+
+  it('does not alias combined benefit_schedule rows', function () {
+    const sources = Object.keys(ALIAS_MAP);
+    for (let i = 0; i < sources.length; i++) {
+      assert.ok(
+        sources[i] !== 'benefit_schedule' &&
+          sources[i].indexOf('benefit_schedule.') !== 0,
+        sources[i] + ' should stay unmapped'
+      );
+    }
   });
 });
