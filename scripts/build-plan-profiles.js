@@ -16,10 +16,25 @@ const {
 } = require('./lib/validate-profile.js');
 const ALIAS_MAP = require('./lib/alias-map.json');
 const BASE_SCHEMA = require('./lib/base-schema.json');
+const {
+  attachToProfile,
+  unregisteredTokens,
+  summarizeAttachment,
+  splitPlanTokens,
+  expandRangeToken: expandComplianceRange
+} = require('./lib/attach-compliance.js');
 
 // CLI-only paths. Pass --sources ledger/01_source_inventory.csv even though
 // that inventory is numbered 03_ in some internal ledger artefacts.
-const REQUIRED_ARGS = ['facts', 'registry', 'sources', 'conflicts', 'out'];
+const REQUIRED_ARGS = [
+  'facts',
+  'registry',
+  'sources',
+  'conflicts',
+  'compliance',
+  'gaps',
+  'out'
+];
 const BASE_DEST_SET = new Set(BASE_SCHEMA);
 
 function parseArgs(argv) {
@@ -441,20 +456,7 @@ function resolveFieldFacts(facts) {
 }
 
 function expandRangeToken(token) {
-  const m = String(token).match(/^(.*?)(\d+)\.\.(.*?)(\d+)$/);
-  if (!m) return [token];
-  const leftPrefix = m[1];
-  const rightPrefix = m[3];
-  const prefix = rightPrefix === '' ? leftPrefix : leftPrefix;
-  if (rightPrefix !== '' && rightPrefix !== leftPrefix) return [token];
-  const start = Number(m[2]);
-  const end = Number(m[4]);
-  if (!Number.isInteger(start) || !Number.isInteger(end) || end < start) {
-    return [token];
-  }
-  const out = [];
-  for (let n = start; n <= end; n++) out.push(prefix + n);
-  return out;
+  return expandComplianceRange(token);
 }
 
 function tokenMatchesPlan(token, planId) {
@@ -469,10 +471,7 @@ function tokenMatchesPlan(token, planId) {
 }
 
 function conflictApplies(conflict, planId) {
-  const raw = String(conflict.plan_id || '');
-  const tokens = raw.split('|').map(function (t) {
-    return t.trim();
-  });
+  const tokens = splitPlanTokens(conflict.plan_id);
   for (let i = 0; i < tokens.length; i++) {
     if (tokens[i] && tokenMatchesPlan(tokens[i], planId)) return true;
   }
@@ -488,6 +487,14 @@ function renderReport(report) {
   lines.push('- Plans emitted: ' + report.plansEmitted);
   lines.push('- Facts consumed: ' + report.factsConsumed);
   lines.push('- Facts rejected: ' + report.factsRejected);
+  lines.push(
+    '- Profiles with at least one compliance risk: ' +
+      report.profilesWithComplianceRisks
+  );
+  lines.push(
+    '- Profiles with at least one blocking gap: ' +
+      report.profilesWithBlockingGaps
+  );
   lines.push('');
 
   function section(title, rows) {
@@ -673,6 +680,26 @@ function renderReport(report) {
     }
   }
   lines.push('');
+
+  lines.push('## Unregistered compliance or gap plan_ids');
+  lines.push('');
+  if (!report.unregisteredAttach.length) {
+    lines.push('- none');
+  } else {
+    for (let i = 0; i < report.unregisteredAttach.length; i++) {
+      const row = report.unregisteredAttach[i];
+      lines.push(
+        '- `' +
+          row.kind +
+          '` `' +
+          String(row.record_id || '-') +
+          '` plan_id=`' +
+          row.plan_id +
+          '`'
+      );
+    }
+  }
+  lines.push('');
   return lines.join('\n');
 }
 
@@ -692,6 +719,8 @@ function loadInputs(args) {
   }
   const facts = readJsonl(args.facts);
   const conflicts = readJsonl(args.conflicts);
+  const compliance = readJsonl(args.compliance);
+  const gaps = readJsonl(args.gaps);
   const sources = csvObjects(args.sources);
   if (!sources.length) {
     throw new Error(
@@ -705,6 +734,8 @@ function loadInputs(args) {
     registry: registry,
     facts: facts,
     conflicts: conflicts,
+    compliance: compliance,
+    gaps: gaps,
     sources: sources
   };
 }
@@ -740,6 +771,9 @@ function buildProfile(
 ) {
   const profile = {
     open_conflicts: [],
+    compliance_risks: [],
+    open_gaps: [],
+    do_not_say: [],
     unmapped: {}
   };
 
@@ -933,6 +967,7 @@ function main() {
       overrides,
       g4Caps
     );
+    attachToProfile(profile, plan, loaded.compliance, loaded.gaps);
     profiles.push(profile);
     const result = validateProfile(profile, { fieldKeys: BASE_SCHEMA });
     for (let f = 0; f < result.fails.length; f++) fails.push(result.fails[f]);
@@ -950,10 +985,18 @@ function main() {
 
   const hasFail = fails.length > 0;
   const plansEmitted = hasFail ? 0 : profiles.length;
+  const attachment = summarizeAttachment(profiles);
+  const unregisteredAttach = unregisteredTokens(
+    loaded.compliance,
+    registryPlans,
+    'compliance'
+  ).concat(unregisteredTokens(loaded.gaps, registryPlans, 'gap'));
   const report = {
     plansEmitted: plansEmitted,
     factsConsumed: factsConsumed,
     factsRejected: factsRejected,
+    profilesWithComplianceRisks: attachment.profilesWithComplianceRisks,
+    profilesWithBlockingGaps: attachment.profilesWithBlockingGaps,
     fails: fails,
     warns: warns,
     overrides: overrides,
@@ -962,7 +1005,8 @@ function main() {
     confidenceCaps: summarizeConfidenceCaps(profiles),
     aliasSummary: aliasMapSummary(),
     unmappedTop: topUnmappedFields(unmappedStats, 40),
-    unregistered: unregisteredPlanCounts(loaded.facts, registryById)
+    unregistered: unregisteredPlanCounts(loaded.facts, registryById),
+    unregisteredAttach: unregisteredAttach
   };
 
   const reportPath = path.join(process.cwd(), 'build', 'validation-report.md');
@@ -1028,6 +1072,17 @@ function main() {
       outRoot +
       '. Report: ' +
       reportPath
+  );
+  console.log(
+    'Profiles with at least one compliance risk: ' +
+      attachment.profilesWithComplianceRisks
+  );
+  console.log(
+    'Profiles with at least one blocking gap: ' +
+      attachment.profilesWithBlockingGaps
+  );
+  console.log(
+    'Unregistered compliance/gap plan_ids: ' + unregisteredAttach.length
   );
 }
 

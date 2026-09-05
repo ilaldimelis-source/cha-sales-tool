@@ -451,6 +451,123 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
+  "compliance_risks": [
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
+      "do_not_say": "Do not tell a client the agreement names their agent.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-040",
+      "safe_wording": "Give the client your own name, agency and email verbally on the recorded call, and confirm you are their contact for benefit and claims questions. Do not rely on the agreement to have done it.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 38175,
+        "sec": "pages 38175 and 32339",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The FirstEnroll enrollment-agreement template served on the live storefront contains unrendered variables - $parentcompany, $product_label, $agent_fullname, $agent_Email, $parentemail - confirmed on two unrelated product families (American Financial Critical Illness page 38175, and Health Choice Silver page 32339). The affected clauses are the third-party administrator disclaimer, the Plan and Claims Inquiries clause and the Writing Agent Contact block.",
+      "verify_before_saying": "Raise with FirstEnroll whether the executed enrollment document renders these variables. See G-039."
+    },
+    {
+      "could_misstate": "Two things. First, 'all in-network bills are repriced to the PHCS network rate' is not the plan paying - the member still owes the repriced bill. Second, and more serious: telling a client there is no pre-existing exclusion because the feature row says 'Not applicable'. The same page contradicts it.",
+      "do_not_say": "Do not say repricing means the plan covers or pays the bill. Do not state there is no pre-existing exclusion. Do not describe mental health or addiction treatment as covered - only Plan 3 covers serious mental illness and only with hospital admission.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-045",
+      "safe_wording": "This membership gets your in-network bills repriced to a lower negotiated rate and gives you an advocacy team to help reduce what you owe - but you still owe the bill. It also pays fixed dollar amounts for hospital stays, surgery, ER and office visits. On pre-existing conditions I need to check the certificate before I answer you.",
+      "severity": "",
+      "source": {
+        "pg": 39559,
+        "sec": "39561, 39562",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "BWA AmeriCare is built around a Medical Bill Repricer: PHCS PPO in-network bills are repriced to the network rate, with an advocacy team assisting in lowering bills, plus a $25 primary / $50 specialist pre-pay with no stated visit limit, plus a scheduled accident and sickness indemnity benefit. The Info page states the pre-existing exclusion period is 'Not applicable' while simultaneously offering a takeover rider that credits time served against a pre-existing condition period. Riders differ by plan: only Plan 3 includes Serious Mental Illness treatment (hospital admission required); only Plan 4 lacks the takeover rider; no plan covers alcohol or drug addiction treatment.",
+      "verify_before_saying": "See C-021. The certificate is not held."
+    },
+    {
+      "could_misstate": "Presenting 'all in-network bills are repriced to the PHCS network rate' as the plan paying network rates. It is a repricing service with no guarantee of any outcome. The client still owes the repriced bill in full.",
+      "do_not_say": "Do not use covered, paid, claim or benefit about the repricing or advocacy services. Do not promise a savings percentage.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-053",
+      "safe_wording": "The repricing service negotiates your bill down to a network rate and an advocacy team helps you reduce what you owe - but it is not insurance, it does not pay anything, and it does not guarantee any result. The hospital indemnity part is the insured piece and it pays set dollar amounts.",
+      "severity": "",
+      "source": {
+        "pg": 39559,
+        "sec": "39561, 39562, TERMS panel",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The enrollment agreement, byte-identical on all three variants, states: 'MBR provides only Medical Bill Repricing and Healthcare Advocacy Services. MBR is not insurance and provides no guarantee to pay, nor guarantees the outcome of any claim.' The Info tab, by contrast, leads with 'MEDICAL BILL REPRICER' and presents repricing, advocacy and a $25/$50 pre-pay as plan features.",
+      "verify_before_saying": "The pre-existing position is still unresolved - the TERMS panel contains zero occurrences of 'pre-existing'. See C-021 and K-045."
+    },
+    {
+      "could_misstate": "Describing reference-based pricing as a network. It is not. Under a PPO the provider has agreed a rate in advance; under reference-based pricing the bill is repriced after the fact and the provider can simply refuse, leaving the member balance-billed for the difference. The BWA AmeriCare Info page's phrasing - 'all in-network medical bills are repriced to the PHCS Network rate' - invites exactly that misreading.",
+      "do_not_say": "Do not say in-network, covered, or guaranteed savings. Do not quote a savings percentage as an expectation.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-059",
+      "safe_wording": "This service reprices your bills to a benchmark based on Medicare rates and negotiates on your behalf. Providers are not obliged to accept it and some decline. There is no guarantee of any particular saving, and you remain responsible for the bill.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "BCS_Brochure_1.pdf",
+        "src": 93,
+        "url": ""
+      },
+      "verified_fact": "MBR PLUS reprices bills using a Reference Based Pricing System 'to between 150% to 200% of the Medicare Allowable Rates'. The brochure states: 'we cannot guarantee the outcome of any claim or the amount of savings on any bill. MEDICAL PROVIDERS MAY DECLINE TO HONOR THIS SERVICE.' The member pays a $25 pre-pay for primary care and $50 for specialist visits at the time of service.",
+      "verify_before_saying": "Always. This is the single sentence most likely to be dropped from a fast pitch."
+    },
+    {
+      "could_misstate": "Three things. First, saying there is no waiting period because the Info page says pre-existing is Not applicable - six named conditions carry a six-month exclusion. Second, quoting the hospital admission benefit to someone likely to be held for observation; under 18 hours it pays nothing. Third, selling to a Medicaid-eligible caller, which the carrier says is inappropriate.",
+      "do_not_say": "Do not say there is no waiting period. Do not add the admission and confinement benefits together for day one. Do not sell to anyone eligible for Medicaid.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-060",
+      "safe_wording": "Acceptance is guaranteed with no health questions and there is no general pre-existing condition exclusion. Six specific things are excluded for the first six months unless it is an emergency: hernia, adenoids, tonsils, varicose veins, appendix and reproductive organ disorders. The admission benefit pays only for a real inpatient admission, not for an emergency room visit or an observation stay under eighteen hours.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "held in Drive and linked from the storefront",
+        "src": 94,
+        "url": ""
+      },
+      "verified_fact": "The insured component is MedChoice Group Hospital Indemnity Insurance underwritten by American Public Life Insurance Company. It is guaranteed issue with no medical questions, and the pre-existing condition exclusion period genuinely is 'Not applicable' - BUT hernia, adenoids, tonsils, varicose veins, appendix and disorders of the reproductive organs are excluded for SIX MONTHS after the certificate effective date unless due to an emergency. The Hospital Admission Benefit is not payable for outpatient treatment, emergency room treatment, or a stay of less than 18 hours in an observation unit, and does not stack with the confinement benefit on the same day. Immunizations are excluded. The carrier states the product 'is inappropriate for people who are eligible for Medicaid coverage'.",
+      "verify_before_saying": "Ask whether the caller is Medicaid-eligible before quoting. See C-021, now resolved."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    }
+  ],
   "cost_sharing": {
     "annual_max": {
       "searched": [],
@@ -529,6 +646,15 @@
     }
   },
   "display_name": "BWA AmeriCare - Plan 3",
+  "do_not_say": [
+    "Do not say in-network, covered, or guaranteed savings. Do not quote a savings percentage as an expectation.",
+    "Do not say repricing means the plan covers or pays the bill. Do not state there is no pre-existing exclusion. Do not describe mental health or addiction treatment as covered - only Plan 3 covers serious mental illness and only with hospital admission.",
+    "Do not say there is no waiting period. Do not add the admission and confinement benefits together for day one. Do not sell to anyone eligible for Medicaid.",
+    "Do not tell a client the agreement names their agent.",
+    "Do not use covered, paid, claim or benefit about the repricing or advocacy services. Do not promise a savings percentage.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never type or describe a product from its name. Read the Info page."
+  ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
     "brochure": {
@@ -742,6 +868,68 @@
       "source_ids": [
         88
       ]
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-024",
+      "what_is_unknown": "The FirstEnroll current product list and all ~70 product Info pages. The session expired mid-run."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-044",
+      "what_is_unknown": "Info, STATES and TERMS panels on the remaining ~45 FirstEnroll product pages: Harmony Care (48876, 48877, 48878, 48879, 48880, 48881, 48882, 48885, 49428), Harmony Care + (48037-48044), Sigma Care PLUS (45288, 45430-45436), Paramount (44347-44349, 46436-46438), BWA AmeriCare (39559, 39561, 39562), Access Health (28230, 28231), TDK (43795, 43900-43903), GHDP 1-5 (44900-44904)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-047",
+      "what_is_unknown": "CLOSED. Panel read. TERMS panels: BWA AmeriCare 11,127 chars (page 39559) unread; Paramount panels on pages 44348, 44349, 46436, 46437 and 46438 not fingerprinted or read (only Plan 1, page 44347, was read)."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
     }
   ],
   "plan_id": "bwa-americare-3",

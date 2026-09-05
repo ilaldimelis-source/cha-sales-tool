@@ -377,6 +377,139 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
+  "compliance_risks": [
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Selling this as a health plan without mentioning that the client is joining a limited partnership, taking on a working-owner attestation, and acquiring an annual tax document. None of this appears in the Info tab the agent reads from - it is only in the TERMS panel behind a tab.",
+      "do_not_say": "Do not describe this as simply buying a health plan. Do not skip the partnership step. Do not tell a client there are no tax consequences.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-026",
+      "safe_wording": "To be eligible for this plan you join the GHD Limited Partnership as a limited partner. That is a legal agreement you sign at enrollment, and you will receive an annual K-1 tax form for it. There is also a referral programme that pays commissions if you refer others.",
+      "severity": "",
+      "source": {
+        "pg": 44899,
+        "sec": "TERMS panel",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "Enrolling in GHDP makes the client a Limited Partner in GHD, LP. They execute a Joinder Agreement and a Gift/Return Agreement, attest they intend to dedicate 20 hours per week to a business, are enrolled into a referral-commission arrangement paying on the 15th of each month, and agree to receive an annual Form K-1 by email.",
+      "verify_before_saying": "Whether the enrollment flow itself presents these terms to the client on screen before signature - and whether the recorded call is required to cover them. Compare SmartChoice, which has a mandatory recorded post-close verification script for exactly this kind of eligibility model. No equivalent GHDP script has been located."
+    },
+    {
+      "could_misstate": "'Your annual maximum runs for twelve months from today.' It does not. A client enrolling in May gets roughly six weeks before everything resets.",
+      "do_not_say": "Do not say 'per year from your effective date' or 'you get a full year of benefits'.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-027",
+      "safe_wording": "The plan year for this plan runs July 1st to June 30th, not twelve months from your start date. Whatever the date you enroll, the benefit year ends June 30th and starts fresh July 1st.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "GHDP Wellness Info page",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The GHDP Plan Year is fixed 7/1 to 6/30. All deductibles, out-of-pocket maximums and plan benefits reset on 7/1 each year regardless of the client's effective date.",
+      "verify_before_saying": "Whether the same fixed plan year applies to GHDP 1-5 and GHDP Dental-Vision - their TERMS panels are different documents and have not been read. See G-037."
+    },
+    {
+      "could_misstate": "'You have 30 days to change your mind.' True only until the client uses the BestChoice Rx card once, which most new members are encouraged to do immediately.",
+      "do_not_say": "Do not offer an unconditional 30-day money-back guarantee.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-028",
+      "safe_wording": "There is a 30-day review period, but it only applies if you have not used any benefit - including the prescription discount card. If you use it, the refund right is gone.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "GHDP Wellness Info page",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "There is a 30-day right to review for cancellation from the effective date, but ONLY if no claims have been utilised - explicitly including any usage of the prescription discount program.",
+      "verify_before_saying": "Always state the condition in the same sentence as the right."
+    },
+    {
+      "could_misstate": "'Your annual physical and screenings are covered.' They are not if the client has them done at a hospital or hospital outpatient department, which is where a large share of screenings and lab work happen.",
+      "do_not_say": "Do not say preventive care is covered without the hospital exclusion and the in-network requirement attached.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-032",
+      "safe_wording": "Preventive services are covered when you use an in-network provider, and they are not covered at all if they are done at a hospital. You will want to use an in-network clinic or physician office.",
+      "severity": "",
+      "source": {
+        "pg": 44899,
+        "sec": "Info tab footnotes and TERMS panel",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "None of the Preventive Health Services are covered if they are provided at a hospital. Out-of-network services are not covered at all and the member owes 100%. Outpatient physician and wellness benefits are in-network only.",
+      "verify_before_saying": "Always. This exclusion is stated twice in the source and is easy to miss because it sits in a footnote."
+    },
+    {
+      "could_misstate": "'Just call us and we'll cancel it.' Under this text a phone call is not a cancellation and a client who calls on the 10th for a 15th billing date will still be charged.",
+      "do_not_say": "Do not say cancellation can be done by phone. Do not say 'cancel any time' without the 15-day written notice condition.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-033",
+      "safe_wording": "To cancel, you need to put it in writing at least 15 days before your next billing date. I can tell you exactly where to send it.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "GHDP Wellness Info page",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "Recurring billing remains in effect until cancelled IN WRITING with at least 15 days notice before the next billing date. ACH revocation requires contacting (732) 876-9733 at least 3 business days ahead. Rejected payments may be re-attempted within 30 days with an additional returned-payment fee. The enrollee certifies they will not dispute scheduled transactions with their bank or card issuer.",
+      "verify_before_saying": "Whether FirstEnroll operationally accepts phone or portal cancellation despite this text. If it does, the discrepancy between practice and the signed authorization should be raised."
+    },
+    {
+      "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
+      "do_not_say": "Do not tell a client the agreement names their agent.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-040",
+      "safe_wording": "Give the client your own name, agency and email verbally on the recorded call, and confirm you are their contact for benefit and claims questions. Do not rely on the agreement to have done it.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 38175,
+        "sec": "pages 38175 and 32339",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The FirstEnroll enrollment-agreement template served on the live storefront contains unrendered variables - $parentcompany, $product_label, $agent_fullname, $agent_Email, $parentemail - confirmed on two unrelated product families (American Financial Critical Illness page 38175, and Health Choice Silver page 32339). The affected clauses are the third-party administrator disclaimer, the Plan and Claims Inquiries clause and the Writing Agent Contact block.",
+      "verify_before_saying": "Raise with FirstEnroll whether the executed enrollment document renders these variables. See G-039."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    }
+  ],
   "cost_sharing": {
     "annual_max": {
       "searched": [],
@@ -455,6 +588,16 @@
     }
   },
   "display_name": "Good Health Distribution Partner Wellness",
+  "do_not_say": [
+    "Do not describe this as simply buying a health plan. Do not skip the partnership step. Do not tell a client there are no tax consequences.",
+    "Do not offer an unconditional 30-day money-back guarantee.",
+    "Do not say 'per year from your effective date' or 'you get a full year of benefits'.",
+    "Do not say cancellation can be done by phone. Do not say 'cancel any time' without the 15-day written notice condition.",
+    "Do not say preventive care is covered without the hospital exclusion and the in-network requirement attached.",
+    "Do not tell a client the agreement names their agent.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never type or describe a product from its name. Read the Info page."
+  ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
     "brochure": {
@@ -708,6 +851,68 @@
       "source_ids": [
         88
       ]
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-024",
+      "what_is_unknown": "The FirstEnroll current product list and all ~70 product Info pages. The session expired mid-run."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-038",
+      "what_is_unknown": "Three brochures now KNOWN TO EXIST and linked from the FirstEnroll storefront, none of them in Drive and none yet downloaded or read: AFSLIC20_AWP_Brochure_rev1.pdf (all 8 Advanced Wellness PLUS), MEC_GHDP_Wellness1.pdf (GHDP Wellness), GHDP_DENTAL+VISION.pdf (all 3 GHDP Dental-Vision)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-051",
+      "what_is_unknown": "A single authoritative statement of which provider directory belongs to which product. FOUR DIFFERENT provider-search URLs are published under the label 'First Health Network' across the FirstEnroll catalogue: http://docfind.health/ (TDK), www.locateprovidersnow.com (GHDP), www.firsthealthlbp.com (Advanced Wellness PLUS / Sigma / Harmony), and www.MultiPlan.com/phcspracanc (Access Health - a PHCS address, not First Health at all)."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
     }
   ],
   "plan_id": "ghdp-wellness",
