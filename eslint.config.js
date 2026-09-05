@@ -35,6 +35,23 @@ export default [
     }
   },
   {
+    files: ['scripts/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'commonjs',
+      globals: {
+        ...globals.node
+      }
+    },
+    rules: {
+      'no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
+      ],
+      'no-empty': ['error', { allowEmptyCatch: true }]
+    }
+  },
+  {
     files: ['*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
