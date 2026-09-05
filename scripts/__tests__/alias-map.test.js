@@ -8,8 +8,8 @@ const ARCHIVE = require('../lib/derived-keys-archive.json');
 
 describe('frozen base schema', function () {
   it('has the contracted destination count', function () {
-    assert.equal(BASE_SCHEMA.length, 112);
-    assert.equal(new Set(BASE_SCHEMA).size, 112);
+    assert.equal(BASE_SCHEMA.length, 113);
+    assert.equal(new Set(BASE_SCHEMA).size, 113);
   });
 
   it('does not use the derived-keys archive as the contract', function () {
