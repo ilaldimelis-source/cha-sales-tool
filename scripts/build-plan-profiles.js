@@ -11,16 +11,18 @@ const {
   findFamilyIdenticalFields,
   collectLeaves,
   compareFactRank,
-  lowestVerifiedConfidence,
+  computeProfileConfidence,
   capUnknownConfidence,
   applyG4Cap
 } = require('./lib/validate-profile.js');
 const FIELD_MAP = require('./lib/field-map.json');
+const BASE_SCHEMA = require('./lib/base-schema.json');
 
 // CLI-only paths. Pass --sources ledger/01_source_inventory.csv even though
 // that inventory is numbered 03_ in some internal ledger artefacts.
 const REQUIRED_ARGS = ['facts', 'registry', 'sources', 'conflicts', 'out'];
-const FIELD_KEYS = Object.keys(FIELD_MAP).sort();
+const FIELD_DESTS = Array.from(new Set(Object.values(FIELD_MAP))).sort();
+const BASE_DEST_SET = new Set(BASE_SCHEMA);
 
 function parseArgs(argv) {
   const out = {};
@@ -232,6 +234,67 @@ function mappedPath(field) {
   return FIELD_MAP[field] || null;
 }
 
+function fieldMapDrift() {
+  const sources = Object.keys(FIELD_MAP).sort();
+  const aliased = [];
+  const derived = [];
+  for (let i = 0; i < sources.length; i++) {
+    const src = sources[i];
+    const dest = FIELD_MAP[src];
+    if (src !== dest) {
+      aliased.push({ source: src, dest: dest });
+    }
+    if (!BASE_DEST_SET.has(dest)) {
+      derived.push(src);
+    }
+  }
+  return {
+    baseCount: BASE_SCHEMA.length,
+    sourceCount: sources.length,
+    destCount: FIELD_DESTS.length,
+    aliased: aliased,
+    derived: derived
+  };
+}
+
+function summarizeConfidenceCaps(profiles) {
+  const rows = [];
+  for (let i = 0; i < profiles.length; i++) {
+    const profile = profiles[i];
+    if (profile.profile_confidence === 'HIGH') continue;
+    const reasons = profile.profile_confidence_reasons || [];
+    let stale = 0;
+    const conflicted = [];
+    for (let r = 0; r < reasons.length; r++) {
+      const reason = reasons[r];
+      if (reason.kind === 'CURRENTNESS') stale += 1;
+      if (reason.kind === 'CONFLICTED' && reason.field) {
+        conflicted.push(reason.field);
+      }
+    }
+    const parts = [];
+    if (stale) {
+      parts.push(
+        stale + ' VERIFIED fact(s) with cur=POSSIBLY_STALE or UNKNOWN'
+      );
+    }
+    if (conflicted.length) {
+      parts.push('CONFLICTED: ' + conflicted.sort().join(', '));
+    }
+    if (!parts.length) {
+      parts.push(
+        'lowest verified conf is ' + String(profile.profile_confidence)
+      );
+    }
+    rows.push({
+      plan_id: profile.plan_id,
+      profile_confidence: profile.profile_confidence,
+      summary: parts.join('; ')
+    });
+  }
+  return rows;
+}
+
 function setLeaf(root, dotted, leaf) {
   const parts = String(dotted).split('.');
   let node = root;
@@ -240,16 +303,21 @@ function setLeaf(root, dotted, leaf) {
     const last = i === parts.length - 1;
     if (last) {
       if (node[key] && typeof node[key] === 'object' && !isLeaf(node[key])) {
-        node[key].__leaf = leaf;
-      } else {
-        node[key] = leaf;
+        throw new Error(
+          'Cannot place a leaf at `' + dotted + '`: path is already a branch'
+        );
       }
+      node[key] = leaf;
       return;
     }
     if (!(key in node) || node[key] == null) {
       node[key] = {};
     } else if (isLeaf(node[key])) {
-      node[key] = { __leaf: node[key] };
+      throw new Error(
+        'Cannot descend through leaf at `' +
+          parts.slice(0, i + 1).join('.') +
+          '`'
+      );
     } else if (typeof node[key] !== 'object') {
       node[key] = {};
     }
@@ -487,6 +555,57 @@ function renderReport(report) {
     }
   }
   lines.push('');
+  lines.push('## Profile confidence caps');
+  lines.push('');
+  if (!report.confidenceCaps.length) {
+    lines.push('- none');
+  } else {
+    const rows = report.confidenceCaps.slice().sort(function (a, b) {
+      return String(a.plan_id).localeCompare(String(b.plan_id));
+    });
+    for (let i = 0; i < rows.length; i++) {
+      const row = rows[i];
+      lines.push(
+        '- `' + row.plan_id + '` ' + row.profile_confidence + ': ' + row.summary
+      );
+    }
+  }
+  lines.push('');
+
+  lines.push('## Field-map drift');
+  lines.push('');
+  lines.push('- Base schema destinations: ' + report.drift.baseCount);
+  lines.push('- Field-map source keys: ' + report.drift.sourceCount);
+  lines.push('- Unique destinations after aliases: ' + report.drift.destCount);
+  lines.push(
+    '- Aliased source keys (source != dest): ' + report.drift.aliased.length
+  );
+  lines.push(
+    '- Derived source keys (destination not in base schema): ' +
+      report.drift.derived.length
+  );
+  lines.push('');
+  lines.push('### Aliases');
+  lines.push('');
+  if (!report.drift.aliased.length) {
+    lines.push('- none');
+  } else {
+    for (let i = 0; i < report.drift.aliased.length; i++) {
+      const row = report.drift.aliased[i];
+      lines.push('- `' + row.source + '` -> `' + row.dest + '`');
+    }
+  }
+  lines.push('');
+  lines.push('### Derived keys');
+  lines.push('');
+  if (!report.drift.derived.length) {
+    lines.push('- none');
+  } else {
+    for (let i = 0; i < report.drift.derived.length; i++) {
+      lines.push('- `' + report.drift.derived[i] + '`');
+    }
+  }
+  lines.push('');
   return lines.join('\n');
 }
 
@@ -557,33 +676,37 @@ function buildProfile(
     unmapped: {}
   };
 
-  const byField = new Map();
+  const byDest = new Map();
+  const unmappedFacts = new Map();
   for (let i = 0; i < planFacts.length; i++) {
     const fact = planFacts[i];
-    const field = fact.field;
-    if (!byField.has(field)) byField.set(field, []);
-    byField.get(field).push(fact);
+    const dest = mappedPath(fact.field);
+    if (!dest) {
+      if (!unmappedFacts.has(fact.field)) unmappedFacts.set(fact.field, []);
+      unmappedFacts.get(fact.field).push(fact);
+      continue;
+    }
+    if (!byDest.has(dest)) byDest.set(dest, []);
+    byDest.get(dest).push(fact);
   }
 
   const resolved = new Map();
-  const fieldNames = Array.from(byField.keys()).sort();
-  for (let i = 0; i < fieldNames.length; i++) {
-    const field = fieldNames[i];
-    const group = byField.get(field);
-    const result = resolveFieldFacts(group);
-    resolved.set(field, result);
+  const destNames = Array.from(byDest.keys()).sort();
+  for (let i = 0; i < destNames.length; i++) {
+    const dest = destNames[i];
+    const result = resolveFieldFacts(byDest.get(dest));
+    resolved.set(dest, result);
     if (result.conflicted) {
       profile.open_conflicts.push({
-        field: field,
+        field: dest,
         source_ids: result.sourceIds
       });
     }
   }
 
-  for (let i = 0; i < FIELD_KEYS.length; i++) {
-    const field = FIELD_KEYS[i];
-    const dest = mappedPath(field);
-    const result = resolved.get(field);
+  for (let i = 0; i < FIELD_DESTS.length; i++) {
+    const dest = FIELD_DESTS[i];
+    const result = resolved.get(dest);
     if (result) {
       setLeaf(profile, dest, result.leaf);
     } else {
@@ -591,10 +714,10 @@ function buildProfile(
     }
   }
 
-  for (let i = 0; i < fieldNames.length; i++) {
-    const field = fieldNames[i];
-    if (mappedPath(field)) continue;
-    const result = resolved.get(field);
+  const unmappedNames = Array.from(unmappedFacts.keys()).sort();
+  for (let i = 0; i < unmappedNames.length; i++) {
+    const field = unmappedNames[i];
+    const result = resolveFieldFacts(unmappedFacts.get(field));
     profile.unmapped[field] = result.leaf;
     warns.push(
       issueRow(
@@ -614,13 +737,12 @@ function buildProfile(
   profile.doc_completeness = completeness;
 
   if (completeness === 'SOB_ONLY' || completeness === 'PORTAL_ONLY') {
-    for (let i = 0; i < FIELD_KEYS.length; i++) {
-      const field = FIELD_KEYS[i];
-      if (field !== 'limitations' && field.indexOf('limitations.') !== 0) {
+    for (let i = 0; i < FIELD_DESTS.length; i++) {
+      const dest = FIELD_DESTS[i];
+      if (dest !== 'limitations' && dest.indexOf('limitations.') !== 0) {
         continue;
       }
-      const dest = mappedPath(field);
-      const existing = resolved.get(field);
+      const existing = resolved.get(dest);
       const hadFact = Boolean(
         existing && existing.leaf && existing.leaf.vs !== 'NOT_FOUND_IN_SOURCE'
       );
@@ -628,7 +750,7 @@ function buildProfile(
       if (hadFact) {
         overrides.push({
           plan_id: plan.plan_id,
-          field: field,
+          field: dest,
           src: existing.leaf.src,
           completeness: completeness
         });
@@ -668,7 +790,9 @@ function buildProfile(
     }
   }
 
-  profile.profile_confidence = lowestVerifiedConfidence(collectLeaves(profile));
+  const scored = computeProfileConfidence(collectLeaves(profile));
+  profile.profile_confidence = scored.profile_confidence;
+  profile.profile_confidence_reasons = scored.reasons;
   profile.plan_id = plan.plan_id;
   profile.family = plan.family;
   profile.plan_variant = plan.variant;
@@ -742,12 +866,12 @@ function main() {
       g4Caps
     );
     profiles.push(profile);
-    const result = validateProfile(profile, { fieldKeys: FIELD_KEYS });
+    const result = validateProfile(profile, { fieldKeys: FIELD_DESTS });
     for (let f = 0; f < result.fails.length; f++) fails.push(result.fails[f]);
     for (let w = 0; w < result.warns.length; w++) warns.push(result.warns[w]);
   }
 
-  const g7 = findFamilyIdenticalFields(profiles, FIELD_KEYS);
+  const g7 = findFamilyIdenticalFields(profiles, FIELD_DESTS);
   for (let i = 0; i < g7.length; i++) warns.push(g7[i]);
 
   const zeroFacts = [];
@@ -766,7 +890,9 @@ function main() {
     warns: warns,
     overrides: overrides,
     g4Caps: g4Caps,
-    zeroFacts: zeroFacts
+    zeroFacts: zeroFacts,
+    confidenceCaps: summarizeConfidenceCaps(profiles),
+    drift: fieldMapDrift()
   };
 
   const reportPath = path.join(process.cwd(), 'build', 'validation-report.md');
