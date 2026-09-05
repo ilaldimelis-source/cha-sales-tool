@@ -8,8 +8,8 @@ const ARCHIVE = require('../lib/derived-keys-archive.json');
 
 describe('frozen base schema', function () {
   it('has the contracted destination count', function () {
-    assert.equal(BASE_SCHEMA.length, 110);
-    assert.equal(new Set(BASE_SCHEMA).size, 110);
+    assert.equal(BASE_SCHEMA.length, 112);
+    assert.equal(new Set(BASE_SCHEMA).size, 112);
   });
 
   it('does not use the derived-keys archive as the contract', function () {
@@ -46,13 +46,19 @@ describe('alias-map destinations stay inside the contract', function () {
     );
   });
 
-  it('does not alias combined benefit_schedule rows', function () {
-    const sources = Object.keys(ALIAS_MAP);
-    for (let i = 0; i < sources.length; i++) {
-      assert.ok(
-        sources[i] !== 'benefit_schedule' &&
-          sources[i].indexOf('benefit_schedule.') !== 0,
-        sources[i] + ' should stay unmapped'
+  it('does not alias combined or supplemental-accident schedule rows', function () {
+    const blocked = [
+      'benefit_schedule.primary_and_specialty_combined_max_days_per_coverage_year',
+      'benefit_schedule.basic_pathology_basic_radiology_advance_studies',
+      'benefit_schedule.inpatient_outpatient_surgery',
+      'benefit_schedule.supplemental_accident_emergency_room',
+      'benefit_schedule.supplemental_accident_inpatient_admission'
+    ];
+    for (let i = 0; i < blocked.length; i++) {
+      assert.equal(
+        ALIAS_MAP[blocked[i]],
+        undefined,
+        blocked[i] + ' should stay unmapped'
       );
     }
   });
