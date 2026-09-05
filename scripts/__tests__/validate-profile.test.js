@@ -8,7 +8,9 @@ const {
   validateProfile,
   validateRegistryCoverage,
   findFamilyIdenticalFields,
-  notFoundRatio
+  notFoundRatio,
+  computeProfileConfidence,
+  collectLeaves
 } = require('../lib/validate-profile.js');
 
 function leaf(overrides) {
@@ -336,11 +338,61 @@ describe('G8 not-found ratio', function () {
   });
 });
 
+describe('profile_confidence currentness and conflicts', function () {
+  it('stays HIGH when verified facts are CURRENT and none are CONFLICTED', function () {
+    const profile = profileWith({
+      'identity.network': leaf({ conf: 'HIGH', cur: 'CURRENT', vs: 'VERIFIED' })
+    });
+    const scored = computeProfileConfidence(collectLeaves(profile));
+    assert.equal(scored.profile_confidence, 'HIGH');
+    assert.equal(scored.reasons.length, 0);
+  });
+
+  it('caps at MEDIUM when a VERIFIED fact is POSSIBLY_STALE', function () {
+    const profile = profileWith({
+      'benefits.pcp': leaf({
+        conf: 'HIGH',
+        cur: 'POSSIBLY_STALE',
+        vs: 'VERIFIED'
+      })
+    });
+    const scored = computeProfileConfidence(collectLeaves(profile));
+    assert.equal(scored.profile_confidence, 'MEDIUM');
+    assert.ok(
+      scored.reasons.some(function (r) {
+        return r.kind === 'CURRENTNESS';
+      })
+    );
+  });
+
+  it('caps at MEDIUM when any field is CONFLICTED', function () {
+    const profile = profileWith({
+      'identity.network': leaf({
+        conf: 'HIGH',
+        cur: 'CURRENT',
+        vs: 'VERIFIED'
+      }),
+      'limitations.maternity': leaf({
+        conf: 'HIGH',
+        cur: 'CURRENT',
+        vs: 'CONFLICTED'
+      })
+    });
+    const scored = computeProfileConfidence(collectLeaves(profile));
+    assert.equal(scored.profile_confidence, 'MEDIUM');
+    assert.ok(
+      scored.reasons.some(function (r) {
+        return r.kind === 'CONFLICTED' && r.field === 'limitations.maternity';
+      })
+    );
+  });
+});
+
 describe('NOT_FOUND scaffolds skip fact gates', function () {
   it('does not FAIL G1/G2 on a searched-and-missing leaf', function () {
     const fails = validateLeaf(
       emptyNotFoundLeaf(),
-      'limitations.waiting_period',
+      'limitations.waiting_period_other',
       'p1'
     );
     assert.equal(fails.length, 0);

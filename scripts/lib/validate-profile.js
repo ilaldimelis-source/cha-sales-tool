@@ -9,6 +9,7 @@ const META_KEYS = new Set([
   'status',
   'doc_completeness',
   'profile_confidence',
+  'profile_confidence_reasons',
   'open_conflicts',
   'aliases',
   'has_profile'
@@ -21,8 +22,7 @@ function isLeaf(node) {
     node &&
     typeof node === 'object' &&
     !Array.isArray(node) &&
-    Object.prototype.hasOwnProperty.call(node, 'vs') &&
-    !Object.prototype.hasOwnProperty.call(node, '__leaf')
+    Object.prototype.hasOwnProperty.call(node, 'vs')
   );
 }
 
@@ -77,19 +77,12 @@ function walkLeaves(node, prefix, acc) {
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
     const child = node[key];
-    if (key === '__leaf' && isLeaf(child)) {
-      if (prefix) acc.push({ field: prefix, leaf: child });
-      continue;
-    }
     if (!prefix && key === 'unmapped' && child && typeof child === 'object') {
       const uKeys = Object.keys(child);
       for (let j = 0; j < uKeys.length; j++) {
         const uField = uKeys[j];
         const uNode = child[uField];
         if (isLeaf(uNode)) acc.push({ field: uField, leaf: uNode });
-        else if (uNode && isLeaf(uNode.__leaf)) {
-          acc.push({ field: uField, leaf: uNode.__leaf });
-        }
       }
       continue;
     }
@@ -112,7 +105,6 @@ function getLeafAt(profile, dotted) {
     node = node[parts[i]];
   }
   if (isLeaf(node)) return node;
-  if (node && isLeaf(node.__leaf)) return node.__leaf;
   return null;
 }
 
@@ -383,6 +375,49 @@ function lowestVerifiedConfidence(leaves) {
   return lowest;
 }
 
+function isStaleCurrentness(cur) {
+  return cur === 'POSSIBLY_STALE' || cur === 'UNKNOWN';
+}
+
+function computeProfileConfidence(leaves) {
+  const list = Array.isArray(leaves) ? leaves : [];
+  const reasons = [];
+  for (let i = 0; i < list.length; i++) {
+    const field = list[i].field || null;
+    const leaf = list[i].leaf || list[i];
+    if (!leaf) continue;
+    if (leaf.vs === 'CONFLICTED') {
+      reasons.push({
+        kind: 'CONFLICTED',
+        field: field,
+        message: 'field is CONFLICTED'
+      });
+    }
+    const vs = String(leaf.vs || '');
+    if (
+      leaf.v !== null &&
+      leaf.v !== undefined &&
+      vs.indexOf('VERIFIED') === 0 &&
+      isStaleCurrentness(leaf.cur)
+    ) {
+      reasons.push({
+        kind: 'CURRENTNESS',
+        field: field,
+        cur: leaf.cur,
+        message: 'VERIFIED fact has cur=' + leaf.cur
+      });
+    }
+  }
+  let confidence = lowestVerifiedConfidence(list);
+  if (confidence === 'HIGH' && reasons.length) {
+    confidence = 'MEDIUM';
+  }
+  return {
+    profile_confidence: confidence,
+    reasons: reasons
+  };
+}
+
 function capUnknownConfidence(conf, cur) {
   if (cur === 'UNKNOWN' && conf === 'HIGH') return 'MEDIUM';
   return conf;
@@ -405,6 +440,7 @@ module.exports = {
   notFoundRatio,
   compareFactRank,
   lowestVerifiedConfidence,
+  computeProfileConfidence,
   capUnknownConfidence,
   needsG4Cap,
   applyG4Cap
