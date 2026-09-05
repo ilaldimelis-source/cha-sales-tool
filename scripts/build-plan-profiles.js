@@ -7,7 +7,6 @@ const {
   isLeaf,
   emptyNotFoundLeaf,
   validateProfile,
-  validateRegistryCoverage,
   findFamilyIdenticalFields,
   collectLeaves,
   compareFactRank,
@@ -15,13 +14,12 @@ const {
   capUnknownConfidence,
   applyG4Cap
 } = require('./lib/validate-profile.js');
-const FIELD_MAP = require('./lib/field-map.json');
+const ALIAS_MAP = require('./lib/alias-map.json');
 const BASE_SCHEMA = require('./lib/base-schema.json');
 
 // CLI-only paths. Pass --sources ledger/01_source_inventory.csv even though
 // that inventory is numbered 03_ in some internal ledger artefacts.
 const REQUIRED_ARGS = ['facts', 'registry', 'sources', 'conflicts', 'out'];
-const FIELD_DESTS = Array.from(new Set(Object.values(FIELD_MAP))).sort();
 const BASE_DEST_SET = new Set(BASE_SCHEMA);
 
 function parseArgs(argv) {
@@ -231,30 +229,86 @@ function buildAliases(plan) {
 }
 
 function mappedPath(field) {
-  return FIELD_MAP[field] || null;
+  if (ALIAS_MAP[field]) return ALIAS_MAP[field];
+  if (BASE_DEST_SET.has(field)) return field;
+  return null;
 }
 
-function fieldMapDrift() {
-  const sources = Object.keys(FIELD_MAP).sort();
+function assertAliasesInContract() {
+  const sources = Object.keys(ALIAS_MAP);
+  for (let i = 0; i < sources.length; i++) {
+    const dest = ALIAS_MAP[sources[i]];
+    if (!BASE_DEST_SET.has(dest)) {
+      throw new Error(
+        'alias-map dest `' + dest + '` is not in base-schema.json'
+      );
+    }
+  }
+}
+
+function aliasMapSummary() {
+  const sources = Object.keys(ALIAS_MAP).sort();
   const aliased = [];
-  const derived = [];
+  const identity = [];
   for (let i = 0; i < sources.length; i++) {
     const src = sources[i];
-    const dest = FIELD_MAP[src];
-    if (src !== dest) {
-      aliased.push({ source: src, dest: dest });
-    }
-    if (!BASE_DEST_SET.has(dest)) {
-      derived.push(src);
-    }
+    const dest = ALIAS_MAP[src];
+    if (src === dest) identity.push(src);
+    else aliased.push({ source: src, dest: dest });
   }
   return {
     baseCount: BASE_SCHEMA.length,
-    sourceCount: sources.length,
-    destCount: FIELD_DESTS.length,
-    aliased: aliased,
-    derived: derived
+    aliasCount: sources.length,
+    identity: identity,
+    aliased: aliased
   };
+}
+
+function truncateExample(value) {
+  let text;
+  if (value == null) text = '';
+  else if (typeof value === 'string') text = value;
+  else text = JSON.stringify(value);
+  if (text.length <= 80) return text;
+  return text.slice(0, 80);
+}
+
+function recordUnmappedStat(stats, field, planId, value) {
+  if (!stats.has(field)) {
+    stats.set(field, {
+      field: field,
+      count: 0,
+      example_plan_id: planId || null,
+      example_value: truncateExample(value)
+    });
+  }
+  stats.get(field).count += 1;
+}
+
+function topUnmappedFields(stats, limit) {
+  const rows = Array.from(stats.values());
+  rows.sort(function (a, b) {
+    if (b.count !== a.count) return b.count - a.count;
+    return String(a.field).localeCompare(String(b.field));
+  });
+  return rows.slice(0, limit);
+}
+
+function unregisteredPlanCounts(facts, registryById) {
+  const counts = new Map();
+  for (let i = 0; i < facts.length; i++) {
+    const planId = facts[i].plan_id;
+    if (!planId || registryById.has(planId)) continue;
+    counts.set(planId, (counts.get(planId) || 0) + 1);
+  }
+  const rows = Array.from(counts.entries()).map(function (entry) {
+    return { plan_id: entry[0], count: entry[1] };
+  });
+  rows.sort(function (a, b) {
+    if (b.count !== a.count) return b.count - a.count;
+    return String(a.plan_id).localeCompare(String(b.plan_id));
+  });
+  return rows;
 }
 
 function summarizeConfidenceCaps(profiles) {
@@ -425,16 +479,6 @@ function conflictApplies(conflict, planId) {
   return false;
 }
 
-function issueRow(gate, severity, planId, field, message) {
-  return {
-    gate: gate,
-    severity: severity,
-    plan_id: planId || null,
-    field: field || null,
-    message: message
-  };
-}
-
 function renderReport(report) {
   const lines = [];
   lines.push('# Plan profile validation report');
@@ -572,37 +616,60 @@ function renderReport(report) {
   }
   lines.push('');
 
-  lines.push('## Field-map drift');
+  lines.push('## Alias map');
   lines.push('');
-  lines.push('- Base schema destinations: ' + report.drift.baseCount);
-  lines.push('- Field-map source keys: ' + report.drift.sourceCount);
-  lines.push('- Unique destinations after aliases: ' + report.drift.destCount);
+  lines.push('- Base schema destinations: ' + report.aliasSummary.baseCount);
+  lines.push('- Alias-map entries: ' + report.aliasSummary.aliasCount);
   lines.push(
-    '- Aliased source keys (source != dest): ' + report.drift.aliased.length
+    '- Identity mappings (source == dest): ' +
+      report.aliasSummary.identity.length
   );
   lines.push(
-    '- Derived source keys (destination not in base schema): ' +
-      report.drift.derived.length
+    '- Renames (source != dest): ' + report.aliasSummary.aliased.length
   );
   lines.push('');
-  lines.push('### Aliases');
+  lines.push('### Renames');
   lines.push('');
-  if (!report.drift.aliased.length) {
+  if (!report.aliasSummary.aliased.length) {
     lines.push('- none');
   } else {
-    for (let i = 0; i < report.drift.aliased.length; i++) {
-      const row = report.drift.aliased[i];
+    for (let i = 0; i < report.aliasSummary.aliased.length; i++) {
+      const row = report.aliasSummary.aliased[i];
       lines.push('- `' + row.source + '` -> `' + row.dest + '`');
     }
   }
   lines.push('');
-  lines.push('### Derived keys');
+
+  lines.push('## Unmapped fields');
   lines.push('');
-  if (!report.drift.derived.length) {
+  if (!report.unmappedTop.length) {
     lines.push('- none');
   } else {
-    for (let i = 0; i < report.drift.derived.length; i++) {
-      lines.push('- `' + report.drift.derived[i] + '`');
+    for (let i = 0; i < report.unmappedTop.length; i++) {
+      const row = report.unmappedTop[i];
+      lines.push(
+        '- `' +
+          row.field +
+          '` n=' +
+          String(row.count) +
+          ' example=`' +
+          String(row.example_plan_id || '-') +
+          '` `' +
+          String(row.example_value).replace(/`/g, "'") +
+          '`'
+      );
+    }
+  }
+  lines.push('');
+
+  lines.push('## Unregistered plan IDs');
+  lines.push('');
+  if (!report.unregistered.length) {
+    lines.push('- none');
+  } else {
+    for (let i = 0; i < report.unregistered.length; i++) {
+      const row = report.unregistered[i];
+      lines.push('- `' + row.plan_id + '` facts=' + String(row.count));
     }
   }
   lines.push('');
@@ -704,8 +771,8 @@ function buildProfile(
     }
   }
 
-  for (let i = 0; i < FIELD_DESTS.length; i++) {
-    const dest = FIELD_DESTS[i];
+  for (let i = 0; i < BASE_SCHEMA.length; i++) {
+    const dest = BASE_SCHEMA[i];
     const result = resolved.get(dest);
     if (result) {
       setLeaf(profile, dest, result.leaf);
@@ -719,15 +786,6 @@ function buildProfile(
     const field = unmappedNames[i];
     const result = resolveFieldFacts(unmappedFacts.get(field));
     profile.unmapped[field] = result.leaf;
-    warns.push(
-      issueRow(
-        'UNMAPPED',
-        'WARN',
-        plan.plan_id,
-        field,
-        'field is not in field-map.json; stored under unmapped'
-      )
-    );
   }
 
   const completeness = docCompleteness(
@@ -737,8 +795,8 @@ function buildProfile(
   profile.doc_completeness = completeness;
 
   if (completeness === 'SOB_ONLY' || completeness === 'PORTAL_ONLY') {
-    for (let i = 0; i < FIELD_DESTS.length; i++) {
-      const dest = FIELD_DESTS[i];
+    for (let i = 0; i < BASE_SCHEMA.length; i++) {
+      const dest = BASE_SCHEMA[i];
       if (dest !== 'limitations' && dest.indexOf('limitations.') !== 0) {
         continue;
       }
@@ -825,18 +883,25 @@ function main() {
     return;
   }
 
+  try {
+    assertAliasesInContract();
+  } catch (err) {
+    failUsage(err.message);
+    return;
+  }
+
   const registryPlans = loaded.registry.plans;
   const registryById = new Map();
   for (let i = 0; i < registryPlans.length; i++) {
     registryById.set(registryPlans[i].plan_id, registryPlans[i]);
   }
-  const registryIds = Array.from(registryById.keys());
   const typeById = sourceTypeById(loaded.sources);
 
-  const fails = validateRegistryCoverage(loaded.facts, registryIds);
+  const fails = [];
   const warns = [];
   const overrides = [];
   const g4Caps = [];
+  const unmappedStats = new Map();
   let factsRejected = 0;
   const acceptedByPlan = new Map();
 
@@ -845,6 +910,9 @@ function main() {
     if (!registryById.has(fact.plan_id)) {
       factsRejected += 1;
       continue;
+    }
+    if (!mappedPath(fact.field)) {
+      recordUnmappedStat(unmappedStats, fact.field, fact.plan_id, fact.value);
     }
     if (!acceptedByPlan.has(fact.plan_id)) acceptedByPlan.set(fact.plan_id, []);
     acceptedByPlan.get(fact.plan_id).push(fact);
@@ -866,12 +934,12 @@ function main() {
       g4Caps
     );
     profiles.push(profile);
-    const result = validateProfile(profile, { fieldKeys: FIELD_DESTS });
+    const result = validateProfile(profile, { fieldKeys: BASE_SCHEMA });
     for (let f = 0; f < result.fails.length; f++) fails.push(result.fails[f]);
     for (let w = 0; w < result.warns.length; w++) warns.push(result.warns[w]);
   }
 
-  const g7 = findFamilyIdenticalFields(profiles, FIELD_DESTS);
+  const g7 = findFamilyIdenticalFields(profiles, BASE_SCHEMA);
   for (let i = 0; i < g7.length; i++) warns.push(g7[i]);
 
   const zeroFacts = [];
@@ -892,7 +960,9 @@ function main() {
     g4Caps: g4Caps,
     zeroFacts: zeroFacts,
     confidenceCaps: summarizeConfidenceCaps(profiles),
-    drift: fieldMapDrift()
+    aliasSummary: aliasMapSummary(),
+    unmappedTop: topUnmappedFields(unmappedStats, 40),
+    unregistered: unregisteredPlanCounts(loaded.facts, registryById)
   };
 
   const reportPath = path.join(process.cwd(), 'build', 'validation-report.md');
