@@ -377,6 +377,59 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
+  "compliance_risks": [
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
+      "do_not_say": "Do not tell a client the agreement names their agent.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-040",
+      "safe_wording": "Give the client your own name, agency and email verbally on the recorded call, and confirm you are their contact for benefit and claims questions. Do not rely on the agreement to have done it.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 38175,
+        "sec": "pages 38175 and 32339",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The FirstEnroll enrollment-agreement template served on the live storefront contains unrendered variables - $parentcompany, $product_label, $agent_fullname, $agent_Email, $parentemail - confirmed on two unrelated product families (American Financial Critical Illness page 38175, and Health Choice Silver page 32339). The affected clauses are the third-party administrator disclaimer, the Plan and Claims Inquiries clause and the Writing Agent Contact block.",
+      "verify_before_saying": "Raise with FirstEnroll whether the executed enrollment document renders these variables. See G-039."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    }
+  ],
   "cost_sharing": {
     "annual_max": {
       "searched": [],
@@ -455,6 +508,11 @@
     }
   },
   "display_name": "Good Health Distribution Partner 4",
+  "do_not_say": [
+    "Do not tell a client the agreement names their agent.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never type or describe a product from its name. Read the Info page."
+  ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
     "brochure": {
@@ -672,6 +730,74 @@
       "source_ids": [
         88
       ]
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-024",
+      "what_is_unknown": "The FirstEnroll current product list and all ~70 product Info pages. The session expired mid-run."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-037",
+      "what_is_unknown": "CLOSED. All nine GHDP-family TERMS panels segmented by section heading and hash-compared, with per-variant targeted extraction of every differing clause. Established: GHDP 1-5 all carry the full 12/12 prudent-person pre-existing definition scoped to the hospitalization benefit; GHDP Wellness and GHDP Dental-Vision carry none, because they have no hospitalization benefit for it to attach to - which resolves most of C-014. Per-variant supplemental benefit amounts extracted for GHDP 1-5. Plan year 7/1-6/30 and Collin County TX arbitration confirmed on each variant's own panel. Two new conflicts surfaced against the Info tabs: C-027 (GHDP 1 hospitalization) and C-028 (GHDP 4 emergency room)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-051",
+      "what_is_unknown": "A single authoritative statement of which provider directory belongs to which product. FOUR DIFFERENT provider-search URLs are published under the label 'First Health Network' across the FirstEnroll catalogue: http://docfind.health/ (TDK), www.locateprovidersnow.com (GHDP), www.firsthealthlbp.com (Advanced Wellness PLUS / Sigma / Harmony), and www.MultiPlan.com/phcspracanc (Access Health - a PHCS address, not First Health at all)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-052",
+      "what_is_unknown": "The Info panels for GHDP 2, 3, 4 and 5 (pages 44901-44904) were not opened. Only GHDP 1 (44900) and GHDP Wellness (44899) were read."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
     }
   ],
   "plan_id": "ghdp-4",

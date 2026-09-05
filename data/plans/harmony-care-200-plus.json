@@ -407,6 +407,93 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
+  "compliance_risks": [
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
+      "do_not_say": "Do not tell a client the agreement names their agent.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-040",
+      "safe_wording": "Give the client your own name, agency and email verbally on the recorded call, and confirm you are their contact for benefit and claims questions. Do not rely on the agreement to have done it.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 38175,
+        "sec": "pages 38175 and 32339",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The FirstEnroll enrollment-agreement template served on the live storefront contains unrendered variables - $parentcompany, $product_label, $agent_fullname, $agent_Email, $parentemail - confirmed on two unrelated product families (American Financial Critical Illness page 38175, and Health Choice Silver page 32339). The affected clauses are the third-party administrator disclaimer, the Plan and Claims Inquiries clause and the Writing Agent Contact block.",
+      "verify_before_saying": "Raise with FirstEnroll whether the executed enrollment document renders these variables. See G-039."
+    },
+    {
+      "could_misstate": "Explaining to a client why one of these costs more than another, or recommending an upgrade from Harmony Care to Harmony Care PLUS on the basis of better benefits. No benefit difference is published anywhere.",
+      "do_not_say": "Do not describe Harmony Care PLUS as having more benefits than Harmony Care. Do not describe any tier of one family as better than the same tier of another. Do not quote a Harmony Care benefit from the PLUS brochure.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-047",
+      "safe_wording": "State the schedule for the specific plan and tier in front of you and nothing more. If a client asks what the difference is between these families, say you will find out - do not improvise one.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 45300,
+        "sec": "45288, 45430-45436, 48876, 48882, 49428, 48037, 48044",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "Thirty-three live variants across four differently-named families publish one identical benefit set, tier for tier, and one identical 20-state availability list. Harmony Care and Harmony Care PLUS additionally share a single brochure titled for the PLUS product.",
+      "verify_before_saying": "See C-022 and C-023. This needs an answer from FirstEnroll before any comparative statement is made."
+    },
+    {
+      "could_misstate": "Two ways. First, presenting the dental table as dental coverage - it is a discount, the member pays the whole discounted amount. Second, quoting the vision figures as what the client will pay. Those are illustrative examples at five specific stores in five specific cities; a client in another state with a different prescription will see different numbers.",
+      "do_not_say": "Do not say dental or vision is covered. Do not quote '$3,549 for child orthodontics' or '$30 for frames at Pearle Vision' as what this client will pay.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-049",
+      "safe_wording": "The plan includes dental and vision discount programmes. They are not insurance - they get you a lower price at participating providers, and you pay that price yourself. The figures on the sheet are examples, not quotes.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 48876,
+        "sec": "48885, 49428, 48037-48044",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The Harmony Care and Harmony Care PLUS Info pages carry two DISCOUNT tables - a dental table comparing an 'Aetna regional average cost' to a discounted price, and a vision table listing named retailers in named cities with worked before-and-after prices (Exact Eye Care Kearney NE, LensCrafters Mesa AZ, JC Penney Michigan, Pearle Vision National City CA, EyeMaster Henderson NV).",
+      "verify_before_saying": "Always frame both tables as discounts before quoting any number from them."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    }
+  ],
   "cost_sharing": {
     "annual_max": {
       "searched": [],
@@ -485,6 +572,13 @@
     }
   },
   "display_name": "Harmony Care 200+",
+  "do_not_say": [
+    "Do not describe Harmony Care PLUS as having more benefits than Harmony Care. Do not describe any tier of one family as better than the same tier of another. Do not quote a Harmony Care benefit from the PLUS brochure.",
+    "Do not say dental or vision is covered. Do not quote '$3,549 for child orthodontics' or '$30 for frames at Pearle Vision' as what this client will pay.",
+    "Do not tell a client the agreement names their agent.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never type or describe a product from its name. Read the Info page."
+  ],
   "doc_completeness": "PORTAL_ONLY",
   "documentation": {
     "brochure": {
@@ -687,11 +781,112 @@
   },
   "open_conflicts": [
     {
+      "conflict_id": "C-022",
+      "field": "documentation.brochure",
+      "source_ids": [
+        88
+      ]
+    },
+    {
       "conflict_id": "C-023",
       "field": "benefit_schedule (all fields) + availability.states",
       "source_ids": [
         88
       ]
+    },
+    {
+      "conflict_id": "C-035",
+      "field": "benefit_schedule.surgery and mental_health",
+      "source_ids": [
+        88,
+        92
+      ]
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-015",
+      "what_is_unknown": "The underwriter and network for the Harmony Care and Sigma Care PLUS families, read from a plan document rather than an internal table."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-024",
+      "what_is_unknown": "The FirstEnroll current product list and all ~70 product Info pages. The session expired mid-run."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-044",
+      "what_is_unknown": "Info, STATES and TERMS panels on the remaining ~45 FirstEnroll product pages: Harmony Care (48876, 48877, 48878, 48879, 48880, 48881, 48882, 48885, 49428), Harmony Care + (48037-48044), Sigma Care PLUS (45288, 45430-45436), Paramount (44347-44349, 46436-46438), BWA AmeriCare (39559, 39561, 39562), Access Health (28230, 28231), TDK (43795, 43900-43903), GHDP 1-5 (44900-44904)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-048",
+      "what_is_unknown": "PARTIALLY CLOSED for 25 of the 43 variants. The Sigma Care PLUS brochure (AFSLIC20_SCP_Brochure_rev.pdf) and the Harmony Care brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf) have now been read from Drive and both disclose the 12-month pre-existing exclusion, the 30-day sickness waiting period, the full exclusion list, the carrier, the NCE association, the claims administrator and the eligibility ages. So Sigma Care PLUS (8), Harmony Care (9) and Harmony Care PLUS (8) now have policy-grade disclosure from a document even though their TERMS panels are empty. STILL OPEN for Advanced Wellness PLUS (8), Access Health (2), AME (2) and AD&D (6) - and the underlying question stands for all 43: is the empty TERMS panel a display failure, and what does the client actually agree to at checkout?"
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-049",
+      "what_is_unknown": "The Info pages for twelve Harmony Care and Harmony Care PLUS mid-tier variants (pages 48877, 48878, 48885, 48879, 48880, 48881 and 48038-48043) were not opened in this pass. Only the 100A, 100B and 1000 tiers of each family were read."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-054",
+      "what_is_unknown": "Whether the QuestSelect Unlimited Labs Program bundled into the Harmony Care brochure is the same thing as the standalone QuestSelect product sold on the NEO catalogue, and whether the bundled version is included at no extra charge on all seventeen Harmony variants or only some."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-055",
+      "what_is_unknown": "A genuine client-facing brochure for Harmony Care, Harmony Care PLUS and Paramount. What the storefront serves as the BROCHURE link on all 23 of these pages is not client material: HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf opens with the words 'For agent use only', and BCS_Brochure_1.pdf is a carrier group proposal 'Prepared for: Business Workers of America' carrying a PROPOSAL DISCLOSURE about rates being subject to reassessment on group participation levels."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
     }
   ],
   "plan_id": "harmony-care-200-plus",

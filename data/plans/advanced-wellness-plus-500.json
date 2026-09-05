@@ -417,6 +417,160 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
+  "compliance_risks": [
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Anything at all beyond the dollar figures. In particular, describing the plan as covering a condition, or answering 'is my pre-existing condition covered' - there is no source for either answer.",
+      "do_not_say": "Do not say what the plan is (major medical, STM, limited medical, indemnity) - the source does not say. Do not say a service is 'not covered' because the schedule shows a dash; a dash means the schedule prints no value. Do not answer any pre-existing or waiting-period question.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-031",
+      "safe_wording": "This plan pays set dollar amounts per day for specific services, up to a set number of days. It is not major medical. I will send you the brochure and go through the exclusions with you before we go any further.",
+      "severity": "",
+      "source": {
+        "pg": 45300,
+        "sec": "45307",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The only source available to an agent for these eight live products is a per-day dollar schedule on the FirstEnroll Info page. It states no product type, no exclusions, no waiting periods, no pre-existing provision, no eligibility rule and no definitions. The TERMS panel is empty.",
+      "verify_before_saying": "AFSLIC20_AWP_Brochure_rev1.pdf is linked on the storefront and has not been read. Read it before selling."
+    },
+    {
+      "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
+      "do_not_say": "Do not tell a client the agreement names their agent.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-040",
+      "safe_wording": "Give the client your own name, agency and email verbally on the recorded call, and confirm you are their contact for benefit and claims questions. Do not rely on the agreement to have done it.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 38175,
+        "sec": "pages 38175 and 32339",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The FirstEnroll enrollment-agreement template served on the live storefront contains unrendered variables - $parentcompany, $product_label, $agent_fullname, $agent_Email, $parentemail - confirmed on two unrelated product families (American Financial Critical Illness page 38175, and Health Choice Silver page 32339). The affected clauses are the third-party administrator disclaimer, the Plan and Claims Inquiries clause and the Writing Agent Contact block.",
+      "verify_before_saying": "Raise with FirstEnroll whether the executed enrollment document renders these variables. See G-039."
+    },
+    {
+      "could_misstate": "Explaining to a client why one of these costs more than another, or recommending an upgrade from Harmony Care to Harmony Care PLUS on the basis of better benefits. No benefit difference is published anywhere.",
+      "do_not_say": "Do not describe Harmony Care PLUS as having more benefits than Harmony Care. Do not describe any tier of one family as better than the same tier of another. Do not quote a Harmony Care benefit from the PLUS brochure.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-047",
+      "safe_wording": "State the schedule for the specific plan and tier in front of you and nothing more. If a client asks what the difference is between these families, say you will find out - do not improvise one.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 45300,
+        "sec": "45288, 45430-45436, 48876, 48882, 49428, 48037, 48044",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "Thirty-three live variants across four differently-named families publish one identical benefit set, tier for tier, and one identical 20-state availability list. Harmony Care and Harmony Care PLUS additionally share a single brochure titled for the PLUS product.",
+      "verify_before_saying": "See C-022 and C-023. This needs an answer from FirstEnroll before any comparative statement is made."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never read the GapAfford bullet list as describing the insurance. If a client asks about pre-existing conditions the answer is the 12-month exclusion, full stop.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-171",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/media/1352/AFSLIC20_AWP_Brochure_rev1.pdf"
+      },
+      "verified_fact": "The GapAfford Plus page lists 'no pre-existing condition limitations' among the features of the DISCOUNT programme. The insurance itself excludes pre-existing conditions for a continuous 12 months from the effective date.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "State the 30-day sickness wait AND the 12-month pre-existing exclusion together. They are separate provisions and both bite.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-172",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/media/1352/AFSLIC20_AWP_Brochure_rev1.pdf"
+      },
+      "verified_fact": "A 30-day waiting period applies to Sickness from the Coverage Effective Date. Sickness is defined to include illness, infection, disease, Complication of Pregnancy and any other abnormal physical condition not caused by an Accident. Injury is not subject to it.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "In those eight states the discount layer delivers nothing. Do not present it as part of the value in a client's state without checking.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-174",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "MEDIUM",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/media/1352/AFSLIC20_AWP_Brochure_rev1.pdf"
+      },
+      "verified_fact": "GapAfford Plus is unavailable in Alaska, Connecticut, Delaware, Montana, Rhode Island, Utah, Vermont and Washington, and the member must pay providers at the time of service.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Disclose before close, and quote the specific per-day cap for the benefit being discussed rather than describing the plan as covering hospitalisation.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-175",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://manage.firstenroll.com/media/1352/AFSLIC20_AWP_Brochure_rev1.pdf"
+      },
+      "verified_fact": "The product is Limited Benefit Health Insurance. The NCE page states a Limited Benefit Medical plan is not comprehensive major medical, is not intended to replace one, and is capped at specific amounts for specific services.",
+      "verify_before_saying": ""
+    }
+  ],
   "cost_sharing": {
     "annual_max": {
       "searched": [],
@@ -495,6 +649,17 @@
     }
   },
   "display_name": "Advanced Wellness PLUS 500",
+  "do_not_say": [
+    "Disclose before close, and quote the specific per-day cap for the benefit being discussed rather than describing the plan as covering hospitalisation.",
+    "Do not describe Harmony Care PLUS as having more benefits than Harmony Care. Do not describe any tier of one family as better than the same tier of another. Do not quote a Harmony Care benefit from the PLUS brochure.",
+    "Do not say what the plan is (major medical, STM, limited medical, indemnity) - the source does not say. Do not say a service is 'not covered' because the schedule shows a dash; a dash means the schedule prints no value. Do not answer any pre-existing or waiting-period question.",
+    "Do not tell a client the agreement names their agent.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "In those eight states the discount layer delivers nothing. Do not present it as part of the value in a client's state without checking.",
+    "Never read the GapAfford bullet list as describing the insurance. If a client asks about pre-existing conditions the answer is the 12-month exclusion, full stop.",
+    "Never type or describe a product from its name. Read the Info page.",
+    "State the 30-day sickness wait AND the 12-month pre-existing exclusion together. They are separate provisions and both bite."
+  ],
   "doc_completeness": "PARTIAL_DOCS",
   "documentation": {
     "brochure": {
@@ -810,6 +975,98 @@
       "source_ids": [
         88
       ]
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-024",
+      "what_is_unknown": "The FirstEnroll current product list and all ~70 product Info pages. The session expired mid-run."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-035",
+      "what_is_unknown": "Any statement of the filed product type. The FirstEnroll Info page publishes a per-day benefit schedule and nothing else - no product-type label, no exclusions, no waiting periods, no pre-existing provision, no eligibility rule, no definitions. The TERMS panel renders empty."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-036",
+      "what_is_unknown": "TERMS panel content. Four of the eight variants (100, 200, 300, 750) display a TERMS tab; on all four it renders zero characters. The other four display no TERMS tab at all."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-038",
+      "what_is_unknown": "Three brochures now KNOWN TO EXIST and linked from the FirstEnroll storefront, none of them in Drive and none yet downloaded or read: AFSLIC20_AWP_Brochure_rev1.pdf (all 8 Advanced Wellness PLUS), MEC_GHDP_Wellness1.pdf (GHDP Wellness), GHDP_DENTAL+VISION.pdf (all 3 GHDP Dental-Vision)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-048",
+      "what_is_unknown": "PARTIALLY CLOSED for 25 of the 43 variants. The Sigma Care PLUS brochure (AFSLIC20_SCP_Brochure_rev.pdf) and the Harmony Care brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf) have now been read from Drive and both disclose the 12-month pre-existing exclusion, the 30-day sickness waiting period, the full exclusion list, the carrier, the NCE association, the claims administrator and the eligibility ages. So Sigma Care PLUS (8), Harmony Care (9) and Harmony Care PLUS (8) now have policy-grade disclosure from a document even though their TERMS panels are empty. STILL OPEN for Advanced Wellness PLUS (8), Access Health (2), AME (2) and AD&D (6) - and the underlying question stands for all 43: is the empty TERMS panel a display failure, and what does the client actually agree to at checkout?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-158",
+      "what_is_unknown": "Do the Hospital Intensive Care Unit and Additional Hospital Admission benefits exist on any Advanced Wellness PLUS variant?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-160",
+      "what_is_unknown": "What is the association one-time enrollment fee amount?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-161",
+      "what_is_unknown": "What does the Anesthesia Benefit's '20%' apply to?"
     }
   ],
   "plan_id": "advanced-wellness-plus-500",

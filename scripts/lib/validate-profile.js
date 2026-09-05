@@ -11,6 +11,9 @@ const META_KEYS = new Set([
   'profile_confidence',
   'profile_confidence_reasons',
   'open_conflicts',
+  'compliance_risks',
+  'open_gaps',
+  'do_not_say',
   'aliases',
   'has_profile'
 ]);
