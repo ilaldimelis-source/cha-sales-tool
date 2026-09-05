@@ -23,6 +23,7 @@
     "verify:pdf-knowledge": "node scripts/verify-pdf-knowledge.js",
     "rag:setup": "node scripts/setup-rag.js",
     "rag:verify": "node scripts/verify-rag.js",
+    "build:profiles": "node scripts/build-plan-profiles.js --facts ledger/03_facts.jsonl --registry ledger/00_plan_registry.json --sources ledger/01_source_inventory.csv --conflicts ledger/04_conflicts.jsonl --out data/",
     "verify": "node scripts/verify.js",
     "plan-check": "node scripts/check-plan-sync.js",
     "diagnose": "node scripts/diagnose.js",

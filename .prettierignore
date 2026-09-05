@@ -6,6 +6,10 @@ js/plan-data.js
 js/call-playbook.js
 
 # Generated / CI artifacts / drafts (not canonical app source)
+ledger/
+data/plans/
+data/plan-index.json
+build/
 knowledge_base/
 test-results/
 tasks/
