@@ -9160,7 +9160,7 @@ body.plan-drawer-lock {
    Re-enable by removing this block when ready to launch. */
 #br-toggle,
 #br-panel {
-  display: none !important;
+  display: none;
 }
 
 /* ==========================================================

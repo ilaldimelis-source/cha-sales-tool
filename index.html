@@ -51,7 +51,7 @@
      that serve .css as text/plain (which browsers reject). The sync XHR runs only
      if the <link> stylesheet has 0 rules after loading. -->
     <link rel="stylesheet" href="css/tokens.css?v=1780600000000" />
-    <link rel="stylesheet" href="css/styles.css?v=1780600000000" id="mainCSS" />
+    <link rel="stylesheet" href="css/styles.css?v=1788705105552" id="mainCSS" />
     <link rel="stylesheet" href="css/sales-tracker.css?v=1787901420000" />
     <script>
       // Groq API configuration for chat modules
@@ -1183,7 +1183,9 @@
       /* - #br-toggle / #br-panel: chat assistant (PR #149) */
       /* - .benefits-bubble / #benefitsPanel: Academy Quick Reference (PR following #149) */
       #br-toggle,
-      #br-panel,
+      #br-panel {
+        display: none;
+      }
       .benefits-bubble,
       #benefitsPanel {
         display: none !important;
@@ -1572,6 +1574,12 @@
         padding: 11px 14px;
         font-size: 13px;
         margin: 0 0 14px;
+      }
+      html.cha-chat-enabled #br-toggle {
+        display: flex;
+      }
+      html.cha-chat-enabled #br-panel {
+        display: flex;
       }
     </style>
   </head>
@@ -3243,7 +3251,7 @@
         renderFull();
       })();
     </script>
-    <script src="js/chat.js?v=1780300000000"></script>
+    <script src="js/chat.js?v=1788705105552"></script>
     <link rel="stylesheet" href="css/course-215.css" />
     <script src="js/course-215.js"></script>
     <script>
