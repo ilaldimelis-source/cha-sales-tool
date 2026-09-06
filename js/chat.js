@@ -478,19 +478,6 @@ document.getElementById('br-toggle').addEventListener('click', function () {
   }
 });
 
-(function () {
-  var ex = document.getElementById('br-expand');
-  if (!ex) return;
-  ex.addEventListener('click', function (ev) {
-    ev.stopPropagation();
-    var panel = document.getElementById('br-panel');
-    if (!panel) return;
-    var on = panel.classList.toggle('br-expanded');
-    ex.setAttribute('aria-pressed', on ? 'true' : 'false');
-    ex.textContent = on ? 'Shrink' : 'Expand';
-  });
-})();
-
 document.getElementById('br-input').addEventListener('input', function () {
   this.style.height = 'auto';
   this.style.height = Math.min(this.scrollHeight, 110) + 'px';
