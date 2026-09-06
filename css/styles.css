@@ -3936,9 +3936,11 @@ a[href='#main-content']:focus {
 }
 
 /* ── BENEFITS SIDEBAR BODY STATE ── */
-body.br-open .main {
-  margin-right: 420px;
-  transition: margin-right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+@media (width <= 768px) {
+  body.br-open .main {
+    margin-right: 420px;
+    transition: margin-right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
 
 body.br-open #br-toggle {
@@ -10439,4 +10441,24 @@ body {
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-word;
+}
+
+/* Desktop: overlay window. Closed state must not use translateX. */
+@media (width > 768px) {
+  #br-panel {
+    transform: none;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease,
+      visibility 0.2s ease;
+  }
+
+  #br-panel.open {
+    transform: none;
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
 }

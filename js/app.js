@@ -1767,14 +1767,8 @@ function _closeBenefitsSidebar() {
   var toggle = document.getElementById('br-toggle');
   if (panel) {
     panel.classList.remove('open');
-    panel.classList.remove('br-expanded');
   }
   if (toggle) toggle.classList.remove('open');
-  var brEx = document.getElementById('br-expand');
-  if (brEx) {
-    brEx.textContent = 'Expand';
-    brEx.setAttribute('aria-pressed', 'false');
-  }
   document.body.classList.remove('br-open');
 }
 
@@ -1863,16 +1857,6 @@ if (document.readyState === 'loading') {
         if (typeof closeSearch === 'function') closeSearch();
       },
       ignore: ['.sw', '#scBtn']
-    },
-    {
-      el: '#br-panel',
-      isOpen: function (e) {
-        return e.classList.contains('open');
-      },
-      close: function () {
-        _closeBenefitsSidebar();
-      },
-      ignore: ['#br-toggle']
     },
     {
       el: '#liveResult',

@@ -51,7 +51,7 @@
      that serve .css as text/plain (which browsers reject). The sync XHR runs only
      if the <link> stylesheet has 0 rules after loading. -->
     <link rel="stylesheet" href="css/tokens.css?v=1780600000000" />
-    <link rel="stylesheet" href="css/styles.css?v=1788705105552" id="mainCSS" />
+    <link rel="stylesheet" href="css/styles.css?v=1788719928173" id="mainCSS" />
     <link rel="stylesheet" href="css/sales-tracker.css?v=1787901420000" />
     <script>
       // Groq API configuration for chat modules
@@ -153,34 +153,6 @@
       #br-panel .br-msgs {
         padding-left: 16px;
         padding-right: 16px;
-      }
-      .br-expand-btn {
-        flex-shrink: 0;
-        font-family: var(--font-ui, Inter, sans-serif);
-        font-size: 11px;
-        font-weight: 700;
-        padding: 6px 10px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        background: rgba(255, 255, 255, 0.12);
-        color: #f1f5f9;
-        cursor: pointer;
-      }
-      .br-expand-btn:hover {
-        background: rgba(255, 255, 255, 0.2);
-      }
-      #br-panel.br-expanded {
-        width: 90vw;
-        max-width: 90vw;
-        height: 90vh;
-        max-height: 90vh;
-        top: 5vh;
-        right: 5vw;
-        left: auto;
-        bottom: auto;
-        border-radius: 16px;
-        border: 1px solid #e2e4eb;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
       }
       /* === DocuSign Walkthrough === */
       .ds-walkthrough-group {
@@ -2498,15 +2470,6 @@
           ↺ Clear
         </button>
         <button
-          type="button"
-          id="br-expand"
-          class="br-expand-btn"
-          title="Expand or shrink panel"
-          aria-pressed="false"
-        >
-          Expand
-        </button>
-        <button
           class="br-close-btn"
           onclick="_closeBenefitsSidebar()"
           aria-label="Close"
@@ -2689,7 +2652,7 @@
     <script src="js/myspace.js?v=1787901420000"></script>
     <script src="js/sales-tracker.js?v=1787901420000"></script>
     <script src="js/office.js?v=1787900000000"></script>
-    <script src="js/app.js?v=1787901420000"></script>
+    <script src="js/app.js?v=1788719928173"></script>
     <script>
       (function () {
         var data = window.docusignWalkthroughData;
@@ -3251,7 +3214,7 @@
         renderFull();
       })();
     </script>
-    <script src="js/chat.js?v=1788705105552"></script>
+    <script src="js/chat.js?v=1788719928173"></script>
     <link rel="stylesheet" href="css/course-215.css" />
     <script src="js/course-215.js"></script>
     <script>
