@@ -1,0 +1,27 @@
+{
+  "planId": "smartchoice3500",
+  "planName": "Smart Choice 3500",
+  "status": "missing_pdf",
+  "documents": [
+    {
+      "fileName": "Smart_Choice_3500_Plan_Doc_2025.pdf",
+      "sourceType": "spd",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "Smart Choice 3500 Limited Medical. Individual deductible $3,500 family $7,000 embedded. Out-of-pocket max individual $9,200 family $18,400. Network First Health. Primary care $40 copay 5 visit limit. Specialist $50 copay 5 visit limit. Urgent care $250 copay 2 visit limit. Emergency room $1,500 max payment 1 per family per benefit period. Inpatient hospital $2,500 copay 1 per family up to 3 days. Outpatient hospital $60 copay 1 per family elective surgeries excluded. Telehealth $0 copay. Advanced imaging $250 copay 1 per benefit period. Radiology $75 copay 1 per family. Mental health inpatient $250 copay 3 day limit. Mental health outpatient $50 copay 3 visit limit. Preventive ACA 100%. Prescriptions generic $12 copay ventegra formulary. Rehab $50 copay 3 visit limit. Home health hospice skilled nursing $50 copay 3 visit limit. DME $50 copay 3 visit limit. Maternity not covered. Out-of-network not covered. Pre-existing 12 month look-back 12 month exclusion. Supplement not major medical does not satisfy ACA MEC. Member services 886-815-6001 memberservices@detegohealth.com.",
+          "normalizedText": "smart choice 3500 limited medical individual deductible 3 500 family 7 000 embedded out of pocket max individual 9 200 family 18 400 network first health primary care 40 copay 5 visit limit specialist 50 copay 5 visit limit urgent care 250 copay 2 visit limit emergency room 1 500 max payment 1 per family per benefit period inpatient hospital 2 500 copay 1 per family up to 3 days outpatient hospital 60 copay 1 per family elective surgeries excluded telehealth 0 copay advanced imaging 250 copay 1 per benefit period radiology 75 copay 1 per family mental health inpatient 250 copay 3 day limit mental health outpatient 50 copay 3 visit limit preventive aca 100 prescriptions generic 12 copay ventegra formulary rehab 50 copay 3 visit limit home health hospice skilled nursing 50 copay 3 visit limit dme 50 copay 3 visit limit maternity not covered out of network not covered pre existing 12 month look back 12 month exclusion supplement not major medical does not satisfy aca mec member services 886 815 6001 memberservices detegohealth com"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "smartchoice3500-c1",
+      "text": "Smart Choice 3500 Limited Medical. Individual deductible $3,500 family $7,000 embedded. Out-of-pocket max individual $9,200 family $18,400. Network First Health. Primary care $40 copay 5 visit limit. Specialist $50 copay 5 visit limit. Urgent care $250 copay 2 visit limit. Emergency room $1,500 max payment 1 per family per benefit period. Inpatient hospital $2,500 copay 1 per family up to 3 days. Outpatient hospital $60 copay 1 per family elective surgeries excluded. Telehealth $0 copay. Advanced imaging $250 copay 1 per benefit period. Radiology $75 copay 1 per family. Mental health inpatient $250 copay 3 day limit. Mental health outpatient $50 copay 3 visit limit. Preventive ACA 100%. Prescriptions generic $12 copay ventegra formulary. Rehab $50 copay 3 visit limit. Home health hospice skilled nursing $50 copay 3 visit limit. DME $50 copay 3 visit limit. Maternity not covered. Out-of-network not covered. Pre-existing 12 month look-back 12 month exclusion. Supplement not major medical does not satisfy ACA MEC. Member services 886-815-6001 memberservices@detegohealth.com.",
+      "tokenEstimate": 272,
+      "pageRange": "1-1",
+      "normalizedText": "smart choice 3500 limited medical individual deductible 3 500 family 7 000 embedded out of pocket max individual 9 200 family 18 400 network first health primary care 40 copay 5 visit limit specialist 50 copay 5 visit limit urgent care 250 copay 2 visit limit emergency room 1 500 max payment 1 per family per benefit period inpatient hospital 2 500 copay 1 per family up to 3 days outpatient hospital 60 copay 1 per family elective surgeries excluded telehealth 0 copay advanced imaging 250 copay 1 per benefit period radiology 75 copay 1 per family mental health inpatient 250 copay 3 day limit mental health outpatient 50 copay 3 visit limit preventive aca 100 prescriptions generic 12 copay ventegra formulary rehab 50 copay 3 visit limit home health hospice skilled nursing 50 copay 3 visit limit dme 50 copay 3 visit limit maternity not covered out of network not covered pre existing 12 month look back 12 month exclusion supplement not major medical does not satisfy aca mec member services 886 815 6001 memberservices detegohealth com"
+    }
+  ]
+}
