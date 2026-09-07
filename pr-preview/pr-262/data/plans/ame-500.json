@@ -1,0 +1,864 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "ame-500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION and STATES panels",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=38167&id=974358",
+      "v": "STATES panel - States Available: AL, AR, AZ, CA, CO, DC, FL, GA, ID, IL, KS, KY, LA, MI, MO, MS, MT, NC, ND, NE, NV, OH, OK, SC, TN, TX, UT, VA, WV, WY (30 states). The INFORMATION panel prose list on the same page reads: 'Available in: AL, AZ, AR, CA, CO, DC, FL, GA, ID, IL, KS, KY, LA, MA, MI, MS, MO, MT, NE, NV, NC, ND, OH, OK, SC, TN, TX, UT, VA, WV, WY' - which INCLUDES MA. The two lists on the same page disagree.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance_risks": [
+    {
+      "could_misstate": "Describing any of these as insurance. Describing a discount program as insurance is a material misrepresentation. Six are named as discount programs; the rest are simply unknown, including products whose names sound insured such as AD&D, Critical Care, Term Life and Fusion Dental.",
+      "do_not_say": "Do not describe AssistPro, GapSupport, Ameriguard, Prime Health Pass, Express Health Tools or HealthAssist as insurance or as coverage - the portal names each of them a Discount. Do not describe the remaining 36 at all until typed. Do not say 'PPO' about Allstate Dental PPO in a way implying major medical.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-011",
+      "safe_wording": "Nothing product-specific. An add-on should not be described until its type is established.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "NEO product list; registry entries with product_type NEEDS_MANUAL_VERIFICATION",
+        "src": 68,
+        "url": ""
+      },
+      "verified_fact": "43 add-on products are listed on the NEO platform. NONE has a document in Drive. 36 of them could not be assigned a product type from any available source. Six are typed as discount programs solely because the portal's own product name contains the word 'Discount'.",
+      "verify_before_saying": "Before mentioning any add-on by name on a recorded call."
+    },
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Everything. In practice the temptation is to read the benefit off the product name - 'AD&D $250K pays $250,000' - and to describe standard AD&D or accident-medical mechanics from general knowledge. Neither is sourced. AD&D policies routinely carry age reductions, dismemberment schedules paying fractions of the principal sum, and exclusions for suicide, intoxication, aviation and war. None of that is knowable here.",
+      "do_not_say": "Do not state a benefit amount. Do not name a carrier. Do not describe how AD&D or accident medical expense benefits 'usually' work. Do not say anything is or is not covered.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-034",
+      "safe_wording": "I want to be straight with you - I do not have the plan document for this one in front of me and I am not going to describe benefits I cannot verify. Let me get you the certificate before we go further.",
+      "severity": "",
+      "source": {
+        "pg": 38167,
+        "sec": "38168, 38169, 38170, 38171, 38172, 38173, 38174",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "There is NO benefit source for any of these eight products. The FirstEnroll Info page contains a state list and nothing else. No brochure is linked. The TERMS panel is absent or empty. The carrier is not named.",
+      "verify_before_saying": "Everything. Obtain the certificates. See G-041."
+    },
+    {
+      "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
+      "do_not_say": "Do not tell a client the agreement names their agent.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-040",
+      "safe_wording": "Give the client your own name, agency and email verbally on the recorded call, and confirm you are their contact for benefit and claims questions. Do not rely on the agreement to have done it.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 38175,
+        "sec": "pages 38175 and 32339",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The FirstEnroll enrollment-agreement template served on the live storefront contains unrendered variables - $parentcompany, $product_label, $agent_fullname, $agent_Email, $parentemail - confirmed on two unrelated product families (American Financial Critical Illness page 38175, and Health Choice Silver page 32339). The affected clauses are the third-party administrator disclaimer, the Plan and Claims Inquiries clause and the Writing Agent Contact block.",
+      "verify_before_saying": "Raise with FirstEnroll whether the executed enrollment document renders these variables. See G-039."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
+    }
+  ],
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "AME $500",
+  "do_not_say": [
+    "Do not describe AssistPro, GapSupport, Ameriguard, Prime Health Pass, Express Health Tools or HealthAssist as insurance or as coverage - the portal names each of them a Discount. Do not describe the remaining 36 at all until typed. Do not say 'PPO' about Allstate Dental PPO in a way implying major medical.",
+    "Do not state a benefit amount. Do not name a carrier. Do not describe how AD&D or accident medical expense benefits 'usually' work. Do not say anything is or is not covered.",
+    "Do not tell a client the agreement names their agent.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never type or describe a product from its name. Read the Info page.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
+  ],
+  "doc_completeness": "PORTAL_ONLY",
+  "documentation": {
+    "brochure": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "ame-500"
+      ],
+      "pg": null,
+      "sec": "BROCHURE panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=38167&id=974358",
+      "v": "No brochure is linked. The BROCHURE tab is absent and the downloads panel resolves to an empty link.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "AME",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "ame-500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=38167&id=974358",
+      "v": "NOT_FOUND_IN_SOURCE. No product type is stated. 'AME' is not expanded anywhere on the page.",
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "conflict_id": "C-015",
+      "field": "availability.states",
+      "source_ids": [
+        88
+      ]
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-024",
+      "what_is_unknown": "The FirstEnroll current product list and all ~70 product Info pages. The session expired mid-run."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-041",
+      "what_is_unknown": "Every benefit fact. These eight live, enrollable products have an Info page consisting of a state list and nothing else - no benefit amount, no product type, no carrier, no exclusions, no waiting periods, no definitions, no brochure, and an absent or empty TERMS panel."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-048",
+      "what_is_unknown": "PARTIALLY CLOSED for 25 of the 43 variants. The Sigma Care PLUS brochure (AFSLIC20_SCP_Brochure_rev.pdf) and the Harmony Care brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf) have now been read from Drive and both disclose the 12-month pre-existing exclusion, the 30-day sickness waiting period, the full exclusion list, the carrier, the NCE association, the claims administrator and the eligibility ages. So Sigma Care PLUS (8), Harmony Care (9) and Harmony Care PLUS (8) now have policy-grade disclosure from a document even though their TERMS panels are empty. STILL OPEN for Advanced Wellness PLUS (8), Access Health (2), AME (2) and AD&D (6) - and the underlying question stands for all 43: is the empty TERMS panel a display failure, and what does the client actually agree to at checkout?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    }
+  ],
+  "plan_id": "ame-500",
+  "plan_variant": "$500",
+  "profile_confidence": "HIGH",
+  "profile_confidence_reasons": [],
+  "status": "ACTIVE",
+  "unmapped": {
+    "benefit.amount": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "ame-500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=38167&id=974358",
+      "v": "NOT_FOUND_IN_SOURCE. No benefit amount is stated anywhere on the Info page.",
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "source_content.info_panel": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "ame-500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=38167&id=974358",
+      "v": "No benefit content. The INFORMATION panel contains only the sentence 'Available in: <state list>'.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "terms.enrollment_terms_panel": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "ame-500"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=38167&id=974358",
+      "v": "The TERMS panel is absent / renders zero characters.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  }
+}
