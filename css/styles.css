@@ -10618,3 +10618,43 @@ body {
   padding-left: 10px;
   padding-right: 10px;
 }
+
+.br-width-toggle {
+  display: none;
+}
+
+@media (width > 768px) {
+  .br-head .br-width-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    margin: 0;
+    margin-right: 6px;
+    padding: 0;
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+    flex-shrink: 0;
+    background: transparent;
+    border: 1px solid var(--cha-border-subtle);
+    border-radius: 8px;
+    color: var(--cha-text-tertiary);
+  }
+
+  .br-head .br-width-toggle:hover {
+    color: var(--cha-text-secondary);
+    border-color: var(--cha-border-default);
+    background: transparent;
+  }
+
+  .br-head .br-width-toggle svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+  }
+}
