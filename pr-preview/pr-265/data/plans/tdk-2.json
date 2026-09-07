@@ -1,0 +1,1523 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "$1,000 per day, $10,000 year maximum. Marked '12/12 month Pre-Existing'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "'The HCDA Plan TDK2 includes a supplemental benefit for hospitalization confinement payable at $1,000 a day for up to 10 days. Neonatal Intensive Care (NICU) is not covered.' The implied annual total is $10,000, which matches the Info tab's stated year maximum.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "4 visits/yr, $25 copay, $150 maximum per visit",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "2 visits/yr, $50 copay, $300 maximum per visit",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "$0 consult fee, no maximum",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "2 visits/yr, $50 copay, $300 maximum per visit",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "1 visit/yr, $0 copay, $150 maximum per visit",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance_risks": [
+    {
+      "could_misstate": "Selling TDK from the FirstEnroll brochure and telling a client there is no pre-existing limitation, because the document in front of the agent does not mention one. Also the classic setting-based error - saying the office visit is covered and only the hospital is excluded. The exclusion is CONDITION-based, not setting-based.",
+      "do_not_say": "Do not say TDK has no pre-existing limitation. Do not say 'the office visit is covered, just not the hospital'. Do not rely on the FirstEnroll brochure's silence as evidence there is no exclusion - silence in marketing material is an omission, not a benefit.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-003",
+      "safe_wording": "This plan has a pre-existing condition limitation. For the first 12 months after you enroll, conditions you already have are not covered. There is also a 30-day waiting period before sickness benefits begin.",
+      "severity": "",
+      "source": {
+        "pg": 35,
+        "sec": "General Exclusions item 74 and page 15 footnotes; absence verified across all 18 pages of source 24",
+        "src": 27,
+        "url": ""
+      },
+      "verified_fact": "The NEO-channel TDK plan document states the plan does not cover pre-existing conditions for the first 12 months after enrollment, and that all sickness benefits are subject to a 30-day waiting period. The FirstEnroll-channel brochure, which is the document that channel links, contains NO pre-existing condition language at all and no waiting period.",
+      "verify_before_saying": "Always, and the plan-year question must be resolved first - the pre-existing language sits in a document with an April 1 2024 plan year while the brochure claims April 1 2025. Confirm with Detego Health whether it remains in force before quoting the 12-month figure."
+    },
+    {
+      "could_misstate": "Framing 'no deductible' as generous without disclosing there is also no cap on what the client can spend. The Master Compliance Key requires any no-deductible claim to be paired with disclosure of benefit caps.",
+      "do_not_say": "Do not say 'no deductible' without immediately disclosing the absence of an out-of-pocket maximum. Do not use any 'the most you'll pay' framing - there is no aggregate cap of any kind on this product.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-004",
+      "safe_wording": "There is no deductible on this plan. You should also know there is no out-of-pocket maximum - the plan pays fixed amounts per service, and anything above those amounts is yours. For example inpatient hospitalization pays $1,000 a day up to $15,000 a year.",
+      "severity": "",
+      "source": {
+        "pg": 14,
+        "sec": "Section V; corroborated by source 24 page 14",
+        "src": 27,
+        "url": ""
+      },
+      "verified_fact": "The plan is a limited benefit plan with NO out-of-pocket maximum. Both channel documents agree. There is no deductible either.",
+      "verify_before_saying": "Always."
+    },
+    {
+      "could_misstate": "Selling TDK from the FirstEnroll brochure and telling a client there is no pre-existing limitation. The brochure's silence is an omission, not a benefit. This is now confirmed against a CURRENT source, so the 'the SPD is just old' defence no longer applies.",
+      "do_not_say": "Do not say TDK has no pre-existing limitation. Do not rely on the FirstEnroll brochure's silence. Do not state the scope of the limitation - whether it applies to all benefits or only hospitalization - until C-010 is resolved.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-013",
+      "safe_wording": "This plan has a pre-existing condition limitation of 12 months and a 30-day waiting period before sickness benefits begin. I want to confirm exactly which benefits the pre-existing limitation touches before I go further, because the plan documents describe its scope two different ways.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "TDK Plan 3) and source 27 (NEO plan document); absence verified across all 18 pages of source 24",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "CONFIRMED CURRENT. The live NEO portal page for TDK 3 states a pre-existing condition limitation under which hospitalization-related benefits are not payable for the first 12 months, and a 30-day waiting period on sickness benefits. Two independent NEO sources - the 2024 plan document and the 2026 portal page - disclose both. The FirstEnroll-linked brochure discloses neither.",
+      "verify_before_saying": "Always. And note the scope question in C-010 must be settled first: if the limitation is genuinely hospitalization-scoped then 'the office visit is covered, just not the hospital' is ACCURATE for TDK, which is the exact phrasing the playbook flags as a misrepresentation on STM products. An agent could be corrected into the wrong answer."
+    },
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Selling TDK's preventive care as a headline benefit without the hospital carve-out - a client who has a covered screening done at a hospital gets nothing. And selling it without mentioning an ongoing participation requirement the member is expected to meet.",
+      "do_not_say": "Do not present preventive care on TDK without the hospital exclusion. Do not omit the activity requirement at point of sale.",
+      "fact_class": "training_guidance",
+      "risk_id": "K-024",
+      "safe_wording": "Preventive services are covered, but not if they're done at a hospital - it needs to be a physician's office or clinic. And as part of this plan you're expected to complete around eight short wellness activities a year; some are required.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "Preventative Health Services slides and 'Activities for Working Owners' slide",
+        "src": 84,
+        "url": ""
+      },
+      "verified_fact": "TWO material items exist only in TDK training: preventive health services are NOT covered if provided at a hospital; and enrollees are expected to complete an average of 8 wellness activities every 12 months, some mandatory, with biometric and DNA screenings at additional cost.",
+      "verify_before_saying": "Every TDK call. Note both facts are rank-6 training-only and cannot yet be stated as contractual - confirm against the plan document first."
+    },
+    {
+      "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
+      "do_not_say": "Do not tell a client the agreement names their agent.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-040",
+      "safe_wording": "Give the client your own name, agency and email verbally on the recorded call, and confirm you are their contact for benefit and claims questions. Do not rely on the agreement to have done it.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 38175,
+        "sec": "pages 38175 and 32339",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The FirstEnroll enrollment-agreement template served on the live storefront contains unrendered variables - $parentcompany, $product_label, $agent_fullname, $agent_Email, $parentemail - confirmed on two unrelated product families (American Financial Critical Illness page 38175, and Health Choice Silver page 32339). The affected clauses are the third-party administrator disclaimer, the Plan and Claims Inquiries clause and the Writing Agent Contact block.",
+      "verify_before_saying": "Raise with FirstEnroll whether the executed enrollment document renders these variables. See G-039."
+    },
+    {
+      "could_misstate": "The scope. Because the limitation attaches to the hospitalization confinement component, saying 'the office visit is covered, just not the hospital' is closer to accurate for TDK than for an STM - but the preventive and physician components carry their own separate 30-day waiting period, so 'covered' is still wrong in the first thirty days. Both facts have to be said together.",
+      "do_not_say": "Do not say there is no pre-existing limitation because the brochure does not mention one. Do not say benefits start immediately.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-041",
+      "safe_wording": "There is a thirty-day waiting period before benefits can be used, apart from the virtual doctor service and emergencies. And the hospital confinement benefit will not pay for anything you were advised about, treated for, or had symptoms of in the twelve months before your start date, for your first twelve months on the plan.",
+      "severity": "",
+      "source": {
+        "pg": 43795,
+        "sec": "TERMS panel",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "REVISION OF K-003. The FirstEnroll enrollment TERMS panel on the TDK product page DOES disclose the 12-month pre-existing limitation and the 30-day sickness waiting period. TDK_Promo_Combined.pdf, the brochure linked from the same page, discloses neither. The pre-existing limitation is scoped to the supplemental hospitalization confinement benefit component, with a full prudent-person definition, 12-month lookback, applying for the first 12 months.",
+      "verify_before_saying": "This resolves the scope half of C-010 in favour of the hospitalization-scoped reading. The 2024 plan document's general-exclusion item 74 still needs reconciling, and the TDK 2025-26 SPD is still outstanding."
+    },
+    {
+      "could_misstate": "Telling a caller the plan includes prescription access without saying specialty drugs are excluded. Anyone on an injectable or infused medication - which includes many common autoimmune, oncology and diabetes therapies - is materially affected, and the exclusion appears in no brochure or portal page.",
+      "do_not_say": "Do not describe TDK as including prescription coverage without the specialty exclusion in the same sentence. Do not attempt to list which drugs count - the definition is deliberately broad and no formulary is held.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-042",
+      "safe_wording": "The plan has a limited prescription formulary through the virtual doctor service, and it specifically excludes specialty medications - broadly, high-cost drugs, biologics, and anything injected or infused. If you take anything like that, this plan will not cover it.",
+      "severity": "",
+      "source": {
+        "pg": 43795,
+        "sec": "MEDICATION AND PHI DISCLOSURES section",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "'This plan specifically excludes all specialty medications, including human growth hormones.' Specialty medications are defined broadly as high-cost, high complexity and/or high touch, often biologics, injectable or infused, some oral. The plan includes only a limited formulary through MyLiveDoc.",
+      "verify_before_saying": "Ask the caller what they take before quoting. See G-045 - the formulary itself is not held."
+    },
+    {
+      "could_misstate": "Presenting TDK as a health plan purchase. It is a Working Owner enrollment with data-contribution obligations, a tax document, and a state bar delivered as a client attestation rather than a system check.",
+      "do_not_say": "Do not skip the Working Owner model. Do not characterise the Preferred Units in any way - see C-018. Do not proceed without establishing the caller's state of residence.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-043",
+      "safe_wording": "To be eligible you join Healthcare Data Analytics as a working owner. You will be asked to complete around eight to ten health data activities a year, you receive an annual K-1 tax form, and this plan is not available in Oregon, Washington, Vermont or New Hampshire. Which state are you in?",
+      "severity": "",
+      "source": {
+        "pg": 43795,
+        "sec": "TERMS panel",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The TDK enrollee becomes a Working Owner of Healthcare Data Analytics LLC, a Tennessee LLC and subsidiary of Population Science Management USA - the same parent named in the SmartChoice mandatory verification script. Obligations: approximately 8-10 data activities per year, timely response to requests for exchange of health and socioeconomic data, regular communication. The Company may assign projects and may invoke a Call Right forcing the sale of the member's interest. The member is granted three Preferred Units, receives a Guaranteed Payment under IRC 707(c), receives an annual K-1, and arbitrates in Davidson County, Tennessee. The client also attests they do not live in Oregon, Washington, Vermont or New Hampshire.",
+      "verify_before_saying": "SmartChoice has a mandatory recorded verification script for this same model; TDK has none that has been found. See G-046 - that should be escalated."
+    },
+    {
+      "could_misstate": "Describing TDK as covering care. After this list what remains is office visits, a wellness exam, virtual care through MyLiveDoc, and a per-day hospitalization indemnity. A caller who mentions a bad back, a diabetic supply, an injectable medication, physical therapy or chemotherapy is asking about something the plan excludes by name.",
+      "do_not_say": "Do not say the plan covers diagnostics, therapy, or medication. Do not describe it as covering an illness - it pays scheduled amounts for scheduled services.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-064",
+      "safe_wording": "This plan pays for office visits up to set copays and limits, a wellness exam, virtual doctor visits, and a fixed daily amount if you are admitted to hospital. It does not pay for lab work, x-rays, physical therapy, chiropractic, chemotherapy, ambulance, durable medical equipment or prescription drugs.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "Section VI (8) sub-exclusions (a)-(gg) and Section VII items 2-7, byte-identical in all five documents",
+        "src": 100,
+        "url": ""
+      },
+      "verified_fact": "The TDK Member Plan Summary excludes, by name: chemotherapy and radiation therapy; ambulance; diagnostic x-rays; laboratory studies and diagnostic services; durable medical equipment; injectables; prosthetic devices; orthotic appliances; casts, splints and surgical dressings; physical therapy; occupational therapy; speech therapy; chiropractic and spinal manipulation; pain management; cardiac rehabilitation; genetic tests; infertility treatment; TMJ; diabetic self-management training and diabetic shoes; allergy testing and injections; contraception; reconstructive surgery; mental health and substance abuse treatment; and prescription drugs. It also excludes acupuncture, abortion, adoption expenses and alternative medicine.",
+      "verify_before_saying": "Ask the caller what care they actually expect to use before quoting. See K-042 for the separate specialty-medication exclusion in the enrollment agreement, which does not appear in these plan summaries at all."
+    },
+    {
+      "could_misstate": "Anything sourced to this document alone. The practical risk is quoting a benefit the document elsewhere denies, or being unable to substantiate a statement if a claim is disputed.",
+      "do_not_say": "Do not tell a client the plan summary sets out their benefits clearly. Do not answer a maternity question, a dependent-age question for a 25-year-old, or a 'what counts as pre-existing' question from this document.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-065",
+      "safe_wording": "Quote from the Schedule of Benefits, which agrees with the portal, the enrollment agreement and the training material on the co-pays and the hospitalization benefit. State the 30-day waiting period and the 12-month pre-existing limitation every time.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "TDK1-5 Member Plan Summary",
+        "src": 100,
+        "url": ""
+      },
+      "verified_fact": "The governing Member Plan Summary contradicts itself on four things an agent will be asked about on every call: it says 'There are no co-pays benefits in this Plan' and then schedules $25/$50 or $50/$75 co-pays; it says 'Hospital Care is not covered under the Plan' and 'This Plan does not include any hospitalization benefits' and then pays $1,000-$1,500 per day for hospitalization; it excludes ambulance and schedules an ambulance benefit on TDK 4 and 5; and it gives three different answers on maternity. It also defines 'Pre-Existing Condition' nowhere while pointing twice to a Defined Terms section that does not exist.",
+      "verify_before_saying": "See C-038 through C-042 and G-060, G-061. The full defect list should go to Detego Health."
+    },
+    {
+      "could_misstate": "Carrying a surgery or emergency room benefit from TDK 4 or 5 onto TDK 1, 2 or 3 - the five plans look like a simple ladder and are usually described as one, so the temptation is to assume the cheaper plans have the same categories at lower amounts. They do not have those categories at all.",
+      "do_not_say": "Do not quote a surgery, emergency room or ambulance amount on TDK 1, 2 or 3. On TDK 4 and 5 never quote the emergency room or ambulance amount without 'if admitted'.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-066",
+      "safe_wording": "On plans one, two and three the benefits are office visits, wellness, virtual care and a daily hospital amount. Surgery and emergency room benefits start at plan four.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "the live FirstEnroll Info tabs",
+        "src": 100,
+        "url": ""
+      },
+      "verified_fact": "TDK 4 and TDK 5 contain three benefit categories that TDK 1, 2 and 3 do not have at all: In/Out-patient Surgery, Emergency Room (if admitted) and Ambulance Benefit (if admitted). These lines are NOT PRESENT in the TDK 1, 2 or 3 Schedule of Benefits in either the plan summary or the portal.",
+      "verify_before_saying": "The ambulance line on TDK 4 and 5 is contradicted by sub-exclusion (a) - see C-041."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-096",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A 3.5% credit-card or ACH processing fee applies to every payment and appears only in the platform TERMS panel, which more than half the product pages do not display at all.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Do not tell a client a scheduled benefit amount will be paid in full without qualifying it by the URC limit.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-097",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A platform-level usual, reasonable and customary cap applies on top of every product's stated benefits and appears only in the TERMS panel.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Every recorded verification must cover all four elements. Omitting the recurring monthly amount or the automatic draft is a breach of the platform agreement, not only a compliance risk.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-098",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "The platform agreement requires an electronic signature or a recorded verification script with every sale, and specifies the four things the member must be shown to understand: the product, its benefits, the initial payment, and the recurring monthly amount drafted automatically.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Disclose to any client on a tight account that a single failed draft can end the plan.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-099",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A dishonoured payment can result in forfeiture of the plan with no liability on anyone's part, expressly including where the dishonour was inadvertent or without cause.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never describe NEO as the insurance company. Name the carrier for the specific product.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-100",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "MEDIUM",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "Neo Insurance Solutions is an agency and platform, not the insurer, and disclaims liability for agents' conduct and representations.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Disclose the 3.5% card/ACH processing fee on every sale regardless of which page the client was shown. Do not rely on the panel a given product page happens to display.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-110",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=26837&id=974021"
+      },
+      "verified_fact": "The storefront serves two different versions of the NEO enrolment agreement. The shorter one, on the MDLive pages, omits the 3.5% processing fee, the contact and electronic-document consents, the HIPAA statement and the member signature block.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Do not tell a client 'the terms are on the page'. Establish which agreement governs their enrolment, and disclose the 3.5% processing fee regardless of which panel their product displays.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-128",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Four different NEO enrolment agreements are in simultaneous circulation on the storefront, and most product pages show none at all.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
+    }
+  ],
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "TDK 2",
+  "do_not_say": [
+    "Disclose the 3.5% card/ACH processing fee on every sale regardless of which page the client was shown. Do not rely on the panel a given product page happens to display.",
+    "Disclose to any client on a tight account that a single failed draft can end the plan.",
+    "Do not describe TDK as including prescription coverage without the specialty exclusion in the same sentence. Do not attempt to list which drugs count - the definition is deliberately broad and no formulary is held.",
+    "Do not present preventive care on TDK without the hospital exclusion. Do not omit the activity requirement at point of sale.",
+    "Do not quote a surgery, emergency room or ambulance amount on TDK 1, 2 or 3. On TDK 4 and 5 never quote the emergency room or ambulance amount without 'if admitted'.",
+    "Do not say 'no deductible' without immediately disclosing the absence of an out-of-pocket maximum. Do not use any 'the most you'll pay' framing - there is no aggregate cap of any kind on this product.",
+    "Do not say TDK has no pre-existing limitation. Do not rely on the FirstEnroll brochure's silence. Do not state the scope of the limitation - whether it applies to all benefits or only hospitalization - until C-010 is resolved.",
+    "Do not say TDK has no pre-existing limitation. Do not say 'the office visit is covered, just not the hospital'. Do not rely on the FirstEnroll brochure's silence as evidence there is no exclusion - silence in marketing material is an omission, not a benefit.",
+    "Do not say the plan covers diagnostics, therapy, or medication. Do not describe it as covering an illness - it pays scheduled amounts for scheduled services.",
+    "Do not say there is no pre-existing limitation because the brochure does not mention one. Do not say benefits start immediately.",
+    "Do not skip the Working Owner model. Do not characterise the Preferred Units in any way - see C-018. Do not proceed without establishing the caller's state of residence.",
+    "Do not tell a client 'the terms are on the page'. Establish which agreement governs their enrolment, and disclose the 3.5% processing fee regardless of which panel their product displays.",
+    "Do not tell a client a scheduled benefit amount will be paid in full without qualifying it by the URC limit.",
+    "Do not tell a client the agreement names their agent.",
+    "Do not tell a client the plan summary sets out their benefits clearly. Do not answer a maternity question, a dependent-age question for a 25-year-old, or a 'what counts as pre-existing' question from this document.",
+    "Every recorded verification must cover all four elements. Omitting the recurring monthly amount or the automatic draft is a breach of the platform agreement, not only a compliance risk.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never describe NEO as the insurance company. Name the carrier for the specific product.",
+    "Never type or describe a product from its name. Read the Info page.",
+    "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
+  ],
+  "doc_completeness": "PORTAL_ONLY",
+  "documentation": {
+    "brochure": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "TDK",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "'Utilies the First Health Network' (typo as printed). Provider search: http://docfind.health/. Footnote 2: 'Outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient Hospital Indemnity benefits are not.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "conflict_id": "C-004",
+      "field": "identity.plan_year",
+      "source_ids": [
+        24,
+        27
+      ]
+    },
+    {
+      "conflict_id": "C-005",
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        24,
+        27
+      ]
+    },
+    {
+      "conflict_id": "C-007",
+      "field": "identity.group_name",
+      "source_ids": [
+        24,
+        27
+      ]
+    },
+    {
+      "conflict_id": "C-010",
+      "field": "limitations.pre_existing.scope",
+      "source_ids": [
+        27,
+        82
+      ]
+    },
+    {
+      "conflict_id": "C-018",
+      "field": "legal.securities_status",
+      "source_ids": [
+        88
+      ]
+    },
+    {
+      "conflict_id": "C-026",
+      "field": "legal.governing_documents",
+      "source_ids": [
+        88
+      ]
+    },
+    {
+      "conflict_id": "C-038",
+      "field": "eligibility.dependent_age",
+      "source_ids": [
+        100
+      ]
+    },
+    {
+      "conflict_id": "C-039",
+      "field": "benefits.prescription_drugs",
+      "source_ids": [
+        88,
+        100
+      ]
+    },
+    {
+      "conflict_id": "C-040",
+      "field": "benefits.maternity",
+      "source_ids": [
+        100
+      ]
+    },
+    {
+      "conflict_id": "C-042",
+      "field": "benefits.copays_and_hospitalization",
+      "source_ids": [
+        100
+      ]
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-002",
+      "what_is_unknown": "The FirstEnroll-linked TDK brochure omits the 12-month pre-existing condition exclusion and the 30-day sickness waiting period that the NEO plan document discloses."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-024",
+      "what_is_unknown": "The FirstEnroll current product list and all ~70 product Info pages. The session expired mid-run."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-028",
+      "what_is_unknown": "Whether the TDK training course discloses the 12-month pre-existing limitation and the 30-day sickness waiting period."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-029",
+      "what_is_unknown": "Two material items that exist ONLY in training and in no portal page, brochure or plan document held: (a) preventive health services are not covered if provided at a hospital; (b) enrollees are expected to complete an average of 8 wellness activities every 12 months, some mandatory, with biometric and DNA screenings at additional cost."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-044",
+      "what_is_unknown": "Info, STATES and TERMS panels on the remaining ~45 FirstEnroll product pages: Harmony Care (48876, 48877, 48878, 48879, 48880, 48881, 48882, 48885, 49428), Harmony Care + (48037-48044), Sigma Care PLUS (45288, 45430-45436), Paramount (44347-44349, 46436-46438), BWA AmeriCare (39559, 39561, 39562), Access Health (28230, 28231), TDK (43795, 43900-43903), GHDP 1-5 (44900-44904)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-045",
+      "what_is_unknown": "CLOSED. All five TDK TERMS panels have now been segmented by section heading and hash-compared, and TDK 1 has been read end to end (31,646 of 31,646 characters). Ten of the fourteen sections are byte-identical across all five variants, including WORKING OWNER STATUS (11,337 chars), MEDICATION & PHI DISCLOSURES (3,308), INTENDED USE VERIFICATION (712) and AUTHORIZATION TO DEBIT (1,992). The only material per-variant difference is the plan name and the supplemental hospitalization benefit amount, both of which have been extracted for each variant."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-046",
+      "what_is_unknown": "A mandatory recorded post-close verification script for TDK, equivalent to the SmartChoice one found in TalentLMS course 202. || STRENGTHENED 2026-09-05: the five Member Plan Summaries have now been read and NONE contains a verification script either. The FirstEnroll enrollment agreement explicitly contemplates 'a recorded verification script' and defines what it must cover. Four source classes have now been searched - portal, brochure, plan summary and TalentLMS - and no TDK script exists in any of them."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-051",
+      "what_is_unknown": "A single authoritative statement of which provider directory belongs to which product. FOUR DIFFERENT provider-search URLs are published under the label 'First Health Network' across the FirstEnroll catalogue: http://docfind.health/ (TDK), www.locateprovidersnow.com (GHDP), www.firsthealthlbp.com (Advanced Wellness PLUS / Sigma / Harmony), and www.MultiPlan.com/phcspracanc (Access Health - a PHCS address, not First Health at all)."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-060",
+      "what_is_unknown": "A definition of 'Pre-Existing Condition' for the TDK family. Schedule footnote 3 defines it by reference - 'as defined in Plan Doc' - and NO Definitions or Defined Terms section exists in any of the five Member Plan Summaries. Section IV separately refers the reader to 'the Defined Terms section of this document', which also does not exist."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-061",
+      "what_is_unknown": "A corrected set of Member Plan Summaries. The five documents held carry at least twelve internal defects, all present in every copy: the no-co-pays statement contradicting the co-pay schedule; two statements that the plan includes no hospitalization benefits alongside a hospitalization benefit on every plan; ambulance excluded and scheduled; exclusion 51 reading 'Medically Necessary expenses will not be considered eligible' as printed; item 87 granting coverage inside an exclusions list; the three-way maternity contradiction; the prescriptions contradiction; exclusion item 56 restarting its letter sequence so that two items are both '56.a'; item 101 'Unrelated Claims:' being a heading with no content; pregnancy and well-baby benefits lettered under 'Rehabilitative therapies'; a claims-filing exception that restates the rule it excepts and then calls 180 days 'This 6-month period'; a duplicated claim-form fragment; the dependent-age parenthetical; TDK 3's corrupt prescription line; and 'TDK MEMBER PLAN PLAN 1' printed in the header of Plans 2 through 5."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-093",
+      "what_is_unknown": "Which NEO products carry the platform TERMS panel, and which do not?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-094",
+      "what_is_unknown": "What is the amount of the one-time association membership processing fee?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-095",
+      "what_is_unknown": "Does 'this coverage is not renewable or extendable' apply to every NEO product or only to short-term products?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    }
+  ],
+  "plan_id": "tdk-2",
+  "plan_variant": "2",
+  "profile_confidence": "HIGH",
+  "profile_confidence_reasons": [],
+  "status": "ACTIVE",
+  "unmapped": {
+    "benefit_schedule.prescriptions": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "1,000+ Free Prescriptions. Discount with Prescription Card.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefits.non_insurance": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "Personal Health Dashboard - track medical records, fitness, sleep, hydration; access to discount lab and DNA testing; 'a wide array of additional benefits'. Advocacy: Hospital Bill Reducer.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "billing.authorization": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43795&id=974358",
+      "v": "AUTHORIZATION TO DEBIT OR WITHDRAW FUNDS (byte-identical on all five variants, 1,992 characters): authorization remains in effect until cancelled IN WRITING with at least 15 days notice before the next billing date; payments falling on a weekend or holiday 'may be executed on the NEXT business day'; a rejected transaction may be re-attempted within 30 days with an additional returned-payment fee; the enrollee certifies they will not dispute scheduled transactions. ACH revocable by calling (732) 876-9733 at least 3 business days ahead.",
+      "vs": "VERIFIED_MULTI_SOURCE"
+    },
+    "exclusions.schedule_limited": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "'This Plan does not cover services unless listed in the Schedule of Benefits, so please review that list carefully.' The plan 'is limited to covering preventive and wellness services as required by the Patient Protection and Affordable Care Act as well as other benefits noted in the Summary Plan Description'.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "plan_identity": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "The enrollment agreement names this product 'HCDA Benefit Plan TDK2'.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "source_defect.unrendered_template_variables_state": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43903&id=974358",
+      "v": "ENROLLMENT DISCLOSURES contains a further unrendered placeholder: 'First Enroll operates as a Third-Party Administrator in the state of $state.' Electronic Signature section: 'I elect to enroll in the following program(s): $product_l...' also unrendered.",
+      "vs": "VERIFIED_MULTI_SOURCE"
+    },
+    "terms.enrollment_terms_panel": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-2"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43900&id=974358",
+      "v": "TERMS panel present and populated. Character counts: TDK 1 = 31,646; TDK 2 = 31,609; TDK 3 = 31,611; TDK 4 = 31,612; TDK 5 = 31,612. Only the TDK 1 panel was read verbatim (to character 27,600).",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "terms.voice_consent_and_recorded_verification": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "TERMS panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=43795&id=974358",
+      "v": "NOTICE OF VOICE CONSENT: 'I consent and agree that if I participated in a recorded verification call, my voice consent shall serve as my signature.' ENROLLMENT DISCLOSURES: 'Almost all enrollments are conducted telephonically and include either a recorded verification script or an e-sign authorization form. The purpose of the recorded verification call or e-sign authorization form is to ensure that you understand, among other things, what program(s) you are enrolling in, what is included with that program, how much you are paying at the initial time of enrollment, how much you will pay monthly thereafter, and that subsequent monthly payments will be automatically drafted.'",
+      "vs": "VERIFIED_MULTI_SOURCE"
+    },
+    "training.completion_status": {
+      "app": "FAMILY_WIDE",
+      "auth": 6,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "Catalog course detail panel",
+      "src": 83,
+      "url": "https://neoinsurancesolutions.talentlms.com/plus/catalog?courseId=165",
+      "v": "A TalentLMS course 'TDK - Taking Data to Knowledge' exists in the Product category (courseId 165) and is marked 'Completed on 06/04/2026' for this agent. Unit contents were not opened.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "training.disclosure.network_restriction": {
+      "app": "FAMILY_WIDE",
+      "auth": 6,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "Schedule of Benefits slide, footnotes",
+      "src": 84,
+      "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/165/units/2104",
+      "v": "Footnote (2): outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient hospital indemnity benefits are NOT so restricted.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "training.disclosure.no_moop": {
+      "app": "FAMILY_WIDE",
+      "auth": 6,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "Schedule of Benefits slide, footnotes",
+      "src": 84,
+      "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/165/units/2104",
+      "v": "The 'Highlights for Health and Wellness' slide states there is no deductible ($0), that the plan has no out-of-pocket limit for covered services, and that expenses paid do not count toward any out-of-pocket limit. It also states no referral is needed to see a specialist, and that the plan does not cover services unless listed in the Schedule of Benefits.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "training.disclosure.pre_existing": {
+      "app": "FAMILY_WIDE",
+      "auth": 6,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "Schedule of Benefits slide, footnotes",
+      "src": 84,
+      "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/165/units/2104",
+      "v": "The TDK training deck's Schedule of Benefits slide carries footnote (3): hospitalization benefits are not payable for a Pre-Existing Condition as defined in the Plan Doc for the first twelve months of coverage.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "training.disclosure.preventive_hospital_exclusion": {
+      "app": "FAMILY_WIDE",
+      "auth": 6,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "Schedule of Benefits slide, footnotes",
+      "src": 84,
+      "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/165/units/2104",
+      "v": "The Preventative Health Services slides carry a header line repeated on every table: none of the preventative health services are covered if they are provided at a hospital.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "training.disclosure.waiting_period": {
+      "app": "FAMILY_WIDE",
+      "auth": 6,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "Schedule of Benefits slide, footnotes",
+      "src": 84,
+      "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/165/units/2104",
+      "v": "Footnote (1): all sickness benefits are subject to a 30-day waiting period before benefits are payable under the plan.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "training.eligibility.working_owner": {
+      "app": "FAMILY_WIDE",
+      "auth": 6,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "Schedule of Benefits slide, footnotes",
+      "src": 84,
+      "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/165/units/2104",
+      "v": "The deck contains a slide titled 'Activities for Working Owners' stating that as working owners, members need to complete an average of 8 activities every 12 months; some mandatory, some voluntary; each typically five to fifteen minutes and completable on a phone. Activities include videos with a short quiz, surveys (Life Satisfaction, Burnout and Engagement, Food Frequency), fitness modules (Diet and Nutrition, Tobacco Cessation, Fitness, Stress), health coaching, recording vitals and vaccines. Biometric screening and DNA screenings are available at ADDITIONAL COST.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    }
+  }
+}
