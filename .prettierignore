@@ -9,6 +9,7 @@ js/call-playbook.js
 ledger/
 data/plans/
 data/plan-index.json
+data/plan-aliases.json
 build/
 knowledge_base/
 test-results/
