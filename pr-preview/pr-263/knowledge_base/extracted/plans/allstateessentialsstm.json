@@ -1,0 +1,27 @@
+{
+  "planId": "allstateessentialsstm",
+  "planName": "Allstate Essentials STM PPO Plan",
+  "status": "missing_pdf",
+  "documents": [
+    {
+      "fileName": "Allstate_Essentials_STM_PPO_Brochure.pdf",
+      "sourceType": "brochure",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "Allstate Essentials STM PPO Plan Short Term Medical. Deductibles $5,000 $10,000 $25,000. Coinsurance 40% member pays 40% after deductible. Coinsurance OOP max $7,500. Coverage period maximum $250,000. Office visits including preventive subject to deductible and coinsurance. Outpatient services $15,000 limit $5,000 limit joint neck spine connective tissue 30 visit limit PT OT ST cardiac pulmonary rehab. Inpatient hospital subject to deductible and coinsurance. Emergency room $250 access fee waived if admitted. Urgent care $50 access fee deductible waived. Child immunizations first dollar. Out-of-network deductibles doubled. Entry level STM lowest coverage max $250,000. 40% coinsurance. Not ACA compliant. Pre-existing conditions subject to underwriting. NEO Insurance Solutions Allstate PPO.",
+          "normalizedText": "allstate essentials stm ppo plan short term medical deductibles 5 000 10 000 25 000 coinsurance 40 member pays 40 after deductible coinsurance oop max 7 500 coverage period maximum 250 000 office visits including preventive subject to deductible and coinsurance outpatient services 15 000 limit 5 000 limit joint neck spine connective tissue 30 visit limit pt ot st cardiac pulmonary rehab inpatient hospital subject to deductible and coinsurance emergency room 250 access fee waived if admitted urgent care 50 access fee deductible waived child immunizations first dollar out of network deductibles doubled entry level stm lowest coverage max 250 000 40 coinsurance not aca compliant pre existing conditions subject to underwriting neo insurance solutions allstate ppo"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "allstateessentialsstm-c1",
+      "text": "Allstate Essentials STM PPO Plan Short Term Medical. Deductibles $5,000 $10,000 $25,000. Coinsurance 40% member pays 40% after deductible. Coinsurance OOP max $7,500. Coverage period maximum $250,000. Office visits including preventive subject to deductible and coinsurance. Outpatient services $15,000 limit $5,000 limit joint neck spine connective tissue 30 visit limit PT OT ST cardiac pulmonary rehab. Inpatient hospital subject to deductible and coinsurance. Emergency room $250 access fee waived if admitted. Urgent care $50 access fee deductible waived. Child immunizations first dollar. Out-of-network deductibles doubled. Entry level STM lowest coverage max $250,000. 40% coinsurance. Not ACA compliant. Pre-existing conditions subject to underwriting. NEO Insurance Solutions Allstate PPO.",
+      "tokenEstimate": 200,
+      "pageRange": "1-1",
+      "normalizedText": "allstate essentials stm ppo plan short term medical deductibles 5 000 10 000 25 000 coinsurance 40 member pays 40 after deductible coinsurance oop max 7 500 coverage period maximum 250 000 office visits including preventive subject to deductible and coinsurance outpatient services 15 000 limit 5 000 limit joint neck spine connective tissue 30 visit limit pt ot st cardiac pulmonary rehab inpatient hospital subject to deductible and coinsurance emergency room 250 access fee waived if admitted urgent care 50 access fee deductible waived child immunizations first dollar out of network deductibles doubled entry level stm lowest coverage max 250 000 40 coinsurance not aca compliant pre existing conditions subject to underwriting neo insurance solutions allstate ppo"
+    }
+  ]
+}
