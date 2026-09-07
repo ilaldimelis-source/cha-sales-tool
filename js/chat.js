@@ -838,16 +838,11 @@ function brRenderAIAnswer(text, planName, planSource) {
 
   var sayBlock = '';
   if (sayThis) {
-    var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     sayBlock =
       '<div style="background:var(--bg-surface-raised);border-radius:8px;padding:8px 10px;margin-top:4px;">' +
       '<div style="font-size:12px;font-style:italic;color:var(--text-secondary);">' +
       escHTML(sayThis) +
-      '</div>' +
-      '<button onclick="navigator.clipboard.writeText(\'' +
-      safeText +
-      "');this.textContent='Copied!';var b=this;setTimeout(function(){b.textContent='Copy';},2000);\" " +
-      'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);cursor:pointer;color:var(--text-secondary);">Copy</button></div>';
+      '</div></div>';
   }
 
   var html =
@@ -1187,16 +1182,11 @@ function brRenderServerAnswer(payload, planName, planSource) {
 
   var sayBlock = '';
   if (sayThis) {
-    var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     sayBlock =
       '<div style="background:var(--bg-surface-raised);border-radius:8px;padding:8px 10px;margin-top:4px;">' +
       '<div style="font-size:12px;font-style:italic;color:var(--text-secondary);">' +
       escHTML(sayThis).replace(/\n/g, '<br>') +
-      '</div>' +
-      '<button onclick="navigator.clipboard.writeText(\'' +
-      safeText +
-      "');this.textContent='Copied!';var b=this;setTimeout(function(){b.textContent='Copy';},2000);\" " +
-      'style="margin-top:6px;font-size:10px;padding:3px 10px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);cursor:pointer;color:var(--text-secondary);">Copy</button></div>';
+      '</div></div>';
   }
 
   var sourceHud = escHTML(source);
@@ -1638,6 +1628,89 @@ function brOnCandidateClick(planId, planName) {
   brAnswerWithProfile(planId, planName, q, intentId);
 }
 
+function brTokenizePlanQuery(raw) {
+  if (raw == null) return [];
+  var s = String(raw);
+  s = s.replace(/([a-z])([A-Z])/g, '$1 $2');
+  s = s.replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2');
+  s = s.replace(/\+/g, ' plus ');
+  s = s.replace(/(\d),(?=\d)/g, '$1');
+  s = s.toLowerCase();
+  s = s.replace(/([a-z])([0-9])/g, '$1 $2');
+  s = s.replace(/([0-9])([a-z])/g, '$1 $2');
+  s = s.replace(/[^a-z0-9]+/g, ' ');
+  s = s.replace(/\s+/g, ' ').trim();
+  if (!s) return [];
+  return s.split(' ');
+}
+
+function brQueryIsPlanNameOnly(query, planId, displayName) {
+  var q = brTokenizePlanQuery(query);
+  if (!q.length) return false;
+  var consumed = {};
+  var names = [planId, displayName];
+  var i;
+  var j;
+  var toks;
+  for (i = 0; i < names.length; i++) {
+    toks = brTokenizePlanQuery(names[i]);
+    for (j = 0; j < toks.length; j++) consumed[toks[j]] = true;
+  }
+  for (i = 0; i < q.length; i++) {
+    if (!consumed[q[i]]) return false;
+  }
+  return true;
+}
+
+function brConfirmResolvedPlan(planId) {
+  if (typeof window.brLoadProfile !== 'function') {
+    brRenderPlanConfirmation(null, planId);
+    return;
+  }
+  window.brLoadProfile(planId).then(function (profile) {
+    brRenderPlanConfirmation(profile, planId);
+  });
+}
+
+function brRenderPlanConfirmation(profile, planId) {
+  var name = planId;
+  var completeness = 'unknown';
+  var confidence = 'unknown';
+  brResolvedPlanId = planId;
+  if (profile) {
+    brResolvedPlanId = profile.plan_id || planId;
+    if (profile.display_name) {
+      name = profile.display_name;
+      brResolvedPlanName = profile.display_name;
+    } else {
+      brResolvedPlanName = brResolvedPlanId;
+    }
+    if (profile.doc_completeness != null && profile.doc_completeness !== '') {
+      completeness = String(profile.doc_completeness);
+    }
+    if (profile.profile_confidence != null && profile.profile_confidence !== '') {
+      confidence = String(profile.profile_confidence);
+    }
+  } else {
+    brResolvedPlanName = planId;
+  }
+  brAddMsg(
+    'ai',
+    '<div style="color:var(--text-secondary);font-size:13px;line-height:1.6;">' +
+      '<div style="font-weight:700;color:var(--text-primary);margin-bottom:6px;">' +
+      escHTML(name) +
+      '</div>' +
+      '<div>Document completeness: ' +
+      escHTML(completeness) +
+      '</div>' +
+      '<div>Profile confidence: ' +
+      escHTML(confidence) +
+      '</div>' +
+      '<div style="margin-top:6px;">Ask a question or use the buttons.</div>' +
+      '</div>'
+  );
+}
+
 function brSend() {
   if (_brSendLock) return;
   var inp = document.getElementById('br-input');
@@ -1662,7 +1735,27 @@ function brSend() {
       brResolvedPlanId = match.planId;
       var intentId = _brPendingIntentId;
       _brPendingIntentId = null;
-      brAnswerWithProfile(match.planId, match.planId, query, intentId);
+      var intentFromQuery =
+        query && typeof window.brMatchIntent === 'function'
+          ? window.brMatchIntent(query)
+          : null;
+      if (intentId || intentFromQuery) {
+        brAnswerWithProfile(match.planId, match.planId, query, intentId);
+      } else if (typeof window.brLoadProfile === 'function') {
+        window.brLoadProfile(match.planId).then(function (profile) {
+          var id = (profile && profile.plan_id) || match.planId;
+          var display = (profile && profile.display_name) || match.planId;
+          if (brQueryIsPlanNameOnly(query, id, display)) {
+            brRenderPlanConfirmation(profile, match.planId);
+          } else {
+            brAnswerWithProfile(match.planId, match.planId, query, null);
+          }
+        });
+      } else if (brQueryIsPlanNameOnly(query, match.planId, match.planId)) {
+        brConfirmResolvedPlan(match.planId);
+      } else {
+        brAnswerWithProfile(match.planId, match.planId, query, null);
+      }
     } else if (match.status === 'AMBIGUOUS') {
       _brPendingQuery = query;
       brRenderCandidates(match.candidates || []);

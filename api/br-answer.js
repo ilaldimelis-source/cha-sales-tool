@@ -58,7 +58,7 @@ function parseModelOutput(raw) {
     status: 'VERIFY',
     fact: '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]',
     sayThis: '',
-    source: 'Plan PDF / POLICY_DOCS'
+    source: 'Supabase plan_chunks'
   };
 
   text.split('\n').forEach(function (line) {
@@ -79,7 +79,7 @@ function parseModelOutput(raw) {
   if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL|INFO)$/.test(out.status))
     out.status = 'VERIFY';
   if (!out.fact) out.fact = '[UNCONFIRMED: PLEASE CHECK PLAN DOCS]';
-  if (!out.source) out.source = 'Plan PDF / POLICY_DOCS';
+  if (!out.source) out.source = 'Supabase plan_chunks';
   return out;
 }
 
@@ -587,7 +587,7 @@ module.exports = function handler(req, res) {
       var safeSource =
         safeCitations.length && safeCitations[0].source_pdf
           ? safeCitations[0].source_pdf
-          : 'Plan PDF / POLICY_DOCS';
+          : 'Source unknown';
       console.error(
         '[CHA RAG] Fallback triggered',
         JSON.stringify({
