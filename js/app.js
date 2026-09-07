@@ -1859,6 +1859,16 @@ if (document.readyState === 'loading') {
       ignore: ['.sw', '#scBtn']
     },
     {
+      el: '#br-panel',
+      isOpen: function (e) {
+        return e.classList.contains('open');
+      },
+      close: function () {
+        _closeBenefitsSidebar();
+      },
+      ignore: ['#br-toggle']
+    },
+    {
       el: '#liveResult',
       isOpen: function (e) {
         return e.classList.contains('show');
