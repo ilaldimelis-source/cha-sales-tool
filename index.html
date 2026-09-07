@@ -51,7 +51,7 @@
      that serve .css as text/plain (which browsers reject). The sync XHR runs only
      if the <link> stylesheet has 0 rules after loading. -->
     <link rel="stylesheet" href="css/tokens.css?v=1780600000000" />
-    <link rel="stylesheet" href="css/styles.css?v=1788807092901" id="mainCSS" />
+    <link rel="stylesheet" href="css/styles.css?v=1788812987600" id="mainCSS" />
     <link rel="stylesheet" href="css/sales-tracker.css?v=1787901420000" />
     <script>
       // Groq API configuration for chat modules
@@ -143,9 +143,7 @@
         font-size: 13px;
       }
       #br-panel .br-head,
-      #br-panel .br-nav-section,
-      #br-panel .br-chips,
-      #br-panel .br-quick-actions,
+      #br-panel .br-intent-row,
       #br-panel .br-input-bar {
         padding-left: 16px;
         padding-right: 16px;
@@ -2500,105 +2498,34 @@
         </button>
       </div>
 
-      <!-- FILTER + PLAN BAR (one section) -->
-      <div class="br-nav-section">
-        <div class="br-filter-bar" id="br-filter-bar"></div>
-        <div class="br-plan-bar" id="br-plan-bar"></div>
-      </div>
-
-      <!-- QUICK CHIPS (3 per row, cleaner) -->
-      <div class="br-chips">
-        <span class="br-chip cop" onclick="brQuick('What are the copays?')"
-          >💊 Copays</span
-        >
-        <span
-          class="br-chip exc"
-          onclick="brQuick('What is NOT covered? List all exclusions.')"
-          >✗ Exclusions</span
-        >
-        <span
-          class="br-chip drg"
-          onclick="brQuick('What is the prescription drug coverage?')"
-          >Rx Drug</span
-        >
-        <span
-          class="br-chip net"
-          onclick="brQuick('What is the network? Out-of-network benefits?')"
-          >🌐 Network</span
-        >
-        <span
-          class="br-chip wai"
-          onclick="
-            brQuick(
-              'What are the waiting periods and pre-existing condition rules?'
-            )
-          "
-          >⏱ Pre-Ex</span
-        >
-        <span
-          class="br-chip xry"
-          onclick="brQuick('Is x-ray and lab work covered?')"
-          >🔬 X-Ray / Labs</span
-        >
-      </div>
-
       <div class="br-msgs" id="br-msgs"></div>
 
-      <div class="br-quick-actions" role="toolbar" aria-label="Quick questions">
-        <button
-          type="button"
-          class="br-qbtn"
-          onclick="
-            brQuick(
-              'What are all waiting periods on this plan (sickness, injury, hospitalization, and any service-specific waits)? List each with exact timing.'
-            )
-          "
-        >
-          Waiting Periods
+      <div
+        class="br-intent-row"
+        id="br-intent-row"
+        role="toolbar"
+        aria-label="Plan questions"
+      >
+        <button type="button" class="br-intent-btn" data-intent="copays">
+          Copays
         </button>
-        <button
-          type="button"
-          class="br-qbtn"
-          onclick="
-            brQuick(
-              'What is the pre-existing condition rule on this plan? Include look-back period, exclusion length, and which benefits it applies to.'
-            )
-          "
-        >
-          Pre-Ex Rule
+        <button type="button" class="br-intent-btn" data-intent="exclusions">
+          Exclusions
         </button>
-        <button
-          type="button"
-          class="br-qbtn"
-          onclick="
-            brQuick(
-              'How does prescription drug coverage work on this plan? Include retail vs mail order, formulary tiers, copays, specialty drugs, discount programs, and any monthly limits.'
-            )
-          "
-        >
-          RX Search
+        <button type="button" class="br-intent-btn" data-intent="preex">
+          Pre-Ex
         </button>
-        <button
-          type="button"
-          class="br-qbtn"
-          onclick="
-            brQuick(
-              'How are emergency room visits covered versus urgent care on this plan? Include copays or benefit amounts, visit limits, and when the member should use ER vs urgent care per the plan document.'
-            )
-          "
-        >
-          ER vs Urgent Care
+        <button type="button" class="br-intent-btn" data-intent="waiting">
+          Waiting periods
         </button>
-        <button
-          type="button"
-          class="br-qbtn"
-          onclick="
-            brQuick(
-              'The prospect says their spouse does not want this plan. Based ONLY on this plan document, what are accurate, compliant points to review (covered benefits, limits, exclusions, and network rules) so the spouse can make an informed decision?'
-            )
-          "
-        >
-          Spouse Objection
+        <button type="button" class="br-intent-btn" data-intent="network">
+          Network
+        </button>
+        <button type="button" class="br-intent-btn" data-intent="whosbehind">
+          Who's behind it
+        </button>
+        <button type="button" class="br-intent-btn" data-intent="postclose">
+          Post-close
         </button>
       </div>
 
@@ -2673,7 +2600,7 @@
     <script src="js/myspace.js?v=1787901420000"></script>
     <script src="js/sales-tracker.js?v=1787901420000"></script>
     <script src="js/office.js?v=1787900000000"></script>
-    <script src="js/app.js?v=1788805448830"></script>
+    <script src="js/app.js?v=1788812987600"></script>
     <script>
       (function () {
         var data = window.docusignWalkthroughData;
@@ -3235,8 +3162,10 @@
         renderFull();
       })();
     </script>
-    <script src="js/chat.js?v=1788719928173"></script>
+    <script src="js/chat.js?v=1788813849749"></script>
     <script src="js/br-plan-match.js?v=1788811424309"></script>
+    <script src="js/br-profile.js?v=1788812987600"></script>
+    <script src="js/br-intents.js?v=1788812987600"></script>
     <script src="js/br-window.js?v=1788807890411"></script>
     <link rel="stylesheet" href="css/course-215.css" />
     <script src="js/course-215.js"></script>

@@ -8,6 +8,10 @@ var brSearchAllPlans = false;
 var brOpen = false;
 var BR_PLANS = [];
 var _brInitDone = false;
+var brResolvedPlanId = null;
+var brResolvedPlanName = null;
+var _brPendingQuery = '';
+var _brPendingIntentId = null;
 // Office key — scoped per Clerk user (see js/storage-utils.js). Console: brSetOfficeKey('gsk_...')
 function brSetOfficeKey(key) {
   if (typeof chaSet === 'function') {
@@ -120,11 +124,65 @@ function _brSetStatus(mode) {
 }
 
 
+function brBindPanelChrome() {
+  var row = document.getElementById('br-intent-row');
+  if (row && !row.getAttribute('data-br-bound')) {
+    row.setAttribute('data-br-bound', '1');
+    row.addEventListener('click', function (e) {
+      var el = e.target;
+      while (el && el !== row) {
+        var intentId = el.getAttribute && el.getAttribute('data-intent');
+        if (intentId) {
+          brOnIntentClick(intentId);
+          return;
+        }
+        el = el.parentNode;
+      }
+    });
+  }
+  var msgs = document.getElementById('br-msgs');
+  if (msgs && !msgs.getAttribute('data-br-cand-bound')) {
+    msgs.setAttribute('data-br-cand-bound', '1');
+    msgs.addEventListener('click', function (e) {
+      var el = e.target;
+      while (el && el !== msgs) {
+        var planId = el.getAttribute && el.getAttribute('data-plan-id');
+        if (planId) {
+          brOnCandidateClick(
+            planId,
+            el.getAttribute('data-plan-name') || planId
+          );
+          return;
+        }
+        el = el.parentNode;
+      }
+    });
+  }
+}
+
 function brInit() {
   if (_brInitDone) return;
-  if (typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return;
-  if (!document.getElementById('br-plan-bar')) return;
   _brInitDone = true;
+  brBindPanelChrome();
+
+  var filterBar = document.getElementById('br-filter-bar');
+  var planBar = document.getElementById('br-plan-bar');
+  if (!filterBar || !planBar) {
+    if (typeof buildSearchIndex === 'function') {
+      buildSearchIndex();
+    }
+    brShowWelcome();
+    var _initKeyEarly =
+      typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
+    _brSetStatus(
+      _initKeyEarly && _initKeyEarly !== 'skip' && _initKeyEarly.length > 20
+        ? 'ai'
+        : 'local'
+    );
+    return;
+  }
+
+  if (typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return;
 
   BR_PLANS = POLICY_DOCS.filter(function (p) {
     return brIsRealPlanRecord(p);
@@ -407,34 +465,18 @@ function brRenderPlanButtons(groupFilter) {
 }
 
 function brShowWelcome() {
-  var planName = brActivePlan ? brActivePlan.name : 'a plan';
-  var planGroup = brActivePlan ? brActivePlan.group : '';
-  var groupDot = { MEC: '#22c55e', STM: '#5B8DEF', Limited: '#7C3AED' };
-  var dot = groupDot[planGroup] || '#94a3b8';
-
   var html = '<div style="text-align:center;padding:16px 8px 8px;">';
-  // Active plan badge
-  if (brActivePlan) {
-    html += '<div style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-surface-muted);border:1px solid var(--border-light, var(--border-default));border-radius:999px;padding:5px 14px;margin-bottom:12px;">';
-    html += '<span style="width:7px;height:7px;border-radius:50%;background:' + dot + ';display:inline-block;"></span>';
-    html += '<span style="font-size:12px;font-weight:700;color:var(--text-primary);">' + escHTML(planName) + '</span>';
-    html += '<span style="font-size:10px;font-weight:600;color:var(--text-secondary);">' + escHTML(planGroup) + '</span>';
+  if (brResolvedPlanName) {
+    html +=
+      '<div style="display:inline-flex;align-items:center;gap:6px;background:var(--bg-surface-muted);border:1px solid var(--border-light, var(--border-default));border-radius:999px;padding:5px 14px;margin-bottom:12px;">';
+    html +=
+      '<span style="font-size:12px;font-weight:700;color:var(--text-primary);">' +
+      escHTML(brResolvedPlanName) +
+      '</span>';
     html += '</div>';
   }
-  html += '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;">Use the chips above or type any question below — copays, exclusions, waiting periods, x-ray, Rx, and more.</div>';
-  html += '</div>';
-
-  // Quick suggestion buttons — 2 per row, simple
-  var suggestions = [
-    { label: 'What are the copays?', q: 'What are the copays?' },
-    { label: "What's NOT covered?", q: 'What is NOT covered? List all exclusions.' },
-    { label: 'Waiting periods?', q: 'What are the waiting periods and pre-existing condition rules?' },
-    { label: 'X-Ray & Labs?', q: 'Is x-ray and lab work covered?' }
-  ];
-  html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 4px 8px;">';
-  suggestions.forEach(function(s) {
-    html += '<button onclick="brQuick(\'' + escHTML(s.q) + '\')" style="padding:9px 10px;border-radius:8px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);font-size:12px;font-weight:600;color:var(--text-secondary);cursor:pointer;text-align:left;line-height:1.4;">' + escHTML(s.label) + '</button>';
-  });
+  html +=
+    '<div style="font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:14px;">Name the plan, then use the buttons below or type a question. Copays, exclusions, pre-ex, and waiting periods are separate lookups.</div>';
   html += '</div>';
 
   brAddMsg('ai', html);
@@ -1143,7 +1185,7 @@ function brRenderServerAnswer(payload, planName, planSource) {
   var requestId = String((payload && payload.requestId) || '');
   var c = brStatusColor(status);
 
-  var sayBlock = '<span style="color:var(--text-tertiary);">—</span>';
+  var sayBlock = '';
   if (sayThis) {
     var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     sayBlock =
@@ -1410,9 +1452,196 @@ function brSkipSetup() {
 }
 
 var _brSendLock = false;
+
+function brIsVsAnswerable(vs) {
+  return (
+    vs === 'VERIFIED' ||
+    vs === 'VERIFIED_SINGLE_SOURCE' ||
+    vs === 'VERIFIED_MULTI_SOURCE'
+  );
+}
+
+function brLeafSourceLabel(leaf, planName) {
+  var bits = [];
+  if (leaf && leaf.sec) bits.push(String(leaf.sec));
+  if (leaf && leaf.pg != null && leaf.pg !== '') bits.push('p.' + leaf.pg);
+  if (leaf && leaf.src != null && leaf.src !== '') bits.push('src ' + leaf.src);
+  if (!bits.length) return planName || '';
+  return bits.join(' | ');
+}
+
+function brAskWhichPlan() {
+  brAddMsg(
+    'ai',
+    '<div style="color:var(--text-secondary);font-size:13px;">Which plan? Type the plan name so the matching profile can be loaded. Do not guess.</div>'
+  );
+}
+
+function brRenderCandidates(candidates) {
+  var html =
+    '<div style="color:var(--text-secondary);font-size:13px;margin-bottom:8px;">Several plans match. Pick one:</div>';
+  var i;
+  var c;
+  var list = candidates || [];
+  for (i = 0; i < list.length; i++) {
+    c = list[i];
+    html +=
+      '<button type="button" class="br-plan-candidate" data-plan-id="' +
+      escHTML(c.planId) +
+      '" data-plan-name="' +
+      escHTML(c.displayName || c.planId) +
+      '">' +
+      escHTML(c.displayName || c.planId) +
+      '</button>';
+  }
+  brAddMsg('ai', html);
+}
+
+function brRenderIntentLeaves(profile, intent, planName) {
+  var keys = intent.keys || [];
+  var i;
+  var keyPath;
+  var leaf;
+  var answerable;
+  var factLines = [];
+  var sourceParts = [];
+  var answerableCount = 0;
+  var srcLabel;
+  var dns;
+  var n;
+  for (i = 0; i < keys.length; i++) {
+    keyPath = keys[i];
+    leaf =
+      typeof window.brReadLeaf === 'function'
+        ? window.brReadLeaf(profile, keyPath)
+        : null;
+    answerable = !!(leaf && brIsVsAnswerable(leaf.vs));
+    if (answerable) {
+      answerableCount += 1;
+      factLines.push(keyPath + ': ' + String(leaf.v));
+      srcLabel = brLeafSourceLabel(leaf, '');
+      if (srcLabel) sourceParts.push(srcLabel);
+    } else {
+      factLines.push(keyPath + ': NOT CONFIRMED');
+    }
+  }
+  n = 0;
+  dns = profile && profile.do_not_say;
+  if (dns && dns.length) {
+    for (i = 0; i < dns.length; i++) {
+      if (dns[i]) n += 1;
+    }
+  }
+  factLines.push('Do-not-say rules on file for this plan: ' + n);
+  brRenderServerAnswer(
+    {
+      status: answerableCount === keys.length && keys.length > 0 ? 'INFO' : 'VERIFY',
+      fact: factLines.join('\n'),
+      sayThis: '',
+      source: sourceParts.length ? sourceParts.join(' | ') : planName || '',
+      requestId: ''
+    },
+    planName,
+    ''
+  );
+}
+
+function brAnswerWithProfile(planId, planName, query, intentId) {
+  if (typeof window.brLoadProfile !== 'function') {
+    brAddMsg(
+      'ai',
+      '<div style="color:var(--text-secondary);font-size:13px;">Profile loader is not available.</div>'
+    );
+    return;
+  }
+  window.brLoadProfile(planId).then(function (profile) {
+    if (!profile) {
+      brRenderServerAnswer(
+        {
+          status: 'VERIFY',
+          fact: 'NOT CONFIRMED. No held document confirms this. The carrier document is needed.',
+          sayThis: 'I need the carrier document before I can answer that.',
+          source: planName || planId || '',
+          requestId: ''
+        },
+        planName || planId,
+        ''
+      );
+      return;
+    }
+    brResolvedPlanId = profile.plan_id || planId;
+    if (profile.display_name) brResolvedPlanName = profile.display_name;
+
+    var intent = null;
+    if (intentId && typeof window.brGetIntent === 'function') {
+      intent = window.brGetIntent(intentId);
+    } else if (query && typeof window.brMatchIntent === 'function') {
+      intent = window.brMatchIntent(query);
+    }
+
+    var name = brResolvedPlanName || planName || planId;
+    if (!intent) {
+      brShowTyping();
+      brServerAnswer(query, brResolvedPlanId)
+        .catch(function (err) {
+          console.warn('[CHA RAG] First attempt failed, retrying once:', err.message);
+          return brServerAnswer(query, brResolvedPlanId);
+        })
+        .then(function (payload) {
+          brHideTyping();
+          brRenderServerAnswer(payload, name, '');
+        })
+        .catch(function (err) {
+          brHideTyping();
+          console.warn('[CHA RAG] API failed after retry - showing VERIFY:', err.message);
+          brRenderServerAnswer(
+            {
+              status: 'VERIFY',
+              fact: 'Could not reach the benefits server. Try again in a moment.',
+              sayThis: 'Hang on - let me pull the exact plan language.',
+              source: 'CHA Command Center',
+              scope: 'none',
+              requestId: ''
+            },
+            name,
+            ''
+          );
+        });
+      return;
+    }
+
+    brRenderIntentLeaves(profile, intent, name);
+  });
+}
+
+function brOnIntentClick(intentId) {
+  var intent =
+    typeof window.brGetIntent === 'function' ? window.brGetIntent(intentId) : null;
+  var label = intent && intent.label ? intent.label : intentId;
+  brAddMsg('user', escHTML(label));
+  if (!brResolvedPlanId) {
+    _brPendingIntentId = intentId;
+    _brPendingQuery = '';
+    brAskWhichPlan();
+    return;
+  }
+  brAnswerWithProfile(brResolvedPlanId, brResolvedPlanName, '', intentId);
+}
+
+function brOnCandidateClick(planId, planName) {
+  brResolvedPlanId = planId;
+  brResolvedPlanName = planName;
+  var q = _brPendingQuery;
+  var intentId = _brPendingIntentId;
+  _brPendingQuery = '';
+  _brPendingIntentId = null;
+  brAnswerWithProfile(planId, planName, q, intentId);
+}
+
 function brSend() {
   if (_brSendLock) return;
   var inp = document.getElementById('br-input');
+  if (!inp) return;
   var query = inp.value.trim();
   if (!query) return;
   _brSendLock = true;
@@ -1422,19 +1651,44 @@ function brSend() {
 
   inp.value = '';
   inp.style.height = 'auto';
-  document.getElementById('br-send').disabled = true;
+  var sendBtn = document.getElementById('br-send');
+  if (sendBtn) sendBtn.disabled = true;
 
   brAddMsg('user', escHTML(query));
 
-  // Benefits Reference always uses /api/br-answer (server RAG). Client Groq key is not required for this panel.
-  if (brActivePlan) {
-    brAIAnswer(query, brActivePlan.id);
-  } else {
-    brAddMsg('ai', '<div style="color:var(--text-secondary)">Please select a plan first.</div>');
+  function afterMatch(match) {
+    if (!match) match = { status: 'NONE' };
+    if (match.status === 'EXACT') {
+      brResolvedPlanId = match.planId;
+      var intentId = _brPendingIntentId;
+      _brPendingIntentId = null;
+      brAnswerWithProfile(match.planId, match.planId, query, intentId);
+    } else if (match.status === 'AMBIGUOUS') {
+      _brPendingQuery = query;
+      brRenderCandidates(match.candidates || []);
+    } else if (brResolvedPlanId) {
+      brAnswerWithProfile(brResolvedPlanId, brResolvedPlanName, query, _brPendingIntentId);
+      _brPendingIntentId = null;
+    } else {
+      brAskWhichPlan();
+    }
+    if (sendBtn) sendBtn.disabled = false;
+    if (inp) inp.focus();
   }
 
-  document.getElementById('br-send').disabled = false;
-  document.getElementById('br-input').focus();
+  function runMatch() {
+    var match = { status: 'NONE' };
+    if (typeof window.brMatchPlan === 'function') {
+      match = window.brMatchPlan(query);
+    }
+    afterMatch(match);
+  }
+
+  if (typeof window.brLoadPlanAliases === 'function') {
+    window.brLoadPlanAliases().then(runMatch).catch(runMatch);
+  } else {
+    runMatch();
+  }
 }
 
 // ── STRUCTURED ANSWER ENGINE ──────────────────────────────────────────

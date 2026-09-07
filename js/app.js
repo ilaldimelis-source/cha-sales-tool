@@ -1743,10 +1743,7 @@ function _toggleBenefitsSidebar() {
   }
   function tryInit() {
     var bar = document.getElementById('br-plan-bar');
-    if (!bar) {
-      setTimeout(tryInit, 400);
-      return;
-    }
+    if (!bar) return;
     var obs = new MutationObserver(applyGroupAttrs);
     obs.observe(bar, { childList: true });
     // Apply to anything already rendered
