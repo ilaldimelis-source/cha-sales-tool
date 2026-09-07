@@ -1185,7 +1185,7 @@ function brRenderServerAnswer(payload, planName, planSource) {
   var requestId = String((payload && payload.requestId) || '');
   var c = brStatusColor(status);
 
-  var sayBlock = '<span style="color:var(--text-tertiary);">—</span>';
+  var sayBlock = '';
   if (sayThis) {
     var safeText = sayThis.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
     sayBlock =
@@ -1497,70 +1497,53 @@ function brRenderCandidates(candidates) {
   brAddMsg('ai', html);
 }
 
-function brRenderDoNotSay(profile, planName) {
-  var list = profile && profile.do_not_say;
-  if (!list || !list.length) return;
-  var lines = [];
-  var i;
-  for (i = 0; i < list.length; i++) {
-    if (list[i]) lines.push(String(list[i]));
-  }
-  if (!lines.length) return;
-  brRenderServerAnswer(
-    {
-      status: 'INFO',
-      fact: lines.join('\n'),
-      sayThis: 'Do not say the lines above.',
-      source: planName || '',
-      requestId: ''
-    },
-    planName,
-    ''
-  );
-}
-
 function brRenderIntentLeaves(profile, intent, planName) {
   var keys = intent.keys || [];
   var i;
   var keyPath;
   var leaf;
   var answerable;
+  var factLines = [];
+  var sourceParts = [];
+  var answerableCount = 0;
+  var srcLabel;
+  var dns;
+  var n;
   for (i = 0; i < keys.length; i++) {
     keyPath = keys[i];
     leaf =
       typeof window.brReadLeaf === 'function'
         ? window.brReadLeaf(profile, keyPath)
         : null;
-    answerable = leaf && brIsVsAnswerable(leaf.vs);
+    answerable = !!(leaf && brIsVsAnswerable(leaf.vs));
     if (answerable) {
-      brRenderServerAnswer(
-        {
-          status: 'INFO',
-          fact: keyPath + ': ' + String(leaf.v),
-          sayThis: String(leaf.v),
-          source: brLeafSourceLabel(leaf, planName),
-          requestId: ''
-        },
-        planName,
-        ''
-      );
+      answerableCount += 1;
+      factLines.push(keyPath + ': ' + String(leaf.v));
+      srcLabel = brLeafSourceLabel(leaf, '');
+      if (srcLabel) sourceParts.push(srcLabel);
     } else {
-      brRenderServerAnswer(
-        {
-          status: 'VERIFY',
-          fact:
-            'NOT CONFIRMED (' +
-            keyPath +
-            '). No held document confirms this. The carrier document is needed.',
-          sayThis: 'I need the carrier document before I can answer that.',
-          source: planName || '',
-          requestId: ''
-        },
-        planName,
-        ''
-      );
+      factLines.push(keyPath + ': NOT CONFIRMED');
     }
   }
+  n = 0;
+  dns = profile && profile.do_not_say;
+  if (dns && dns.length) {
+    for (i = 0; i < dns.length; i++) {
+      if (dns[i]) n += 1;
+    }
+  }
+  factLines.push('Do-not-say rules on file for this plan: ' + n);
+  brRenderServerAnswer(
+    {
+      status: answerableCount === keys.length && keys.length > 0 ? 'INFO' : 'VERIFY',
+      fact: factLines.join('\n'),
+      sayThis: '',
+      source: sourceParts.length ? sourceParts.join(' | ') : planName || '',
+      requestId: ''
+    },
+    planName,
+    ''
+  );
 }
 
 function brAnswerWithProfile(planId, planName, query, intentId) {
@@ -1607,7 +1590,6 @@ function brAnswerWithProfile(planId, planName, query, intentId) {
         .then(function (payload) {
           brHideTyping();
           brRenderServerAnswer(payload, name, '');
-          brRenderDoNotSay(profile, name);
         })
         .catch(function (err) {
           brHideTyping();
@@ -1624,13 +1606,11 @@ function brAnswerWithProfile(planId, planName, query, intentId) {
             name,
             ''
           );
-          brRenderDoNotSay(profile, name);
         });
       return;
     }
 
     brRenderIntentLeaves(profile, intent, name);
-    brRenderDoNotSay(profile, name);
   });
 }
 
