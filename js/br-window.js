@@ -130,12 +130,24 @@
     var g = readGeom();
     if (!g) return;
     var preferredW;
-    if (isFiniteNumber(preferredOverride)) {
+    if (
+      isFiniteNumber(preferredOverride) &&
+      preferredOverride < WIDE_THRESHOLD
+    ) {
       preferredW = preferredOverride;
     } else {
       var prev = readStoredObject();
-      if (prev && isFiniteNumber(prev.preferredW)) preferredW = prev.preferredW;
-      else preferredW = g.w;
+      if (
+        prev &&
+        isFiniteNumber(prev.preferredW) &&
+        prev.preferredW < WIDE_THRESHOLD
+      ) {
+        preferredW = prev.preferredW;
+      } else if (g.w < WIDE_THRESHOLD) {
+        preferredW = g.w;
+      } else {
+        preferredW = DEFAULT_W;
+      }
     }
     chaSet(STORE_KEY, {
       x: g.x,
@@ -154,7 +166,7 @@
   function persistAfterChange(widthAtStart) {
     var g = readGeom();
     if (!g) return;
-    if (g.w !== widthAtStart) persistGeom(g.w);
+    if (g.w < WIDE_THRESHOLD) persistGeom(g.w);
     else persistGeom();
   }
 
@@ -417,7 +429,8 @@
     } else if (
       stored &&
       isFiniteNumber(stored.preferredW) &&
-      stored.preferredW >= MIN_W
+      stored.preferredW >= MIN_W &&
+      stored.preferredW < WIDE_THRESHOLD
     ) {
       preferredW = stored.preferredW;
       newW = stored.preferredW;
