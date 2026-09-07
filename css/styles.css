@@ -2798,13 +2798,6 @@ textarea:focus-visible {
   color: #fbbf24;
 }
 
-/* Combined filter + plan nav */
-.br-nav-section {
-  background: #fff;
-  border-bottom: 1px solid #e2e8f0;
-  flex-shrink: 0;
-}
-
 .br-dot {
   width: 6px;
   height: 6px;
@@ -2861,204 +2854,6 @@ textarea:focus-visible {
 .br-close-btn:hover {
   color: #fff;
   background: #e2e8f0;
-}
-
-.br-filter-bar {
-  background: #fff;
-  padding: 8px 12px;
-  border-bottom: 1px solid #e2e8f0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  flex-shrink: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.br-filter-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.br-filter-btn {
-  padding: 5px 16px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  border: 1.5px solid #e2e8f0;
-  transition: all 0.15s;
-  font-family: var(--font-ui);
-  background: #fff;
-  color: #64748b;
-  white-space: nowrap;
-  flex-shrink: 0;
-  letter-spacing: 0.03em;
-}
-
-.br-filter-btn.active {
-  background: #5175f1;
-  color: #fff;
-  border-color: #5175f1;
-}
-
-.br-filter-btn:hover:not(.active) {
-  border-color: #5175f1;
-  color: #5175f1;
-}
-
-.br-plan-bar {
-  background: #fff;
-  padding: 8px 12px 10px;
-  border-bottom: 1px solid #e2e8f0;
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-  flex-wrap: nowrap;
-  overflow: auto hidden;
-
-  /* Visible thin scrollbar so agents know they can scroll to see all plans */
-  scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
-  -webkit-overflow-scrolling: touch;
-}
-
-.br-plan-bar::-webkit-scrollbar {
-  height: 5px;
-}
-
-.br-plan-bar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.br-plan-bar::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 3px;
-}
-
-.br-plan-bar::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-.br-plan-btn {
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1px solid #e2e8f0;
-  transition: all 0.15s;
-  font-family: var(--font-ui);
-  background: #fff;
-  color: #374151;
-  white-space: nowrap;
-  flex-shrink: 0;
-  width: auto;
-  min-width: unset;
-  max-width: none;
-  overflow: visible;
-  text-overflow: unset;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* Color-coded plan type badge: small dot before the plan name.
-   data-group is added by app.js MutationObserver reading from BR_PLANS. */
-.br-plan-btn[data-group]::before {
-  content: '';
-  display: inline-block;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  flex-shrink: 0;
-  background: #94a3b8;
-}
-
-.br-plan-btn[data-group='MEC']::before {
-  background: #22c55e;
-}
-
-.br-plan-btn[data-group='STM']::before {
-  background: #5b8def;
-}
-
-.br-plan-btn[data-group='Limited']::before {
-  background: #f59e0b;
-}
-
-.br-plan-btn.active {
-  background: #1e293b;
-  color: #fff;
-  border-color: #1e293b;
-  font-weight: 700;
-}
-
-.br-plan-btn:hover:not(.active) {
-  background: #f1f5f9;
-  color: #1e293b;
-}
-
-.br-chips {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 5px;
-  padding: 8px 10px;
-  border-bottom: 1px solid #e2e8f0;
-  flex-shrink: 0;
-  background: var(--cha-bg-muted);
-}
-
-.br-chip {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: 600;
-  padding: 8px 6px;
-  border-radius: 8px;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-top: 3px solid #e2e8f0;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-  text-align: center;
-}
-
-.br-chip:hover {
-  background: #f1f5f9;
-  transform: translateY(-1px);
-}
-
-.br-chip svg {
-  color: #64748b;
-}
-
-.br-chip.cop {
-  border-top-color: #22c55e;
-}
-
-.br-chip.exc {
-  border-top-color: #ef4444;
-}
-
-.br-chip.drg {
-  border-top-color: #a78bfa;
-}
-
-.br-chip.net {
-  border-top-color: #0ea5e9;
-}
-
-.br-chip.wai {
-  border-top-color: #f59e0b;
-}
-
-.br-chip.xry {
-  border-top-color: #06b6d4;
 }
 
 .br-msgs {
@@ -3187,39 +2982,6 @@ textarea:focus-visible {
 
 .br-tdot:nth-child(3) {
   animation-delay: 0.4s;
-}
-
-.br-quick-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 8px 12px 6px;
-  border-top: 1px solid #e2e8f0;
-  background: var(--cha-bg-muted);
-  flex-shrink: 0;
-}
-
-.br-qbtn {
-  font-family: var(--font-ui);
-  font-size: 11px;
-  font-weight: var(--fw-semibold, 600);
-  color: #334155;
-  background: #fff;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 6px 10px;
-  cursor: pointer;
-  line-height: 1.25;
-  transition:
-    background 0.15s,
-    border-color 0.15s,
-    color 0.15s;
-}
-
-.br-qbtn:hover {
-  border-color: #5b8def;
-  color: #1e40af;
-  background: rgb(91, 141, 239, 0.06);
 }
 
 .br-input-bar {
@@ -3444,12 +3206,6 @@ a[href='#main-content']:focus {
   .fab-btn {
     min-width: 44px;
     min-height: 44px;
-  }
-
-  .br-chip {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
   }
 }
 
@@ -4173,12 +3929,6 @@ button:active {
     margin-bottom: 8px;
   }
 
-  .br-filter-btn,
-  .br-plan-btn {
-    min-height: 44px;
-    font-size: 12px;
-  }
-
   .page-subtabs .stab {
     font-size: 12px;
     padding: 8px 14px;
@@ -4259,11 +4009,6 @@ button:active {
 
   .nb {
     min-height: 48px;
-  }
-
-  .br-chip {
-    font-size: 13px;
-    padding: 10px 8px;
   }
 
   .ps-card {
@@ -10016,8 +9761,6 @@ button {
 }
 
 .stb,
-.br-chip,
-.br-qbtn,
 .comp-btn,
 .nb {
   transition:
