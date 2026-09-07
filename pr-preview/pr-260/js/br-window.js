@@ -71,6 +71,7 @@
     root.style.removeProperty('--br-y');
     root.style.removeProperty('--br-w');
     root.style.removeProperty('--br-h');
+    root.classList.remove('br-window-ready');
   }
 
   function clampGeom(x, y, w, h) {
@@ -111,6 +112,7 @@
     if (!g) g = defaultGeom();
     else g = clampGeom(g.x, g.y, g.w, g.h);
     applyGeom(g.x, g.y, g.w, g.h);
+    document.documentElement.classList.add('br-window-ready');
   }
 
   function tryCapture(el, pointerId) {
