@@ -3,9 +3,69 @@
 (function (global) {
   'use strict';
 
-  var ALIAS_URL = 'data/plan-aliases.json?v=1788810779609';
+  var ALIAS_URL = 'data/plan-aliases.json?v=1788811424309';
   var _cache = null;
   var _loading = null;
+  var GENERIC_TOKENS = {
+    care: true,
+    health: true,
+    plus: true,
+    max: true,
+    gap: true,
+    support: true,
+    complete: true,
+    prime: true,
+    pass: true,
+    express: true,
+    tools: true,
+    direct: true,
+    primary: true,
+    advanced: true,
+    critical: true,
+    term: true,
+    life: true,
+    select: true,
+    assist: true,
+    pro: true,
+    secure: true,
+    essential: true,
+    traditional: true,
+    lite: true,
+    dental: true,
+    vision: true,
+    wellness: true,
+    illness: true,
+    financial: true,
+    american: true,
+    national: true,
+    insurance: true,
+    medical: true,
+    first: true,
+    choice: true,
+    guard: true,
+    shield: true,
+    protect: true,
+    discount: true,
+    plan: true,
+    membership: true,
+    short: true,
+    urgent: true,
+    virtual: true,
+    live: true,
+    well: true,
+    good: true,
+    partner: true,
+    simple: true,
+    new: true,
+    silver: true,
+    hi: true,
+    add: true,
+    md: true
+  };
+
+  function isGenericToken(tok) {
+    return !!GENERIC_TOKENS[tok];
+  }
 
   function isDigitToken(tok) {
     return /^[0-9]+$/.test(tok);
@@ -122,16 +182,30 @@
     var acc;
     var ft;
     var matched = 0;
+    var matchedTokens = [];
     for (i = 0; i < qTokens.length; i++) used[i] = false;
     for (i = 0; i < familyTokens.length; i++) {
       ft = familyTokens[i];
       var found = false;
+      var exactHit = false;
       for (j = 0; j < qTokens.length; j++) {
         if (used[j]) continue;
-        if (tokensMatch(ft, qTokens[j])) {
+        if (qTokens[j] === ft) {
           used[j] = true;
           found = true;
+          exactHit = true;
           break;
+        }
+      }
+      if (!found) {
+        for (j = 0; j < qTokens.length; j++) {
+          if (used[j]) continue;
+          if (tokensMatch(ft, qTokens[j])) {
+            used[j] = true;
+            found = true;
+            exactHit = false;
+            break;
+          }
         }
       }
       if (!found) {
@@ -141,6 +215,7 @@
           if (acc === ft) {
             used[j] = true;
             found = true;
+            exactHit = true;
             break;
           }
           for (k = j + 1; k < qTokens.length; k++) {
@@ -150,6 +225,7 @@
               used[j] = true;
               for (var u = j; u <= k; u++) used[u] = true;
               found = true;
+              exactHit = true;
               break;
             }
             if (acc.length > ft.length) break;
@@ -157,10 +233,14 @@
           if (found) break;
         }
       }
-      if (found) matched += 1;
+      if (found) {
+        matched += 1;
+        matchedTokens.push({ token: ft, exact: exactHit });
+      }
     }
     return {
       matched: matched,
+      matchedTokens: matchedTokens,
       all: familyTokens.length > 0 && matched === familyTokens.length,
       used: used
     };
@@ -199,6 +279,18 @@
     var ft = plan.family_tokens || [];
     var cons = consumeFamily(ft, qTokens);
     if (cons.matched <= 0) return null;
+    var hasSpecific = false;
+    var mi;
+    for (mi = 0; mi < cons.matchedTokens.length; mi++) {
+      if (
+        cons.matchedTokens[mi].exact &&
+        !isGenericToken(cons.matchedTokens[mi].token)
+      ) {
+        hasSpecific = true;
+        break;
+      }
+    }
+    if (!hasSpecific) return null;
     var pool = leftoverTokens(qTokens, cons.used);
     var vt = plan.variant_tokens || [];
     var hits = variantHitCount(vt, pool);
