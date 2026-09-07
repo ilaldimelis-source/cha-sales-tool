@@ -12,6 +12,9 @@
   var STEP = 12;
   var STEP_SHIFT = 48;
   var DRAG_CLASS = 'br-window-dragging';
+  var STORE_KEY = 'cha_br_window';
+  var WIDE_W = 880;
+  var WIDE_THRESHOLD = 740;
   var DIRS = ['n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'];
   var LABELS = {
     n: 'Resize top',
@@ -102,6 +105,59 @@
     return clampGeom(x, y, w, h);
   }
 
+  function isFiniteNumber(n) {
+    return typeof n === 'number' && isFinite(n);
+  }
+
+  function readStoredObject() {
+    if (typeof chaGet !== 'function') return null;
+    var raw = chaGet(STORE_KEY, null);
+    if (!raw || typeof raw !== 'object') return null;
+    if (
+      !isFiniteNumber(raw.x) ||
+      !isFiniteNumber(raw.y) ||
+      !isFiniteNumber(raw.w) ||
+      !isFiniteNumber(raw.h)
+    ) {
+      return null;
+    }
+    return raw;
+  }
+
+  function persistGeom(preferredOverride) {
+    if (!isDesktop()) return;
+    if (typeof chaSet !== 'function') return;
+    var g = readGeom();
+    if (!g) return;
+    var preferredW;
+    if (isFiniteNumber(preferredOverride)) {
+      preferredW = preferredOverride;
+    } else {
+      var prev = readStoredObject();
+      if (prev && isFiniteNumber(prev.preferredW)) preferredW = prev.preferredW;
+      else preferredW = g.w;
+    }
+    chaSet(STORE_KEY, {
+      x: g.x,
+      y: g.y,
+      w: g.w,
+      h: g.h,
+      preferredW: preferredW
+    });
+  }
+
+  function clearStoredGeom() {
+    if (typeof chaSet !== 'function') return;
+    chaSet(STORE_KEY, null);
+  }
+
+  function persistAfterChange(widthAtStart) {
+    var g = readGeom();
+    if (!g) return;
+    if (g.w !== widthAtStart) persistGeom(g.w);
+    else persistGeom();
+  }
+
   function syncViewport() {
     if (!isDesktop()) {
       clearGeom();
@@ -109,8 +165,13 @@
       return;
     }
     var g = readGeom();
-    if (!g) g = defaultGeom();
-    else g = clampGeom(g.x, g.y, g.w, g.h);
+    if (!g) {
+      g = readStoredObject();
+      if (g) g = clampGeom(g.x, g.y, g.w, g.h);
+      else g = defaultGeom();
+    } else {
+      g = clampGeom(g.x, g.y, g.w, g.h);
+    }
     applyGeom(g.x, g.y, g.w, g.h);
     document.documentElement.classList.add('br-window-ready');
   }
@@ -131,11 +192,14 @@
       document.documentElement.classList.remove(DRAG_CLASS);
       return;
     }
+    var didChange = dragMoved;
+    var widthAtStart = startW;
     mode = null;
     dir = null;
     document.documentElement.classList.remove(DRAG_CLASS);
-    if (suppress && dragMoved) queueSwallowClick();
+    if (suppress && didChange) queueSwallowClick();
     dragMoved = false;
+    if (didChange) persistAfterChange(widthAtStart);
   }
 
   function queueSwallowClick() {
@@ -272,6 +336,7 @@
     endInteraction(false);
     var g = defaultGeom();
     applyGeom(g.x, g.y, g.w, g.h);
+    clearStoredGeom();
   }
 
   function onResizeDown(e, handleDir) {
@@ -335,6 +400,34 @@
     startW = g.w;
     startH = g.h;
     resizeFrom(handleDir, dx, dy);
+    persistAfterChange(startW);
+  }
+
+  function onWidthToggle() {
+    if (!isDesktop()) return;
+    var g = readGeom();
+    if (!g) g = defaultGeom();
+    var stored = readStoredObject();
+    var right = g.x + g.w;
+    var newW;
+    var preferredW;
+    if (g.w < WIDE_THRESHOLD) {
+      preferredW = g.w;
+      newW = WIDE_W;
+    } else if (
+      stored &&
+      isFiniteNumber(stored.preferredW) &&
+      stored.preferredW >= MIN_W
+    ) {
+      preferredW = stored.preferredW;
+      newW = stored.preferredW;
+    } else {
+      preferredW = DEFAULT_W;
+      newW = DEFAULT_W;
+    }
+    var next = clampGeom(right - newW, g.y, newW, g.h);
+    applyGeom(next.x, next.y, next.w, next.h);
+    persistGeom(preferredW);
   }
 
   function insertHandles() {
@@ -375,6 +468,10 @@
     if (head) {
       head.addEventListener('pointerdown', onHeadDown);
       head.addEventListener('dblclick', onHeadDblClick);
+      var widthBtn = head.querySelector('.br-width-toggle');
+      if (widthBtn) {
+        widthBtn.addEventListener('click', onWidthToggle);
+      }
     }
     document.addEventListener('pointermove', onMove);
     document.addEventListener('pointerup', onUp);
