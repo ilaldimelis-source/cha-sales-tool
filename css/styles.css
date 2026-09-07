@@ -10461,7 +10461,7 @@ body {
 }
 
 @media (width > 768px) {
-  #br-panel {
+  html.br-window-ready #br-panel {
     left: var(--br-x);
     top: var(--br-y);
     width: var(--br-w);
@@ -10469,6 +10469,9 @@ body {
     right: auto;
     max-width: none;
     max-height: none;
+  }
+
+  #br-panel {
     transition:
       opacity 0.2s ease,
       visibility 0.2s ease,
@@ -10478,7 +10481,7 @@ body {
       height 0.15s ease;
   }
 
-  html.br-window-dragging #br-panel {
+  html.br-window-ready.br-window-dragging #br-panel {
     transition:
       opacity 0.2s ease,
       visibility 0.2s ease;
