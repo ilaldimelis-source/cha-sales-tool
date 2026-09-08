@@ -1,0 +1,2255 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Subject to Deductible and Coinsurance",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "er": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance_risks": [
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Quoting the office visit benefit without the $2,000 combined cap, or quoting one waiting period and letting the client assume it applies to everything.",
+      "do_not_say": "Do not describe office visits and urgent care as separately limited - the cap is shared. Do not state a single waiting period for the plan.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-019",
+      "safe_wording": "Office and urgent care visits share a combined $2,000 limit for the coverage period, and that includes anything else done during those visits. On waiting periods: 5 days for illness, 30 days for cancer, and none at all for injuries.",
+      "severity": "",
+      "source": {
+        "pg": 29669,
+        "sec": ")",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Office and urgent care visits share a COMBINED maximum benefit of $2,000 per coverage period, including additional services rendered during those visits. Waiting periods are 5 days for sickness, 30 days for cancer, and none for injuries.",
+      "verify_before_saying": "Always. The page itself instructs the agent to verify the elected policy maximum on every sale."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-096",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A 3.5% credit-card or ACH processing fee applies to every payment and appears only in the platform TERMS panel, which more than half the product pages do not display at all.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Do not tell a client a scheduled benefit amount will be paid in full without qualifying it by the URC limit.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-097",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A platform-level usual, reasonable and customary cap applies on top of every product's stated benefits and appears only in the TERMS panel.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Every recorded verification must cover all four elements. Omitting the recurring monthly amount or the automatic draft is a breach of the platform agreement, not only a compliance risk.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-098",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "The platform agreement requires an electronic signature or a recorded verification script with every sale, and specifies the four things the member must be shown to understand: the product, its benefits, the initial payment, and the recurring monthly amount drafted automatically.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Disclose to any client on a tight account that a single failed draft can end the plan.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-099",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "A dishonoured payment can result in forfeiture of the plan with no liability on anyone's part, expressly including where the dishonour was inadvertent or without cause.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never describe NEO as the insurance company. Name the carrier for the specific product.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-100",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "MEDIUM",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=52630&id=974021"
+      },
+      "verified_fact": "Neo Insurance Solutions is an agency and platform, not the insurer, and disclaims liability for agents' conduct and representations.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Disclose the 3.5% card/ACH processing fee on every sale regardless of which page the client was shown. Do not rely on the panel a given product page happens to display.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-110",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.1enrollment.com/information/product.cfm?page=26837&id=974021"
+      },
+      "verified_fact": "The storefront serves two different versions of the NEO enrolment agreement. The shorter one, on the MDLive pages, omits the 3.5% processing fee, the contact and electronic-document consents, the HIPAA statement and the member signature block.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Do not tell a client 'the terms are on the page'. Establish which agreement governs their enrolment, and disclose the 3.5% processing fee regardless of which panel their product displays.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-128",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Four different NEO enrolment agreements are in simultaneous circulation on the storefront, and most product pages show none at all.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Treat every figure in it as requiring confirmation against a current certificate before it is quoted on a recorded call.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-141",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf"
+      },
+      "verified_fact": "The only document source for two products live for sale today is a brochure copyrighted February 2020 whose internal PDF title is a December 2018 PowerPoint export.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Three years is longer than most clients expect. Disclose the length AND the manifestation prong: a condition never diagnosed can still be pre-existing.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-142",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf"
+      },
+      "verified_fact": "The pre-existing condition definition reaches back 36 months on two prongs - treatment received, and symptoms that would have caused an ordinarily prudent person to seek treatment. The second prong catches undiagnosed conditions.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never present the rider as covering pre-existing conditions. It only carries forward coverage a member already earned in a previous term.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-143",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf"
+      },
+      "verified_fact": "The Pre-Existing Waiver Rider waives conditions that were covered during a PRIOR coverage period. It does not remove the 36-month lookback for a new applicant.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "A client buying 36 months pays the deductible three times. State this before close.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-144",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf"
+      },
+      "verified_fact": "On a 36-month consecutive-term sale the deductible, coinsurance and all benefit limits reset with each 12 month block.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Never describe the Limited plan as paying 80% after the deductible. On most benefits it pays a fixed dollar amount and the client owes the rest. Name the cap for the benefit being discussed.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-145",
+      "safe_wording": "",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf"
+      },
+      "verified_fact": "On the Limited plan almost every major benefit is capped in dollars: $1,500 a day room rate, $2,000 a day ICU, $5,000 per surgery, $1,500 outpatient surgery per day, $250 per ER visit, $2,000 a year for office and urgent care visits combined, $50,000 for transplants. The Traditional plan runs these through the deductible and coinsurance instead.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Explain balance-billing exposure: a facility billing above 150% of Medicare can pursue the member for the difference.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-146",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf"
+      },
+      "verified_fact": "Facility charges are paid up to 150% of Medicare allowable charges, not up to billed charges or a network discount.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Disclose the auto-continuation and that the rate can change between terms.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-147",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf"
+      },
+      "verified_fact": "On a consecutive-term enrolment, subsequent terms begin automatically and the member is emailed a new monthly rate with an opportunity to opt out.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Present both as services attached to the policy, never as benefits of it.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-148",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "MEDIUM",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf"
+      },
+      "verified_fact": "RightWay patient advocacy is expressly not insurance and provides no coverage. PHCS is a discount network that does not process claims and is not affiliated with either underwriter.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
+    }
+  ],
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "SmartHealth Short Term Medical - Limited",
+  "do_not_say": [
+    "A client buying 36 months pays the deductible three times. State this before close.",
+    "Disclose the 3.5% card/ACH processing fee on every sale regardless of which page the client was shown. Do not rely on the panel a given product page happens to display.",
+    "Disclose the auto-continuation and that the rate can change between terms.",
+    "Disclose to any client on a tight account that a single failed draft can end the plan.",
+    "Do not describe office visits and urgent care as separately limited - the cap is shared. Do not state a single waiting period for the plan.",
+    "Do not tell a client 'the terms are on the page'. Establish which agreement governs their enrolment, and disclose the 3.5% processing fee regardless of which panel their product displays.",
+    "Do not tell a client a scheduled benefit amount will be paid in full without qualifying it by the URC limit.",
+    "Every recorded verification must cover all four elements. Omitting the recurring monthly amount or the automatic draft is a breach of the platform agreement, not only a compliance risk.",
+    "Explain balance-billing exposure: a facility billing above 150% of Medicare can pursue the member for the difference.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never describe NEO as the insurance company. Name the carrier for the specific product.",
+    "Never describe the Limited plan as paying 80% after the deductible. On most benefits it pays a fixed dollar amount and the client owes the rest. Name the cap for the benefit being discussed.",
+    "Never present the rider as covering pre-existing conditions. It only carries forward coverage a member already earned in a previous term.",
+    "Never type or describe a product from its name. Read the Info page.",
+    "Present both as services attached to the policy, never as benefits of it.",
+    "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
+    "Three years is longer than most clients expect. Disclose the length AND the manifestation prong: a condition never diagnosed can still be pre-existing.",
+    "Treat every figure in it as requiring confirmation against a current certificate before it is quoted on a recorded call.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
+  ],
+  "doc_completeness": "PARTIAL_DOCS",
+  "documentation": {
+    "brochure": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "18 to 64 1/2; child coverage policies from 2-17",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "SmartHealth STM",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 2,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "NCE - the National Congress of Employers",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 1,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "American Financial Security Life Insurance Company (AFSLIC) and Standard Life And Casualty Insurance Company",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 3,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "PHCS Network (Private Healthcare Systems). Insureds may be treated in or out of network. Approximately 900,000 contracted providers",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 7,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "36 months immediately preceding the Covered Person's Effective Date, on both the treatment prong and the manifestation prong",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
+      "gov": [
+        "smarthealth-stm-limited",
+        "smarthealth-stm-traditional"
+      ],
+      "pg": null,
+      "sec": "Information tab",
+      "src": 82,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29669&id=767303",
+      "v": "An optional Pre-Existing Waiver Rider is available where offered. The page states that if selected the rider can waive certain waiting periods in subsequent terms and helps avoid re-qualifying for another term when conditions were covered during the prior coverage period.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "5 days for sickness, 30 days for cancer; no waiting period for injuries",
+      "vs": "CONFLICTED"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "field": "limitations.waiting_period_other",
+      "source_ids": [
+        82,
+        103
+      ]
+    },
+    {
+      "conflict_id": "C-059",
+      "field": "emergency_room_additional_deductible",
+      "source_ids": []
+    },
+    {
+      "conflict_id": "C-060",
+      "field": "pre_existing_treatment",
+      "source_ids": []
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-093",
+      "what_is_unknown": "Which NEO products carry the platform TERMS panel, and which do not?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-094",
+      "what_is_unknown": "What is the amount of the one-time association membership processing fee?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-095",
+      "what_is_unknown": "Does 'this coverage is not renewable or extendable' apply to every NEO product or only to short-term products?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-134",
+      "what_is_unknown": "Which underwriter writes in which state?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-135",
+      "what_is_unknown": "What is the Urgent Care Facility Additional Deductible amount?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-136",
+      "what_is_unknown": "Does the Joint/Tendon Surgery benefit cover joints other than the knees?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-137",
+      "what_is_unknown": "What are the SmartHealth premium rates?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-138",
+      "what_is_unknown": "Is there a current version of this brochure?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    }
+  ],
+  "plan_id": "smarthealth-stm-limited",
+  "plan_variant": "Limited",
+  "profile_confidence": "MEDIUM",
+  "profile_confidence_reasons": [
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "addon.rightway",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "addon.rightway.disclaimer",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.aids",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.ambulance",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.anesthesia",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.appendectomy",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.assistant_surgeon",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.average_standard_room_rate",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.bone_density_testing",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.emergency_room_additional_deductible",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.emergency_room_treatment",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.gallbladder_surgery",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.home_health_care",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.hospice_care",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.hospital_intensive_or_critical_care",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.in_hospital_physician_visits",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.joint_tendon_surgery",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.kidney_stones",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.knee_injury_or_disorder",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.organ_tissue_bone_marrow_transplants",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.other_outpatient_miscellaneous",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.outpatient_hospital_miscellaneous",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.outpatient_hospital_surgery_or_asc",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.physician_office_and_urgent_care",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.skilled_nursing_facility",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.surgical_services",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.therapy_services",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.tmj",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit.urgent_care_additional_deductible",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit_basis",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefit_reset",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "carrier.state_split",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "coinsurance",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "coinsurance_limit",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "compliance.dollar_limits",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "compliance.not_aca",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "compliance.open_enrollment",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "compliance.pre_existing_not_covered",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "consecutive_terms",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "copay.physician_office_and_urgent_care",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "copay.specialist",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "copay.wellness",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "coverage_effective_date",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "coverage_period_maximum_options",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "deductible_options",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "exclusion_count",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "length_of_coverage",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "network.disclaimer",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "network.facility_charges",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "pre_existing.waiver_rider",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "identity.carrier",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "identity.association",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "identity.network",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "eligibility.age_range",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "limitations.waiting_period_other",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    }
+  ],
+  "status": "ACTIVE",
+  "unmapped": {
+    "addon.rightway": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 3,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "RightWay Healthcare patient advocacy - a team of Patient Advisors who help members navigate healthcare",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "addon.rightway.disclaimer": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 3,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "The providers listed are not affiliated with either underwriter; the discounts and services are not insurance and do not provide coverage",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.aids": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $10,000 per Coverage Period for all Covered Expenses including Inpatient Hospital, Surgical and Outpatient Miscellaneous Medical Covered Expenses",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.ambulance": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $500 per trip ground; up to $1,000 per trip air",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.anesthesia": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $1,000 per Surgery for all anesthesia services combined, and $2,000 per Coverage Period",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.appendectomy": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $3,000 per Coverage Period for all Covered Expenses including Inpatient Hospital, Surgical and Outpatient Miscellaneous Medical Covered Expenses",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.assistant_surgeon": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $1,000 per Surgery for all Assistant Surgeon services combined and $2,000 per Coverage Period",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.average_standard_room_rate": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $1,500 per day including all Inpatient miscellaneous medical expenses except for professional fees",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.bone_density_testing": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $150 per Coverage Period",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.emergency_room_additional_deductible": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "No Additional Deductible",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.emergency_room_treatment": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Subject to the Emergency Room Additional Deductible, then Deductible and Coinsurance; the Additional Deductible is waived if admitted within 24 hours of Emergency Room Treatment. Up to $250 per visit including the Emergency Room Physician charge, observation and all miscellaneous medical expenses received during the Emergency Room visit",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.gallbladder_surgery": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $3,000 per Coverage Period for all Covered Expenses including Inpatient Hospital, Surgical and Outpatient Miscellaneous Medical Covered Expenses",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.home_health_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $30 per day and a maximum of 30 days per Coverage Period",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.hospice_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $5,000 per Coverage Period",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.hospital_intensive_or_critical_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $2,000 per day including all Inpatient miscellaneous medical expenses except for professional fees",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.in_hospital_physician_visits": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $50 per day up to a maximum $500 per Coverage Period",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.joint_tendon_surgery": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $3,000 per Coverage Period for all Covered Expenses including Inpatient Hospital, Surgical and Outpatient Miscellaneous Medical Covered Expenses for both left and right knees",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.kidney_stones": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "$3,000 per Coverage Period for all Covered Expenses including Inpatient Hospital, Surgical and Outpatient Miscellaneous Medical Covered Expenses",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.knee_injury_or_disorder": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "$3,000 per Coverage Period for all Covered Expenses including Inpatient Hospital, Surgical and Outpatient Miscellaneous Medical Covered Expenses for both left and right knees",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.organ_tissue_bone_marrow_transplants": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $50,000 per Coverage Period for all Covered Expenses including Inpatient Hospital, Surgical and Outpatient Miscellaneous Medical Covered Expenses",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.other_outpatient_miscellaneous": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Subject to Deductible and Coinsurance",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.outpatient_hospital_miscellaneous": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $1,500 excluding Outpatient surgery per Coverage Period for all Eligible Expenses combined",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.outpatient_hospital_surgery_or_asc": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $1,500 per day including all miscellaneous medical expenses except for professional fees",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.physician_office_and_urgent_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Visits in excess of the 2 visits per Covered Person per Coverage Period covered by the Copayments are subject to Deductible and Coinsurance; Urgent Care Facility Visits also subject to the Urgent Care Facility Additional Deductible. SEPARATELY: Physician Office Visits and Urgent Care Facility visits are subject to a maximum benefit of $2,000 per Coverage Period including additional services incurred during Office Visits or Visits to an Urgent Care Facility combined",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.skilled_nursing_facility": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $100 per day and 30 days per Coverage Period",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.surgical_services": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $5,000 per Surgery for all surgical services combined and $10,000 per Coverage Period",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.therapy_services": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $30 per day and a maximum of 15 days per Coverage Period - physical, speech and occupational therapy",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.tmj": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Up to $3,000 per Coverage Period for all Covered Expenses including Inpatient Hospital, Surgical and Outpatient Miscellaneous Medical Covered Expenses",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit.urgent_care_additional_deductible": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "No Additional Deductible",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_basis": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "All benefits are limited to Usual, Reasonable and Customary Amounts; the definition may vary by state",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_reset": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Deductible, coinsurance and all benefit limits reset with each 12 month block of coverage",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "carrier.state_split": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 1,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Standard Life And Casualty Insurance Company is annotated 'Florida, Louisiana, South Carolina and Tennessee'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "coinsurance": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "80/20",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "coinsurance_limit": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "$2,000 or $4,000",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "compliance.dollar_limits": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Coverage has lifetime and/or annual dollar limits on health benefits",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "compliance.not_aca": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "This coverage is not required to comply with certain federal market requirements for health insurance, principally those contained in the Affordable Care Act",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "compliance.open_enrollment": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "If this coverage expires or eligibility is lost, the member might have to wait until an open enrollment period to get other health insurance coverage",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "compliance.pre_existing_not_covered": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Pre-existing conditions are not covered",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "consecutive_terms": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "On a consecutive-term enrolment the customer is issued their initial term with subsequent terms pending; the waiting period on all subsequent terms is waived; no reapplication is needed; before each subsequent term the customer receives an email with their new monthly rate and an opportunity to opt out",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "copay.physician_office_and_urgent_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "$25, maximum 2",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "copay.specialist": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "$40, maximum 2",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "copay.wellness": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "$50, maximum 1",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "cost_sharing.coverage_maximum": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "smarthealth-stm-limited",
+        "smarthealth-stm-traditional"
+      ],
+      "pg": null,
+      "sec": "Information tab",
+      "src": 82,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29669&id=767303",
+      "v": "Coverage period maximum options of $250,000, $500,000 or $1,000,000.",
+      "vs": "VERIFIED"
+    },
+    "cost_sharing.office_visit_cap": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "smarthealth-stm-limited",
+        "smarthealth-stm-traditional"
+      ],
+      "pg": null,
+      "sec": "Information tab",
+      "src": 82,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29669&id=767303",
+      "v": "Office and urgent care visits are subject to a COMBINED maximum benefit of $2,000 per coverage period, including additional services rendered during those visits.",
+      "vs": "VERIFIED"
+    },
+    "coverage_effective_date": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Next day coverage; later effective date available, but not to exceed 60 days from date of transmission",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "coverage_period_maximum_options": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "$250,000, $500,000, $1,000,000",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "deductible_options": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "$500, $1,000, $2,000, $2,500, $5,000, $7,500, $10,000",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "exclusion_count": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 7,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "65 numbered limitations and exclusions",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "length_of_coverage": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Available for up to 36 months of coverage depending upon state regulations",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "network.disclaimer": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 3,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "The PHCS network is not affiliated with either underwriter and the insurance benefits provided are not dependent on the use of this network; PHCS does not process claims",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "network.facility_charges": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 3,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "Plan pays up to 150% of Medicare allowable charges",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "pre_existing.waiver_rider": {
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": 4,
+      "sec": "brochure",
+      "src": 103,
+      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
+      "v": "A Pre-Existing Waiver Rider option waives any conditions that were covered during the prior coverage period, so consumers do not have to re-qualify for another term; terms and limitations may vary by state",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  }
+}
