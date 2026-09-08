@@ -21,14 +21,42 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 21,
+      "sec": "SEC 4 ELIGIBILITY AND ENROLLMENT - 4.5 When Coverage Ends",
+      "src": 114,
+      "url": null,
+      "v": "When Coverage Ends: except in the case of COBRA rights, benefits terminate upon the earliest of: the date you cease to be an Eligible Employee; for Eligible Dependents, the date the Eligible Dependent ceases to be an Eligible Dependent; the time when you or your Eligible Dependent(s) have exhausted the benefits available under the Plan; the last day for which necessary contributions are made; the date the Company amends the Plan to eliminate eligibility; or the date the Company terminates the Plan. The Company reserves the right to change or eliminate benefits and may amend or terminate the Plan at any time.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 2,
+      "sec": "SEC 1 INTRODUCTION - 1.4.5 Plan Administrator (Third Party) and 1.4.6 Agent for Service",
+      "src": 114,
+      "url": null,
+      "v": "Merchants Benefit Administration (MBA)",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "claims_submission": {
       "searched": [],
@@ -36,9 +64,23 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "customer_service": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 18,
+      "sec": "SEC 3 ADMINISTRATION - 3.8 Contact Information",
+      "src": 114,
+      "url": null,
+      "v": "MBA 18700 N Hayden Rd Suite 390, Scottsdale, AZ 85255. 480-576-7118.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "id_card_timing": {
       "searched": [],
@@ -362,9 +404,23 @@
   },
   "compliance": {
     "mec_status": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 69,
+      "sec": "SEC 13 MISCELLANEOUS - 13.12 MEC",
+      "src": 114,
+      "url": null,
+      "v": "This Plan provides \"minimum essential coverage\" within the meaning of Section 5000A(f) of the Code.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "required_disclosures": {
       "searched": [],
@@ -548,7 +604,7 @@
     "Present GHDP 3 to 4 as a TRADE, never as an upgrade. The client gains a wellness exam and surgery cover and gives up $5,000 of inpatient annual maximum and pays higher copays on every visit.",
     "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
-  "doc_completeness": "PORTAL_ONLY",
+  "doc_completeness": "FULL_DOCS",
   "documentation": {
     "brochure": {
       "searched": [],
@@ -556,9 +612,23 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "source_defects": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 5,
+      "sec": "SEC 2 DEFINITIONS - 2.18 The Company and 2.53 Plan",
+      "src": 114,
+      "url": null,
+      "v": "Template holes remain in the certificate: 2.18 The Company still reads \"means (company name)\"; 2.53 Plan still reads \"means the (name of Plan)\".",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "eligibility": {
@@ -578,14 +648,42 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "dependent_rules": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 6,
+      "sec": "SEC 2 DEFINITIONS - 2.21.4 Eligible Dependents and 2.22 Dependent (continues p.7)",
+      "src": 114,
+      "url": null,
+      "v": "A child of a covered Eligible Employee who has not attained age 26 is an Eligible Dependent (biological child, stepchild, legally adopted child, or foster child placed by court order). Coverage for a Dependent Child continues until the end of the calendar month he or she turns 26. An Employee's Child, regardless of age, who is mentally or physically incapable of sustaining his or her own living may continue if written proof is furnished within 31 days after the limiting age. Active-duty members of any armed force and residents of a country other than the United States shall not be deemed Dependents.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "enrollment_mechanics": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 18,
+      "sec": "SEC 4 ELIGIBILITY AND ENROLLMENT - 4.3.1 Timing of enrollment",
+      "src": 114,
+      "url": null,
+      "v": "You (and your Eligible Dependents) may enroll at any time.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "knockout_questions": {
       "searched": [],
@@ -611,9 +709,23 @@
   "family": "GHDP",
   "identity": {
     "administrator": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 2,
+      "sec": "SEC 1 INTRODUCTION - 1.4.5 Plan Administrator (Third Party)",
+      "src": 114,
+      "url": null,
+      "v": "Merchants Benefit Administration (MBA)",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "association": {
       "searched": [],
@@ -626,19 +738,61 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "searched": [],
-      "v": null,
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "LOW",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 2,
+      "sec": "SEC 1 INTRODUCTION - 1.4.7 Source of Funding; SEC 13.8 Benefits Source p.69; whole document full-text search for an insurance company legal name",
+      "src": 114,
+      "url": null,
+      "v": "NOT ESTABLISHED BY THIS SOURCE.",
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "effective_date_rules": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 2,
+      "sec": "SEC 1 INTRODUCTION - 1.4.8 Plan Year (effective date also p.1, 1.1)",
+      "src": 114,
+      "url": null,
+      "v": "Plan Year: July 1 to June 30. The plan is effective the 1st of July, 2024.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "eligibility_model": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 7,
+      "sec": "SEC 2 DEFINITIONS - 2.24 Employee (SEC 4.1 Eligibility, p.18)",
+      "src": 114,
+      "url": null,
+      "v": "Employee means any W2 employee, 1099 independent affiliate or GHD Limited Partner that promotes the business purposes of the Partnership, who either works on average at least 20 hours per week or at least 80 hours per month providing personal services to the working owner's trade or business, or has wages or self-employment income from such trade or business that at least equals the working owner's cost of coverage for participation by the working owner and any covered beneficiaries in the group health plan sponsored by the group or association in which the individual is participating. SEC 4.1: eligible W2 employee, 1099 affiliate or working owner of the Company.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "enrollment_platform": {
       "searched": [],
@@ -652,18 +806,18 @@
     },
     "network": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "LOW",
-      "cur": "CURRENT_LIVE",
+      "auth": 2,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
       "gov": [
         "ghdp-4"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=44903&id=974358",
-      "v": "First Health Network. Provider search: www.locateprovidersnow.com. Footnote 2: outpatient physician services and wellness benefits are in-network only; inpatient hospital indemnity benefits are not.",
-      "vs": "SUPERSEDED"
+      "pg": 1,
+      "sec": "Cover - Utilizes the First Health Network, and footnote (2)",
+      "src": 118,
+      "url": null,
+      "v": "First Health. Outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient Hospital indemnity benefits are not.",
+      "vs": "CONFLICTED"
     },
     "policy_form": {
       "searched": [],
@@ -696,14 +850,38 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
-      "v": null,
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "LOW",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 2,
+      "sec": "SEC 1 INTRODUCTION - 1.4.7 Source of Funding; SEC 13.8 Benefits Source p.69; whole document full-text search for an underwriter",
+      "src": 114,
+      "url": null,
+      "v": "NOT ESTABLISHED BY THIS SOURCE.",
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "variant": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 2,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-4"
+      ],
+      "pg": 1,
+      "sec": "Cover - Plan Sponsor / Plan Administrator block",
+      "src": 118,
+      "url": null,
+      "v": "GHDP-4",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "limitations": {
@@ -713,14 +891,42 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 89,
+      "sec": "APPENDIX A - Exclusions",
+      "src": 114,
+      "url": null,
+      "v": "The following exclusions apply to the benefits offered under this Plan: (1) Office visits, physical examinations, immunizations, and tests when required solely for sports, camp, employment, travel, insurance, marriage, or legal proceedings; (2) Routine foot care for treatment of flat feet, corns, bunions, calluses, toenails, fallen arches, weak feet, or chronic foot strain; (3) Dental procedures; (4) Any other medical service, treatment, or procedure not covered under this Plan; (5) Any other expense, bill, charge, or monetary obligation not covered under this Plan, including but not limited to all non-medical service expenses, bills, charges, and monetary obligations. Unless the medical service is explicitly provided by this Appendix A or otherwise explicitly provided in this Plan Document, this Plan does not cover the medical service or any related expense, bill, charge, or monetary obligation to the medical service; (6) Claims unrelated to treatment of medical care or treatment; (7) Cosmetic surgery unless authorized as medically necessary. Such authorization is based on the following causes for cosmetic surgery: accidental injury, correction of congenital deformity within six (6) years of birth, or as a treatment of a diseased condition; (8) Any treatment with respect to treatment of teeth or periodontium, any treatment of periodontal or periapical disease involving teeth surrounding tissue, or structure. Exceptions to this exclusion include only malignant tumors or benefits specifically noted in the schedule of benefits to the Plan Document; (9) Any claim related to an injury arising out of or in the course of any employment for wage or profit; (10) Claims which would otherwise be covered by a Worker's Compensation policy for which a participant is entitled to benefit; (11) Any claim arising from service received outside of the United States, except for the reasonable cost of claims billed by the Veterans Administration or Department of Defense for benefits covered under this Plan and not incurred during or from service in the Armed Forces of the United States; (12) Claims for which a participant is not legally required to pay or claims which would not have been made if this Plan had not existed; (13) Claims for services which are not medically necessary as determined by this Plan or the excess of any claim above reasonable and customary rates when a PPO network has not been contracted; (14) Charges which are or could be reimbursed by any public health program irrespective of whether such coverage has been elected by a participant; (15) Claims due to an act of war, declared or undeclared, not including acts of terrorism; (16) Claims for eyeglasses, contacts, hearing aids (or examinations for the fitting thereof) or radial keratotomy; (17) Abortion Services; (18) Travel, unless specifically provided in the schedule of benefits; (19) Custodial care for primarily personal, not medical, needs provided by persons with no special medical training or skill; (20) Claims from any provider other than a healthcare provider as defined in the Plan Document unless explicitly permitted in the schedule of benefits; (21) Investigatory or experimental treatment, services, or supplies unless specifically covered under Approved Clinical Trials; (22) Services or supplies which are primarily educational; (23) Claims due to attempted suicide or intentionally self-inflicted injury while sane or insane, unless the claim results from a medical condition such as depression; (24) Claims resulting from, or which arise due to the attempt or commission of, an illegal act. Claims by victims of domestic violence will not be subject to this exclusion; (25) Claims with respect to any treatment or procedure to change one's physical anatomy to those of the opposite sex and any other treatment or study related to sex change; (26) Claims from a medical service provider who is related by blood, marriage, or legal adoption to a participant; (27) Any claims for fertility or infertility treatment; (28) Claims for weight control, weight reduction, or surgical treatment for obesity or morbid obesity, unless explicitly provided in the schedule of benefits; (29) Claims for disability resulting from reversal of sterilization; (30) Claims for the completion of forms, or failure to keep scheduled appointments; (31) Recreational or diversional therapy; (32) Personal hygiene or convenience items, including but not limited to air conditioning, humidifiers, hot tubs, whirlpools, or exercise equipment, irrespective of the recommendations or prescriptions of a medical service provider; (33) Claims due to participation in a dangerous activity, including but not limited to sky-diving, motorcycle or automobile racing, bungee jumping, rock climbing, rappelling, or hang gliding; (34) Claims that arise primarily due to medical tourism; (35) Supportive devices of the foot; (36) Treatments for sexual dysfunction; (37) Aquatic or massage therapy; (38) Biofeedback training; (39) Skilled nursing facilities; (40) Durable medical equipment and prosthetics; (41) Hospice care, private duty nursing, or long-term care; (42) Residential facility - for charges from a residential halfway house or home, or any facility which is not a health care institution licensed for the primary purpose of treatment of an illness or injury; (43) Claims for temporomandibular joint syndrome; (44) Claims for biotech or specialty prescriptions; (45) Any claim which is not explicitly covered in the schedule of benefits; (46) Genetic testing unless explicitly covered in the schedule of benefits; (47) Organ transplants; (48) Claims for cosmetic surgery, not related to mastectomy reconstruction to produce a symmetrical appearance or prosthesis, or physical complications which result from such procedures; (49) Chiropractic care; (50) Radiation and chemotherapy; (51) Dialysis; (52) Acupuncture; (53) Alternative medicine/homeopathy; (54) Children dental and vision; (55) Neonatal intensive care (NICU); (56) Rehabilitative therapies; (57) PCP surgery; (58) Routine eye care (Adult); (59) Non-emergency care when traveling outside the U.S.; (60) Pregnancy Benefits, including office visits and childbirth/delivery professional and facility services; (61) Routine well-baby care of newborn infant while inpatient. The purpose of this list of exclusions is solely to provide additional clarity regarding treatments, procedures, products, services, or any other items which are not covered under this plan. Accordingly, no exclusion shall be interpreted by negative implication, or otherwise, as evidence of the existence of coverage under this plan.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "lookback_months": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 12,
+      "sec": "SEC 2 DEFINITIONS - 2.56 Pre-Existing Condition",
+      "src": 114,
+      "url": null,
+      "v": "Twelve months immediately before the person's Effective Date.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "material_definitions": {
       "searched": [],
@@ -728,19 +934,57 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "pre_ex_scope": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 77,
+      "sec": "APPENDIX A - GHDP Summary footnotes, footnote (3)",
+      "src": 114,
+      "url": null,
+      "v": "Hospitalization benefits are not payable for a Pre-Existing Condition as defined in Section 2.56 Definitions for the first Twelve [12] Months of coverage.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pre_existing": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "ghdp-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44903&id=974358",
+      "v": "PUBLISHED ON THE INFO TAB: the In Patient Hospitalization Benefit row (and, on GHDP 4 and 5, the In/Outpatient Surgery row) is marked '12/12 mo Pre-Ex3'.",
+      "vs": "CONFLICTED"
     },
     "pregnancy_exclusion": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
+      ],
+      "pg": 89,
+      "sec": "APPENDIX A - Exclusions, item 60",
+      "src": 114,
+      "url": null,
+      "v": "Pregnancy Benefits, including office visits and childbirth/delivery professional and facility services.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "visit_limits": {
       "searched": [],
@@ -753,17 +997,64 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_sickness": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 2,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "ghdp-4"
+      ],
+      "pg": 1,
+      "sec": "Cover footnotes - footnote (1)",
+      "src": 118,
+      "url": null,
+      "v": "All sickness benefits are subject to a 30-day waiting period before benefits are payable under the plan.",
+      "vs": "CONFLICTED"
     }
   },
   "open_conflicts": [
+    {
+      "field": "identity.network",
+      "source_ids": [
+        88,
+        118
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        88,
+        114
+      ]
+    },
+    {
+      "field": "limitations.waiting_period_sickness",
+      "source_ids": [
+        88,
+        118
+      ]
+    },
     {
       "conflict_id": "C-028",
       "field": "benefit_schedule.emergency_room",
       "source_ids": [
         88
+      ]
+    },
+    {
+      "conflict_id": "C-067",
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        88,
+        114
+      ]
+    },
+    {
+      "conflict_id": "C-068",
+      "field": "legal.arbitration_and_venue",
+      "source_ids": [
+        88,
+        114
       ]
     }
   ],
@@ -849,8 +1140,114 @@
   ],
   "plan_id": "ghdp-4",
   "plan_variant": "4",
-  "profile_confidence": "HIGH",
-  "profile_confidence_reasons": [],
+  "profile_confidence": "MEDIUM",
+  "profile_confidence_reasons": [
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "identity.variant",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "identity.eligibility_model",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "identity.administrator",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "identity.network",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "identity.effective_date_rules",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "eligibility.dependent_rules",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "eligibility.enrollment_mechanics",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "limitations.pre_existing",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "limitations.pre_ex_scope",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "limitations.lookback_months",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "limitations.waiting_period_sickness",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "limitations.excluded_services",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "limitations.pregnancy_exclusion",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "administration.claims_administrator",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "administration.customer_service",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "administration.cancellation",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "documentation.source_defects",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "compliance.mec_status",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    }
+  ],
   "status": "ACTIVE",
   "unmapped": {
     "benefit.physician_services": {

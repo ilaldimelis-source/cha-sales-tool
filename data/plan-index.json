@@ -1367,7 +1367,7 @@
         "goodhealthdistributionpartner1"
       ],
       "display_name": "Good Health Distribution Partner 1",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "FULL_DOCS",
       "family": "GHDP",
       "has_profile": true,
       "plan_id": "ghdp-1",
@@ -1391,7 +1391,7 @@
         "goodhealthdistributionpartner2"
       ],
       "display_name": "Good Health Distribution Partner 2",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "FULL_DOCS",
       "family": "GHDP",
       "has_profile": true,
       "plan_id": "ghdp-2",
@@ -1415,7 +1415,7 @@
         "goodhealthdistributionpartner3"
       ],
       "display_name": "Good Health Distribution Partner 3",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "FULL_DOCS",
       "family": "GHDP",
       "has_profile": true,
       "plan_id": "ghdp-3",
@@ -1439,7 +1439,7 @@
         "goodhealthdistributionpartner4"
       ],
       "display_name": "Good Health Distribution Partner 4",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "FULL_DOCS",
       "family": "GHDP",
       "has_profile": true,
       "plan_id": "ghdp-4",
@@ -1463,7 +1463,7 @@
         "goodhealthdistributionpartner5"
       ],
       "display_name": "Good Health Distribution Partner 5",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "FULL_DOCS",
       "family": "GHDP",
       "has_profile": true,
       "plan_id": "ghdp-5",
