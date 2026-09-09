@@ -11,12 +11,36 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -51,9 +75,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "precert": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
+      "v": "required for inpatient hospitalizations, outpatient surgeries, durable medical equipment, and prosthetics. Call (888) 275-7916. Pre-authorization does not guarantee coverage.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "provider_verification": {
       "searched": [],
@@ -93,9 +129,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
+      "v": "AL, AR, AZ, FL, GA, KY, LA, MS, NE, SC, TN",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -611,7 +659,19 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -659,12 +719,36 @@
   "family": "AFRP Galena STM",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -687,8 +771,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=40405&id=767303",
-      "v": "SGIC - Southern Guaranty Insurance Company.",
-      "vs": "VERIFIED"
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "effective_date_rules": {
       "searched": [],
@@ -711,9 +795,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "network": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
+      "v": "National PPO access through First Health and MultiPlan references. First Health: access to providers, specialists, and hospitals nationwide at discounted rates.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "policy_form": {
       "searched": [],
@@ -736,7 +832,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "afrp-galena-stm-economy",
+        "afrp-galena-stm-elite",
+        "afrp-galena-stm-standard"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 124,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=40404&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -798,7 +906,29 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
-  "open_conflicts": [],
+  "open_conflicts": [
+    {
+      "field": "identity.carrier",
+      "source_ids": [
+        82,
+        124
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        82,
+        124
+      ]
+    },
+    {
+      "field": "limitations.waiting_period_other",
+      "source_ids": [
+        82,
+        124
+      ]
+    }
+  ],
   "open_gaps": [
     {
       "blocks_statement": false,
@@ -877,6 +1007,18 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-172",
+      "what_is_unknown": "Why do the Standard and Economy pages link a brochure labelled Galena STM Elite?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-177",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "afrp-galena-stm-economy",

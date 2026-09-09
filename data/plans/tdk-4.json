@@ -11,12 +11,40 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -93,9 +121,23 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
+      "v": "AK, AL, AR, AZ, CA, CO, DC, DE, FL, GA, IA, ID, IL, IN, KS, KY, LA, MI, MO, MT, NC, ND, NE, NM, NV, NY, OH, OK, RI, SC, SD, TN, TX, UT, VA, WI, WV, WY",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -899,7 +941,21 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -947,12 +1003,40 @@
   "family": "TDK",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -962,7 +1046,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -999,7 +1097,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=43902&id=974358",
       "v": "'Utilies the First Health Network' (typo as printed). Provider search: http://docfind.health/. Footnote 2: 'Outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient Hospital Indemnity benefits are not.'",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "CONFLICTED"
     },
     "policy_form": {
       "searched": [],
@@ -1022,7 +1120,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1039,12 +1151,40 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION accordion Additional terms and conditions",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "lookback_months": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1071,7 +1211,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=43902&id=974358",
       "v": "PUBLISHED ON THE INFO TAB. Every hospitalization, surgery, emergency room and ambulance row is marked '12/12 month Pre-Existing3', and footnote 3 reads: 'Hospitalization benefits are not payable for a Pre-Existing Condition as defined in Plan Doc for the first Twelve (12) Months of coverage'.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "CONFLICTED"
     },
     "pregnancy_exclusion": {
       "searched": [],
@@ -1101,10 +1241,31 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=43902&id=974358",
       "v": "Footnote 1 on the Info tab: 'All sickness benefits are subject to a 30-day waiting period before benefits are payable under the plan.'",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "CONFLICTED"
     }
   },
   "open_conflicts": [
+    {
+      "field": "identity.network",
+      "source_ids": [
+        88,
+        127
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        88,
+        127
+      ]
+    },
+    {
+      "field": "limitations.waiting_period_sickness",
+      "source_ids": [
+        88,
+        127
+      ]
+    },
     {
       "conflict_id": "C-004",
       "field": "identity.plan_year",
@@ -1327,6 +1488,18 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-171",
+      "what_is_unknown": "What are the TDK exclusions and limitations on the NEO Info page?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-178",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "tdk-4",
@@ -1338,6 +1511,21 @@
       "field": "benefit_schedule.structural_difference",
       "kind": "CURRENTNESS",
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "identity.network",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "limitations.pre_existing",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "limitations.waiting_period_sickness",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
     }
   ],
   "status": "ACTIVE",

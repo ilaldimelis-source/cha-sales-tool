@@ -11,12 +11,32 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -88,9 +108,19 @@
   },
   "availability": {
     "state_exclusions": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
+      "v": "WI and WY in the NOT AVAILABLE column",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "states": {
       "searched": [],
@@ -626,14 +656,34 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "price_family": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "PRICING",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
+      "v": "$209.00 per Month for Family",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "price_member": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "PRICING",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
+      "v": "$149.99 per Month for Member",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "price_member_plus_children": {
       "searched": [],
@@ -694,9 +744,19 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
+      "v": "Eligible member: under age 64 years and 6 months.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "age_min": {
       "searched": [],
@@ -752,24 +812,34 @@
   "family": "NCE WellGuard AD&D",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
-      "conf": "MEDIUM",
-      "cur": "UNKNOWN",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
       "gov": [
         "nce-wellguard-add-250000"
       ],
-      "pg": 1,
-      "sec": "brochure",
-      "src": 108,
-      "url": "https://www.administration123.com/media/1367/Brochures/WellGuard ADD Brochure_v3.pdf",
-      "v": "NCE",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
+      "v": null,
+      "vs": "CONFLICTED"
     },
     "billing_entity": {
       "searched": [],
@@ -788,8 +858,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=767303",
-      "v": "American Financial Security Life Insurance Company.",
-      "vs": "CONFLICTED"
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "effective_date_rules": {
       "searched": [],
@@ -812,7 +882,17 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "network": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -847,9 +927,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
+      "v": "WellGuard AD&D is underwritten by American Financial Security Life Insurance Company in the following states: AL, AR, AZ, GA, IL, KY, MS, NE, NV, NM, ND, OH, OK, PA, TX, VA, WI, WY.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "variant": {
       "searched": [],
@@ -864,12 +954,32 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "TERMS Specific Limitations and Exclusions",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
+      "v": "We will not pay benefits for any loss: sickness/disease/myocardial infarction as a contributing factor (excepting bacterial infection from an accidental cut, wound, or ingestion of contaminated food); suicide or intentionally self-inflicted injury while sane; war or act of war; accident while in the armed forces of any country (with pro-rata premium return); riot or insurrection; commission or attempted commission of assault or felony or other illegal activity; piloting or serving as crew or riding in aircraft except as a fare-paying passenger on a scheduled or charter airline; voluntarily taking prescription-only drugs unless as prescribed; legal intoxication; 2- or 3-wheeled motor vehicles or vehicles not designed primarily for public streets; interscholastic tackle football, intercollegiate, semi-professional or professional sports, ballooning, mountaineering, hang gliding, sky diving, parachuting, bungee jumping, spelunking, jet skiing, scuba diving; motorized racing, speed test, or stunt show.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "lookback_months": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -884,9 +994,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "pre_existing": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
+      "v": "This is accident-only coverage. It does not cover sickness or losses caused by pre-existing conditions.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pregnancy_exclusion": {
       "searched": [],
@@ -899,22 +1019,50 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_other": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_sickness": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-wellguard-add-250000"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 132,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=31107&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
   "open_conflicts": [
     {
+      "field": "identity.association",
+      "source_ids": [
+        108,
+        132
+      ]
+    },
+    {
       "field": "identity.carrier",
       "source_ids": [
         82,
-        108
+        108,
+        132
       ]
     },
     {
@@ -922,6 +1070,13 @@
       "source_ids": [
         82,
         108
+      ]
+    },
+    {
+      "conflict_id": "C-069",
+      "field": "availability.states",
+      "source_ids": [
+        131
       ]
     }
   ],
@@ -1105,15 +1260,9 @@
       "message": "field is CONFLICTED"
     },
     {
-      "field": "identity.carrier",
+      "field": "identity.association",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
-    },
-    {
-      "cur": "UNKNOWN",
-      "field": "identity.association",
-      "kind": "CURRENTNESS",
-      "message": "VERIFIED fact has cur=UNKNOWN"
     },
     {
       "cur": "UNKNOWN",

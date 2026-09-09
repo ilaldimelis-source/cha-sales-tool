@@ -11,12 +11,32 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "TERMS",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "if I cancel my insurance or if Neo Insurance Solutions is unable to collect my payment on my bill date, my insurance and benefits will be cancelled. I may request a full refund of my policy within my 30 days free look period.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -88,14 +108,34 @@
   },
   "availability": {
     "state_exclusions": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "AZ, AR, KY, MS, NV, OH, TX, VA, WI, TN listed as not available (ten carrier-map states). GA is offered on STATES but is in neither AFSLIC nor SLAC licensed-state list.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "AL, FL, GA, LA, NE, OK, SC",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -764,9 +804,19 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "Eligibility: ages 18 to 64½; child-only coverage ages 2 to 17.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "age_min": {
       "searched": [],
@@ -822,24 +872,34 @@
   "family": "SmartHealth STM",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
+      "auth": 5,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT_LIVE",
       "gov": [
         "smarthealth-stm-limited"
       ],
-      "pg": 2,
-      "sec": "brochure",
-      "src": 103,
-      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
-      "v": "NCE - the National Congress of Employers",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "pg": null,
+      "sec": "TERMS",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "Please accept my application for membership in the National Congress of Employers (NCE).",
+      "vs": "CONFLICTED"
     },
     "billing_entity": {
       "searched": [],
@@ -848,18 +908,18 @@
     },
     "carrier": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
+      "auth": 5,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT_LIVE",
       "gov": [
         "smarthealth-stm-limited"
       ],
-      "pg": 1,
-      "sec": "brochure",
-      "src": 103,
-      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
-      "v": "American Financial Security Life Insurance Company (AFSLIC) and Standard Life And Casualty Insurance Company",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "pg": null,
+      "sec": "TERMS",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "American Financial Security Life Insurance Company (AL, AR, AZ, KY, MS, NE, NV, OH, OK, TX, VA, WI) and Standard Life and Casualty Insurance Company (FL, LA, SC, TN)",
+      "vs": "CONFLICTED"
     },
     "effective_date_rules": {
       "searched": [],
@@ -883,18 +943,18 @@
     },
     "network": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
+      "auth": 5,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT_LIVE",
       "gov": [
         "smarthealth-stm-limited"
       ],
-      "pg": 3,
-      "sec": "brochure",
-      "src": 103,
-      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
-      "v": "PHCS Network (Private Healthcare Systems). Insureds may be treated in or out of network. Approximately 900,000 contracted providers",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "PHCS Practitioner with Ancillary Network",
+      "vs": "CONFLICTED"
     },
     "policy_form": {
       "searched": [],
@@ -917,9 +977,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "TERMS declaration block",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "I understand that benefits are provided under a group insurance policy underwritten by American Finaical Security Life Insurance Company (in AL, AR, AZ, KY, MS, NE, NV, OH, OK, TX, VA, WI) and Standard Life and Casualty Insurance Company (in FL, LA, SC, TN).",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "variant": {
       "searched": [],
@@ -934,24 +1004,34 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
-    },
-    "lookback_months": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
-      "conf": "MEDIUM",
-      "cur": "POSSIBLY_STALE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
       "gov": [
         "smarthealth-stm-limited"
       ],
-      "pg": 7,
-      "sec": "brochure",
-      "src": 103,
-      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
-      "v": "36 months immediately preceding the Covered Person's Effective Date, on both the treatment prong and the manifestation prong",
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "pg": null,
+      "sec": "INFORMATION accordion",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "Outpatient prescription drugs and many preventive or limited-service categories may be excluded or limited by design. / Pregnancy and related services, except complications of pregnancy. / Mental or nervous disorders and substance use disorders. / Routine exams, physical examinations, and non-medically necessary care. / This is not an exhaustive list.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "lookback_months": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "INFORMATION accordion / TERMS",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": null,
+      "vs": "CONFLICTED"
     },
     "material_definitions": {
       "searched": [],
@@ -964,20 +1044,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "pre_existing": {
-      "app": "FAMILY_WIDE",
+      "app": "EXACT_VARIANT",
       "auth": 5,
-      "conf": "MEDIUM",
-      "cur": "CURRENT",
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
       "gov": [
-        "smarthealth-stm-limited",
-        "smarthealth-stm-traditional"
+        "smarthealth-stm-limited"
       ],
       "pg": null,
-      "sec": "Information tab",
-      "src": 82,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=29669&id=767303",
-      "v": "An optional Pre-Existing Waiver Rider is available where offered. The page states that if selected the rider can waive certain waiting periods in subsequent terms and helps avoid re-qualifying for another term when conditions were covered during the prior coverage period.",
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "sec": "INFORMATION accordion",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "Pre-existing conditions are not covered.",
+      "vs": "CONFLICTED"
     },
     "pregnancy_exclusion": {
       "searched": [],
@@ -991,31 +1070,77 @@
     },
     "waiting_period_other": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
+      "auth": 5,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT_LIVE",
       "gov": [
         "smarthealth-stm-limited"
       ],
-      "pg": 4,
-      "sec": "brochure",
-      "src": 103,
-      "url": "https://www.enrollment123.com/media/1367/Brochures/SmartHealth_v3.pdf",
-      "v": "5 days for sickness, 30 days for cancer; no waiting period for injuries",
+      "pg": null,
+      "sec": "INFORMATION accordion",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "Waiting periods: 5 days for sickness, 30 days for cancer, and no waiting period for injuries.",
       "vs": "CONFLICTED"
     },
     "waiting_period_sickness": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smarthealth-stm-limited"
+      ],
+      "pg": null,
+      "sec": "INFORMATION accordion",
+      "src": 126,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
+      "v": "Waiting periods: 5 days for sickness, 30 days for cancer, and no waiting period for injuries.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "open_conflicts": [
     {
+      "field": "identity.association",
+      "source_ids": [
+        103,
+        126
+      ]
+    },
+    {
+      "field": "identity.carrier",
+      "source_ids": [
+        103,
+        126
+      ]
+    },
+    {
+      "field": "identity.network",
+      "source_ids": [
+        103,
+        126
+      ]
+    },
+    {
+      "field": "limitations.lookback_months",
+      "source_ids": [
+        103,
+        126
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        82,
+        126
+      ]
+    },
+    {
       "field": "limitations.waiting_period_other",
       "source_ids": [
         82,
-        103
+        103,
+        126
       ]
     },
     {
@@ -1027,6 +1152,20 @@
       "conflict_id": "C-060",
       "field": "pre_existing_treatment",
       "source_ids": []
+    },
+    {
+      "conflict_id": "C-070",
+      "field": "availability.states",
+      "source_ids": [
+        125
+      ]
+    },
+    {
+      "conflict_id": "C-075",
+      "field": "documentation.source_defects",
+      "source_ids": [
+        125
+      ]
     }
   ],
   "open_gaps": [
@@ -1438,28 +1577,35 @@
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
-      "cur": "POSSIBLY_STALE",
       "field": "identity.carrier",
-      "kind": "CURRENTNESS",
-      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
     },
     {
-      "cur": "POSSIBLY_STALE",
       "field": "identity.association",
-      "kind": "CURRENTNESS",
-      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
     },
     {
-      "cur": "POSSIBLY_STALE",
       "field": "identity.network",
-      "kind": "CURRENTNESS",
-      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
     },
     {
       "cur": "POSSIBLY_STALE",
       "field": "eligibility.age_range",
       "kind": "CURRENTNESS",
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "limitations.pre_existing",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "limitations.lookback_months",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
     },
     {
       "field": "limitations.waiting_period_other",

@@ -11,12 +11,38 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -108,14 +134,40 @@
   },
   "availability": {
     "state_exclusions": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
+      "v": "CA, CT, HI, ME, MD, MA, MN, NH, NJ, OR, PA, VT, WA, WI, MS",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
+      "v": "AK, AL, AR, AZ, CO, DC, DE, FL, GA, IA, ID, IL, IN, KS, KY, LA, MI, MO, MT, NC, ND, NE, NM, NV, NY, OH, OK, RI, SC, SD, TN, TX, UT, VA, WV, WY",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -984,7 +1036,20 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1045,12 +1110,38 @@
   "family": "Smart Choice",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1060,7 +1151,20 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1107,7 +1211,7 @@
       "src": 19,
       "url": null,
       "v": "First Health",
-      "vs": "VERIFIED"
+      "vs": "CONFLICTED"
     },
     "policy_form": {
       "searched": [],
@@ -1150,7 +1254,20 @@
       "vs": "VERIFIED"
     },
     "underwriter": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1167,12 +1284,38 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "lookback_months": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1201,8 +1344,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=767303",
-      "v": "NOT ESTABLISHED BY THIS SOURCE.",
-      "vs": "CONFLICTED"
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pregnancy_exclusion": {
       "searched": [],
@@ -1215,17 +1358,50 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_other": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_sickness": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "smart-choice-1500",
+        "smart-choice-2500",
+        "smart-choice-3000",
+        "smart-choice-3500"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 120,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=48541&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
   "open_conflicts": [
+    {
+      "field": "identity.network",
+      "source_ids": [
+        19,
+        120
+      ]
+    },
     {
       "field": "identity.product_type",
       "source_ids": [
@@ -1237,7 +1413,8 @@
       "field": "limitations.pre_existing",
       "source_ids": [
         82,
-        85
+        85,
+        120
       ]
     },
     {
@@ -1365,6 +1542,12 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-173",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "smart-choice-3500",
@@ -1507,10 +1690,9 @@
       "message": "field is CONFLICTED"
     },
     {
-      "cur": "POSSIBLY_STALE",
       "field": "identity.network",
-      "kind": "CURRENTNESS",
-      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
     },
     {
       "cur": "POSSIBLY_STALE",
@@ -1637,11 +1819,6 @@
       "field": "cost_sharing.moop_exclusions",
       "kind": "CURRENTNESS",
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
-    },
-    {
-      "field": "limitations.pre_existing",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
     },
     {
       "cur": "POSSIBLY_STALE",

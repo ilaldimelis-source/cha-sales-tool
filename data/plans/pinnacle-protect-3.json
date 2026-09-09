@@ -11,12 +11,36 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -93,9 +117,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
+      "v": "AL, AR, AZ, DC, DE, FL, GA, IL, KS, KY, LA, MI, MS, NC, ND, NE, NV, OH, OK, RI, SC, TN, TX, WI, WV",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -751,7 +787,19 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -799,12 +847,36 @@
   "family": "Pinnacle Protect",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -814,7 +886,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -839,9 +923,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "network": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
+      "v": "MultiPlan access through the Pinnacle network; the MultiPlan Network, a nationwide complementary PPO network",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "policy_form": {
       "searched": [],
@@ -864,7 +960,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -881,12 +989,36 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION accordion",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
+      "v": "Cosmetic surgery, except certain reconstructive situations if applicable. / Dental and vision treatment outside any specific scheduled benefits or discount programs. / Elective or non-medically necessary treatment and experimental or investigational treatment. / Mental illness and substance abuse exclusions may apply except where specifically scheduled. / Pregnancy and related services may be excluded except complications of pregnancy where defined. / Pre-existing condition limitations and waiting periods may apply. / This list is not exhaustive.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "lookback_months": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -901,9 +1033,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "pre_existing": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION accordion",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
+      "v": "Pre-existing condition limitations and waiting periods may apply.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pregnancy_exclusion": {
       "searched": [],
@@ -921,7 +1065,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_sickness": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     }
@@ -1026,6 +1182,12 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-179",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "pinnacle-protect-3",

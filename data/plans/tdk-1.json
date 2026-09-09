@@ -11,12 +11,40 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -105,7 +133,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=43795&id=974358",
       "v": "States Available: IN, LA, MI, MO, NC, ND, NE, NV, SC, SD, WV (11 states).",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "CONFLICTED"
     }
   },
   "benefits": {
@@ -890,7 +918,21 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -952,12 +994,40 @@
   "family": "TDK",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -967,7 +1037,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1041,7 +1125,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1074,10 +1172,24 @@
       "src": 100,
       "url": null,
       "v": "Section VI (8) 'Other Medical Services and Supplies. These services and supplies are not covered under the Plan:' (a) local medically necessary professional land or air AMBULANCE service; (b) anesthetic, oxygen, blood and blood derivatives not donated or replaced, intravenous injections and solutions; (c) CARDIAC REHABILITATION; (d) radiation, radioisotope, nuclear medicine therapy, CHEMOTHERAPY and treatment with radioactive substances; (e) routine patient care charges for CLINICAL TRIALS; (f) initial contact lenses or glasses following cataract surgery; (g) outpatient DIABETIC SELF-MANAGEMENT TRAINING and education; (h) DIABETIC SHOES; (i) rental or purchase of DURABLE MEDICAL EQUIPMENT; (j) GENETIC TESTS; (k) INFERTILITY diagnosis and treatment; (l) INJECTABLES; (m) TMJ and jaw joint conditions; (n) laboratory studies and DIAGNOSTIC SERVICES; (o) MENTAL DISORDERS AND SUBSTANCE ABUSE; (p) injury to or care of mouth, teeth and gums; (q) OCCUPATIONAL THERAPY; (r) ORTHOTIC APPLIANCES; (s) PAIN MANAGEMENT; (t) PHYSICAL THERAPY; (u) PRESCRIPTION DRUGS; (v) routine preventive care beyond the Schedule, routine well adult care and routine well child care; (w) PROSTHETIC DEVICES; (x) RECONSTRUCTIVE SURGERY; (y) SPEECH THERAPY; (z) SPINAL MANIPULATION AND CHIROPRACTIC; (aa) sterilization procedures for women; (bb) surgical dressings, splints, casts and devices used in the reduction of fractures and dislocations; (cc) well newborn nursery and physician care limited to ACA guidelines; (dd) initial purchase of a wig after chemotherapy; (ee) DIAGNOSTIC X-RAYS; (ff) a facility or surgical implant provider billing for an implantable device; (gg) any charge for CONTRACEPTIVE materials, devices, injections or related services.",
-      "vs": "VERIFIED_MULTI_SOURCE"
+      "vs": "CONFLICTED"
     },
     "lookback_months": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 127,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1144,10 +1256,17 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=43795&id=974358",
       "v": "Footnote 1 on the Info tab: 'All sickness benefits are subject to a 30-day waiting period before benefits are payable under the plan.'",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "CONFLICTED"
     }
   },
   "open_conflicts": [
+    {
+      "field": "availability.states",
+      "source_ids": [
+        88,
+        127
+      ]
+    },
     {
       "field": "benefits.pcp",
       "source_ids": [
@@ -1165,14 +1284,23 @@
     {
       "field": "identity.network",
       "source_ids": [
-        88
+        88,
+        127
+      ]
+    },
+    {
+      "field": "limitations.excluded_services",
+      "source_ids": [
+        100,
+        127
       ]
     },
     {
       "field": "limitations.pre_existing",
       "source_ids": [
         88,
-        100
+        100,
+        127
       ]
     },
     {
@@ -1180,6 +1308,13 @@
       "source_ids": [
         88,
         100
+      ]
+    },
+    {
+      "field": "limitations.waiting_period_sickness",
+      "source_ids": [
+        88,
+        127
       ]
     },
     {
@@ -1390,6 +1525,18 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-171",
+      "what_is_unknown": "What are the TDK exclusions and limitations on the NEO Info page?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-178",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "tdk-1",
@@ -1450,6 +1597,11 @@
       "message": "field is CONFLICTED"
     },
     {
+      "field": "availability.states",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
       "field": "eligibility.dependent_rules",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
@@ -1460,15 +1612,19 @@
       "message": "field is CONFLICTED"
     },
     {
+      "field": "limitations.waiting_period_sickness",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
       "field": "limitations.waiting_period_other",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
     },
     {
-      "cur": "POSSIBLY_STALE",
       "field": "limitations.excluded_services",
-      "kind": "CURRENTNESS",
-      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
     }
   ],
   "status": "ACTIVE",
