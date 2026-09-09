@@ -3610,7 +3610,7 @@
         "smartchoice1500"
       ],
       "display_name": "SmartChoice 1500",
-      "doc_completeness": "PARTIAL_DOCS",
+      "doc_completeness": "FULL_DOCS",
       "family": "Smart Choice",
       "has_profile": true,
       "plan_id": "smart-choice-1500",
@@ -3632,7 +3632,7 @@
         "smartchoice2500"
       ],
       "display_name": "SmartChoice 2500",
-      "doc_completeness": "PARTIAL_DOCS",
+      "doc_completeness": "FULL_DOCS",
       "family": "Smart Choice",
       "has_profile": true,
       "plan_id": "smart-choice-2500",
@@ -3654,7 +3654,7 @@
         "smartchoice3000"
       ],
       "display_name": "SmartChoice 3000",
-      "doc_completeness": "PARTIAL_DOCS",
+      "doc_completeness": "FULL_DOCS",
       "family": "Smart Choice",
       "has_profile": true,
       "plan_id": "smart-choice-3000",
@@ -3676,7 +3676,7 @@
         "smartchoice3500"
       ],
       "display_name": "SmartChoice 3500",
-      "doc_completeness": "PARTIAL_DOCS",
+      "doc_completeness": "FULL_DOCS",
       "family": "Smart Choice",
       "has_profile": true,
       "plan_id": "smart-choice-3500",
