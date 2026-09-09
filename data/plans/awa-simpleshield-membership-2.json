@@ -11,25 +11,36 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
-    },
-    "claims_administrator": {
       "app": "FAMILY_WIDE",
-      "auth": 6,
-      "conf": "MEDIUM",
-      "cur": "CURRENT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
       "gov": [
         "awa-simpleshield-membership-1",
         "awa-simpleshield-membership-2"
       ],
       "pg": null,
-      "sec": "SGIC Healthwings deck",
-      "src": 86,
-      "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/164/units/2102",
-      "v": "From the specimen member ID card: the card is branded First Health Network and marked 'Limited Benefit Plan', underwritten by SGIC, with American Workers Association, SGIC and MultiPlan logos. General Support and Billing (866) 870-7730, Monday to Friday 9:00am to 6:00pm EST. Benefits, Eligibility and Claims (888) 304-7442, Monday to Friday 8:00am to 5:00pm EST. Provider Locator Assistance 1-800-309-4932. Claims are mailed to SGIC, P.O. Box 211282, Eagan, MN 55121. EDI Payor ID 11789.",
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 129,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45993&id=974021",
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-simpleshield-membership-1",
+        "awa-simpleshield-membership-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 129,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45993&id=974021",
+      "v": null,
+      "vs": "CONFLICTED"
     },
     "claims_submission": {
       "searched": [],
@@ -104,9 +115,20 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-simpleshield-membership-1",
+        "awa-simpleshield-membership-2"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 129,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45993&id=974021",
+      "v": "AL, FL, GA, IA, IL, KY, LA, MI, MS, NE, OK, SC, TN, TX, WI",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -657,7 +679,18 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-simpleshield-membership-1",
+        "awa-simpleshield-membership-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 129,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45993&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -705,12 +738,34 @@
   "family": "AWA SimpleShield",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-simpleshield-membership-1",
+        "awa-simpleshield-membership-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 129,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45993&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-simpleshield-membership-1",
+        "awa-simpleshield-membership-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 129,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45993&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -755,9 +810,20 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "network": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-simpleshield-membership-1",
+        "awa-simpleshield-membership-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 129,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45993&id=974021",
+      "v": "First Health. MultiPlan: additional participating provider access may also be available.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "policy_form": {
       "searched": [],
@@ -790,7 +856,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "awa-simpleshield-membership-1",
+        "awa-simpleshield-membership-2"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 129,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45993&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -854,10 +931,25 @@
   },
   "open_conflicts": [
     {
+      "field": "administration.claims_administrator",
+      "source_ids": [
+        86,
+        129
+      ]
+    },
+    {
       "field": "identity.carrier",
       "source_ids": [
         82,
-        86
+        86,
+        129
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        86,
+        129
       ]
     }
   ],
@@ -945,6 +1037,12 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-180",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "awa-simpleshield-membership-2",
@@ -953,6 +1051,11 @@
   "profile_confidence_reasons": [
     {
       "field": "identity.carrier",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "administration.claims_administrator",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
     }

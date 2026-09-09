@@ -11,12 +11,36 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -93,9 +117,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
+      "v": "AL, AR, AZ, DC, DE, FL, GA, IL, KS, KY, LA, MI, MS, NC, ND, NE, NV, OH, OK, RI, SC, TN, TX, WI, WV",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -751,7 +787,19 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -799,12 +847,36 @@
   "family": "Pinnacle Protect",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -814,7 +886,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -853,7 +937,7 @@
       "src": 99,
       "url": null,
       "v": "'There are NO NETWORK REQUIREMENTS for Pinnacle Protect fixed indemnity - members may use the providers and facilities of their choice. THE PLAN BENEFITS DO NOT CHANGE REGARDLESS OF PROVIDER OR FACILITY. However, members may be able to decrease their out-of-pocket costs by utilizing a participating provider in the PHCS Practitioner & Ancillary Only network.' PHCS Practitioner & Ancillary Only: 915,000 contracted healthcare providers, 60 million consumers accessing the network, 135 million medical bills processed for cost reductions. Provider lookup at https://providersearch.multiplan.com - choose the network 'PHCS Practitioner & Ancillary' and click 'Select & Search'.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "CONFLICTED"
     },
     "policy_form": {
       "searched": [],
@@ -888,7 +972,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -919,10 +1015,22 @@
       "src": 99,
       "url": null,
       "v": "WHAT IS NOT COVERED: Breast surgery (capsular contraction, augmentation or reduction mammoplasty) except post-mastectomy reconstruction for cancer treatment, including the other breast for symmetry and lymphedema treatment; services from persons who do not normally charge; COSMETIC SURGERY except reconstructive after trauma, infection or disease, or for a Dependent Child's congenital condition causing a functional defect; DENTAL CARE except accidental injury to Sound Natural Teeth within 12 months of a Covered Accident and congenital disease or anomaly ('Sound Natural Teeth means teeth that are free of active or chronic clinical decay, have at least 50% bone support and are functional in the arch'); ELECTIVE TREATMENT OR SURGERY; EXPERIMENTAL OR INVESTIGATIONAL treatment; treatment from a Family Member; FOREIGN TRAVEL - nothing outside the United States 'unless the charges are incurred while traveling on business or for pleasure, FOR A PERIOD NOT TO EXCEED 30 DAYS, and the charges are incurred for an EMERGENCY, provided the treatment... [is] approved for use in the United States'; EXTREME SPORTS (scuba diving, skydiving, hang-gliding, parachuting, para-gliding, para-sending, bungee jumping, mountaineering or rock climbing normally requiring guides or ropes, caving, non-scheduled flight, acting or training as pilot or crew, rodeo, acrobatic or off-road vehicle use, parkour, free running); GENDER-related treatment including sex transformation, gender dysphoric disorder, gender reassignment and treatment of sexual function; HAZARDOUS ACTIVITY OCCUPATION where compensation in any form is received; ILLEGAL ACTS; INCARCERATION; INTOXICATION (conclusively deemed if blood level exceeds the state's presumption for operating a motor vehicle, 'regardless of whether he or she is in fact operating a motor vehicle'); NOT MEDICALLY NECESSARY; MENTAL ILLNESS AND SUBSTANCE ABUSE 'whether organic or non-organic, chemical or non-chemical, biological or non-biological in origin and irrespective of cause' except where a Mental Health or Substance Abuse benefit is listed; NARCOTICS unless prescribed; OVERDOSE; PREGNANCY, maternity, childbirth and voluntary or elective abortion except where life would be endangered, and except a Newborn Indemnity Benefit if listed - 'COMPLICATIONS OF PREGNANCY ARE COVERED AS ANY OTHER SICKNESS'; military action in active armed service; MANIPULATIONS OF THE MUSCULOSKELETAL SYSTEM OR ACUPUNCTURE, including Meridian therapy; SPORTS - intercollegiate, interscholastic, organized competitive (travel or club) or professional athletics, 'This does not include dependent children participating in local recreational community sports activities'; SUICIDE OR INTENTIONAL INJURY 'even if the Covered Person did not intend to cause the harm'; UNLICENSED DRIVER unless holding a learner's permit and receiving instruction from a driver's education instructor; WAR, riot, insurrection or armed forces service - terrorism not excluded unless the covered person committed it; WEIGHT - anything for controlling weight or related to obesity or morbid obesity 'whether or not weight reduction is Medically Necessary', including gastric bypass, suction lipectomy, physical fitness programs, exercise equipment or therapy, health club membership and NUTRITIONAL COUNSELING; WORKERS COMPENSATION - anything arising out of work for wage or profit or eligible under workers' compensation 'EVEN WHEN THE COVERED PERSON DOES NOT FILE A CLAIM FOR BENEFITS'.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "CONFLICTED"
     },
     "lookback_months": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -951,7 +1059,7 @@
       "src": 99,
       "url": null,
       "v": "'Pre-existing Condition Limitation - No benefits are payable for a Pre-Existing Condition for a continuous period of ___ months, AS OUTLINED IN PART II - SCHEDULE OF BENEFITS, following the effective date of a Covered Person's coverage under the Certificate. This exclusion does not apply to a newborn child or newborn adopted child who is added to coverage in accordance with PART II - ELIGIBILITY AND EFFECTIVE DATE OF INSURANCE.'",
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "vs": "CONFLICTED"
     },
     "pregnancy_exclusion": {
       "searched": [],
@@ -981,12 +1089,45 @@
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "waiting_period_sickness": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-protect-2",
+        "pinnacle-protect-3",
+        "pinnacle-protect-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 128,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
   "open_conflicts": [
+    {
+      "field": "identity.network",
+      "source_ids": [
+        99,
+        128
+      ]
+    },
+    {
+      "field": "limitations.excluded_services",
+      "source_ids": [
+        99,
+        128
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        99,
+        128
+      ]
+    },
     {
       "conflict_id": "C-011",
       "field": "identity.product_type",
@@ -1086,12 +1227,34 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-179",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "pinnacle-protect-2",
   "plan_variant": "2",
-  "profile_confidence": "HIGH",
-  "profile_confidence_reasons": [],
+  "profile_confidence": "MEDIUM",
+  "profile_confidence_reasons": [
+    {
+      "field": "identity.network",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "limitations.pre_existing",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "limitations.excluded_services",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    }
+  ],
   "status": "ACTIVE",
   "unmapped": {
     "addons.awa_membership": {

@@ -11,12 +11,36 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -93,9 +117,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
+      "v": "AL, AZ, FL, GA, KS, KY, LA, MO, MS, NE, OK, SC, SD, WV",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -611,7 +647,19 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -659,14 +707,38 @@
   "family": "Allstate",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "INFORMATION accordion",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
+      "v": "Some offerings may be presented through an association membership; benefits may vary by state. No association is named.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "billing_entity": {
       "searched": [],
@@ -674,7 +746,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -699,9 +783,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "network": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
+      "v": "Aetna Open Choice PPO. Out-of-network: deductibles and coinsurance may be higher",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "policy_form": {
       "searched": [],
@@ -724,7 +820,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-copay-enhanced-stm-ppo",
+        "allstate-enhanced-stm-ppo",
+        "allstate-essentials-stm-ppo"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 122,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39475&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -786,7 +894,22 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
-  "open_conflicts": [],
+  "open_conflicts": [
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        95,
+        122
+      ]
+    },
+    {
+      "conflict_id": "C-073",
+      "field": "cost_sharing.price_member",
+      "source_ids": [
+        122
+      ]
+    }
+  ],
   "open_gaps": [
     {
       "blocks_statement": false,
@@ -865,6 +988,12 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-175",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "allstate-enhanced-stm-ppo",

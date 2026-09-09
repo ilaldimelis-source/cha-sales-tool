@@ -11,12 +11,32 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -93,9 +113,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
+      "v": "AL, AZ, CA, CO, DE, FL, GA, IA, IL, KY, LA, MI, MO, MS, NC, NE, NV, OH, OK, PA, SC, SD, TN, TX, VA, WI, WV",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -611,7 +641,17 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -659,14 +699,34 @@
   "family": "Allstate",
   "identity": {
     "administrator": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
+      "v": "LIFE Association member offering, where available and state-approved.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "billing_entity": {
       "searched": [],
@@ -674,7 +734,17 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -699,9 +769,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "network": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
+      "v": "First Health Network access for covered services from network providers.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "policy_form": {
       "searched": [],
@@ -724,7 +804,17 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-health-access"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 123,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=45451&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -787,6 +877,27 @@
     }
   },
   "open_conflicts": [
+    {
+      "field": "limitations.excluded_services",
+      "source_ids": [
+        98,
+        123
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        98,
+        123
+      ]
+    },
+    {
+      "field": "limitations.waiting_period_other",
+      "source_ids": [
+        98,
+        123
+      ]
+    },
     {
       "conflict_id": "C-037",
       "field": "benefit.laboratory_test",
@@ -873,6 +984,12 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-176",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "allstate-health-access",

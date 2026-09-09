@@ -11,14 +11,38 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
+      "v": "Coverage terminates at the end of the month in which the insured turns 65. Members can be enrolled only once; duplicate or multiple memberships are not allowed. If coverage is canceled, a person may not re-enroll with Everest Reinsurance Company until six months after their termination date.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "claims_administrator": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
+      "v": "InsuranceTPA.com — claims.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "claims_submission": {
       "searched": [],
@@ -113,9 +137,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "states": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "STATES",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
+      "v": "AL, AZ, FL, GA, KY, NE, OH, SC, TN, WI, WV",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "benefits": {
@@ -877,9 +913,21 @@
   },
   "eligibility": {
     "age_max": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
+      "v": "Coverage is not provided for members age 65 or over; coverage terminates at the end of the month in which the insured turns 65.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "age_min": {
       "searched": [],
@@ -936,20 +984,20 @@
   "identity": {
     "administrator": {
       "app": "FAMILY_WIDE",
-      "auth": 7,
+      "auth": 5,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT_LIVE",
       "gov": [
         "harbor-stm-access",
         "harbor-stm-essential",
         "harbor-stm-secure"
       ],
       "pg": null,
-      "sec": "Disclosures",
-      "src": 34,
-      "url": null,
-      "v": "Everest Reinsurance is underwriter and plan administrator. Neo Insurance Solutions is the billing administrator. Claims are handled by InsuranceTPA.com. The brochure states Neo Insurance Solutions is not affiliated with Everest.",
-      "vs": "VERIFIED"
+      "sec": "INFORMATION",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
+      "v": "Everest Reinsurance Company — underwriter and plan administrator (or Everest Denali Insurance Company, depending on jurisdiction).",
+      "vs": "CONFLICTED"
     },
     "association": {
       "app": "EXACT_VARIANT",
@@ -1052,9 +1100,21 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
+      "v": "Everest Reinsurance Company — underwriter and plan administrator (or Everest Denali Insurance Company, depending on jurisdiction).",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "variant": {
       "searched": [],
@@ -1069,12 +1129,36 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "INFORMATION",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
+      "v": "Preventive treatment and routine physicals, except where expressly listed as a covered benefit. / Prescription drugs, except under the Outpatient Prescription Drug Rider. / Dental, vision, and routine ancillary services, except where specifically provided. / Cosmetic or elective procedures, except where specifically provided. Additional limitations: experimental or investigational; not medically necessary; Custodial, domiciliary, and long-term care; charges above the plan's maximums; Rider or state-specific rider limitations supersede the certificate where required.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "lookback_months": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
@@ -1102,8 +1186,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=767303",
-      "v": "The NEO portal page confirms the brochure. Without the optional rider, pre-existing limitations apply separately to each new coverage period, so a condition treated in an earlier period may be pre-existing under a later certificate. The rider does not provide immediate or complete coverage for all pre-existing conditions, and state-specific terms apply.",
-      "vs": "CONFLICTED"
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pregnancy_exclusion": {
       "searched": [],
@@ -1116,12 +1200,36 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_other": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_sickness": {
-      "searched": [],
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "LOW",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "harbor-stm-access",
+        "harbor-stm-essential",
+        "harbor-stm-secure"
+      ],
+      "pg": null,
+      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
+      "src": 133,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
       "v": null,
       "vs": "NOT_FOUND_IN_SOURCE"
     }
@@ -1135,17 +1243,26 @@
       ]
     },
     {
+      "field": "identity.administrator",
+      "source_ids": [
+        34,
+        133
+      ]
+    },
+    {
       "field": "identity.association",
       "source_ids": [
         34,
-        104
+        104,
+        133
       ]
     },
     {
       "field": "identity.carrier",
       "source_ids": [
         34,
-        104
+        104,
+        133
       ]
     },
     {
@@ -1153,14 +1270,16 @@
       "source_ids": [
         34,
         82,
-        104
+        104,
+        133
       ]
     },
     {
       "field": "limitations.pre_existing",
       "source_ids": [
         34,
-        82
+        82,
+        133
       ]
     },
     {
@@ -1179,6 +1298,13 @@
       "conflict_id": "C-062",
       "field": "pre_existing_rider_name",
       "source_ids": []
+    },
+    {
+      "conflict_id": "C-071",
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        133
+      ]
     }
   ],
   "open_gaps": [
@@ -1313,6 +1439,12 @@
       "field": "",
       "gap_id": "G-170",
       "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-181",
+      "what_is_unknown": "What does the TERMS panel state?"
     }
   ],
   "plan_id": "harbor-stm-secure",
@@ -1343,10 +1475,9 @@
       "message": "field is CONFLICTED"
     },
     {
-      "cur": "POSSIBLY_STALE",
       "field": "identity.administrator",
-      "kind": "CURRENTNESS",
-      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
     },
     {
       "field": "identity.association",
@@ -1355,11 +1486,6 @@
     },
     {
       "field": "identity.network",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
-    },
-    {
-      "field": "limitations.pre_existing",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
     },
