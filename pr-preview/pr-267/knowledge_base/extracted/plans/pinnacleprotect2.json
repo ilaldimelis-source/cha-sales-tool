@@ -1,0 +1,27 @@
+{
+  "planId": "pinnacleprotect2",
+  "planName": "Pinnacle Protect Plan 2",
+  "status": "missing_pdf",
+  "documents": [
+    {
+      "fileName": "Pinnacle_Protect_Plan2_Brochure.pdf",
+      "sourceType": "brochure",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "Pinnacle Protect Plan 2 Limited Medical Guaranteed Issue. Higher benefit tier than Plan 1. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA minimum essential coverage. Member pays amounts above fixed benefit. PHCS network provides discounted billing.",
+          "normalizedText": "pinnacle protect plan 2 limited medical guaranteed issue higher benefit tier than plan 1 phcs practitioner ancillary network multiplan fixed cash benefit per covered service pre existing 12 month look back 12 month exclusion supplement to health insurance not substitute for major medical does not satisfy aca minimum essential coverage member pays amounts above fixed benefit phcs network provides discounted billing"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "pinnacleprotect2-c1",
+      "text": "Pinnacle Protect Plan 2 Limited Medical Guaranteed Issue. Higher benefit tier than Plan 1. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA minimum essential coverage. Member pays amounts above fixed benefit. PHCS network provides discounted billing.",
+      "tokenEstimate": 107,
+      "pageRange": "1-1",
+      "normalizedText": "pinnacle protect plan 2 limited medical guaranteed issue higher benefit tier than plan 1 phcs practitioner ancillary network multiplan fixed cash benefit per covered service pre existing 12 month look back 12 month exclusion supplement to health insurance not substitute for major medical does not satisfy aca minimum essential coverage member pays amounts above fixed benefit phcs network provides discounted billing"
+    }
+  ]
+}
