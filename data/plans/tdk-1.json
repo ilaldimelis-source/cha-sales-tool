@@ -11,42 +11,34 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancellation": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
-      "conf": "LOW",
-      "cur": "CURRENT_LIVE",
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
-      "src": 127,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "pg": 10,
+      "sec": "TERMINATION OF COVERAGE / Termination of Plan Membership (p.10-11)",
+      "src": 25,
+      "url": null,
+      "v": "TERMINATION OF COVERAGE Termination of Plan Membership : A Plan Member’s coverage will terminate with the Plan for any one of the reasons outlined in this section. This termination language will apply to each class of eligible Members. Coverage ends on the last day of the month following one of the events listed, unless otherwise specified. Spouse and dependent children will terminate on the same date as the Member for the all benefits; or for a dependent child, the end of the month in which they turn 26. 1. Working owner does not maintain good standing by completing all required activities each year. 2. Voluntary Termination of Coverage. Coverage will end on the last day for which a contribution has been paid for a Plan Member who voluntarily ends cover age. 3. Death. Coverage will end on the date of death of the member. 4. Contributions. If the covered Plan Member or beneficiary fails to remit required contributions within thirty (30) days when such payment is due, then coverage will terminate at the end of the period for which a contribution is made. 5. Military Duty. The date the Plan Member becomes a full-time member of the Armed Forces of any United States on a full-time active-duty basis, or a government unit covered by or Uniformed Services Employment and re- employment Rights Act of 1993 (USERRA). Reserve duty, drills and summer camp shall be excluded from the definition of active duty unless such duty lasts over 30 days as defined by the act. 6. Plan Termination. The date the Plan is terminated. Rescission of Coverage : Coverage under this Plan may be rescinded under certain circumstances. A determination by the Plan that a rescission is warranted will be considered an Adverse Benefit Determination for purposes of review and appeal. A Participant whose coverage is being rescinded will be provided a thirty (30) day notice period as described under Health Care Reform and regulatory guidance. Such notice shall be considered an Adverse Benefit Determination. At the conclusion of the thirty (30) day notice period, coverage shall be terminated retroactive to the date identified in the notification. Claims Incurred after the retroactive date of termination shall not be further processed and/or paid under the Plan. Claims Incurred after the retroactive date of termination that were paid under the Plan will be treated as erroneously paid claims under this Plan.",
+      "vs": "CONFLICTED"
     },
     "claims_administrator": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
-      "conf": "LOW",
-      "cur": "CURRENT_LIVE",
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
-      "src": 127,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "pg": 5,
+      "sec": "I. PLAN INTRODUCTION",
+      "src": 25,
+      "url": null,
+      "v": "The Plan is an ERISA health and welfare plan, and the responsibility for the administration of the Plan is with the Claims Administrator. For the name, address, and other important information regarding the Claims Administrator, refer to the Information Section of this Plan Document. Detego Health is the Benefits Administrator for the benefits payable under the Plan. Detego Health LLC, 759 N 114th St, Suite 300, Omaha, Nebraska 68154",
+      "vs": "CONFLICTED"
     },
     "claims_submission": {
       "searched": [],
@@ -410,9 +402,19 @@
   },
   "compliance": {
     "mec_status": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "tdk-1"
+      ],
+      "pg": 5,
+      "sec": "I. PLAN INTRODUCTION",
+      "src": 25,
+      "url": null,
+      "v": "While this does meet the Minimum Essential Coverage (MEC), this plan is not considered Creditable Coverage.",
+      "vs": "VERIFIED"
     },
     "required_disclosures": {
       "searched": [],
@@ -786,9 +788,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "deductible": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "tdk-1"
+      ],
+      "pg": 13,
+      "sec": "V. DEDUCTIBLES/CO-PAYS/BENEFIT YEAR VISIT LIMITS/ OUT OF POCKET MAXIMUM and VI. MEDICAL BENEFITS DEDUCTIBLE p.23",
+      "src": 25,
+      "url": null,
+      "v": "There are no deductibles that the Plan Member must meet in this Plan. There is no Medical Deductible under this policy.",
+      "vs": "VERIFIED"
     },
     "enrollment_fee": {
       "app": "FAMILY_WIDE",
@@ -815,9 +827,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "moop": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "tdk-1"
+      ],
+      "pg": 14,
+      "sec": "V. Out-of-Pocket Maximum and VI. OUT-OF-POCKET LIMIT p.23",
+      "src": 25,
+      "url": null,
+      "v": "The Plan is a limited benefit Plan with no out-of-pocket maximum benefit. There is no Medical Out-of-Pocket under this policy.",
+      "vs": "VERIFIED"
     },
     "moop_exclusions": {
       "searched": [],
@@ -947,22 +969,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "dependent_rules": {
-      "app": "FAMILY_WIDE",
-      "auth": 2,
-      "conf": "MEDIUM",
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
       "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "Member Plan Summary",
-      "src": 100,
+      "pg": 7,
+      "sec": "Dependent Child Coverage Ends",
+      "src": 25,
       "url": null,
-      "v": "Section II item 7: 'a dependent child will be eligible for coverage from live birth until the end of the month in which the child attains age 26. There will be no coverage after the month the child attains age 26 (COVERAGE WILL BE PROVIDED UP TO AND THROUGH AGE 25).'",
+      "v": "An eligible and enrolled Dependent child will be eligible for coverage from live birth until the end of the month in which the child attains age 26. There will be no coverage after the month the child attains age 26 (coverage will be provided up to and through age 25).",
       "vs": "CONFLICTED"
     },
     "enrollment_mechanics": {
@@ -994,42 +1012,34 @@
   "family": "TDK",
   "identity": {
     "administrator": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
-      "conf": "LOW",
-      "cur": "CURRENT_LIVE",
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
-      "src": 127,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "pg": 5,
+      "sec": "I. PLAN INTRODUCTION",
+      "src": 25,
+      "url": null,
+      "v": "Detego Health is the Benefits Administrator for the benefits payable under the Plan. Detego Health LLC, 759 N 114th St, Suite 300, Omaha, Nebraska 68154",
+      "vs": "CONFLICTED"
     },
     "association": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
+      "app": "EXACT_VARIANT",
+      "auth": 1,
       "conf": "LOW",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
-      "src": 127,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
+      "pg": 1,
+      "sec": "cover / I. PLAN INTRODUCTION / Information Section p.40",
+      "src": 25,
+      "url": null,
       "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "vs": "CONFLICTED"
     },
     "billing_entity": {
       "searched": [],
@@ -1037,23 +1047,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "carrier": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
+      "app": "EXACT_VARIANT",
+      "auth": 1,
       "conf": "LOW",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
-      "src": 127,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
+      "pg": 5,
+      "sec": "I. PLAN INTRODUCTION / cover / Information Section",
+      "src": 25,
+      "url": null,
       "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "vs": "CONFLICTED"
     },
     "effective_date_rules": {
       "searched": [],
@@ -1061,23 +1067,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "eligibility_model": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
+      "app": "EXACT_VARIANT",
+      "auth": 1,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "TERMS panel - HCDA / Working Owner enrollment agreement (31,646 characters)",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=43795&id=974358",
-      "v": "The enrollee becomes a WORKING OWNER of Healthcare Data Analytics LLC (HCDA), a Tennessee limited liability company, which is a subsidiary of POPULATION SCIENCE MANAGEMENT USA. The Joinder Agreement 'allows this member and dependents access to the ERISA health plan offered by a subsidiary of Population Science Management USA'. Admission is under Section 5.01(c) of the LLC Agreement. Claims are processed by Detego Health LLC.",
-      "vs": "VERIFIED_MULTI_SOURCE"
+      "pg": 6,
+      "sec": "II. PLAN ELIGIBILITY AND MEMBERSHIP - Who is Eligible to Participate",
+      "src": 25,
+      "url": null,
+      "v": "If you are a W2 employee, 1099 affiliate or working owner of your own company you can enroll for coverage.",
+      "vs": "CONFLICTED"
     },
     "enrollment_platform": {
       "searched": [],
@@ -1091,17 +1093,17 @@
     },
     "network": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 1,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
         "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=43795&id=974358",
-      "v": "'Utilies the First Health Network' (typo as printed). Provider search: http://docfind.health/. Footnote 2: 'Outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient Hospital Indemnity benefits are not.'",
+      "pg": 15,
+      "sec": "MEDICAL BENEFITS SCHEDULE",
+      "src": 25,
+      "url": null,
+      "v": "(Utilizes the First Health Network)",
       "vs": "CONFLICTED"
     },
     "policy_form": {
@@ -1125,23 +1127,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
+      "app": "EXACT_VARIANT",
+      "auth": 1,
       "conf": "LOW",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
-      "src": 127,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
+      "pg": 5,
+      "sec": "I. PLAN INTRODUCTION / GINA discussion",
+      "src": 25,
+      "url": null,
       "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "vs": "CONFLICTED"
     },
     "variant": {
       "searched": [],
@@ -1156,42 +1154,34 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "app": "FAMILY_WIDE",
-      "auth": 2,
+      "app": "EXACT_VARIANT",
+      "auth": 1,
       "conf": "HIGH",
       "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "Member Plan Summary",
-      "src": 100,
+      "pg": 26,
+      "sec": "VII. GENERAL EXCLUSIONS AND LIMITATIONS",
+      "src": 25,
       "url": null,
-      "v": "Section VI (8) 'Other Medical Services and Supplies. These services and supplies are not covered under the Plan:' (a) local medically necessary professional land or air AMBULANCE service; (b) anesthetic, oxygen, blood and blood derivatives not donated or replaced, intravenous injections and solutions; (c) CARDIAC REHABILITATION; (d) radiation, radioisotope, nuclear medicine therapy, CHEMOTHERAPY and treatment with radioactive substances; (e) routine patient care charges for CLINICAL TRIALS; (f) initial contact lenses or glasses following cataract surgery; (g) outpatient DIABETIC SELF-MANAGEMENT TRAINING and education; (h) DIABETIC SHOES; (i) rental or purchase of DURABLE MEDICAL EQUIPMENT; (j) GENETIC TESTS; (k) INFERTILITY diagnosis and treatment; (l) INJECTABLES; (m) TMJ and jaw joint conditions; (n) laboratory studies and DIAGNOSTIC SERVICES; (o) MENTAL DISORDERS AND SUBSTANCE ABUSE; (p) injury to or care of mouth, teeth and gums; (q) OCCUPATIONAL THERAPY; (r) ORTHOTIC APPLIANCES; (s) PAIN MANAGEMENT; (t) PHYSICAL THERAPY; (u) PRESCRIPTION DRUGS; (v) routine preventive care beyond the Schedule, routine well adult care and routine well child care; (w) PROSTHETIC DEVICES; (x) RECONSTRUCTIVE SURGERY; (y) SPEECH THERAPY; (z) SPINAL MANIPULATION AND CHIROPRACTIC; (aa) sterilization procedures for women; (bb) surgical dressings, splints, casts and devices used in the reduction of fractures and dislocations; (cc) well newborn nursery and physician care limited to ACA guidelines; (dd) initial purchase of a wig after chemotherapy; (ee) DIAGNOSTIC X-RAYS; (ff) a facility or surgical implant provider billing for an implantable device; (gg) any charge for CONTRACEPTIVE materials, devices, injections or related services.",
+      "v": "VII. GENERAL EXCLUSIONS AND LIMITATIONS 1. No payment will be eligible under any portion of this Plan for expenses Incurred by a Covered Person for the expenses or circumstances listed below. If an expense is paid that is found to be excluded or limited as shown below, the Plan has the right to collect that amount from the payee, the Covered Person or from future benefits and any such payment does not waive the written exclusions, limitations or other terms of the Plan. Limitations listed can be informed in the Medical Benefits Section. 2. Abortion will not be considered eligible. 3. Acupuncture will not be considered eligible. 4. Adoption expenses will not be considered eligible. 5. Alcohol services, supplies, care or treatment to a Covered Person for an Injury or Sickness which occurred as a result of that Covered Person’s illegal use of alcohol. 6. Allergy testing/injections will not be considered eligible. 7. Alternative Medicine or Complementary Medicine services and supplies related to alternative or complementary medicine, including but not limited to acupressure, acupuncture, aroma therapy, bioenergial synchronization technique (BEST), contact reflex analysis, holistic medicine herbal therapy, hypnotism, iridology (study of the iris), naturopathy, Reiki therapy, Rolfing, thermography, or other forms of alternative treatment as defined by the National Center for Complementary and Alternative Medicine of the National Institutes of Health or any similar or successor organization. 8. Ambulance Services – Ground / Air is limited, see Summary of Benefits Page. 9. Autism Services (Inpatient and Outpatient) will not be considered eligible. 10. Autopsy expenses will not be considered eligible. 11. Autotransfusions charges or cell saver transfusions occurring during or after surgery will not be considered eligible. 12. Biofeedback. 13. Blood or Other Body Tissue and Fluids, Including Storage will not be considered eligible. 14. Cardiac Rehabilitation will not be considered eligible. 15. Chemotherapy / Radiation Therapy will not be considered eligible. 16. Chiropractic Services will not be considered eligible. 17. Close Relative expenses for services, care or supplies provided by a person who normally resides in the Covered Person’s home or by a Close Relative will not be considered eligible. 18. Complications services or treatment required as a result of complications from a treatment or procedure not covered under the Plan will not be considered eligible. 19. Contraceptives expenses (including placement and removal) will not be considered eligible, except as otherwise covered as a preventive service under the Schedule of Benefits and Medical Covered Charges section of the Plan. 20. Convenience Items expenses (personal hygiene and convenience) will not be considered eligible. 21. Cosmetic/Reconstructive Procedures expenses will not be considered eligible. 22. Counseling expenses for religious, marital, or relationship counseling will not be considered eligible. 23. Custodial Care expenses will not be considered eligible. 24. Dental Care expenses incurred in connection with dental care, treatment, x-rays, general anesthesia or Hospital expenses will not be considered eligible. 25. Developmental Delays expenses, including, but not limited to speech therapy, occupational therapy, physical therapy and any related diagnostic testing will not be considered eligible. This exclusion will not apply to expenses related to the diagnosis, testing and treatment of autism, ADD or ADHD and to expenses covered as a preventive service under the Schedule of Benefits and Medical Covered Charges section of the Plan. 26. Diagnostic Testing will not be considered eligible. 27. Dialysis will not be considered eligible. 28. Durable Medical Equipment will not be considered eligible. 29. Employment, Insurance, or License related care - physical exams or immunizations, or any other treatment required for enrollment in any insurance program, as a condition of employment, for licensing, or other similar purposes. 30. Exercise Programs will not be considered eligible. 31. Experimental and/or Investigational expenses for treatment, procedures, devices, drugs or medicines which are determined to be Experimental and/or Investigational will not be considered eligible. 32. Eye care - Radial keratotomy, Lasik surgery or other eye surgery to correct vision problems that are alternately correctable by vision lenses. Also, routine eye examinations, including refractions, lenses for the eyes and exams for their fitting (unless specified in the Schedule of Benefits). This exclusion does not apply to aphakic patients and soft lenses or sclera shells intended for use as corneal bandages or as may be covered under the well adult or well child sections of this Plan. 33. Foot Care expenses for routine foot care, treatment of weak, unstable or flat feet will not be considered eligible. 34. Genetic Testing will not be considered eligible. 35. Governmental Agency expenses for services and supplies which are provided by any governmental agency for which the Covered Person is not liable for payment will not be considered eligible. In the case of a state sponsored medical assistance program, benefits payable under this Plan will be primary. Benefits payable under this Plan will also be primary for any Covered Person eligible under TRICARE (the government sponsored program for military dependents). 36. Hair Loss/transplants expenses will not be considered eligible. 37. Hazardous Hobby expenses for any condition, Illness or Injury, or complication thereof, arising out of engaging in a hazardous hobby or activity will not be considered eligible. For the purposes of this Plan, “hazardous hobby or activity” is defined as an unusual activity characterized by a constant threat of danger, such as skydiving, auto racing, hang gliding, bungee jumping, and jet ski operating. This does not include common recreational activities, such as water or snow skiing, horseback riding, boating, motorcycling, snowmobiling, all-terrain vehicle riding and team sports. 38. Hearing Exams/Aids expenses for routine hearing examinations, hearing aids (including the fitting thereof) and supplies will not be considered eligible, except as otherwise covered as a preventive service under the Schedule of Benefits and Medical Covered Charges section of the Plan. 39. Home Health Care will not be considered eligible. 40. Homeopathic Treatment expenses for naturopathic and homeopathic treatments, services and supplies will not be considered eligible. 41. Hospice Care will not be considered eligible. 42. Hypnotherapy expenses will not be considered eligible. 43. Illegal acts - charges for services received as a result of Injury or Sickness occurring directly or indirectly, as a result of an Illegal Act, or a riot, or public disturbance. For purposes of this exclusion, the term Illegal Act shall mean any act or series of acts that, if charged, prosecuted and convicted of a criminal offense, a sentence to a term of imprisonment in excess of one year could be imposed. 44. Illegal Occupation/Felony expenses for or in connection with an Injury or Illness arising out of an illegal occupation or commission of a felony will not be considered eligible. 45. Implantable Devices will not be considered eligible. 46. Infertility expenses for confinement, treatment, testing or services related to infertility (the inability to conceive) or the promotion of conception will not be considered eligible unless otherwise indicated in the Schedule of Benefits. Nothing in this section is intended to exclude coverage for any infertility counseling or treatment required to be covered (if any) as a preventive service under the guidelines published by the Health Resources and Services Administration on August 1, 2011 (or any applicable subsequent guidelines). 47. Late submission charges for care, treatment, services or supplies which were incurred more than 12 months prior to the date the charges were submitted to the Plan for payments will not be considered eligible. 48. Maintenance Therapy expenses for Maintenance Therapy of any type when the individual has reached the maximum level of improvement will not be considered eligible. 49. Massage Therapy expenses will not be considered eligible. 50. Maternity/Pregnancy Services will not be considered eligible. 51. Medically Necessary expenses will not be considered eligible. 52. Mental Health Services (Inpatient and Outpatient) will not be considered eligible. 53. Missed Appointments expenses for completion of claim forms, missed appointments or telephone consultations will not be considered eligible. 54. Motor vehicle injury charges incurred for the care or treatment of any injury sustained as a result of or related to any motor vehicle accident to the extent that such care or treatment for that injury is covered by any plan, program, policy or other arrangement providing insurance coverage for vehicles. 55. Negligence expenses for Injuries resulting from negligence, misfeasance, malfeasance, nonfeasance or malpractice on the part of any licensed Physician will not be considered eligible. 56. Never Events expenses for serious preventable adverse events (“Never Events”) will not, in any event, be considered eligible. These Never Events include: a. Surgery performed on the wrong body part; b. Surgery performed on the wrong patient; c. Wrong Surgical procedure performed on a patient; d. Unintentional retention of a foreign object in a patient after Surgery or other procedure; e. Inoperative or immediate postoperative death in an ASA Class I patient; f. Patient death or serious disability associated with the use of contaminated Drugs, devices, or biologics provided by the healthcare facility; g. Patient death or serious disability associated with the use or function of a device in a patient in which the device is used for functions other than as intended; h. Patient death or serious disability associated with intravascular air embolism that occurs while being cared for in a healthcare facility; i. Patient death or serious disability associated with patient leaving the facility without permission; j. Infant discharged to the wrong person; k. Patient death or serious disability associated with a medication error (e.g., error involving the wrong drug, wrong dose, wrong patient, wrong time, wrong rate, wrong preparations, or wrong route of administration); l. Patient death or serious disability associated with a hemolytic reaction due to the administration of ABO- incompatible blood or blood products; m. Maternal death or serious disability associated with labor and delivery in a low-risk Pregnancy while being cared for in a healthcare facility; n. Patient death or serious disability associated with hypoglycemia, the onset of which occurs while the patient is being cared for in a healthcare facility; o. Death or serious disability associated with failure to identify and treat hyperbilirubinemia (condition where there is a high amount of bilirubin in the blood) in newborns; p. Stage 3 or 4 pressure ulcers acquired after admission to a healthcare facility; q. Patient death or serious disability due to spinal manipulative therapy; r. Artificial insemination with the wrong donor sperm or wrong egg; s. Patient death or serious disability associated with an electric shock while being cared for in a healthcare facility; t. Any incident in which a line designated for oxygen or other gas to be delivered to a patient contains the wrong gas or is contaminated by toxic substances; u. Patient death or serious disability associated with a burn Incurred from any source while being cared for in a healthcare facility; v. Patient death associated with a fall while being cared for in a healthcare facility; w. Patient death or serious disability associated with the use of restrains or bedrails while being cared for in a healthcare facility; x. Any instance of care ordered by or provided by someone impersonating a Physician, nurse, pharmacist, or other Provider; y. Abduction of a patient of any age; z. Sexual assault on a patient within or on the grounds of a healthcare facility; and a. Death or significant Injury of a patient or staff member resulting from a physical assault (i.e. battery) that occurs within or on the grounds of a healthcare facility. 57. No Legal Obligation expenses for services provided for which the Covered Person has no legal obligation to pay will not be considered eligible. This exclusion will not apply to eligible expenses that may be covered by state Medicaid coverage where federal law requires this Employer’s plan to be primary. 58. Non-Covered Procedures expenses for services related to a non-covered Surgery or procedure will not be considered eligible regardless of when the Surgery or procedure was performed. 59. Not Performed Under the Direction of a Physician expenses for services and supplies which are not prescribed or performed by or under the direction of a Physician will not be considered eligible. 60. Not Recommended by a Physician expenses by a Hospital or covered residential treatment center if hospitalization is not recommended or approved by a legally qualified Physician will not be considered eligible. 61. Nutritional Counseling expenses related to nutritional counseling will not be considered eligible, except as otherwise covered as a preventive service under the Schedule of Benefits and Medical Covered Charges section of the Plan. 62. Nutritional Supplements expenses for nutritional supplements or other enteral supplementation will not be considered eligible, except as specified under Schedule of Benefits and Medical Covered Charges of the Plan. Over-the-counter nutritional supplements or infant formulas will not be considered eligible even if prescribed by a Physician. 63. Obesity - surgical and non-surgical care and treatment of obesity including weight loss or dietary control, whether or not it is in any case a part of a treatment plan for another Illness, will not be considered eligible, except as otherwise covered as a preventive service under the Schedule of Benefits and Medical Covered Charges section of the Plan. 64. Off-label drugs - A charge for FDA-approved drugs that are prescribed for non-FDA-approved uses will not be considered eligible. 65. Office visits , physical examinations, immunizations, and tests when required solely for the following: a. Sports b. Camp c. Employment d. Travel e. Marriage f. Insurance g. Legal Proceedings 66. Operated by the Government expenses for treatment at a facility owned or operated by the government will not be considered eligible, unless the Covered Person is legally obligated to pay. This does not apply to Covered Expenses rendered by a Hospital owned or operated by the United States Veteran’s Administration when services are provided to a Covered Person for a non-service related Illness or Injury. 67. Organ Transplants will not be considered eligible. 68. Outpatient surgery (Facility, Anesthesia and Physician charges) , unless specified in the Schedule of Benefits, will not be considered eligible. 69. Outside the United States (U.S.) expenses for services or supplies if the Covered Person leaves the U.S. or the U.S. Territories for the express purpose of receiving medical treatment will not be considered eligible. 70. Over-the-Counter (OTC) Medication expenses for any over-the-counter medication will not be considered eligible. Expenses for drugs and medicines not requiring a prescription by a licensed Physician and not dispensed by a licensed pharmacist will not be considered eligible, except as otherwise covered as a preventive services under the Schedule of Benefits and Pharmacy Covered Charges section of the Plan. 71. Physical/Speech/Occupational Therapy will not be considered eligible. 72. Plan Allowable Fee expenses in excess of the Plan allowable fee charge will not be considered eligible. 73. Plan Maximums - Charges in excess of Plan maximums will not be considered eligible. 74. Pre-Existing Conditions - This plan does not cover pre-existing conditions for the first 12 months after enrollment. 75. Prenatal/Postnatal Services will not be considered eligible, except as required per ACA guidelines. 76. Prior to Effective Date expenses which are incurred prior to the effective date of your coverage under the Plan will not be considered eligible. 77. Private Duty Nursing expenses for inpatient private duty nursing will not be considered eligible. 78. Prosthetics/Orthotics will not be considered eligible. 79. Pulmonary Rehabilitation will not be considered eligible. 80. Radioactive Contamination expenses Incurred as the result of radioactive contamination or the hazardous properties of nuclear material will not be considered eligible. 81. Radiology (CT, PET, MRI, MRA, SPECT) will not be considered eligible. 82. Recreational and Educational Therapy expenses for recreational and educational services; learning disabilities; behavior modification services; any form of non-medical self-care or self-help training, including any related diagnostic testing; music therapy; health club memberships; aquatic or pool therapies; will not be considered eligible. 83. Refractive Errors expenses for radial keratotomy, Lasik Surgery or any Surgical Procedure to correct refractive errors of the eye will not be considered eligible. 84. Replacement braces - Replacement of braces of the leg, arm, back, neck, or artificial arms or legs, unless there is sufficient change in the Covered Person’s physical condition to make the original device no longer functional, will not be considered eligible. 85. Required by Law - In any case where an individual is required by law to maintain insurance coverage (or to maintain any other security or reserve amount in lieu of insurance coverage), expenses of a Covered Person that would be paid by such insurance coverage are not eligible expenses, regardless of whether the individual is in fact covered under such coverage. For purposes of any required automobile, motorcycle or other vehicle coverage, otherwise eligible expenses below the minimum required coverage or the actual coverage elected, whichever is higher, will be excluded from coverage under this Plan. 86. Riot/Revolt expenses resulting from a Covered Person’s participation in a riot or revolt will not be considered eligible. 87. Safety devices- For drivers and all passengers: charges for the treatment for injuries incurred when not wearing appropriate safety restraints and/or motorcycle helmets, when legally required, will be considered eligible. 88. Sex Transformation expenses in connection with sex transformation will not be considered eligible. 89. Sexual Dysfunction/Impotence expenses for services, supplies or drugs related to sexual dysfunction/impotence not related to organic disease will not be considered eligible. Expenses for sex therapy will not be considered eligible. 90. Skilled Nursing Facility will not be considered eligible. 91. Stand-by Physician expenses for technical medical assistance or stand-by Physician services will not be considered eligible. 92. Sterilization expenses for the reversal of elective sterilization will not be considered eligible. Male sterilization services will not be considered eligible. 93. Substance Abuse Services (Inpatient and Outpatient) will not be considered eligible. 94. Surrogate expenses relating to a surrogate pregnancy of any person who is not covered under this Plan, including but not limited to pre-pregnancy, conception, pre-natal, childbirth and post-natal expenses, will not be considered eligible. 95. Transplant expenses for services, supplies or drugs related to all organ or tissue transplant services, will not be considered eligible. Expenses for donor, transportation or travel will not be considered eligible. 96. Travel expenses for travel will not be considered eligible. 97. War expenses for the treatment of Illness or Injury resulting from a war or any act of war or terrorism, whether declared or undeclared, civil war, hostilities or invasion, or while in the armed forces of any country or international organization will not be considered eligible. 98. Weekend Admissions expenses for care and treatment billed by a Hospital for non-Medical Emergency admissions on a Friday or Saturday will not be considered eligible. 99. Wig after Chemotherapy will not be considered eligible. 100. Worker’s Compensation expenses for or in connection with any Injury or Illness which arises out of or in the course of any occupation for which the Covered Person would be entitled to compensation under any Worker’s Compensation Law or occupational disease law or similar legislation will not be considered eligible. 101. Unrelated Claims: 102. Claims for disability resulting from reversal of sterilization 103. Recreational or diversional therapy 104. Claims for temporomandibular joint syndrome 105. Routine eye care (Adult) 106. Rehabilitative therapies a. Pregnancy Benefits, including office visits and childbirth/delivery professional and facility services. b. Routine well-baby care of newborn infant while inpatient. - Diagnosis - Type of services rendered, with diagnosis and/or procedure codes - Date of services - Charges",
       "vs": "CONFLICTED"
     },
     "lookback_months": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
+      "app": "EXACT_VARIANT",
+      "auth": 1,
       "conf": "LOW",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "tdk-1",
-        "tdk-2",
-        "tdk-3",
-        "tdk-4",
-        "tdk-5"
+        "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION / STATES / TERMS (accordion-open)",
-      "src": 127,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=44147&id=974021",
+      "pg": 35,
+      "sec": "VII. exclusion 74 and MEDICAL BENEFITS SCHEDULE footnote (3) p.15",
+      "src": 25,
+      "url": null,
       "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "vs": "CONFLICTED"
     },
     "material_definitions": {
       "searched": [],
@@ -1205,18 +1195,18 @@
     },
     "pre_existing": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 1,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
         "tdk-1"
       ],
-      "pg": null,
-      "sec": "TERMS panel - HCDA / Working Owner enrollment agreement (31,646 characters)",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=43795&id=974358",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "pg": 35,
+      "sec": "VII. GENERAL EXCLUSIONS AND LIMITATIONS, exclusion 74",
+      "src": 25,
+      "url": null,
+      "v": "Pre-Existing Conditions - This plan does not cover pre-existing conditions for the first 12 months after enrollment.",
+      "vs": "CONFLICTED"
     },
     "pregnancy_exclusion": {
       "searched": [],
@@ -1245,21 +1235,35 @@
     },
     "waiting_period_sickness": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 1,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
         "tdk-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=43795&id=974358",
-      "v": "Footnote 1 on the Info tab: 'All sickness benefits are subject to a 30-day waiting period before benefits are payable under the plan.'",
+      "pg": 7,
+      "sec": "Waiting Period",
+      "src": 25,
+      "url": null,
+      "v": "Waiting Period : There is a 30-day waiting period to use any services besides Virtual Medical Services and Pharmacy, as detailed in the Summary of Benefits; this applies to your first year only. Additionally, the 30-day waiting does not apply to emergent care benefits included in the plan. Members that disenroll in the plan for longer than 90 days will be subject to the 30-Day waiting period. At no time will benefits reset during a 12-month enrollment.",
       "vs": "CONFLICTED"
     }
   },
   "open_conflicts": [
+    {
+      "field": "administration.cancellation",
+      "source_ids": [
+        25,
+        127
+      ]
+    },
+    {
+      "field": "administration.claims_administrator",
+      "source_ids": [
+        25,
+        127
+      ]
+    },
     {
       "field": "availability.states",
       "source_ids": [
@@ -1277,27 +1281,73 @@
     {
       "field": "eligibility.dependent_rules",
       "source_ids": [
+        25,
         88,
         100
       ]
     },
     {
+      "field": "identity.administrator",
+      "source_ids": [
+        25,
+        127
+      ]
+    },
+    {
+      "field": "identity.association",
+      "source_ids": [
+        25,
+        127
+      ]
+    },
+    {
+      "field": "identity.carrier",
+      "source_ids": [
+        25,
+        127
+      ]
+    },
+    {
+      "field": "identity.eligibility_model",
+      "source_ids": [
+        25,
+        88
+      ]
+    },
+    {
       "field": "identity.network",
       "source_ids": [
+        25,
         88,
+        127
+      ]
+    },
+    {
+      "field": "identity.underwriter",
+      "source_ids": [
+        25,
         127
       ]
     },
     {
       "field": "limitations.excluded_services",
       "source_ids": [
+        25,
         100,
+        127
+      ]
+    },
+    {
+      "field": "limitations.lookback_months",
+      "source_ids": [
+        25,
         127
       ]
     },
     {
       "field": "limitations.pre_existing",
       "source_ids": [
+        25,
         88,
         100,
         127
@@ -1313,6 +1363,7 @@
     {
       "field": "limitations.waiting_period_sickness",
       "source_ids": [
+        25,
         88,
         127
       ]
@@ -1390,6 +1441,20 @@
       "field": "benefits.copays_and_hospitalization",
       "source_ids": [
         100
+      ]
+    },
+    {
+      "conflict_id": "C-076",
+      "field": "benefits.hospital_ambulance_rx_vs_schedule",
+      "source_ids": [
+        28
+      ]
+    },
+    {
+      "conflict_id": "C-078",
+      "field": "documentation.source_defects",
+      "source_ids": [
+        135
       ]
     }
   ],
@@ -1533,10 +1598,28 @@
       "what_is_unknown": "What are the TDK exclusions and limitations on the NEO Info page?"
     },
     {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-171",
+      "what_is_unknown": "What are the TDK exclusions and limitations on the NEO Info page?"
+    },
+    {
       "blocks_statement": true,
       "field": "",
       "gap_id": "G-178",
       "what_is_unknown": "What does the TERMS panel state?"
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-182",
+      "what_is_unknown": "Does the MyLiveDoc formulary duplicate its DERMATOLOGY section?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-183",
+      "what_is_unknown": "What is the definition of Pre-Existing Condition for TDK?"
     }
   ],
   "plan_id": "tdk-1",
@@ -1592,6 +1675,37 @@
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
+      "cur": "POSSIBLY_STALE",
+      "field": "training.working_owner_activities",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "identity.eligibility_model",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "identity.underwriter",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "identity.carrier",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "identity.administrator",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "identity.association",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
       "field": "identity.network",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
@@ -1612,6 +1726,28 @@
       "message": "field is CONFLICTED"
     },
     {
+      "cur": "POSSIBLY_STALE",
+      "field": "cost_sharing.deductible",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "cost_sharing.moop",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "field": "limitations.pre_existing",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "limitations.lookback_months",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
       "field": "limitations.waiting_period_sickness",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
@@ -1625,6 +1761,22 @@
       "field": "limitations.excluded_services",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
+    },
+    {
+      "field": "administration.claims_administrator",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "administration.cancellation",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "compliance.mec_status",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     }
   ],
   "status": "ACTIVE",
@@ -2322,6 +2474,25 @@
       "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/165/units/2104",
       "v": "The deck contains a slide titled 'Activities for Working Owners' stating that as working owners, members need to complete an average of 8 activities every 12 months; some mandatory, some voluntary; each typically five to fifteen minutes and completable on a phone. Activities include videos with a short quiz, surveys (Life Satisfaction, Burnout and Engagement, Food Frequency), fitness modules (Diet and Nutrition, Tobacco Cessation, Fitness, Stress), health coaching, recording vitals and vaccines. Biometric screening and DNA screenings are available at ADDITIONAL COST.",
       "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "training.working_owner_activities": {
+      "app": "FAMILY_WIDE",
+      "auth": 6,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "tdk-1",
+        "tdk-2",
+        "tdk-3",
+        "tdk-4",
+        "tdk-5"
+      ],
+      "pg": 3,
+      "sec": "Activities for Working Owners",
+      "src": 135,
+      "url": null,
+      "v": "As working owners, members need to complete an average of 8 activities every 12 months. Some activities will be mandatory and others will be voluntary.",
+      "vs": "VERIFIED"
     },
     "underwriting.phi_and_rescission": {
       "app": "FAMILY_WIDE",
