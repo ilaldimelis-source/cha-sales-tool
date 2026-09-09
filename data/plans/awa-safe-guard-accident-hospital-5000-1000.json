@@ -896,11 +896,6 @@
       "vs": "CONFLICTED"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
-    },
-    "product_type": {
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
@@ -914,6 +909,11 @@
       "url": "https://www.1enrollment.com/information/product.cfm?page=25654&id=974021",
       "v": "group_accident_only_add_plus_accident_hospital_indemnity",
       "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "product_type": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "rx_admin": {
       "searched": [],

@@ -819,9 +819,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "allstate-specified-care"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52062&id=974021",
+      "v": "supplemental_critical_event_with_episodic_deductible",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "product_type": {
       "app": "EXACT_VARIANT",
@@ -835,8 +845,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=52062&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Insured supplemental product. The page describes 'a supplemental critical medical event product' from Allstate Health designed to help with out-of-pocket costs tied to unexpected major medical events, covering listed conditions such as cancer, heart attack, stroke, transplant and severe burns. It uses an EPISODIC deductible rather than an annual calendar-year deductible, with four deductible options and the same covered-event structure across each version.",
+      "vs": "VERIFIED"
     },
     "rx_admin": {
       "searched": [],
@@ -906,15 +916,7 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
-  "open_conflicts": [
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        101
-      ]
-    }
-  ],
+  "open_conflicts": [],
   "open_gaps": [
     {
       "blocks_statement": false,

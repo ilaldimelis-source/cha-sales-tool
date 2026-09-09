@@ -822,9 +822,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "recuro-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52663&id=974021",
+      "v": "non_insurance_virtual_care_service",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "product_type": {
       "app": "EXACT_VARIANT",
@@ -838,8 +848,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=52663&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Virtual care service, delivered by a named service partner. The page states 'Powered by Recuro Health' and names Recuro Health as the Service Partner. Every package is built on Virtual Urgent Care; higher packages add Virtual Therapy and then Virtual Primary Care. 24/7 access to board-certified clinicians by phone, video, mobile, web and desktop. Virtual Therapy uses licensed counsellors across all 50 states with consults in 48 to 72 hours. Platform is HITRUST-certified.",
+      "vs": "VERIFIED"
     },
     "rx_admin": {
       "searched": [],
@@ -909,15 +919,7 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
-  "open_conflicts": [
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        101
-      ]
-    }
-  ],
+  "open_conflicts": [],
   "open_gaps": [
     {
       "blocks_statement": false,

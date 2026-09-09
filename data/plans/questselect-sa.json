@@ -776,9 +776,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "questselect-sa"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=52901&id=974021",
+      "v": "non_insurance_lab_benefit_program",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "product_type": {
       "app": "EXACT_VARIANT",
@@ -792,8 +802,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=52901&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Voluntary value-added lab benefit delivered through Quest Diagnostics. The page describes covered outpatient laboratory testing at $0 member cost across more than 1,200 CPT-coded tests. Members ask that lab work be sent to Quest. The page states the member's own health benefit plan pays some or all of the cost, which can mean discounts of up to 100%. If the member does not use it, normal benefits apply.",
+      "vs": "VERIFIED"
     },
     "rx_admin": {
       "searched": [],
@@ -864,13 +874,6 @@
     }
   },
   "open_conflicts": [
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        101
-      ]
-    },
     {
       "conflict_id": "C-050",
       "field": "standalone_vs_bundled",

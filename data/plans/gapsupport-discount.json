@@ -756,9 +756,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "gapsupport-discount"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=43986&id=974021",
+      "v": "non_insurance_savings_and_advocacy_program",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "product_type": {
       "app": "EXACT_VARIANT",
@@ -772,8 +782,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=43986&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Discount and advocacy program. The page labels it a 'Supplemental Savings Product' and describes a savings and advocacy program to reduce out-of-pocket health-related expenses. Components: medical expense savings (first-dollar, no stated usage limits), medical bill mediation and patient advocacy, dental savings 15-50% per visit in most instances, vision 10-60% off eyewear and 40-50% off LASIK, pharmacy averaging 55% generic and 15% brand-name discounts.",
+      "vs": "VERIFIED"
     },
     "rx_admin": {
       "searched": [],
@@ -843,15 +853,7 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
-  "open_conflicts": [
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        101
-      ]
-    }
-  ],
+  "open_conflicts": [],
   "open_gaps": [
     {
       "blocks_statement": true,

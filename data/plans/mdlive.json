@@ -776,9 +776,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "mdlive"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=26837&id=974021",
+      "v": "non_insurance_telehealth_service",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "product_type": {
       "app": "EXACT_VARIANT",
@@ -792,8 +802,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=26837&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Virtual care service. The page header field reads 'Virtual Care Service'. Provides 24/7 access to US board-certified doctors and licensed counsellors by phone, secure video or mobile app, at a $0 copay per visit, with family members eligible.",
+      "vs": "VERIFIED"
     },
     "rx_admin": {
       "searched": [],
@@ -863,15 +873,7 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
-  "open_conflicts": [
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        101
-      ]
-    }
-  ],
+  "open_conflicts": [],
   "open_gaps": [
     {
       "blocks_statement": true,

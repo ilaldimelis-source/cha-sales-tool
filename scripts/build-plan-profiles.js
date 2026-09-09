@@ -243,7 +243,10 @@ function buildAliases(plan) {
   return Array.from(set).sort();
 }
 
-function mappedPath(field) {
+function mappedPath(field, sourceId) {
+  if (field === 'product_type' && sourceId === 101) {
+    return 'identity.product_class';
+  }
   if (ALIAS_MAP[field]) return ALIAS_MAP[field];
   if (BASE_DEST_SET.has(field)) return field;
   return null;
@@ -781,7 +784,7 @@ function buildProfile(
   const unmappedFacts = new Map();
   for (let i = 0; i < planFacts.length; i++) {
     const fact = planFacts[i];
-    const dest = mappedPath(fact.field);
+    const dest = mappedPath(fact.field, fact.source_id);
     if (!dest) {
       if (!unmappedFacts.has(fact.field)) unmappedFacts.set(fact.field, []);
       unmappedFacts.get(fact.field).push(fact);
@@ -945,7 +948,7 @@ function main() {
       factsRejected += 1;
       continue;
     }
-    if (!mappedPath(fact.field)) {
+    if (!mappedPath(fact.field, fact.source_id)) {
       recordUnmappedStat(unmappedStats, fact.field, fact.plan_id, fact.value);
     }
     if (!acceptedByPlan.has(fact.plan_id)) acceptedByPlan.set(fact.plan_id, []);

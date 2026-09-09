@@ -808,11 +808,6 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
-    },
-    "product_type": {
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
@@ -826,6 +821,11 @@
       "url": "https://www.1enrollment.com/information/product.cfm?page=50493&id=974021",
       "v": "accident_medical_expense_with_optional_riders",
       "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "product_type": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "rx_admin": {
       "searched": [],
