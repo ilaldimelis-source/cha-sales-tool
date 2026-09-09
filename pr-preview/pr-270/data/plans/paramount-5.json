@@ -1,0 +1,1147 @@
+{
+  "administration": {
+    "arbitration_venue": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_descriptor": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancellation": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "claims_submission": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "customer_service": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "id_card_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "member_portal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network_lookup": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "payment_timing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "precert": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "provider_verification": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "refund": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "reinstatement": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "renewal": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "tax_treatment": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_length": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "availability": {
+    "state_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "states": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "STATES panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "States Available: DC, FL, TN, VA, WY (5 states only).",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  },
+  "benefits": {
+    "accident": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "accidental_death": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ambulance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "anesthesia": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "cancer": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "chiropractic": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$25 per day, up to 5 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "critical_illness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ct": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dme": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "er": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$200 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "home_health": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_admission": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$1,000 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "hospital_confinement_supplemental": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "hospital_daily": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "icu": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$200 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "labs": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "maternity": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "Normal Pregnancy Coverage: Included. Complications of Pregnancy are always covered. Normal Pregnancy Waiting Period: None (does not apply to Complications).",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "mental_health_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mental_health_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "mri": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pathology": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pcp": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$50 per day, up to 3 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "preventive": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pt": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rehab": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_brand": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_generic": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "rx_specialty": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "snf": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "specialist": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "substance_use": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_inpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "surgery_outpatient": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "telehealth": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ultrasound": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "urgent_care": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$125 per day, up to 2 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "vision": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "wellness": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$50 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "xray": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance": {
+    "mec_status": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "required_disclosures": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "verification_script": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "compliance_risks": [
+    {
+      "could_misstate": "Classifying any product from its name. Doing so produces errors in both directions - calling insurance a membership, and calling a service a discount.",
+      "do_not_say": "Never type or describe a product from its name. Read the Info page.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-017",
+      "safe_wording": "Nothing client-facing. This is an internal rule.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "compared against the 2026-04-08 snapshot",
+        "src": 82,
+        "url": ""
+      },
+      "verified_fact": "Product names in this portfolio are unreliable indicators of product type IN BOTH DIRECTIONS. 'AWA SimpleShield Membership Plan' is fixed indemnity insurance. 'Prime Health Pass Discount' is described on its own page as a Diagnostic Services Product delivering services. Between April and September NEO inserted the word 'Membership' into four Safe Guard product names without any evident change of type. Meanwhile 'AssistPro Discount' genuinely is a discount program.",
+      "verify_before_saying": "Before any add-on is described on a call, and before any tooling assigns it a category."
+    },
+    {
+      "could_misstate": "Nothing directly - this is a defect in the document, not in what the agent says. But it means the clause telling the client who to contact about claims may be unreadable, and the client may later say they were never told who their agent was.",
+      "do_not_say": "Do not tell a client the agreement names their agent.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-040",
+      "safe_wording": "Give the client your own name, agency and email verbally on the recorded call, and confirm you are their contact for benefit and claims questions. Do not rely on the agreement to have done it.",
+      "scope": "PORTFOLIO",
+      "severity": "",
+      "source": {
+        "pg": 38175,
+        "sec": "pages 38175 and 32339",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "The FirstEnroll enrollment-agreement template served on the live storefront contains unrendered variables - $parentcompany, $product_label, $agent_fullname, $agent_Email, $parentemail - confirmed on two unrelated product families (American Financial Critical Illness page 38175, and Health Choice Silver page 32339). The affected clauses are the third-party administrator disclaimer, the Plan and Claims Inquiries clause and the Writing Agent Contact block.",
+      "verify_before_saying": "Raise with FirstEnroll whether the executed enrollment document renders these variables. See G-039."
+    },
+    {
+      "could_misstate": "'No annual benefit maximum' sounds like unlimited coverage. It is not - every line is capped per day and by days per year, so the real ceiling is the sum of those caps. Also, the age-70 reduction sits at the bottom of a feature grid and is easy to skip past with an older caller.",
+      "do_not_say": "Do not say there is no maximum. Do not omit the age-70 reduction to a caller near or over seventy. Do not describe the membership discount benefits as insurance.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-044",
+      "safe_wording": "This is an association membership that includes a hospital indemnity insurance benefit. It pays set dollar amounts per day, up to a set number of days a year. There is a twelve-month pre-existing condition limitation. Normal pregnancy is included with no waiting period. If you are seventy or older your benefits are reduced to seventy-five percent.",
+      "severity": "",
+      "source": {
+        "pg": 44347,
+        "sec": "46436-46438 and the page 44347 TERMS panel",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "Paramount is a Business Workers of America membership that INCLUDES Group Hospital Indemnity Insurance. Published on the Info page: 12/12 pre-existing limitation; normal pregnancy INCLUDED with no waiting period and complications always covered; portability not included; no annual benefit maximum; 0-day benefit waiting period; benefits REDUCE TO 75% AT AGE 70. Available in five states only: DC, FL, TN, VA, WY. A non-refundable enrollment fee applies and cancellation requires 15 days written notice.",
+      "verify_before_saying": "Plans 1, 4, 5 and 6 publish identical benefits - see C-020. Do not attempt to explain a difference between them; there is none published."
+    },
+    {
+      "could_misstate": "This is the most serious misstatement risk found in the entire portfolio. The Info tab for these three products publishes an ordinary insurance benefit schedule with '12/12' pre-existing, 'Normal Pregnancy Coverage Included' and 'Annual Benefit Maximum None' - and is byte-identical to Paramount Plan 1, which is genuinely insurance. An agent working from the Info tab has no way to know a sharing layer exists, and would describe guaranteed insurance payment for an arrangement in which sharing is voluntary and the member stays personally liable.",
+      "do_not_say": "Never say covered, paid, claim, benefit or policy about the sharing component. Never quote 'no annual or lifetime limit' without the pre-existing phase-in caps in the same breath. Never quote the Info tab's 12/12 pre-existing figure for these three plans. Never present Plan 4, 5 or 6 as an upgrade of Plan 1 - it is a different product class.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-050",
+      "safe_wording": "Part of this membership is a health care sharing programme. That is not insurance - it is a community that shares eligible medical costs, sharing is voluntary, and you remain personally responsible for your own medical bills. There is a fifteen-hundred-dollar unshared amount you pay first. If you have a condition you have been examined for, medicated for, had symptoms of or been treated for in the last two years, nothing is shared for it in year one, and the amount shared is capped for the next three years.",
+      "severity": "",
+      "source": {
+        "pg": 46436,
+        "sec": "46437, 46438, TERMS panel - sections verified byte-identical across all three",
+        "src": 88,
+        "url": ""
+      },
+      "verified_fact": "These three products carry a ShareWELL HEALTH CARE SHARING layer that Paramount Plans 1-3 do not. The agreement states verbatim: 'Sharewell is not an insurance company and does not offer insurance products or policies. This program is not a qualified health plan under the Affordable Care Act. This program should not be considered a substitute for an insurance policy... If the member is unable to share in all or part of an eligible medical need, the member will remain solely financially liable for any and all unpaid medical needs.' It carries the statutory health care sharing ministry notice for Florida, Virginia and Wyoming among others - three of the five states Paramount is sold in. Pre-existing: 24-month lookback (36 months for cancer recurrence), one-year total waiting period, then a phase-in capping shared amounts at $30,000, $60,000 and $150,000 per need in years two, three and four, unlimited only from year five. Unshared Amount $1,500.",
+      "verify_before_saying": "Read the statutory notice for the client's state before selling in FL, VA or WY. Obtain and read the ShareWELL Membership Guidelines (linked in the agreement, not held). See C-029."
+    },
+    {
+      "could_misstate": "Selling 'guaranteed acceptance' without the pre-existing exclusion and the actively-at-work condition. Also: quoting the $2,200 heart-attack example as what a client will receive - the brochure disclaims it as an estimate. Also: failing to give a Medicare-eligible caller the Medicare buyer's guide the carrier says they should have.",
+      "do_not_say": "Do not say guaranteed issue without saying pre-existing conditions are excluded. Do not present it as Medicare coverage or a Medicare supplement. Do not quote the illustration as a benefit amount. Do not tell a client they can add coverage later - they cannot, except at open enrollment.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-058",
+      "safe_wording": "Acceptance is guaranteed - no health questions and no medical exam - as long as you are actively working. There is still a twelve-month pre-existing condition limitation. It pays fixed dollar amounts directly to you. It is not a Medicare supplement, and nothing is paid for anything that happens outside the US or Canada.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "held in Drive and linked from all six Paramount storefront pages",
+        "src": 93,
+        "url": ""
+      },
+      "verified_fact": "The insured component of Paramount is BCS EssentialCare Group Hospital Insurance, underwritten by BCS Insurance Company. It is GUARANTEED ISSUE with no medical exam and no health questions, conditional on the member being ACTIVELY AT WORK - and it carries pre-existing exclusions. It is expressly NOT Medicare supplement insurance, and the carrier directs that 'a certificate holder eligible for Medicare should review the guide to health insurance for people with Medicare'. A 1099 is issued if benefits exceed $10,000. There is no portability and coverage can only be changed at open enrollment. Nothing is payable for travel or activity outside the United States or Canada.",
+      "verify_before_saying": "Cancellation requires BOTH a call to BCS on 877-697-0026 and written notice to FirstEnroll 15 days ahead - see C-036."
+    },
+    {
+      "could_misstate": "Describing reference-based pricing as a network. It is not. Under a PPO the provider has agreed a rate in advance; under reference-based pricing the bill is repriced after the fact and the provider can simply refuse, leaving the member balance-billed for the difference. The BWA AmeriCare Info page's phrasing - 'all in-network medical bills are repriced to the PHCS Network rate' - invites exactly that misreading.",
+      "do_not_say": "Do not say in-network, covered, or guaranteed savings. Do not quote a savings percentage as an expectation.",
+      "fact_class": "verified_plan_fact",
+      "risk_id": "K-059",
+      "safe_wording": "This service reprices your bills to a benchmark based on Medicare rates and negotiates on your behalf. Providers are not obliged to accept it and some decline. There is no guarantee of any particular saving, and you remain responsible for the bill.",
+      "severity": "",
+      "source": {
+        "pg": null,
+        "sec": "BCS_Brochure_1.pdf",
+        "src": 93,
+        "url": ""
+      },
+      "verified_fact": "MBR PLUS reprices bills using a Reference Based Pricing System 'to between 150% to 200% of the Medicare Allowable Rates'. The brochure states: 'we cannot guarantee the outcome of any claim or the amount of savings on any bill. MEDICAL PROVIDERS MAY DECLINE TO HONOR THIS SERVICE.' The member pays a $25 pre-pay for primary care and $50 for specialist visits at the time of service.",
+      "verify_before_saying": "Always. This is the single sentence most likely to be dropped from a fast pitch."
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-088",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "51 of the 80 products on the NEO agent storefront have no brochure, certificate or policy document attached anywhere in the enrolment system. For those products the NEO reference page is the only available source, and four of those pages carry a limitations or exclusions heading with no text beneath it.",
+      "verify_before_saying": ""
+    },
+    {
+      "could_misstate": "",
+      "do_not_say": "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping.",
+      "fact_class": "internal_interpretation",
+      "risk_id": "K-200",
+      "safe_wording": "",
+      "scope": "PORTFOLIO",
+      "severity": "HIGH",
+      "source": {
+        "pg": null,
+        "sec": "",
+        "src": null,
+        "url": ""
+      },
+      "verified_fact": "Ten of the eleven linked brochures are READ and fully extracted into the ledger, but the PDF files themselves are not in Drive. The documents behind 25 live variants therefore exist in this project only as extracted facts, not as retrievable source documents.",
+      "verify_before_saying": ""
+    }
+  ],
+  "cost_sharing": {
+    "annual_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "coinsurance": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "deductible": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lifetime_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "moop_exclusions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_children": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "price_member_plus_spouse": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "processing_fee": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "term_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "ucr_cap": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "display_name": "Paramount Plan 5",
+  "do_not_say": [
+    "Do not say guaranteed issue without saying pre-existing conditions are excluded. Do not present it as Medicare coverage or a Medicare supplement. Do not quote the illustration as a benefit amount. Do not tell a client they can add coverage later - they cannot, except at open enrollment.",
+    "Do not say in-network, covered, or guaranteed savings. Do not quote a savings percentage as an expectation.",
+    "Do not say there is no maximum. Do not omit the age-70 reduction to a caller near or over seventy. Do not describe the membership discount benefits as insurance.",
+    "Do not tell a client the agreement names their agent.",
+    "For any product in this group, do not answer a coverage, exclusion, waiting-period or pre-existing question on a recorded call from portal material alone. Obtain the carrier document first.",
+    "Never say covered, paid, claim, benefit or policy about the sharing component. Never quote 'no annual or lifetime limit' without the pre-existing phase-in caps in the same breath. Never quote the Info tab's 12/12 pre-existing figure for these three plans. Never present Plan 4, 5 or 6 as an upgrade of Plan 1 - it is a different product class.",
+    "Never type or describe a product from its name. Read the Info page.",
+    "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
+  ],
+  "doc_completeness": "PORTAL_ONLY",
+  "documentation": {
+    "brochure": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "BROCHURE panel",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "A brochure is linked: BCS_Brochure_1.pdf - already held in Drive.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "source_defects": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "eligibility": {
+    "age_max": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_min": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "age_range": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "dependent_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_mechanics": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "knockout_questions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "medical_underwriting": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "residency": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "spouse_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "family": "Paramount",
+  "identity": {
+    "administrator": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "association": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "billing_entity": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "carrier": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "effective_date_rules": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "eligibility_model": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "enrollment_platform": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "family": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "network": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "policy_form": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_class": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "product_type": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
+    },
+    "rx_admin": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "underwriter": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "variant": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "limitations": {
+    "day_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "excluded_services": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "lookback_months": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "material_definitions": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_ex_scope": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pre_existing": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "pregnancy_exclusion": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "visit_limits": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_other": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    },
+    "waiting_period_sickness": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
+    }
+  },
+  "open_conflicts": [
+    {
+      "field": "identity.product_type",
+      "source_ids": [
+        88
+      ]
+    },
+    {
+      "field": "limitations.pre_existing",
+      "source_ids": [
+        88
+      ]
+    },
+    {
+      "conflict_id": "C-020",
+      "field": "benefit_schedule (all fields)",
+      "source_ids": [
+        88
+      ]
+    },
+    {
+      "conflict_id": "C-029",
+      "field": "exclusions.pre_existing",
+      "source_ids": [
+        88
+      ]
+    },
+    {
+      "conflict_id": "C-036",
+      "field": "cancellation.method",
+      "source_ids": [
+        88,
+        93
+      ]
+    }
+  ],
+  "open_gaps": [
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-006",
+      "what_is_unknown": "Paramount_4_BOOKLET.pdf, Paramount_5_BOOKLET.pdf and Paramount_6_BOOKLET.pdf are linked by FirstEnroll but are not in Drive."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-013",
+      "what_is_unknown": "Every product Info page and Cost page on both platforms; roughly 110 pages in total."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-014",
+      "what_is_unknown": "All TalentLMS course content."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-016",
+      "what_is_unknown": "Not a missing document - a method finding. The Benefit Summary tables in the Smart Choice documents contain overlapping text runs that cause ordinary text extraction to assign cost-sharing figures to the WRONG ROWS."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-018",
+      "what_is_unknown": "Current product lists. Both list snapshots are dated 2026-04-08, five months old."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-024",
+      "what_is_unknown": "The FirstEnroll current product list and all ~70 product Info pages. The session expired mid-run."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-025",
+      "what_is_unknown": "TalentLMS course interiors. The catalogue was inventoried - 82 courses across ASG Onboarding (61), Product (11) and General (10) - and one course detail panel was read. Course units could not be opened without clicking 'Get this course', which would enrol the user."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-044",
+      "what_is_unknown": "Info, STATES and TERMS panels on the remaining ~45 FirstEnroll product pages: Harmony Care (48876, 48877, 48878, 48879, 48880, 48881, 48882, 48885, 49428), Harmony Care + (48037-48044), Sigma Care PLUS (45288, 45430-45436), Paramount (44347-44349, 46436-46438), BWA AmeriCare (39559, 39561, 39562), Access Health (28230, 28231), TDK (43795, 43900-43903), GHDP 1-5 (44900-44904)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-047",
+      "what_is_unknown": "CLOSED. Panel read. TERMS panels: BWA AmeriCare 11,127 chars (page 39559) unread; Paramount panels on pages 44348, 44349, 46436, 46437 and 46438 not fingerprinted or read (only Plan 1, page 44347, was read)."
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-055",
+      "what_is_unknown": "A genuine client-facing brochure for Harmony Care, Harmony Care PLUS and Paramount. What the storefront serves as the BROCHURE link on all 23 of these pages is not client material: HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf opens with the words 'For agent use only', and BCS_Brochure_1.pdf is a carrier group proposal 'Prepared for: Business Workers of America' carrying a PROPOSAL DISCLOSURE about rates being subject to reassessment on group participation levels."
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-088",
+      "what_is_unknown": "Which NEO products have NO brochure at all?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-089",
+      "what_is_unknown": "Where are the ten NEO brochures that are linked but not in Drive?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-167",
+      "what_is_unknown": "Are the 300-tier diagnostic gap and the 200+ emergency room drop intentional carrier design or a schedule error?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-168",
+      "what_is_unknown": "Why do Paramount Plans 4, 5 and 6 carry lower indemnity benefits than Plans 2 and 3?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "",
+      "gap_id": "G-170",
+      "what_is_unknown": "Can the linked brochure PDFs be saved to disk and uploaded to Drive from this session?"
+    }
+  ],
+  "plan_id": "paramount-5",
+  "plan_variant": "5",
+  "profile_confidence": "HIGH",
+  "profile_confidence_reasons": [],
+  "status": "ACTIVE",
+  "unmapped": {
+    "benefit.unshared_amount": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - ShareWELL Health Share membership agreement",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "'The Unshared Amount, or UA, is the amount a member must contribute as their member[ship responsibility]... ShareWELL offers the membership UA option $1,500. After the member pays the UA, additional eligible medical expenses are shared with the ShareWELL community. There is no annual or lifetime limit on eligible expenses.' Medical expenses not outlined as an eligible preventive service are subject to the UA - 'This includes maternity, unexpected medical events, and care for pre-existing conditions after the first year.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.ambulance_air": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$100 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.ambulance_ground_or_water": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$100 per day, up to 1 day per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.hospital_confinement_day_2_forward": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$100 per day, up to 10 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "benefit_schedule.icu_confinement_day_2_forward": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "$200 per day, up to 10 days per year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "compliance.statutory_hcsm_notice": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - ShareWELL Health Share membership agreement",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "The agreement carries the statutory health care sharing ministry notice for a named list of states - Alabama 22-6A-2, Arizona 20-122, Arkansas 23-60-104.2, Florida 624.1265, Georgia 33-1-20, Idaho 41-121, Louisiana 22-318/319, Maine 24-A sec 704 sub-sec 3, Michigan 550.1867, Mississippi 83-77-1, Nebraska 44-311, New Hampshire 126-V:1, North Carolina 58-49-12, South Dakota 58-1-3.3, Texas Title 8 K 1681.001, Virginia 38.2-6300-6301, Washington 48.43.009, Wyoming 26.1.104(a)(v)(C), plus a separate notice list for Indiana 27-1-2.1, Illinois 215-5/4 Class 1-b and Missouri. The notice reads: 'The organization facilitating the sharing of medical expenses is not an insurance company, and its product should never be considered insurance, and neither its guidelines nor plan of operation is an insurance policy. If you join this organization instead [of purchasing insurance you will be con]sidered uninsured. Whether anyone chooses to assist you with your medical bills will be totally voluntary because no other participant will be compelled by law to contribute toward your medical bills... Regardless of whether you receive any payment for medical expenses or whether this organization continues to operate, you are always personally responsible for the payment of your own medical bills. This organization is not regulated by the State's Department of Insurance, though complaints concerning this Health Care Sharing Ministry may be reported to the office of the State Attorney General.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "documentation.membership_guidelines": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - ShareWELL Health Share membership agreement",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "The agreement requires the client to confirm: 'You have read and agree to the Sharewell Membership Guidelines and Principles of Membership located at the link below: https://www.enrollment123.com/media/1064/Product_Brochures/Sharewell/Member-Guide-Summary-2.pdf'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "exclusions.pre_existing_exceptions": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - ShareWELL Health Share membership agreement",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "'High blood pressure, high cholesterol, hyperthyroidism, hypothyroidism, and type 2 diabetes will not be considered preexisting conditions as long as the member has not been hospitalized for the condition in the 12 months before enrollment.'",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "exclusions.pre_existing_phase_in": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - ShareWELL Health Share membership agreement",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "PHASE-IN PERIOD. 'Members have a one-year waiting period from the initial enrollment date before pre-existing conditions are eligible. After the first year, pre-existing Sharing Requests are eligible with a sharing limit that increases each membership year.' Eligible amounts for pre-existing conditions: Year One $0 (waiting period); Year Two $30,000 maximum per need; Year Three $60,000 maximum per need; Year Four $150,000; Year Five - the sharing maximum is removed.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "features.other": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-5"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=46437&id=974358",
+      "v": "Portability: Not Included. Annual Benefit Maximum: None. Benefit Waiting Period: 0 Days. Reduction in Benefits at Older Ages: 75% at Age 70.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "terms.bwa_membership": {
+      "app": "FAMILY_WIDE",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "paramount-1",
+        "paramount-2",
+        "paramount-3",
+        "paramount-4",
+        "paramount-5",
+        "paramount-6"
+      ],
+      "pg": null,
+      "sec": "TERMS panel - BWA membership terms and conditions (11,291 characters)",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=44347&id=974358",
+      "v": "TERMS AND CONDITIONS - BWA MEMBERSHIP. FirstEnroll charges 'on behalf of the Business Workers of America, Inc.' Statements show 'FirstEnroll'. Payments falling on a weekend or holiday may be executed on the prior business day. The authorization remains in effect until cancelled IN WRITING, with at least 15 days notice before the next billing date. An ENROLLMENT FEE is charged, described as 'the cost of the administrators who assist you with your application for membership in the Association'. Client checkboxes include: 'You understand this Membership nor the Hospital Indemnity Insurance provide minimum essential benefits under the Affordable Care Act, is not a substitute for major medical insurance coverage, nor is it intended to replace existing Health Insurance'; 'You attest that you are currently working'; and an agreement to call (732) 876-9733 immediately if no email arrives within 24 hours. Refund: review the membership booklet and supporting documents in the Member Portal within 30 days of the confirmation email; if not happy, contact customer service within 30 days for a full refund - ENROLLMENT FEES ARE NOT REFUNDED.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    }
+  }
+}
