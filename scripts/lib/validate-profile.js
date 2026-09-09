@@ -360,6 +360,16 @@ function compareFactRank(a, b) {
   if (Number.isInteger(aAuth) && Number.isInteger(bAuth) && aAuth !== bAuth) {
     return aAuth - bAuth;
   }
+
+  const aVs = a.verification_status || a.vs;
+  const bVs = b.verification_status || b.vs;
+  const aAbsent =
+    aVs === 'NOT_FOUND_IN_SOURCE' || aVs === 'NOT_ATTEMPTED';
+  const bAbsent =
+    bVs === 'NOT_FOUND_IN_SOURCE' || bVs === 'NOT_ATTEMPTED';
+  if (aAbsent && !bAbsent) return 1;
+  if (bAbsent && !aAbsent) return -1;
+
   return 0;
 }
 
