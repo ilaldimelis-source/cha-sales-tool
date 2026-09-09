@@ -3772,7 +3772,7 @@
         "tdkplan2"
       ],
       "display_name": "TDK 2",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "PARTIAL_DOCS",
       "family": "TDK",
       "has_profile": true,
       "plan_id": "tdk-2",
@@ -3832,7 +3832,7 @@
         "tdkplan5"
       ],
       "display_name": "TDK 5",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "PARTIAL_DOCS",
       "family": "TDK",
       "has_profile": true,
       "plan_id": "tdk-5",
