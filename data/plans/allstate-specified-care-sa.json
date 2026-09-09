@@ -785,11 +785,6 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
-    },
-    "product_type": {
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
@@ -803,6 +798,11 @@
       "url": "https://www.1enrollment.com/information/product.cfm?page=52498&id=974021",
       "v": "supplemental_critical_event_with_episodic_deductible",
       "vs": "VERIFIED_MULTI_SOURCE"
+    },
+    "product_type": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "rx_admin": {
       "searched": [],

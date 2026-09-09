@@ -900,11 +900,6 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
-    },
-    "product_type": {
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
@@ -918,6 +913,11 @@
       "url": "https://www.1enrollment.com/information/product.cfm?page=52874&id=974021",
       "v": "non_insurance_direct_primary_care_membership",
       "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "product_type": {
+      "searched": [],
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "rx_admin": {
       "searched": [],

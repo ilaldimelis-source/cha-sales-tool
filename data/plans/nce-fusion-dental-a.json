@@ -998,9 +998,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "nce-fusion-dental-a"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=29843&id=974021",
+      "v": "combined_dental_and_vision",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "product_type": {
       "app": "EXACT_VARIANT",
@@ -1014,8 +1024,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=29843&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Insured coverage. Fusion combines dental and eye care benefits into one plan with one enrollment form, ONE CERTIFICATE and one premium. Members draw on a shared annual maximum across both benefit categories while remaining within individual dental and vision sub-limits. Benefits begin with no waiting period. Vision maximum is $100 per year.",
+      "vs": "VERIFIED"
     },
     "rx_admin": {
       "searched": [],
@@ -1098,13 +1108,6 @@
   "open_conflicts": [
     {
       "field": "identity.carrier",
-      "source_ids": [
-        82,
-        101
-      ]
-    },
-    {
-      "field": "identity.product_type",
       "source_ids": [
         82,
         101

@@ -754,9 +754,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "express-health-tools-discount"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=39387&id=974021",
+      "v": "non_insurance_bundled_benefit_package",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "product_type": {
       "app": "EXACT_VARIANT",
@@ -770,8 +780,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=39387&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Bundled package of services and discounts. The page labels it an 'Ancillary Benefit Package' bundling six benefit categories into a single membership: the Prime Health Pass component (mobile diagnostics, diagnostic blood testing, wellness resources), a 24-hour nurse line with unlimited RN access, imaging savings of 40-75% off MRI, CT and X-ray, dental savings 15-50% via Aetna Dental Access, vision savings, and prescription discounts.",
+      "vs": "VERIFIED"
     },
     "rx_admin": {
       "searched": [],
@@ -842,13 +852,6 @@
     }
   },
   "open_conflicts": [
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        101
-      ]
-    },
     {
       "conflict_id": "C-058",
       "field": "price_vs_component",

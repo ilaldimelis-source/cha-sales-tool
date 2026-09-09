@@ -808,9 +808,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_class": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "prime-health-pass-discount"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=32623&id=974021",
+      "v": "non_insurance_diagnostic_services_program",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "product_type": {
       "app": "EXACT_VARIANT",
@@ -824,8 +834,8 @@
       "sec": "Information tab",
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=32623&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Service product. The page labels it a 'Diagnostic Services Product' providing mobile diagnostic services (X-ray, ultrasound, EKG) and annual diagnostic blood testing through InfinityHealth Diagnostics and LabCorp, described as $700+ value with more than 70 panels, available at LabCorp nationwide with no referral needed.",
+      "vs": "VERIFIED"
     },
     "rx_admin": {
       "searched": [],
@@ -911,13 +921,6 @@
       "source_ids": [
         101,
         111
-      ]
-    },
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        101
       ]
     }
   ],
