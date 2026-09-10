@@ -635,6 +635,9 @@
     var matching;
     var seen;
     var ids;
+    var seenUnknown;
+    var unknowns;
+    var unk;
     var i;
     var g;
     var gid;
@@ -689,17 +692,23 @@
     if (matching.length) {
       seen = {};
       ids = [];
+      seenUnknown = {};
+      unknowns = [];
       for (i = 0; i < matching.length; i++) {
         gid = matching[i].gap_id;
-        if (!isNonEmptyString(gid) || seen[gid]) {
-          continue;
+        if (isNonEmptyString(gid) && !seen[gid]) {
+          seen[gid] = true;
+          ids.push(gid);
         }
-        seen[gid] = true;
-        ids.push(gid);
+        unk = matching[i].what_is_unknown;
+        if (typeof unk === 'string' && !seenUnknown[unk]) {
+          seenUnknown[unk] = true;
+          unknowns.push(unk);
+        }
       }
       data.watchOut = {
         state: 'BLOCKED',
-        notEstablished: matching[0].what_is_unknown,
+        notEstablished: unknowns.join(' '),
         nextStep:
           'A source document must establish this before any specific period, lookback or clause may be stated on a call.',
         gapId: ids.join(' and ')
