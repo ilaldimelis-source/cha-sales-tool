@@ -533,6 +533,222 @@
     if (disc) toggleDisc(disc);
   });
 
+  function brHasExactFlag(name) {
+    var search = String(window.location.search || '');
+    var pairs;
+    var i;
+    var pair;
+    var eq;
+    var key;
+    var val;
+    if (search.charAt(0) === '?') {
+      search = search.substring(1);
+    }
+    if (!search) {
+      return false;
+    }
+    pairs = search.split('&');
+    for (i = 0; i < pairs.length; i++) {
+      pair = pairs[i];
+      if (!pair) {
+        continue;
+      }
+      eq = pair.indexOf('=');
+      if (eq === -1) {
+        key = pair;
+        val = '';
+      } else {
+        key = pair.substring(0, eq);
+        val = pair.substring(eq + 1);
+      }
+      try {
+        key = decodeURIComponent(key);
+        val = decodeURIComponent(val);
+      } catch (_decodeErr) {
+        continue;
+      }
+      if (key === name && val === '1') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function brBuildPreExCard(profile, intent) {
+    function notConfirmed() {
+      return { state: 'NOT_CONFIRMED' };
+    }
+    function isNonEmptyString(s) {
+      return typeof s === 'string' && s.length > 0;
+    }
+    function getLeaf(obj, path) {
+      var parts;
+      var node;
+      var i;
+      if (!obj || typeof obj !== 'object') {
+        return null;
+      }
+      parts = String(path).split('.');
+      node = obj;
+      for (i = 0; i < parts.length; i++) {
+        if (!node || typeof node !== 'object') {
+          return null;
+        }
+        node = node[parts[i]];
+      }
+      if (!node || typeof node !== 'object') {
+        return null;
+      }
+      return node;
+    }
+    function fieldInKeys(field, keys) {
+      var k;
+      if (!keys || !keys.length) {
+        return false;
+      }
+      for (k = 0; k < keys.length; k++) {
+        if (keys[k] === field) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    var data = {
+      plan: notConfirmed(),
+      clientSituation: notConfirmed(),
+      quickAnswer: notConfirmed(),
+      watchOut: notConfirmed(),
+      complianceGate: notConfirmed(),
+      whatToSay: notConfirmed(),
+      nextQuestion: notConfirmed(),
+      howItWorks: notConfirmed(),
+      clientMayPay: notConfirmed(),
+      doNotSay: notConfirmed(),
+      source: notConfirmed(),
+      confidence: notConfirmed()
+    };
+    var leaf;
+    var v;
+    var vs;
+    var gaps;
+    var matching;
+    var seen;
+    var ids;
+    var seenUnknown;
+    var unknowns;
+    var unk;
+    var i;
+    var g;
+    var gid;
+    var srcParts;
+    var dns;
+
+    if (profile && isNonEmptyString(profile.display_name)) {
+      data.plan = { state: 'ANSWERED', value: profile.display_name };
+    }
+
+    leaf = getLeaf(profile, 'limitations.pre_existing');
+    if (leaf) {
+      v = leaf.v;
+      vs = leaf.vs;
+      if (v == null) {
+        data.quickAnswer = notConfirmed();
+      } else if (
+        isNonEmptyString(v) &&
+        (vs === 'VERIFIED' || vs === 'VERIFIED_SINGLE_SOURCE')
+      ) {
+        data.quickAnswer = {
+          state: 'ANSWERED',
+          statusPill: vs,
+          value: v
+        };
+      } else if (vs === 'CONFLICTED' && isNonEmptyString(v)) {
+        data.quickAnswer = {
+          state: 'CONFLICTED',
+          value: v,
+          conflictId: ''
+        };
+      }
+    }
+
+    gaps = profile && profile.open_gaps;
+    matching = [];
+    if (gaps && gaps.length) {
+      for (i = 0; i < gaps.length; i++) {
+        g = gaps[i];
+        if (!g || g.blocks_statement !== true) {
+          continue;
+        }
+        if (!isNonEmptyString(g.field)) {
+          continue;
+        }
+        if (!fieldInKeys(g.field, intent && intent.keys)) {
+          continue;
+        }
+        matching.push(g);
+      }
+    }
+    if (matching.length) {
+      seen = {};
+      ids = [];
+      seenUnknown = {};
+      unknowns = [];
+      for (i = 0; i < matching.length; i++) {
+        gid = matching[i].gap_id;
+        if (isNonEmptyString(gid) && !seen[gid]) {
+          seen[gid] = true;
+          ids.push(gid);
+        }
+        unk = matching[i].what_is_unknown;
+        if (typeof unk === 'string' && !seenUnknown[unk]) {
+          seenUnknown[unk] = true;
+          unknowns.push(unk);
+        }
+      }
+      data.watchOut = {
+        state: 'BLOCKED',
+        notEstablished: unknowns.join(' '),
+        nextStep:
+          'A source document must establish this before any specific period, lookback or clause may be stated on a call.',
+        gapId: ids.join(' and ')
+      };
+    }
+
+    leaf = getLeaf(profile, 'compliance.verification_script');
+    if (leaf && isNonEmptyString(leaf.v)) {
+      data.complianceGate = { state: 'ANSWERED', value: leaf.v };
+      srcParts = ['Source ' + leaf.src];
+      if (leaf.sec) {
+        srcParts.push(leaf.sec);
+      }
+      if (leaf.pg != null) {
+        srcParts.push('p. ' + leaf.pg);
+      }
+      data.source = { state: 'ANSWERED', value: srcParts.join(' ') };
+    }
+
+    dns = profile && profile.do_not_say;
+    if (
+      dns &&
+      Object.prototype.toString.call(dns) === '[object Array]' &&
+      dns.length
+    ) {
+      data.doNotSay = { state: 'ANSWERED', value: dns.join('\n') };
+    }
+
+    if (profile && profile.profile_confidence != null) {
+      data.confidence = {
+        state: 'ANSWERED',
+        value: profile.profile_confidence
+      };
+    }
+
+    return data;
+  }
+
+  window.brHasExactFlag = brHasExactFlag;
+  window.brBuildPreExCard = brBuildPreExCard;
   window.brRenderCard = brRenderCard;
 
   if (urlHasBrcard()) {

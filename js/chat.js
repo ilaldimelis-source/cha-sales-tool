@@ -982,6 +982,18 @@ function brAnswerWithProfile(planId, planName, query, intentId) {
       return;
     }
 
+    if (
+      intent.id === 'preex' &&
+      typeof window.brHasExactFlag === 'function' &&
+      window.brHasExactFlag('showchat') === true &&
+      window.brHasExactFlag('brcardlive') === true &&
+      typeof window.brBuildPreExCard === 'function' &&
+      typeof window.brRenderCard === 'function'
+    ) {
+      window.brRenderCard(window.brBuildPreExCard(profile, intent));
+      return;
+    }
+
     brRenderIntentLeaves(profile, intent, name);
   });
 }
