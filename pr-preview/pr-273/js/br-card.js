@@ -70,7 +70,7 @@
       label: 'DO NOT SAY',
       loud: true,
       ncCopy:
-        'No held source establishes a restriction here. That is not a confirmation that none exists.'
+        'No restrictions recorded. This is not clearance to describe the plan freely.'
     },
     {
       key: 'source',
