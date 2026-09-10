@@ -10709,3 +10709,11 @@ body {
   max-height: 240px;
   overflow: hidden auto;
 }
+
+.br-ref-card-nc-quiet {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--cha-text-tertiary);
+}

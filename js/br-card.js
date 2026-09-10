@@ -5,32 +5,87 @@
 
   var LONG_MAX_PX = 240;
   var LONG_CHARS = 21125;
-  var NC_COPY =
-    'No held source confirms this. It is not established as covered or excluded.';
-  var WHAT_TO_SAY_EMPTY =
-    'No held source confirms approved client-facing wording. None may be generated.';
 
   var SECTION_ORDER = [
-    { key: 'plan', label: 'PLAN' },
-    { key: 'clientSituation', label: 'CLIENT SITUATION' },
+    { key: 'plan', label: 'PLAN', loud: false, ncCopy: 'No plan identified.' },
+    {
+      key: 'clientSituation',
+      label: 'CLIENT SITUATION',
+      loud: false,
+      ncCopy: 'Not captured.'
+    },
     {
       key: 'quickAnswer',
-      label: 'QUICK ANSWER'
+      label: 'QUICK ANSWER',
+      loud: true,
+      ncCopy:
+        'No held source confirms this. It is not established as covered or excluded.'
     },
-    { key: 'watchOut', label: 'WATCH OUT', rail: 'danger' },
+    {
+      key: 'watchOut',
+      label: 'WATCH OUT',
+      rail: 'danger',
+      loud: true,
+      ncCopy:
+        'No held source establishes a watch-out here. That is not a confirmation that none exists.'
+    },
     {
       key: 'complianceGate',
       label: 'COMPLIANCE GATE',
       rail: 'danger',
-      boxed: true
+      boxed: true,
+      loud: true,
+      ncCopy:
+        'No held source establishes a compliance requirement here. That is not a confirmation that none exists.'
     },
-    { key: 'whatToSay', label: 'WHAT TO SAY', serif: true },
-    { key: 'nextQuestion', label: 'NEXT QUESTION' },
-    { key: 'howItWorks', label: 'HOW IT WORKS', disclosure: true },
-    { key: 'clientMayPay', label: 'CLIENT MAY PAY', disclosure: true },
-    { key: 'doNotSay', label: 'DO NOT SAY' },
-    { key: 'source', label: 'SOURCE', quiet: true },
-    { key: 'confidence', label: 'CONFIDENCE', quiet: true }
+    {
+      key: 'whatToSay',
+      label: 'WHAT TO SAY',
+      serif: true,
+      loud: true,
+      ncCopy: 'No approved wording yet. Nothing may be generated.'
+    },
+    {
+      key: 'nextQuestion',
+      label: 'NEXT QUESTION',
+      loud: false,
+      ncCopy: 'None written.'
+    },
+    {
+      key: 'howItWorks',
+      label: 'HOW IT WORKS',
+      disclosure: true,
+      loud: false,
+      ncCopy: 'Not confirmed.'
+    },
+    {
+      key: 'clientMayPay',
+      label: 'CLIENT MAY PAY',
+      disclosure: true,
+      loud: false,
+      ncCopy: 'Not confirmed.'
+    },
+    {
+      key: 'doNotSay',
+      label: 'DO NOT SAY',
+      loud: true,
+      ncCopy:
+        'No held source establishes a restriction here. That is not a confirmation that none exists.'
+    },
+    {
+      key: 'source',
+      label: 'SOURCE',
+      quiet: true,
+      loud: false,
+      ncCopy: 'No source document held.'
+    },
+    {
+      key: 'confidence',
+      label: 'CONFIDENCE',
+      quiet: true,
+      loud: false,
+      ncCopy: 'Not scored.'
+    }
   ];
 
   function el(tag, className) {
@@ -100,9 +155,15 @@
     setText(badge, 'NOT CONFIRMED');
     wrap.appendChild(badge);
     var p = el('p', 'br-ref-card-nc-copy');
-    setText(p, copy || NC_COPY);
+    setText(p, copy);
     wrap.appendChild(p);
     return wrap;
+  }
+
+  function notConfirmedQuiet(copy) {
+    var p = el('p', 'br-ref-card-nc-quiet');
+    setText(p, copy);
+    return p;
   }
 
   function blockedBody(sec) {
@@ -162,9 +223,11 @@
       return;
     }
     if (state === 'NOT_CONFIRMED') {
-      holder.appendChild(
-        notConfirmedBody(spec.key === 'whatToSay' ? WHAT_TO_SAY_EMPTY : NC_COPY)
-      );
+      if (spec.loud) {
+        holder.appendChild(notConfirmedBody(spec.ncCopy));
+      } else {
+        holder.appendChild(notConfirmedQuiet(spec.ncCopy));
+      }
       return;
     }
     if (state === 'CONFLICTED') {
