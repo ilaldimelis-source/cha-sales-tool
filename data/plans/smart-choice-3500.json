@@ -1799,6 +1799,18 @@
       "field": "",
       "gap_id": "G-185",
       "what_is_unknown": "What does \"Guardianship\" mean on the Smart Choice Benefit Summary, and what qualifies as a Guardianship referral that waives the listed copays?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "limitations.lookback_months",
+      "gap_id": "G-186",
+      "what_is_unknown": "What is the pre-existing condition lookback period on Smart Choice, as referenced by the mandatory post-close verification script?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "limitations.pre_ex_scope",
+      "gap_id": "G-187",
+      "what_is_unknown": "What is the scope of the Smart Choice pre-existing condition limitation - which conditions it applies to and for how long?"
     }
   ],
   "plan_id": "smart-choice-3500",
