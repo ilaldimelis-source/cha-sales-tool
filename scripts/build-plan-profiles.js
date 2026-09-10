@@ -426,6 +426,12 @@ function toLeaf(fact) {
 }
 
 function resolveFieldFacts(facts) {
+  const filtered = facts.filter(function (f) {
+    return (f.currentness || f.cur) !== 'SUPERSEDED';
+  });
+  if (filtered.length > 0) {
+    facts = filtered;
+  }
   const sourceIds = uniqueSortedInts(
     facts.map(function (f) {
       return f.source_id;
