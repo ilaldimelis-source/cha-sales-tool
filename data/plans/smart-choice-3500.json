@@ -1811,6 +1811,12 @@
       "field": "limitations.pre_ex_scope",
       "gap_id": "G-187",
       "what_is_unknown": "What is the scope of the Smart Choice pre-existing condition limitation - which conditions it applies to and for how long?"
+    },
+    {
+      "blocks_statement": false,
+      "field": "",
+      "gap_id": "G-188",
+      "what_is_unknown": "Can pdf.js coordinate-only reconstruction recover Smart Choice benefit-grid values without plain-text reading order?"
     }
   ],
   "plan_id": "smart-choice-3500",
