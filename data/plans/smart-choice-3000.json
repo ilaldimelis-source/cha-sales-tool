@@ -580,7 +580,7 @@
     "verification_script": {
       "app": "FAMILY_WIDE",
       "auth": 6,
-      "conf": "MEDIUM",
+      "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
         "smart-choice-1500",
@@ -588,12 +588,12 @@
         "smart-choice-3000",
         "smart-choice-3500"
       ],
-      "pg": null,
-      "sec": "Enrollment Requirements",
-      "src": 85,
+      "pg": 1,
+      "sec": "Unit 7 Enrollment Requirements, pages 1-2, Post-Close Verification Script",
+      "src": 143,
       "url": "https://neoinsurancesolutions.talentlms.com/plus/my/training/202/units/2299",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "Post-Close Verification Script\n\nThe below must be read on a recorded line before the end of the enrollment call.\n\n\"Before we complete your enrollment, I am going to review important details about this coverage. I will ask you to confirm your understanding after each statement.\"\n\n\"This is a Group Limited Medical plan offered to working owners of Population Science Management. It provides limited benefits for certain covered services. It is not major medical insurance, and it will not cover all healthcare expenses. Do you understand?\"\n\nDo you confirm that you are willing to share personal health and consumer insights data as a Working Owner in Population Science Management?\n\n\"This plan does not provide full maternity coverage. Do you understand?\"\n\n\"If you or a dependent needs ongoing treatment, frequent doctor visits, or continuous management of a medical condition, this plan may not meet those needs. Do you understand?\"\n\nPost-Close Verification Script (Cont.)\n\nThe below must be read on a recorded line before the end of the enrollment call.\n\n\"Only the dependents you specifically enroll today will be covered. Anyone not listed during this enrollment will not have benefits. Do you understand?\"\n\n\"This plan includes limitations on pre-existing conditions. A pre-existing condition means any medical condition for which you or your dependents received medical advice, diagnosis, treatment, or prescription medication before your coverage begins. Care or treatment relating to those pre-existing conditions may not be covered until you have been enrolled for the required amount of time stated in the plan documents. Do you understand that pre-existing conditions may not be immediately covered?\"\n\n\"Do you confirm that you understand this plan provides limited medical benefits, is not major medical coverage, and that you are enrolling with full awareness of the plan's limits and exclusions?\"\n\n\"Thank you. I will now complete your enrollment.\"",
+      "vs": "CONFLICTED"
     }
   },
   "compliance_risks": [
@@ -2149,6 +2149,11 @@
     },
     {
       "field": "administration.cancellation",
+      "kind": "CONFLICTED",
+      "message": "field is CONFLICTED"
+    },
+    {
+      "field": "compliance.verification_script",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
     }
