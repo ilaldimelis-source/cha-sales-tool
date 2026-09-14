@@ -211,9 +211,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "ct": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smart-choice-1500"
+      ],
+      "pg": 8,
+      "sec": "printed page 8 (PDF page 9), Benefit Summary - Advanced Diagnostic Imaging. Printed page n = PDF page n+1.",
+      "src": 137,
+      "url": null,
+      "v": "Advanced Diagnostic Imaging (CT, MRI, MRA, MRS, PET, SPECT and other nuclear medicine): $250 copayment after deductible, limited to 4 per benefit period. Out-of-network not covered.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "dental": {
       "searched": [],
@@ -266,9 +276,19 @@
       "vs": "VERIFIED"
     },
     "hospital_admission": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smart-choice-1500"
+      ],
+      "pg": 6,
+      "sec": "printed page 6 (PDF page 7), Benefit Summary - Inpatient Hospital. Printed page n = PDF page n+1.",
+      "src": 137,
+      "url": null,
+      "v": "$2,500 copayment after deductible. Limited to 1 per family per benefit period for up to 7 days. Out-of-network not covered.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "hospital_confinement_supplemental": {
       "searched": [],
@@ -336,9 +356,19 @@
       "vs": "VERIFIED"
     },
     "mri": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smart-choice-1500"
+      ],
+      "pg": 8,
+      "sec": "printed page 8 (PDF page 9), Benefit Summary - Advanced Diagnostic Imaging. Printed page n = PDF page n+1.",
+      "src": 137,
+      "url": null,
+      "v": "Advanced Diagnostic Imaging (CT, MRI, MRA, MRS, PET, SPECT and other nuclear medicine): $250 copayment after deductible, limited to 4 per benefit period. Out-of-network not covered.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pathology": {
       "searched": [],
@@ -376,9 +406,19 @@
       "vs": "VERIFIED"
     },
     "pt": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smart-choice-1500"
+      ],
+      "pg": 9,
+      "sec": "printed page 9 (PDF page 10), Benefit Summary - Physical, occupational and speech therapy. Printed page n = PDF page n+1.",
+      "src": 137,
+      "url": null,
+      "v": "$50 copayment after deductible, limited to 10 visits combined. Treatment limits for physical, occupational and speech therapy do not apply to treatment for mental health or substance use disorders. Evaluations are covered and do not count toward the combined annual limit. Out-of-network not covered.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rehab": {
       "app": "EXACT_VARIANT",
@@ -389,11 +429,11 @@
         "smart-choice-1500"
       ],
       "pg": 9,
-      "sec": "Benefit Summary",
-      "src": 21,
+      "sec": "printed page 9 (PDF page 10), Benefit Summary - Other Covered Services",
+      "src": 137,
       "url": null,
-      "v": "$50 copayment after deductible, limited to 10 visits combined.",
-      "vs": "VERIFIED"
+      "v": "Rehabilitation Services $50 copayment after deductible. Visit limit 10 combined. Out-of-network not covered.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_brand": {
       "app": "EXACT_VARIANT",
@@ -419,11 +459,11 @@
         "smart-choice-1500"
       ],
       "pg": 9,
-      "sec": "Prescription Benefits",
-      "src": 21,
+      "sec": "printed page 9 (PDF page 10), Prescription Benefits",
+      "src": 137,
       "url": null,
-      "v": "Preferred generic drugs: $12 copayment per 30-day retail supply. Out-of-network not covered.",
-      "vs": "VERIFIED"
+      "v": "Preferred generic drugs $12 copayment per 30-day retail supply, Ventegra Acute Formulary only. Preferred generic drugs by home delivery per 90-day supply through ScriptCo. Pharmacy Benefit Manager is Ventegra. Out-of-network not covered.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_specialty": {
       "app": "EXACT_VARIANT",
@@ -1069,11 +1109,11 @@
         "smart-choice-1500"
       ],
       "pg": 5,
-      "sec": "Benefit Summary",
-      "src": 21,
+      "sec": "printed pages 5, 16, 19 and 76 (PDF pages 6, 17, 20 and 77)",
+      "src": 137,
       "url": null,
-      "v": "CRITICAL. The stated out-of-pocket limit does NOT cap total member cost, because nearly every benefit category carries a hard visit or occurrence limit, and non-covered charges never accumulate. Once a category limit is exhausted the plan pays nothing further for that category regardless of the out-of-pocket limit. The document's own wording is qualified - most covered services, not all.",
-      "vs": "VERIFIED"
+      "v": "PLAN-STATED FACTS: The Out-of-pocket Limit includes Deductible, Coinsurance and Copayment amounts for medical and pharmacy Services. It does not include premium amounts, amounts over the Allowable Charge, or penalties for failure to comply with Preauthorization requirements or under the Prescription Drug Program (printed page 76). Printed page 16 lists charges that do not count toward the Out-of-pocket Limit, introduced as examples and therefore not exhaustive: charges in excess of the Allowable Charge; charges for Noncovered Services; penalty amounts for failure to comply with Preauthorization requirements; penalty amounts under the Prescription Drug Program; cost-sharing for prescription drugs paid with a pharmaceutical discount or copay card. Printed page 19 states that any reductions in benefits are not considered when computing the Deductible or Out-of-pocket Limit. In-network and Out-of-network Out-of-pocket Limits are separate and do not cross accumulate, while all other limits including days, visits, sessions and dollar amounts do cross accumulate (printed pages 5 and 16). Printed page 5 states that once the annual Out-of-pocket Limit is reached, MOST Covered Services are payable by the plan at 100% for the rest of the Calendar Year. PRACTICAL INTERPRETATION - NOT STATED AS A SINGLE SENTENCE IN THE PLAN DOCUMENT: Benefit-specific visit, day, session and dollar limits remain separate from the Out-of-pocket Limit. Based on the cited provisions, once a service is no longer payable under its stated benefit limit, the Out-of-pocket Limit should not be described as restoring unlimited coverage for that service.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "price": {
       "searched": [],
@@ -1410,9 +1450,19 @@
   },
   "limitations": {
     "day_limits": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smart-choice-1500"
+      ],
+      "pg": 6,
+      "sec": "printed pages 6 and 8 (PDF pages 7 and 9), Benefit Summary day limits. Printed page n = PDF page n+1.",
+      "src": 137,
+      "url": null,
+      "v": "Inpatient hospital: 1 confinement per family per benefit period, for up to 7 days. Mental health inpatient: 10 days.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "excluded_services": {
       "app": "EXACT_VARIANT",
@@ -1475,9 +1525,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "visit_limits": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smart-choice-1500"
+      ],
+      "pg": 6,
+      "sec": "printed pages 6-9 (PDF pages 7-10), Benefit Summary visit and occurrence limits. Printed page n = PDF page n+1.",
+      "src": 137,
+      "url": null,
+      "v": "PCP: 12 visits. Specialist: 12 visits. Urgent care: 5 visits. Emergency room: 4 per family per benefit period. Outpatient surgery facility: 4 per family per benefit period. Mental health outpatient: 10 visits. Advanced diagnostic imaging (CT, MRI, MRA, MRS, PET, SPECT and other nuclear medicine): 4 per benefit period. Diagnostic x-ray: 4 per family per benefit period. Allergy testing: 2 visits; allergy shots: 10 visits. Diabetic counselling, education, self-management training and podiatric appliances: 1 visit. Durable medical equipment: 10 visits combined. Home health: 10 visits combined. Home infusion: 12 visits combined (maximum combined with chemotherapy and radiation). Skilled nursing: 10 visits combined. Hospice: 10 visits combined. Rehabilitation: 10 visits combined. Physical, occupational and speech therapy and manipulations: 10 visits combined. Outpatient administered drugs: 10 visits combined. Ambulance: 1 per family per benefit period.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "waiting_period_other": {
       "app": "FAMILY_WIDE",
@@ -2097,6 +2157,12 @@
     },
     {
       "cur": "POSSIBLY_STALE",
+      "field": "benefits.hospital_admission",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
       "field": "benefits.surgery_outpatient",
       "kind": "CURRENTNESS",
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
@@ -2104,6 +2170,18 @@
     {
       "cur": "POSSIBLY_STALE",
       "field": "benefits.xray",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefits.ct",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefits.mri",
       "kind": "CURRENTNESS",
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
@@ -2157,6 +2235,12 @@
     },
     {
       "cur": "POSSIBLY_STALE",
+      "field": "benefits.pt",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
       "field": "benefits.dme",
       "kind": "CURRENTNESS",
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
@@ -2200,6 +2284,18 @@
       "field": "limitations.lookback_months",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "limitations.visit_limits",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "limitations.day_limits",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
       "field": "limitations.excluded_services",
