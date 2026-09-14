@@ -777,7 +777,12 @@ function brRenderServerAnswer(payload, planName, planSource) {
   if (!/^(COVERED|NOT COVERED|VERIFY|PARTIAL|INFO)$/.test(status)) {
     status = 'VERIFY';
   }
-  var source = String((payload && payload.source) || planSource || planName || 'Plan PDF');
+  var source;
+  if (payload && Object.prototype.hasOwnProperty.call(payload, 'source')) {
+    source = String(payload.source || '');
+  } else {
+    source = String(planSource || planName || 'Plan PDF');
+  }
   var requestId = String((payload && payload.requestId) || '');
   var c = brStatusColor(status);
 
@@ -989,8 +994,9 @@ function brAnswerWithProfile(planId, planName, query, intentId) {
         {
           status: 'VERIFY',
           fact: "NOT CONFIRMED. I can't verify that question from the supported plan fields yet. Ask about a specific benefit or choose one of the available benefit topics.",
-          sayThis: '',
-          source: name,
+          sayThis:
+            'I want to make sure I give you the right answer on that, so let me confirm it against the plan documents before I tell you anything.',
+          source: '',
           requestId: ''
         },
         name,

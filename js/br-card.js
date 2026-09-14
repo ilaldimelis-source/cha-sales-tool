@@ -223,10 +223,14 @@
       return;
     }
     if (state === 'NOT_CONFIRMED') {
+      var ncText = spec.ncCopy;
+      if (sec && typeof sec.ncCopy === 'string' && sec.ncCopy.length > 0) {
+        ncText = sec.ncCopy;
+      }
       if (spec.loud) {
-        holder.appendChild(notConfirmedBody(spec.ncCopy));
+        holder.appendChild(notConfirmedBody(ncText));
       } else {
-        holder.appendChild(notConfirmedQuiet(spec.ncCopy));
+        holder.appendChild(notConfirmedQuiet(ncText));
       }
       return;
     }
@@ -643,6 +647,7 @@
     var gid;
     var srcParts;
     var dns;
+    var whatCopy;
 
     if (profile && isNonEmptyString(profile.display_name)) {
       data.plan = { state: 'ANSWERED', value: profile.display_name };
@@ -743,6 +748,24 @@
         value: profile.profile_confidence
       };
     }
+
+    if (data.watchOut.state === 'BLOCKED') {
+      whatCopy =
+        "That specific detail isn't confirmed in the plan documents I have, so I don't want to state it as a plan benefit or limitation until it's verified.";
+    } else if (data.quickAnswer.state === 'CONFLICTED') {
+      whatCopy =
+        "My materials show more than one version of that. I'm not going to quote you something I can't stand behind, so let me verify it first.";
+    } else if (data.quickAnswer.state === 'ANSWERED') {
+      whatCopy =
+        'Read the confirmed fact above to the client in plain language. Do not add to it.';
+    } else {
+      whatCopy =
+        'I want to make sure I give you the right answer on that, so let me confirm it against the plan documents before I tell you anything.';
+    }
+    data.whatToSay = {
+      state: 'NOT_CONFIRMED',
+      ncCopy: whatCopy
+    };
 
     return data;
   }
