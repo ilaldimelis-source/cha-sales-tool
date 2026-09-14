@@ -953,32 +953,49 @@ function brAnswerWithProfile(planId, planName, query, intentId) {
 
     var name = brResolvedPlanName || planName || planId;
     if (!intent) {
-      brShowTyping();
-      brServerAnswer(query, brResolvedPlanId)
-        .catch(function (err) {
-          console.warn('[CHA RAG] First attempt failed, retrying once:', err.message);
-          return brServerAnswer(query, brResolvedPlanId);
-        })
-        .then(function (payload) {
-          brHideTyping();
-          brRenderServerAnswer(payload, name, '');
-        })
-        .catch(function (err) {
-          brHideTyping();
-          console.warn('[CHA RAG] API failed after retry - showing VERIFY:', err.message);
-          brRenderServerAnswer(
-            {
-              status: 'VERIFY',
-              fact: 'Could not reach the benefits server. Try again in a moment.',
-              sayThis: 'Hang on - let me pull the exact plan language.',
-              source: 'CHA Command Center',
-              scope: 'none',
-              requestId: ''
-            },
-            name,
-            ''
-          );
-        });
+      if (
+        typeof window.brHasExactFlag === 'function' &&
+        window.brHasExactFlag('rag') === true
+      ) {
+        brShowTyping();
+        brServerAnswer(query, brResolvedPlanId)
+          .catch(function (err) {
+            console.warn('[CHA RAG] First attempt failed, retrying once:', err.message);
+            return brServerAnswer(query, brResolvedPlanId);
+          })
+          .then(function (payload) {
+            brHideTyping();
+            brRenderServerAnswer(payload, name, '');
+          })
+          .catch(function (err) {
+            brHideTyping();
+            console.warn('[CHA RAG] API failed after retry - showing VERIFY:', err.message);
+            brRenderServerAnswer(
+              {
+                status: 'VERIFY',
+                fact: 'Could not reach the benefits server. Try again in a moment.',
+                sayThis: 'Hang on - let me pull the exact plan language.',
+                source: 'CHA Command Center',
+                scope: 'none',
+                requestId: ''
+              },
+              name,
+              ''
+            );
+          });
+        return;
+      }
+      brRenderServerAnswer(
+        {
+          status: 'VERIFY',
+          fact: "NOT CONFIRMED. I can't verify that question from the supported plan fields yet. Ask about a specific benefit or choose one of the available benefit topics.",
+          sayThis: '',
+          source: name,
+          requestId: ''
+        },
+        name,
+        ''
+      );
       return;
     }
 
