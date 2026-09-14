@@ -202,7 +202,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=45300&id=974358",
       "v": "NOT_FOUND_IN_SOURCE - schedule prints a dash",
-      "vs": "CONFLICTED"
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "home_health": {
       "searched": [],
@@ -960,13 +960,6 @@
   },
   "open_conflicts": [
     {
-      "field": "benefits.er",
-      "source_ids": [
-        88,
-        113
-      ]
-    },
-    {
       "field": "benefits.hospital_daily",
       "source_ids": [
         88,
@@ -1117,11 +1110,6 @@
     },
     {
       "field": "identity.product_type",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
-    },
-    {
-      "field": "benefits.er",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
     },

@@ -23,7 +23,7 @@
       "src": 25,
       "url": null,
       "v": "TERMINATION OF COVERAGE Termination of Plan Membership : A Plan Member’s coverage will terminate with the Plan for any one of the reasons outlined in this section. This termination language will apply to each class of eligible Members. Coverage ends on the last day of the month following one of the events listed, unless otherwise specified. Spouse and dependent children will terminate on the same date as the Member for the all benefits; or for a dependent child, the end of the month in which they turn 26. 1. Working owner does not maintain good standing by completing all required activities each year. 2. Voluntary Termination of Coverage. Coverage will end on the last day for which a contribution has been paid for a Plan Member who voluntarily ends cover age. 3. Death. Coverage will end on the date of death of the member. 4. Contributions. If the covered Plan Member or beneficiary fails to remit required contributions within thirty (30) days when such payment is due, then coverage will terminate at the end of the period for which a contribution is made. 5. Military Duty. The date the Plan Member becomes a full-time member of the Armed Forces of any United States on a full-time active-duty basis, or a government unit covered by or Uniformed Services Employment and re- employment Rights Act of 1993 (USERRA). Reserve duty, drills and summer camp shall be excluded from the definition of active duty unless such duty lasts over 30 days as defined by the act. 6. Plan Termination. The date the Plan is terminated. Rescission of Coverage : Coverage under this Plan may be rescinded under certain circumstances. A determination by the Plan that a rescission is warranted will be considered an Adverse Benefit Determination for purposes of review and appeal. A Participant whose coverage is being rescinded will be provided a thirty (30) day notice period as described under Health Care Reform and regulatory guidance. Such notice shall be considered an Adverse Benefit Determination. At the conclusion of the thirty (30) day notice period, coverage shall be terminated retroactive to the date identified in the notification. Claims Incurred after the retroactive date of termination shall not be further processed and/or paid under the Plan. Claims Incurred after the retroactive date of termination that were paid under the Plan will be treated as erroneously paid claims under this Plan.",
-      "vs": "CONFLICTED"
+      "vs": "VERIFIED"
     },
     "claims_administrator": {
       "app": "EXACT_VARIANT",
@@ -38,7 +38,7 @@
       "src": 25,
       "url": null,
       "v": "The Plan is an ERISA health and welfare plan, and the responsibility for the administration of the Plan is with the Claims Administrator. For the name, address, and other important information regarding the Claims Administrator, refer to the Information Section of this Plan Document. Detego Health is the Benefits Administrator for the benefits payable under the Plan. Detego Health LLC, 759 N 114th St, Suite 300, Omaha, Nebraska 68154",
-      "vs": "CONFLICTED"
+      "vs": "VERIFIED"
     },
     "claims_submission": {
       "searched": [],
@@ -1024,7 +1024,7 @@
       "src": 25,
       "url": null,
       "v": "Detego Health is the Benefits Administrator for the benefits payable under the Plan. Detego Health LLC, 759 N 114th St, Suite 300, Omaha, Nebraska 68154",
-      "vs": "CONFLICTED"
+      "vs": "VERIFIED"
     },
     "association": {
       "app": "EXACT_VARIANT",
@@ -1039,7 +1039,7 @@
       "src": 25,
       "url": null,
       "v": null,
-      "vs": "CONFLICTED"
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "billing_entity": {
       "searched": [],
@@ -1059,7 +1059,7 @@
       "src": 25,
       "url": null,
       "v": null,
-      "vs": "CONFLICTED"
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "effective_date_rules": {
       "searched": [],
@@ -1139,7 +1139,7 @@
       "src": 25,
       "url": null,
       "v": null,
-      "vs": "CONFLICTED"
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "variant": {
       "searched": [],
@@ -1181,7 +1181,7 @@
       "src": 25,
       "url": null,
       "v": null,
-      "vs": "CONFLICTED"
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "material_definitions": {
       "searched": [],
@@ -1251,20 +1251,6 @@
   },
   "open_conflicts": [
     {
-      "field": "administration.cancellation",
-      "source_ids": [
-        25,
-        127
-      ]
-    },
-    {
-      "field": "administration.claims_administrator",
-      "source_ids": [
-        25,
-        127
-      ]
-    },
-    {
       "field": "availability.states",
       "source_ids": [
         88,
@@ -1287,27 +1273,6 @@
       ]
     },
     {
-      "field": "identity.administrator",
-      "source_ids": [
-        25,
-        127
-      ]
-    },
-    {
-      "field": "identity.association",
-      "source_ids": [
-        25,
-        127
-      ]
-    },
-    {
-      "field": "identity.carrier",
-      "source_ids": [
-        25,
-        127
-      ]
-    },
-    {
       "field": "identity.eligibility_model",
       "source_ids": [
         25,
@@ -1323,24 +1288,10 @@
       ]
     },
     {
-      "field": "identity.underwriter",
-      "source_ids": [
-        25,
-        127
-      ]
-    },
-    {
       "field": "limitations.excluded_services",
       "source_ids": [
         25,
         100,
-        127
-      ]
-    },
-    {
-      "field": "limitations.lookback_months",
-      "source_ids": [
-        25,
         127
       ]
     },
@@ -1686,24 +1637,10 @@
       "message": "field is CONFLICTED"
     },
     {
-      "field": "identity.underwriter",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
-    },
-    {
-      "field": "identity.carrier",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
-    },
-    {
+      "cur": "POSSIBLY_STALE",
       "field": "identity.administrator",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
-    },
-    {
-      "field": "identity.association",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
       "field": "identity.network",
@@ -1743,11 +1680,6 @@
       "message": "field is CONFLICTED"
     },
     {
-      "field": "limitations.lookback_months",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
-    },
-    {
       "field": "limitations.waiting_period_sickness",
       "kind": "CONFLICTED",
       "message": "field is CONFLICTED"
@@ -1763,14 +1695,16 @@
       "message": "field is CONFLICTED"
     },
     {
+      "cur": "POSSIBLY_STALE",
       "field": "administration.claims_administrator",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
+      "cur": "POSSIBLY_STALE",
       "field": "administration.cancellation",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
       "cur": "POSSIBLY_STALE",
