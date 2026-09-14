@@ -417,7 +417,7 @@
       "sec": "printed page 9 (PDF page 10), Benefit Summary - Physical, occupational and speech therapy. Printed page n = PDF page n+1.",
       "src": 137,
       "url": null,
-      "v": "$50 copayment after deductible, limited to 10 visits combined. Treatment limits for physical, occupational and speech therapy do not apply to treatment for mental health or substance use disorders. Evaluations are covered and do not count toward the combined annual limit.",
+      "v": "$50 copayment after deductible, limited to 10 visits combined. Treatment limits for physical, occupational and speech therapy do not apply to treatment for mental health or substance use disorders. Evaluations are covered and do not count toward the combined annual limit. Out-of-network not covered.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rehab": {
