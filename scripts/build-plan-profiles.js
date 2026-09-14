@@ -455,6 +455,17 @@ function resolveFieldFacts(facts) {
   }
   if (beatsAll) {
     const leaf = toLeaf(best);
+    let losersAreAbsence = true;
+    for (let j = 1; j < sorted.length; j++) {
+      const vs = sorted[j].verification_status || sorted[j].vs;
+      if (vs !== 'NOT_FOUND_IN_SOURCE' && vs !== 'NOT_ATTEMPTED') {
+        losersAreAbsence = false;
+        break;
+      }
+    }
+    if (losersAreAbsence) {
+      return { leaf: leaf, sourceIds: sourceIds, conflicted: false };
+    }
     leaf.vs = 'CONFLICTED';
     return { leaf: leaf, sourceIds: sourceIds, conflicted: true };
   }

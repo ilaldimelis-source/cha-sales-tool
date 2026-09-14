@@ -772,7 +772,7 @@
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=40405&id=767303",
       "v": "SGIC - Southern Guaranty Insurance Company.",
-      "vs": "CONFLICTED"
+      "vs": "VERIFIED"
     },
     "effective_date_rules": {
       "searched": [],
@@ -908,13 +908,6 @@
   },
   "open_conflicts": [
     {
-      "field": "identity.carrier",
-      "source_ids": [
-        82,
-        124
-      ]
-    },
-    {
       "field": "limitations.pre_existing",
       "source_ids": [
         82,
@@ -1023,14 +1016,8 @@
   ],
   "plan_id": "afrp-galena-stm-standard",
   "plan_variant": "Standard",
-  "profile_confidence": "MEDIUM",
-  "profile_confidence_reasons": [
-    {
-      "field": "identity.carrier",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
-    }
-  ],
+  "profile_confidence": "HIGH",
+  "profile_confidence_reasons": [],
   "status": "ACTIVE",
   "unmapped": {
     "cost_sharing.coinsurance_maximum": {
