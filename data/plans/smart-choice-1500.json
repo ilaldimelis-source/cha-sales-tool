@@ -201,9 +201,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "chiropractic": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 1,
+      "conf": "HIGH",
+      "cur": "POSSIBLY_STALE",
+      "gov": [
+        "smart-choice-1500"
+      ],
+      "pg": 33,
+      "sec": "printed pages 31 and 33 (PDF pages 32 and 34), Therapy And Manipulations; Non-Covered Under an Office Copayment Benefit",
+      "src": 137,
+      "url": null,
+      "v": "Chiropractic or osteopathic physiotherapy and chiropractic or osteopathic manipulative treatments or adjustments by an Approved Provider are included within the Therapy & Manipulations benefit when ordered by a Physician, subject to the applicable Benefit Summary cost-sharing and maximums. A Physician Office Visit / Physician Office Services copayment does not apply to manipulations and adjustments (chiropractic and osteopathic) or chiropractic/osteopathic physiotherapy.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "critical_illness": {
       "searched": [],
@@ -254,11 +264,11 @@
         "smart-choice-1500"
       ],
       "pg": 6,
-      "sec": "Benefit Summary",
-      "src": 21,
+      "sec": "printed pages 6 and 25 (PDF pages 7 and 26), Benefit Summary - Emergency Room Services; Emergency Room Service",
+      "src": 137,
       "url": null,
-      "v": "$250 Copayment after Deductible, in-network. Limited to 4 per family per benefit period. Covers facility and professional services. Out-of-network pays at the in-network level of benefits if emergent; non-emergent visits are not covered.",
-      "vs": "VERIFIED"
+      "v": "$250 Copayment after Deductible, in-network. Limited to 4 per family per benefit period. Covers facility and professional services. Out-of-network pays at the in-network level of benefits if emergent; non-emergent visits are not covered. If a copayment is applicable to the emergency room facility charge, it is waived if the patient is admitted within 24 hours for the same diagnosis.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "home_health": {
       "app": "EXACT_VARIANT",
@@ -1880,6 +1890,30 @@
       "field": "",
       "gap_id": "G-188",
       "what_is_unknown": "Can pdf.js coordinate-only reconstruction recover Smart Choice benefit-grid values without plain-text reading order?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "benefits.hospital_admission",
+      "gap_id": "G-189",
+      "what_is_unknown": "Is the inpatient hospital or facility copayment applied per confinement, per admission, per day, or per stay?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "cost_sharing.coinsurance",
+      "gap_id": "G-190",
+      "what_is_unknown": "What numerical coinsurance percentage applies to the All Other Covered Services category, if any?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "benefits.anesthesia",
+      "gap_id": "G-191",
+      "what_is_unknown": "What member cost-sharing applies to anesthesia professional fees?"
+    },
+    {
+      "blocks_statement": true,
+      "field": "benefits.surgery_inpatient",
+      "gap_id": "G-192",
+      "what_is_unknown": "What member cost-sharing applies to surgeon and assistant-surgeon professional fees, as distinct from the outpatient facility copayment?"
     }
   ],
   "plan_id": "smart-choice-1500",
@@ -2236,6 +2270,12 @@
     {
       "cur": "POSSIBLY_STALE",
       "field": "benefits.pt",
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
+    },
+    {
+      "cur": "POSSIBLY_STALE",
+      "field": "benefits.chiropractic",
       "kind": "CURRENTNESS",
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
