@@ -2198,26 +2198,86 @@ function _stNormalizeReceiptRaw(text) {
   return String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 }
 
+// --- CHA_CLERK_TOKEN_HELPERS_BEGIN ---
+function _stIsWellFormedJwt(tok) {
+  if (typeof tok !== 'string' || !tok) return false;
+  if (tok.indexOf('[object ') !== -1) return false;
+  var parts = tok.split('.');
+  if (parts.length !== 3) return false;
+  var i;
+  for (i = 0; i < 3; i++) {
+    if (!parts[i] || !/^[A-Za-z0-9_-]+$/.test(parts[i])) return false;
+  }
+  return true;
+}
+
+function _stCandidateClerkJwt(raw) {
+  if (typeof raw !== 'string') return '';
+  var tok = raw.replace(/^\s+|\s+$/g, '');
+  if (!_stIsWellFormedJwt(tok)) return '';
+  return tok;
+}
+
+function _stJwtPayload(tok) {
+  if (!_stIsWellFormedJwt(tok)) return null;
+  try {
+    var b64 = tok.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    var pad = b64.length % 4;
+    if (pad) b64 += '===='.slice(0, 4 - pad);
+    return JSON.parse(atob(b64));
+  } catch (_e) {
+    return null;
+  }
+}
+
+function _stClerkJwtStillFresh(tok, nowMs) {
+  var payload = _stJwtPayload(tok);
+  if (!payload || typeof payload.exp !== 'number' || !isFinite(payload.exp)) {
+    return false;
+  }
+  var now = typeof nowMs === 'number' ? nowMs : Date.now();
+  var nowSec = Math.floor(now / 1000);
+  return payload.exp > nowSec + 5;
+}
+
+function _stLastActiveJwt() {
+  try {
+    if (!(typeof window !== 'undefined' && window.Clerk && Clerk.session)) {
+      return '';
+    }
+    var lat = Clerk.session.lastActiveToken;
+    if (!lat) return '';
+    if (typeof lat.getRawString === 'function') {
+      var fromRaw = _stCandidateClerkJwt(lat.getRawString());
+      if (fromRaw) return fromRaw;
+    }
+    if (typeof lat.jwt === 'string') {
+      var fromJwt = _stCandidateClerkJwt(lat.jwt);
+      if (fromJwt) return fromJwt;
+    }
+    return '';
+  } catch (_e) {
+    return '';
+  }
+}
+
 function _stClerkSessionToken() {
+  var live = _stLastActiveJwt();
+  if (live) return live;
   try {
     if (typeof window !== 'undefined' && window.__CHA_CLERK_TOKEN) {
-      return String(window.__CHA_CLERK_TOKEN);
+      return _stCandidateClerkJwt(String(window.__CHA_CLERK_TOKEN));
     }
   } catch (_a) {}
-  try {
-    if (window.Clerk && Clerk.session) {
-      var lat = Clerk.session.lastActiveToken;
-      if (lat) {
-        if (typeof lat.getRawString === 'function') {
-          var rawTok = lat.getRawString();
-          if (rawTok) return String(rawTok);
-        }
-        if (lat.jwt) return String(lat.jwt);
-      }
-    }
-  } catch (_b) {}
   return '';
 }
+
+function _stClerkBearerForExtract(nowMs) {
+  var tok = _stClerkSessionToken();
+  if (!tok || !_stClerkJwtStillFresh(tok, nowMs)) return '';
+  return tok;
+}
+// --- CHA_CLERK_TOKEN_HELPERS_END ---
 
 // Same-origin POST. Cookies go automatically. Bearer is a backup.
 // Non-200 / missing endpoint / 401 / 503 -> null (silent local fallback).
@@ -2228,7 +2288,7 @@ function _stReceiptExtractPost(raw, stage) {
     xhr.open('POST', '/api/receipt-extract', false);
     xhr.withCredentials = true;
     xhr.setRequestHeader('Content-Type', 'application/json');
-    var tok = _stClerkSessionToken();
+    var tok = _stClerkBearerForExtract();
     if (tok) {
       xhr.setRequestHeader('Authorization', 'Bearer ' + tok);
     }

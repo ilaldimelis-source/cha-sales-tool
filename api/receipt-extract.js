@@ -34,7 +34,8 @@ var FALLBACK_SYSTEM =
 
 var testHooks = {
   authenticate: null,
-  groqFetch: null
+  groqFetch: null,
+  log: null
 };
 
 function jsonNoCache(res) {
@@ -97,6 +98,78 @@ function readSessionToken(req) {
     }
   }
   return '';
+}
+
+function hasBearerToken(req) {
+  var auth = headerValue(req, 'authorization').trim();
+  return auth.toLowerCase().indexOf('bearer ') === 0 && !!auth.slice(7).trim();
+}
+
+function hasNamedCookie(req, exactName) {
+  var cookie = headerValue(req, 'cookie');
+  if (!cookie || !exactName) return false;
+  var prefix = exactName + '_';
+  var parts = cookie.split(';');
+  for (var i = 0; i < parts.length; i++) {
+    var p = parts[i].trim();
+    var eq = p.indexOf('=');
+    if (eq <= 0) continue;
+    var name = p.slice(0, eq);
+    if (name === exactName || name.indexOf(prefix) === 0) return true;
+  }
+  return false;
+}
+
+function secretKind(secret) {
+  if (typeof secret === 'string' && secret.indexOf('sk_test_') === 0) {
+    return 'sk_test';
+  }
+  if (typeof secret === 'string' && secret.indexOf('sk_live_') === 0) {
+    return 'sk_live';
+  }
+  return 'other';
+}
+
+function decodeJwtAzpIss(tok) {
+  var out = { azp: null, iss: null };
+  if (typeof tok !== 'string' || !tok) return out;
+  var parts = tok.split('.');
+  if (parts.length !== 3 || !parts[1]) return out;
+  try {
+    var b64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    var pad = b64.length % 4;
+    if (pad) b64 += '===='.slice(0, 4 - pad);
+    var payload = JSON.parse(Buffer.from(b64, 'base64').toString('utf8'));
+    if (payload && typeof payload.azp === 'string') out.azp = payload.azp;
+    if (payload && typeof payload.iss === 'string') out.iss = payload.iss;
+  } catch (_e) {}
+  return out;
+}
+
+function authErrorReason(err) {
+  if (!err) return 'authenticate_threw';
+  if (err.reason != null && err.reason !== '') return String(err.reason);
+  if (err.name && err.name !== 'Error') return String(err.name);
+  return 'authenticate_threw';
+}
+
+function emitExtractDiag(row) {
+  var payload = {
+    hasBearer: !!row.hasBearer,
+    hasSessionCookie: !!row.hasSessionCookie,
+    hasDevBrowserCookie: !!row.hasDevBrowserCookie,
+    authStatus: row.authStatus == null ? null : String(row.authStatus),
+    authReason: row.authReason == null ? null : String(row.authReason),
+    secretKind: row.secretKind || 'other',
+    azp: row.azp == null ? null : String(row.azp),
+    iss: row.iss == null ? null : String(row.iss),
+    outcomeStatus: row.outcomeStatus,
+    durationMs: row.durationMs
+  };
+  if (typeof testHooks.log === 'function') {
+    testHooks.log(payload);
+  }
+  console.log('[receipt-extract]', JSON.stringify(payload));
 }
 
 function nodeToWebRequest(req) {
@@ -248,42 +321,79 @@ async function handler(req, res) {
     return sendJson(res, 405, { error: 'Method Not Allowed' });
   }
 
+  var started = Date.now();
   var secret = process.env.CLERK_SECRET_KEY || '';
-  if (!clerkSecretOk(secret)) {
-    return sendJson(res, 503, { error: 'Extractor is not configured' });
+  var tokenForClaims = readSessionToken(req);
+  var claims = decodeJwtAzpIss(tokenForClaims);
+  var diag = {
+    hasBearer: hasBearerToken(req),
+    hasSessionCookie: hasNamedCookie(req, '__session'),
+    hasDevBrowserCookie: hasNamedCookie(req, '__clerk_db_jwt'),
+    authStatus: null,
+    authReason: null,
+    secretKind: secretKind(secret),
+    azp: claims.azp,
+    iss: claims.iss
+  };
+
+  function finish(status, body) {
+    emitExtractDiag({
+      hasBearer: diag.hasBearer,
+      hasSessionCookie: diag.hasSessionCookie,
+      hasDevBrowserCookie: diag.hasDevBrowserCookie,
+      authStatus: diag.authStatus,
+      authReason: diag.authReason,
+      secretKind: diag.secretKind,
+      azp: diag.azp,
+      iss: diag.iss,
+      outcomeStatus: status,
+      durationMs: Date.now() - started
+    });
+    return sendJson(res, status, body);
   }
 
-  if (!readSessionToken(req)) {
-    return sendJson(res, 401, { error: 'Unauthorized' });
+  if (!clerkSecretOk(secret)) {
+    return finish(503, { error: 'Extractor is not configured' });
+  }
+
+  if (!tokenForClaims) {
+    return finish(401, { error: 'Unauthorized' });
   }
 
   var signedIn = false;
   try {
     var state = await getAuthenticate()(req);
-    if (state && (state.isAuthenticated || state.isSignedIn)) {
-      signedIn = true;
+    if (state) {
+      if (state.status != null) diag.authStatus = state.status;
+      if (state.reason != null) diag.authReason = state.reason;
+      if (state.isAuthenticated || state.isSignedIn) {
+        signedIn = true;
+      }
     }
-  } catch (_authErr) {}
+  } catch (authErr) {
+    diag.authStatus = 'error';
+    diag.authReason = authErrorReason(authErr);
+  }
   if (!signedIn) {
-    return sendJson(res, 401, { error: 'Unauthorized' });
+    return finish(401, { error: 'Unauthorized' });
   }
 
   var groqKey = process.env.GROQ_API_KEY || '';
   if (!groqKey) {
-    return sendJson(res, 503, { error: 'Extractor is not configured' });
+    return finish(503, { error: 'Extractor is not configured' });
   }
 
   var body = readJsonBody(req);
   if (!body) {
-    return sendJson(res, 400, { error: 'Invalid JSON' });
+    return finish(400, { error: 'Invalid JSON' });
   }
 
   var receipt = body.receipt != null ? String(body.receipt) : '';
   if (!receipt.trim()) {
-    return sendJson(res, 400, { error: 'Missing receipt' });
+    return finish(400, { error: 'Missing receipt' });
   }
   if (receipt.length > MAX_RECEIPT_CHARS) {
-    return sendJson(res, 400, { error: 'Receipt too long' });
+    return finish(400, { error: 'Receipt too long' });
   }
 
   var stage = body.stage === 'fallback' ? 'fallback' : 'primary';
@@ -310,18 +420,18 @@ async function handler(req, res) {
       })
     });
   } catch (_fetchErr) {
-    return sendJson(res, 502, { error: 'Extraction failed' });
+    return finish(502, { error: 'Extraction failed' });
   }
 
   if (!groqResp || !groqResp.ok) {
-    return sendJson(res, 502, { error: 'Extraction failed' });
+    return finish(502, { error: 'Extraction failed' });
   }
 
   var groqBody;
   try {
     groqBody = await groqResp.json();
   } catch (_jsonErr) {
-    return sendJson(res, 502, { error: 'Extraction failed' });
+    return finish(502, { error: 'Extraction failed' });
   }
 
   var content =
@@ -334,13 +444,13 @@ async function handler(req, res) {
       : '';
   var parsed = parseModelJson(content);
   if (!parsed) {
-    return sendJson(res, 502, { error: 'Extraction failed' });
+    return finish(502, { error: 'Extraction failed' });
   }
 
   if (stage === 'fallback') {
-    return sendJson(res, 200, sanitizeFallback(parsed));
+    return finish(200, sanitizeFallback(parsed));
   }
-  return sendJson(res, 200, sanitizePrimary(parsed));
+  return finish(200, sanitizePrimary(parsed));
 }
 
 handler._testHooks = testHooks;
