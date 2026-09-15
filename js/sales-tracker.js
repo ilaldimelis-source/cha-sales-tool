@@ -2192,25 +2192,10 @@ function _stEscape(s) {
   });
 }
 
-// ── RECEIPT NORMALIZE + GROQ (PRIMARY) ───────────────────────
+// ── RECEIPT NORMALIZE ────────────────────────────────────────
 function _stNormalizeReceiptRaw(text) {
   if (!text) return '';
   return String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-}
-
-function _stGroqApiKeyForReceipt() {
-  if (
-    typeof _aiGroqFallbackKey !== 'undefined' &&
-    _aiGroqFallbackKey &&
-    _aiGroqFallbackKey.length >= 20
-  ) {
-    return _aiGroqFallbackKey;
-  }
-  try {
-    var ls = typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
-    if (ls && ls !== 'skip' && ls.length >= 20) return ls;
-  } catch (_k) {}
-  return '';
 }
 
 function _stApplySummaryTotalFromRaw(raw, out) {
@@ -2250,147 +2235,6 @@ function _stReorderDealProducts(out) {
     }
   }
   out.products = roCore.concat(roAdd);
-}
-
-// Synchronous Groq extraction — primary path when API key is present.
-// Returns { products, customer, memberId, enrollmentFee, saleDate, agent }
-// or null on failure / empty.
-function _stGroqSyncReceiptPrimary(raw) {
-  var key = _stGroqApiKeyForReceipt();
-  if (!key || !raw || typeof XMLHttpRequest === 'undefined') return null;
-  var sys =
-    'You extract structured enrollment-receipt data for an insurance sales tracker. ' +
-    'Return ONLY valid JSON (no markdown fences) with exactly this shape: ' +
-    '{"customer":"","memberId":"","saleDate":"","planName":"","planPremium":0,"enrollmentFee":0,' +
-    '"addons":[{"name":"","monthlyPrice":0}],"agent":""}. ' +
-    'Rules: planPremium = core plan recurring MONTHLY premium only (not enrollment). ' +
-    'enrollmentFee = one-time enrollment / signup / association fee if shown, else 0. ' +
-    'addons = supplemental products each with its own monthly recurring price. ' +
-    'saleDate as YYYY-MM-DD when visible on the receipt, else empty string. ' +
-    'Use numbers only for prices. Never invent data; leave fields empty or 0 when absent.';
-  try {
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'https://api.groq.com/openai/v1/chat/completions', false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Authorization', 'Bearer ' + key);
-    xhr.send(
-      JSON.stringify({
-        model: 'llama-3.1-8b-instant',
-        max_tokens: 900,
-        temperature: 0.05,
-        messages: [
-          { role: 'system', content: sys },
-          { role: 'user', content: raw }
-        ]
-      })
-    );
-    if (xhr.status !== 200) return null;
-    var body = JSON.parse(xhr.responseText);
-    var txt =
-      body &&
-      body.choices &&
-      body.choices[0] &&
-      body.choices[0].message &&
-      body.choices[0].message.content
-        ? String(body.choices[0].message.content).trim()
-        : '';
-    txt = txt
-      .replace(/^```(?:json)?\s*/i, '')
-      .replace(/```$/, '')
-      .trim();
-    var gj = null;
-    try {
-      gj = JSON.parse(txt);
-    } catch (_p1) {
-      var m = txt.match(/\{[\s\S]*\}/);
-      if (m) {
-        try {
-          gj = JSON.parse(m[0]);
-        } catch (_p2) {
-          gj = null;
-        }
-      }
-    }
-    if (!gj) return null;
-    var products = [];
-    var planName = gj.planName ? String(gj.planName) : '';
-    var planPremium = parseFloat(gj.planPremium);
-    if (planName && !isNaN(planPremium) && planPremium > 0) {
-      var canon = _stMatchPlanName(planName);
-      products.push({
-        name: canon || planName.substring(0, 120),
-        price: planPremium,
-        policy: ''
-      });
-    }
-    var addonList = gj.addons;
-    if (addonList && addonList.length) {
-      for (var ai = 0; ai < addonList.length; ai++) {
-        var ad = addonList[ai] || {};
-        var an = ad.name ? String(ad.name) : '';
-        var ap = parseFloat(ad.monthlyPrice);
-        if (!an || isNaN(ap) || ap <= 0) continue;
-        var canonA = _stMatchPlanName(an);
-        products.push({
-          name: canonA || an.substring(0, 120),
-          price: ap,
-          policy: ''
-        });
-      }
-    }
-    // Literal-price override: this receipt layout ("Product $X.XX" lines)
-    // already prints the true monthly amount as plain text. Groq is asked
-    // for a MONTHLY premium but can misread a printed dollar figure as an
-    // annual one and divide it down. When this layout's signature is
-    // present and the count of literal prices matches the count of
-    // products Groq returned, trust the literal printed amounts (in
-    // document order) over Groq's guess.
-    var litProductRe = /\bproduct\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
-    var litEnrollmentRe = /enrollment|one[-\s]?time|sign[-\s]?up\s+fee/i;
-    var litTotalRe = /^\s*total\b/i;
-    var litLines = raw.split(/\r?\n/);
-    var litPrices = [];
-    for (var lli = 0; lli < litLines.length; lli++) {
-      var llLine = litLines[lli];
-      if (litEnrollmentRe.test(llLine)) continue;
-      if (litTotalRe.test(llLine)) continue;
-      var llM = llLine.match(litProductRe);
-      if (!llM) continue;
-      var llPrice = parseFloat(llM[1].replace(/,/g, ''));
-      if (isNaN(llPrice) || llPrice <= 0) continue;
-      litPrices.push(llPrice);
-    }
-    if (litPrices.length === products.length) {
-      for (var lpi = 0; lpi < products.length; lpi++) {
-        products[lpi].price = litPrices[lpi];
-      }
-    }
-    if (!products.length) return null;
-    var enr = parseFloat(gj.enrollmentFee);
-    if (isNaN(enr) || enr < 0) enr = 0;
-    var saleDate = null;
-    if (gj.saleDate) {
-      var dm = String(gj.saleDate).match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
-      if (dm) {
-        var y = parseInt(dm[1], 10);
-        var mo = parseInt(dm[2], 10);
-        var d = parseInt(dm[3], 10);
-        if (!isNaN(y) && !isNaN(mo) && !isNaN(d)) {
-          saleDate = new Date(y, mo - 1, d, 9, 0, 0, 0);
-        }
-      }
-    }
-    return {
-      products: products,
-      customer: gj.customer ? String(gj.customer).substring(0, 80) : '',
-      memberId: gj.memberId ? String(gj.memberId).substring(0, 40) : '',
-      enrollmentFee: enr,
-      saleDate: saleDate,
-      agent: gj.agent ? String(gj.agent).substring(0, 80) : ''
-    };
-  } catch (_e) {
-    return null;
-  }
 }
 
 // Parse "Month D, YYYY at H:MM AM/PM" after "Confirmation" (or whole
@@ -2570,7 +2414,7 @@ function _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe) {
 // - Policy effective/active date may be present in receipt text or
 //   product metadata, but is NOT persisted as a separate top-level
 //   field on saved sales rows today.
-function _stParseReceipt(text, useGroq) {
+function _stParseReceipt(text, _useGroq) {
   var out = {
     products: [],
     receiptTotal: 0,
@@ -2582,43 +2426,6 @@ function _stParseReceipt(text, useGroq) {
   };
   if (!text) return out;
   var raw = _stNormalizeReceiptRaw(text);
-
-  // Groq is only used on explicit add actions — not on every
-  // keystroke in the receipt textarea (would sync-block the UI).
-  // Some receipts print the literal recurring price on a dedicated
-  // "Product  $X.XX" line (Member ID / GHDP style) instead of a
-  // "... per Month" marker. The local line-by-line parser further
-  // down in this function reads this format correctly regardless
-  // of product order or count, so skip the Groq AI call entirely
-  // when this signature is present and let local parsing run.
-  var _literalProductLineRe = /\bproduct\s+\$\s*[0-9][0-9,]*(?:\.[0-9]{1,2})?/i;
-  var _hasLiteralProductFormat = _literalProductLineRe.test(raw);
-  if (useGroq === true && !_hasLiteralProductFormat) {
-    var groqPrim = _stGroqSyncReceiptPrimary(raw);
-    if (groqPrim) {
-      out.products = groqPrim.products;
-      out.customer = groqPrim.customer;
-      out.memberId = groqPrim.memberId;
-      out.enrollmentFee = groqPrim.enrollmentFee;
-      if (groqPrim.agent) out.agent = groqPrim.agent;
-      if (groqPrim.saleDate) out.saleDate = groqPrim.saleDate;
-      var confirmTsGroq = _stParseConfirmationTimestampInRaw(raw);
-      if (confirmTsGroq) out.saleDate = confirmTsGroq;
-      // Groq primary path used to return here BEFORE any local line
-      // parsing — so Policy+Enrollment+Product-per-Month lines were
-      // never scanned and planPremium could wrongly equal $125.
-      var _spGroq = _stReceiptLinesSplit(raw);
-      raw = _spGroq.raw;
-      _stInjectCombinedPolicyPremiums(
-        _spGroq.lines,
-        out,
-        /enrollment|one[-\s]?time|sign[-\s]?up\s+fee/i
-      );
-      _stApplySummaryTotalFromRaw(raw, out);
-      _stReorderDealProducts(out);
-      return out;
-    }
-  }
 
   var _sp = _stReceiptLinesSplit(raw);
   raw = _sp.raw;
@@ -3142,109 +2949,6 @@ function _stParseReceipt(text, useGroq) {
 
   // ── DEAL DETECTION & REORDER ──────────────────────────────
   _stReorderDealProducts(out);
-
-  // ── GROQ FALLBACK ─────────────────────────────────────────
-  // Last-resort parser for receipt formats we've never seen.
-  // Only fires when every other pass above failed to extract
-  // a single product. Uses a synchronous XMLHttpRequest so the
-  // sync return contract of _stParseReceipt is preserved. The
-  // whole block is wrapped in try/catch — any failure at all
-  // leaves out.products empty and the caller renders its normal
-  // "could not detect any products" error.
-  if (
-    out.products.length === 0 &&
-    _stGroqApiKeyForReceipt() &&
-    typeof XMLHttpRequest !== 'undefined'
-  ) {
-    try {
-      var grqKey = _stGroqApiKeyForReceipt();
-      var grqPrompt =
-        'Extract from this receipt: customer full name, 9-digit member ID, sale date (YYYY-MM-DD), and all products with their monthly prices. Return ONLY valid JSON in this exact format: {"customer":"","memberId":"","saleDate":"","products":[{"name":"","price":0,"type":"deal or addon"}]}. First product is always the deal, rest are addons.';
-      var grqXhr = new XMLHttpRequest();
-      grqXhr.open(
-        'POST',
-        'https://api.groq.com/openai/v1/chat/completions',
-        false
-      );
-      grqXhr.setRequestHeader('Content-Type', 'application/json');
-      grqXhr.setRequestHeader('Authorization', 'Bearer ' + grqKey);
-      grqXhr.send(
-        JSON.stringify({
-          model: 'llama-3.1-8b-instant',
-          max_tokens: 800,
-          temperature: 0.1,
-          messages: [
-            { role: 'system', content: grqPrompt },
-            { role: 'user', content: raw }
-          ]
-        })
-      );
-      if (grqXhr.status === 200) {
-        var grqBody = JSON.parse(grqXhr.responseText);
-        var grqTxt =
-          grqBody &&
-          grqBody.choices &&
-          grqBody.choices[0] &&
-          grqBody.choices[0].message &&
-          grqBody.choices[0].message.content
-            ? String(grqBody.choices[0].message.content).trim()
-            : '';
-        // Strip any markdown code fences Groq may wrap the JSON in.
-        grqTxt = grqTxt
-          .replace(/^```(?:json)?\s*/i, '')
-          .replace(/```$/, '')
-          .trim();
-        var grqJson = null;
-        try {
-          grqJson = JSON.parse(grqTxt);
-        } catch (grqJsonErr) {
-          // Try to pull the first {...} block out of the text.
-          var grqMatch = grqTxt.match(/\{[\s\S]*\}/);
-          if (grqMatch) {
-            try {
-              grqJson = JSON.parse(grqMatch[0]);
-            } catch (grqJsonErr2) {
-              grqJson = null;
-            }
-          }
-        }
-        if (grqJson && grqJson.products && grqJson.products.length > 0) {
-          if (!out.customer && grqJson.customer) {
-            out.customer = String(grqJson.customer).substring(0, 80);
-          }
-          if (!out.memberId && grqJson.memberId) {
-            out.memberId = String(grqJson.memberId).substring(0, 40);
-          }
-          if (!out.saleDate && grqJson.saleDate) {
-            var grqDt = String(grqJson.saleDate);
-            var grqDm = grqDt.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
-            if (grqDm) {
-              var grqY = parseInt(grqDm[1], 10);
-              var grqMo = parseInt(grqDm[2], 10);
-              var grqDd = parseInt(grqDm[3], 10);
-              if (!isNaN(grqY) && !isNaN(grqMo) && !isNaN(grqDd)) {
-                out.saleDate = new Date(grqY, grqMo - 1, grqDd, 9, 0, 0, 0);
-              }
-            }
-          }
-          for (var grqPi = 0; grqPi < grqJson.products.length; grqPi++) {
-            var grqP = grqJson.products[grqPi] || {};
-            var grqName = grqP.name ? String(grqP.name).substring(0, 120) : '';
-            var grqPrice = parseFloat(grqP.price);
-            if (!grqName || isNaN(grqPrice) || grqPrice <= 0) continue;
-            var grqMatched = _stMatchPlanName(grqName);
-            out.products.push({
-              name: grqMatched || grqName,
-              price: grqPrice,
-              policy: ''
-            });
-          }
-        }
-      }
-    } catch (grqErr) {
-      // Leave out.products empty so caller shows the normal error.
-    }
-  }
 
   return out;
 }
@@ -4584,7 +4288,7 @@ function _stReceiptInputChanged() {
   f.value = yy + '-' + mm + '-' + dd;
 }
 
-// Bubble preview of parsed receipt (heuristic) while typing — Groq runs on Add.
+// Bubble preview of parsed receipt (heuristic) while typing.
 function _stUpdateReceiptPreview() {
   var wrap = document.getElementById('st-receipt-preview');
   var input = document.getElementById('st-receipt-input');
@@ -4598,7 +4302,7 @@ function _stUpdateReceiptPreview() {
   if (!chunks.length) chunks = [txt];
   var parts = [];
   parts.push(
-    '<div class="st-preview-hint">Preview uses fast parsing. <strong>Add</strong> runs Groq AI when your key is active.</div>'
+    '<div class="st-preview-hint">Preview uses local parsing. <strong>Add</strong> uses the same local parser, then manual entry if nothing is detected.</div>'
   );
   parts.push('<div class="st-preview-bubbles">');
   var anyContent = false;
@@ -4643,7 +4347,7 @@ function _stUpdateReceiptPreview() {
   parts.push('</div>');
   if (!anyContent) {
     wrap.innerHTML =
-      '<div class="st-preview-empty">No products detected yet — paste more of the receipt or use <strong>Add</strong> with Groq.</div>';
+      '<div class="st-preview-empty">No products detected yet — paste more of the receipt or enter the sale manually.</div>';
     return;
   }
   wrap.innerHTML = parts.join('');
@@ -5459,7 +5163,7 @@ function _stBuildInput() {
   html +=
     '<textarea id="st-receipt-input" class="st-textarea" rows="4" ' +
     'oninput="_stReceiptInputChanged()" ' +
-    'placeholder="Paste the full enrollment receipt here. Groq AI extracts plan premium, enrollment fee, and add-ons when you tap Add."></textarea>';
+    'placeholder="Paste the full enrollment receipt here. Plan premium, enrollment fee, and add-ons are parsed locally when you tap Add."></textarea>';
   html +=
     '<div id="st-receipt-preview" class="st-receipt-preview" aria-live="polite"></div>';
   html += '<div id="st-flash" class="st-flash" style="opacity:0;"></div>';

@@ -222,6 +222,15 @@ module.exports = function handler(req, res) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
+
+  // Fail closed on Vercel production and preview. Local `vercel dev`
+  // sets VERCEL_ENV=development and can still run RAG research.
+  var vercelEnv = String(process.env.VERCEL_ENV || '');
+  if (vercelEnv === 'production' || vercelEnv === 'preview') {
+    jsonNoCache(res);
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
   jsonNoCache(res);
 
   var body = req.body || {};
