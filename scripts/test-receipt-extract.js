@@ -376,17 +376,13 @@ Promise.resolve()
     });
   })
   .then(function () {
-    assert.ok(
-      handler._AUTHORIZED_PARTIES.indexOf(
-        'https://cha-sales-tool.vercel.app'
-      ) !== -1
+    assert.deepStrictEqual(handler._AUTHORIZED_PARTIES, [
+      'https://cha-sales-tool-main.vercel.app',
+      'https://cha-sales-tool-dhca.vercel.app'
+    ]);
+    console.log(
+      'PASS  authorizedParties is exactly the two live production origins'
     );
-    assert.ok(
-      handler._AUTHORIZED_PARTIES.indexOf(
-        'https://cha-sales-tool-xi.vercel.app'
-      ) !== -1
-    );
-    console.log('PASS  authorizedParties includes both production origins');
   })
   .then(function () {
     var st = fs.readFileSync(
