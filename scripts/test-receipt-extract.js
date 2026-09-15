@@ -9,10 +9,17 @@ var handler = require('../api/receipt-extract');
 
 var groqCalls = 0;
 
+var FIXTURE_JWT_PEM =
+  '-----BEGIN PUBLIC KEY-----\n' +
+  'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwTESTFIXTUREONLY1234\n' +
+  'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUV\n' +
+  '-----END PUBLIC KEY-----';
+
 function resetEnv(opts) {
   groqCalls = 0;
   handler._testHooks.authenticate = null;
   handler._testHooks.log = null;
+  handler._testHooks.authTimeoutMs = null;
   handler._testHooks.groqFetch = function () {
     groqCalls += 1;
     throw new Error('Groq fetch must not be called in this test');
@@ -24,6 +31,13 @@ function resetEnv(opts) {
       'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
   } else {
     process.env.CLERK_SECRET_KEY = 'sk_test_fake_secret_key_for_unit_tests';
+  }
+  if (opts.jwtKey === 'missing') {
+    delete process.env.CLERK_JWT_KEY;
+  } else if (opts.jwtKey === 'malformed') {
+    process.env.CLERK_JWT_KEY = 'not-a-pem';
+  } else {
+    process.env.CLERK_JWT_KEY = FIXTURE_JWT_PEM;
   }
   if (opts.groq === 'missing') {
     delete process.env.GROQ_API_KEY;
@@ -99,6 +113,8 @@ var DIAG_LOG_KEYS = {
   authStatus: true,
   authReason: true,
   secretKind: true,
+  jwtKeyConfigured: true,
+  networklessUsed: true,
   azp: true,
   iss: true,
   outcomeStatus: true,
@@ -266,6 +282,80 @@ Promise.resolve()
     );
   })
   .then(function () {
+    return run('missing CLERK_JWT_KEY -> 503, zero Groq call', function () {
+      resetEnv({ clerk: 'ok', groq: 'ok', jwtKey: 'missing' });
+      handler._testHooks.authenticate = function () {
+        throw new Error(
+          'authenticateRequest must not run when CLERK_JWT_KEY is missing'
+        );
+      };
+      var captured = [];
+      handler._testHooks.log = function (row) {
+        captured.push(row);
+      };
+      var res = mockRes();
+      return handler(
+        mockReq({
+          headers: { authorization: 'Bearer fake.jwt.token' },
+          body: { receipt: 'hello' }
+        }),
+        res
+      ).then(function () {
+        assert.strictEqual(res.statusCode, 503);
+        expectNoGroq();
+        assert.strictEqual(captured[0].jwtKeyConfigured, false);
+        assert.strictEqual(captured[0].networklessUsed, false);
+      });
+    });
+  })
+  .then(function () {
+    return run('malformed CLERK_JWT_KEY -> 503, zero Groq call', function () {
+      resetEnv({ clerk: 'ok', groq: 'ok', jwtKey: 'malformed' });
+      handler._testHooks.authenticate = function () {
+        throw new Error(
+          'authenticateRequest must not run when CLERK_JWT_KEY is malformed'
+        );
+      };
+      var res = mockRes();
+      return handler(
+        mockReq({
+          headers: { authorization: 'Bearer fake.jwt.token' },
+          body: { receipt: 'hello' }
+        }),
+        res
+      ).then(function () {
+        assert.strictEqual(res.statusCode, 503);
+        expectNoGroq();
+      });
+    });
+  })
+  .then(function () {
+    return run('authenticate timeout -> 503, zero Groq call', function () {
+      resetEnv({ clerk: 'ok', groq: 'ok' });
+      handler._testHooks.authTimeoutMs = 40;
+      handler._testHooks.authenticate = function () {
+        return new Promise(function () {});
+      };
+      var captured = [];
+      handler._testHooks.log = function (row) {
+        captured.push(row);
+      };
+      var res = mockRes();
+      return handler(
+        mockReq({
+          headers: { authorization: 'Bearer fake.jwt.token' },
+          body: { receipt: 'hello' }
+        }),
+        res
+      ).then(function () {
+        assert.strictEqual(res.statusCode, 503);
+        expectNoGroq();
+        assert.strictEqual(captured[0].authReason, 'authenticate_timeout');
+        assert.strictEqual(captured[0].networklessUsed, true);
+      });
+    });
+  })
+  .then(function () {
     return run(
       'unauthenticated token present -> 401, zero Groq call',
       function () {
@@ -333,6 +423,10 @@ Promise.resolve()
   .then(function () {
     return run('authenticated primary happy-path contract', function () {
       resetEnv({ clerk: 'ok', groq: 'ok' });
+      var captured = [];
+      handler._testHooks.log = function (row) {
+        captured.push(row);
+      };
       handler._testHooks.authenticate = function () {
         return Promise.resolve({ isAuthenticated: true });
       };
@@ -402,6 +496,10 @@ Promise.resolve()
         });
         assert.ok(!res.body.model);
         assert.ok(!String(JSON.stringify(res.body)).includes('gsk_'));
+        assert.strictEqual(captured.length, 1);
+        assert.strictEqual(captured[0].jwtKeyConfigured, true);
+        assert.strictEqual(captured[0].networklessUsed, true);
+        assert.strictEqual(captured[0].outcomeStatus, 200);
       });
     });
   })
@@ -487,6 +585,7 @@ Promise.resolve()
       'https://cha-sales-tool-main.vercel.app',
       'https://cha-sales-tool-dhca.vercel.app'
     ]);
+    assert.strictEqual(handler._AUTH_TIMEOUT_MS, 1500);
     console.log(
       'PASS  authorizedParties is exactly the two live production origins'
     );
@@ -652,7 +751,9 @@ Promise.resolve()
           leakJwt,
           'sk_test_fake_secret_key_for_unit_tests',
           'gsk_fake_for_unit_tests',
-          'gsk_'
+          'gsk_',
+          'TESTFIXTUREONLY',
+          FIXTURE_JWT_PEM
         ];
         var captured = [];
         handler._testHooks.log = function (row) {
@@ -696,6 +797,8 @@ Promise.resolve()
               'token-invalid-authorized-parties'
             );
             assert.strictEqual(captured[0].secretKind, 'sk_test');
+            assert.strictEqual(captured[0].jwtKeyConfigured, true);
+            assert.strictEqual(captured[0].networklessUsed, true);
             assert.strictEqual(
               captured[0].azp,
               'https://cha-sales-tool-dhca.vercel.app'
