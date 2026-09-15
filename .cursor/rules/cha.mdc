@@ -84,6 +84,10 @@ Two documented collisions to respect:
 
 Rates are carrier-specific. A rate proven on one carrier does not transfer to a similarly named product on another.
 
+## Plan profile base schema
+
+The converter maps onto 113 keys. Source of truth: `scripts/lib/base-schema.json` (array length 113). Do not document a different key count in rules or CLAUDE.md.
+
 ## Before reporting done
 
 - Zero JavaScript errors in the console.
