@@ -1,7 +1,5 @@
 // utils.js — Icons, escHTML, search engine, shared utilities
 
-// ── SHARED CONFIG ────────────────────────────────────────────
-var CHA_GROQ_ENDPOINT = 'https://api.groq.com/openai/v1/chat/completions';
 // Canonical static folder for plan PDFs and knowledge assets (no /docs, /data, or /plans).
 var CHA_KNOWLEDGE_BASE = '/knowledge_base';
 function chaKnowledgeBaseUrl(filename) {

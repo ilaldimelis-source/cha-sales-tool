@@ -4,24 +4,24 @@
 // When changing js/sales-tracker.js or css/sales-tracker.css, bump
 // CACHE_NAME by +1 AND the matching ?v= query strings in index.html
 // and URLS_TO_CACHE below (keep those two files in sync).
-var CACHE_NAME = 'cha-command-center-v162';
+var CACHE_NAME = 'cha-command-center-v163';
 var URLS_TO_CACHE = [
   './',
-  './index.html?v=1788982043370',
+  './index.html?v=1789432300000',
   './logo.png?v=1779700000000',
   './manifest.json?v=1779700000000',
   './css/tokens.css?v=1780600000000',
   './css/styles.css?v=1789051308139',
   './css/sales-tracker.css?v=1787901420000',
   './js/plan-registry.js?v=1779700000000',
-  './js/storage-utils.js?v=1780000000000',
-  './js/utils.js?v=1779700000000',
+  './js/storage-utils.js?v=1789432300000',
+  './js/utils.js?v=1789432300000',
   './js/recovery-data.js?v=1779700000000',
   './js/objections.js?v=1779700000000',
   './js/plans-benefits.js?v=1787901420000',
   './js/call-playbook.js?v=1779700000000',
   './js/live-assist.js?v=1787901420000',
-  './js/ai-tools.js?v=1779700000000',
+  './js/ai-tools.js?v=1789432300000',
   './js/training.js?v=1780300000000',
   './js/compliance.js?v=1787901430000',
   './js/plan-data.js?v=1779700000000',
@@ -30,10 +30,10 @@ var URLS_TO_CACHE = [
   './js/policy-docs.js?v=1787901420000',
   './js/docusign-walkthrough.js?v=1780700000000',
   './js/myspace.js?v=1787901420000',
-  './js/sales-tracker.js?v=1787901420000',
+  './js/sales-tracker.js?v=1789432300000',
   './js/office.js?v=1787900000000',
-  './js/app.js?v=1788812987600',
-  './js/chat.js?v=1789418473863',
+  './js/app.js?v=1789432300000',
+  './js/chat.js?v=1789432300000',
   './js/br-plan-match.js?v=1788811424309',
   './js/br-profile.js?v=1788812987600',
   './js/br-intents.js?v=1788812987600',
@@ -113,7 +113,6 @@ self.addEventListener('fetch', function (event) {
     '/api/',
     'clerk.accounts.dev',
     'clerk.com',
-    'api.groq.com',
     'api.anthropic.com'
   ];
   var skipCache = noCachePatterns.some(function (p) {

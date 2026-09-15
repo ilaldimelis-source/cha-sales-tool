@@ -12,14 +12,6 @@ var brResolvedPlanId = null;
 var brResolvedPlanName = null;
 var _brPendingQuery = '';
 var _brPendingIntentId = null;
-// Office key — scoped per Clerk user (see js/storage-utils.js). Console: brSetOfficeKey('gsk_...')
-function brSetOfficeKey(key) {
-  if (typeof chaSet === 'function') {
-    chaSet('cha_groq_key', key);
-  } else {
-    localStorage.setItem('cha_groq_key', key);
-  }
-}
 // ── LUCIDE-STYLE SVG ICONS ──────────────────────────────────────────
 var LI = {
   check:
@@ -111,12 +103,9 @@ function _brSetStatus(mode) {
   var lbl = document.getElementById('br-ai-label');
   if (!el || !lbl) return;
   el.className = 'br-ai-status';
-  if (mode === 'ai') {
-    el.classList.add('br-ai-active');
-    lbl.textContent = 'Groq AI Active';
-  } else if (mode === 'thinking') {
+  if (mode === 'thinking') {
     el.classList.add('br-ai-thinking');
-    lbl.textContent = 'AI Thinking...';
+    lbl.textContent = 'Looking up...';
   } else {
     el.classList.add('br-ai-local');
     lbl.textContent = 'Plan Lookup';
@@ -172,13 +161,7 @@ function brInit() {
       buildSearchIndex();
     }
     brShowWelcome();
-    var _initKeyEarly =
-      typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
-    _brSetStatus(
-      _initKeyEarly && _initKeyEarly !== 'skip' && _initKeyEarly.length > 20
-        ? 'ai'
-        : 'local'
-    );
+    _brSetStatus('local');
     return;
   }
 
@@ -405,14 +388,7 @@ function brInit() {
   buildSearchIndex();
   brShowWelcome();
 
-  // Set initial AI status
-  var _initKey =
-    typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
-  _brSetStatus(_initKey && _initKey !== 'skip' && _initKey.length > 20 ? 'ai' : 'local');
-
-  // Groq AI is provided automatically via the shared company key
-  // fetched by ai-tools.js into _aiGroqFallbackKey. Agents do not
-  // manage their own keys, so no ⚙ AI settings button is rendered.
+  _brSetStatus('local');
 }
 
 function brRenderPlanButtons(groupFilter) {
@@ -638,9 +614,7 @@ function brShowTyping() {
 function brHideTyping() {
   var t = document.getElementById('br-typing');
   if (t) t.remove();
-  // Reset status after AI responds
-  var key = typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
-  _brSetStatus(key && key !== 'skip' && key.length > 20 ? 'ai' : 'local');
+  _brSetStatus('local');
 }
 
 
@@ -1328,7 +1302,7 @@ if (document.readyState === 'loading') {
 
 // ═══════════════════════════════════════════════════
 // CHA BRAIN CHAT BOX (Live Playbook panel)
-// Local-first conceptual router + KB search + optional Groq call.
+// Local-first conceptual router + KB search.
 // ES5 only (no async/await).
 // ═══════════════════════════════════════════════════
 var CHA_BRAIN_KEYWORDS = {
@@ -1630,21 +1604,6 @@ function handleChatMessage(userMessage) {
     '<div class="ai-message"><div class="response-content">Searching plan documents...</div></div>';
   _chaBrainScroll();
 
-  var sharedKey =
-    (typeof _aiGroqFallbackKey !== 'undefined' && _aiGroqFallbackKey) ||
-    (typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '') ||
-    '';
-  if (!sharedKey || sharedKey === 'skip' || sharedKey.length < 20) {
-    chatContainer.innerHTML +=
-      '<div class="ai-message">' +
-      formatResponse(
-        'Groq API key not found. Configure `window.GROQ_API_KEY` or set `GROQ_API_KEY` in Vercel for `/api/groq-key`.',
-        scope
-      ) +
-      '</div>';
-    _chaBrainScroll();
-    return;
-  }
   var runtime = window.CHA_PDF_KNOWLEDGE_RUNTIME;
   if (!runtime) {
     chatContainer.innerHTML +=
@@ -1710,37 +1669,11 @@ function handleChatMessage(userMessage) {
     .loadPlanContent(planMeta.planId)
     .then(function (planPayload) {
       var topChunks = runtime.retrieveTopChunks(planPayload, clean, 8);
-      if (!topChunks.length) {
-        return {
-          fallback:
-            'That specific detail is not in the ' + planMeta.planName + ' document.',
-          topChunks: []
-        };
-      }
-      var systemPrompt = _chaBuildGroundedPrompt(planMeta, topChunks);
-      return fetch((window.GROQ_API_URL || CHA_GROQ_ENDPOINT), {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + sharedKey
-        },
-        body: JSON.stringify({
-          model: 'llama-3.1-70b-versatile',
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: 'Agent question: ' + clean }
-          ],
-          max_tokens: 450,
-          temperature: 0
-        })
-      })
-        .then(function (r) {
-          if (!r.ok) throw new Error('API error ' + r.status);
-          return r.json();
-        })
-        .then(function (data) {
-          return { data: data, topChunks: topChunks };
-        });
+      return {
+        fallback:
+          'That specific detail is not in the ' + planMeta.planName + ' document.',
+        topChunks: topChunks
+      };
     })
     .then(function (result) {
       // eslint-disable-next-line no-useless-assignment

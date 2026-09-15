@@ -50,22 +50,6 @@ function safeSetItem(key, val) {
 }
 
 // ══════════════════════════════════════════════════════
-// AUTO-POPULATE GROQ API KEY FROM /api/groq-key
-// Fetches the shared office key from the Vercel serverless function
-// on page load and saves it to localStorage — but only when nothing
-// is already saved. This means:
-//   • Agents who have entered their own personal key: untouched.
-//   • Agents who have previously clicked "skip": untouched.
-//   • Agents with no key at all: get the shared key automatically
-//     so chat.js picks it up at runtime without ever prompting.
-// Uses the safe wrappers above so incognito / quota errors don't crash.
-// Cache-buster on the URL prevents the service worker's
-// stale-while-revalidate path from caching the key response.
-// ══════════════════════════════════════════════════════
-// Groq key auto-populate runs from chaAfterAuthUserReady() in js/storage-utils.js
-// after Clerk sets window.CHA_USER (scoped per user).
-
-// ══════════════════════════════════════════════════════
 // FONT SIZE TOGGLE (S / M / L)
 // ══════════════════════════════════════════════════════
 function setFontSize(size) {

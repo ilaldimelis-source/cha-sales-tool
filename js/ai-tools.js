@@ -1,72 +1,5 @@
 // ai-tools.js — AI Tools tab (Client Profiler / psych profile, Discovery, Closing Engine)
 
-// ── SHARED GROQ HELPER ───────────────────────────────────────────────────────
-
-// Env-provided shared company Groq key, fetched once at script load
-// from /api/groq-key (a Vercel serverless function that reads
-// process.env.GROQ_API_KEY). Agents never manage this key — it is
-// applied automatically for everyone the moment the app loads.
-// The ?t= cache-buster prevents the service worker's stale-while-
-// revalidate path from caching the response.
-var _aiGroqFallbackKey = '';
-fetch('/api/groq-key?t=' + Date.now())
-  .then(function (r) {
-    if (!r.ok) return null;
-    return r.json();
-  })
-  .then(function (d) {
-    if (d && d.key) {
-      _aiGroqFallbackKey = d.key;
-    }
-  })
-  .catch(function () {
-    // Network failure or 500 — silently leave fallback empty.
-    // _aiNoKeyMsg will then show the unavailable message.
-  });
-
-function _aiGroq(systemPrompt, userMsg, onSuccess, onError) {
-  // Company key from /api/groq-key always wins so agents do not have
-  // to do anything. localStorage is only consulted if the shared key
-  // failed to load (e.g. network blip during initial fetch).
-  var key = _aiGroqFallbackKey || '';
-  if (!key || key.length < 20) {
-    var lsKey =
-      typeof chaGroqKeyString === 'function' ? chaGroqKeyString() : '';
-    if (lsKey && lsKey !== 'skip' && lsKey.length >= 20) {
-      key = lsKey;
-    }
-  }
-  if (!key || key.length < 20) {
-    if (onError) onError('no-key');
-    return;
-  }
-  fetch(CHA_GROQ_ENDPOINT, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + key
-    },
-    body: JSON.stringify({
-      model: 'llama-3.1-8b-instant',
-      max_tokens: 600,
-      temperature: 0.3,
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: userMsg }
-      ]
-    })
-  })
-    .then(function (r) {
-      if (!r.ok) throw new Error(r.status);
-      return r.json();
-    })
-    .then(function (d) {
-      onSuccess(d.choices[0].message.content.trim());
-    })
-    .catch(function (e) {
-      if (onError) onError(e.message);
-    });
-}
 function _aiLoadingBtn(btnId, msg) {
   var b = document.getElementById(btnId);
   if (b) {
@@ -80,14 +13,6 @@ function _aiResetBtn(btnId) {
   if (b && b._orig) {
     b.textContent = b._orig;
     b.disabled = false;
-  }
-}
-function _aiNoKeyMsg(elId) {
-  var el = document.getElementById(elId);
-  if (el) {
-    el.innerHTML =
-      '<div style="background:#f1f5f9;border:1px solid #e2e8f0;border-radius:10px;padding:14px 16px;font-size:13px;color:#475569;">AI assistant is unavailable. Please contact your manager.</div>';
-    el.style.display = 'block';
   }
 }
 
@@ -403,34 +328,4 @@ function analyzePsych() {
   el.innerHTML = html;
   el.style.display = 'block';
   el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  // AI-powered live scripts for this personality
-  var aiDiv = document.createElement('div');
-  aiDiv.id = 'psychAiScripts';
-  aiDiv.style.cssText =
-    'margin-top:12px;padding:14px 16px;background:var(--cha-bg-muted);border:1px solid #e2e8f0;border-radius:12px;font-size:13px;color:#64748b;';
-  aiDiv.textContent =
-    '✦ AI generating personalized scripts for this prospect...';
-  el.appendChild(aiDiv);
-
-  var sys =
-    'You are an elite health insurance sales coach at Central Health Advisors. Generate 3 ultra-specific, conversational scripts for a ' +
-    top +
-    ' personality prospect. Scripts must be for selling private health benefit plans (MEC/STM/limited benefit — NOT ACA). Each script: max 2 sentences, ready to say verbatim, no placeholders. Format: 1. [script] 2. [script] 3. [script]';
-  _aiGroq(
-    sys,
-    'Generate 3 live call scripts for a ' +
-      top +
-      ' type prospect who is considering enrolling in a private health benefit plan today.',
-    function (text) {
-      aiDiv.innerHTML =
-        '<div style="font-size:10px;font-weight:800;color:#5175f1;letter-spacing:1px;margin-bottom:8px;">✦ AI SCRIPTS FOR THIS PROSPECT</div>' +
-        '<div style="font-size:13px;color:#374151;line-height:1.8;white-space:pre-line;">' +
-        escHTML(text) +
-        '</div>';
-    },
-    function () {
-      aiDiv.textContent = '';
-    }
-  );
 }

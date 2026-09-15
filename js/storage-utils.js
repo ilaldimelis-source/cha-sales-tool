@@ -3,8 +3,26 @@
 'use strict';
 
 (function () {
+  function chaPurgeGroqKeyStorage() {
+    try {
+      var toRemove = [];
+      var i;
+      var k;
+      for (i = 0; i < localStorage.length; i++) {
+        k = localStorage.key(i);
+        if (k && k.indexOf('cha_groq_key') === 0) {
+          toRemove.push(k);
+        }
+      }
+      for (i = 0; i < toRemove.length; i++) {
+        localStorage.removeItem(toRemove[i]);
+      }
+    } catch (_e) {}
+  }
+
+  chaPurgeGroqKeyStorage();
+
   var CHA_LEGACY_BASES = [
-    'cha_groq_key',
     'preferredName',
     'cha_display_name',
     'cha_monthly_goal',
@@ -28,6 +46,7 @@
   }
 
   function chaTryMigrateLegacy(base) {
+    if (String(base || '').indexOf('cha_groq_key') === 0) return;
     var uid = window.CHA_USER && window.CHA_USER.id;
     if (!uid || uid === 'anonymous') return;
     var sk = chaKey(base);
@@ -64,6 +83,7 @@
   }
 
   function chaSet(base, value) {
+    if (String(base || '').indexOf('cha_groq_key') === 0) return;
     try {
       localStorage.setItem(chaKey(base), JSON.stringify(value));
     } catch (_e) {}
@@ -75,18 +95,8 @@
     } catch (_e) {}
   }
 
-  /** Groq key and other string secrets stored as JSON strings */
-  function chaGroqKeyString() {
-    chaTryMigrateLegacy('cha_groq_key');
-    var v = chaGet('cha_groq_key', '');
-    if (v == null) return '';
-    return typeof v === 'string' ? v : String(v);
-  }
-
   function chaClearSensitive() {
-    try {
-      chaRemove('cha_groq_key');
-    } catch (_e) {}
+    chaPurgeGroqKeyStorage();
     try {
       window.CHA_USER = undefined;
     } catch (_e2) {}
@@ -108,23 +118,7 @@
         localStorage.removeItem(b + '__' + userId);
       } catch (_e) {}
     }
-  }
-
-  function chaAutoPopulateGroqIfEmpty() {
-    var existing = chaGroqKeyString();
-    if (existing) return;
-    fetch('/api/groq-key?t=' + Date.now())
-      .then(function (r) {
-        if (!r.ok) return null;
-        return r.json();
-      })
-      .then(function (d) {
-        if (!d || !d.key) return;
-        if (!chaGroqKeyString()) {
-          chaSet('cha_groq_key', d.key);
-        }
-      })
-      .catch(function () {});
+    chaPurgeGroqKeyStorage();
   }
 
   function chaAfterAuthUserReady() {
@@ -152,7 +146,6 @@
     ) {
       window.chaDashRefreshWidgets();
     }
-    chaAutoPopulateGroqIfEmpty();
   }
 
   window.chaKey = chaKey;
@@ -160,7 +153,6 @@
   window.chaSet = chaSet;
   window.chaRemove = chaRemove;
   window.chaTryMigrateLegacy = chaTryMigrateLegacy;
-  window.chaGroqKeyString = chaGroqKeyString;
   window.chaClearSensitive = chaClearSensitive;
   window.chaClearAllForUser = chaClearAllForUser;
   window.chaAfterAuthUserReady = chaAfterAuthUserReady;
