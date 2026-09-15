@@ -17,6 +17,10 @@ var AUTHORIZED_PARTIES = [
   'https://cha-sales-tool-main.vercel.app',
   'https://cha-sales-tool-dhca.vercel.app'
 ];
+// Caps Clerk verify (including any residual remote JWKS retry) so a hung
+// api.clerk.com path cannot burn ~3s. Local PEM verify is milliseconds;
+// 1500ms is above one healthy JWKS RTT and below Clerk's 5-attempt retry.
+var AUTH_TIMEOUT_MS = 1500;
 
 var PRIMARY_SYSTEM =
   'You extract structured enrollment-receipt data for an insurance sales tracker. ' +
@@ -35,7 +39,8 @@ var FALLBACK_SYSTEM =
 var testHooks = {
   authenticate: null,
   groqFetch: null,
-  log: null
+  log: null,
+  authTimeoutMs: null
 };
 
 function jsonNoCache(res) {
@@ -59,6 +64,61 @@ function clerkSecretOk(secret) {
     secret.indexOf('sk_') === 0 &&
     secret.length >= 20
   );
+}
+
+function normalizePem(raw) {
+  return String(raw || '')
+    .replace(/\r\n/g, '\n')
+    .replace(/\\n/g, '\n');
+}
+
+function jwtKeyOk(raw) {
+  var key = normalizePem(raw);
+  if (key.length < 80) return false;
+  var hasBegin =
+    key.indexOf('-----BEGIN PUBLIC KEY-----') !== -1 ||
+    key.indexOf('-----BEGIN RSA PUBLIC KEY-----') !== -1;
+  var hasEnd =
+    key.indexOf('-----END PUBLIC KEY-----') !== -1 ||
+    key.indexOf('-----END RSA PUBLIC KEY-----') !== -1;
+  return hasBegin && hasEnd;
+}
+
+function getAuthTimeoutMs() {
+  if (
+    typeof testHooks.authTimeoutMs === 'number' &&
+    testHooks.authTimeoutMs > 0
+  ) {
+    return testHooks.authTimeoutMs;
+  }
+  return AUTH_TIMEOUT_MS;
+}
+
+function withTimeout(promise, ms, reason) {
+  return new Promise(function (resolve, reject) {
+    var settled = false;
+    var timer = setTimeout(function () {
+      if (settled) return;
+      settled = true;
+      var err = new Error(reason || 'authenticate_timeout');
+      err.reason = 'authenticate_timeout';
+      reject(err);
+    }, ms);
+    Promise.resolve(promise).then(
+      function (value) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve(value);
+      },
+      function (err) {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        reject(err);
+      }
+    );
+  });
 }
 
 function headerValue(req, name) {
@@ -161,6 +221,8 @@ function emitExtractDiag(row) {
     authStatus: row.authStatus == null ? null : String(row.authStatus),
     authReason: row.authReason == null ? null : String(row.authReason),
     secretKind: row.secretKind || 'other',
+    jwtKeyConfigured: !!row.jwtKeyConfigured,
+    networklessUsed: !!row.networklessUsed,
     azp: row.azp == null ? null : String(row.azp),
     iss: row.iss == null ? null : String(row.iss),
     outcomeStatus: row.outcomeStatus,
@@ -296,14 +358,17 @@ function sanitizeFallback(obj) {
 
 async function defaultAuthenticate(req) {
   var secret = process.env.CLERK_SECRET_KEY || '';
+  var jwtKey = normalizePem(process.env.CLERK_JWT_KEY || '');
   var clerk = createClerkClient({
     secretKey: secret,
-    publishableKey: CLERK_PUBLISHABLE_KEY
+    publishableKey: CLERK_PUBLISHABLE_KEY,
+    jwtKey: jwtKey
   });
   return clerk.authenticateRequest(nodeToWebRequest(req), {
     authorizedParties: AUTHORIZED_PARTIES,
     secretKey: secret,
-    publishableKey: CLERK_PUBLISHABLE_KEY
+    publishableKey: CLERK_PUBLISHABLE_KEY,
+    jwtKey: jwtKey
   });
 }
 
@@ -323,6 +388,8 @@ async function handler(req, res) {
 
   var started = Date.now();
   var secret = process.env.CLERK_SECRET_KEY || '';
+  var jwtPem = normalizePem(process.env.CLERK_JWT_KEY || '');
+  var jwtConfigured = jwtKeyOk(jwtPem);
   var tokenForClaims = readSessionToken(req);
   var claims = decodeJwtAzpIss(tokenForClaims);
   var diag = {
@@ -332,6 +399,8 @@ async function handler(req, res) {
     authStatus: null,
     authReason: null,
     secretKind: secretKind(secret),
+    jwtKeyConfigured: jwtConfigured,
+    networklessUsed: false,
     azp: claims.azp,
     iss: claims.iss
   };
@@ -344,6 +413,8 @@ async function handler(req, res) {
       authStatus: diag.authStatus,
       authReason: diag.authReason,
       secretKind: diag.secretKind,
+      jwtKeyConfigured: diag.jwtKeyConfigured,
+      networklessUsed: diag.networklessUsed,
       azp: diag.azp,
       iss: diag.iss,
       outcomeStatus: status,
@@ -356,13 +427,22 @@ async function handler(req, res) {
     return finish(503, { error: 'Extractor is not configured' });
   }
 
+  if (!jwtConfigured) {
+    return finish(503, { error: 'Extractor is not configured' });
+  }
+
   if (!tokenForClaims) {
     return finish(401, { error: 'Unauthorized' });
   }
 
   var signedIn = false;
   try {
-    var state = await getAuthenticate()(req);
+    diag.networklessUsed = true;
+    var state = await withTimeout(
+      getAuthenticate()(req),
+      getAuthTimeoutMs(),
+      'authenticate_timeout'
+    );
     if (state) {
       if (state.status != null) diag.authStatus = state.status;
       if (state.reason != null) diag.authReason = state.reason;
@@ -373,6 +453,9 @@ async function handler(req, res) {
   } catch (authErr) {
     diag.authStatus = 'error';
     diag.authReason = authErrorReason(authErr);
+    if (diag.authReason === 'authenticate_timeout') {
+      return finish(503, { error: 'Extractor is not configured' });
+    }
   }
   if (!signedIn) {
     return finish(401, { error: 'Unauthorized' });
@@ -455,6 +538,8 @@ async function handler(req, res) {
 
 handler._testHooks = testHooks;
 handler._clerkSecretOk = clerkSecretOk;
+handler._jwtKeyOk = jwtKeyOk;
 handler._readSessionToken = readSessionToken;
 handler._AUTHORIZED_PARTIES = AUTHORIZED_PARTIES;
+handler._AUTH_TIMEOUT_MS = AUTH_TIMEOUT_MS;
 module.exports = handler;
