@@ -2192,10 +2192,143 @@ function _stEscape(s) {
   });
 }
 
-// ── RECEIPT NORMALIZE ────────────────────────────────────────
+// ── RECEIPT NORMALIZE + SECURE EXTRACT (PRIMARY) ─────────────
 function _stNormalizeReceiptRaw(text) {
   if (!text) return '';
   return String(text).replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+}
+
+function _stClerkSessionToken() {
+  try {
+    if (typeof window !== 'undefined' && window.__CHA_CLERK_TOKEN) {
+      return String(window.__CHA_CLERK_TOKEN);
+    }
+  } catch (_a) {}
+  try {
+    if (window.Clerk && Clerk.session) {
+      var lat = Clerk.session.lastActiveToken;
+      if (lat) {
+        if (typeof lat.getRawString === 'function') {
+          var rawTok = lat.getRawString();
+          if (rawTok) return String(rawTok);
+        }
+        if (lat.jwt) return String(lat.jwt);
+      }
+    }
+  } catch (_b) {}
+  return '';
+}
+
+// Same-origin POST. Cookies go automatically. Bearer is a backup.
+// Non-200 / missing endpoint / 401 / 503 -> null (silent local fallback).
+function _stReceiptExtractPost(raw, stage) {
+  if (!raw || typeof XMLHttpRequest === 'undefined') return null;
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/api/receipt-extract', false);
+    xhr.withCredentials = true;
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    var tok = _stClerkSessionToken();
+    if (tok) {
+      xhr.setRequestHeader('Authorization', 'Bearer ' + tok);
+    }
+    xhr.send(
+      JSON.stringify({
+        receipt: String(raw),
+        stage: stage === 'fallback' ? 'fallback' : 'primary'
+      })
+    );
+    if (xhr.status !== 200) return null;
+    var body = JSON.parse(xhr.responseText);
+    if (!body || typeof body !== 'object') return null;
+    return body;
+  } catch (_e) {
+    return null;
+  }
+}
+
+// Maps the primary extractor JSON into parser products. Returns
+// { products, customer, memberId, enrollmentFee, saleDate, agent }
+// or null on failure / empty.
+function _stSecureReceiptExtractPrimary(raw) {
+  var gj = _stReceiptExtractPost(raw, 'primary');
+  if (!gj) return null;
+  var products = [];
+  var planName = gj.planName ? String(gj.planName) : '';
+  var planPremium = parseFloat(gj.planPremium);
+  if (planName && !isNaN(planPremium) && planPremium > 0) {
+    var canon = _stMatchPlanName(planName);
+    products.push({
+      name: canon || planName.substring(0, 120),
+      price: planPremium,
+      policy: ''
+    });
+  }
+  var addonList = gj.addons;
+  if (addonList && addonList.length) {
+    for (var ai = 0; ai < addonList.length; ai++) {
+      var ad = addonList[ai] || {};
+      var an = ad.name ? String(ad.name) : '';
+      var ap = parseFloat(ad.monthlyPrice);
+      if (!an || isNaN(ap) || ap <= 0) continue;
+      var canonA = _stMatchPlanName(an);
+      products.push({
+        name: canonA || an.substring(0, 120),
+        price: ap,
+        policy: ''
+      });
+    }
+  }
+  // Literal-price override: this receipt layout ("Product $X.XX" lines)
+  // already prints the true monthly amount as plain text. The extractor
+  // is asked for a MONTHLY premium but can misread a printed dollar
+  // figure as an annual one and divide it down. When this layout's
+  // signature is present and the count of literal prices matches the
+  // count of products returned, trust the literal printed amounts (in
+  // document order) over the model guess.
+  var litProductRe = /\bproduct\s+\$\s*([0-9][0-9,]*(?:\.[0-9]{1,2})?)/i;
+  var litEnrollmentRe = /enrollment|one[-\s]?time|sign[-\s]?up\s+fee/i;
+  var litTotalRe = /^\s*total\b/i;
+  var litLines = raw.split(/\r?\n/);
+  var litPrices = [];
+  for (var lli = 0; lli < litLines.length; lli++) {
+    var llLine = litLines[lli];
+    if (litEnrollmentRe.test(llLine)) continue;
+    if (litTotalRe.test(llLine)) continue;
+    var llM = llLine.match(litProductRe);
+    if (!llM) continue;
+    var llPrice = parseFloat(llM[1].replace(/,/g, ''));
+    if (isNaN(llPrice) || llPrice <= 0) continue;
+    litPrices.push(llPrice);
+  }
+  if (litPrices.length === products.length) {
+    for (var lpi = 0; lpi < products.length; lpi++) {
+      products[lpi].price = litPrices[lpi];
+    }
+  }
+  if (!products.length) return null;
+  var enr = parseFloat(gj.enrollmentFee);
+  if (isNaN(enr) || enr < 0) enr = 0;
+  var saleDate = null;
+  if (gj.saleDate) {
+    var dm = String(gj.saleDate).match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (dm) {
+      var y = parseInt(dm[1], 10);
+      var mo = parseInt(dm[2], 10);
+      var d = parseInt(dm[3], 10);
+      if (!isNaN(y) && !isNaN(mo) && !isNaN(d)) {
+        saleDate = new Date(y, mo - 1, d, 9, 0, 0, 0);
+      }
+    }
+  }
+  return {
+    products: products,
+    customer: gj.customer ? String(gj.customer).substring(0, 80) : '',
+    memberId: gj.memberId ? String(gj.memberId).substring(0, 40) : '',
+    enrollmentFee: enr,
+    saleDate: saleDate,
+    agent: gj.agent ? String(gj.agent).substring(0, 80) : ''
+  };
 }
 
 function _stApplySummaryTotalFromRaw(raw, out) {
@@ -2414,7 +2547,7 @@ function _stInjectCombinedPolicyPremiums(lines, out, enrollmentRe) {
 // - Policy effective/active date may be present in receipt text or
 //   product metadata, but is NOT persisted as a separate top-level
 //   field on saved sales rows today.
-function _stParseReceipt(text, _useGroq) {
+function _stParseReceipt(text, useGroq) {
   var out = {
     products: [],
     receiptTotal: 0,
@@ -2426,6 +2559,43 @@ function _stParseReceipt(text, _useGroq) {
   };
   if (!text) return out;
   var raw = _stNormalizeReceiptRaw(text);
+
+  // Extractor is only used on explicit add actions - not on every
+  // keystroke in the receipt textarea (would sync-block the UI).
+  // Some receipts print the literal recurring price on a dedicated
+  // "Product  $X.XX" line (Member ID / GHDP style) instead of a
+  // "... per Month" marker. The local line-by-line parser further
+  // down in this function reads this format correctly regardless
+  // of product order or count, so skip the extractor call entirely
+  // when this signature is present and let local parsing run.
+  var _literalProductLineRe = /\bproduct\s+\$\s*[0-9][0-9,]*(?:\.[0-9]{1,2})?/i;
+  var _hasLiteralProductFormat = _literalProductLineRe.test(raw);
+  if (useGroq === true && !_hasLiteralProductFormat) {
+    var groqPrim = _stSecureReceiptExtractPrimary(raw);
+    if (groqPrim) {
+      out.products = groqPrim.products;
+      out.customer = groqPrim.customer;
+      out.memberId = groqPrim.memberId;
+      out.enrollmentFee = groqPrim.enrollmentFee;
+      if (groqPrim.agent) out.agent = groqPrim.agent;
+      if (groqPrim.saleDate) out.saleDate = groqPrim.saleDate;
+      var confirmTsGroq = _stParseConfirmationTimestampInRaw(raw);
+      if (confirmTsGroq) out.saleDate = confirmTsGroq;
+      // Primary path used to return here BEFORE any local line
+      // parsing - so Policy+Enrollment+Product-per-Month lines were
+      // never scanned and planPremium could wrongly equal $125.
+      var _spGroq = _stReceiptLinesSplit(raw);
+      raw = _spGroq.raw;
+      _stInjectCombinedPolicyPremiums(
+        _spGroq.lines,
+        out,
+        /enrollment|one[-\s]?time|sign[-\s]?up\s+fee/i
+      );
+      _stApplySummaryTotalFromRaw(raw, out);
+      _stReorderDealProducts(out);
+      return out;
+    }
+  }
 
   var _sp = _stReceiptLinesSplit(raw);
   raw = _sp.raw;
@@ -2949,6 +3119,58 @@ function _stParseReceipt(text, _useGroq) {
 
   // ── DEAL DETECTION & REORDER ──────────────────────────────
   _stReorderDealProducts(out);
+
+  // ── SECURE EXTRACT FALLBACK ───────────────────────────────
+  // Last-resort parser for receipt formats we've never seen.
+  // Only fires when every other pass above failed to extract
+  // a single product. Uses a synchronous XMLHttpRequest so the
+  // sync return contract of _stParseReceipt is preserved. The
+  // whole block is wrapped in try/catch - any failure at all
+  // leaves out.products empty and the caller renders its normal
+  // manual-entry fallback. 401/503/unavailable are silent.
+  if (
+    useGroq === true &&
+    out.products.length === 0 &&
+    typeof XMLHttpRequest !== 'undefined'
+  ) {
+    try {
+      var grqJson = _stReceiptExtractPost(raw, 'fallback');
+      if (grqJson && grqJson.products && grqJson.products.length > 0) {
+        if (!out.customer && grqJson.customer) {
+          out.customer = String(grqJson.customer).substring(0, 80);
+        }
+        if (!out.memberId && grqJson.memberId) {
+          out.memberId = String(grqJson.memberId).substring(0, 40);
+        }
+        if (!out.saleDate && grqJson.saleDate) {
+          var grqDt = String(grqJson.saleDate);
+          var grqDm = grqDt.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+          if (grqDm) {
+            var grqY = parseInt(grqDm[1], 10);
+            var grqMo = parseInt(grqDm[2], 10);
+            var grqDd = parseInt(grqDm[3], 10);
+            if (!isNaN(grqY) && !isNaN(grqMo) && !isNaN(grqDd)) {
+              out.saleDate = new Date(grqY, grqMo - 1, grqDd, 9, 0, 0, 0);
+            }
+          }
+        }
+        for (var grqPi = 0; grqPi < grqJson.products.length; grqPi++) {
+          var grqP = grqJson.products[grqPi] || {};
+          var grqName = grqP.name ? String(grqP.name).substring(0, 120) : '';
+          var grqPrice = parseFloat(grqP.price);
+          if (!grqName || isNaN(grqPrice) || grqPrice <= 0) continue;
+          var grqMatched = _stMatchPlanName(grqName);
+          out.products.push({
+            name: grqMatched || grqName,
+            price: grqPrice,
+            policy: ''
+          });
+        }
+      }
+    } catch (grqErr) {
+      // Leave out.products empty so caller shows the normal fallback.
+    }
+  }
 
   return out;
 }
@@ -4302,7 +4524,7 @@ function _stUpdateReceiptPreview() {
   if (!chunks.length) chunks = [txt];
   var parts = [];
   parts.push(
-    '<div class="st-preview-hint">Preview uses local parsing. <strong>Add</strong> uses the same local parser, then manual entry if nothing is detected.</div>'
+    '<div class="st-preview-hint">Preview uses fast parsing. <strong>Add</strong> runs Auto-detect extraction when available.</div>'
   );
   parts.push('<div class="st-preview-bubbles">');
   var anyContent = false;
@@ -4347,7 +4569,7 @@ function _stUpdateReceiptPreview() {
   parts.push('</div>');
   if (!anyContent) {
     wrap.innerHTML =
-      '<div class="st-preview-empty">No products detected yet — paste more of the receipt or enter the sale manually.</div>';
+      '<div class="st-preview-empty">No products detected yet - paste more of the receipt or use Add.</div>';
     return;
   }
   wrap.innerHTML = parts.join('');
@@ -5163,7 +5385,7 @@ function _stBuildInput() {
   html +=
     '<textarea id="st-receipt-input" class="st-textarea" rows="4" ' +
     'oninput="_stReceiptInputChanged()" ' +
-    'placeholder="Paste the full enrollment receipt here. Plan premium, enrollment fee, and add-ons are parsed locally when you tap Add."></textarea>';
+    'placeholder="Paste the full enrollment receipt here. Auto-detect extracts plan premium, enrollment fee, and add-ons when you tap Add."></textarea>';
   html +=
     '<div id="st-receipt-preview" class="st-receipt-preview" aria-live="polite"></div>';
   html += '<div id="st-flash" class="st-flash" style="opacity:0;"></div>';

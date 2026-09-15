@@ -35,7 +35,7 @@ export default [
     }
   },
   {
-    files: ['scripts/**/*.js'],
+    files: ['scripts/**/*.js', 'api/**/*.js'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'commonjs',
