@@ -144,6 +144,15 @@ Live URL: https://cha-sales-tool.vercel.app/
 - NEVER change answer logic in js/chat.js
 - NEVER change POLICY_DOCS data values in js/plan-data.js
 
+## Plan profile benefit verification
+
+Benefit grids are read from page images and transcribed by hand, then corroborated by string presence against the authoritative PDF, and written at VERIFIED_SINGLE_SOURCE. Plain text extraction (G-016) and pdf.js coordinate clustering (G-188) are both disallowed for benefit grids.
+
+- A dash in a printed grid is not a zero and not a value. Write no fact. Sole exception: a page that defines its own dash notation in-page (Recuro comparison table).
+- Never remap column order inside a read. Report printed left-to-right order and validate both end columns before trusting any remap.
+- Structural checks (line counts, hashes, changed-file scope, frozen-leaf comparison) do not catch wrong values. Every changed value is manually read before commit.
+- The unit of verification is the leaf, not the summary of benefits. Each fact carries source, page, section, governance and confidence and lands on one schema path.
+
 ## If Site Goes Blank After a Commit
 
 Run immediately: npm run revert
