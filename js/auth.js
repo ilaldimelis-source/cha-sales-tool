@@ -63,6 +63,7 @@
             Clerk.addListener(function () {
               if (Clerk.user) {
                 renderUserInfo(Clerk.user);
+                refreshChaClerkToken();
               }
             });
           }
@@ -70,6 +71,7 @@
           /* older Clerk builds may omit addListener */
         }
         renderUserInfo(Clerk.user);
+        refreshChaClerkToken();
         hideOverlay();
         startInactivityTimer();
       })
@@ -108,6 +110,9 @@
     if (typeof chaClearSensitive === 'function') {
       chaClearSensitive();
     }
+    try {
+      window.__CHA_CLERK_TOKEN = '';
+    } catch (_t) {}
     if (Clerk && typeof Clerk.signOut === 'function') {
       Clerk.signOut()
         .then(function () {
@@ -121,6 +126,29 @@
     }
   }
   window.chaLogout = doLogout;
+
+  function refreshChaClerkToken() {
+    try {
+      if (
+        !window.Clerk ||
+        !Clerk.session ||
+        typeof Clerk.session.getToken !== 'function'
+      ) {
+        window.__CHA_CLERK_TOKEN = '';
+        return;
+      }
+      Clerk.session
+        .getToken()
+        .then(function (t) {
+          window.__CHA_CLERK_TOKEN = t || '';
+        })
+        .catch(function () {
+          window.__CHA_CLERK_TOKEN = '';
+        });
+    } catch (_e) {
+      window.__CHA_CLERK_TOKEN = '';
+    }
+  }
 
   // ── RENDER USER CARD IN SIDEBAR ──────────────────────────────────────────────
   function renderUserInfo(user) {
