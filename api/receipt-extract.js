@@ -9,14 +9,13 @@ var createClerkClient = require('@clerk/backend').createClerkClient;
 
 var MAX_RECEIPT_CHARS = 20000;
 var GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
-// llama-3.1-8b-instant was shut down for developer-tier Groq on 2026-08-16.
-// openai/gpt-oss-20b is Groq's documented replacement. Fixed server-side.
+// GROQ_MODEL replaced retired llama-3.1-8b-instant (developer-tier shutdown 2026-08-16).
 var GROQ_MODEL = 'openai/gpt-oss-20b';
 var CLERK_PUBLISHABLE_KEY =
   'pk_test_d2hvbGUtdmlwZXItODkuY2xlcmsuYWNjb3VudHMuZGV2JA';
 var AUTHORIZED_PARTIES = [
-  'https://cha-sales-tool.vercel.app',
-  'https://cha-sales-tool-xi.vercel.app'
+  'https://cha-sales-tool-main.vercel.app',
+  'https://cha-sales-tool-dhca.vercel.app'
 ];
 
 var PRIMARY_SYSTEM =
