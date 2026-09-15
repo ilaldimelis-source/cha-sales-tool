@@ -259,31 +259,53 @@ step('Data: plan-registry loads (if present)', () => {
 //            Uses pattern match so sw.js can be renamed.
 // ---------------------------------------------------------------
 step('Service worker: CACHE_NAME present and reasonable', () => {
-  // Look for any top-level sw-like file
+  // Prefer sw2.js (this repo); also accept sw.js and other sw-like names.
   let swPath = null;
-  const rootEntries = fs
-    .readdirSync(ROOT)
-    .filter((f) => /(^|[-_])(sw|service-worker|serviceworker)\.js$/i.test(f));
-  if (rootEntries.length > 0) {
-    swPath = path.join(ROOT, rootEntries[0]);
+  const preferred = ['sw2.js', 'sw.js'];
+  for (let i = 0; i < preferred.length; i++) {
+    const candidate = path.join(ROOT, preferred[i]);
+    if (fs.existsSync(candidate)) {
+      swPath = candidate;
+      break;
+    }
   }
   if (!swPath) {
-    warnings.push('No service worker file found — skipping SW check.');
+    const rootEntries = fs
+      .readdirSync(ROOT)
+      .filter((f) =>
+        /(^|[-_])(sw\d*|sw|service-worker|serviceworker)\.js$/i.test(f)
+      );
+    if (rootEntries.length > 0) {
+      swPath = path.join(ROOT, rootEntries[0]);
+    }
+  }
+  if (!swPath) {
+    warnings.push('No service worker file found - skipping SW check.');
     return;
   }
   const src = fs.readFileSync(swPath, 'utf8');
   const match = src.match(/CACHE_NAME\s*=\s*['"`]([^'"`]+)['"`]/);
   if (!match) {
     warnings.push(
-      `${path.basename(swPath)} has no CACHE_NAME — skipping version check.`
+      path.basename(swPath) + ' has no CACHE_NAME - skipping version check.'
     );
     return;
   }
   if (match[1].length < 3) {
     throw new Error(
-      `${path.basename(swPath)} CACHE_NAME is suspiciously short: "${match[1]}"`
+      path.basename(swPath) +
+        ' CACHE_NAME is suspiciously short: "' +
+        match[1] +
+        '"'
     );
   }
+  passed.push(
+    'Service worker file ' +
+      path.basename(swPath) +
+      ' CACHE_NAME="' +
+      match[1] +
+      '"'
+  );
 });
 
 // ---------------------------------------------------------------
@@ -334,6 +356,68 @@ step('Palette: no blocked warm hex values', () => {
     );
     throw new Error(lines.join('\n'));
   }
+});
+
+// ---------------------------------------------------------------
+// STEP 7 - plan-index invariant: has_profile true => profile file.
+//            Uncertain stubs (has_profile false) are reported only.
+// ---------------------------------------------------------------
+step('Plan index: has_profile true rows have profile files', () => {
+  const indexPath = path.join(ROOT, 'data', 'plan-index.json');
+  const plansDir = path.join(ROOT, 'data', 'plans');
+  if (!fs.existsSync(indexPath)) {
+    warnings.push(
+      'data/plan-index.json not found - skipping plan-index check.'
+    );
+    return;
+  }
+  if (!fs.existsSync(plansDir)) {
+    throw new Error('data/plans/ directory is missing.');
+  }
+  let index;
+  try {
+    index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));
+  } catch (e) {
+    throw new Error('data/plan-index.json could not be parsed: ' + e.message);
+  }
+  const rows = index && Array.isArray(index.plans) ? index.plans : null;
+  if (!rows) {
+    throw new Error('data/plan-index.json is missing a plans array.');
+  }
+  const files = new Set(
+    fs
+      .readdirSync(plansDir)
+      .filter(function (f) {
+        return f.endsWith('.json');
+      })
+      .map(function (f) {
+        return f.slice(0, -5);
+      })
+  );
+  const missing = [];
+  const stubs = [];
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    if (!row || typeof row.plan_id !== 'string' || !row.plan_id) continue;
+    if (row.has_profile === true) {
+      if (!files.has(row.plan_id)) missing.push(row.plan_id);
+    } else if (row.has_profile === false) {
+      stubs.push(row.plan_id);
+    }
+  }
+  if (missing.length > 0) {
+    throw new Error(
+      'has_profile: true index rows missing data/plans/*.json files (' +
+        missing.length +
+        '): ' +
+        missing.join(', ')
+    );
+  }
+  warnings.push(
+    'Plan index uncertain stubs (has_profile: false, not failing): ' +
+      stubs.length +
+      (stubs.length ? ' - ' + stubs.join(', ') : '')
+  );
 });
 
 // ---------------------------------------------------------------
