@@ -1,0 +1,27 @@
+{
+  "planId": "trueh2",
+  "planName": "TrueHealth 2",
+  "status": "missing_pdf",
+  "documents": [
+    {
+      "fileName": "MEC_TrueHealth2_SPD_Jan25.pdf",
+      "sourceType": "spd",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "TrueHealth 2 MEC Minimum Essential Coverage. Physician services First Health Network. Primary care $25 copay $150 max per visit 4 visits per year. Specialist urgent care $50 copay $300 max per visit 2 visits per year. Inpatient hospitalization $1,000 per day $10,000 per year maximum 12 12 pre-existing exclusion. Telemedicine $0 consult fee unlimited. Prescriptions generic $0 copay acute preventive formulary. Preferred generic $5 copay 200 maintenance drugs. Specialty drugs not covered prescription assistance program income based. Mail order optional. Hospital bill reducer advocacy. 30 day waiting period sickness benefits. Outpatient physician services in-network only. Inpatient hospital indemnity not network restricted. MEC plan covers preventive limited physician services not comprehensive major medical. Group health plan ACA minimum essential coverage preventive wellness.",
+          "normalizedText": "truehealth 2 mec minimum essential coverage physician services first health network primary care 25 copay 150 max per visit 4 visits per year specialist urgent care 50 copay 300 max per visit 2 visits per year inpatient hospitalization 1 000 per day 10 000 per year maximum 12 12 pre existing exclusion telemedicine 0 consult fee unlimited prescriptions generic 0 copay acute preventive formulary preferred generic 5 copay 200 maintenance drugs specialty drugs not covered prescription assistance program income based mail order optional hospital bill reducer advocacy 30 day waiting period sickness benefits outpatient physician services in network only inpatient hospital indemnity not network restricted mec plan covers preventive limited physician services not comprehensive major medical group health plan aca minimum essential coverage preventive wellness"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "trueh2-c1",
+      "text": "TrueHealth 2 MEC Minimum Essential Coverage. Physician services First Health Network. Primary care $25 copay $150 max per visit 4 visits per year. Specialist urgent care $50 copay $300 max per visit 2 visits per year. Inpatient hospitalization $1,000 per day $10,000 per year maximum 12 12 pre-existing exclusion. Telemedicine $0 consult fee unlimited. Prescriptions generic $0 copay acute preventive formulary. Preferred generic $5 copay 200 maintenance drugs. Specialty drugs not covered prescription assistance program income based. Mail order optional. Hospital bill reducer advocacy. 30 day waiting period sickness benefits. Outpatient physician services in-network only. Inpatient hospital indemnity not network restricted. MEC plan covers preventive limited physician services not comprehensive major medical. Group health plan ACA minimum essential coverage preventive wellness.",
+      "tokenEstimate": 222,
+      "pageRange": "1-1",
+      "normalizedText": "truehealth 2 mec minimum essential coverage physician services first health network primary care 25 copay 150 max per visit 4 visits per year specialist urgent care 50 copay 300 max per visit 2 visits per year inpatient hospitalization 1 000 per day 10 000 per year maximum 12 12 pre existing exclusion telemedicine 0 consult fee unlimited prescriptions generic 0 copay acute preventive formulary preferred generic 5 copay 200 maintenance drugs specialty drugs not covered prescription assistance program income based mail order optional hospital bill reducer advocacy 30 day waiting period sickness benefits outpatient physician services in network only inpatient hospital indemnity not network restricted mec plan covers preventive limited physician services not comprehensive major medical group health plan aca minimum essential coverage preventive wellness"
+    }
+  ]
+}
