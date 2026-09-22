@@ -254,58 +254,26 @@ step('Data: plan-registry loads (if present)', () => {
 });
 
 // ---------------------------------------------------------------
-// STEP 4 — service worker cache safety: CACHE_NAME must exist,
-//            look reasonable, and not be obviously corrupted.
-//            Uses pattern match so sw.js can be renamed.
+// STEP 4 — service worker cache safety: CACHE_NAME must exist
+//            on sw2.js. Missing sw2.js or missing CACHE_NAME fails.
+//            Do not fall back to any other filename.
 // ---------------------------------------------------------------
 step('Service worker: CACHE_NAME present and reasonable', () => {
-  // Prefer sw2.js (this repo); also accept sw.js and other sw-like names.
-  let swPath = null;
-  const preferred = ['sw2.js', 'sw.js'];
-  for (let i = 0; i < preferred.length; i++) {
-    const candidate = path.join(ROOT, preferred[i]);
-    if (fs.existsSync(candidate)) {
-      swPath = candidate;
-      break;
-    }
-  }
-  if (!swPath) {
-    const rootEntries = fs
-      .readdirSync(ROOT)
-      .filter((f) =>
-        /(^|[-_])(sw\d*|sw|service-worker|serviceworker)\.js$/i.test(f)
-      );
-    if (rootEntries.length > 0) {
-      swPath = path.join(ROOT, rootEntries[0]);
-    }
-  }
-  if (!swPath) {
-    warnings.push('No service worker file found - skipping SW check.');
-    return;
+  const swPath = path.join(ROOT, 'sw2.js');
+  if (!fs.existsSync(swPath)) {
+    throw new Error(
+      'sw2.js is missing. The service worker check requires sw2.js at the repo root.'
+    );
   }
   const src = fs.readFileSync(swPath, 'utf8');
   const match = src.match(/CACHE_NAME\s*=\s*['"`]([^'"`]+)['"`]/);
   if (!match) {
-    warnings.push(
-      path.basename(swPath) + ' has no CACHE_NAME - skipping version check.'
-    );
-    return;
+    throw new Error('sw2.js has no CACHE_NAME.');
   }
   if (match[1].length < 3) {
-    throw new Error(
-      path.basename(swPath) +
-        ' CACHE_NAME is suspiciously short: "' +
-        match[1] +
-        '"'
-    );
+    throw new Error('sw2.js CACHE_NAME is suspiciously short: "' + match[1] + '"');
   }
-  passed.push(
-    'Service worker file ' +
-      path.basename(swPath) +
-      ' CACHE_NAME="' +
-      match[1] +
-      '"'
-  );
+  passed.push('Service worker file sw2.js CACHE_NAME="' + match[1] + '"');
 });
 
 // ---------------------------------------------------------------
