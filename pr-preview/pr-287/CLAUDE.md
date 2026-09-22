@@ -144,6 +144,17 @@ Live URL: https://cha-sales-tool.vercel.app/
 - NEVER change answer logic in js/chat.js
 - NEVER change POLICY_DOCS data values in js/plan-data.js
 
+## Plan index vs profile files
+
+`data/plan-index.json` is generated from the ledger registry and may contain
+STATUS_UNCERTAIN stubs with `has_profile: false` and no file in `data/plans/`.
+Only `has_profile: true` rows are expected to have a profile file.
+`data/plan-aliases.json` is built from `data/plans/` only, so stubs are
+unreachable from plan matching. The SPA does not read `plan-index.json` at
+runtime; a missing profile file falls through to NOT CONFIRMED.
+
+As of 2026-09-15: 159 index rows = 154 profile files + 5 uncertain stubs.
+
 ## Plan profile benefit verification
 
 The converter maps onto 113 keys. Source of truth: scripts/lib/base-schema.json (array length 113).
