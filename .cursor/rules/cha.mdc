@@ -95,6 +95,10 @@ runtime; a missing profile file falls through to NOT CONFIRMED.
 
 As of 2026-09-15: 159 index rows = 154 profile files + 5 uncertain stubs.
 
+## Plan profile base schema
+
+The converter maps onto 113 keys. Source of truth: `scripts/lib/base-schema.json` (array length 113). Do not document a different key count in rules or CLAUDE.md.
+
 ## Before reporting done
 
 - Zero JavaScript errors in the console.
