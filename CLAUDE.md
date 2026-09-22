@@ -186,7 +186,7 @@ Run immediately: npm run revert
 - Never push directly to main
 - If a conflict appears, rebase do not merge
 - One PR at a time per file — wait for merge before starting next change to same file
-- sw.js CACHE_NAME must be bumped by 1 on every commit — check current main version first before bumping
+- sw2.js CACHE_NAME must be bumped by 1 on every commit — check current main version first before bumping
 
 ## Before EVERY Commit — Mandatory Checklist
 
@@ -194,7 +194,7 @@ Run immediately: npm run revert
 2. Verify NO defer on script tags in index.html
 3. Verify app.js is second-to-last script in index.html
 4. Verify plan-registry.js is first script in index.html
-5. Bump sw.js cache version by 1
+5. Bump sw2.js cache version by 1
 6. Verify NO async/await in any JS file
 
 ## CI and lint quality bar
