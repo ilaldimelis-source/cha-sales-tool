@@ -41,8 +41,8 @@ later, the checks still work.
    - if a plan has `benefits`, each benefit's `items` must be an array
      (this is the exact bug that crashed the Benefits panel in PR #34)
 3. **Registry.** Any file matching `plan-registry*.js` loads without error.
-4. **Service worker.** Any top-level `sw.js` / `service-worker.js` has a
-   non-trivial `CACHE_NAME` value.
+4. **Service worker.** Repo-root `sw2.js` has a non-trivial `CACHE_NAME`
+   value. Missing `sw2.js` fails the check. There is no fallback filename.
 5. **API functions.** Every `.js` file in `api/` (Vercel serverless) parses.
 
 ## What verify does NOT do
@@ -85,7 +85,7 @@ Every check auto-discovers files by pattern. Safe against:
 
 - renaming `plan-data.js` → `policy-data.js`
 - splitting `plan-data.js` into `plan-data.js` + `plan-data-extra.js`
-- moving `sw.js` or renaming it to `service-worker.js`
+- renaming most data files (not `sw2.js`; that filename is required)
 - adding new serverless functions to `api/`
 - merging or reorganizing utility files
 
