@@ -1,0 +1,37 @@
+---
+globs: js/**/*.js
+alwaysApply: false
+---
+
+# ES5 in js/
+
+cha.mdc is authoritative here. This file adds detail it does not
+enumerate.
+
+Async work uses .then().catch() as cha.mdc specifies. async/await is
+forbidden.
+
+Also forbidden, beyond the list in cha.mdc: class, destructuring, default
+parameters, spread and rest, for...of, Object.assign,
+Array.prototype.includes, Array.prototype.find,
+String.prototype.startsWith, Object.entries, Object.values.
+
+Use instead: var, function expressions, string concatenation, indexOf, a
+plain for loop.
+
+These files ship to the browser with no transpile step. Modern syntax
+does not fail loudly here. It fails on one agent's older browser in the
+middle of a live call.
+
+## Defensive habits
+
+- Guard every DOM lookup. getElementById returns null on tabs where the
+  element is not rendered, and this app renders several.
+- Toggle an existing class rather than writing element.style directly
+  when a class for that state already exists.
+
+## Before adding a helper
+
+Search js/ for an existing one. This codebase already has utilities for
+most common operations, and several are frozen. Duplicating one is how
+the two copies drift apart.
