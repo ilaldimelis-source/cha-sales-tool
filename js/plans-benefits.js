@@ -619,7 +619,7 @@ const PLANS = [
       '3 primary / 3 specialist / 3 urgent care at $50 copay',
       'Coverage period max: $750,000',
       '$500 access fee per admission on emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics',
-      'Billing: Neo Insurance Solutions. Claims: InsuranceTPA.com'
+      'Billing: Neo Insurance Solutions. Claims: Administrative Concepts, Inc.'
     ],
     limitations: [
       'NOT MEC',
@@ -632,7 +632,7 @@ const PLANS = [
       '"Harbor STM Essential is short-term medical on the Cigna PPO network. It is not MEC and it is not ACA. Office visits are in network only."',
     objections: ['Not ACA. It is short-term medical.', 'Not MEC.'],
     compliance:
-      'REQUIRED DISCLOSURES — say every enrollment: (1) This is short-term medical, not MEC and not ACA. (2) Office visits have no out-of-network benefit. (3) Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period. (4) Deductible options are 2500 / 5000 / 7500 / 10000. Member coinsurance is 30%, 20% or 0%, with a $5,000 coinsurance out-of-pocket max. (5) Essential is 3 primary / 3 specialist / 3 urgent care at $50 copay, coverage period max $750,000, and a $500 access fee per admission on emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics. (6) Coverage ends at the end of the month the member turns 65. (7) Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing is Neo Insurance Solutions. Claims are InsuranceTPA.com. Association is AWA, American Workers Association.',
+      'REQUIRED DISCLOSURES — say every enrollment: (1) This is short-term medical, not MEC and not ACA. (2) Office visits have no out-of-network benefit. (3) Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period. (4) Deductible options are 2500 / 5000 / 7500 / 10000. Member coinsurance is 30%, 20% or 0%, with a $5,000 coinsurance out-of-pocket max. (5) Essential is 3 primary / 3 specialist / 3 urgent care at $50 copay, coverage period max $750,000, and a $500 access fee per admission on emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics. (6) Coverage ends at the end of the month the member turns 65. (7) Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing is Neo Insurance Solutions. Claims are Administrative Concepts, Inc. Association is AWA, American Workers Association.',
     fitYes: ['Can use Cigna PPO providers', 'Wants short-term medical'],
     fitNo: ['Needs MEC or ACA coverage', 'Needs out-of-network office visits']
   },
@@ -655,7 +655,7 @@ const PLANS = [
       '3 primary / 3 specialist / 3 urgent care at $40 copay',
       'Coverage period max: $1,000,000',
       'No access fee',
-      'Billing: Neo Insurance Solutions. Claims: InsuranceTPA.com'
+      'Billing: Neo Insurance Solutions. Claims: Administrative Concepts, Inc.'
     ],
     limitations: [
       'NOT MEC',
@@ -668,7 +668,7 @@ const PLANS = [
       '"Harbor STM Access is short-term medical on the Cigna PPO network. It is not MEC and it is not ACA. Office visits are in network only."',
     objections: ['Not ACA. It is short-term medical.', 'Not MEC.'],
     compliance:
-      'REQUIRED DISCLOSURES — say every enrollment: (1) This is short-term medical, not MEC and not ACA. (2) Office visits have no out-of-network benefit. (3) Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period. (4) Deductible options are 2500 / 5000 / 7500 / 10000. Member coinsurance is 30%, 20% or 0%, with a $5,000 coinsurance out-of-pocket max. (5) Access is 3 primary / 3 specialist / 3 urgent care at $40 copay, coverage period max $1,000,000, and no access fee. (6) Coverage ends at the end of the month the member turns 65. (7) Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing is Neo Insurance Solutions. Claims are InsuranceTPA.com. Association is AWA, American Workers Association.',
+      'REQUIRED DISCLOSURES — say every enrollment: (1) This is short-term medical, not MEC and not ACA. (2) Office visits have no out-of-network benefit. (3) Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period. (4) Deductible options are 2500 / 5000 / 7500 / 10000. Member coinsurance is 30%, 20% or 0%, with a $5,000 coinsurance out-of-pocket max. (5) Access is 3 primary / 3 specialist / 3 urgent care at $40 copay, coverage period max $1,000,000, and no access fee. (6) Coverage ends at the end of the month the member turns 65. (7) Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing is Neo Insurance Solutions. Claims are Administrative Concepts, Inc. Association is AWA, American Workers Association.',
     fitYes: ['Can use Cigna PPO providers', 'Wants short-term medical'],
     fitNo: ['Needs MEC or ACA coverage', 'Needs out-of-network office visits']
   },
@@ -691,7 +691,7 @@ const PLANS = [
       'Unlimited primary, specialist and urgent care at $40 copay',
       'Coverage period max: $1,500,000',
       'No access fee',
-      'Billing: Neo Insurance Solutions. Claims: InsuranceTPA.com'
+      'Billing: Neo Insurance Solutions. Claims: Administrative Concepts, Inc.'
     ],
     limitations: [
       'NOT MEC',
@@ -704,7 +704,7 @@ const PLANS = [
       '"Harbor STM Secure is short-term medical on the Cigna PPO network. It is not MEC and it is not ACA. Office visits are in network only."',
     objections: ['Not ACA. It is short-term medical.', 'Not MEC.'],
     compliance:
-      'REQUIRED DISCLOSURES — say every enrollment: (1) This is short-term medical, not MEC and not ACA. (2) Office visits have no out-of-network benefit. (3) Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period. (4) Deductible options are 2500 / 5000 / 7500 / 10000. Member coinsurance is 30%, 20% or 0%, with a $5,000 coinsurance out-of-pocket max. (5) Secure is unlimited primary, specialist and urgent care at $40 copay, coverage period max $1,500,000, and no access fee. (6) Coverage ends at the end of the month the member turns 65. (7) Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing is Neo Insurance Solutions. Claims are InsuranceTPA.com. Association is AWA, American Workers Association.',
+      'REQUIRED DISCLOSURES — say every enrollment: (1) This is short-term medical, not MEC and not ACA. (2) Office visits have no out-of-network benefit. (3) Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period. (4) Deductible options are 2500 / 5000 / 7500 / 10000. Member coinsurance is 30%, 20% or 0%, with a $5,000 coinsurance out-of-pocket max. (5) Secure is unlimited primary, specialist and urgent care at $40 copay, coverage period max $1,500,000, and no access fee. (6) Coverage ends at the end of the month the member turns 65. (7) Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing is Neo Insurance Solutions. Claims are Administrative Concepts, Inc. Association is AWA, American Workers Association.',
     fitYes: ['Can use Cigna PPO providers', 'Wants short-term medical'],
     fitNo: ['Needs MEC or ACA coverage', 'Needs out-of-network office visits']
   },

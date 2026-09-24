@@ -2367,7 +2367,7 @@ var planReferenceData = {
     association: 'AWA, American Workers Association',
     providerSearch:
       'hcpdirectory.cigna.com/web/public/consumer/directory/search',
-    claimsAdmin: 'InsuranceTPA.com',
+    claimsAdmin: 'Administrative Concepts, Inc.',
     type: 'STM'
   },
   'harbor-access': {
@@ -2378,7 +2378,7 @@ var planReferenceData = {
     association: 'AWA, American Workers Association',
     providerSearch:
       'hcpdirectory.cigna.com/web/public/consumer/directory/search',
-    claimsAdmin: 'InsuranceTPA.com',
+    claimsAdmin: 'Administrative Concepts, Inc.',
     type: 'STM'
   },
   'harbor-secure': {
@@ -2389,7 +2389,7 @@ var planReferenceData = {
     association: 'AWA, American Workers Association',
     providerSearch:
       'hcpdirectory.cigna.com/web/public/consumer/directory/search',
-    claimsAdmin: 'InsuranceTPA.com',
+    claimsAdmin: 'Administrative Concepts, Inc.',
     type: 'STM'
   },
   'goodlife-choice': {

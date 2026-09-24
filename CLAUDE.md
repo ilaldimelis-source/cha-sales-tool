@@ -149,9 +149,10 @@ Only `has_profile: true` rows are expected to have a profile file.
 unreachable from plan matching. The SPA does not read `plan-index.json` at
 runtime; a missing profile file falls through to NOT CONFIRMED.
 
-As of 2026-09-24: 156 index rows = 154 profile files + 2 uncertain stubs
+As of 2026-09-24: 158 index rows = 156 profile files + 2 uncertain stubs
 (harmony-care-100-plus, ngl-dental). The three MedValue stubs were removed
-with the unsold plans.
+with the unsold plans. Goodlife WB Choice and WB Select are the two
+profiles added with the member guide.
 
 ## Shared formulary files left unedited
 
@@ -172,12 +173,11 @@ any carrier brochure. Confirm with Neo and FirstEnroll
 before relying on it, and make it consistent across all
 scripts once confirmed.
 
-Harbor STM Essential, Access and Secure were added without
-enrollUrl, waiting period, coverage term, brochure PDF map
-or PDF extract. The brochure HarborSTM_Brochure_08202026.pdf
-is not in the repo. Harbor waiting periods are unconfirmed
-pending the Neo certificate of coverage - do not copy a
-30-day wait or a 12/12 clause from another plan.
+Harbor STM Essential, Access and Secure still have an empty
+enrollUrl and no coverage term. HarborSTM_Brochure_0827.pdf
+is the brochure on file. It states no waiting period and no
+12-month figure. Do not copy a 30-day wait or a 12/12 clause
+from another plan.
 
 Harbor STM scripts state a 12-and-12 pre-existing clause and
 a 30-day waiting period for hospital, sickness and scheduled
@@ -188,12 +188,28 @@ period. The plan cards, compliance notes and knowledge base
 correctly omit both figures, so the spoken script and the
 reference data disagree. Kept verbatim by decision, Sept 2026. Resolve when the Neo certificate of coverage arrives.
 
-The WB Choice & Select member guide is not in the repo, so
-chat reports NOT CONFIRMED for both Goodlife plans while
-the Plans tab states the benefits as fact. Add
-`WB_Choice___Select_-_Member_Guide.pdf` and build profiles
-under data/plans/ to close this. The same applies to Harbor
-STM.
+`WB_Choice___Select_-_Member_Guide.pdf` is in the repo and
+the Goodlife chat profiles are built from it. The guide does
+not print contribution amounts, so the price lines on the
+plan cards stay the enrollment-storefront figures and the
+profile price fields stay empty.
+
+Two revisions of the HarborSTM brochure exist and differ on
+one line. The 0820 file says claims are handled by
+InsuranceTPA.com; the 0827 file says Administrative
+Concepts, Inc. Neither prints an effective or revision date,
+so the filename is the only ordering evidence. The 0827
+version is in the repo and the app uses Administrative
+Concepts, Inc. Confirm with Neo at 866-870-7730 which is
+current, and correct if needed.
+
+Do not run scripts/build-plan-pdf-knowledge.js as a full
+regeneration. It rebuilds knowledge_base/extracted/plans/
+from each plan card's rawText, and grouped cards no longer
+carry per-tier text, so a full run wipes the benefit
+figures for GoodHealth 1-5, TDK 1-5 and Smart Choice 2500
+and collapses tier ids. Add or update extracts one plan at
+a time.
 
 The Goodlife script conflicts with the member guide in five
 places: it sells prescription savings and a discount card
