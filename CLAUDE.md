@@ -186,8 +186,7 @@ brochure, which states only that pre-existing conditions are
 not covered, with limitations reapplied to each new coverage
 period. The plan cards, compliance notes and knowledge base
 correctly omit both figures, so the spoken script and the
-reference data disagree. Kept verbatim by decision, Sept
-2026. Resolve when the Neo certificate of coverage arrives.
+reference data disagree. Kept verbatim by decision, Sept 2026. Resolve when the Neo certificate of coverage arrives.
 
 ## Plan profile benefit verification
 
