@@ -10863,7 +10863,7 @@ body {
   color: var(--cha-text-secondary);
 }
 
-@media (max-width: 720px) {
+@media (width <= 720px) {
   .ao-controls {
     flex-direction: column;
   }
