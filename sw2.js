@@ -4,29 +4,29 @@
 // When changing js/sales-tracker.js or css/sales-tracker.css, bump
 // CACHE_NAME by +1 AND the matching ?v= query strings in index.html
 // and URLS_TO_CACHE below (keep those two files in sync).
-var CACHE_NAME = 'cha-command-center-v172';
+var CACHE_NAME = 'cha-command-center-v173';
 var URLS_TO_CACHE = [
   './',
-  './index.html?v=1790272800000',
+  './index.html?v=1790272900000',
   './logo.png?v=1779700000000',
   './manifest.json?v=1779700000000',
   './css/tokens.css?v=1780600000000',
   './css/styles.css?v=1790260950067',
   './css/sales-tracker.css?v=1790260950067',
-  './js/plan-registry.js?v=1790272800000',
+  './js/plan-registry.js?v=1790272900000',
   './js/storage-utils.js?v=1789432300000',
   './js/utils.js?v=1789432300000',
   './js/recovery-data.js?v=1779700000000',
   './js/objections.js?v=1779700000000',
-  './js/plans-benefits.js?v=1790272800000',
+  './js/plans-benefits.js?v=1790272900000',
   './js/call-playbook.js?v=1790272800000',
   './js/live-assist.js?v=1790272600000',
   './js/ai-tools.js?v=1789432300000',
-  './js/training.js?v=1790272800000',
-  './js/compliance.js?v=1790272800000',
-  './js/plan-data.js?v=1790272800000',
+  './js/training.js?v=1790272900000',
+  './js/compliance.js?v=1790272900000',
+  './js/plan-data.js?v=1790272900000',
   './js/plan-data-extended.js?v=1779700000000',
-  './js/plan-data-pdf-raw.js?v=1790272400000',
+  './js/plan-data-pdf-raw.js?v=1790272900000',
   './js/policy-docs.js?v=1790272700000',
   './js/docusign-walkthrough.js?v=1780700000000',
   './js/myspace.js?v=1787901420000',

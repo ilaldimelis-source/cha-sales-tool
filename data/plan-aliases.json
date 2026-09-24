@@ -851,6 +851,30 @@
     ]
   },
   {
+    "plan_id": "goodlife-wb-choice",
+    "display_name": "Goodlife Partners WB Choice",
+    "family_tokens": [
+      "goodlife",
+      "partners",
+      "wb"
+    ],
+    "variant_tokens": [
+      "choice"
+    ]
+  },
+  {
+    "plan_id": "goodlife-wb-select",
+    "display_name": "Goodlife Partners WB Select",
+    "family_tokens": [
+      "goodlife",
+      "partners",
+      "wb"
+    ],
+    "variant_tokens": [
+      "select"
+    ]
+  },
+  {
     "plan_id": "harbor-stm-access",
     "display_name": "Harbor STM Access",
     "family_tokens": [

@@ -28,20 +28,17 @@
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "claims_administrator": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
+      "app": "EXACT_VARIANT",
+      "auth": 7,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
-        "harbor-stm-access",
-        "harbor-stm-essential",
-        "harbor-stm-secure"
+        "harbor-stm-essential"
       ],
-      "pg": null,
-      "sec": "INFORMATION",
-      "src": 133,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
-      "v": "InsuranceTPA.com — claims.",
+      "pg": 12,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Claims are handled by Administrative Concepts, Inc.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "claims_submission": {
@@ -60,9 +57,8 @@
       "pg": 11,
       "sec": "brochure",
       "src": 104,
-      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
-      "v": "(866) 870-7730; Monday-Thursday 9:00 AM to 6:00 PM EST, Friday 9:00 AM to 5:00 PM EST",
-      "vs": "CONFLICTED"
+      "v": "Member Services (866) 870-7730. Monday-Thursday 9:00 AM to 6:00 PM EST, Friday 9:00 AM to 5:00 PM EST.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "id_card_timing": {
       "searched": [],
@@ -75,9 +71,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "network_lookup": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 8,
+      "sec": "brochure",
+      "src": 104,
+      "v": "https://hcpdirectory.cigna.com/web/public/consumer/directory/search. Enter address, state, or ZIP, then choose Doctor by Type, Doctor by Name, or Health Facilities and Group Practices.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "payment_timing": {
       "searched": [],
@@ -171,9 +176,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "anesthesia": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics: $500 access fee per admission, then subject to the deductible and coinsurance.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "cancer": {
       "searched": [],
@@ -206,9 +220,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "er": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics: $500 access fee per admission, then subject to the deductible and coinsurance.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "home_health": {
       "searched": [],
@@ -236,9 +259,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "labs": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Diagnostic and lab services are subject to the deductible and coinsurance. The brochure does not publish separate allowances for x-ray, CT, MRI, ultrasound, or pathology.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "maternity": {
       "searched": [],
@@ -266,14 +298,32 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "pcp": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Primary care office visits, in-network only: 3 visits at a $50 copay. Out-of-network coverage is not available.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "preventive": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "One annual wellness visit. The deductible is waived and coinsurance applies. Mammography and colorectal screenings are no cost. Other screenings and routine child healthcare are subject to the deductible and coinsurance.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pt": {
       "searched": [],
@@ -286,19 +336,46 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "rx_brand": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Optional Outpatient Prescription Drug Rider. Covered brand-name drugs are subject to a $500 prescription drug deductible, then plan coinsurance. Limited to the approved drug list and participating pharmacies.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_generic": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Optional Outpatient Prescription Drug Rider, not part of the base plan. Eligible generic drugs through participating pharmacies are subject to a $25 copay. The rider has a $5,000 maximum benefit per covered person per coverage period. Prescriptions outside the participating pharmacy network are not covered.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_specialty": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Optional Outpatient Prescription Drug Rider. Covered specialty drugs are subject to a $500 prescription drug deductible, then plan coinsurance. Limited to the approved drug list and participating pharmacies.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "snf": {
       "searched": [],
@@ -306,9 +383,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "specialist": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Specialist office visits, in-network only: 3 visits at a $50 copay. Out-of-network coverage is not available.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "substance_use": {
       "searched": [],
@@ -316,14 +402,32 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "surgery_inpatient": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Hospital inpatient surgery is subject to the deductible and coinsurance.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "surgery_outpatient": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics: $500 access fee per admission, then subject to the deductible and coinsurance.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "telehealth": {
       "searched": [],
@@ -336,9 +440,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "urgent_care": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Urgent care office visits, in-network only: 3 visits at a $50 copay. Out-of-network coverage is not available.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "vision": {
       "searched": [],
@@ -347,8 +460,8 @@
     },
     "wellness": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
-      "conf": "MEDIUM",
+      "auth": 5,
+      "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-essential"
@@ -356,9 +469,8 @@
       "pg": 5,
       "sec": "brochure",
       "src": 104,
-      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
-      "v": "One annual wellness visit; deductible waived, coinsurance applies",
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "v": "One annual wellness visit on every Harbor option. The deductible is waived and coinsurance applies.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "xray": {
       "searched": [],
@@ -375,11 +487,10 @@
       "gov": [
         "harbor-stm-essential"
       ],
-      "pg": 4,
+      "pg": 6,
       "sec": "brochure",
       "src": 104,
-      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
-      "v": "This program provides supplemental health insurance only. It does not provide basic medical, or comprehensive/major medical coverage, and does not satisfy the minimum essential coverage requirements of the Patient Protection and Affordable Care Act",
+      "v": "Not minimum essential coverage and not ACA comprehensive major medical.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "required_disclosures": {
@@ -806,14 +917,32 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "coinsurance": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Coinsurance the member pays: 30%, 20%, or 0%.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "deductible": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Deductible options: $2,500, $5,000, $7,500, or $10,000.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "enrollment_fee": {
       "searched": [],
@@ -826,21 +955,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "moop": {
-      "app": "FAMILY_WIDE",
+      "app": "EXACT_VARIANT",
       "auth": 7,
-      "conf": "MEDIUM",
-      "cur": "POSSIBLY_STALE",
+      "conf": "HIGH",
+      "cur": "CURRENT",
       "gov": [
-        "harbor-stm-access",
-        "harbor-stm-essential",
-        "harbor-stm-secure"
+        "harbor-stm-essential"
       ],
-      "pg": null,
-      "sec": "Plan Benefits table",
-      "src": 34,
-      "url": null,
-      "v": "The brochure states a Coinsurance Out-of-Pocket Maximum of $5,000. The word Coinsurance is part of the printed label - it is NOT a general out-of-pocket maximum. Whether deductibles, copays or the access fee accumulate toward it is NOT STATED in this document. A footnote adds that for the 0% coinsurance option the maximum is satisfied once the deductible is met.",
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "$5,000 coinsurance out-of-pocket maximum. For the 0% coinsurance option, the out-of-pocket maximum is satisfied after the deductible is met.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "moop_exclusions": {
       "searched": [],
@@ -878,9 +1004,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "term_max": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 5,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Coverage period maximum benefit: $750,000.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "ucr_cap": {
       "searched": [],
@@ -1000,21 +1135,18 @@
   "family": "Harbor STM",
   "identity": {
     "administrator": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
+      "app": "EXACT_VARIANT",
+      "auth": 7,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
-        "harbor-stm-access",
-        "harbor-stm-essential",
-        "harbor-stm-secure"
+        "harbor-stm-essential"
       ],
-      "pg": null,
-      "sec": "INFORMATION",
-      "src": 133,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
-      "v": "Everest Reinsurance Company — underwriter and plan administrator (or Everest Denali Insurance Company, depending on jurisdiction).",
-      "vs": "CONFLICTED"
+      "pg": 12,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Everest Reinsurance is the underwriter and plan administrator.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "association": {
       "app": "EXACT_VARIANT",
@@ -1024,17 +1156,25 @@
       "gov": [
         "harbor-stm-essential"
       ],
-      "pg": 4,
+      "pg": 9,
       "sec": "brochure",
       "src": 104,
-      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
-      "v": "American Workers Association (AWA) membership provides access to the Harbor short term medical plan in select states",
-      "vs": "CONFLICTED"
+      "v": "American Workers Association (AWA) membership provides access to the Harbor short-term medical plan in select states.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "billing_entity": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 12,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Neo Insurance Solutions is the billing administrator.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "carrier": {
       "app": "EXACT_VARIANT",
@@ -1047,9 +1187,8 @@
       "pg": 6,
       "sec": "brochure",
       "src": 104,
-      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
-      "v": "Everest Reinsurance Company, or Everest Denali Insurance Company depending on jurisdiction",
-      "vs": "CONFLICTED"
+      "v": "Underwritten by Everest Reinsurance Company (or Everest Denali Insurance Company), depending on jurisdiction.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "effective_date_rules": {
       "searched": [],
@@ -1079,12 +1218,11 @@
       "gov": [
         "harbor-stm-essential"
       ],
-      "pg": 7,
+      "pg": 8,
       "sec": "brochure",
       "src": 104,
-      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
-      "v": "Cigna Healthcare PPO Network, Shared Administration - approximately 1.6 million health care providers and nearly 6,400 hospitals",
-      "vs": "CONFLICTED"
+      "v": "Cigna Healthcare PPO for Shared Administration. In-network coverage is stated for the benefit grid. Out-of-network benefits vary and the brochure refers to the certificate.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "policy_form": {
       "searched": [],
@@ -1117,20 +1255,17 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "app": "FAMILY_WIDE",
-      "auth": 5,
+      "app": "EXACT_VARIANT",
+      "auth": 7,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
-        "harbor-stm-access",
-        "harbor-stm-essential",
-        "harbor-stm-secure"
+        "harbor-stm-essential"
       ],
-      "pg": null,
-      "sec": "INFORMATION",
-      "src": 133,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
-      "v": "Everest Reinsurance Company — underwriter and plan administrator (or Everest Denali Insurance Company, depending on jurisdiction).",
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Everest Reinsurance Company (or Everest Denali Insurance Company), depending on jurisdiction.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "variant": {
@@ -1146,20 +1281,17 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "excluded_services": {
-      "app": "FAMILY_WIDE",
+      "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
-        "harbor-stm-access",
-        "harbor-stm-essential",
-        "harbor-stm-secure"
+        "harbor-stm-essential"
       ],
-      "pg": null,
-      "sec": "INFORMATION",
-      "src": 133,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=974021",
-      "v": "Preventive treatment and routine physicals, except where expressly listed as a covered benefit. / Prescription drugs, except under the Outpatient Prescription Drug Rider. / Dental, vision, and routine ancillary services, except where specifically provided. / Cosmetic or elective procedures, except where specifically provided. Additional limitations: experimental or investigational; not medically necessary; Custodial, domiciliary, and long-term care; charges above the plan's maximums; Rider or state-specific rider limitations supersede the certificate where required.",
+      "pg": 9,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Not covered except where the brochure expressly lists a benefit: pre-existing conditions without the optional rider, routine preventive care beyond the listed wellness benefit, prescription drugs without the rider, dental, vision, cosmetic or elective procedures, experimental or investigational treatment, services that are not medically necessary, and custodial, domiciliary, or long-term care. This is short-term medical and is not minimum essential coverage. Coverage is not renewable.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "lookback_months": {
@@ -1185,31 +1317,46 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "pre_ex_scope": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
-    },
-    "pre_existing": {
-      "app": "FAMILY_WIDE",
+      "app": "EXACT_VARIANT",
       "auth": 5,
-      "conf": "MEDIUM",
+      "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
-        "harbor-stm-access",
-        "harbor-stm-essential",
-        "harbor-stm-secure"
+        "harbor-stm-essential"
       ],
-      "pg": null,
-      "sec": "Information tab",
-      "src": 82,
-      "url": "https://www.1enrollment.com/information/product.cfm?page=52704&id=767303",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "v": "A pre-existing condition includes a sickness, injury, pregnancy, or other medical condition that existed before coverage began, including prior care, a prescription, or symptoms a provider could have diagnosed. The optional rider does not give immediate coverage for all pre-existing conditions.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
+    },
+    "pre_existing": {
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 6,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Pre-existing conditions are not covered unless the optional Pre-Existing Conditions Rider is elected. The brochure states no 12-month figure. Without the rider, the limitation is applied separately to each new coverage period.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pregnancy_exclusion": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-essential"
+      ],
+      "pg": 9,
+      "sec": "brochure",
+      "src": 104,
+      "v": "Maternity, pregnancy, routine newborn care, and related services are not covered except where expressly required by law or a state-specific rider.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "visit_limits": {
       "searched": [],

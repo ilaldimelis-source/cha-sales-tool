@@ -1572,6 +1572,38 @@
     },
     {
       "aliases": [
+        "Goodlife Partners WB Choice",
+        "WB Choice",
+        "goodlife partners wb choice",
+        "goodlife-wb-choice",
+        "goodlifewbchoice"
+      ],
+      "display_name": "Goodlife Partners WB Choice",
+      "doc_completeness": "PARTIAL_DOCS",
+      "family": "Goodlife Partners",
+      "has_profile": true,
+      "plan_id": "goodlife-wb-choice",
+      "status": "ACTIVE",
+      "variant": "WB Choice"
+    },
+    {
+      "aliases": [
+        "Goodlife Partners WB Select",
+        "WB Select",
+        "goodlife partners wb select",
+        "goodlife-wb-select",
+        "goodlifewbselect"
+      ],
+      "display_name": "Goodlife Partners WB Select",
+      "doc_completeness": "PARTIAL_DOCS",
+      "family": "Goodlife Partners",
+      "has_profile": true,
+      "plan_id": "goodlife-wb-select",
+      "status": "ACTIVE",
+      "variant": "WB Select"
+    },
+    {
+      "aliases": [
         "Access",
         "Harbor STM",
         "Harbor STM Access",

@@ -213,12 +213,82 @@
       missingFiles: []
     },
     {
+      planId: 'goodlife-wb-choice',
+      planName: 'Goodlife Partners WB Choice',
+      type: 'Limited',
+      group: 'Goodlife',
+      aliases: [
+        'Goodlife Partners WB Choice',
+        'goodlife partners wb choice',
+        'goodlife-wb-choice'
+      ],
+      pdfFiles: ['WB_Choice___Select_-_Member_Guide.pdf'],
+      status: 'ready',
+      missingFiles: []
+    },
+    {
+      planId: 'goodlife-wb-select',
+      planName: 'Goodlife Partners WB Select',
+      type: 'Limited',
+      group: 'Goodlife',
+      aliases: [
+        'Goodlife Partners WB Select',
+        'goodlife partners wb select',
+        'goodlife-wb-select'
+      ],
+      pdfFiles: ['WB_Choice___Select_-_Member_Guide.pdf'],
+      status: 'ready',
+      missingFiles: []
+    },
+    {
       planId: 'harmonycare',
       planName: 'HarmonyCare PLUS',
       type: 'Limited',
       group: 'HarmonyCare',
       aliases: ['HarmonyCare PLUS', 'harmonycare plus', 'harmonycare'],
       pdfFiles: ['HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf'],
+      status: 'ready',
+      missingFiles: []
+    },
+    {
+      planId: 'harbor-stm-access',
+      planName: 'Harbor STM Access',
+      type: 'STM',
+      group: 'Harbor STM',
+      aliases: [
+        'Harbor STM Access',
+        'harbor stm access',
+        'harbor-stm-access'
+      ],
+      pdfFiles: ['HarborSTM_Brochure_0827.pdf'],
+      status: 'ready',
+      missingFiles: []
+    },
+    {
+      planId: 'harbor-stm-essential',
+      planName: 'Harbor STM Essential',
+      type: 'STM',
+      group: 'Harbor STM',
+      aliases: [
+        'Harbor STM Essential',
+        'harbor stm essential',
+        'harbor-stm-essential'
+      ],
+      pdfFiles: ['HarborSTM_Brochure_0827.pdf'],
+      status: 'ready',
+      missingFiles: []
+    },
+    {
+      planId: 'harbor-stm-secure',
+      planName: 'Harbor STM Secure',
+      type: 'STM',
+      group: 'Harbor STM',
+      aliases: [
+        'Harbor STM Secure',
+        'harbor stm secure',
+        'harbor-stm-secure'
+      ],
+      pdfFiles: ['HarborSTM_Brochure_0827.pdf'],
       status: 'ready',
       missingFiles: []
     },
@@ -654,6 +724,16 @@
     'goodhealth 5': 'ghdp5',
     ghdp5: 'ghdp5',
     goodhealth5: 'ghdp5',
+    'goodlife partners wb choice': 'goodlife-wb-choice',
+    'goodlife-wb-choice': 'goodlife-wb-choice',
+    'goodlife partners wb select': 'goodlife-wb-select',
+    'goodlife-wb-select': 'goodlife-wb-select',
+    'harbor stm access': 'harbor-stm-access',
+    'harbor-stm-access': 'harbor-stm-access',
+    'harbor stm essential': 'harbor-stm-essential',
+    'harbor-stm-essential': 'harbor-stm-essential',
+    'harbor stm secure': 'harbor-stm-secure',
+    'harbor-stm-secure': 'harbor-stm-secure',
     'harmonycare plus': 'harmonycare',
     harmonycare: 'harmonycare',
     'mychoice plan high': 'mychoicehigh',

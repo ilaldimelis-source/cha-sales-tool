@@ -183,7 +183,7 @@ var CHA_PLAN_REGISTRY = [
       'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
     network: 'Cigna Healthcare PPO for Shared Administration',
     enrollUrl: '',
-    pdfFile: '',
+    pdfFile: 'HarborSTM_Brochure_0827.pdf',
     active: true
   },
   {
@@ -196,7 +196,7 @@ var CHA_PLAN_REGISTRY = [
       'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
     network: 'Cigna Healthcare PPO for Shared Administration',
     enrollUrl: '',
-    pdfFile: '',
+    pdfFile: 'HarborSTM_Brochure_0827.pdf',
     active: true
   },
   {
@@ -209,7 +209,7 @@ var CHA_PLAN_REGISTRY = [
       'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
     network: 'Cigna Healthcare PPO for Shared Administration',
     enrollUrl: '',
-    pdfFile: '',
+    pdfFile: 'HarborSTM_Brochure_0827.pdf',
     active: true
   },
   {
@@ -318,7 +318,7 @@ var CHA_PLAN_REGISTRY = [
       'Wellness Brands Management LLC, general partner of Good Life Partners LP',
     network: 'First Health Network, a CVS Health company',
     enrollUrl: '',
-    pdfFile: '',
+    pdfFile: 'WB_Choice___Select_-_Member_Guide.pdf',
     active: true
   },
   {
@@ -331,7 +331,7 @@ var CHA_PLAN_REGISTRY = [
       'Wellness Brands Management LLC, general partner of Good Life Partners LP',
     network: 'First Health Network, a CVS Health company',
     enrollUrl: '',
-    pdfFile: '',
+    pdfFile: 'WB_Choice___Select_-_Member_Guide.pdf',
     active: true
   }
 ];
