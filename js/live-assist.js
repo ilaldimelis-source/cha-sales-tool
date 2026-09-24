@@ -446,7 +446,7 @@ var QA_REBUTTALS = [
     a: "Benefits are paid per visit, up to the plan's annual visit limits. Each visit is treated separately."
   },
   {
-    q: "Why wouldn't I just pay cash for Doctor Visits?",
+    q: "Why wouldn't I just pay cash for Doctor Visits? ( Limited Med Plans )",
     a: 'These plans provide pre-negotiated rates that are typically lower than cash pay prices.'
   },
   {
