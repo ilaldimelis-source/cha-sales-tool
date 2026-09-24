@@ -174,6 +174,45 @@ var CHA_PLAN_REGISTRY = [
     active: true
   },
   {
+    id: 'harborstmessential',
+    name: 'Harbor STM Essential',
+    type: 'STM',
+    group: 'Harbor',
+    tier: 1,
+    carrier:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    enrollUrl: '',
+    pdfFile: '',
+    active: true
+  },
+  {
+    id: 'harborstmaccess',
+    name: 'Harbor STM Access',
+    type: 'STM',
+    group: 'Harbor',
+    tier: 1,
+    carrier:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    enrollUrl: '',
+    pdfFile: '',
+    active: true
+  },
+  {
+    id: 'harborstmsecure',
+    name: 'Harbor STM Secure',
+    type: 'STM',
+    group: 'Harbor',
+    tier: 1,
+    carrier:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    enrollUrl: '',
+    pdfFile: '',
+    active: true
+  },
+  {
     id: 'smarthealth',
     name: 'Smart Health STM',
     type: 'STM',
@@ -309,7 +348,7 @@ function chaValidateRegistry() {
     if (!p.id) errors.push('Plan at index ' + i + ' missing id');
     if (!p.name) errors.push('Plan ' + p.id + ' missing name');
     if (!p.type) errors.push('Plan ' + p.id + ' missing type');
-    if (!p.enrollUrl) errors.push('Plan ' + p.id + ' missing enrollUrl');
+    if (p.enrollUrl == null) errors.push('Plan ' + p.id + ' missing enrollUrl');
     if (!p.network) errors.push('Plan ' + p.id + ' missing network');
   }
   if (errors.length > 0) {

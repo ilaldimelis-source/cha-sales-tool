@@ -982,6 +982,9 @@ function _dashLookupProviderUrl(network) {
   if (net.indexOf('phcs') !== -1 || net.indexOf('multiplan') !== -1) {
     return 'https://www.multiplan.com/webcenter/portal/ProviderSearch';
   }
+  if (net.indexOf('cigna') !== -1) {
+    return 'https://hcpdirectory.cigna.com/web/public/consumer/directory/search';
+  }
   if (net.indexOf('managed care') !== -1) {
     return 'https://www.bcsins.com';
   }
@@ -1028,7 +1031,7 @@ function _dashLookupDisplayType(plan) {
     return 'MEC — Minimum Essential Coverage';
   }
   if (
-    /\bpinnacle stm\b|\baccess health\b|\bsmart health\b|\bgalena\b|\ballstate enhanced\b|\ballstate copay\b|\ballstate essentials\b/.test(
+    /\bpinnacle stm\b|\baccess health\b|\bsmart health\b|\bgalena\b|\ballstate enhanced\b|\ballstate copay\b|\ballstate essentials\b|\bharbor stm\b/.test(
       n
     )
   ) {
