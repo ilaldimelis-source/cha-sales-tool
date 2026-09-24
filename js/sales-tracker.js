@@ -80,6 +80,8 @@ var CHA_CORE_PLAN_NAMES = [
   'Harbor STM Essential',
   'Harbor STM Access',
   'Harbor STM Secure',
+  'Goodlife Partners WB Choice',
+  'Goodlife Partners WB Select',
   'Allstate Enhanced STM PPO',
   'Allstate Copay Enhanced STM PPO',
   'Allstate Essentials STM PPO',
@@ -3836,7 +3838,7 @@ function _stReceiptReviewLineIsJunk(name) {
 function _stReceiptReviewLineLooksAddonOnly(name) {
   var n = String(name || '').toLowerCase();
   if (
-    /short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|goodhealth|tdk\b|access health|harbor\b/.test(
+    /short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|goodhealth|tdk\b|access health|harbor\b|goodlife\b/.test(
       n
     )
   ) {

@@ -973,6 +973,9 @@ function chaDashRenderSimilarPlans() {
 
 function _dashLookupProviderUrl(network) {
   var net = String(network || '').toLowerCase();
+  if (net.indexOf('cvs health') !== -1) {
+    return 'https://firsthealthlbp.com';
+  }
   if (
     net.indexOf('first health') !== -1 ||
     net.indexOf('first health epo') !== -1
@@ -1038,7 +1041,7 @@ function _dashLookupDisplayType(plan) {
     return 'STM — Short Term Medical';
   }
   if (
-    /\bharmony\b|\bsigma\b|\beverest\b|\bpinnacle protect\b|\bbwa americare\b|\bbwa paramount\b|\bhealth choice\b|\ballstate health access\b|\bmychoice\b/.test(
+    /\bharmony\b|\bsigma\b|\beverest\b|\bpinnacle protect\b|\bbwa americare\b|\bbwa paramount\b|\bhealth choice\b|\ballstate health access\b|\bmychoice\b|\bgoodlife\b/.test(
       n
     )
   ) {

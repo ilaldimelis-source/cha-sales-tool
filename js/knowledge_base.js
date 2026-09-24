@@ -113,6 +113,40 @@ var KNOWLEDGE_BASE = {
       coinsurance: '80/20',
       maxOOP: '$2,000 after deductible'
     },
+    'Goodlife Partners WB Choice': {
+      type: 'Indemnity',
+      network: 'First Health Network, a CVS Health company',
+      providerSearch: 'firsthealthlbp.com',
+      underwriter:
+        'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+      association: 'Good Life Partners',
+      admin: 'Merchants Benefit Administration (MBA), (480) 550-6457',
+      billing: 'Neo Insurance Solutions, (866) 870-7730',
+      deductible: 'NONE',
+      structure: 'Scheduled fixed indemnity. Same rate at every age.',
+      enrollmentFee: '$49.99 one-time',
+      member: '$274.99 / month',
+      memberSpouse: '$379.99 / month',
+      memberChildren: '$329.99 / month',
+      family: '$469.99 / month'
+    },
+    'Goodlife Partners WB Select': {
+      type: 'Indemnity',
+      network: 'First Health Network, a CVS Health company',
+      providerSearch: 'firsthealthlbp.com',
+      underwriter:
+        'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+      association: 'Good Life Partners',
+      admin: 'Merchants Benefit Administration (MBA), (480) 550-6457',
+      billing: 'Neo Insurance Solutions, (866) 870-7730',
+      deductible: 'NONE',
+      structure: 'Scheduled fixed indemnity. Same rate at every age.',
+      enrollmentFee: '$49.99 one-time',
+      member: '$335.00 / month',
+      memberSpouse: '$500.00 / month',
+      memberChildren: '$425.00 / month',
+      family: '$700.00 / month'
+    },
     'Harbor STM Essential': {
       type: 'STM',
       network: 'Cigna Healthcare PPO for Shared Administration',

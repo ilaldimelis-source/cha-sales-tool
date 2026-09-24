@@ -867,6 +867,96 @@ const PLANS = [
   // ══════════════════════════════
   {
     group: 'Limited',
+    name: 'Goodlife Partners WB Choice',
+    type: 'Limited Benefit / Fixed Indemnity',
+    tagline: 'Scheduled fixed indemnity on First Health LBP. Not MEC. Not STM.',
+    network: 'First Health Network, a CVS Health company',
+    admin: 'Merchants Benefit Administration (MBA)',
+    assoc: 'Good Life Partners',
+    bestFor: 'Someone who can use First Health LBP providers for office visits',
+    notGood:
+      'Anyone expecting prescription, telemedicine, or out-of-network office visits',
+    idealClient:
+      'A member or Working Owner who wants set cash amounts and a flat rate',
+    topPoints: [
+      'No deductible and no coinsurance',
+      'Rates are the same at every age',
+      'Enrollment fee: $49.99 one-time',
+      'Member: $274.99 / month',
+      'Member + Spouse: $379.99 / month',
+      'Member + Child(ren): $329.99 / month',
+      'Family: $469.99 / month',
+      'Primary care: member pays $60, plan pays up to $100, 5 visits per year, in-network only',
+      'Inpatient hospital: $1,500 per day, 10 days per year, any hospital'
+    ],
+    limitations: [
+      'NOT MEC',
+      'NOT STM',
+      'Office visits and preventive care pay nothing out of network',
+      'All prescription drugs are not covered',
+      'Pre-existing limitation applies to hospital and surgery benefits only'
+    ],
+    framing:
+      '"Goodlife Partners WB Choice is scheduled fixed indemnity. It pays set cash amounts. It is not MEC and it is not short-term medical. Office visits must be in the First Health LBP network."',
+    objections: [
+      'Set amounts, not the full bill',
+      'Office visits are in-network only'
+    ],
+    compliance:
+      'Limited benefit fixed indemnity, not MEC and not STM. 30-day sickness wait. Accident coverage starts on the effective date. 12-month / 12-month pre-existing limitation on hospital and surgery benefits only. 30-day free look. Provider search is firsthealthlbp.com.',
+    fitYes: [
+      'Can use First Health LBP providers',
+      'Wants a flat rate at every age'
+    ],
+    fitNo: ['Needs prescription coverage', 'Needs out-of-network office visits']
+  },
+  {
+    group: 'Limited',
+    name: 'Goodlife Partners WB Select',
+    type: 'Limited Benefit / Fixed Indemnity',
+    tagline: 'Scheduled fixed indemnity on First Health LBP. Not MEC. Not STM.',
+    network: 'First Health Network, a CVS Health company',
+    admin: 'Merchants Benefit Administration (MBA)',
+    assoc: 'Good Life Partners',
+    bestFor: 'Someone who can use First Health LBP providers for office visits',
+    notGood:
+      'Anyone expecting prescription, telemedicine, or out-of-network office visits',
+    idealClient:
+      'A member or Working Owner who wants higher visit counts and a flat rate',
+    topPoints: [
+      'No deductible and no coinsurance',
+      'Rates are the same at every age',
+      'Enrollment fee: $49.99 one-time',
+      'Member: $335.00 / month',
+      'Member + Spouse: $500.00 / month',
+      'Member + Child(ren): $425.00 / month',
+      'Family: $700.00 / month',
+      'Primary care: member pays $50, plan pays up to $150, 8 visits per year, in-network only',
+      'Inpatient hospital: $2,500 per day, 10 days per year, any hospital'
+    ],
+    limitations: [
+      'NOT MEC',
+      'NOT STM',
+      'Office visits and preventive care pay nothing out of network',
+      'All prescription drugs are not covered',
+      'Pre-existing limitation applies to hospital and surgery benefits only'
+    ],
+    framing:
+      '"Goodlife Partners WB Select is scheduled fixed indemnity. It pays set cash amounts. It is not MEC and it is not short-term medical. Office visits must be in the First Health LBP network."',
+    objections: [
+      'Set amounts, not the full bill',
+      'Office visits are in-network only'
+    ],
+    compliance:
+      'Limited benefit fixed indemnity, not MEC and not STM. 30-day sickness wait. Accident coverage starts on the effective date. 12-month / 12-month pre-existing limitation on hospital and surgery benefits only. 30-day free look. Provider search is firsthealthlbp.com.',
+    fitYes: [
+      'Can use First Health LBP providers',
+      'Wants a flat rate at every age'
+    ],
+    fitNo: ['Needs prescription coverage', 'Needs out-of-network office visits']
+  },
+  {
+    group: 'Limited',
     name: 'HarmonyCare / SigmaCare',
     type: 'Limited Benefit / Fixed Indemnity',
     tagline: 'First Health network fixed indemnity plans',
@@ -1880,6 +1970,16 @@ function renderNetworkexplainer() {
         'Harbor STM is short-term medical. It is not on the First Health network and it is not on PHCS.',
       howto:
         'Enter address, state or zip code, then choose "Doctor by Type", "Doctor by Name", or "Health Facilities and Group Practices".'
+    },
+    {
+      name: 'First Health Network, a CVS Health company',
+      color: 'var(--cha-accent)',
+      bg: 'var(--cha-bg-muted)',
+      plans: ['Goodlife Partners WB Choice', 'Goodlife Partners WB Select'],
+      website: 'firsthealthlbp.com',
+      warning:
+        'Primary care, specialist and urgent care visits: in-network only, out-of-network pays nothing. Preventive and wellness: in-network only. Inpatient hospital: any hospital. Surgical benefit, all tiers: any facility. Emergency room: not network-restricted.',
+      howto: 'Phone (800) 226-5116. Search providers at firsthealthlbp.com.'
     }
   ];
 

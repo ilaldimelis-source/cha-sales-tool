@@ -323,6 +323,31 @@
     return hits;
   }
 
+  function policyDocExact(qSeq) {
+    if (typeof POLICY_DOCS === 'undefined' || !POLICY_DOCS.length) return [];
+    var hits = [];
+    var i;
+    var plan;
+    var seen = {};
+    var id;
+    for (i = 0; i < POLICY_DOCS.length; i++) {
+      plan = POLICY_DOCS[i];
+      if (!plan || !plan.id || !plan.name) continue;
+      id = String(plan.id);
+      if (id.indexOf('kb-') === 0) continue;
+      if (
+        sequencesEqual(qSeq, tokenize(plan.name)) ||
+        sequencesEqual(qSeq, tokenize(plan.id))
+      ) {
+        if (!seen[id]) {
+          seen[id] = true;
+          hits.push({ plan_id: id, display_name: plan.name });
+        }
+      }
+    }
+    return hits;
+  }
+
   function brLoadPlanAliases() {
     if (_cache) {
       return Promise.resolve(_cache);
@@ -354,6 +379,7 @@
     if (!qSeq.length) return none();
 
     var exact = exactNameHits(qSeq);
+    if (!exact.length) exact = policyDocExact(qSeq);
     if (exact.length === 1) {
       return { status: 'EXACT', planId: exact[0].plan_id };
     }

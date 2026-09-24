@@ -2391,6 +2391,26 @@ var planReferenceData = {
       'hcpdirectory.cigna.com/web/public/consumer/directory/search',
     claimsAdmin: 'InsuranceTPA.com',
     type: 'STM'
+  },
+  'goodlife-choice': {
+    name: 'Goodlife Partners WB Choice',
+    network: 'First Health Network, a CVS Health company',
+    underwriter:
+      'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+    association: 'Good Life Partners',
+    providerSearch: 'firsthealthlbp.com',
+    claimsAdmin: 'Merchants Benefit Administration (MBA), (480) 550-6457',
+    type: 'Limited Benefit / Fixed Indemnity'
+  },
+  'goodlife-select': {
+    name: 'Goodlife Partners WB Select',
+    network: 'First Health Network, a CVS Health company',
+    underwriter:
+      'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+    association: 'Good Life Partners',
+    providerSearch: 'firsthealthlbp.com',
+    claimsAdmin: 'Merchants Benefit Administration (MBA), (480) 550-6457',
+    type: 'Limited Benefit / Fixed Indemnity'
   }
 };
 var dayConfig = [
@@ -3298,7 +3318,7 @@ function generateLesson3_4() {
   html +=
     '<optgroup label="MultiPlan Network"><option value="galena">AFRP Galena STM Elite</option><option value="everest">Everest Summit Plans</option><option value="healthchoice">HealthChoice Silver</option></optgroup>';
   html +=
-    '<optgroup label="Cigna PPO"><option value="harbor-essential">Harbor STM Essential</option><option value="harbor-access">Harbor STM Access</option><option value="harbor-secure">Harbor STM Secure</option></optgroup><optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select></div>';
+    '<optgroup label="Cigna PPO"><option value="harbor-essential">Harbor STM Essential</option><option value="harbor-access">Harbor STM Access</option><option value="harbor-secure">Harbor STM Secure</option></optgroup><optgroup label="Goodlife"><option value="goodlife-choice">Goodlife Partners WB Choice</option><option value="goodlife-select">Goodlife Partners WB Select</option></optgroup><optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select></div>';
   html += '<div id="planInfoDisplay"></div>';
   html +=
     '<div class="pro-tip">' +
@@ -3829,12 +3849,12 @@ function loadBenefitsContent(tabId) {
     html +=
       '<optgroup label="MultiPlan Network"><option value="galena">AFRP Galena STM Elite</option><option value="everest">Everest Summit Plans</option><option value="healthchoice">HealthChoice Silver</option></optgroup>';
     html +=
-      '<optgroup label="Cigna PPO"><option value="harbor-essential">Harbor STM Essential</option><option value="harbor-access">Harbor STM Access</option><option value="harbor-secure">Harbor STM Secure</option></optgroup><optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select>';
+      '<optgroup label="Cigna PPO"><option value="harbor-essential">Harbor STM Essential</option><option value="harbor-access">Harbor STM Access</option><option value="harbor-secure">Harbor STM Secure</option></optgroup><optgroup label="Goodlife"><option value="goodlife-choice">Goodlife Partners WB Choice</option><option value="goodlife-select">Goodlife Partners WB Select</option></optgroup><optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select>';
     html += '<div id="refPlanDisplay"></div>';
     html +=
       '<div class="ref-card" style="background:#EFF6FF;margin-top:16px;"><div class="ref-card-title" style="margin-bottom:10px;">' +
       svgIcons.search +
-      ' Provider Search URLs</div><div class="ref-card-body"><p><strong>First Health:</strong> providerlocator.firsthealth.com</p><p><strong>PHCS/MultiPlan:</strong> providersearch.multiplan.com</p><p><strong>Cigna PPO:</strong> hcpdirectory.cigna.com/web/public/consumer/directory/search</p></div></div>';
+      ' Provider Search URLs</div><div class="ref-card-body"><p><strong>First Health:</strong> providerlocator.firsthealth.com</p><p><strong>PHCS/MultiPlan:</strong> providersearch.multiplan.com</p><p><strong>Cigna PPO:</strong> hcpdirectory.cigna.com/web/public/consumer/directory/search</p><p><strong>Goodlife / First Health LBP:</strong> firsthealthlbp.com</p></div></div>';
   } else if (tabId === 'objections') {
     var objs = [
       {

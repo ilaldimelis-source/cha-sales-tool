@@ -307,6 +307,32 @@ var CHA_PLAN_REGISTRY = [
     enrollUrl: 'https://www.firstenroll.com',
     pdfFile: 'BWABrochurePlan2MBRAmericare2_REV.pdf',
     active: true
+  },
+  {
+    id: 'goodlifewbchoice',
+    name: 'Goodlife Partners WB Choice',
+    type: 'Limited',
+    group: 'Goodlife',
+    tier: 1,
+    carrier:
+      'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+    network: 'First Health Network, a CVS Health company',
+    enrollUrl: '',
+    pdfFile: '',
+    active: true
+  },
+  {
+    id: 'goodlifewbselect',
+    name: 'Goodlife Partners WB Select',
+    type: 'Limited',
+    group: 'Goodlife',
+    tier: 1,
+    carrier:
+      'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+    network: 'First Health Network, a CVS Health company',
+    enrollUrl: '',
+    pdfFile: '',
+    active: true
   }
 ];
 
