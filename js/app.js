@@ -463,7 +463,8 @@ function showPage(id) {
     btn.setAttribute('aria-current', 'page');
   }
   var renderMap = {
-    dashboard: renderDashboard
+    dashboard: renderDashboard,
+    addons: renderAddons
   };
   if (renderMap[id]) {
     try {

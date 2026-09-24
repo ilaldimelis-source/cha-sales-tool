@@ -51,7 +51,7 @@
      that serve .css as text/plain (which browsers reject). The sync XHR runs only
      if the <link> stylesheet has 0 rules after loading. -->
     <link rel="stylesheet" href="css/tokens.css?v=1780600000000" />
-    <link rel="stylesheet" href="css/styles.css?v=1790260950067" id="mainCSS" />
+    <link rel="stylesheet" href="css/styles.css?v=1790273000000" id="mainCSS" />
     <link rel="stylesheet" href="css/sales-tracker.css?v=1790260950067" />
     <script>
       (function () {
@@ -1638,6 +1638,25 @@
             <span class="nb-label">Plans</span>
             <span class="nb-dot" aria-hidden="true"></span>
           </button>
+          <button class="nb" onclick="showPage('addons')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 5v14" />
+                <path d="M5 12h14" /></svg
+            ></span>
+            <span class="nb-label">Add-Ons</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
           <button class="nb" onclick="showPage('salestracker')">
             <span class="nb-icon"
               ><svg
@@ -1981,6 +2000,7 @@
       <main aria-live="polite" class="content" id="main-content">
         <h1 class="sr-only">CHA Sales Command Center</h1>
         <div id="page-dashboard" class="page"></div>
+        <div id="page-addons" class="page"></div>
 
         <!-- LIVE CALL -- Live Assist, Rebuttals, Q&A Rebuttals, Client Profiler -->
         <div id="page-livecall" class="combo-page">
@@ -2560,7 +2580,8 @@
     <script src="js/myspace.js?v=1787901420000"></script>
     <script src="js/sales-tracker.js?v=1790272800000"></script>
     <script src="js/office.js?v=1787900000000"></script>
-    <script src="js/app.js?v=1790272800000"></script>
+    <script src="js/addons.js?v=1790273000000"></script>
+    <script src="js/app.js?v=1790273000000"></script>
     <script>
       (function () {
         var data = window.docusignWalkthroughData;
