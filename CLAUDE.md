@@ -162,6 +162,16 @@ Those entries are unreachable because the removed plans are no longer
 selectable. The files were deliberately left unedited. Do not treat the
 leftover names as a bug, and do not rewrite the repeated arrays to drop them.
 
+## Known open items
+
+The two-ID-card paragraph ("one is a discount card for
+prescriptions and other added benefits like dental and
+vision") appears in 11 scripts and was removed from 6, per
+the Sept 2026 script PDF. The claim is unverified against
+any carrier brochure. Confirm with Neo and FirstEnroll
+before relying on it, and make it consistent across all
+scripts once confirmed.
+
 ## Plan profile benefit verification
 
 The converter maps onto 113 keys. Source of truth: scripts/lib/base-schema.json (array length 113).
