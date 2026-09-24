@@ -2287,15 +2287,6 @@ var planReferenceData = {
     providerSearch: 'providerlocator.firsthealth.com',
     type: 'Indemnity'
   },
-  medfirst: {
-    name: 'MedFirst 1-5 / TrueHealth 1-5',
-    network: 'First Health Network',
-    underwriter: '',
-    claimsAdmin: 'Merchants Benefit Administrators (MBA)',
-    association: 'VP Limited Partnership / The Vitamin Patch (TVP)',
-    providerSearch: 'providerlocator.firsthealth.com',
-    type: 'MEC'
-  },
   'pinnacle-stm': {
     name: 'Pinnacle STM Traditional',
     network: 'PHCS',
@@ -3268,7 +3259,7 @@ function generateLesson3_4() {
   html +=
     '<div class="plan-selector"><label>Select a Plan:</label><select id="planSelect" onchange="showPlanInfo()"><option value="">-- Choose a plan --</option>';
   html +=
-    '<optgroup label="First Health Network"><option value="smartchoice">SmartChoice</option><option value="tdk">TDK 1-5</option><option value="goodhealth">GoodHealth 1-5</option><option value="harmonycare">Harmony Care / Sigma Care</option><option value="medfirst">MedFirst 1-5 / TrueHealth 1-5</option></optgroup>';
+    '<optgroup label="First Health Network"><option value="smartchoice">SmartChoice</option><option value="tdk">TDK 1-5</option><option value="goodhealth">GoodHealth 1-5</option><option value="harmonycare">Harmony Care / Sigma Care</option></optgroup>';
   html +=
     '<optgroup label="PHCS Network"><option value="pinnacle-stm">Pinnacle STM Traditional</option><option value="pinnacle-protect">Pinnacle Protect Plan 1-4</option><option value="access-health">Access Health Traditional STM</option><option value="smart-health">Smart Health STM (Traditional)</option><option value="bwa-americare">BWA Americare 2-4</option></optgroup>';
   html +=
@@ -3799,7 +3790,7 @@ function loadBenefitsContent(tabId) {
     html +=
       '<select class="ref-plan-select" id="refPlanSelect" onchange="showRefPlanInfo()"><option value="">-- Select Plan --</option>';
     html +=
-      '<optgroup label="First Health Network"><option value="smartchoice">SmartChoice</option><option value="tdk">TDK 1-5</option><option value="goodhealth">GoodHealth 1-5</option><option value="harmonycare">Harmony Care / Sigma Care</option><option value="medfirst">MedFirst 1-5 / TrueHealth 1-5</option></optgroup>';
+      '<optgroup label="First Health Network"><option value="smartchoice">SmartChoice</option><option value="tdk">TDK 1-5</option><option value="goodhealth">GoodHealth 1-5</option><option value="harmonycare">Harmony Care / Sigma Care</option></optgroup>';
     html +=
       '<optgroup label="PHCS Network"><option value="pinnacle-stm">Pinnacle STM Traditional</option><option value="pinnacle-protect">Pinnacle Protect Plan 1-4</option><option value="access-health">Access Health Traditional STM</option><option value="smart-health">Smart Health STM (Traditional)</option><option value="bwa-americare">BWA Americare 2-4</option></optgroup>';
     html +=

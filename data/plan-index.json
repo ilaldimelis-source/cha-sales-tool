@@ -2359,61 +2359,6 @@
     },
     {
       "aliases": [
-        "2000",
-        "MedValue",
-        "MedValue 2000",
-        "med value 2000",
-        "medvalue",
-        "medvalue 2000",
-        "medvalue-2000",
-        "medvalue2000"
-      ],
-      "display_name": "MedValue 2000",
-      "doc_completeness": "STATUS_UNCERTAIN",
-      "family": "MedValue",
-      "has_profile": false,
-      "plan_id": "medvalue-2000",
-      "status": "STATUS_UNCERTAIN",
-      "variant": "2000"
-    },
-    {
-      "aliases": [
-        "4000",
-        "MedValue",
-        "MedValue 4000",
-        "medvalue",
-        "medvalue 4000",
-        "medvalue-4000",
-        "medvalue4000"
-      ],
-      "display_name": "MedValue 4000",
-      "doc_completeness": "STATUS_UNCERTAIN",
-      "family": "MedValue",
-      "has_profile": false,
-      "plan_id": "medvalue-4000",
-      "status": "STATUS_UNCERTAIN",
-      "variant": "4000"
-    },
-    {
-      "aliases": [
-        "6000",
-        "MedValue",
-        "MedValue 6000",
-        "medvalue",
-        "medvalue 6000",
-        "medvalue-6000",
-        "medvalue6000"
-      ],
-      "display_name": "MedValue 6000",
-      "doc_completeness": "STATUS_UNCERTAIN",
-      "family": "MedValue",
-      "has_profile": false,
-      "plan_id": "medvalue-6000",
-      "status": "STATUS_UNCERTAIN",
-      "variant": "6000"
-    },
-    {
-      "aliases": [
         "NCE Fusion Dental",
         "NCE Fusion Dental - Plan A",
         "NCE Fusion Dental NCE Fusion Dental - Plan A",

@@ -187,7 +187,7 @@ function brInit() {
   var searchInput = document.createElement('input');
   searchInput.type = 'text';
   searchInput.id = 'br-plan-search';
-  searchInput.placeholder = 'Search plans... (e.g. "MedFirst", "Everest", "STM")';
+  searchInput.placeholder = 'Search plans... (e.g. "GoodHealth", "Everest", "STM")';
   searchInput.style.cssText = 'width:100%;font-size:13px;padding:9px 14px;border-radius:8px;border:1px solid var(--border-light, var(--border-default));background:var(--bg-surface);color:var(--text-primary);box-sizing:border-box;outline:none;';
   searchInput.addEventListener('focus', function () {
     searchInput.style.borderColor = '#5175f1';
@@ -212,7 +212,6 @@ function brInit() {
     'stm': 'STM', 'short term': 'STM', 'short-term': 'STM',
     'limited': 'Limited', 'indemnity': 'Limited',
     'detego': 'GHDP', 'ghdp': 'GHDP',
-    'medfirst': 'MedFirst', 'med first': 'MedFirst',
     'everest': 'Everest',
     'smart choice': 'Smart Choice', 'smartchoice': 'Smart Choice',
     'pinnacle': 'Pinnacle',
@@ -223,7 +222,6 @@ function brInit() {
     'tdk': 'TDK',
     'neo': 'STM', 'smart health': 'Smart Health',
     'goodhealth': 'GoodHealth', 'good health': 'GoodHealth',
-    'truehealth': 'trueh', 'true health': 'trueh',
     'galena': 'Galena',
     'sigmacare': 'SigmaCare', 'sigma': 'SigmaCare',
     'nce': 'NCE', 'health choice': 'NCE',
@@ -1342,20 +1340,6 @@ var CHA_PDF_KNOWLEDGE_PROMPT = [
   'TDK 4: PCP $50 (4/yr), Specialist $75 (4/yr), Hospital $1,000/day ($10,000 max), ER $1,000/day if admitted, Surgery $1,000/day ($2,000 max), Ambulance $500, SSN REQUIRED',
   'TDK 5: PCP $50 (5/yr), Specialist $75 (5/yr), Hospital $1,500/day ($15,000 max), ER $1,500/day if admitted, Surgery $1,500/day ($4,500 max), Ambulance $500, SSN REQUIRED',
   '',
-  'MEDFIRST PLANS (MEC)',
-  'Network: First Health | Underwriter: MBA | Billing: FirstEnroll',
-  'MedFirst 1: PCP $25 (3/yr), Specialist $50 (1/yr), Hospital $1,000/day ($5,000 max), ER: Not Covered, Rx: Discount only, No SSN',
-  'MedFirst 2: PCP $25 (4/yr), Specialist $50 (2/yr), Hospital $1,000/day ($10,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5, No SSN',
-  'MedFirst 3: PCP $25 (4/yr), Specialist $50 (4/yr), Hospital $1,000/day ($15,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5, Non-Pref $5-10, Brand $40, No SSN',
-  'MedFirst 4: Wellness $25, PCP $50 (4/yr), Specialist $75 (4/yr), Hospital $1,000/day ($10,000 max), ER $1,000 if admitted, Surgery $1,000 ($2,000 max), Ambulance $500, Rx: Full formulary, SSN REQUIRED',
-  'MedFirst 5: Wellness $25, PCP $50 (5/yr), Specialist $75 (5/yr), Hospital $1,500/day ($15,000 max), ER $1,500 if admitted, Surgery $1,500 ($4,500 max), Ambulance $500, Rx: Full formulary, SSN REQUIRED',
-  '',
-  'TRUEHEALTH PLANS (MEC)',
-  'Network: First Health | Underwriter: MBA',
-  'TrueHealth 1: PCP $25 (3/yr), Specialist $50 (1/yr), Hospital $1,000/day ($5,000 max), ER: Not Covered, Rx: Discount only',
-  'TrueHealth 2: PCP $25 (4/yr), Specialist $50 (2/yr), Hospital $1,000/day ($10,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5',
-  'TrueHealth 3: PCP $25 (4/yr), Specialist $50 (4/yr), Hospital $1,000/day ($15,000 max), ER: Not Covered, Rx: Generic $0, Preferred $5, Non-Pref $5-10, Brand $40',
-  '',
   'GOODHEALTH PLANS (MEC)',
   'Network: First Health | Underwriter: MBA | Association: Good Health Partners',
   'GoodHealth 1: PCP $25 (3/yr), Specialist $50 (1/yr), Hospital $1,000/day ($5,000 max), ER: Not Covered, Rx: Discount only',
@@ -1573,7 +1557,7 @@ function _chaBuildGroundedPrompt(planMeta, topChunks) {
     'Return a short, clean answer with exact numbers from the document.',
     'Do NOT paste raw OCR/extracted text blocks.',
     'Do NOT repeat excerpt labels like "[Excerpt 1]" in the final answer.',
-    'Preferred output style: "MedFirst 1 PCP Copay: $25, 3 visits/year".',
+    'Preferred output style: "GoodHealth 1 PCP Copay: $25, 3 visits/year".',
     'If multiple values are needed, use 1-3 concise bullet lines.',
     'Preserve exact amounts, limits, visit counts, percentages, and conditions from excerpts.',
     'If the detail is not explicitly in excerpts, respond exactly with:',
@@ -1616,7 +1600,7 @@ function handleChatMessage(userMessage) {
 
   var resolution = runtime.resolvePlan(clean, window.activePlan || null);
   if (resolution.status === 'no_plan') {
-    var hasPlanLikeWords = /(plan|medfirst|truehealth|goodhealth|smart|harmony|everest|bwa|allstate|pinnacle|sigma|mychoice|galena|access)/i.test(clean);
+    var hasPlanLikeWords = /(plan|goodhealth|smart|harmony|everest|bwa|allstate|pinnacle|sigma|mychoice|galena|access)/i.test(clean);
     chatContainer.innerHTML +=
       '<div class="ai-message">' +
       formatResponse(

@@ -503,22 +503,22 @@ module.exports = function handler(req, res) {
           'STATUS: INFO\n' +
           'FACT: There is a 30-day waiting period before sickness benefits become payable. Pre-existing conditions are not covered for the first 12 months.\n' +
           'SAY THIS: You will have a 30-day wait for sickness benefits and a 12-month wait for pre-existing conditions.\n' +
-          'SOURCE: MEC_MedFirst1_SPD_Jan25.pdf\n\n' +
+          'SOURCE: MEC_GHDP1_1.pdf\n\n' +
           'User: "What is NOT covered?" (PLAN CONTEXT lists exclusions)\n' +
           'STATUS: NOT COVERED\n' +
           'FACT: Major exclusions include fertility treatment, weight loss surgery, cosmetic procedures, organ transplants, dental and vision. Plus other limits listed in the plan document.\n' +
           'SAY THIS: This plan has standard exclusions like fertility, weight loss surgery, dental, and vision.\n' +
-          'SOURCE: MEC_MedFirst1_SPD_Jan25.pdf\n\n' +
+          'SOURCE: MEC_GHDP1_1.pdf\n\n' +
           'User: "Is bloodwork covered?" (PLAN CONTEXT mentions lab work is excluded but discounts available)\n' +
           'STATUS: NOT COVERED\n' +
           'FACT: Blood work and lab tests are not a covered insurance benefit. Discounted rates are available through the First Health PPO network.\n' +
           'SAY THIS: Lab work is not covered as insurance, but you get discounted rates through the First Health network.\n' +
-          'SOURCE: MEC_MedFirst1_SPD_Jan25.pdf\n\n' +
+          'SOURCE: MEC_GHDP1_1.pdf\n\n' +
           'User: "What are the copays?" (PLAN CONTEXT does not list copays — plan uses discount network)\n' +
           'STATUS: INFO\n' +
           'FACT: This plan does not include traditional copays. Members access discounted rates through the network instead.\n' +
           'SAY THIS: This plan uses network discounts instead of copays.\n' +
-          'SOURCE: MEC_MedFirst1_SPD_Jan25.pdf\n\n' +
+          'SOURCE: MEC_GHDP1_1.pdf\n\n' +
           'PLAN CONTEXT:\n' +
           context;
 

@@ -71,7 +71,7 @@ const BENEFITS = [
     ifTheyAsk:
       '"How many visits do I get?" → "Your plan includes a set number of visits per year at the reduced rate. I can look up the exact number for your specific plan."',
     official:
-      'Covered primary care physician visits with a flat copay and annual visit limit. Example (TrueHealth 2): PCP $25 copay, Specialist $50 copay, limited visits per year.',
+      'Covered primary care physician visits with a flat copay and annual visit limit. Example (GoodHealth 2): PCP $25 copay, Specialist $50 copay, limited visits per year.',
     simple:
       'How you pay for doctor visits depends on your plan — some use copays, others use pre-pays with bill repricing, and some pay a fixed benefit amount per visit.',
     frame:
@@ -329,113 +329,7 @@ const PLANS = [
   // ══════════════════════════════
   // GROUP 1: MEC PLANS
   // ══════════════════════════════
-  {
-    group: 'MEC',
-    name: 'MedFirst 1–5',
-    type: 'MEC — Minimum Essential Coverage',
-    tagline: 'Preventive-first base plan with First Health network',
-    network: 'First Health',
-    admin: 'Merchants Benefit Administrators (MBA)',
-    assoc: 'VP Limited Partnership / The Vitamin Patch (TVP)',
-    bestFor:
-      'Self-employed, gig workers, 1099 contractors, part-time employees who need affordable preventive coverage',
-    notGood:
-      'Anyone with active chronic conditions, ongoing specialist care, or specialty Rx needs above $150/month',
-    idealClient:
-      'Healthy 25–50, rarely sees doctors, wants preventive care + safety net, budget-conscious',
-    topPoints: [
-      'Preventive health services covered',
-      'Annual physical exam covered',
-      'Unlimited telemedicine from day one',
-      'MedFirst 1-3: $25 PCP copay / $50 specialist & urgent care',
-      'MedFirst 4-5: $50 PCP copay / $75 specialist & urgent care',
-      'Rx discount tiers',
-      'Hospital indemnity $1,000–$1,500/day (Tiers 3–5)'
-    ],
-    limitations: [
-      'NOT ACA compliant',
-      'NO maternity or pregnancy coverage',
-      'NO drug or alcohol rehabilitation coverage',
-      'NO mental health coverage',
-      '12-month pre-existing condition exclusion',
-      '30-day sickness waiting period',
-      'NOT major medical insurance'
-    ],
-    framing:
-      '"This plan keeps your everyday healthcare covered — doctor visits, preventive care, prescriptions, telemedicine — at a price that makes sense. It\'s designed for people who are generally healthy and want real coverage without paying major medical prices."',
-    objections: [
-      "Is this real insurance? → It's a federally compliant health benefit plan, not ACA major medical",
-      'Pre-ex? → Excluded 12 months, then covered',
-      'ER? → Covered if admitted on Tier 4+'
-    ],
-    compliance:
-      'REQUIRED DISCLOSURES — say every enrollment: (1) This is NOT ACA-compliant major medical insurance. (2) Maternity and pregnancy are NOT covered. (3) Drug and alcohol rehabilitation is NOT covered. (4) Mental health is NOT covered. (5) Pre-existing conditions are excluded for 12 months. (6) There is a 30-day sickness waiting period. (7) Benefits are fixed amounts toward services, not full bill coverage.',
-    fitYes: [
-      'Generally healthy, rarely sees doctors',
-      'Budget is primary concern',
-      'Self-employed / no employer benefits',
-      'Needs preventive care covered',
-      'Telemedicine user'
-    ],
-    fitNo: [
-      'Active specialist needs',
-      'Takes specialty medications',
-      'Recent serious health history',
-      'Expecting surgery or hospitalization soon',
-      'Wants ACA-equivalent coverage'
-    ]
-  },
 
-  {
-    group: 'MEC',
-    name: 'TrueHealth 1–3',
-    type: 'MEC — Minimum Essential Coverage',
-    tagline: 'Simplified MEC tiers with First Health network',
-    network: 'First Health',
-    admin: 'Merchants Benefit Administrators (MBA)',
-    assoc: 'VP Limited Partnership / The Vitamin Patch (TVP)',
-    bestFor:
-      'Same profile as MedFirst — healthy, budget-conscious, needs preventive base coverage',
-    notGood:
-      'Same exclusions as MedFirst — not for chronic conditions, specialty Rx, or active health needs',
-    idealClient:
-      'Similar to MedFirst buyer; simpler tier structure may appeal to prospects who want fewer choices',
-    topPoints: [
-      'Preventive health services covered',
-      'Annual physical exam covered',
-      'TrueHealth 1: $25 PCP copay / $50 specialist & urgent care',
-      'Unlimited telemedicine from day one',
-      'Hospital indemnity on higher tiers',
-      'Rx discount tiers'
-    ],
-    limitations: [
-      'NOT ACA compliant',
-      'NO maternity or pregnancy coverage',
-      'NO drug or alcohol rehabilitation coverage',
-      'NO mental health coverage',
-      '12-month pre-existing condition exclusion',
-      '30-day sickness waiting period',
-      'NOT major medical insurance'
-    ],
-    framing:
-      '"TrueHealth is a clean, simple version of our MEC coverage. Same core benefits — preventive care, doctor visits, telemedicine — with fewer tier options so it\'s easier to pick what fits."',
-    objections: [
-      'Same as MedFirst — pre-ex, waiting period, not major medical'
-    ],
-    compliance:
-      'REQUIRED DISCLOSURES — say every enrollment: (1) This is NOT ACA-compliant major medical insurance. (2) Maternity and pregnancy are NOT covered. (3) Drug and alcohol rehabilitation is NOT covered. (4) Mental health is NOT covered. (5) Pre-existing conditions are excluded for 12 months. (6) There is a 30-day sickness waiting period. (7) Benefits are fixed amounts toward services, not full bill coverage.',
-    fitYes: [
-      'Healthy, rarely uses healthcare',
-      'Wants simple straightforward coverage',
-      'Budget-conscious',
-      'No employer benefits'
-    ],
-    fitNo: [
-      'Has ongoing health conditions',
-      'Wants comprehensive major medical',
-      'Needs specialist access regularly'
-    ]
-  },
 
   {
     group: 'MEC',
@@ -545,13 +439,6 @@ const PLANS = [
     ]
   },
 
-  {
-    group: 'Limited',
-    name: 'MedValue 2000 / 4000 / 6000',
-    network: 'First Health Network',
-    admin: 'HC Data Consulting, LLC',
-    assoc: 'ERISA'
-  },
 
   {
     group: 'MEC',
@@ -1826,11 +1713,8 @@ function renderNetworkexplainer() {
       color: 'var(--charcoal3)',
       bg: 'rgba(212,96,122,0.07)',
       plans: [
-        'MedFirst 1–5',
-        'TrueHealth 1–3',
         'GoodHealth 1–5',
         'TDK 1–5',
-        'MedValue 2000/4000/6000',
         'SmartChoice (EPO — in-network only)',
         'HarmonyCare / SigmaCare'
       ],

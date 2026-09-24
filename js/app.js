@@ -1025,7 +1025,7 @@ function _dashLookupDisplayType(plan) {
   if (!plan) return '—';
   var n = String(plan.name || '').toLowerCase();
   if (
-    /\bmedfirst\b|\btruehealth\b|\bgoodhealth\b|\btdk\b|\bsmartchoice\b|\bghdp\b/.test(
+    /\bgoodhealth\b|\btdk\b|\bsmartchoice\b|\bghdp\b/.test(
       n
     )
   ) {
