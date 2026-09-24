@@ -32,7 +32,7 @@ Live URL: https://cha-sales-tool.vercel.app/
 ## Sales Tracker architecture (current)
 
 - Sales Tracker page has a page-level KPI strip above the internal tab bar.
-- Internal tabs: `This Week`, `All Sales`, `Analytics`, `Reconcile`, `Paychecks`, `Chargebacks`, `History`.
+- Internal tabs: `This Week`, `All Sales`, `Reconcile`, `Paychecks`, `Chargebacks`, `History`.
 - Add Sale uses a fixed FAB + slide-over panel mounted as a body-level overlay root.
 - Dark mode has been permanently removed from this app and should not be reintroduced.
 - Service worker cache: read `CACHE_NAME` from `sw2.js` and bump by exactly +1. Never assume the version.
@@ -52,7 +52,6 @@ Live URL: https://cha-sales-tool.vercel.app/
 - css/tokens.css — **FIRST stylesheet** in index.html; shared CHA palette tokens (`--cha-*`)
 - css/styles.css — shared app styling
 - css/sales-tracker.css — Sales Tracker styles
-- css/course-215.css — Course 215 styles (loaded after chat.js)
 - js/storage-utils.js — scoped localStorage helpers
 - js/auth.js — Clerk session
 - js/speed-insights.js — Vercel Speed Insights
@@ -67,7 +66,7 @@ Live URL: https://cha-sales-tool.vercel.app/
 - js/plan-pdf-map.js — plan-to-PDF map
 - js/pdf-knowledge-runtime.js — PDF knowledge runtime
 - js/policy-docs.js — plan card render functions
-- js/plans-benefits.js — Plans tab, Compare, Benefits
+- js/plans-benefits.js — Plans tab, Benefits
 - js/call-playbook.js — Scripts tab, Plan Scripts
 - js/live-assist.js — Live Assist tab
 - js/ai-tools.js — AI Tools tab
@@ -79,14 +78,12 @@ Live URL: https://cha-sales-tool.vercel.app/
 - js/office.js — Office tab
 - js/app.js — routing, navigation, initApp
 - js/chat.js — Benefits Reference chatbot
-- js/course-215.js — Course 215 (loads after chat.js)
 
 ## Stylesheet load order in index.html (NEVER CHANGE)
 
 1. css/tokens.css (FIRST — defines `--cha-*` tokens used by the rest of the CSS)
 2. css/styles.css
 3. css/sales-tracker.css
-4. css/course-215.css (after chat.js)
 
 ## Script Load Order in index.html (NEVER CHANGE)
 
@@ -116,7 +113,6 @@ Live URL: https://cha-sales-tool.vercel.app/
 24. js/office.js
 25. js/app.js
 26. js/chat.js (after app.js)
-27. js/course-215.js (after chat.js)
 
 ## Color System
 

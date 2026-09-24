@@ -102,7 +102,7 @@ The converter maps onto 113 keys. Source of truth: `scripts/lib/base-schema.json
 ## Before reporting done
 
 - Zero JavaScript errors in the console.
-- This Week, All Sales, Analytics, Add Sale, Reconcile, Paychecks, Chargebacks, and History all still work.
+- This Week, All Sales, Add Sale, Reconcile, Paychecks, Chargebacks, and History all still work.
 - Existing saved data still loads unchanged.
 - Cache bump verified by diff — replaced, not appended.
 - Report in plain English. State what changed, what now works, what the user needs to do, and any limitation. No large code blocks.

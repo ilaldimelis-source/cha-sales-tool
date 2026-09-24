@@ -303,7 +303,6 @@ var PAGE_CONFIG = {
     label: 'Plans',
     subs: [
       { id: 'policydocs', label: 'Plans', render: renderPolicydocs },
-      { id: 'compare', label: 'Compare', render: renderCompare },
       { id: 'benefits', label: 'Benefits', render: renderBenefits }
     ]
   },

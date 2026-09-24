@@ -92,13 +92,13 @@ var sw = fs.readFileSync(path.join(ROOT, 'sw2.js'), 'utf8');
 var indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
 assert(
-  /var CACHE_NAME = 'cha-command-center-v142';/.test(sw),
-  'CACHE_NAME bumped to v142'
+  /var CACHE_NAME = 'cha-command-center-v167';/.test(sw),
+  'CACHE_NAME bumped to v167'
 );
 assert(
-  indexHtml.indexOf('sales-tracker.css?v=1787901420000') !== -1 &&
-    indexHtml.indexOf('1787901410000') === -1,
-  'cache bust replaced to v142'
+  indexHtml.indexOf('sales-tracker.css?v=1790260950067') !== -1 &&
+    indexHtml.indexOf('sales-tracker.css?v=1787901420000') === -1,
+  'cache bust replaced to v167'
 );
 assert(
   css.indexOf('st-hist-meta-warn') !== -1,
