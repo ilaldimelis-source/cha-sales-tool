@@ -3,68 +3,6 @@
 
 var KNOWLEDGE_BASE = {
   plans: {
-    'MedFirst 1': {
-      type: 'MEC',
-      network: 'First Health',
-      underwriter: 'MBA',
-      association: 'VP Limited/TVP',
-      deductible: 'NONE',
-      primaryCopay: '$25',
-      specialistCopay: '$50',
-      hospitalBenefit: '$1,000/day, $5,000/year max',
-      telemedicine: '$0',
-      rx: 'Discount only',
-      preExisting: '12/12 rule',
-      waitingPeriod: '30 days',
-      exclusions: ['Mental health', 'Substance abuse', 'Pregnancy'],
-      providerSearch: 'providerlocator.firsthealth.com'
-    },
-    'MedFirst 2': {
-      type: 'MEC',
-      network: 'First Health',
-      underwriter: 'MBA',
-      deductible: 'NONE',
-      primaryCopay: '$25 (4 visits/yr, $150 max)',
-      specialistCopay: '$50 (2 visits/yr, $300 max)',
-      hospitalBenefit: '$1,000/day, $10,000/year max',
-      rx: 'Generic $0, Preferred $5',
-      preventiveCare: 'Fully covered'
-    },
-    'MedFirst 3': {
-      type: 'MEC',
-      network: 'First Health',
-      underwriter: 'MBA',
-      deductible: 'NONE',
-      primaryCopay: '$25',
-      specialistCopay: '$50'
-    },
-    'MedFirst 4': {
-      type: 'MEC',
-      network: 'First Health',
-      underwriter: 'MBA',
-      deductible: 'NONE',
-      primaryCopay: '$50',
-      specialistCopay: '$75',
-      requiresSSN: true
-    },
-    'MedFirst 5': {
-      type: 'MEC',
-      network: 'First Health',
-      underwriter: 'MBA',
-      deductible: 'NONE',
-      primaryCopay: '$50',
-      specialistCopay: '$75',
-      requiresSSN: true
-    },
-    'TrueHealth 1-3': {
-      type: 'MEC',
-      network: 'First Health',
-      underwriter: 'MBA',
-      association: 'VP Limited/TVP',
-      deductible: 'NONE',
-      primaryCopay: '$25',
-      specialistCopay: '$50'
-    },
     'GoodHealth 1-3': {
       type: 'MEC',
       network: 'First Health',

@@ -88,24 +88,22 @@ function renderComplianceCenter() {
   html +=
     '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#5B8DEF;margin-bottom:8px;">MEC PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(91,141,239,0.12);color:#5B8DEF;margin-left:6px;letter-spacing:0;">MEC</span></div>';
   html +=
-    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: TrueHealth 1-3, MedFirst 1-5, GoodHealth 1-5, TDK 1-5, NEO Smart Choice, First Enroll MEDVALUE</div>';
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: GoodHealth 1-5, TDK 1-5, NEO Smart Choice</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
   html += '&#8226; This is a group plan -- not individual insurance<br>';
   html +=
     '&#8226; Member becomes a Working Owner of the sponsoring organization<br>';
   html +=
-    '&#8226; Name the correct Benefits Administrator: TDK = Detego Health | MedFirst/GoodHealth = MBA | NEO Smart Choice = Population Science Management | MEDVALUE = HC Data Consulting LLC<br>';
+    '&#8226; Name the correct Benefits Administrator: TDK = Detego Health | GoodHealth = MBA | NEO Smart Choice = Population Science Management<br>';
   html +=
     '&#8226; Name the billing admin: TDK = FirstEnroll AND NEO Insurance Solutions (both) | All others = FirstEnroll only<br>';
   html +=
     '&#8226; State exact visit limits and dollar caps -- never overstate benefits<br>';
   html +=
-    '&#8226; Tiers 1-3 (MedFirst/GoodHealth/TrueHealth): NO surgery, NO ER, NO ambulance -- Rx discount only on tier 1<br>';
+    '&#8226; Tiers 1-3 (GoodHealth): NO surgery, NO ER, NO ambulance -- Rx discount only on tier 1<br>';
   html +=
     '&#8226; Tiers 4-5: Surgery, ER (if admitted), and ambulance (if admitted) ARE covered with limits<br>';
-  html +=
-    '&#8226; MEDVALUE: Labs $50 3/yr, ER $500 1/yr, surgery covered with prior auth<br>';
   html +=
     '&#8226; Prescriptions: state formulary type -- brand NOT covered on most plans<br>';
   html += '&#8226; 30-day waiting period for sickness -- injury Day 1';

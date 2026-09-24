@@ -55,14 +55,6 @@ window.CHA_BONUS_TIERS_FOR_DASH = ST_BONUS_TIERS;
 // keeps the raw product name from the receipt instead of
 // falling back to "Unknown Plan".
 var CHA_CORE_PLAN_NAMES = [
-  'MedFirst 1',
-  'MedFirst 2',
-  'MedFirst 3',
-  'MedFirst 4',
-  'MedFirst 5',
-  'TrueHealth 1',
-  'TrueHealth 2',
-  'TrueHealth 3',
   'Good Health Distribution Partner 1',
   'Good Health Distribution Partner 2',
   'Good Health Distribution Partner 3',
@@ -119,10 +111,7 @@ var CHA_CORE_PLAN_NAMES = [
   'BWA Paramount',
   'MyChoice Plan Low',
   'MyChoice Plan Mid',
-  'MyChoice Plan High',
-  'MedValue 2000+',
-  'MedValue 4000+',
-  'MedValue 6000+'
+  'MyChoice Plan High'
 ];
 
 var CHA_ADDON_PLAN_NAMES = [
@@ -2917,7 +2906,7 @@ function _stParseReceipt(text, useGroq) {
         // (Employee, Employee + Children, Employee + Spouse, Employee +
         // Family, Individual, Member, etc., with or without an age
         // bracket) as long as it's followed by "- ID: <digits> -
-        // Payment:". This is the fixed vocabulary MedValue/GHDP receipts
+        // Payment:". This is the fixed vocabulary GHDP receipts
         // use for coverage-detail lines, which are never plan names.
         if (/-\s*id\s*:\s*\d+\s*-\s*payment\s*:/i.test(mfPrev)) continue;
         if (enrollmentRe.test(mfPrev)) continue;
@@ -3844,7 +3833,7 @@ function _stReceiptReviewLineIsJunk(name) {
 function _stReceiptReviewLineLooksAddonOnly(name) {
   var n = String(name || '').toLowerCase();
   if (
-    /short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|medfirst|goodhealth|tdk\b|access health/.test(
+    /short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|goodhealth|tdk\b|access health/.test(
       n
     )
   ) {
@@ -9338,9 +9327,6 @@ function _stReconNormName(s) {
 }
 
 var _ST_PLAN_ALIASES = {
-  'medvalue 2000': 'medvalue 2000 plus',
-  'medvalue 4000': 'medvalue 4000 plus',
-  'medvalue 6000': 'medvalue 6000 plus',
   tdk1: 'tdk 1',
   tdk2: 'tdk 2',
   tdk3: 'tdk 3',

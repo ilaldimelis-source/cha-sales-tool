@@ -149,7 +149,18 @@ Only `has_profile: true` rows are expected to have a profile file.
 unreachable from plan matching. The SPA does not read `plan-index.json` at
 runtime; a missing profile file falls through to NOT CONFIRMED.
 
-As of 2026-09-15: 159 index rows = 154 profile files + 5 uncertain stubs.
+As of 2026-09-24: 156 index rows = 154 profile files + 2 uncertain stubs
+(harmony-care-100-plus, ngl-dental). The three MedValue stubs were removed
+with the unsold plans.
+
+## Shared formulary files left unedited
+
+`data/bestchoicerx-formulary.json` and `data/ventegra-formulary.json` still
+name MedFirst, TrueHealth, and MedValue inside shared `plans` arrays that also
+name plans still sold (GoodHealth on BestChoiceRx, SmartChoice on Ventegra).
+Those entries are unreachable because the removed plans are no longer
+selectable. The files were deliberately left unedited. Do not treat the
+leftover names as a bug, and do not rewrite the repeated arrays to drop them.
 
 ## Plan profile benefit verification
 

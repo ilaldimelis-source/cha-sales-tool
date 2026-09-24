@@ -223,56 +223,6 @@
       missingFiles: []
     },
     {
-      planId: 'medf1',
-      planName: 'MedFirst 1',
-      type: 'MEC',
-      group: 'MedFirst',
-      aliases: ['MedFirst 1', 'medfirst 1', 'medf1', 'MedFirst1', 'medfirst1'],
-      pdfFiles: ['MEC_MedFirst1_SPD_Jan25.pdf', 'MEC_MedFirst1_SPDh_Jan25.pdf'],
-      status: 'missing_pdf',
-      missingFiles: ['MEC_MedFirst1_SPDh_Jan25.pdf']
-    },
-    {
-      planId: 'medf2',
-      planName: 'MedFirst 2',
-      type: 'MEC',
-      group: 'MedFirst',
-      aliases: ['MedFirst 2', 'medfirst 2', 'medf2', 'MedFirst2', 'medfirst2'],
-      pdfFiles: ['MEC_MedFirst2_SPD_Jan25.pdf'],
-      status: 'ready',
-      missingFiles: []
-    },
-    {
-      planId: 'medf3',
-      planName: 'MedFirst 3',
-      type: 'MEC',
-      group: 'MedFirst',
-      aliases: ['MedFirst 3', 'medfirst 3', 'medf3', 'MedFirst3', 'medfirst3'],
-      pdfFiles: ['MEC_MedFirst3_SPD_Jan25.pdf'],
-      status: 'ready',
-      missingFiles: []
-    },
-    {
-      planId: 'medf4',
-      planName: 'MedFirst 4',
-      type: 'MEC',
-      group: 'MedFirst',
-      aliases: ['MedFirst 4', 'medfirst 4', 'medf4', 'MedFirst4', 'medfirst4'],
-      pdfFiles: ['MEC_MedFirst4_SPD_Jan25.pdf'],
-      status: 'ready',
-      missingFiles: []
-    },
-    {
-      planId: 'medf5',
-      planName: 'MedFirst 5',
-      type: 'MEC',
-      group: 'MedFirst',
-      aliases: ['MedFirst 5', 'medfirst 5', 'medf5', 'MedFirst5', 'medfirst5'],
-      pdfFiles: ['MEC_MedFirst5_SPD_Jan25.pdf'],
-      status: 'ready',
-      missingFiles: []
-    },
-    {
       planId: 'mychoicehigh',
       planName: 'MyChoice - Plan High',
       type: 'Limited',
@@ -668,54 +618,6 @@
       pdfFiles: ['TDK_Plans_Complete_Guide.pdf'],
       status: 'ready',
       missingFiles: []
-    },
-    {
-      planId: 'trueh1',
-      planName: 'TrueHealth 1',
-      type: 'MEC',
-      group: 'TrueHealth',
-      aliases: [
-        'TrueHealth 1',
-        'truehealth 1',
-        'trueh1',
-        'TrueHealth1',
-        'truehealth1'
-      ],
-      pdfFiles: ['MEC_TrueHealth1_SPD_Jan25.pdf'],
-      status: 'ready',
-      missingFiles: []
-    },
-    {
-      planId: 'trueh2',
-      planName: 'TrueHealth 2',
-      type: 'MEC',
-      group: 'MEC',
-      aliases: [
-        'TrueHealth 2',
-        'truehealth 2',
-        'trueh2',
-        'TrueHealth2',
-        'truehealth2'
-      ],
-      pdfFiles: ['MEC_TrueHealth2_SPD_Jan25 (1).pdf'],
-      status: 'ready',
-      missingFiles: []
-    },
-    {
-      planId: 'trueh3',
-      planName: 'TrueHealth 3',
-      type: 'MEC',
-      group: 'MEC',
-      aliases: [
-        'TrueHealth 3',
-        'truehealth 3',
-        'trueh3',
-        'TrueHealth3',
-        'truehealth3'
-      ],
-      pdfFiles: ['MEC_TrueHealth3_SPD_Jan25 (1).pdf'],
-      status: 'ready',
-      missingFiles: []
     }
   ];
   window.CHA_PLAN_ALIAS_INDEX = {
@@ -754,21 +656,6 @@
     goodhealth5: 'ghdp5',
     'harmonycare plus': 'harmonycare',
     harmonycare: 'harmonycare',
-    'medfirst 1': 'medf1',
-    medf1: 'medf1',
-    medfirst1: 'medf1',
-    'medfirst 2': 'medf2',
-    medf2: 'medf2',
-    medfirst2: 'medf2',
-    'medfirst 3': 'medf3',
-    medf3: 'medf3',
-    medfirst3: 'medf3',
-    'medfirst 4': 'medf4',
-    medf4: 'medf4',
-    medfirst4: 'medf4',
-    'medfirst 5': 'medf5',
-    medf5: 'medf5',
-    medfirst5: 'medf5',
     'mychoice plan high': 'mychoicehigh',
     mychoicehigh: 'mychoicehigh',
     'mychoice plan low': 'mychoicelow',
@@ -834,15 +721,6 @@
     'tdk-4': 'tdk-4',
     'tdk-5': 'tdk-5',
     'tdk complete guide': 'tdk-complete-guide',
-    'tdk-complete-guide': 'tdk-complete-guide',
-    'truehealth 1': 'trueh1',
-    trueh1: 'trueh1',
-    truehealth1: 'trueh1',
-    'truehealth 2': 'trueh2',
-    trueh2: 'trueh2',
-    truehealth2: 'trueh2',
-    'truehealth 3': 'trueh3',
-    trueh3: 'trueh3',
-    truehealth3: 'trueh3'
+    'tdk-complete-guide': 'tdk-complete-guide'
   };
 })();
