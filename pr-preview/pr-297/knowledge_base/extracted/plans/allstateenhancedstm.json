@@ -1,0 +1,27 @@
+{
+  "planId": "allstateenhancedstm",
+  "planName": "Allstate Enhanced STM PPO Plan",
+  "status": "missing_pdf",
+  "documents": [
+    {
+      "fileName": "Allstate_Enhanced_STM_PPO_Brochure.pdf",
+      "sourceType": "brochure",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "Allstate Enhanced STM PPO Plan Short Term Medical. Deductibles from $2,500 to $25,000. Coinsurance from 0% to 50%. Coverage period maximum $1,000,000. Office visits including preventive subject to deductible and coinsurance. Outpatient services subject to deductible and coinsurance $5,000 benefit limit on joint neck spine connective tissue tendons ligaments cartilage. 30 visit limit for PT OT ST cardiac pulmonary rehabilitation. Adult screenings subject to deductible and coinsurance. Inpatient hospital stays subject to deductible and coinsurance. Emergency room $250 access fee waived if admitted subject to deductible and coinsurance. Diagnostic x-ray lab subject to deductible and coinsurance. Urgent care $50 access fee deductible waived remaining subject to coinsurance. Child immunizations first dollar benefit no deductible. Out-of-network deductibles and coinsurance doubled. Family deductible capped at 3x individual. Copays not applicable out-of-network. Short term medical not ACA compliant. Pre-existing conditions subject to underwriting review. No waiting period stated. NEO Insurance Solutions PPO network Allstate.",
+          "normalizedText": "allstate enhanced stm ppo plan short term medical deductibles from 2 500 to 25 000 coinsurance from 0 to 50 coverage period maximum 1 000 000 office visits including preventive subject to deductible and coinsurance outpatient services subject to deductible and coinsurance 5 000 benefit limit on joint neck spine connective tissue tendons ligaments cartilage 30 visit limit for pt ot st cardiac pulmonary rehabilitation adult screenings subject to deductible and coinsurance inpatient hospital stays subject to deductible and coinsurance emergency room 250 access fee waived if admitted subject to deductible and coinsurance diagnostic x ray lab subject to deductible and coinsurance urgent care 50 access fee deductible waived remaining subject to coinsurance child immunizations first dollar benefit no deductible out of network deductibles and coinsurance doubled family deductible capped at 3x individual copays not applicable out of network short term medical not aca compliant pre existing conditions subject to underwriting review no waiting period stated neo insurance solutions ppo network allstate"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "allstateenhancedstm-c1",
+      "text": "Allstate Enhanced STM PPO Plan Short Term Medical. Deductibles from $2,500 to $25,000. Coinsurance from 0% to 50%. Coverage period maximum $1,000,000. Office visits including preventive subject to deductible and coinsurance. Outpatient services subject to deductible and coinsurance $5,000 benefit limit on joint neck spine connective tissue tendons ligaments cartilage. 30 visit limit for PT OT ST cardiac pulmonary rehabilitation. Adult screenings subject to deductible and coinsurance. Inpatient hospital stays subject to deductible and coinsurance. Emergency room $250 access fee waived if admitted subject to deductible and coinsurance. Diagnostic x-ray lab subject to deductible and coinsurance. Urgent care $50 access fee deductible waived remaining subject to coinsurance. Child immunizations first dollar benefit no deductible. Out-of-network deductibles and coinsurance doubled. Family deductible capped at 3x individual. Copays not applicable out-of-network. Short term medical not ACA compliant. Pre-existing conditions subject to underwriting review. No waiting period stated. NEO Insurance Solutions PPO network Allstate.",
+      "tokenEstimate": 284,
+      "pageRange": "1-1",
+      "normalizedText": "allstate enhanced stm ppo plan short term medical deductibles from 2 500 to 25 000 coinsurance from 0 to 50 coverage period maximum 1 000 000 office visits including preventive subject to deductible and coinsurance outpatient services subject to deductible and coinsurance 5 000 benefit limit on joint neck spine connective tissue tendons ligaments cartilage 30 visit limit for pt ot st cardiac pulmonary rehabilitation adult screenings subject to deductible and coinsurance inpatient hospital stays subject to deductible and coinsurance emergency room 250 access fee waived if admitted subject to deductible and coinsurance diagnostic x ray lab subject to deductible and coinsurance urgent care 50 access fee deductible waived remaining subject to coinsurance child immunizations first dollar benefit no deductible out of network deductibles and coinsurance doubled family deductible capped at 3x individual copays not applicable out of network short term medical not aca compliant pre existing conditions subject to underwriting review no waiting period stated neo insurance solutions ppo network allstate"
+    }
+  ]
+}
