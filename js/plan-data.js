@@ -10,6 +10,7 @@ var CHA_KNOWLEDGE_BASE_REF_TEXT =
   'GoodHealth 1-3 / 4-5 First Health MBA Good Health Partners\n' +
   'TDK 1-3 / 4-5 First Health Detego Health Health Care Data Analytics\n' +
   'HarmonyCare First Health Everest NCE\n' +
+  'Goodlife Partners WB Choice / WB Select First Health LBP MBA Good Life Partners\n' +
   'SigmaCare MultiPlan Everest NCE\n' +
   'Everest MultiPlan AFSLIC NCE\n' +
   'Pinnacle Protect 1-4 PHCS Everest AWA\n' +
@@ -2136,6 +2137,173 @@ var POLICY_DOCS = [
       'Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period.',
     planNotes:
       'Short term medical. Billing is Neo Insurance Solutions. Claims are InsuranceTPA.com. No brochure PDF is loaded in this app.'
+  }
+,
+  {
+    group: 'Limited',
+    id: 'goodlifewbchoice',
+    rawText: 'Goodlife Partners WB Choice. Scheduled fixed indemnity. Not MEC. Not STM. Rates are the same at every age.',
+    name: 'Goodlife Partners WB Choice',
+    type: 'Limited Benefit / Fixed Indemnity',
+    carrier: 'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+    assoc: 'Good Life Partners',
+    network: 'First Health Network, a CVS Health company',
+    source: '',
+    benefits: [
+      {
+        category: 'Price, same at every age',
+        items: [
+          'Enrollment fee: $49.99 one-time',
+          'Member: $274.99 / month',
+          'Member + Spouse: $379.99 / month',
+          'Member + Child(ren): $329.99 / month',
+          'Family: $469.99 / month'
+        ]
+      },
+      {
+        category: 'Office visits, in-network only',
+        items: [
+          'Primary care: member pays $60, plan pays up to $100, 5 visits per year',
+          'Specialist: member pays $75, plan pays up to $125, 3 visits per year',
+          'Urgent care: member pays $75, plan pays up to $75, 2 visits per year'
+        ]
+      },
+      {
+        category: 'Hospital, surgery and emergency',
+        items: [
+          'Inpatient hospital: $1,500 per day, 10 days per year, payable at any hospital',
+          'Emergency room: $750 per visit, 1 per year, not network-restricted',
+          'Ground ambulance: $500 per incident, 2 per year',
+          'Surgical tiers 1 to 7: $25,000 / $10,000 / $5,000 / $2,500 / $1,250 / $500 / $250',
+          'Assistant surgeon pays 20% of the surgical benefit. Anaesthesiologist pays 30%. If more than one covered surgery is performed the same day, the plan pays the highest tier only. Surgical tier is set by CPT code.'
+        ]
+      },
+      {
+        category: 'Administration',
+        items: [
+          'Plan sponsor: Wellness Brands Management LLC, general partner of Good Life Partners LP',
+          'Plan administrator, claims and eligibility: Merchants Benefit Administration (MBA), (480) 550-6457',
+          'Billing and enrollment: Neo Insurance Solutions, (866) 870-7730',
+          'Network phone: (800) 226-5116. Provider search: firsthealthlbp.com',
+          'Benefits reset on a calendar year, January 1',
+          '30-day free look from the effective date',
+          '$10,000 group term life, primary member only',
+          'Healthcare Ninja bill advocacy included',
+          'Kindly Human 24/7 peer support included',
+          'No preauthorization or referral on any covered service',
+          'Coverage tiers: Member Only, Member + Spouse, Member + Child(ren), Member + Family',
+          'Dependants: legal spouse and children through the end of the month they turn 26',
+          'Eligibility: employee of the plan sponsor or a participating employer, OR a Working Owner under Section 3.8 of the Summary Plan Description'
+        ]
+      }
+    ],
+    limitations: [
+          'NOT MEC',
+          'NOT STM',
+          'NOT ACA',
+          'No deductible and no coinsurance. Pays set cash amounts per covered event',
+          'Primary care, specialist and urgent care: in-network only. Out-of-network pays nothing',
+          'Preventive and wellness: in-network only',
+          'Inpatient hospital: payable at any hospital',
+          'Surgical benefit, all tiers: payable at any facility',
+          'Emergency room: not network-restricted',
+          'All prescription drugs are not covered',
+          'Telemedicine is not covered',
+          'Inpatient physician visits, air ambulance, outpatient diagnostics and advanced radiology are not covered',
+          'Skilled nursing, home health, physical and occupational therapy are not covered',
+          'Radiation, chemotherapy, and durable medical equipment are not covered',
+          'Inpatient mental health and substance abuse are not covered',
+          'Dental, vision, hearing aids, infertility, cosmetic, experimental, and custodial care are not covered',
+          'Weight-loss treatment, workers-comp injuries, and non-emergency care outside the United States are not covered'
+    ],
+    waitingPeriods: [
+      '30-day waiting period for sickness. Accident coverage begins on the effective date.'
+    ],
+    preEx: 'Pre-existing conditions have a 12-month / 12-month limitation applying to hospital and surgery benefits only. Other benefits remain available.',
+    planNotes: 'Scheduled fixed indemnity. Not MEC. Not STM. Rates do not vary by age. No brochure PDF is loaded in this app. State availability was not given.'
+  },
+  {
+    group: 'Limited',
+    id: 'goodlifewbselect',
+    rawText: 'Goodlife Partners WB Select. Scheduled fixed indemnity. Not MEC. Not STM. Rates are the same at every age.',
+    name: 'Goodlife Partners WB Select',
+    type: 'Limited Benefit / Fixed Indemnity',
+    carrier: 'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+    assoc: 'Good Life Partners',
+    network: 'First Health Network, a CVS Health company',
+    source: '',
+    benefits: [
+      {
+        category: 'Price, same at every age',
+        items: [
+          'Enrollment fee: $49.99 one-time',
+          'Member: $335.00 / month',
+          'Member + Spouse: $500.00 / month',
+          'Member + Child(ren): $425.00 / month',
+          'Family: $700.00 / month'
+        ]
+      },
+      {
+        category: 'Office visits, in-network only',
+        items: [
+          'Primary care: member pays $50, plan pays up to $150, 8 visits per year',
+          'Specialist: member pays $75, plan pays up to $150, 3 visits per year',
+          'Urgent care: member pays $75, plan pays up to $125, 3 visits per year'
+        ]
+      },
+      {
+        category: 'Hospital, surgery and emergency',
+        items: [
+          'Inpatient hospital: $2,500 per day, 10 days per year, payable at any hospital',
+          'Emergency room: $750 per visit, 3 per year, not network-restricted',
+          'Ground ambulance: $500 per incident, 2 per year',
+          'Surgical tiers 1 to 7: $50,000 / $20,000 / $10,000 / $5,000 / $2,500 / $1,000 / $500',
+          'Assistant surgeon pays 20% of the surgical benefit. Anaesthesiologist pays 30%. If more than one covered surgery is performed the same day, the plan pays the highest tier only. Surgical tier is set by CPT code.'
+        ]
+      },
+      {
+        category: 'Administration',
+        items: [
+          'Plan sponsor: Wellness Brands Management LLC, general partner of Good Life Partners LP',
+          'Plan administrator, claims and eligibility: Merchants Benefit Administration (MBA), (480) 550-6457',
+          'Billing and enrollment: Neo Insurance Solutions, (866) 870-7730',
+          'Network phone: (800) 226-5116. Provider search: firsthealthlbp.com',
+          'Benefits reset on a calendar year, January 1',
+          '30-day free look from the effective date',
+          '$10,000 group term life, primary member only',
+          'Healthcare Ninja bill advocacy included',
+          'Kindly Human 24/7 peer support included',
+          'No preauthorization or referral on any covered service',
+          'Coverage tiers: Member Only, Member + Spouse, Member + Child(ren), Member + Family',
+          'Dependants: legal spouse and children through the end of the month they turn 26',
+          'Eligibility: employee of the plan sponsor or a participating employer, OR a Working Owner under Section 3.8 of the Summary Plan Description'
+        ]
+      }
+    ],
+    limitations: [
+          'NOT MEC',
+          'NOT STM',
+          'NOT ACA',
+          'No deductible and no coinsurance. Pays set cash amounts per covered event',
+          'Primary care, specialist and urgent care: in-network only. Out-of-network pays nothing',
+          'Preventive and wellness: in-network only',
+          'Inpatient hospital: payable at any hospital',
+          'Surgical benefit, all tiers: payable at any facility',
+          'Emergency room: not network-restricted',
+          'All prescription drugs are not covered',
+          'Telemedicine is not covered',
+          'Inpatient physician visits, air ambulance, outpatient diagnostics and advanced radiology are not covered',
+          'Skilled nursing, home health, physical and occupational therapy are not covered',
+          'Radiation, chemotherapy, and durable medical equipment are not covered',
+          'Inpatient mental health and substance abuse are not covered',
+          'Dental, vision, hearing aids, infertility, cosmetic, experimental, and custodial care are not covered',
+          'Weight-loss treatment, workers-comp injuries, and non-emergency care outside the United States are not covered'
+    ],
+    waitingPeriods: [
+      '30-day waiting period for sickness. Accident coverage begins on the effective date.'
+    ],
+    preEx: 'Pre-existing conditions have a 12-month / 12-month limitation applying to hospital and surgery benefits only. Other benefits remain available.',
+    planNotes: 'Scheduled fixed indemnity. Not MEC. Not STM. Rates do not vary by age. No brochure PDF is loaded in this app. State availability was not given.'
   }
 ];
 /* Knowledge-base PDF full text merges + reference table prepend: see js/plan-data-pdf-raw.js */

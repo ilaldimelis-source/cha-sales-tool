@@ -229,6 +229,12 @@ function brInit() {
     'harbor access': 'Harbor STM Access',
     'harbor secure': 'Harbor STM Secure',
     'cigna': 'Harbor STM',
+    'goodlife': 'Goodlife Partners WB',
+    'goodlife partners': 'Goodlife Partners WB',
+    'wb choice': 'Goodlife Partners WB Choice',
+    'wb select': 'Goodlife Partners WB Select',
+    'goodlife choice': 'Goodlife Partners WB Choice',
+    'goodlife select': 'Goodlife Partners WB Select',
     'sigmacare': 'SigmaCare', 'sigma': 'SigmaCare',
     'nce': 'NCE', 'health choice': 'NCE',
     'bwa': 'BWA', 'paramount': 'Paramount', 'americare': 'Americare',
@@ -911,15 +917,21 @@ function brAnswerWithProfile(planId, planName, query, intentId) {
   }
   window.brLoadProfile(planId).then(function (profile) {
     if (!profile) {
+      var shownName = '';
+      if (planName && String(planName) !== String(planId)) shownName = planName;
+      if (!shownName) shownName = brPolicyDocDisplayName(planId);
+      if (!shownName) shownName = planName || planId || '';
+      brResolvedPlanId = planId;
+      brResolvedPlanName = shownName;
       brRenderServerAnswer(
         {
           status: 'VERIFY',
           fact: 'NOT CONFIRMED. No held document confirms this. The carrier document is needed.',
           sayThis: 'I need the carrier document before I can answer that.',
-          source: planName || planId || '',
+          source: shownName,
           requestId: ''
         },
-        planName || planId,
+        shownName,
         ''
       );
       return;
@@ -1039,6 +1051,18 @@ function brTokenizePlanQuery(raw) {
   return s.split(' ');
 }
 
+function brPolicyDocDisplayName(planId) {
+  if (typeof POLICY_DOCS === 'undefined' || planId == null) return '';
+  var i;
+  var id = String(planId);
+  for (i = 0; i < POLICY_DOCS.length; i++) {
+    if (POLICY_DOCS[i] && String(POLICY_DOCS[i].id) === id && POLICY_DOCS[i].name) {
+      return POLICY_DOCS[i].name;
+    }
+  }
+  return '';
+}
+
 function brQueryIsPlanNameOnly(query, planId, displayName) {
   var q = brTokenizePlanQuery(query);
   if (!q.length) return false;
@@ -1087,7 +1111,8 @@ function brRenderPlanConfirmation(profile, planId) {
       confidence = String(profile.profile_confidence);
     }
   } else {
-    brResolvedPlanName = planId;
+    name = brPolicyDocDisplayName(planId) || planId;
+    brResolvedPlanName = name;
   }
   brAddMsg(
     'ai',
@@ -1134,22 +1159,23 @@ function brSend() {
         query && typeof window.brMatchIntent === 'function'
           ? window.brMatchIntent(query)
           : null;
+      var matchedName = brPolicyDocDisplayName(match.planId) || match.planId;
       if (intentId || intentFromQuery) {
-        brAnswerWithProfile(match.planId, match.planId, query, intentId);
+        brAnswerWithProfile(match.planId, matchedName, query, intentId);
       } else if (typeof window.brLoadProfile === 'function') {
         window.brLoadProfile(match.planId).then(function (profile) {
           var id = (profile && profile.plan_id) || match.planId;
-          var display = (profile && profile.display_name) || match.planId;
+          var display = (profile && profile.display_name) || matchedName;
           if (brQueryIsPlanNameOnly(query, id, display)) {
             brRenderPlanConfirmation(profile, match.planId);
           } else {
-            brAnswerWithProfile(match.planId, match.planId, query, null);
+            brAnswerWithProfile(match.planId, display, query, null);
           }
         });
-      } else if (brQueryIsPlanNameOnly(query, match.planId, match.planId)) {
+      } else if (brQueryIsPlanNameOnly(query, match.planId, matchedName)) {
         brConfirmResolvedPlan(match.planId);
       } else {
-        brAnswerWithProfile(match.planId, match.planId, query, null);
+        brAnswerWithProfile(match.planId, matchedName, query, null);
       }
     } else if (match.status === 'AMBIGUOUS') {
       _brPendingQuery = query;

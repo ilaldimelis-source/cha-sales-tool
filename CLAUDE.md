@@ -188,6 +188,23 @@ period. The plan cards, compliance notes and knowledge base
 correctly omit both figures, so the spoken script and the
 reference data disagree. Kept verbatim by decision, Sept 2026. Resolve when the Neo certificate of coverage arrives.
 
+The WB Choice & Select member guide is not in the repo, so
+chat reports NOT CONFIRMED for both Goodlife plans while
+the Plans tab states the benefits as fact. Add
+`WB_Choice___Select_-_Member_Guide.pdf` and build profiles
+under data/plans/ to close this. The same applies to Harbor
+STM.
+
+The Goodlife script conflicts with the member guide in five
+places: it sells prescription savings and a discount card
+when all prescription drugs are excluded; it says the plan
+pays at any hospital when office visits and preventive are
+in-network only; it gives providerlocator.firsthealth.com
+when the guide gives firsthealthlbp.com; it states no annual
+visit limits when both plans have them; and it omits the
+30-day free look and the $10,000 group term life. Kept
+verbatim by decision, Sept 2026.
+
 ## Plan profile benefit verification
 
 The converter maps onto 113 keys. Source of truth: scripts/lib/base-schema.json (array length 113).

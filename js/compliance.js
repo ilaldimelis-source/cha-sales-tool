@@ -150,11 +150,13 @@ function renderComplianceCenter() {
   html +=
     '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#DC2626;margin-bottom:8px;">LIMITED BENEFIT PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(220,38,38,0.10);color:#DC2626;margin-left:6px;letter-spacing:0;">LIMITED</span></div>';
   html +=
-    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Everest, HarmonyCare, SigmaCare, BWA Paramount 1-6, BWA Americare 2/3/4, Health Choice Silver, Pinnacle Protect 1-4</div>';
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Everest, HarmonyCare, SigmaCare, BWA Paramount 1-6, BWA Americare 2/3/4, Health Choice Silver, Pinnacle Protect 1-4, Goodlife Partners WB Choice, Goodlife Partners WB Select</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
   html +=
     '&#8226; State this is a fixed indemnity / limited benefit plan -- not major medical<br>';
+  html +=
+    '&#8226; Goodlife Partners WB Choice and WB Select: scheduled fixed indemnity, not MEC and not STM. Plan sponsor Wellness Brands Management LLC, general partner of Good Life Partners LP. Administrator, claims and eligibility: Merchants Benefit Administration (MBA), (480) 550-6457. Billing and enrollment: Neo Insurance Solutions, (866) 870-7730. Network: First Health Network, a CVS Health company, (800) 226-5116, firsthealthlbp.com. No deductible, no coinsurance. Benefits reset January 1. 30-day waiting period for sickness. Accident coverage begins on the effective date. Pre-existing is a 12-month / 12-month limitation on hospital and surgery benefits only. 30-day free look. $10,000 group term life, primary member only. Office visits and preventive care are in-network only. Hospital, surgery and emergency room are not limited to the network. Choice: member $274.99, spouse $379.99, child(ren) $329.99, family $469.99, enrollment fee $49.99. Select: member $335.00, spouse $500.00, child(ren) $425.00, family $700.00, enrollment fee $49.99. Rates do not vary by age.<br>';
   html +=
     '&#8226; Plan pays a fixed cash benefit -- NOT a percentage of the bill -- member may owe significant balance<br>';
   html += '&#8226; No true out-of-pocket maximum on any of these plans<br>';
