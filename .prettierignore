@@ -10,6 +10,7 @@ ledger/
 data/plans/
 data/plan-index.json
 data/plan-aliases.json
+data/addons.json
 build/
 knowledge_base/
 test-results/
