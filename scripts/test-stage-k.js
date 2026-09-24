@@ -253,13 +253,6 @@ assert(
 );
 
 var weekStart = ctx._stStartOfWeek(new Date(2026, 7, 16, 12, 0, 0)).getTime();
-var stats = ctx._stCalcStats([], weekStart);
-var dash = ctx._stBuildAnalyticsDashboard([], stats);
-assert(
-  dash.indexOf('Product commission rates') === -1,
-  'rates panel is not on Analytics'
-);
-
 var recon = ctx._stBuildReconcilePane([], {
   start: weekStart,
   endExclusive: weekStart + 7 * 24 * 60 * 60 * 1000

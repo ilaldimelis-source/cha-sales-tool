@@ -13447,82 +13447,12 @@ function _stBuildFloatingPaycheckBar(sales, stats) {
   );
 }
 
-// ── ANALYTICS DASHBOARD (additive — read-only rollups) ───────
+// ── Home dashboard weekly progress (read-only sales rollup) ──
 function chaAnalyticsReadBundle() {
   var sales = _stLoadSales();
   sales = _stValidateSalesIntegrity(sales);
   var stats = _stCalcStats(sales);
   return { sales: sales, stats: stats };
-}
-
-function _stSumPremiumInRange(sales, t0, t1) {
-  var validDealReceiptIds = {};
-  var di;
-  for (di = 0; di < sales.length; di++) {
-    var ds = sales[di];
-    if (!ds || ds.type !== 'deal') continue;
-    if (ds.ts < t0 || ds.ts >= t1) continue;
-    if (!_stIsReversalStatus(ds) && ds.receiptId) {
-      validDealReceiptIds[ds.receiptId] = true;
-    }
-  }
-  var total = 0;
-  var i;
-  for (i = 0; i < sales.length; i++) {
-    var s = sales[i];
-    if (!s) continue;
-    if (_stIsReversalStatus(s)) continue;
-    if (s.ts < t0 || s.ts >= t1) continue;
-    var include = false;
-    if (s.type === 'deal') include = true;
-    else if (s.type === 'addon') {
-      include = s.receiptId ? validDealReceiptIds[s.receiptId] === true : true;
-    }
-    if (include) total += Number(s.amount) || 0;
-  }
-  return total;
-}
-
-function _stMonthPremiumTotal(sales, y, m) {
-  var t0 = new Date(y, m, 1, 0, 0, 0, 0).getTime();
-  var t1 = new Date(y, m + 1, 1, 0, 0, 0, 0).getTime();
-  return _stSumPremiumInRange(sales, t0, t1);
-}
-
-function _stGetMonthlyGoalDollars() {
-  try {
-    var raw = null;
-    if (typeof chaGet === 'function') {
-      var v = chaGet('cha_monthly_goal', null);
-      raw = v == null ? null : String(v);
-    }
-    if (raw == null) raw = '';
-    var n = raw ? parseFloat(raw) : 10000;
-    if (isNaN(n) || n < 1000) return 10000;
-    return n;
-  } catch (_e) {
-    return 10000;
-  }
-}
-
-function _stEditMonthlyGoal() {
-  var cur = _stGetMonthlyGoalDollars();
-  var v = window.prompt('Monthly sales goal ($)', String(cur));
-  if (v == null) return;
-  var n = parseFloat(String(v).replace(/[$,]/g, ''));
-  if (isNaN(n) || n < 0) {
-    _stFlash('Invalid goal.', 'error');
-    return;
-  }
-  try {
-    if (typeof chaSet === 'function') {
-      chaSet('cha_monthly_goal', n);
-    } else {
-      localStorage.setItem('cha_monthly_goal', String(n));
-    }
-  } catch (_e2) {}
-  _stRender();
-  _stFlash('Monthly goal updated.', 'ok');
 }
 
 function _stCbcEventTs(sale) {
@@ -15099,7 +15029,6 @@ function _stNavValidTab(tabId) {
   return (
     tabId === 'thisweek' ||
     tabId === 'allsales' ||
-    tabId === 'analytics' ||
     tabId === 'reconcile' ||
     tabId === 'paychecks' ||
     tabId === 'chargebacks' ||
@@ -15348,7 +15277,6 @@ function _stBuildInternalSubtabs(activeTab) {
     '<div class="page-subtabs-inner" role="tablist" aria-label="Sales Tracker">';
   html += _stNavTabBtnHtml('thisweek', activeTab, 'This Week');
   html += _stNavTabBtnHtml('allsales', activeTab, 'All Sales');
-  html += _stNavTabBtnHtml('analytics', activeTab, 'Analytics');
   html += _stNavTabBtnHtml('reconcile', activeTab, 'Reconcile');
   html += _stNavTabBtnHtml('paychecks', activeTab, 'Paychecks');
   html += _stNavTabBtnHtml(
@@ -15504,170 +15432,6 @@ function _stNavOpenSale(btn) {
   _stOpenCommissionEditor(sale.id);
 }
 
-function _stBuildAnalyticsDashboard(sales, stats) {
-  var now = new Date();
-  var ws = stats.weekStart;
-  var weekMs = 7 * 24 * 60 * 60 * 1000;
-  var wkTotals = [];
-  var wkLabels = [];
-  var wi;
-  for (wi = 3; wi >= 0; wi--) {
-    var start = ws - wi * weekMs;
-    wkTotals.push(_stSumPremiumInRange(sales, start, start + weekMs));
-    wkLabels.push(wi === 0 ? 'This week' : 'Week ' + (4 - wi));
-  }
-  var sumWk = 0;
-  for (wi = 0; wi < wkTotals.length; wi++) {
-    sumWk += Number(wkTotals[wi]) || 0;
-  }
-  var allWeeksZero = sumWk === 0;
-  var maxBar = Math.max.apply(null, wkTotals.concat([1]));
-  var barW = 48;
-  var barGap = 10;
-  var chartH = 132;
-  var chartBlock;
-  if (allWeeksZero) {
-    chartBlock =
-      '<div class="st-analytics-chart-empty" role="status">No sales data yet. Start logging sales to see your weekly trend.</div>';
-  } else {
-    var svgBars = '';
-    var bi;
-    for (bi = 0; bi < wkTotals.length; bi++) {
-      var h = Math.round((wkTotals[bi] / maxBar) * (chartH - 26));
-      var x = 20 + bi * (barW + barGap);
-      var y = chartH - 18 - h;
-      svgBars +=
-        '<rect x="' +
-        x +
-        '" y="' +
-        y +
-        '" width="' +
-        barW +
-        '" height="' +
-        h +
-        '" rx="4" fill="#5B8DEF"><title>' +
-        _stEscape(wkLabels[bi] + ': $' + Math.round(wkTotals[bi])) +
-        '</title></rect>';
-      svgBars +=
-        '<text x="' +
-        (x + barW / 2) +
-        '" y="' +
-        (chartH - 4) +
-        '" text-anchor="middle" font-size="9" fill="#64748b">' +
-        _stEscape(wkLabels[bi]) +
-        '</text>';
-    }
-    chartBlock =
-      '<svg class="st-analytics-chart" viewBox="0 0 300 ' +
-      chartH +
-      '" width="100%" height="' +
-      Math.min(160, chartH) +
-      '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Weekly premium totals">' +
-      svgBars +
-      '</svg>';
-  }
-
-  var goal = _stGetMonthlyGoalDollars();
-  var monthPrem = _stMonthPremiumTotal(
-    sales,
-    now.getFullYear(),
-    now.getMonth()
-  );
-  var pct = goal > 0 ? Math.min(100, Math.round((monthPrem / goal) * 100)) : 0;
-
-  var msDay = 24 * 60 * 60 * 1000;
-  var daysElapsed = Math.max(
-    1,
-    Math.min(7, Math.floor((Date.now() - ws) / msDay) + 1)
-  );
-  var paceWeek =
-    daysElapsed > 0 ? (stats.weekCommissionValid / daysElapsed) * 7 : 0;
-  var paceMonth = paceWeek * 4.3;
-
-  var fourWeekStart = _stStartOfDay(
-    new Date(now.getTime() - 27 * msDay)
-  ).getTime();
-  var wdSum = [0, 0, 0, 0, 0, 0, 0];
-  var wdCnt = [0, 0, 0, 0, 0, 0, 0];
-  var t;
-  for (t = fourWeekStart; t <= now.getTime(); t += msDay) {
-    var dayTot = _stSumPremiumInRange(sales, t, t + msDay);
-    var dd = new Date(t);
-    var wd = dd.getDay();
-    wdCnt[wd]++;
-    wdSum[wd] += dayTot;
-  }
-  var bestWd = -1;
-  var bestAvg = 0;
-  var wdx;
-  for (wdx = 0; wdx < 7; wdx++) {
-    if (wdCnt[wdx] === 0) continue;
-    var av = wdSum[wdx] / wdCnt[wdx];
-    if (bestWd < 0 || av > bestAvg) {
-      bestAvg = av;
-      bestWd = wdx;
-    }
-  }
-  var dayNames = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
-  ];
-
-  var html =
-    '<section class="st-analytics st-analytics-compact" aria-label="Sales analytics">';
-  html +=
-    '<div class="st-analytics-chart-card"><div class="st-analytics-card-title">Weekly premium</div>';
-  html += chartBlock + '</div>';
-
-  html += '<div class="st-analytics-cards-3">';
-  html +=
-    '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Monthly goal</div>';
-  html += '<div class="st-analytics-goal-row">';
-  html +=
-    '<span class="st-analytics-goal-line">$' +
-    Math.round(monthPrem).toLocaleString() +
-    ' of $' +
-    Math.round(goal).toLocaleString() +
-    ' <span class="st-analytics-pct">(' +
-    pct +
-    '%)</span></span>';
-  html +=
-    '<button type="button" class="st-analytics-link" onclick="_stEditMonthlyGoal()">Edit goal</button></div>';
-  html +=
-    '<div class="st-analytics-progress st-analytics-progress-thin"><span style="width:' +
-    pct +
-    '%"></span></div></div>';
-
-  html +=
-    '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Commission forecast</div>';
-  html +=
-    '<p class="st-analytics-one-line">This week: <strong>' +
-    _stFmtMoney(paceWeek) +
-    '</strong> · This month: <strong>' +
-    _stFmtMoney(paceMonth) +
-    '</strong></p>';
-  html += '<p class="st-analytics-note">Based on current pace</p></div>';
-
-  html +=
-    '<div class="st-analytics-card st-analytics-mini"><div class="st-analytics-card-title">Best day</div>';
-  html +=
-    '<p class="st-analytics-one-line"><strong>' +
-    (bestWd < 0 ? '-' : dayNames[bestWd]) +
-    '</strong> · $' +
-    Math.round(bestAvg).toLocaleString() +
-    ' avg</p>';
-  html += '<p class="st-analytics-note">Last 4 weeks</p></div>';
-
-  html += '</div>';
-  html += '</section>';
-  return html;
-}
-
 // ── MAIN RENDER ─────────────────────────────────────────────
 function _stRender() {
   var page = document.getElementById('page-salestracker');
@@ -15720,12 +15484,6 @@ function _stRender() {
   html += _stBuildAllSalesPane(sales);
   html +=
     '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
-  html += '</div>';
-  html +=
-    '<div id="stTabPanelAnalytics" class="st-tab-panel" role="tabpanel" style="display:' +
-    (stTab === 'analytics' ? 'block' : 'none') +
-    '">';
-  html += _stBuildAnalyticsDashboard(sales, stats);
   html += '</div>';
   html +=
     '<div id="stTabPanelReconcile" class="st-tab-panel" role="tabpanel" style="display:' +

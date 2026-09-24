@@ -64,8 +64,8 @@ assert(
 
 var remaining = css.match(/#[0-9a-fA-F]{3,8}\b/g) || [];
 assert(
-  remaining.length === 347,
-  'remaining hardcoded hex count is 347 (got ' + remaining.length + ')'
+  remaining.length === 338,
+  'remaining hardcoded hex count is 338 (got ' + remaining.length + ')'
 );
 
 if (failures.length) {
@@ -77,4 +77,4 @@ if (failures.length) {
 }
 
 console.log('STAGE Q TESTS PASSED');
-console.log('exact-match hex migrated; 347 orphans remain by design');
+console.log('exact-match hex migrated; 338 orphans remain by design');
