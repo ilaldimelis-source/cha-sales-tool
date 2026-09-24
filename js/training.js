@@ -2358,6 +2358,39 @@ var planReferenceData = {
     association: 'Business Workers of America',
     providerSearch: '',
     type: 'Indemnity'
+  },
+  'harbor-essential': {
+    name: 'Harbor STM Essential',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    underwriter:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+    association: 'AWA, American Workers Association',
+    providerSearch:
+      'hcpdirectory.cigna.com/web/public/consumer/directory/search',
+    claimsAdmin: 'InsuranceTPA.com',
+    type: 'STM'
+  },
+  'harbor-access': {
+    name: 'Harbor STM Access',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    underwriter:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+    association: 'AWA, American Workers Association',
+    providerSearch:
+      'hcpdirectory.cigna.com/web/public/consumer/directory/search',
+    claimsAdmin: 'InsuranceTPA.com',
+    type: 'STM'
+  },
+  'harbor-secure': {
+    name: 'Harbor STM Secure',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    underwriter:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+    association: 'AWA, American Workers Association',
+    providerSearch:
+      'hcpdirectory.cigna.com/web/public/consumer/directory/search',
+    claimsAdmin: 'InsuranceTPA.com',
+    type: 'STM'
   }
 };
 var dayConfig = [
@@ -3265,7 +3298,7 @@ function generateLesson3_4() {
   html +=
     '<optgroup label="MultiPlan Network"><option value="galena">AFRP Galena STM Elite</option><option value="everest">Everest Summit Plans</option><option value="healthchoice">HealthChoice Silver</option></optgroup>';
   html +=
-    '<optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select></div>';
+    '<optgroup label="Cigna PPO"><option value="harbor-essential">Harbor STM Essential</option><option value="harbor-access">Harbor STM Access</option><option value="harbor-secure">Harbor STM Secure</option></optgroup><optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select></div>';
   html += '<div id="planInfoDisplay"></div>';
   html +=
     '<div class="pro-tip">' +
@@ -3796,12 +3829,12 @@ function loadBenefitsContent(tabId) {
     html +=
       '<optgroup label="MultiPlan Network"><option value="galena">AFRP Galena STM Elite</option><option value="everest">Everest Summit Plans</option><option value="healthchoice">HealthChoice Silver</option></optgroup>';
     html +=
-      '<optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select>';
+      '<optgroup label="Cigna PPO"><option value="harbor-essential">Harbor STM Essential</option><option value="harbor-access">Harbor STM Access</option><option value="harbor-secure">Harbor STM Secure</option></optgroup><optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select>';
     html += '<div id="refPlanDisplay"></div>';
     html +=
       '<div class="ref-card" style="background:#EFF6FF;margin-top:16px;"><div class="ref-card-title" style="margin-bottom:10px;">' +
       svgIcons.search +
-      ' Provider Search URLs</div><div class="ref-card-body"><p><strong>First Health:</strong> providerlocator.firsthealth.com</p><p><strong>PHCS/MultiPlan:</strong> providersearch.multiplan.com</p></div></div>';
+      ' Provider Search URLs</div><div class="ref-card-body"><p><strong>First Health:</strong> providerlocator.firsthealth.com</p><p><strong>PHCS/MultiPlan:</strong> providersearch.multiplan.com</p><p><strong>Cigna PPO:</strong> hcpdirectory.cigna.com/web/public/consumer/directory/search</p></div></div>';
   } else if (tabId === 'objections') {
     var objs = [
       {

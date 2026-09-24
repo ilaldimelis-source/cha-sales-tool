@@ -114,7 +114,7 @@ function renderComplianceCenter() {
   html +=
     '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#C2410C;margin-bottom:8px;">STM PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(245,158,11,0.12);color:#C2410C;margin-left:6px;letter-spacing:0;">STM</span></div>';
   html +=
-    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Access Health STM, NEO Pinnacle STM, AFRP Galena Elite/Standard/Economy, Smart Health Traditional/Limited</div>';
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Access Health STM, NEO Pinnacle STM, AFRP Galena Elite/Standard/Economy, Smart Health Traditional/Limited, Harbor STM Essential, Harbor STM Access, Harbor STM Secure</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
   html +=
@@ -140,7 +140,9 @@ function renderComplianceCenter() {
   html +=
     '&#8226; NEO Pinnacle STM: deductible $500-$10K | MOOP $5K | coverage max $1M<br>';
   html +=
-    '&#8226; Billing: FirstEnroll = Access Health STM | NEO = Pinnacle STM, Galena (all tiers), Smart Health';
+    '&#8226; Billing: FirstEnroll = Access Health STM | NEO = Pinnacle STM, Galena (all tiers), Smart Health<br>';
+  html +=
+    '&#8226; Harbor STM Essential, Access and Secure: short-term medical, not MEC and not ACA. Cigna Healthcare PPO for Shared Administration. Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing: Neo Insurance Solutions. Claims: InsuranceTPA.com. Association: AWA, American Workers Association. Deductible 2500 / 5000 / 7500 / 10000. Member coinsurance 30%, 20% or 0%. Coinsurance out-of-pocket max $5,000. Office visits have no out-of-network benefit. Coverage ends at the end of the month the member turns 65. Essential: 3/3/3 at $50, max $750,000, $500 access fee on emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics. Access: 3/3/3 at $40, max $1,000,000, no access fee. Secure: unlimited primary, specialist and urgent care at $40, max $1,500,000, no access fee. Pre-existing conditions are not covered.';
   html += '</div></div>';
 
   html +=

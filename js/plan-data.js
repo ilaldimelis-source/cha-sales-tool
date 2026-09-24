@@ -20,6 +20,7 @@ var CHA_KNOWLEDGE_BASE_REF_TEXT =
   'Access Health STM PHCS AFSLIC NCE\n' +
   'Smart Health STM PHCS Standard Life NCE\n' +
   'Galena STM MultiPlan Southern Guarantee AFRP\n' +
+  'Harbor STM Essential / Access / Secure Cigna PPO Everest AWA\n' +
   'SmartChoice First Health EPO Detego Health Population Science Mgmt\n' +
   'MEC\n' +
   'Plan Name Network Underwriter Association\n' +
@@ -1971,6 +1972,170 @@ var POLICY_DOCS = [
     preEx: '12-month exclusion for prior 12-month conditions',
     planNotes:
       'MultiPlan network (broader than First Health). 9 tiers including 1000+ with ICU and admission benefits. Surgery at 1000 tier pays 100% of charges up to benefit max.'
+  },
+  {
+    group: 'STM',
+    id: 'harborstmessential',
+    rawText:
+      'Harbor STM Essential. Short term medical. Not MEC. Not ACA. Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing administrator Neo Insurance Solutions. Claims InsuranceTPA.com. Association AWA, American Workers Association. Network Cigna Healthcare PPO for Shared Administration. Deductible options 2500 / 5000 / 7500 / 10000. Coinsurance member pays 30%, 20% or 0%. Coinsurance out-of-pocket max $5,000. Office visits have no out-of-network benefit. Coverage ends at the end of the month the member turns 65. Essential: 3 primary / 3 specialist / 3 urgent care at $50 copay. Coverage period max $750,000. $500 access fee per admission on emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics.',
+    name: 'Harbor STM Essential',
+    type: 'Short-Term Medical',
+    carrier:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator.',
+    assoc: 'AWA, American Workers Association',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    source: '',
+    benefits: [
+      {
+        category: 'Deductible and coinsurance',
+        items: [
+          'Deductible options: 2500 / 5000 / 7500 / 10000',
+          'Coinsurance the member pays: 30%, 20% or 0%',
+          'Coinsurance out-of-pocket max: $5,000',
+          'Coverage period max: $750,000'
+        ]
+      },
+      {
+        category: 'Office visits',
+        items: [
+          '3 primary / 3 specialist / 3 urgent care at $50 copay',
+          'No out-of-network benefit for office visits'
+        ]
+      },
+      {
+        category: 'Access fee',
+        items: [
+          '$500 access fee per admission on emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics'
+        ]
+      },
+      {
+        category: 'Administration',
+        items: [
+          'Billing administrator: Neo Insurance Solutions',
+          'Claims: InsuranceTPA.com',
+          'Coverage ends at the end of the month the member turns 65'
+        ]
+      }
+    ],
+    limitations: [
+      'NOT MEC',
+      'NOT ACA',
+      'Office visits have no out-of-network benefit',
+      'Pre-existing conditions are not covered'
+    ],
+    waitingPeriods: [],
+    preEx:
+      'Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period.',
+    planNotes:
+      'Short term medical. Billing is Neo Insurance Solutions. Claims are InsuranceTPA.com. No brochure PDF is loaded in this app.'
+  },
+  {
+    group: 'STM',
+    id: 'harborstmaccess',
+    rawText:
+      'Harbor STM Access. Short term medical. Not MEC. Not ACA. Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing administrator Neo Insurance Solutions. Claims InsuranceTPA.com. Association AWA, American Workers Association. Network Cigna Healthcare PPO for Shared Administration. Deductible options 2500 / 5000 / 7500 / 10000. Coinsurance member pays 30%, 20% or 0%. Coinsurance out-of-pocket max $5,000. Office visits have no out-of-network benefit. Coverage ends at the end of the month the member turns 65. Access: 3 primary / 3 specialist / 3 urgent care at $40 copay. Coverage period max $1,000,000. No access fee.',
+    name: 'Harbor STM Access',
+    type: 'Short-Term Medical',
+    carrier:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator.',
+    assoc: 'AWA, American Workers Association',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    source: '',
+    benefits: [
+      {
+        category: 'Deductible and coinsurance',
+        items: [
+          'Deductible options: 2500 / 5000 / 7500 / 10000',
+          'Coinsurance the member pays: 30%, 20% or 0%',
+          'Coinsurance out-of-pocket max: $5,000',
+          'Coverage period max: $1,000,000'
+        ]
+      },
+      {
+        category: 'Office visits',
+        items: [
+          '3 primary / 3 specialist / 3 urgent care at $40 copay',
+          'No out-of-network benefit for office visits'
+        ]
+      },
+      {
+        category: 'Access fee',
+        items: ['No access fee']
+      },
+      {
+        category: 'Administration',
+        items: [
+          'Billing administrator: Neo Insurance Solutions',
+          'Claims: InsuranceTPA.com',
+          'Coverage ends at the end of the month the member turns 65'
+        ]
+      }
+    ],
+    limitations: [
+      'NOT MEC',
+      'NOT ACA',
+      'Office visits have no out-of-network benefit',
+      'Pre-existing conditions are not covered'
+    ],
+    waitingPeriods: [],
+    preEx:
+      'Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period.',
+    planNotes:
+      'Short term medical. Billing is Neo Insurance Solutions. Claims are InsuranceTPA.com. No brochure PDF is loaded in this app.'
+  },
+  {
+    group: 'STM',
+    id: 'harborstmsecure',
+    rawText:
+      'Harbor STM Secure. Short term medical. Not MEC. Not ACA. Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing administrator Neo Insurance Solutions. Claims InsuranceTPA.com. Association AWA, American Workers Association. Network Cigna Healthcare PPO for Shared Administration. Deductible options 2500 / 5000 / 7500 / 10000. Coinsurance member pays 30%, 20% or 0%. Coinsurance out-of-pocket max $5,000. Office visits have no out-of-network benefit. Coverage ends at the end of the month the member turns 65. Secure: unlimited primary, specialist and urgent care at $40 copay. Coverage period max $1,500,000. No access fee.',
+    name: 'Harbor STM Secure',
+    type: 'Short-Term Medical',
+    carrier:
+      'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator.',
+    assoc: 'AWA, American Workers Association',
+    network: 'Cigna Healthcare PPO for Shared Administration',
+    source: '',
+    benefits: [
+      {
+        category: 'Deductible and coinsurance',
+        items: [
+          'Deductible options: 2500 / 5000 / 7500 / 10000',
+          'Coinsurance the member pays: 30%, 20% or 0%',
+          'Coinsurance out-of-pocket max: $5,000',
+          'Coverage period max: $1,500,000'
+        ]
+      },
+      {
+        category: 'Office visits',
+        items: [
+          'Unlimited primary, specialist and urgent care at $40 copay',
+          'No out-of-network benefit for office visits'
+        ]
+      },
+      {
+        category: 'Access fee',
+        items: ['No access fee']
+      },
+      {
+        category: 'Administration',
+        items: [
+          'Billing administrator: Neo Insurance Solutions',
+          'Claims: InsuranceTPA.com',
+          'Coverage ends at the end of the month the member turns 65'
+        ]
+      }
+    ],
+    limitations: [
+      'NOT MEC',
+      'NOT ACA',
+      'Office visits have no out-of-network benefit',
+      'Pre-existing conditions are not covered'
+    ],
+    waitingPeriods: [],
+    preEx:
+      'Pre-existing conditions are not covered. A pre-existing condition is one for which the person received or was advised to receive medical care, consultation, testing, diagnosis or treatment, took a prescription medication, or had symptoms significant enough that a provider could have diagnosed it. These limitations are applied separately to each new coverage period.',
+    planNotes:
+      'Short term medical. Billing is Neo Insurance Solutions. Claims are InsuranceTPA.com. No brochure PDF is loaded in this app.'
   }
 ];
 /* Knowledge-base PDF full text merges + reference table prepend: see js/plan-data-pdf-raw.js */

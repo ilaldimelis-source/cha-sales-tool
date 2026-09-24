@@ -172,6 +172,22 @@ any carrier brochure. Confirm with Neo and FirstEnroll
 before relying on it, and make it consistent across all
 scripts once confirmed.
 
+Harbor STM Essential, Access and Secure were added without
+enrollUrl, waiting period, coverage term, brochure PDF map
+or PDF extract. The brochure HarborSTM_Brochure_08202026.pdf
+is not in the repo. Harbor waiting periods are unconfirmed
+pending the Neo certificate of coverage - do not copy a
+30-day wait or a 12/12 clause from another plan.
+
+Harbor STM scripts state a 12-and-12 pre-existing clause and
+a 30-day waiting period for hospital, sickness and scheduled
+doctor visits. Neither figure appears in the HarborSTM
+brochure, which states only that pre-existing conditions are
+not covered, with limitations reapplied to each new coverage
+period. The plan cards, compliance notes and knowledge base
+correctly omit both figures, so the spoken script and the
+reference data disagree. Kept verbatim by decision, Sept 2026. Resolve when the Neo certificate of coverage arrives.
+
 ## Plan profile benefit verification
 
 The converter maps onto 113 keys. Source of truth: scripts/lib/base-schema.json (array length 113).

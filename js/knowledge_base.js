@@ -113,6 +113,53 @@ var KNOWLEDGE_BASE = {
       coinsurance: '80/20',
       maxOOP: '$2,000 after deductible'
     },
+    'Harbor STM Essential': {
+      type: 'STM',
+      network: 'Cigna Healthcare PPO for Shared Administration',
+      underwriter:
+        'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+      association: 'AWA, American Workers Association',
+      billing: 'Neo Insurance Solutions',
+      claims: 'InsuranceTPA.com',
+      deductible: '2500 / 5000 / 7500 / 10000',
+      coinsurance: 'Member pays 30%, 20% or 0%',
+      maxOOP: '$5,000',
+      officeVisits: '3 primary / 3 specialist / 3 urgent care at $50 copay',
+      coverageMax: '$750,000',
+      accessFee:
+        '$500 per admission on emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics'
+    },
+    'Harbor STM Access': {
+      type: 'STM',
+      network: 'Cigna Healthcare PPO for Shared Administration',
+      underwriter:
+        'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+      association: 'AWA, American Workers Association',
+      billing: 'Neo Insurance Solutions',
+      claims: 'InsuranceTPA.com',
+      deductible: '2500 / 5000 / 7500 / 10000',
+      coinsurance: 'Member pays 30%, 20% or 0%',
+      maxOOP: '$5,000',
+      officeVisits: '3 primary / 3 specialist / 3 urgent care at $40 copay',
+      coverageMax: '$1,000,000',
+      accessFee: 'None'
+    },
+    'Harbor STM Secure': {
+      type: 'STM',
+      network: 'Cigna Healthcare PPO for Shared Administration',
+      underwriter:
+        'Everest Reinsurance Company, or Everest Denali Insurance Company depending on state',
+      association: 'AWA, American Workers Association',
+      billing: 'Neo Insurance Solutions',
+      claims: 'InsuranceTPA.com',
+      deductible: '2500 / 5000 / 7500 / 10000',
+      coinsurance: 'Member pays 30%, 20% or 0%',
+      maxOOP: '$5,000',
+      officeVisits:
+        'Unlimited primary, specialist and urgent care at $40 copay',
+      coverageMax: '$1,500,000',
+      accessFee: 'None'
+    },
     'SmartHealth STM Traditional': {
       type: 'STM',
       network: 'PHCS',

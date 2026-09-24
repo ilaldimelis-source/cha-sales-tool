@@ -257,24 +257,29 @@ function _pdExpandedDetail(plan) {
     html += _card('#7C3AED', rxHtml);
   }
 
-  // Waiting Periods + Pre-Ex side by side
-  var wpHtml = _label('Waiting Periods', '#15803D');
-  plan.waitingPeriods.forEach(function (w) {
-    wpHtml +=
-      '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
-      w +
-      '</div>';
-  });
+  // Waiting Periods + Pre-Ex. An empty waiting list is omitted so the
+  // card does not show a heading with nothing under it.
   var peHtml = _label('Pre-Ex Rules', '#B91C1C');
   peHtml +=
     '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
     plan.preEx +
     '</div>';
-  html +=
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
-    _card('#15803D', wpHtml) +
-    _card('#B91C1C', peHtml) +
-    '</div>';
+  if (plan.waitingPeriods && plan.waitingPeriods.length) {
+    var wpHtml = _label('Waiting Periods', '#15803D');
+    plan.waitingPeriods.forEach(function (w) {
+      wpHtml +=
+        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
+        w +
+        '</div>';
+    });
+    html +=
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
+      _card('#15803D', wpHtml) +
+      _card('#B91C1C', peHtml) +
+      '</div>';
+  } else if (plan.preEx) {
+    html += _card('#B91C1C', peHtml);
+  }
 
   // Key exclusions — only top 5 most important, no full dump
   if (plan.limitations.length) {
@@ -310,13 +315,16 @@ function _pdExpandedDetail(plan) {
       '<strong>Live Call → Rebuttals</strong> (Plan fit &amp; framing). This view stays limited to benefits, limits, and carrier facts.</div>'
   );
 
-  // Source (canonical file lives under /knowledge_base only)
-  html +=
-    '<div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Source: <a href="' +
-    escHTML(chaKnowledgeBaseUrl(plan.source)) +
-    '" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">' +
-    escHTML(plan.source) +
-    '</a></div>';
+  // Source link only when a file name is recorded. An empty source
+  // must not render an href.
+  if (plan.source) {
+    html +=
+      '<div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Source: <a href="' +
+      escHTML(chaKnowledgeBaseUrl(plan.source)) +
+      '" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">' +
+      escHTML(plan.source) +
+      '</a></div>';
+  }
 
   html += '</div>'; // body
   html += '</div>'; // card

@@ -77,6 +77,9 @@ var CHA_CORE_PLAN_NAMES = [
   'Galena STM Elite',
   'Galena STM Standard',
   'Galena STM Economy',
+  'Harbor STM Essential',
+  'Harbor STM Access',
+  'Harbor STM Secure',
   'Allstate Enhanced STM PPO',
   'Allstate Copay Enhanced STM PPO',
   'Allstate Essentials STM PPO',
@@ -3833,7 +3836,7 @@ function _stReceiptReviewLineIsJunk(name) {
 function _stReceiptReviewLineLooksAddonOnly(name) {
   var n = String(name || '').toLowerCase();
   if (
-    /short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|goodhealth|tdk\b|access health/.test(
+    /short term|stm\b|deductible|coinsurance|medical|pinnacle|neo\b|goodhealth|tdk\b|access health|harbor\b/.test(
       n
     )
   ) {
