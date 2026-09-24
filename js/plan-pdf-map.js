@@ -255,11 +255,7 @@
       planName: 'Harbor STM Access',
       type: 'STM',
       group: 'Harbor STM',
-      aliases: [
-        'Harbor STM Access',
-        'harbor stm access',
-        'harbor-stm-access'
-      ],
+      aliases: ['Harbor STM Access', 'harbor stm access', 'harbor-stm-access'],
       pdfFiles: ['HarborSTM_Brochure_0827.pdf'],
       status: 'ready',
       missingFiles: []
@@ -283,11 +279,7 @@
       planName: 'Harbor STM Secure',
       type: 'STM',
       group: 'Harbor STM',
-      aliases: [
-        'Harbor STM Secure',
-        'harbor stm secure',
-        'harbor-stm-secure'
-      ],
+      aliases: ['Harbor STM Secure', 'harbor stm secure', 'harbor-stm-secure'],
       pdfFiles: ['HarborSTM_Brochure_0827.pdf'],
       status: 'ready',
       missingFiles: []
