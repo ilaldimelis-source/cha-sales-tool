@@ -111,7 +111,7 @@ var CHA_CORE_PLAN_NAMES = [
   'BWA Paramount',
   'MyChoice Plan Low',
   'MyChoice Plan Mid',
-  'MyChoice Plan High',
+  'MyChoice Plan High'
 ];
 
 var CHA_ADDON_PLAN_NAMES = [

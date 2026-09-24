@@ -330,7 +330,6 @@ const PLANS = [
   // GROUP 1: MEC PLANS
   // ══════════════════════════════
 
-
   {
     group: 'MEC',
     name: 'GoodHealth 1–5',
@@ -438,7 +437,6 @@ const PLANS = [
       'Expecting any significant healthcare use'
     ]
   },
-
 
   {
     group: 'MEC',

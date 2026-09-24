@@ -1024,11 +1024,7 @@ function _dashLookupFilteredPlans() {
 function _dashLookupDisplayType(plan) {
   if (!plan) return '—';
   var n = String(plan.name || '').toLowerCase();
-  if (
-    /\bgoodhealth\b|\btdk\b|\bsmartchoice\b|\bghdp\b/.test(
-      n
-    )
-  ) {
+  if (/\bgoodhealth\b|\btdk\b|\bsmartchoice\b|\bghdp\b/.test(n)) {
     return 'MEC — Minimum Essential Coverage';
   }
   if (
