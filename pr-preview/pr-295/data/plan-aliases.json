@@ -1,0 +1,1949 @@
+[
+  {
+    "plan_id": "access-health-stm-lite",
+    "display_name": "Access Health Lite STM",
+    "family_tokens": [
+      "access",
+      "health",
+      "stm"
+    ],
+    "variant_tokens": [
+      "lite"
+    ]
+  },
+  {
+    "plan_id": "access-health-stm-traditional",
+    "display_name": "Access Health Traditional STM",
+    "family_tokens": [
+      "access",
+      "health",
+      "stm"
+    ],
+    "variant_tokens": [
+      "traditional"
+    ]
+  },
+  {
+    "plan_id": "add-100k",
+    "display_name": "AD&D $100K",
+    "family_tokens": [
+      "ad",
+      "add"
+    ],
+    "variant_tokens": [
+      "100",
+      "d",
+      "k"
+    ]
+  },
+  {
+    "plan_id": "add-125k",
+    "display_name": "AD&D $125K",
+    "family_tokens": [
+      "ad",
+      "add"
+    ],
+    "variant_tokens": [
+      "125",
+      "d",
+      "k"
+    ]
+  },
+  {
+    "plan_id": "add-175k",
+    "display_name": "AD&D $175K",
+    "family_tokens": [
+      "ad",
+      "add"
+    ],
+    "variant_tokens": [
+      "175",
+      "d",
+      "k"
+    ]
+  },
+  {
+    "plan_id": "add-200k",
+    "display_name": "AD&D $200K",
+    "family_tokens": [
+      "ad",
+      "add"
+    ],
+    "variant_tokens": [
+      "200",
+      "d",
+      "k"
+    ]
+  },
+  {
+    "plan_id": "add-250k",
+    "display_name": "AD&D $250K",
+    "family_tokens": [
+      "ad",
+      "add"
+    ],
+    "variant_tokens": [
+      "250",
+      "d",
+      "k"
+    ]
+  },
+  {
+    "plan_id": "add-50k",
+    "display_name": "AD&D $50K",
+    "family_tokens": [
+      "ad",
+      "add"
+    ],
+    "variant_tokens": [
+      "50",
+      "d",
+      "k"
+    ]
+  },
+  {
+    "plan_id": "advanced-wellness-plus-100",
+    "display_name": "Advanced Wellness PLUS 100",
+    "family_tokens": [
+      "advanced",
+      "plus",
+      "wellness"
+    ],
+    "variant_tokens": [
+      "100"
+    ]
+  },
+  {
+    "plan_id": "advanced-wellness-plus-1000",
+    "display_name": "Advanced Wellness PLUS 1000",
+    "family_tokens": [
+      "advanced",
+      "plus",
+      "wellness"
+    ],
+    "variant_tokens": [
+      "1000"
+    ]
+  },
+  {
+    "plan_id": "advanced-wellness-plus-100a",
+    "display_name": "Advanced Wellness PLUS 100A",
+    "family_tokens": [
+      "advanced",
+      "plus",
+      "wellness"
+    ],
+    "variant_tokens": [
+      "100",
+      "a"
+    ]
+  },
+  {
+    "plan_id": "advanced-wellness-plus-200",
+    "display_name": "Advanced Wellness PLUS 200",
+    "family_tokens": [
+      "advanced",
+      "plus",
+      "wellness"
+    ],
+    "variant_tokens": [
+      "200"
+    ]
+  },
+  {
+    "plan_id": "advanced-wellness-plus-200-plus",
+    "display_name": "Advanced Wellness PLUS 200+",
+    "family_tokens": [
+      "advanced",
+      "plus",
+      "wellness"
+    ],
+    "variant_tokens": [
+      "200"
+    ]
+  },
+  {
+    "plan_id": "advanced-wellness-plus-300",
+    "display_name": "Advanced Wellness PLUS 300",
+    "family_tokens": [
+      "advanced",
+      "plus",
+      "wellness"
+    ],
+    "variant_tokens": [
+      "300"
+    ]
+  },
+  {
+    "plan_id": "advanced-wellness-plus-500",
+    "display_name": "Advanced Wellness PLUS 500",
+    "family_tokens": [
+      "advanced",
+      "plus",
+      "wellness"
+    ],
+    "variant_tokens": [
+      "500"
+    ]
+  },
+  {
+    "plan_id": "advanced-wellness-plus-750",
+    "display_name": "Advanced Wellness PLUS 750",
+    "family_tokens": [
+      "advanced",
+      "plus",
+      "wellness"
+    ],
+    "variant_tokens": [
+      "750"
+    ]
+  },
+  {
+    "plan_id": "afrp-galena-stm-economy",
+    "display_name": "AFRP Galena STM Economy",
+    "family_tokens": [
+      "afrp",
+      "galena",
+      "stm"
+    ],
+    "variant_tokens": [
+      "economy"
+    ]
+  },
+  {
+    "plan_id": "afrp-galena-stm-elite",
+    "display_name": "AFRP Galena STM Elite",
+    "family_tokens": [
+      "afrp",
+      "galena",
+      "stm"
+    ],
+    "variant_tokens": [
+      "elite"
+    ]
+  },
+  {
+    "plan_id": "afrp-galena-stm-standard",
+    "display_name": "AFRP Galena STM Standard",
+    "family_tokens": [
+      "afrp",
+      "galena",
+      "stm"
+    ],
+    "variant_tokens": [
+      "standard"
+    ]
+  },
+  {
+    "plan_id": "allstate-cancer-heart-stroke",
+    "display_name": "Allstate Cancer and Heart/Stroke",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "and",
+      "cancer",
+      "heart",
+      "stroke"
+    ]
+  },
+  {
+    "plan_id": "allstate-copay-enhanced-stm-ppo",
+    "display_name": "Allstate Copay Enhanced STM PPO Plan",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "copay",
+      "enhanced",
+      "plan",
+      "ppo",
+      "stm"
+    ]
+  },
+  {
+    "plan_id": "allstate-dental-ppo",
+    "display_name": "Allstate Dental PPO",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "dental",
+      "ppo"
+    ]
+  },
+  {
+    "plan_id": "allstate-enhanced-stm-ppo",
+    "display_name": "Allstate Enhanced STM PPO Plan",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "enhanced",
+      "plan",
+      "ppo",
+      "stm"
+    ]
+  },
+  {
+    "plan_id": "allstate-essentials-stm-ppo",
+    "display_name": "Allstate Essentials STM PPO Plan",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "essentials",
+      "plan",
+      "ppo",
+      "stm"
+    ]
+  },
+  {
+    "plan_id": "allstate-health-access",
+    "display_name": "Allstate Health Access",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "access",
+      "health"
+    ]
+  },
+  {
+    "plan_id": "allstate-hospital-expense",
+    "display_name": "Allstate Hospital Expense",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "expense",
+      "hospital"
+    ]
+  },
+  {
+    "plan_id": "allstate-plan-enhancer",
+    "display_name": "Allstate Plan Enhancer",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "enhancer",
+      "plan"
+    ]
+  },
+  {
+    "plan_id": "allstate-specified-care",
+    "display_name": "Allstate Specified Care",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "care",
+      "specified"
+    ]
+  },
+  {
+    "plan_id": "allstate-specified-care-sa",
+    "display_name": "Allstate Specified Care SA",
+    "family_tokens": [
+      "allstate"
+    ],
+    "variant_tokens": [
+      "care",
+      "sa",
+      "specified"
+    ]
+  },
+  {
+    "plan_id": "ame-1000",
+    "display_name": "AME $1000",
+    "family_tokens": [
+      "ame"
+    ],
+    "variant_tokens": [
+      "1000"
+    ]
+  },
+  {
+    "plan_id": "ame-500",
+    "display_name": "AME $500",
+    "family_tokens": [
+      "ame"
+    ],
+    "variant_tokens": [
+      "500"
+    ]
+  },
+  {
+    "plan_id": "american-financial-ci-10000",
+    "display_name": "American Financial - Critical Illness $10,000",
+    "family_tokens": [
+      "american",
+      "ci",
+      "critical",
+      "financial",
+      "illness"
+    ],
+    "variant_tokens": [
+      "10000"
+    ]
+  },
+  {
+    "plan_id": "american-financial-ci-2500",
+    "display_name": "American Financial - Critical Illness $2,500",
+    "family_tokens": [
+      "american",
+      "ci",
+      "critical",
+      "financial",
+      "illness"
+    ],
+    "variant_tokens": [
+      "2500"
+    ]
+  },
+  {
+    "plan_id": "american-financial-ci-5000",
+    "display_name": "American Financial - Critical Illness $5,000",
+    "family_tokens": [
+      "american",
+      "ci",
+      "critical",
+      "financial",
+      "illness"
+    ],
+    "variant_tokens": [
+      "5000"
+    ]
+  },
+  {
+    "plan_id": "american-financial-ci-7500",
+    "display_name": "American Financial - Critical Illness $7,500",
+    "family_tokens": [
+      "american",
+      "ci",
+      "critical",
+      "financial",
+      "illness"
+    ],
+    "variant_tokens": [
+      "7500"
+    ]
+  },
+  {
+    "plan_id": "assistpro-discount",
+    "display_name": "AssistPro Discount",
+    "family_tokens": [
+      "assist",
+      "assistpro",
+      "discount",
+      "pro"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "awa-safe-guard-100",
+    "display_name": "AWA Safe Guard 100",
+    "family_tokens": [
+      "awa"
+    ],
+    "variant_tokens": [
+      "100",
+      "guard",
+      "safe"
+    ]
+  },
+  {
+    "plan_id": "awa-safe-guard-accident-100000-sa",
+    "display_name": "AWA Safe Guard Accident Membership Plan $100,000 SA",
+    "family_tokens": [
+      "awa"
+    ],
+    "variant_tokens": [
+      "100000",
+      "accident",
+      "guard",
+      "membership",
+      "plan",
+      "sa",
+      "safe"
+    ]
+  },
+  {
+    "plan_id": "awa-safe-guard-accident-hospital-5000-1000",
+    "display_name": "AWA Safe Guard AH Membership Plan $5000/$1000",
+    "family_tokens": [
+      "awa"
+    ],
+    "variant_tokens": [
+      "1000",
+      "5000",
+      "accident",
+      "ah",
+      "guard",
+      "hospital",
+      "membership",
+      "plan",
+      "safe"
+    ]
+  },
+  {
+    "plan_id": "awa-safe-guard-accident-hospital-5000-1000-sa",
+    "display_name": "AWA Safe Guard AH Membership Plan $5000/$1000 SA",
+    "family_tokens": [
+      "awa"
+    ],
+    "variant_tokens": [
+      "1000",
+      "5000",
+      "accident",
+      "ah",
+      "guard",
+      "hospital",
+      "membership",
+      "plan",
+      "sa",
+      "safe"
+    ]
+  },
+  {
+    "plan_id": "awa-safe-guard-accident-hospital-5000-500",
+    "display_name": "AWA Safe Guard AH Membership Plan $5000/$500",
+    "family_tokens": [
+      "awa"
+    ],
+    "variant_tokens": [
+      "500",
+      "5000",
+      "accident",
+      "ah",
+      "guard",
+      "hospital",
+      "membership",
+      "plan",
+      "safe"
+    ]
+  },
+  {
+    "plan_id": "awa-safe-guard-accident-hospital-5000-500-sa",
+    "display_name": "AWA Safe Guard AH Membership Plan $5000/$500 SA",
+    "family_tokens": [
+      "awa"
+    ],
+    "variant_tokens": [
+      "500",
+      "5000",
+      "accident",
+      "ah",
+      "guard",
+      "hospital",
+      "membership",
+      "plan",
+      "sa",
+      "safe"
+    ]
+  },
+  {
+    "plan_id": "awa-safeguard-add-ame-ci-adv",
+    "display_name": "AWA Safeguard ADD/AME/CI (ADV Bundled Add-On)",
+    "family_tokens": [
+      "awa"
+    ],
+    "variant_tokens": [
+      "add",
+      "adv",
+      "ame",
+      "bundled",
+      "ci",
+      "on",
+      "safeguard"
+    ]
+  },
+  {
+    "plan_id": "awa-safeguard-add-ame-ci-sa",
+    "display_name": "AWA Safeguard ADD/AME/CI (Standalone)",
+    "family_tokens": [
+      "awa"
+    ],
+    "variant_tokens": [
+      "add",
+      "ame",
+      "ci",
+      "sa",
+      "safeguard",
+      "standalone"
+    ]
+  },
+  {
+    "plan_id": "awa-simpleshield-membership-1",
+    "display_name": "AWA SimpleShield Membership Plan 1",
+    "family_tokens": [
+      "awa",
+      "membership",
+      "plan",
+      "shield",
+      "simple",
+      "simpleshield"
+    ],
+    "variant_tokens": [
+      "1"
+    ]
+  },
+  {
+    "plan_id": "awa-simpleshield-membership-2",
+    "display_name": "AWA SimpleShield Membership Plan 2",
+    "family_tokens": [
+      "awa",
+      "membership",
+      "plan",
+      "shield",
+      "simple",
+      "simpleshield"
+    ],
+    "variant_tokens": [
+      "2"
+    ]
+  },
+  {
+    "plan_id": "bwa-americare-2",
+    "display_name": "BWA AmeriCare - Plan 2",
+    "family_tokens": [
+      "ameri",
+      "americare",
+      "bwa",
+      "care",
+      "plan"
+    ],
+    "variant_tokens": [
+      "2"
+    ]
+  },
+  {
+    "plan_id": "bwa-americare-3",
+    "display_name": "BWA AmeriCare - Plan 3",
+    "family_tokens": [
+      "ameri",
+      "americare",
+      "bwa",
+      "care",
+      "plan"
+    ],
+    "variant_tokens": [
+      "3"
+    ]
+  },
+  {
+    "plan_id": "bwa-americare-4",
+    "display_name": "BWA AmeriCare - Plan 4",
+    "family_tokens": [
+      "ameri",
+      "americare",
+      "bwa",
+      "care",
+      "plan"
+    ],
+    "variant_tokens": [
+      "4"
+    ]
+  },
+  {
+    "plan_id": "complete-care-max",
+    "display_name": "Complete Care Max",
+    "family_tokens": [
+      "care",
+      "complete",
+      "max"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "direct-primary-care-advantage",
+    "display_name": "Direct Primary Care Advantage",
+    "family_tokens": [
+      "care",
+      "direct",
+      "primary"
+    ],
+    "variant_tokens": [
+      "advantage"
+    ]
+  },
+  {
+    "plan_id": "direct-primary-care-advantage-sa",
+    "display_name": "Direct Primary Care Advantage (Standalone)",
+    "family_tokens": [
+      "care",
+      "direct",
+      "primary"
+    ],
+    "variant_tokens": [
+      "advantage",
+      "sa",
+      "standalone"
+    ]
+  },
+  {
+    "plan_id": "direct-primary-care-plus",
+    "display_name": "Direct Primary Care Plus",
+    "family_tokens": [
+      "care",
+      "direct",
+      "primary"
+    ],
+    "variant_tokens": [
+      "plus"
+    ]
+  },
+  {
+    "plan_id": "direct-primary-care-plus-sa",
+    "display_name": "Direct Primary Care Plus (Standalone)",
+    "family_tokens": [
+      "care",
+      "direct",
+      "primary"
+    ],
+    "variant_tokens": [
+      "plus",
+      "sa",
+      "standalone"
+    ]
+  },
+  {
+    "plan_id": "express-health-tools-discount",
+    "display_name": "Express Health Tools Discount",
+    "family_tokens": [
+      "discount",
+      "express",
+      "health",
+      "tools"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "gapsupport-discount",
+    "display_name": "GapSupport Discount",
+    "family_tokens": [
+      "discount",
+      "gap",
+      "gapsupport",
+      "support"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "ghdp-1",
+    "display_name": "Good Health Distribution Partner 1",
+    "family_tokens": [
+      "distribution",
+      "ghdp",
+      "good",
+      "health",
+      "partner"
+    ],
+    "variant_tokens": [
+      "1"
+    ]
+  },
+  {
+    "plan_id": "ghdp-2",
+    "display_name": "Good Health Distribution Partner 2",
+    "family_tokens": [
+      "distribution",
+      "ghdp",
+      "good",
+      "health",
+      "partner"
+    ],
+    "variant_tokens": [
+      "2"
+    ]
+  },
+  {
+    "plan_id": "ghdp-3",
+    "display_name": "Good Health Distribution Partner 3",
+    "family_tokens": [
+      "distribution",
+      "ghdp",
+      "good",
+      "health",
+      "partner"
+    ],
+    "variant_tokens": [
+      "3"
+    ]
+  },
+  {
+    "plan_id": "ghdp-4",
+    "display_name": "Good Health Distribution Partner 4",
+    "family_tokens": [
+      "distribution",
+      "ghdp",
+      "good",
+      "health",
+      "partner"
+    ],
+    "variant_tokens": [
+      "4"
+    ]
+  },
+  {
+    "plan_id": "ghdp-5",
+    "display_name": "Good Health Distribution Partner 5",
+    "family_tokens": [
+      "distribution",
+      "ghdp",
+      "good",
+      "health",
+      "partner"
+    ],
+    "variant_tokens": [
+      "5"
+    ]
+  },
+  {
+    "plan_id": "ghdp-dental-vision-1500",
+    "display_name": "GHDP Dental & Vision 1500",
+    "family_tokens": [
+      "dental",
+      "ghdp",
+      "vision"
+    ],
+    "variant_tokens": [
+      "1500"
+    ]
+  },
+  {
+    "plan_id": "ghdp-dental-vision-3000",
+    "display_name": "GHDP Dental & Vision 3000",
+    "family_tokens": [
+      "dental",
+      "ghdp",
+      "vision"
+    ],
+    "variant_tokens": [
+      "3000"
+    ]
+  },
+  {
+    "plan_id": "ghdp-dental-vision-5000",
+    "display_name": "GHDP Dental & Vision 5000",
+    "family_tokens": [
+      "dental",
+      "ghdp",
+      "vision"
+    ],
+    "variant_tokens": [
+      "5000"
+    ]
+  },
+  {
+    "plan_id": "ghdp-wellness",
+    "display_name": "Good Health Distribution Partner Wellness",
+    "family_tokens": [
+      "distribution",
+      "ghdp",
+      "good",
+      "health",
+      "partner"
+    ],
+    "variant_tokens": [
+      "wellness"
+    ]
+  },
+  {
+    "plan_id": "harbor-stm-access",
+    "display_name": "Harbor STM Access",
+    "family_tokens": [
+      "harbor",
+      "stm"
+    ],
+    "variant_tokens": [
+      "access"
+    ]
+  },
+  {
+    "plan_id": "harbor-stm-essential",
+    "display_name": "Harbor STM Essential",
+    "family_tokens": [
+      "harbor",
+      "stm"
+    ],
+    "variant_tokens": [
+      "essential"
+    ]
+  },
+  {
+    "plan_id": "harbor-stm-secure",
+    "display_name": "Harbor STM Secure",
+    "family_tokens": [
+      "harbor",
+      "stm"
+    ],
+    "variant_tokens": [
+      "secure"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-100",
+    "display_name": "Harmony Care 100",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "100"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-1000",
+    "display_name": "Harmony Care 1000",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "1000"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-100a",
+    "display_name": "Harmony Care 100A",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "100",
+      "a"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-100b",
+    "display_name": "Harmony Care 100B",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "100",
+      "b"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-200",
+    "display_name": "Harmony Care 200",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "200"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-200-plus",
+    "display_name": "Harmony Care 200+",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "200",
+      "plus"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-300",
+    "display_name": "Harmony Care 300",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "300"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-500",
+    "display_name": "Harmony Care 500",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "500"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-750",
+    "display_name": "Harmony Care 750",
+    "family_tokens": [
+      "care",
+      "harmony"
+    ],
+    "variant_tokens": [
+      "750"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-plus-100",
+    "display_name": "Harmony Care + 100",
+    "family_tokens": [
+      "care",
+      "harmony",
+      "plus"
+    ],
+    "variant_tokens": [
+      "100"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-plus-1000",
+    "display_name": "Harmony Care + 1000",
+    "family_tokens": [
+      "care",
+      "harmony",
+      "plus"
+    ],
+    "variant_tokens": [
+      "1000"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-plus-100a",
+    "display_name": "Harmony Care + 100A",
+    "family_tokens": [
+      "care",
+      "harmony",
+      "plus"
+    ],
+    "variant_tokens": [
+      "100",
+      "a"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-plus-200",
+    "display_name": "Harmony Care + 200",
+    "family_tokens": [
+      "care",
+      "harmony",
+      "plus"
+    ],
+    "variant_tokens": [
+      "200"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-plus-200-plus",
+    "display_name": "Harmony Care + 200+",
+    "family_tokens": [
+      "care",
+      "harmony",
+      "plus"
+    ],
+    "variant_tokens": [
+      "200"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-plus-300",
+    "display_name": "Harmony Care + 300",
+    "family_tokens": [
+      "care",
+      "harmony",
+      "plus"
+    ],
+    "variant_tokens": [
+      "300"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-plus-500",
+    "display_name": "Harmony Care + 500",
+    "family_tokens": [
+      "care",
+      "harmony",
+      "plus"
+    ],
+    "variant_tokens": [
+      "500"
+    ]
+  },
+  {
+    "plan_id": "harmony-care-plus-750",
+    "display_name": "Harmony Care + 750",
+    "family_tokens": [
+      "care",
+      "harmony",
+      "plus"
+    ],
+    "variant_tokens": [
+      "750"
+    ]
+  },
+  {
+    "plan_id": "health-choice-silver-100",
+    "display_name": "Health Choice Silver 100",
+    "family_tokens": [
+      "choice",
+      "health",
+      "silver"
+    ],
+    "variant_tokens": [
+      "100"
+    ]
+  },
+  {
+    "plan_id": "health-choice-silver-1000",
+    "display_name": "Health Choice Silver 1000",
+    "family_tokens": [
+      "choice",
+      "health",
+      "silver"
+    ],
+    "variant_tokens": [
+      "1000"
+    ]
+  },
+  {
+    "plan_id": "health-choice-silver-100a",
+    "display_name": "Health Choice Silver 100A",
+    "family_tokens": [
+      "choice",
+      "health",
+      "silver"
+    ],
+    "variant_tokens": [
+      "100",
+      "a"
+    ]
+  },
+  {
+    "plan_id": "health-choice-silver-200",
+    "display_name": "Health Choice Silver 200",
+    "family_tokens": [
+      "choice",
+      "health",
+      "silver"
+    ],
+    "variant_tokens": [
+      "200"
+    ]
+  },
+  {
+    "plan_id": "health-choice-silver-200-plus",
+    "display_name": "Health Choice Silver 200+",
+    "family_tokens": [
+      "choice",
+      "health",
+      "silver"
+    ],
+    "variant_tokens": [
+      "200",
+      "plus"
+    ]
+  },
+  {
+    "plan_id": "health-choice-silver-300",
+    "display_name": "Health Choice Silver 300",
+    "family_tokens": [
+      "choice",
+      "health",
+      "silver"
+    ],
+    "variant_tokens": [
+      "300"
+    ]
+  },
+  {
+    "plan_id": "health-choice-silver-500",
+    "display_name": "Health Choice Silver 500",
+    "family_tokens": [
+      "choice",
+      "health",
+      "silver"
+    ],
+    "variant_tokens": [
+      "500"
+    ]
+  },
+  {
+    "plan_id": "health-choice-silver-750",
+    "display_name": "Health Choice Silver 750",
+    "family_tokens": [
+      "choice",
+      "health",
+      "silver"
+    ],
+    "variant_tokens": [
+      "750"
+    ]
+  },
+  {
+    "plan_id": "healthassist-discount",
+    "display_name": "HealthAssist Discount",
+    "family_tokens": [
+      "assist",
+      "discount",
+      "health",
+      "healthassist"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "mdlive",
+    "display_name": "MDLive",
+    "family_tokens": [
+      "live",
+      "md",
+      "mdlive"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "mdlive-sa",
+    "display_name": "MD Live Standalone",
+    "family_tokens": [
+      "live",
+      "md",
+      "mdlive"
+    ],
+    "variant_tokens": [
+      "sa",
+      "standalone"
+    ]
+  },
+  {
+    "plan_id": "nce-fusion-dental-a",
+    "display_name": "NCE Fusion Dental - Plan A",
+    "family_tokens": [
+      "dental",
+      "fusion",
+      "nce",
+      "plan"
+    ],
+    "variant_tokens": [
+      "a"
+    ]
+  },
+  {
+    "plan_id": "nce-fusion-dental-a-sa",
+    "display_name": "Fusion Dental - Plan A SA",
+    "family_tokens": [
+      "dental",
+      "fusion",
+      "nce",
+      "plan"
+    ],
+    "variant_tokens": [
+      "a",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "nce-fusion-dental-b",
+    "display_name": "NCE Fusion Dental - Plan B",
+    "family_tokens": [
+      "dental",
+      "fusion",
+      "nce",
+      "plan"
+    ],
+    "variant_tokens": [
+      "b"
+    ]
+  },
+  {
+    "plan_id": "nce-fusion-dental-b-sa",
+    "display_name": "Fusion Dental - Plan B SA",
+    "family_tokens": [
+      "dental",
+      "fusion",
+      "nce",
+      "plan"
+    ],
+    "variant_tokens": [
+      "b",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "nce-wellguard-add-100000",
+    "display_name": "NCE WellGuard AD&D $100,000",
+    "family_tokens": [
+      "ad",
+      "add",
+      "guard",
+      "nce",
+      "well",
+      "wellguard"
+    ],
+    "variant_tokens": [
+      "100000",
+      "d"
+    ]
+  },
+  {
+    "plan_id": "nce-wellguard-add-250000",
+    "display_name": "NCE WellGuard AD&D $250,000",
+    "family_tokens": [
+      "ad",
+      "add",
+      "guard",
+      "nce",
+      "well",
+      "wellguard"
+    ],
+    "variant_tokens": [
+      "250000",
+      "d"
+    ]
+  },
+  {
+    "plan_id": "nyl-term-life-50000",
+    "display_name": "New York Life $50,000 Term Life",
+    "family_tokens": [
+      "life",
+      "new",
+      "nyl",
+      "term",
+      "york"
+    ],
+    "variant_tokens": [
+      "50000"
+    ]
+  },
+  {
+    "plan_id": "nyl-term-life-50000-sa",
+    "display_name": "New York Life $50,000 Term Life SA",
+    "family_tokens": [
+      "life",
+      "new",
+      "nyl",
+      "term",
+      "york"
+    ],
+    "variant_tokens": [
+      "50000",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "paramount-1",
+    "display_name": "Paramount Plan 1",
+    "family_tokens": [
+      "paramount",
+      "plan"
+    ],
+    "variant_tokens": [
+      "1"
+    ]
+  },
+  {
+    "plan_id": "paramount-2",
+    "display_name": "Paramount Plan 2",
+    "family_tokens": [
+      "paramount",
+      "plan"
+    ],
+    "variant_tokens": [
+      "2"
+    ]
+  },
+  {
+    "plan_id": "paramount-3",
+    "display_name": "Paramount Plan 3",
+    "family_tokens": [
+      "paramount",
+      "plan"
+    ],
+    "variant_tokens": [
+      "3"
+    ]
+  },
+  {
+    "plan_id": "paramount-4",
+    "display_name": "Paramount Plan 4",
+    "family_tokens": [
+      "paramount",
+      "plan"
+    ],
+    "variant_tokens": [
+      "4"
+    ]
+  },
+  {
+    "plan_id": "paramount-5",
+    "display_name": "Paramount Plan 5",
+    "family_tokens": [
+      "paramount",
+      "plan"
+    ],
+    "variant_tokens": [
+      "5"
+    ]
+  },
+  {
+    "plan_id": "paramount-6",
+    "display_name": "Paramount Plan 6",
+    "family_tokens": [
+      "paramount",
+      "plan"
+    ],
+    "variant_tokens": [
+      "6"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-critical-care-1",
+    "display_name": "Pinnacle Critical Care Plan 1",
+    "family_tokens": [
+      "care",
+      "critical",
+      "pinnacle",
+      "plan"
+    ],
+    "variant_tokens": [
+      "1"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-critical-care-1-sa",
+    "display_name": "Pinnacle Critical Care Plan 1 SA",
+    "family_tokens": [
+      "care",
+      "critical",
+      "pinnacle",
+      "plan"
+    ],
+    "variant_tokens": [
+      "1",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-critical-care-2",
+    "display_name": "Pinnacle Critical Care Plan 2",
+    "family_tokens": [
+      "care",
+      "critical",
+      "pinnacle",
+      "plan"
+    ],
+    "variant_tokens": [
+      "2"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-critical-care-2-sa",
+    "display_name": "Pinnacle Critical Care Plan 2 SA",
+    "family_tokens": [
+      "care",
+      "critical",
+      "pinnacle",
+      "plan"
+    ],
+    "variant_tokens": [
+      "2",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-critical-care-3",
+    "display_name": "Pinnacle Critical Care Plan 3",
+    "family_tokens": [
+      "care",
+      "critical",
+      "pinnacle",
+      "plan"
+    ],
+    "variant_tokens": [
+      "3"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-critical-care-3-sa",
+    "display_name": "Pinnacle Critical Care Plan 3 SA",
+    "family_tokens": [
+      "care",
+      "critical",
+      "pinnacle",
+      "plan"
+    ],
+    "variant_tokens": [
+      "3",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-critical-care-4",
+    "display_name": "Pinnacle Critical Care Plan 4",
+    "family_tokens": [
+      "care",
+      "critical",
+      "pinnacle",
+      "plan"
+    ],
+    "variant_tokens": [
+      "4"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-critical-care-4-sa",
+    "display_name": "Pinnacle Critical Care Plan 4 SA",
+    "family_tokens": [
+      "care",
+      "critical",
+      "pinnacle",
+      "plan"
+    ],
+    "variant_tokens": [
+      "4",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-hi-1",
+    "display_name": "Pinnacle HI Plan 1 Addon",
+    "family_tokens": [
+      "hi",
+      "pinnacle"
+    ],
+    "variant_tokens": [
+      "1",
+      "addon",
+      "plan"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-hi-1-sa",
+    "display_name": "Pinnacle HI 1 SA",
+    "family_tokens": [
+      "hi",
+      "pinnacle"
+    ],
+    "variant_tokens": [
+      "1",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-hi-2",
+    "display_name": "Pinnacle HI Plan 2 Addon",
+    "family_tokens": [
+      "hi",
+      "pinnacle"
+    ],
+    "variant_tokens": [
+      "2",
+      "addon",
+      "plan"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-hi-2-sa",
+    "display_name": "Pinnacle HI 2 SA",
+    "family_tokens": [
+      "hi",
+      "pinnacle"
+    ],
+    "variant_tokens": [
+      "2",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-protect-2",
+    "display_name": "Pinnacle Protect Plan 2",
+    "family_tokens": [
+      "pinnacle",
+      "plan",
+      "protect"
+    ],
+    "variant_tokens": [
+      "2"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-protect-3",
+    "display_name": "Pinnacle Protect Plan 3",
+    "family_tokens": [
+      "pinnacle",
+      "plan",
+      "protect"
+    ],
+    "variant_tokens": [
+      "3"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-protect-4",
+    "display_name": "Pinnacle Protect Plan 4",
+    "family_tokens": [
+      "pinnacle",
+      "plan",
+      "protect"
+    ],
+    "variant_tokens": [
+      "4"
+    ]
+  },
+  {
+    "plan_id": "pinnacle-stm-traditional",
+    "display_name": "Pinnacle STM Traditional",
+    "family_tokens": [
+      "pinnacle",
+      "stm",
+      "traditional"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "prime-health-pass-discount",
+    "display_name": "Prime Health Pass Discount",
+    "family_tokens": [
+      "discount",
+      "health",
+      "pass",
+      "prime"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "questselect",
+    "display_name": "QuestSelect",
+    "family_tokens": [
+      "quest",
+      "questselect",
+      "select"
+    ],
+    "variant_tokens": []
+  },
+  {
+    "plan_id": "questselect-sa",
+    "display_name": "QuestSelect SA",
+    "family_tokens": [
+      "quest",
+      "questselect",
+      "select"
+    ],
+    "variant_tokens": [
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "recuro-1",
+    "display_name": "recuro 1 (Virtual Urgent Care)",
+    "family_tokens": [
+      "care",
+      "recuro",
+      "urgent",
+      "virtual"
+    ],
+    "variant_tokens": [
+      "1"
+    ]
+  },
+  {
+    "plan_id": "recuro-1-sa",
+    "display_name": "Recuro 1 SA (Virtual Urgent Care)",
+    "family_tokens": [
+      "care",
+      "recuro",
+      "urgent",
+      "virtual"
+    ],
+    "variant_tokens": [
+      "1",
+      "sa"
+    ]
+  },
+  {
+    "plan_id": "recuro-2",
+    "display_name": "recuro 2 (Virtual Urgent Care + Virtual Therapy)",
+    "family_tokens": [
+      "care",
+      "recuro",
+      "urgent",
+      "virtual"
+    ],
+    "variant_tokens": [
+      "2",
+      "plus",
+      "therapy"
+    ]
+  },
+  {
+    "plan_id": "recuro-2-sa",
+    "display_name": "Recuro 2 SA (Virtual Urgent Care + Virtual Therapy)",
+    "family_tokens": [
+      "care",
+      "recuro",
+      "urgent",
+      "virtual"
+    ],
+    "variant_tokens": [
+      "2",
+      "plus",
+      "sa",
+      "therapy"
+    ]
+  },
+  {
+    "plan_id": "recuro-3",
+    "display_name": "recuro 3 (Virtual Primary Care + Virtual Urgent Care + Virtual Therapy)",
+    "family_tokens": [
+      "care",
+      "recuro",
+      "urgent",
+      "virtual"
+    ],
+    "variant_tokens": [
+      "3",
+      "plus",
+      "primary",
+      "therapy"
+    ]
+  },
+  {
+    "plan_id": "recuro-3-sa",
+    "display_name": "Recuro 3 SA (Virtual Primary Care + Virtual Urgent Care + Virtual Therapy)",
+    "family_tokens": [
+      "care",
+      "recuro",
+      "urgent",
+      "virtual"
+    ],
+    "variant_tokens": [
+      "3",
+      "plus",
+      "primary",
+      "sa",
+      "therapy"
+    ]
+  },
+  {
+    "plan_id": "sigma-care-plus-100",
+    "display_name": "Sigma Care PLUS 100",
+    "family_tokens": [
+      "care",
+      "plus",
+      "sigma"
+    ],
+    "variant_tokens": [
+      "100"
+    ]
+  },
+  {
+    "plan_id": "sigma-care-plus-1000",
+    "display_name": "Sigma Care PLUS 1000",
+    "family_tokens": [
+      "care",
+      "plus",
+      "sigma"
+    ],
+    "variant_tokens": [
+      "1000"
+    ]
+  },
+  {
+    "plan_id": "sigma-care-plus-100a",
+    "display_name": "Sigma Care PLUS 100A",
+    "family_tokens": [
+      "care",
+      "plus",
+      "sigma"
+    ],
+    "variant_tokens": [
+      "100",
+      "a"
+    ]
+  },
+  {
+    "plan_id": "sigma-care-plus-200",
+    "display_name": "Sigma Care PLUS 200",
+    "family_tokens": [
+      "care",
+      "plus",
+      "sigma"
+    ],
+    "variant_tokens": [
+      "200"
+    ]
+  },
+  {
+    "plan_id": "sigma-care-plus-200-plus",
+    "display_name": "Sigma Care PLUS 200+",
+    "family_tokens": [
+      "care",
+      "plus",
+      "sigma"
+    ],
+    "variant_tokens": [
+      "200"
+    ]
+  },
+  {
+    "plan_id": "sigma-care-plus-300",
+    "display_name": "Sigma Care PLUS 300",
+    "family_tokens": [
+      "care",
+      "plus",
+      "sigma"
+    ],
+    "variant_tokens": [
+      "300"
+    ]
+  },
+  {
+    "plan_id": "sigma-care-plus-500",
+    "display_name": "Sigma Care PLUS 500",
+    "family_tokens": [
+      "care",
+      "plus",
+      "sigma"
+    ],
+    "variant_tokens": [
+      "500"
+    ]
+  },
+  {
+    "plan_id": "sigma-care-plus-750",
+    "display_name": "Sigma Care PLUS 750",
+    "family_tokens": [
+      "care",
+      "plus",
+      "sigma"
+    ],
+    "variant_tokens": [
+      "750"
+    ]
+  },
+  {
+    "plan_id": "smart-choice-1500",
+    "display_name": "SmartChoice 1500",
+    "family_tokens": [
+      "choice",
+      "smart"
+    ],
+    "variant_tokens": [
+      "1500"
+    ]
+  },
+  {
+    "plan_id": "smart-choice-2500",
+    "display_name": "SmartChoice 2500",
+    "family_tokens": [
+      "choice",
+      "smart"
+    ],
+    "variant_tokens": [
+      "2500"
+    ]
+  },
+  {
+    "plan_id": "smart-choice-3000",
+    "display_name": "SmartChoice 3000",
+    "family_tokens": [
+      "choice",
+      "smart"
+    ],
+    "variant_tokens": [
+      "3000"
+    ]
+  },
+  {
+    "plan_id": "smart-choice-3500",
+    "display_name": "SmartChoice 3500",
+    "family_tokens": [
+      "choice",
+      "smart"
+    ],
+    "variant_tokens": [
+      "3500"
+    ]
+  },
+  {
+    "plan_id": "smarthealth-stm-limited",
+    "display_name": "SmartHealth Short Term Medical - Limited",
+    "family_tokens": [
+      "health",
+      "medical",
+      "short",
+      "smart",
+      "smarthealth",
+      "stm",
+      "term"
+    ],
+    "variant_tokens": [
+      "limited"
+    ]
+  },
+  {
+    "plan_id": "smarthealth-stm-traditional",
+    "display_name": "SmartHealth Short Term Medical - Traditional",
+    "family_tokens": [
+      "health",
+      "medical",
+      "short",
+      "smart",
+      "smarthealth",
+      "stm",
+      "term"
+    ],
+    "variant_tokens": [
+      "traditional"
+    ]
+  },
+  {
+    "plan_id": "tdk-1",
+    "display_name": "TDK 1",
+    "family_tokens": [
+      "tdk"
+    ],
+    "variant_tokens": [
+      "1"
+    ]
+  },
+  {
+    "plan_id": "tdk-2",
+    "display_name": "TDK 2",
+    "family_tokens": [
+      "tdk"
+    ],
+    "variant_tokens": [
+      "2"
+    ]
+  },
+  {
+    "plan_id": "tdk-3",
+    "display_name": "TDK 3",
+    "family_tokens": [
+      "tdk"
+    ],
+    "variant_tokens": [
+      "3"
+    ]
+  },
+  {
+    "plan_id": "tdk-4",
+    "display_name": "TDK 4",
+    "family_tokens": [
+      "tdk"
+    ],
+    "variant_tokens": [
+      "4"
+    ]
+  },
+  {
+    "plan_id": "tdk-5",
+    "display_name": "TDK 5",
+    "family_tokens": [
+      "tdk"
+    ],
+    "variant_tokens": [
+      "5"
+    ]
+  }
+]
