@@ -1,0 +1,39 @@
+---
+globs: index.html, css/**/*.css
+alwaysApply: false
+---
+
+# HTML and CSS conventions
+
+cha.mdc is authoritative on colors, tokens and the blocked hex list.
+Never write a raw hex value. All colors flow through css/tokens.css as
+--cha-* variables, and scripts/verify.js enforces it. Do not bypass it.
+
+To match the theme, read the token the surrounding component already
+uses. Do not introduce a new value, and do not copy a hex out of a design
+note into a stylesheet.
+
+## Placement
+
+- New or changed CSS goes in an override block at the very BOTTOM of the
+  existing <style> block in index.html, or the bottom of the target
+  stylesheet. Do not edit rules above that point unless the user asked
+  for that exact rule to change.
+- Before adding a rule, search EVERY stylesheet in the repo for an
+  existing rule on the same selector. Cross-stylesheet collisions are a
+  repeat failure here, and your own diff will not reveal one. Checking
+  only the file you edited is not sufficient.
+- Namespace new class names.
+
+## HTML
+
+- Do not change structure, copy, colour, spacing, font or layout unless
+  that is the requested change.
+- Load order in index.html is fixed. See cha.mdc. Do not reorder, do not
+  add defer.
+
+## Accessibility floor
+
+Interactive elements reachable by keyboard. Any control conveying state
+needs a text label, not colour alone. Agents read this while typing on a
+live call.
