@@ -271,7 +271,9 @@ step('Service worker: CACHE_NAME present and reasonable', () => {
     throw new Error('sw2.js has no CACHE_NAME.');
   }
   if (match[1].length < 3) {
-    throw new Error('sw2.js CACHE_NAME is suspiciously short: "' + match[1] + '"');
+    throw new Error(
+      'sw2.js CACHE_NAME is suspiciously short: "' + match[1] + '"'
+    );
   }
   passed.push('Service worker file sw2.js CACHE_NAME="' + match[1] + '"');
 });
