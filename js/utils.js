@@ -5,7 +5,10 @@ var CHA_KNOWLEDGE_BASE = '/knowledge_base';
 function chaKnowledgeBaseUrl(filename) {
   if (!filename) return CHA_KNOWLEDGE_BASE + '/';
   var f = String(filename).replace(/^\/+/, '');
-  return CHA_KNOWLEDGE_BASE + '/' + f;
+  var encoded = encodeURIComponent(f)
+    .replace(/\(/g, '%28')
+    .replace(/\)/g, '%29');
+  return CHA_KNOWLEDGE_BASE + '/' + encoded;
 }
 
 function escHTML(s) {

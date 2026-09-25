@@ -165,6 +165,16 @@ leftover names as a bug, and do not rewrite the repeated arrays to drop them.
 
 ## Known open items
 
+Three Plan Vault brochures pointed at another plan's
+document. Fixed Sept 2026. Allstate STM now has one link
+per tier. Pinnacle Critical Care 1-4 and MyChoice have no
+brochure in the repo and their source is deliberately
+empty, so the Brochure control is disabled. Add
+knowledge_base/ files and set source when the carrier
+documents arrive. TDK 1-3 and 4-5 share
+TDK_Promo_Combined.pdf and the three Harbor tiers share
+HarborSTM_Brochure_0827.pdf; both are legitimate.
+
 The two-ID-card paragraph ("one is a discount card for
 prescriptions and other added benefits like dental and
 vision") appears in 11 scripts and was removed from 6, per

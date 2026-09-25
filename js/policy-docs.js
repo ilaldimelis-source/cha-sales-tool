@@ -302,12 +302,42 @@ function _pdFillDocBadge(plan) {
     .catch(function () {});
 }
 
+function _pdBrochureControls(plan) {
+  var tiers;
+  var i;
+  var html;
+  if (plan.id === 'allstatestm') {
+    tiers = [
+      ['Enhanced', 'Allstate Enhanced STM PPO Plan.pdf'],
+      ['Copay Enhanced', 'Allstate Copay Enhanced STM PPO Plan.pdf'],
+      ['Essentials', 'Allstate Essentials STM PPO Plan.pdf']
+    ];
+    html = '';
+    for (i = 0; i < tiers.length; i++) {
+      html +=
+        '<a class="pv-action" href="' +
+        escHTML(chaKnowledgeBaseUrl(tiers[i][1])) +
+        '" target="_blank" rel="noopener noreferrer">' +
+        escHTML(tiers[i][0]) +
+        '</a>';
+    }
+    return html;
+  }
+  if (_pdHasFact(plan.source)) {
+    return (
+      '<a class="pv-action" href="' +
+      escHTML(chaKnowledgeBaseUrl(plan.source)) +
+      '" target="_blank" rel="noopener noreferrer">Brochure</a>'
+    );
+  }
+  return '<button type="button" class="pv-action" disabled title="No brochure on file">Brochure unavailable</button>';
+}
+
 function _pdDetailHtml(plan) {
   if (!plan) {
     return '<p class="pv-status">No plan is selected.</p>';
   }
   var scriptIndex = _pdScriptIndex(plan);
-  var hasDoc = _pdHasFact(plan.source);
   var html =
     '<button type="button" class="pv-back" data-pv-back="1">Back to list</button>';
   html += '<div class="pv-detail-top"><div>';
@@ -321,15 +351,7 @@ function _pdDetailHtml(plan) {
     '</span>';
   html += '</div></div>';
   html += '<div class="pv-actions">';
-  if (hasDoc) {
-    html +=
-      '<a class="pv-action" href="' +
-      escHTML(chaKnowledgeBaseUrl(plan.source)) +
-      '" target="_blank" rel="noopener noreferrer">Brochure</a>';
-  } else {
-    html +=
-      '<button type="button" class="pv-action" disabled>Brochure</button>';
-  }
+  html += _pdBrochureControls(plan);
   if (scriptIndex >= 0) {
     html +=
       '<button type="button" class="pv-action" data-pv-script="' +
