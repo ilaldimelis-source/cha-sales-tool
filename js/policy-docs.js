@@ -77,10 +77,7 @@ var PD_FACT_SLOTS = [
   },
   {
     label: 'Coverage period maximum',
-    paths: [
-      'cost_sharing.term_max',
-      'unmapped.cost_sharing.coverage_maximum'
-    ]
+    paths: ['cost_sharing.term_max', 'unmapped.cost_sharing.coverage_maximum']
   },
   { label: 'Primary care', paths: ['benefits.pcp'] },
   { label: 'Specialist', paths: ['benefits.specialist'] },
@@ -194,7 +191,8 @@ function _pdLeafNode(profile, path) {
     leaf = brReadLeaf(profile, path);
   }
   if (leaf) return leaf;
-  if (!profile || path !== 'unmapped.cost_sharing.coverage_maximum') return null;
+  if (!profile || path !== 'unmapped.cost_sharing.coverage_maximum')
+    return null;
   var bucket = profile.unmapped;
   if (!bucket) return null;
   var node = bucket['cost_sharing.coverage_maximum'];
@@ -360,9 +358,7 @@ function _pdListHtml(plans) {
     }
     if (!groupPlans.length) continue;
     html +=
-      '<section class="pv-group" data-plan-group="' +
-      PD_GROUPS[g].key +
-      '">';
+      '<section class="pv-group" data-plan-group="' + PD_GROUPS[g].key + '">';
     html +=
       '<h2 class="pv-divider"><span>' +
       escHTML(PD_GROUPS[g].label) +
@@ -463,8 +459,7 @@ function _renderPolicydocsInner() {
     '>&times;</button>';
   html += '</div>';
   html += '<div class="pv-split">';
-  html +=
-    '<div id="pv-list" class="pv-list" aria-label="Plan list"></div>';
+  html += '<div id="pv-list" class="pv-list" aria-label="Plan list"></div>';
   html += '<div id="pv-detail" class="pv-detail" aria-live="polite"></div>';
   html += '</div>';
   html += '<div id="pdResultsContainer" class="pv-results-host"></div>';
@@ -504,7 +499,9 @@ function clearPdSearch() {
 
 function policyDocFilterChanged() {
   policyDocOpen = null;
-  var tabs = document.querySelectorAll('#page-policydocs .stab, #page-allplans .stab');
+  var tabs = document.querySelectorAll(
+    '#page-policydocs .stab, #page-allplans .stab'
+  );
   var filters = ['All', 'MEC', 'STM', 'Limited'];
   tabs.forEach(function (tab, i) {
     if (filters[i] === policyDocFilter) tab.classList.add('active');
