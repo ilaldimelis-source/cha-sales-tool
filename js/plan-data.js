@@ -496,7 +496,7 @@ var POLICY_DOCS = [
     ],
     waitingPeriods: ['30-day waiting period for sickness benefits'],
     preEx: 'Check plan documents for pre-existing condition terms',
-    source: 'Smart_Choice_1500_Plan_Doc_2025.pdf',
+    source: 'Smart Choice 1500 Plan Doc 2025   .pdf',
     rawText: 'SmartChoice MEC group plan First Health EPO Detego Health Population Science Management four tiers 1500 2500 3000 3500 deductible in-network only EPO no out of network preventive zero copay telemedicine zero copay working owner FirstEnroll not major medical not ACA'
   },
 {
@@ -508,7 +508,7 @@ var POLICY_DOCS = [
     carrier: 'Everest Reinsurance Company',
     assoc: 'American Workers Association (AWA)',
     network: 'PHCS Practitioner & Ancillary',
-    source: 'Pinnacle_STM_Brochure.pdf',
+    source: 'Pinnacle STM Brochure.pdf',
     benefits: [
       {
         category: 'Doctor Visits',
@@ -637,7 +637,7 @@ var POLICY_DOCS = [
     carrier: 'American Financial Security Life Insurance Co.',
     assoc: 'National Congress of Employers (NCE)',
     network: 'PHCS',
-    source: 'Access_Health_STM.pdf',
+    source: 'AccessHealthBrochure2.pdf',
     benefits: [
       {
         category: 'Doctor Visits (Plan 1)',
@@ -832,7 +832,7 @@ var POLICY_DOCS = [
     carrier: 'Standard Life and Casualty Insurance Company (SLACIC)',
     assoc: 'National Congress of Employers (NCE)',
     network: 'PHCS',
-    source: 'SmartHealth_v3.pdf',
+    source: 'SmartHealth_v3 (2).pdf',
     benefits: [
       {
         category: 'Deductible & Coinsurance (Both Plans)',
@@ -965,7 +965,7 @@ var POLICY_DOCS = [
     carrier: 'Southern Guaranty Insurance Company (SGIC)',
     assoc: 'Association for Responsible Planners (AFRP)',
     network: 'First Health + MultiPlan',
-    source: 'NEOSGIC_AFRP_STM_LimitedElite_1.pdf',
+    source: 'NEO-SGIC_AFRP STM Limited-Elite (1).pdf',
     benefits: [
       {
         category: 'ELITE -- Deductible & Coinsurance',
@@ -1421,7 +1421,7 @@ var POLICY_DOCS = [
     carrier: 'Everest Reinsurance Company',
     assoc: 'National Congress of Employers (NCE)',
     network: 'MultiPlan PPO',
-    source: 'Everest_Brochure_REV.pdf',
+    source: 'Everest_Brochure_REV (1).pdf',
     benefits: [
       {
         category: 'Hospital Confinement',
@@ -1589,7 +1589,7 @@ var POLICY_DOCS = [
     carrier: 'BCS Insurance Company',
     assoc: 'Business Workers of America (BWA)',
     network: 'Managed Care / Reference-Based Pricing',
-    source: 'BCS_Brochure_1.pdf',
+    source: 'BCS_Brochure_1 (1).pdf',
     benefits: [
       {
         category: 'Doctor Visits (Pre-Pay)',
@@ -1715,7 +1715,7 @@ var POLICY_DOCS = [
     carrier: 'American Public Life',
     assoc: 'Business Workers of America (BWA)',
     network: 'PHCS',
-    source: 'BWABrochurePlan2MBRAmericare2_REV.pdf',
+    source: 'BWABrochurePlan2MBR-Americare2_REV.pdf',
     benefits: [
       {
         category: 'Doctor Visits (Pre-Pay)',
