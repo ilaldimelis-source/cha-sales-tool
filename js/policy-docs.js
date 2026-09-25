@@ -34,306 +34,82 @@ function _pdFindSalesPlan(doc) {
   return null;
 }
 
-function renderPolicydocs() {
-  try {
-    return _renderPolicydocsInner();
-  } catch (e) {
-    var pg =
-      document.getElementById('page-policydocs') ||
-      document.getElementById('page-allplans');
-    if (pg)
-      pg.innerHTML =
-        '<div style="padding:24px;color:#B91C1C;">Plans failed to load. Please refresh the page (Ctrl+Shift+R).</div>';
-  }
-}
-function _renderPolicydocsInner() {
-  var html = '<div class="ph"><div class="pt">Plan <span>Vault</span></div>';
-  html +=
-    '<div class="pd">Find the right plan for every client. Tap any card for full details.</div></div>';
+var policyDocSelected = '';
 
-  // Filter tabs
-  html += '<div class="stabs" style="margin-bottom:12px;">';
-  ['All', 'MEC', 'STM', 'Limited'].forEach(function (f) {
-    html +=
-      '<button class="stab' +
-      (f === policyDocFilter ? ' active' : '') +
-      '" onclick="policyDocFilter=\'' +
-      f +
-      '\';policyDocFilterChanged()">' +
-      (f === 'All' ? 'All' : f) +
-      '</button>';
-  });
-  html += '</div>';
+var PD_SCRIPT_BY_ID = {
+  goodhealth13: 'TrueHealth / MedFirst / GoodHealth 1,2,3',
+  goodhealth45: 'MedFirst / GoodHealth 4,5',
+  tdk13: 'TDK 1,2,3',
+  tdk45: 'TDK 4,5',
+  smartchoice: 'NEO Smart Choice',
+  pinnacle: 'NEO Pinnacle STM Traditional',
+  accesshealth: 'Access Health STM',
+  harmonycare: 'Everest / HarmonyCare / SigmaCare',
+  sigmacare: 'Everest / HarmonyCare / SigmaCare',
+  everest: 'Everest / HarmonyCare / SigmaCare',
+  bwapara: 'BWA Paramount 1-6',
+  bwaamericare: 'BWA Americare 2,3,4',
+  healthchoicesilver: 'Health Choice Silver',
+  harborstmessential: 'Harbor STM Essential',
+  harborstmaccess: 'Harbor STM Access',
+  harborstmsecure: 'Harbor STM Secure',
+  goodlifewbchoice:
+    'Goodlife Partners WB Choice and WB Select (Match Doctor visits to Plan)',
+  goodlifewbselect:
+    'Goodlife Partners WB Choice and WB Select (Match Doctor visits to Plan)',
+  pinnacleprotect: 'Pinnacle Protect Plan 1-4'
+};
 
-  // Search box
-  html += '<div style="position:relative;margin-bottom:14px;">';
-  html +=
-    '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
-  html +=
-    '<input type="text" id="pdSearchInput" placeholder="Search plans, benefits, exclusions..." value="' +
-    escHTML(policyDocSearch) +
-    '" aria-label="Search plans, benefits, exclusions" oninput="policyDocSearchTyping(this.value)" style="width:100%;height:44px;border-radius:999px;border:1.5px solid #E5E7EB;padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:#F8F9FE;color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'#E5E7EB\'">';
-  html +=
-    '<button id="pdSearchClear" type="button" aria-label="Clear plan search" onclick="clearPdSearch()" style="display:' +
-    (policyDocSearch ? 'block' : 'none') +
-    ';position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9CA3AF;font-size:18px;line-height:1;padding:4px;">&times;</button>';
-  html += '</div>';
+var PD_GROUPS = [
+  { key: 'MEC', label: 'MEC' },
+  { key: 'STM', label: 'Short-term medical' },
+  { key: 'Limited', label: 'Limited benefit' }
+];
 
-  // Results container
-  html += '<div id="pdResultsContainer">';
-  html += renderPolicyResults();
-  html += '</div>';
+var PD_FACT_SLOTS = [
+  { label: 'Plan type', vault: 'type' },
+  { label: 'Network', vault: 'network', paths: ['identity.network'] },
+  { label: 'Deductible', paths: ['cost_sharing.deductible'] },
+  { label: 'Coinsurance', paths: ['cost_sharing.coinsurance'] },
+  {
+    label: 'Coinsurance out-of-pocket maximum',
+    paths: ['cost_sharing.moop']
+  },
+  {
+    label: 'Coverage period maximum',
+    paths: ['cost_sharing.term_max', 'unmapped.cost_sharing.coverage_maximum']
+  },
+  { label: 'Primary care', paths: ['benefits.pcp'] },
+  { label: 'Specialist', paths: ['benefits.specialist'] },
+  { label: 'Urgent care', paths: ['benefits.urgent_care'] },
+  {
+    label: 'Underwriter',
+    vault: 'carrier',
+    paths: ['identity.underwriter', 'identity.carrier']
+  },
+  { label: 'Plan administrator', paths: ['identity.administrator'] },
+  { label: 'Billing administrator', paths: ['identity.billing_entity'] },
+  {
+    label: 'Claims administrator',
+    paths: ['administration.claims_administrator']
+  },
+  { label: 'Association', vault: 'assoc', paths: ['identity.association'] },
+  { label: 'State availability', paths: ['availability.states'] },
+  { label: 'Coverage term', paths: ['administration.term_length'] },
+  { label: 'Age limit', paths: ['eligibility.age_max'] },
+  { label: 'Pre-certification', paths: ['administration.precert'] }
+];
 
-  var _page_policydocs =
-    document.getElementById('page-policydocs') ||
-    document.getElementById('page-allplans');
-  if (_page_policydocs) _page_policydocs.innerHTML = html;
-}
-
-function policyDocSearchTyping(val) {
-  policyDocSearch = val;
-  var clearBtn = document.getElementById('pdSearchClear');
-  if (clearBtn) clearBtn.style.display = val ? 'block' : 'none';
-  clearTimeout(_pdSearchTimer);
-  _pdSearchTimer = setTimeout(function () {
-    var container = document.getElementById('pdResultsContainer');
-    if (container) container.innerHTML = renderPolicyResults();
-  }, 100);
-}
-
-function clearPdSearch() {
-  policyDocSearch = '';
-  var input = document.getElementById('pdSearchInput');
-  if (input) {
-    input.value = '';
-    input.focus();
-  }
-  var clearBtn = document.getElementById('pdSearchClear');
-  if (clearBtn) clearBtn.style.display = 'none';
-  var container = document.getElementById('pdResultsContainer');
-  if (container) container.innerHTML = renderPolicyResults();
+function _pdHasFact(value) {
+  if (value == null) return false;
+  var text = String(value).replace(/^\s+|\s+$/g, '');
+  if (!text) return false;
+  if (text === '-' || text === '\u2014' || text === '\u2013') return false;
+  return true;
 }
 
-function policyDocFilterChanged() {
-  var container = document.getElementById('pdResultsContainer');
-  if (container) {
-    container.innerHTML = renderPolicyResults();
-  }
-  // Update filter tab active states
-  var tabs = document.querySelectorAll('.stabs .stab');
-  var filters = ['All', 'MEC', 'STM', 'Limited'];
-  tabs.forEach(function (tab, i) {
-    if (filters[i] === policyDocFilter) tab.classList.add('active');
-    else tab.classList.remove('active');
-  });
-}
-
-function _pdBadge(grp) {
-  var bg =
-    grp === 'MEC'
-      ? 'rgba(91,141,239,0.10)'
-      : grp === 'STM'
-        ? 'rgba(245,158,11,0.10)'
-        : 'rgba(239,68,68,0.08)';
-  var col = grp === 'MEC' ? '#5B8DEF' : grp === 'STM' ? '#d97706' : '#dc2626';
-  return (
-    '<span style="display:inline-block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:' +
-    bg +
-    ';color:' +
-    col +
-    ';">' +
-    grp +
-    '</span>'
-  );
-}
-
-function _pdGrpColor(grp) {
-  return grp === 'MEC' ? '#5B8DEF' : grp === 'STM' ? '#d97706' : '#dc2626';
-}
-
-function _pdExpandedDetail(plan) {
-  var gc = _pdGrpColor(plan.group);
-
-  // ── Card helper: bordered rounded box ──
-  var _card = function (borderColor, content) {
-    return (
-      '<div style="background:var(--bg-card);border:1.5px solid #E5E7EB;border-left:3px solid ' +
-      borderColor +
-      ';border-radius:var(--r-card);padding:14px 16px;margin-bottom:10px;">' +
-      content +
-      '</div>'
-    );
-  };
-  var _label = function (text, color) {
-    return (
-      '<div style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:' +
-      color +
-      ';text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">' +
-      text +
-      '</div>'
-    );
-  };
-  var _pill = function (text, bg, color) {
-    return (
-      '<span style="display:inline-block;font-family:var(--font-ui);font-size:10px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:999px;background:' +
-      bg +
-      ';color:' +
-      color +
-      ';margin-right:4px;margin-bottom:4px;">' +
-      text +
-      '</span>'
-    );
-  };
-
-  var html =
-    '<div id="pd-detail-' +
-    plan.id +
-    '" style="background:var(--bg-card);border:2px solid ' +
-    gc +
-    ';border-radius:var(--r-card);margin-bottom:16px;overflow:hidden;animation:cha-fade-in 0.18s ease both;">';
-
-  // ── Header ──
-  html +=
-    '<div style="padding:16px 20px;border-bottom:1.5px solid #E5E7EB;display:flex;align-items:center;gap:12px;">';
-  html += '<div style="flex:1;min-width:0;">';
-  html +=
-    '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">' +
-    _pdBadge(plan.group) +
-    '<span style="font-family:var(--font-ui);font-size:17px;font-weight:700;color:var(--text-primary);">' +
-    plan.name +
-    '</span></div>';
-  // Meta pills
-  html += '<div style="display:flex;flex-wrap:wrap;gap:0;margin-top:4px;">';
-  html += _pill(plan.network, 'rgba(34,197,94,0.08)', '#15803D');
-  html += _pill(plan.carrier, 'rgba(91,141,239,0.08)', '#5B8DEF');
-  if (plan.assoc) html += _pill(plan.assoc, 'rgba(245,158,11,0.08)', '#d97706');
-  html += '</div>';
-  html += '</div>';
-  html +=
-    '<button onclick="policyDocToggle(\'' +
-    plan.id +
-    '\')" style="background:none;border:1px solid #E5E7EB;border-radius:8px;padding:6px;cursor:pointer;color:var(--text-secondary);flex-shrink:0;" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
-  html += '</div>';
-
-  // ── Body ──
-  html += '<div style="padding:16px 20px;">';
-
-  // Coverage highlights — top 5
-  var topBullets = [];
-  plan.benefits.forEach(function (bcat) {
-    bcat.items.forEach(function (item) {
-      if (topBullets.length < 5 && !/NOT covered/i.test(item))
-        topBullets.push(item);
-    });
-  });
-  if (topBullets.length) {
-    var covHtml = _label('Coverage Highlights', 'var(--accent)');
-    topBullets.forEach(function (b) {
-      covHtml +=
-        '<div style="font-size:13px;color:var(--text-secondary);padding-left:8px;margin-bottom:3px;line-height:1.5;">&#8226; ' +
-        b +
-        '</div>';
-    });
-    html += _card('var(--accent)', covHtml);
-  }
-
-  // Rx Coverage
-  var rxItems = [];
-  plan.benefits.forEach(function (bcat) {
-    if (/prescription|rx/i.test(bcat.category)) {
-      bcat.items.forEach(function (item) {
-        rxItems.push(item);
-      });
-    }
-  });
-  if (rxItems.length) {
-    var rxHtml = _label('Rx Coverage', '#7C3AED');
-    rxItems.slice(0, 3).forEach(function (item) {
-      rxHtml +=
-        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">&#8226; ' +
-        item +
-        '</div>';
-    });
-    html += _card('#7C3AED', rxHtml);
-  }
-
-  // Waiting Periods + Pre-Ex. An empty waiting list is omitted so the
-  // card does not show a heading with nothing under it.
-  var peHtml = _label('Pre-Ex Rules', '#B91C1C');
-  peHtml +=
-    '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
-    plan.preEx +
-    '</div>';
-  if (plan.waitingPeriods && plan.waitingPeriods.length) {
-    var wpHtml = _label('Waiting Periods', '#15803D');
-    plan.waitingPeriods.forEach(function (w) {
-      wpHtml +=
-        '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">' +
-        w +
-        '</div>';
-    });
-    html +=
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;">' +
-      _card('#15803D', wpHtml) +
-      _card('#B91C1C', peHtml) +
-      '</div>';
-  } else if (plan.preEx) {
-    html += _card('#B91C1C', peHtml);
-  }
-
-  // Key exclusions — only top 5 most important, no full dump
-  if (plan.limitations.length) {
-    var keyExclusions = plan.limitations
-      .filter(function (l) {
-        return /\bNO\b|\bNOT\b|not cover|excluded/i.test(l);
-      })
-      .slice(0, 5);
-    if (!keyExclusions.length) keyExclusions = plan.limitations.slice(0, 5);
-    var exHtml = _label('Key Exclusions', '#B91C1C');
-    keyExclusions.forEach(function (lim) {
-      exHtml +=
-        '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:3px;line-height:1.5;"><span style="color:#DC2626;font-weight:600;">&#10005;</span> ' +
-        lim +
-        '</div>';
-    });
-    if (plan.limitations.length > 5) {
-      exHtml +=
-        '<div style="font-size:11px;color:var(--text-muted);margin-top:4px;">' +
-        (plan.limitations.length - 5) +
-        ' more exclusions — ask Benefits AI for details</div>';
-    }
-    html += _card('#B91C1C', exHtml);
-  }
-
-  // Plan Vault = structured plan data only. Framing, fit, and talk-track
-  // compliance live under Live Call → Rebuttals.
-  html += _card(
-    '#64748B',
-    _label('Agent scripts & framing', '#64748B') +
-      '<div style="font-size:13px;color:var(--text-secondary);line-height:1.55;">' +
-      'Sales framing, best-fit / not-a-fit, and delivery compliance for this product family are in ' +
-      '<strong>Live Call → Rebuttals</strong> (Plan fit &amp; framing). This view stays limited to benefits, limits, and carrier facts.</div>'
-  );
-
-  // Source link only when a file name is recorded. An empty source
-  // must not render an href.
-  if (plan.source) {
-    html +=
-      '<div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Source: <a href="' +
-      escHTML(chaKnowledgeBaseUrl(plan.source)) +
-      '" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;">' +
-      escHTML(plan.source) +
-      '</a></div>';
-  }
-
-  html += '</div>'; // body
-  html += '</div>'; // card
-  return html;
-}
-
-function renderPolicyResults() {
-  var html = '';
-  var filtered = POLICY_DOCS.filter(function (p) {
+function _pdFilteredPlans() {
+  return POLICY_DOCS.filter(function (p) {
     if (!_pdIsDisplayablePlan(p)) return false;
     var groupOk = policyDocFilter === 'All' || p.group === policyDocFilter;
     if (!groupOk) return false;
@@ -363,122 +139,499 @@ function renderPolicyResults() {
       ' ' +
       (p.waitingPeriods || []).join(' ')
     ).toLowerCase();
-    for (var t = 0; t < expandedTerms.length; t++) {
+    var t;
+    for (t = 0; t < expandedTerms.length; t++) {
       if (brTermMatch(searchable, expandedTerms[t])) return true;
     }
     return false;
   });
+}
 
-  if (!filtered.length) {
-    return '<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:14px;">No plans match your search.</div>';
+function _pdFindPlan(id) {
+  var i;
+  for (i = 0; i < POLICY_DOCS.length; i++) {
+    if (POLICY_DOCS[i].id === id) return POLICY_DOCS[i];
   }
+  return null;
+}
 
-  var groups = [
-    { key: 'MEC', label: 'MEC Plans', color: '#5B8DEF' },
-    { key: 'STM', label: 'Short-Term Medical', color: '#d97706' },
-    { key: 'Limited', label: 'Limited Benefit', color: '#dc2626' }
-  ];
-
-  groups.forEach(function (grp) {
-    var plans = filtered.filter(function (p) {
-      return p.group === grp.key;
-    });
-    if (!plans.length) return;
-
-    // Group header
-    html +=
-      '<div style="display:flex;align-items:center;gap:10px;margin:18px 0 10px;">';
-    html +=
-      '<div style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:' +
-      grp.color +
-      ';text-transform:uppercase;letter-spacing:.06em;">' +
-      grp.label +
-      '</div>';
-    html += '<div style="flex:1;height:1px;background:#E5E7EB;"></div>';
-    html +=
-      '<span style="font-family:var(--font-ui);font-size:12px;font-weight:600;color:var(--text-muted);">' +
-      plans.length +
-      '</span></div>';
-
-    // Card grid
-    html +=
-      '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:6px;">';
-    plans.forEach(function (plan) {
-      var isOpen = policyDocOpen === plan.id;
-      var borderColor = isOpen ? grp.color : '#C8CEDD';
-      var bgColor = isOpen
-        ? grp.key === 'MEC'
-          ? 'rgba(91,141,239,0.04)'
-          : grp.key === 'STM'
-            ? 'rgba(245,158,11,0.04)'
-            : 'rgba(239,68,68,0.03)'
-        : '#FFFFFF';
-
-      html +=
-        '<div id="pd-' +
-        plan.id +
-        '" style="background:' +
-        bgColor +
-        ';border:2px solid ' +
-        borderColor +
-        ';border-radius:14px;cursor:pointer;transition:border-color 0.15s, background 0.15s;" onclick="policyDocToggle(\'' +
-        plan.id +
-        '\')">';
-      html +=
-        '<div style="padding:14px 16px;display:flex;align-items:flex-start;gap:10px;">';
-      html += '<div style="flex:1;min-width:0;">';
-      html +=
-        '<div style="margin-bottom:6px;">' + _pdBadge(plan.group) + '</div>';
-      html +=
-        '<div style="font-family:var(--font-ui);font-size:15px;font-weight:700;color:var(--text-primary);line-height:1.3;margin-bottom:3px;">' +
-        plan.name +
-        '</div>';
-      html +=
-        '<div style="font-size:12px;color:var(--text-secondary);line-height:1.4;">' +
-        plan.network +
-        ' &middot; ' +
-        plan.carrier +
-        '</div>';
-      html += '</div>';
-      html +=
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="' +
-        (isOpen ? grp.color : '#9CA3AF') +
-        '" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:6px;transition:transform 0.2s;' +
-        (isOpen ? 'transform:rotate(180deg);' : '') +
-        '" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
-      html += '</div></div>';
-    });
-    html += '</div>';
-
-    // Expanded detail for open plan in this group
-    if (policyDocOpen) {
-      var openPlan = plans.filter(function (p) {
-        return p.id === policyDocOpen;
-      })[0];
-      if (openPlan) {
-        html += _pdExpandedDetail(openPlan);
-      }
+function _pdScriptIndex(plan) {
+  if (!plan || typeof PLAN_SCRIPTS === 'undefined') return -1;
+  var wanted = PD_SCRIPT_BY_ID[plan.id] || '';
+  var i;
+  if (wanted) {
+    for (i = 0; i < PLAN_SCRIPTS.length; i++) {
+      if (PLAN_SCRIPTS[i].name === wanted) return i;
     }
-  });
+    return -1;
+  }
+  var name = String(plan.name || '');
+  var hits = [];
+  for (i = 0; i < PLAN_SCRIPTS.length; i++) {
+    var sn = PLAN_SCRIPTS[i].name;
+    if (sn === name || sn.indexOf(name) !== -1) hits.push(i);
+  }
+  if (hits.length === 1) return hits[0];
+  return -1;
+}
 
+function _pdDocLabel(code) {
+  if (code === 'FULL_DOCS') return 'Complete';
+  if (code === 'PARTIAL_DOCS') return 'Partial';
+  if (code === 'PORTAL_ONLY') return 'Portal only';
+  if (code === 'SOB_ONLY') return 'Summary only';
+  if (code === 'NO_CURRENT_SOURCE') return 'No current source';
+  if (code === 'STATUS_UNCERTAIN') return 'Uncertain';
+  return '';
+}
+
+function _pdLeafNode(profile, path) {
+  var leaf = null;
+  if (profile && typeof brReadLeaf === 'function') {
+    leaf = brReadLeaf(profile, path);
+  }
+  if (leaf) return leaf;
+  if (!profile || path !== 'unmapped.cost_sharing.coverage_maximum')
+    return null;
+  var bucket = profile.unmapped;
+  if (!bucket) return null;
+  var node = bucket['cost_sharing.coverage_maximum'];
+  if (!node || typeof node !== 'object') return null;
+  return {
+    v: node.v === undefined ? null : node.v,
+    vs: node.vs === undefined ? null : node.vs
+  };
+}
+
+function _pdVerifiedLeaf(profile, path) {
+  var leaf = _pdLeafNode(profile, path);
+  if (!leaf) return '';
+  if (leaf.vs !== 'VERIFIED' && leaf.vs !== 'VERIFIED_SINGLE_SOURCE') return '';
+  if (!_pdHasFact(leaf.v)) return '';
+  return String(leaf.v);
+}
+
+function _pdSlotValue(plan, profile, slot) {
+  var i;
+  var text;
+  if (profile && slot.paths) {
+    for (i = 0; i < slot.paths.length; i++) {
+      text = _pdVerifiedLeaf(profile, slot.paths[i]);
+      if (text) return text;
+    }
+  }
+  if (slot.vault && plan && _pdHasFact(plan[slot.vault])) {
+    return String(plan[slot.vault]);
+  }
+  return '';
+}
+
+function _pdFactsInner(plan, profile) {
+  var html = '';
+  var i;
+  var text;
+  for (i = 0; i < PD_FACT_SLOTS.length; i++) {
+    text = _pdSlotValue(plan, profile, PD_FACT_SLOTS[i]);
+    if (!text) continue;
+    html +=
+      '<div class="pv-fact"><dt>' +
+      escHTML(PD_FACT_SLOTS[i].label) +
+      '</dt><dd>' +
+      escHTML(text) +
+      '</dd></div>';
+  }
   return html;
 }
 
-function policyDocToggle(id) {
-  policyDocOpen = policyDocOpen === id ? null : id;
-  var container = document.getElementById('pdResultsContainer');
-  if (container) container.innerHTML = renderPolicyResults();
-  if (policyDocOpen) {
-    // Set sticky plan context
-    var plan = POLICY_DOCS.find(function (p) {
-      return p.id === id;
-    });
-    if (plan && typeof setActivePlan === 'function') {
-      setActivePlan(plan.id, plan.name, plan.group || plan.type || '');
-    }
-    setTimeout(function () {
-      var el = document.getElementById('pd-detail-' + id);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 50);
+function _pdAliasHasId(rows, planId) {
+  var i;
+  if (!rows || !planId) return false;
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i] && rows[i].plan_id === planId) return true;
   }
+  return false;
+}
+
+function _pdProfileId(plan, rows) {
+  var match;
+  if (!plan || typeof brMatchPlan !== 'function') return '';
+  match = brMatchPlan(plan.name);
+  if (!match || match.status !== 'EXACT' || !match.planId) return '';
+  if (_pdAliasHasId(rows, match.planId)) return match.planId;
+  return '';
+}
+
+function _pdApplyProfile(plan, profile) {
+  var facts = document.getElementById('pv-facts');
+  var badge = document.getElementById('pv-doc-badge');
+  var label;
+  if (policyDocSelected !== plan.id) return;
+  if (facts) facts.innerHTML = _pdFactsInner(plan, profile);
+  if (!badge) return;
+  label = profile ? _pdDocLabel(profile.doc_completeness) : '';
+  if (!label) {
+    badge.innerHTML = '';
+    return;
+  }
+  badge.innerHTML = '<span class="pv-doc-badge">' + escHTML(label) + '</span>';
+}
+
+function _pdFillDocBadge(plan) {
+  if (!plan) return;
+  if (
+    typeof brLoadPlanAliases !== 'function' ||
+    typeof brMatchPlan !== 'function' ||
+    typeof brLoadProfile !== 'function'
+  ) {
+    return;
+  }
+  var requested = plan.id;
+  brLoadPlanAliases()
+    .then(function (rows) {
+      var profileId;
+      if (policyDocSelected !== requested) return null;
+      profileId = _pdProfileId(plan, rows || []);
+      if (!profileId) return null;
+      return brLoadProfile(profileId);
+    })
+    .then(function (profile) {
+      if (policyDocSelected !== requested) return;
+      if (!profile) return;
+      _pdApplyProfile(plan, profile);
+    })
+    .catch(function () {});
+}
+
+function _pdDetailHtml(plan) {
+  if (!plan) {
+    return '<p class="pv-status">No plan is selected.</p>';
+  }
+  var scriptIndex = _pdScriptIndex(plan);
+  var hasDoc = _pdHasFact(plan.source);
+  var html =
+    '<button type="button" class="pv-back" data-pv-back="1">Back to list</button>';
+  html += '<div class="pv-detail-top"><div>';
+  html += '<h2 class="pv-detail-name">' + escHTML(plan.name) + '</h2>';
+  html += '<div class="pv-badges">';
+  html +=
+    '<span class="pv-badge pv-badge-' +
+    escHTML(plan.group) +
+    '">' +
+    escHTML(plan.group) +
+    '</span>';
+  html += '</div></div>';
+  html += '<div class="pv-actions">';
+  if (hasDoc) {
+    html +=
+      '<a class="pv-action" href="' +
+      escHTML(chaKnowledgeBaseUrl(plan.source)) +
+      '" target="_blank" rel="noopener noreferrer">Brochure</a>';
+  } else {
+    html +=
+      '<button type="button" class="pv-action" disabled>Brochure</button>';
+  }
+  if (scriptIndex >= 0) {
+    html +=
+      '<button type="button" class="pv-action" data-pv-script="' +
+      scriptIndex +
+      '">Open script</button>';
+  } else {
+    html +=
+      '<button type="button" class="pv-action" disabled>Open script</button>';
+  }
+  html += '</div></div>';
+  html += '<dl class="pv-facts" id="pv-facts">';
+  html += _pdFactsInner(plan, null);
+  html += '</dl>';
+  html += '<div id="pv-doc-badge" class="pv-doc-slot"></div>';
+  return html;
+}
+
+function _pdListHtml(plans) {
+  var html = '';
+  var g;
+  var i;
+  for (g = 0; g < PD_GROUPS.length; g++) {
+    var groupPlans = [];
+    for (i = 0; i < plans.length; i++) {
+      if (plans[i].group === PD_GROUPS[g].key) groupPlans.push(plans[i]);
+    }
+    if (!groupPlans.length) continue;
+    html +=
+      '<section class="pv-group" data-plan-group="' + PD_GROUPS[g].key + '">';
+    html +=
+      '<h2 class="pv-divider"><span>' +
+      escHTML(PD_GROUPS[g].label) +
+      '</span><span class="pv-count">' +
+      groupPlans.length +
+      '</span></h2>';
+    for (i = 0; i < groupPlans.length; i++) {
+      var plan = groupPlans[i];
+      var selected = plan.id === policyDocSelected ? ' pv-row-selected' : '';
+      html +=
+        '<button type="button" class="pv-row' +
+        selected +
+        '" id="pd-' +
+        escHTML(plan.id) +
+        '" data-pv-id="' +
+        escHTML(plan.id) +
+        '"><span class="pv-row-name">' +
+        escHTML(plan.name) +
+        '</span></button>';
+    }
+    html += '</section>';
+  }
+  return html;
+}
+
+function _pdMarkSelection() {
+  var rows = document.querySelectorAll('#pv-list .pv-row');
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    var on = rows[i].getAttribute('data-pv-id') === policyDocSelected;
+    if (on) {
+      if (rows[i].className.indexOf('pv-row-selected') === -1) {
+        rows[i].className += ' pv-row-selected';
+      }
+    } else {
+      rows[i].className = rows[i].className
+        .replace(' pv-row-selected', '')
+        .replace('pv-row-selected', '');
+    }
+  }
+}
+
+function _pdShowDetail(openMobile) {
+  var pane = document.getElementById('pv-detail');
+  var page = document.querySelector('#page-policydocs .pv-page');
+  var plan = _pdFindPlan(policyDocSelected);
+  if (pane) pane.innerHTML = _pdDetailHtml(plan);
+  _pdMarkSelection();
+  _pdFillDocBadge(plan);
+  if (plan && typeof setActivePlan === 'function') {
+    setActivePlan(plan.id, plan.name, plan.group || plan.type || '');
+  }
+  if (!page) return;
+  if (openMobile && window.matchMedia('(max-width: 900px)').matches) {
+    if (page.className.indexOf('pv-show-detail') === -1) {
+      page.className += ' pv-show-detail';
+    }
+  }
+}
+
+function renderPolicydocs() {
+  try {
+    return _renderPolicydocsInner();
+  } catch (e) {
+    var pg =
+      document.getElementById('page-policydocs') ||
+      document.getElementById('page-allplans');
+    if (pg)
+      pg.innerHTML =
+        '<div style="padding:24px;color:#B91C1C;">Plans failed to load. Please refresh the page (Ctrl+Shift+R).</div>';
+  }
+}
+function _renderPolicydocsInner() {
+  var html = '<div class="pv-page">';
+  html += '<header class="pv-header"><h2 class="pv-title">Plan Vault</h2>';
+  html +=
+    '<p class="pv-lead">Find the right plan for every client.</p></header>';
+  html += '<div class="stabs pv-filters">';
+  ['All', 'MEC', 'STM', 'Limited'].forEach(function (f) {
+    html +=
+      '<button type="button" class="stab' +
+      (f === policyDocFilter ? ' active' : '') +
+      '" data-pv-filter="' +
+      f +
+      '">' +
+      (f === 'All' ? 'All' : f) +
+      '</button>';
+  });
+  html += '</div>';
+  html += '<div class="pv-search-wrap">';
+  html +=
+    '<input type="text" id="pdSearchInput" class="pv-search" placeholder="Search plans, benefits, exclusions..." value="' +
+    escHTML(policyDocSearch) +
+    '" aria-label="Search plans, benefits, exclusions">';
+  html +=
+    '<button id="pdSearchClear" type="button" class="pv-search-clear" aria-label="Clear plan search"' +
+    (policyDocSearch ? '' : ' style="display:none"') +
+    '>&times;</button>';
+  html += '</div>';
+  html += '<div class="pv-split">';
+  html += '<div id="pv-list" class="pv-list" aria-label="Plan list"></div>';
+  html += '<div id="pv-detail" class="pv-detail" aria-live="polite"></div>';
+  html += '</div>';
+  html += '<div id="pdResultsContainer" class="pv-results-host"></div>';
+  html += '</div>';
+
+  var _page_policydocs =
+    document.getElementById('page-policydocs') ||
+    document.getElementById('page-allplans');
+  if (_page_policydocs) _page_policydocs.innerHTML = html;
+  _pdBindKeys();
+  renderPolicyResults();
+}
+
+function policyDocSearchTyping(val) {
+  policyDocSearch = val;
+  policyDocOpen = null;
+  var clearBtn = document.getElementById('pdSearchClear');
+  if (clearBtn) clearBtn.style.display = val ? 'block' : 'none';
+  clearTimeout(_pdSearchTimer);
+  _pdSearchTimer = setTimeout(function () {
+    renderPolicyResults();
+  }, 100);
+}
+
+function clearPdSearch() {
+  policyDocSearch = '';
+  policyDocOpen = null;
+  var input = document.getElementById('pdSearchInput');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+  var clearBtn = document.getElementById('pdSearchClear');
+  if (clearBtn) clearBtn.style.display = 'none';
+  renderPolicyResults();
+}
+
+function policyDocFilterChanged() {
+  policyDocOpen = null;
+  var tabs = document.querySelectorAll(
+    '#page-policydocs .stab, #page-allplans .stab'
+  );
+  var filters = ['All', 'MEC', 'STM', 'Limited'];
+  tabs.forEach(function (tab, i) {
+    if (filters[i] === policyDocFilter) tab.classList.add('active');
+    else tab.classList.remove('active');
+  });
+  renderPolicyResults();
+}
+
+function renderPolicyResults() {
+  var list = document.getElementById('pv-list');
+  var pane = document.getElementById('pv-detail');
+  var host = document.getElementById('pdResultsContainer');
+  if (!list || !pane) {
+    if (host) host.innerHTML = '';
+    return;
+  }
+  var page = document.querySelector('#page-policydocs .pv-page');
+  if (page) {
+    page.className = page.className
+      .replace(' pv-show-detail', '')
+      .replace('pv-show-detail', '');
+  }
+  var plans = _pdFilteredPlans();
+  if (!plans.length) {
+    policyDocSelected = '';
+    list.innerHTML = '<p class="pv-status">No plans match your search.</p>';
+    pane.innerHTML = '<p class="pv-status">No plan is selected.</p>';
+    return;
+  }
+  var keep = null;
+  var i;
+  if (policyDocOpen) {
+    for (i = 0; i < plans.length; i++) {
+      if (plans[i].id === policyDocOpen) keep = plans[i];
+    }
+  }
+  var selected = keep || plans[0];
+  policyDocSelected = selected.id;
+  policyDocOpen = selected.id;
+  list.innerHTML = _pdListHtml(plans);
+  pane.innerHTML = _pdDetailHtml(selected);
+  _pdFillDocBadge(selected);
+}
+
+function policyDocToggle(id) {
+  policyDocOpen = id;
+  policyDocSelected = id;
+  var container = document.getElementById('pv-list');
+  if (container) _pdShowDetail(true);
+  else renderPolicyResults();
+}
+
+function _pdBindKeys() {
+  var root =
+    document.getElementById('page-policydocs') ||
+    document.getElementById('page-allplans');
+  if (!root || root.getAttribute('data-pv-bound')) return;
+  root.setAttribute('data-pv-bound', '1');
+  root.addEventListener('click', _pdOnClick);
+  root.addEventListener('keydown', _pdOnKey);
+  root.addEventListener('input', function (event) {
+    if (event.target && event.target.id === 'pdSearchInput') {
+      policyDocSearchTyping(event.target.value);
+    }
+  });
+}
+
+function _pdOnClick(event) {
+  var node = event.target;
+  while (node && node !== event.currentTarget) {
+    if (node.getAttribute && node.getAttribute('data-pv-back') === '1') {
+      var page = document.querySelector('#page-policydocs .pv-page');
+      if (page) {
+        page.className = page.className
+          .replace(' pv-show-detail', '')
+          .replace('pv-show-detail', '');
+      }
+      return;
+    }
+    if (node.getAttribute && node.getAttribute('data-pv-filter')) {
+      policyDocFilter = node.getAttribute('data-pv-filter');
+      policyDocFilterChanged();
+      return;
+    }
+    if (node.id === 'pdSearchClear') {
+      clearPdSearch();
+      return;
+    }
+    if (node.getAttribute && node.getAttribute('data-pv-script') != null) {
+      var index = parseInt(node.getAttribute('data-pv-script'), 10);
+      if (!isNaN(index)) {
+        planScriptFilter = 'All';
+        planScriptActive = index;
+        planScriptSection = 0;
+        if (typeof _showComboPage === 'function') {
+          _showComboPage('scripts', 'planscripts');
+        }
+      }
+      return;
+    }
+    if (
+      node.tagName === 'BUTTON' &&
+      node.getAttribute('data-pv-id') &&
+      node.className.indexOf('pv-row') !== -1
+    ) {
+      policyDocSelected = node.getAttribute('data-pv-id');
+      policyDocOpen = policyDocSelected;
+      _pdShowDetail(true);
+      return;
+    }
+    node = node.parentNode;
+  }
+}
+
+function _pdOnKey(event) {
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+  var list = document.getElementById('pv-list');
+  if (!list || !list.contains(event.target)) return;
+  var rows = list.querySelectorAll('button.pv-row');
+  var index = -1;
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i] === document.activeElement) index = i;
+  }
+  if (index < 0) return;
+  var next = event.key === 'ArrowDown' ? index + 1 : index - 1;
+  if (next < 0 || next >= rows.length) return;
+  event.preventDefault();
+  rows[next].focus();
+  policyDocSelected = rows[next].getAttribute('data-pv-id');
+  policyDocOpen = policyDocSelected;
+  _pdShowDetail(false);
 }
