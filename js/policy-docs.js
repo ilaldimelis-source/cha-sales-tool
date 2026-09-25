@@ -330,7 +330,7 @@ function _pdBrochureControls(plan) {
       '" target="_blank" rel="noopener noreferrer">Brochure</a>'
     );
   }
-  return '<button type="button" class="pv-action" disabled title="No brochure on file">Brochure unavailable</button>';
+  return '<button type="button" class="pv-action" disabled title="No brochure on file">No brochure on file</button>';
 }
 
 function _pdDetailHtml(plan) {
@@ -338,9 +338,7 @@ function _pdDetailHtml(plan) {
     return '<p class="pv-status">No plan is selected.</p>';
   }
   var scriptIndex = _pdScriptIndex(plan);
-  var html =
-    '<button type="button" class="pv-back" data-pv-back="1">Back to list</button>';
-  html += '<div class="pv-detail-top"><div>';
+  var html = '<div class="pv-detail-top"><div>';
   html += '<h2 class="pv-detail-name">' + escHTML(plan.name) + '</h2>';
   html += '<div class="pv-badges">';
   html +=
@@ -387,58 +385,97 @@ function _pdListHtml(plans) {
       '</span><span class="pv-count">' +
       groupPlans.length +
       '</span></h2>';
+    html += '<div class="pv-grid">';
     for (i = 0; i < groupPlans.length; i++) {
       var plan = groupPlans[i];
-      var selected = plan.id === policyDocSelected ? ' pv-row-selected' : '';
+      var open = plan.id === policyDocOpen;
       html +=
-        '<button type="button" class="pv-row' +
-        selected +
+        '<button type="button" class="pv-card' +
+        (open ? ' pv-card-open' : '') +
         '" id="pd-' +
         escHTML(plan.id) +
         '" data-pv-id="' +
         escHTML(plan.id) +
-        '"><span class="pv-row-name">' +
+        '" aria-expanded="' +
+        (open ? 'true' : 'false') +
+        '"><span class="pv-card-name">' +
         escHTML(plan.name) +
+        '</span><span class="pv-card-network">' +
+        escHTML(plan.network || '') +
+        '</span><span class="pv-card-carrier">' +
+        escHTML(plan.carrier || '') +
         '</span></button>';
     }
-    html += '</section>';
+    html += '</div></section>';
   }
   return html;
 }
 
-function _pdMarkSelection() {
-  var rows = document.querySelectorAll('#pv-list .pv-row');
-  var i;
-  for (i = 0; i < rows.length; i++) {
-    var on = rows[i].getAttribute('data-pv-id') === policyDocSelected;
-    if (on) {
-      if (rows[i].className.indexOf('pv-row-selected') === -1) {
-        rows[i].className += ' pv-row-selected';
-      }
-    } else {
-      rows[i].className = rows[i].className
-        .replace(' pv-row-selected', '')
-        .replace('pv-row-selected', '');
-    }
+function _pdColumnCount(grid) {
+  var cols = window.getComputedStyle(grid).gridTemplateColumns;
+  if (!cols || cols === 'none') return 1;
+  return cols.split(' ').length;
+}
+
+function _pdScrollPanel(panel) {
+  var rect = panel.getBoundingClientRect();
+  var view = window.innerHeight || document.documentElement.clientHeight;
+  if (rect.bottom > view + 1) {
+    panel.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   }
 }
 
-function _pdShowDetail(openMobile) {
-  var pane = document.getElementById('pv-detail');
-  var page = document.querySelector('#page-policydocs .pv-page');
-  var plan = _pdFindPlan(policyDocSelected);
-  if (pane) pane.innerHTML = _pdDetailHtml(plan);
-  _pdMarkSelection();
-  _pdFillDocBadge(plan);
-  if (plan && typeof setActivePlan === 'function') {
-    setActivePlan(plan.id, plan.name, plan.group || plan.type || '');
-  }
-  if (!page) return;
-  if (openMobile && window.matchMedia('(max-width: 900px)').matches) {
-    if (page.className.indexOf('pv-show-detail') === -1) {
-      page.className += ' pv-show-detail';
+function _pdPlacePanel(shouldScroll) {
+  var old = document.querySelector('#page-policydocs .pv-panel');
+  if (old && old.parentNode) old.parentNode.removeChild(old);
+  var cards = document.querySelectorAll('#page-policydocs .pv-card');
+  var i;
+  for (i = 0; i < cards.length; i++) {
+    var on = cards[i].getAttribute('data-pv-id') === policyDocOpen;
+    cards[i].setAttribute('aria-expanded', on ? 'true' : 'false');
+    if (on) {
+      if (cards[i].className.indexOf('pv-card-open') === -1) {
+        cards[i].className += ' pv-card-open';
+      }
+    } else {
+      cards[i].className = cards[i].className
+        .replace(' pv-card-open', '')
+        .replace('pv-card-open', '');
     }
   }
+  if (!policyDocOpen) return;
+  var card = document.getElementById('pd-' + policyDocOpen);
+  if (!card || !card.parentNode) return;
+  var grid = card.parentNode;
+  var gridCards = [];
+  var child = grid.firstChild;
+  while (child) {
+    if (child.className && child.className.indexOf('pv-card') !== -1) {
+      gridCards.push(child);
+    }
+    child = child.nextSibling;
+  }
+  var index = 0;
+  for (i = 0; i < gridCards.length; i++) {
+    if (gridCards[i] === card) index = i;
+  }
+  var cols = _pdColumnCount(grid);
+  var rowEnd = Math.floor(index / cols) * cols + cols - 1;
+  if (rowEnd > gridCards.length - 1) rowEnd = gridCards.length - 1;
+  var panel = document.createElement('div');
+  panel.className = 'pv-panel';
+  panel.setAttribute('role', 'region');
+  panel.setAttribute('aria-label', 'Plan details');
+  var plan = _pdFindPlan(policyDocOpen);
+  panel.innerHTML = _pdDetailHtml(plan);
+  var after = gridCards[rowEnd];
+  if (after.nextSibling) grid.insertBefore(panel, after.nextSibling);
+  else grid.appendChild(panel);
+  _pdFillDocBadge(plan);
+  if (typeof setActivePlan === 'function' && plan) {
+    setActivePlan(plan.id, plan.name, plan.group || plan.type || '');
+  }
+  if (shouldScroll) _pdScrollPanel(panel);
 }
 
 function renderPolicydocs() {
@@ -480,10 +517,7 @@ function _renderPolicydocsInner() {
     (policyDocSearch ? '' : ' style="display:none"') +
     '>&times;</button>';
   html += '</div>';
-  html += '<div class="pv-split">';
-  html += '<div id="pv-list" class="pv-list" aria-label="Plan list"></div>';
-  html += '<div id="pv-detail" class="pv-detail" aria-live="polite"></div>';
-  html += '</div>';
+  html += '<div id="pv-list" class="pv-board" aria-label="Plan cards"></div>';
   html += '<div id="pdResultsContainer" class="pv-results-host"></div>';
   html += '</div>';
 
@@ -534,45 +568,46 @@ function policyDocFilterChanged() {
 
 function renderPolicyResults() {
   var list = document.getElementById('pv-list');
-  var pane = document.getElementById('pv-detail');
   var host = document.getElementById('pdResultsContainer');
-  if (!list || !pane) {
+  if (!list) {
     if (host) host.innerHTML = '';
     return;
-  }
-  var page = document.querySelector('#page-policydocs .pv-page');
-  if (page) {
-    page.className = page.className
-      .replace(' pv-show-detail', '')
-      .replace('pv-show-detail', '');
   }
   var plans = _pdFilteredPlans();
   if (!plans.length) {
     policyDocSelected = '';
+    policyDocOpen = '';
     list.innerHTML = '<p class="pv-status">No plans match your search.</p>';
-    pane.innerHTML = '<p class="pv-status">No plan is selected.</p>';
     return;
   }
-  var keep = null;
+  var still = false;
   var i;
   if (policyDocOpen) {
     for (i = 0; i < plans.length; i++) {
-      if (plans[i].id === policyDocOpen) keep = plans[i];
+      if (plans[i].id === policyDocOpen) still = true;
     }
   }
-  var selected = keep || plans[0];
-  policyDocSelected = selected.id;
-  policyDocOpen = selected.id;
+  if (!still) {
+    policyDocOpen = '';
+    policyDocSelected = '';
+  } else {
+    policyDocSelected = policyDocOpen;
+  }
   list.innerHTML = _pdListHtml(plans);
-  pane.innerHTML = _pdDetailHtml(selected);
-  _pdFillDocBadge(selected);
+  if (policyDocOpen) _pdPlacePanel(false);
 }
 
 function policyDocToggle(id) {
+  if (policyDocOpen === id) {
+    policyDocOpen = '';
+    policyDocSelected = '';
+    _pdPlacePanel(false);
+    return;
+  }
   policyDocOpen = id;
   policyDocSelected = id;
   var container = document.getElementById('pv-list');
-  if (container) _pdShowDetail(true);
+  if (container) _pdPlacePanel(true);
   else renderPolicyResults();
 }
 
@@ -584,6 +619,11 @@ function _pdBindKeys() {
   root.setAttribute('data-pv-bound', '1');
   root.addEventListener('click', _pdOnClick);
   root.addEventListener('keydown', _pdOnKey);
+  window.addEventListener('resize', function () {
+    if (!policyDocOpen) return;
+    if (!document.getElementById('pv-list')) return;
+    _pdPlacePanel(false);
+  });
   root.addEventListener('input', function (event) {
     if (event.target && event.target.id === 'pdSearchInput') {
       policyDocSearchTyping(event.target.value);
@@ -594,15 +634,6 @@ function _pdBindKeys() {
 function _pdOnClick(event) {
   var node = event.target;
   while (node && node !== event.currentTarget) {
-    if (node.getAttribute && node.getAttribute('data-pv-back') === '1') {
-      var page = document.querySelector('#page-policydocs .pv-page');
-      if (page) {
-        page.className = page.className
-          .replace(' pv-show-detail', '')
-          .replace('pv-show-detail', '');
-      }
-      return;
-    }
     if (node.getAttribute && node.getAttribute('data-pv-filter')) {
       policyDocFilter = node.getAttribute('data-pv-filter');
       policyDocFilterChanged();
@@ -627,11 +658,9 @@ function _pdOnClick(event) {
     if (
       node.tagName === 'BUTTON' &&
       node.getAttribute('data-pv-id') &&
-      node.className.indexOf('pv-row') !== -1
+      node.className.indexOf('pv-card') !== -1
     ) {
-      policyDocSelected = node.getAttribute('data-pv-id');
-      policyDocOpen = policyDocSelected;
-      _pdShowDetail(true);
+      policyDocToggle(node.getAttribute('data-pv-id'));
       return;
     }
     node = node.parentNode;
@@ -639,21 +668,9 @@ function _pdOnClick(event) {
 }
 
 function _pdOnKey(event) {
-  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
-  var list = document.getElementById('pv-list');
-  if (!list || !list.contains(event.target)) return;
-  var rows = list.querySelectorAll('button.pv-row');
-  var index = -1;
-  var i;
-  for (i = 0; i < rows.length; i++) {
-    if (rows[i] === document.activeElement) index = i;
-  }
-  if (index < 0) return;
-  var next = event.key === 'ArrowDown' ? index + 1 : index - 1;
-  if (next < 0 || next >= rows.length) return;
-  event.preventDefault();
-  rows[next].focus();
-  policyDocSelected = rows[next].getAttribute('data-pv-id');
-  policyDocOpen = policyDocSelected;
-  _pdShowDetail(false);
+  if (event.key !== 'Escape') return;
+  if (!policyDocOpen) return;
+  policyDocOpen = '';
+  policyDocSelected = '';
+  _pdPlacePanel(false);
 }
