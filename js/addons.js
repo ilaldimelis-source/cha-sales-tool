@@ -67,6 +67,7 @@ var AO_PLAN_NOT_ADDON = {
 
 var aoData = null;
 var aoLoadStarted = false;
+var aoSelectedName = '';
 
 function aoEsc(text) {
   return String(text)
@@ -268,13 +269,13 @@ function aoTierRows(product) {
     product.tiers.spouse !== null &&
     typeof product.tiers.spouse !== 'undefined'
   ) {
-    rows.push(['Member + Spouse', product.tiers.spouse]);
+    rows.push(['Member + spouse', product.tiers.spouse]);
   }
   if (
     product.tiers.children !== null &&
     typeof product.tiers.children !== 'undefined'
   ) {
-    rows.push(['Member + Child(ren)', product.tiers.children]);
+    rows.push(['Member + children', product.tiers.children]);
   }
   if (
     product.tiers.family !== null &&
@@ -285,12 +286,137 @@ function aoTierRows(product) {
   return rows;
 }
 
-function aoCardHtml(product, dim) {
-  var cls = 'ao-card';
-  if (dim) cls += ' ao-card-hold';
+function aoListLabel(section) {
+  if (section.id === 'fe') return 'FirstEnroll';
+  if (section.id === 'neo') return 'NEO';
+  if (section.id === 'confirm') return 'Confirm first';
+  if (section.id === 'unavailable') return 'Not available';
+  if (section.id === 'hold') return 'On hold';
+  return section.title || '';
+}
+
+function aoSectionProducts(section) {
+  var list = [];
+  var i;
+  var g;
+  if (section.kind === 'confirm') {
+    for (g = 0; g < section.groups.length; g++) {
+      for (i = 0; i < section.groups[g].items.length; i++) {
+        list.push(section.groups[g].items[i]);
+      }
+    }
+    return list;
+  }
+  for (i = 0; i < section.items.length; i++) list.push(section.items[i]);
+  return list;
+}
+
+function aoFirstSelectable(sections) {
+  var s;
+  var i;
+  var products;
+  for (s = 0; s < sections.length; s++) {
+    if (sections[s].kind === 'chips') continue;
+    products = aoSectionProducts(sections[s]);
+    for (i = 0; i < products.length; i++) return products[i];
+  }
+  return null;
+}
+
+function aoFindProduct(name) {
+  var products = aoData && aoData.products ? aoData.products : [];
+  var i;
+  for (i = 0; i < products.length; i++) {
+    if (products[i].name === name) return products[i];
+  }
+  return null;
+}
+
+function aoRowHtml(product, dim) {
+  var cls = 'ao-row';
+  if (dim) cls += ' ao-row-hold';
+  if (product.name === aoSelectedName) cls += ' ao-row-selected';
+  var price = aoHasPrice(product)
+    ? '<span class="ao-row-price">' + aoMoney(product.price_member) + '</span>'
+    : '<span class="ao-row-price ao-row-none">No price</span>';
+  return (
+    '<button type="button" class="' +
+    cls +
+    '" data-ao-name="' +
+    aoEsc(product.name) +
+    '">' +
+    '<span class="ao-row-copy"><span class="ao-row-name">' +
+    aoEsc(product.name) +
+    '</span><span class="ao-badge ao-badge-platform">' +
+    aoEsc(product.platform) +
+    '</span></span>' +
+    price +
+    '</button>'
+  );
+}
+
+function aoUnavailableHtml(product) {
+  return (
+    '<div class="ao-unavailable" data-ao-name="' +
+    aoEsc(product.name) +
+    '">' +
+    aoEsc(product.name) +
+    '</div>'
+  );
+}
+
+function aoListHtml(sections) {
+  var html = '';
+  var s;
+  var i;
+  var products;
+  var label;
+  for (s = 0; s < sections.length; s++) {
+    label = aoListLabel(sections[s]);
+    html += '<section class="ao-group" data-ao-group="' + sections[s].id + '">';
+    if (label) html += '<h2 class="ao-divider">' + aoEsc(label) + '</h2>';
+    products = aoSectionProducts(sections[s]);
+    if (sections[s].kind === 'chips') {
+      for (i = 0; i < products.length; i++)
+        html += aoUnavailableHtml(products[i]);
+    } else {
+      for (i = 0; i < products.length; i++) {
+        html += aoRowHtml(products[i], sections[s].dim);
+      }
+    }
+    html += '</section>';
+  }
+  return html;
+}
+
+function aoStateNames(codes) {
+  var names = [];
+  var i;
+  for (i = 0; i < codes.length; i++) {
+    names.push(AO_STATE_NAMES[codes[i]] || codes[i]);
+  }
+  return names.join(', ');
+}
+
+function aoMissingStates(product) {
+  var all = aoStateCodes();
+  var missing = [];
+  var i;
+  for (i = 0; i < all.length; i++) {
+    if (product.states.indexOf(all[i]) === -1) missing.push(all[i]);
+  }
+  return missing;
+}
+
+function aoDetailHtml(product) {
+  if (!product) {
+    return '<p class="ao-status">No add-on is selected.</p>';
+  }
   var badges =
     '<span class="ao-badge ao-badge-platform">' +
     aoEsc(product.platform) +
+    '</span><span class="ao-badge ao-badge-category">' +
+    aoEsc(product.category) +
     '</span>';
   if (product.is_discount_program) {
     badges +=
@@ -300,96 +426,82 @@ function aoCardHtml(product, dim) {
     badges +=
       '<span class="ao-badge ao-badge-plan">Limited medical plan, not an add-on</span>';
   }
-  var price;
-  if (aoHasPrice(product))
-    price = '<p class="ao-price">' + aoMoney(product.price_member) + '</p>';
-  else if (product.price_note)
-    price = '<p class="ao-price-note">' + aoEsc(product.price_note) + '</p>';
-  else price = '<p class="ao-price-note">Price not published</p>';
-  var tiers = aoTierRows(product);
-  var tierHtml = '';
-  if (tiers.length) {
-    tierHtml = '<ul class="ao-tiers">';
-    for (var i = 0; i < tiers.length; i++) {
-      tierHtml +=
-        '<li><span>' +
-        aoEsc(tiers[i][0]) +
-        '</span><span>' +
-        aoMoney(tiers[i][1]) +
-        '</span></li>';
-    }
-    tierHtml += '</ul>';
+  if (product.on_hold) {
+    badges += '<span class="ao-badge ao-badge-hold">On hold</span>';
   }
-  var fee = '';
-  if (
-    product.enrollment_fee !== null &&
-    typeof product.enrollment_fee !== 'undefined'
-  ) {
-    fee =
-      '<p class="ao-fee">One-time enrollment fee ' +
-      aoMoney(product.enrollment_fee) +
+  var priceBlock;
+  if (aoHasPrice(product)) {
+    priceBlock =
+      '<div class="ao-detail-price"><p class="ao-detail-amount">' +
+      aoMoney(product.price_member) +
+      '</p><p class="ao-detail-period">per month, Member</p></div>';
+  } else {
+    priceBlock = '';
+  }
+  var body;
+  if (!aoHasPrice(product)) {
+    body =
+      '<p class="ao-detail-unpublished">' +
+      aoEsc(product.price_note || 'Price not published') +
       '</p>';
+  } else {
+    var tiers = aoTierRows(product);
+    var feeSet =
+      product.enrollment_fee !== null &&
+      typeof product.enrollment_fee !== 'undefined';
+    if (!tiers.length && !feeSet) {
+      body = '';
+    } else {
+      body = '<table class="ao-table"><tbody>';
+      var i;
+      for (i = 0; i < tiers.length; i++) {
+        body +=
+          '<tr><th scope="row">' +
+          aoEsc(tiers[i][0]) +
+          '</th><td>' +
+          aoMoney(tiers[i][1]) +
+          '</td></tr>';
+      }
+      if (feeSet) {
+        body +=
+          '<tr class="ao-fee-row"><th scope="row">One-time enrollment fee</th><td>' +
+          aoMoney(product.enrollment_fee) +
+          '</td></tr>';
+      }
+      body += '</tbody></table>';
+    }
+  }
+  var states;
+  if (product.states === null) {
+    states =
+      '<p class="ao-availability-missing">No availability given in the source. Confirm on the platform before quoting.</p>';
+  } else {
+    var missing = aoMissingStates(product);
+    states =
+      '<h3 class="ao-detail-label">Available in</h3><p class="ao-availability">' +
+      aoEsc(aoStateNames(product.states)) +
+      '</p>';
+    if (missing.length) {
+      states +=
+        '<p class="ao-availability-off">Not available in ' +
+        aoEsc(aoStateNames(missing)) +
+        '.</p>';
+    }
   }
   return (
-    '<article class="' +
-    cls +
-    '" data-ao-name="' +
+    '<button type="button" class="ao-back" data-ao-back="1">Back to list</button>' +
+    '<div class="ao-detail-top"><div><h2 class="ao-detail-name">' +
     aoEsc(product.name) +
-    '">' +
-    '<div class="ao-card-top"><h3 class="ao-name">' +
-    aoEsc(product.name) +
-    '</h3>' +
-    price +
-    '</div>' +
-    '<p class="ao-category">' +
-    aoEsc(product.category) +
-    '</p>' +
-    '<div class="ao-badges">' +
+    '</h2><div class="ao-badges">' +
     badges +
-    '</div>' +
-    tierHtml +
-    fee +
-    '</article>'
+    '</div></div>' +
+    priceBlock +
+    '</div><p class="ao-description">' +
+    aoEsc(product.description || '') +
+    '</p>' +
+    body +
+    states
   );
-}
-
-function aoSectionHtml(section) {
-  var html = '<section class="ao-section" data-ao-group="' + section.id + '">';
-  if (section.title)
-    html += '<h2 class="ao-section-title">' + aoEsc(section.title) + '</h2>';
-  if (section.kind === 'chips') {
-    html += '<div class="ao-chips">';
-    for (var i = 0; i < section.items.length; i++) {
-      html +=
-        '<span class="ao-chip" data-ao-name="' +
-        aoEsc(section.items[i].name) +
-        '">' +
-        aoEsc(section.items[i].name) +
-        '</span>';
-    }
-    html += '</div></section>';
-    return html;
-  }
-  if (section.kind === 'confirm') {
-    for (var g = 0; g < section.groups.length; g++) {
-      html +=
-        '<h3 class="ao-subhead">' +
-        aoEsc(section.groups[g].platform) +
-        '</h3><div class="ao-grid">';
-      for (var c = 0; c < section.groups[g].items.length; c++) {
-        html += aoCardHtml(section.groups[g].items[c], false);
-      }
-      html += '</div>';
-    }
-    html += '</section>';
-    return html;
-  }
-  html += '<div class="ao-grid">';
-  for (var n = 0; n < section.items.length; n++) {
-    html += aoCardHtml(section.items[n], section.dim);
-  }
-  html += '</div></section>';
-  return html;
 }
 
 function aoStateCodes() {
@@ -399,13 +511,7 @@ function aoStateCodes() {
   return [];
 }
 
-function aoRenderResults() {
-  var box = document.getElementById('ao-results');
-  if (!box) return;
-  if (!aoData || !aoData.products) {
-    box.innerHTML = '<p class="ao-status">Add-on list could not be loaded.</p>';
-    return;
-  }
+function aoCurrentView() {
   var searchEl = document.getElementById('ao-search');
   var stateEl = document.getElementById('ao-state');
   var query = searchEl ? searchEl.value : '';
@@ -413,14 +519,109 @@ function aoRenderResults() {
   var searched = aoMatchState(query, aoStateCodes());
   var stateCode = searched || dropdown || '';
   var textQuery = searched ? '' : query;
-  var sections = aoBuildView(aoData.products, stateCode, textQuery);
-  if (!sections.length) {
-    box.innerHTML = '<p class="ao-status">No add-ons match.</p>';
+  return aoBuildView(aoData.products, stateCode, textQuery);
+}
+
+function aoMarkSelection() {
+  var rows = document.querySelectorAll('#ao-list .ao-row');
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i].getAttribute('data-ao-name') === aoSelectedName) {
+      rows[i].className +=
+        rows[i].className.indexOf('ao-row-selected') === -1
+          ? ' ao-row-selected'
+          : '';
+    } else {
+      rows[i].className = rows[i].className
+        .replace(' ao-row-selected', '')
+        .replace('ao-row-selected', '');
+    }
+  }
+}
+
+function aoShowDetail(openMobile) {
+  var pane = document.getElementById('ao-detail');
+  var page = document.querySelector('#page-addons .ao-page');
+  if (pane) pane.innerHTML = aoDetailHtml(aoFindProduct(aoSelectedName));
+  aoMarkSelection();
+  if (!page) return;
+  if (openMobile && window.matchMedia('(max-width: 900px)').matches) {
+    page.className +=
+      page.className.indexOf('ao-show-detail') === -1 ? ' ao-show-detail' : '';
+  }
+}
+
+function aoRenderResults() {
+  var list = document.getElementById('ao-list');
+  var pane = document.getElementById('ao-detail');
+  if (!list || !pane) return;
+  if (!aoData || !aoData.products) {
+    list.innerHTML = '';
+    pane.innerHTML =
+      '<p class="ao-status">Add-on list could not be loaded.</p>';
     return;
   }
-  var html = '';
-  for (var i = 0; i < sections.length; i++) html += aoSectionHtml(sections[i]);
-  box.innerHTML = html;
+  var sections = aoCurrentView();
+  var page = document.querySelector('#page-addons .ao-page');
+  if (page) {
+    page.className = page.className
+      .replace(' ao-show-detail', '')
+      .replace('ao-show-detail', '');
+  }
+  if (!sections.length) {
+    aoSelectedName = '';
+    list.innerHTML = '<p class="ao-status">No add-ons match.</p>';
+    pane.innerHTML = '<p class="ao-status">No add-on is selected.</p>';
+    return;
+  }
+  var first = aoFirstSelectable(sections);
+  aoSelectedName = first ? first.name : '';
+  list.innerHTML = aoListHtml(sections);
+  pane.innerHTML = aoDetailHtml(first);
+}
+
+function aoOnListClick(event) {
+  var node = event.target;
+  while (node && node !== event.currentTarget) {
+    if (node.getAttribute && node.getAttribute('data-ao-back') === '1') {
+      var page = document.querySelector('#page-addons .ao-page');
+      if (page) {
+        page.className = page.className
+          .replace(' ao-show-detail', '')
+          .replace('ao-show-detail', '');
+      }
+      return;
+    }
+    if (
+      node.tagName === 'BUTTON' &&
+      node.getAttribute('data-ao-name') &&
+      node.className.indexOf('ao-row') !== -1
+    ) {
+      aoSelectedName = node.getAttribute('data-ao-name');
+      aoShowDetail(true);
+      return;
+    }
+    node = node.parentNode;
+  }
+}
+
+function aoOnListKey(event) {
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+  var list = document.getElementById('ao-list');
+  if (!list || !list.contains(event.target)) return;
+  var rows = list.querySelectorAll('button.ao-row');
+  var index = -1;
+  var i;
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i] === document.activeElement) index = i;
+  }
+  if (index < 0) return;
+  var next = event.key === 'ArrowDown' ? index + 1 : index - 1;
+  if (next < 0 || next >= rows.length) return;
+  event.preventDefault();
+  rows[next].focus();
+  aoSelectedName = rows[next].getAttribute('data-ao-name');
+  aoShowDetail(false);
 }
 
 function aoFillStates() {
@@ -455,11 +656,15 @@ function renderAddons() {
       '<input id="ao-search" class="ao-search" type="search" placeholder="Search name, description, category, or a state" aria-label="Search add-ons">' +
       '<select id="ao-state" class="ao-state" aria-label="Filter by state"><option value="">All states</option></select>' +
       '</div>' +
-      '<div id="ao-results"><p class="ao-status">Loading add-ons...</p></div>' +
-      '</div>';
+      '<div class="ao-split">' +
+      '<div id="ao-list" class="ao-list" aria-label="Add-on list"><p class="ao-status">Loading add-ons...</p></div>' +
+      '<div id="ao-detail" class="ao-detail" aria-live="polite"><p class="ao-status">Loading add-ons...</p></div>' +
+      '</div></div>';
     root.setAttribute('data-ao-ready', '1');
     root.addEventListener('input', aoOnControl);
     root.addEventListener('change', aoOnControl);
+    root.addEventListener('click', aoOnListClick);
+    root.addEventListener('keydown', aoOnListKey);
   }
   if (aoData) {
     aoFillStates();
@@ -481,9 +686,11 @@ function renderAddons() {
       aoRenderResults();
     })
     .catch(function () {
-      var box = document.getElementById('ao-results');
-      if (box)
-        box.innerHTML =
+      var list = document.getElementById('ao-list');
+      var pane = document.getElementById('ao-detail');
+      if (list) list.innerHTML = '';
+      if (pane)
+        pane.innerHTML =
           '<p class="ao-status">Add-on list could not be loaded.</p>';
     });
 }
