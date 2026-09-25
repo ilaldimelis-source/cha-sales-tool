@@ -139,10 +139,15 @@ function aoSortProducts(list) {
   return copy;
 }
 
-function aoBuildView(products, stateCode, textQuery) {
+var aoPlatformFilter = 'both';
+
+function aoBuildView(products, stateCode, textQuery, platform) {
   var matched = [];
   var i;
   for (i = 0; i < products.length; i++) {
+    if (platform && platform !== 'both' && products[i].platform !== platform) {
+      continue;
+    }
     if (textQuery && !aoTextMatch(products[i], textQuery)) continue;
     matched.push(products[i]);
   }
@@ -365,17 +370,41 @@ function aoUnavailableHtml(product) {
   );
 }
 
-function aoListHtml(sections) {
+function aoCountLine(sections) {
+  var parts = [];
+  var s;
+  var label;
+  var n;
+  for (s = 0; s < sections.length; s++) {
+    if (sections[s].id === 'all') continue;
+    label = aoListLabel(sections[s]);
+    if (!label) continue;
+    n = aoSectionProducts(sections[s]).length;
+    if (!n) continue;
+    parts.push(label + ' ' + n);
+  }
+  return parts.join(', ');
+}
+
+function aoListHtml(sections, stateCode) {
   var html = '';
   var s;
   var i;
   var products;
   var label;
+  var counts;
+  if (stateCode) {
+    counts = aoCountLine(sections);
+    if (counts) {
+      html += '<p class="ao-count-line">' + aoEsc(counts) + '</p>';
+    }
+  }
   for (s = 0; s < sections.length; s++) {
+    products = aoSectionProducts(sections[s]);
+    if (!products.length) continue;
     label = aoListLabel(sections[s]);
     html += '<section class="ao-group" data-ao-group="' + sections[s].id + '">';
     if (label) html += '<h2 class="ao-divider">' + aoEsc(label) + '</h2>';
-    products = aoSectionProducts(sections[s]);
     if (sections[s].kind === 'chips') {
       for (i = 0; i < products.length; i++)
         html += aoUnavailableHtml(products[i]);
@@ -511,15 +540,48 @@ function aoStateCodes() {
   return [];
 }
 
-function aoCurrentView() {
+function aoViewQuery() {
   var searchEl = document.getElementById('ao-search');
   var stateEl = document.getElementById('ao-state');
   var query = searchEl ? searchEl.value : '';
   var dropdown = stateEl ? stateEl.value : '';
   var searched = aoMatchState(query, aoStateCodes());
-  var stateCode = searched || dropdown || '';
-  var textQuery = searched ? '' : query;
-  return aoBuildView(aoData.products, stateCode, textQuery);
+  return {
+    stateCode: searched || dropdown || '',
+    textQuery: searched ? '' : query
+  };
+}
+
+function aoEmptyPlatformMessage(stateCode) {
+  var other = aoPlatformFilter === 'NEO' ? 'FirstEnroll' : 'NEO';
+  var stateName = stateCode ? AO_STATE_NAMES[stateCode] || stateCode : '';
+  if (stateName) {
+    return (
+      'No ' +
+      aoPlatformFilter +
+      ' add-ons for ' +
+      stateName +
+      '. ' +
+      other +
+      ' may still have add-ons for this state.'
+    );
+  }
+  return (
+    'No ' + aoPlatformFilter + ' add-ons. ' + other + ' may still have add-ons.'
+  );
+}
+
+function aoCurrentView() {
+  var query = aoViewQuery();
+  return {
+    stateCode: query.stateCode,
+    sections: aoBuildView(
+      aoData.products,
+      query.stateCode,
+      query.textQuery,
+      aoPlatformFilter
+    )
+  };
 }
 
 function aoMarkSelection() {
@@ -561,7 +623,8 @@ function aoRenderResults() {
       '<p class="ao-status">Add-on list could not be loaded.</p>';
     return;
   }
-  var sections = aoCurrentView();
+  var view = aoCurrentView();
+  var sections = view.sections;
   var page = document.querySelector('#page-addons .ao-page');
   if (page) {
     page.className = page.className
@@ -570,19 +633,41 @@ function aoRenderResults() {
   }
   if (!sections.length) {
     aoSelectedName = '';
-    list.innerHTML = '<p class="ao-status">No add-ons match.</p>';
+    var emptyText = 'No add-ons match.';
+    if (aoPlatformFilter !== 'both') {
+      emptyText = aoEmptyPlatformMessage(view.stateCode);
+    }
+    list.innerHTML = '<p class="ao-status">' + aoEsc(emptyText) + '</p>';
     pane.innerHTML = '<p class="ao-status">No add-on is selected.</p>';
     return;
   }
   var first = aoFirstSelectable(sections);
   aoSelectedName = first ? first.name : '';
-  list.innerHTML = aoListHtml(sections);
+  list.innerHTML = aoListHtml(sections, view.stateCode);
   pane.innerHTML = aoDetailHtml(first);
 }
 
 function aoOnListClick(event) {
   var node = event.target;
   while (node && node !== event.currentTarget) {
+    if (node.getAttribute && node.getAttribute('data-ao-platform')) {
+      aoPlatformFilter = node.getAttribute('data-ao-platform');
+      var pills = document.querySelectorAll('#page-addons [data-ao-platform]');
+      var p;
+      for (p = 0; p < pills.length; p++) {
+        if (pills[p] === node) {
+          if (pills[p].className.indexOf('active') === -1) {
+            pills[p].className += ' active';
+          }
+        } else {
+          pills[p].className = pills[p].className
+            .replace(' active', '')
+            .replace('active', '');
+        }
+      }
+      aoRenderResults();
+      return;
+    }
     if (node.getAttribute && node.getAttribute('data-ao-back') === '1') {
       var page = document.querySelector('#page-addons .ao-page');
       if (page) {
@@ -655,6 +740,11 @@ function renderAddons() {
       '<div class="ao-controls">' +
       '<input id="ao-search" class="ao-search" type="search" placeholder="Search name, description, category, or a state" aria-label="Search add-ons">' +
       '<select id="ao-state" class="ao-state" aria-label="Filter by state"><option value="">All states</option></select>' +
+      '<div class="ao-platforms" role="group" aria-label="Filter by platform">' +
+      '<button type="button" class="stab active" data-ao-platform="both">Both</button>' +
+      '<button type="button" class="stab" data-ao-platform="FirstEnroll">FirstEnroll</button>' +
+      '<button type="button" class="stab" data-ao-platform="NEO">NEO</button>' +
+      '</div>' +
       '</div>' +
       '<div class="ao-split">' +
       '<div id="ao-list" class="ao-list" aria-label="Add-on list"><p class="ao-status">Loading add-ons...</p></div>' +

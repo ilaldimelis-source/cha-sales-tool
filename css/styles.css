@@ -11395,3 +11395,24 @@ body {
     gap: 2px;
   }
 }
+
+.ao-platforms {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ao-count-line {
+  margin: 0;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--cha-border-subtle);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cha-text-secondary);
+}
+
+.main .ao-platforms .stab:hover {
+  transform: none;
+}
