@@ -11471,3 +11471,35 @@ body {
 .main .ao-platforms .stab:hover {
   transform: none;
 }
+
+.pv-tiers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px;
+}
+
+.pv-tier {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--cha-border-default);
+  background: var(--cha-bg-card);
+  color: var(--cha-text-secondary);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.pv-tier-on {
+  border-color: var(--cha-accent);
+  background: var(--cha-bg-muted);
+  color: var(--cha-text-primary);
+  font-weight: 700;
+}
+
+.pv-tier:focus-visible {
+  outline: 2px solid var(--cha-accent);
+  outline-offset: 2px;
+}
