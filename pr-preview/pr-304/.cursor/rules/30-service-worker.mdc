@@ -1,0 +1,32 @@
+---
+globs: sw2.js
+alwaysApply: false
+---
+
+# Service worker cache versioning
+
+This file is the most common source of broken deploys in this repo. The
+failure is always the same shape: a second stamp gets appended instead of
+the existing one being replaced, and agents keep getting the old file.
+
+Read the whole file before editing it.
+
+1. CACHE_NAME ends in an integer. Increment it by exactly 1. Replace the
+   value in place. Do not introduce a second constant.
+2. For every file this PR changes, find its EXISTING entry in
+   URLS_TO_CACHE and replace the ?v= value on that line.
+3. A URL containing "?v=" more than once is a defect. Never append.
+4. Never add a new URLS_TO_CACHE line for a path that is already listed.
+   Edit the existing line.
+5. The same ?v= values appear in index.html. Both files must agree.
+   Update both.
+
+## Mandatory verification before declaring done
+
+Search both sw2.js and index.html for:
+
+- any URL containing more than one "?v="
+- any path listed twice
+
+Report the result of that search explicitly in your summary. "I updated
+the cache" without this check is not a completed task.
