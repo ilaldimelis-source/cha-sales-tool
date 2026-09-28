@@ -35,6 +35,8 @@ function _pdFindSalesPlan(doc) {
 }
 
 var policyDocSelected = '';
+var policyDocTierId = '';
+var _pdProfileReq = 0;
 
 var PD_SCRIPT_BY_ID = {
   goodhealth13: 'TrueHealth / MedFirst / GoodHealth 1,2,3',
@@ -99,6 +101,106 @@ var PD_FACT_SLOTS = [
   { label: 'Age limit', paths: ['eligibility.age_max'] },
   { label: 'Pre-certification', paths: ['administration.precert'] }
 ];
+
+var PD_PLAN_TIERS = {
+  goodhealth13: [
+    { id: 'ghdp-1', label: 'GoodHealth 1' },
+    { id: 'ghdp-2', label: 'GoodHealth 2' },
+    { id: 'ghdp-3', label: 'GoodHealth 3' }
+  ],
+  goodhealth45: [
+    { id: 'ghdp-4', label: 'GoodHealth 4' },
+    { id: 'ghdp-5', label: 'GoodHealth 5' }
+  ],
+  tdk13: [
+    { id: 'tdk-1', label: 'TDK 1' },
+    { id: 'tdk-2', label: 'TDK 2' },
+    { id: 'tdk-3', label: 'TDK 3' }
+  ],
+  tdk45: [
+    { id: 'tdk-4', label: 'TDK 4' },
+    { id: 'tdk-5', label: 'TDK 5' }
+  ],
+  smartchoice: [
+    { id: 'smart-choice-1500', label: 'SmartChoice 1500' },
+    { id: 'smart-choice-2500', label: 'SmartChoice 2500' },
+    { id: 'smart-choice-3000', label: 'SmartChoice 3000' },
+    { id: 'smart-choice-3500', label: 'SmartChoice 3500' }
+  ],
+  accesshealth: [
+    { id: 'access-health-stm-lite', label: 'Access Health Lite' },
+    { id: 'access-health-stm-traditional', label: 'Access Health Traditional' }
+  ],
+  smarthealth: [
+    { id: 'smarthealth-stm-limited', label: 'Smart Health Limited' },
+    { id: 'smarthealth-stm-traditional', label: 'Smart Health Traditional' }
+  ],
+  galena: [
+    { id: 'afrp-galena-stm-economy', label: 'Galena Economy' },
+    { id: 'afrp-galena-stm-standard', label: 'Galena Standard' },
+    { id: 'afrp-galena-stm-elite', label: 'Galena Elite' }
+  ],
+  harmonycare: [
+    { id: 'harmony-care-plus-100', label: 'HarmonyCare 100' },
+    { id: 'harmony-care-plus-100a', label: 'HarmonyCare 100A' },
+    { id: 'harmony-care-plus-200', label: 'HarmonyCare 200' },
+    { id: 'harmony-care-plus-200-plus', label: 'HarmonyCare 200+' },
+    { id: 'harmony-care-plus-300', label: 'HarmonyCare 300' },
+    { id: 'harmony-care-plus-500', label: 'HarmonyCare 500' },
+    { id: 'harmony-care-plus-750', label: 'HarmonyCare 750' },
+    { id: 'harmony-care-plus-1000', label: 'HarmonyCare 1000' }
+  ],
+  sigmacare: [
+    { id: 'sigma-care-plus-100', label: 'SigmaCare 100' },
+    { id: 'sigma-care-plus-100a', label: 'SigmaCare 100A' },
+    { id: 'sigma-care-plus-200', label: 'SigmaCare 200' },
+    { id: 'sigma-care-plus-200-plus', label: 'SigmaCare 200+' },
+    { id: 'sigma-care-plus-300', label: 'SigmaCare 300' },
+    { id: 'sigma-care-plus-500', label: 'SigmaCare 500' },
+    { id: 'sigma-care-plus-750', label: 'SigmaCare 750' },
+    { id: 'sigma-care-plus-1000', label: 'SigmaCare 1000' }
+  ],
+  healthchoicesilver: [
+    { id: 'health-choice-silver-100', label: 'Health Choice Silver 100' },
+    { id: 'health-choice-silver-100a', label: 'Health Choice Silver 100A' },
+    { id: 'health-choice-silver-200', label: 'Health Choice Silver 200' },
+    { id: 'health-choice-silver-200-plus', label: 'Health Choice Silver 200+' },
+    { id: 'health-choice-silver-300', label: 'Health Choice Silver 300' },
+    { id: 'health-choice-silver-500', label: 'Health Choice Silver 500' },
+    { id: 'health-choice-silver-750', label: 'Health Choice Silver 750' },
+    { id: 'health-choice-silver-1000', label: 'Health Choice Silver 1000' }
+  ],
+  bwapara: [
+    { id: 'paramount-1', label: 'Paramount 1' },
+    { id: 'paramount-2', label: 'Paramount 2' },
+    { id: 'paramount-3', label: 'Paramount 3' },
+    { id: 'paramount-4', label: 'Paramount 4' },
+    { id: 'paramount-5', label: 'Paramount 5' },
+    { id: 'paramount-6', label: 'Paramount 6' }
+  ],
+  bwaamericare: [
+    { id: 'bwa-americare-2', label: 'Americare 2' },
+    { id: 'bwa-americare-3', label: 'Americare 3' },
+    { id: 'bwa-americare-4', label: 'Americare 4' }
+  ],
+  pinnacleprotect: [
+    { id: 'pinnacle-protect-2', label: 'Protect 2' },
+    { id: 'pinnacle-protect-3', label: 'Protect 3' },
+    { id: 'pinnacle-protect-4', label: 'Protect 4' }
+  ],
+  pinnaclecriticalcare: [
+    { id: 'pinnacle-critical-care-1', label: 'Critical Care 1' },
+    { id: 'pinnacle-critical-care-2', label: 'Critical Care 2' },
+    { id: 'pinnacle-critical-care-3', label: 'Critical Care 3' },
+    { id: 'pinnacle-critical-care-4', label: 'Critical Care 4' }
+  ],
+  allstatestm: [
+    { id: 'allstate-enhanced-stm-ppo', label: 'Enhanced' },
+    { id: 'allstate-copay-enhanced-stm-ppo', label: 'Copay Enhanced' },
+    { id: 'allstate-essentials-stm-ppo', label: 'Essentials' }
+  ],
+  pinnacle: [{ id: 'pinnacle-stm-traditional', label: 'Pinnacle STM' }]
+};
 
 function _pdHasFact(value) {
   if (value == null) return false;
@@ -261,6 +363,125 @@ function _pdProfileId(plan, rows) {
   return '';
 }
 
+function _pdPlanTiers(plan) {
+  var rows;
+  if (!plan || !plan.id || !PD_PLAN_TIERS[plan.id]) return [];
+  rows = PD_PLAN_TIERS[plan.id];
+  if (!rows || !rows.length) return [];
+  return rows;
+}
+
+function _pdSelectedTier(plan) {
+  var rows = _pdPlanTiers(plan);
+  var i;
+  if (!rows.length) return null;
+  if (policyDocTierId) {
+    for (i = 0; i < rows.length; i++) {
+      if (rows[i].id === policyDocTierId) return rows[i];
+    }
+  }
+  return rows[0];
+}
+
+function _pdTierHtml(plan) {
+  var rows = _pdPlanTiers(plan);
+  var active;
+  var html;
+  var i;
+  var on;
+  if (rows.length < 2) return '';
+  active = _pdSelectedTier(plan);
+  html = '<div class="pv-tiers" role="group" aria-label="Plan tiers">';
+  for (i = 0; i < rows.length; i++) {
+    on = active && rows[i].id === active.id;
+    html +=
+      '<button type="button" class="pv-tier' +
+      (on ? ' pv-tier-on' : '') +
+      '" data-pv-tier="' +
+      escHTML(rows[i].id) +
+      '" aria-pressed="' +
+      (on ? 'true' : 'false') +
+      '">' +
+      escHTML(rows[i].label) +
+      '</button>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function _pdMarkTierButtons(tierId) {
+  var root =
+    document.getElementById('page-policydocs') ||
+    document.getElementById('page-allplans');
+  var buttons;
+  var i;
+  var id;
+  var on;
+  if (!root) return;
+  buttons = root.querySelectorAll('.pv-tier');
+  for (i = 0; i < buttons.length; i++) {
+    id = buttons[i].getAttribute('data-pv-tier');
+    on = id === tierId;
+    if (on) {
+      if (buttons[i].className.indexOf('pv-tier-on') === -1) {
+        buttons[i].className += ' pv-tier-on';
+      }
+    } else {
+      buttons[i].className = buttons[i].className
+        .replace(' pv-tier-on', '')
+        .replace('pv-tier-on', '');
+    }
+    buttons[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+}
+
+function _pdFetchProfile(plan, profileId) {
+  var requestedCard = plan.id;
+  var requestedTier = profileId;
+  var req = ++_pdProfileReq;
+  if (!profileId || typeof brLoadProfile !== 'function') return;
+  brLoadProfile(profileId)
+    .then(function (profile) {
+      var current;
+      if (req !== _pdProfileReq) return;
+      if (policyDocSelected !== requestedCard) return;
+      if (_pdPlanTiers(plan).length) {
+        current = _pdSelectedTier(plan);
+        if (!current || current.id !== requestedTier) return;
+      }
+      if (!profile) {
+        _pdApplyProfile(plan, null);
+        return;
+      }
+      _pdApplyProfile(plan, profile);
+    })
+    .catch(function () {
+      if (req !== _pdProfileReq) return;
+      if (policyDocSelected !== requestedCard) return;
+      _pdApplyProfile(plan, null);
+    });
+}
+
+function _pdSelectTier(tierId) {
+  var plan;
+  var rows;
+  var i;
+  var found = false;
+  if (!policyDocOpen || !tierId) return;
+  plan = _pdFindPlan(policyDocOpen);
+  if (!plan) return;
+  rows = _pdPlanTiers(plan);
+  for (i = 0; i < rows.length; i++) {
+    if (rows[i].id === tierId) found = true;
+  }
+  if (!found) return;
+  if (policyDocTierId === tierId) return;
+  policyDocTierId = tierId;
+  _pdMarkTierButtons(tierId);
+  _pdApplyProfile(plan, null);
+  _pdFetchProfile(plan, tierId);
+}
+
 function _pdApplyProfile(plan, profile) {
   var facts = document.getElementById('pv-facts');
   var badge = document.getElementById('pv-doc-badge');
@@ -277,7 +498,20 @@ function _pdApplyProfile(plan, profile) {
 }
 
 function _pdFillDocBadge(plan) {
+  var mapped;
+  var tier;
+  var requested;
+  var req;
   if (!plan) return;
+  mapped = _pdPlanTiers(plan);
+  if (mapped.length) {
+    tier = _pdSelectedTier(plan);
+    if (tier) {
+      policyDocTierId = tier.id;
+      _pdFetchProfile(plan, tier.id);
+    }
+    return;
+  }
   if (
     typeof brLoadPlanAliases !== 'function' ||
     typeof brMatchPlan !== 'function' ||
@@ -285,16 +519,19 @@ function _pdFillDocBadge(plan) {
   ) {
     return;
   }
-  var requested = plan.id;
+  requested = plan.id;
+  req = ++_pdProfileReq;
   brLoadPlanAliases()
     .then(function (rows) {
       var profileId;
+      if (req !== _pdProfileReq) return null;
       if (policyDocSelected !== requested) return null;
       profileId = _pdProfileId(plan, rows || []);
       if (!profileId) return null;
       return brLoadProfile(profileId);
     })
     .then(function (profile) {
+      if (req !== _pdProfileReq) return;
       if (policyDocSelected !== requested) return;
       if (!profile) return;
       _pdApplyProfile(plan, profile);
@@ -338,7 +575,8 @@ function _pdDetailHtml(plan) {
     return '<p class="pv-status">No plan is selected.</p>';
   }
   var scriptIndex = _pdScriptIndex(plan);
-  var html = '<div class="pv-detail-top"><div>';
+  var html = _pdTierHtml(plan);
+  html += '<div class="pv-detail-top"><div>';
   html += '<h2 class="pv-detail-name">' + escHTML(plan.name) + '</h2>';
   html += '<div class="pv-badges">';
   html +=
@@ -590,6 +828,7 @@ function renderPolicyResults() {
   if (!still) {
     policyDocOpen = '';
     policyDocSelected = '';
+    policyDocTierId = '';
   } else {
     policyDocSelected = policyDocOpen;
   }
@@ -601,9 +840,11 @@ function policyDocToggle(id) {
   if (policyDocOpen === id) {
     policyDocOpen = '';
     policyDocSelected = '';
+    policyDocTierId = '';
     _pdPlacePanel(false);
     return;
   }
+  policyDocTierId = '';
   policyDocOpen = id;
   policyDocSelected = id;
   var container = document.getElementById('pv-list');
@@ -634,6 +875,10 @@ function _pdBindKeys() {
 function _pdOnClick(event) {
   var node = event.target;
   while (node && node !== event.currentTarget) {
+    if (node.getAttribute && node.getAttribute('data-pv-tier')) {
+      _pdSelectTier(node.getAttribute('data-pv-tier'));
+      return;
+    }
     if (node.getAttribute && node.getAttribute('data-pv-filter')) {
       policyDocFilter = node.getAttribute('data-pv-filter');
       policyDocFilterChanged();
@@ -672,5 +917,6 @@ function _pdOnKey(event) {
   if (!policyDocOpen) return;
   policyDocOpen = '';
   policyDocSelected = '';
+  policyDocTierId = '';
   _pdPlacePanel(false);
 }
