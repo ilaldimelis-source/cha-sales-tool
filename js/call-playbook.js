@@ -1,7 +1,7 @@
 // call-playbook.js — Call Playbook tab (Call Flow, Closes, Scripts, Plan Scripts)
 
 function copyScriptBubble(btn) {
-  var bubble = btn.closest('div[style*="border-radius:16px"]');
+  var bubble = btn.closest('.ps-plan-card');
   if (!bubble) return;
   var textEl = bubble.querySelector('.ps-bubble-text');
   if (!textEl) return;
@@ -1622,15 +1622,11 @@ function renderPlanScripts() {
   var activePlan = filtered[planScriptActive];
   var typeColor = _psTypeColor(activePlan.planType);
 
-  // Back button + quick plan switcher dropdown
+  html += '<div class="ps-pin"><div class="ps-pin-nav">';
   html +=
-    '<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;">';
+    '<button type="button" class="ps-pin-btn" onclick="planScriptActive=-1;renderPlanScripts()">\u2190 All Plans</button>';
   html +=
-    '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:6px 14px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:12px;font-weight:600;">\u2190 All Plans</button>';
-  html +=
-    '<label style="font-family:var(--font-ui);font-size:11px;font-weight:700;color:var(--text-secondary);letter-spacing:.06em;text-transform:uppercase;">Plan:</label>';
-  html +=
-    '<select onchange="planScriptActive=parseInt(this.value,10);planScriptSection=0;renderPlanScripts()" style="flex:1;min-width:200px;max-width:360px;padding:7px 12px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-primary);font-family:var(--font-ui);font-size:13px;font-weight:600;cursor:pointer;outline:none;">';
+    '<select class="ps-pin-select" aria-label="Plan" onchange="planScriptActive=parseInt(this.value,10);planScriptSection=0;renderPlanScripts()">';
   filtered.forEach(function (p, idx) {
     html +=
       '<option value="' +
@@ -1644,31 +1640,28 @@ function renderPlanScripts() {
       ')</option>';
   });
   html += '</select>';
-  html += '</div>';
-
-  // Plan card wrapper
   html +=
-    '<div style="background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">';
-
-  // Sticky plan name header
-  html +=
-    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">';
-  html +=
-    '<span style="font-family:var(--font-ui);font-size:18px;font-weight:700;color:var(--text-primary);">' +
-    activePlan.name +
-    '</span>';
-  html +=
-    '<span style="padding:3px 10px;border-radius:999px;font-size:10px;font-weight:700;letter-spacing:.06em;background:' +
-    typeColor +
-    ';color:#fff;">' +
-    activePlan.planType +
-    '</span></div>';
-  html +=
-    '<div style="font-size:12px;color:var(--text-tertiary);margin-bottom:16px;">' +
+    '<span class="ps-pin-pos">Section ' +
+    (planScriptSection + 1) +
+    ' of ' +
     activePlan.sections.length +
-    ' sections — follow in order during the call</div>';
+    '</span>';
+  if (planScriptSection < activePlan.sections.length - 1) {
+    html +=
+      '<button type="button" class="ps-pin-next" onclick="planScriptSection++;renderPlanScripts()">Next \u2192</button>';
+  } else {
+    html +=
+      '<button type="button" class="ps-pin-finish" onclick="planScriptActive=-1;renderPlanScripts()">Finish \u2713</button>';
+  }
+  html += '</div><div class="ps-head">';
+  html += '<span class="ps-name">' + activePlan.name + '</span>';
+  html +=
+    '<span class="ps-type" style="background:' +
+    typeColor +
+    ';">' +
+    activePlan.planType +
+    '</span>';
 
-  // Progress tracker dots
   var secLabels = [
     'Opening',
     'Benefits',
@@ -1677,44 +1670,38 @@ function renderPlanScripts() {
     'Verification',
     'Post-Close'
   ];
-  html +=
-    '<div style="display:flex;align-items:center;gap:0;margin-bottom:20px;padding:10px 0;border-top:1px solid var(--cha-border-subtle);border-bottom:1px solid var(--cha-border-subtle);">';
+  html += '<div class="ps-stepper" role="group" aria-label="Script sections">';
   activePlan.sections.forEach(function (sec, si) {
     var isCurrent = si === planScriptSection;
     var dotLabel = sec.title || secLabels[si] || 'Section ' + (si + 1);
-    html += '<div style="display:flex;align-items:center;flex:1;min-width:0;">';
+    html += '<div class="ps-step">';
     html +=
-      '<button onclick="planScriptSection=' +
+      '<button type="button" class="ps-step-btn' +
+      (isCurrent ? ' ps-step-on' : '') +
+      '" onclick="planScriptSection=' +
       si +
-      ';renderPlanScripts()" style="display:flex;flex-direction:column;align-items:center;gap:4px;border:none;background:none;cursor:pointer;min-width:0;flex-shrink:0;">';
+      ';renderPlanScripts()">';
     html +=
-      '<div style="width:12px;height:12px;border-radius:50%;background:' +
+      '<span class="ps-step-dot" style="background:' +
       (isCurrent
         ? '#5B8DEF'
         : si < planScriptSection
           ? '#BBF7D0'
           : 'var(--cha-bg-muted)') +
-      ';border:2px solid ' +
+      ';border-color:' +
       (isCurrent
         ? '#5B8DEF'
         : si < planScriptSection
           ? '#15803D'
           : 'var(--cha-border-default)') +
-      ';"></div>';
-    html +=
-      '<span style="font-size:9px;font-weight:' +
-      (isCurrent ? '700' : '500') +
-      ';color:' +
-      (isCurrent ? '#5B8DEF' : '#94a3b8') +
-      ';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:60px;">' +
-      dotLabel +
-      '</span>';
+      ';"></span>';
+    html += '<span class="ps-step-lbl">' + dotLabel + '</span>';
     html += '</button>';
     if (si < activePlan.sections.length - 1)
       html +=
-        '<div style="flex:1;height:2px;background:' +
+        '<span class="ps-step-line" style="background:' +
         (si < planScriptSection ? '#BBF7D0' : 'var(--cha-bg-muted)') +
-        ';margin:0 2px;margin-bottom:16px;"></div>';
+        ';"></span>';
     html += '</div>';
   });
   html += '</div>';
@@ -1734,28 +1721,34 @@ function renderPlanScripts() {
 
   var _complianceBanner = '';
   if (_complianceBannerType === 'tdk') {
-    _complianceBanner = '<div style="background:#FFFBEB;border:1px solid #FCD34D;border-left:4px solid #F59E0B;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">';
-    _complianceBanner += '<span style="font-size:16px;flex-shrink:0;">⚠️</span>';
-    _complianceBanner += '<div style="font-size:12px;color:#92400E;line-height:1.6;"><b>TDK Audit Requirements apply.</b> State plan name verbally (TDK 1/2/3/4/5), Working Owner of HCDA, Detego Health as Benefits Administrator, visit limits per tier. TDK 1/2/3: ER, outpatient surgery, ambulance NOT COVERED. Billing: FirstEnroll AND NEO Insurance Solutions — both must be named. <span style="color:#5B8DEF;cursor:pointer;text-decoration:underline;" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View TDK Audit Guide &#8594;</span></div>';
+    _complianceBanner = '<div class="ps-banner" style="background:#FFFBEB;border:1px solid #FCD34D;border-left:4px solid #F59E0B;">';
+    _complianceBanner += '<span class="ps-banner-ico">⚠️</span>';
+    _complianceBanner += '<span class="ps-banner-text" style="color:#92400E;"><b>TDK Audit Requirements apply.</b> State plan name verbally (TDK 1/2/3/4/5), Working Owner of HCDA, Detego Health as Benefits Administrator, visit limits per tier. TDK 1/2/3: ER, outpatient surgery, ambulance NOT COVERED. Billing: FirstEnroll AND NEO Insurance Solutions — both must be named.</span>';
+    _complianceBanner += '<button type="button" class="ps-banner-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View TDK Audit Guide &#8594;</button>';
     _complianceBanner += '</div>';
   } else if (_complianceBannerType === 'mec') {
-    _complianceBanner = '<div style="background:#EFF6FF;border:1px solid #BFDBFE;border-left:4px solid #5B8DEF;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">';
-    _complianceBanner += '<span style="font-size:16px;flex-shrink:0;">ℹ️</span>';
-    _complianceBanner += '<div style="font-size:12px;color:#1E40AF;line-height:1.6;"><b>MEC plan:</b> State group plan type, Working Owner disclosure, correct Benefits Administrator name, visit limits and dollar caps, full pre-ex legal definition required. <span style="color:#5B8DEF;cursor:pointer;text-decoration:underline;" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View MEC Requirements &#8594;</span></div>';
+    _complianceBanner = '<div class="ps-banner" style="background:#EFF6FF;border:1px solid #BFDBFE;border-left:4px solid #5B8DEF;">';
+    _complianceBanner += '<span class="ps-banner-ico">ℹ️</span>';
+    _complianceBanner += '<span class="ps-banner-text" style="color:#1E40AF;"><b>MEC plan:</b> State group plan type, Working Owner disclosure, correct Benefits Administrator name, visit limits and dollar caps, full pre-ex legal definition required.</span>';
+    _complianceBanner += '<button type="button" class="ps-banner-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View MEC Requirements &#8594;</button>';
     _complianceBanner += '</div>';
   } else if (_complianceBannerType === 'stm') {
-    _complianceBanner = '<div style="background:#FFFBEB;border:1px solid #FDE68A;border-left:4px solid #D97706;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">';
-    _complianceBanner += '<span style="font-size:16px;flex-shrink:0;">ℹ️</span>';
-    _complianceBanner += '<div style="font-size:12px;color:#92400E;line-height:1.6;"><b>STM plan:</b> Read 15-condition underwriting list, state exact deductible/coinsurance/MOOP. Access Health: 5-day sickness wait, 36-month pre-ex lookback, out-of-network allowed. Galena Economy: doctor visits subject to deductible. <span style="color:#5B8DEF;cursor:pointer;text-decoration:underline;" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View STM Requirements &#8594;</span></div>';
+    _complianceBanner = '<div class="ps-banner" style="background:#FFFBEB;border:1px solid #FDE68A;border-left:4px solid #D97706;">';
+    _complianceBanner += '<span class="ps-banner-ico">ℹ️</span>';
+    _complianceBanner += '<span class="ps-banner-text" style="color:#92400E;"><b>STM plan:</b> Read 15-condition underwriting list, state exact deductible/coinsurance/MOOP. Access Health: 5-day sickness wait, 36-month pre-ex lookback, out-of-network allowed. Galena Economy: doctor visits subject to deductible.</span>';
+    _complianceBanner += '<button type="button" class="ps-banner-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View STM Requirements &#8594;</button>';
     _complianceBanner += '</div>';
   } else if (_complianceBannerType === 'limited') {
-    _complianceBanner = '<div style="background:#F9FAFB;border:1px solid #E5E7EB;border-left:4px solid #6B7280;border-radius:8px;padding:12px 14px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;">';
-    _complianceBanner += '<span style="font-size:16px;flex-shrink:0;">ℹ️</span>';
-    _complianceBanner += '<div style="font-size:12px;color:#374151;line-height:1.6;"><b>Limited benefit plan:</b> Explain fixed indemnity structure — plan pays fixed cash amount, not % of bill. No true out-of-pocket maximum. Member may still owe significant balance above the benefit. <span style="color:#5B8DEF;cursor:pointer;text-decoration:underline;" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View Limited Requirements &#8594;</span></div>';
+    _complianceBanner = '<div class="ps-banner" style="background:#F9FAFB;border:1px solid #E5E7EB;border-left:4px solid #6B7280;">';
+    _complianceBanner += '<span class="ps-banner-ico">ℹ️</span>';
+    _complianceBanner += '<span class="ps-banner-text" style="color:#374151;"><b>Limited benefit plan:</b> Explain fixed indemnity structure — plan pays fixed cash amount, not % of bill. No true out-of-pocket maximum. Member may still owe significant balance above the benefit.</span>';
+    _complianceBanner += '<button type="button" class="ps-banner-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View Limited Requirements &#8594;</button>';
     _complianceBanner += '</div>';
   }
 
   html += _complianceBanner;
+  html += '</div></div>';
+  html += '<div class="ps-plan-card">';
 
   // Render ALL sections as colored bubbles
   var bubbleStyles = [
@@ -1798,14 +1791,14 @@ function renderPlanScripts() {
     lines.forEach(function (line) {
       var trimLine = line.trim();
       if (!trimLine) {
-        parsedLines.push('<div style="height:8px;"></div>');
+        parsedLines.push('<div class="ps-script-gap"></div>');
         return;
       }
       if (/\( *DO NOT|\( *do not|✖/.test(trimLine)) {
         // Strip existing ✖ prefix to avoid double
         var cleanDo = trimLine.replace(/^✖\s*/, '');
         parsedLines.push(
-          '<div style="background:var(--cha-danger-bg);border-left:3px solid #dc2626;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:12px;font-weight:700;color:#dc2626;letter-spacing:0.5px;">✖ ' +
+          '<div style="background:var(--cha-danger-bg);border-left:3px solid #dc2626;border-radius:8px;padding:4px 12px;margin:4px 0;font-size:12px;font-weight:700;color:#dc2626;letter-spacing:0.5px;">✖ ' +
             cleanDo +
             '</div>'
         );
@@ -1813,14 +1806,14 @@ function renderPlanScripts() {
         // Strip existing ▶ prefix to avoid double
         var cleanWait = trimLine.replace(/^▶\s*/, '');
         parsedLines.push(
-          '<div style="background:var(--cha-warning-bg);border-left:3px solid #f59e0b;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:13px;font-style:italic;color:var(--cha-warning-text);">▶ ' +
+          '<div style="background:var(--cha-warning-bg);border-left:3px solid #f59e0b;border-radius:8px;padding:4px 12px;margin:4px 0;font-size:13px;font-style:italic;color:var(--cha-warning-text);">▶ ' +
             cleanWait +
             '</div>'
         );
       } else if (/^✔/.test(trimLine)) {
         var cleanOk = trimLine.replace(/^✔\s*/, '');
         parsedLines.push(
-          '<div style="background:var(--cha-success-bg);border-left:3px solid #16a34a;border-radius:8px;padding:8px 16px;margin:12px 0;font-size:13px;font-weight:600;color:var(--cha-success-text);">✔ ' +
+          '<div style="background:var(--cha-success-bg);border-left:3px solid #16a34a;border-radius:8px;padding:4px 12px;margin:4px 0;font-size:13px;font-weight:600;color:var(--cha-success-text);">✔ ' +
             cleanOk +
             '</div>'
         );
@@ -1836,7 +1829,7 @@ function renderPlanScripts() {
           '<span style="background:var(--cha-bg-surface);color:var(--cha-accent);padding:1px 6px;border-radius:6px;font-weight:600;">[Customer Name]</span>'
         );
         parsedLines.push(
-          '<div style="margin-bottom:16px;">' + parsed + '</div>'
+          '<div class="ps-script-p">' + parsed + '</div>'
         );
       }
     });
@@ -1846,71 +1839,19 @@ function renderPlanScripts() {
     var secLabel = sec.title || bs.label;
     var secId = 'ps-sec-' + si;
 
+    html += '<div id="' + secId + '" class="ps-script-col">';
+    html += '<div class="ps-sec-title">' + secLabel + '</div>';
+    html += '<div class="ps-script-body">';
     html +=
-      '<div id="' +
-      secId +
-      '" style="max-width:720px;margin:0 auto 24px;position:relative;">';
-    // Large bold section header
-    html +=
-      '<div style="font-family:var(--font-ui);font-size:22px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text-primary);background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-bottom:none;padding:14px 24px;border-radius:14px 14px 0 0;">' +
-      secLabel +
-      '</div>';
-    html +=
-      '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-top:none;border-bottom:none;padding:10px 24px;">';
-    if (planScriptSection > 0) {
-      html +=
-        '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← Back</button>';
-    } else {
-      html +=
-        '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← All Plans</button>';
-    }
-    if (planScriptSection < activePlan.sections.length - 1) {
-      html +=
-        '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:none;background:#5175F1;color:white;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">Next →</button>';
-    } else {
-      html +=
-        '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:none;background:#16a34a;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">Finish ✓</button>';
-    }
-    html += '</div>';
-    // Script card body
-    html +=
-      '<div style="background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-top:none;border-radius:0 0 14px 14px;padding:28px;">';
-    // Script text
-    html +=
-      '<div class="ps-bubble-text" style="font-size:17px;line-height:1.9;color:var(--text-primary);font-family:var(--font-body);">' +
+      '<div class="ps-bubble-text" style="color:var(--text-primary);font-family:var(--font-body);">' +
       c +
       '</div>';
     html += '</div>';
-    // Tap to Copy button
     html +=
-      '<button onclick="copyScriptBubble(this)" style="display:block;width:100%;max-width:720px;margin:8px auto 0;font-family:var(--font-ui);font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:10px 20px;border-radius:10px;border:1.5px solid #5175f1;background:rgba(81,117,241,0.08);color:#5175f1;cursor:pointer;transition:background .15s;">TAP TO COPY</button>';
+      '<button type="button" class="ps-copy" onclick="copyScriptBubble(this)">TAP TO COPY</button>';
     html += '</div>';
   });
 
-  html += '</div>'; // close plan card wrapper
-  // Progress footer
-  html +=
-    '<div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);padding:14px 24px;margin-top:20px;border-radius:12px;">';
-  if (planScriptSection > 0) {
-    html +=
-      '<button onclick="planScriptSection--;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← Back</button>';
-  } else {
-    html +=
-      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:1px solid var(--border-light, var(--border-default));background:var(--cha-bg-card);color:var(--text-secondary);cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">← All Plans</button>';
-  }
-  html +=
-    '<span style="font-size:12px;font-weight:700;color:var(--text-primary);">Section ' +
-    (planScriptSection + 1) +
-    ' of ' +
-    activePlan.sections.length +
-    '</span>';
-  if (planScriptSection < activePlan.sections.length - 1) {
-    html +=
-      '<button onclick="planScriptSection++;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:none;background:#5175F1;color:white;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">Next →</button>';
-  } else {
-    html +=
-      '<button onclick="planScriptActive=-1;renderPlanScripts()" style="padding:12px 28px;border-radius:10px;border:none;background:#16a34a;color:#fff;cursor:pointer;font-family:var(--font-ui);font-size:15px;font-weight:600;">Finish ✓</button>';
-  }
   html += '</div>';
   var _page_planscripts = document.getElementById('page-planscripts');
   if (_page_planscripts) _page_planscripts.innerHTML = html;
