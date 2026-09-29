@@ -12109,3 +12109,159 @@ body {
     max-width: none;
   }
 }
+
+/* Add-on columns. Layout only. */
+.ao-split {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.ao-list {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  width: auto;
+  height: auto;
+  min-height: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.ao-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.ao-cols-one {
+  grid-template-columns: 1fr;
+}
+
+.ao-col {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 12px;
+  background: var(--cha-bg-card);
+}
+
+.ao-col-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 10px 14px;
+  color: #fff;
+}
+
+.ao-col-fe .ao-col-head {
+  background: var(--cha-accent);
+}
+
+.ao-col-neo .ao-col-head {
+  background: var(--cha-neo);
+}
+
+.ao-col-title,
+.ao-col-count {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.ao-col-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.ao-col-row {
+  align-items: center;
+}
+
+.ao-col-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.ao-col-titleline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.ao-col-row .ao-row-name {
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.ao-line2 {
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  line-height: 1.35;
+}
+
+.ao-line-muted {
+  color: var(--cha-text-tertiary);
+}
+
+.ao-line-discount {
+  color: var(--cha-warning-text);
+  font-weight: 600;
+}
+
+.ao-col-price {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding-left: 12px;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--cha-text-primary);
+  text-align: right;
+}
+
+.ao-col-price-note {
+  max-width: 42%;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--cha-text-tertiary);
+}
+
+.ao-rest {
+  flex: 0 1 auto;
+  max-height: 38%;
+  min-height: 0;
+  overflow: auto;
+}
+
+.ao-list > .ao-rest:only-child {
+  max-height: none;
+  flex: 1 1 auto;
+}
+
+@media (width <= 900px) {
+  .ao-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .ao-col-body {
+    max-height: 50vh;
+  }
+}
