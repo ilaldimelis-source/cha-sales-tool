@@ -65,6 +65,18 @@ var AO_PLAN_NOT_ADDON = {
   'Pinnacle Protect Plan 2-4': true
 };
 
+var AO_DISCOUNT_LINE =
+  'This is a discount program, not insurance. It does not pay a claim and does not go toward a deductible.';
+
+var AO_CATEGORY_EXPLANATION = {
+  'Accident (AME)':
+    'Helps pay eligible medical expenses resulting from a covered accident.',
+  'AD&D':
+    'Pays a benefit for a covered accidental death or qualifying loss, such as loss of a limb or eyesight.',
+  'Critical illness':
+    "Pays a benefit following a covered critical illness diagnosis, subject to the policy's terms and covered conditions."
+};
+
 var aoData = null;
 var aoLoadStarted = false;
 var aoSelectedName = '';
@@ -266,31 +278,6 @@ function aoBuildView(products, stateCode, textQuery, platform) {
   return out;
 }
 
-function aoTierRows(product) {
-  var rows = [];
-  if (!product.tiers) return rows;
-  if (aoHasPrice(product)) rows.push(['Member', product.price_member]);
-  if (
-    product.tiers.spouse !== null &&
-    typeof product.tiers.spouse !== 'undefined'
-  ) {
-    rows.push(['Member + spouse', product.tiers.spouse]);
-  }
-  if (
-    product.tiers.children !== null &&
-    typeof product.tiers.children !== 'undefined'
-  ) {
-    rows.push(['Member + children', product.tiers.children]);
-  }
-  if (
-    product.tiers.family !== null &&
-    typeof product.tiers.family !== 'undefined'
-  ) {
-    rows.push(['Family', product.tiers.family]);
-  }
-  return rows;
-}
-
 function aoListLabel(section) {
   if (section.id === 'fe') return 'FirstEnroll';
   if (section.id === 'neo') return 'NEO';
@@ -316,18 +303,6 @@ function aoSectionProducts(section) {
   return list;
 }
 
-function aoFirstSelectable(sections) {
-  var s;
-  var i;
-  var products;
-  for (s = 0; s < sections.length; s++) {
-    if (sections[s].kind === 'chips') continue;
-    products = aoSectionProducts(sections[s]);
-    for (i = 0; i < products.length; i++) return products[i];
-  }
-  return null;
-}
-
 function aoFindProduct(name) {
   var products = aoData && aoData.products ? aoData.products : [];
   var i;
@@ -337,6 +312,19 @@ function aoFindProduct(name) {
   return null;
 }
 
+function aoMarkerHtml(product) {
+  var html = '';
+  if (product.is_discount_program) {
+    html +=
+      '<span class="ao-badge ao-badge-discount">Discount, not insurance</span>';
+  }
+  if (AO_PLAN_NOT_ADDON[product.name]) {
+    html +=
+      '<span class="ao-badge ao-badge-plan">Limited medical plan, not an add-on</span>';
+  }
+  return html;
+}
+
 function aoRowHtml(product, dim) {
   var cls = 'ao-row';
   if (dim) cls += ' ao-row-hold';
@@ -344,6 +332,7 @@ function aoRowHtml(product, dim) {
   var price = aoHasPrice(product)
     ? '<span class="ao-row-price">' + aoMoney(product.price_member) + '</span>'
     : '<span class="ao-row-price ao-row-none">No price</span>';
+  var markers = aoMarkerHtml(product);
   return (
     '<button type="button" class="' +
     cls +
@@ -352,12 +341,116 @@ function aoRowHtml(product, dim) {
     '">' +
     '<span class="ao-row-copy"><span class="ao-row-name">' +
     aoEsc(product.name) +
-    '</span><span class="ao-badge ao-badge-platform">' +
+    '</span>' +
+    (markers ? '<span class="ao-badges">' + markers + '</span>' : '') +
+    '<span class="ao-badge ao-badge-platform">' +
     aoEsc(product.platform) +
     '</span></span>' +
     price +
     '</button>'
   );
+}
+
+function aoMoneyCell(amount) {
+  if (amount === null || typeof amount === 'undefined') {
+    return '<td class="ao-money ao-money-empty">-</td>';
+  }
+  return '<td class="ao-money">' + aoMoney(amount) + '</td>';
+}
+
+function aoPriceCells(product) {
+  var tiers;
+  if (!aoHasPrice(product)) {
+    return (
+      '<td class="ao-price-note" colspan="4">' +
+      aoEsc(product.price_note || 'Price not published') +
+      '</td>'
+    );
+  }
+  tiers = product.tiers || {};
+  return (
+    aoMoneyCell(product.price_member) +
+    aoMoneyCell(tiers.spouse) +
+    aoMoneyCell(tiers.children) +
+    aoMoneyCell(tiers.family)
+  );
+}
+
+function aoGridRowHtml(product) {
+  var cls = 'ao-grid-row';
+  var markers = aoMarkerHtml(product);
+  if (product.name === aoSelectedName) cls += ' ao-grid-row-on';
+  return (
+    '<tr class="' +
+    cls +
+    '" data-ao-name="' +
+    aoEsc(product.name) +
+    '" tabindex="0">' +
+    '<td class="ao-product"><span class="ao-row-name">' +
+    aoEsc(product.name) +
+    '</span>' +
+    (markers ? '<span class="ao-badges">' + markers + '</span>' : '') +
+    '</td><td class="ao-category">' +
+    aoEsc(product.category) +
+    '</td>' +
+    aoPriceCells(product) +
+    '</tr>'
+  );
+}
+
+function aoTableHtml(label, items) {
+  var html = '';
+  var i;
+  html +=
+    '<section class="ao-table-block" data-ao-table="' +
+    aoEsc(label) +
+    '" data-ao-count="' +
+    items.length +
+    '">';
+  html +=
+    '<div class="ao-table-head"><h2 class="ao-table-title">' +
+    aoEsc(label) +
+    '</h2><p class="ao-table-count">' +
+    items.length +
+    '</p></div>';
+  html += '<table class="ao-grid"><thead><tr>';
+  html += '<th scope="col">Product</th>';
+  html += '<th scope="col">Category</th>';
+  html += '<th scope="col" class="ao-money">Member</th>';
+  html += '<th scope="col" class="ao-money">+ Spouse</th>';
+  html += '<th scope="col" class="ao-money">+ Children</th>';
+  html += '<th scope="col" class="ao-money">Family</th>';
+  html += '</tr></thead><tbody>';
+  for (i = 0; i < items.length; i++) html += aoGridRowHtml(items[i]);
+  html += '</tbody></table></section>';
+  return html;
+}
+
+function aoIsAvailableTable(section) {
+  return section.kind === 'cards' && !section.dim;
+}
+
+function aoTablesForSection(section) {
+  var products = section.items || [];
+  var fe = [];
+  var neo = [];
+  var i;
+  var label;
+  var tables = [];
+  if (section.id !== 'all' || aoPlatformFilter !== 'both') {
+    label = aoListLabel(section);
+    if (!label) {
+      label = aoPlatformFilter === 'both' ? 'Add-ons' : aoPlatformFilter;
+    }
+    return [{ label: label, items: products }];
+  }
+  for (i = 0; i < products.length; i++) {
+    if (products[i].platform === 'FirstEnroll') fe.push(products[i]);
+    else neo.push(products[i]);
+  }
+  if (fe.length) tables.push({ label: 'FirstEnroll', items: fe });
+  if (neo.length) tables.push({ label: 'NEO', items: neo });
+  return tables;
 }
 
 function aoUnavailableHtml(product) {
@@ -370,36 +463,23 @@ function aoUnavailableHtml(product) {
   );
 }
 
-function aoCountLine(sections) {
-  var parts = [];
-  var s;
-  var label;
-  var n;
-  for (s = 0; s < sections.length; s++) {
-    if (sections[s].id === 'all') continue;
-    label = aoListLabel(sections[s]);
-    if (!label) continue;
-    n = aoSectionProducts(sections[s]).length;
-    if (!n) continue;
-    parts.push(label + ' ' + n);
-  }
-  return parts.join(', ');
-}
-
-function aoListHtml(sections, stateCode) {
+function aoListHtml(sections) {
   var html = '';
   var s;
   var i;
+  var t;
   var products;
   var label;
-  var counts;
-  if (stateCode) {
-    counts = aoCountLine(sections);
-    if (counts) {
-      html += '<p class="ao-count-line">' + aoEsc(counts) + '</p>';
-    }
-  }
+  var tables;
   for (s = 0; s < sections.length; s++) {
+    if (aoIsAvailableTable(sections[s])) {
+      tables = aoTablesForSection(sections[s]);
+      for (t = 0; t < tables.length; t++) {
+        if (!tables[t].items.length) continue;
+        html += aoTableHtml(tables[t].label, tables[t].items);
+      }
+      continue;
+    }
     products = aoSectionProducts(sections[s]);
     if (!products.length) continue;
     label = aoListLabel(sections[s]);
@@ -437,100 +517,80 @@ function aoMissingStates(product) {
   return missing;
 }
 
-function aoDetailHtml(product) {
-  if (!product) {
-    return '<p class="ao-status">No add-on is selected.</p>';
+function aoHasDescription(product) {
+  if (
+    !product ||
+    product.description === null ||
+    typeof product.description === 'undefined'
+  ) {
+    return false;
   }
-  var badges =
-    '<span class="ao-badge ao-badge-platform">' +
+  return String(product.description).replace(/^\s+|\s+$/g, '') !== '';
+}
+
+function aoStateBlock(product) {
+  var missing;
+  if (product.states === null) {
+    return '<p class="ao-availability-missing">No availability given in the source. Confirm on the platform before quoting.</p>';
+  }
+  missing = aoMissingStates(product);
+  var html =
+    '<h3 class="ao-detail-label">Available in</h3><p class="ao-availability">' +
+    aoEsc(aoStateNames(product.states)) +
+    '</p>';
+  if (missing.length) {
+    html +=
+      '<p class="ao-availability-off">Not available in ' +
+      aoEsc(aoStateNames(missing)) +
+      '.</p>';
+  }
+  return html;
+}
+
+function aoDetailHtml(product) {
+  var html;
+  var explain;
+  var feeSet;
+  if (!product) return '';
+  html = '';
+  if (product.is_discount_program) {
+    html += '<p class="ao-discount-note">' + aoEsc(AO_DISCOUNT_LINE) + '</p>';
+  }
+  html +=
+    '<div class="ao-panel-top"><h2 class="ao-detail-name">' +
+    aoEsc(product.name) +
+    '</h2><button type="button" class="ao-panel-close" data-ao-close="1">Close</button></div>';
+  html +=
+    '<div class="ao-badges"><span class="ao-badge ao-badge-platform">' +
     aoEsc(product.platform) +
     '</span><span class="ao-badge ao-badge-category">' +
     aoEsc(product.category) +
     '</span>';
-  if (product.is_discount_program) {
-    badges +=
-      '<span class="ao-badge ao-badge-discount">Discount, not insurance</span>';
-  }
-  if (AO_PLAN_NOT_ADDON[product.name]) {
-    badges +=
-      '<span class="ao-badge ao-badge-plan">Limited medical plan, not an add-on</span>';
-  }
   if (product.on_hold) {
-    badges += '<span class="ao-badge ao-badge-hold">On hold</span>';
+    html += '<span class="ao-badge ao-badge-hold">On hold</span>';
   }
-  var priceBlock;
-  if (aoHasPrice(product)) {
-    priceBlock =
-      '<div class="ao-detail-price"><p class="ao-detail-amount">' +
-      aoMoney(product.price_member) +
-      '</p><p class="ao-detail-period">per month, Member</p></div>';
-  } else {
-    priceBlock = '';
-  }
-  var body;
-  if (!aoHasPrice(product)) {
-    body =
-      '<p class="ao-detail-unpublished">' +
-      aoEsc(product.price_note || 'Price not published') +
+  html += '</div>';
+  explain = AO_CATEGORY_EXPLANATION[product.category];
+  if (explain) {
+    html +=
+      '<h3 class="ao-detail-label">WHAT THIS IS</h3><p class="ao-explain">' +
+      aoEsc(explain) +
       '</p>';
-  } else {
-    var tiers = aoTierRows(product);
-    var feeSet =
-      product.enrollment_fee !== null &&
-      typeof product.enrollment_fee !== 'undefined';
-    if (!tiers.length && !feeSet) {
-      body = '';
-    } else {
-      body = '<table class="ao-table"><tbody>';
-      var i;
-      for (i = 0; i < tiers.length; i++) {
-        body +=
-          '<tr><th scope="row">' +
-          aoEsc(tiers[i][0]) +
-          '</th><td>' +
-          aoMoney(tiers[i][1]) +
-          '</td></tr>';
-      }
-      if (feeSet) {
-        body +=
-          '<tr class="ao-fee-row"><th scope="row">One-time enrollment fee</th><td>' +
-          aoMoney(product.enrollment_fee) +
-          '</td></tr>';
-      }
-      body += '</tbody></table>';
-    }
   }
-  var states;
-  if (product.states === null) {
-    states =
-      '<p class="ao-availability-missing">No availability given in the source. Confirm on the platform before quoting.</p>';
-  } else {
-    var missing = aoMissingStates(product);
-    states =
-      '<h3 class="ao-detail-label">Available in</h3><p class="ao-availability">' +
-      aoEsc(aoStateNames(product.states)) +
+  if (aoHasDescription(product)) {
+    html += '<p class="ao-description">' + aoEsc(product.description) + '</p>';
+  }
+  feeSet =
+    product.enrollment_fee !== null &&
+    typeof product.enrollment_fee !== 'undefined';
+  if (feeSet) {
+    html +=
+      '<p class="ao-fee-line">One-time enrollment fee ' +
+      aoMoney(product.enrollment_fee) +
       '</p>';
-    if (missing.length) {
-      states +=
-        '<p class="ao-availability-off">Not available in ' +
-        aoEsc(aoStateNames(missing)) +
-        '.</p>';
-    }
   }
-  return (
-    '<button type="button" class="ao-back" data-ao-back="1">Back to list</button>' +
-    '<div class="ao-detail-top"><div><h2 class="ao-detail-name">' +
-    aoEsc(product.name) +
-    '</h2><div class="ao-badges">' +
-    badges +
-    '</div></div>' +
-    priceBlock +
-    '</div><p class="ao-description">' +
-    aoEsc(product.description || '') +
-    '</p>' +
-    body +
-    states
-  );
+  html += aoStateBlock(product);
+  return html;
 }
 
 function aoStateCodes() {
@@ -584,33 +644,71 @@ function aoCurrentView() {
   };
 }
 
-function aoMarkSelection() {
-  var rows = document.querySelectorAll('#ao-list .ao-row');
-  var i;
-  for (i = 0; i < rows.length; i++) {
-    if (rows[i].getAttribute('data-ao-name') === aoSelectedName) {
-      rows[i].className +=
-        rows[i].className.indexOf('ao-row-selected') === -1
-          ? ' ao-row-selected'
-          : '';
-    } else {
-      rows[i].className = rows[i].className
-        .replace(' ao-row-selected', '')
-        .replace('ao-row-selected', '');
-    }
+function aoSetToken(el, token, on) {
+  var padded = ' ' + el.className + ' ';
+  var has = padded.indexOf(' ' + token + ' ') !== -1;
+  if (on && !has) el.className += ' ' + token;
+  if (!on && has) {
+    el.className = padded
+      .replace(' ' + token + ' ', ' ')
+      .replace(/^\s+|\s+$/g, '');
   }
 }
 
-function aoShowDetail(openMobile) {
-  var pane = document.getElementById('ao-detail');
-  var page = document.querySelector('#page-addons .ao-page');
-  if (pane) pane.innerHTML = aoDetailHtml(aoFindProduct(aoSelectedName));
-  aoMarkSelection();
-  if (!page) return;
-  if (openMobile && window.matchMedia('(max-width: 900px)').matches) {
-    page.className +=
-      page.className.indexOf('ao-show-detail') === -1 ? ' ao-show-detail' : '';
+function aoMarkSelection() {
+  var rows = document.querySelectorAll(
+    '#ao-list .ao-grid-row, #ao-list .ao-row'
+  );
+  var i;
+  var token;
+  for (i = 0; i < rows.length; i++) {
+    token =
+      rows[i].className.indexOf('ao-grid-row') !== -1
+        ? 'ao-grid-row-on'
+        : 'ao-row-selected';
+    aoSetToken(
+      rows[i],
+      token,
+      rows[i].getAttribute('data-ao-name') === aoSelectedName
+    );
   }
+}
+
+function aoOpenPanel() {
+  var pane = document.getElementById('ao-detail');
+  var product = aoFindProduct(aoSelectedName);
+  if (!pane) return;
+  if (!product) {
+    aoClosePanel();
+    return;
+  }
+  pane.innerHTML = aoDetailHtml(product);
+  aoSetToken(pane, 'ao-panel-open', true);
+  aoMarkSelection();
+}
+
+function aoClosePanel() {
+  var pane = document.getElementById('ao-detail');
+  aoSelectedName = '';
+  if (pane) {
+    pane.innerHTML = '';
+    aoSetToken(pane, 'ao-panel-open', false);
+  }
+  aoMarkSelection();
+}
+
+function aoProductInSections(sections, name) {
+  var s;
+  var products;
+  var i;
+  for (s = 0; s < sections.length; s++) {
+    if (sections[s].kind === 'chips') continue;
+    products = aoSectionProducts(sections[s]);
+    for (i = 0; i < products.length; i++) {
+      if (products[i].name === name) return true;
+    }
+  }
+  return false;
 }
 
 function aoRenderResults() {
@@ -618,33 +716,29 @@ function aoRenderResults() {
   var pane = document.getElementById('ao-detail');
   if (!list || !pane) return;
   if (!aoData || !aoData.products) {
-    list.innerHTML = '';
-    pane.innerHTML =
+    list.innerHTML =
       '<p class="ao-status">Add-on list could not be loaded.</p>';
+    aoClosePanel();
     return;
   }
   var view = aoCurrentView();
   var sections = view.sections;
-  var page = document.querySelector('#page-addons .ao-page');
-  if (page) {
-    page.className = page.className
-      .replace(' ao-show-detail', '')
-      .replace('ao-show-detail', '');
-  }
+  var emptyText;
   if (!sections.length) {
-    aoSelectedName = '';
-    var emptyText = 'No add-ons match.';
+    emptyText = 'No add-ons match.';
     if (aoPlatformFilter !== 'both') {
       emptyText = aoEmptyPlatformMessage(view.stateCode);
     }
     list.innerHTML = '<p class="ao-status">' + aoEsc(emptyText) + '</p>';
-    pane.innerHTML = '<p class="ao-status">No add-on is selected.</p>';
+    aoClosePanel();
     return;
   }
-  var first = aoFirstSelectable(sections);
-  aoSelectedName = first ? first.name : '';
-  list.innerHTML = aoListHtml(sections, view.stateCode);
-  pane.innerHTML = aoDetailHtml(first);
+  if (aoSelectedName && !aoProductInSections(sections, aoSelectedName)) {
+    aoSelectedName = '';
+  }
+  list.innerHTML = aoListHtml(sections);
+  if (aoSelectedName) aoOpenPanel();
+  else aoClosePanel();
 }
 
 function aoOnListClick(event) {
@@ -668,45 +762,74 @@ function aoOnListClick(event) {
       aoRenderResults();
       return;
     }
-    if (node.getAttribute && node.getAttribute('data-ao-back') === '1') {
-      var page = document.querySelector('#page-addons .ao-page');
-      if (page) {
-        page.className = page.className
-          .replace(' ao-show-detail', '')
-          .replace('ao-show-detail', '');
-      }
+    if (node.getAttribute && node.getAttribute('data-ao-close') === '1') {
+      aoClosePanel();
       return;
     }
-    if (
-      node.tagName === 'BUTTON' &&
-      node.getAttribute('data-ao-name') &&
-      node.className.indexOf('ao-row') !== -1
-    ) {
-      aoSelectedName = node.getAttribute('data-ao-name');
-      aoShowDetail(true);
-      return;
+    if (node.getAttribute && node.getAttribute('data-ao-name')) {
+      var rowCls = node.className || '';
+      if (
+        rowCls.indexOf('ao-grid-row') !== -1 ||
+        (node.tagName === 'BUTTON' && rowCls.indexOf('ao-row') !== -1)
+      ) {
+        aoSelectedName = node.getAttribute('data-ao-name');
+        aoOpenPanel();
+        return;
+      }
     }
     node = node.parentNode;
   }
 }
 
-function aoOnListKey(event) {
-  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+function aoFocusableRows() {
   var list = document.getElementById('ao-list');
-  if (!list || !list.contains(event.target)) return;
-  var rows = list.querySelectorAll('button.ao-row');
-  var index = -1;
+  if (!list) return [];
+  return list.querySelectorAll('tr.ao-grid-row, button.ao-row');
+}
+
+function aoOnListKey(event) {
+  var rows;
+  var index;
   var i;
+  var next;
+  var target;
+  var list;
+  if (event.key === 'Escape') {
+    if (!aoSelectedName) return;
+    aoClosePanel();
+    return;
+  }
+  target = event.target;
+  if (event.key === 'Enter' || event.key === ' ') {
+    if (
+      !target ||
+      !target.className ||
+      target.className.indexOf('ao-grid-row') === -1
+    ) {
+      return;
+    }
+    event.preventDefault();
+    aoSelectedName = target.getAttribute('data-ao-name');
+    aoOpenPanel();
+    return;
+  }
+  if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+  list = document.getElementById('ao-list');
+  if (!list || !list.contains(event.target)) return;
+  rows = aoFocusableRows();
+  index = -1;
   for (i = 0; i < rows.length; i++) {
     if (rows[i] === document.activeElement) index = i;
   }
   if (index < 0) return;
-  var next = event.key === 'ArrowDown' ? index + 1 : index - 1;
+  next = event.key === 'ArrowDown' ? index + 1 : index - 1;
   if (next < 0 || next >= rows.length) return;
   event.preventDefault();
   rows[next].focus();
-  aoSelectedName = rows[next].getAttribute('data-ao-name');
-  aoShowDetail(false);
+  if (aoSelectedName) {
+    aoSelectedName = rows[next].getAttribute('data-ao-name');
+    aoOpenPanel();
+  }
 }
 
 function aoFillStates() {
@@ -748,7 +871,7 @@ function renderAddons() {
       '</div>' +
       '<div class="ao-split">' +
       '<div id="ao-list" class="ao-list" aria-label="Add-on list"><p class="ao-status">Loading add-ons...</p></div>' +
-      '<div id="ao-detail" class="ao-detail" aria-live="polite"><p class="ao-status">Loading add-ons...</p></div>' +
+      '<div id="ao-detail" class="ao-detail ao-panel" aria-live="polite"></div>' +
       '</div></div>';
     root.setAttribute('data-ao-ready', '1');
     root.addEventListener('input', aoOnControl);
@@ -777,10 +900,10 @@ function renderAddons() {
     })
     .catch(function () {
       var list = document.getElementById('ao-list');
-      var pane = document.getElementById('ao-detail');
-      if (list) list.innerHTML = '';
-      if (pane)
-        pane.innerHTML =
+      if (list) {
+        list.innerHTML =
           '<p class="ao-status">Add-on list could not be loaded.</p>';
+      }
+      aoClosePanel();
     });
 }
