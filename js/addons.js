@@ -351,78 +351,104 @@ function aoRowHtml(product, dim) {
   );
 }
 
-function aoMoneyCell(amount) {
-  if (amount === null || typeof amount === 'undefined') {
-    return '<td class="ao-money ao-money-empty">-</td>';
+function aoTierBits(product) {
+  var bits = [];
+  var tiers = product.tiers || {};
+  var feeSet =
+    product.enrollment_fee !== null &&
+    typeof product.enrollment_fee !== 'undefined';
+  if (tiers.spouse !== null && typeof tiers.spouse !== 'undefined') {
+    bits.push('Spouse ' + aoMoney(tiers.spouse));
   }
-  return '<td class="ao-money">' + aoMoney(amount) + '</td>';
+  if (tiers.children !== null && typeof tiers.children !== 'undefined') {
+    bits.push('Children ' + aoMoney(tiers.children));
+  }
+  if (tiers.family !== null && typeof tiers.family !== 'undefined') {
+    bits.push('Family ' + aoMoney(tiers.family));
+  }
+  if (feeSet) bits.push(aoMoney(product.enrollment_fee) + ' fee');
+  return bits;
 }
 
-function aoPriceCells(product) {
-  var tiers;
-  if (!aoHasPrice(product)) {
-    return (
-      '<td class="ao-price-note" colspan="4">' +
+function aoColRowHtml(product) {
+  var cls = 'ao-row ao-col-row';
+  var marker = '';
+  var price;
+  var bits;
+  var line;
+  if (product.name === aoSelectedName) cls += ' ao-row-selected';
+  if (AO_PLAN_NOT_ADDON[product.name]) {
+    marker =
+      '<span class="ao-badges"><span class="ao-badge ao-badge-plan">Limited medical plan, not an add-on</span></span>';
+  }
+  if (aoHasPrice(product)) {
+    price =
+      '<span class="ao-col-price">' + aoMoney(product.price_member) + '</span>';
+  } else {
+    price =
+      '<span class="ao-col-price ao-col-price-note">' +
       aoEsc(product.price_note || 'Price not published') +
-      '</td>'
-    );
+      '</span>';
   }
-  tiers = product.tiers || {};
+  bits = aoTierBits(product);
+  if (product.is_discount_program) {
+    line =
+      '<span class="ao-line2"><span class="ao-line-discount">Discount, not insurance</span>';
+    if (bits.length) {
+      line +=
+        '<span class="ao-line-muted"> \u00b7 ' +
+        aoEsc(bits.join(' \u00b7 ')) +
+        '</span>';
+    }
+    line += '</span>';
+  } else {
+    line =
+      '<span class="ao-line2 ao-line-muted">' +
+      aoEsc([product.category].concat(bits).join(' \u00b7 ')) +
+      '</span>';
+  }
   return (
-    aoMoneyCell(product.price_member) +
-    aoMoneyCell(tiers.spouse) +
-    aoMoneyCell(tiers.children) +
-    aoMoneyCell(tiers.family)
-  );
-}
-
-function aoGridRowHtml(product) {
-  var cls = 'ao-grid-row';
-  var markers = aoMarkerHtml(product);
-  if (product.name === aoSelectedName) cls += ' ao-grid-row-on';
-  return (
-    '<tr class="' +
+    '<button type="button" class="' +
     cls +
     '" data-ao-name="' +
     aoEsc(product.name) +
-    '" tabindex="0">' +
-    '<td class="ao-product"><span class="ao-row-name">' +
+    '"><span class="ao-col-main"><span class="ao-col-titleline"><span class="ao-row-name">' +
     aoEsc(product.name) +
     '</span>' +
-    (markers ? '<span class="ao-badges">' + markers + '</span>' : '') +
-    '</td><td class="ao-category">' +
-    aoEsc(product.category) +
-    '</td>' +
-    aoPriceCells(product) +
-    '</tr>'
+    marker +
+    '</span>' +
+    line +
+    '</span>' +
+    price +
+    '</button>'
   );
 }
 
-function aoTableHtml(label, items) {
+function aoColTone(label) {
+  if (label === 'FirstEnroll') return 'ao-col-fe';
+  if (label === 'NEO') return 'ao-col-neo';
+  return '';
+}
+
+function aoColHtml(label, items) {
   var html = '';
   var i;
   html +=
-    '<section class="ao-table-block" data-ao-table="' +
+    '<section class="ao-col ' +
+    aoColTone(label) +
+    '" data-ao-table="' +
     aoEsc(label) +
     '" data-ao-count="' +
     items.length +
     '">';
   html +=
-    '<div class="ao-table-head"><h2 class="ao-table-title">' +
+    '<div class="ao-col-head"><h2 class="ao-col-title">' +
     aoEsc(label) +
-    '</h2><p class="ao-table-count">' +
+    '</h2><p class="ao-col-count">' +
     items.length +
-    '</p></div>';
-  html += '<table class="ao-grid"><thead><tr>';
-  html += '<th scope="col">Product</th>';
-  html += '<th scope="col">Category</th>';
-  html += '<th scope="col" class="ao-money">Member</th>';
-  html += '<th scope="col" class="ao-money">+ Spouse</th>';
-  html += '<th scope="col" class="ao-money">+ Children</th>';
-  html += '<th scope="col" class="ao-money">Family</th>';
-  html += '</tr></thead><tbody>';
-  for (i = 0; i < items.length; i++) html += aoGridRowHtml(items[i]);
-  html += '</tbody></table></section>';
+    '</p></div><div class="ao-col-body">';
+  for (i = 0; i < items.length; i++) html += aoColRowHtml(items[i]);
+  html += '</div></section>';
   return html;
 }
 
@@ -465,56 +491,57 @@ function aoUnavailableHtml(product) {
 
 function aoListHtml(sections) {
   var html = '';
+  var rest = '';
+  var pending = [];
   var s;
   var i;
   var t;
   var products;
   var label;
   var tables;
+  function flushCols() {
+    var block = '';
+    var n;
+    var cls;
+    if (!pending.length) return '';
+    cls = 'ao-cols';
+    if (pending.length === 1) cls += ' ao-cols-one';
+    block += '<div class="' + cls + '">';
+    for (n = 0; n < pending.length; n++) {
+      block += aoColHtml(pending[n].label, pending[n].items);
+    }
+    block += '</div>';
+    pending = [];
+    return block;
+  }
   for (s = 0; s < sections.length; s++) {
     if (aoIsAvailableTable(sections[s])) {
       tables = aoTablesForSection(sections[s]);
       for (t = 0; t < tables.length; t++) {
         if (!tables[t].items.length) continue;
-        html += aoTableHtml(tables[t].label, tables[t].items);
+        pending.push(tables[t]);
       }
       continue;
     }
+    html += flushCols();
     products = aoSectionProducts(sections[s]);
     if (!products.length) continue;
     label = aoListLabel(sections[s]);
-    html += '<section class="ao-group" data-ao-group="' + sections[s].id + '">';
-    if (label) html += '<h2 class="ao-divider">' + aoEsc(label) + '</h2>';
+    rest += '<section class="ao-group" data-ao-group="' + sections[s].id + '">';
+    if (label) rest += '<h2 class="ao-divider">' + aoEsc(label) + '</h2>';
     if (sections[s].kind === 'chips') {
       for (i = 0; i < products.length; i++)
-        html += aoUnavailableHtml(products[i]);
+        rest += aoUnavailableHtml(products[i]);
     } else {
       for (i = 0; i < products.length; i++) {
-        html += aoRowHtml(products[i], sections[s].dim);
+        rest += aoRowHtml(products[i], sections[s].dim);
       }
     }
-    html += '</section>';
+    rest += '</section>';
   }
+  html += flushCols();
+  if (rest) html += '<div class="ao-rest">' + rest + '</div>';
   return html;
-}
-
-function aoStateNames(codes) {
-  var names = [];
-  var i;
-  for (i = 0; i < codes.length; i++) {
-    names.push(AO_STATE_NAMES[codes[i]] || codes[i]);
-  }
-  return names.join(', ');
-}
-
-function aoMissingStates(product) {
-  var all = aoStateCodes();
-  var missing = [];
-  var i;
-  for (i = 0; i < all.length; i++) {
-    if (product.states.indexOf(all[i]) === -1) missing.push(all[i]);
-  }
-  return missing;
 }
 
 function aoHasDescription(product) {
@@ -529,22 +556,10 @@ function aoHasDescription(product) {
 }
 
 function aoStateBlock(product) {
-  var missing;
   if (product.states === null) {
     return '<p class="ao-availability-missing">No availability given in the source. Confirm on the platform before quoting.</p>';
   }
-  missing = aoMissingStates(product);
-  var html =
-    '<h3 class="ao-detail-label">Available in</h3><p class="ao-availability">' +
-    aoEsc(aoStateNames(product.states)) +
-    '</p>';
-  if (missing.length) {
-    html +=
-      '<p class="ao-availability-off">Not available in ' +
-      aoEsc(aoStateNames(missing)) +
-      '.</p>';
-  }
-  return html;
+  return '';
 }
 
 function aoDetailHtml(product) {
@@ -565,11 +580,7 @@ function aoDetailHtml(product) {
     aoEsc(product.platform) +
     '</span><span class="ao-badge ao-badge-category">' +
     aoEsc(product.category) +
-    '</span>';
-  if (product.on_hold) {
-    html += '<span class="ao-badge ao-badge-hold">On hold</span>';
-  }
-  html += '</div>';
+    '</span></div>';
   explain = AO_CATEGORY_EXPLANATION[product.category];
   if (explain) {
     html +=
