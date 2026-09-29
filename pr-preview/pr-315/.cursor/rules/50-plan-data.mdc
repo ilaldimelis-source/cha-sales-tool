@@ -1,0 +1,59 @@
+---
+globs: data/**, scripts/**/*.js
+alwaysApply: false
+---
+
+# Plan reference data integrity
+
+This data governs what a licensed agent says to a client on a recorded
+call. A wrong benefit value is a regulatory violation, not a bug.
+Accuracy and traceability outrank completeness, speed and helpfulness.
+
+## Generated output, never hand-edited
+
+data/plans/*.json (154 files) and data/plan-index.json are built by
+scripts/build-plan-profiles.js from the ledger. To change a profile,
+change the converter and rebuild with npm run build:profiles.
+
+The converter maps onto 113 keys. Source of truth: `scripts/lib/base-schema.json` (array length 113). Do not add, rename or
+remove a key unless told to in the current request.
+
+## Schema invariants
+
+- Every value is a fact leaf: {v, src, pg, sec, url, cur, app, gov, auth,
+  conf, vs}. Never a bare string.
+- An absent key means never considered. {v: null, vs:
+  "NOT_FOUND_IN_SOURCE"} means searched and not found. These are
+  different and must never be collapsed into one another.
+- NOT_FOUND_IN_SOURCE NEVER MEANS NOT COVERED. It also never means
+  covered.
+- A dash or N/A in a source benefit grid is NOT_FOUND_IN_SOURCE, not a
+  denial.
+- Conflicts are recorded, never silently resolved.
+- profile_confidence is the weakest fact in the profile, not an average.
+- Training material (auth rank 6) can never establish coverage,
+  exclusions, waiting periods or pre-existing provisions. It may
+  corroborate only.
+
+## Retrieval
+
+Fuzzy matching is permitted on plan names ONLY. Never on benefit text.
+The portfolio is roughly 95 percent lexically identical across variants,
+so semantic search over benefit text returns confident wrong numbers.
+
+Resolve an exact plan_id first, then read only that plan's data.
+
+Never carry a value from one variant to another however identical the
+pages look. Never compare across tiers. The benefit ladder is not
+monotonic: a dearer tier is not a superset of a cheaper one.
+
+If the plan or tier is ambiguous, ask and show the options. Never guess.
+
+## Any UI consuming this data
+
+A blank field is a compliance failure, not a cosmetic one. A newer agent
+who sees a blank field will fill it in from memory. Every unknown must
+render an explicit not-confirmed state.
+
+Compliance and disclosure language must come verbatim from the attached
+compliance records. Never compose, paraphrase or improve it.
