@@ -152,6 +152,7 @@ function aoSortProducts(list) {
 }
 
 var aoPlatformFilter = 'both';
+var aoStateFromSearch = false;
 
 function aoBuildView(products, stateCode, textQuery, platform) {
   var matched = [];
@@ -741,6 +742,7 @@ function aoRenderResults() {
       emptyText = aoEmptyPlatformMessage(view.stateCode);
     }
     list.innerHTML = '<p class="ao-status">' + aoEsc(emptyText) + '</p>';
+    aoSyncLead();
     aoClosePanel();
     return;
   }
@@ -748,6 +750,7 @@ function aoRenderResults() {
     aoSelectedName = '';
   }
   list.innerHTML = aoListHtml(sections);
+  aoSyncLead();
   if (aoSelectedName) aoOpenPanel();
   else aoClosePanel();
 }
@@ -755,6 +758,10 @@ function aoRenderResults() {
 function aoOnListClick(event) {
   var node = event.target;
   while (node && node !== event.currentTarget) {
+    if (node.getAttribute && node.getAttribute('data-ao-clear-state') === '1') {
+      aoClearState();
+      return;
+    }
     if (node.getAttribute && node.getAttribute('data-ao-platform')) {
       aoPlatformFilter = node.getAttribute('data-ao-platform');
       var pills = document.querySelectorAll('#page-addons [data-ao-platform]');
@@ -859,7 +866,63 @@ function aoFillStates() {
   select.setAttribute('data-ao-filled', '1');
 }
 
-function aoOnControl() {
+function aoSyncStateChrome(event) {
+  var searchEl = document.getElementById('ao-search');
+  var stateEl = document.getElementById('ao-state');
+  var target = event && event.target;
+  var searched;
+  if (!searchEl || !stateEl) return;
+  if (target && target === stateEl) {
+    aoStateFromSearch = false;
+    return;
+  }
+  searched = aoMatchState(searchEl.value, aoStateCodes());
+  if (searched) {
+    stateEl.value = searched;
+    aoStateFromSearch = true;
+    return;
+  }
+  if (
+    !String(searchEl.value || '').replace(/^\s+|\s+$/g, '') &&
+    aoStateFromSearch
+  ) {
+    stateEl.value = '';
+    aoStateFromSearch = false;
+  }
+}
+
+function aoSyncLead() {
+  var lead = document.getElementById('ao-lead');
+  var code;
+  var name;
+  if (!lead) return;
+  code = aoViewQuery().stateCode;
+  name = code ? AO_STATE_NAMES[code] || code : '';
+  if (!name) {
+    lead.className = 'ao-lead';
+    lead.textContent = 'Prices and state availability for enrollment add-ons.';
+    return;
+  }
+  lead.className = 'ao-lead ao-lead-on';
+  lead.innerHTML =
+    'Showing add-ons available in ' +
+    aoEsc(name) +
+    ' <button type="button" class="ao-state-clear" data-ao-clear-state="1">Clear</button>';
+}
+
+function aoClearState() {
+  var searchEl = document.getElementById('ao-search');
+  var stateEl = document.getElementById('ao-state');
+  if (searchEl && aoMatchState(searchEl.value, aoStateCodes())) {
+    searchEl.value = '';
+  }
+  if (stateEl) stateEl.value = '';
+  aoStateFromSearch = false;
+  aoRenderResults();
+}
+
+function aoOnControl(event) {
+  aoSyncStateChrome(event);
   aoRenderResults();
 }
 
@@ -870,7 +933,7 @@ function renderAddons() {
     root.innerHTML =
       '<div class="ao-page">' +
       '<header class="ao-header"><h2 class="ao-title">Add-Ons</h2>' +
-      '<p class="ao-lead">Prices and state availability for enrollment add-ons.</p></header>' +
+      '<p id="ao-lead" class="ao-lead">Prices and state availability for enrollment add-ons.</p></header>' +
       '<div class="ao-controls">' +
       '<input id="ao-search" class="ao-search" type="search" placeholder="Search name, description, category, or a state" aria-label="Search add-ons">' +
       '<select id="ao-state" class="ao-state" aria-label="Filter by state"><option value="">All states</option></select>' +
