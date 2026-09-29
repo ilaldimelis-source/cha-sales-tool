@@ -1,0 +1,27 @@
+{
+  "planId": "allstatecopayenhancedstm",
+  "planName": "Allstate Copay Enhanced STM PPO Plan",
+  "status": "missing_pdf",
+  "documents": [
+    {
+      "fileName": "Allstate_Copay_Enhanced_STM_PPO_Brochure.pdf",
+      "sourceType": "brochure",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "Allstate Copay Enhanced STM PPO Plan Short Term Medical. Choose between $6,000 and $8,000 deductible. Coinsurance 0%. Coverage period maximum $5,000,000. Office visits copay $40 PCP $60 specialist including preventive. Pharmacy $10 copay on generic drugs maximum benefit $3,000. Outpatient services subject to deductible $5,000 limit joint neck spine connective tissue 30 visit limit PT OT ST cardiac pulmonary rehab. Adult screenings includes immunizations subject to deductible and coinsurance. Inpatient hospital stays subject to deductible. Emergency room $250 access fee waived if admitted deductible applies. Urgent care $50 access fee deductible waived remaining subject to coinsurance. Child immunizations first dollar benefit. Out-of-network deductibles doubled copays not applicable. Short term medical not ACA compliant. Pre-existing conditions subject to underwriting. No waiting period stated. NEO Insurance Solutions PPO network Allstate.",
+          "normalizedText": "allstate copay enhanced stm ppo plan short term medical choose between 6 000 and 8 000 deductible coinsurance 0 coverage period maximum 5 000 000 office visits copay 40 pcp 60 specialist including preventive pharmacy 10 copay on generic drugs maximum benefit 3 000 outpatient services subject to deductible 5 000 limit joint neck spine connective tissue 30 visit limit pt ot st cardiac pulmonary rehab adult screenings includes immunizations subject to deductible and coinsurance inpatient hospital stays subject to deductible emergency room 250 access fee waived if admitted deductible applies urgent care 50 access fee deductible waived remaining subject to coinsurance child immunizations first dollar benefit out of network deductibles doubled copays not applicable short term medical not aca compliant pre existing conditions subject to underwriting no waiting period stated neo insurance solutions ppo network allstate"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "allstatecopayenhancedstm-c1",
+      "text": "Allstate Copay Enhanced STM PPO Plan Short Term Medical. Choose between $6,000 and $8,000 deductible. Coinsurance 0%. Coverage period maximum $5,000,000. Office visits copay $40 PCP $60 specialist including preventive. Pharmacy $10 copay on generic drugs maximum benefit $3,000. Outpatient services subject to deductible $5,000 limit joint neck spine connective tissue 30 visit limit PT OT ST cardiac pulmonary rehab. Adult screenings includes immunizations subject to deductible and coinsurance. Inpatient hospital stays subject to deductible. Emergency room $250 access fee waived if admitted deductible applies. Urgent care $50 access fee deductible waived remaining subject to coinsurance. Child immunizations first dollar benefit. Out-of-network deductibles doubled copays not applicable. Short term medical not ACA compliant. Pre-existing conditions subject to underwriting. No waiting period stated. NEO Insurance Solutions PPO network Allstate.",
+      "tokenEstimate": 238,
+      "pageRange": "1-1",
+      "normalizedText": "allstate copay enhanced stm ppo plan short term medical choose between 6 000 and 8 000 deductible coinsurance 0 coverage period maximum 5 000 000 office visits copay 40 pcp 60 specialist including preventive pharmacy 10 copay on generic drugs maximum benefit 3 000 outpatient services subject to deductible 5 000 limit joint neck spine connective tissue 30 visit limit pt ot st cardiac pulmonary rehab adult screenings includes immunizations subject to deductible and coinsurance inpatient hospital stays subject to deductible emergency room 250 access fee waived if admitted deductible applies urgent care 50 access fee deductible waived remaining subject to coinsurance child immunizations first dollar benefit out of network deductibles doubled copays not applicable short term medical not aca compliant pre existing conditions subject to underwriting no waiting period stated neo insurance solutions ppo network allstate"
+    }
+  ]
+}

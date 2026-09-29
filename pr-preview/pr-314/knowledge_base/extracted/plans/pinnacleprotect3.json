@@ -1,0 +1,27 @@
+{
+  "planId": "pinnacleprotect3",
+  "planName": "Pinnacle Protect Plan 3",
+  "status": "missing_pdf",
+  "documents": [
+    {
+      "fileName": "Pinnacle_Protect_Plan3_Brochure.pdf",
+      "sourceType": "brochure",
+      "pages": [
+        {
+          "pageNumber": 1,
+          "text": "Pinnacle Protect Plan 3 Limited Medical Guaranteed Issue. Higher benefit tier than Plan 2. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA MEC requirement.",
+          "normalizedText": "pinnacle protect plan 3 limited medical guaranteed issue higher benefit tier than plan 2 phcs practitioner ancillary network multiplan fixed cash benefit per covered service pre existing 12 month look back 12 month exclusion supplement to health insurance not substitute for major medical does not satisfy aca mec requirement"
+        }
+      ]
+    }
+  ],
+  "chunks": [
+    {
+      "chunkId": "pinnacleprotect3-c1",
+      "text": "Pinnacle Protect Plan 3 Limited Medical Guaranteed Issue. Higher benefit tier than Plan 2. PHCS Practitioner Ancillary Network Multiplan. Fixed cash benefit per covered service. Pre-existing 12 month look-back 12 month exclusion. Supplement to health insurance not substitute for major medical. Does not satisfy ACA MEC requirement.",
+      "tokenEstimate": 83,
+      "pageRange": "1-1",
+      "normalizedText": "pinnacle protect plan 3 limited medical guaranteed issue higher benefit tier than plan 2 phcs practitioner ancillary network multiplan fixed cash benefit per covered service pre existing 12 month look back 12 month exclusion supplement to health insurance not substitute for major medical does not satisfy aca mec requirement"
+    }
+  ]
+}
