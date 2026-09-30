@@ -26,9 +26,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "customer_service": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "pinnacle-critical-care-4"
+      ],
+      "pg": null,
+      "sec": "brochure",
+      "src": "Everest_FI_Critical_Illness_Brochure.pdf",
+      "v": "866-870-7730, Monday to Friday, 9am to 6pm EST",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "id_card_timing": {
       "searched": [],
@@ -140,9 +149,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "critical_illness": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-critical-care-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44563&id=974021",
+      "v": "$100,000",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "ct": {
       "searched": [],
@@ -729,12 +748,21 @@
     "The monthly cost quoted on a recorded call must include this fee, or the fee must be stated separately before the payment authorisation. Quoting the product page price alone understates what the client will be charged.",
     "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
-  "doc_completeness": "PORTAL_ONLY",
+  "doc_completeness": "PARTIAL_DOCS",
   "documentation": {
     "brochure": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "pinnacle-critical-care-4"
+      ],
+      "pg": null,
+      "sec": "brochure",
+      "src": "Everest_FI_Critical_Illness_Brochure.pdf",
+      "v": "Everest_FI_Critical_Illness_Brochure.pdf",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "source_defects": {
       "searched": [],
@@ -797,9 +825,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "association": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "pinnacle-critical-care-4"
+      ],
+      "pg": null,
+      "sec": "brochure",
+      "src": "Everest_FI_Critical_Illness_Brochure.pdf",
+      "v": "American Workers Association (AWA)",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "billing_entity": {
       "searched": [],
@@ -887,9 +924,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "underwriter": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "pinnacle-critical-care-4"
+      ],
+      "pg": null,
+      "sec": "brochure",
+      "src": "Everest_FI_Critical_Illness_Brochure.pdf",
+      "v": "Everest Reinsurance Company, rated A+ Superior by A.M. Best",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "variant": {
       "searched": [],
@@ -899,14 +945,33 @@
   },
   "limitations": {
     "day_limits": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-critical-care-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44563&id=974021",
+      "v": "10 days per confinement; 30 days per certificate year",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "excluded_services": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "pinnacle-critical-care-4"
+      ],
+      "pg": null,
+      "sec": "brochure",
+      "src": "Everest_FI_Critical_Illness_Brochure.pdf",
+      "v": "Breast surgery; certain services by non-charging providers; cosmetic surgery; dental care; elective treatment or surgery; experimental or investigational treatment; family member treatment; foreign travel; pre-existing condition limitation; waiting period.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "lookback_months": {
       "searched": [],
@@ -939,9 +1004,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "waiting_period_other": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "HIGH",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "pinnacle-critical-care-4"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 101,
+      "url": "https://www.1enrollment.com/information/product.cfm?page=44563&id=974021",
+      "v": "30 days for the Critical Care benefit",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "waiting_period_sickness": {
       "searched": [],
