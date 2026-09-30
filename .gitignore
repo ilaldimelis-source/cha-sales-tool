@@ -22,6 +22,8 @@ stylelint-full.txt
 stylelint-report.json
 stylelint-clean.json
 screenshots/
+ledger/02_progress.json
+ledger/FINAL_STATE.md
 ledger-backup-*/
 Claude outputs/
 build/
