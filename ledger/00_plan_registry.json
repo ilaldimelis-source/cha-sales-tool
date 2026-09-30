@@ -1,0 +1,4084 @@
+{
+ "registry_version": "1.0",
+ "built": "2026-09-05",
+ "registry_status": "COMPLETE",
+ "registry_status_reason": "BOTH product lists have now been read live from the signed-in portals on 2026-09-05 - NEO (agent id 974021, identical to 767303) and FirstEnroll (agent id 974358, Melis Ilaldi's own storefront). Every entry carries a status resolved against a live catalogue. IMPORTANT CAVEAT recorded rather than hidden: the April 2026 FirstEnroll snapshot held in the project was agent id 824962 (Ana Avalos's storefront), NOT this agent's. 22 products on that snapshot are absent from this agent's live catalogue, and because storefront 824962 renders empty under this login the date effect cannot be separated from the storefront effect. Those entries are marked NOT_ON_CURRENT_AGENT_CATALOGUE, not DISCONTINUED.",
+ "sources_unavailable": [
+  {
+   "source": "neo",
+   "blocker": "B-01",
+   "effect": "cannot confirm the current NEO catalogue, cannot open any product Info page, cannot read any add-on description"
+  },
+  {
+   "source": "firstenroll",
+   "blocker": "B-02",
+   "effect": "cannot confirm the current FirstEnroll catalogue, cannot open any product Info page"
+  },
+  {
+   "source": "talentlms",
+   "blocker": "B-03",
+   "effect": "no training content available; note that training may never establish contractual benefit facts in any case"
+  },
+  {
+   "source": "handoff_document",
+   "blocker": "B-04",
+   "effect": "cannot reconcile against the handoff's 24-item do-not-assume list"
+  }
+ ],
+ "status_vocabulary": {
+  "ACTIVE_AS_OF_SNAPSHOT": "appeared on a product list dated 2026-04-08; NOT confirmed still sold today",
+  "STATUS_UNCERTAIN": "documented somewhere but absent from both April lists, or named only in internal material",
+  "DISCONTINUED": "NOT USED. No source available to this run establishes discontinuation. Drive folder placement under '04 NOT SELLING' is an internal note (authority rank 8) and is recorded as a conflict, never as a status."
+ },
+ "critical_caveats": [
+  "Having documents is not evidence a product is sold. Having no documents is not evidence a product is unsold.",
+  "Both product lists predate today by five months. Harbor STM's brochure is dated 08/2026 and postdates them, proving the lists are known to be behind the real catalogue.",
+  "product_type is left UNKNOWN or NEEDS_MANUAL_VERIFICATION wherever no source categorises the product. It is never inferred from a product name, a filename prefix such as MEC_, or a sibling variant.",
+  "No plan_id in this registry has had any benefit fact attributed to it yet. This registry establishes identity only."
+ ],
+ "plan_count": 185,
+ "plans": [
+  {
+   "plan_id": "smart-choice-1500",
+   "family": "Smart Choice",
+   "variant": "1500",
+   "display_name": "SmartChoice 1500",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "The live NEO SmartChoice Info page states 'All four SmartChoice plans are limited medical plans using the First Health network.' Corroborated by each plan document's own cover title. Supersedes the 'STM' heading in Plan_Reference_Table.pdf - see C-001.",
+   "aliases": [
+    "smartchoice 1500",
+    "sc1500",
+    "smart choice 1500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "48541"
+   ]
+  },
+  {
+   "plan_id": "smart-choice-2500",
+   "family": "Smart Choice",
+   "variant": "2500",
+   "display_name": "SmartChoice 2500",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "The live NEO SmartChoice Info page states 'All four SmartChoice plans are limited medical plans using the First Health network.' Corroborated by each plan document's own cover title. Supersedes the 'STM' heading in Plan_Reference_Table.pdf - see C-001.",
+   "aliases": [
+    "smartchoice 2500",
+    "sc2500",
+    "smart choice 2500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "48542"
+   ]
+  },
+  {
+   "plan_id": "smart-choice-3000",
+   "family": "Smart Choice",
+   "variant": "3000",
+   "display_name": "SmartChoice 3000",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "The live NEO SmartChoice Info page states 'All four SmartChoice plans are limited medical plans using the First Health network.' Corroborated by each plan document's own cover title. Supersedes the 'STM' heading in Plan_Reference_Table.pdf - see C-001.",
+   "aliases": [
+    "smartchoice 3000",
+    "sc3000",
+    "smart choice 3000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "48543"
+   ]
+  },
+  {
+   "plan_id": "smart-choice-3500",
+   "family": "Smart Choice",
+   "variant": "3500",
+   "display_name": "SmartChoice 3500",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "The live NEO SmartChoice Info page states 'All four SmartChoice plans are limited medical plans using the First Health network.' Corroborated by each plan document's own cover title. Supersedes the 'STM' heading in Plan_Reference_Table.pdf - see C-001.",
+   "aliases": [
+    "smartchoice 3500",
+    "sc3500",
+    "smart choice 3500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "48544"
+   ]
+  },
+  {
+   "plan_id": "pinnacle-stm-traditional",
+   "family": "Pinnacle STM",
+   "variant": "Traditional",
+   "display_name": "Pinnacle STM Traditional",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "pinnacle stm",
+    "pinnacle short term medical"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "40790"
+   ]
+  },
+  {
+   "plan_id": "allstate-enhanced-stm-ppo",
+   "family": "Allstate",
+   "variant": "Enhanced STM PPO",
+   "display_name": "Allstate Enhanced STM PPO Plan",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "allstate enhanced stm ppo plan"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "39475"
+   ]
+  },
+  {
+   "plan_id": "allstate-copay-enhanced-stm-ppo",
+   "family": "Allstate",
+   "variant": "Copay Enhanced STM PPO",
+   "display_name": "Allstate Copay Enhanced STM PPO Plan",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "allstate copay enhanced stm ppo plan"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "39509"
+   ]
+  },
+  {
+   "plan_id": "allstate-essentials-stm-ppo",
+   "family": "Allstate",
+   "variant": "Essentials STM PPO",
+   "display_name": "Allstate Essentials STM PPO Plan",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "allstate essentials stm ppo plan"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "39479"
+   ]
+  },
+  {
+   "plan_id": "allstate-health-access",
+   "family": "Allstate",
+   "variant": "Health Access",
+   "display_name": "Allstate Health Access",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "NEO product list categorises this product 'Limited Medical'.",
+   "aliases": [
+    "allstate health access"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "45451"
+   ]
+  },
+  {
+   "plan_id": "afrp-galena-stm-elite",
+   "family": "AFRP Galena STM",
+   "variant": "Elite",
+   "display_name": "AFRP Galena STM Elite",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "galena elite",
+    "afrp galena elite",
+    "galena stm elite"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "40405"
+   ]
+  },
+  {
+   "plan_id": "afrp-galena-stm-standard",
+   "family": "AFRP Galena STM",
+   "variant": "Standard",
+   "display_name": "AFRP Galena STM Standard",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "galena standard",
+    "afrp galena standard",
+    "galena stm standard"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "40404"
+   ]
+  },
+  {
+   "plan_id": "afrp-galena-stm-economy",
+   "family": "AFRP Galena STM",
+   "variant": "Economy",
+   "display_name": "AFRP Galena STM Economy",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "galena economy",
+    "afrp galena economy",
+    "galena stm economy"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "40406"
+   ]
+  },
+  {
+   "plan_id": "smarthealth-stm-traditional",
+   "family": "SmartHealth STM",
+   "variant": "Traditional",
+   "display_name": "SmartHealth Short Term Medical - Traditional",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "smarthealth traditional",
+    "smart health stm traditional"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "29669"
+   ]
+  },
+  {
+   "plan_id": "smarthealth-stm-limited",
+   "family": "SmartHealth STM",
+   "variant": "Limited",
+   "display_name": "SmartHealth Short Term Medical - Limited",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "smarthealth limited",
+    "smart health stm limited"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "29588"
+   ]
+  },
+  {
+   "plan_id": "tdk-1",
+   "family": "TDK",
+   "variant": "1",
+   "display_name": "TDK 1",
+   "listed_on": [
+    "neo",
+    "firstenroll"
+   ],
+   "product_type": "mec_erisa",
+   "product_type_evidence": "NEO product list categorises this product 'ERISA'.",
+   "aliases": [
+    "tdk1",
+    "tdk plan 1",
+    "tdk 1"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "neo:44147",
+    "firstenroll:43795"
+   ],
+   "notes": "OPEN Q5: NEO and FirstEnroll list TDK 1-5 with DIFFERENT brochures - NEO links _CustomerBrochure_TDKPlanN.pdf, FirstEnroll links TDK_Promo_Combined.pdf. Same product on two channels vs two products is UNRESOLVED. Do not merge these records without evidence."
+  },
+  {
+   "plan_id": "tdk-2",
+   "family": "TDK",
+   "variant": "2",
+   "display_name": "TDK 2",
+   "listed_on": [
+    "neo",
+    "firstenroll"
+   ],
+   "product_type": "mec_erisa",
+   "product_type_evidence": "NEO product list categorises this product 'ERISA'.",
+   "aliases": [
+    "tdk2",
+    "tdk plan 2",
+    "tdk 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "neo:44148",
+    "firstenroll:43900"
+   ],
+   "notes": "OPEN Q5: NEO and FirstEnroll list TDK 1-5 with DIFFERENT brochures - NEO links _CustomerBrochure_TDKPlanN.pdf, FirstEnroll links TDK_Promo_Combined.pdf. Same product on two channels vs two products is UNRESOLVED. Do not merge these records without evidence."
+  },
+  {
+   "plan_id": "tdk-3",
+   "family": "TDK",
+   "variant": "3",
+   "display_name": "TDK 3",
+   "listed_on": [
+    "neo",
+    "firstenroll"
+   ],
+   "product_type": "mec_erisa",
+   "product_type_evidence": "NEO product list categorises this product 'ERISA'.",
+   "aliases": [
+    "tdk3",
+    "tdk plan 3",
+    "tdk 3"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "neo:44149",
+    "firstenroll:43901"
+   ],
+   "notes": "OPEN Q5: NEO and FirstEnroll list TDK 1-5 with DIFFERENT brochures - NEO links _CustomerBrochure_TDKPlanN.pdf, FirstEnroll links TDK_Promo_Combined.pdf. Same product on two channels vs two products is UNRESOLVED. Do not merge these records without evidence."
+  },
+  {
+   "plan_id": "tdk-4",
+   "family": "TDK",
+   "variant": "4",
+   "display_name": "TDK 4",
+   "listed_on": [
+    "neo",
+    "firstenroll"
+   ],
+   "product_type": "mec_erisa",
+   "product_type_evidence": "NEO product list categorises this product 'ERISA'.",
+   "aliases": [
+    "tdk4",
+    "tdk plan 4",
+    "tdk 4"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "neo:44150",
+    "firstenroll:43902"
+   ],
+   "notes": "OPEN Q5: NEO and FirstEnroll list TDK 1-5 with DIFFERENT brochures - NEO links _CustomerBrochure_TDKPlanN.pdf, FirstEnroll links TDK_Promo_Combined.pdf. Same product on two channels vs two products is UNRESOLVED. Do not merge these records without evidence."
+  },
+  {
+   "plan_id": "tdk-5",
+   "family": "TDK",
+   "variant": "5",
+   "display_name": "TDK 5",
+   "listed_on": [
+    "neo",
+    "firstenroll"
+   ],
+   "product_type": "mec_erisa",
+   "product_type_evidence": "NEO product list categorises this product 'ERISA'.",
+   "aliases": [
+    "tdk5",
+    "tdk plan 5",
+    "tdk 5"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "neo:44151",
+    "firstenroll:43903"
+   ],
+   "notes": "OPEN Q5: NEO and FirstEnroll list TDK 1-5 with DIFFERENT brochures - NEO links _CustomerBrochure_TDKPlanN.pdf, FirstEnroll links TDK_Promo_Combined.pdf. Same product on two channels vs two products is UNRESOLVED. Do not merge these records without evidence."
+  },
+  {
+   "plan_id": "pinnacle-protect-1",
+   "family": "Pinnacle Protect",
+   "variant": "1",
+   "display_name": "Pinnacle Protect Plan 1",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "NEO list tags Plan 1 'Limited Medical'. Plans 2-4 carry NO type label on the list - type not established, and must not be carried over from Plan 1.",
+   "aliases": [
+    "pinnacle protect 1",
+    "pinnacle protect plan 1"
+   ],
+   "status": "DISCONTINUED",
+   "status_evidence": "DELISTED. Present on the NEO product list snapshot dated 2026-04-08 and ABSENT from the live NEO list read 2026-09-05. Both readings are of the same authoritative source for the same agent id, so this is positive evidence of removal from the catalogue between those dates - not merely absence of evidence. It is NOT evidence about existing in-force policies.",
+   "portal_page_ids": [
+    "44137"
+   ],
+   "notes": "RESOLVES OPEN QUESTION 1, and reconciles two readings that both looked right. The handoff said NEO lists Plans 2/3/4 only; my April-snapshot reading said all four. Both were accurate for their date - Plan 1 was on the April list and is gone from the live one. Only having both snapshots made the change visible. The three variants now sold have no benefit document in Drive at all: the only Pinnacle Protect document held is for this delisted Plan 1."
+  },
+  {
+   "plan_id": "pinnacle-protect-2",
+   "family": "Pinnacle Protect",
+   "variant": "2",
+   "display_name": "Pinnacle Protect Plan 2",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "NEO product list categorises this product 'Limited Medical'.",
+   "aliases": [
+    "pinnacle protect 2",
+    "pinnacle protect plan 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "51231"
+   ],
+   "notes": "2026-09-08 PAGE ID CORRECTION: live NEO Info page is 51231. Dead ID 44557 rendered a 318-character site shell with no details, states, pricing, downloads or terms element. Old value kept here for traceability. CORRECTION TO HANDOFF: the handoff states only Plan 1 is documented and NEO lists Plans 2/3/4. The 2026-04-08 NEO snapshot lists ALL FOUR (Plans 1,2,3,4). See Q1. LIVE FINDING: the NEO Info page for Plan 2 renders with NO product content. TalentLMS carries a 'Pinnacle Protect Training' course whose description covers Plans 2, 3 and 4 and names 'fixed cash benefits' and 'PHCS network repricing' - which sits oddly against NEO's 'Limited Medical' category label and should be reconciled."
+  },
+  {
+   "plan_id": "pinnacle-protect-3",
+   "family": "Pinnacle Protect",
+   "variant": "3",
+   "display_name": "Pinnacle Protect Plan 3",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "NEO product list categorises this product 'Limited Medical'.",
+   "aliases": [
+    "pinnacle protect 3",
+    "pinnacle protect plan 3"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "51232"
+   ],
+   "notes": "2026-09-08 PAGE ID CORRECTION: live NEO Info page is 51232. Dead ID 44558 rendered a 318-character site shell with no details, states, pricing, downloads or terms element. Old value kept here for traceability. CORRECTION TO HANDOFF: the handoff states only Plan 1 is documented and NEO lists Plans 2/3/4. The 2026-04-08 NEO snapshot lists ALL FOUR (Plans 1,2,3,4). See Q1."
+  },
+  {
+   "plan_id": "pinnacle-protect-4",
+   "family": "Pinnacle Protect",
+   "variant": "4",
+   "display_name": "Pinnacle Protect Plan 4",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "limited_medical",
+   "product_type_evidence": "NEO product list categorises this product 'Limited Medical'.",
+   "aliases": [
+    "pinnacle protect 4",
+    "pinnacle protect plan 4"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "51233"
+   ],
+   "notes": "2026-09-08 PAGE ID CORRECTION: live NEO Info page is 51233. Dead ID 44559 rendered a 318-character site shell with no details, states, pricing, downloads or terms element. Old value kept here for traceability. CORRECTION TO HANDOFF: the handoff states only Plan 1 is documented and NEO lists Plans 2/3/4. The 2026-04-08 NEO snapshot lists ALL FOUR (Plans 1,2,3,4). See Q1."
+  },
+  {
+   "plan_id": "ghdp-1",
+   "family": "GHDP",
+   "variant": "1",
+   "display_name": "Good Health Distribution Partner 1",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. The linked PDF filename is prefixed MEC_ but a filename is not a source. MEC status must never be asserted without a document that states it.",
+   "aliases": [
+    "ghdp1",
+    "ghdp 1",
+    "good health distribution partner 1",
+    "goodhealth 1",
+    "good health 1"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "44900"
+   ]
+  },
+  {
+   "plan_id": "ghdp-2",
+   "family": "GHDP",
+   "variant": "2",
+   "display_name": "Good Health Distribution Partner 2",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. The linked PDF filename is prefixed MEC_ but a filename is not a source. MEC status must never be asserted without a document that states it.",
+   "aliases": [
+    "ghdp2",
+    "ghdp 2",
+    "good health distribution partner 2",
+    "goodhealth 2",
+    "good health 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "44901"
+   ]
+  },
+  {
+   "plan_id": "ghdp-3",
+   "family": "GHDP",
+   "variant": "3",
+   "display_name": "Good Health Distribution Partner 3",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. The linked PDF filename is prefixed MEC_ but a filename is not a source. MEC status must never be asserted without a document that states it.",
+   "aliases": [
+    "ghdp3",
+    "ghdp 3",
+    "good health distribution partner 3",
+    "goodhealth 3",
+    "good health 3"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "44902"
+   ]
+  },
+  {
+   "plan_id": "ghdp-4",
+   "family": "GHDP",
+   "variant": "4",
+   "display_name": "Good Health Distribution Partner 4",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. The linked PDF filename is prefixed MEC_ but a filename is not a source. MEC status must never be asserted without a document that states it.",
+   "aliases": [
+    "ghdp4",
+    "ghdp 4",
+    "good health distribution partner 4",
+    "goodhealth 4",
+    "good health 4"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "44903"
+   ]
+  },
+  {
+   "plan_id": "ghdp-5",
+   "family": "GHDP",
+   "variant": "5",
+   "display_name": "Good Health Distribution Partner 5",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. The linked PDF filename is prefixed MEC_ but a filename is not a source. MEC status must never be asserted without a document that states it.",
+   "aliases": [
+    "ghdp5",
+    "ghdp 5",
+    "good health distribution partner 5",
+    "goodhealth 5",
+    "good health 5"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "44904"
+   ]
+  },
+  {
+   "plan_id": "summit-100",
+   "family": "Summit",
+   "variant": "100",
+   "display_name": "Summit Plan 100",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "fixed_indemnity",
+   "product_type_evidence": "FirstEnroll list labels every Summit variant 'Group Fixed Indemnity Insurance'",
+   "aliases": [
+    "summit 100",
+    "summit plan 100",
+    "everest summit 100"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "44515"
+   ],
+   "notes": "BEARS ON Q2 (Everest). The Summit family is absent from this agent's live catalogue. Combined with the Drive filing under '04 NOT SELLING / Everest NCE', the earlier finding that Summit is actively sold now holds only for storefront 824962 as of April. For THIS agent, today, Summit/Everest is not on the catalogue."
+  },
+  {
+   "plan_id": "summit-200",
+   "family": "Summit",
+   "variant": "200",
+   "display_name": "Summit Plan 200",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "fixed_indemnity",
+   "product_type_evidence": "FirstEnroll list labels every Summit variant 'Group Fixed Indemnity Insurance'",
+   "aliases": [
+    "summit 200",
+    "summit plan 200",
+    "everest summit 200"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "44524"
+   ],
+   "notes": "BEARS ON Q2 (Everest). The Summit family is absent from this agent's live catalogue. Combined with the Drive filing under '04 NOT SELLING / Everest NCE', the earlier finding that Summit is actively sold now holds only for storefront 824962 as of April. For THIS agent, today, Summit/Everest is not on the catalogue."
+  },
+  {
+   "plan_id": "summit-200-plus",
+   "family": "Summit",
+   "variant": "200+",
+   "display_name": "Summit Plan 200+",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "fixed_indemnity",
+   "product_type_evidence": "FirstEnroll list labels every Summit variant 'Group Fixed Indemnity Insurance'",
+   "aliases": [
+    "summit 200+",
+    "summit plan 200+",
+    "everest summit 200+"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "44569"
+   ],
+   "notes": "BEARS ON Q2 (Everest). The Summit family is absent from this agent's live catalogue. Combined with the Drive filing under '04 NOT SELLING / Everest NCE', the earlier finding that Summit is actively sold now holds only for storefront 824962 as of April. For THIS agent, today, Summit/Everest is not on the catalogue."
+  },
+  {
+   "plan_id": "summit-300",
+   "family": "Summit",
+   "variant": "300",
+   "display_name": "Summit Plan 300",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "fixed_indemnity",
+   "product_type_evidence": "FirstEnroll list labels every Summit variant 'Group Fixed Indemnity Insurance'",
+   "aliases": [
+    "summit 300",
+    "summit plan 300",
+    "everest summit 300"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "44570"
+   ],
+   "notes": "BEARS ON Q2 (Everest). The Summit family is absent from this agent's live catalogue. Combined with the Drive filing under '04 NOT SELLING / Everest NCE', the earlier finding that Summit is actively sold now holds only for storefront 824962 as of April. For THIS agent, today, Summit/Everest is not on the catalogue."
+  },
+  {
+   "plan_id": "summit-500",
+   "family": "Summit",
+   "variant": "500",
+   "display_name": "Summit Plan 500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "fixed_indemnity",
+   "product_type_evidence": "FirstEnroll list labels every Summit variant 'Group Fixed Indemnity Insurance'",
+   "aliases": [
+    "summit 500",
+    "summit plan 500",
+    "everest summit 500"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "44571"
+   ],
+   "notes": "BEARS ON Q2 (Everest). The Summit family is absent from this agent's live catalogue. Combined with the Drive filing under '04 NOT SELLING / Everest NCE', the earlier finding that Summit is actively sold now holds only for storefront 824962 as of April. For THIS agent, today, Summit/Everest is not on the catalogue."
+  },
+  {
+   "plan_id": "summit-750",
+   "family": "Summit",
+   "variant": "750",
+   "display_name": "Summit Plan 750",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "fixed_indemnity",
+   "product_type_evidence": "FirstEnroll list labels every Summit variant 'Group Fixed Indemnity Insurance'",
+   "aliases": [
+    "summit 750",
+    "summit plan 750",
+    "everest summit 750"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "44572"
+   ],
+   "notes": "BEARS ON Q2 (Everest). The Summit family is absent from this agent's live catalogue. Combined with the Drive filing under '04 NOT SELLING / Everest NCE', the earlier finding that Summit is actively sold now holds only for storefront 824962 as of April. For THIS agent, today, Summit/Everest is not on the catalogue."
+  },
+  {
+   "plan_id": "summit-1000",
+   "family": "Summit",
+   "variant": "1000",
+   "display_name": "Summit Plan 1000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "fixed_indemnity",
+   "product_type_evidence": "FirstEnroll list labels every Summit variant 'Group Fixed Indemnity Insurance'",
+   "aliases": [
+    "summit 1000",
+    "summit plan 1000",
+    "everest summit 1000"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "44573"
+   ],
+   "notes": "BEARS ON Q2 (Everest). The Summit family is absent from this agent's live catalogue. Combined with the Drive filing under '04 NOT SELLING / Everest NCE', the earlier finding that Summit is actively sold now holds only for storefront 824962 as of April. For THIS agent, today, Summit/Everest is not on the catalogue."
+  },
+  {
+   "plan_id": "summit-1000-plus",
+   "family": "Summit",
+   "variant": "1000+",
+   "display_name": "Summit Plan 1000+",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "fixed_indemnity",
+   "product_type_evidence": "FirstEnroll list labels every Summit variant 'Group Fixed Indemnity Insurance'",
+   "aliases": [
+    "summit 1000+",
+    "summit plan 1000+",
+    "everest summit 1000+"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "44574"
+   ],
+   "notes": "BEARS ON Q2 (Everest). The Summit family is absent from this agent's live catalogue. Combined with the Drive filing under '04 NOT SELLING / Everest NCE', the earlier finding that Summit is actively sold now holds only for storefront 824962 as of April. For THIS agent, today, Summit/Everest is not on the catalogue."
+  },
+  {
+   "plan_id": "harmony-care-plus-100a",
+   "family": "Harmony Care PLUS",
+   "variant": "100A",
+   "display_name": "Harmony Care + 100A",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care + 100a",
+    "harmony care plus 100a",
+    "hc+ 100a",
+    "harmonycare plus 100a"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48037"
+   ],
+   "notes": "All 8 PLUS variants link to a SINGLE family-wide brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf). Any fact taken from it requires a verbatim anchor naming this exact variant.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-plus-100",
+   "family": "Harmony Care PLUS",
+   "variant": "100",
+   "display_name": "Harmony Care + 100",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care + 100",
+    "harmony care plus 100",
+    "hc+ 100",
+    "harmonycare plus 100"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48038"
+   ],
+   "notes": "All 8 PLUS variants link to a SINGLE family-wide brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf). Any fact taken from it requires a verbatim anchor naming this exact variant.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-plus-200",
+   "family": "Harmony Care PLUS",
+   "variant": "200",
+   "display_name": "Harmony Care + 200",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care + 200",
+    "harmony care plus 200",
+    "hc+ 200",
+    "harmonycare plus 200"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48039"
+   ],
+   "notes": "All 8 PLUS variants link to a SINGLE family-wide brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf). Any fact taken from it requires a verbatim anchor naming this exact variant.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-plus-200-plus",
+   "family": "Harmony Care PLUS",
+   "variant": "200+",
+   "display_name": "Harmony Care + 200+",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care + 200+",
+    "harmony care plus 200+",
+    "hc+ 200+",
+    "harmonycare plus 200+"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48040"
+   ],
+   "notes": "All 8 PLUS variants link to a SINGLE family-wide brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf). Any fact taken from it requires a verbatim anchor naming this exact variant.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-plus-300",
+   "family": "Harmony Care PLUS",
+   "variant": "300",
+   "display_name": "Harmony Care + 300",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care + 300",
+    "harmony care plus 300",
+    "hc+ 300",
+    "harmonycare plus 300"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48041"
+   ],
+   "notes": "All 8 PLUS variants link to a SINGLE family-wide brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf). Any fact taken from it requires a verbatim anchor naming this exact variant.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-plus-500",
+   "family": "Harmony Care PLUS",
+   "variant": "500",
+   "display_name": "Harmony Care + 500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care + 500",
+    "harmony care plus 500",
+    "hc+ 500",
+    "harmonycare plus 500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48042"
+   ],
+   "notes": "All 8 PLUS variants link to a SINGLE family-wide brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf). Any fact taken from it requires a verbatim anchor naming this exact variant.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-plus-750",
+   "family": "Harmony Care PLUS",
+   "variant": "750",
+   "display_name": "Harmony Care + 750",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care + 750",
+    "harmony care plus 750",
+    "hc+ 750",
+    "harmonycare plus 750"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48043"
+   ],
+   "notes": "All 8 PLUS variants link to a SINGLE family-wide brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf). Any fact taken from it requires a verbatim anchor naming this exact variant.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-plus-1000",
+   "family": "Harmony Care PLUS",
+   "variant": "1000",
+   "display_name": "Harmony Care + 1000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care + 1000",
+    "harmony care plus 1000",
+    "hc+ 1000",
+    "harmonycare plus 1000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48044"
+   ],
+   "notes": "All 8 PLUS variants link to a SINGLE family-wide brochure (HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf). Any fact taken from it requires a verbatim anchor naming this exact variant.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-100a",
+   "family": "Harmony Care",
+   "variant": "100A",
+   "display_name": "Harmony Care 100A",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 100a",
+    "harmonycare 100a",
+    "hc 100a"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48876"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-100b",
+   "family": "Harmony Care",
+   "variant": "100B",
+   "display_name": "Harmony Care 100B",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 100b",
+    "harmonycare 100b",
+    "hc 100b"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "49428"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-100",
+   "family": "Harmony Care",
+   "variant": "100",
+   "display_name": "Harmony Care 100",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 100",
+    "harmonycare 100",
+    "hc 100"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48877"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-200",
+   "family": "Harmony Care",
+   "variant": "200",
+   "display_name": "Harmony Care 200",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 200",
+    "harmonycare 200",
+    "hc 200"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48878"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-200-plus",
+   "family": "Harmony Care",
+   "variant": "200+",
+   "display_name": "Harmony Care 200+",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 200+",
+    "harmonycare 200+",
+    "hc 200+"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48885"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-300",
+   "family": "Harmony Care",
+   "variant": "300",
+   "display_name": "Harmony Care 300",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 300",
+    "harmonycare 300",
+    "hc 300"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48879"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-500",
+   "family": "Harmony Care",
+   "variant": "500",
+   "display_name": "Harmony Care 500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 500",
+    "harmonycare 500",
+    "hc 500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48880"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-750",
+   "family": "Harmony Care",
+   "variant": "750",
+   "display_name": "Harmony Care 750",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 750",
+    "harmonycare 750",
+    "hc 750"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48881"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harmony-care-1000",
+   "family": "Harmony Care",
+   "variant": "1000",
+   "display_name": "Harmony Care 1000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "harmony care 1000",
+    "harmonycare 1000",
+    "hc 1000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "48882"
+   ],
+   "notes": "Non-PLUS Harmony Care variants link to the SAME PLUS-branded brochure on FirstEnroll. Whether that brochure governs the non-PLUS tiers is UNVERIFIED and is a distinct gap - do not assume it does.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "sigma-care-plus-100a",
+   "family": "Sigma Care PLUS",
+   "variant": "100A",
+   "display_name": "Sigma Care PLUS 100A",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "sigma care plus 100a",
+    "sigmacare plus 100a",
+    "scp 100a",
+    "sigma care + 100a"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "45288"
+   ],
+   "notes": "All 8 variants link to one family-wide brochure (AFSLIC20_SCP_Brochure_rev.pdf). Verbatim anchor required for any variant-level fact.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "sigma-care-plus-100",
+   "family": "Sigma Care PLUS",
+   "variant": "100",
+   "display_name": "Sigma Care PLUS 100",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "sigma care plus 100",
+    "sigmacare plus 100",
+    "scp 100",
+    "sigma care + 100"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "45430"
+   ],
+   "notes": "All 8 variants link to one family-wide brochure (AFSLIC20_SCP_Brochure_rev.pdf). Verbatim anchor required for any variant-level fact.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "sigma-care-plus-200",
+   "family": "Sigma Care PLUS",
+   "variant": "200",
+   "display_name": "Sigma Care PLUS 200",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "sigma care plus 200",
+    "sigmacare plus 200",
+    "scp 200",
+    "sigma care + 200"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "45431"
+   ],
+   "notes": "All 8 variants link to one family-wide brochure (AFSLIC20_SCP_Brochure_rev.pdf). Verbatim anchor required for any variant-level fact.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "sigma-care-plus-200-plus",
+   "family": "Sigma Care PLUS",
+   "variant": "200+",
+   "display_name": "Sigma Care PLUS 200+",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "sigma care plus 200+",
+    "sigmacare plus 200+",
+    "scp 200+",
+    "sigma care + 200+"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "45432"
+   ],
+   "notes": "All 8 variants link to one family-wide brochure (AFSLIC20_SCP_Brochure_rev.pdf). Verbatim anchor required for any variant-level fact.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "sigma-care-plus-300",
+   "family": "Sigma Care PLUS",
+   "variant": "300",
+   "display_name": "Sigma Care PLUS 300",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "sigma care plus 300",
+    "sigmacare plus 300",
+    "scp 300",
+    "sigma care + 300"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "45433"
+   ],
+   "notes": "All 8 variants link to one family-wide brochure (AFSLIC20_SCP_Brochure_rev.pdf). Verbatim anchor required for any variant-level fact.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "sigma-care-plus-500",
+   "family": "Sigma Care PLUS",
+   "variant": "500",
+   "display_name": "Sigma Care PLUS 500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "sigma care plus 500",
+    "sigmacare plus 500",
+    "scp 500",
+    "sigma care + 500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "45434"
+   ],
+   "notes": "All 8 variants link to one family-wide brochure (AFSLIC20_SCP_Brochure_rev.pdf). Verbatim anchor required for any variant-level fact.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "sigma-care-plus-750",
+   "family": "Sigma Care PLUS",
+   "variant": "750",
+   "display_name": "Sigma Care PLUS 750",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "sigma care plus 750",
+    "sigmacare plus 750",
+    "scp 750",
+    "sigma care + 750"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "45435"
+   ],
+   "notes": "All 8 variants link to one family-wide brochure (AFSLIC20_SCP_Brochure_rev.pdf). Verbatim anchor required for any variant-level fact.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "sigma-care-plus-1000",
+   "family": "Sigma Care PLUS",
+   "variant": "1000",
+   "display_name": "Sigma Care PLUS 1000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "sigma care plus 1000",
+    "sigmacare plus 1000",
+    "scp 1000",
+    "sigma care + 1000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "45436"
+   ],
+   "notes": "All 8 variants link to one family-wide brochure (AFSLIC20_SCP_Brochure_rev.pdf). Verbatim anchor required for any variant-level fact.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "paramount-1",
+   "family": "Paramount",
+   "variant": "1",
+   "display_name": "Paramount Plan 1",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_hospital_indemnity_limited_benefit",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "paramount 1",
+    "paramount plan 1"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "44347"
+   ],
+   "notes": "Linked document on FirstEnroll is BCS_Brochure_1.pdf. MAJOR FINDING BEARING ON Q3: Paramount Plans 1-3 link to the BCS_Brochure_1/2/3 PDFs. This is direct evidence that the 'BCS EssentialCare' documents in Drive are the source documents for Paramount 1-3, not an unrecognized orphan product. Plans 4-6 link to separate Paramount_N_BOOKLET.pdf files NOT present in Drive.",
+   "carrier": "BCS Insurance Company, Worthington OH (administrative offices Oakbrook Terrace, IL)",
+   "carrier_evidence": "BCS_Brochure_1.pdf: \"BCS EssentialCare insurance is underwritten by BCS Insurance Company, Worthington, OH.\""
+  },
+  {
+   "plan_id": "paramount-2",
+   "family": "Paramount",
+   "variant": "2",
+   "display_name": "Paramount Plan 2",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_hospital_indemnity_limited_benefit",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "paramount 2",
+    "paramount plan 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "44348"
+   ],
+   "notes": "Linked document on FirstEnroll is BCS_Brochure_2.pdf. MAJOR FINDING BEARING ON Q3: Paramount Plans 1-3 link to the BCS_Brochure_1/2/3 PDFs. This is direct evidence that the 'BCS EssentialCare' documents in Drive are the source documents for Paramount 1-3, not an unrecognized orphan product. Plans 4-6 link to separate Paramount_N_BOOKLET.pdf files NOT present in Drive.",
+   "carrier": "BCS Insurance Company, Worthington OH (administrative offices Oakbrook Terrace, IL)",
+   "carrier_evidence": "BCS_Brochure_1.pdf: \"BCS EssentialCare insurance is underwritten by BCS Insurance Company, Worthington, OH.\""
+  },
+  {
+   "plan_id": "paramount-3",
+   "family": "Paramount",
+   "variant": "3",
+   "display_name": "Paramount Plan 3",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_hospital_indemnity_limited_benefit",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "paramount 3",
+    "paramount plan 3"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "44349"
+   ],
+   "notes": "Linked document on FirstEnroll is BCS_Brochure_3.pdf. MAJOR FINDING BEARING ON Q3: Paramount Plans 1-3 link to the BCS_Brochure_1/2/3 PDFs. This is direct evidence that the 'BCS EssentialCare' documents in Drive are the source documents for Paramount 1-3, not an unrecognized orphan product. Plans 4-6 link to separate Paramount_N_BOOKLET.pdf files NOT present in Drive.",
+   "carrier": "BCS Insurance Company, Worthington OH (administrative offices Oakbrook Terrace, IL)",
+   "carrier_evidence": "BCS_Brochure_1.pdf: \"BCS EssentialCare insurance is underwritten by BCS Insurance Company, Worthington, OH.\""
+  },
+  {
+   "plan_id": "paramount-4",
+   "family": "Paramount",
+   "variant": "4",
+   "display_name": "Paramount Plan 4",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_hospital_indemnity_limited_benefit + ShareWELL health care sharing layer",
+   "product_type_evidence": "BCS EssentialCare insurance PLUS a ShareWELL Health Share sharing arrangement present only on Plans 4, 5 and 6 - see C-020, C-029, K-050.",
+   "aliases": [
+    "paramount 4",
+    "paramount plan 4"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "46436"
+   ],
+   "notes": "Linked document on FirstEnroll is Paramount_4_BOOKLET.pdf. MAJOR FINDING BEARING ON Q3: Paramount Plans 1-3 link to the BCS_Brochure_1/2/3 PDFs. This is direct evidence that the 'BCS EssentialCare' documents in Drive are the source documents for Paramount 1-3, not an unrecognized orphan product. Plans 4-6 link to separate Paramount_N_BOOKLET.pdf files NOT present in Drive.",
+   "carrier": "BCS Insurance Company, Worthington OH (administrative offices Oakbrook Terrace, IL)",
+   "carrier_evidence": "BCS_Brochure_1.pdf: \"BCS EssentialCare insurance is underwritten by BCS Insurance Company, Worthington, OH.\""
+  },
+  {
+   "plan_id": "paramount-5",
+   "family": "Paramount",
+   "variant": "5",
+   "display_name": "Paramount Plan 5",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_hospital_indemnity_limited_benefit + ShareWELL health care sharing layer",
+   "product_type_evidence": "BCS EssentialCare insurance PLUS a ShareWELL Health Share sharing arrangement present only on Plans 4, 5 and 6 - see C-020, C-029, K-050.",
+   "aliases": [
+    "paramount 5",
+    "paramount plan 5"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "46437"
+   ],
+   "notes": "Linked document on FirstEnroll is Paramount_5_BOOKLET.pdf. MAJOR FINDING BEARING ON Q3: Paramount Plans 1-3 link to the BCS_Brochure_1/2/3 PDFs. This is direct evidence that the 'BCS EssentialCare' documents in Drive are the source documents for Paramount 1-3, not an unrecognized orphan product. Plans 4-6 link to separate Paramount_N_BOOKLET.pdf files NOT present in Drive.",
+   "carrier": "BCS Insurance Company, Worthington OH (administrative offices Oakbrook Terrace, IL)",
+   "carrier_evidence": "BCS_Brochure_1.pdf: \"BCS EssentialCare insurance is underwritten by BCS Insurance Company, Worthington, OH.\""
+  },
+  {
+   "plan_id": "paramount-6",
+   "family": "Paramount",
+   "variant": "6",
+   "display_name": "Paramount Plan 6",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_hospital_indemnity_limited_benefit + ShareWELL health care sharing layer",
+   "product_type_evidence": "BCS EssentialCare insurance PLUS a ShareWELL Health Share sharing arrangement present only on Plans 4, 5 and 6 - see C-020, C-029, K-050.",
+   "aliases": [
+    "paramount 6",
+    "paramount plan 6"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "46438"
+   ],
+   "notes": "Linked document on FirstEnroll is Paramount_6_BOOKLET.pdf. MAJOR FINDING BEARING ON Q3: Paramount Plans 1-3 link to the BCS_Brochure_1/2/3 PDFs. This is direct evidence that the 'BCS EssentialCare' documents in Drive are the source documents for Paramount 1-3, not an unrecognized orphan product. Plans 4-6 link to separate Paramount_N_BOOKLET.pdf files NOT present in Drive.",
+   "carrier": "BCS Insurance Company, Worthington OH (administrative offices Oakbrook Terrace, IL)",
+   "carrier_evidence": "BCS_Brochure_1.pdf: \"BCS EssentialCare insurance is underwritten by BCS Insurance Company, Worthington, OH.\""
+  },
+  {
+   "plan_id": "mychoice-low",
+   "family": "MyChoice",
+   "variant": "Low",
+   "display_name": "MyChoice - Plan Low",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "mychoice low",
+    "my choice low",
+    "mychoice plan low"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "41675"
+   ],
+   "notes": "NOT MENTIONED ANYWHERE IN THE HANDOFF OR THE TOOLKIT PLAN TABLE. Three listed, sellable products with zero documentation in Drive (MyChoice Low/Mid/High_Brochure_1.pdf are portal-only). NEW GAP."
+  },
+  {
+   "plan_id": "mychoice-mid",
+   "family": "MyChoice",
+   "variant": "Mid",
+   "display_name": "MyChoice - Plan Mid",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "mychoice mid",
+    "my choice mid",
+    "mychoice plan mid"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "41676"
+   ],
+   "notes": "NOT MENTIONED ANYWHERE IN THE HANDOFF OR THE TOOLKIT PLAN TABLE. Three listed, sellable products with zero documentation in Drive (MyChoice Low/Mid/High_Brochure_1.pdf are portal-only). NEW GAP."
+  },
+  {
+   "plan_id": "mychoice-high",
+   "family": "MyChoice",
+   "variant": "High",
+   "display_name": "MyChoice - Plan High",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "mychoice high",
+    "my choice high",
+    "mychoice plan high"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "41677"
+   ],
+   "notes": "NOT MENTIONED ANYWHERE IN THE HANDOFF OR THE TOOLKIT PLAN TABLE. Three listed, sellable products with zero documentation in Drive (MyChoice Low/Mid/High_Brochure_1.pdf are portal-only). NEW GAP."
+  },
+  {
+   "plan_id": "medfirst-1",
+   "family": "MedFirst",
+   "variant": "1",
+   "display_name": "MedFirst 1",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. MEC_ filename prefix is not evidence of MEC status.",
+   "aliases": [
+    "medfirst 1",
+    "med first 1",
+    "medfirst1"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "40218"
+   ],
+   "notes": "PARTIALLY RESOLVES C-003. Two independent signals now agree this is not sellable from this agent's catalogue: the Drive folder filing under '04 NOT SELLING (discontinued)', and absence from the live 974358 list. That is materially stronger than the earlier position, where the only live-list evidence pointed the other way. It still falls short of confirmed discontinuation, because the control storefront could not be read."
+  },
+  {
+   "plan_id": "medfirst-2",
+   "family": "MedFirst",
+   "variant": "2",
+   "display_name": "MedFirst 2",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. MEC_ filename prefix is not evidence of MEC status.",
+   "aliases": [
+    "medfirst 2",
+    "med first 2",
+    "medfirst2"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "40219"
+   ],
+   "notes": "PARTIALLY RESOLVES C-003. Two independent signals now agree this is not sellable from this agent's catalogue: the Drive folder filing under '04 NOT SELLING (discontinued)', and absence from the live 974358 list. That is materially stronger than the earlier position, where the only live-list evidence pointed the other way. It still falls short of confirmed discontinuation, because the control storefront could not be read."
+  },
+  {
+   "plan_id": "medfirst-3",
+   "family": "MedFirst",
+   "variant": "3",
+   "display_name": "MedFirst 3",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. MEC_ filename prefix is not evidence of MEC status.",
+   "aliases": [
+    "medfirst 3",
+    "med first 3",
+    "medfirst3"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "40220"
+   ],
+   "notes": "PARTIALLY RESOLVES C-003. Two independent signals now agree this is not sellable from this agent's catalogue: the Drive folder filing under '04 NOT SELLING (discontinued)', and absence from the live 974358 list. That is materially stronger than the earlier position, where the only live-list evidence pointed the other way. It still falls short of confirmed discontinuation, because the control storefront could not be read."
+  },
+  {
+   "plan_id": "medfirst-4",
+   "family": "MedFirst",
+   "variant": "4",
+   "display_name": "MedFirst 4",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. MEC_ filename prefix is not evidence of MEC status.",
+   "aliases": [
+    "medfirst 4",
+    "med first 4",
+    "medfirst4"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "40221"
+   ],
+   "notes": "PARTIALLY RESOLVES C-003. Two independent signals now agree this is not sellable from this agent's catalogue: the Drive folder filing under '04 NOT SELLING (discontinued)', and absence from the live 974358 list. That is materially stronger than the earlier position, where the only live-list evidence pointed the other way. It still falls short of confirmed discontinuation, because the control storefront could not be read."
+  },
+  {
+   "plan_id": "medfirst-5",
+   "family": "MedFirst",
+   "variant": "5",
+   "display_name": "MedFirst 5",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. MEC_ filename prefix is not evidence of MEC status.",
+   "aliases": [
+    "medfirst 5",
+    "med first 5",
+    "medfirst5"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "40222"
+   ],
+   "notes": "PARTIALLY RESOLVES C-003. Two independent signals now agree this is not sellable from this agent's catalogue: the Drive folder filing under '04 NOT SELLING (discontinued)', and absence from the live 974358 list. That is materially stronger than the earlier position, where the only live-list evidence pointed the other way. It still falls short of confirmed discontinuation, because the control storefront could not be read."
+  },
+  {
+   "plan_id": "truehealth-1",
+   "family": "TrueHealth",
+   "variant": "1",
+   "display_name": "True Health 1",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. MEC_ filename prefix is not evidence of MEC status.",
+   "aliases": [
+    "truehealth 1",
+    "true health 1",
+    "th1"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "39364"
+   ],
+   "notes": "PARTIALLY RESOLVES C-003. Two independent signals now agree this is not sellable from this agent's catalogue: the Drive folder filing under '04 NOT SELLING (discontinued)', and absence from the live 974358 list. That is materially stronger than the earlier position, where the only live-list evidence pointed the other way. It still falls short of confirmed discontinuation, because the control storefront could not be read."
+  },
+  {
+   "plan_id": "truehealth-2",
+   "family": "TrueHealth",
+   "variant": "2",
+   "display_name": "True Health 2",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. MEC_ filename prefix is not evidence of MEC status.",
+   "aliases": [
+    "truehealth 2",
+    "true health 2",
+    "th2"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "39365"
+   ],
+   "notes": "PARTIALLY RESOLVES C-003. Two independent signals now agree this is not sellable from this agent's catalogue: the Drive folder filing under '04 NOT SELLING (discontinued)', and absence from the live 974358 list. That is materially stronger than the earlier position, where the only live-list evidence pointed the other way. It still falls short of confirmed discontinuation, because the control storefront could not be read."
+  },
+  {
+   "plan_id": "truehealth-3",
+   "family": "TrueHealth",
+   "variant": "3",
+   "display_name": "True Health 3",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'. MEC_ filename prefix is not evidence of MEC status.",
+   "aliases": [
+    "truehealth 3",
+    "true health 3",
+    "th3"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "39366"
+   ],
+   "notes": "PARTIALLY RESOLVES C-003. Two independent signals now agree this is not sellable from this agent's catalogue: the Drive folder filing under '04 NOT SELLING (discontinued)', and absence from the live 974358 list. That is materially stronger than the earlier position, where the only live-list evidence pointed the other way. It still falls short of confirmed discontinuation, because the control storefront could not be read."
+  },
+  {
+   "plan_id": "bwa-americare-2",
+   "family": "BWA AmeriCare",
+   "variant": "2",
+   "display_name": "BWA AmeriCare - Plan 2",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "bwa americare 2",
+    "americare 2",
+    "bwa plan 2",
+    "bwa americare plan 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "39559"
+   ],
+   "notes": "Plan 1 is NOT listed on FirstEnroll. Only Plans 2, 3, 4 exist as products. Do not create a bwa-americare-1 record without evidence."
+  },
+  {
+   "plan_id": "bwa-americare-3",
+   "family": "BWA AmeriCare",
+   "variant": "3",
+   "display_name": "BWA AmeriCare - Plan 3",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "bwa americare 3",
+    "americare 3",
+    "bwa plan 3",
+    "bwa americare plan 3"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "39561"
+   ],
+   "notes": "Plan 1 is NOT listed on FirstEnroll. Only Plans 2, 3, 4 exist as products. Do not create a bwa-americare-1 record without evidence."
+  },
+  {
+   "plan_id": "bwa-americare-4",
+   "family": "BWA AmeriCare",
+   "variant": "4",
+   "display_name": "BWA AmeriCare - Plan 4",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name",
+   "aliases": [
+    "bwa americare 4",
+    "americare 4",
+    "bwa plan 4",
+    "bwa americare plan 4"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "39562"
+   ],
+   "notes": "Plan 1 is NOT listed on FirstEnroll. Only Plans 2, 3, 4 exist as products. Do not create a bwa-americare-1 record without evidence."
+  },
+  {
+   "plan_id": "health-choice-silver-100a",
+   "family": "Health Choice Silver",
+   "variant": "100A",
+   "display_name": "Health Choice Silver 100A",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_indemnity_hospital_indemnity",
+   "product_type_evidence": "Live FirstEnroll TERMS panel (page 32339, agent 974358, 2026-09-05): heading 'Insurance Coverage / GROUP LIMITED INDEMNITY HEALTH INSURANCE'; Insurance Disclosures state 'the insurance coverage included with this membership is an accident and sickness hospital indemnity plan' and 'This policy provides limited benefits on a fixed indemnity basis'. Carrier: American Financial Security Life Insurance Company. Sold through National Congress of Employers (NCE) Association membership.",
+   "aliases": [
+    "health choice silver 100a",
+    "hcs 100a",
+    "healthchoice silver 100a"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "32329"
+   ],
+   "notes": "Q4 CONFIRMED AT LIST LEVEL: all eight variants carry the descriptor 'Over 65' on the FirstEnroll list. Whether this is a portal mislabel or a genuine senior product is UNRESOLVED and requires the certificate. This is a compliance-material question - the agent sells under-65.",
+   "eligibility_ages": "Adults 65 and older; dependent children 1-25"
+  },
+  {
+   "plan_id": "health-choice-silver-100",
+   "family": "Health Choice Silver",
+   "variant": "100",
+   "display_name": "Health Choice Silver 100",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_indemnity_hospital_indemnity",
+   "product_type_evidence": "Live FirstEnroll TERMS panel (page 32339, agent 974358, 2026-09-05): heading 'Insurance Coverage / GROUP LIMITED INDEMNITY HEALTH INSURANCE'; Insurance Disclosures state 'the insurance coverage included with this membership is an accident and sickness hospital indemnity plan' and 'This policy provides limited benefits on a fixed indemnity basis'. Carrier: American Financial Security Life Insurance Company. Sold through National Congress of Employers (NCE) Association membership.",
+   "aliases": [
+    "health choice silver 100",
+    "hcs 100",
+    "healthchoice silver 100"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "32337"
+   ],
+   "notes": "Q4 CONFIRMED AT LIST LEVEL: all eight variants carry the descriptor 'Over 65' on the FirstEnroll list. Whether this is a portal mislabel or a genuine senior product is UNRESOLVED and requires the certificate. This is a compliance-material question - the agent sells under-65.",
+   "eligibility_ages": "Adults 65 and older; dependent children 1-25"
+  },
+  {
+   "plan_id": "health-choice-silver-200",
+   "family": "Health Choice Silver",
+   "variant": "200",
+   "display_name": "Health Choice Silver 200",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_indemnity_hospital_indemnity",
+   "product_type_evidence": "Live FirstEnroll TERMS panel (page 32339, agent 974358, 2026-09-05): heading 'Insurance Coverage / GROUP LIMITED INDEMNITY HEALTH INSURANCE'; Insurance Disclosures state 'the insurance coverage included with this membership is an accident and sickness hospital indemnity plan' and 'This policy provides limited benefits on a fixed indemnity basis'. Carrier: American Financial Security Life Insurance Company. Sold through National Congress of Employers (NCE) Association membership.",
+   "aliases": [
+    "health choice silver 200",
+    "hcs 200",
+    "healthchoice silver 200"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "32338"
+   ],
+   "notes": "Q4 CONFIRMED AT LIST LEVEL: all eight variants carry the descriptor 'Over 65' on the FirstEnroll list. Whether this is a portal mislabel or a genuine senior product is UNRESOLVED and requires the certificate. This is a compliance-material question - the agent sells under-65.",
+   "eligibility_ages": "Adults 65 and older; dependent children 1-25"
+  },
+  {
+   "plan_id": "health-choice-silver-200-plus",
+   "family": "Health Choice Silver",
+   "variant": "200+",
+   "display_name": "Health Choice Silver 200+",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_indemnity_hospital_indemnity",
+   "product_type_evidence": "Live FirstEnroll TERMS panel (page 32339, agent 974358, 2026-09-05): heading 'Insurance Coverage / GROUP LIMITED INDEMNITY HEALTH INSURANCE'; Insurance Disclosures state 'the insurance coverage included with this membership is an accident and sickness hospital indemnity plan' and 'This policy provides limited benefits on a fixed indemnity basis'. Carrier: American Financial Security Life Insurance Company. Sold through National Congress of Employers (NCE) Association membership.",
+   "aliases": [
+    "health choice silver 200+",
+    "hcs 200+",
+    "healthchoice silver 200+"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "32339"
+   ],
+   "notes": "Q4 CONFIRMED AT LIST LEVEL: all eight variants carry the descriptor 'Over 65' on the FirstEnroll list. Whether this is a portal mislabel or a genuine senior product is UNRESOLVED and requires the certificate. This is a compliance-material question - the agent sells under-65.",
+   "eligibility_ages": "Adults 65 and older; dependent children 1-25"
+  },
+  {
+   "plan_id": "health-choice-silver-300",
+   "family": "Health Choice Silver",
+   "variant": "300",
+   "display_name": "Health Choice Silver 300",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_indemnity_hospital_indemnity",
+   "product_type_evidence": "Live FirstEnroll TERMS panel (page 32339, agent 974358, 2026-09-05): heading 'Insurance Coverage / GROUP LIMITED INDEMNITY HEALTH INSURANCE'; Insurance Disclosures state 'the insurance coverage included with this membership is an accident and sickness hospital indemnity plan' and 'This policy provides limited benefits on a fixed indemnity basis'. Carrier: American Financial Security Life Insurance Company. Sold through National Congress of Employers (NCE) Association membership.",
+   "aliases": [
+    "health choice silver 300",
+    "hcs 300",
+    "healthchoice silver 300"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "32340"
+   ],
+   "notes": "Q4 CONFIRMED AT LIST LEVEL: all eight variants carry the descriptor 'Over 65' on the FirstEnroll list. Whether this is a portal mislabel or a genuine senior product is UNRESOLVED and requires the certificate. This is a compliance-material question - the agent sells under-65.",
+   "eligibility_ages": "Adults 65 and older; dependent children 1-25"
+  },
+  {
+   "plan_id": "health-choice-silver-500",
+   "family": "Health Choice Silver",
+   "variant": "500",
+   "display_name": "Health Choice Silver 500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_indemnity_hospital_indemnity",
+   "product_type_evidence": "Live FirstEnroll TERMS panel (page 32339, agent 974358, 2026-09-05): heading 'Insurance Coverage / GROUP LIMITED INDEMNITY HEALTH INSURANCE'; Insurance Disclosures state 'the insurance coverage included with this membership is an accident and sickness hospital indemnity plan' and 'This policy provides limited benefits on a fixed indemnity basis'. Carrier: American Financial Security Life Insurance Company. Sold through National Congress of Employers (NCE) Association membership.",
+   "aliases": [
+    "health choice silver 500",
+    "hcs 500",
+    "healthchoice silver 500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "32341"
+   ],
+   "notes": "Q4 CONFIRMED AT LIST LEVEL: all eight variants carry the descriptor 'Over 65' on the FirstEnroll list. Whether this is a portal mislabel or a genuine senior product is UNRESOLVED and requires the certificate. This is a compliance-material question - the agent sells under-65.",
+   "eligibility_ages": "Adults 65 and older; dependent children 1-25"
+  },
+  {
+   "plan_id": "health-choice-silver-750",
+   "family": "Health Choice Silver",
+   "variant": "750",
+   "display_name": "Health Choice Silver 750",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_indemnity_hospital_indemnity",
+   "product_type_evidence": "Live FirstEnroll TERMS panel (page 32339, agent 974358, 2026-09-05): heading 'Insurance Coverage / GROUP LIMITED INDEMNITY HEALTH INSURANCE'; Insurance Disclosures state 'the insurance coverage included with this membership is an accident and sickness hospital indemnity plan' and 'This policy provides limited benefits on a fixed indemnity basis'. Carrier: American Financial Security Life Insurance Company. Sold through National Congress of Employers (NCE) Association membership.",
+   "aliases": [
+    "health choice silver 750",
+    "hcs 750",
+    "healthchoice silver 750"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "32342"
+   ],
+   "notes": "Q4 CONFIRMED AT LIST LEVEL: all eight variants carry the descriptor 'Over 65' on the FirstEnroll list. Whether this is a portal mislabel or a genuine senior product is UNRESOLVED and requires the certificate. This is a compliance-material question - the agent sells under-65.",
+   "eligibility_ages": "Adults 65 and older; dependent children 1-25"
+  },
+  {
+   "plan_id": "health-choice-silver-1000",
+   "family": "Health Choice Silver",
+   "variant": "1000",
+   "display_name": "Health Choice Silver 1000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "group_limited_indemnity_hospital_indemnity",
+   "product_type_evidence": "Live FirstEnroll TERMS panel (page 32339, agent 974358, 2026-09-05): heading 'Insurance Coverage / GROUP LIMITED INDEMNITY HEALTH INSURANCE'; Insurance Disclosures state 'the insurance coverage included with this membership is an accident and sickness hospital indemnity plan' and 'This policy provides limited benefits on a fixed indemnity basis'. Carrier: American Financial Security Life Insurance Company. Sold through National Congress of Employers (NCE) Association membership.",
+   "aliases": [
+    "health choice silver 1000",
+    "hcs 1000",
+    "healthchoice silver 1000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "32343"
+   ],
+   "notes": "Q4 CONFIRMED AT LIST LEVEL: all eight variants carry the descriptor 'Over 65' on the FirstEnroll list. Whether this is a portal mislabel or a genuine senior product is UNRESOLVED and requires the certificate. This is a compliance-material question - the agent sells under-65.",
+   "eligibility_ages": "Adults 65 and older; dependent children 1-25"
+  },
+  {
+   "plan_id": "access-health-stm-traditional",
+   "family": "Access Health STM",
+   "variant": "Traditional",
+   "display_name": "Access Health Traditional STM",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "limited_duration_group_short_term_medical",
+   "product_type_evidence": "AccessHealthBrochure2.pdf: \"Limited Duration Group Short Term Medical Insurance\", Certificate form AF ST CERT 818.",
+   "aliases": [
+    "access health traditional",
+    "access health stm traditional"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "28230"
+   ],
+   "notes": "Both variants link to the SAME brochure, AccessHealthBrochure2.pdf. Family-wide source: verbatim anchor required per variant.",
+   "eligibility_ages": "18 to 64.5 (brochure summary) / 6 months to 64 years 11 months (provisions) - see C-031. Terminates at 65 or on Medicare entitlement."
+  },
+  {
+   "plan_id": "access-health-stm-lite",
+   "family": "Access Health STM",
+   "variant": "Lite",
+   "display_name": "Access Health Lite STM",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "limited_duration_group_short_term_medical",
+   "product_type_evidence": "AccessHealthBrochure2.pdf: \"Limited Duration Group Short Term Medical Insurance\", Certificate form AF ST CERT 818.",
+   "aliases": [
+    "access health lite",
+    "access health stm lite"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "portal_page_ids": [
+    "28231"
+   ],
+   "notes": "Both variants link to the SAME brochure, AccessHealthBrochure2.pdf. Family-wide source: verbatim anchor required per variant.",
+   "eligibility_ages": "18 to 64.5 (brochure summary) / 6 months to 64 years 11 months (provisions) - see C-031. Terminates at 65 or on Medicare entitlement."
+  },
+  {
+   "plan_id": "zurich-individual-hospital-indemnity",
+   "family": "Zurich",
+   "variant": "Individual Hospital Indemnity",
+   "display_name": "Zurich Individual Hospital Indemnity",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Hospital Indemnity Plan with the First Health Network'. Name and description both say hospital indemnity but the filed type must come from the document.",
+   "aliases": [
+    "zurich hospital indemnity",
+    "zurich encore health",
+    "encore health"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "47628"
+   ],
+   "notes": "NOT MENTIONED IN THE HANDOFF. Zero documentation in Drive. Portal PDF is Zurich_Encore Health_Full State Listing_Brochure_Eff_06022025.pdf. NEW GAP."
+  },
+  {
+   "plan_id": "ameritas-schedule",
+   "family": "Ameritas",
+   "variant": "Schedule",
+   "display_name": "Ameritas Schedule Plan",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes both as 'Dental and Eye Care Benefits'",
+   "aliases": [
+    "ameritas schedule",
+    "nce ameritas schedule"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "41933"
+   ],
+   "notes": "NOT MENTIONED IN THE HANDOFF. Zero documentation in Drive. NEW GAP."
+  },
+  {
+   "plan_id": "ameritas-coinsurance",
+   "family": "Ameritas",
+   "variant": "Coinsurance",
+   "display_name": "Ameritas Coinsurance Plan",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes both as 'Dental and Eye Care Benefits'",
+   "aliases": [
+    "ameritas coinsurance",
+    "nce ameritas coinsurance"
+   ],
+   "status": "NOT_ON_CURRENT_AGENT_CATALOGUE",
+   "status_evidence": "NOT ON THE AGENT'S CURRENT CATALOGUE. Present on the 2026-04-08 FirstEnroll snapshot, which was agent id 824962 (Ana Avalos's storefront), and ABSENT from the live 2026-09-05 list for agent id 974358 (Melis Ilaldi's own storefront). TWO VARIABLES DIFFER between those readings - the date AND the agent storefront - and they cannot be separated, because storefront 824962 renders empty under this login and could not be re-read as a control. So this is NOT evidence of discontinuation. What it does establish, and what matters operationally, is that this product is not available to sell from this agent's own catalogue today.",
+   "portal_page_ids": [
+    "41934"
+   ],
+   "notes": "NOT MENTIONED IN THE HANDOFF. Zero documentation in Drive. NEW GAP."
+  },
+  {
+   "plan_id": "assistpro-discount",
+   "family": "AssistPro",
+   "variant": "Discount",
+   "display_name": "AssistPro Discount",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "discount_program",
+   "product_type_evidence": "Live NEO Info page: titled 'AssistPro Membership', 'Member-Only Benefits - National Discount Network', first highlight reads 'Access to non-insurance health & wellness services'.",
+   "aliases": [
+    "assistpro",
+    "assistpro discount"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "49774"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "COMPLIANCE PRIORITY. NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Type is classified from the product NAME only; what the program actually provides is undocumented. An agent cannot describe this product's contents compliantly from any source currently available. Describing a discount program as insurance is a material misrepresentation."
+  },
+  {
+   "plan_id": "gapsupport-discount",
+   "family": "GapSupport",
+   "variant": "Discount",
+   "display_name": "GapSupport Discount",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "discount_program",
+   "product_type_evidence": "Live NEO Info page labels it a 'Supplemental Savings Product' and describes a savings and advocacy program. Carries an advocacy component (bill mediation, patient advocacy) alongside the discounts.",
+   "aliases": [
+    "gapsupport",
+    "gapsupport discount"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "43986"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Type is classified from the product NAME only; what the program actually provides is undocumented. An agent cannot describe this product's contents compliantly from any source currently available. Describing a discount program as insurance is a material misrepresentation."
+  },
+  {
+   "plan_id": "ameriguard-discount",
+   "family": "Ameriguard",
+   "variant": "Discount",
+   "display_name": "Ameriguard Discount",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "discount_program",
+   "product_type_evidence": "NEO product list names this product literally 'Ameriguard Discount'. The portal's own name carries the categorising word 'Discount'.",
+   "aliases": [
+    "ameriguard",
+    "ameriguard discount"
+   ],
+   "status": "DISCONTINUED",
+   "status_evidence": "DELISTED. Present on the NEO product list snapshot dated 2026-04-08 and ABSENT from the live NEO list read 2026-09-05. Both readings are of the same authoritative source for the same agent id, so this is positive evidence of removal from the catalogue between those dates - not merely absence of evidence. It is NOT evidence about existing in-force policies.",
+   "portal_page_ids": [
+    "45291"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Type is classified from the product NAME only; what the program actually provides is undocumented. An agent cannot describe this product's contents compliantly from any source currently available. Describing a discount program as insurance is a material misrepresentation."
+  },
+  {
+   "plan_id": "prime-health-pass-discount",
+   "family": "Prime Health Pass",
+   "variant": "Discount",
+   "display_name": "Prime Health Pass Discount",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page labels it a 'Diagnostic Services Product' - mobile diagnostics and annual blood testing through InfinityHealth Diagnostics and LabCorp. Carries a 90-day waiting period.",
+   "aliases": [
+    "prime health pass",
+    "prime health pass discount"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "32623"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Type is classified from the product NAME only; what the program actually provides is undocumented. An agent cannot describe this product's contents compliantly from any source currently available. Describing a discount program as insurance is a material misrepresentation."
+  },
+  {
+   "plan_id": "express-health-tools-discount",
+   "family": "Express Health Tools",
+   "variant": "Discount",
+   "display_name": "Express Health Tools Discount",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page labels it an 'Ancillary Benefit Package' bundling Prime Health Pass, a 24-hour nurse line, and imaging/dental/vision/Rx savings into one membership.",
+   "aliases": [
+    "express health tools",
+    "express health tools discount"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "39387"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Type is classified from the product NAME only; what the program actually provides is undocumented. An agent cannot describe this product's contents compliantly from any source currently available. Describing a discount program as insurance is a material misrepresentation."
+  },
+  {
+   "plan_id": "healthassist-discount",
+   "family": "HealthAssist",
+   "variant": "Discount",
+   "display_name": "HealthAssist Discount",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: sections are Mobile Diagnostic Services, Mental Health Benefit, Labs Discount Service, Prime Health Pass Benefit. Delivered services plus a discount component. Not insurance.",
+   "aliases": [
+    "healthassist",
+    "healthassist discount"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "39452"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Type is classified from the product NAME only; what the program actually provides is undocumented. An agent cannot describe this product's contents compliantly from any source currently available. Describing a discount program as insurance is a material misrepresentation."
+  },
+  {
+   "plan_id": "technology-access-fee",
+   "family": "Technology Access",
+   "variant": "Fee",
+   "display_name": "Technology Access Fee",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "non_insurance_feature",
+   "product_type_evidence": "NEO product list names it 'Technology Access Fee'. A fee is not a benefit product.",
+   "aliases": [
+    "technology access fee"
+   ],
+   "status": "DISCONTINUED",
+   "status_evidence": "DELISTED. Present on the NEO product list snapshot dated 2026-04-08 and ABSENT from the live NEO list read 2026-09-05. Both readings are of the same authoritative source for the same agent id, so this is positive evidence of removal from the catalogue between those dates - not merely absence of evidence. It is NOT evidence about existing in-force policies.",
+   "portal_page_ids": [
+    "45248"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Appears on the client's charge as a separate line item - billing descriptor unverified."
+  },
+  {
+   "plan_id": "awa-association-fee",
+   "family": "AWA Association",
+   "variant": "Fee",
+   "display_name": "AWA Association Fee",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "non_insurance_feature",
+   "product_type_evidence": "NEO product list names it 'AWA Association Fee'. A fee is not a benefit product.",
+   "aliases": [
+    "awa association fee"
+   ],
+   "status": "DISCONTINUED",
+   "status_evidence": "DELISTED. Present on the NEO product list snapshot dated 2026-04-08 and ABSENT from the live NEO list read 2026-09-05. Both readings are of the same authoritative source for the same agent id, so this is positive evidence of removal from the catalogue between those dates - not merely absence of evidence. It is NOT evidence about existing in-force policies.",
+   "portal_page_ids": [
+    "42309"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Appears on the client's charge as a separate line item - billing descriptor unverified."
+  },
+  {
+   "plan_id": "awa-simpleshield-membership-1",
+   "family": "AWA SimpleShield",
+   "variant": "Membership Plan 1",
+   "display_name": "AWA SimpleShield Membership Plan 1",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "The live NEO Info page states 'SimpleShield is a fixed indemnity insurance plan.' Carrier SGIC. NEO categorises it 'Limited Medical'. CORRECTS the previous membership_benefit classification, which had been inferred from the word 'Membership' in the product name.",
+   "aliases": [
+    "simpleshield 1",
+    "awa simpleshield 1"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "45993"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "awa-simpleshield-membership-2",
+   "family": "AWA SimpleShield",
+   "variant": "Membership Plan 2",
+   "display_name": "AWA SimpleShield Membership Plan 2",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "The live NEO Info page states 'SimpleShield is a fixed indemnity insurance plan.' Carrier SGIC. NEO categorises it 'Limited Medical'. CORRECTS the previous membership_benefit classification, which had been inferred from the word 'Membership' in the product name.",
+   "aliases": [
+    "simpleshield 2",
+    "awa simpleshield 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "46067"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "allstate-cancer-heart-stroke",
+   "family": "Allstate",
+   "variant": "Cancer and Heart/Stroke",
+   "display_name": "Allstate Cancer and Heart/Stroke",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "NEO list description: a lump-sum supplemental plan that pays cash on a first-ever diagnosis.",
+   "aliases": [
+    "allstate cancer heart stroke",
+    "cancer and heart/stroke"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "40206"
+   ],
+   "bundling": "standalone_or_addon_UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Benefit amounts, exclusions and the first-ever-diagnosis definition are all unsourced."
+  },
+  {
+   "plan_id": "allstate-plan-enhancer",
+   "family": "Allstate",
+   "variant": "Plan Enhancer",
+   "display_name": "Allstate Plan Enhancer",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "NEO list description: a guaranteed-issue supplemental plan that pays accident-related medical expenses.",
+   "aliases": [
+    "allstate plan enhancer",
+    "plan enhancer"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "50493"
+   ],
+   "bundling": "standalone_or_addon_UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. Riders referenced on the listing are entirely undocumented."
+  },
+  {
+   "plan_id": "allstate-dental-ppo",
+   "family": "Allstate",
+   "variant": "Dental PPO",
+   "display_name": "Allstate Dental PPO",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "NEO list supplies NO type label and NO description for this product. 'Dental PPO' is a product name, not a filed type - it may be insured dental, a discount dental card, or network access. Ambiguous wording: the bare listing entry reads only 'Allstate Dental PPO'. Product remains untyped: its NEO Info page was not read in this pass. NEO shows no category label for it on the list, and the name is not evidence - see K-017.",
+   "aliases": [
+    "allstate dental",
+    "allstate dental ppo"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05 (agent id 974021).",
+   "portal_page_ids": [
+    "40205"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. The Master Compliance Key warns specifically against using 'PPO' in a way that implies major medical. Type must be resolved before this is sold."
+  },
+  {
+   "plan_id": "awa-safe-guard-100",
+   "family": "AWA Safe Guard",
+   "variant": "AWA Safe Guard 100",
+   "display_name": "AWA Safe Guard 100",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "TalentLMS course 'AWA Safeguard' (courseId 155) identifies the carrier as GTL Guarantee Trust Life, a mid-sized mutual insurer rated A by AM Best, and describes AD&D, Accidental Medical Expense and Cancer Lump Sum benefit components. Authority rank 6 - training cannot establish contractual terms, but carrier identity and product structure are corroborative.",
+   "aliases": [
+    "awa safe guard 100"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05 (agent id 974021).",
+   "portal_page_ids": [
+    "27090"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links brochures on its own media host for several of these (AWA_Brochure 100 v3.pdf, AHI500, AHI1000, AWA_Brochure1-2.pdf) - none are in Drive and all sit behind blocker B-01."
+  },
+  {
+   "plan_id": "awa-safeguard-add-ame-ci-sa",
+   "family": "AWA Safe Guard",
+   "variant": "AWA Safeguard ADD/AME/CI (Standalone)",
+   "display_name": "AWA Safeguard ADD/AME/CI (Standalone)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "TalentLMS course 'AWA Safeguard' (courseId 155) identifies the carrier as GTL Guarantee Trust Life, a mid-sized mutual insurer rated A by AM Best, and describes AD&D, Accidental Medical Expense and Cancer Lump Sum benefit components. Authority rank 6 - training cannot establish contractual terms, but carrier identity and product structure are corroborative.",
+   "aliases": [
+    "awa safeguard add/ame/ci (standalone)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05 (agent id 974021).",
+   "portal_page_ids": [
+    "47435"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links brochures on its own media host for several of these (AWA_Brochure 100 v3.pdf, AHI500, AHI1000, AWA_Brochure1-2.pdf) - none are in Drive and all sit behind blocker B-01."
+  },
+  {
+   "plan_id": "awa-safeguard-add-ame-ci-adv",
+   "family": "AWA Safe Guard",
+   "variant": "AWA Safeguard ADD/AME/CI (ADV Bundled Add-On)",
+   "display_name": "AWA Safeguard ADD/AME/CI (ADV Bundled Add-On)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "TalentLMS course 'AWA Safeguard' (courseId 155) identifies the carrier as GTL Guarantee Trust Life, a mid-sized mutual insurer rated A by AM Best, and describes AD&D, Accidental Medical Expense and Cancer Lump Sum benefit components. Authority rank 6 - training cannot establish contractual terms, but carrier identity and product structure are corroborative.",
+   "aliases": [
+    "awa safeguard add/ame/ci (adv bundled add-on)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05 (agent id 974021).",
+   "portal_page_ids": [
+    "47609"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links brochures on its own media host for several of these (AWA_Brochure 100 v3.pdf, AHI500, AHI1000, AWA_Brochure1-2.pdf) - none are in Drive and all sit behind blocker B-01."
+  },
+  {
+   "plan_id": "awa-safe-guard-accident-hospital-5000-500",
+   "family": "AWA Safe Guard",
+   "variant": "AWA Safe Guard Accident Hospital Plan $5000/$500",
+   "display_name": "AWA Safe Guard AH Membership Plan $5000/$500",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "NEO list supplies no type label and no description. Dollar figures in the product name do not establish whether the benefit is insured, a membership benefit, or a discount arrangement.",
+   "aliases": [
+    "awa safe guard accident hospital plan $5000/$500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "25653"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "RENAMED on the NEO catalogue between 2026-04-08 and 2026-09-05. Was 'AWA Safe Guard Accident Hospital Plan $5000/$500'. NEO inserted the word 'Membership' into the name. Treat the word as a lead, not a classification: the AWA SimpleShield 'Membership Plan' turned out to be fixed indemnity INSURANCE. plan_id kept stable per the permanent-ID rule."
+  },
+  {
+   "plan_id": "awa-safe-guard-accident-hospital-5000-1000",
+   "family": "AWA Safe Guard",
+   "variant": "AWA Safe Guard Accident Hospital Plan $5000/$1000",
+   "display_name": "AWA Safe Guard AH Membership Plan $5000/$1000",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "NEO list supplies no type label and no description. Dollar figures in the product name do not establish whether the benefit is insured, a membership benefit, or a discount arrangement.",
+   "aliases": [
+    "awa safe guard accident hospital plan $5000/$1000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "25654"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "RENAMED on the NEO catalogue between 2026-04-08 and 2026-09-05. Was 'AWA Safe Guard Accident Hospital Plan $5000/$1000'. NEO inserted the word 'Membership' into the name. Treat the word as a lead, not a classification: the AWA SimpleShield 'Membership Plan' turned out to be fixed indemnity INSURANCE. plan_id kept stable per the permanent-ID rule."
+  },
+  {
+   "plan_id": "awa-safe-guard-accident-hospital-5000-500-sa",
+   "family": "AWA Safe Guard",
+   "variant": "Safe Guard Accident Hospital Plan $5000/$500 SA",
+   "display_name": "AWA Safe Guard AH Membership Plan $5000/$500 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "NEO list supplies no type label and no description. Dollar figures in the product name do not establish whether the benefit is insured, a membership benefit, or a discount arrangement.",
+   "aliases": [
+    "safe guard accident hospital plan $5000/$500 sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "35352"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "RENAMED on the NEO catalogue between 2026-04-08 and 2026-09-05. Was 'Safe Guard Accident Hospital Plan $5000/$500 SA'. NEO inserted the word 'Membership' into the name. Treat the word as a lead, not a classification: the AWA SimpleShield 'Membership Plan' turned out to be fixed indemnity INSURANCE. plan_id kept stable per the permanent-ID rule."
+  },
+  {
+   "plan_id": "awa-safe-guard-accident-hospital-5000-1000-sa",
+   "family": "AWA Safe Guard",
+   "variant": "Safe Guard Accident Hospital Plan $5000/$1000 SA",
+   "display_name": "AWA Safe Guard AH Membership Plan $5000/$1000 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "NEO list supplies no type label and no description. Dollar figures in the product name do not establish whether the benefit is insured, a membership benefit, or a discount arrangement.",
+   "aliases": [
+    "safe guard accident hospital plan $5000/$1000 sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "35353"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "RENAMED on the NEO catalogue between 2026-04-08 and 2026-09-05. Was 'Safe Guard Accident Hospital Plan $5000/$1000 SA'. NEO inserted the word 'Membership' into the name. Treat the word as a lead, not a classification: the AWA SimpleShield 'Membership Plan' turned out to be fixed indemnity INSURANCE. plan_id kept stable per the permanent-ID rule."
+  },
+  {
+   "plan_id": "awa-safe-guard-accident-100000-sa",
+   "family": "AWA Safe Guard",
+   "variant": "AWA Safe Guard Accident Plan $100,000 SA",
+   "display_name": "AWA Safe Guard Accident Membership Plan $100,000 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "NEO list supplies no type label and no description. Dollar figures in the product name do not establish whether the benefit is insured, a membership benefit, or a discount arrangement.",
+   "aliases": [
+    "awa safe guard accident plan $100,000 sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "32200"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "RENAMED on the NEO catalogue between 2026-04-08 and 2026-09-05. Was 'AWA Safe Guard Accident Plan $100,000 SA'. NEO inserted the word 'Membership' into the name. Treat the word as a lead, not a classification: the AWA SimpleShield 'Membership Plan' turned out to be fixed indemnity INSURANCE. plan_id kept stable per the permanent-ID rule."
+  },
+  {
+   "plan_id": "nce-wellguard-add-100000",
+   "family": "NCE WellGuard AD&D",
+   "variant": "$100,000",
+   "display_name": "NCE WellGuard AD&D $100,000",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: American Financial Security Life Insurance Company; accident-only AD&D coverage.",
+   "aliases": [
+    "nce wellguard ad&d $100,000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "31106"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links WellGuard ADD Brochure_v3.pdf on its media host - not in Drive, behind B-01."
+  },
+  {
+   "plan_id": "nce-wellguard-add-250000",
+   "family": "NCE WellGuard AD&D",
+   "variant": "$250,000",
+   "display_name": "NCE WellGuard AD&D $250,000",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: American Financial Security Life Insurance Company; accident-only AD&D coverage.",
+   "aliases": [
+    "nce wellguard ad&d $250,000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "31107"
+   ],
+   "bundling": "UNKNOWN",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links WellGuard ADD Brochure_v3.pdf on its media host - not in Drive, behind B-01."
+  },
+  {
+   "plan_id": "nce-fusion-dental-a",
+   "family": "NCE Fusion Dental",
+   "variant": "NCE Fusion Dental - Plan A",
+   "display_name": "NCE Fusion Dental - Plan A",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Ameritas product, one enrollment form, ONE CERTIFICATE and one premium, shared annual maximum across dental and vision.",
+   "aliases": [
+    "nce fusion dental - plan a"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "29843"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links NCE Fusion Combined Brochure.pdf - not in Drive, behind B-01."
+  },
+  {
+   "plan_id": "nce-fusion-dental-b",
+   "family": "NCE Fusion Dental",
+   "variant": "NCE Fusion Dental - Plan B",
+   "display_name": "NCE Fusion Dental - Plan B",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Ameritas product with one certificate and one premium.",
+   "aliases": [
+    "nce fusion dental - plan b"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "29844"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links NCE Fusion Combined Brochure.pdf - not in Drive, behind B-01."
+  },
+  {
+   "plan_id": "nce-fusion-dental-a-sa",
+   "family": "NCE Fusion Dental",
+   "variant": "Fusion Dental - Plan A SA",
+   "display_name": "Fusion Dental - Plan A SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Ameritas product with one certificate and one premium.",
+   "aliases": [
+    "fusion dental - plan a sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "35203"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links NCE Fusion Combined Brochure.pdf - not in Drive, behind B-01."
+  },
+  {
+   "plan_id": "nce-fusion-dental-b-sa",
+   "family": "NCE Fusion Dental",
+   "variant": "Fusion Dental - Plan B SA",
+   "display_name": "Fusion Dental - Plan B SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Ameritas product with one certificate and one premium.",
+   "aliases": [
+    "fusion dental - plan b sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "35204"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01. NEO links NCE Fusion Combined Brochure.pdf - not in Drive, behind B-01."
+  },
+  {
+   "plan_id": "nyl-term-life-50000",
+   "family": "New York Life Term Life",
+   "variant": "$50,000",
+   "display_name": "New York Life $50,000 Term Life",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "NEO list supplies no type label or description. Product remains untyped: its NEO Info page was not read in this pass. NEO shows no category label for it on the list, and the name is not evidence - see K-017.",
+   "aliases": [
+    "new york life $50,000 term life",
+    "nyl term life"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05 (agent id 974021).",
+   "portal_page_ids": [
+    "42223"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "nyl-term-life-50000-sa",
+   "family": "New York Life Term Life",
+   "variant": "$50,000",
+   "display_name": "New York Life $50,000 Term Life SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "NEO list supplies no type label or description. Product remains untyped: its NEO Info page was not read in this pass. NEO shows no category label for it on the list, and the name is not evidence - see K-017.",
+   "aliases": [
+    "new york life $50,000 term life sa",
+    "nyl term life"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05 (agent id 974021).",
+   "portal_page_ids": [
+    "43701"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "mdlive",
+   "family": "MDLive",
+   "variant": "Bundled",
+   "display_name": "MDLive",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page header field reads 'Virtual Care Service'.",
+   "aliases": [
+    "mdlive",
+    "md live"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "26837"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "mdlive-sa",
+   "family": "MDLive",
+   "variant": "Standalone",
+   "display_name": "MD Live Standalone",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page header field reads 'Virtual Care Service'.",
+   "aliases": [
+    "mdlive",
+    "md live"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "32201"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-critical-care-1",
+   "family": "Pinnacle Critical Care",
+   "variant": "Plan 1",
+   "display_name": "Pinnacle Critical Care Plan 1",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE; Daily Hospital Confinement plus a Critical Care benefit paying a percentage of the elected plan benefit. 30-day waiting period on the Critical Care benefit.",
+   "aliases": [
+    "pinnacle critical care 1",
+    "pcc 1"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "44232"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-critical-care-1-sa",
+   "family": "Pinnacle Critical Care",
+   "variant": "Plan 1 SA",
+   "display_name": "Pinnacle Critical Care Plan 1 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE critical care product.",
+   "aliases": [
+    "pinnacle critical care 1 sa",
+    "pcc 1 sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "45405"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-critical-care-2",
+   "family": "Pinnacle Critical Care",
+   "variant": "Plan 2",
+   "display_name": "Pinnacle Critical Care Plan 2",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE; Daily Hospital Confinement plus a Critical Care benefit paying a percentage of the elected plan benefit. 30-day waiting period on the Critical Care benefit.",
+   "aliases": [
+    "pinnacle critical care 2",
+    "pcc 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "44561"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-critical-care-2-sa",
+   "family": "Pinnacle Critical Care",
+   "variant": "Plan 2 SA",
+   "display_name": "Pinnacle Critical Care Plan 2 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE critical care product.",
+   "aliases": [
+    "pinnacle critical care 2 sa",
+    "pcc 2 sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "45406"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-critical-care-3",
+   "family": "Pinnacle Critical Care",
+   "variant": "Plan 3",
+   "display_name": "Pinnacle Critical Care Plan 3",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE; Daily Hospital Confinement plus a Critical Care benefit paying a percentage of the elected plan benefit. 30-day waiting period on the Critical Care benefit.",
+   "aliases": [
+    "pinnacle critical care 3",
+    "pcc 3"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "44562"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-critical-care-3-sa",
+   "family": "Pinnacle Critical Care",
+   "variant": "Plan 3 SA",
+   "display_name": "Pinnacle Critical Care Plan 3 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE critical care product.",
+   "aliases": [
+    "pinnacle critical care 3 sa",
+    "pcc 3 sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "45407"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-critical-care-4",
+   "family": "Pinnacle Critical Care",
+   "variant": "Plan 4",
+   "display_name": "Pinnacle Critical Care Plan 4",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE; Daily Hospital Confinement plus a Critical Care benefit paying a percentage of the elected plan benefit. 30-day waiting period on the Critical Care benefit.",
+   "aliases": [
+    "pinnacle critical care 4",
+    "pcc 4"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "44563"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-critical-care-4-sa",
+   "family": "Pinnacle Critical Care",
+   "variant": "Plan 4 SA",
+   "display_name": "Pinnacle Critical Care Plan 4 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE critical care product.",
+   "aliases": [
+    "pinnacle critical care 4 sa",
+    "pcc 4 sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "45408"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-hi-1",
+   "family": "Pinnacle HI",
+   "variant": "Plan 1",
+   "display_name": "Pinnacle HI Plan 1 Addon",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE; 'Pinnacle Hospital Indemnity' with fixed-dollar confinement, ICU and admission benefits. Carries a 12/12 pre-existing limitation. 'HI' expands to Hospital Indemnity on the page.",
+   "aliases": [
+    "pinnacle hi plan 1 addon",
+    "pinnacle hi 1"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "44107"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-hi-2",
+   "family": "Pinnacle HI",
+   "variant": "Plan 2",
+   "display_name": "Pinnacle HI Plan 2 Addon",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE; 'Pinnacle Hospital Indemnity' with fixed-dollar confinement, ICU and admission benefits. Carries a 12/12 pre-existing limitation. 'HI' expands to Hospital Indemnity on the page.",
+   "aliases": [
+    "pinnacle hi plan 2 addon",
+    "pinnacle hi 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "44560"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-hi-1-sa",
+   "family": "Pinnacle HI",
+   "variant": "Plan 1 SA",
+   "display_name": "Pinnacle HI 1 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE; 'Pinnacle Hospital Indemnity' with fixed-dollar confinement, ICU and admission benefits. Carries a 12/12 pre-existing limitation. 'HI' expands to Hospital Indemnity on the page.",
+   "aliases": [
+    "pinnacle hi 1 sa",
+    "pinnacle hi 1"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "45390"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "pinnacle-hi-2-sa",
+   "family": "Pinnacle HI",
+   "variant": "Plan 2 SA",
+   "display_name": "Pinnacle HI 2 SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: Everest RE; 'Pinnacle Hospital Indemnity' with fixed-dollar confinement, ICU and admission benefits. Carries a 12/12 pre-existing limitation. 'HI' expands to Hospital Indemnity on the page.",
+   "aliases": [
+    "pinnacle hi 2 sa",
+    "pinnacle hi 2"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05.",
+   "portal_page_ids": [
+    "45391"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
+  },
+  {
+   "plan_id": "medvalue-2000",
+   "family": "MedValue",
+   "variant": "2000",
+   "display_name": "MedValue 2000",
+   "listed_on": [],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "Not on either product list; no portal categorisation available",
+   "aliases": [
+    "medvalue 2000",
+    "med value 2000"
+   ],
+   "status": "STATUS_UNCERTAIN",
+   "status_evidence": "Documented in Google Drive but ABSENT from both the NEO and FirstEnroll 2026-04-08 product-list snapshots. Having documents is not evidence a product is sold. Live lists unavailable (B-01/B-02).",
+   "notes": "Drive holds 'CARRIER APPROVED_03112026_MEDVALUE 2000_03112026(LR)(1).pdf' dated 2026-03-11, one month BEFORE the April snapshots, yet MedValue does not appear on either list. That is a genuine status question, unlike Harbor. The CHA Complete Toolkit's plan table lists MedValue 2000/4000/6000 as a live family with a dedicated sales script - only the 2000 variant is documented, and 4000/6000 have no document and no listing at all."
+  },
+  {
+   "plan_id": "medvalue-4000",
+   "family": "MedValue",
+   "variant": "4000",
+   "display_name": "MedValue 4000",
+   "listed_on": [],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "Not on either product list; no portal categorisation available",
+   "aliases": [
+    "medvalue 4000"
+   ],
+   "status": "STATUS_UNCERTAIN",
+   "status_evidence": "Documented in Google Drive but ABSENT from both the NEO and FirstEnroll 2026-04-08 product-list snapshots. Having documents is not evidence a product is sold. Live lists unavailable (B-01/B-02).",
+   "notes": "Named in the CHA Complete Toolkit plan table only. No document, no product listing. Existence as a current product is unverified."
+  },
+  {
+   "plan_id": "medvalue-6000",
+   "family": "MedValue",
+   "variant": "6000",
+   "display_name": "MedValue 6000",
+   "listed_on": [],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "Not on either product list; no portal categorisation available",
+   "aliases": [
+    "medvalue 6000"
+   ],
+   "status": "STATUS_UNCERTAIN",
+   "status_evidence": "Documented in Google Drive but ABSENT from both the NEO and FirstEnroll 2026-04-08 product-list snapshots. Having documents is not evidence a product is sold. Live lists unavailable (B-01/B-02).",
+   "notes": "Named in the CHA Complete Toolkit plan table only. No document, no product listing. Existence as a current product is unverified."
+  },
+  {
+   "plan_id": "harmony-care-100-plus",
+   "family": "Harmony Care",
+   "variant": "100+",
+   "display_name": "Harmony Care 100+",
+   "listed_on": [],
+   "product_type": "group_limited_benefit_health_insurance",
+   "product_type_evidence": "Not on either product list; no portal categorisation available",
+   "aliases": [
+    "harmony care 100+",
+    "harmony care 100 plus"
+   ],
+   "status": "STATUS_UNCERTAIN",
+   "status_evidence": "Documented in Google Drive but ABSENT from both the NEO and FirstEnroll 2026-04-08 product-list snapshots. Having documents is not evidence a product is sold. Live lists unavailable (B-01/B-02).",
+   "notes": "VARIANT-IDENTITY RISK. Drive contains 'Harmony Care 100+  Certificate.pdf'. The FirstEnroll list has NO 100+ tier - it has 100A, 100B, 100, 200, 200+, 300, 500, 750, 1000. Either 100+ is a retired/renamed tier, or the filename is loose and the certificate actually governs 100A, 100B or 200+. Given the variant-isolation rule, NO fact may be extracted from this certificate and attributed to any listed variant until the certificate's own internal variant naming is read. Treated as its own provisional record so it can never be silently merged.",
+   "carrier": "American Financial Security Life Insurance Co.",
+   "eligibility_ages": "Adults 18-65; dependent children 1-25"
+  },
+  {
+   "plan_id": "harbor-stm-essential",
+   "family": "Harbor STM",
+   "variant": "Essential",
+   "display_name": "Harbor STM Essential",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "harbor essential",
+    "harborstm essential",
+    "harbor stm essential"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. Harbor moved from STATUS_UNCERTAIN to ACTIVE: it was absent from the April snapshot only because it had not yet launched.",
+   "portal_page_ids": [
+    "52704",
+    "52711",
+    "52712"
+   ],
+   "notes": "2026-09-08: NEO Info page IDs 52704 / 52711 / 52712 recorded as FAMILY-SCOPED. The 2026-09-08 Cowork read listed those three live IDs and did not state which ID maps to Essential, Access or Secure. Do not treat any one ID as a single variant. IDENTIFIED 2026-09-05 from the Harbor STM brochure (source 34). The brochure names exactly three variants as benefit-table column headers - Essential, Access and Secure. No numbered tier naming exists for this family. Deductible options ($2,500/$5,000/$7,500/$10,000) and coinsurance options (30%, 20%, 0%) are configuration choices offered identically across all three variants and are NOT variant names - a variant plus a deductible choice is a sold configuration, which matters for how a plan is identified on a call. Coverage Period Maximum Benefit for this variant: $750,000."
+  },
+  {
+   "plan_id": "harbor-stm-access",
+   "family": "Harbor STM",
+   "variant": "Access",
+   "display_name": "Harbor STM Access",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "harbor access",
+    "harborstm access",
+    "harbor stm access"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. Harbor moved from STATUS_UNCERTAIN to ACTIVE: it was absent from the April snapshot only because it had not yet launched.",
+   "portal_page_ids": [
+    "52704",
+    "52711",
+    "52712"
+   ],
+   "notes": "2026-09-08: NEO Info page IDs 52704 / 52711 / 52712 recorded as FAMILY-SCOPED. The 2026-09-08 Cowork read listed those three live IDs and did not state which ID maps to Essential, Access or Secure. Do not treat any one ID as a single variant. IDENTIFIED 2026-09-05 from the Harbor STM brochure (source 34). The brochure names exactly three variants as benefit-table column headers - Essential, Access and Secure. No numbered tier naming exists for this family. Deductible options ($2,500/$5,000/$7,500/$10,000) and coinsurance options (30%, 20%, 0%) are configuration choices offered identically across all three variants and are NOT variant names - a variant plus a deductible choice is a sold configuration, which matters for how a plan is identified on a call. Coverage Period Maximum Benefit for this variant: $1,000,000."
+  },
+  {
+   "plan_id": "harbor-stm-secure",
+   "family": "Harbor STM",
+   "variant": "Secure",
+   "display_name": "Harbor STM Secure",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "stm",
+   "product_type_evidence": "NEO product list categorises this product 'Short Term Medical'.",
+   "aliases": [
+    "harbor secure",
+    "harborstm secure",
+    "harbor stm secure"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. Harbor moved from STATUS_UNCERTAIN to ACTIVE: it was absent from the April snapshot only because it had not yet launched.",
+   "portal_page_ids": [
+    "52704",
+    "52711",
+    "52712"
+   ],
+   "notes": "2026-09-08: NEO Info page IDs 52704 / 52711 / 52712 recorded as FAMILY-SCOPED. The 2026-09-08 Cowork read listed those three live IDs and did not state which ID maps to Essential, Access or Secure. Do not treat any one ID as a single variant. IDENTIFIED 2026-09-05 from the Harbor STM brochure (source 34). The brochure names exactly three variants as benefit-table column headers - Essential, Access and Secure. No numbered tier naming exists for this family. Deductible options ($2,500/$5,000/$7,500/$10,000) and coinsurance options (30%, 20%, 0%) are configuration choices offered identically across all three variants and are NOT variant names - a variant plus a deductible choice is a sold configuration, which matters for how a plan is identified on a call. Coverage Period Maximum Benefit for this variant: $1,500,000."
+  },
+  {
+   "plan_id": "recuro-1",
+   "family": "Recuro",
+   "variant": "1",
+   "display_name": "recuro 1 (Virtual Urgent Care)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: 'Powered by Recuro Health'; Service Partner Recuro Health; virtual urgent care.",
+   "aliases": [
+    "recuro 1 (virtual urgent care)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52630"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "recuro-2",
+   "family": "Recuro",
+   "variant": "2",
+   "display_name": "recuro 2 (Virtual Urgent Care + Virtual Therapy)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: Recuro Health virtual urgent care plus virtual therapy.",
+   "aliases": [
+    "recuro 2 (virtual urgent care + virtual therapy)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52631"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "recuro-3",
+   "family": "Recuro",
+   "variant": "3",
+   "display_name": "recuro 3 (Virtual Primary Care + Virtual Urgent Care + Virtual Therapy)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: Recuro Health virtual primary, urgent and therapy.",
+   "aliases": [
+    "recuro 3 (virtual primary care + virtual urgent care + virtual therapy)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52663"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "recuro-1-sa",
+   "family": "Recuro",
+   "variant": "1 SA",
+   "display_name": "Recuro 1 SA (Virtual Urgent Care)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: Recuro Health service, standalone.",
+   "aliases": [
+    "recuro 1 sa (virtual urgent care)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52697"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "recuro-2-sa",
+   "family": "Recuro",
+   "variant": "2 SA",
+   "display_name": "Recuro 2 SA (Virtual Urgent Care + Virtual Therapy)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: Recuro Health service, standalone.",
+   "aliases": [
+    "recuro 2 sa (virtual urgent care + virtual therapy)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52698"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "recuro-3-sa",
+   "family": "Recuro",
+   "variant": "3 SA",
+   "display_name": "Recuro 3 SA (Virtual Primary Care + Virtual Urgent Care + Virtual Therapy)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: Recuro Health service, standalone.",
+   "aliases": [
+    "recuro 3 sa (virtual primary care + virtual urgent care + virtual therapy)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52699"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "questselect",
+   "family": "QuestSelect",
+   "variant": "bundled",
+   "display_name": "QuestSelect",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: 'a voluntary, value-added benefit' routing covered outpatient lab testing to Quest Diagnostics at $0 member cost. Does not itself pay claims - the member's own plan does.",
+   "aliases": [
+    "questselect"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52642"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "questselect-sa",
+   "family": "QuestSelect",
+   "variant": "SA",
+   "display_name": "QuestSelect SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "service",
+   "product_type_evidence": "Live NEO Info page: same voluntary Quest Diagnostics lab benefit, standalone.",
+   "aliases": [
+    "questselect sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52901"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "direct-primary-care-plus",
+   "family": "Direct Primary Care",
+   "variant": "Plus",
+   "display_name": "Direct Primary Care Plus",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "membership_benefit",
+   "product_type_evidence": "Live NEO Info page: 'Powered by Healthcare2U'; the page states 'Direct Primary Care is a healthcare membership.'",
+   "aliases": [
+    "direct primary care plus"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52871"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "direct-primary-care-advantage",
+   "family": "Direct Primary Care",
+   "variant": "Advantage",
+   "display_name": "Direct Primary Care Advantage",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "membership_benefit",
+   "product_type_evidence": "Live NEO Info page: Healthcare2U healthcare membership.",
+   "aliases": [
+    "direct primary care advantage"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52872"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "direct-primary-care-plus-sa",
+   "family": "Direct Primary Care",
+   "variant": "Plus SA",
+   "display_name": "Direct Primary Care Plus (Standalone)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "membership_benefit",
+   "product_type_evidence": "Live NEO Info page: Healthcare2U healthcare membership, standalone.",
+   "aliases": [
+    "direct primary care plus (standalone)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52873"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "direct-primary-care-advantage-sa",
+   "family": "Direct Primary Care",
+   "variant": "Advantage SA",
+   "display_name": "Direct Primary Care Advantage (Standalone)",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "membership_benefit",
+   "product_type_evidence": "Live NEO Info page: Healthcare2U healthcare membership, standalone.",
+   "aliases": [
+    "direct primary care advantage (standalone)"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52874"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "allstate-specified-care",
+   "family": "Allstate",
+   "variant": "Specified Care",
+   "display_name": "Allstate Specified Care",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: supplemental critical medical event product with an episodic deductible.",
+   "aliases": [
+    "allstate specified care"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52062"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "allstate-specified-care-sa",
+   "family": "Allstate",
+   "variant": "Specified Care SA",
+   "display_name": "Allstate Specified Care SA",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: same product, standalone.",
+   "aliases": [
+    "allstate specified care sa"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "52498"
+   ],
+   "bundling": "standalone",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "allstate-hospital-expense",
+   "family": "Allstate",
+   "variant": "Hospital Expense",
+   "display_name": "Allstate Hospital Expense",
+   "listed_on": [
+    "neo"
+   ],
+   "product_type": "insured_coverage",
+   "product_type_evidence": "Live NEO Info page: PRODUCT TYPE Fixed-Benefit Hospital Plan.",
+   "aliases": [
+    "allstate hospital expense"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE NEO product list read from the signed-in agent portal on 2026-09-05. NEW SINCE THE APRIL SNAPSHOT - this product launched between 2026-04-08 and 2026-09-05.",
+   "portal_page_ids": [
+    "49256"
+   ],
+   "bundling": "bundled",
+   "is_addon": true,
+   "notes": "Listed in the handoff as an undocumented add-on. It was not missing from the April snapshot - it had not launched yet."
+  },
+  {
+   "plan_id": "ngl-dental",
+   "family": "NGL Dental",
+   "variant": "UNKNOWN",
+   "display_name": "NGL Dental Plans",
+   "listed_on": [],
+   "product_type": "NEEDS_MANUAL_VERIFICATION",
+   "product_type_evidence": "No product listing and no document; known only from a TalentLMS course title.",
+   "aliases": [
+    "ngl dental",
+    "ngl"
+   ],
+   "status": "STATUS_UNCERTAIN",
+   "status_evidence": "Known ONLY from the NEO TalentLMS course 'New Product - NGL Dental Plans Training'. Appears on NEITHER the live NEO product list NOR the FirstEnroll April snapshot.",
+   "notes": "NEW DISCOVERY, invisible to every prior source. A course exists titled 'New Product' for a dental family that is not on the NEO catalogue. Either it is sold through FirstEnroll (currently blocked) or training was built ahead of launch. Variants unknown."
+  },
+  {
+   "plan_id": "advanced-wellness-plus-100a",
+   "family": "Advanced Wellness PLUS",
+   "variant": "100A",
+   "display_name": "Advanced Wellness PLUS 100A",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "advanced wellness plus 100a"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. The handoff lists Advanced Wellness PLUS as a whole family with ZERO documents; it is real, listed and enrollable on this agent's own catalogue. Eight variants, no document anywhere."
+  },
+  {
+   "plan_id": "advanced-wellness-plus-100",
+   "family": "Advanced Wellness PLUS",
+   "variant": "100",
+   "display_name": "Advanced Wellness PLUS 100",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "advanced wellness plus 100"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. The handoff lists Advanced Wellness PLUS as a whole family with ZERO documents; it is real, listed and enrollable on this agent's own catalogue. Eight variants, no document anywhere."
+  },
+  {
+   "plan_id": "advanced-wellness-plus-200",
+   "family": "Advanced Wellness PLUS",
+   "variant": "200",
+   "display_name": "Advanced Wellness PLUS 200",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "advanced wellness plus 200"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. The handoff lists Advanced Wellness PLUS as a whole family with ZERO documents; it is real, listed and enrollable on this agent's own catalogue. Eight variants, no document anywhere."
+  },
+  {
+   "plan_id": "advanced-wellness-plus-200-plus",
+   "family": "Advanced Wellness PLUS",
+   "variant": "200+",
+   "display_name": "Advanced Wellness PLUS 200+",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "advanced wellness plus 200+"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. The handoff lists Advanced Wellness PLUS as a whole family with ZERO documents; it is real, listed and enrollable on this agent's own catalogue. Eight variants, no document anywhere."
+  },
+  {
+   "plan_id": "advanced-wellness-plus-300",
+   "family": "Advanced Wellness PLUS",
+   "variant": "300",
+   "display_name": "Advanced Wellness PLUS 300",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "advanced wellness plus 300"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. The handoff lists Advanced Wellness PLUS as a whole family with ZERO documents; it is real, listed and enrollable on this agent's own catalogue. Eight variants, no document anywhere."
+  },
+  {
+   "plan_id": "advanced-wellness-plus-500",
+   "family": "Advanced Wellness PLUS",
+   "variant": "500",
+   "display_name": "Advanced Wellness PLUS 500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "advanced wellness plus 500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. The handoff lists Advanced Wellness PLUS as a whole family with ZERO documents; it is real, listed and enrollable on this agent's own catalogue. Eight variants, no document anywhere."
+  },
+  {
+   "plan_id": "advanced-wellness-plus-750",
+   "family": "Advanced Wellness PLUS",
+   "variant": "750",
+   "display_name": "Advanced Wellness PLUS 750",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "advanced wellness plus 750"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. The handoff lists Advanced Wellness PLUS as a whole family with ZERO documents; it is real, listed and enrollable on this agent's own catalogue. Eight variants, no document anywhere."
+  },
+  {
+   "plan_id": "advanced-wellness-plus-1000",
+   "family": "Advanced Wellness PLUS",
+   "variant": "1000",
+   "display_name": "Advanced Wellness PLUS 1000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "advanced wellness plus 1000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. The handoff lists Advanced Wellness PLUS as a whole family with ZERO documents; it is real, listed and enrollable on this agent's own catalogue. Eight variants, no document anywhere."
+  },
+  {
+   "plan_id": "ghdp-wellness",
+   "family": "GHDP",
+   "variant": "Wellness",
+   "display_name": "Good Health Distribution Partner Wellness",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Annual Wellness Exam, Preventive Care, Telemedicine, PAP and other Benefits'.",
+   "aliases": [
+    "good health distribution partner wellness"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "RESOLVES OPEN QUESTION 6. GHDP Wellness IS a distinct listed product, and its FirstEnroll description differs from that of GHDP 1-5 ('Physician and Preventive Health Services, Telemedicine, and Pharmacy Benefits'). Different descriptions mean the 96-page GHDP master SPD must NOT be assumed to cover it - the handoff was right to flag that assumption. No document exists for this variant."
+  },
+  {
+   "plan_id": "ghdp-dental-vision-1500",
+   "family": "GHDP Dental-Vision",
+   "variant": "1500",
+   "display_name": "GHDP Dental & Vision 1500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "ghdp dental & vision 1500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation."
+  },
+  {
+   "plan_id": "ghdp-dental-vision-3000",
+   "family": "GHDP Dental-Vision",
+   "variant": "3000",
+   "display_name": "GHDP Dental & Vision 3000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "ghdp dental & vision 3000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation."
+  },
+  {
+   "plan_id": "ghdp-dental-vision-5000",
+   "family": "GHDP Dental-Vision",
+   "variant": "5000",
+   "display_name": "GHDP Dental & Vision 5000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll list gives no type label beyond the plan name.",
+   "aliases": [
+    "ghdp dental & vision 5000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation."
+  },
+  {
+   "plan_id": "ame-500",
+   "family": "AME",
+   "variant": "$500",
+   "display_name": "AME $500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Accident Medical Expense'. Whether it is insured is not stated on the list.",
+   "aliases": [
+    "ame $500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true
+  },
+  {
+   "plan_id": "ame-1000",
+   "family": "AME",
+   "variant": "$1000",
+   "display_name": "AME $1000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Accident Medical Expense'. Whether it is insured is not stated on the list.",
+   "aliases": [
+    "ame $1000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true
+  },
+  {
+   "plan_id": "add-50k",
+   "family": "AD&D",
+   "variant": "$50K",
+   "display_name": "AD&D $50K",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Accident Death & Dismemberment'. Not typed from the name - the NEO WellGuard AD&D products were only confirmed insured by reading their Info page.",
+   "aliases": [
+    "ad&d $50k"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true
+  },
+  {
+   "plan_id": "add-100k",
+   "family": "AD&D",
+   "variant": "$100K",
+   "display_name": "AD&D $100K",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Accident Death & Dismemberment'. Not typed from the name - the NEO WellGuard AD&D products were only confirmed insured by reading their Info page.",
+   "aliases": [
+    "ad&d $100k"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true
+  },
+  {
+   "plan_id": "add-125k",
+   "family": "AD&D",
+   "variant": "$125K",
+   "display_name": "AD&D $125K",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Accident Death & Dismemberment'. Not typed from the name - the NEO WellGuard AD&D products were only confirmed insured by reading their Info page.",
+   "aliases": [
+    "ad&d $125k"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true
+  },
+  {
+   "plan_id": "add-175k",
+   "family": "AD&D",
+   "variant": "$175K",
+   "display_name": "AD&D $175K",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Accident Death & Dismemberment'. Not typed from the name - the NEO WellGuard AD&D products were only confirmed insured by reading their Info page.",
+   "aliases": [
+    "ad&d $175k"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true
+  },
+  {
+   "plan_id": "add-200k",
+   "family": "AD&D",
+   "variant": "$200K",
+   "display_name": "AD&D $200K",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Accident Death & Dismemberment'. Not typed from the name - the NEO WellGuard AD&D products were only confirmed insured by reading their Info page.",
+   "aliases": [
+    "ad&d $200k"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true
+  },
+  {
+   "plan_id": "add-250k",
+   "family": "AD&D",
+   "variant": "$250K",
+   "display_name": "AD&D $250K",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Accident Death & Dismemberment'. Not typed from the name - the NEO WellGuard AD&D products were only confirmed insured by reading their Info page.",
+   "aliases": [
+    "ad&d $250k"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true
+  },
+  {
+   "plan_id": "american-financial-ci-2500",
+   "family": "American Financial Critical Illness",
+   "variant": "$2,500",
+   "display_name": "American Financial - Critical Illness $2,500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Critical Illness'. Carrier named in the product title as American Financial.",
+   "aliases": [
+    "american financial - critical illness $2,500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true,
+   "carrier": "American Financial Security Life Insurance Company",
+   "carrier_evidence": "Live FirstEnroll TERMS panel, page 38175, billing authorization: charges made \"on behalf of American Financial Security Life Insurance Company\"."
+  },
+  {
+   "plan_id": "american-financial-ci-5000",
+   "family": "American Financial Critical Illness",
+   "variant": "$5,000",
+   "display_name": "American Financial - Critical Illness $5,000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Critical Illness'. Carrier named in the product title as American Financial.",
+   "aliases": [
+    "american financial - critical illness $5,000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true,
+   "carrier": "American Financial Security Life Insurance Company",
+   "carrier_evidence": "Live FirstEnroll TERMS panel, page 38175, billing authorization: charges made \"on behalf of American Financial Security Life Insurance Company\"."
+  },
+  {
+   "plan_id": "american-financial-ci-7500",
+   "family": "American Financial Critical Illness",
+   "variant": "$7,500",
+   "display_name": "American Financial - Critical Illness $7,500",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Critical Illness'. Carrier named in the product title as American Financial.",
+   "aliases": [
+    "american financial - critical illness $7,500"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true,
+   "carrier": "American Financial Security Life Insurance Company",
+   "carrier_evidence": "Live FirstEnroll TERMS panel, page 38175, billing authorization: charges made \"on behalf of American Financial Security Life Insurance Company\"."
+  },
+  {
+   "plan_id": "american-financial-ci-10000",
+   "family": "American Financial Critical Illness",
+   "variant": "$10,000",
+   "display_name": "American Financial - Critical Illness $10,000",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "UNKNOWN",
+   "product_type_evidence": "FirstEnroll describes it as 'Critical Illness'. Carrier named in the product title as American Financial.",
+   "aliases": [
+    "american financial - critical illness $10,000"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation.",
+   "is_addon": true,
+   "carrier": "American Financial Security Life Insurance Company",
+   "carrier_evidence": "Live FirstEnroll TERMS panel, page 38175, billing authorization: charges made \"on behalf of American Financial Security Life Insurance Company\"."
+  },
+  {
+   "plan_id": "complete-care-max",
+   "family": "Complete Care Max",
+   "variant": "-",
+   "display_name": "Complete Care Max",
+   "listed_on": [
+    "firstenroll"
+   ],
+   "product_type": "discount_program",
+   "product_type_evidence": "Live FirstEnroll Info page 38740: \"This plan is a discount plan NOT a health insurance policy.\" Licensed DMPO: Access One Consumer Health, Inc.",
+   "aliases": [
+    "complete care max"
+   ],
+   "status": "ACTIVE",
+   "status_evidence": "Verified against the LIVE FirstEnroll product list for agent id 974358 (Melis Ilaldi's own storefront), read 2026-09-05.",
+   "notes": "CONFIRMED ACTIVE. Zero documentation. The component list suggests a non-insurance bundle but the portal never says so - do not classify it without the Info page.",
+   "is_addon": true
+  }
+ ],
+ "last_updated": "2026-09-05 (run 3 - TERMS panels and Drive brochures)",
+ "agent_storefronts": {
+  "neo": "974021 (identical catalogue to 767303)",
+  "firstenroll": "974358 (Melis Ilaldi)",
+  "april_snapshot_sources": "NEO 767303 and FirstEnroll 824962 (Ana Avalos) - a DIFFERENT FirstEnroll storefront from this agent's"
+ }
+}
