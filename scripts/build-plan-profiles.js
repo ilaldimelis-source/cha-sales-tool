@@ -2,6 +2,7 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const {
   isLeaf,
@@ -45,6 +46,10 @@ function parseArgs(argv) {
       throw new Error('Unexpected argument: ' + token);
     }
     const key = token.slice(2);
+    if (key === 'write') {
+      out.write = true;
+      continue;
+    }
     const value = argv[i + 1];
     if (value == null || value.slice(0, 2) === '--') {
       throw new Error('Missing value for --' + key);
@@ -727,6 +732,37 @@ function mkdirp(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
+function filesDiffer(leftPath, rightPath) {
+  if (!fs.existsSync(rightPath)) return true;
+  const left = fs.readFileSync(leftPath);
+  const right = fs.readFileSync(rightPath);
+  return !left.equals(right);
+}
+
+function diffWrittenOutput(tempRoot, destRoot) {
+  const changed = [];
+  function rel(filePath) {
+    return path.relative(process.cwd(), filePath).split(path.sep).join('/');
+  }
+  const indexName = 'plan-index.json';
+  if (
+    filesDiffer(path.join(tempRoot, indexName), path.join(destRoot, indexName))
+  ) {
+    changed.push(rel(path.join(destRoot, indexName)));
+  }
+  const tempPlans = path.join(tempRoot, 'plans');
+  const destPlans = path.join(destRoot, 'plans');
+  const names = fs.readdirSync(tempPlans).sort();
+  for (let i = 0; i < names.length; i++) {
+    const name = names[i];
+    if (filesDiffer(path.join(tempPlans, name), path.join(destPlans, name))) {
+      changed.push(rel(path.join(destPlans, name)));
+    }
+  }
+  changed.sort();
+  return changed;
+}
+
 function writeFile(filePath, contents) {
   mkdirp(path.dirname(filePath));
   fs.writeFileSync(filePath, contents);
@@ -1039,7 +1075,10 @@ function main() {
     process.exit(1);
   }
 
-  const outRoot = path.resolve(args.out);
+  const destRoot = path.resolve(args.out);
+  const outRoot = args.write
+    ? destRoot
+    : fs.mkdtempSync(path.join(os.tmpdir(), 'cha-plan-profiles-'));
   const plansDir = path.join(outRoot, 'plans');
   mkdirp(plansDir);
 
@@ -1085,6 +1124,27 @@ function main() {
     path.join(outRoot, 'plan-index.json'),
     stableStringify({ plans: indexPlans })
   );
+  if (!args.write) {
+    const changed = diffWrittenOutput(outRoot, destRoot);
+    fs.rmSync(outRoot, { recursive: true, force: true });
+    if (changed.length) {
+      console.log(
+        'Profile build differs from ' +
+          path.relative(process.cwd(), destRoot).split(path.sep).join('/') +
+          ' and was not written. Pass --write to replace these files.'
+      );
+      for (let i = 0; i < changed.length; i++) {
+        console.log(changed[i]);
+      }
+      process.exit(1);
+    }
+    console.log(
+      'Profile build matches ' +
+        path.relative(process.cwd(), destRoot).split(path.sep).join('/') +
+        '. Nothing written.'
+    );
+    return;
+  }
   console.log(
     'Wrote ' +
       profiles.length +
