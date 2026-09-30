@@ -23,4 +23,7 @@ stylelint-report.json
 stylelint-clean.json
 screenshots/
 ledger/
+ledger-backup-*/
+Claude outputs/
+build/
 cowork-reports/
