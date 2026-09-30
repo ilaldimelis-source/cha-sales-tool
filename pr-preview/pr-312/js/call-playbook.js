@@ -1622,29 +1622,23 @@ function renderPlanScripts() {
   var activePlan = filtered[planScriptActive];
   var typeColor = _psTypeColor(activePlan.planType);
 
+  var currentTitle =
+    (activePlan.sections[planScriptSection] &&
+      activePlan.sections[planScriptSection].title) ||
+    'Section ' + (planScriptSection + 1);
+  var progressPct = Math.round(
+    ((planScriptSection + 1) / activePlan.sections.length) * 100
+  );
+
   html += '<div class="ps-pin"><div class="ps-pin-nav">';
   html +=
     '<button type="button" class="ps-pin-btn" onclick="planScriptActive=-1;renderPlanScripts()">\u2190 All Plans</button>';
+  html += '<span class="ps-name">' + activePlan.name + '</span>';
   html +=
-    '<select class="ps-pin-select" aria-label="Plan" onchange="planScriptActive=parseInt(this.value,10);planScriptSection=0;renderPlanScripts()">';
-  filtered.forEach(function (p, idx) {
-    html +=
-      '<option value="' +
-      idx +
-      '"' +
-      (idx === planScriptActive ? ' selected' : '') +
-      '>' +
-      p.name +
-      ' (' +
-      p.planType +
-      ')</option>';
-  });
-  html += '</select>';
-  html +=
-    '<span class="ps-pin-pos">Section ' +
-    (planScriptSection + 1) +
-    ' of ' +
-    activePlan.sections.length +
+    '<span class="ps-type" style="background:' +
+    typeColor +
+    ';">' +
+    activePlan.planType +
     '</span>';
   if (planScriptSection < activePlan.sections.length - 1) {
     html +=
@@ -1653,58 +1647,25 @@ function renderPlanScripts() {
     html +=
       '<button type="button" class="ps-pin-finish" onclick="planScriptActive=-1;renderPlanScripts()">Finish \u2713</button>';
   }
-  html += '</div><div class="ps-head">';
-  html += '<span class="ps-name">' + activePlan.name + '</span>';
-  html +=
-    '<span class="ps-type" style="background:' +
-    typeColor +
-    ';">' +
-    activePlan.planType +
-    '</span>';
-
-  var secLabels = [
-    'Opening',
-    'Benefits',
-    'Rx',
-    'Closing',
-    'Verification',
-    'Post-Close'
-  ];
-  html += '<div class="ps-stepper" role="group" aria-label="Script sections">';
-  activePlan.sections.forEach(function (sec, si) {
-    var isCurrent = si === planScriptSection;
-    var dotLabel = sec.title || secLabels[si] || 'Section ' + (si + 1);
-    html += '<div class="ps-step">';
-    html +=
-      '<button type="button" class="ps-step-btn' +
-      (isCurrent ? ' ps-step-on' : '') +
-      '" onclick="planScriptSection=' +
-      si +
-      ';renderPlanScripts()">';
-    html +=
-      '<span class="ps-step-dot" style="background:' +
-      (isCurrent
-        ? '#5B8DEF'
-        : si < planScriptSection
-          ? '#BBF7D0'
-          : 'var(--cha-bg-muted)') +
-      ';border-color:' +
-      (isCurrent
-        ? '#5B8DEF'
-        : si < planScriptSection
-          ? '#15803D'
-          : 'var(--cha-border-default)') +
-      ';"></span>';
-    html += '<span class="ps-step-lbl">' + dotLabel + '</span>';
-    html += '</button>';
-    if (si < activePlan.sections.length - 1)
-      html +=
-        '<span class="ps-step-line" style="background:' +
-        (si < planScriptSection ? '#BBF7D0' : 'var(--cha-bg-muted)') +
-        ';"></span>';
-    html += '</div>';
-  });
   html += '</div>';
+  html += '<div class="ps-progress" role="group" aria-label="Script sections">';
+  html += '<span class="ps-progress-now ps-step-on">' + currentTitle + '</span>';
+  html +=
+    '<span class="ps-progress-track" aria-hidden="true"><span class="ps-progress-fill" style="width:' +
+    progressPct +
+    '%;"></span></span>';
+  html += '<span class="ps-progress-rest">';
+  activePlan.sections.forEach(function (sec, si) {
+    if (si <= planScriptSection) return;
+    var laterTitle = sec.title || 'Section ' + (si + 1);
+    html +=
+      '<button type="button" class="ps-step-btn" onclick="planScriptSection=' +
+      si +
+      ';renderPlanScripts()">' +
+      laterTitle +
+      '</button>';
+  });
+  html += '</span></div>';
 
   // Compliance banner — keyed on activePlan.name exactly as it appears in PLAN_SCRIPTS
   var _complianceBannerType = (function(n) {
@@ -1747,38 +1708,8 @@ function renderPlanScripts() {
   }
 
   html += _complianceBanner;
-  html += '</div></div>';
+  html += '</div>';
   html += '<div class="ps-plan-card">';
-
-  // Render ALL sections as colored bubbles
-  var bubbleStyles = [
-    { label: 'OPENING', bg: '#EFF6FF', border: '#BFDBFE', color: '#1D4ED8' },
-    { label: 'BENEFITS', bg: '#F0FDF4', border: '#BBF7D0', color: '#15803D' },
-    {
-      label: 'PRESCRIPTIONS / RX',
-      bg: '#FAF5FF',
-      border: '#E9D5FF',
-      color: '#7C3AED'
-    },
-    {
-      label: 'CLOSING STATEMENT',
-      bg: '#FFFBEB',
-      border: '#FDE68A',
-      color: '#B45309'
-    },
-    {
-      label: 'VERIFICATION',
-      bg: '#FFF1F2',
-      border: '#FECDD3',
-      color: '#BE123C'
-    },
-    {
-      label: 'POST-CLOSE',
-      bg: 'var(--cha-bg-muted)',
-      border: '#E2E8F0',
-      color: '#475569'
-    }
-  ];
 
   activePlan.sections.forEach(function (sec, si) {
     if (si !== planScriptSection) return;
@@ -1788,59 +1719,62 @@ function renderPlanScripts() {
     // Line-by-line parsing handles all symbols — no pre-wrapping needed
     var lines = c.split('<br>');
     var parsedLines = [];
+    var beatNum = 0;
     lines.forEach(function (line) {
       var trimLine = line.trim();
-      if (!trimLine) {
-        parsedLines.push('<div class="ps-script-gap"></div>');
-        return;
-      }
+      if (!trimLine) return;
       if (/\( *DO NOT|\( *do not|✖/.test(trimLine)) {
-        // Strip existing ✖ prefix to avoid double
         var cleanDo = trimLine.replace(/^✖\s*/, '');
         parsedLines.push(
-          '<div style="background:var(--cha-danger-bg);border-left:3px solid #dc2626;border-radius:8px;padding:4px 12px;margin:4px 0;font-size:12px;font-weight:700;color:#dc2626;letter-spacing:0.5px;">✖ ' +
+          '<div class="ps-marker ps-marker-stop" style="background:var(--cha-danger-bg);border-left:3px solid #dc2626;">' +
+            '<span class="ps-beat-slot" style="color:#dc2626;">\u2716</span>' +
+            '<div class="ps-marker-copy" style="font-size:12px;font-weight:700;color:#dc2626;letter-spacing:0.5px;">' +
             cleanDo +
-            '</div>'
+            '</div></div>'
         );
       } else if (/\( *[Ww]ait for/.test(trimLine)) {
-        // Strip existing ▶ prefix to avoid double
         var cleanWait = trimLine.replace(/^▶\s*/, '');
         parsedLines.push(
-          '<div style="background:var(--cha-warning-bg);border-left:3px solid #f59e0b;border-radius:8px;padding:4px 12px;margin:4px 0;font-size:13px;font-style:italic;color:var(--cha-warning-text);">▶ ' +
+          '<div class="ps-marker ps-marker-wait" style="background:var(--cha-warning-bg);border-left:3px solid #f59e0b;">' +
+            '<span class="ps-beat-slot ps-pause" style="color:var(--cha-warning-text);" aria-hidden="true"><i></i><i></i></span>' +
+            '<div class="ps-marker-copy" style="font-size:13px;font-style:italic;color:var(--cha-warning-text);">' +
             cleanWait +
-            '</div>'
+            '</div></div>'
         );
       } else if (/^✔/.test(trimLine)) {
         var cleanOk = trimLine.replace(/^✔\s*/, '');
         parsedLines.push(
-          '<div style="background:var(--cha-success-bg);border-left:3px solid #16a34a;border-radius:8px;padding:4px 12px;margin:4px 0;font-size:13px;font-weight:600;color:var(--cha-success-text);">✔ ' +
+          '<div class="ps-marker ps-marker-ok" style="background:var(--cha-success-bg);border-left:3px solid #16a34a;">' +
+            '<span class="ps-beat-slot" style="color:var(--cha-success-text);">\u2714</span>' +
+            '<div class="ps-marker-copy" style="font-size:13px;font-weight:600;color:var(--cha-success-text);">' +
             cleanOk +
-            '</div>'
+            '</div></div>'
         );
       } else {
         var parsed = trimLine;
-        // Strip any stray ✔/✖/▶ that were in original data (handled by block detection above)
         parsed = parsed.replace(
           /(_{3,}|\$___)/g,
-          '<span style="background:var(--cha-warning-bg);padding:1px 6px;border-radius:6px;font-weight:600;color:var(--cha-warning-text);">$1</span>'
+          '<span class="ps-blank">$1</span>'
         );
         parsed = parsed.replace(
           /\[Customer Name\]/gi,
-          '<span style="background:var(--cha-bg-surface);color:var(--cha-accent);padding:1px 6px;border-radius:6px;font-weight:600;">[Customer Name]</span>'
+          '<span class="ps-blank">[Customer Name]</span>'
         );
+        beatNum += 1;
         parsedLines.push(
-          '<div class="ps-script-p">' + parsed + '</div>'
+          '<div class="ps-beat"><span class="ps-beat-num">' +
+            beatNum +
+            '</span><div class="ps-beat-body"><div class="ps-script-p">' +
+            parsed +
+            '</div></div></div>'
         );
       }
     });
     c = parsedLines.join('');
 
-    var bs = bubbleStyles[Math.min(si, bubbleStyles.length - 1)];
-    var secLabel = sec.title || bs.label;
     var secId = 'ps-sec-' + si;
 
     html += '<div id="' + secId + '" class="ps-script-col">';
-    html += '<div class="ps-sec-title">' + secLabel + '</div>';
     html += '<div class="ps-script-body">';
     html +=
       '<div class="ps-bubble-text" style="color:var(--text-primary);font-family:var(--font-body);">' +
