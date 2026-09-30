@@ -1301,30 +1301,30 @@
     },
     "pre_ex_scope": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 7,
       "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-secure"
       ],
       "pg": 6,
-      "sec": "brochure",
-      "src": 104,
-      "v": "A pre-existing condition includes a sickness, injury, pregnancy, or other medical condition that existed before coverage began, including prior care, a prescription, or symptoms a provider could have diagnosed. The optional rider does not give immediate coverage for all pre-existing conditions.",
+      "sec": "printed page 6 (PDF page 6), Pre-Existing Conditions Rider",
+      "src": 147,
+      "v": "This coverage generally does not pay benefits for a sickness, injury, pregnancy, or other medical condition that existed before coverage began. This may include conditions for which you previously: received or were advised to receive medical care, consultation, testing, diagnosis, or treatment; received a prescription medication; or experienced signs or symptoms significant enough that a medical provider could have diagnosed the condition or a reasonable person would have sought medical care. It does not provide immediate or complete coverage for all pre-existing conditions.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pre_existing": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 7,
       "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-secure"
       ],
-      "pg": 6,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Pre-existing conditions are not covered unless the optional Pre-Existing Conditions Rider is elected. The brochure states no 12-month figure. Without the rider, the limitation is applied separately to each new coverage period.",
+      "pg": null,
+      "sec": "printed page 6 (PDF page 6): Without the optional rider: These limitations are applied separately to each new coverage period. printed page 6 (PDF page 6): The Pre-Existing Conditions Rider is an optional add-on and is not available in all states. Not available in Ohio (OH). printed page 10 (PDF page 10): Pre-existing conditions are not covered except as expressly modified by an approved Pre-Existing Condition Waiver Rider, where applicable.",
+      "src": 147,
+      "v": "Without the optional rider: These limitations are applied separately to each new coverage period. The Pre-Existing Conditions Rider is an optional add-on and is not available in all states. Not available in Ohio (OH). Pre-existing conditions are not covered except as expressly modified by an approved Pre-Existing Condition Waiver Rider, where applicable.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pregnancy_exclusion": {
