@@ -31,3 +31,6 @@ jobs:
 
       - name: Verify critical systems
         run: npm run verify
+
+      - name: Syntax check
+        run: npm run check
