@@ -2781,7 +2781,7 @@
         "plan1"
       ],
       "display_name": "Pinnacle Critical Care Plan 1",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "PARTIAL_DOCS",
       "family": "Pinnacle Critical Care",
       "has_profile": true,
       "plan_id": "pinnacle-critical-care-1",
@@ -2831,7 +2831,7 @@
         "plan2"
       ],
       "display_name": "Pinnacle Critical Care Plan 2",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "PARTIAL_DOCS",
       "family": "Pinnacle Critical Care",
       "has_profile": true,
       "plan_id": "pinnacle-critical-care-2",
@@ -2881,7 +2881,7 @@
         "plan3"
       ],
       "display_name": "Pinnacle Critical Care Plan 3",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "PARTIAL_DOCS",
       "family": "Pinnacle Critical Care",
       "has_profile": true,
       "plan_id": "pinnacle-critical-care-3",
@@ -2931,7 +2931,7 @@
         "plan4"
       ],
       "display_name": "Pinnacle Critical Care Plan 4",
-      "doc_completeness": "PORTAL_ONLY",
+      "doc_completeness": "PARTIAL_DOCS",
       "family": "Pinnacle Critical Care",
       "has_profile": true,
       "plan_id": "pinnacle-critical-care-4",

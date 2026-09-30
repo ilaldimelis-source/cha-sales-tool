@@ -89,39 +89,42 @@
       network: 'PHCS (Multiplan)',
       assoc: 'American Workers Association (AWA)',
       planNotes:
-        'Four tiers (1-4). Critical care supplement -- designed as add-on to STM or other coverage. Verify exact benefit amounts per tier in SOB.',
+        'Four tiers (1-4). Daily hospital confinement is $50 per day on every tier. The Critical Care benefit is $25,000, $50,000, $75,000, or $100,000 by tier. The Critical Care waiting period is 30 days.',
       benefits: [
         {
-          category: 'Plan Overview',
+          category: 'Critical Care benefit',
           items: [
-            'Four tiers (1-4) with progressively higher benefit amounts',
-            'Critical illness and hospital-level event coverage',
-            'Designed as supplement to STM or other primary coverage',
-            'Network: PHCS Multiplan',
-            'Verify exact tier benefit amounts in SOB'
+            'Plan 1: $25,000',
+            'Plan 2: $50,000',
+            'Plan 3: $75,000',
+            'Plan 4: $100,000',
+            'Covered conditions pay a percentage of the elected Critical Care amount. Skin cancer is $1,000 per lifetime.'
           ]
         },
         {
-          category: 'Plan Structure',
+          category: 'Daily Hospital Confinement',
           items: [
-            'Fixed cash benefits -- NOT full bill coverage',
-            '12/12 pre-existing condition exclusion',
-            'Guaranteed issue -- no medical underwriting'
+            '$50 per day on every tier',
+            '10 days per confinement',
+            '30 days per certificate year'
           ]
+        },
+        {
+          category: 'Waiting period',
+          items: ['30-day waiting period for the Critical Care benefit']
         }
       ],
       limitations: [
         'NOT ACA-compliant major medical',
-        'Supplement plan -- not standalone coverage',
-        'Fixed dollar amounts -- not full bill payment',
-        '12/12 pre-existing condition exclusion',
-        'Verify exact benefit amounts per tier in SOB'
+        'Fixed dollar amounts, not full bill payment',
+        'A pre-existing condition limitation applies. The brochure does not state its length.',
+        'Exclusions include breast surgery, certain services by non-charging providers, cosmetic surgery, dental care, elective treatment or surgery, experimental or investigational treatment, family member treatment, and foreign travel'
       ],
-      waitingPeriods: ['30-day waiting period for sickness'],
-      preEx: '12-month look-back / 12-month exclusion',
-      source: '',
+      waitingPeriods: ['30-day waiting period for the Critical Care benefit'],
+      preEx: '',
+      source: 'Everest_FI_Critical_Illness_Brochure.pdf',
       rawText:
-        'Pinnacle Critical Care 1 2 3 4 limited fixed benefit PHCS Multiplan Everest AWA critical illness supplement four tiers 12 12 pre-existing not ACA not major medical'
+        'Pinnacle Critical Care 1 2 3 4 limited fixed benefit PHCS Multiplan Everest Reinsurance AWA critical illness supplement four tiers daily hospital confinement 50 dollars 10 days 30 days certificate year critical care waiting period 30 days not ACA not major medical'
     },
     {
       id: 'allstatestm',

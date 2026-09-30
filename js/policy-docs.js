@@ -328,6 +328,161 @@ function _pdSlotValue(plan, profile, slot) {
   return '';
 }
 
+var PD_CC_CONDITIONS = [
+  {
+    group: 'Cardiac',
+    items: [
+      [
+        'schedule.heart_attack_myocardial_infarction',
+        'Heart Attack (Myocardial Infarction)'
+      ],
+      ['schedule.sudden_cardiac_arrest', 'Sudden Cardiac Arrest'],
+      [
+        'schedule.coronary_artery_disease_requiring_bypass',
+        'Coronary Artery Disease requiring Coronary Artery Bypass'
+      ],
+      [
+        'schedule.coronary_artery_disease_requiring_angioplasty',
+        'Coronary Artery Disease requiring Angioplasty'
+      ]
+    ]
+  },
+  {
+    group: 'Cerebral vascular disease',
+    items: [
+      ['schedule.stroke', 'Stroke'],
+      ['schedule.ruptured_brain_aneurysm', 'Ruptured Brain Aneurysm'],
+      ['schedule.transient_ischemic_attack', 'Transient Ischemic Attack']
+    ]
+  },
+  {
+    group: 'Other specified illness',
+    items: [
+      [
+        'schedule.bone_marrow_or_stem_cell_transplant',
+        'Bone Marrow / Stem Cell Transplant'
+      ],
+      ['schedule.coma', 'Coma'],
+      ['schedule.end_stage_renal_failure', 'End Stage Renal Failure'],
+      [
+        'schedule.major_organ_failure_requiring_transplant',
+        'Major Organ Failure requiring Transplant'
+      ],
+      [
+        'schedule.occupational_infectious_hepatitis_b_c_or_d',
+        'Occupational Infectious Hepatitis B, C or D'
+      ],
+      ['schedule.occupational_infectious_hiv', 'Occupational Infectious HIV'],
+      ['schedule.benign_brain_tumor', 'Benign Brain Tumor']
+    ]
+  },
+  {
+    group: 'Permanent paralysis',
+    items: [
+      ['schedule.quadriplegia', 'Quadriplegia'],
+      ['schedule.paraplegia', 'Paraplegia'],
+      ['schedule.hemiplegia_or_diplegia', 'Hemiplegia / Diplegia']
+    ]
+  },
+  {
+    group: 'Other accident',
+    items: [['schedule.severe_burns', 'Severe Burns']]
+  },
+  {
+    group: 'Cancer',
+    items: [
+      ['schedule.cancer_invasive', 'Invasive'],
+      ['schedule.cancer_non_invasive', 'Non-Invasive'],
+      ['schedule.skin_cancer', 'Skin Cancer']
+    ]
+  }
+];
+
+function _pdFactRow(label, text, wide) {
+  if (!_pdHasFact(text)) return '';
+  return (
+    '<div class="pv-fact' +
+    (wide ? ' pv-cc-wide' : '') +
+    '"><dt>' +
+    escHTML(label) +
+    '</dt><dd>' +
+    escHTML(text) +
+    '</dd></div>'
+  );
+}
+
+function _pdUnmappedFact(profile, key) {
+  var node;
+  if (!profile || !profile.unmapped) return '';
+  node = profile.unmapped[key];
+  if (!node) return '';
+  if (node.vs !== 'VERIFIED' && node.vs !== 'VERIFIED_SINGLE_SOURCE') {
+    return '';
+  }
+  if (!_pdHasFact(node.v)) return '';
+  return String(node.v);
+}
+
+function _pdCriticalCareFacts(profile) {
+  var html = '';
+  var conditions = '';
+  var count = 0;
+  var g;
+  var i;
+  var item;
+  var text;
+  if (!_pdUnmappedFact(profile, 'benefit.critical_care_amount')) return '';
+  html += _pdFactRow(
+    'Critical Care benefit',
+    _pdUnmappedFact(profile, 'benefit.critical_care_amount')
+  );
+  html += _pdFactRow(
+    'Daily Hospital Confinement',
+    _pdVerifiedLeaf(profile, 'benefits.hospital_daily')
+  );
+  html += _pdFactRow(
+    'Confinement limits',
+    _pdUnmappedFact(profile, 'benefit.confinement_limits')
+  );
+  html += _pdFactRow(
+    'Critical Care waiting period',
+    _pdUnmappedFact(profile, 'waiting_period.critical_care')
+  );
+  for (g = 0; g < PD_CC_CONDITIONS.length; g++) {
+    for (i = 0; i < PD_CC_CONDITIONS[g].items.length; i++) {
+      item = PD_CC_CONDITIONS[g].items[i];
+      text = _pdUnmappedFact(profile, item[0]);
+      if (!_pdHasFact(text)) continue;
+      conditions += _pdFactRow(
+        PD_CC_CONDITIONS[g].group + ': ' + item[1],
+        text
+      );
+      count += 1;
+    }
+  }
+  if (count) {
+    html +=
+      '<div class="pv-cc-toggle-row"><button type="button" class="pv-cc-toggle" data-pv-cc-toggle="1" aria-expanded="false" aria-controls="pv-cc-conditions">' +
+      escHTML('Covered conditions and benefit percentages (' + count + ')') +
+      '</button></div>';
+    html +=
+      '<div id="pv-cc-conditions" class="pv-cc-conditions">' +
+      conditions +
+      '</div>';
+  }
+  html += _pdFactRow(
+    'Exclusions',
+    _pdVerifiedLeaf(profile, 'limitations.excluded_services'),
+    true
+  );
+  html += _pdFactRow(
+    'Member services',
+    _pdVerifiedLeaf(profile, 'administration.customer_service'),
+    true
+  );
+  return html;
+}
+
 function _pdFactsInner(plan, profile) {
   var html = '';
   var i;
@@ -342,6 +497,7 @@ function _pdFactsInner(plan, profile) {
       escHTML(text) +
       '</dd></div>';
   }
+  html += _pdCriticalCareFacts(profile);
   return html;
 }
 
@@ -487,7 +643,16 @@ function _pdApplyProfile(plan, profile) {
   var badge = document.getElementById('pv-doc-badge');
   var label;
   if (policyDocSelected !== plan.id) return;
-  if (facts) facts.innerHTML = _pdFactsInner(plan, profile);
+  if (facts) {
+    facts.innerHTML = _pdFactsInner(plan, profile);
+    if (
+      plan.id === 'pinnaclecriticalcare' &&
+      facts.parentNode &&
+      facts.parentNode.className.indexOf('pv-panel') !== -1
+    ) {
+      facts.parentNode.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    }
+  }
   if (!badge) return;
   label = profile ? _pdDocLabel(profile.doc_completeness) : '';
   if (!label) {
@@ -872,9 +1037,28 @@ function _pdBindKeys() {
   });
 }
 
+function _pdToggleCoveredConditions(button) {
+  var panel = document.getElementById('pv-cc-conditions');
+  var open;
+  if (!panel || !button) return;
+  open = panel.className.indexOf('pv-cc-open') === -1;
+  if (open) {
+    panel.className += ' pv-cc-open';
+  } else {
+    panel.className = panel.className
+      .replace(' pv-cc-open', '')
+      .replace('pv-cc-open', '');
+  }
+  button.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
 function _pdOnClick(event) {
   var node = event.target;
   while (node && node !== event.currentTarget) {
+    if (node.getAttribute && node.getAttribute('data-pv-cc-toggle')) {
+      _pdToggleCoveredConditions(node);
+      return;
+    }
     if (node.getAttribute && node.getAttribute('data-pv-tier')) {
       _pdSelectTier(node.getAttribute('data-pv-tier'));
       return;

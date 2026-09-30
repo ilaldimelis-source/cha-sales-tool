@@ -680,6 +680,46 @@
       pdfFiles: ['TDK_Plans_Complete_Guide.pdf'],
       status: 'ready',
       missingFiles: []
+    },
+    {
+      planId: 'pinnacle-critical-care-1',
+      planName: 'Pinnacle Critical Care Plan 1',
+      type: 'Limited',
+      group: 'Limited',
+      aliases: ['Pinnacle Critical Care Plan 1', 'pinnacle-critical-care-1'],
+      pdfFiles: ['Everest_FI_Critical_Illness_Brochure.pdf'],
+      status: 'ready',
+      missingFiles: []
+    },
+    {
+      planId: 'pinnacle-critical-care-2',
+      planName: 'Pinnacle Critical Care Plan 2',
+      type: 'Limited',
+      group: 'Limited',
+      aliases: ['Pinnacle Critical Care Plan 2', 'pinnacle-critical-care-2'],
+      pdfFiles: ['Everest_FI_Critical_Illness_Brochure.pdf'],
+      status: 'ready',
+      missingFiles: []
+    },
+    {
+      planId: 'pinnacle-critical-care-3',
+      planName: 'Pinnacle Critical Care Plan 3',
+      type: 'Limited',
+      group: 'Limited',
+      aliases: ['Pinnacle Critical Care Plan 3', 'pinnacle-critical-care-3'],
+      pdfFiles: ['Everest_FI_Critical_Illness_Brochure.pdf'],
+      status: 'ready',
+      missingFiles: []
+    },
+    {
+      planId: 'pinnacle-critical-care-4',
+      planName: 'Pinnacle Critical Care Plan 4',
+      type: 'Limited',
+      group: 'Limited',
+      aliases: ['Pinnacle Critical Care Plan 4', 'pinnacle-critical-care-4'],
+      pdfFiles: ['Everest_FI_Critical_Illness_Brochure.pdf'],
+      status: 'ready',
+      missingFiles: []
     }
   ];
   window.CHA_PLAN_ALIAS_INDEX = {
