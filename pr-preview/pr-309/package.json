@@ -64,6 +64,6 @@
     "@vercel/speed-insights": "^2.0.0",
     "dotenv": "^17.4.1",
     "node-fetch": "^2.7.0",
-    "openai": "^6.34.0"
+    "openai": "^7.23.0"
   }
 }

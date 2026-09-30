@@ -2,7 +2,7 @@
  "_readme": {
   "purpose": "CHA add-on products for the Command Center Add-Ons page.",
   "source": "FirstEnroll rate sheet and product catalog, NEO availability document, NEO storefront pricing. Verified product by product and state by state.",
-  "product_count": 75,
+  "product_count": 73,
   "rules": [
    "states: null means the source document gave NO availability list. That is NOT the same as unavailable - it needs confirming on the platform before quoting.",
    "states: an array means the source DID give a list. A state not in that array is genuinely unavailable - do not offer it.",
@@ -879,6 +879,22 @@
    "FL",
    "GA",
    "IA",
+   "IL",
+   "KY",
+   "LA",
+   "MI",
+   "MS",
+   "NE",
+   "OK",
+   "SC",
+   "TN",
+   "TX",
+   "WI"
+  ],
+  "simpleShield2": [
+   "AL",
+   "FL",
+   "GA",
    "IL",
    "KY",
    "LA",
@@ -4123,34 +4139,6 @@
    ]
   },
   {
-   "name": "Express Health Tools Discount",
-   "platform": "NEO",
-   "category": "Discount program",
-   "description": "Non-insurance discount program.",
-   "price_member": 39.99,
-   "tiers": null,
-   "enrollment_fee": null,
-   "price_note": null,
-   "is_discount_program": true,
-   "on_hold": false,
-   "state_list_key": null,
-   "states": null
-  },
-  {
-   "name": "HealthAssist Discount",
-   "platform": "NEO",
-   "category": "Discount program",
-   "description": "Non-insurance discount program.",
-   "price_member": 69.99,
-   "tiers": null,
-   "enrollment_fee": null,
-   "price_note": null,
-   "is_discount_program": true,
-   "on_hold": false,
-   "state_list_key": null,
-   "states": null
-  },
-  {
    "name": "AWA SimpleShield Plan 1 (lower tier)",
    "platform": "NEO",
    "category": "Limited medical",
@@ -4233,8 +4221,23 @@
    "price_note": null,
    "is_discount_program": false,
    "on_hold": false,
-   "state_list_key": null,
-   "states": null
+   "state_list_key": "simpleShield2",
+   "states": [
+    "AL",
+    "FL",
+    "GA",
+    "IL",
+    "KY",
+    "LA",
+    "MI",
+    "MS",
+    "NE",
+    "OK",
+    "SC",
+    "TN",
+    "TX",
+    "WI"
+   ]
   },
   {
    "name": "AWA SimpleShield Plan 2 (higher tier)",
@@ -4251,8 +4254,23 @@
    "price_note": null,
    "is_discount_program": false,
    "on_hold": false,
-   "state_list_key": null,
-   "states": null
+   "state_list_key": "simpleShield2",
+   "states": [
+    "AL",
+    "FL",
+    "GA",
+    "IL",
+    "KY",
+    "LA",
+    "MI",
+    "MS",
+    "NE",
+    "OK",
+    "SC",
+    "TN",
+    "TX",
+    "WI"
+   ]
   },
   {
    "name": "Pinnacle Protect Plan 2-4",
