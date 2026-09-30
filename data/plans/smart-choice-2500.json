@@ -1035,8 +1035,8 @@
       "sec": "printed page 5 (PDF page 6), Benefit Summary - Out-of-pocket Limit. Printed page n = PDF page n+1.",
       "src": 138,
       "url": null,
-      "v": "Out-of-pocket Limit (Includes Deductible, Coinsurance and Copays): Individual $9,200 / Family (Embedded*) $18,400. Out-of-network: Not Covered. Once the annual Out-of-pocket Limit is reached, most Covered Services are payable by the plan at 100% for the rest of the Calendar Year. Identical on all four Smart Choice variants.",
-      "vs": "CONFLICTED"
+      "v": "Out-of-pocket Limit (Includes Deductible, Coinsurance and Copays). Individual, In Network $9,200, Out of Network Not Covered. Family (Embedded*), In Network $18,400, Out of Network Not Covered. Once the annual Out-of-pocket Limit is reached, most Covered Services are payable by the plan at 100% for the rest of the Calendar Year.",
+      "vs": "VERIFIED"
     },
     "moop_exclusions": {
       "app": "EXACT_VARIANT",
@@ -1487,13 +1487,6 @@
       "field": "administration.precert",
       "source_ids": [
         18,
-        138
-      ]
-    },
-    {
-      "field": "cost_sharing.moop",
-      "source_ids": [
-        82,
         138
       ]
     },
@@ -2036,11 +2029,6 @@
       "field": "cost_sharing.deductible",
       "kind": "CURRENTNESS",
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
-    },
-    {
-      "field": "cost_sharing.moop",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
     },
     {
       "cur": "POSSIBLY_STALE",
