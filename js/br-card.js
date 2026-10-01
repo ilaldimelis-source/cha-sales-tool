@@ -661,7 +661,9 @@
         data.quickAnswer = notConfirmed();
       } else if (
         isNonEmptyString(v) &&
-        (vs === 'VERIFIED' || vs === 'VERIFIED_SINGLE_SOURCE')
+        (vs === 'VERIFIED' ||
+          vs === 'VERIFIED_SINGLE_SOURCE' ||
+          vs === 'VERIFIED_MULTI_SOURCE')
       ) {
         data.quickAnswer = {
           state: 'ANSWERED',

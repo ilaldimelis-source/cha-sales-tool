@@ -308,7 +308,13 @@ function _pdLeafNode(profile, path) {
 function _pdVerifiedLeaf(profile, path) {
   var leaf = _pdLeafNode(profile, path);
   if (!leaf) return '';
-  if (leaf.vs !== 'VERIFIED' && leaf.vs !== 'VERIFIED_SINGLE_SOURCE') return '';
+  if (
+    leaf.vs !== 'VERIFIED' &&
+    leaf.vs !== 'VERIFIED_SINGLE_SOURCE' &&
+    leaf.vs !== 'VERIFIED_MULTI_SOURCE'
+  ) {
+    return '';
+  }
   if (!_pdHasFact(leaf.v)) return '';
   return String(leaf.v);
 }
@@ -416,7 +422,11 @@ function _pdUnmappedFact(profile, key) {
   if (!profile || !profile.unmapped) return '';
   node = profile.unmapped[key];
   if (!node) return '';
-  if (node.vs !== 'VERIFIED' && node.vs !== 'VERIFIED_SINGLE_SOURCE') {
+  if (
+    node.vs !== 'VERIFIED' &&
+    node.vs !== 'VERIFIED_SINGLE_SOURCE' &&
+    node.vs !== 'VERIFIED_MULTI_SOURCE'
+  ) {
     return '';
   }
   if (!_pdHasFact(node.v)) return '';
