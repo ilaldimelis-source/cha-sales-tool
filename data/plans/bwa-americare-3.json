@@ -250,18 +250,18 @@
     },
     "icu": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 7,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "bwa-americare-3"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
-      "v": null,
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "pg": 8,
+      "sec": "printed page 8 (PDF page 8), Summary of Benefits",
+      "src": 9,
+      "url": null,
+      "v": "Intensive Care Unit Admission Benefit: $2,000 per day; max of 1 day(s)\nIntensive Care Unit Benefit: $500 per day; max of 30 day(s)",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "labs": {
       "searched": [],
@@ -892,12 +892,6 @@
     }
   },
   "open_conflicts": [
-    {
-      "field": "benefits.icu",
-      "source_ids": [
-        88
-      ]
-    },
     {
       "conflict_id": "C-021",
       "field": "exclusions.pre_existing",
