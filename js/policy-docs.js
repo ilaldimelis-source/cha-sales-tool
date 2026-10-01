@@ -483,17 +483,37 @@ function _pdCriticalCareFacts(profile) {
   return html;
 }
 
+function _pdSlotIsVaultFallback(plan, profile, slot) {
+  var i;
+  if (!slot || !slot.vault || !plan) return false;
+  if (profile && slot.paths) {
+    for (i = 0; i < slot.paths.length; i++) {
+      if (_pdVerifiedLeaf(profile, slot.paths[i])) return false;
+    }
+  }
+  return _pdHasFact(plan[slot.vault]);
+}
+
 function _pdFactsInner(plan, profile) {
   var html = '';
   var i;
+  var slot;
   var text;
+  var mark;
   for (i = 0; i < PD_FACT_SLOTS.length; i++) {
-    text = _pdSlotValue(plan, profile, PD_FACT_SLOTS[i]);
+    slot = PD_FACT_SLOTS[i];
+    text = _pdSlotValue(plan, profile, slot);
     if (!text) continue;
+    mark = '';
+    if (_pdSlotIsVaultFallback(plan, profile, slot)) {
+      mark =
+        '<span class="br-ref-card-badge br-ref-card-badge-nc">NOT CONFIRMED</span> ';
+    }
     html +=
       '<div class="pv-fact"><dt>' +
-      escHTML(PD_FACT_SLOTS[i].label) +
+      escHTML(slot.label) +
       '</dt><dd>' +
+      mark +
       escHTML(text) +
       '</dd></div>';
   }
