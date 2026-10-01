@@ -517,9 +517,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "ucr_cap": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 4,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "access-health-stm-lite"
+      ],
+      "pg": 9,
+      "sec": "printed page 9 (PDF page 9), Network",
+      "src": 89,
+      "url": null,
+      "v": "Facility Charges: Plan pays up to 150% of Medicare allowable charge.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "display_name": "Access Health Lite STM",
