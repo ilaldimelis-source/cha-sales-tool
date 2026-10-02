@@ -55,9 +55,10 @@
         "harbor-stm-essential"
       ],
       "pg": 11,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Member Services (866) 870-7730. Monday-Thursday 9:00 AM to 6:00 PM EST, Friday 9:00 AM to 5:00 PM EST.",
+      "sec": "printed page 11 (PDF page 11), Member Contact Information",
+      "src": 147,
+      "url": null,
+      "v": "Call Member Services at (866) 870-7730 Monday -Thursday 9:00 AM - 6:00 PM EST Friday 9:00 AM - 5:00 PM EST",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "id_card_timing": {
