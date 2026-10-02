@@ -1,6 +1,6 @@
 # Status
 
-Through PR #366, merged 2 October 2026. #323 was closed and did not merge.
+Through PR #368, merged 2 October 2026. #323 was closed and did not merge.
 
 The GHDP-1 file in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October 2026) is source 149. It is the same schedule cover as source 115, a newer one-page copy. It is a benefit schedule at rank 2, matching sources 115 through 119. It is not the older 249604-byte file. It settles none of the blocked documents below.
 
@@ -77,7 +77,7 @@ The HealthSherpa file in Downloads (`plan_comparison.pdf`, 1079776 bytes, create
 ### Intake
 
 - #360 File the 2 October 2026 GHDP-1 download in the source inventory as source 149.
-- Filed the 1 October 2026 HealthSherpa comparison as source 150. Rank 7. No blocked item moved.
+- #368 File the 1 October 2026 HealthSherpa comparison as source 150. Rank 7. No blocked item moved.
 
 ## Rules in force
 
