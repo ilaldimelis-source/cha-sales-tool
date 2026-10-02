@@ -106,6 +106,19 @@ var PD_FACT_SLOTS = [
   }
 ];
 
+var PD_INDEMNITY_SLOTS = [
+  ['Hospital daily', 'benefits.hospital_daily'],
+  ['Hospital admission', 'benefits.hospital_admission'],
+  ['ICU', 'benefits.icu'],
+  ['Inpatient surgery', 'benefits.surgery_inpatient'],
+  ['Outpatient surgery', 'benefits.surgery_outpatient'],
+  ['Anesthesia', 'benefits.anesthesia'],
+  ['Accidental death', 'benefits.accidental_death'],
+  ['Critical illness', 'benefits.critical_illness'],
+  ['Mental health, inpatient', 'benefits.mental_health_inpatient'],
+  ['Mental health, outpatient', 'benefits.mental_health_outpatient']
+];
+
 var PD_PLAN_TIERS = {
   goodhealth13: [
     { id: 'ghdp-1', label: 'GoodHealth 1' },
@@ -503,6 +516,23 @@ function _pdSlotIsVaultFallback(plan, profile, slot) {
   return _pdHasFact(plan[slot.vault]);
 }
 
+function _pdIndemnityFacts(profile) {
+  var html = '';
+  var i;
+  var text;
+  if (!profile) return '';
+  for (i = 0; i < PD_INDEMNITY_SLOTS.length; i++) {
+    text = _pdVerifiedLeaf(profile, PD_INDEMNITY_SLOTS[i][1]);
+    html += _pdFactRow(PD_INDEMNITY_SLOTS[i][0], text);
+  }
+  if (!html) return '';
+  return (
+    '<div class="pv-indemnity"><div class="pv-indemnity-label">Indemnity</div>' +
+    html +
+    '</div>'
+  );
+}
+
 function _pdFactsInner(plan, profile) {
   var html = '';
   var i;
@@ -527,6 +557,7 @@ function _pdFactsInner(plan, profile) {
       '</dd></div>';
   }
   html += _pdCriticalCareFacts(profile);
+  html += _pdIndemnityFacts(profile);
   return html;
 }
 
