@@ -1,6 +1,6 @@
 # Status
 
-Through PR #358, merged 2 October 2026. #323 was closed and did not merge.
+Through PR #366, merged 2 October 2026. #323 was closed and did not merge.
 
 The GHDP-1 file in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October 2026) is source 149. It is the same schedule cover as source 115, a newer one-page copy. It is a benefit schedule at rank 2, matching sources 115 through 119. It is not the older 249604-byte file. It settles none of the blocked documents below.
 
@@ -23,6 +23,7 @@ The GHDP-1 file in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October
 - #356 Move those seven cards into a More plans section.
 - #357 Move SmartChoice into a Limited medical section.
 - #358 Add a Key terms block that shows only verified printed values.
+- #366 Show telemedicine on the plan card after urgent care.
 
 ### Harbor
 
@@ -57,6 +58,11 @@ The GHDP-1 file in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October
 - #343 Use the GoodHealth certificate definition and schedule network.
 - #344 Drop the unsold MedValue plans from the registry.
 - #354 Record the GoodHealth 1 plan type from the certificate.
+- #361 Rank the newer GHDP-1 schedule with the older copy, as a benefit schedule at rank 2.
+- #362 Show the printed GoodHealth plan administrator, and clear underwriter and association.
+- #363 Record GoodHealth 1 primary care, specialist, and telemedicine from the schedule cover.
+- #364 Clear GoodHealth member services. The certificate line is a service address, not a member phone and hours.
+- #365 Record GoodHealth 2-5 primary care, the combined specialist or urgent care row, and telemedicine from the schedules.
 
 ### Other printed facts
 
@@ -68,7 +74,7 @@ The GHDP-1 file in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October
 
 ### Intake
 
-- Filed the 2 October 2026 GHDP-1 one-page schedule as source 149. Benefit schedule, rank 2, matching source 115. No blocked item moved.
+- #360 File the 2 October 2026 GHDP-1 download in the source inventory as source 149.
 
 ## Rules in force
 
@@ -100,10 +106,13 @@ All of these pass, or the change does not merge.
 - Access Health certificate (form AF ST CERT 818, named in the 2022 brochure). Unlocks any facility-charge or plan terms newer than that brochure, and which brochure column is Traditional or Lite.
 - Full SmartChoice 1500, 3000, and 3500 plan documents. Unlocks the rest of those benefit grids. Specialty and preventive rows are still notes.
 - SmartHealth STM Traditional and Limited FirstEnroll page PDFs. Sources 125 and 126 are URLs only. Unlocks pre-existing conditions and the carrier by state. Those pages were blocked.
+- GoodHealth/MBA member services contact: a welcome kit, sample ID card, or member letter that prints a member phone and hours. Unlocks Member services on GoodHealth 1-5.
 
 ## Platform facts
 
 Access Health STM is sold on FirstEnroll, not NEO. Traditional is page 28230 and Lite is page 28231.
+
+GoodHealth is a self-funded employee welfare benefit plan (certificate source 114, page 2, section 1.4.7; page 69, section 13.8). Plan Administrator is Merchants Benefit Administration. Plan Sponsor is Good Health Distribution Partners. No insurance underwriter or association is named.
 
 ## Open decisions
 
