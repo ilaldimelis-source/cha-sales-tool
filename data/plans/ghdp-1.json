@@ -815,7 +815,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=44900&id=974358",
       "v": "'This is not a major medical plan nor a replacement for a major medical plan.' Group health plan limited to ACA-required preventive and wellness services plus benefits noted in the Summary Plan Description.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_admin": {
       "searched": [],

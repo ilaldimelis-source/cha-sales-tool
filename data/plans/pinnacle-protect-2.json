@@ -964,7 +964,7 @@
       "src": 99,
       "url": null,
       "v": "FIXED INDEMNITY. The brochure is titled 'PINNACLE PROTECT FIXED INDEMNITY INSURANCE PLANS - An Everest Product' and explains: 'Fixed indemnity health insurance is a type of medical insurance that pays a pre-determined amount on a per-period or per-incident basis, REGARDLESS OF THE TOTAL CHARGES INCURRED. Payouts are the same no matter what the cost of care actually is... There is no deductible, coinsurance, or co payment applicable to benefits the fixed indemnity plan covers. The reimbursement rate is fixed and typically sent to the insured and not to the provider of service.'",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_admin": {
       "searched": [],
