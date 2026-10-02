@@ -1042,9 +1042,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "source_defects": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 7,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "harbor-stm-access"
+      ],
+      "pg": 10,
+      "sec": "Exclusions and Limitations - What is Not Covered",
+      "src": 147,
+      "url": null,
+      "v": "Cut off mid-sentence. Printed text ends: Prescription drug coverage is subject to the Outpatient Prescription Drug Rider, including applicable limitations, exclusions, eligibility requirements, and benefit",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     }
   },
   "eligibility": {
