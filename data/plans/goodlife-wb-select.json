@@ -27,8 +27,9 @@
       "pg": 5,
       "sec": "brochure",
       "src": 144,
+      "url": null,
       "v": "Scheduled fixed indemnity. Not comprehensive major medical and not minimum essential coverage.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "product_class": {
       "app": "EXACT_VARIANT",

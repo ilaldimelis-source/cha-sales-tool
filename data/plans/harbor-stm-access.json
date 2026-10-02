@@ -1226,10 +1226,10 @@
         "harbor-stm-access"
       ],
       "pg": 1,
-      "sec": "brochure",
-      "src": 104,
-      "url": "https://sales.neoinsurancesolutions.com/media/1367/HarborSTM Brochure 082720261.pdf",
-      "v": "short_term_medical",
+      "sec": "Cover",
+      "src": 147,
+      "url": null,
+      "v": "Short Term Medical Insurance Plans",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_admin": {
