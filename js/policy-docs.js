@@ -86,6 +86,7 @@ var PD_FACT_SLOTS = [
   { label: 'Primary care', paths: ['benefits.pcp'] },
   { label: 'Specialist', paths: ['benefits.specialist'] },
   { label: 'Urgent care', paths: ['benefits.urgent_care'] },
+  { label: 'Telemedicine', paths: ['benefits.telehealth'] },
   {
     label: 'Underwriter',
     vault: 'carrier',
