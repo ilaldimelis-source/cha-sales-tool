@@ -918,13 +918,6 @@
       ]
     },
     {
-      "conflict_id": "C-020",
-      "field": "benefit_schedule (all fields)",
-      "source_ids": [
-        88
-      ]
-    },
-    {
       "conflict_id": "C-036",
       "field": "cancellation.method",
       "source_ids": [

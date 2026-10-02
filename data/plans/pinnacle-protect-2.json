@@ -1127,14 +1127,6 @@
         99,
         128
       ]
-    },
-    {
-      "conflict_id": "C-011",
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        83
-      ]
     }
   ],
   "open_gaps": [
