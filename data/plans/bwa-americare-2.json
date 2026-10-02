@@ -250,7 +250,7 @@
     },
     "icu": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
@@ -737,7 +737,7 @@
     },
     "medical_underwriting": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -822,7 +822,7 @@
     },
     "product_type": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
@@ -859,7 +859,7 @@
     },
     "excluded_services": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -1027,7 +1027,7 @@
   "unmapped": {
     "addons.mbr": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -1044,7 +1044,7 @@
     },
     "addons.non_insurance": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -1061,7 +1061,7 @@
     },
     "benefit.hospital_admission_conditions": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -1078,7 +1078,7 @@
     },
     "benefit.pregnancy_and_dependents": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -1125,7 +1125,7 @@
     },
     "carrier_and_product": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -1142,7 +1142,7 @@
     },
     "compliance.erisa_medicaid_and_workers_comp": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -1193,7 +1193,7 @@
     },
     "exclusions.six_month_specified_conditions": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [
@@ -1257,7 +1257,7 @@
     },
     "termination": {
       "app": "FAMILY_WIDE",
-      "auth": 4,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT_LINKED",
       "gov": [

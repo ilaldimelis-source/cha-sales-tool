@@ -250,7 +250,7 @@
     },
     "icu": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
@@ -691,7 +691,7 @@
     "Safe to describe as a straightforward ladder. This is the only medical family in the catalogue verified clean.",
     "Until the PDFs are filed, any compliance challenge to a benefit statement on these products can be answered only with the ledger's citations, not with the underlying document. Treat filing them as outstanding remediation, not housekeeping."
   ],
-  "doc_completeness": "PORTAL_ONLY",
+  "doc_completeness": "PARTIAL_DOCS",
   "documentation": {
     "brochure": {
       "searched": [],
@@ -810,7 +810,7 @@
     },
     "product_type": {
       "app": "EXACT_VARIANT",
-      "auth": 7,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "CURRENT",
       "gov": [
@@ -866,9 +866,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "pre_existing": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 5,
+      "conf": "MEDIUM",
+      "cur": "CURRENT_LIVE",
+      "gov": [
+        "bwa-americare-3"
+      ],
+      "pg": null,
+      "sec": "INFORMATION tab",
+      "src": 88,
+      "url": "https://manage.firstenroll.com/information/product.cfm?page=39561&id=974358",
+      "v": "'Pre-Existing Condition Period / Pre-Existing Condition Exclusion Period: Not applicable' as printed on the Info page.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pregnancy_exclusion": {
       "searched": [],
