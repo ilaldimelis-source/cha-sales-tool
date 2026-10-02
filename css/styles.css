@@ -12342,3 +12342,9 @@ body {
   color: var(--cha-text-secondary);
   border: 1px solid var(--cha-border-default);
 }
+
+.pv-badge-Limited-medical {
+  background: var(--cha-bg-muted);
+  color: var(--cha-text-secondary);
+  border: 1px solid var(--cha-border-default);
+}

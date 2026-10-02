@@ -66,6 +66,7 @@ var PD_GROUPS = [
   { key: 'MEC', label: 'MEC' },
   { key: 'STM', label: 'Short-term medical' },
   { key: 'Limited', label: 'Limited benefit' },
+  { key: 'Limited medical', label: 'Limited medical' },
   { key: 'More plans', label: 'More plans' }
 ];
 
@@ -1029,16 +1030,18 @@ function _renderPolicydocsInner() {
   html +=
     '<p class="pv-lead">Find the right plan for every client.</p></header>';
   html += '<div class="stabs pv-filters">';
-  ['All', 'MEC', 'STM', 'Limited', 'More plans'].forEach(function (f) {
-    html +=
-      '<button type="button" class="stab' +
-      (f === policyDocFilter ? ' active' : '') +
-      '" data-pv-filter="' +
-      f +
-      '">' +
-      (f === 'All' ? 'All' : f) +
-      '</button>';
-  });
+  ['All', 'MEC', 'STM', 'Limited', 'Limited medical', 'More plans'].forEach(
+    function (f) {
+      html +=
+        '<button type="button" class="stab' +
+        (f === policyDocFilter ? ' active' : '') +
+        '" data-pv-filter="' +
+        f +
+        '">' +
+        (f === 'All' ? 'All' : f) +
+        '</button>';
+    }
+  );
   html += '</div>';
   html += '<div class="pv-search-wrap">';
   html +=
@@ -1091,7 +1094,14 @@ function policyDocFilterChanged() {
   var tabs = document.querySelectorAll(
     '#page-policydocs .stab, #page-allplans .stab'
   );
-  var filters = ['All', 'MEC', 'STM', 'Limited', 'More plans'];
+  var filters = [
+    'All',
+    'MEC',
+    'STM',
+    'Limited',
+    'Limited medical',
+    'More plans'
+  ];
   tabs.forEach(function (tab, i) {
     if (filters[i] === policyDocFilter) tab.classList.add('active');
     else tab.classList.remove('active');
