@@ -442,7 +442,7 @@ var POLICY_DOCS = [
 {
     id: 'smartchoice',
     name: 'SmartChoice',
-    group: 'MEC',
+    group: 'Limited medical',
     type: 'MEC',
     carrier: 'Detego Health',
     network: 'First Health EPO',
