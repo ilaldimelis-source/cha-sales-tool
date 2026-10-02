@@ -92,8 +92,8 @@ var sw = fs.readFileSync(path.join(ROOT, 'sw2.js'), 'utf8');
 var indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 
 assert(
-  /var CACHE_NAME = 'cha-command-center-v226';/.test(sw),
-  'CACHE_NAME bumped to v226'
+  /var CACHE_NAME = 'cha-command-center-v227';/.test(sw),
+  'CACHE_NAME bumped to v227'
 );
 assert(
   indexHtml.indexOf('sales-tracker.css?v=1790260950067') !== -1 &&

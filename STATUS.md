@@ -2,7 +2,7 @@
 
 Through PR #358, merged 2 October 2026. #323 was closed and did not merge.
 
-The GHDP-1 flyer in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October 2026) is source 149. It is a one-page marketing sheet. The header prints GHDP-1. It has no form number, so it is rank 7. It is not the older 249604-byte file already on file. It settles none of the blocked documents below.
+The GHDP-1 file in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October 2026) is source 149. It is the same schedule cover as source 115, a newer one-page copy. It is a benefit schedule at rank 2, matching sources 115 through 119. It is not the older 249604-byte file. It settles none of the blocked documents below.
 
 ## Done
 
@@ -68,7 +68,7 @@ The GHDP-1 flyer in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 Octobe
 
 ### Intake
 
-- Filed the 2 October 2026 GHDP-1 one-page flyer as source 149. Rank 7 marketing. No blocked item moved.
+- Filed the 2 October 2026 GHDP-1 one-page schedule as source 149. Benefit schedule, rank 2, matching source 115. No blocked item moved.
 
 ## Rules in force
 
