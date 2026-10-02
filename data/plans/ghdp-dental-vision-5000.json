@@ -228,7 +228,7 @@
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "ghdp-dental-vision-5000"
       ],
@@ -237,7 +237,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=45105&id=974358",
       "v": "100% coverage, NO waiting period. Routine Exam (2 per 12 months); Cleaning (2 per 12 months); Bitewing X-rays (1 per 12 months); Fluoride for children under age 16 (1 per 12 months).",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pt": {
       "searched": [],

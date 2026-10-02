@@ -385,7 +385,7 @@
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "ghdp-5"
       ],
@@ -394,7 +394,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=44904&id=974358",
       "v": "1 visit/year, $25 copay, $150 maximum per visit",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "xray": {
       "searched": [],

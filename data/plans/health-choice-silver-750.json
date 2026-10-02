@@ -14,7 +14,7 @@
       "app": "FAMILY_WIDE",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "health-choice-silver-100",
         "health-choice-silver-1000",
@@ -30,7 +30,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=32339&id=974358",
       "v": "30-day free trial: cancel and receive a full refund excluding the one-time enrollment fee, AS LONG AS NO BENEFITS HAVE BEEN USED. After using the program, cancellation terminates benefits at the end of the billing cycle already billed. NCE authorization 'will remain in effect until NCE Association has received written notice from you that it should be cancelled at least 10 DAYS prior to your next bill date.' The FirstEnroll billing authorization in the same document requires written notice 'at least 15 DAYS prior to the next billing date'.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "claims_administrator": {
       "searched": [],
@@ -422,7 +422,7 @@
       "app": "FAMILY_WIDE",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "health-choice-silver-100",
         "health-choice-silver-1000",
@@ -438,7 +438,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=32339&id=974358",
       "v": "The plan 'does not satisfy a person's individual obligation to secure the requirement of minimum essential coverage under the Affordable Care Act (ACA)' and is not major medical coverage. The disclosures refer the client to http://www.HealthCare.gov.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "required_disclosures": {
       "searched": [],

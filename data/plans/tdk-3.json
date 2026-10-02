@@ -14,7 +14,7 @@
       "app": "EXACT_VARIANT",
       "auth": 1,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT",
       "gov": [
         "tdk-3"
       ],
@@ -23,7 +23,7 @@
       "src": 27,
       "url": null,
       "v": "TERMINATION OF COVERAGE Termination of Plan Membership : A Plan Member’s coverage will terminate with the Plan for any one of the reasons outlined in this section. This termination language will apply to each class of eligible Members. Coverage ends on the last day of the month following one of the events listed, unless otherwise specified. Spouse and dependent children will terminate on the same date as the Member for the all benefits; or for a dependent child, the end of the month in which they turn 26. 1. Working owner does not maintain good standing by completing all required activities each year. 2. Voluntary Termination of Coverage. Coverage will end on the last day for which a contribution has been paid for a Plan Member who voluntarily ends cover age. 3. Death. Coverage will end on the date of death of the member. 4. Contributions. If the covered Plan Member or beneficiary fails to remit required contributions within thirty (30) days when such payment is due, then coverage will terminate at the end of the period for which a contribution is made. 5. Military Duty. The date the Plan Member becomes a full-time member of the Armed Forces of any United States on a full-time active-duty basis, or a government unit covered by or Uniformed Services Employment and re- employment Rights Act of 1993 (USERRA). Reserve duty, drills and summer camp shall be excluded from the definition of active duty unless such duty lasts over 30 days as defined by the act. 6. Plan Termination. The date the Plan is terminated. Rescission of Coverage : Coverage under this Plan may be rescinded under certain circumstances. A determination by the Plan that a rescission is warranted will be considered an Adverse Benefit Determination for purposes of review and appeal. A Participant whose coverage is being rescinded will be provided a thirty (30) day notice period as described under Health Care Reform and regulatory guidance. Such notice shall be considered an Adverse Benefit Determination. At the conclusion of the thirty (30) day notice period, coverage shall be terminated retroactive to the date identified in the notification. Claims Incurred after the retroactive date of termination shall not be further processed and/or paid under the Plan. Claims Incurred after the retroactive date of termination that were paid under the Plan will be treated as erroneously paid claims under this Plan.",
-      "vs": "VERIFIED"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "claims_administrator": {
       "app": "EXACT_VARIANT",
@@ -292,7 +292,7 @@
       "app": "EXACT_VARIANT",
       "auth": 1,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT",
       "gov": [
         "tdk-3"
       ],
@@ -301,7 +301,7 @@
       "src": 27,
       "url": null,
       "v": "Wellness or preventive exam: 1 visit per year, $0 copayment, maximum $150 per visit.",
-      "vs": "VERIFIED"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pt": {
       "searched": [],

@@ -14,7 +14,7 @@
       "app": "FAMILY_WIDE",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "awa-safeguard-add-ame-ci-adv",
         "awa-safeguard-add-ame-ci-sa"
@@ -24,7 +24,7 @@
       "src": 130,
       "url": "https://www.1enrollment.com/information/product.cfm?page=47435&id=974021",
       "v": "A member may terminate the scheduled payments… by notifying Neo Insurance Solutions in writing at least three business days prior to the next scheduled payment date… You understand that this coverage is not renewable or extendable. If a member is not 100% satisfied… they may contact Neo Insurance Solutions for cancellation within 30 days of purchase. Coverage will be cancelled as of the effective date and premium will be returned less any claims paid.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "claims_administrator": {
       "app": "FAMILY_WIDE",

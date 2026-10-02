@@ -404,7 +404,7 @@
       "app": "EXACT_VARIANT",
       "auth": 1,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT",
       "gov": [
         "smart-choice-1500"
       ],
@@ -413,7 +413,7 @@
       "src": 21,
       "url": null,
       "v": "ACA-required preventive services paid at 100% in-network, subject to age, gender and frequency limits. ACA-required services received outside those limits, and other preventive services not required by ACA, are treated the same as any other illness. Out-of-network not covered.",
-      "vs": "VERIFIED"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pt": {
       "app": "EXACT_VARIANT",
@@ -479,7 +479,7 @@
       "app": "EXACT_VARIANT",
       "auth": 1,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT",
       "gov": [
         "smart-choice-1500"
       ],
@@ -488,7 +488,7 @@
       "src": 21,
       "url": null,
       "v": "Preferred and non-preferred specialty drugs are NOT COVERED. The document directs members to access patient assistance through ScriptAide, subject to foundational program rules including income requirements.",
-      "vs": "VERIFIED"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "snf": {
       "app": "EXACT_VARIANT",

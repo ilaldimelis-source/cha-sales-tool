@@ -374,7 +374,7 @@
       "app": "EXACT_VARIANT",
       "auth": 1,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT",
       "gov": [
         "smart-choice-2500"
       ],
@@ -383,7 +383,7 @@
       "src": 18,
       "url": null,
       "v": "ACA-required preventive paid 100% in-network subject to age, gender and frequency limits. Outside those limits, and other non-ACA preventive, treated as any other illness. Out-of-network not covered.",
-      "vs": "VERIFIED"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pt": {
       "searched": [],
@@ -439,7 +439,7 @@
       "app": "EXACT_VARIANT",
       "auth": 1,
       "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "cur": "CURRENT",
       "gov": [
         "smart-choice-2500"
       ],
@@ -448,7 +448,7 @@
       "src": 18,
       "url": null,
       "v": "Preferred and non-preferred specialty drugs NOT COVERED. Patient assistance available through ScriptAide subject to foundational program rules including income requirements.",
-      "vs": "VERIFIED"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "snf": {
       "app": "EXACT_VARIANT",

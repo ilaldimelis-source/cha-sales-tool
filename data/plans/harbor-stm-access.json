@@ -315,17 +315,18 @@
     },
     "preventive": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-access"
       ],
       "pg": 5,
-      "sec": "brochure",
-      "src": 104,
-      "v": "One annual wellness visit. The deductible is waived and coinsurance applies. Mammography and colorectal screenings are no cost. Other screenings and routine child healthcare are subject to the deductible and coinsurance.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "sec": "printed page 5 (PDF page 5), Plan Benefits, Medical Expense Highlights",
+      "src": 147,
+      "url": null,
+      "v": "Wellness Exam: Deductible waived, coinsurance applies. Mammography and colorectal screenings are no cost. Other screenings and routine child healthcare are subject to deductible and coinsurance.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pt": {
       "searched": [],
@@ -339,45 +340,48 @@
     },
     "rx_brand": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-access"
       ],
       "pg": 6,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Optional Outpatient Prescription Drug Rider. Covered brand-name drugs are subject to a $500 prescription drug deductible, then plan coinsurance. Limited to the approved drug list and participating pharmacies.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "sec": "printed page 6 (PDF page 6), Plan Benefits, Prescription Drugs",
+      "src": 147,
+      "url": null,
+      "v": "Prescription Drugs (Rx Rider): Available. The optional Outpatient Prescription Drug Rider provides coverage for eligible generic, preferred brand-name, non-preferred brand-name, and specialty prescriptions filled through participating pharmacies. It includes a $5,000 maximum benefit per covered person per coverage period. Generic drugs are subject to a $25 copay, while covered brand-name and specialty drugs are subject to a $500 prescription drug deductible, followed by plan coinsurance. Prescriptions filled outside the participating pharmacy network are not covered, and coverage is limited to drugs included on the plan's approved drug list.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_generic": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-access"
       ],
       "pg": 6,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Optional Outpatient Prescription Drug Rider, not part of the base plan. Eligible generic drugs through participating pharmacies are subject to a $25 copay. The rider has a $5,000 maximum benefit per covered person per coverage period. Prescriptions outside the participating pharmacy network are not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "sec": "printed page 6 (PDF page 6), Plan Benefits, Prescription Drugs",
+      "src": 147,
+      "url": null,
+      "v": "Prescription Drugs (Rx Rider): Available. The optional Outpatient Prescription Drug Rider provides coverage for eligible generic, preferred brand-name, non-preferred brand-name, and specialty prescriptions filled through participating pharmacies. It includes a $5,000 maximum benefit per covered person per coverage period. Generic drugs are subject to a $25 copay, while covered brand-name and specialty drugs are subject to a $500 prescription drug deductible, followed by plan coinsurance. Prescriptions filled outside the participating pharmacy network are not covered, and coverage is limited to drugs included on the plan's approved drug list.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_specialty": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-access"
       ],
       "pg": 6,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Optional Outpatient Prescription Drug Rider. Covered specialty drugs are subject to a $500 prescription drug deductible, then plan coinsurance. Limited to the approved drug list and participating pharmacies.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "sec": "printed page 6 (PDF page 6), Plan Benefits, Prescription Drugs",
+      "src": 147,
+      "url": null,
+      "v": "Prescription Drugs (Rx Rider): Available. The optional Outpatient Prescription Drug Rider provides coverage for eligible generic, preferred brand-name, non-preferred brand-name, and specialty prescriptions filled through participating pharmacies. It includes a $5,000 maximum benefit per covered person per coverage period. Generic drugs are subject to a $25 copay, while covered brand-name and specialty drugs are subject to a $500 prescription drug deductible, followed by plan coinsurance. Prescriptions filled outside the participating pharmacy network are not covered, and coverage is limited to drugs included on the plan's approved drug list.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "snf": {
       "searched": [],
@@ -464,17 +468,18 @@
     },
     "wellness": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-access"
       ],
-      "pg": 5,
-      "sec": "brochure",
-      "src": 104,
-      "v": "One annual wellness visit on every Harbor option. The deductible is waived and coinsurance applies.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "pg": null,
+      "sec": "printed page 4 (PDF page 4), Plan Highlights, Preventive Care; printed page 5 (PDF page 5), Plan Benefits, Medical Expense Highlights, Wellness Exam footnote 3",
+      "src": 147,
+      "url": null,
+      "v": "HarborSTM features one annual wellness visit included on all plan options. Wellness Exam: Deductible waived, coinsurance applies. Mammography and colorectal screenings are no cost. Other screenings and routine child healthcare are subject to deductible and coinsurance.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "xray": {
       "searched": [],
@@ -491,10 +496,11 @@
       "gov": [
         "harbor-stm-access"
       ],
-      "pg": 6,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Not minimum essential coverage and not ACA comprehensive major medical.",
+      "pg": 10,
+      "sec": "printed page 10 (PDF page 10), Exclusions and Limitations, What is Not Covered",
+      "src": 147,
+      "url": null,
+      "v": "This coverage is not Minimum Essential Coverage (MEC) and is not intended to satisfy the Affordable Care Act's requirements for comprehensive health insurance.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "required_disclosures": {
