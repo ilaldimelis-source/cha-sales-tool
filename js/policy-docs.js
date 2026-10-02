@@ -69,7 +69,7 @@ var PD_GROUPS = [
 ];
 
 var PD_FACT_SLOTS = [
-  { label: 'Plan type', vault: 'type' },
+  { label: 'Plan type', vault: 'type', paths: ['identity.product_type'] },
   { label: 'Network', vault: 'network', paths: ['identity.network'] },
   { label: 'Deductible', paths: ['cost_sharing.deductible'] },
   { label: 'Coinsurance', paths: ['cost_sharing.coinsurance'] },
