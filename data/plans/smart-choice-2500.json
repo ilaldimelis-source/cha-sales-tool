@@ -1341,12 +1341,12 @@
       "gov": [
         "smart-choice-2500"
       ],
-      "pg": 0,
-      "sec": "Cover / title block",
-      "src": 18,
+      "pg": 1,
+      "sec": "Cover",
+      "src": 138,
       "url": null,
-      "v": "Limited Medical, per the document's own cover title.",
-      "vs": "CONFLICTED"
+      "v": "Limited Medical",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_admin": {
       "searched": [],
@@ -1503,13 +1503,6 @@
         18,
         120,
         138
-      ]
-    },
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        18,
-        82
       ]
     },
     {
@@ -1883,9 +1876,10 @@
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
+      "cur": "POSSIBLY_STALE",
       "field": "identity.product_type",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
       "cur": "POSSIBLY_STALE",

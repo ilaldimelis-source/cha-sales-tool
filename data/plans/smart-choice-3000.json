@@ -1352,18 +1352,18 @@
     },
     "product_type": {
       "app": "EXACT_VARIANT",
-      "auth": 1,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "POSSIBLY_STALE",
       "gov": [
         "smart-choice-3000"
       ],
-      "pg": 0,
-      "sec": "Cover / title block",
-      "src": 20,
+      "pg": 1,
+      "sec": "Cover",
+      "src": 145,
       "url": null,
-      "v": "Limited Medical, per the document's own cover title.",
-      "vs": "CONFLICTED"
+      "v": "Limited Medical",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_admin": {
       "app": "EXACT_VARIANT",
@@ -1537,13 +1537,6 @@
         20,
         120,
         139
-      ]
-    },
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        20,
-        82
       ]
     },
     {
@@ -1943,9 +1936,10 @@
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
+      "cur": "POSSIBLY_STALE",
       "field": "identity.product_type",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
       "cur": "POSSIBLY_STALE",

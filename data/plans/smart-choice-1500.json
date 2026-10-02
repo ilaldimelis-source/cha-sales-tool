@@ -1409,18 +1409,18 @@
     },
     "product_type": {
       "app": "EXACT_VARIANT",
-      "auth": 1,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "POSSIBLY_STALE",
       "gov": [
         "smart-choice-1500"
       ],
-      "pg": 0,
-      "sec": "Cover / title block",
-      "src": 21,
+      "pg": 1,
+      "sec": "Cover",
+      "src": 144,
       "url": null,
-      "v": "Limited Medical. The document's own cover title names the plan type.",
-      "vs": "CONFLICTED"
+      "v": "Limited Medical",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_admin": {
       "app": "EXACT_VARIANT",
@@ -1614,13 +1614,6 @@
         21,
         120,
         137
-      ]
-    },
-    {
-      "field": "identity.product_type",
-      "source_ids": [
-        21,
-        82
       ]
     },
     {
@@ -2061,9 +2054,10 @@
       "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
+      "cur": "POSSIBLY_STALE",
       "field": "identity.product_type",
-      "kind": "CONFLICTED",
-      "message": "field is CONFLICTED"
+      "kind": "CURRENTNESS",
+      "message": "VERIFIED fact has cur=POSSIBLY_STALE"
     },
     {
       "cur": "POSSIBLY_STALE",
