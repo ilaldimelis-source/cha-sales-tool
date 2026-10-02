@@ -2,6 +2,8 @@
 
 Through PR #358, merged 2 October 2026. #323 was closed and did not merge.
 
+The GHDP-1 flyer in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October 2026) is source 149. It is a one-page marketing sheet. The header prints GHDP-1. It has no form number, so it is rank 7. It is not the older 249604-byte file already on file. It settles none of the blocked documents below.
+
 ## Done
 
 ### Ledger and the profile build
@@ -63,6 +65,10 @@ Through PR #358, merged 2 October 2026. #323 was closed and did not merge.
 - #349 Replace indemnity dash notes with the printed schedule rows.
 - #352 Add the Pinnacle Critical Care brochure to the source inventory.
 - #353 Replace paraphrased exclusion lists with the printed text.
+
+### Intake
+
+- Filed the 2 October 2026 GHDP-1 one-page flyer as source 149. Rank 7 marketing. No blocked item moved.
 
 ## Rules in force
 
