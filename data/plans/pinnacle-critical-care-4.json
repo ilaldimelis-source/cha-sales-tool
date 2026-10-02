@@ -916,7 +916,7 @@
       "src": 82,
       "url": "https://www.1enrollment.com/information/product.cfm?page=44563&id=767303",
       "v": "Insured coverage. Four Critical Care plan options share the same Daily Hospital Confinement benefit of $50 per day and differ in the Critical Care benefit amount, which ranges from $25,000 to $100,000 by plan. Covered conditions pay a listed percentage of the elected plan benefit.",
-      "vs": "VERIFIED"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_admin": {
       "searched": [],
