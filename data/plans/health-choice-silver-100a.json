@@ -1103,13 +1103,6 @@
       ]
     },
     {
-      "conflict_id": "C-016",
-      "field": "eligibility.age",
-      "source_ids": [
-        88
-      ]
-    },
-    {
       "conflict_id": "C-017",
       "field": "cancellation.notice_period",
       "source_ids": [

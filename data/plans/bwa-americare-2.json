@@ -932,13 +932,6 @@
         88,
         94
       ]
-    },
-    {
-      "conflict_id": "C-021",
-      "field": "exclusions.pre_existing",
-      "source_ids": [
-        88
-      ]
     }
   ],
   "open_gaps": [

@@ -853,13 +853,6 @@
       ]
     },
     {
-      "conflict_id": "C-020",
-      "field": "benefit_schedule (all fields)",
-      "source_ids": [
-        88
-      ]
-    },
-    {
       "conflict_id": "C-029",
       "field": "exclusions.pre_existing",
       "source_ids": [

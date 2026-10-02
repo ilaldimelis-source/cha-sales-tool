@@ -1082,16 +1082,7 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     }
   },
-  "open_conflicts": [
-    {
-      "conflict_id": "C-011",
-      "field": "identity.product_type",
-      "source_ids": [
-        82,
-        83
-      ]
-    }
-  ],
+  "open_conflicts": [],
   "open_gaps": [
     {
       "blocks_statement": false,
