@@ -64,23 +64,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "customer_service": {
-      "app": "FAMILY_WIDE",
+      "app": "EXACT_VARIANT",
       "auth": 1,
-      "conf": "HIGH",
-      "cur": "POSSIBLY_STALE",
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
       "gov": [
-        "ghdp-1",
-        "ghdp-2",
-        "ghdp-3",
-        "ghdp-4",
-        "ghdp-5"
+        "ghdp-2"
       ],
       "pg": 18,
       "sec": "SEC 3 ADMINISTRATION - 3.8 Contact Information",
       "src": 114,
       "url": null,
-      "v": "MBA 18700 N Hayden Rd Suite 390, Scottsdale, AZ 85255. 480-576-7118.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "id_card_timing": {
       "searched": [],
