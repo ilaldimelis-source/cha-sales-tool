@@ -1104,10 +1104,10 @@
         "smart-choice-1500"
       ],
       "pg": 5,
-      "sec": "printed page 5 (PDF page 6), Benefit Summary - Out-of-pocket Limit. Smart Choice 1500 Plan Doc 2025   .pdf at commit 978066c0aa84082bde0f69f5021c003cb76ce47c.",
+      "sec": "printed page 5 (PDF page 6), Benefit Summary - Out-of-pocket Limit",
       "src": 144,
       "url": null,
-      "v": "Out-of-pocket Limit (Includes Deductible, Coinsurance and Copays). Individual, In Network $9,200, Out of Network Not Covered. Family (Embedded*), In Network $18,400, Out of Network Not Covered. Once the annual Out-of-pocket Limit is reached, most Covered Services are payable by the plan at 100% for the rest of the Calendar Year.",
+      "v": "Out-of-pocket Limit (Includes Deductible, Coinsurance and Copays). Individual, In Network $9,200, Out of Network Not Covered. Family (Embedded*), In Network $18,400, Out of Network Not Covered. Once the annual Out-of-pocket Limit is reached, most Covered Services are payable by the plan at 100% for the rest of the Calendar Year. *Embedded – If you have single coverage, you only need to satisfy the individual Deductible and Out-of-pocket Limit amounts. If you have family coverage, no one family member contributes more than the individual amount. Family members may combine their covered expenses to satisfy the required family Deductible and Out-of-pocket amounts.",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "moop_exclusions": {
