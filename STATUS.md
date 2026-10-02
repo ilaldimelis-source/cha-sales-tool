@@ -4,8 +4,6 @@ Through PR #368, merged 2 October 2026. #323 was closed and did not merge.
 
 The GHDP-1 file in Downloads (`MEC_GHDP1_1.pdf`, 157974 bytes, created 2 October 2026) is source 149. It is the same schedule cover as source 115, a newer one-page copy. It is a benefit schedule at rank 2, matching sources 115 through 119. It is not the older 249604-byte file. It settles none of the blocked documents below.
 
-The HealthSherpa file in Downloads (`plan_comparison.pdf`, 1079776 bytes, created 1 October 2026) is source 150. Both pages were read from page images. It is a quote comparison of Anthem Colorado and SelectHealth marketplace plans. It has no form number. It is filed as a brochure at rank 7. It names no plan in this registry and settles none of the blocked documents below.
-
 ## Done
 
 ### Ledger and the profile build
@@ -77,7 +75,6 @@ The HealthSherpa file in Downloads (`plan_comparison.pdf`, 1079776 bytes, create
 ### Intake
 
 - #360 File the 2 October 2026 GHDP-1 download in the source inventory as source 149.
-- #368 File the 1 October 2026 HealthSherpa comparison as source 150. Rank 7. No blocked item moved.
 
 ## Rules in force
 
@@ -86,6 +83,7 @@ The HealthSherpa file in Downloads (`plan_comparison.pdf`, 1079776 bytes, create
 - `npm run build:profiles` is a dry run unless `--write` is passed.
 - When a plan card shows its own type, network, carrier, or association because no verified leaf exists, that text carries a NOT CONFIRMED badge.
 - A brochure at rank 7 cannot verify benefits or limitations. Those leaves are capped to needs manual verification.
+- If an intake prompt does not name a specific file, or it still contains "[FILE NAME]", do nothing and ask which file. Never pick a file by recency. Never inventory a document that does not name a plan or carrier in the registry.
 
 ### Batch-mode gates
 
