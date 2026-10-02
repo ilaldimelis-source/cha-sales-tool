@@ -216,7 +216,76 @@ var PD_PLAN_TIERS = {
     { id: 'allstate-copay-enhanced-stm-ppo', label: 'Copay Enhanced' },
     { id: 'allstate-essentials-stm-ppo', label: 'Essentials' }
   ],
-  pinnacle: [{ id: 'pinnacle-stm-traditional', label: 'Pinnacle STM' }]
+  pinnacle: [{ id: 'pinnacle-stm-traditional', label: 'Pinnacle STM' }],
+  harmonycareseries: [
+    { id: 'harmony-care-100', label: '100' },
+    { id: 'harmony-care-100a', label: '100A' },
+    { id: 'harmony-care-100b', label: '100B' },
+    { id: 'harmony-care-200', label: '200' },
+    { id: 'harmony-care-200-plus', label: '200+' },
+    { id: 'harmony-care-300', label: '300' },
+    { id: 'harmony-care-500', label: '500' },
+    { id: 'harmony-care-750', label: '750' },
+    { id: 'harmony-care-1000', label: '1000' }
+  ],
+  advancedwellnessplus: [
+    { id: 'advanced-wellness-plus-100', label: '100' },
+    { id: 'advanced-wellness-plus-100a', label: '100A' },
+    { id: 'advanced-wellness-plus-200', label: '200' },
+    { id: 'advanced-wellness-plus-200-plus', label: '200+' },
+    { id: 'advanced-wellness-plus-300', label: '300' },
+    { id: 'advanced-wellness-plus-500', label: '500' },
+    { id: 'advanced-wellness-plus-750', label: '750' },
+    { id: 'advanced-wellness-plus-1000', label: '1000' }
+  ],
+  awasafeguard: [
+    { id: 'awa-safe-guard-100', label: 'Safe Guard 100' },
+    { id: 'awa-safe-guard-accident-100000-sa', label: 'Accident $100,000 SA' },
+    {
+      id: 'awa-safe-guard-accident-hospital-5000-500',
+      label: 'AH $5,000/$500'
+    },
+    {
+      id: 'awa-safe-guard-accident-hospital-5000-500-sa',
+      label: 'AH $5,000/$500 SA'
+    },
+    {
+      id: 'awa-safe-guard-accident-hospital-5000-1000',
+      label: 'AH $5,000/$1,000'
+    },
+    {
+      id: 'awa-safe-guard-accident-hospital-5000-1000-sa',
+      label: 'AH $5,000/$1,000 SA'
+    },
+    { id: 'awa-safeguard-add-ame-ci-adv', label: 'ADD/AME/CI ADV' },
+    { id: 'awa-safeguard-add-ame-ci-sa', label: 'ADD/AME/CI SA' }
+  ],
+  allstateplans: [
+    { id: 'allstate-cancer-heart-stroke', label: 'Cancer and Heart/Stroke' },
+    { id: 'allstate-dental-ppo', label: 'Dental PPO' },
+    { id: 'allstate-hospital-expense', label: 'Hospital Expense' },
+    { id: 'allstate-plan-enhancer', label: 'Plan Enhancer' },
+    { id: 'allstate-specified-care', label: 'Specified Care' },
+    { id: 'allstate-specified-care-sa', label: 'Specified Care SA' }
+  ],
+  pinnaclehi: [
+    { id: 'pinnacle-hi-1', label: 'Plan 1' },
+    { id: 'pinnacle-hi-1-sa', label: 'Plan 1 SA' },
+    { id: 'pinnacle-hi-2', label: 'Plan 2' },
+    { id: 'pinnacle-hi-2-sa', label: 'Plan 2 SA' }
+  ],
+  pinnaclecriticalcaresa: [
+    { id: 'pinnacle-critical-care-1-sa', label: 'Plan 1 SA' },
+    { id: 'pinnacle-critical-care-2-sa', label: 'Plan 2 SA' },
+    { id: 'pinnacle-critical-care-3-sa', label: 'Plan 3 SA' },
+    { id: 'pinnacle-critical-care-4-sa', label: 'Plan 4 SA' }
+  ],
+  americanfinancialci: [
+    { id: 'american-financial-ci-2500', label: '$2,500' },
+    { id: 'american-financial-ci-5000', label: '$5,000' },
+    { id: 'american-financial-ci-7500', label: '$7,500' },
+    { id: 'american-financial-ci-10000', label: '$10,000' }
+  ]
 };
 
 function _pdHasFact(value) {
