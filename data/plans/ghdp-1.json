@@ -786,11 +786,11 @@
         "ghdp-1"
       ],
       "pg": 1,
-      "sec": "Cover - Utilizes the First Health Network, and footnote (2)",
+      "sec": "footer",
       "src": 115,
       "url": null,
-      "v": "First Health. Outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient Hospital indemnity benefits are not.",
-      "vs": "CONFLICTED"
+      "v": "First Health Network",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "policy_form": {
       "searched": [],
