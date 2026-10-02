@@ -117,9 +117,9 @@ var POLICY_DOCS = [
     name: 'GoodHealth 1-3',
     group: 'MEC',
     type: 'MEC',
-    carrier: 'Merchants Benefit Administration (MBA)',
+    carrier: '',
     network: 'First Health',
-    assoc: 'Good Health Distribution Partners',
+    assoc: '',
     source: 'MEC_GHDP1_1.pdf',
     planNotes:
       'Entry-level GoodHealth tiers 1-3. No surgery, no ER, no ambulance. Includes Kindly Human peer support.',
@@ -194,9 +194,9 @@ var POLICY_DOCS = [
     name: 'GoodHealth 4-5',
     group: 'MEC',
     type: 'MEC',
-    carrier: 'Merchants Benefit Administration (MBA)',
+    carrier: '',
     network: 'First Health',
-    assoc: 'Good Health Distribution Partners',
+    assoc: '',
     source: 'MEC_GHDP4_1.pdf',
     planNotes:
       'Upper GoodHealth tiers 4-5. Surgery, ER (if admitted), and ambulance ARE covered. Full formulary Rx included.',
