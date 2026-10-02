@@ -12336,3 +12336,9 @@ body {
 .pv-cc-conditions.pv-cc-open {
   display: contents;
 }
+
+.pv-badge-More-plans {
+  background: var(--cha-bg-muted);
+  color: var(--cha-text-secondary);
+  border: 1px solid var(--cha-border-default);
+}
