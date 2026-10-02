@@ -796,11 +796,11 @@
         "ghdp-3"
       ],
       "pg": 1,
-      "sec": "Cover - Utilizes the First Health Network, and footnote (2)",
+      "sec": "footer",
       "src": 117,
       "url": null,
-      "v": "First Health. Outpatient physician services and wellness benefits are subject to in-network providers only. Inpatient Hospital indemnity benefits are not.",
-      "vs": "CONFLICTED"
+      "v": "First Health Network",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "policy_form": {
       "searched": [],
@@ -936,19 +936,23 @@
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pre_existing": {
-      "app": "EXACT_VARIANT",
-      "auth": 5,
+      "app": "FAMILY_WIDE",
+      "auth": 1,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
-        "ghdp-3"
+        "ghdp-1",
+        "ghdp-2",
+        "ghdp-3",
+        "ghdp-4",
+        "ghdp-5"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=44902&id=974358",
-      "v": "PUBLISHED ON THE INFO TAB: the In Patient Hospitalization Benefit row (and, on GHDP 4 and 5, the In/Outpatient Surgery row) is marked '12/12 mo Pre-Ex3'.",
-      "vs": "CONFLICTED"
+      "pg": 12,
+      "sec": "SEC 2 DEFINITIONS - 2.56 Pre-Existing Condition (continues p.13)",
+      "src": 114,
+      "url": null,
+      "v": "a Bodily Injury or Sickness, whether a physical or mental condition regardless of the cause for the condition, for which medical advice, diagnosis, care or treatment was recommended or received by an Insured Person within the Twelve [12] months immediately before that person's Effective Date, or for which symptoms of a condition have occurred that would have led a prudent person to seek medical advice, diagnosis, care, or treatment during the Twelve [12] immediately before that person's Effective Date. Medical advice, diagnosis, care or treatment will be taken into account only if it is recommended by, or received from an individual licensed or similarly authorized to provide such services under state law and operating within the scope of practice authorized by state law. Medical treatment includes prescription medications.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "pregnancy_exclusion": {
       "app": "FAMILY_WIDE",
