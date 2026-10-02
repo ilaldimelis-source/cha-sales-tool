@@ -691,19 +691,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_type": {
-      "app": "FAMILY_WIDE",
-      "auth": 4,
+      "app": "EXACT_VARIANT",
+      "auth": 7,
       "conf": "HIGH",
       "cur": "POSSIBLY_STALE",
       "gov": [
-        "access-health-stm-lite",
         "access-health-stm-traditional"
       ],
-      "pg": null,
-      "sec": "brochure",
-      "src": 89,
+      "pg": 1,
+      "sec": "Cover",
+      "src": 23,
       "url": null,
-      "v": "'Limited Duration Group Short Term Medical Insurance'. Certificate form AF ST CERT 818. Brochure code BR-AFS-STM-2022.",
+      "v": "Limited Duration Group Short Term Medical Insurance",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_admin": {

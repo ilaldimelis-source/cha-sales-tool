@@ -751,25 +751,18 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "product_type": {
-      "app": "FAMILY_WIDE",
-      "auth": 4,
+      "app": "EXACT_VARIANT",
+      "auth": 7,
       "conf": "HIGH",
-      "cur": "CURRENT_LINKED",
+      "cur": "CURRENT",
       "gov": [
-        "sigma-care-plus-100",
-        "sigma-care-plus-1000",
-        "sigma-care-plus-100a",
-        "sigma-care-plus-200",
-        "sigma-care-plus-200-plus",
-        "sigma-care-plus-300",
-        "sigma-care-plus-500",
-        "sigma-care-plus-750"
+        "sigma-care-plus-100a"
       ],
-      "pg": null,
-      "sec": "brochure",
-      "src": 91,
+      "pg": 1,
+      "sec": "Cover",
+      "src": 11,
       "url": null,
-      "v": "'Limited Benefit Health Insurance Plans. Limited Benefit Insurance underwritten by: American Financial Security Life Insurance Co. GROUP POLICY FORM AF FI POLICY 721 ISSUED TO THE NATIONAL CONGRESS OF EMPLOYERS.' Brochure code AFS LM 721 SCP BR. Version marker 'Limited Medical Benefit Policy v1'.",
+      "v": "Limited Benefit Health Insurance Plans",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_admin": {

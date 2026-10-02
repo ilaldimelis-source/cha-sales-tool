@@ -822,17 +822,17 @@
     },
     "product_type": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 7,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "bwa-americare-2"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=39559&id=974358",
-      "v": "Business Workers of America membership built around a MEDICAL BILL REPRICER (MBR) plus a scheduled accident and sickness indemnity benefit. The Info page headline is 'MEDICAL BILL REPRICER'. Components: exceptional customer support coordinating benefits for members and providers; a $25/$50 pre-pay - 'Customers pay only $25 for Primary Care and $50 for Specialist, at time of service. No Limit to the number of visits'; PHCS PPO Network - 'All In-Network medical bills are repriced to the PHCS Network rate'; and Advocacy - 'MBR's support team will assist in lowering medical bills and help members access Financial Assistance'.",
+      "pg": 1,
+      "sec": "Cover",
+      "src": 8,
+      "url": null,
+      "v": "MEMBERSHIP PACKAGE",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_admin": {
