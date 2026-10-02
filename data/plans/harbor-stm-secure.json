@@ -1276,17 +1276,18 @@
     },
     "excluded_services": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-secure"
       ],
-      "pg": 9,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Not covered except where the brochure expressly lists a benefit: pre-existing conditions without the optional rider, routine preventive care beyond the listed wellness benefit, prescription drugs without the rider, dental, vision, cosmetic or elective procedures, experimental or investigational treatment, services that are not medically necessary, and custodial, domiciliary, or long-term care. This is short-term medical and is not minimum essential coverage. Coverage is not renewable.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "pg": 10,
+      "sec": "printed page 10 (PDF page 10), Exclusions and Limitations, What is Not Covered",
+      "src": 147,
+      "url": null,
+      "v": "This coverage is temporary and is not intended to replace comprehensive major medical insurance.\nPre-existing conditions are not covered except as expressly modified by an approved Pre-Existing Condition Waiver Rider, where applicable.\nCoverage is subject to the selected plan's benefit maximums, deductibles, copayments, coinsurance, and benefit-specific limits.\nPreventive treatment, routine physical examinations, and routine wellness services are not covered except where expressly listed as covered benefits.\nPrescription drug coverage is subject to the Outpatient Prescription Drug Rider, including applicable limitations, exclusions, eligibility requirements, and benefit\nMaternity, pregnancy, routine newborn care, and related services are not covered except where expressly required by applicable law or modified by a state-specific Rider.\nDental, vision, and other routine ancillary services are not covered except where specifically provided as covered benefits.\nCosmetic or elective procedures are not covered except where specifically provided as covered benefits.\nExperimental or investigational treatments, services, or procedures are not covered.\nServices, treatments, supplies, or procedures determined not to be Medically Necessary are not covered.\nCustodial care, domiciliary care, long-term care, and similar non-medically necessary supportive services are not covered.\nAdditional limitations or exclusions contained in an applicable Rider or state-specific Rider supersede the Certificate where required.\nThis coverage is not Minimum Essential Coverage (MEC) and is not intended to satisfy the Affordable Care Act's requirements for comprehensive health insurance.",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "lookback_months": {
       "app": "FAMILY_WIDE",
