@@ -206,8 +206,8 @@
     "hospital_admission": {
       "app": "EXACT_VARIANT",
       "auth": 5,
-      "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
       "gov": [
         "tdk-3"
       ],
@@ -215,8 +215,8 @@
       "sec": "INFORMATION tab",
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=43901&id=974358",
-      "v": "$1,000 per day, $15,000 year maximum. Marked '12/12 month Pre-Existing'",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "hospital_confinement_supplemental": {
       "app": "EXACT_VARIANT",

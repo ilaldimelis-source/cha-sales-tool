@@ -215,18 +215,18 @@
     },
     "hospital_admission": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "auth": 7,
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
       "gov": [
         "tdk-5"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=43903&id=974358",
-      "v": "$1,500 per day, $15,000 year maximum. Marked '12/12 month Pre-Existing'",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "pg": 15,
+      "sec": "In-Patient Hospitalization Benefit",
+      "src": 29,
+      "url": null,
+      "v": "In-Patient Hospitalization Benefit 12/12 Month Pre-Existing Per Day $1,500 Year Maximum $15,000",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "hospital_confinement_supplemental": {
       "app": "EXACT_VARIANT",
