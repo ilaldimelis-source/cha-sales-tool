@@ -604,6 +604,34 @@ function _pdIndemnityFacts(profile) {
   );
 }
 
+var PD_KEY_TERM_SLOTS = [
+  ['Facility payment limit', 'cost_sharing.ucr_cap'],
+  ['MEC / ACA status', 'compliance.mec_status'],
+  ['Prescription drugs generic', 'benefits.rx_generic'],
+  ['Prescription drugs brand', 'benefits.rx_brand'],
+  ['Prescription drugs specialty', 'benefits.rx_specialty'],
+  ['Wellness', 'benefits.wellness'],
+  ['Preventive', 'benefits.preventive'],
+  ['Cancellation', 'administration.cancellation']
+];
+
+function _pdKeyTermFacts(profile) {
+  var html = '';
+  var i;
+  var text;
+  if (!profile) return '';
+  for (i = 0; i < PD_KEY_TERM_SLOTS.length; i++) {
+    text = _pdVerifiedLeaf(profile, PD_KEY_TERM_SLOTS[i][1]);
+    html += _pdFactRow(PD_KEY_TERM_SLOTS[i][0], text);
+  }
+  if (!html) return '';
+  return (
+    '<div class="pv-indemnity"><div class="pv-indemnity-label">Key terms</div>' +
+    html +
+    '</div>'
+  );
+}
+
 function _pdFactsInner(plan, profile) {
   var html = '';
   var i;
@@ -629,6 +657,7 @@ function _pdFactsInner(plan, profile) {
   }
   html += _pdCriticalCareFacts(profile);
   html += _pdIndemnityFacts(profile);
+  html += _pdKeyTermFacts(profile);
   return html;
 }
 

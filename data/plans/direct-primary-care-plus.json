@@ -335,7 +335,7 @@
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "direct-primary-care-plus"
       ],
@@ -344,7 +344,7 @@
       "src": 101,
       "url": "https://www.1enrollment.com/information/product.cfm?page=52871&id=974021",
       "v": "Not insurance; does not satisfy ACA minimum essential coverage",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "required_disclosures": {
       "searched": [],

@@ -248,7 +248,7 @@
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "ghdp-wellness"
       ],
@@ -257,7 +257,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=44899&id=974358",
       "v": "ACA section 2713 preventive list, itemised on the page: Abdominal Aortic Aneurysm Screening; Adult Annual Standard Physical; Alcohol Misuse screening and counseling; Aspirin preventive medication; Bacteriuria Screening; BRCA Risk Assessment and Genetic Counseling/Testing; Breast Cancer Screening; Breastfeeding Support, Supplies and Counseling; Cervical Cancer Screening (Cytology/Pap, and Cytology+HPV); Chlamydia Screening; Colorectal Cancer Screening (subject to an at-home test kit for initial screening; colonoscopy benefits only if positive); Contraceptive Methods and Counseling; Dental Caries Prevention (infants and children up to age 5); Depression Screening; Diabetes Screening; Fall Prevention (older adults); Folic Acid Supplementation; Gestational Diabetes Mellitus Screening; Gonorrhea Prophylactic Medication; Gonorrhea Screening; Healthy Diet and Physical Activity Counseling; Hemoglobinopathies Screening; Hepatitis B Screening; Hepatitis C Screening; High Blood Pressure Screening; HIV Preexposure Prophylaxis; HIV Screening; Hypothyroidism Screening; Intimate Partner Violence Screening; Lung Cancer Screening; Obesity Screening and Counseling; Osteoporosis Screening; Phenylketonuria Screening; Preeclampsia Screening; Rh Incompatibility Screening (first pregnancy visit, and 24-28 weeks); Sexually Transmitted Infections Counseling; Skin Cancer Behavioral Counseling; Statin Preventive Medication; Syphilis Screening; Tobacco Use Counseling and Interventions; Tuberculosis Screening; Vision Screening; Well-Child Visits; Well-Woman Visits.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pt": {
       "searched": [],
@@ -343,7 +343,7 @@
       "app": "EXACT_VARIANT",
       "auth": 5,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "ghdp-wellness"
       ],
@@ -352,7 +352,7 @@
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=44899&id=974358",
       "v": "1 visit per year, $25 copay, $150 maximum per visit",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "xray": {
       "searched": [],
