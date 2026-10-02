@@ -322,8 +322,8 @@
       "sec": "brochure",
       "src": 99,
       "url": null,
-      "v": "N/A - not included on Plan 2",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "mri": {
       "searched": [],

@@ -152,8 +152,8 @@
       "sec": "INFORMATION tab - benefit schedule table",
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=48876&id=974358",
-      "v": "NOT_FOUND_IN_SOURCE - dash",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "ambulance": {
       "searched": [],
@@ -172,8 +172,8 @@
       "sec": "INFORMATION tab - benefit schedule table",
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=48876&id=974358",
-      "v": "NOT_FOUND_IN_SOURCE - dash",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "cancer": {
       "searched": [],
@@ -197,8 +197,8 @@
       "sec": "INFORMATION tab - benefit schedule table",
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=48876&id=974358",
-      "v": "NOT_FOUND_IN_SOURCE - dash",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "ct": {
       "searched": [],
@@ -287,8 +287,8 @@
       "sec": "INFORMATION tab - benefit schedule table",
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=48876&id=974358",
-      "v": "NOT_FOUND_IN_SOURCE - dash",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "mental_health_outpatient": {
       "app": "EXACT_VARIANT",
@@ -302,8 +302,8 @@
       "sec": "INFORMATION tab - benefit schedule table",
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=48876&id=974358",
-      "v": "NOT_FOUND_IN_SOURCE - dash",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NOT_FOUND_IN_SOURCE"
     },
     "mri": {
       "searched": [],

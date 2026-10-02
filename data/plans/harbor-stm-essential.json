@@ -178,17 +178,18 @@
     },
     "anesthesia": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-essential"
       ],
       "pg": 5,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics: $500 access fee per admission, then subject to the deductible and coinsurance.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "sec": "printed page 5 (PDF page 5), Plan Benefits, Medical Expense Highlights",
+      "src": 147,
+      "url": null,
+      "v": "Emergency Treatment, Outpatient Surgery and Anesthesia, Advance Diagnostics Access Fee: $500 per admission then subject to deductible and coinsurance",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "cancer": {
       "searched": [],
@@ -404,31 +405,33 @@
     },
     "surgery_inpatient": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-essential"
       ],
       "pg": 5,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Hospital inpatient surgery is subject to the deductible and coinsurance.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "sec": "printed page 5 (PDF page 5), Plan Benefits, Medical Expense Highlights",
+      "src": 147,
+      "url": null,
+      "v": "Hospital Inpatient Surgery: Subject to deductible and coinsurance",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "surgery_outpatient": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
-      "conf": "HIGH",
+      "auth": 7,
+      "conf": "MEDIUM",
       "cur": "CURRENT",
       "gov": [
         "harbor-stm-essential"
       ],
       "pg": 5,
-      "sec": "brochure",
-      "src": 104,
-      "v": "Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics: $500 access fee per admission, then subject to the deductible and coinsurance.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "sec": "printed page 5 (PDF page 5), Plan Benefits, Medical Expense Highlights",
+      "src": 147,
+      "url": null,
+      "v": "Emergency Treatment, Outpatient Surgery and Anesthesia, Advance Diagnostics Access Fee: $500 per admission then subject to deductible and coinsurance",
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "telehealth": {
       "searched": [],

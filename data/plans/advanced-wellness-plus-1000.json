@@ -162,8 +162,8 @@
     "critical_illness": {
       "app": "EXACT_VARIANT",
       "auth": 5,
-      "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "conf": "MEDIUM",
+      "cur": "CURRENT",
       "gov": [
         "advanced-wellness-plus-1000"
       ],
@@ -171,8 +171,8 @@
       "sec": "INFORMATION tab - benefit schedule table",
       "src": 88,
       "url": "https://manage.firstenroll.com/information/product.cfm?page=45307&id=974358",
-      "v": "PRINTED AS '$1.000' IN THE SOURCE - decimal point, not a comma. Transcribed verbatim. Almost certainly $1,000 by comparison with 200+/300/500/750, but that is an inference and is NOT recorded as the value.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "v": null,
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "ct": {
       "searched": [],

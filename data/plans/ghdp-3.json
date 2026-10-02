@@ -213,17 +213,17 @@
     },
     "hospital_admission": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 2,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "POSSIBLY_STALE",
       "gov": [
         "ghdp-3"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=44902&id=974358",
-      "v": "$1,000 per day, $15,000 per year. Marked '12/12 mo Pre-Ex3'",
+      "pg": 1,
+      "sec": "In-Patient Hospitalization Benefit",
+      "src": 117,
+      "url": null,
+      "v": "In-Patient Hospitalization Benefit $1,000 / Day $15,000 / Year Maximum 12/12 mo Pre-Ex",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "hospital_confinement_supplemental": {

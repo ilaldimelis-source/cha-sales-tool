@@ -492,7 +492,7 @@
     },
     "surgery_outpatient": {
       "app": "EXACT_VARIANT",
-      "auth": 1,
+      "auth": 2,
       "conf": "HIGH",
       "cur": "POSSIBLY_STALE",
       "gov": [
@@ -502,8 +502,8 @@
       "sec": "Benefit Summary",
       "src": 18,
       "url": null,
-      "v": "$750 Copayment after Deductible, in-network. Limited to 3 per family per benefit period. Elective surgery is excluded - defined in the document as a procedure planned in advance that can be postponed without immediate harm. Out-of-network not covered.",
-      "vs": "VERIFIED"
+      "v": "Outpatient Hospital or Facility Services Limit 3 per family per benefit period — Elective Surgeries Excluded: Elective surgery refers to a surgical procedure that is planned in advance and is not considered an emergency. This means that the surgery can be postponed without causing immediate harm to the patient's health or life. In-network Provider $750 Copayment after Deductible. Out-of-network Provider Not Covered.",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "telehealth": {
       "app": "EXACT_VARIANT",
