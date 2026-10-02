@@ -3147,52 +3147,6 @@
    "notes": "NO document of any kind in Google Drive for this product. Portal Info page is behind blocker B-01."
   },
   {
-   "plan_id": "medvalue-2000",
-   "family": "MedValue",
-   "variant": "2000",
-   "display_name": "MedValue 2000",
-   "listed_on": [],
-   "product_type": "NEEDS_MANUAL_VERIFICATION",
-   "product_type_evidence": "Not on either product list; no portal categorisation available",
-   "aliases": [
-    "medvalue 2000",
-    "med value 2000"
-   ],
-   "status": "STATUS_UNCERTAIN",
-   "status_evidence": "Documented in Google Drive but ABSENT from both the NEO and FirstEnroll 2026-04-08 product-list snapshots. Having documents is not evidence a product is sold. Live lists unavailable (B-01/B-02).",
-   "notes": "Drive holds 'CARRIER APPROVED_03112026_MEDVALUE 2000_03112026(LR)(1).pdf' dated 2026-03-11, one month BEFORE the April snapshots, yet MedValue does not appear on either list. That is a genuine status question, unlike Harbor. The CHA Complete Toolkit's plan table lists MedValue 2000/4000/6000 as a live family with a dedicated sales script - only the 2000 variant is documented, and 4000/6000 have no document and no listing at all."
-  },
-  {
-   "plan_id": "medvalue-4000",
-   "family": "MedValue",
-   "variant": "4000",
-   "display_name": "MedValue 4000",
-   "listed_on": [],
-   "product_type": "NEEDS_MANUAL_VERIFICATION",
-   "product_type_evidence": "Not on either product list; no portal categorisation available",
-   "aliases": [
-    "medvalue 4000"
-   ],
-   "status": "STATUS_UNCERTAIN",
-   "status_evidence": "Documented in Google Drive but ABSENT from both the NEO and FirstEnroll 2026-04-08 product-list snapshots. Having documents is not evidence a product is sold. Live lists unavailable (B-01/B-02).",
-   "notes": "Named in the CHA Complete Toolkit plan table only. No document, no product listing. Existence as a current product is unverified."
-  },
-  {
-   "plan_id": "medvalue-6000",
-   "family": "MedValue",
-   "variant": "6000",
-   "display_name": "MedValue 6000",
-   "listed_on": [],
-   "product_type": "NEEDS_MANUAL_VERIFICATION",
-   "product_type_evidence": "Not on either product list; no portal categorisation available",
-   "aliases": [
-    "medvalue 6000"
-   ],
-   "status": "STATUS_UNCERTAIN",
-   "status_evidence": "Documented in Google Drive but ABSENT from both the NEO and FirstEnroll 2026-04-08 product-list snapshots. Having documents is not evidence a product is sold. Live lists unavailable (B-01/B-02).",
-   "notes": "Named in the CHA Complete Toolkit plan table only. No document, no product listing. Existence as a current product is unverified."
-  },
-  {
    "plan_id": "harmony-care-100-plus",
    "family": "Harmony Care",
    "variant": "100+",
