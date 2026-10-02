@@ -804,18 +804,18 @@
     },
     "product_type": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 1,
       "conf": "HIGH",
       "cur": "CURRENT_LIVE",
       "gov": [
         "ghdp-1"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=44900&id=974358",
-      "v": "'This is not a major medical plan nor a replacement for a major medical plan.' Group health plan limited to ACA-required preventive and wellness services plus benefits noted in the Summary Plan Description.",
-      "vs": "NEEDS_MANUAL_VERIFICATION"
+      "pg": 1,
+      "sec": "1.4.4 Type of Plan",
+      "src": 114,
+      "url": null,
+      "v": "Employee Welfare Benefit Plan",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "rx_admin": {
       "searched": [],
