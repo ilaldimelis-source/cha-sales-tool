@@ -43,7 +43,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Excepted-benefit coverage under the Wellness Brands Health Plan. Not a substitute for major medical coverage.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "eligibility_model": {
       "searched": [],
@@ -72,7 +72,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Merchants Benefit Administration (MBA) is the Plan Administrator and processes claims and eligibility. (480) 550-6457.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "association": {
       "app": "EXACT_VARIANT",
@@ -86,7 +86,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Wellness Brands Management LLC sponsors the Plan and is the general partner of Good Life Partners, LP.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "billing_entity": {
       "app": "EXACT_VARIANT",
@@ -100,7 +100,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Neo Insurance Solutions handles billing and enrollment. (866) 870-7730.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "enrollment_platform": {
       "searched": [],
@@ -119,7 +119,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "First Health Network, a CVS Health company. Office visits and preventive care are in-network only. Inpatient hospital is payable at any hospital. Surgical benefits, all tiers, are payable at any facility. The emergency room is not network-restricted.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_admin": {
       "searched": [],
@@ -177,7 +177,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Children through the end of the month in which they turn 26.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "spouse_rules": {
       "app": "EXACT_VARIANT",
@@ -191,7 +191,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Legal spouse.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "residency": {
       "searched": [],
@@ -220,7 +220,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Enrollment after the Plan Administrator confirms eligibility as an employee of the plan sponsor or a participating employer, or as a Working Owner under Section 3.8 of the Summary Plan Description. Coverage tiers: Member Only, Member + Spouse, Member + Child(ren), and Member + Family.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     }
   },
   "benefits": {
@@ -236,7 +236,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "In-network only. You pay $60. The plan pays up to $100. 5 visits per year. Out-of-network pays nothing.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "specialist": {
       "app": "EXACT_VARIANT",
@@ -250,7 +250,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "In-network only. You pay $75. The plan pays up to $125. 3 visits per year. Out-of-network pays nothing.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "urgent_care": {
       "app": "EXACT_VARIANT",
@@ -264,7 +264,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "In-network only. You pay $75. The plan pays up to $75. 2 visits per year. Out-of-network pays nothing.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "er": {
       "app": "EXACT_VARIANT",
@@ -278,7 +278,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "$750 per visit, 1 per year. Not network-restricted.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "ambulance": {
       "app": "EXACT_VARIANT",
@@ -292,7 +292,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Ground ambulance $500 per incident, 2 per year. Air ambulance is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "hospital_admission": {
       "searched": [],
@@ -311,7 +311,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "$1,500 per day, 10 days per year. Payable at any hospital.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "hospital_confinement_supplemental": {
       "searched": [],
@@ -335,7 +335,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "One surgical schedule, payable at any facility. Tier 1 $25,000, tier 2 $10,000, tier 3 $5,000, tier 4 $2,500, tier 5 $1,250, tier 6 $500, tier 7 $250. Assistant surgeon 20% of the surgical benefit. Same-day multiple surgeries pay the highest tier only. The tier is set by CPT code. The guide does not publish a separate inpatient-only amount.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "surgery_outpatient": {
       "searched": [],
@@ -354,7 +354,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Anesthesiologist, when required: 30% of the surgical benefit.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "labs": {
       "app": "EXACT_VARIANT",
@@ -368,7 +368,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Outpatient diagnostics and advanced radiology are not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "xray": {
       "searched": [],
@@ -407,7 +407,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Preventive services are paid at the fixed Schedule A amounts, in-network only. Each amount is a cap, not a floor. Adult annual preventive visit: 1 per year, $215. The guide lists 26 Schedule A services with their own frequency and amount.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "telehealth": {
       "app": "EXACT_VARIANT",
@@ -421,7 +421,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Telemedicine is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_generic": {
       "app": "EXACT_VARIANT",
@@ -435,7 +435,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "All prescription drugs are not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_brand": {
       "app": "EXACT_VARIANT",
@@ -449,7 +449,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "All prescription drugs are not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rx_specialty": {
       "app": "EXACT_VARIANT",
@@ -463,7 +463,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "All prescription drugs are not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "mental_health_inpatient": {
       "app": "EXACT_VARIANT",
@@ -477,7 +477,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Inpatient mental and nervous care is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "mental_health_outpatient": {
       "searched": [],
@@ -496,7 +496,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Inpatient substance abuse care is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "maternity": {
       "app": "EXACT_VARIANT",
@@ -510,7 +510,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Infertility treatment is not covered. The guide does not state a separate maternity benefit.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pt": {
       "app": "EXACT_VARIANT",
@@ -524,7 +524,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Physical and occupational therapy are not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "chiropractic": {
       "searched": [],
@@ -543,7 +543,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Durable medical equipment is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "home_health": {
       "app": "EXACT_VARIANT",
@@ -557,7 +557,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Home health care is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "snf": {
       "app": "EXACT_VARIANT",
@@ -571,7 +571,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Skilled nursing care is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "rehab": {
       "searched": [],
@@ -600,7 +600,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Accident coverage begins on the effective date. The guide does not publish a separate accident dollar benefit.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "accidental_death": {
       "searched": [],
@@ -619,7 +619,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "In-network only, same Schedule A on both options. Adult annual preventive visit $215 once per year. If the charge is under the scheduled amount, the plan pays the charge.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "dental": {
       "app": "EXACT_VARIANT",
@@ -633,7 +633,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Dental care is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "vision": {
       "app": "EXACT_VARIANT",
@@ -647,7 +647,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Vision care is not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     }
   },
   "cost_sharing": {
@@ -663,7 +663,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "No deductible.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "coinsurance": {
       "app": "EXACT_VARIANT",
@@ -677,7 +677,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "No coinsurance.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "moop": {
       "searched": [],
@@ -701,7 +701,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "No single annual maximum. Most benefits are capped per benefit, such as 10 hospital days per calendar year.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "term_max": {
       "searched": [],
@@ -767,7 +767,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "A 12-month / 12-month limitation applies to hospital and surgery benefits only. Those benefits are not payable during the first 12 months of coverage for a condition that received medical advice, diagnosis, care, or treatment in the 12 months before the effective date. Other benefits remain available.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pre_ex_scope": {
       "app": "EXACT_VARIANT",
@@ -781,7 +781,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Hospital and surgery benefits only. Office visits, preventive care, and other benefits are not subject to this limitation.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "lookback_months": {
       "app": "EXACT_VARIANT",
@@ -795,7 +795,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "12",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "waiting_period_sickness": {
       "app": "EXACT_VARIANT",
@@ -809,7 +809,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "A 30-day waiting period applies to sickness.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "waiting_period_other": {
       "app": "EXACT_VARIANT",
@@ -823,7 +823,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Accident coverage begins on the effective date.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "visit_limits": {
       "app": "EXACT_VARIANT",
@@ -837,7 +837,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Office-visit counts are printed on the plan benefits table and reset each calendar year on January 1.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "day_limits": {
       "app": "EXACT_VARIANT",
@@ -851,7 +851,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Inpatient hospital is limited to 10 days per calendar year.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "excluded_services": {
       "app": "EXACT_VARIANT",
@@ -865,7 +865,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Not covered on either option: all prescription drugs, telemedicine, inpatient physician visits, air ambulance, outpatient diagnostics and advanced radiology, skilled nursing and home health, physical and occupational therapy, radiation and chemotherapy, durable medical equipment, inpatient mental and nervous care, inpatient substance abuse, dental, vision, hearing aids, infertility treatment, cosmetic procedures, experimental or investigational treatment, custodial care, alternative medicine, weight-loss treatment, work-related injuries covered by workers compensation, and non-emergency care outside the United States.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "pregnancy_exclusion": {
       "app": "EXACT_VARIANT",
@@ -879,7 +879,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "The guide does not list a maternity benefit. Infertility treatment is not covered. Benefits not listed are not covered.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "material_definitions": {
       "searched": [],
@@ -900,7 +900,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Merchants Benefit Administration (MBA), (480) 550-6457, accountservices@mbaadmin.com.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "claims_submission": {
       "searched": [],
@@ -919,7 +919,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "No preauthorization or referral is required for any covered service.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "network_lookup": {
       "app": "EXACT_VARIANT",
@@ -933,7 +933,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "firsthealthlbp.com. No access code. Phone (800) 226-5116.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "provider_verification": {
       "searched": [],
@@ -962,7 +962,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Benefits, eligibility, and claims: Merchants Benefit Administration (MBA), (480) 550-6457. Billing and enrollment: Neo Insurance Solutions, (866) 870-7730.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "billing_descriptor": {
       "searched": [],
@@ -981,7 +981,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Contributions are due on the first of the month. A 31-day grace period applies to a late payment. Contribution amounts are not printed in the member guide.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "cancellation": {
       "searched": [],
@@ -1000,7 +1000,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "30-day free look from the effective date. Cancel within 30 days for a full refund of contributions, offset by any claims paid.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "renewal": {
       "searched": [],
@@ -1063,7 +1063,7 @@
       "sec": "brochure",
       "src": 144,
       "v": "Not minimum essential coverage and not comprehensive major medical insurance.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     }
   }
 }
