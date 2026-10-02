@@ -279,17 +279,17 @@
     },
     "pcp": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 2,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "ghdp-4"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=44903&id=974358",
-      "v": "4 visits/year, $50 copay, $150 maximum per visit",
+      "pg": 1,
+      "sec": "Physician Services, Primary Care Office Visit",
+      "src": 118,
+      "url": null,
+      "v": "Primary Care Office Visit 4 visits / yr Co-pay $50 Maximum/ Visit $150",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "preventive": {
@@ -328,9 +328,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "specialist": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 2,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "ghdp-4"
+      ],
+      "pg": 1,
+      "sec": "Physician Services, Specialist or Urgent Care Office Visit",
+      "src": 118,
+      "url": null,
+      "v": "Specialist or Urgent Care Office Visit 4 visits / yr Co-pay $75 Maximum/ Visit $300",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "substance_use": {
       "searched": [],
@@ -349,17 +359,17 @@
     },
     "telehealth": {
       "app": "EXACT_VARIANT",
-      "auth": 5,
+      "auth": 2,
       "conf": "HIGH",
-      "cur": "CURRENT_LIVE",
+      "cur": "CURRENT",
       "gov": [
         "ghdp-4"
       ],
-      "pg": null,
-      "sec": "INFORMATION tab",
-      "src": 88,
-      "url": "https://manage.firstenroll.com/information/product.cfm?page=44903&id=974358",
-      "v": "$0 copay, No Maximum",
+      "pg": 1,
+      "sec": "Telemedicine",
+      "src": 118,
+      "url": null,
+      "v": "Telemedicine $0 Consult Fee No Maximum",
       "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "ultrasound": {
