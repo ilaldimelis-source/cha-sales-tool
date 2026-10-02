@@ -292,9 +292,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "pcp": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 2,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "ghdp-1"
+      ],
+      "pg": 1,
+      "sec": "Physician Services, Primary Care Office Visit",
+      "src": 149,
+      "url": null,
+      "v": "Primary Care Office Visit 3 visits / yr Co-pay $25 Maximum / Visit $150",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "preventive": {
       "searched": [],
@@ -332,9 +342,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "specialist": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 2,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "ghdp-1"
+      ],
+      "pg": 1,
+      "sec": "Physician Services, Specialist or Urgent Care Office Visit",
+      "src": 149,
+      "url": null,
+      "v": "Specialist or Urgent Care Office Visit 1 visits / yr Co-pay $50 Maximum / Visit $300",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "substance_use": {
       "searched": [],
@@ -352,9 +372,19 @@
       "vs": "NOT_FOUND_IN_SOURCE"
     },
     "telehealth": {
-      "searched": [],
-      "v": null,
-      "vs": "NOT_FOUND_IN_SOURCE"
+      "app": "EXACT_VARIANT",
+      "auth": 2,
+      "conf": "HIGH",
+      "cur": "CURRENT",
+      "gov": [
+        "ghdp-1"
+      ],
+      "pg": 1,
+      "sec": "Telemedicine",
+      "src": 149,
+      "url": null,
+      "v": "Telemedicine $0 Consult Fee No Maximum",
+      "vs": "VERIFIED_SINGLE_SOURCE"
     },
     "ultrasound": {
       "searched": [],
