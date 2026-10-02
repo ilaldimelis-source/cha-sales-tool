@@ -1627,14 +1627,6 @@
       ]
     },
     {
-      "conflict_id": "C-001",
-      "field": "identity.product_type",
-      "source_ids": [
-        21,
-        67
-      ]
-    },
-    {
       "conflict_id": "C-009",
       "field": "source_completeness",
       "source_ids": [
