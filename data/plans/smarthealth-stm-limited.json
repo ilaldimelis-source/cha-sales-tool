@@ -1016,7 +1016,7 @@
       "src": 126,
       "url": "https://www.1enrollment.com/information/product.cfm?page=29588&id=974021",
       "v": "Outpatient prescription drugs and many preventive or limited-service categories may be excluded or limited by design. / Pregnancy and related services, except complications of pregnancy. / Mental or nervous disorders and substance use disorders. / Routine exams, physical examinations, and non-medically necessary care. / This is not an exhaustive list.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "lookback_months": {
       "app": "EXACT_VARIANT",

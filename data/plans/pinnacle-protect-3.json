@@ -1003,7 +1003,7 @@
       "src": 128,
       "url": "https://www.1enrollment.com/information/product.cfm?page=51231&id=974021",
       "v": "Cosmetic surgery, except certain reconstructive situations if applicable. / Dental and vision treatment outside any specific scheduled benefits or discount programs. / Elective or non-medically necessary treatment and experimental or investigational treatment. / Mental illness and substance abuse exclusions may apply except where specifically scheduled. / Pregnancy and related services may be excluded except complications of pregnancy where defined. / Pre-existing condition limitations and waiting periods may apply. / This list is not exhaustive.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "lookback_months": {
       "app": "FAMILY_WIDE",

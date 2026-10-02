@@ -966,7 +966,7 @@
       "src": 131,
       "url": "https://www.1enrollment.com/information/product.cfm?page=31106&id=974021",
       "v": "We will not pay benefits for any loss: sickness/disease/myocardial infarction as a contributing factor (excepting bacterial infection from an accidental cut, wound, or ingestion of contaminated food); suicide or intentionally self-inflicted injury while sane; war or act of war; accident while in the armed forces of any country (with pro-rata premium return); riot or insurrection; commission or attempted commission of assault or felony or other illegal activity; piloting or serving as crew or riding in aircraft except as a fare-paying passenger on a scheduled or charter airline; voluntarily taking prescription-only drugs unless as prescribed; legal intoxication; 2- or 3-wheeled motor vehicles or vehicles not designed primarily for public streets; interscholastic tackle football, intercollegiate, semi-professional or professional sports, ballooning, mountaineering, hang gliding, sky diving, parachuting, bungee jumping, spelunking, jet skiing, scuba diving; motorized racing, speed test, or stunt show.",
-      "vs": "VERIFIED_SINGLE_SOURCE"
+      "vs": "NEEDS_MANUAL_VERIFICATION"
     },
     "lookback_months": {
       "app": "EXACT_VARIANT",
