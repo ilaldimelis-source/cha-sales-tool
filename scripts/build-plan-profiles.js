@@ -909,6 +909,8 @@ function buildProfile(
   for (let i = 0; i < conflicts.length; i++) {
     const conflict = conflicts[i];
     if (!conflictApplies(conflict, plan.plan_id)) continue;
+    const resolution = conflict.resolution ? String(conflict.resolution) : '';
+    if (resolution.indexOf('RESOLVED') === 0) continue;
     const sourceIds = uniqueSortedInts([
       conflict.source_a && conflict.source_a.source_id,
       conflict.source_b && conflict.source_b.source_id
