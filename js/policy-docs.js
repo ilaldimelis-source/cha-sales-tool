@@ -65,7 +65,8 @@ var PD_SCRIPT_BY_ID = {
 var PD_GROUPS = [
   { key: 'MEC', label: 'MEC' },
   { key: 'STM', label: 'Short-term medical' },
-  { key: 'Limited', label: 'Limited benefit' }
+  { key: 'Limited', label: 'Limited benefit' },
+  { key: 'More plans', label: 'More plans' }
 ];
 
 var PD_FACT_SLOTS = [
@@ -875,7 +876,7 @@ function _pdDetailHtml(plan) {
   html += '<div class="pv-badges">';
   html +=
     '<span class="pv-badge pv-badge-' +
-    escHTML(plan.group) +
+    escHTML(String(plan.group).replace(/ /g, '-')) +
     '">' +
     escHTML(plan.group) +
     '</span>';
@@ -1028,7 +1029,7 @@ function _renderPolicydocsInner() {
   html +=
     '<p class="pv-lead">Find the right plan for every client.</p></header>';
   html += '<div class="stabs pv-filters">';
-  ['All', 'MEC', 'STM', 'Limited'].forEach(function (f) {
+  ['All', 'MEC', 'STM', 'Limited', 'More plans'].forEach(function (f) {
     html +=
       '<button type="button" class="stab' +
       (f === policyDocFilter ? ' active' : '') +
@@ -1090,7 +1091,7 @@ function policyDocFilterChanged() {
   var tabs = document.querySelectorAll(
     '#page-policydocs .stab, #page-allplans .stab'
   );
-  var filters = ['All', 'MEC', 'STM', 'Limited'];
+  var filters = ['All', 'MEC', 'STM', 'Limited', 'More plans'];
   tabs.forEach(function (tab, i) {
     if (filters[i] === policyDocFilter) tab.classList.add('active');
     else tab.classList.remove('active');

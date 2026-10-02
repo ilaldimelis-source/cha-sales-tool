@@ -328,7 +328,7 @@
     {
       id: 'harmonycareseries',
       name: 'Harmony Care',
-      group: 'Limited',
+      group: 'More plans',
       type: '',
       carrier: '',
       network: '',
@@ -344,7 +344,7 @@
     {
       id: 'advancedwellnessplus',
       name: 'Advanced Wellness PLUS',
-      group: 'Limited',
+      group: 'More plans',
       type: '',
       carrier: '',
       network: '',
@@ -360,7 +360,7 @@
     {
       id: 'awasafeguard',
       name: 'AWA Safe Guard',
-      group: 'Limited',
+      group: 'More plans',
       type: '',
       carrier: '',
       network: '',
@@ -376,7 +376,7 @@
     {
       id: 'allstateplans',
       name: 'Allstate',
-      group: 'Limited',
+      group: 'More plans',
       type: '',
       carrier: '',
       network: '',
@@ -392,7 +392,7 @@
     {
       id: 'pinnaclehi',
       name: 'Pinnacle HI',
-      group: 'Limited',
+      group: 'More plans',
       type: '',
       carrier: '',
       network: '',
@@ -408,7 +408,7 @@
     {
       id: 'pinnaclecriticalcaresa',
       name: 'Pinnacle Critical Care SA',
-      group: 'Limited',
+      group: 'More plans',
       type: '',
       carrier: '',
       network: '',
@@ -424,7 +424,7 @@
     {
       id: 'americanfinancialci',
       name: 'American Financial Critical Illness',
-      group: 'Limited',
+      group: 'More plans',
       type: '',
       carrier: '',
       network: '',
