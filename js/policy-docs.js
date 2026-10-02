@@ -99,7 +99,11 @@ var PD_FACT_SLOTS = [
   { label: 'State availability', paths: ['availability.states'] },
   { label: 'Coverage term', paths: ['administration.term_length'] },
   { label: 'Age limit', paths: ['eligibility.age_max'] },
-  { label: 'Pre-certification', paths: ['administration.precert'] }
+  { label: 'Pre-certification', paths: ['administration.precert'] },
+  {
+    label: 'Member services',
+    paths: ['administration.customer_service']
+  }
 ];
 
 var PD_PLAN_TIERS = {
@@ -483,11 +487,6 @@ function _pdCriticalCareFacts(profile) {
   html += _pdFactRow(
     'Exclusions',
     _pdVerifiedLeaf(profile, 'limitations.excluded_services'),
-    true
-  );
-  html += _pdFactRow(
-    'Member services',
-    _pdVerifiedLeaf(profile, 'administration.customer_service'),
     true
   );
   return html;
