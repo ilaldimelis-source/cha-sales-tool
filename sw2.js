@@ -4,7 +4,7 @@
 // When changing js/sales-tracker.js or css/sales-tracker.css, bump
 // CACHE_NAME by +1 AND the matching ?v= query strings in index.html
 // and URLS_TO_CACHE below (keep those two files in sync).
-var CACHE_NAME = 'cha-command-center-v205';
+var CACHE_NAME = 'cha-command-center-v206';
 var URLS_TO_CACHE = [
   './',
   './index.html?v=1790710000000',
@@ -27,7 +27,7 @@ var URLS_TO_CACHE = [
   './js/plan-data.js?v=1790273900000',
   './js/plan-data-extended.js?v=1790710000000',
   './js/plan-data-pdf-raw.js?v=1790272900000',
-  './js/policy-docs.js?v=1790824000000',
+  './js/policy-docs.js?v=1790831000000',
   './js/docusign-walkthrough.js?v=1780700000000',
   './js/myspace.js?v=1787901420000',
   './js/sales-tracker.js?v=1790272800000',
