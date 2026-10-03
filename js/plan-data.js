@@ -44,66 +44,6 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
     if (typeof p.rawText === 'string' && p.rawText.indexOf('=== OFFICIAL REFERENCE') === -1) {
       p.rawText = header + p.rawText;
     }
-    var id = p.id;
-    if (id === 'goodhealth13' || id === 'goodhealth45') {
-      p.network = 'First Health';
-    } else if (id === 'tdk13' || id === 'tdk45') {
-      p.network = 'First Health';
-      p.assoc = 'Health Care Data Analytics (HCDA)';
-    } else if (id === 'pinnacle') {
-      p.network = 'PHCS';
-      p.carrier = 'Everest';
-      p.assoc = 'American Workers Association (AWA)';
-    } else if (id === 'accesshealth') {
-      p.network = 'PHCS';
-      p.carrier = 'AFSLIC';
-      p.assoc = 'National Congress of Employers (NCE)';
-    } else if (id === 'smarthealth') {
-      p.network = 'PHCS';
-      p.carrier = 'Standard Life';
-      p.assoc = 'National Congress of Employers (NCE)';
-    } else if (id === 'galena') {
-      p.network = 'MultiPlan';
-      p.carrier = 'Southern Guarantee';
-      p.assoc = 'Association for Responsible Planners';
-    } else if (id === 'harmonycare') {
-      p.network = 'First Health';
-      p.assoc = 'National Congress of Employers (NCE)';
-    } else if (id === 'sigmacare') {
-      p.network = 'MultiPlan';
-      p.assoc = 'National Congress of Employers (NCE)';
-    } else if (id === 'everest') {
-      p.network = 'MultiPlan';
-      p.carrier = 'AFSLIC';
-      p.assoc = 'National Congress of Employers (NCE)';
-    } else if (
-      id === 'pinnacleprotect1' ||
-      id === 'pinnacleprotect2' ||
-      id === 'pinnacleprotect3' ||
-      id === 'pinnacleprotect4'
-    ) {
-      p.network = 'PHCS';
-      p.carrier = 'Everest';
-      p.assoc = 'American Workers Association (AWA)';
-    } else if (
-      id === 'pinnaclecriticalcare1' ||
-      id === 'pinnaclecriticalcare2' ||
-      id === 'pinnaclecriticalcare3' ||
-      id === 'pinnaclecriticalcare4'
-    ) {
-      p.network = 'PHCS';
-      p.carrier = 'Everest';
-      p.assoc = 'American Workers Association (AWA)';
-    } else if (id === 'bwapara') {
-      p.network = 'PHCS';
-      p.assoc = 'Business Workers of America (BWA)';
-    } else if (id === 'bwaamericare') {
-      p.network = 'PHCS';
-      p.carrier = 'American Public Life';
-      p.assoc = 'Business Workers of America (BWA)';
-    } else if (id === 'smartchoice') {
-      p.network = 'First Health EPO';
-    }
   }
 }
 
