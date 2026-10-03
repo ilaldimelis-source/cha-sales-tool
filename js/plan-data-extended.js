@@ -131,9 +131,9 @@
       name: 'Allstate STM (Enhanced / Copay Enhanced / Essentials)',
       group: 'STM',
       type: 'STM',
-      carrier: 'Allstate / NEO Insurance Solutions',
+      carrier: '',
       network: 'PPO Network',
-      assoc: 'NEO Insurance Solutions',
+      assoc: '',
       planNotes:
         'Three tiers: Enhanced, Copay Enhanced, Essentials. All are short-term medical PPO plans underwritten by Allstate. Billed through NEO Insurance Solutions.',
       benefits: [
@@ -220,7 +220,7 @@
       name: 'Allstate Health Access',
       group: 'Limited',
       type: 'Limited',
-      carrier: 'Allstate / NEO Insurance Solutions',
+      carrier: '',
       network: 'Provider search available through plan',
       benefits: [
         {
@@ -289,9 +289,9 @@
       name: 'MyChoice (Low / Mid / High)',
       group: 'Limited',
       type: 'Limited Benefit / Fixed Indemnity',
-      carrier: 'BWA / FirstEnroll',
+      carrier: '',
       network: 'See plan certificate for network details',
-      assoc: 'Business Workers of America (BWA)',
+      assoc: '',
       planNotes:
         'Three tiers: Low, Mid, High. Verify exact benefit amounts per tier in plan certificate.',
       benefits: [
