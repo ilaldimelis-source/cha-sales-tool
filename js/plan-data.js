@@ -47,11 +47,8 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
     var id = p.id;
     if (id === 'goodhealth13' || id === 'goodhealth45') {
       p.network = 'First Health';
-      p.carrier = 'Merchants Benefit Administration (MBA)';
-      p.assoc = 'Good Health Distribution Partners';
     } else if (id === 'tdk13' || id === 'tdk45') {
       p.network = 'First Health';
-      p.carrier = 'Detego Health';
       p.assoc = 'Health Care Data Analytics (HCDA)';
     } else if (id === 'pinnacle') {
       p.network = 'PHCS';
@@ -71,11 +68,9 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
       p.assoc = 'Association for Responsible Planners';
     } else if (id === 'harmonycare') {
       p.network = 'First Health';
-      p.carrier = 'Everest';
       p.assoc = 'National Congress of Employers (NCE)';
     } else if (id === 'sigmacare') {
       p.network = 'MultiPlan';
-      p.carrier = 'Everest';
       p.assoc = 'National Congress of Employers (NCE)';
     } else if (id === 'everest') {
       p.network = 'MultiPlan';
@@ -99,14 +94,15 @@ function chaApplyKnowledgeBasePdfToDocs(docs) {
       p.network = 'PHCS';
       p.carrier = 'Everest';
       p.assoc = 'American Workers Association (AWA)';
-    } else if (id === 'bwapara' || id === 'bwaamericare') {
+    } else if (id === 'bwapara') {
+      p.network = 'PHCS';
+      p.assoc = 'Business Workers of America (BWA)';
+    } else if (id === 'bwaamericare') {
       p.network = 'PHCS';
       p.carrier = 'American Public Life';
       p.assoc = 'Business Workers of America (BWA)';
     } else if (id === 'smartchoice') {
       p.network = 'First Health EPO';
-      p.carrier = 'Detego Health';
-      p.assoc = 'Population Science Management';
     }
   }
 }
@@ -275,7 +271,7 @@ var POLICY_DOCS = [
     name: 'TDK 1-3',
     group: 'MEC',
     type: 'MEC',
-    carrier: 'Detego Health',
+    carrier: '',
     network: 'First Health',
     assoc: 'Health Care Data Analytics (HCDA)',
     source: 'TDK_Promo_Combined.pdf',
@@ -360,7 +356,7 @@ var POLICY_DOCS = [
     name: 'TDK 4-5',
     group: 'MEC',
     type: 'MEC',
-    carrier: 'Detego Health',
+    carrier: '',
     network: 'First Health',
     assoc: 'Health Care Data Analytics (HCDA)',
     source: 'TDK_Promo_Combined.pdf',
@@ -444,9 +440,9 @@ var POLICY_DOCS = [
     name: 'SmartChoice',
     group: 'Limited medical',
     type: 'MEC',
-    carrier: 'Detego Health',
+    carrier: '',
     network: 'First Health EPO',
-    assoc: 'Population Science Management',
+    assoc: '',
     planNotes: 'Four deductible tiers: 1500, 2500, 3000, 3500. EPO network -- members MUST use in-network providers. No out-of-network coverage except emergencies.',
     benefits: [
       {
@@ -2145,7 +2141,7 @@ var POLICY_DOCS = [
     rawText: 'Goodlife Partners WB Choice. Scheduled fixed indemnity. Not MEC. Not STM. Rates are the same at every age.',
     name: 'Goodlife Partners WB Choice',
     type: 'Limited Benefit / Fixed Indemnity',
-    carrier: 'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+    carrier: '',
     assoc: 'Good Life Partners',
     network: 'First Health Network, a CVS Health company',
     source: 'WB_Choice___Select_-_Member_Guide.pdf',
@@ -2228,7 +2224,7 @@ var POLICY_DOCS = [
     rawText: 'Goodlife Partners WB Select. Scheduled fixed indemnity. Not MEC. Not STM. Rates are the same at every age.',
     name: 'Goodlife Partners WB Select',
     type: 'Limited Benefit / Fixed Indemnity',
-    carrier: 'Wellness Brands Management LLC, general partner of Good Life Partners LP',
+    carrier: '',
     assoc: 'Good Life Partners',
     network: 'First Health Network, a CVS Health company',
     source: 'WB_Choice___Select_-_Member_Guide.pdf',
