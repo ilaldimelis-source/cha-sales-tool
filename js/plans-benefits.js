@@ -1873,16 +1873,37 @@ var CHA_NETWORK_GUIDE = [
       }
     ],
     plans: [
-      ['GoodHealth (GHDP)', 'FE'],
-      ['TDK', 'FE'],
-      ['Harmony Care PLUS', 'FE'],
-      ['Harmony Care', 'FE'],
-      ['Advanced Wellness PLUS', 'FE'],
-      ['Sigma Care PLUS', 'FE'],
       ['Allstate Health Access', 'NEO'],
       ['SmartChoice', 'NEO'],
       ['WB Select', 'NEO'],
       ['WB Choice', 'NEO']
+    ]
+  },
+  {
+    name: 'First Health Limited Benefit',
+    how: 'firsthealthlbp.com: First Health Limited Benefit Network (FirstEnroll quick reference, Oct 15 2026).',
+    notes: [],
+    links: [
+      { label: 'Find a provider', url: 'https://www.firsthealthlbp.com' }
+    ],
+    plans: [
+      ['Harmony Care PLUS', 'FE'],
+      ['Harmony Care', 'FE'],
+      ['Advanced Wellness PLUS', 'FE'],
+      ['Sigma Care PLUS', 'FE']
+    ]
+  },
+  {
+    name: 'First Health (GoodHealth, TDK)',
+    how: 'GoodHealth: locateprovidersnow.com. TDK: docfind.health (FirstEnroll quick reference, Oct 15 2026).',
+    notes: [],
+    links: [
+      { label: 'GoodHealth', url: 'https://www.locateprovidersnow.com' },
+      { label: 'TDK', url: 'https://docfind.health' }
+    ],
+    plans: [
+      ['GoodHealth (GHDP)', 'FE'],
+      ['TDK', 'FE']
     ]
   },
   {
@@ -1949,8 +1970,8 @@ var CHA_NETWORK_GUIDE = [
     plans: [['Allstate STM PPO', 'NEO']]
   },
   {
-    name: 'Managed care',
-    how: 'No online search. Call the carrier to check providers before enrolling.',
+    name: 'No network required',
+    how: 'Bills are repriced by Medical Bill Repricer (MBR). No provider search.',
     notes: [],
     links: [],
     plans: [['BWA Paramount', 'FE']]
@@ -2248,7 +2269,7 @@ var CHA_QUICK_REF = [
     type: 'Limited medical',
     tiers: 'Plans 2 / 3 / 4 (Limited Medical)',
     network: 'MultiPlan PPO (via Pinnacle network)',
-    assoc: 'American Workers Association (AWA)',
+    assoc: 'Association benefits included (not named on info page)',
     uw: 'Everest RE',
     vault: 'pinnacleprotect'
   },
@@ -2268,8 +2289,11 @@ var CHA_QUICK_REF = [
     type: 'STM',
     tiers: 'Traditional / Lite',
     network: 'PHCS',
-    assoc: 'National Congress of Employers (NCE)',
+    assoc:
+      'NCE Association (National Congress of Employers), not required in all states',
     uw: 'American Financial Security Life Insurance Co.',
+    claims:
+      'WebTPA, PO Box 99906, Grapevine, TX 76099, 878-208-1319 (existing claims)',
     vault: 'accesshealth'
   },
   {
@@ -2277,10 +2301,12 @@ var CHA_QUICK_REF = [
     platform: 'FirstEnroll',
     type: 'MEC',
     tiers: 'Wellness / 1 / 2 / 3 / 4 / 5',
-    network: 'First Health',
+    network: 'First Health (locateprovidersnow.com)',
     assoc: 'Good Health Distribution Partners',
     uw: 'Merchants Benefit Administrators (MBA)',
     uwLabel: 'Administrator',
+    claims:
+      'MBA, PO Box 35249, Phoenix, AZ 85021, Payer ID IHS24, 480-550-6452, main.mbaadmin.com',
     vault: 'goodhealth13'
   },
   {
@@ -2288,10 +2314,12 @@ var CHA_QUICK_REF = [
     platform: 'FirstEnroll',
     type: 'MEC',
     tiers: '1 / 2 / 3 / 4 / 5',
-    network: 'First Health',
+    network: 'First Health (docfind.health)',
     assoc: 'Health Care Data Analytics (HCDA)',
     uw: 'Detego Health',
     uwLabel: 'Administrator',
+    claims:
+      'Detego Health LLC, PO Box 211609, Eagan, MN 55121, Payer EDI 62599, 866-815-6001 (existing claims)',
     vault: 'tdk13'
   },
   {
@@ -2299,9 +2327,11 @@ var CHA_QUICK_REF = [
     platform: 'FirstEnroll',
     type: 'Limited',
     tiers: '100A / 100 / 200 / 200+ / 300 / 500 / 750 / 1000',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
+    claims:
+      'WebTPA, PO Box 99906, Grapevine, TX 76099-9706, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319. The Harmony Care+ brochure (06/25) lists IBA, Payor ID 11329, 878-512-0177. Confirm current TPA.',
     vault: 'harmonycare'
   },
   {
@@ -2309,39 +2339,47 @@ var CHA_QUICK_REF = [
     platform: 'FirstEnroll',
     type: 'Limited',
     tiers: '100A / 100B / 100 / 200 / 200+ / 300 / 500 / 750 / 1000',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
+    claims:
+      'WebTPA, PO Box 99906, Grapevine, TX 76099-9706, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319',
     vault: 'harmonycareseries'
   },
   {
     name: 'Advanced Wellness PLUS',
     platform: 'FirstEnroll',
     type: 'Limited',
-    tiers: '100A to 1000',
-    network: 'First Health Network',
+    tiers: '100A / 100 / 200 / 200+ / 300 / 500 / 750 / 1000',
+    network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
+    claims:
+      'WebTPA, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319',
     vault: 'advancedwellnessplus'
   },
   {
     name: 'Sigma Care PLUS',
     platform: 'FirstEnroll',
     type: 'Limited',
-    tiers: '100A to 1000',
-    network: 'First Health',
+    tiers: '100A / 100 / 200 / 200+ / 300 / 500 / 750 / 1000',
+    network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
+    claims:
+      'WebTPA, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319',
     vault: 'sigmacare'
   },
   {
     name: 'Health Choice Silver',
     platform: 'FirstEnroll',
     type: 'Limited',
-    tiers: '100A to 1000',
+    tiers: 'Over 65 / 100A / 100 / 200 / 200+ / 300 / 500 / 750 / 1000',
     network: 'MultiPlan',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
+    claims:
+      'WebTPA, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319',
     vault: 'healthchoicesilver'
   },
   {
@@ -2349,9 +2387,12 @@ var CHA_QUICK_REF = [
     platform: 'FirstEnroll',
     type: 'Limited',
     tiers: 'Plan 1 to 6',
-    network: 'Managed Care / Reference-Based Pricing',
+    network:
+      'No network required. Bills repriced by Medical Bill Repricer (MBR)',
     assoc: 'Business Workers of America (BWA)',
     uw: 'BCS Insurance Company',
+    claims:
+      'AdminOne, PO Box 21176, Eagan, MN 55121, claims@AdminOne.com, 877-278-4668, Fax 770-691-5234, Rx BIN 610709 GRP BWAARX',
     vault: 'bwapara'
   },
   {
@@ -2359,9 +2400,11 @@ var CHA_QUICK_REF = [
     platform: 'FirstEnroll',
     type: 'Limited',
     tiers: 'Plan 2 / 3 / 4',
-    network: 'PHCS',
+    network: 'PHCS Limited Medical Network (MedicalBillRepricer.com)',
     assoc: 'Business Workers of America (BWA)',
     uw: 'American Public Life',
+    claims:
+      'Inova Care, PO Box 1298, Liberty, MO 64069, MedicalBillRepricer@Inovacare.com, Fax 239-236-1720',
     vault: 'bwaamericare'
   }
 ];
@@ -2394,25 +2437,33 @@ var QR_SHORT = {
     'Detego Health (admin)'
   ],
   goodlifewbchoice: ['First Health', 'Good Life Partners', 'MBA (admin)'],
-  pinnacleprotect: ['MultiPlan', 'AWA', 'Everest RE'],
+  pinnacleprotect: ['MultiPlan', 'Association not named', 'Everest RE'],
   simpleshield: ['First Health + MultiPlan', 'AWA', 'SGIC'],
   accesshealth: ['PHCS', 'NCE', 'American Financial Security Life'],
   goodhealth13: ['First Health', 'GHDP', 'MBA (admin)'],
   tdk13: ['First Health', 'HCDA', 'Detego Health (admin)'],
-  harmonycare: ['First Health', 'NCE', 'American Financial Security Life'],
+  harmonycare: [
+    'First Health Limited Benefit',
+    'NCE',
+    'American Financial Security Life'
+  ],
   harmonycareseries: [
-    'First Health',
+    'First Health Limited Benefit',
     'NCE',
     'American Financial Security Life'
   ],
   advancedwellnessplus: [
-    'First Health',
+    'First Health Limited Benefit',
     'NCE',
     'American Financial Security Life'
   ],
-  sigmacare: ['First Health', 'NCE', 'American Financial Security Life'],
+  sigmacare: [
+    'First Health Limited Benefit',
+    'NCE',
+    'American Financial Security Life'
+  ],
   healthchoicesilver: ['MultiPlan', 'NCE', 'American Financial Security Life'],
-  bwapara: ['Managed care', 'BWA', 'BCS Insurance'],
+  bwapara: ['No network (MBR repricing)', 'BWA', 'BCS Insurance'],
   bwaamericare: ['PHCS', 'BWA', 'American Public Life']
 };
 
@@ -2525,6 +2576,7 @@ function _qrRenderCards() {
         escHTML(p.uwLabel || 'Underwriter') +
         ':</b> ' +
         escHTML(p.uw) +
+        (p.claims ? '<br><b>Claims:</b> ' + escHTML(p.claims) : '') +
         '<br><b>Billing:</b> ' +
         (p.platform === 'NEO' ? 'NEO Insurance Solutions' : 'FirstEnroll') +
         '</span><span class="qr3-open" onclick="event.stopPropagation();qrOpenInVault(\'' +

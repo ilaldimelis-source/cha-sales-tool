@@ -1049,6 +1049,7 @@ function aoColumnHtml(platform, label, stateCode, query) {
       '</span></button>';
     if (open) {
       html += '<p class="ao-t-explain">' + aoEsc(aoExplain(p)) + '</p>';
+      html += aoDetailsHtml(p);
     }
     if (open && !p.states) {
       html +=
@@ -1060,6 +1061,256 @@ function aoColumnHtml(platform, label, stateCode, query) {
     html += '<p class="ao-t-empty">None in this state.</p>';
   }
   return html + '</div>';
+}
+
+// Who is behind each add-on, from the NEO and FirstEnroll plan quick
+// reference sheets (Oct 14-15 2026). Shown when an add-on row is opened.
+var AO_DETAILS = [
+  {
+    platform: 'FirstEnroll',
+    match: /^AME /i,
+    rows: [
+      ['Association', 'NCE'],
+      ['Underwriter', 'American Financial Security Life Ins. Co.'],
+      [
+        'Claims',
+        'Most states: IBA, PO Box 576, Arnold, MD 21012, 878-222-4411. CA, CO, DC, FL, ID, IA, KS, LA, MI, MO, NC, SC, TN, WV, WY claims after 8/2/2021: IAC for LNIC, PO Box 16338, Oklahoma City, OK 73113, 844-649-1896. Texas: CBP, PO Box 21673, Eagan, MN 55121, EDI 14829, 888-562-0409.'
+      ]
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /^AD&D /i,
+    rows: [
+      ['Association', 'NCE'],
+      ['Underwriter', 'American Financial Security Life Ins. Co.'],
+      [
+        'Claims',
+        'Most states: IBA, PO Box 576, Arnold, MD 21012, 878-222-4411. CA, CO, DC, FL, ID, IA, KS, LA, MI, MO, NC, SC, TN, WV, WY claims after 8/2/2021: IAC for LNIC, PO Box 16338, Oklahoma City, OK 73113, 844-649-1896. Texas: CBP, PO Box 21673, Eagan, MN 55121, EDI 14829, 888-562-0409.'
+      ]
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /^Critical Illness/i,
+    rows: [
+      ['Association', 'NCE'],
+      ['Underwriter', 'American Financial Security Life Ins. Co.']
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /GHDP Dental/i,
+    rows: [
+      ['Network', 'MaximumCare PPO (Careington, Connection Dental, DenteMax)'],
+      ['Association', 'GHDP, LP'],
+      ['Underwriter', 'Self-funded PPO, TPA: MBA'],
+      [
+        'Claims',
+        'MBA, PO Box 35249, Phoenix, AZ 85021-9998, claims@mbaadmin.com, 480-550-6452, Fax-back 480-550-6440'
+      ]
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Ameritas/i,
+    rows: [
+      ['Underwriter', 'Ameritas'],
+      ['Network', 'Not named at checkout']
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Complete Care Max/i,
+    rows: [
+      [
+        'Provider',
+        'ValuePoint by MultiPlan, Aetna Dental Access, Outlook Vision, Start Hearing, Lyric telemed, DirectLabs, chiro, Rx. DMPO: Access One Consumer Health (800-896-1962). Member services 732-876-9733'
+      ]
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Complete Care Pro/i,
+    rows: [
+      [
+        'Provider',
+        'Aetna Dental Access, Outlook Vision, Start Hearing, Rx discount cards'
+      ]
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Complete Care (Select|Plus)/i,
+    rows: [
+      [
+        'Provider',
+        'Aetna Dental Access, Outlook Vision, Start Hearing. Plus adds Rx discount cards'
+      ]
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Better (Dental|Vision)/i,
+    rows: [['Provider', 'Aetna Dental Access, Outlook Vision, Start Hearing']]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Better (Complete Health|Guard)/i,
+    rows: [
+      [
+        'Provider',
+        'ValuePoint MultiPlan, $0 telemed, nurse line, dental, vision, hearing, lab, chiro, Rx'
+      ]
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Better Rx|Compass VAB/i,
+    rows: [
+      [
+        'Provider',
+        'Walk-in Rx card plus international mail-order Rx (ADCLookup.com)'
+      ]
+    ]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Better TeleMed|Compass Telemed/i,
+    rows: [['Provider', '24/7/365 physician consults']]
+  },
+  {
+    platform: 'FirstEnroll',
+    match: /Health Essential Care/i,
+    rows: [
+      [
+        'Provider',
+        'Dental, vision and hearing discount network (500,000+ providers)'
+      ]
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /Pinnacle HI/i,
+    rows: [
+      ['Network', 'MultiPlan / PHCS P&A'],
+      ['Underwriter', 'Everest RE'],
+      ['Issue', 'Plan 1 guaranteed issue, Plan 2 simplified issue']
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /Pinnacle Critical Care/i,
+    rows: [['Underwriter', 'Everest RE']]
+  },
+  {
+    platform: 'NEO',
+    match: /AWA Safe Guard/i,
+    rows: [
+      ['Association', 'AWA'],
+      ['Underwriter', 'Guarantee Trust Life Ins. Co.']
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /AWA Safeguard/i,
+    rows: [
+      ['Association', 'AWA'],
+      ['Underwriter', 'Not named on info page']
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /WellGuard/i,
+    rows: [
+      ['Association', 'NCE'],
+      ['Underwriter', 'American Financial Security Life Ins. Co.']
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /Fusion Dental/i,
+    rows: [
+      [
+        'Network',
+        'Plan A: Passive PPO. Plan B: A New Choice Plus (any dentist OK)'
+      ],
+      ['Association', 'NCE'],
+      ['Underwriter', 'Ameritas']
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /New York Life/i,
+    rows: [
+      ['Association', "Through the member's association"],
+      ['Underwriter', 'New York Life Ins. Co.']
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /MD ?Live/i,
+    rows: [['Provider', 'MDLIVE telehealth']]
+  },
+  {
+    platform: 'NEO',
+    match: /Recuro/i,
+    rows: [
+      ['Provider', 'Recuro Health: virtual urgent care, therapy, primary care']
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /Direct Primary Care/i,
+    rows: [['Provider', 'Healthcare2U Private Physician Network (PPN)']]
+  },
+  {
+    platform: 'NEO',
+    match: /QuestSelect/i,
+    rows: [['Provider', 'Quest Diagnostics lab network']]
+  },
+  {
+    platform: 'NEO',
+    match: /GapSupport/i,
+    rows: [
+      [
+        'Provider',
+        'Aetna Dental Access, Coast to Coast Vision, Optum Rx discount'
+      ]
+    ]
+  },
+  {
+    platform: 'NEO',
+    match: /AssistPro/i,
+    rows: [['Provider', 'National discount network (imaging, chiro)']]
+  },
+  {
+    platform: 'NEO',
+    match: /Prime Health Pass/i,
+    rows: [
+      ['Provider', 'Mobile diagnostics / discount program. Network not named']
+    ]
+  }
+];
+
+function aoDetailsHtml(product) {
+  var i;
+  var j;
+  var html = '';
+  for (i = 0; i < AO_DETAILS.length; i++) {
+    if (AO_DETAILS[i].platform !== product.platform) continue;
+    if (!AO_DETAILS[i].match.test(String(product.name || ''))) continue;
+    for (j = 0; j < AO_DETAILS[i].rows.length; j++) {
+      html +=
+        '<span class="ao-t-dl"><b>' +
+        aoEsc(AO_DETAILS[i].rows[j][0]) +
+        ':</b> ' +
+        aoEsc(AO_DETAILS[i].rows[j][1]) +
+        '</span>';
+    }
+    break;
+  }
+  return html ? '<p class="ao-t-explain ao-t-details">' + html + '</p>' : '';
 }
 
 // Typing a state in the search box (for example "flo" or "FL") picks

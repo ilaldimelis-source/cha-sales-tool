@@ -1438,10 +1438,10 @@ var PD_NETWORK_SHORT = {
   smartchoice: 'First Health',
   goodlifewbchoice: 'First Health',
   goodlifewbselect: 'First Health',
-  harmonycare: 'First Health',
-  harmonycareseries: 'First Health',
-  advancedwellnessplus: 'First Health',
-  sigmacare: 'First Health',
+  harmonycare: 'First Health LBP',
+  harmonycareseries: 'First Health LBP',
+  advancedwellnessplus: 'First Health LBP',
+  sigmacare: 'First Health LBP',
   allstatehealthaccess: 'First Health',
   pinnacle: 'PHCS',
   smarthealth: 'PHCS',
@@ -1455,7 +1455,7 @@ var PD_NETWORK_SHORT = {
   harborstmaccess: 'Cigna PPO',
   harborstmsecure: 'Cigna PPO',
   allstatestm: 'Aetna Open Choice PPO',
-  bwapara: 'Managed care'
+  bwapara: 'No network (MBR)'
 };
 
 var PD_TYPE_LABEL = {
