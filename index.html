@@ -2785,7 +2785,7 @@
       }
       .med-form {
         display: grid;
-        grid-template-columns: 3fr 0.8fr 1.2fr 1.2fr;
+        grid-template-columns: 4fr 1fr;
         gap: 12px;
         align-items: end;
         background: var(--cha-bg-card);
@@ -2877,7 +2877,7 @@
       }
       .med-line {
         display: grid;
-        grid-template-columns: 1.3fr 1.2fr 1fr 0.9fr 1fr 20px;
+        grid-template-columns: 1.5fr 1.3fr 1fr 1fr;
         gap: 12px;
         align-items: center;
         width: 100%;
@@ -2895,6 +2895,9 @@
         min-width: 0;
       }
       .med-line.med-head {
+        position: sticky;
+        top: 0;
+        z-index: 1;
         border-top: 0;
         cursor: default;
         font-size: 11px;
@@ -2925,6 +2928,16 @@
       }
       .med-c-lim {
         font-variant-numeric: tabular-nums;
+      }
+      .med-c-wide {
+        grid-column: 2 / -1;
+      }
+      .med-star {
+        color: var(--cha-warning-text);
+      }
+      .med-table {
+        max-height: 70vh;
+        overflow-y: auto;
       }
       .med-c-arrow {
         color: var(--cha-text-tertiary);
@@ -2993,6 +3006,7 @@
         color: var(--cha-text-tertiary);
       }
       .med-rxs {
+        margin: 0;
         background: var(--cha-warning-bg);
         color: var(--cha-warning-text);
         border-radius: 14px;
@@ -3029,35 +3043,26 @@
         .med-f-meds {
           grid-column: 1 / -1;
         }
+        .med-table {
+          max-height: none;
+        }
         .med-line.med-head {
           display: none;
         }
         .med-line {
-          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 20px;
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
           gap: 6px 10px;
         }
-        .med-hide-m {
-          display: none;
-        }
-        .med-tag {
-          white-space: normal;
-        }
-        .med-c-name {
-          grid-column: 1 / 3;
-        }
-        .med-c-arrow {
-          grid-column: 3;
-          grid-row: 1;
-        }
-        .med-c-prog,
-        .med-c-lim {
+        .med-c-name,
+        .med-c-maker {
           grid-column: 1 / -1;
+        }
+        .med-c-maker {
           font-size: 12.5px;
           color: var(--cha-text-secondary);
         }
-        .med-c-now,
-        .med-c-after {
-          grid-column: auto;
+        .med-tag {
+          white-space: normal;
         }
         .med-detail {
           grid-template-columns: 1fr;
@@ -4090,7 +4095,7 @@
     <script src="js/sales-tracker.js?v=1792165216661"></script>
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1792186043707"></script>
-    <script src="js/meds.js?v=1792193165281"></script>
+    <script src="js/meds.js?v=1792193893195"></script>
     <script src="js/app.js?v=1792191756954"></script>
     <script>
       (function () {
