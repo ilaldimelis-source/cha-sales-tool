@@ -1980,39 +1980,45 @@ function _ngCardsHtml() {
       });
     if (!hit) return;
     shown++;
-    html += '<div class="ng7-card"><div class="ng7-top"><h3 class="ng7-name">';
-    html += _ngEsc(n.name) + '</h3><div class="ng7-links">';
+    html +=
+      '<div class="ng7-card"><div class="ng7-top"><h3 class="ng7-name">' +
+      _ngEsc(n.name) +
+      '</h3><span class="ng7-count">' +
+      n.plans.length +
+      (n.plans.length === 1 ? ' plan' : ' plans') +
+      '</span></div><div class="ng7-pills">';
+    n.plans.forEach(function (p) {
+      var match = q && p[0].toLowerCase().indexOf(q) !== -1;
+      var label = p[0];
+      var tip = '';
+      if (label === 'SmartChoice') label = 'SmartChoice (in-network only)';
+      if (label === 'WB Select' || label === 'WB Choice') {
+        tip =
+          ' title="Members can also use firsthealthlbp.com or call (800) 226-5116"';
+      }
+      html +=
+        '<span class="ng7-pill' +
+        (match ? ' ng7-pill-hit' : '') +
+        '"' +
+        tip +
+        '>' +
+        _ngEsc(label) +
+        '</span>';
+    });
+    html += '</div><div class="ng7-foot">';
     if (n.links.length) {
       n.links.forEach(function (l) {
         html +=
           '<a class="ng7-btn" href="' +
           _ngEsc(l.url) +
           '" target="_blank" rel="noopener noreferrer">' +
-          _ngEsc(l.label) +
+          _ngEsc(n.links.length > 1 ? l.label : 'Find a provider') +
           '</a>';
       });
-    }
-    html += '</div></div><div class="ng7-pills">';
-    n.plans.forEach(function (p) {
-      var match = q && p[0].toLowerCase().indexOf(q) !== -1;
-      var label = p[0];
-      if (label === 'SmartChoice') label = 'SmartChoice (in-network only)';
-      html +=
-        '<span class="ng7-pill' +
-        (match ? ' ng7-pill-hit' : '') +
-        '">' +
-        _ngEsc(label) +
-        '</span>';
-    });
-    html += '</div>';
-    if (!n.links.length) {
+    } else {
       html += '<p class="ng7-note">' + _ngEsc(n.how) + '</p>';
     }
-    if (n.name === 'First Health') {
-      html +=
-        '<p class="ng7-note">WB Select and WB Choice members can also use firsthealthlbp.com or call (800) 226-5116.</p>';
-    }
-    html += '</div>';
+    html += '</div></div>';
   });
   if (!shown) {
     html = '<p class="ng-empty">No plan matches that name.</p>';
@@ -2453,6 +2459,10 @@ function _qrRenderHero() {
         counts[h[0]] +
         ' plan families. ' +
         h[2] +
+        '</span><span class="qr3-hero-cta">' +
+        (on
+          ? 'Showing only ' + h[1] + '. Tap to show all'
+          : 'Tap to show only ' + h[1]) +
         '</span></button>'
       );
     })
