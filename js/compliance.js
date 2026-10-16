@@ -967,3 +967,37 @@ function runCallAudit() {
   html += '</div>';
   result.innerHTML = html;
 }
+
+// Scripts > Every Call (moved from the Compliance tab, Oct 2026).
+// Only rules that apply to every plan. Waiting periods, pre-existing
+// rules and exclusions differ by plan and live in each Plan Vault panel.
+var CHA_EVERY_CALL_RULES = [
+  'State your full name and Central Health Advisors within the first 30 seconds',
+  'State the exact plan name verbally and the plan type (MEC group plan, short-term medical, or fixed indemnity limited benefit)',
+  'Name the billing administrator by name -- FirstEnroll or NEO Insurance Solutions',
+  'State this is NOT ACA-compliant major medical insurance',
+  'Tell member to verify providers are in-network themselves -- never guarantee a specific doctor',
+  'Break down first month cost AND ongoing monthly cost separately including enrollment fee',
+  'Collect SSN and payment only after all material disclosures are complete',
+  'Give member time to read DocuSign -- never rush or push for signature',
+  'Give confirmation number CHA561337 and customer service number 855-736-1590 before disconnecting'
+];
+
+function renderEveryCall() {
+  var el = document.getElementById('page-everycall');
+  if (!el) return;
+  var html =
+    '<section class="ec-card"><h2 class="ec-title">Required on every call</h2>';
+  for (var i = 0; i < CHA_EVERY_CALL_RULES.length; i++) {
+    html +=
+      '<div class="ec-row"><span class="ec-num">' +
+      (i + 1) +
+      '</span><span>' +
+      escHTML(CHA_EVERY_CALL_RULES[i]) +
+      '</span></div>';
+  }
+  html +=
+    '<p class="ec-note">Waiting period, pre-existing and what is not covered are different for each plan. Open the plan in Plan Vault.</p>';
+  html += '</section>';
+  el.innerHTML = html;
+}

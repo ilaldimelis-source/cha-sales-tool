@@ -1552,6 +1552,90 @@
         font-weight: 700;
         color: var(--cha-text-secondary);
       }
+
+      /* === PLAN LINEUP OCT 2026: Every Call + Benefit Talk Tracks === */
+      .ec-card,
+      .bt-card {
+        background: var(--cha-bg-card);
+        border-radius: 22px;
+        padding: 22px 26px;
+        box-shadow: 0 8px 24px rgb(15 23 42 / 0.06);
+      }
+      .ec-title {
+        margin: 0 0 8px;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--cha-text-primary);
+      }
+      .ec-row {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 12px 0;
+        border-top: 1px solid var(--cha-border-subtle);
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cha-text-primary);
+      }
+      .ec-num {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+        font-size: 12px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .ec-note {
+        margin: 12px 0 0;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cha-warning-text);
+        background: var(--cha-warning-bg);
+        border-radius: 14px;
+        padding: 10px 14px;
+      }
+      .bt-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .bt-name {
+        margin: 0 0 12px;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--cha-text-primary);
+      }
+      .bt-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 10px;
+      }
+      .bt-box {
+        background: var(--cha-bg-muted);
+        border-radius: 16px;
+        padding: 14px 16px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--cha-text-primary);
+      }
+      .bt-label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--cha-text-secondary);
+      }
+      .bt-box-never {
+        background: var(--cha-danger-bg);
+      }
+      .bt-box-never .bt-label {
+        color: var(--cha-danger-text);
+      }
     </style>
   </head>
   <body>
@@ -1607,26 +1691,6 @@
                 <polyline points="9 22 9 12 15 12 15 22" /></svg
             ></span>
             <span class="nb-label">Home</span>
-            <span class="nb-dot" aria-hidden="true"></span>
-          </button>
-          <button class="nb" onclick="showPage('livecall')">
-            <span class="nb-icon"
-              ><svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
-                /></svg
-            ></span>
-            <span class="nb-label">Live Call</span>
             <span class="nb-dot" aria-hidden="true"></span>
           </button>
           <button class="nb" onclick="showPage('plans')">
@@ -1736,31 +1800,6 @@
           <span class="nb-label">Network Guide</span>
           <span class="nb-dot" aria-hidden="true"></span>
         </button>
-        <button class="nb" onclick="showPage('cheatsheets')">
-          <span class="nb-icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
-              <path
-                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
-              />
-              <path d="M12 11h4" />
-              <path d="M12 16h4" />
-              <path d="M8 11h.01" />
-              <path d="M8 16h.01" /></svg
-          ></span>
-          <span class="nb-label">Cheat Sheet</span>
-          <span class="nb-dot" aria-hidden="true"></span>
-        </button>
         <button class="nb" onclick="showPage('training')">
           <span class="nb-icon"
             ><svg
@@ -1778,27 +1817,6 @@
               <path d="M6 12v5c3 3 9 3 12 0v-5" /></svg
           ></span>
           <span class="nb-label">CHA Academy</span>
-          <span class="nb-dot" aria-hidden="true"></span>
-        </button>
-        <button class="nb" onclick="showPage('compliance')">
-          <span class="nb-icon"
-            ><svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path
-                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"
-              />
-              <path d="m9 12 2 2 4-4" /></svg
-          ></span>
-          <span class="nb-label">Compliance</span>
           <span class="nb-dot" aria-hidden="true"></span>
         </button>
         <button class="nb" onclick="showPage('myspace')">
@@ -2040,6 +2058,7 @@
         <div id="page-scripts" class="combo-page">
           <div class="page-subtabs" id="subtabs-scripts"></div>
           <div id="subcontent-scripts"></div>
+          <div id="page-everycall" class="page" style="display: none"></div>
           <div id="page-closes" class="page" style="display: none"></div>
           <div
             id="page-callflow"
@@ -2048,6 +2067,74 @@
           ></div>
           <div id="page-planscripts" class="page" style="display: none"></div>
           <div id="page-recovery" class="page" style="display: none"></div>
+          <div id="page-docusign" class="page" style="display: none">
+            <div class="ds-walkthrough-group">
+              <button
+                class="ds-walkthrough-trigger"
+                type="button"
+                aria-expanded="true"
+              >
+                <span>SmartChoice DocuSign Walkthrough</span>
+                <span class="ds-chevron" aria-hidden="true"></span>
+              </button>
+              <div class="ds-walkthrough-body">
+                <div class="ds-walkthrough-search">
+                  <input
+                    type="text"
+                    id="dsSearchInput"
+                    placeholder="Search all tabs (typos OK)..."
+                    autocomplete="off"
+                  />
+                </div>
+                <div class="ds-walkthrough-tabs" role="tablist">
+                  <button
+                    class="ds-tab is-active"
+                    data-tab="ask"
+                    role="tab"
+                    aria-selected="true"
+                  >
+                    WHAT CLIENTS ASK MOST
+                  </button>
+                  <button
+                    class="ds-tab"
+                    data-tab="att"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    10 ADDITIONAL MEMBER ATTESTATIONS
+                  </button>
+                  <button
+                    class="ds-tab"
+                    data-tab="full"
+                    role="tab"
+                    aria-selected="false"
+                  >
+                    FULL WALKTHROUGH
+                  </button>
+                </div>
+                <div class="ds-tab-panels">
+                  <div
+                    class="ds-panel is-active"
+                    data-panel="ask"
+                    role="tabpanel"
+                  ></div>
+                  <div
+                    class="ds-panel"
+                    data-panel="att"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                  <div
+                    class="ds-panel"
+                    data-panel="full"
+                    role="tabpanel"
+                    hidden
+                  ></div>
+                </div>
+                <div class="ds-search-results" hidden></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- NETWORK GUIDE -->
@@ -2072,6 +2159,7 @@
         <div id="page-training" class="combo-page">
           <div class="page-subtabs" id="subtabs-training"></div>
           <div id="subcontent-training"></div>
+          <div id="page-benefittalk" class="page" style="display: none"></div>
           <div id="page-traininghome" class="page" style="display: none">
             <div class="academy-container" id="academyContainer">
               <div class="academy-welcome">
@@ -2250,74 +2338,6 @@
             style="display: none"
           ></div>
           <div id="page-callaudit" class="page" style="display: none"></div>
-          <div id="page-docusign" class="page" style="display: none">
-            <div class="ds-walkthrough-group">
-              <button
-                class="ds-walkthrough-trigger"
-                type="button"
-                aria-expanded="true"
-              >
-                <span>SmartChoice DocuSign Walkthrough</span>
-                <span class="ds-chevron" aria-hidden="true"></span>
-              </button>
-              <div class="ds-walkthrough-body">
-                <div class="ds-walkthrough-search">
-                  <input
-                    type="text"
-                    id="dsSearchInput"
-                    placeholder="Search all tabs (typos OK)..."
-                    autocomplete="off"
-                  />
-                </div>
-                <div class="ds-walkthrough-tabs" role="tablist">
-                  <button
-                    class="ds-tab is-active"
-                    data-tab="ask"
-                    role="tab"
-                    aria-selected="true"
-                  >
-                    WHAT CLIENTS ASK MOST
-                  </button>
-                  <button
-                    class="ds-tab"
-                    data-tab="att"
-                    role="tab"
-                    aria-selected="false"
-                  >
-                    10 ADDITIONAL MEMBER ATTESTATIONS
-                  </button>
-                  <button
-                    class="ds-tab"
-                    data-tab="full"
-                    role="tab"
-                    aria-selected="false"
-                  >
-                    FULL WALKTHROUGH
-                  </button>
-                </div>
-                <div class="ds-tab-panels">
-                  <div
-                    class="ds-panel is-active"
-                    data-panel="ask"
-                    role="tabpanel"
-                  ></div>
-                  <div
-                    class="ds-panel"
-                    data-panel="att"
-                    role="tabpanel"
-                    hidden
-                  ></div>
-                  <div
-                    class="ds-panel"
-                    data-panel="full"
-                    role="tabpanel"
-                    hidden
-                  ></div>
-                </div>
-                <div class="ds-search-results" hidden></div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <!-- MY SPACE -->
@@ -2575,7 +2595,7 @@
     <script src="js/auth.js"></script>
     <script src="js/speed-insights.js"></script>
     <script src="js/plan-registry.js?v=1792163611848"></script>
-    <script src="js/utils.js?v=1790273900000"></script>
+    <script src="js/utils.js?v=1792164089398"></script>
     <script src="js/recovery-data.js?v=1779700000000"></script>
     <script src="js/objections.js?v=1779700000000"></script>
     <script src="js/knowledge_base.js?v=1790272900000"></script>
@@ -2585,18 +2605,18 @@
     <script src="js/plan-pdf-map.js?v=1790710000000"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1790832900000"></script>
-    <script src="js/plans-benefits.js?v=1790272900000"></script>
+    <script src="js/plans-benefits.js?v=1792164089398"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>
     <script src="js/training.js?v=1790272900000"></script>
-    <script src="js/compliance.js?v=1790272900000"></script>
+    <script src="js/compliance.js?v=1792164089398"></script>
     <script src="js/docusign-walkthrough.js?v=1780700000000"></script>
-    <script src="js/myspace.js?v=1787901420000"></script>
+    <script src="js/myspace.js?v=1792164089398"></script>
     <script src="js/sales-tracker.js?v=1790272800000"></script>
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1790682000000"></script>
-    <script src="js/app.js?v=1790273000000"></script>
+    <script src="js/app.js?v=1792164089398"></script>
     <script>
       (function () {
         var data = window.docusignWalkthroughData;

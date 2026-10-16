@@ -853,12 +853,16 @@ function matchesExpanded(text, expandedTerms) {
 var SEARCH_INDEX = [];
 var _searchIndexBuilt = false;
 
+// Live Call (Live Assist, Rebuttals, Q&A Rebuttals, Client Profiler) is
+// hidden from agents as of Oct 2026. Set to false to bring it back.
+var CHA_LIVE_CALL_HIDDEN = true;
+
 function buildSearchIndex() {
   if (_searchIndexBuilt) return;
   SEARCH_INDEX = [];
 
-  // Index OBJECTIONS
-  if (typeof OBJECTIONS !== 'undefined') {
+  // Index OBJECTIONS - skipped while the Live Call tab is hidden (Oct 2026)
+  if (typeof OBJECTIONS !== 'undefined' && !CHA_LIVE_CALL_HIDDEN) {
     OBJECTIONS.forEach(function (o, i) {
       SEARCH_INDEX.push({
         type: 'Objection Handler',
@@ -913,14 +917,10 @@ function buildSearchIndex() {
         ).toLowerCase(),
         action: function () {
           closeSearch();
-          showPage('benefits');
+          showPage('benefittalk');
           setTimeout(function () {
-            var el = document.getElementById('bx' + i);
-            if (el) {
-              el.classList.add('open');
-              el.querySelector('.xcard-body').style.display = 'block';
-              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            var el = document.getElementById('bt' + i);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }, 200);
         }
       });
@@ -1013,15 +1013,16 @@ function buildSearchIndex() {
         action: function () {
           var pid = p.id;
           closeSearch();
-          showPage('benefits');
+          showPage('policydocs');
           setTimeout(function () {
-            policyDocOpen = pid;
-            var container = document.getElementById('pdResultsContainer');
-            if (container) container.innerHTML = renderPolicyResults();
-            setTimeout(function () {
-              var el = document.getElementById('pd-' + pid);
-              if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
+            if (
+              typeof policyDocToggle === 'function' &&
+              policyDocOpen !== pid
+            ) {
+              policyDocToggle(pid);
+            }
+            var el = document.getElementById('pd-' + pid);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
           }, 200);
         }
       });
@@ -1110,24 +1111,24 @@ function buildSearchIndex() {
 
   SEARCH_INDEX.push({
     type: 'Training',
-    title: 'Cheat Sheets',
-    preview: 'Compliance non-negotiables and plan reference table',
+    title: 'Plan Vault',
+    preview: 'Every current plan with network, underwriter and association',
     searchText:
       'training cheat sheet network underwriter association billing disclose',
     action: function () {
       closeSearch();
-      showPage('cheatsheet');
+      showPage('policydocs');
     }
   });
   SEARCH_INDEX.push({
     type: 'Compliance',
-    title: 'Compliance Center',
-    preview: 'Required disclosures and call audit standards',
+    title: 'Every Call',
+    preview: 'What every call must include',
     searchText:
       'compliance disclosures non aca not major medical waiting period pre existing exclusions',
     action: function () {
       closeSearch();
-      showPage('compliancecenter');
+      showPage('everycall');
     }
   });
 
