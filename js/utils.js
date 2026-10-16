@@ -1111,13 +1111,13 @@ function buildSearchIndex() {
 
   SEARCH_INDEX.push({
     type: 'Training',
-    title: 'Plan Vault',
+    title: 'Quick Reference',
     preview: 'Every current plan with network, underwriter and association',
     searchText:
       'training cheat sheet network underwriter association billing disclose',
     action: function () {
       closeSearch();
-      showPage('policydocs');
+      showPage('quickref');
     }
   });
   SEARCH_INDEX.push({

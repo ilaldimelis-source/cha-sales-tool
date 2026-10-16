@@ -301,7 +301,10 @@ var PAGE_CONFIG = {
   },
   plans: {
     label: 'Plans',
-    subs: [{ id: 'policydocs', label: 'Plans', render: renderPolicydocs }]
+    subs: [
+      { id: 'policydocs', label: 'Plans', render: renderPolicydocs },
+      { id: 'quickref', label: 'Quick Reference', render: renderQuickReference }
+    ]
   },
   scripts: {
     label: 'Scripts',
