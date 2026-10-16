@@ -2215,3 +2215,359 @@ function renderBenefitTalkTracks() {
   html += '</div>';
   el.innerHTML = html;
 }
+
+// Plans > Quick Reference (Oct 2026). Who is behind every current NEO and
+// FirstEnroll plan. Values come from the NEO product Info pages (Oct 14),
+// the Allstate STM brochure (rev. 04/2026) and the owner-approved plan
+// reference table. Every card shows the same three rows.
+var CHA_QUICK_REF = [
+  {
+    name: 'Harbor STM',
+    platform: 'NEO',
+    type: 'STM',
+    tiers: 'Essential / Access / Secure',
+    network: 'Cigna Healthcare PPO (Shared Administration)',
+    assoc: 'American Workers Association (AWA)',
+    uw: 'Everest Reinsurance Co. (or Everest Denali Ins. Co. by state) / Claims: Administrative Concepts, Inc.',
+    vault: 'harborstmessential'
+  },
+  {
+    name: 'Pinnacle STM',
+    platform: 'NEO',
+    type: 'STM',
+    tiers: 'Traditional',
+    network: 'PHCS Practitioner & Ancillary (MultiPlan)',
+    assoc: 'American Workers Association (AWA)',
+    uw: 'Everest Reinsurance Company',
+    vault: 'pinnacle'
+  },
+  {
+    name: 'AFRP Galena STM',
+    platform: 'NEO',
+    type: 'STM',
+    tiers: 'Economy / Standard / Elite',
+    network: 'First Health + MultiPlan (SGIC dual-network lookup)',
+    assoc: 'AFRP (membership/billing)',
+    uw: 'SGIC',
+    vault: 'galena'
+  },
+  {
+    name: 'SmartHealth STM',
+    platform: 'NEO',
+    type: 'STM',
+    tiers: 'Traditional / Limited',
+    network: 'PHCS Practitioner with Ancillary (MultiPlan)',
+    assoc: 'NCE Association (National Congress of Employers)',
+    uw: 'American Financial Security Life Ins. Co. / Standard Life & Casualty Ins. Co. (by state)',
+    vault: 'smarthealth'
+  },
+  {
+    name: 'Allstate STM PPO',
+    platform: 'NEO',
+    type: 'STM',
+    tiers: 'Enhanced / Copay Enhanced / Essentials',
+    network: 'Aetna Open Choice PPO',
+    assoc: 'LIFE Association',
+    uw: 'National Health Insurance Co. / Integon National Insurance Co. / Integon Indemnity Corp. (by state)',
+    vault: 'allstatestm'
+  },
+  {
+    name: 'Allstate Health Access',
+    platform: 'NEO',
+    type: 'Limited',
+    tiers: 'One plan',
+    network: 'First Health',
+    assoc: 'LIFE Association',
+    uw: 'National Health Insurance Co. / Integon National Insurance Co. / Integon Indemnity Corp. (by state)',
+    vault: 'allstatehealthaccess'
+  },
+  {
+    name: 'SmartChoice',
+    platform: 'NEO',
+    type: 'ERISA',
+    tiers: '1500 / 2500 / 3000 / 3500 - ERISA plan, Working Owner eligibility',
+    network: 'First Health - in-network only',
+    assoc: 'Population Science Management',
+    uw: 'Detego Health',
+    uwLabel: 'Administrator',
+    vault: 'smartchoice'
+  },
+  {
+    name: 'WB Select / WB Choice',
+    platform: 'NEO',
+    type: 'ERISA',
+    tiers: 'Limited partnership',
+    network: 'First Health PPO (CVS Health) + Healthcare Ninja advocacy',
+    assoc: 'Good Life Partners, LP (member joins as Limited Partner)',
+    uw: 'Sponsor: Wellness Brands Management LLC / Plan Admin/TPA: Merchants Benefit Administration (MBA)',
+    vault: 'goodlifewbchoice'
+  },
+  {
+    name: 'Pinnacle Protect',
+    platform: 'NEO',
+    type: 'Limited medical',
+    tiers: 'Plans 2 / 3 / 4 (Limited Medical)',
+    network: 'MultiPlan PPO (via Pinnacle network)',
+    assoc: 'American Workers Association (AWA)',
+    uw: 'Everest RE',
+    vault: 'pinnacleprotect'
+  },
+  {
+    name: 'AWA SimpleShield',
+    platform: 'NEO',
+    type: 'Fixed indemnity',
+    tiers: 'Plans 1 / 2',
+    network: 'First Health + MultiPlan (SGIC dual-network lookup)',
+    assoc: 'American Workers Association (AWA)',
+    uw: 'SGIC',
+    vault: 'simpleshield'
+  },
+  {
+    name: 'Access Health STM',
+    platform: 'FirstEnroll',
+    type: 'STM',
+    tiers: 'Traditional / Lite',
+    network: 'PHCS',
+    assoc: 'National Congress of Employers (NCE)',
+    uw: 'American Financial Security Life Insurance Co.',
+    vault: 'accesshealth'
+  },
+  {
+    name: 'GoodHealth (GHDP)',
+    platform: 'FirstEnroll',
+    type: 'MEC',
+    tiers: 'Wellness / 1 / 2 / 3 / 4 / 5',
+    network: 'First Health',
+    assoc: 'Good Health Distribution Partners',
+    uw: 'Merchants Benefit Administrators (MBA)',
+    uwLabel: 'Administrator',
+    vault: 'goodhealth13'
+  },
+  {
+    name: 'TDK',
+    platform: 'FirstEnroll',
+    type: 'MEC',
+    tiers: '1 / 2 / 3 / 4 / 5',
+    network: 'First Health',
+    assoc: 'Health Care Data Analytics (HCDA)',
+    uw: 'Detego Health',
+    uwLabel: 'Administrator',
+    vault: 'tdk13'
+  },
+  {
+    name: 'Harmony Care PLUS',
+    platform: 'FirstEnroll',
+    type: 'Limited',
+    tiers: '100A / 100 / 200 / 200+ / 300 / 500 / 750 / 1000',
+    network: 'First Health',
+    assoc: 'National Congress of Employers (NCE)',
+    uw: 'American Financial Security Life Insurance Co.',
+    vault: 'harmonycare'
+  },
+  {
+    name: 'Harmony Care',
+    platform: 'FirstEnroll',
+    type: 'Limited',
+    tiers: '100A / 100B / 100 / 200 / 200+ / 300 / 500 / 750 / 1000',
+    network: 'First Health',
+    assoc: 'National Congress of Employers (NCE)',
+    uw: 'American Financial Security Life Insurance Co.',
+    vault: 'harmonycareseries'
+  },
+  {
+    name: 'Advanced Wellness PLUS',
+    platform: 'FirstEnroll',
+    type: 'Limited',
+    tiers: '100A to 1000',
+    network: 'First Health Network',
+    assoc: 'National Congress of Employers (NCE)',
+    uw: 'American Financial Security Life Insurance Co.',
+    vault: 'advancedwellnessplus'
+  },
+  {
+    name: 'Sigma Care PLUS',
+    platform: 'FirstEnroll',
+    type: 'Limited',
+    tiers: '100A to 1000',
+    network: 'First Health',
+    assoc: 'National Congress of Employers (NCE)',
+    uw: 'American Financial Security Life Insurance Co.',
+    vault: 'sigmacare'
+  },
+  {
+    name: 'Health Choice Silver',
+    platform: 'FirstEnroll',
+    type: 'Limited',
+    tiers: '100A to 1000',
+    network: 'MultiPlan',
+    assoc: 'National Congress of Employers (NCE)',
+    uw: 'American Financial Security Life Insurance Co.',
+    vault: 'healthchoicesilver'
+  },
+  {
+    name: 'BWA Paramount',
+    platform: 'FirstEnroll',
+    type: 'Limited',
+    tiers: 'Plan 1 to 6',
+    network: 'Managed Care / Reference-Based Pricing',
+    assoc: 'Business Workers of America (BWA)',
+    uw: 'BCS Insurance Company',
+    vault: 'bwapara'
+  },
+  {
+    name: 'BWA Americare',
+    platform: 'FirstEnroll',
+    type: 'Limited',
+    tiers: 'Plan 2 / 3 / 4',
+    network: 'PHCS',
+    assoc: 'Business Workers of America (BWA)',
+    uw: 'American Public Life',
+    vault: 'bwaamericare'
+  }
+];
+
+var qrPlatform = 'All';
+var qrType = 'All';
+var qrQuery = '';
+
+function _qrPills(values, current, setter) {
+  var html = '';
+  var i;
+  for (i = 0; i < values.length; i++) {
+    html +=
+      '<button type="button" class="qr-pill' +
+      (values[i] === current ? ' qr-pill-on' : '') +
+      '" aria-pressed="' +
+      (values[i] === current ? 'true' : 'false') +
+      '" onclick="' +
+      setter +
+      "('" +
+      values[i] +
+      '\')">' +
+      escHTML(values[i]) +
+      '</button>';
+  }
+  return html;
+}
+
+function _qrRow(label, value) {
+  return '<dt>' + escHTML(label) + '</dt><dd>' + escHTML(value || '') + '</dd>';
+}
+
+function _qrRenderCards() {
+  var grid = document.getElementById('qr-grid');
+  var count = document.getElementById('qr-count');
+  var pills = document.getElementById('qr-pills');
+  var q = qrQuery.toLowerCase().replace(/^\s+|\s+$/g, '');
+  var html = '';
+  var shown = 0;
+  var i;
+  var p;
+  if (pills) {
+    pills.innerHTML =
+      '<div class="qr-pill-row"><span class="qr-pill-label">Platform</span>' +
+      _qrPills(['All', 'NEO', 'FirstEnroll'], qrPlatform, 'qrSetPlatform') +
+      '</div><div class="qr-pill-row"><span class="qr-pill-label">Type</span>' +
+      _qrPills(
+        [
+          'All',
+          'STM',
+          'MEC',
+          'ERISA',
+          'Limited',
+          'Limited medical',
+          'Fixed indemnity'
+        ],
+        qrType,
+        'qrSetType'
+      ) +
+      '</div>';
+  }
+  for (i = 0; i < CHA_QUICK_REF.length; i++) {
+    p = CHA_QUICK_REF[i];
+    if (qrPlatform !== 'All' && p.platform !== qrPlatform) continue;
+    if (qrType !== 'All' && p.type !== qrType) continue;
+    if (
+      q &&
+      (p.name + ' ' + p.tiers + ' ' + p.network + ' ' + p.assoc + ' ' + p.uw)
+        .toLowerCase()
+        .indexOf(q) === -1
+    ) {
+      continue;
+    }
+    shown++;
+    html +=
+      '<article class="qr-card"><div class="qr-card-top"><div><h3 class="qr-name">' +
+      escHTML(p.name) +
+      '</h3><div class="qr-tiers">' +
+      escHTML(p.tiers) +
+      '</div></div><span class="qr-plat qr-plat-' +
+      (p.platform === 'NEO' ? 'neo' : 'fe') +
+      '">' +
+      escHTML(p.platform) +
+      '</span></div><span class="qr-type">' +
+      escHTML(p.type) +
+      '</span><dl class="qr-rows">' +
+      _qrRow('Network', p.network) +
+      _qrRow('Association', p.assoc) +
+      _qrRow(p.uwLabel || 'Underwriter', p.uw) +
+      '</dl><button type="button" class="qr-open" onclick="qrOpenInVault(\'' +
+      p.vault +
+      '\')">Open in Plan Vault</button></article>';
+  }
+  if (grid) {
+    grid.innerHTML =
+      html || '<p class="qr-empty">No plans match that search.</p>';
+  }
+  if (count) {
+    count.textContent =
+      shown + ' of ' + CHA_QUICK_REF.length + ' plan families';
+  }
+}
+
+function qrSetPlatform(v) {
+  qrPlatform = v;
+  _qrRenderCards();
+}
+
+function qrSetType(v) {
+  qrType = v;
+  _qrRenderCards();
+}
+
+function qrSearch(v) {
+  qrQuery = v || '';
+  _qrRenderCards();
+}
+
+function qrOpenInVault(id) {
+  _showComboPage('plans', 'policydocs');
+  setTimeout(function () {
+    if (typeof policyDocToggle === 'function' && policyDocOpen !== id) {
+      policyDocToggle(id);
+    }
+    var el = document.getElementById('pd-' + id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 150);
+}
+
+function renderQuickReference() {
+  var el = document.getElementById('page-quickref');
+  if (!el) return;
+  if (!el.getAttribute('data-qr-ready')) {
+    el.innerHTML =
+      '<div class="ph"><div class="pt">Quick <span>Reference</span></div><div class="pd">Who is behind every current NEO and FirstEnroll plan.</div></div>' +
+      '<section class="qr-every"><span class="qr-every-k">Every call</span>' +
+      '<span class="qr-every-v">Must disclose network, underwriter, association, and billing</span>' +
+      '<span class="qr-every-v">Not ACA-compliant</span>' +
+      '<span class="qr-every-v">Not major medical</span></section>' +
+      '<p class="qr-note" role="note">Always confirm provider participation before quoting in-network access.</p>' +
+      '<input type="text" class="qr-search" placeholder="Search plan, network, association, or carrier" aria-label="Search plans" oninput="qrSearch(this.value)">' +
+      '<div id="qr-pills" class="qr-pills"></div>' +
+      '<div id="qr-count" class="qr-count"></div>' +
+      '<div id="qr-grid" class="qr-grid"></div>' +
+      '<p class="qr-foot">Sources: NEO Insurance product Info pages on 1Enrollment (Oct 14, 2026), the Allstate STM brochure (rev. 04/2026) and the CHA plan reference table. For internal agent use only.</p>';
+    el.setAttribute('data-qr-ready', '1');
+  }
+  _qrRenderCards();
+}

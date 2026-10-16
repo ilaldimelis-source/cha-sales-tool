@@ -1730,6 +1730,179 @@
           grid-column: auto;
         }
       }
+      /* === PLAN LINEUP OCT 2026: Quick Reference === */
+      .qr-every {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+        padding: 16px 20px;
+        border-radius: 22px;
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+      }
+      .qr-every-k {
+        margin-right: 6px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .qr-every-v {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgb(255 255 255 / 0.1);
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .qr-note {
+        margin: 0 0 14px;
+        padding: 12px 16px;
+        border-radius: 18px;
+        background: var(--cha-warning-bg);
+        color: var(--cha-warning-text);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .qr-search {
+        width: 100%;
+        height: 48px;
+        box-sizing: border-box;
+        margin-bottom: 12px;
+        padding: 0 20px;
+        border: 1.5px solid var(--cha-border-default);
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        font-size: 15px;
+      }
+      .qr-pills {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .qr-pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+      }
+      .qr-pill-label {
+        width: 72px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--cha-text-secondary);
+      }
+      .qr-pill {
+        min-height: 40px;
+        padding: 9px 15px;
+        border: 1.5px solid var(--cha-border-default);
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-secondary);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .qr-pill-on {
+        border-color: var(--cha-text-primary);
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+      }
+      .qr-count {
+        margin-bottom: 12px;
+        font-size: 13px;
+        color: var(--cha-text-secondary);
+      }
+      .qr-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 16px;
+      }
+      .qr-card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 18px 20px;
+        border-radius: 22px;
+        background: var(--cha-bg-card);
+        box-shadow: 0 8px 24px rgb(15 23 42 / 0.06);
+      }
+      .qr-card-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .qr-name {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--cha-text-primary);
+      }
+      .qr-tiers {
+        font-size: 12px;
+        color: var(--cha-text-secondary);
+      }
+      .qr-plat {
+        flex-shrink: 0;
+        padding: 5px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .qr-plat-neo {
+        background: var(--cha-text-secondary);
+        color: var(--cha-bg-card);
+      }
+      .qr-plat-fe {
+        background: var(--cha-bg-surface);
+        color: var(--cha-accent-dark);
+      }
+      .qr-type {
+        align-self: flex-start;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--cha-bg-surface);
+        color: var(--cha-text-secondary);
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .qr-rows {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 8px 10px;
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .qr-rows dt {
+        color: var(--cha-text-secondary);
+        font-weight: 600;
+      }
+      .qr-rows dd {
+        margin: 0;
+        color: var(--cha-text-primary);
+      }
+      .qr-open {
+        align-self: flex-start;
+        margin-top: auto;
+        padding: 10px 0 0;
+        border: 0;
+        background: none;
+        color: var(--cha-accent-dark);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .qr-empty,
+      .qr-foot {
+        font-size: 13px;
+        color: var(--cha-text-secondary);
+      }
+      .qr-foot {
+        margin-top: 18px;
+      }
     </style>
   </head>
   <body>
@@ -2144,6 +2317,7 @@
           <div class="page-subtabs" id="subtabs-plans"></div>
           <div id="subcontent-plans"></div>
           <div id="page-policydocs" class="page" style="display: none"></div>
+          <div id="page-quickref" class="page" style="display: none"></div>
           <div id="page-allplans" class="page" style="display: none"></div>
           <div id="page-benefits" class="page" style="display: none"></div>
         </div>
@@ -2689,7 +2863,7 @@
     <script src="js/auth.js"></script>
     <script src="js/speed-insights.js"></script>
     <script src="js/plan-registry.js?v=1792163611848"></script>
-    <script src="js/utils.js?v=1792164089398"></script>
+    <script src="js/utils.js?v=1792164488818"></script>
     <script src="js/recovery-data.js?v=1779700000000"></script>
     <script src="js/objections.js?v=1779700000000"></script>
     <script src="js/knowledge_base.js?v=1790272900000"></script>
@@ -2699,7 +2873,7 @@
     <script src="js/plan-pdf-map.js?v=1790710000000"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1792164336013"></script>
-    <script src="js/plans-benefits.js?v=1792164089398"></script>
+    <script src="js/plans-benefits.js?v=1792164488818"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>
@@ -2710,7 +2884,7 @@
     <script src="js/sales-tracker.js?v=1790272800000"></script>
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1790682000000"></script>
-    <script src="js/app.js?v=1792164089398"></script>
+    <script src="js/app.js?v=1792164488818"></script>
     <script>
       (function () {
         var data = window.docusignWalkthroughData;
