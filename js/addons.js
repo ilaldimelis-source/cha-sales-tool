@@ -1071,11 +1071,7 @@ var AO_DETAILS = [
     match: /^AME /i,
     rows: [
       ['Association', 'NCE'],
-      ['Underwriter', 'American Financial Security Life Ins. Co.'],
-      [
-        'Claims',
-        'Most states: IBA, PO Box 576, Arnold, MD 21012, 878-222-4411. CA, CO, DC, FL, ID, IA, KS, LA, MI, MO, NC, SC, TN, WV, WY claims after 8/2/2021: IAC for LNIC, PO Box 16338, Oklahoma City, OK 73113, 844-649-1896. Texas: CBP, PO Box 21673, Eagan, MN 55121, EDI 14829, 888-562-0409.'
-      ]
+      ['Underwriter', 'American Financial Security Life Ins. Co.']
     ]
   },
   {
@@ -1083,11 +1079,7 @@ var AO_DETAILS = [
     match: /^AD&D /i,
     rows: [
       ['Association', 'NCE'],
-      ['Underwriter', 'American Financial Security Life Ins. Co.'],
-      [
-        'Claims',
-        'Most states: IBA, PO Box 576, Arnold, MD 21012, 878-222-4411. CA, CO, DC, FL, ID, IA, KS, LA, MI, MO, NC, SC, TN, WV, WY claims after 8/2/2021: IAC for LNIC, PO Box 16338, Oklahoma City, OK 73113, 844-649-1896. Texas: CBP, PO Box 21673, Eagan, MN 55121, EDI 14829, 888-562-0409.'
-      ]
+      ['Underwriter', 'American Financial Security Life Ins. Co.']
     ]
   },
   {
@@ -1104,11 +1096,7 @@ var AO_DETAILS = [
     rows: [
       ['Network', 'MaximumCare PPO (Careington, Connection Dental, DenteMax)'],
       ['Association', 'GHDP, LP'],
-      ['Underwriter', 'Self-funded PPO, TPA: MBA'],
-      [
-        'Claims',
-        'MBA, PO Box 35249, Phoenix, AZ 85021-9998, claims@mbaadmin.com, 480-550-6452, Fax-back 480-550-6440'
-      ]
+      ['Underwriter', 'Self-funded PPO, TPA: MBA']
     ]
   },
   {
@@ -1125,7 +1113,7 @@ var AO_DETAILS = [
     rows: [
       [
         'Provider',
-        'ValuePoint by MultiPlan, Aetna Dental Access, Outlook Vision, Start Hearing, Lyric telemed, DirectLabs, chiro, Rx. DMPO: Access One Consumer Health (800-896-1962). Member services 732-876-9733'
+        'ValuePoint by MultiPlan, Aetna Dental Access, Outlook Vision, Start Hearing, Lyric telemed, DirectLabs, chiro, Rx. DMPO: Access One Consumer Health'
       ]
     ]
   },
