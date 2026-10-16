@@ -1380,38 +1380,92 @@ function _pdShortValues(plan) {
   return null;
 }
 
+function _pdKeyValueHtml(text) {
+  var m = String(text).match(/^((?:[^,;(]|,(?=\d)){1,26})([,;]\s+|\s+\()(.*)$/);
+  if (!m) return '<span class="pv-kv-big">' + escHTML(text) + '</span>';
+  return (
+    '<span class="pv-kv-big">' +
+    escHTML(m[1]) +
+    '</span> <span class="pv-kv-note">' +
+    escHTML((m[2].indexOf('(') !== -1 ? '(' : '') + m[3]) +
+    '</span>'
+  );
+}
+
 function _pdShortSectionsHtml(short) {
   var html = '';
+  var rows = '';
+  var warn = '';
   var s;
   var i;
-  var tiles;
+  var key;
   var text;
   for (s = 0; s < PD_SHORT_SECTIONS.length; s++) {
-    tiles = '';
     for (i = 0; i < PD_SHORT_SECTIONS[s].keys.length; i++) {
-      text = short[PD_SHORT_SECTIONS[s].keys[i][0]];
-      if (!text) continue;
-      tiles +=
-        '<div class="pv-tile' +
-        (text.length > 90 ? ' pv-tile-wide' : '') +
-        '"><div class="pv-tile-k">' +
-        escHTML(PD_SHORT_SECTIONS[s].keys[i][1]) +
-        '</div><div class="pv-tile-v">' +
-        escHTML(text) +
-        '</div></div>';
+      key = PD_SHORT_SECTIONS[s].keys[i];
+      text = short[key[0]];
+      if (!text || /^not listed/i.test(text)) continue;
+      if (PD_SHORT_SECTIONS[s].warn) {
+        warn +=
+          '<div class="pv-warn-line"><b>' +
+          escHTML(key[1]) +
+          ':</b> ' +
+          escHTML(text) +
+          '</div>';
+      } else {
+        rows +=
+          '<div class="pv-kv"><span class="pv-kv-k">' +
+          escHTML(key[0] === 'deductible' ? 'Deductible' : key[1]) +
+          '</span><span class="pv-kv-v">' +
+          _pdKeyValueHtml(text) +
+          '</span></div>';
+      }
     }
-    if (!tiles) continue;
-    html +=
-      '<section class="pv-sec' +
-      (PD_SHORT_SECTIONS[s].warn ? ' pv-sec-warn' : '') +
-      '"><h3 class="pv-sec-title">' +
-      escHTML(PD_SHORT_SECTIONS[s].title) +
-      '</h3><div class="pv-tiles">' +
-      tiles +
-      '</div></section>';
   }
+  if (rows) html += '<div class="pv-kvs">' + rows + '</div>';
+  if (warn) html += '<div class="pv-warns">' + warn + '</div>';
   return html;
 }
+
+// Plans list (Oct 2026 option C): one row per plan with type, network and
+// platform; the plan opens in place under its row.
+var PD_NETWORK_SHORT = {
+  goodhealth13: 'First Health',
+  goodhealth45: 'First Health',
+  ghdpwellness: 'First Health',
+  tdk13: 'First Health',
+  tdk45: 'First Health',
+  smartchoice: 'First Health',
+  goodlifewbchoice: 'First Health',
+  goodlifewbselect: 'First Health',
+  harmonycare: 'First Health',
+  harmonycareseries: 'First Health',
+  advancedwellnessplus: 'First Health',
+  sigmacare: 'First Health',
+  allstatehealthaccess: 'First Health',
+  pinnacle: 'PHCS',
+  smarthealth: 'PHCS',
+  accesshealth: 'PHCS',
+  bwaamericare: 'PHCS',
+  pinnacleprotect: 'MultiPlan',
+  healthchoicesilver: 'MultiPlan',
+  galena: 'First Health + MultiPlan',
+  simpleshield: 'First Health + MultiPlan',
+  harborstmessential: 'Cigna PPO',
+  harborstmaccess: 'Cigna PPO',
+  harborstmsecure: 'Cigna PPO',
+  allstatestm: 'Aetna Open Choice PPO',
+  bwapara: 'Managed care'
+};
+
+var PD_TYPE_LABEL = {
+  MEC: 'MEC',
+  STM: 'Short-term medical',
+  Limited: 'Limited benefit',
+  'Limited medical': 'Limited medical'
+};
+
+var policyDocPlatform = 'All';
 
 function _pdHasFact(value) {
   if (value == null) return false;
@@ -1426,6 +1480,12 @@ function _pdFilteredPlans() {
     if (!_pdIsDisplayablePlan(p)) return false;
     var groupOk = policyDocFilter === 'All' || p.group === policyDocFilter;
     if (!groupOk) return false;
+    if (
+      policyDocPlatform !== 'All' &&
+      (PD_PLATFORM[p.id] === 'NEO' ? 'NEO' : 'FE') !== policyDocPlatform
+    ) {
+      return false;
+    }
     if (!policyDocSearch.trim()) return true;
     var q = policyDocSearch.toLowerCase();
     var expandedTerms = expandSearchSynonyms(q);
@@ -1909,6 +1969,31 @@ function _pdFactsInner(plan, profile) {
   return html;
 }
 
+function _pdFactsWithMore(plan, profile) {
+  var short = _pdShortValues(plan);
+  var full = _pdFactsInner(plan, profile);
+  var cut;
+  if (!short) {
+    cut = full.indexOf('<h3 class="pv-sec-title">Who is behind it</h3>');
+    if (cut === -1) return full;
+    cut = full.lastIndexOf('<section', cut);
+    return (
+      full.slice(0, cut) +
+      '<details class="pv-more"><summary>More details: administrator, states, cancellation</summary>' +
+      full.slice(cut) +
+      '</details>'
+    );
+  }
+  cut = full.indexOf('<section');
+  if (cut === -1) return full;
+  return (
+    full.slice(0, cut) +
+    '<details class="pv-more"><summary>More details: administrator, states, cancellation</summary>' +
+    full.slice(cut) +
+    '</details>'
+  );
+}
+
 function _pdAliasHasId(rows, planId) {
   var i;
   if (!rows || !planId) return false;
@@ -2052,7 +2137,7 @@ function _pdApplyProfile(plan, profile) {
   var label;
   if (policyDocSelected !== plan.id) return;
   if (facts) {
-    facts.innerHTML = _pdFactsInner(plan, profile);
+    facts.innerHTML = _pdFactsWithMore(plan, profile);
     if (
       plan.id === 'pinnaclecriticalcare' &&
       facts.parentNode &&
@@ -2148,37 +2233,19 @@ function _pdDetailHtml(plan) {
     return '<p class="pv-status">No plan is selected.</p>';
   }
   var scriptIndex = _pdScriptIndex(plan);
-  var html = _pdTierHtml(plan);
-  html += '<div class="pv-detail-top"><div>';
-  html += '<h2 class="pv-detail-name">' + escHTML(plan.name) + '</h2>';
-  html += '<div class="pv-badges">';
-  html +=
-    '<span class="pv-badge pv-badge-' +
-    escHTML(String(plan.group).replace(/ /g, '-')) +
-    '">' +
-    escHTML(plan.group) +
-    '</span>';
-  if (PD_PLATFORM[plan.id]) {
-    html +=
-      '<span class="pv-badge pv-badge-plat">' +
-      escHTML(PD_PLATFORM[plan.id]) +
-      '</span>';
-  }
-  html += '</div></div>';
+  var html = '<div class="pv-open-top">';
+  html += _pdTierHtml(plan) || '<span></span>';
   html += '<div class="pv-actions">';
   html += _pdBrochureControls(plan);
   if (scriptIndex >= 0) {
     html +=
       '<button type="button" class="pv-action" data-pv-script="' +
       scriptIndex +
-      '">Open script</button>';
-  } else {
-    html +=
-      '<button type="button" class="pv-action" disabled>Open script</button>';
+      '">Script</button>';
   }
   html += '</div></div>';
   html += '<div class="pv-facts" id="pv-facts">';
-  html += _pdFactsInner(plan, null);
+  html += _pdFactsWithMore(plan, null);
   html += '</div>';
   html += '<div id="pv-doc-badge" class="pv-doc-slot"></div>';
   return html;
@@ -2197,45 +2264,39 @@ function _pdPlatformTag(plan) {
 }
 
 function _pdListHtml(plans) {
-  var html = '';
+  var html = '<div class="pv-rows">';
   var g;
   var i;
+  var plan;
+  var open;
   for (g = 0; g < PD_GROUPS.length; g++) {
-    var groupPlans = [];
     for (i = 0; i < plans.length; i++) {
-      if (plans[i].group === PD_GROUPS[g].key) groupPlans.push(plans[i]);
-    }
-    if (!groupPlans.length) continue;
-    html +=
-      '<section class="pv-group" data-plan-group="' + PD_GROUPS[g].key + '">';
-    html +=
-      '<h2 class="pv-divider"><span>' +
-      escHTML(PD_GROUPS[g].label) +
-      '</span><span class="pv-count">' +
-      groupPlans.length +
-      '</span></h2>';
-    html += '<div class="pv-grid">';
-    for (i = 0; i < groupPlans.length; i++) {
-      var plan = groupPlans[i];
-      var open = plan.id === policyDocOpen;
+      plan = plans[i];
+      if (plan.group !== PD_GROUPS[g].key) continue;
+      open = plan.id === policyDocOpen;
       html +=
-        '<button type="button" class="pv-card' +
-        (open ? ' pv-card-open' : '') +
+        '<button type="button" class="pv-row' +
+        (open ? ' pv-row-open' : '') +
         '" id="pd-' +
         escHTML(plan.id) +
         '" data-pv-id="' +
         escHTML(plan.id) +
         '" aria-expanded="' +
         (open ? 'true' : 'false') +
-        '"><span class="pv-card-name">' +
+        '"><span class="pv-row-name">' +
         escHTML(plan.name) +
+        '</span><span class="pv-row-type">' +
+        escHTML(PD_TYPE_LABEL[plan.group] || plan.group || '') +
+        '</span><span class="pv-row-net">' +
+        escHTML(PD_NETWORK_SHORT[plan.id] || '') +
         '</span>' +
         _pdPlatformTag(plan) +
-        '</button>';
+        '<span class="pv-row-icon" aria-hidden="true">' +
+        (open ? '-' : '+') +
+        '</span></button>';
     }
-    html += '</div></section>';
   }
-  return html;
+  return html + '</div>';
 }
 
 function _pdColumnCount(grid) {
@@ -2255,49 +2316,28 @@ function _pdScrollPanel(panel) {
 function _pdPlacePanel(shouldScroll) {
   var old = document.querySelector('#page-policydocs .pv-panel');
   if (old && old.parentNode) old.parentNode.removeChild(old);
-  var cards = document.querySelectorAll('#page-policydocs .pv-card');
+  var rows = document.querySelectorAll('#page-policydocs .pv-row');
   var i;
-  for (i = 0; i < cards.length; i++) {
-    var on = cards[i].getAttribute('data-pv-id') === policyDocOpen;
-    cards[i].setAttribute('aria-expanded', on ? 'true' : 'false');
-    if (on) {
-      if (cards[i].className.indexOf('pv-card-open') === -1) {
-        cards[i].className += ' pv-card-open';
-      }
-    } else {
-      cards[i].className = cards[i].className
-        .replace(' pv-card-open', '')
-        .replace('pv-card-open', '');
-    }
+  var on;
+  var icon;
+  for (i = 0; i < rows.length; i++) {
+    on = rows[i].getAttribute('data-pv-id') === policyDocOpen;
+    rows[i].setAttribute('aria-expanded', on ? 'true' : 'false');
+    rows[i].className = on ? 'pv-row pv-row-open' : 'pv-row';
+    icon = rows[i].querySelector('.pv-row-icon');
+    if (icon) icon.textContent = on ? '-' : '+';
   }
   if (!policyDocOpen) return;
-  var card = document.getElementById('pd-' + policyDocOpen);
-  if (!card || !card.parentNode) return;
-  var grid = card.parentNode;
-  var gridCards = [];
-  var child = grid.firstChild;
-  while (child) {
-    if (child.className && child.className.indexOf('pv-card') !== -1) {
-      gridCards.push(child);
-    }
-    child = child.nextSibling;
-  }
-  var index = 0;
-  for (i = 0; i < gridCards.length; i++) {
-    if (gridCards[i] === card) index = i;
-  }
-  var cols = _pdColumnCount(grid);
-  var rowEnd = Math.floor(index / cols) * cols + cols - 1;
-  if (rowEnd > gridCards.length - 1) rowEnd = gridCards.length - 1;
+  var row = document.getElementById('pd-' + policyDocOpen);
+  if (!row || !row.parentNode) return;
   var panel = document.createElement('div');
-  panel.className = 'pv-panel';
+  panel.className = 'pv-panel pv-row-panel';
   panel.setAttribute('role', 'region');
   panel.setAttribute('aria-label', 'Plan details');
   var plan = _pdFindPlan(policyDocOpen);
   panel.innerHTML = _pdDetailHtml(plan);
-  var after = gridCards[rowEnd];
-  if (after.nextSibling) grid.insertBefore(panel, after.nextSibling);
-  else grid.appendChild(panel);
+  if (row.nextSibling) row.parentNode.insertBefore(panel, row.nextSibling);
+  else row.parentNode.appendChild(panel);
   _pdFillDocBadge(plan);
   if (typeof setActivePlan === 'function' && plan) {
     setActivePlan(plan.id, plan.name, plan.group || plan.type || '');
@@ -2318,10 +2358,18 @@ function renderPolicydocs() {
   }
 }
 function _renderPolicydocsInner() {
-  var html = '<div class="pv-page">';
-  html += '<header class="pv-header"><h2 class="pv-title">Plan Vault</h2>';
+  var html = '<div class="pv-page pv-page-list">';
+  html += '<div class="pv-toolbar">';
+  html += '<div class="pv-search-wrap">';
   html +=
-    '<p class="pv-lead">Find the right plan for every client.</p></header>';
+    '<input type="text" id="pdSearchInput" class="pv-search" placeholder="Search a plan, benefit or network" value="' +
+    escHTML(policyDocSearch) +
+    '" aria-label="Search a plan, benefit or network">';
+  html +=
+    '<button id="pdSearchClear" type="button" class="pv-search-clear" aria-label="Clear plan search"' +
+    (policyDocSearch ? '' : ' style="display:none"') +
+    '>&times;</button>';
+  html += '</div>';
   html += '<div class="stabs pv-filters">';
   ['All', 'MEC', 'STM', 'Limited', 'Limited medical'].forEach(function (f) {
     html +=
@@ -2330,21 +2378,27 @@ function _renderPolicydocsInner() {
       '" data-pv-filter="' +
       f +
       '">' +
-      (f === 'All' ? 'All' : f) +
+      f +
       '</button>';
   });
   html += '</div>';
-  html += '<div class="pv-search-wrap">';
-  html +=
-    '<input type="text" id="pdSearchInput" class="pv-search" placeholder="Search plans, benefits, exclusions..." value="' +
-    escHTML(policyDocSearch) +
-    '" aria-label="Search plans, benefits, exclusions">';
-  html +=
-    '<button id="pdSearchClear" type="button" class="pv-search-clear" aria-label="Clear plan search"' +
-    (policyDocSearch ? '' : ' style="display:none"') +
-    '>&times;</button>';
-  html += '</div>';
-  html += '<div id="pv-list" class="pv-board" aria-label="Plan cards"></div>';
+  html += '<div class="stabs pv-plat-filters">';
+  [
+    ['All', 'NEO + FE'],
+    ['NEO', 'NEO'],
+    ['FE', 'FirstEnroll']
+  ].forEach(function (f) {
+    html +=
+      '<button type="button" class="stab' +
+      (f[0] === policyDocPlatform ? ' active' : '') +
+      '" data-pv-plat="' +
+      f[0] +
+      '">' +
+      f[1] +
+      '</button>';
+  });
+  html += '</div></div>';
+  html += '<div id="pv-list" class="pv-board" aria-label="Plans"></div>';
   html += '<div id="pdResultsContainer" class="pv-results-host"></div>';
   html += '</div>';
 
@@ -2383,8 +2437,18 @@ function clearPdSearch() {
 function policyDocFilterChanged() {
   policyDocOpen = null;
   var tabs = document.querySelectorAll(
-    '#page-policydocs .stab, #page-allplans .stab'
+    '#page-policydocs .pv-filters .stab, #page-allplans .pv-filters .stab'
   );
+  var platTabs = document.querySelectorAll(
+    '#page-policydocs .pv-plat-filters .stab'
+  );
+  platTabs.forEach(function (tab) {
+    if (tab.getAttribute('data-pv-plat') === policyDocPlatform) {
+      tab.classList.add('active');
+    } else {
+      tab.classList.remove('active');
+    }
+  });
   var filters = [
     'All',
     'MEC',
@@ -2494,6 +2558,11 @@ function _pdOnClick(event) {
       _pdSelectTier(node.getAttribute('data-pv-tier'));
       return;
     }
+    if (node.getAttribute && node.getAttribute('data-pv-plat')) {
+      policyDocPlatform = node.getAttribute('data-pv-plat');
+      policyDocFilterChanged();
+      return;
+    }
     if (node.getAttribute && node.getAttribute('data-pv-filter')) {
       policyDocFilter = node.getAttribute('data-pv-filter');
       policyDocFilterChanged();
@@ -2518,7 +2587,8 @@ function _pdOnClick(event) {
     if (
       node.tagName === 'BUTTON' &&
       node.getAttribute('data-pv-id') &&
-      node.className.indexOf('pv-card') !== -1
+      (node.className.indexOf('pv-card') !== -1 ||
+        node.className.indexOf('pv-row') !== -1)
     ) {
       policyDocToggle(node.getAttribute('data-pv-id'));
       return;

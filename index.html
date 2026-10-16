@@ -2168,6 +2168,199 @@
           grid-template-columns: minmax(0, 1fr);
         }
       }
+      /* === PLANS TAB OCT 2026: option C list, opens in place === */
+      #page-policydocs .pv-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      #page-policydocs .pv-toolbar .pv-search-wrap {
+        flex: 1 1 320px;
+        margin: 0;
+      }
+      #page-policydocs .pv-toolbar .pv-search {
+        height: 48px;
+        border-radius: 999px;
+        padding: 0 44px 0 20px;
+        font-size: 15px;
+      }
+      #page-policydocs .pv-toolbar .pv-filters,
+      #page-policydocs .pv-toolbar .pv-plat-filters {
+        margin: 0;
+        flex-wrap: wrap;
+      }
+      #page-policydocs .pv-rows {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border-radius: 24px;
+        background: var(--cha-bg-card);
+        box-shadow: 0 8px 24px rgb(15 23 42 / 0.06);
+      }
+      #page-policydocs .pv-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 160px 200px 52px 20px;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        min-height: 56px;
+        padding: 12px 22px;
+        border: 0;
+        border-bottom: 1px solid var(--cha-border-subtle);
+        background: transparent;
+        color: var(--cha-text-primary);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      #page-policydocs .pv-row:focus-visible {
+        outline: 2px solid var(--cha-accent);
+        outline-offset: -2px;
+      }
+      #page-policydocs .pv-row-open {
+        background: var(--cha-bg-muted);
+        border-bottom-color: transparent;
+      }
+      #page-policydocs .pv-row-name {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      #page-policydocs .pv-row-type,
+      #page-policydocs .pv-row-net {
+        font-size: 13px;
+        color: var(--cha-text-secondary);
+      }
+      #page-policydocs .pv-row .pv-plat {
+        justify-self: start;
+      }
+      #page-policydocs .pv-row-icon {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--cha-text-secondary);
+        text-align: center;
+      }
+      #page-policydocs .pv-row-panel {
+        margin: 0;
+        padding: 6px 22px 22px;
+        border: 0;
+        border-bottom: 1px solid var(--cha-border-subtle);
+        border-radius: 0;
+        background: var(--cha-bg-muted);
+      }
+      #page-policydocs .pv-open-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+      #page-policydocs .pv-open-top .pv-tiers {
+        margin: 0;
+        padding: 4px;
+        gap: 4px;
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+      }
+      #page-policydocs .pv-open-top .pv-tier {
+        padding: 8px 16px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      #page-policydocs .pv-open-top .pv-tier-on {
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+      }
+      #page-policydocs .pv-open-top .pv-action {
+        border-radius: 999px;
+      }
+      #page-policydocs .pv-kvs {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 32px;
+        padding: 4px 18px;
+        border-radius: 18px;
+        background: var(--cha-bg-card);
+      }
+      #page-policydocs .pv-kv {
+        display: grid;
+        grid-template-columns: 130px minmax(0, 1fr);
+        gap: 12px;
+        align-items: baseline;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--cha-border-subtle);
+      }
+      #page-policydocs .pv-kv-k {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cha-text-secondary);
+      }
+      #page-policydocs .pv-kv-big {
+        font-size: 16px;
+        font-weight: 800;
+        color: var(--cha-text-primary);
+      }
+      #page-policydocs .pv-kv-note {
+        font-size: 13px;
+        color: var(--cha-text-secondary);
+      }
+      #page-policydocs .pv-warns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      #page-policydocs .pv-warn-line {
+        flex: 1 1 260px;
+        padding: 12px 16px;
+        border-radius: 16px;
+        background: var(--cha-warning-bg);
+        color: var(--cha-warning-text);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+      #page-policydocs .pv-more {
+        border-radius: 16px;
+        background: var(--cha-bg-card);
+      }
+      #page-policydocs .pv-more > summary {
+        padding: 14px 18px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      #page-policydocs .pv-more[open] {
+        padding-bottom: 14px;
+      }
+      #page-policydocs .pv-more > .pv-sec {
+        padding: 0 18px;
+      }
+      #page-policydocs .pv-doc-slot {
+        display: none;
+      }
+      @media (max-width: 760px) {
+        #page-policydocs .pv-row {
+          grid-template-columns: minmax(0, 1fr) auto 20px;
+          padding: 12px 16px;
+        }
+        #page-policydocs .pv-row-type,
+        #page-policydocs .pv-row-net {
+          display: none;
+        }
+        #page-policydocs .pv-row-panel {
+          padding: 6px 12px 16px;
+        }
+        #page-policydocs .pv-kvs {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        #page-policydocs .pv-kv {
+          grid-template-columns: 110px minmax(0, 1fr);
+        }
+      }
     </style>
   </head>
   <body>
@@ -3161,7 +3354,7 @@
     <script src="js/plan-data-pdf-raw.js?v=1790272900000"></script>
     <script src="js/plan-pdf-map.js?v=1792165216661"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
-    <script src="js/policy-docs.js?v=1792170361536"></script>
+    <script src="js/policy-docs.js?v=1792171505341"></script>
     <script src="js/plans-benefits.js?v=1792165948486"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
