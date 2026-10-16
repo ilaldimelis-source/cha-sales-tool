@@ -1062,16 +1062,39 @@ function aoColumnHtml(platform, label, stateCode, query) {
   return html + '</div>';
 }
 
+// Typing a state in the search box (for example "flo" or "FL") picks
+// that state when only one state matches.
+function aoStateFromQuery(query) {
+  var q = String(query || '')
+    .toLowerCase()
+    .replace(/^\s+|\s+$/g, '');
+  var code;
+  var hits = [];
+  if (q.length < 2) return '';
+  for (code in AO_STATE_NAMES) {
+    if (!Object.prototype.hasOwnProperty.call(AO_STATE_NAMES, code)) continue;
+    if (code.toLowerCase() === q) return code;
+    if (AO_STATE_NAMES[code].toLowerCase().indexOf(q) === 0) hits.push(code);
+  }
+  return hits.length === 1 ? hits[0] : '';
+}
+
 function aoRenderTChart() {
   var host = document.getElementById('ao-tchart');
   var stateEl = document.getElementById('ao-state');
   var searchEl = document.getElementById('ao-search');
   var stateCode = stateEl ? stateEl.value : '';
   var query = searchEl ? searchEl.value : '';
+  var typedState = aoStateFromQuery(query);
   if (!host) return;
   if (!aoData) {
     host.innerHTML = '<p class="ao-status">Loading add-ons...</p>';
     return;
+  }
+  if (typedState) {
+    stateCode = typedState;
+    query = '';
+    if (stateEl) stateEl.value = typedState;
   }
   host.innerHTML =
     aoColumnHtml('NEO', 'NEO', stateCode, query) +
@@ -1111,7 +1134,7 @@ function renderAddons() {
       '<div class="ao-t-controls">' +
       '<label class="ao-t-state"><span>Client state</span>' +
       '<select id="ao-state" aria-label="Client state"><option value="">All states</option></select></label>' +
-      '<input id="ao-search" class="ao-t-search" type="search" placeholder="Search add-ons" aria-label="Search add-ons">' +
+      '<input id="ao-search" class="ao-t-search" type="search" placeholder="Search an add-on or type a state" aria-label="Search an add-on or type a state">' +
       '</div>' +
       '<div id="ao-tchart" class="ao-tchart"><p class="ao-status">Loading add-ons...</p></div>' +
       '</div>';

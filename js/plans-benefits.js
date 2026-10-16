@@ -2417,6 +2417,48 @@ function qrToggle(id) {
   _qrRenderCards();
 }
 
+function _qrTiersLine(tiers) {
+  var text = String(tiers || '').split(' - ')[0];
+  if (/^(one plan|limited partnership)$/i.test(text)) return '';
+  return text;
+}
+
+function _qrRenderHero() {
+  var host = document.getElementById('qr-hero');
+  var counts = { NEO: 0, FirstEnroll: 0 };
+  var i;
+  if (!host) return;
+  for (i = 0; i < CHA_QUICK_REF.length; i++) {
+    counts[CHA_QUICK_REF[i].platform] =
+      (counts[CHA_QUICK_REF[i].platform] || 0) + 1;
+  }
+  host.innerHTML = [
+    ['NEO', 'NEO', 'Billing: NEO Insurance Solutions'],
+    ['FirstEnroll', 'FirstEnroll', 'Billing: FirstEnroll']
+  ]
+    .map(function (h) {
+      var on = qrPlatform === h[0];
+      return (
+        '<button type="button" class="qr3-hero-btn' +
+        (on ? ' qr3-hero-on' : '') +
+        '" aria-pressed="' +
+        (on ? 'true' : 'false') +
+        '" onclick="qrSetPlatform(qrPlatform === \'' +
+        h[0] +
+        "' ? 'All' : '" +
+        h[0] +
+        '\')"><span class="qr3-hero-name">' +
+        h[1] +
+        '</span><span class="qr3-hero-sub">' +
+        counts[h[0]] +
+        ' plan families. ' +
+        h[2] +
+        '</span></button>'
+      );
+    })
+    .join('');
+}
+
 function _qrRenderCards() {
   var grid = document.getElementById('qr-grid');
   var q = qrQuery.toLowerCase().replace(/^\s+|\s+$/g, '');
@@ -2425,8 +2467,11 @@ function _qrRenderCards() {
   var p;
   var s;
   var open;
+  var tiers;
+  _qrRenderHero();
   for (i = 0; i < CHA_QUICK_REF.length; i++) {
     p = CHA_QUICK_REF[i];
+    if (qrPlatform !== 'All' && p.platform !== qrPlatform) continue;
     if (
       q &&
       (p.name + ' ' + p.tiers + ' ' + p.network + ' ' + p.assoc + ' ' + p.uw)
@@ -2436,6 +2481,7 @@ function _qrRenderCards() {
       continue;
     }
     s = QR_SHORT[p.vault] || [p.network, p.assoc, p.uw];
+    tiers = _qrTiersLine(p.tiers);
     open = qrOpenTile === p.vault;
     html +=
       '<button type="button" class="qr3-tile' +
@@ -2450,7 +2496,9 @@ function _qrRenderCards() {
       (p.platform === 'NEO' ? 'neo' : 'fe') +
       '">' +
       (p.platform === 'NEO' ? 'NEO' : 'FE') +
-      '</span></span><span class="qr3-lines">' +
+      '</span></span>' +
+      (tiers ? '<span class="qr3-tiers">' + escHTML(tiers) + '</span>' : '') +
+      '<span class="qr3-lines">' +
       escHTML(s[0]) +
       '<br>' +
       escHTML(s[1]) +
@@ -2514,6 +2562,7 @@ function renderQuickReference() {
     el.innerHTML =
       '<div class="qr3-page">' +
       '<p class="qr3-every">Every call: disclose network, underwriter, association and billing. Not ACA-compliant. Not major medical.</p>' +
+      '<div id="qr-hero" class="qr3-hero"></div>' +
       '<input type="search" class="qr3-search" placeholder="Search a plan" aria-label="Search a plan" oninput="qrSearch(this.value)">' +
       '<div id="qr-grid" class="qr3-grid"></div>' +
       '<p class="qr3-hint">Each tile: network, association, underwriter. Tap a tile for full names.</p>' +
