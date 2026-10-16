@@ -935,7 +935,19 @@ var aoOpenName = '';
 var AO_EXPLAIN_SKIP =
   /same price|member only|standalone version|priced differently|no benefit description|confirm before|listed here|rates? differ|differs from|not an add-on/i;
 
+// One-line explanations for products whose source description is
+// empty. Text from the NEO QuestSelect product page (Oct 2026).
+var AO_EXPLAIN_OVERRIDE = {
+  QuestSelect:
+    'Covered outpatient lab tests (1,200+) at $0 member cost when the doctor orders them and the lab work is sent to Quest Diagnostics. Hospital, ER/STAT and imaging are not included.',
+  'QuestSelect Standalone':
+    'Covered outpatient lab tests (1,200+) at $0 member cost when the doctor orders them and the lab work is sent to Quest Diagnostics. Hospital, ER/STAT and imaging are not included.'
+};
+
 function aoExplain(product) {
+  if (AO_EXPLAIN_OVERRIDE[product.name]) {
+    return AO_EXPLAIN_OVERRIDE[product.name];
+  }
   var parts = String(product.description || '').split(/\.\s+/);
   var i;
   var s;
@@ -1066,7 +1078,11 @@ function aoRenderTChart() {
     aoColumnHtml('FirstEnroll', 'FirstEnroll', stateCode, query);
 }
 
-function aoOnTChartInput() {
+function aoOnTChartInput(event) {
+  // The search box also fires change on blur; only input should redraw it.
+  if (event && event.type === 'change' && event.target.id === 'ao-search') {
+    return;
+  }
   aoOpenName = '';
   aoRenderTChart();
 }
