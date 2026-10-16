@@ -2292,8 +2292,6 @@ var CHA_QUICK_REF = [
     assoc:
       'NCE Association (National Congress of Employers), not required in all states',
     uw: 'American Financial Security Life Insurance Co.',
-    claims:
-      'WebTPA, PO Box 99906, Grapevine, TX 76099, 878-208-1319 (existing claims)',
     vault: 'accesshealth'
   },
   {
@@ -2305,8 +2303,6 @@ var CHA_QUICK_REF = [
     assoc: 'Good Health Distribution Partners',
     uw: 'Merchants Benefit Administrators (MBA)',
     uwLabel: 'Administrator',
-    claims:
-      'MBA, PO Box 35249, Phoenix, AZ 85021, Payer ID IHS24, 480-550-6452, main.mbaadmin.com',
     vault: 'goodhealth13'
   },
   {
@@ -2318,8 +2314,6 @@ var CHA_QUICK_REF = [
     assoc: 'Health Care Data Analytics (HCDA)',
     uw: 'Detego Health',
     uwLabel: 'Administrator',
-    claims:
-      'Detego Health LLC, PO Box 211609, Eagan, MN 55121, Payer EDI 62599, 866-815-6001 (existing claims)',
     vault: 'tdk13'
   },
   {
@@ -2330,8 +2324,6 @@ var CHA_QUICK_REF = [
     network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    claims:
-      'WebTPA, PO Box 99906, Grapevine, TX 76099-9706, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319. The Harmony Care+ brochure (06/25) lists IBA, Payor ID 11329, 878-512-0177. Confirm current TPA.',
     vault: 'harmonycare'
   },
   {
@@ -2342,8 +2334,6 @@ var CHA_QUICK_REF = [
     network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    claims:
-      'WebTPA, PO Box 99906, Grapevine, TX 76099-9706, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319',
     vault: 'harmonycareseries'
   },
   {
@@ -2354,8 +2344,6 @@ var CHA_QUICK_REF = [
     network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    claims:
-      'WebTPA, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319',
     vault: 'advancedwellnessplus'
   },
   {
@@ -2366,8 +2354,6 @@ var CHA_QUICK_REF = [
     network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    claims:
-      'WebTPA, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319',
     vault: 'sigmacare'
   },
   {
@@ -2378,8 +2364,6 @@ var CHA_QUICK_REF = [
     network: 'MultiPlan',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    claims:
-      'WebTPA, Payer ID 75261, Members 878-208-1313, Providers 878-208-1319',
     vault: 'healthchoicesilver'
   },
   {
@@ -2391,8 +2375,6 @@ var CHA_QUICK_REF = [
       'No network required. Bills repriced by Medical Bill Repricer (MBR)',
     assoc: 'Business Workers of America (BWA)',
     uw: 'BCS Insurance Company',
-    claims:
-      'AdminOne, PO Box 21176, Eagan, MN 55121, claims@AdminOne.com, 877-278-4668, Fax 770-691-5234, Rx BIN 610709 GRP BWAARX',
     vault: 'bwapara'
   },
   {
@@ -2403,8 +2385,6 @@ var CHA_QUICK_REF = [
     network: 'PHCS Limited Medical Network (MedicalBillRepricer.com)',
     assoc: 'Business Workers of America (BWA)',
     uw: 'American Public Life',
-    claims:
-      'Inova Care, PO Box 1298, Liberty, MO 64069, MedicalBillRepricer@Inovacare.com, Fax 239-236-1720',
     vault: 'bwaamericare'
   }
 ];
@@ -2575,8 +2555,7 @@ function _qrRenderCards() {
         '<br><b>' +
         escHTML(p.uwLabel || 'Underwriter') +
         ':</b> ' +
-        escHTML(p.uw) +
-        (p.claims ? '<br><b>Claims:</b> ' + escHTML(p.claims) : '') +
+        escHTML(String(p.uw).replace(/\s*\/\s*Claims:.*$/, '')) +
         '<br><b>Billing:</b> ' +
         (p.platform === 'NEO' ? 'NEO Insurance Solutions' : 'FirstEnroll') +
         '</span><span class="qr3-open" onclick="event.stopPropagation();qrOpenInVault(\'' +
