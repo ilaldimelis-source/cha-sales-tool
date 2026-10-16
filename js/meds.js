@@ -467,6 +467,26 @@ function medsSummaryHtml(items) {
         ' now' +
         (ok.length ? ': ' + ok.join(', ') : '')
     );
+  var brands = paps.filter(function (it) {
+    return it.d.k === 'b';
+  }).length;
+  var tiers = (medsData.rxsavers && medsData.rxsavers.tiers) || [];
+  if (brands && tiers.length) {
+    var tier = Math.min(brands, tiers.length);
+    html += medsTag(
+      'neutral',
+      'RxSavers: ' +
+        brands +
+        ' brand ' +
+        (brands === 1 ? 'med' : 'meds') +
+        ' = Tier ' +
+        tier +
+        ', $' +
+        tiers[tier - 1].toFixed(2) +
+        '/mo' +
+        (brands > tiers.length ? ' (highest tier listed)' : '')
+    );
+  }
   if (inc && ok.length)
     html += medsTag(
       fit.length ? 'ok' : 'warn',
