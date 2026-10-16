@@ -193,7 +193,7 @@ const BENEFITS = [
   {
     icon: 'clock',
     name: 'Pre-Existing Conditions',
-    hint: '12/12 rule — must disclose',
+    hint: 'Varies by plan - must disclose',
     howItWorks:
       'Most plans have a 12/12 pre-existing condition clause. Anything diagnosed or treated in the last 12 months has a 12-month waiting period before benefits apply.',
     byPlan: [
@@ -203,11 +203,11 @@ const BENEFITS = [
       { type: 'Limited', desc: '12/12 month pre-ex typical' }
     ],
     sayThis:
-      '"I want to be upfront — any condition diagnosed in the past 12 months would have a 12-month waiting period before hospital benefits apply."',
+      '"Pre-existing conditions are handled differently on every plan. Let me read you exactly how it works on this one."',
     neverSay:
-      'Never skip the pre-ex disclosure. Never say pre-existing conditions are "covered" without explaining the waiting period. This is a compliance requirement.',
+      'Never skip the pre-ex disclosure. Never quote a blanket 12-month rule. Read the pre-existing rule from the plan card in Plan Vault. This is a compliance requirement.',
     ifTheyAsk:
-      '"So my diabetes won\'t be covered?" → "Hospital benefits related to a pre-existing condition would have a 12-month waiting period. Your doctor visits, telemedicine, and prescriptions are not affected by the pre-ex clause."',
+      '"So my diabetes won\'t be covered?" → "Let me check this plan\'s pre-existing rule so I give you the exact answer." Then read it from the plan card in Plan Vault.',
     official:
       'Conditions diagnosed or treated in the 12 months before the policy effective date are excluded for the first 12 months of the plan.',
     simple:
@@ -226,7 +226,7 @@ const BENEFITS = [
   {
     icon: 'hourglass',
     name: 'Waiting Periods',
-    hint: '30-day sickness, injury immediate',
+    hint: 'Varies by plan - check Plan Vault',
     howItWorks:
       'Standard 30-day waiting period for sickness benefits and scheduled doctor visits. Injuries are typically covered immediately from day one.',
     byPlan: [
@@ -237,11 +237,11 @@ const BENEFITS = [
       { type: 'All plans', desc: 'Injuries covered immediately' }
     ],
     sayThis:
-      '"There is a standard 30-day waiting period for sickness-related benefits. However, if you have an injury, you are covered from day one."',
+      '"Waiting periods are different on every plan. Let me read you exactly what applies on this one."',
     neverSay:
-      "Don't say there are no waiting periods. Don't say coverage starts immediately for everything — only injuries are immediate.",
+      "Don't say there are no waiting periods. Don't quote a standard 30-day wait. Read the waiting periods from the plan card in Plan Vault.",
     ifTheyAsk:
-      '"Why is there a waiting period?" → "The 30-day waiting period is standard across these plans. It prevents someone from signing up only when they are already sick, which keeps premiums lower for everyone."',
+      '"Why is there a waiting period?" → "It stops people from signing up only once they are already sick, which keeps the price lower for everyone. Here is exactly what applies on this plan." Then read it from the plan card in Plan Vault.',
     official:
       'A defined period before certain benefits activate. STM example: Accidents → day one. Sickness → 5-day wait. Cancer → 30-day wait. MEC example: Sickness → 30-day wait.',
     simple:
