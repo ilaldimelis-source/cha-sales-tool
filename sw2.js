@@ -4,10 +4,10 @@
 // When changing js/sales-tracker.js or css/sales-tracker.css, bump
 // CACHE_NAME by +1 AND the matching ?v= query strings in index.html
 // and URLS_TO_CACHE below (keep those two files in sync).
-var CACHE_NAME = 'cha-command-center-v255';
+var CACHE_NAME = 'cha-command-center-v256';
 var URLS_TO_CACHE = [
   './',
-  './index.html?v=1792186043707',
+  './index.html?v=1792191756954',
   './logo.png?v=1779700000000',
   './manifest.json?v=1779700000000',
   './css/tokens.css?v=1790682000000',
@@ -33,7 +33,8 @@ var URLS_TO_CACHE = [
   './js/sales-tracker.js?v=1792165216661',
   './js/office.js?v=1787900000000',
   './js/addons.js?v=1792186043707',
-  './js/app.js?v=1792171229555',
+  './js/meds.js?v=1792191756954',
+  './js/app.js?v=1792191756954',
   './js/chat.js?v=1790272800000',
   './js/br-plan-match.js?v=1790272800000',
   './js/br-profile.js?v=1788812987600',
@@ -42,6 +43,7 @@ var URLS_TO_CACHE = [
   './js/br-card.js?v=1790824000000',
   './data/plan-aliases.json?v=1788811424309',
   './data/addons.json?v=1792200000000',
+  './data/meds.json?v=1792200100000',
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Sans:wght@400;500&display=swap&v=1779700000000'
 ];
 

@@ -470,7 +470,8 @@ function showPage(id) {
   }
   var renderMap = {
     dashboard: renderDashboard,
-    addons: renderAddons
+    addons: renderAddons,
+    meds: renderMeds
   };
   if (renderMap[id]) {
     try {
@@ -724,6 +725,11 @@ function chaDashWidgetsHtml() {
     '<button type="button" class="dash-cc-action" onclick="showPage(\'quickreference\')">' +
     ic('<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>') +
     '<span>Quick Reference</span></button>' +
+    '<button type="button" class="dash-cc-action" onclick="showPage(\'meds\')">' +
+    ic(
+      '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>'
+    ) +
+    '<span>Meds</span></button>' +
     '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'scripts\',\'planscripts\')">' +
     ic(
       '<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/>'
@@ -2000,6 +2006,7 @@ document.addEventListener('keydown', function (e) {
     4: 'scripts',
     5: 'networkguide',
     6: 'training',
+    7: 'meds',
     8: 'myspace'
   };
   if (numMap[key]) {
