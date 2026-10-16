@@ -2039,6 +2039,135 @@
           border-right: 0;
         }
       }
+      /* === PLAN LINEUP OCT 2026: Network Guide === */
+      .ng-header {
+        margin-bottom: 14px;
+      }
+      .ng-title {
+        margin: 0 0 4px;
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--cha-text-primary);
+      }
+      .ng-lead {
+        margin: 0;
+        font-size: 15px;
+        color: var(--cha-text-secondary);
+      }
+      .ng-confirm {
+        margin: 0 0 14px;
+        padding: 12px 18px;
+        border-radius: 16px;
+        background: var(--cha-warning-bg);
+        color: var(--cha-warning-text);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .ng-search {
+        width: 100%;
+        height: 48px;
+        box-sizing: border-box;
+        margin-bottom: 16px;
+        padding: 0 20px;
+        border: 1.5px solid var(--cha-border-default);
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        font-size: 15px;
+      }
+      .ng-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+        gap: 16px;
+        align-items: start;
+      }
+      .ng-card {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 22px;
+        border-radius: 24px;
+        background: var(--cha-bg-card);
+        box-shadow: 0 8px 24px rgb(15 23 42 / 0.06);
+      }
+      .ng-name {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--cha-text-primary);
+      }
+      .ng-plans {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .ng-plan {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px 6px 12px;
+        border-radius: 999px;
+        background: var(--cha-bg-muted);
+        color: var(--cha-text-primary);
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .ng-plan-hit {
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+      }
+      .ng-tag {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        opacity: 0.6;
+      }
+      .ng-how,
+      .ng-note {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--cha-text-secondary);
+        overflow-wrap: anywhere;
+      }
+      .ng-note {
+        font-weight: 600;
+        color: var(--cha-text-primary);
+      }
+      .ng-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .ng-btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 44px;
+        box-sizing: border-box;
+        padding: 0 18px;
+        border-radius: 999px;
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .ng-btn-off {
+        background: var(--cha-bg-muted);
+        color: var(--cha-text-secondary);
+      }
+      .ng-empty {
+        margin: 0;
+        padding: 22px;
+        font-size: 14px;
+        color: var(--cha-text-secondary);
+      }
+      @media (max-width: 520px) {
+        .ng-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
     </style>
   </head>
   <body>
@@ -3009,7 +3138,7 @@
     <script src="js/plan-pdf-map.js?v=1790710000000"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1792164336013"></script>
-    <script src="js/plans-benefits.js?v=1792164488818"></script>
+    <script src="js/plans-benefits.js?v=1792164970906"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>
