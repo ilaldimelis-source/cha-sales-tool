@@ -254,6 +254,58 @@ step('Data: plan-registry loads (if present)', () => {
 });
 
 // ---------------------------------------------------------------
+// STEP 3b — plan lineup guard: discontinued plans must not appear in
+//            agent-facing JS. Warning-only until the lineup cleanup is
+//            finished; set LINEUP_GUARD_BLOCKS = true to make it block.
+// ---------------------------------------------------------------
+const LINEUP_GUARD_BLOCKS = false;
+const DISCONTINUED_PLAN_PATTERNS = [
+  /Everest Summit/i,
+  /Everest Fixed Indemnity/i,
+  /\bMyChoice\b/i,
+  /\bMy Choice\b/,
+  /Pinnacle Protect (Plan )?1\b/i,
+  /AdvantCare/i,
+  /MedFirst/i,
+  /TrueHealth/i,
+  /TrueFirst/i,
+  /MedValue/i
+];
+// Exempt: plan scripts stay verbatim by decision (Oct 2026); Sales
+// Tracker keeps old names so past sales still reconcile; raw PDF text
+// is source material, not agent-facing copy.
+const LINEUP_GUARD_EXEMPT = [
+  'call-playbook.js',
+  'sales-tracker.js',
+  'plan-data-pdf-raw.js'
+];
+step('Plan lineup: no discontinued plans in agent-facing JS', () => {
+  const hits = [];
+  for (const f of listFiles(JS_DIR, /\.js$/i)) {
+    if (LINEUP_GUARD_EXEMPT.includes(path.basename(f))) continue;
+    const lines = fs.readFileSync(f, 'utf8').split('\n');
+    lines.forEach((line, i) => {
+      for (const re of DISCONTINUED_PLAN_PATTERNS) {
+        if (re.test(line)) {
+          hits.push(`${path.relative(ROOT, f)}:${i + 1} ${re.source}`);
+          break;
+        }
+      }
+    });
+  }
+  if (hits.length === 0) return;
+  const msg =
+    `${hits.length} discontinued plan mention(s):\n` +
+    hits.slice(0, 40).join('\n') +
+    (hits.length > 40 ? `\n...and ${hits.length - 40} more` : '');
+  if (LINEUP_GUARD_BLOCKS) throw new Error(msg);
+  warnings.push(
+    `Plan lineup guard: ${hits.length} discontinued plan mention(s) remain (run npm run verify -- --verbose to list).`
+  );
+  if (VERBOSE) console.log(msg);
+});
+
+// ---------------------------------------------------------------
 // STEP 4 — service worker cache safety: CACHE_NAME must exist
 //            on sw2.js. Missing sw2.js or missing CACHE_NAME fails.
 //            Do not fall back to any other filename.
