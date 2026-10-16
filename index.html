@@ -2612,6 +2612,66 @@
         font-size: 12px !important;
         line-height: 1 !important;
       }
+      /* === OCT 2026: Quick Reference NEO/FE hero, even Network Guide cards === */
+      .qr3-hero {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .qr3-hero-btn {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 16px 20px;
+        border: 2px solid transparent;
+        border-radius: 18px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgb(15 23 42 / 0.05);
+      }
+      .qr3-hero-btn:focus-visible {
+        outline: 2px solid var(--cha-accent);
+        outline-offset: 2px;
+      }
+      .qr3-hero-on {
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+      }
+      .qr3-hero-name {
+        font-size: 20px;
+        font-weight: 800;
+      }
+      .qr3-hero-sub {
+        font-size: 12px;
+        opacity: 0.7;
+      }
+      .qr3-tiers {
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--cha-text-primary);
+        opacity: 0.75;
+      }
+      .ng7-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+      }
+      .ng7-grid > .ng7-card:first-child {
+        grid-column: 1 / -1;
+      }
+      @media (max-width: 1100px) {
+        .ng7-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+      @media (max-width: 640px) {
+        .ng7-grid,
+        .qr3-hero {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
     </style>
   </head>
   <body>
@@ -3606,7 +3666,7 @@
     <script src="js/plan-pdf-map.js?v=1792165216661"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1792171505341"></script>
-    <script src="js/plans-benefits.js?v=1792172511010"></script>
+    <script src="js/plans-benefits.js?v=1792184676316"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>
@@ -3616,7 +3676,7 @@
     <script src="js/myspace.js?v=1792164089398"></script>
     <script src="js/sales-tracker.js?v=1792165216661"></script>
     <script src="js/office.js?v=1787900000000"></script>
-    <script src="js/addons.js?v=1792165948486"></script>
+    <script src="js/addons.js?v=1792184676316"></script>
     <script src="js/app.js?v=1792171229555"></script>
     <script>
       (function () {
