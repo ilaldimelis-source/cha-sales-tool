@@ -1912,7 +1912,7 @@ var CHA_NETWORK_GUIDE = [
     ]
   },
   {
-    name: 'First Health + MultiPlan (dual network)',
+    name: 'First Health + MultiPlan',
     how: 'Check both: providerlocator.firsthealth.com and providersearch.multiplan.com.',
     notes: [],
     links: [
@@ -1925,7 +1925,7 @@ var CHA_NETWORK_GUIDE = [
     ]
   },
   {
-    name: 'Cigna Healthcare PPO (Shared Administration)',
+    name: 'Cigna PPO',
     how: 'hcpdirectory.cigna.com: enter address or zip, then search by doctor type or name.',
     notes: [],
     links: [
@@ -1949,8 +1949,8 @@ var CHA_NETWORK_GUIDE = [
     plans: [['Allstate STM PPO', 'NEO']]
   },
   {
-    name: 'Managed Care / Reference-Based Pricing',
-    how: 'No online search. Contact the carrier to verify providers before enrolling.',
+    name: 'Managed care',
+    how: 'No online search. Call the carrier to check providers before enrolling.',
     notes: [],
     links: [],
     plans: [['BWA Paramount', 'FE']]
@@ -1991,8 +1991,6 @@ function _ngCardsHtml() {
           _ngEsc(l.label) +
           '</a>';
       });
-    } else {
-      html += '<span class="ng7-btn ng7-btn-off">No online search</span>';
     }
     html += '</div></div><div class="ng7-pills">';
     n.plans.forEach(function (p) {

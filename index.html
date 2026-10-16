@@ -2524,6 +2524,94 @@
           grid-column: auto;
         }
       }
+      /* === OCT 2026: Quick Reference and Network Guide, compact sizing === */
+      .qr3-page,
+      .ng7-page {
+        gap: 10px;
+      }
+      .qr3-every,
+      .ng7-confirm,
+      .qr3-hint {
+        font-size: 12px;
+      }
+      .qr3-search,
+      .ng7-search {
+        height: 42px;
+        padding: 0 18px;
+        font-size: 14px;
+      }
+      .qr3-grid {
+        grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr));
+        gap: 10px;
+        align-items: stretch;
+      }
+      .qr3-tile {
+        gap: 6px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgb(15 23 42 / 0.05);
+      }
+      .qr3-name {
+        font-size: 14px;
+        line-height: 1.25;
+      }
+      .qr3-top .qr-plat {
+        font-size: 9px;
+        padding: 2px 6px;
+      }
+      .qr3-lines {
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .qr3-full {
+        padding: 10px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        line-height: 1.55;
+      }
+      .qr3-open {
+        padding: 7px 14px;
+        font-size: 12px;
+      }
+      .ng7-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr));
+        gap: 10px;
+        align-items: start;
+      }
+      .ng7-card {
+        gap: 10px;
+        padding: 14px 18px;
+        border-radius: 18px;
+        box-shadow: 0 4px 12px rgb(15 23 42 / 0.05);
+      }
+      .ng7-name {
+        font-size: 16px;
+      }
+      .ng7-btn {
+        min-height: 32px;
+        padding: 0 14px;
+        font-size: 12px;
+      }
+      .ng7-pills {
+        gap: 6px;
+      }
+      .ng7-pill {
+        padding: 5px 11px;
+        font-size: 12px;
+      }
+      .ng7-note {
+        font-size: 12px;
+      }
+      #page-networkexplainer a.ng7-btn[target='_blank'][href^='https://'] {
+        display: inline-flex !important;
+        align-items: center !important;
+        height: 32px !important;
+        box-sizing: border-box !important;
+        padding: 0 14px !important;
+        font-size: 12px !important;
+        line-height: 1 !important;
+      }
     </style>
   </head>
   <body>
@@ -3518,7 +3606,7 @@
     <script src="js/plan-pdf-map.js?v=1792165216661"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1792171505341"></script>
-    <script src="js/plans-benefits.js?v=1792172231674"></script>
+    <script src="js/plans-benefits.js?v=1792172511010"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>
