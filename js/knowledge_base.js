@@ -66,13 +66,6 @@ var KNOWLEDGE_BASE = {
       deductible: 'NONE',
       providerSearch: 'providersearch.multiplan.com'
     },
-    Everest: {
-      type: 'Indemnity',
-      network: 'MultiPlan',
-      underwriter: 'AFSLIC',
-      association: 'NCE',
-      deductible: 'NONE'
-    },
     'Health Choice Silver': {
       type: 'Indemnity',
       network: 'MultiPlan',
@@ -98,7 +91,7 @@ var KNOWLEDGE_BASE = {
       primaryPrepay: '$25',
       specialistPrepay: '$50'
     },
-    'Pinnacle Protect 1-4': {
+    'Pinnacle Protect 2-4': {
       type: 'Indemnity',
       network: 'PHCS',
       underwriter: 'Everest',

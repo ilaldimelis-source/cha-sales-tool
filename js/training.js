@@ -2296,7 +2296,7 @@ var planReferenceData = {
     type: 'STM'
   },
   'pinnacle-protect': {
-    name: 'Pinnacle Protect Plan 1-4',
+    name: 'Pinnacle Protect 2-4',
     network: 'PHCS',
     underwriter: 'Everest Reinsurance Company',
     association: 'AWA (American Workers Association)',
@@ -2334,14 +2334,6 @@ var planReferenceData = {
     association: 'Association for Responsible Planners',
     providerSearch: 'providersearch.multiplan.com',
     type: 'STM'
-  },
-  everest: {
-    name: 'Everest Summit Plans',
-    network: 'MultiPlan',
-    underwriter: 'Everest Reinsurance Company',
-    association: 'National Congress of Employers',
-    providerSearch: 'providersearch.multiplan.com',
-    type: 'Indemnity'
   },
   healthchoice: {
     name: 'HealthChoice Silver',
@@ -3314,9 +3306,9 @@ function generateLesson3_4() {
   html +=
     '<optgroup label="First Health Network"><option value="smartchoice">SmartChoice</option><option value="tdk">TDK 1-5</option><option value="goodhealth">GoodHealth 1-5</option><option value="harmonycare">Harmony Care / Sigma Care</option></optgroup>';
   html +=
-    '<optgroup label="PHCS Network"><option value="pinnacle-stm">Pinnacle STM Traditional</option><option value="pinnacle-protect">Pinnacle Protect Plan 1-4</option><option value="access-health">Access Health Traditional STM</option><option value="smart-health">Smart Health STM (Traditional)</option><option value="bwa-americare">BWA Americare 2-4</option></optgroup>';
+    '<optgroup label="PHCS Network"><option value="pinnacle-stm">Pinnacle STM Traditional</option><option value="pinnacle-protect">Pinnacle Protect 2-4</option><option value="access-health">Access Health Traditional STM</option><option value="smart-health">Smart Health STM (Traditional)</option><option value="bwa-americare">BWA Americare 2-4</option></optgroup>';
   html +=
-    '<optgroup label="MultiPlan Network"><option value="galena">AFRP Galena STM Elite</option><option value="everest">Everest Summit Plans</option><option value="healthchoice">HealthChoice Silver</option></optgroup>';
+    '<optgroup label="MultiPlan Network"><option value="galena">AFRP Galena STM Elite</option><option value="healthchoice">HealthChoice Silver</option></optgroup>';
   html +=
     '<optgroup label="Cigna PPO"><option value="harbor-essential">Harbor STM Essential</option><option value="harbor-access">Harbor STM Access</option><option value="harbor-secure">Harbor STM Secure</option></optgroup><optgroup label="Goodlife"><option value="goodlife-choice">Goodlife Partners WB Choice</option><option value="goodlife-select">Goodlife Partners WB Select</option></optgroup><optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select></div>';
   html += '<div id="planInfoDisplay"></div>';
@@ -3845,9 +3837,9 @@ function loadBenefitsContent(tabId) {
     html +=
       '<optgroup label="First Health Network"><option value="smartchoice">SmartChoice</option><option value="tdk">TDK 1-5</option><option value="goodhealth">GoodHealth 1-5</option><option value="harmonycare">Harmony Care / Sigma Care</option></optgroup>';
     html +=
-      '<optgroup label="PHCS Network"><option value="pinnacle-stm">Pinnacle STM Traditional</option><option value="pinnacle-protect">Pinnacle Protect Plan 1-4</option><option value="access-health">Access Health Traditional STM</option><option value="smart-health">Smart Health STM (Traditional)</option><option value="bwa-americare">BWA Americare 2-4</option></optgroup>';
+      '<optgroup label="PHCS Network"><option value="pinnacle-stm">Pinnacle STM Traditional</option><option value="pinnacle-protect">Pinnacle Protect 2-4</option><option value="access-health">Access Health Traditional STM</option><option value="smart-health">Smart Health STM (Traditional)</option><option value="bwa-americare">BWA Americare 2-4</option></optgroup>';
     html +=
-      '<optgroup label="MultiPlan Network"><option value="galena">AFRP Galena STM Elite</option><option value="everest">Everest Summit Plans</option><option value="healthchoice">HealthChoice Silver</option></optgroup>';
+      '<optgroup label="MultiPlan Network"><option value="galena">AFRP Galena STM Elite</option><option value="healthchoice">HealthChoice Silver</option></optgroup>';
     html +=
       '<optgroup label="Cigna PPO"><option value="harbor-essential">Harbor STM Essential</option><option value="harbor-access">Harbor STM Access</option><option value="harbor-secure">Harbor STM Secure</option></optgroup><optgroup label="Goodlife"><option value="goodlife-choice">Goodlife Partners WB Choice</option><option value="goodlife-select">Goodlife Partners WB Select</option></optgroup><optgroup label="Other / Managed Care"><option value="bwa-paramount">BWA Paramount Plans</option></optgroup></select>';
     html += '<div id="refPlanDisplay"></div>';

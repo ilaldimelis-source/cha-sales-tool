@@ -7,7 +7,7 @@
   var EXTENDED_PLANS = [
     {
       id: 'pinnacleprotect',
-      name: 'Pinnacle Protect 1-4',
+      name: 'Pinnacle Protect 2-4',
       group: 'Limited',
       type: 'Limited Benefit / Fixed Indemnity',
       carrier: 'Everest Reinsurance Company',
@@ -78,7 +78,7 @@
       preEx: '12-month look-back / 12-month exclusion',
       source: 'pinnical protect 1.pdf',
       rawText:
-        'Pinnacle Protect 1 2 3 4 limited fixed benefit PHCS Multiplan Everest AWA guaranteed issue four tiers hospital confinement surgery outpatient physician urgent care ER lab xray 12 12 pre-existing not ACA not major medical'
+        'Pinnacle Protect 2 3 4 limited fixed benefit PHCS Multiplan Everest AWA guaranteed issue four tiers hospital confinement surgery outpatient physician urgent care ER lab xray 12 12 pre-existing not ACA not major medical'
     },
     {
       id: 'pinnaclecriticalcare',
@@ -283,47 +283,6 @@
       source: 'Allstate Health Access.pdf',
       rawText:
         'Allstate Health Access Limited Medical Metal Gap indemnity three tiers CORE VALUE PLUS. Weight restriction males over 300 lbs females over 250 lbs not eligible. Deductible $0. Waiting period 3 months preventive only. Pre-existing condition exclusion 12 months from effective date 1 year look-back for signs symptoms treatment diagnosis. Hospital admission PLUS year 1 $6,000 year 2 $9,000 year 3 $12,000. Hospital confinement sickness PLUS $6,000 unlimited days. Hospital confinement injury PLUS $6,000 unlimited days. ICU PLUS $6,000 60 days. Emergency room PLUS $300. Surgery tier 1 PLUS $10,000 3 days. Surgery tier 2 PLUS $5,000 4 days. Outpatient surgery PLUS $5,000 4 days. Anesthesia PLUS $5,000. Ambulatory surgical center PLUS $3,000 3 days. Office visit PLUS $200 4 visits. Urgent care PLUS $150 4 visits. Inpatient physician PLUS $200 4 visits. Preventive office visit PLUS $175 2 visits. Radiology PLUS $200. Laboratory test PLUS $35 10 visits. Chemotherapy PLUS $4,000 monthly max. Observation unit PLUS $1,500 3 days. Ambulance ground water PLUS $25,000. Ambulance air PLUS $1,500 2 days. Office visit increasing benefit year 1 $4,000 year 2 $6,000 year 3 $8,000 PLUS. Exclusions mental illness substance abuse hazardous activities eye exams hearing cosmetic gastric bypass chronic pain foot conditions outside US war self-inflicted injury felony. Not ACA compliant limited benefit fixed indemnity. NEO Insurance Solutions Allstate.'
-    },
-    {
-      id: 'mychoice',
-      name: 'MyChoice (Low / Mid / High)',
-      group: 'Limited',
-      type: 'Limited Benefit / Fixed Indemnity',
-      carrier: '',
-      network: 'See plan certificate for network details',
-      assoc: '',
-      planNotes:
-        'Three tiers: Low, Mid, High. Verify exact benefit amounts per tier in plan certificate.',
-      benefits: [
-        {
-          category: 'Plan Tiers',
-          items: [
-            'MyChoice Low: entry-level benefit amounts',
-            'MyChoice Mid: moderate benefit amounts',
-            'MyChoice High: highest benefit amounts',
-            'All tiers: verify exact benefit amounts in plan certificate'
-          ]
-        },
-        {
-          category: 'Plan Structure',
-          items: [
-            'Limited benefit plan -- not comprehensive major medical',
-            'Not ACA-compliant',
-            'Billed through FirstEnroll',
-            'BWA Business Workers of America association'
-          ]
-        }
-      ],
-      limitations: [
-        'NOT ACA-compliant major medical',
-        'Limited benefit -- not full bill coverage',
-        'Verify exact benefit amounts per tier in plan certificate'
-      ],
-      waitingPeriods: ['Check plan certificate for waiting periods'],
-      preEx: 'Check plan certificate for pre-existing condition terms',
-      source: '',
-      rawText:
-        'MyChoice Low Mid High limited benefit three tiers BWA Business Workers America FirstEnroll not ACA not major medical verify plan certificate'
     },
     {
       id: 'harmonycareseries',

@@ -814,54 +814,6 @@ const PLANS = [
     ]
   },
 
-  {
-    group: 'STM',
-    name: 'Everest Summit Plans',
-    type: 'STM / Indemnity Hybrid',
-    tagline: 'MultiPlan STM hybrid through Everest Reinsurance',
-    network: 'MultiPlan',
-    admin: 'Everest Reinsurance Company',
-    assoc: 'National Congress of Employers',
-    bestFor:
-      'Individuals needing STM-style coverage with indemnity hybrid structure through MultiPlan network',
-    notGood: 'Pre-existing conditions, permanent coverage need, ACA compliance',
-    idealClient:
-      'Transitioning adult comfortable with hybrid benefit structure, healthy, short-term need',
-    topPoints: [
-      'Everest Reinsurance backed',
-      'MultiPlan network access',
-      'STM + indemnity hybrid structure',
-      'Bridge coverage'
-    ],
-    limitations: [
-      'NOT ACA compliant',
-      'NO maternity or pregnancy coverage',
-      'NO drug or alcohol rehabilitation coverage',
-      'Pre-existing conditions excluded (12-month lookback)',
-      'NOT renewable as permanent coverage',
-      'NOT major medical insurance'
-    ],
-    framing:
-      '"Everest Summit is a hybrid STM plan — it combines short-term medical structure with indemnity benefits, backed by Everest Reinsurance. Solid bridge coverage with MultiPlan network access."',
-    objections: [
-      'Pre-ex excluded',
-      'Not ACA',
-      'Hybrid structure — explain indemnity components clearly'
-    ],
-    compliance:
-      'REQUIRED DISCLOSURES — say every enrollment: (1) This is NOT ACA-compliant insurance. (2) Maternity and pregnancy are NOT covered. (3) Drug and alcohol rehabilitation is NOT covered. (4) Mental health coverage is limited or not covered depending on plan. (5) Pre-existing conditions from the prior 12 months are excluded. (6) This is a temporary plan — NOT renewable as permanent coverage. (7) This is NOT major medical insurance.',
-    fitYes: [
-      'Healthy, transitioning',
-      'Short-term coverage gap',
-      'Understands hybrid benefit structure'
-    ],
-    fitNo: [
-      'Pre-existing conditions',
-      'Long-term need',
-      'ACA compliance required'
-    ]
-  },
-
   // ══════════════════════════════
   // GROUP 3: LIMITED BENEFIT PLANS
   // ══════════════════════════════

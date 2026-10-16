@@ -205,13 +205,9 @@ plan cards stay the enrollment-storefront figures and the
 profile price fields stay empty.
 
 Two revisions of the HarborSTM brochure exist and differ on
-one line. The 0820 file says claims are handled by
-InsuranceTPA.com; the 0827 file says Administrative
-Concepts, Inc. Neither prints an effective or revision date,
-so the filename is the only ordering evidence. The 0827
-version is in the repo and the app uses Administrative
-Concepts, Inc. Confirm with Neo at 866-870-7730 which is
-current, and correct if needed.
+one line (0820: InsuranceTPA.com; 0827: Administrative
+Concepts, Inc.). Resolved Oct 2026: NEO confirms Administrative
+Concepts, Inc., which is what the app uses.
 
 Do not run scripts/build-plan-pdf-knowledge.js as a full
 regeneration. It rebuilds knowledge_base/extracted/plans/
@@ -230,6 +226,19 @@ when the guide gives firsthealthlbp.com; it states no annual
 visit limits when both plans have them; and it omits the
 30-day free look and the $10,000 group term life. Kept
 verbatim by decision, Sept 2026.
+
+## Plan lineup guard (Oct 2026)
+
+The app shows only the plans on the NEO and FirstEnroll storefronts
+(Oct 15 2026 export). scripts/verify.js STEP 3b blocks any commit that
+mentions a discontinued plan (Everest Summit, Everest Fixed Indemnity,
+MyChoice, Pinnacle Protect 1, AdvantCare, MedFirst, TrueHealth,
+TrueFirst, MedValue) in js/. Exempt files: call-playbook.js (scripts
+verbatim), sales-tracker.js (past sales), plan-data-pdf-raw.js (source
+text), chat.js and plan-data.js (hard rules above). A kept script name
+on a single line carries a `// lineup-guard-ignore: script name`
+comment. Discontinued POLICY_DOCS records are hidden in Plan Vault
+through PD_HIDDEN_IDS in js/policy-docs.js, not deleted.
 
 ## Plan profile benefit verification
 

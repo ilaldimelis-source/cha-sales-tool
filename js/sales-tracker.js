@@ -105,8 +105,6 @@ var CHA_CORE_PLAN_NAMES = [
   'Sigma Care Plus 750',
   'Sigma Care Plus 1000',
   'Health Choice Silver',
-  'Everest Summit',
-  'Pinnacle Protect Plan 1',
   'Pinnacle Protect Plan 2',
   'Pinnacle Protect Plan 3',
   'Pinnacle Protect Plan 4',
@@ -114,9 +112,20 @@ var CHA_CORE_PLAN_NAMES = [
   'BWA Americare Plan 3',
   'BWA Americare Plan 4',
   'BWA Paramount',
-  'MyChoice Plan Low',
-  'MyChoice Plan Mid',
-  'MyChoice Plan High'
+  'Good Health Distribution Partner Wellness',
+  'AWA SimpleShield Membership Plan 1',
+  'AWA SimpleShield Membership Plan 2',
+  'Harmony Care Plus 100A',
+  'Harmony Care 100A',
+  'Harmony Care 100B',
+  'Sigma Care Plus 100A',
+  'Advanced Wellness Plus 100',
+  'Advanced Wellness Plus 100A',
+  'Advanced Wellness Plus 200',
+  'Advanced Wellness Plus 300',
+  'Advanced Wellness Plus 500',
+  'Advanced Wellness Plus 750',
+  'Advanced Wellness Plus 1000'
 ];
 
 var CHA_ADDON_PLAN_NAMES = [

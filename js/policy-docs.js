@@ -25,7 +25,6 @@ function _pdIsDisplayablePlan(p) {
 // Display-layer overrides so POLICY_DOCS data values stay untouched.
 var PD_HIDDEN_IDS = {
   everest: true,
-  mychoice: true,
   pinnaclecriticalcare: true,
   awasafeguard: true,
   allstateplans: true,
@@ -150,8 +149,8 @@ var policyDocTierId = '';
 var _pdProfileReq = 0;
 
 var PD_SCRIPT_BY_ID = {
-  goodhealth13: 'TrueHealth / MedFirst / GoodHealth 1,2,3',
-  goodhealth45: 'MedFirst / GoodHealth 4,5',
+  goodhealth13: 'TrueHealth / MedFirst / GoodHealth 1,2,3', // lineup-guard-ignore: script name
+  goodhealth45: 'MedFirst / GoodHealth 4,5', // lineup-guard-ignore: script name
   tdk13: 'TDK 1,2,3',
   tdk45: 'TDK 4,5',
   smartchoice: 'NEO Smart Choice',
@@ -170,7 +169,7 @@ var PD_SCRIPT_BY_ID = {
     'Goodlife Partners WB Choice and WB Select (Match Doctor visits to Plan)',
   goodlifewbselect:
     'Goodlife Partners WB Choice and WB Select (Match Doctor visits to Plan)',
-  pinnacleprotect: 'Pinnacle Protect Plan 1-4'
+  pinnacleprotect: 'Pinnacle Protect Plan 1-4' // lineup-guard-ignore: script name
 };
 
 var PD_GROUPS = [
