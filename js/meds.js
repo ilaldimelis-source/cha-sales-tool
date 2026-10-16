@@ -1,28 +1,19 @@
-// js/meds.js - Meds tab (Oct 2026)
-// One search card per medication: what the plans we sell pay for it,
-// patient assistance (PAP) that is open to our plan members, and the
-// cost steps when nothing pays. Data: data/meds.json (plan drug lists,
-// PAP rules checked on official program sites, 2026 poverty line).
-// Plan rows come from the plan documents in Plan Vault. Only plans in
-// CHA_PLAN_REGISTRY (NEO + FirstEnroll storefronts) are shown.
+// js/meds.js - Meds check (Oct 2026), built for live calls.
+// The agent types every med the client says ("eliquis, ozempc, metformn").
+// Each med is matched (typos allowed) and gets one line: PAP program and
+// income limit (pap-lookup.com list; CHA has an agreement with Ventec SW
+// LLC), whether the client qualifies now, and whether the program still
+// takes them after they enroll in one of our plans (official program
+// insurance wording). Tap a line for details, our plan coverage and GoodRx.
+// Data: data/meds.json. Plans: CHA_PLAN_REGISTRY (NEO + FirstEnroll).
 
-var MEDS_JSON_URL = 'data/meds.json?v=1792200100000';
+var MEDS_JSON_URL = 'data/meds.json?v=1792193126000';
 var medsData = null;
 var medsLoadStarted = false;
 var medsIndex = [];
-var medsState = {
-  q: '',
-  sel: '',
-  plat: 'All',
-  type: 'All',
-  inc: '',
-  hh: '1',
-  st: '48'
-};
+var medsByKey = {};
+var medsState = { text: '', hh: '1', inc: '', st: '48', open: '' };
 
-// What each plan we sell pays, from the Rx line of its plan documents
-// (see PD_SHORT_VALUES in js/policy-docs.js). A rule only shows a row
-// when the drug list or drug kind says the plan pays something.
 var MEDS_PLAN_RULES = [
   {
     groups: ['TDK'],
@@ -130,6 +121,7 @@ function medsKey(text) {
   return String(text || '')
     .toLowerCase()
     .replace(/\(insulin\)/g, '')
+    .replace(/[^a-z0-9 -]+/g, ' ')
     .replace(/\s+/g, ' ')
     .replace(/^\s+|\s+$/g, '');
 }
@@ -141,27 +133,14 @@ function medsPlans() {
   });
 }
 
-function medsPlanPasses(p) {
-  if (medsState.plat !== 'All' && p.platform !== medsState.plat) return false;
-  if (medsState.type !== 'All' && p.type !== medsState.type) return false;
-  return true;
-}
-
 function medsRuleMatches(rule, p) {
   if (rule.ids) return rule.ids.indexOf(p.id) !== -1;
   return rule.groups.indexOf(p.group) !== -1;
 }
 
-function medsFind(name) {
-  var k = medsKey(name);
-  for (var i = 0; i < medsIndex.length; i++) {
-    if (medsIndex[i].key === k) return medsIndex[i].d;
-  }
-  return null;
-}
-
 function medsBuildIndex() {
   medsIndex = [];
+  medsByKey = {};
   var list = medsData.drugs || [];
   for (var i = 0; i < list.length; i++) {
     var d = list[i];
@@ -169,34 +148,112 @@ function medsBuildIndex() {
     if (d.a) {
       for (var j = 0; j < d.a.length; j++) words.push(medsKey(d.a[j]));
     }
-    medsIndex.push({ key: medsKey(d.n), words: words, d: d });
+    for (var w = 0; w < words.length; w++) {
+      if (!medsByKey[words[w]] || d.pap) medsByKey[words[w]] = d;
+      medsIndex.push({ key: words[w], d: d });
+    }
   }
 }
 
-function medsSearch(q) {
-  var k = medsKey(q);
-  if (!k) return [];
-  var starts = [];
-  var inside = [];
+function medsFind(name) {
+  return medsByKey[medsKey(name)] || null;
+}
+
+// Typo distance (Damerau-Levenshtein, optimal string alignment).
+function medsDist(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  var prev2 = [];
+  var prev = [];
+  var cur;
+  var i;
+  var j;
+  for (j = 0; j <= b.length; j++) prev[j] = j;
+  for (i = 1; i <= a.length; i++) {
+    cur = [i];
+    var rowMin = i;
+    for (j = 1; j <= b.length; j++) {
+      var cost = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+      var v = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+      if (
+        i > 1 &&
+        j > 1 &&
+        a.charAt(i - 1) === b.charAt(j - 2) &&
+        a.charAt(i - 2) === b.charAt(j - 1)
+      )
+        v = Math.min(v, prev2[j - 2] + 1);
+      cur[j] = v;
+      if (v < rowMin) rowMin = v;
+    }
+    if (rowMin > max) return max + 1;
+    prev2 = prev;
+    prev = cur;
+  }
+  return prev[b.length];
+}
+
+// Best match for one typed med: exact, then starts-with, then typo.
+function medsMatch(typed) {
+  var k = medsKey(typed);
+  if (!k) return null;
+  if (medsByKey[k]) return { d: medsByKey[k], exact: true };
+  var best = null;
+  var bestScore = 99;
+  var max = k.length <= 4 ? 1 : k.length <= 8 ? 2 : 3;
   for (var i = 0; i < medsIndex.length; i++) {
     var it = medsIndex[i];
-    var hit = 0;
-    for (var j = 0; j < it.words.length; j++) {
-      if (it.words[j].indexOf(k) === 0) hit = 2;
-      else if (!hit && it.words[j].indexOf(k) > 0) hit = 1;
+    var score;
+    if (k.length >= 4 && it.key.indexOf(k) === 0) {
+      score = 0.5 + (it.key.length - k.length) / 100;
+    } else {
+      var head =
+        it.key.length > k.length + 3 ? it.key.slice(0, k.length) : it.key;
+      score = medsDist(k, head, max);
+      if (head !== it.key) score += 0.3 + (it.key.length - k.length) / 100;
     }
-    if (hit === 2) starts.push(it.d);
-    else if (hit === 1) inside.push(it.d);
+    if (it.d.pap) score -= 0.05;
+    if (score < bestScore) {
+      bestScore = score;
+      best = it.d;
+    }
   }
-  var byName = function (a, b) {
-    return a.n.length - b.n.length || (a.n < b.n ? -1 : 1);
-  };
-  starts.sort(byName);
-  inside.sort(byName);
-  return starts.concat(inside).slice(0, 8);
+  if (best && bestScore <= max + 0.5) return { d: best, exact: false };
+  return null;
 }
 
-// PAP record for a drug, or for the sheet name's matching product.
+// Split what the agent typed: commas, new lines, semicolons, "and", "/".
+function medsParse(text) {
+  var parts = String(text || '').split(/[,;\n\/]+|\s+and\s+|\s+&\s+/i);
+  var out = [];
+  var seen = {};
+  parts.forEach(function (raw) {
+    var t = raw
+      .replace(/\d+(\.\d+)?\s*(mg|mcg|ml|units?)\b/gi, '')
+      .replace(/^\s+|\s+$/g, '');
+    if (!t) return;
+    var m = medsMatch(t);
+    if (!m && t.indexOf(' ') !== -1) {
+      // "eliquis ozempic" without a comma: try each word.
+      t.split(/\s+/).forEach(function (w) {
+        var mw = medsMatch(w);
+        var id = mw ? mw.d.n : 'x:' + w;
+        if (seen[id]) return;
+        seen[id] = 1;
+        out.push({
+          typed: w,
+          d: mw ? mw.d : null,
+          exact: mw ? mw.exact : false
+        });
+      });
+      return;
+    }
+    var id = m ? m.d.n : 'x:' + t;
+    if (seen[id]) return;
+    seen[id] = 1;
+    out.push({ typed: t, d: m ? m.d : null, exact: m ? m.exact : false });
+  });
+  return out;
+}
+
 function medsPap(d) {
   if (!d) return null;
   if (d.pap) return d.pap;
@@ -212,480 +269,309 @@ function medsFplBase(n, st) {
   return t[0] + t[1] * (n - 1);
 }
 
-function medsChip(group, value, label) {
-  var on = medsState[group] === value;
+function medsIncome() {
+  var v = parseFloat(String(medsState.inc).replace(/[^0-9.]/g, ''));
+  return isFinite(v) && v > 0 ? v : 0;
+}
+
+var MEDS_AFTER = {
+  yes: ['ok', 'Stays eligible'],
+  likely: ['mid', 'Likely stays eligible'],
+  unclear: ['warn', 'Ask the program'],
+  not_checked: ['warn', 'Ask the program'],
+  no: ['bad', 'Not eligible']
+};
+
+var MEDS_AFTER_TEXT = {
+  yes: 'The program checks coverage for this drug, not insurance in general. Most of our plans do not cover brand drugs.',
+  likely:
+    'The program does not say how it treats plans like ours. The client lists the plan on the application.',
+  unclear:
+    'The program rules conflict or are not published. Ask the program before the client counts on it.',
+  not_checked:
+    'Not checked yet. Ask the program whether a private plan affects eligibility.',
+  no: 'The program turns away anyone with private insurance. Make sure the client knows this before they enroll in our plan.'
+};
+
+function medsTag(tone, text) {
   return (
-    '<button type="button" class="med-chip' +
-    (on ? ' is-on' : '') +
-    '" data-meds-filter="' +
-    group +
-    '" data-meds-value="' +
-    medsEsc(value) +
-    '" aria-pressed="' +
-    (on ? 'true' : 'false') +
-    '">' +
-    medsEsc(label) +
-    '</button>'
+    '<span class="med-tag med-tag-' + tone + '">' + medsEsc(text) + '</span>'
   );
 }
 
-function medsPlanRowsHtml(d) {
-  var plans = medsPlans().filter(medsPlanPasses);
-  var html = '';
-  var covered = {};
+function medsPlanPays(d) {
+  var plans = medsPlans();
+  var rows = [];
   for (var r = 0; r < MEDS_PLAN_RULES.length; r++) {
     var rule = MEDS_PLAN_RULES[r];
-    var matched = plans.filter(function (p) {
+    var has = plans.some(function (p) {
       return medsRuleMatches(rule, p);
     });
-    if (!matched.length) continue;
-    if (!rule.test(d)) continue;
-    var meta = matched[0].platform + ' - ' + matched[0].type;
-    matched.forEach(function (p) {
-      covered[p.id] = 1;
-    });
-    html +=
-      '<div class="med-row">' +
-      '<div class="med-row-main"><b>' +
-      medsEsc(rule.label) +
-      '</b> <span class="med-row-meta">' +
-      medsEsc(meta) +
-      '</span><div class="med-row-sub">' +
-      medsEsc(rule.sub(d)) +
-      '</div></div>' +
-      '<span class="med-val med-val-' +
-      rule.tone +
-      '">' +
-      medsEsc(rule.val(d)) +
-      '</span></div>';
+    if (has && rule.test(d))
+      rows.push(rule.label + ': ' + rule.val(d) + ' (' + rule.sub(d) + ')');
   }
-  var rest = [];
-  var seen = {};
-  plans.forEach(function (p) {
-    if (covered[p.id]) return;
-    var label = p.group;
-    if (seen[label]) return;
-    seen[label] = 1;
-    rest.push(label);
-  });
-  if (!html && !rest.length) {
-    return '<p class="med-empty">No plans match these filters.</p>';
-  }
-  if (rest.length) {
-    html +=
-      '<details class="med-rest"><summary><span>' +
-      (html
-        ? 'Other ' + rest.length + ' plan families'
-        : 'All ' + rest.length + ' plan families') +
-      ': not covered or not on file</span><span class="med-rest-open">Show list</span></summary>' +
-      '<p>' +
-      medsEsc(rest.join(', ')) +
-      '</p></details>';
-  }
-  return html;
+  return rows;
 }
 
-function medsGoodRxUrl(name) {
-  var slug = String(name)
-    .toLowerCase()
-    .replace(/\(.*?\)/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-  return 'https://www.goodrx.com/' + slug;
-}
-
-function medsStepsHtml(d) {
+function medsRowHtml(item, idx) {
+  var d = item.d;
+  var typedNote =
+    d && !item.exact
+      ? '<span class="med-typed">you typed "' + medsEsc(item.typed) + '"</span>'
+      : '';
+  if (!d) {
+    return (
+      '<div class="med-line is-miss"><div class="med-c-name"><b>' +
+      medsEsc(item.typed) +
+      '</b><span class="med-typed">Not found. Check the spelling.</span></div>' +
+      '<div class="med-c-prog med-hide-m">-</div><div class="med-c-lim med-hide-m">-</div><div class="med-c-now med-hide-m">-</div><div class="med-c-after med-hide-m">-</div><div class="med-hide-m"></div></div>'
+    );
+  }
+  var p = medsPap(d);
+  var open = medsState.open === d.n;
+  var cells;
+  if (p) {
+    var n = parseInt(medsState.hh, 10) || 1;
+    var fpl = medsFplBase(n, medsState.st);
+    var limit = (fpl * p.f) / 100;
+    var inc = medsIncome();
+    var now = inc
+      ? inc <= limit
+        ? medsTag('ok', 'Qualifies')
+        : medsTag('bad', 'Over limit')
+      : '<span class="med-dim">Enter income</span>';
+    var after = MEDS_AFTER[p.o] || MEDS_AFTER.not_checked;
+    var prog = (medsData.programs[p.p] || {}).name || 'Program not on file';
+    cells =
+      '<div class="med-c-prog">' +
+      medsEsc(prog) +
+      '</div>' +
+      '<div class="med-c-lim">' +
+      p.f +
+      '% - ' +
+      medsMoney(limit) +
+      '</div>' +
+      '<div class="med-c-now">' +
+      now +
+      '</div>' +
+      '<div class="med-c-after">' +
+      medsTag(after[0], after[1]) +
+      '</div>';
+  } else {
+    var pays = medsPlanPays(d).length;
+    cells =
+      '<div class="med-c-prog med-dim">Not a PAP med</div><div class="med-c-lim med-dim med-hide-m">-</div><div class="med-c-now med-dim med-hide-m">-</div>' +
+      '<div class="med-c-after">' +
+      (pays
+        ? medsTag('neutral', pays + (pays === 1 ? ' plan pays' : ' plans pay'))
+        : '<span class="med-dim">No plan pays</span>') +
+      '</div>';
+  }
   return (
-    '<div class="med-label">Lower the cost</div>' +
-    '<ol class="med-steps">' +
-    '<li><b>Discount card from the plan</b><span>Customer shows the plan Rx card at the pharmacy (RxSavers, BestChoiceRx, GapAfford Plus, NCE, Clever Rx).</span></li>' +
-    '<li><b>Compare cash prices on GoodRx</b><span>Customer enters a zip and sees nearby pharmacy prices. Use the coupon instead of the card, not with it. Prices change; never promise one.</span>' +
-    '<a class="med-btn med-btn-dark" href="' +
-    medsGoodRxUrl(d.n) +
-    '" target="_blank" rel="noopener">Open GoodRx</a></li>' +
-    '<li><b>Ask the doctor</b><span>About a generic or a med a plan covers. The doctor decides.</span></li>' +
-    '</ol>'
+    '<button type="button" class="med-line' +
+    (open ? ' is-open' : '') +
+    '" data-meds-open="' +
+    medsEsc(d.n) +
+    '" aria-expanded="' +
+    (open ? 'true' : 'false') +
+    '"><div class="med-c-name"><b>' +
+    medsEsc(d.n) +
+    '</b>' +
+    typedNote +
+    '</div>' +
+    cells +
+    '<div class="med-c-arrow" aria-hidden="true">' +
+    (open ? '&#9650;' : '&#9660;') +
+    '</div></button>' +
+    (open ? medsDetailHtml(d, idx) : '')
   );
 }
 
-function medsCalcHtml(p) {
-  var canCalc = p.s === 'ready' && (p.f || p.dol);
-  if (!canCalc) {
-    var msg =
-      p.s === 'call'
-        ? 'No fixed income limit published. Customer calls the program.'
-        : 'Income limit not published. Customer checks with the program.';
-    return '<p class="med-pap-note">' + medsEsc(msg) + '</p>';
+function medsDetailHtml(d) {
+  var p = medsPap(d);
+  var left = '';
+  if (p) {
+    var prog = medsData.programs[p.p] || {};
+    var url = p.u || prog.url;
+    left +=
+      '<div class="med-label">If they enroll in our plan</div><p>' +
+      medsEsc(MEDS_AFTER_TEXT[p.o] || MEDS_AFTER_TEXT.not_checked) +
+      '</p>';
+    if (p.q)
+      left +=
+        '<blockquote class="med-quote">"' + medsEsc(p.q) + '"</blockquote>';
+    if (p.x)
+      left +=
+        '<p class="med-warn">The drug maker\'s site no longer lists this med in its program (checked Oct 2026). Confirm before applying.</p>';
+    if (url)
+      left +=
+        '<a class="med-btn med-btn-accent" href="' +
+        medsEsc(url) +
+        '" target="_blank" rel="noopener">Program site</a>';
   }
+  var pays = medsPlanPays(d);
+  var right =
+    '<div class="med-label">Our plans</div><p>' +
+    (pays.length
+      ? medsEsc(pays.join('; '))
+      : 'Not covered by the plans we sell, or not on file.') +
+    '</p>' +
+    '<a class="med-btn" href="https://www.goodrx.com/' +
+    medsEsc(medsKey(d.n).replace(/\s+/g, '-')) +
+    '" target="_blank" rel="noopener">GoodRx price</a>';
+  return (
+    '<div class="med-detail"><div>' +
+    left +
+    '</div><div>' +
+    right +
+    '</div></div>'
+  );
+}
+
+function medsSummaryHtml(items) {
+  var found = items.filter(function (it) {
+    return it.d;
+  });
+  var paps = found.filter(function (it) {
+    return medsPap(it.d);
+  });
+  var inc = medsIncome();
   var n = parseInt(medsState.hh, 10) || 1;
-  var fplAmt = medsFplBase(n, medsState.st);
-  var limit = p.f ? (fplAmt * p.f) / 100 : p.dol[0] + p.dol[1] * (n - 1);
-  var inc = parseFloat(String(medsState.inc).replace(/[^0-9.]/g, ''));
-  var hh = '';
-  for (var i = 1; i <= 10; i++) {
-    hh +=
-      '<option value="' +
-      i +
-      '"' +
-      (String(i) === medsState.hh ? ' selected' : '') +
-      '>' +
-      i +
-      '</option>';
+  var fpl = medsFplBase(n, medsState.st);
+  var ok = [];
+  var fit = [];
+  if (inc) {
+    paps.forEach(function (it) {
+      var p = medsPap(it.d);
+      if (inc <= (fpl * p.f) / 100) {
+        ok.push(it.d.n);
+        if (p.o === 'yes' || p.o === 'likely') fit.push(it.d.n);
+      }
+    });
   }
-  var sts = [
-    ['48', '48 states + DC'],
-    ['AK', 'Alaska'],
-    ['HI', 'Hawaii']
-  ];
-  var st = sts
-    .map(function (s) {
-      return (
-        '<option value="' +
-        s[0] +
-        '"' +
-        (s[0] === medsState.st ? ' selected' : '') +
-        '>' +
-        s[1] +
-        '</option>'
-      );
+  var html =
+    medsTag(
+      'neutral',
+      found.length + (found.length === 1 ? ' med found' : ' meds found')
+    ) +
+    medsTag(
+      'mid',
+      paps.length + ' PAP ' + (paps.length === 1 ? 'med' : 'meds')
+    );
+  if (inc)
+    html += medsTag(
+      ok.length ? 'ok' : 'bad',
+      ok.length +
+        ' qualif' +
+        (ok.length === 1 ? 'ies' : 'y') +
+        ' now' +
+        (ok.length ? ': ' + ok.join(', ') : '')
+    );
+  if (inc && ok.length)
+    html += medsTag(
+      fit.length ? 'ok' : 'warn',
+      'Still eligible on our plan: ' + (fit.length ? fit.join(', ') : 'none')
+    );
+  html +=
+    '<span class="med-dim">Poverty line for ' +
+    n +
+    ': ' +
+    medsMoney(fpl) +
+    (inc ? ' - client is at ' + Math.round((inc / fpl) * 100) + '%' : '') +
+    '</span>';
+  return '<div class="med-summary">' + html + '</div>';
+}
+
+function medsRxSaversHtml() {
+  var t = (medsData.rxsavers && medsData.rxsavers.tiers) || [];
+  var tiers = t
+    .map(function (v, i) {
+      return '<span>Tier ' + (i + 1) + ' $' + v.toFixed(2) + '</span>';
     })
     .join('');
-  var result;
-  var limitTxt =
-    'Limit for ' +
-    n +
-    (n === 1 ? ' person' : ' people') +
-    ': ' +
-    medsMoney(limit);
-  if (!isFinite(inc) || inc <= 0) {
-    result =
-      '<div class="med-result"><b>Enter yearly household income</b><span>' +
-      medsEsc(limitTxt) +
-      '</span></div>';
-  } else {
-    var pct = Math.round((inc / fplAmt) * 100);
-    var ok = inc <= limit;
-    result =
-      '<div class="med-result ' +
-      (ok ? 'is-ok' : 'is-over') +
-      '"><b>' +
-      (ok ? 'Likely qualifies' : 'Over the limit') +
-      '</b><span>' +
-      pct +
-      '% of the poverty line. ' +
-      medsEsc(limitTxt) +
-      '</span></div>';
-  }
   return (
-    '<div class="med-calc">' +
-    '<label><span>Yearly income</span><input id="meds-inc" type="text" inputmode="numeric" placeholder="$0" value="' +
-    medsEsc(medsState.inc) +
-    '"></label>' +
-    '<label><span>Household</span><select id="meds-hh">' +
-    hh +
-    '</select></label>' +
-    '<label><span>State</span><select id="meds-st">' +
-    st +
-    '</select></label>' +
-    '</div>' +
-    '<div id="meds-result">' +
-    result +
-    '</div>'
+    '<details class="med-rxs"><summary><b>RxSavers</b><span>Not insurance. Approval not guaranteed. Client and doctor sign each application. Never tell a client to say they have no insurance.</span><span class="med-rxs-open">Prices</span></summary>' +
+    '<div class="med-rxs-tiers">' +
+    tiers +
+    '<em>per month</em></div></details>'
   );
 }
 
-function medsPapHtml(d) {
-  var p = medsPap(d);
-  if (!p) {
-    if (d.k === 'b')
-      return '<p class="med-pap-none">No patient assistance program confirmed for our plan members.</p>';
-    return '';
+function medsRenderResults() {
+  var host = document.getElementById('meds-results');
+  if (!host || !medsData) return;
+  var items = medsParse(medsState.text);
+  if (!items.length) {
+    host.innerHTML =
+      '<p class="med-empty">Type the meds the client says, separated by commas. Example: eliquis, ozempic, metformin</p>' +
+      medsRxSaversHtml();
+    return;
   }
-  var prog = medsData.programs[p.p] || { name: '', url: '' };
-  var url = p.u || prog.url;
-  var badge =
-    p.o === 'yes'
-      ? '<span class="med-badge med-badge-ok">Open to our plan members</span>'
-      : '<span class="med-badge med-badge-mid">Apply and list the plan</span>';
-  var forName =
-    d.see && !d.pap
-      ? '<p class="med-pap-note">For ' + medsEsc(d.see) + '.</p>'
-      : '';
-  return (
-    '<div class="med-pap">' +
-    '<div class="med-pap-head"><div class="med-label">Patient Assistance (PAP)</div>' +
-    badge +
+  host.innerHTML =
+    medsSummaryHtml(items) +
+    '<div class="med-table" role="list">' +
+    '<div class="med-line med-head" aria-hidden="true"><div>Med</div><div>PAP program</div><div>Income limit for ' +
+    medsEsc(medsState.hh) +
+    '</div><div>Client now</div><div>After our plan</div><div></div></div>' +
+    items.map(medsRowHtml).join('') +
     '</div>' +
-    forName +
-    '<div><b>' +
-    medsEsc(prog.name) +
-    '</b><div class="med-pap-rule">' +
-    medsEsc(p.r) +
-    (p.i ? '. ' + medsEsc(p.i) : '') +
-    '</div></div>' +
-    (p.q
-      ? '<blockquote class="med-quote">"' + medsEsc(p.q) + '"</blockquote>'
-      : '') +
-    medsCalcHtml(p) +
-    '<div class="med-btns">' +
-    (url
-      ? '<a class="med-btn med-btn-accent" href="' +
-        medsEsc(url.split(' ')[0]) +
-        '" target="_blank" rel="noopener">Open program site</a>'
-      : '') +
-    '<a class="med-btn" href="https://www.pap-lookup.com/" target="_blank" rel="noopener">Check on pap-lookup.com</a>' +
-    '</div>' +
-    '<p class="med-rule">The program decides; say "may qualify". Never tell a customer to say they have no insurance. Agents do not fill out PAP forms.</p>' +
-    '</div>'
-  );
-}
-
-function medsCardHtml(d) {
-  var kind =
-    d.k === 'b'
-      ? '<span class="med-pill med-pill-brand">Brand</span>'
-      : d.k === 'g'
-        ? '<span class="med-pill med-pill-gen">Generic</span>'
-        : '';
-  var pap = medsPap(d);
-  var papPill = pap
-    ? '<span class="med-pill med-pill-pap">PAP for our plan members</span>'
-    : '';
-  var extra = [];
-  if (d.a && d.a.length) extra.push('Also called ' + d.a.join(', '));
-  if (d.qs) extra.push('Quick Sheet: ' + d.qs);
-  var papBlock = medsPapHtml(d);
-  return (
-    '<article class="med-card">' +
-    '<div class="med-card-head"><h3>' +
-    medsEsc(d.n) +
-    '</h3>' +
-    kind +
-    papPill +
-    '</div>' +
-    (extra.length
-      ? '<p class="med-card-sub">' + medsEsc(extra.join(' - ')) + '</p>'
-      : '') +
-    '<div class="med-card-grid' +
-    (papBlock ? '' : ' is-single') +
-    '">' +
-    '<div class="med-col">' +
-    '<div class="med-label">On the plans we sell</div>' +
-    '<div class="med-chips">' +
-    medsChip('plat', 'All', 'All plans') +
-    medsChip('plat', 'NEO', 'NEO') +
-    medsChip('plat', 'FirstEnroll', 'FirstEnroll') +
-    '<span class="med-chip-gap"></span>' +
-    medsChip('type', 'All', 'All types') +
-    medsChip('type', 'Limited', 'Limited') +
-    medsChip('type', 'MEC', 'MEC') +
-    medsChip('type', 'STM', 'STM') +
-    '</div>' +
-    '<div id="meds-plan-rows">' +
-    medsPlanRowsHtml(d) +
-    '</div>' +
-    medsStepsHtml(d) +
-    '</div>' +
-    (papBlock ? '<div class="med-col">' + papBlock + '</div>' : '') +
-    '</div>' +
-    '<p class="med-src">Plan coverage: plan documents in Plan Vault. Drug lists: MyLiveDoc (TDK), BestChoiceRx (GoodHealth), Ventegra (Smart Choice). PAP: official program sites, checked ' +
+    '<p class="med-src">PAP meds and income limits: pap-lookup.com list. Program insurance rules: official program sites, checked ' +
     medsEsc(medsData.checked) +
     '. Poverty line: HHS ' +
     medsEsc(medsData.fpl.year) +
-    '.</p>' +
-    '</article>'
-  );
+    '. Plans: Plan Vault.</p>' +
+    medsRxSaversHtml();
 }
 
-function medsSheetHtml() {
-  var html = '';
-  (medsData.sheet || []).forEach(function (s) {
-    var body = '';
-    s.g.forEach(function (g) {
-      var pills = g.d
-        .map(function (name) {
-          var d = medsFind(name);
-          var isBrand = g.l.indexOf('Brand') === 0;
-          var pap = d && medsPap(d) ? '<b class="med-pap-tag">PAP</b>' : '';
-          return (
-            '<button type="button" class="med-sheet-pill ' +
-            (isBrand ? 'is-brand' : 'is-gen') +
-            '" data-meds-pick="' +
-            medsEsc(d ? d.n : name) +
-            '">' +
-            medsEsc(name) +
-            pap +
-            '</button>'
-          );
-        })
-        .join('');
-      body +=
-        '<div class="med-sheet-group"><div class="med-label">' +
-        medsEsc(g.l) +
-        '</div><div class="med-sheet-pills">' +
-        pills +
-        '</div></div>';
-    });
-    html +=
-      '<section class="med-sheet-card"><div class="med-sheet-head"><b>' +
-      medsEsc(s.c) +
-      '</b>' +
-      (s.note ? '<span>' + medsEsc(s.note) + '</span>' : '') +
-      '</div>' +
-      body +
-      '</section>';
-  });
-  return (
-    '<div class="med-sheet-title"><h3>Med Quick Sheet</h3><span>Tap a med to open its card. PAP shows only where a program is open to our plan members.</span></div>' +
-    '<div class="med-sheet">' +
-    html +
-    '</div>' +
-    '<p class="med-src">Meds in the same category are not interchangeable. Not on this sheet? Ask a supervisor.</p>'
-  );
-}
-
-function medsResultsHtml() {
-  if (!medsState.q || medsState.sel) return '';
-  var hits = medsSearch(medsState.q);
-  if (!hits.length) {
-    return (
-      '<div class="med-hits"><p class="med-empty">Not in our drug lists. Ask a supervisor, or check cash prices on <a href="' +
-      medsGoodRxUrl(medsState.q) +
-      '" target="_blank" rel="noopener">GoodRx</a>.</p></div>'
-    );
-  }
-  return (
-    '<div class="med-hits" role="listbox">' +
-    hits
-      .map(function (d) {
-        return (
-          '<button type="button" class="med-hit" data-meds-pick="' +
-          medsEsc(d.n) +
-          '"><b>' +
-          medsEsc(d.n) +
-          '</b><span>' +
-          (d.k === 'b' ? 'Brand' : d.k === 'g' ? 'Generic' : '') +
-          (medsPap(d) ? ' - PAP' : '') +
-          '</span></button>'
-        );
-      })
-      .join('') +
-    '</div>'
-  );
-}
-
-function medsRenderBody() {
-  var host = document.getElementById('meds-body');
-  if (!host || !medsData) return;
-  var d = medsState.sel ? medsFind(medsState.sel) : null;
-  host.innerHTML =
-    medsResultsHtml() + (d ? medsCardHtml(d) : '') + medsSheetHtml();
-}
-
-function medsRenderPlanRows() {
-  var d = medsState.sel ? medsFind(medsState.sel) : null;
-  var host = document.getElementById('meds-plan-rows');
-  if (d && host) host.innerHTML = medsPlanRowsHtml(d);
-  document.querySelectorAll('#page-meds .med-chip').forEach(function (b) {
-    var on =
-      medsState[b.getAttribute('data-meds-filter')] ===
-      b.getAttribute('data-meds-value');
-    b.classList.toggle('is-on', on);
-    b.setAttribute('aria-pressed', on ? 'true' : 'false');
-  });
-}
-
-function medsRenderResult() {
-  var d = medsState.sel ? medsFind(medsState.sel) : null;
-  var p = medsPap(d);
-  var host = document.getElementById('meds-result');
-  if (!p || !host) return;
-  var tmp = document.createElement('div');
-  tmp.innerHTML = medsCalcHtml(p);
-  var fresh = tmp.querySelector('#meds-result');
-  if (fresh) host.innerHTML = fresh.innerHTML;
-}
-
-function medsPick(name) {
-  medsState.sel = name;
-  medsState.q = name;
-  var input = document.getElementById('meds-search');
-  if (input) input.value = name;
-  medsRenderBody();
-  var card = document.querySelector('#page-meds .med-card');
-  if (card && card.scrollIntoView) card.scrollIntoView({ block: 'nearest' });
-}
+var medsTimer = null;
 
 function medsOnInput(e) {
   var t = e.target;
-  if (t.id === 'meds-search') {
-    // The blur 'change' event would re-render before the click lands.
-    if (e.type === 'change') return;
-    medsState.q = t.value;
-    medsState.sel = '';
-    var exact = medsFind(t.value);
-    if (exact && medsSearch(t.value).length === 1) medsState.sel = exact.n;
-    medsRenderBody();
-    return;
-  }
-  if (t.id === 'meds-inc') {
-    medsState.inc = t.value;
-    medsRenderResult();
-    return;
-  }
-  if (t.id === 'meds-hh') {
-    medsState.hh = t.value;
-    medsRenderResult();
-    return;
-  }
-  if (t.id === 'meds-st') {
-    medsState.st = t.value;
-    medsRenderResult();
-  }
-}
-
-function medsOnKey(e) {
-  if (e.target.id !== 'meds-search' || e.key !== 'Enter') return;
-  var hits = medsSearch(e.target.value);
-  if (hits.length) {
-    e.preventDefault();
-    medsPick(hits[0].n);
-  }
+  if (t.id === 'meds-text') medsState.text = t.value;
+  else if (t.id === 'meds-inc') medsState.inc = t.value;
+  else if (t.id === 'meds-hh') medsState.hh = t.value;
+  else if (t.id === 'meds-st') medsState.st = t.value;
+  else return;
+  if (medsTimer) clearTimeout(medsTimer);
+  medsTimer = setTimeout(medsRenderResults, 150);
 }
 
 function medsOnClick(e) {
-  var pick = e.target.closest ? e.target.closest('[data-meds-pick]') : null;
-  if (pick) {
-    medsPick(pick.getAttribute('data-meds-pick'));
-    return;
-  }
-  var chip = e.target.closest ? e.target.closest('[data-meds-filter]') : null;
-  if (chip) {
-    medsState[chip.getAttribute('data-meds-filter')] =
-      chip.getAttribute('data-meds-value');
-    medsRenderPlanRows();
-  }
+  var row = e.target.closest ? e.target.closest('[data-meds-open]') : null;
+  if (!row) return;
+  var name = row.getAttribute('data-meds-open');
+  medsState.open = medsState.open === name ? '' : name;
+  medsRenderResults();
 }
 
 function renderMeds() {
   var root = document.getElementById('page-meds');
   if (!root) return;
   if (!root.getAttribute('data-meds-ready')) {
+    var hh = '';
+    for (var i = 1; i <= 10; i++)
+      hh += '<option value="' + i + '">' + i + '</option>';
     root.innerHTML =
       '<div class="med-page">' +
-      '<header class="med-header"><h2>Meds</h2>' +
-      '<p>Search a medication. Only what works with the plans we sell on NEO and FirstEnroll.</p></header>' +
-      '<input id="meds-search" class="med-search" type="search" autocomplete="off" placeholder="Search a medication (brand or generic)" aria-label="Search a medication">' +
-      '<div id="meds-body"><p class="med-empty">Loading meds...</p></div>' +
+      '<header class="med-header"><h2>Meds check</h2>' +
+      "<p>Type the client's meds as they say them. Commas, typos and spaces are fine.</p></header>" +
+      '<div class="med-form">' +
+      '<label class="med-f-meds"><span>Client meds</span><textarea id="meds-text" rows="1" autocomplete="off" spellcheck="false" placeholder="eliquis, ozempic, metformin"></textarea></label>' +
+      '<label><span>Household</span><select id="meds-hh">' +
+      hh +
+      '</select></label>' +
+      '<label><span>Yearly income</span><input id="meds-inc" type="text" inputmode="numeric" placeholder="$0"></label>' +
+      '<label><span>State</span><select id="meds-st"><option value="48">48 states + DC</option><option value="AK">Alaska</option><option value="HI">Hawaii</option></select></label>' +
+      '</div>' +
+      '<div id="meds-results"><p class="med-empty">Loading meds...</p></div>' +
       '</div>';
     root.setAttribute('data-meds-ready', '1');
     root.addEventListener('input', medsOnInput);
     root.addEventListener('change', medsOnInput);
-    root.addEventListener('keydown', medsOnKey);
     root.addEventListener('click', medsOnClick);
   }
   if (medsData) {
-    medsRenderBody();
+    medsRenderResults();
     return;
   }
   if (medsLoadStarted) return;
@@ -698,11 +584,11 @@ function renderMeds() {
     .then(function (data) {
       medsData = data;
       medsBuildIndex();
-      medsRenderBody();
+      medsRenderResults();
     })
     .catch(function () {
       medsLoadStarted = false;
-      var host = document.getElementById('meds-body');
+      var host = document.getElementById('meds-results');
       if (host)
         host.innerHTML =
           '<p class="med-empty">Meds could not load. Check your connection and open the tab again.</p>';

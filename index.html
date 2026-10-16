@@ -2766,11 +2766,11 @@
       .ao-t-dl b {
         color: var(--cha-text-primary);
       }
-      /* Meds tab (Oct 2026) */
+      /* Meds check (Oct 2026) - live-call layout */
       .med-page {
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 12px;
         max-width: 1180px;
       }
       .med-header h2 {
@@ -2783,114 +2783,77 @@
         color: var(--cha-text-secondary);
         font-size: 14px;
       }
-      .med-search {
-        width: 100%;
-        box-sizing: border-box;
-        height: 46px;
-        border-radius: 999px;
-        border: 1px solid var(--cha-border-subtle);
+      .med-form {
+        display: grid;
+        grid-template-columns: 3fr 0.8fr 1.2fr 1.2fr;
+        gap: 12px;
+        align-items: end;
         background: var(--cha-bg-card);
-        padding: 0 20px;
-        font-size: 15px;
-        color: var(--cha-text-primary);
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
-      }
-      .med-search:focus {
-        outline: 2px solid var(--cha-accent);
-        outline-offset: 1px;
-      }
-      #meds-body {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
-      .med-hits {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .med-hit {
-        display: inline-flex;
-        gap: 8px;
-        align-items: baseline;
-        padding: 9px 14px;
-        border-radius: 999px;
-        border: 1px solid var(--cha-border-subtle);
-        background: var(--cha-bg-card);
-        color: var(--cha-text-primary);
-        font-size: 14px;
-        cursor: pointer;
-      }
-      .med-hit span {
-        color: var(--cha-text-tertiary);
-        font-size: 12px;
-      }
-      .med-hit:hover,
-      .med-hit:focus-visible {
-        border-color: var(--cha-accent);
-      }
-      .med-empty {
-        margin: 0;
-        color: var(--cha-text-secondary);
-        font-size: 14px;
-      }
-      .med-card {
-        background: var(--cha-bg-card);
-        border: 2px solid var(--cha-text-primary);
         border-radius: 18px;
-        padding: 18px 20px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+        padding: 16px;
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
       }
-      .med-card-head {
+      .med-form label {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--cha-text-tertiary);
+      }
+      .med-form textarea,
+      .med-form input,
+      .med-form select {
+        box-sizing: border-box;
+        width: 100%;
+        min-height: 42px;
+        border-radius: 12px;
+        border: 1px solid var(--cha-border-subtle);
+        background: var(--cha-bg-card);
+        padding: 10px 12px;
+        font: inherit;
+        font-size: 14px;
+        text-transform: none;
+        letter-spacing: 0;
+        font-weight: 400;
+        color: var(--cha-text-primary);
+      }
+      .med-form textarea {
+        resize: vertical;
+        border: 2px solid var(--cha-accent);
+        line-height: 1.4;
+      }
+      .med-summary {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
         align-items: center;
       }
-      .med-card-head h3 {
-        margin: 0;
-        font-size: 21px;
-        color: var(--cha-text-primary);
-      }
-      .med-card-sub {
-        margin: 0;
-        font-size: 13px;
-        color: var(--cha-text-secondary);
-      }
-      .med-pill,
-      .med-badge,
-      .med-val {
+      .med-tag {
         display: inline-flex;
         align-items: center;
-        padding: 4px 11px;
+        padding: 4px 10px;
         border-radius: 999px;
         font-size: 12.5px;
         font-weight: 700;
         white-space: nowrap;
       }
-      .med-pill-brand {
-        background: color-mix(
-          in srgb,
-          var(--cha-accent) 12%,
-          var(--cha-bg-card)
-        );
-        color: var(--cha-accent-dark);
-      }
-      .med-pill-gen,
-      .med-val-ok,
-      .med-badge-ok {
+      .med-tag-ok {
         background: var(--cha-success-bg);
         color: var(--cha-success-text);
       }
-      .med-pill-pap {
+      .med-tag-bad {
+        background: var(--cha-danger-bg);
+        color: var(--cha-danger-text);
+      }
+      .med-tag-warn {
         background: var(--cha-warning-bg);
         color: var(--cha-warning-text);
       }
-      .med-val-mid,
-      .med-badge-mid {
+      .med-tag-mid {
         background: color-mix(
           in srgb,
           var(--cha-accent) 12%,
@@ -2898,20 +2861,93 @@
         );
         color: var(--cha-accent-dark);
       }
-      .med-card-grid {
+      .med-tag-neutral {
+        background: var(--cha-bg-muted);
+        color: var(--cha-text-secondary);
+      }
+      .med-dim {
+        color: var(--cha-text-tertiary);
+        font-size: 13px;
+      }
+      .med-table {
+        background: var(--cha-bg-card);
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+      }
+      .med-line {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+        grid-template-columns: 1.3fr 1.2fr 1fr 0.9fr 1fr 20px;
+        gap: 12px;
+        align-items: center;
+        width: 100%;
+        padding: 12px 16px;
+        border: 0;
+        border-top: 1px solid var(--cha-border-subtle);
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        font: inherit;
+        font-size: 13.5px;
+        text-align: left;
+        cursor: pointer;
+      }
+      .med-line > div {
+        min-width: 0;
+      }
+      .med-line.med-head {
+        border-top: 0;
+        cursor: default;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--cha-text-tertiary);
+        padding-block: 10px;
+      }
+      .med-line.is-open {
+        background: var(--cha-bg-muted);
+      }
+      .med-line:not(.med-head):hover {
+        background: var(--cha-bg-muted);
+      }
+      .med-line.is-miss {
+        cursor: default;
+        color: var(--cha-danger-text);
+      }
+      .med-c-name b {
+        display: block;
+        font-size: 15px;
+      }
+      .med-typed {
+        display: block;
+        font-size: 11.5px;
+        color: var(--cha-text-tertiary);
+      }
+      .med-c-lim {
+        font-variant-numeric: tabular-nums;
+      }
+      .med-c-arrow {
+        color: var(--cha-text-tertiary);
+        font-size: 11px;
+      }
+      .med-detail {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
         gap: 18px;
-        align-items: start;
+        padding: 4px 16px 16px;
+        background: var(--cha-bg-muted);
+        font-size: 13px;
+        color: var(--cha-text-secondary);
       }
-      .med-card-grid.is-single {
-        grid-template-columns: minmax(0, 1fr);
-      }
-      .med-col {
+      .med-detail > div {
         display: flex;
         flex-direction: column;
         gap: 6px;
+        align-items: flex-start;
         min-width: 0;
+      }
+      .med-detail p {
+        margin: 0;
       }
       .med-label {
         font-size: 11px;
@@ -2920,121 +2956,19 @@
         text-transform: uppercase;
         color: var(--cha-text-tertiary);
       }
-      .med-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        margin: 2px 0 4px;
-      }
-      .med-chip-gap {
-        width: 8px;
-      }
-      .med-chip {
-        padding: 5px 11px;
-        border-radius: 999px;
-        border: 1px solid var(--cha-border-default);
-        background: var(--cha-bg-card);
-        color: var(--cha-text-secondary);
-        font-size: 12.5px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      .med-chip.is-on {
-        background: var(--cha-text-primary);
-        border-color: var(--cha-text-primary);
-        color: var(--cha-bg-card);
-      }
-      .med-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        align-items: center;
-        padding: 9px 0;
-        border-top: 1px solid var(--cha-border-subtle);
-      }
-      .med-row-main {
-        min-width: 0;
-        font-size: 14px;
-        color: var(--cha-text-primary);
-      }
-      .med-row-meta {
-        font-size: 11.5px;
-        color: var(--cha-text-tertiary);
-      }
-      .med-row-sub {
-        font-size: 12px;
-        color: var(--cha-text-secondary);
-      }
-      .med-rest {
-        border-top: 1px solid var(--cha-border-subtle);
-        padding: 9px 0;
-        font-size: 13px;
-        color: var(--cha-text-secondary);
-      }
-      .med-rest summary {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        cursor: pointer;
-        list-style: none;
-      }
-      .med-rest summary::-webkit-details-marker {
-        display: none;
-      }
-      .med-rest-open {
-        color: var(--cha-accent);
-        font-weight: 600;
-        white-space: nowrap;
-      }
-      .med-rest p {
-        margin: 6px 0 0;
-      }
-      .med-steps {
-        list-style: none;
+      .med-quote {
         margin: 0;
-        padding: 0;
-        counter-reset: medstep;
+        font-size: 12.5px;
+        border-left: 3px solid var(--cha-border-default);
+        padding-left: 10px;
       }
-      .med-steps li {
-        counter-increment: medstep;
-        position: relative;
-        padding: 9px 0 9px 34px;
-        border-top: 1px solid var(--cha-border-subtle);
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        font-size: 14px;
-        color: var(--cha-text-primary);
-      }
-      .med-steps li::before {
-        content: counter(medstep);
-        position: absolute;
-        left: 0;
-        top: 9px;
-        width: 24px;
-        height: 24px;
-        border-radius: 999px;
-        background: var(--cha-text-primary);
-        color: var(--cha-bg-card);
-        font-size: 12px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .med-steps li span {
-        font-size: 13px;
-        color: var(--cha-text-secondary);
-      }
-      .med-steps .med-btn {
-        align-self: flex-start;
-        margin-top: 4px;
+      .med-warn {
+        color: var(--cha-warning-text);
       }
       .med-btn {
         display: inline-flex;
         align-items: center;
-        justify-content: center;
-        padding: 8px 15px;
+        padding: 7px 14px;
         border-radius: 999px;
         font-size: 13px;
         font-weight: 600;
@@ -3043,216 +2977,90 @@
         background: var(--cha-bg-card);
         color: var(--cha-text-primary);
       }
-      .med-btn-dark {
-        background: var(--cha-text-primary);
-        border-color: var(--cha-text-primary);
-        color: var(--cha-bg-card);
-      }
       .med-btn-accent {
         background: var(--cha-accent);
         border-color: var(--cha-accent);
         color: var(--cha-bg-card);
       }
-      .med-btns {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .med-pap {
-        background: var(--cha-bg-muted);
-        border-radius: 14px;
-        padding: 14px 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+      .med-empty {
+        margin: 0;
+        color: var(--cha-text-secondary);
         font-size: 14px;
-        color: var(--cha-text-primary);
-      }
-      .med-pap-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-      }
-      .med-pap-rule,
-      .med-pap-note,
-      .med-pap-none {
-        font-size: 13px;
-        color: var(--cha-text-secondary);
-        margin: 0;
-      }
-      .med-quote {
-        margin: 0;
-        font-size: 12.5px;
-        color: var(--cha-text-secondary);
-        border-left: 3px solid var(--cha-border-default);
-        padding-left: 10px;
-      }
-      .med-calc {
-        display: grid;
-        grid-template-columns: 1.3fr 1fr 1fr;
-        gap: 8px;
-      }
-      .med-calc label {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-        font-size: 12px;
-        color: var(--cha-text-tertiary);
-        min-width: 0;
-      }
-      .med-calc input,
-      .med-calc select {
-        height: 40px;
-        border-radius: 12px;
-        border: 1px solid var(--cha-border-subtle);
-        background: var(--cha-bg-card);
-        padding: 0 10px;
-        font-size: 14px;
-        color: var(--cha-text-primary);
-        min-width: 0;
-      }
-      .med-result {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px 10px;
-        align-items: baseline;
-        border-radius: 12px;
-        padding: 10px 14px;
-        background: var(--cha-bg-card);
-        font-size: 13px;
-        color: var(--cha-text-secondary);
-      }
-      .med-result b {
-        font-size: 15px;
-        color: var(--cha-text-primary);
-      }
-      .med-result.is-ok {
-        background: var(--cha-success-bg);
-        color: var(--cha-success-text);
-      }
-      .med-result.is-ok b {
-        color: var(--cha-success-text);
-      }
-      .med-result.is-over {
-        background: var(--cha-danger-bg);
-        color: var(--cha-danger-text);
-      }
-      .med-result.is-over b {
-        color: var(--cha-danger-text);
-      }
-      .med-rule {
-        margin: 0;
-        font-size: 12px;
-        color: var(--cha-warning-text);
-        background: var(--cha-warning-bg);
-        border-radius: 10px;
-        padding: 8px 10px;
       }
       .med-src {
         margin: 0;
         font-size: 11.5px;
         color: var(--cha-text-tertiary);
       }
-      .med-sheet-title {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px 12px;
-        align-items: baseline;
-      }
-      .med-sheet-title h3 {
-        margin: 0;
-        font-size: 17px;
-        color: var(--cha-text-primary);
-      }
-      .med-sheet-title span {
-        font-size: 13px;
-        color: var(--cha-text-secondary);
-      }
-      .med-sheet {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
-        gap: 12px;
-        align-items: start;
-      }
-      .med-sheet-card {
-        background: var(--cha-bg-card);
-        border-radius: 18px;
-        padding: 16px 18px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
-        min-width: 0;
-      }
-      .med-sheet-head {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        gap: 8px;
-        color: var(--cha-text-primary);
-        font-size: 15px;
-      }
-      .med-sheet-head span {
-        font-size: 12px;
-        color: var(--cha-text-tertiary);
-      }
-      .med-sheet-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-      .med-sheet-pills {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .med-sheet-pill {
-        display: inline-flex;
-        gap: 6px;
-        align-items: center;
-        padding: 6px 11px;
-        border-radius: 999px;
-        border: 0;
-        font-size: 12.5px;
-        font-weight: 600;
-        cursor: pointer;
-      }
-      .med-sheet-pill.is-gen {
-        background: var(--cha-success-bg);
-        color: var(--cha-success-text);
-      }
-      .med-sheet-pill.is-brand {
-        background: color-mix(
-          in srgb,
-          var(--cha-accent) 12%,
-          var(--cha-bg-card)
-        );
-        color: var(--cha-accent-dark);
-      }
-      .med-pap-tag {
-        font-size: 10px;
+      .med-rxs {
         background: var(--cha-warning-bg);
         color: var(--cha-warning-text);
-        border-radius: 999px;
-        padding: 1px 6px;
+        border-radius: 14px;
+        padding: 10px 16px;
+        font-size: 13px;
+      }
+      .med-rxs summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        align-items: baseline;
+        cursor: pointer;
+        list-style: none;
+      }
+      .med-rxs summary::-webkit-details-marker {
+        display: none;
+      }
+      .med-rxs-open {
+        margin-left: auto;
+        font-weight: 700;
+        text-decoration: underline;
+      }
+      .med-rxs-tiers {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        margin-top: 8px;
+        font-variant-numeric: tabular-nums;
       }
       @media (width <= 760px) {
-        .med-card-grid {
-          grid-template-columns: minmax(0, 1fr);
-        }
-        .med-card {
-          padding: 14px;
-        }
-        .med-calc {
+        .med-form {
           grid-template-columns: 1fr 1fr;
         }
-        .med-calc label:first-child {
+        .med-f-meds {
           grid-column: 1 / -1;
         }
-        .med-row {
-          flex-wrap: wrap;
+        .med-line.med-head {
+          display: none;
+        }
+        .med-line {
+          grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 20px;
+          gap: 6px 10px;
+        }
+        .med-hide-m {
+          display: none;
+        }
+        .med-tag {
+          white-space: normal;
+        }
+        .med-c-name {
+          grid-column: 1 / 3;
+        }
+        .med-c-arrow {
+          grid-column: 3;
+          grid-row: 1;
+        }
+        .med-c-prog,
+        .med-c-lim {
+          grid-column: 1 / -1;
+          font-size: 12.5px;
+          color: var(--cha-text-secondary);
+        }
+        .med-c-now,
+        .med-c-after {
+          grid-column: auto;
+        }
+        .med-detail {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -4282,7 +4090,7 @@
     <script src="js/sales-tracker.js?v=1792165216661"></script>
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1792186043707"></script>
-    <script src="js/meds.js?v=1792191756954"></script>
+    <script src="js/meds.js?v=1792193165281"></script>
     <script src="js/app.js?v=1792191756954"></script>
     <script>
       (function () {
