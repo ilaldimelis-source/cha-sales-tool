@@ -926,6 +926,164 @@ function aoOnControl(event) {
   aoRenderResults();
 }
 
+// Add-Ons T chart (Oct 2026): NEO on the left, FirstEnroll on the right,
+// filtered by the client's state. Tap a row for a one-line explanation
+// taken from the product's own description. Core plans and products on
+// hold are not listed.
+var aoOpenName = '';
+
+var AO_EXPLAIN_SKIP =
+  /same price|member only|standalone version|priced differently|no benefit description|confirm before|listed here|rates? differ|differs from|not an add-on/i;
+
+function aoExplain(product) {
+  var parts = String(product.description || '').split(/\.\s+/);
+  var i;
+  var s;
+  var m;
+  var base;
+  for (i = 0; i < parts.length; i++) {
+    s = parts[i].replace(/^\s+|\s+$/g, '');
+    if (!s || AO_EXPLAIN_SKIP.test(s)) continue;
+    return s.charAt(s.length - 1) === '.' ? s : s + '.';
+  }
+  m = String(product.name || '').match(
+    /\$(\d+)k ADD \/ \$(\d+)k AME \/ \$(\d+)k CI/i
+  );
+  if (m) {
+    return (
+      '$' +
+      m[1] +
+      'K accidental death, $' +
+      m[2] +
+      'K accident medical expense and $' +
+      m[3] +
+      'K critical illness benefit.'
+    );
+  }
+  base = aoFindAddonSibling(product);
+  if (base) return aoExplain(base);
+  return 'No description on file yet.';
+}
+
+function aoFindAddonSibling(product) {
+  var name = String(product.name || '');
+  var products = (aoData && aoData.products) || [];
+  var key = name
+    .replace(/^NCE /, '')
+    .replace(/ SA \(standalone\)$/, '')
+    .replace(/ \(add-on\)$/, '')
+    .replace(/ Standalone$/, '');
+  var i;
+  var other;
+  if (key === name) return null;
+  for (i = 0; i < products.length; i++) {
+    other = products[i];
+    if (other === product) continue;
+    if (
+      String(other.name || '')
+        .replace(/^NCE /, '')
+        .replace(/ \(add-on\)$/, '') === key &&
+      !AO_EXPLAIN_SKIP.test(String(other.description || '').split('.')[0])
+    ) {
+      return other;
+    }
+  }
+  return null;
+}
+
+function aoIsListedAddon(product) {
+  if (!product || product.on_hold) return false;
+  if (AO_PLAN_NOT_ADDON[product.name]) return false;
+  if (product.category === 'Limited medical') return false;
+  return true;
+}
+
+function aoColumnHtml(platform, label, stateCode, query) {
+  var products = (aoData && aoData.products) || [];
+  var list = [];
+  var html;
+  var i;
+  var p;
+  var open;
+  for (i = 0; i < products.length; i++) {
+    p = products[i];
+    if (p.platform !== platform || !aoIsListedAddon(p)) continue;
+    if (stateCode && p.states && p.states.indexOf(stateCode) === -1) continue;
+    if (query && !aoTextMatch(p, query)) continue;
+    list.push(p);
+  }
+  list = aoSortProducts(list);
+  html =
+    '<div class="ao-t-col"><div class="ao-t-head"><h2>' +
+    aoEsc(label) +
+    '</h2><span>' +
+    list.length +
+    (stateCode ? ' in ' + aoEsc(stateCode) : ' add-ons') +
+    '</span></div>';
+  for (i = 0; i < list.length; i++) {
+    p = list[i];
+    open = aoOpenName === p.name;
+    html +=
+      '<div class="ao-t-item"><button type="button" class="ao-t-row' +
+      (open ? ' ao-t-row-open' : '') +
+      '" data-ao-row="' +
+      aoEsc(p.name) +
+      '" aria-expanded="' +
+      (open ? 'true' : 'false') +
+      '"><span class="ao-t-name">' +
+      aoEsc(p.name) +
+      '</span><span class="ao-t-price">' +
+      (aoHasPrice(p) ? aoMoney(p.price_member) : 'See platform') +
+      '</span></button>';
+    if (open) {
+      html += '<p class="ao-t-explain">' + aoEsc(aoExplain(p)) + '</p>';
+    }
+    if (open && !p.states) {
+      html +=
+        '<p class="ao-t-explain ao-t-confirm">State list not on file. Confirm on the platform.</p>';
+    }
+    html += '</div>';
+  }
+  if (!list.length) {
+    html += '<p class="ao-t-empty">None in this state.</p>';
+  }
+  return html + '</div>';
+}
+
+function aoRenderTChart() {
+  var host = document.getElementById('ao-tchart');
+  var stateEl = document.getElementById('ao-state');
+  var searchEl = document.getElementById('ao-search');
+  var stateCode = stateEl ? stateEl.value : '';
+  var query = searchEl ? searchEl.value : '';
+  if (!host) return;
+  if (!aoData) {
+    host.innerHTML = '<p class="ao-status">Loading add-ons...</p>';
+    return;
+  }
+  host.innerHTML =
+    aoColumnHtml('NEO', 'NEO', stateCode, query) +
+    aoColumnHtml('FirstEnroll', 'FirstEnroll', stateCode, query);
+}
+
+function aoOnTChartInput() {
+  aoOpenName = '';
+  aoRenderTChart();
+}
+
+function aoOnTChartClick(event) {
+  var node = event.target;
+  while (node && node !== event.currentTarget) {
+    if (node.getAttribute && node.getAttribute('data-ao-row') !== null) {
+      var name = node.getAttribute('data-ao-row');
+      aoOpenName = aoOpenName === name ? '' : name;
+      aoRenderTChart();
+      return;
+    }
+    node = node.parentNode;
+  }
+}
+
 function renderAddons() {
   var root = document.getElementById('page-addons');
   if (!root) return;
@@ -933,29 +1091,22 @@ function renderAddons() {
     root.innerHTML =
       '<div class="ao-page">' +
       '<header class="ao-header"><h2 class="ao-title">Add-Ons</h2>' +
-      '<p id="ao-lead" class="ao-lead">Prices and state availability for enrollment add-ons.</p></header>' +
-      '<div class="ao-controls">' +
-      '<input id="ao-search" class="ao-search" type="search" placeholder="Search name, description, category, or a state" aria-label="Search add-ons">' +
-      '<select id="ao-state" class="ao-state" aria-label="Filter by state"><option value="">All states</option></select>' +
-      '<div class="ao-platforms" role="group" aria-label="Filter by platform">' +
-      '<button type="button" class="stab active" data-ao-platform="both">Both</button>' +
-      '<button type="button" class="stab" data-ao-platform="FirstEnroll">FirstEnroll</button>' +
-      '<button type="button" class="stab" data-ao-platform="NEO">NEO</button>' +
+      '<p class="ao-lead">Pick the client\'s state. Tap an add-on for a quick explanation.</p></header>' +
+      '<div class="ao-t-controls">' +
+      '<label class="ao-t-state"><span>Client state</span>' +
+      '<select id="ao-state" aria-label="Client state"><option value="">All states</option></select></label>' +
+      '<input id="ao-search" class="ao-t-search" type="search" placeholder="Search add-ons" aria-label="Search add-ons">' +
       '</div>' +
-      '</div>' +
-      '<div class="ao-split">' +
-      '<div id="ao-list" class="ao-list" aria-label="Add-on list"><p class="ao-status">Loading add-ons...</p></div>' +
-      '<div id="ao-detail" class="ao-detail ao-panel" aria-live="polite"></div>' +
-      '</div></div>';
+      '<div id="ao-tchart" class="ao-tchart"><p class="ao-status">Loading add-ons...</p></div>' +
+      '</div>';
     root.setAttribute('data-ao-ready', '1');
-    root.addEventListener('input', aoOnControl);
-    root.addEventListener('change', aoOnControl);
-    root.addEventListener('click', aoOnListClick);
-    root.addEventListener('keydown', aoOnListKey);
+    root.addEventListener('input', aoOnTChartInput);
+    root.addEventListener('change', aoOnTChartInput);
+    root.addEventListener('click', aoOnTChartClick);
   }
   if (aoData) {
     aoFillStates();
-    aoRenderResults();
+    aoRenderTChart();
     return;
   }
   if (aoLoadStarted) return;
@@ -970,14 +1121,13 @@ function renderAddons() {
       for (var i = 0; i < products.length; i++) products[i]._aoIndex = i;
       aoData = data;
       aoFillStates();
-      aoRenderResults();
+      aoRenderTChart();
     })
     .catch(function () {
-      var list = document.getElementById('ao-list');
-      if (list) {
-        list.innerHTML =
+      var host = document.getElementById('ao-tchart');
+      if (host) {
+        host.innerHTML =
           '<p class="ao-status">Add-on list could not be loaded.</p>';
       }
-      aoClosePanel();
     });
 }

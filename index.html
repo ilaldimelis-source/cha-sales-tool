@@ -1903,6 +1903,142 @@
       .qr-foot {
         margin-top: 18px;
       }
+      /* === PLAN LINEUP OCT 2026: Add-Ons T chart === */
+      .ao-t-controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .ao-t-state {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        height: 48px;
+        box-sizing: border-box;
+        padding: 0 8px 0 18px;
+        border: 1.5px solid var(--cha-border-default);
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cha-text-secondary);
+        white-space: nowrap;
+        max-width: 100%;
+        min-width: 0;
+      }
+      .ao-t-state select {
+        min-width: 0;
+        max-width: 100%;
+        height: 40px;
+        border: 0;
+        background: transparent;
+        color: var(--cha-text-primary);
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .ao-t-search {
+        flex: 1 1 260px;
+        height: 48px;
+        box-sizing: border-box;
+        padding: 0 20px;
+        border: 1.5px solid var(--cha-border-default);
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        font-size: 15px;
+      }
+      .ao-tchart {
+        display: flex;
+        flex-wrap: wrap;
+        overflow: hidden;
+        border-radius: 24px;
+        background: var(--cha-bg-card);
+        box-shadow: 0 8px 24px rgb(15 23 42 / 0.06);
+      }
+      .ao-t-col {
+        flex: 1 1 420px;
+        min-width: 0;
+      }
+      .ao-t-col:first-child {
+        border-right: 2px solid var(--cha-text-primary);
+      }
+      .ao-t-head {
+        position: relative;
+        z-index: 1;
+        background: var(--cha-bg-card);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 22px;
+        border-bottom: 2px solid var(--cha-text-primary);
+      }
+      .ao-t-head h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--cha-text-primary);
+      }
+      .ao-t-head span {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--cha-text-secondary);
+      }
+      .ao-t-item {
+        border-bottom: 1px solid var(--cha-border-subtle);
+      }
+      .ao-t-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        min-height: 48px;
+        padding: 13px 22px;
+        border: 0;
+        background: transparent;
+        color: var(--cha-text-primary);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .ao-t-row-open {
+        background: var(--cha-bg-muted);
+      }
+      .ao-t-name {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .ao-t-price {
+        flex-shrink: 0;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .ao-t-explain {
+        margin: 0 22px 14px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: var(--cha-bg-muted);
+        color: var(--cha-text-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .ao-t-confirm {
+        background: var(--cha-warning-bg);
+        color: var(--cha-warning-text);
+      }
+      .ao-t-empty {
+        margin: 0;
+        padding: 22px;
+        font-size: 14px;
+        color: var(--cha-text-secondary);
+      }
+      @media (max-width: 900px) {
+        .ao-t-col:first-child {
+          border-right: 0;
+        }
+      }
     </style>
   </head>
   <body>
@@ -2883,7 +3019,7 @@
     <script src="js/myspace.js?v=1792164089398"></script>
     <script src="js/sales-tracker.js?v=1790272800000"></script>
     <script src="js/office.js?v=1787900000000"></script>
-    <script src="js/addons.js?v=1790682000000"></script>
+    <script src="js/addons.js?v=1792164729780"></script>
     <script src="js/app.js?v=1792164488818"></script>
     <script>
       (function () {
