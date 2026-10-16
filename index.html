@@ -2361,6 +2361,169 @@
           grid-template-columns: 110px minmax(0, 1fr);
         }
       }
+      /* === OCT 2026: Quick Reference tiles and Network Guide pill cards === */
+      .qr3-page,
+      .ng7-page {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .qr3-every,
+      .ng7-confirm,
+      .qr3-hint {
+        margin: 0;
+        font-size: 13px;
+        color: var(--cha-text-secondary);
+      }
+      .qr3-search,
+      .ng7-search {
+        width: 100%;
+        height: 52px;
+        box-sizing: border-box;
+        padding: 0 22px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        font-size: 15px;
+        box-shadow: 0 4px 14px rgb(15 23 42 / 0.04);
+      }
+      .qr3-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+        gap: 14px;
+        align-items: start;
+      }
+      .qr3-tile {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+        padding: 18px;
+        border: 0;
+        border-radius: 24px;
+        background: var(--cha-bg-card);
+        box-shadow: 0 8px 24px rgb(15 23 42 / 0.06);
+        color: var(--cha-text-primary);
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .qr3-tile:focus-visible {
+        outline: 2px solid var(--cha-accent);
+        outline-offset: 2px;
+      }
+      .qr3-tile-open {
+        grid-column: span 2;
+        outline: 2px solid var(--cha-text-primary);
+      }
+      .qr3-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+      .qr3-name {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .qr3-lines {
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--cha-text-secondary);
+      }
+      .qr3-full {
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: var(--cha-bg-muted);
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--cha-text-primary);
+      }
+      .qr3-open {
+        align-self: flex-start;
+        padding: 9px 16px;
+        border-radius: 999px;
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .ng7-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .ng7-card {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding: 22px 24px;
+        border-radius: 24px;
+        background: var(--cha-bg-card);
+        box-shadow: 0 8px 24px rgb(15 23 42 / 0.06);
+      }
+      .ng7-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+      .ng7-name {
+        margin: 0;
+        font-size: 19px;
+        font-weight: 700;
+        color: var(--cha-text-primary);
+      }
+      .ng7-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .ng7-btn {
+        display: inline-flex;
+        align-items: center;
+        min-height: 40px;
+        padding: 0 18px;
+        border-radius: 999px;
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+      }
+      .ng7-btn-off {
+        background: var(--cha-bg-muted);
+        color: var(--cha-text-secondary);
+      }
+      .ng7-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .ng7-pill {
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: var(--cha-bg-muted);
+        color: var(--cha-text-primary);
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .ng7-pill-hit {
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+      }
+      .ng7-note {
+        margin: 0;
+        font-size: 13px;
+        color: var(--cha-text-secondary);
+      }
+      @media (max-width: 600px) {
+        .qr3-tile-open {
+          grid-column: auto;
+        }
+      }
     </style>
   </head>
   <body>
@@ -3355,7 +3518,7 @@
     <script src="js/plan-pdf-map.js?v=1792165216661"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1792171505341"></script>
-    <script src="js/plans-benefits.js?v=1792165948486"></script>
+    <script src="js/plans-benefits.js?v=1792172231674"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>

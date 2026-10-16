@@ -1980,38 +1980,41 @@ function _ngCardsHtml() {
       });
     if (!hit) return;
     shown++;
-    html +=
-      '<div class="ng-card"><h3 class="ng-name">' + _ngEsc(n.name) + '</h3>';
-    html += '<div class="ng-plans">';
-    n.plans.forEach(function (p) {
-      var match = q && p[0].toLowerCase().indexOf(q) !== -1;
-      html +=
-        '<span class="ng-plan' +
-        (match ? ' ng-plan-hit' : '') +
-        '">' +
-        _ngEsc(p[0]) +
-        ' <span class="ng-tag">' +
-        _ngEsc(p[1]) +
-        '</span></span>';
-    });
-    html += '</div><p class="ng-how">' + _ngEsc(n.how) + '</p>';
-    n.notes.forEach(function (note) {
-      html += '<p class="ng-note">' + _ngEsc(note) + '</p>';
-    });
-    html += '<div class="ng-links">';
+    html += '<div class="ng7-card"><div class="ng7-top"><h3 class="ng7-name">';
+    html += _ngEsc(n.name) + '</h3><div class="ng7-links">';
     if (n.links.length) {
       n.links.forEach(function (l) {
         html +=
-          '<a class="ng-btn" href="' +
+          '<a class="ng7-btn" href="' +
           _ngEsc(l.url) +
           '" target="_blank" rel="noopener noreferrer">' +
           _ngEsc(l.label) +
           '</a>';
       });
     } else {
-      html += '<span class="ng-btn ng-btn-off">No provider search</span>';
+      html += '<span class="ng7-btn ng7-btn-off">No online search</span>';
     }
-    html += '</div></div>';
+    html += '</div></div><div class="ng7-pills">';
+    n.plans.forEach(function (p) {
+      var match = q && p[0].toLowerCase().indexOf(q) !== -1;
+      var label = p[0];
+      if (label === 'SmartChoice') label = 'SmartChoice (in-network only)';
+      html +=
+        '<span class="ng7-pill' +
+        (match ? ' ng7-pill-hit' : '') +
+        '">' +
+        _ngEsc(label) +
+        '</span>';
+    });
+    html += '</div>';
+    if (!n.links.length) {
+      html += '<p class="ng7-note">' + _ngEsc(n.how) + '</p>';
+    }
+    if (n.name === 'First Health') {
+      html +=
+        '<p class="ng7-note">WB Select and WB Choice members can also use firsthealthlbp.com or call (800) 226-5116.</p>';
+    }
+    html += '</div>';
   });
   if (!shown) {
     html = '<p class="ng-empty">No plan matches that name.</p>';
@@ -2029,14 +2032,12 @@ function renderNetworkexplainer() {
   var page = document.getElementById('page-networkexplainer');
   if (!page) return;
   page.innerHTML =
-    '<div class="ng-page">' +
-    '<header class="ng-header"><h2 class="ng-title">Network Guide</h2>' +
-    '<p class="ng-lead">Find the plan, see its network, open the provider search.</p></header>' +
-    '<p class="ng-confirm">Always confirm provider participation before quoting in-network access.</p>' +
-    '<input id="ng-search" class="ng-search" type="search" placeholder="Search a plan" aria-label="Search a plan" oninput="ngSearch(this.value)" value="' +
+    '<div class="ng7-page">' +
+    '<p class="ng7-confirm">Always confirm the doctor is in network before quoting.</p>' +
+    '<input id="ng-search" class="ng7-search" type="search" placeholder="Search a plan" aria-label="Search a plan" oninput="ngSearch(this.value)" value="' +
     _ngEsc(ngQuery) +
     '">' +
-    '<div id="ng-grid" class="ng-grid">' +
+    '<div id="ng-grid" class="ng7-grid">' +
     _ngCardsHtml() +
     '</div></div>';
 }
@@ -2365,63 +2366,69 @@ var qrPlatform = 'All';
 var qrType = 'All';
 var qrQuery = '';
 
-function _qrPills(values, current, setter) {
-  var html = '';
-  var i;
-  for (i = 0; i < values.length; i++) {
-    html +=
-      '<button type="button" class="qr-pill' +
-      (values[i] === current ? ' qr-pill-on' : '') +
-      '" aria-pressed="' +
-      (values[i] === current ? 'true' : 'false') +
-      '" onclick="' +
-      setter +
-      "('" +
-      values[i] +
-      '\')">' +
-      escHTML(values[i]) +
-      '</button>';
-  }
-  return html;
-}
+// Quick Reference tiles (Oct 2026 design 3): name, platform tag and three
+// short lines (network, association, underwriter). Tap a tile for the
+// full names and a link to the plan.
+var QR_SHORT = {
+  harborstmessential: ['Cigna PPO', 'AWA', 'Everest Reinsurance'],
+  pinnacle: ['PHCS', 'AWA', 'Everest Reinsurance'],
+  galena: ['First Health + MultiPlan', 'AFRP', 'SGIC'],
+  smarthealth: ['PHCS', 'NCE', 'AFSLIC or Standard Life (by state)'],
+  allstatestm: [
+    'Aetna Open Choice PPO',
+    'LIFE Association',
+    'National Health Ins. Co. (by state)'
+  ],
+  allstatehealthaccess: [
+    'First Health',
+    'LIFE Association',
+    'National Health Ins. Co. (by state)'
+  ],
+  smartchoice: [
+    'First Health (in-network only)',
+    'Population Science Mgmt',
+    'Detego Health (admin)'
+  ],
+  goodlifewbchoice: ['First Health', 'Good Life Partners', 'MBA (admin)'],
+  pinnacleprotect: ['MultiPlan', 'AWA', 'Everest RE'],
+  simpleshield: ['First Health + MultiPlan', 'AWA', 'SGIC'],
+  accesshealth: ['PHCS', 'NCE', 'American Financial Security Life'],
+  goodhealth13: ['First Health', 'GHDP', 'MBA (admin)'],
+  tdk13: ['First Health', 'HCDA', 'Detego Health (admin)'],
+  harmonycare: ['First Health', 'NCE', 'American Financial Security Life'],
+  harmonycareseries: [
+    'First Health',
+    'NCE',
+    'American Financial Security Life'
+  ],
+  advancedwellnessplus: [
+    'First Health',
+    'NCE',
+    'American Financial Security Life'
+  ],
+  sigmacare: ['First Health', 'NCE', 'American Financial Security Life'],
+  healthchoicesilver: ['MultiPlan', 'NCE', 'American Financial Security Life'],
+  bwapara: ['Managed care', 'BWA', 'BCS Insurance'],
+  bwaamericare: ['PHCS', 'BWA', 'American Public Life']
+};
 
-function _qrRow(label, value) {
-  return '<dt>' + escHTML(label) + '</dt><dd>' + escHTML(value || '') + '</dd>';
+var qrOpenTile = '';
+
+function qrToggle(id) {
+  qrOpenTile = qrOpenTile === id ? '' : id;
+  _qrRenderCards();
 }
 
 function _qrRenderCards() {
   var grid = document.getElementById('qr-grid');
-  var count = document.getElementById('qr-count');
-  var pills = document.getElementById('qr-pills');
   var q = qrQuery.toLowerCase().replace(/^\s+|\s+$/g, '');
   var html = '';
-  var shown = 0;
   var i;
   var p;
-  if (pills) {
-    pills.innerHTML =
-      '<div class="qr-pill-row"><span class="qr-pill-label">Platform</span>' +
-      _qrPills(['All', 'NEO', 'FirstEnroll'], qrPlatform, 'qrSetPlatform') +
-      '</div><div class="qr-pill-row"><span class="qr-pill-label">Type</span>' +
-      _qrPills(
-        [
-          'All',
-          'STM',
-          'MEC',
-          'ERISA',
-          'Limited',
-          'Limited medical',
-          'Fixed indemnity'
-        ],
-        qrType,
-        'qrSetType'
-      ) +
-      '</div>';
-  }
+  var s;
+  var open;
   for (i = 0; i < CHA_QUICK_REF.length; i++) {
     p = CHA_QUICK_REF[i];
-    if (qrPlatform !== 'All' && p.platform !== qrPlatform) continue;
-    if (qrType !== 'All' && p.type !== qrType) continue;
     if (
       q &&
       (p.name + ' ' + p.tiers + ' ' + p.network + ' ' + p.assoc + ' ' + p.uw)
@@ -2430,33 +2437,49 @@ function _qrRenderCards() {
     ) {
       continue;
     }
-    shown++;
+    s = QR_SHORT[p.vault] || [p.network, p.assoc, p.uw];
+    open = qrOpenTile === p.vault;
     html +=
-      '<article class="qr-card"><div class="qr-card-top"><div><h3 class="qr-name">' +
+      '<button type="button" class="qr3-tile' +
+      (open ? ' qr3-tile-open' : '') +
+      '" aria-expanded="' +
+      (open ? 'true' : 'false') +
+      '" onclick="qrToggle(\'' +
+      p.vault +
+      '\')"><span class="qr3-top"><span class="qr3-name">' +
       escHTML(p.name) +
-      '</h3><div class="qr-tiers">' +
-      escHTML(p.tiers) +
-      '</div></div><span class="qr-plat qr-plat-' +
+      '</span><span class="qr-plat qr-plat-' +
       (p.platform === 'NEO' ? 'neo' : 'fe') +
       '">' +
-      escHTML(p.platform) +
-      '</span></div><span class="qr-type">' +
-      escHTML(p.type) +
-      '</span><dl class="qr-rows">' +
-      _qrRow('Network', p.network) +
-      _qrRow('Association', p.assoc) +
-      _qrRow(p.uwLabel || 'Underwriter', p.uw) +
-      '</dl><button type="button" class="qr-open" onclick="qrOpenInVault(\'' +
-      p.vault +
-      '\')">Open in Plan Vault</button></article>';
+      (p.platform === 'NEO' ? 'NEO' : 'FE') +
+      '</span></span><span class="qr3-lines">' +
+      escHTML(s[0]) +
+      '<br>' +
+      escHTML(s[1]) +
+      '<br>' +
+      escHTML(s[2]) +
+      '</span>';
+    if (open) {
+      html +=
+        '<span class="qr3-full"><b>Network:</b> ' +
+        escHTML(p.network) +
+        '<br><b>Association:</b> ' +
+        escHTML(p.assoc) +
+        '<br><b>' +
+        escHTML(p.uwLabel || 'Underwriter') +
+        ':</b> ' +
+        escHTML(p.uw) +
+        '<br><b>Billing:</b> ' +
+        (p.platform === 'NEO' ? 'NEO Insurance Solutions' : 'FirstEnroll') +
+        '</span><span class="qr3-open" onclick="event.stopPropagation();qrOpenInVault(\'' +
+        p.vault +
+        '\')">Open in Plans</span>';
+    }
+    html += '</button>';
   }
   if (grid) {
     grid.innerHTML =
       html || '<p class="qr-empty">No plans match that search.</p>';
-  }
-  if (count) {
-    count.textContent =
-      shown + ' of ' + CHA_QUICK_REF.length + ' plan families';
   }
 }
 
@@ -2491,17 +2514,12 @@ function renderQuickReference() {
   if (!el) return;
   if (!el.getAttribute('data-qr-ready')) {
     el.innerHTML =
-      '<div class="ph"><div class="pt">Quick <span>Reference</span></div><div class="pd">Who is behind every current NEO and FirstEnroll plan.</div></div>' +
-      '<section class="qr-every"><span class="qr-every-k">Every call</span>' +
-      '<span class="qr-every-v">Must disclose network, underwriter, association, and billing</span>' +
-      '<span class="qr-every-v">Not ACA-compliant</span>' +
-      '<span class="qr-every-v">Not major medical</span></section>' +
-      '<p class="qr-note" role="note">Always confirm provider participation before quoting in-network access.</p>' +
-      '<input type="text" class="qr-search" placeholder="Search plan, network, association, or carrier" aria-label="Search plans" oninput="qrSearch(this.value)">' +
-      '<div id="qr-pills" class="qr-pills"></div>' +
-      '<div id="qr-count" class="qr-count"></div>' +
-      '<div id="qr-grid" class="qr-grid"></div>' +
-      '<p class="qr-foot">Sources: NEO Insurance product Info pages on 1Enrollment (Oct 14, 2026), the Allstate STM brochure (rev. 04/2026) and the CHA plan reference table. For internal agent use only.</p>';
+      '<div class="qr3-page">' +
+      '<p class="qr3-every">Every call: disclose network, underwriter, association and billing. Not ACA-compliant. Not major medical.</p>' +
+      '<input type="search" class="qr3-search" placeholder="Search a plan" aria-label="Search a plan" oninput="qrSearch(this.value)">' +
+      '<div id="qr-grid" class="qr3-grid"></div>' +
+      '<p class="qr3-hint">Each tile: network, association, underwriter. Tap a tile for full names.</p>' +
+      '</div>';
     el.setAttribute('data-qr-ready', '1');
   }
   _qrRenderCards();
