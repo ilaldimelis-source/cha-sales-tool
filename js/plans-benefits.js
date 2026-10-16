@@ -2179,3 +2179,39 @@ function chaPickSimilarPlansForDash(plan, limit) {
   }
   return out;
 }
+
+// Training > Benefit Talk Tracks (moved from Plans > Benefits, Oct 2026).
+// Shows each benefit's coaching lines exactly as written in BENEFITS.
+function renderBenefitTalkTracks() {
+  var el = document.getElementById('page-benefittalk');
+  if (!el) return;
+  var html =
+    '<div class="ph"><div class="pt">Benefit <span>Talk Tracks</span></div><div class="pd">What to say, what never to say, and how to answer.</div></div><div class="bt-list">';
+  for (var i = 0; i < BENEFITS.length; i++) {
+    var b = BENEFITS[i];
+    html += '<section class="bt-card" id="bt' + i + '">';
+    html +=
+      '<h2 class="bt-name">' + escHTML(b.name) + '</h2><div class="bt-grid">';
+    if (b.sayThis) {
+      html +=
+        '<div class="bt-box"><span class="bt-label">Say this</span>' +
+        escHTML(b.sayThis) +
+        '</div>';
+    }
+    if (b.neverSay) {
+      html +=
+        '<div class="bt-box bt-box-never"><span class="bt-label">Never say</span>' +
+        escHTML(b.neverSay) +
+        '</div>';
+    }
+    if (b.ifTheyAsk) {
+      html +=
+        '<div class="bt-box"><span class="bt-label">If they ask</span>' +
+        escHTML(b.ifTheyAsk) +
+        '</div>';
+    }
+    html += '</div></section>';
+  }
+  html += '</div>';
+  el.innerHTML = html;
+}

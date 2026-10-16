@@ -301,17 +301,16 @@ var PAGE_CONFIG = {
   },
   plans: {
     label: 'Plans',
-    subs: [
-      { id: 'policydocs', label: 'Plans', render: renderPolicydocs },
-      { id: 'benefits', label: 'Benefits', render: renderBenefits }
-    ]
+    subs: [{ id: 'policydocs', label: 'Plans', render: renderPolicydocs }]
   },
   scripts: {
     label: 'Scripts',
     subs: [
+      { id: 'everycall', label: 'Every Call', render: renderEveryCall },
       { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
       { id: 'closes', label: 'Closing Lines', render: renderCloses },
-      { id: 'recovery', label: 'Rebuttals', render: renderRecovery }
+      { id: 'recovery', label: 'Rebuttals', render: renderRecovery },
+      { id: 'docusign', label: 'DocuSign' }
     ]
   },
   networkguide: {
@@ -333,7 +332,12 @@ var PAGE_CONFIG = {
   training: {
     label: 'Training',
     subs: [
-      { id: 'traininghome', label: 'CHA Academy', render: renderTrainingHome }
+      { id: 'traininghome', label: 'CHA Academy', render: renderTrainingHome },
+      {
+        id: 'benefittalk',
+        label: 'Benefit Talk Tracks',
+        render: renderBenefitTalkTracks
+      }
     ]
   },
   compliance: {
@@ -344,8 +348,7 @@ var PAGE_CONFIG = {
         label: 'Compliance Center',
         render: renderComplianceCenter
       },
-      { id: 'callaudit', label: 'Call Audit', render: renderCallAudit },
-      { id: 'docusign', label: 'DocuSign Walkthrough' }
+      { id: 'callaudit', label: 'Call Audit', render: renderCallAudit }
     ]
   },
   myspace: {
@@ -738,8 +741,8 @@ function chaDashWidgetsHtml() {
 
 function goToDocusignWalkthrough(e) {
   if (e && typeof e.preventDefault === 'function') e.preventDefault();
-  if (typeof showPage === 'function') showPage('compliance');
-  else if (typeof navigateTo === 'function') navigateTo('compliance');
+  if (typeof showPage === 'function') showPage('docusign');
+  else if (typeof navigateTo === 'function') navigateTo('docusign');
   else {
     var comp = document.querySelector(
       '[data-page="compliance"], a[href="#compliance"]'
@@ -1790,7 +1793,6 @@ function initApp() {
     fab.className = 'fab-bar';
     fab.innerHTML =
       '<button class="fab-btn" onclick="showPage(\'dashboard\')" title="Home"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>' +
-      '<button class="fab-btn" onclick="showPage(\'livecall\')" title="Live Call"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2z"/></svg></button>' +
       '<button class="fab-btn" onclick="showPage(\'scripts\')" title="Scripts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>' +
       '<button class="fab-btn" onclick="showPage(\'plans\')" title="Plans"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M8 10h8M8 14h5"/></svg></button>';
     document.body.appendChild(fab);
@@ -1987,12 +1989,10 @@ document.addEventListener('keydown', function (e) {
   // Number keys 1-8 for page navigation
   var numMap = {
     1: 'dashboard',
-    2: 'livecall',
     3: 'plans',
     4: 'scripts',
     5: 'networkguide',
     6: 'training',
-    7: 'compliance',
     8: 'myspace'
   };
   if (numMap[key]) {
@@ -2003,12 +2003,10 @@ document.addEventListener('keydown', function (e) {
   var letterKey = key.toLowerCase();
   var map = {
     h: 'dashboard',
-    l: 'livecall',
     p: 'plans',
     s: 'scripts',
     n: 'networkguide',
     t: 'training',
-    c: 'compliance',
     m: 'myspace'
   };
   if (map[letterKey]) {

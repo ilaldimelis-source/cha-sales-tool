@@ -17,10 +17,6 @@ function renderMySpaceHub() {
     '<button type="button" class="msh-card" onclick="_showComboPage(\'myspace\',\'notes\')">' +
     '<div class="msh-card-k">Notes</div>' +
     '<div class="msh-card-d">Display name, scratch pad, favorites, saved scripts.</div></button>';
-  html +=
-    '<button type="button" class="msh-card msh-card-wide" onclick="showPage(\'objections\')">' +
-    '<div class="msh-card-k">Rebuttals</div>' +
-    '<div class="msh-card-d">Plan framing, fit guides, and objection battle cards live here — Plan Vault stays data-only.</div></button>';
   html += '</div>';
   var el = document.getElementById('page-myspacehub');
   if (el) el.innerHTML = html;
