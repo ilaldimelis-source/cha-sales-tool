@@ -21,6 +21,117 @@ function _pdIsDisplayablePlan(p) {
   return true;
 }
 
+// Plan lineup, Oct 2026 (NEO and FirstEnroll storefronts, Oct 15).
+// Display-layer overrides so POLICY_DOCS data values stay untouched.
+var PD_HIDDEN_IDS = {
+  everest: true,
+  mychoice: true,
+  pinnaclecriticalcare: true,
+  awasafeguard: true,
+  allstateplans: true,
+  pinnaclehi: true,
+  pinnaclecriticalcaresa: true,
+  americanfinancialci: true
+};
+
+var PD_GROUP_OVERRIDE = {
+  harmonycareseries: 'Limited',
+  advancedwellnessplus: 'Limited'
+};
+
+var PD_NAME_OVERRIDE = {
+  pinnacleprotect: 'Pinnacle Protect 2-4',
+  allstatestm: 'Allstate STM PPO'
+};
+
+var PD_PLATFORM = {
+  smartchoice: 'NEO',
+  pinnacle: 'NEO',
+  smarthealth: 'NEO',
+  galena: 'NEO',
+  harborstmessential: 'NEO',
+  harborstmaccess: 'NEO',
+  harborstmsecure: 'NEO',
+  goodlifewbchoice: 'NEO',
+  goodlifewbselect: 'NEO',
+  pinnacleprotect: 'NEO',
+  allstatestm: 'NEO',
+  allstatehealthaccess: 'NEO',
+  simpleshield: 'NEO',
+  goodhealth13: 'FirstEnroll',
+  goodhealth45: 'FirstEnroll',
+  ghdpwellness: 'FirstEnroll',
+  tdk13: 'FirstEnroll',
+  tdk45: 'FirstEnroll',
+  accesshealth: 'FirstEnroll',
+  harmonycare: 'FirstEnroll',
+  harmonycareseries: 'FirstEnroll',
+  advancedwellnessplus: 'FirstEnroll',
+  sigmacare: 'FirstEnroll',
+  healthchoicesilver: 'FirstEnroll',
+  bwapara: 'FirstEnroll',
+  bwaamericare: 'FirstEnroll'
+};
+
+// Cards for current plans that have a plan profile but no POLICY_DOCS row.
+var PD_EXTRA_DOCS = [
+  {
+    id: 'ghdpwellness',
+    name: 'GoodHealth Wellness',
+    group: 'MEC',
+    type: 'MEC',
+    carrier: '',
+    network: 'First Health',
+    assoc: '',
+    source: '',
+    planNotes: '',
+    benefits: [],
+    limitations: [],
+    waitingPeriods: [],
+    preEx: ''
+  },
+  {
+    id: 'simpleshield',
+    name: 'AWA SimpleShield',
+    group: 'Limited',
+    type: 'Fixed indemnity',
+    carrier: 'Southern Guaranty Insurance Company (SGIC)',
+    network: 'First Health + MultiPlan',
+    assoc: 'American Workers Association (AWA)',
+    source: '',
+    planNotes: '',
+    benefits: [],
+    limitations: [],
+    waitingPeriods: [],
+    preEx: ''
+  }
+];
+
+var _pdDocsCache = null;
+
+function _pdAllDocs() {
+  var out = [];
+  var all;
+  var i;
+  var p;
+  var copy;
+  if (_pdDocsCache) return _pdDocsCache;
+  all = POLICY_DOCS.concat(PD_EXTRA_DOCS);
+  for (i = 0; i < all.length; i++) {
+    p = all[i];
+    if (!p || PD_HIDDEN_IDS[p.id]) continue;
+    if (PD_GROUP_OVERRIDE[p.id] || PD_NAME_OVERRIDE[p.id]) {
+      copy = Object.assign({}, p);
+      if (PD_GROUP_OVERRIDE[p.id]) copy.group = PD_GROUP_OVERRIDE[p.id];
+      if (PD_NAME_OVERRIDE[p.id]) copy.name = PD_NAME_OVERRIDE[p.id];
+      p = copy;
+    }
+    out.push(p);
+  }
+  _pdDocsCache = out;
+  return out;
+}
+
 function _pdFindSalesPlan(doc) {
   if (typeof PLANS === 'undefined') return null;
   for (var i = 0; i < PLANS.length; i++) {
@@ -66,8 +177,7 @@ var PD_GROUPS = [
   { key: 'MEC', label: 'MEC' },
   { key: 'STM', label: 'Short-term medical' },
   { key: 'Limited', label: 'Limited benefit' },
-  { key: 'Limited medical', label: 'Limited medical' },
-  { key: 'More plans', label: 'More plans' }
+  { key: 'Limited medical', label: 'Limited medical' }
 ];
 
 var PD_FACT_SLOTS = [
@@ -123,6 +233,11 @@ var PD_INDEMNITY_SLOTS = [
 ];
 
 var PD_PLAN_TIERS = {
+  ghdpwellness: [{ id: 'ghdp-wellness', label: 'GoodHealth Wellness' }],
+  simpleshield: [
+    { id: 'awa-simpleshield-membership-1', label: 'Plan 1' },
+    { id: 'awa-simpleshield-membership-2', label: 'Plan 2' }
+  ],
   goodhealth13: [
     { id: 'ghdp-1', label: 'GoodHealth 1' },
     { id: 'ghdp-2', label: 'GoodHealth 2' },
@@ -300,7 +415,7 @@ function _pdHasFact(value) {
 }
 
 function _pdFilteredPlans() {
-  return POLICY_DOCS.filter(function (p) {
+  return _pdAllDocs().filter(function (p) {
     if (!_pdIsDisplayablePlan(p)) return false;
     var groupOk = policyDocFilter === 'All' || p.group === policyDocFilter;
     if (!groupOk) return false;
@@ -340,8 +455,9 @@ function _pdFilteredPlans() {
 
 function _pdFindPlan(id) {
   var i;
-  for (i = 0; i < POLICY_DOCS.length; i++) {
-    if (POLICY_DOCS[i].id === id) return POLICY_DOCS[i];
+  var docs = _pdAllDocs();
+  for (i = 0; i < docs.length; i++) {
+    if (docs[i].id === id) return docs[i];
   }
   return null;
 }
@@ -633,32 +749,151 @@ function _pdKeyTermFacts(profile) {
   );
 }
 
+// Plan Vault panel, Oct 2026: verified facts grouped into short sections
+// of tiles. Values are the same verified profile leaves as before; only the
+// layout changes. A section with no verified facts is not shown.
+function _pdSlotByLabel(label) {
+  var i;
+  for (i = 0; i < PD_FACT_SLOTS.length; i++) {
+    if (PD_FACT_SLOTS[i].label === label) return PD_FACT_SLOTS[i];
+  }
+  return null;
+}
+
+function _pdPathSlots(pairs) {
+  var out = [];
+  var i;
+  for (i = 0; i < pairs.length; i++) {
+    out.push({ label: pairs[i][0], paths: [pairs[i][1]] });
+  }
+  return out;
+}
+
+function _pdSections() {
+  var L = _pdSlotByLabel;
+  return [
+    {
+      title: 'Costs',
+      slots: [
+        L('Deductible'),
+        L('Coinsurance'),
+        L('Coinsurance out-of-pocket maximum'),
+        L('Coverage period maximum')
+      ]
+    },
+    {
+      title: 'Doctor visits',
+      slots: [
+        L('Primary care'),
+        L('Specialist'),
+        L('Urgent care'),
+        L('Telemedicine')
+      ].concat(
+        _pdPathSlots([
+          ['Preventive', 'benefits.preventive'],
+          ['Wellness', 'benefits.wellness']
+        ])
+      )
+    },
+    {
+      title: 'Hospital',
+      slots: _pdPathSlots(PD_INDEMNITY_SLOTS).concat(
+        _pdPathSlots([
+          ['Emergency room', 'benefits.er'],
+          ['Ambulance', 'benefits.ambulance']
+        ])
+      )
+    },
+    {
+      title: 'Prescriptions',
+      slots: _pdPathSlots([
+        ['Generic', 'benefits.rx_generic'],
+        ['Brand', 'benefits.rx_brand'],
+        ['Specialty', 'benefits.rx_specialty']
+      ])
+    },
+    {
+      title: 'Disclose',
+      warn: true,
+      slots: _pdPathSlots([
+        ['Pre-existing', 'limitations.pre_existing'],
+        ['Waiting period, sickness', 'limitations.waiting_period_sickness'],
+        ['Waiting period, other', 'limitations.waiting_period_other']
+      ])
+    },
+    {
+      title: 'Who is behind it',
+      slots: [
+        L('Plan type'),
+        L('Network'),
+        L('Underwriter'),
+        L('Plan administrator'),
+        L('Billing administrator'),
+        L('Claims administrator'),
+        L('Association')
+      ]
+    },
+    {
+      title: 'Other',
+      slots: [
+        L('State availability'),
+        L('Coverage term'),
+        L('Age limit'),
+        L('Pre-certification'),
+        L('Member services')
+      ].concat(
+        _pdPathSlots([
+          ['MEC / ACA status', 'compliance.mec_status'],
+          ['Facility payment limit', 'cost_sharing.ucr_cap'],
+          ['Cancellation', 'administration.cancellation']
+        ])
+      )
+    }
+  ];
+}
+
 function _pdFactsInner(plan, profile) {
   var html = '';
+  var sections = _pdSections();
+  var s;
   var i;
   var slot;
   var text;
   var mark;
-  for (i = 0; i < PD_FACT_SLOTS.length; i++) {
-    slot = PD_FACT_SLOTS[i];
-    text = _pdSlotValue(plan, profile, slot);
-    if (!text) continue;
-    mark = '';
-    if (_pdSlotIsVaultFallback(plan, profile, slot)) {
-      mark =
-        '<span class="br-ref-card-badge br-ref-card-badge-nc">NOT CONFIRMED</span> ';
+  var tiles;
+  for (s = 0; s < sections.length; s++) {
+    tiles = '';
+    for (i = 0; i < sections[s].slots.length; i++) {
+      slot = sections[s].slots[i];
+      if (!slot) continue;
+      text = _pdSlotValue(plan, profile, slot);
+      if (!text) continue;
+      mark = '';
+      if (_pdSlotIsVaultFallback(plan, profile, slot)) {
+        mark =
+          '<span class="br-ref-card-badge br-ref-card-badge-nc">NOT CONFIRMED</span> ';
+      }
+      tiles +=
+        '<div class="pv-tile' +
+        (text.length > 90 ? ' pv-tile-wide' : '') +
+        '"><div class="pv-tile-k">' +
+        escHTML(slot.label) +
+        '</div><div class="pv-tile-v">' +
+        mark +
+        escHTML(text) +
+        '</div></div>';
     }
+    if (!tiles) continue;
     html +=
-      '<div class="pv-fact"><dt>' +
-      escHTML(slot.label) +
-      '</dt><dd>' +
-      mark +
-      escHTML(text) +
-      '</dd></div>';
+      '<section class="pv-sec' +
+      (sections[s].warn ? ' pv-sec-warn' : '') +
+      '"><h3 class="pv-sec-title">' +
+      escHTML(sections[s].title) +
+      '</h3><div class="pv-tiles">' +
+      tiles +
+      '</div></section>';
   }
   html += _pdCriticalCareFacts(profile);
-  html += _pdIndemnityFacts(profile);
-  html += _pdKeyTermFacts(profile);
   return html;
 }
 
@@ -911,6 +1146,12 @@ function _pdDetailHtml(plan) {
     '">' +
     escHTML(plan.group) +
     '</span>';
+  if (PD_PLATFORM[plan.id]) {
+    html +=
+      '<span class="pv-badge pv-badge-plat">' +
+      escHTML(PD_PLATFORM[plan.id]) +
+      '</span>';
+  }
   html += '</div></div>';
   html += '<div class="pv-actions">';
   html += _pdBrochureControls(plan);
@@ -924,11 +1165,23 @@ function _pdDetailHtml(plan) {
       '<button type="button" class="pv-action" disabled>Open script</button>';
   }
   html += '</div></div>';
-  html += '<dl class="pv-facts" id="pv-facts">';
+  html += '<div class="pv-facts" id="pv-facts">';
   html += _pdFactsInner(plan, null);
-  html += '</dl>';
+  html += '</div>';
   html += '<div id="pv-doc-badge" class="pv-doc-slot"></div>';
   return html;
+}
+
+function _pdPlatformTag(plan) {
+  var platform = plan ? PD_PLATFORM[plan.id] : '';
+  if (!platform) return '';
+  return (
+    '<span class="pv-plat pv-plat-' +
+    (platform === 'NEO' ? 'neo' : 'fe') +
+    '">' +
+    (platform === 'NEO' ? 'NEO' : 'FE') +
+    '</span>'
+  );
 }
 
 function _pdListHtml(plans) {
@@ -964,11 +1217,9 @@ function _pdListHtml(plans) {
         (open ? 'true' : 'false') +
         '"><span class="pv-card-name">' +
         escHTML(plan.name) +
-        '</span><span class="pv-card-network">' +
-        escHTML(plan.network || '') +
-        '</span><span class="pv-card-carrier">' +
-        escHTML(plan.carrier || '') +
-        '</span></button>';
+        '</span>' +
+        _pdPlatformTag(plan) +
+        '</button>';
     }
     html += '</div></section>';
   }
@@ -1060,18 +1311,16 @@ function _renderPolicydocsInner() {
   html +=
     '<p class="pv-lead">Find the right plan for every client.</p></header>';
   html += '<div class="stabs pv-filters">';
-  ['All', 'MEC', 'STM', 'Limited', 'Limited medical', 'More plans'].forEach(
-    function (f) {
-      html +=
-        '<button type="button" class="stab' +
-        (f === policyDocFilter ? ' active' : '') +
-        '" data-pv-filter="' +
-        f +
-        '">' +
-        (f === 'All' ? 'All' : f) +
-        '</button>';
-    }
-  );
+  ['All', 'MEC', 'STM', 'Limited', 'Limited medical'].forEach(function (f) {
+    html +=
+      '<button type="button" class="stab' +
+      (f === policyDocFilter ? ' active' : '') +
+      '" data-pv-filter="' +
+      f +
+      '">' +
+      (f === 'All' ? 'All' : f) +
+      '</button>';
+  });
   html += '</div>';
   html += '<div class="pv-search-wrap">';
   html +=
