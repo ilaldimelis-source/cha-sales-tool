@@ -3238,6 +3238,41 @@
         border-radius: 999px;
         padding: 1px 6px;
       }
+      .med-after {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        border-radius: 12px;
+        padding: 10px 14px;
+        font-size: 13px;
+      }
+      .med-after b {
+        font-size: 14px;
+      }
+      .med-after-ok {
+        background: var(--cha-success-bg);
+        color: var(--cha-success-text);
+      }
+      .med-after-mid {
+        background: color-mix(
+          in srgb,
+          var(--cha-accent) 12%,
+          var(--cha-bg-card)
+        );
+        color: var(--cha-accent-dark);
+      }
+      .med-after-warn {
+        background: var(--cha-warning-bg);
+        color: var(--cha-warning-text);
+      }
+      .med-after-bad {
+        background: var(--cha-danger-bg);
+        color: var(--cha-danger-text);
+      }
+      .med-after .med-label {
+        color: inherit;
+        opacity: 0.8;
+      }
       @media (width <= 760px) {
         .med-card-grid {
           grid-template-columns: minmax(0, 1fr);
@@ -4282,7 +4317,7 @@
     <script src="js/sales-tracker.js?v=1792165216661"></script>
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1792186043707"></script>
-    <script src="js/meds.js?v=1792191756954"></script>
+    <script src="js/meds.js?v=1792192331363"></script>
     <script src="js/app.js?v=1792191756954"></script>
     <script>
       (function () {

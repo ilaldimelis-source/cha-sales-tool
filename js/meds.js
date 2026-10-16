@@ -1,12 +1,13 @@
 // js/meds.js - Meds tab (Oct 2026)
 // One search card per medication: what the plans we sell pay for it,
-// patient assistance (PAP) that is open to our plan members, and the
-// cost steps when nothing pays. Data: data/meds.json (plan drug lists,
-// PAP rules checked on official program sites, 2026 poverty line).
+// patient assistance (PAP) open to uninsured clients, what happens to it
+// once they enroll in our plan, and the cost steps when nothing pays.
+// Data: data/meds.json (plan drug lists, PAP rules checked on official
+// program sites, 2026 poverty line).
 // Plan rows come from the plan documents in Plan Vault. Only plans in
 // CHA_PLAN_REGISTRY (NEO + FirstEnroll storefronts) are shown.
 
-var MEDS_JSON_URL = 'data/meds.json?v=1792200100000';
+var MEDS_JSON_URL = 'data/meds.json?v=1792192331000';
 var medsData = null;
 var medsLoadStarted = false;
 var medsIndex = [];
@@ -394,19 +395,55 @@ function medsCalcHtml(p) {
   );
 }
 
+// What happens to PAP eligibility once the client is on one of our plans,
+// from each program's own insurance wording (quote shown on the card).
+var MEDS_AFTER_ENROLL = {
+  yes: {
+    tone: 'ok',
+    title: 'Still eligible',
+    text: 'The program checks coverage for this drug. Most of our plans do not cover brand drugs.'
+  },
+  likely: {
+    tone: 'mid',
+    title: 'May stay eligible',
+    text: 'The program does not say how it treats our plans. The client lists the plan on the application.'
+  },
+  unclear: {
+    tone: 'warn',
+    title: 'Not clear',
+    text: 'The program rules conflict or are not published. The client asks the program before enrolling.'
+  },
+  not_checked: {
+    tone: 'warn',
+    title: 'Not checked yet',
+    text: 'The client asks the program whether a private plan affects eligibility.'
+  },
+  no: {
+    tone: 'bad',
+    title: 'Not eligible',
+    text: 'The program turns away anyone with private insurance. Make sure the client knows this before they enroll.'
+  }
+};
+
 function medsPapHtml(d) {
   var p = medsPap(d);
   if (!p) {
     if (d.k === 'b')
-      return '<p class="med-pap-none">No patient assistance program confirmed for our plan members.</p>';
+      return '<p class="med-pap-none">No patient assistance program found for this med.</p>';
     return '';
   }
   var prog = medsData.programs[p.p] || { name: '', url: '' };
   var url = p.u || prog.url;
-  var badge =
-    p.o === 'yes'
-      ? '<span class="med-badge med-badge-ok">Open to our plan members</span>'
-      : '<span class="med-badge med-badge-mid">Apply and list the plan</span>';
+  var badge = '<span class="med-badge med-badge-ok">Open to uninsured</span>';
+  var after = MEDS_AFTER_ENROLL[p.o] || MEDS_AFTER_ENROLL.not_checked;
+  var afterHtml =
+    '<div class="med-after med-after-' +
+    after.tone +
+    '"><div class="med-label">If they enroll in our plan</div><b>' +
+    medsEsc(after.title) +
+    '</b><span>' +
+    medsEsc(after.text) +
+    '</span></div>';
   var forName =
     d.see && !d.pap
       ? '<p class="med-pap-note">For ' + medsEsc(d.see) + '.</p>'
@@ -427,6 +464,7 @@ function medsPapHtml(d) {
       ? '<blockquote class="med-quote">"' + medsEsc(p.q) + '"</blockquote>'
       : '') +
     medsCalcHtml(p) +
+    afterHtml +
     '<div class="med-btns">' +
     (url
       ? '<a class="med-btn med-btn-accent" href="' +
@@ -448,9 +486,7 @@ function medsCardHtml(d) {
         ? '<span class="med-pill med-pill-gen">Generic</span>'
         : '';
   var pap = medsPap(d);
-  var papPill = pap
-    ? '<span class="med-pill med-pill-pap">PAP for our plan members</span>'
-    : '';
+  var papPill = pap ? '<span class="med-pill med-pill-pap">PAP</span>' : '';
   var extra = [];
   if (d.a && d.a.length) extra.push('Also called ' + d.a.join(', '));
   if (d.qs) extra.push('Quick Sheet: ' + d.qs);
@@ -536,7 +572,7 @@ function medsSheetHtml() {
       '</section>';
   });
   return (
-    '<div class="med-sheet-title"><h3>Med Quick Sheet</h3><span>Tap a med to open its card. PAP shows only where a program is open to our plan members.</span></div>' +
+    '<div class="med-sheet-title"><h3>Med Quick Sheet</h3><span>Tap a med to open its card. PAP = patient assistance program for uninsured people.</span></div>' +
     '<div class="med-sheet">' +
     html +
     '</div>' +
@@ -674,7 +710,7 @@ function renderMeds() {
     root.innerHTML =
       '<div class="med-page">' +
       '<header class="med-header"><h2>Meds</h2>' +
-      '<p>Search a medication. Only what works with the plans we sell on NEO and FirstEnroll.</p></header>' +
+      '<p>Search a medication. Plans we sell on NEO and FirstEnroll, plus patient assistance for uninsured clients.</p></header>' +
       '<input id="meds-search" class="med-search" type="search" autocomplete="off" placeholder="Search a medication (brand or generic)" aria-label="Search a medication">' +
       '<div id="meds-body"><p class="med-empty">Loading meds...</p></div>' +
       '</div>';

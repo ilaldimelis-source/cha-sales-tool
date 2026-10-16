@@ -28,6 +28,10 @@
       "name": "Sanofi Patient Connection",
       "url": "https://www.sanofipatientconnection.com/financial-eligibility"
     },
+    "novartis-patient-assistance-foundation-n": {
+      "name": "Novartis Patient Assistance Foundation (NPAF)",
+      "url": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+    },
     "bayer-us-patient-assistance-foundation": {
       "name": "Bayer US Patient Assistance Foundation",
       "url": "https://www.patientassistance.bayer.us/en/faqs"
@@ -36,13 +40,25 @@
       "name": "Amgen Safety Net Foundation",
       "url": "https://www.amgensafetynetfoundation.com/eligibility.html"
     },
+    "az-me-prescription-savings-program": {
+      "name": "AZ&Me Prescription Savings Program",
+      "url": "https://www.azandmeapp.com/eligibility-requirements"
+    },
     "teva-cares-foundation": {
       "name": "Teva Cares Foundation",
       "url": "https://www.tevacares.org/faq/"
     },
+    "johnson-johnson-patient-assistance-found": {
+      "name": "Johnson & Johnson Patient Assistance Foundation",
+      "url": "https://www.jjpatientassistance.com"
+    },
     "allergan-patient-assistance-program-abbv": {
       "name": "Allergan Patient Assistance Program (AbbVie)",
       "url": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+    },
+    "bausch-health-patient-assistance-program": {
+      "name": "Bausch Health Patient Assistance Program",
+      "url": "https://www.bauschhealthpap.com/"
     },
     "gsk-for-you-pap": {
       "name": "GSK For You PAP",
@@ -56,13 +72,25 @@
       "name": "Boehringer Ingelheim Cares Foundation (BI Cares)",
       "url": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
     },
+    "alkermes-aristada-patient-assistance-pro": {
+      "name": "Alkermes ARISTADA Patient Assistance Program",
+      "url": "https://www.aristadahcp.com/access-support"
+    },
     "mylan-viatris-originally-gsk-flag": {
       "name": "Mylan/Viatris (originally GSK) - FLAG",
       "url": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
     },
+    "lilly-cares-foundation": {
+      "name": "Lilly Cares Foundation",
+      "url": "https://www.lillycares.com/how-to-apply"
+    },
     "merck-patient-assistance-program-merck-h": {
       "name": "Merck Patient Assistance Program (Merck Helps)",
       "url": "https://www.merckhelps.com/"
+    },
+    "gilead-advancing-access-pap-map": {
+      "name": "Gilead Advancing Access PAP/MAP",
+      "url": "https://www.gileadadvancingaccess.com/patient"
     },
     "ucb-patient-assistance-program": {
       "name": "UCB Patient Assistance Program",
@@ -76,6 +104,15 @@
       "name": "BOTOX Patient Assistance Program (AbbVie/Allergan)",
       "url": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
     },
+    "immedica-various-flag": { "name": "Immedica / various - FLAG", "url": "" },
+    "intra-cellular-therapies-patient-assista": {
+      "name": "Intra-Cellular Therapies Patient Assistance Program",
+      "url": "https://www.intracellulartherapies.com/patient-assistance/"
+    },
+    "sanofi-genzyme-careassist": {
+      "name": "Sanofi Genzyme CareASSIST",
+      "url": "https://www.sanofipatientconnection.com/financial-eligibility"
+    },
     "takeda-help-at-hand": {
       "name": "Takeda Help At Hand",
       "url": "https://www.helpathandpap.com/Eligibility.aspx"
@@ -85,29 +122,183 @@
       "name": "myAbbVie Assist",
       "url": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
     },
-    "lilly-cares-foundation": {
-      "name": "Lilly Cares Foundation",
-      "url": "https://www.lillycares.com/how-to-apply"
+    "astellas-patient-assistance-program": {
+      "name": "Astellas Patient Assistance Program",
+      "url": "https://www.astellaspharmasupportsolutions.com/patient/cresemba/astellas_patient_assistance_program.aspx"
     },
+    "bausch-health-atlantic-unconfirmed": {
+      "name": "Bausch Health (Atlantic) - unconfirmed",
+      "url": ""
+    },
+    "recordati-rare-diseases-unconfirmed": {
+      "name": "Recordati Rare Diseases - unconfirmed",
+      "url": ""
+    },
+    "eisai-patient-assistance-program": {
+      "name": "Eisai Patient Assistance Program",
+      "url": "https://www.eisaireimbursement.com/"
+    },
+    "validus-pharmaceuticals-unconfirmed": {
+      "name": "Validus Pharmaceuticals - unconfirmed",
+      "url": ""
+    },
+    "bioventus-unconfirmed": { "name": "Bioventus - unconfirmed", "url": "" },
+    "viatris-unconfirmed": { "name": "Viatris - unconfirmed", "url": "" },
+    "amneal-impax-unconfirmed": {
+      "name": "Amneal/Impax - unconfirmed",
+      "url": ""
+    },
+    "multiple-generic-manufacturers": {
+      "name": "Multiple generic manufacturers",
+      "url": ""
+    },
+    "mayne-pharma-unconfirmed": {
+      "name": "Mayne Pharma - unconfirmed",
+      "url": ""
+    },
+    "ferring-patient-assistance-program": {
+      "name": "Ferring Patient Assistance Program",
+      "url": "https://ferringusa.com/building-families-improving-lives/patient-assistance-programs-main/"
+    },
+    "novo-nordisk-pap-novocare": {
+      "name": "Novo Nordisk PAP (NovoCare)",
+      "url": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+    },
+    "viatris-biocon-biosimilar-unconfirmed": {
+      "name": "Viatris/Biocon (biosimilar) - unconfirmed",
+      "url": ""
+    },
+    "grifols-unconfirmed": { "name": "Grifols - unconfirmed", "url": "" },
     "merck-vaccine-patient-assistance-program": {
       "name": "Merck Vaccine Patient Assistance Program",
       "url": "https://www.merckhelps.com/"
+    },
+    "azurity-prasco-unconfirmed": {
+      "name": "Azurity/Prasco - unconfirmed",
+      "url": ""
+    },
+    "teva-cares-foundation-if-teva-branded-co": {
+      "name": "Teva Cares Foundation (if Teva-branded Copaxone)",
+      "url": "https://www.tevacares.org/"
     },
     "organon-patient-assistance-program": {
       "name": "Organon Patient Assistance Program",
       "url": "https://organon.com/our-focus/patient-support-programs/"
     },
+    "pfizer-patient-assistance-program-rxpath": {
+      "name": "Pfizer Patient Assistance Program (RxPathways)",
+      "url": "https://www.pfizerrxpathways.com/"
+    },
+    "amgen-avsola-pfizer-inflectra-organon-re": {
+      "name": "Amgen (Avsola) / Pfizer (Inflectra) / Organon (Renflexis)",
+      "url": "https://www.pfizerrxpathways.com/"
+    },
+    "american-regent-daiichi-sankyo-unconfirm": {
+      "name": "American Regent / Daiichi Sankyo - unconfirmed",
+      "url": ""
+    },
     "merck-patient-assistance-program-referra": {
       "name": "Merck Patient Assistance Program (referral via Merck Access Program)",
       "url": "https://www.merckhelps.com/"
+    },
+    "bayer-chagas-disease-special-access-prog": {
+      "name": "Bayer (Chagas disease, special access program) - unconfirmed",
+      "url": ""
+    },
+    "eisai-patient-support": {
+      "name": "Eisai Patient Support",
+      "url": "https://www.eisaireimbursement.com/"
+    },
+    "originally-gsk-now-various-generic-uncon": {
+      "name": "Originally GSK, now various generic - unconfirmed",
+      "url": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+    },
+    "azurity-pharmaceuticals-unconfirmed": {
+      "name": "Azurity Pharmaceuticals - unconfirmed",
+      "url": ""
     },
     "bausch-lomb-patient-assistance-program": {
       "name": "Bausch + Lomb Patient Assistance Program",
       "url": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
     },
+    "chiesi-usa-unconfirmed": { "name": "Chiesi USA - unconfirmed", "url": "" },
+    "tb-alliance-nonprofit-not-a-standard-com": {
+      "name": "TB Alliance (nonprofit, not a standard commercial PAP)",
+      "url": ""
+    },
+    "mayne-pharma-alliance-unconfirmed": {
+      "name": "Mayne Pharma / Alliance - unconfirmed",
+      "url": ""
+    },
+    "teva-rare-disease-unconfirmed": {
+      "name": "Teva (rare disease) - unconfirmed",
+      "url": "https://www.tevacares.org/faq/"
+    },
+    "bausch-health-rare-disease-unconfirmed": {
+      "name": "Bausch Health (rare disease) - unconfirmed",
+      "url": ""
+    },
+    "amneal-pharmaceuticals-unconfirmed": {
+      "name": "Amneal Pharmaceuticals - unconfirmed",
+      "url": ""
+    },
+    "viatris-biocon-biosimilar-insulin-unconf": {
+      "name": "Viatris/Biocon (biosimilar insulin) - unconfirmed",
+      "url": ""
+    },
+    "bausch-health-rare-disease-wilson-s-dise": {
+      "name": "Bausch Health (rare disease, Wilson's disease) - unconfirmed",
+      "url": ""
+    },
+    "valeant-bausch-health-patient-assistance": {
+      "name": "Valeant/Bausch Health Patient Assistance Program",
+      "url": "https://www.bauschhealthpap.com/"
+    },
+    "bausch-health-unconfirmed": {
+      "name": "Bausch Health - unconfirmed",
+      "url": ""
+    },
+    "ibsa-pharma-unconfirmed": {
+      "name": "IBSA Pharma - unconfirmed",
+      "url": ""
+    },
+    "viatris-mylan-unconfirmed": {
+      "name": "Viatris/Mylan - unconfirmed",
+      "url": ""
+    },
+    "daiichi-sankyo-unconfirmed": {
+      "name": "Daiichi Sankyo - unconfirmed",
+      "url": ""
+    },
     "genentech-patient-foundation-free-drug-p": {
       "name": "Genentech Patient Foundation (free-drug program)",
       "url": "https://www.gene.com/patients/patient-foundation"
+    },
+    "nestle-health-science-formerly-aptalis-u": {
+      "name": "Nestle Health Science (formerly Aptalis) - unconfirmed",
+      "url": ""
+    },
+    "lundbeck-unconfirmed": { "name": "Lundbeck - unconfirmed", "url": "" },
+    "viatris-generic-advair-unconfirmed": {
+      "name": "Viatris (generic Advair) - unconfirmed",
+      "url": ""
+    },
+    "unidentified": { "name": "Unidentified", "url": "" },
+    "viatris-mylan-generic-patch-unconfirmed": {
+      "name": "Viatris/Mylan (generic patch) - unconfirmed",
+      "url": ""
+    },
+    "gilead-advancing-access": {
+      "name": "Gilead Advancing Access",
+      "url": "https://www.gileadadvancingaccess.com/patient"
+    },
+    "valeant-bausch-unconfirmed": {
+      "name": "Valeant/Bausch - unconfirmed",
+      "url": ""
+    },
+    "arcutis-biotherapeutics-unconfirmed": {
+      "name": "Arcutis Biotherapeutics - unconfirmed",
+      "url": ""
     }
   },
   "drugs": [
@@ -244,7 +435,18 @@
         "u": "https://www.sanofipatientconnection.com/financial-eligibility"
       }
     },
-    { "n": "Adakveo", "k": "b" },
+    {
+      "n": "Adakveo",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Adalene", "k": "g", "sc": 1 },
     { "n": "Adalene-benzoyl Peroxide", "k": "g", "sc": 1 },
     { "n": "Adefovir Dipivoxil", "k": "b" },
@@ -276,8 +478,30 @@
         "u": "https://www.sanofipatientconnection.com/financial-eligibility"
       }
     },
-    { "n": "Afinitor", "k": "b" },
-    { "n": "Afinitor Disperz", "k": "b" },
+    {
+      "n": "Afinitor",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
+    {
+      "n": "Afinitor Disperz",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     {
       "n": "Afluria Quad Inj; Fluarix Quad Inj; Fluzone Quad Inj; Flulaval Qua",
       "k": "g",
@@ -299,7 +523,20 @@
         "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
       }
     },
-    { "n": "Airsupra", "k": "b" },
+    {
+      "n": "Airsupra",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     {
       "n": "Ajovy",
       "k": "b",
@@ -314,7 +551,18 @@
         "u": "https://www.tevacares.org/faq/"
       }
     },
-    { "n": "Akeega", "k": "b" },
+    {
+      "n": "Akeega",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Albendazole", "k": "b" },
     { "n": "Albuterol", "k": "g", "qs": "Allergy Inhalers" },
     { "n": "Albuterol HFA", "k": "g", "a": ["Proventil HFA"], "tdk": "c" },
@@ -371,7 +619,17 @@
       }
     },
     { "n": "Alprazolam", "k": "g", "sc": 1 },
-    { "n": "Alrex", "k": "b" },
+    {
+      "n": "Alrex",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     {
       "n": "Amantadine",
       "k": "g",
@@ -435,7 +693,17 @@
     { "n": "Amphetamine-dextroamphetamine 3-bead", "k": "b" },
     { "n": "Ampicillin", "k": "b", "a": ["Omnipen"], "tdk": "c" },
     { "n": "Anagrelide", "k": "g", "sc": 1 },
-    { "n": "Analpram HC", "k": "b" },
+    {
+      "n": "Analpram HC",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Anarozole", "k": "g", "sc": 1 },
     { "n": "Anastrozole", "k": "g", "gh": 1 },
     {
@@ -494,7 +762,17 @@
       }
     },
     { "n": "Aranelle", "k": "g", "sc": 1 },
-    { "n": "Arazlo", "k": "b" },
+    {
+      "n": "Arazlo",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Arexvy", "k": "g", "sc": 1 },
     {
       "n": "Aripiprazole",
@@ -504,7 +782,17 @@
       "gh": 1,
       "tdk": "c"
     },
-    { "n": "Aristada", "k": "b" },
+    {
+      "n": "Aristada",
+      "k": "b",
+      "pap": {
+        "p": "alkermes-aristada-patient-assistance-pro",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.aristadahcp.com/access-support"
+      }
+    },
     {
       "n": "Arixtra",
       "k": "b",
@@ -686,7 +974,21 @@
     },
     { "n": "Balsalazide", "k": "g", "sc": 1 },
     { "n": "Balsalazide Disodium", "k": "g", "gh": 1 },
-    { "n": "Basaglar", "k": "b", "qs": "Diabetes" },
+    {
+      "n": "Basaglar",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "BD Brand Only Home Delivery Only", "k": "g", "gh": 1 },
     {
       "n": "Belsomra",
@@ -735,8 +1037,29 @@
     { "n": "Benzoyl Peroxide-erythromycin", "k": "g", "sc": 1 },
     { "n": "Benztropine", "k": "g", "sc": 1 },
     { "n": "Benztropine Mesylate", "k": "g", "gh": 1 },
-    { "n": "Beovu", "k": "b" },
-    { "n": "Besivance", "k": "b" },
+    {
+      "n": "Beovu",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
+    {
+      "n": "Besivance",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Betamethasone Dipropionate", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Betamethasone Dipropionate Augmented", "k": "g", "sc": 1 },
     { "n": "Betamethasone DP", "k": "g", "gh": 1 },
@@ -759,11 +1082,36 @@
     { "n": "Betaxolol", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Bethanechol", "k": "g", "sc": 1 },
     { "n": "Bethanechol Chloride", "k": "g", "gh": 1 },
-    { "n": "Bevespi Aerosphere", "k": "b" },
+    {
+      "n": "Bevespi Aerosphere",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     { "n": "Bexsero", "k": "g", "sc": 1 },
     { "n": "Bicalutamide", "k": "g", "sc": 1 },
     { "n": "Bijuva", "k": "b" },
-    { "n": "Biktarvy", "k": "b" },
+    {
+      "n": "Biktarvy",
+      "k": "b",
+      "pap": {
+        "p": "gilead-advancing-access-pap-map",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income limit published; uninsured only",
+        "i": "Uninsured only",
+        "q": "If your patient is uninsured, they may be eligible to receive their Gilead medication free of charge through the PAP/MAP",
+        "u": "https://www.gileadadvancingaccess.com/patient"
+      }
+    },
     { "n": "Bimatopro", "k": "g", "sc": 1 },
     {
       "n": "Bimzelx",
@@ -845,7 +1193,20 @@
         "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
       }
     },
-    { "n": "Breztri", "k": "b" },
+    {
+      "n": "Breztri",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     { "n": "Briellyn", "k": "g", "sc": 1 },
     { "n": "Brilinta", "k": "b" },
     { "n": "Brimonidine Tartrate", "k": "g", "gh": 1 },
@@ -865,10 +1226,29 @@
     },
     { "n": "Bromfenac Sodium Opht", "k": "g", "sc": 1 },
     { "n": "Bromocriptine Mesylate", "k": "g", "gh": 1 },
-    { "n": "Bryhali", "k": "b" },
+    {
+      "n": "Bryhali",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Budesonide", "k": "b", "sc": 1, "gh": 1 },
     { "n": "Bumetanide", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Buphenyl", "k": "b" },
+    {
+      "n": "Buphenyl",
+      "k": "b",
+      "pap": {
+        "p": "immedica-various-flag",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Buprenorphine Sl", "k": "g", "sc": 1 },
     { "n": "Buprenorphine-naloxone Sl", "k": "g", "sc": 1 },
     {
@@ -930,7 +1310,20 @@
     { "n": "Calcium Citrate", "k": "g", "gh": 1 },
     { "n": "Calcium Citrate/vitamin D3", "k": "g", "gh": 1 },
     { "n": "Calcium Polycarbophil", "k": "g", "gh": 1 },
-    { "n": "Calquence", "k": "b" },
+    {
+      "n": "Calquence",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     { "n": "Camila", "k": "g", "sc": 1 },
     { "n": "Camrese", "k": "g", "sc": 1 },
     { "n": "Camrese Lo", "k": "g", "sc": 1 },
@@ -951,8 +1344,28 @@
     { "n": "Candesartan Cilexetil-hydrochlorothiazide", "k": "g", "sc": 1 },
     { "n": "Candesartan/hydrochlorothiazid", "k": "g", "gh": 1 },
     { "n": "Capecitabine", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Caplyta", "k": "b" },
-    { "n": "Caprelsa", "k": "b" },
+    {
+      "n": "Caplyta",
+      "k": "b",
+      "pap": {
+        "p": "intra-cellular-therapies-patient-assista",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.intracellulartherapies.com/patient-assistance/"
+      }
+    },
+    {
+      "n": "Caprelsa",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-genzyme-careassist",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
     { "n": "Capsaicin", "k": "g", "gh": 1 },
     { "n": "Captopril", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Carbamazepin", "k": "g", "sc": 1 },
@@ -1070,7 +1483,20 @@
     { "n": "Choleyramine", "k": "g", "sc": 1 },
     { "n": "Choleyramine Light", "k": "g", "sc": 1 },
     { "n": "Choline Fenofibrate", "k": "g", "sc": 1 },
-    { "n": "Cialis", "k": "b" },
+    {
+      "n": "Cialis",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL (Group 1)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 300,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Ciclopirox", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Ciclopirox Olamine", "k": "g", "sc": 1 },
     { "n": "Ciloazol", "k": "g", "sc": 1 },
@@ -1156,7 +1582,18 @@
     { "n": "Clotrimazole W/ Betamethasone", "k": "g", "sc": 1 },
     { "n": "Clotrimazole/betamethasone Dip", "k": "g", "gh": 1 },
     { "n": "Clozapine", "k": "g", "sc": 1 },
-    { "n": "Coartem", "k": "b" },
+    {
+      "n": "Coartem",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Codeine Sulfate", "k": "b" },
     {
       "n": "Colchicine",
@@ -1207,7 +1644,18 @@
         "q": "Applicants must be fully Uninsured, or if Insured, have no prescription drug insurance"
       }
     },
-    { "n": "Cosentyx", "k": "b" },
+    {
+      "n": "Cosentyx",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     {
       "n": "Cotellic",
       "k": "b",
@@ -1237,12 +1685,31 @@
         "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
       }
     },
-    { "n": "Cresemba", "k": "b" },
+    {
+      "n": "Cresemba",
+      "k": "b",
+      "pap": {
+        "p": "astellas-patient-assistance-program",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.astellaspharmasupportsolutions.com/patient/cresemba/astellas_patient_assistance_program.aspx"
+      }
+    },
     { "n": "Crestor", "k": "b", "qs": "Cholesterol" },
     { "n": "Cromolyn", "k": "g", "sc": 1 },
     { "n": "Cromolyn Sodium", "k": "g", "gh": 1 },
     { "n": "Cryselle-28", "k": "g", "sc": 1 },
-    { "n": "Cuprimine", "k": "b" },
+    {
+      "n": "Cuprimine",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-atlantic-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Cyanocobalamin", "k": "g", "sc": 1 },
     { "n": "Cyanocobalamin (vitamin B-12)", "k": "g", "gh": 1 },
     { "n": "Cyanocobalamin/fa/pyridoxine", "k": "g", "gh": 1 },
@@ -1285,7 +1752,16 @@
         "u": "https://www.lillycares.com/how-to-apply"
       }
     },
-    { "n": "Cystagon", "k": "b" },
+    {
+      "n": "Cystagon",
+      "k": "b",
+      "pap": {
+        "p": "recordati-rare-diseases-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Dabigatran", "k": "b" },
     { "n": "Dabigatran Etexilate Mesylate", "k": "b" },
     { "n": "Dalfampridine", "k": "g", "sc": 1 },
@@ -1308,9 +1784,31 @@
     { "n": "Daptacel", "k": "g", "sc": 1 },
     { "n": "Darifenacin", "k": "g", "sc": 1 },
     { "n": "Darunavir", "k": "g", "sc": 1 },
-    { "n": "Darzalex", "k": "b" },
+    {
+      "n": "Darzalex",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Dasatinib", "k": "b" },
-    { "n": "Dayvigo", "k": "b" },
+    {
+      "n": "Dayvigo",
+      "k": "b",
+      "pap": {
+        "p": "eisai-patient-assistance-program",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income figure published",
+        "q": "Patients insured by Medicare, Medicaid, Tricare, VA or other Federal or State healthcare plans are not eligible for patient assistance",
+        "u": "https://www.eisaireimbursement.com/"
+      }
+    },
     { "n": "Deferasirox", "k": "b" },
     {
       "n": "Delstrigo",
@@ -1326,7 +1824,18 @@
         "u": "https://www.merckhelps.com/"
       }
     },
-    { "n": "Denavir", "k": "b" },
+    {
+      "n": "Denavir",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     {
       "n": "Depakote",
       "k": "b",
@@ -1343,7 +1852,19 @@
     },
     { "n": "Depo-sq Prov", "k": "g", "sc": 1 },
     { "n": "Depo-teoerone", "k": "g", "sc": 1 },
-    { "n": "Descovy", "k": "b" },
+    {
+      "n": "Descovy",
+      "k": "b",
+      "pap": {
+        "p": "gilead-advancing-access-pap-map",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income limit published; uninsured only",
+        "i": "Uninsured only",
+        "q": "If your patient is uninsured, they may be eligible to receive their Gilead medication free of charge through the PAP/MAP",
+        "u": "https://www.gileadadvancingaccess.com/patient"
+      }
+    },
     { "n": "Desipramine", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Desloratadine", "k": "g", "gh": 1 },
     { "n": "Desmopressin", "k": "g", "sc": 1 },
@@ -1424,7 +1945,16 @@
     { "n": "Diltiazem Extended Release Beads", "k": "g", "sc": 1 },
     { "n": "Diltiazem La", "k": "g", "sc": 1 },
     { "n": "Dimethyl Fumarate", "k": "g", "sc": 1 },
-    { "n": "Dipentum", "k": "b" },
+    {
+      "n": "Dipentum",
+      "k": "b",
+      "pap": {
+        "p": "validus-pharmaceuticals-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Diphenhydramine", "k": "g", "gh": 1 },
     { "n": "Diphenhydramine/zinc Acet", "k": "g", "gh": 1 },
     { "n": "Diphenoxylate W/ Atropine", "k": "g", "sc": 1 },
@@ -1488,8 +2018,27 @@
       "tdk": "c"
     },
     { "n": "Duloxetine Enteric Coated Pellets", "k": "g", "sc": 1 },
-    { "n": "Duobrii", "k": "b" },
-    { "n": "Durolane", "k": "b" },
+    {
+      "n": "Duobrii",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
+    {
+      "n": "Durolane",
+      "k": "b",
+      "pap": {
+        "p": "bioventus-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Durysta",
       "k": "b",
@@ -1507,11 +2056,44 @@
     { "n": "Dutaeride", "k": "g", "sc": 1 },
     { "n": "Dutaeride-tamsulosin", "k": "g", "sc": 1 },
     { "n": "Dutasteride", "k": "g", "a": ["Avodart"], "gh": 1, "tdk": "c" },
-    { "n": "Dymista", "k": "b" },
+    {
+      "n": "Dymista",
+      "k": "b",
+      "pap": {
+        "p": "viatris-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Eazolam", "k": "g", "sc": 1 },
-    { "n": "Ebglyss", "k": "b" },
+    {
+      "n": "Ebglyss",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "500% FPL (Groups 3-4)",
+        "i": "Medicare Part B without supplemental, or insurance does not cover the drug",
+        "q": "You do not have any private commercial insurance",
+        "f": 500,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Econazole Nitrate", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Edurant", "k": "b" },
+    {
+      "n": "Edurant",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Eerified Erogens & Methylteoerone", "k": "g", "sc": 1 },
     { "n": "Efavirenz", "k": "g", "sc": 1 },
     { "n": "Efavirenz-emtricitabine-tenofovir Df", "k": "g", "sc": 1 },
@@ -1549,8 +2131,32 @@
       }
     },
     { "n": "Ella", "k": "g", "sc": 1 },
-    { "n": "Elmiron", "k": "b" },
-    { "n": "Emgality", "k": "b" },
+    {
+      "n": "Elmiron",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Emgality",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL (Group 1)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 300,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Empaglifloz/linaglip/metformin", "k": "g", "gh": 1 },
     {
       "n": "Empliciti",
@@ -1565,10 +2171,28 @@
         "u": "https://www.bmspaf.org/"
       }
     },
-    { "n": "EMSAM", "k": "b" },
+    {
+      "n": "EMSAM",
+      "k": "b",
+      "pap": {
+        "p": "validus-pharmaceuticals-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Emtricitabin", "k": "b" },
     { "n": "Emtricitabine-tenofovir Disoproxil Fumarate", "k": "b" },
-    { "n": "Emverm", "k": "b" },
+    {
+      "n": "Emverm",
+      "k": "b",
+      "pap": {
+        "p": "amneal-impax-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Enalapril", "k": "g", "a": ["Vasotec"], "tdk": "c" },
     { "n": "Enalapril Maleate", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Enalapril Maleate & Hydrochlorothiazide", "k": "g", "sc": 1 },
@@ -1635,9 +2259,40 @@
         "u": "https://www.helpathandpap.com/Eligibility.aspx"
       }
     },
-    { "n": "Epclusa", "k": "b" },
-    { "n": "Epinephrine", "k": "b", "sc": 1 },
-    { "n": "EpiPen", "k": "b" },
+    {
+      "n": "Epclusa",
+      "k": "b",
+      "pap": {
+        "p": "gilead-advancing-access-pap-map",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income limit published; uninsured only",
+        "i": "Uninsured only",
+        "q": "If your patient is uninsured, they may be eligible to receive their Gilead medication free of charge through the PAP/MAP",
+        "u": "https://www.gileadadvancingaccess.com/patient"
+      }
+    },
+    {
+      "n": "Epinephrine",
+      "k": "b",
+      "sc": 1,
+      "pap": {
+        "p": "multiple-generic-manufacturers",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
+    {
+      "n": "EpiPen",
+      "k": "b",
+      "pap": {
+        "p": "viatris-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Epivir",
       "k": "b",
@@ -1653,7 +2308,16 @@
       }
     },
     { "n": "Eplerenone", "k": "g", "gh": 1 },
-    { "n": "Equetro", "k": "b" },
+    {
+      "n": "Equetro",
+      "k": "b",
+      "pap": {
+        "p": "validus-pharmaceuticals-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Eradiol", "k": "g", "sc": 1 },
     { "n": "Eradiol Transdermal", "k": "g", "sc": 1 },
     {
@@ -1687,8 +2351,28 @@
         "u": "https://www.gene.com/patients/patient-foundation"
       }
     },
-    { "n": "Erleada", "k": "b" },
-    { "n": "Ermeza", "k": "b" },
+    {
+      "n": "Erleada",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Ermeza",
+      "k": "b",
+      "pap": {
+        "p": "mayne-pharma-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Erythromycin", "k": "g", "sc": 1 },
     { "n": "Erythromycin Base", "k": "b", "sc": 1, "gh": 1 },
     { "n": "Erythromycin Ethylsuccinate", "k": "g", "gh": 1 },
@@ -1712,7 +2396,17 @@
     { "n": "Ethynodiol D-ethinyl Estradiol", "k": "g", "gh": 1 },
     { "n": "Etodolac", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Etravirine", "k": "b" },
-    { "n": "Euflexxa", "k": "b" },
+    {
+      "n": "Euflexxa",
+      "k": "b",
+      "pap": {
+        "p": "ferring-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://ferringusa.com/building-families-improving-lives/patient-assistance-programs-main/"
+      }
+    },
     {
       "n": "Evenity",
       "k": "b",
@@ -1739,7 +2433,18 @@
       "tdk": "c",
       "qs": "Cholesterol"
     },
-    { "n": "Fabhalta", "k": "b" },
+    {
+      "n": "Fabhalta",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     {
       "n": "Famciclovir",
       "k": "g",
@@ -1750,10 +2455,32 @@
     },
     { "n": "Famotidine", "k": "g", "a": ["Pepcid"], "gh": 1, "tdk": "c" },
     { "n": "Farxiga", "k": "b" },
-    { "n": "Fasenra", "k": "b" },
+    {
+      "n": "Fasenra",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     { "n": "FE Fumarate/fa/mv, Min Comb#15", "k": "g", "gh": 1 },
     { "n": "Febuxoat", "k": "g", "sc": 1 },
-    { "n": "Felbatol", "k": "b" },
+    {
+      "n": "Felbatol",
+      "k": "b",
+      "pap": {
+        "p": "validus-pharmaceuticals-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Felodipine", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Femlyv", "k": "g", "sc": 1 },
     { "n": "Fenofibrate", "k": "g", "sc": 1 },
@@ -1768,7 +2495,20 @@
     { "n": "Fetzima Er", "k": "b" },
     { "n": "Fetzima Titration Er", "k": "b" },
     { "n": "Fexofenadine", "k": "g", "gh": 1 },
-    { "n": "Fiasp", "k": "b" },
+    {
+      "n": "Fiasp",
+      "k": "b",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
     { "n": "Fidaxomicin", "k": "b" },
     { "n": "Finaeride", "k": "g", "sc": 1 },
     {
@@ -1827,12 +2567,34 @@
     { "n": "Fluzone Quadrivalent Intramuscular", "k": "g", "sc": 1 },
     { "n": "Folic Acid", "k": "g", "sc": 1, "gh": 1, "tdk": "c" },
     { "n": "Fondarinux Sodium Subcutaneous", "k": "b" },
-    { "n": "Forteo", "k": "b" },
+    {
+      "n": "Forteo",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL (Group 1)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 300,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Fosinopril Sodium", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Fosinopril Sodium & Hydrochlorothiazide", "k": "g", "sc": 1 },
     { "n": "Freeyle Control", "k": "b" },
     { "n": "Frovatriptan", "k": "g", "sc": 1 },
-    { "n": "Fulphila", "k": "b" },
+    {
+      "n": "Fulphila",
+      "k": "b",
+      "pap": {
+        "p": "viatris-biocon-biosimilar-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Furosemide",
       "k": "g",
@@ -1853,7 +2615,16 @@
     { "n": "Gabapentin Daily", "k": "b", "sc": 1 },
     { "n": "Gabapentin Dly", "k": "b" },
     { "n": "Galantamine Hydrobromide", "k": "g", "sc": 1 },
-    { "n": "Gamunex-C", "k": "b" },
+    {
+      "n": "Gamunex-C",
+      "k": "b",
+      "pap": {
+        "p": "grifols-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Gardasil 9",
       "k": "b",
@@ -1869,7 +2640,16 @@
         "u": "https://www.merckhelps.com/"
       }
     },
-    { "n": "Gastrocrom", "k": "b" },
+    {
+      "n": "Gastrocrom",
+      "k": "b",
+      "pap": {
+        "p": "azurity-prasco-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Gazyva",
       "k": "b",
@@ -1902,7 +2682,19 @@
     },
     { "n": "Gentamicin", "k": "g", "sc": 1 },
     { "n": "Gentamicin Sulfate", "k": "g", "gh": 1 },
-    { "n": "Genvoya", "k": "b" },
+    {
+      "n": "Genvoya",
+      "k": "b",
+      "pap": {
+        "p": "gilead-advancing-access-pap-map",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income limit published; uninsured only",
+        "i": "Uninsured only",
+        "q": "If your patient is uninsured, they may be eligible to receive their Gilead medication free of charge through the PAP/MAP",
+        "u": "https://www.gileadadvancingaccess.com/patient"
+      }
+    },
     {
       "n": "Gilotrif",
       "k": "b",
@@ -1915,7 +2707,17 @@
         "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
       }
     },
-    { "n": "Glatiramer", "k": "b" },
+    {
+      "n": "Glatiramer",
+      "k": "b",
+      "pap": {
+        "p": "teva-cares-foundation-if-teva-branded-co",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.tevacares.org/"
+      }
+    },
     {
       "n": "Glimepiride",
       "k": "g",
@@ -1984,11 +2786,34 @@
         "u": "https://organon.com/our-focus/patient-support-programs/"
       }
     },
-    { "n": "Halaven", "k": "b" },
+    {
+      "n": "Halaven",
+      "k": "b",
+      "pap": {
+        "p": "eisai-patient-assistance-program",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income figure published",
+        "q": "Patients insured by Medicare, Medicaid, Tricare, VA or other Federal or State healthcare plans are not eligible for patient assistance",
+        "u": "https://www.eisaireimbursement.com/"
+      }
+    },
     { "n": "Halobetasol Propionate", "k": "g", "sc": 1 },
     { "n": "Haloperidol", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Haloperidol Lactate", "k": "g", "gh": 1 },
-    { "n": "Harvoni", "k": "b" },
+    {
+      "n": "Harvoni",
+      "k": "b",
+      "pap": {
+        "p": "gilead-advancing-access-pap-map",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income limit published; uninsured only",
+        "i": "Uninsured only",
+        "q": "If your patient is uninsured, they may be eligible to receive their Gilead medication free of charge through the PAP/MAP",
+        "u": "https://www.gileadadvancingaccess.com/patient"
+      }
+    },
     { "n": "Havrix, Vaqta", "k": "g", "sc": 1 },
     { "n": "HCTZ", "k": "g", "a": ["HydroDiuril"], "tdk": "c" },
     {
@@ -2022,13 +2847,66 @@
       }
     },
     { "n": "Hiberix", "k": "g", "sc": 1 },
-    { "n": "Humalog", "k": "b", "qs": "Diabetes" },
+    {
+      "n": "Humalog",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Humalog Junior Kwikpen", "k": "b" },
-    { "n": "Humalog Kwikpen", "k": "b" },
+    {
+      "n": "Humalog Kwikpen",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Humalog Kwikpen Subcutaneous", "k": "b" },
     { "n": "Humalog Mix", "k": "b" },
-    { "n": "Humalog Mix 50-50", "k": "b" },
-    { "n": "Humalog Mix 75-25", "k": "b" },
+    {
+      "n": "Humalog Mix 50-50",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    {
+      "n": "Humalog Mix 75-25",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Humalog Mix 75/25 Subcutaneous", "k": "b" },
     { "n": "Humalog Subcutaneous", "k": "b" },
     {
@@ -2045,12 +2923,77 @@
         "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
       }
     },
-    { "n": "Humulin", "k": "b" },
-    { "n": "Humulin 70-30", "k": "b" },
-    { "n": "Humulin N", "k": "b" },
+    {
+      "n": "Humulin",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    {
+      "n": "Humulin 70-30",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    {
+      "n": "Humulin N",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Humulin N Subcutaneous", "k": "b" },
-    { "n": "Humulin R", "k": "b" },
-    { "n": "Humulin R U-500", "k": "b" },
+    {
+      "n": "Humulin R",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    {
+      "n": "Humulin R U-500",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Hydralazine", "k": "g", "sc": 1, "gh": 1 },
     {
       "n": "Hydrochlorothiazide",
@@ -2091,7 +3034,20 @@
     },
     { "n": "Ibandronate", "k": "g", "sc": 1 },
     { "n": "Ibandronate Sodium", "k": "g", "gh": 1 },
-    { "n": "Ibrance", "k": "b" },
+    {
+      "n": "Ibrance",
+      "k": "b",
+      "pap": {
+        "p": "pfizer-patient-assistance-program-rxpath",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or government insured; not commercial; Part D must use the Medicare Prescription Payment Plan first",
+        "q": "Be uninsured or government insured and unable to afford your co-payment",
+        "f": 300,
+        "u": "https://www.pfizerrxpathways.com/"
+      }
+    },
     {
       "n": "Ibuprofen",
       "k": "g",
@@ -2115,7 +3071,18 @@
         "u": "https://www.bmspaf.org/"
       }
     },
-    { "n": "Ilaris", "k": "b" },
+    {
+      "n": "Ilaris",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Imatinib Mes", "k": "g", "sc": 1 },
     {
       "n": "Imbruvica",
@@ -2131,10 +3098,36 @@
         "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
       }
     },
-    { "n": "Imfinzi", "k": "b" },
+    {
+      "n": "Imfinzi",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     { "n": "Imipramine", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Imiquimod", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Imjudo", "k": "b" },
+    {
+      "n": "Imjudo",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     {
       "n": "Imovax",
       "k": "b",
@@ -2167,8 +3160,30 @@
     { "n": "Indapamide", "k": "g", "gh": 1 },
     { "n": "Indomethacin", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Infanrix", "k": "g", "sc": 1 },
-    { "n": "Infliximab", "k": "b" },
-    { "n": "Injectafer", "k": "b" },
+    {
+      "n": "Infliximab",
+      "k": "b",
+      "pap": {
+        "p": "amgen-avsola-pfizer-inflectra-organon-re",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or government insured; not commercial; Part D must use the Medicare Prescription Payment Plan first",
+        "q": "Be uninsured or government insured and unable to afford your co-payment",
+        "f": 300,
+        "u": "https://www.pfizerrxpathways.com/"
+      }
+    },
+    {
+      "n": "Injectafer",
+      "k": "b",
+      "pap": {
+        "p": "american-regent-daiichi-sankyo-unconfirm",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Inrebic",
       "k": "b",
@@ -2189,7 +3204,18 @@
     { "n": "Insulin Glargine-yfgn", "k": "b" },
     { "n": "Insulin Lispro", "k": "b", "a": ["Humalog"], "sc": 1, "tdk": "u" },
     { "n": "Insulin Lispro Subcutaneous", "k": "g", "sc": 1 },
-    { "n": "Intelence", "k": "b" },
+    {
+      "n": "Intelence",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     {
       "n": "Intuniv Extended Release",
       "k": "b",
@@ -2204,12 +3230,79 @@
         "u": "https://www.helpathandpap.com/Eligibility.aspx"
       }
     },
-    { "n": "Invega Hafyera", "k": "b" },
-    { "n": "Invega Sustenna", "k": "b" },
-    { "n": "Invega Trinza", "k": "b" },
-    { "n": "Invokamet", "k": "b", "qs": "Diabetes" },
-    { "n": "Invokamet XR", "k": "b" },
-    { "n": "Invokana", "k": "b" },
+    {
+      "n": "Invega Hafyera",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Invega Sustenna",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Invega Trinza",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Invokamet",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Invokamet XR",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Invokana",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Iodoquinol And Hydrocortisone", "k": "b" },
     { "n": "Ipol", "k": "g", "sc": 1 },
     { "n": "Ipratropium Bromide", "k": "g", "gh": 1 },
@@ -2286,8 +3379,30 @@
     { "n": "Itraconazole", "k": "b", "sc": 1, "gh": 1 },
     { "n": "Ivabradine", "k": "g", "sc": 1 },
     { "n": "Ivermectin", "k": "g", "sc": 1 },
-    { "n": "Jadenu", "k": "b" },
-    { "n": "Jadenu Sprinkle", "k": "b" },
+    {
+      "n": "Jadenu",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
+    {
+      "n": "Jadenu Sprinkle",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     {
       "n": "JanuMet",
       "k": "b",
@@ -2397,7 +3512,17 @@
       }
     },
     { "n": "Joyeaux", "k": "g", "sc": 1 },
-    { "n": "Jublia", "k": "b" },
+    {
+      "n": "Jublia",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     {
       "n": "Juluca",
       "k": "b",
@@ -2470,7 +3595,18 @@
         "u": "https://www.patientassistance.bayer.us/en/faqs"
       }
     },
-    { "n": "Kesimpta", "k": "b" },
+    {
+      "n": "Kesimpta",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Ketoconazole", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Ketoprofen", "k": "g", "gh": 1 },
     { "n": "Ketorolac Tromethamine", "k": "g", "sc": 1, "gh": 1 },
@@ -2490,7 +3626,18 @@
       }
     },
     { "n": "Kinrix, Quadracel", "k": "g", "sc": 1 },
-    { "n": "Kisqali", "k": "b" },
+    {
+      "n": "Kisqali",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Klor-m Cr", "k": "g", "sc": 1 },
     {
       "n": "Kovaltry",
@@ -2590,7 +3737,16 @@
       "tdk": "c"
     },
     { "n": "Lamotrigine Orally Disintegrating", "k": "g", "sc": 1 },
-    { "n": "Lampit", "k": "b" },
+    {
+      "n": "Lampit",
+      "k": "b",
+      "pap": {
+        "p": "bayer-chagas-disease-special-access-prog",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Lancets", "k": "g", "gh": 1 },
     {
       "n": "Lansoprazole",
@@ -2633,8 +3789,32 @@
     },
     { "n": "Latanoprost", "k": "g", "gh": 1 },
     { "n": "Leflunomide", "k": "g", "sc": 1 },
-    { "n": "Lenvima", "k": "b" },
-    { "n": "Leqvio", "k": "b" },
+    {
+      "n": "Lenvima",
+      "k": "b",
+      "pap": {
+        "p": "eisai-patient-support",
+        "o": "unclear",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "Uninsured or not enough coverage",
+        "q": "Patients insured by Medicare, Medicaid, Tricare, VA or other Federal or State healthcare plans are not eligible for patient assistance",
+        "f": 500,
+        "u": "https://www.eisaireimbursement.com/"
+      }
+    },
+    {
+      "n": "Leqvio",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Letrozole", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Leucovorin Calcium", "k": "g", "sc": 1 },
     { "n": "Levamlodipin", "k": "b" },
@@ -2719,7 +3899,20 @@
     { "n": "Lithium Carbonate", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Locoid External", "k": "g", "sc": 1 },
     { "n": "Lofexidine", "k": "b" },
-    { "n": "Lokelma", "k": "b" },
+    {
+      "n": "Lokelma",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     { "n": "Lomedia 24", "k": "g", "sc": 1 },
     { "n": "Loperamide", "k": "g", "gh": 1 },
     { "n": "Lopinavir-ritonavir", "k": "b" },
@@ -2736,7 +3929,19 @@
     { "n": "Losartan Potassium & Hydrochlorothiazide", "k": "g", "sc": 1 },
     { "n": "Losartan/hydrochlorothiazide", "k": "g", "gh": 1 },
     { "n": "Loteprednol Etabonate", "k": "g", "sc": 1 },
-    { "n": "Lotronex", "k": "b" },
+    {
+      "n": "Lotronex",
+      "k": "b",
+      "pap": {
+        "p": "originally-gsk-now-various-generic-uncon",
+        "o": "not_checked",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
     { "n": "Lovaatin", "k": "g", "sc": 1 },
     {
       "n": "Lovastatin",
@@ -2819,12 +4024,68 @@
       }
     },
     { "n": "Lurasidone", "k": "b" },
-    { "n": "Lutathera", "k": "b" },
-    { "n": "Luzu", "k": "b" },
-    { "n": "Lynparza", "k": "b" },
-    { "n": "Lyumjev", "k": "b" },
+    {
+      "n": "Lutathera",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
+    {
+      "n": "Luzu",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
+    {
+      "n": "Lynparza",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
+    {
+      "n": "Lyumjev",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL (insulins)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 400,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Lyumjev Kwpn", "k": "b" },
-    { "n": "Lyvispah", "k": "b" },
+    {
+      "n": "Lyvispah",
+      "k": "b",
+      "pap": {
+        "p": "azurity-pharmaceuticals-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "M-m-r Ii", "k": "g", "sc": 1 },
     { "n": "Magnesium", "k": "g", "tdk": "c" },
     { "n": "Magnesium Chloride", "k": "g", "gh": 1 },
@@ -2858,7 +4119,18 @@
         "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
       }
     },
-    { "n": "Mayzent", "k": "b" },
+    {
+      "n": "Mayzent",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Meclizine", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Medroxyprogeerone Ac", "k": "g", "sc": 1 },
     { "n": "Medroxyprogeerone Acetate", "k": "g", "sc": 1 },
@@ -2867,7 +4139,18 @@
     { "n": "Mefloquine", "k": "g", "sc": 1 },
     { "n": "Megerol Acetate", "k": "g", "sc": 1 },
     { "n": "Megestrol Acetate", "k": "g", "gh": 1 },
-    { "n": "Mekinist", "k": "b" },
+    {
+      "n": "Mekinist",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Melatonin", "k": "g", "gh": 1 },
     {
       "n": "Meloxicam",
@@ -3089,7 +4372,17 @@
       }
     },
     { "n": "Moxifloxacin", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Mozobil", "k": "b" },
+    {
+      "n": "Mozobil",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-genzyme-careassist",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
     {
       "n": "Multaq",
       "k": "b",
@@ -3249,7 +4542,17 @@
     { "n": "Norgestimate-ethinyl Estradiol 7daysx3 28", "k": "g", "gh": 1 },
     { "n": "Norgestimate-ethinyl Estradiol 7daysx3 Lo", "k": "g", "gh": 1 },
     { "n": "Norgestrel-ethinyl Estradiol", "k": "g", "gh": 1 },
-    { "n": "Noritate", "k": "b" },
+    {
+      "n": "Noritate",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Nortrel (28)", "k": "g", "sc": 1 },
     { "n": "Nortrel 28", "k": "g", "sc": 1 },
     { "n": "Nortrel7/7/7", "k": "g", "sc": 1 },
@@ -3269,12 +4572,92 @@
       }
     },
     { "n": "Novavax", "k": "g", "sc": 1 },
-    { "n": "Novolin", "k": "b", "qs": "Diabetes" },
-    { "n": "Novolin 70-30", "k": "b" },
-    { "n": "Novolin N", "k": "b" },
-    { "n": "Novolin R", "k": "b" },
-    { "n": "NovoLog", "k": "b", "qs": "Diabetes" },
-    { "n": "Novolog Mix 70-30", "k": "b" },
+    {
+      "n": "Novolin",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
+    {
+      "n": "Novolin 70-30",
+      "k": "b",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
+    {
+      "n": "Novolin N",
+      "k": "b",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
+    {
+      "n": "Novolin R",
+      "k": "b",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
+    {
+      "n": "NovoLog",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
+    {
+      "n": "Novolog Mix 70-30",
+      "k": "b",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
     { "n": "Novolog Penfill Subcutaneous", "k": "b" },
     { "n": "Np Thyroid", "k": "g", "sc": 1 },
     { "n": "Ntoprazole Sodium", "k": "b" },
@@ -3364,7 +4747,20 @@
     { "n": "Olmesartan/hydrochlorothiazide", "k": "g", "gh": 1 },
     { "n": "Olopatadine", "k": "g", "gh": 1 },
     { "n": "Olotadine", "k": "g", "sc": 1 },
-    { "n": "Olumiant", "k": "b" },
+    {
+      "n": "Olumiant",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "500% FPL (Groups 3-4)",
+        "i": "Medicare Part B without supplemental, or insurance does not cover the drug",
+        "q": "You do not have any private commercial insurance",
+        "f": 500,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Omega-3 Acid Ethyl Esters", "k": "g", "gh": 1 },
     { "n": "Omega-3-acid", "k": "g", "sc": 1 },
     { "n": "Omeprazole", "k": "g", "a": ["Prilosec"], "gh": 1, "tdk": "c" },
@@ -3421,7 +4817,18 @@
         "u": "https://www.bmspaf.org/"
       }
     },
-    { "n": "Opsumit", "k": "b" },
+    {
+      "n": "Opsumit",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     {
       "n": "Orencia",
       "k": "b",
@@ -3490,7 +4897,21 @@
     { "n": "Oxycodone", "k": "g", "sc": 1 },
     { "n": "Oxycodone W/ Acetaminophen", "k": "g", "sc": 1 },
     { "n": "Oxymetazoline", "k": "g", "gh": 1 },
-    { "n": "Ozempic", "k": "b", "qs": "Diabetes" },
+    {
+      "n": "Ozempic",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "200% FPL, uninsured only",
+        "i": "Uninsured only; Medicare Part D no longer eligible",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 200,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
     { "n": "Pantoprazole", "k": "g", "a": ["Protonix"], "tdk": "u" },
     { "n": "Pantoprazole Sodium", "k": "g", "gh": 1 },
     { "n": "Paricalcitol", "k": "g", "gh": 1 },
@@ -3540,7 +4961,16 @@
       }
     },
     { "n": "Pentoxifylline", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Perforomist", "k": "b" },
+    {
+      "n": "Perforomist",
+      "k": "b",
+      "pap": {
+        "p": "viatris-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Perindopril", "k": "g", "sc": 1 },
     { "n": "Perindopril Erbumine", "k": "g", "gh": 1 },
     {
@@ -3559,7 +4989,16 @@
     },
     { "n": "Permethrin", "k": "g", "sc": 1 },
     { "n": "Perphenazine", "k": "g", "sc": 1 },
-    { "n": "Pertzye", "k": "b" },
+    {
+      "n": "Pertzye",
+      "k": "b",
+      "pap": {
+        "p": "chiesi-usa-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Pfizer 5-11y", "k": "g", "sc": 1 },
     { "n": "Pfizer 6m-4y", "k": "g", "sc": 1 },
     { "n": "Pfizer Bival", "k": "g", "sc": 1 },
@@ -3617,12 +5056,34 @@
     },
     { "n": "Pioglitazone-glimepiride", "k": "g", "sc": 1 },
     { "n": "Pioglitazone-metformin", "k": "g", "sc": 1 },
-    { "n": "Piqray", "k": "b" },
+    {
+      "n": "Piqray",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Pirfenidone", "k": "b" },
     { "n": "Piroxicam", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Pitavaatin", "k": "g", "sc": 1 },
     { "n": "Pitavaatin Calcium", "k": "g", "sc": 1 },
-    { "n": "Pluvicto", "k": "b" },
+    {
+      "n": "Pluvicto",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Pneumovax 23", "k": "g", "sc": 1 },
     { "n": "Pnv Prenatal Plus", "k": "g", "gh": 1 },
     {
@@ -3694,7 +5155,16 @@
     { "n": "Premarin", "k": "b" },
     { "n": "Premphase", "k": "b" },
     { "n": "Prempro", "k": "b" },
-    { "n": "Pretomanid", "k": "b" },
+    {
+      "n": "Pretomanid",
+      "k": "b",
+      "pap": {
+        "p": "tb-alliance-nonprofit-not-a-standard-com",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Prevacid SoluTab",
       "k": "b",
@@ -3725,8 +5195,30 @@
         "u": "https://www.merckhelps.com/"
       }
     },
-    { "n": "Prezcobix", "k": "b" },
-    { "n": "Prezista", "k": "b" },
+    {
+      "n": "Prezcobix",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Prezista",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     {
       "n": "Priftin",
       "k": "b",
@@ -3748,7 +5240,16 @@
     { "n": "Probenecid", "k": "g", "sc": 1 },
     { "n": "Prochlorperazine", "k": "g", "gh": 1 },
     { "n": "Prochlorperazine Maleate", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Proctofoam", "k": "b" },
+    {
+      "n": "Proctofoam",
+      "k": "b",
+      "pap": {
+        "p": "mayne-pharma-alliance-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Prodigy Diabetic Test Strips",
       "k": "g",
@@ -3762,9 +5263,42 @@
     { "n": "Progeerone Micronized", "k": "g", "sc": 1 },
     { "n": "Progesterone", "k": "g", "a": ["Prometrium"], "tdk": "c" },
     { "n": "Progesterone,micronized", "k": "g", "gh": 1 },
-    { "n": "Proglycem", "k": "b" },
-    { "n": "Prolensa", "k": "b" },
-    { "n": "Promacta", "k": "b" },
+    {
+      "n": "Proglycem",
+      "k": "b",
+      "pap": {
+        "p": "teva-rare-disease-unconfirmed",
+        "o": "not_checked",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Must meet insurance criteria",
+        "f": 300,
+        "u": "https://www.tevacares.org/faq/"
+      }
+    },
+    {
+      "n": "Prolensa",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
+    {
+      "n": "Promacta",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Prometh/cod", "k": "g", "sc": 1 },
     {
       "n": "Promethazine",
@@ -3890,7 +5424,16 @@
       }
     },
     { "n": "Recombivax Hb", "k": "g", "sc": 1 },
-    { "n": "Rectiv", "k": "b" },
+    {
+      "n": "Rectiv",
+      "k": "b",
+      "pap": {
+        "p": "mayne-pharma-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Relenza",
       "k": "b",
@@ -3905,7 +5448,17 @@
         "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
       }
     },
-    { "n": "Relistor", "k": "b" },
+    {
+      "n": "Relistor",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Repaglinide", "k": "g", "gh": 1 },
     {
       "n": "Repatha",
@@ -4002,7 +5555,20 @@
         "u": "https://www.otsukapatientassistance.com/faqs"
       }
     },
-    { "n": "Reyvow", "k": "b" },
+    {
+      "n": "Reyvow",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL (Group 1)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 300,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Rglinide", "k": "g", "sc": 1 },
     {
       "n": "Riabni",
@@ -4016,7 +5582,16 @@
         "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
       }
     },
-    { "n": "Ridaura", "k": "b" },
+    {
+      "n": "Ridaura",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-rare-disease-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Rifampin", "k": "g", "sc": 1 },
     { "n": "Rimantadine", "k": "g", "sc": 1, "gh": 1 },
     {
@@ -4035,7 +5610,18 @@
     },
     { "n": "Risedronate", "k": "b" },
     { "n": "Risedronate Sodium", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Risperdal Consta", "k": "b" },
+    {
+      "n": "Risperdal Consta",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     {
       "n": "Risperidone",
       "k": "g",
@@ -4138,9 +5724,40 @@
       }
     },
     { "n": "Rybelsus", "k": "b" },
-    { "n": "Rybrevant", "k": "b" },
-    { "n": "Rydapt", "k": "b" },
-    { "n": "Rytary", "k": "b" },
+    {
+      "n": "Rybrevant",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Rydapt",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
+    {
+      "n": "Rytary",
+      "k": "b",
+      "pap": {
+        "p": "amneal-pharmaceuticals-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Sacubitril-valsartan", "k": "g", "sc": 1 },
     { "n": "Salicylic Acid", "k": "b" },
     { "n": "Salsalate", "k": "g", "sc": 1 },
@@ -4156,8 +5773,32 @@
         "u": "https://www.otsukapatientassistance.com/"
       }
     },
-    { "n": "SANDOSTATIN LAR", "k": "b" },
-    { "n": "Saphnelo", "k": "b" },
+    {
+      "n": "SANDOSTATIN LAR",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
+    {
+      "n": "Saphnelo",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
     {
       "n": "Saphris",
       "k": "b",
@@ -4186,7 +5827,18 @@
     },
     { "n": "Saxagliptin", "k": "g", "sc": 1 },
     { "n": "Saxagliptin-metformin", "k": "g", "sc": 1 },
-    { "n": "Scemblix", "k": "b" },
+    {
+      "n": "Scemblix",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Segluromet", "k": "b" },
     { "n": "Selegiline", "k": "g", "sc": 1 },
     { "n": "Selenium Sulfide", "k": "g", "sc": 1 },
@@ -4204,7 +5856,16 @@
         "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
       }
     },
-    { "n": "Semglee", "k": "b" },
+    {
+      "n": "Semglee",
+      "k": "b",
+      "pap": {
+        "p": "viatris-biocon-biosimilar-insulin-unconf",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Sennosides", "k": "g", "gh": 1 },
     { "n": "Sennosides/docusate Sodium", "k": "g", "gh": 1 },
     {
@@ -4255,7 +5916,17 @@
       "tdk": "c"
     },
     { "n": "Sildenafil Citrate", "k": "g", "gh": 1 },
-    { "n": "Siliq", "k": "b" },
+    {
+      "n": "Siliq",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Silver Sulfadiazine", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Simvaatin", "k": "g", "sc": 1 },
     {
@@ -4268,7 +5939,18 @@
     },
     { "n": "Sinus Relief Oxymetazoline", "k": "g", "gh": 1 },
     { "n": "Sirolimus", "k": "b" },
-    { "n": "Sirturo", "k": "b" },
+    {
+      "n": "Sirturo",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Sitagliptin", "k": "b" },
     { "n": "Sitagliptin Free Base-metformin", "k": "b" },
     { "n": "Skarjel", "k": "g", "sc": 1 },
@@ -4355,7 +6037,18 @@
     { "n": "Spironolactone", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Spironolactone & Hydrochlorothiazide", "k": "g", "sc": 1 },
     { "n": "Spironolactone/hydrochlorothiazide", "k": "g", "gh": 1 },
-    { "n": "Spravato", "k": "b" },
+    {
+      "n": "Spravato",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Sprintec 28", "k": "g", "sc": 1 },
     {
       "n": "Sprycel",
@@ -4455,7 +6148,18 @@
       }
     },
     { "n": "Sutab", "k": "b" },
-    { "n": "Symtuza", "k": "b" },
+    {
+      "n": "Symtuza",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     {
       "n": "Synjardy",
       "k": "b",
@@ -4485,7 +6189,16 @@
       }
     },
     { "n": "Synvisc", "k": "b" },
-    { "n": "Syprine", "k": "b" },
+    {
+      "n": "Syprine",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-rare-disease-wilson-s-dise",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Tacrolimus", "k": "g", "sc": 1, "gh": 1 },
     {
       "n": "Tadalafil",
@@ -4495,10 +6208,47 @@
       "gh": 1,
       "tdk": "c"
     },
-    { "n": "Tafinlar", "k": "b" },
+    {
+      "n": "Tafinlar",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Taflupro", "k": "g", "sc": 1 },
-    { "n": "Tagrisso", "k": "b" },
-    { "n": "Taltz", "k": "b" },
+    {
+      "n": "Tagrisso",
+      "k": "b",
+      "pap": {
+        "p": "az-me-prescription-savings-program",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or Medicare; no commercial or other government coverage",
+        "q": "Not have any commercial (private or employer-sponsored) insurance or government insurance other than Medicare",
+        "f": 300,
+        "u": "https://www.azandmeapp.com/eligibility-requirements"
+      }
+    },
+    {
+      "n": "Taltz",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "500% FPL (Groups 3-4)",
+        "i": "Medicare Part B without supplemental, or insurance does not cover the drug",
+        "q": "You do not have any private commercial insurance",
+        "f": 500,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Tamoxifen", "k": "g", "a": ["Nolvadex"], "tdk": "c" },
     { "n": "Tamoxifen Citrate", "k": "g", "gh": 1 },
     {
@@ -4509,9 +6259,39 @@
       "gh": 1,
       "tdk": "c"
     },
-    { "n": "Targretin", "k": "b" },
-    { "n": "Tasigna", "k": "b" },
-    { "n": "Tasmar", "k": "b" },
+    {
+      "n": "Targretin",
+      "k": "b",
+      "pap": {
+        "p": "valeant-bausch-health-patient-assistance",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
+    {
+      "n": "Tasigna",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
+    {
+      "n": "Tasmar",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Tavaborole", "k": "b" },
     { "n": "Tazarotene", "k": "b", "sc": 1 },
     {
@@ -4528,8 +6308,32 @@
         "u": "https://www.gene.com/patients/patient-foundation"
       }
     },
-    { "n": "Tecvayli", "k": "b" },
-    { "n": "Teflaro", "k": "b" },
+    {
+      "n": "Tecvayli",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Teflaro",
+      "k": "b",
+      "pap": {
+        "p": "pfizer-patient-assistance-program-rxpath",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or government insured; not commercial; Part D must use the Medicare Prescription Payment Plan first",
+        "q": "Be uninsured or government insured and unable to afford your co-payment",
+        "f": 300,
+        "u": "https://www.pfizerrxpathways.com/"
+      }
+    },
     {
       "n": "Telmisartan",
       "k": "g",
@@ -4613,7 +6417,16 @@
     { "n": "Timolol Maleate", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Tinidazole", "k": "g", "sc": 1 },
     { "n": "Tiotropium Bromide Monohydrate Inhal", "k": "b" },
-    { "n": "Tirosint", "k": "b" },
+    {
+      "n": "Tirosint",
+      "k": "b",
+      "pap": {
+        "p": "ibsa-pharma-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Tivicay",
       "k": "b",
@@ -4629,7 +6442,16 @@
       }
     },
     { "n": "Tizanidine", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Tobi", "k": "b" },
+    {
+      "n": "Tobi",
+      "k": "b",
+      "pap": {
+        "p": "viatris-mylan-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Tobramycin", "k": "g", "sc": 1, "gh": 1 },
     { "n": "Tobramycin/dexamethasone", "k": "g", "gh": 1 },
     { "n": "Tobrex", "k": "b" },
@@ -4678,7 +6500,18 @@
         "u": "https://www.sanofipatientconnection.com/financial-eligibility"
       }
     },
-    { "n": "Tracleer", "k": "b" },
+    {
+      "n": "Tracleer",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     {
       "n": "Tradjenta",
       "k": "b",
@@ -4732,8 +6565,33 @@
         "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
       }
     },
-    { "n": "Tremfya", "k": "b" },
-    { "n": "Tresiba", "k": "b", "qs": "Diabetes" },
+    {
+      "n": "Tremfya",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Tresiba",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
     { "n": "Tretinoin", "k": "g", "sc": 1 },
     { "n": "Triamcinolone Acetonide", "k": "g", "sc": 1 },
     { "n": "Triamcinolone Acetonide Inj", "k": "g", "gh": 1 },
@@ -4804,14 +6662,57 @@
     { "n": "Tropicamide", "k": "g", "gh": 1 },
     { "n": "Trospium Chloride", "k": "g", "sc": 1, "gh": 1 },
     { "n": "True Metrix", "k": "b" },
-    { "n": "Trulance", "k": "b" },
-    { "n": "Trulicity", "k": "b" },
+    {
+      "n": "Trulance",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
+    {
+      "n": "Trulicity",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "no",
+        "s": "ready",
+        "r": "300% FPL (Group 1)",
+        "i": "No insurance or Medicare Part D; not Medicaid/LIS/VA",
+        "q": "You do not have any private commercial insurance",
+        "f": 300,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
     { "n": "Trulicity Subcutaneous", "k": "b" },
     { "n": "Trumenba", "k": "g", "sc": 1 },
-    { "n": "Turalio", "k": "b" },
+    {
+      "n": "Turalio",
+      "k": "b",
+      "pap": {
+        "p": "daiichi-sankyo-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Twinrix", "k": "g", "sc": 1 },
     { "n": "Tyblume", "k": "g", "sc": 1 },
-    { "n": "Tykerb", "k": "b" },
+    {
+      "n": "Tykerb",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Ubidecarenone", "k": "g", "gh": 1 },
     {
       "n": "Ubrelvy",
@@ -4827,9 +6728,30 @@
         "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
       }
     },
-    { "n": "Uceris", "k": "b" },
+    {
+      "n": "Uceris",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Uell", "k": "b" },
-    { "n": "Uptravi", "k": "b" },
+    {
+      "n": "Uptravi",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Urea", "k": "g", "sc": 1 },
     { "n": "Urea 20 External", "k": "g", "sc": 1 },
     { "n": "Ursodiol", "k": "g", "gh": 1 },
@@ -4904,9 +6826,32 @@
     { "n": "Varivax", "k": "g", "sc": 1 },
     { "n": "Vaxelis", "k": "g", "sc": 1 },
     { "n": "Vaxneuvance", "k": "g", "sc": 1 },
-    { "n": "Veletri", "k": "b" },
+    {
+      "n": "Veletri",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Velivet", "k": "g", "sc": 1 },
-    { "n": "Vemlidy", "k": "b" },
+    {
+      "n": "Vemlidy",
+      "k": "b",
+      "pap": {
+        "p": "gilead-advancing-access-pap-map",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income limit published; uninsured only",
+        "i": "Uninsured only",
+        "q": "If your patient is uninsured, they may be eligible to receive their Gilead medication free of charge through the PAP/MAP",
+        "u": "https://www.gileadadvancingaccess.com/patient"
+      }
+    },
     {
       "n": "Venclexta",
       "k": "b",
@@ -5003,9 +6948,29 @@
         "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
       }
     },
-    { "n": "Vijoice", "k": "b" },
+    {
+      "n": "Vijoice",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     { "n": "Vilazodone", "k": "g", "sc": 1 },
-    { "n": "Viokace", "k": "b" },
+    {
+      "n": "Viokace",
+      "k": "b",
+      "pap": {
+        "p": "nestle-health-science-formerly-aptalis-u",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Viracept", "k": "b" },
     {
       "n": "Visudyne",
@@ -5040,7 +7005,18 @@
       }
     },
     { "n": "Voriconazole", "k": "g", "sc": 1 },
-    { "n": "Votrient", "k": "b" },
+    {
+      "n": "Votrient",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     {
       "n": "Vraylar",
       "k": "b",
@@ -5056,7 +7032,16 @@
       }
     },
     { "n": "Vumerity", "k": "b" },
-    { "n": "Vyepti", "k": "b" },
+    {
+      "n": "Vyepti",
+      "k": "b",
+      "pap": {
+        "p": "lundbeck-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Vyzulta",
       "k": "b",
@@ -5087,14 +7072,53 @@
         "u": "https://www.merckhelps.com/"
       }
     },
-    { "n": "Wixela", "k": "b" },
+    {
+      "n": "Wixela",
+      "k": "b",
+      "pap": {
+        "p": "viatris-generic-advair-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Wixela Inhub", "k": "g", "sc": 1 },
     { "n": "Works W/ One Touch Ultra Meters", "k": "g", "gh": 1 },
     { "n": "Works With One Touch Ultra Meters", "k": "g", "gh": 1 },
-    { "n": "Xarelto", "k": "b" },
+    {
+      "n": "Xarelto",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
     { "n": "Xeljanz / Xeljanz", "k": "b" },
-    { "n": "Xen", "k": "b" },
-    { "n": "Xifaxan", "k": "b" },
+    {
+      "n": "Xen",
+      "k": "b",
+      "pap": {
+        "p": "unidentified",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
+    {
+      "n": "Xifaxan",
+      "k": "b",
+      "pap": {
+        "p": "bausch-health-patient-assistance-program",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.bauschhealthpap.com/"
+      }
+    },
     { "n": "Xigduo", "k": "b", "qs": "Diabetes" },
     { "n": "Xigduo Xr", "k": "b" },
     {
@@ -5154,10 +7178,52 @@
         "u": "https://www.gene.com/patients/patient-foundation"
       }
     },
-    { "n": "Xospata", "k": "b" },
-    { "n": "Xtandi", "k": "b" },
-    { "n": "Xulane", "k": "b" },
-    { "n": "Xultophy", "k": "b" },
+    {
+      "n": "Xospata",
+      "k": "b",
+      "pap": {
+        "p": "astellas-patient-assistance-program",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.astellaspharmasupportsolutions.com/"
+      }
+    },
+    {
+      "n": "Xtandi",
+      "k": "b",
+      "pap": {
+        "p": "astellas-patient-assistance-program",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "u": "https://www.astellaspharmasupportsolutions.com/products/xtandi/patient_assistance/"
+      }
+    },
+    {
+      "n": "Xulane",
+      "k": "b",
+      "pap": {
+        "p": "viatris-mylan-generic-patch-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
+    {
+      "n": "Xultophy",
+      "k": "b",
+      "pap": {
+        "p": "novo-nordisk-pap-novocare",
+        "o": "no",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or Medicare; not commercial, Medicaid, LIS or VA",
+        "q": "If you have private or commercial insurance, you are not eligible for the PAP",
+        "f": 400,
+        "u": "https://www.novocare.com/diabetes/help-with-costs/pap.html"
+      }
+    },
     {
       "n": "Yervoy",
       "k": "b",
@@ -5171,13 +7237,53 @@
         "u": "https://www.bmspaf.org/"
       }
     },
-    { "n": "Yeztugo", "k": "b" },
-    { "n": "Yondelis", "k": "b" },
-    { "n": "Yupelri", "k": "b" },
+    {
+      "n": "Yeztugo",
+      "k": "b",
+      "pap": {
+        "p": "gilead-advancing-access",
+        "o": "unclear",
+        "s": "call",
+        "r": "No income limit published; uninsured only",
+        "q": "If your patient is uninsured, they may be eligible to receive their Gilead medication free of charge through the PAP/MAP",
+        "u": "https://www.gileadadvancingaccess.com/patient"
+      }
+    },
+    {
+      "n": "Yondelis",
+      "k": "b",
+      "pap": {
+        "p": "johnson-johnson-patient-assistance-found",
+        "o": "unclear",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "You may be eligible if you don't have insurance",
+        "u": "https://www.jjpatientassistance.com"
+      }
+    },
+    {
+      "n": "Yupelri",
+      "k": "b",
+      "pap": {
+        "p": "viatris-mylan-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     { "n": "Zafirluka", "k": "g", "sc": 1 },
     { "n": "Zafirlukast", "k": "g", "gh": 1 },
     { "n": "Zaleplon", "k": "g", "sc": 1 },
-    { "n": "Zelapar", "k": "b" },
+    {
+      "n": "Zelapar",
+      "k": "b",
+      "pap": {
+        "p": "valeant-bausch-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
     {
       "n": "Zelboraf",
       "k": "b",
@@ -5264,8 +7370,28 @@
     { "n": "Zolpidem Er", "k": "g", "sc": 1 },
     { "n": "Zolpidem Tartrate", "k": "g", "sc": 1 },
     { "n": "Zonisamide", "k": "g", "sc": 1, "gh": 1 },
-    { "n": "Zoryve", "k": "b" },
-    { "n": "Zykadia", "k": "b" },
+    {
+      "n": "Zoryve",
+      "k": "b",
+      "pap": {
+        "p": "arcutis-biotherapeutics-unconfirmed",
+        "o": "not_checked",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site"
+      }
+    },
+    {
+      "n": "Zykadia",
+      "k": "b",
+      "pap": {
+        "p": "novartis-patient-assistance-foundation-n",
+        "o": "no",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Patients who have commercial insurance are not eligible for NPAF support... even if their insurance does not cover the medication",
+        "u": "https://www.novartis.com/us-en/patients-and-caregivers/patient-assistance/patient-assistance-foundation-enrollment"
+      }
+    },
     {
       "n": "Zylet",
       "k": "b",
