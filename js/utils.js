@@ -856,6 +856,9 @@ var _searchIndexBuilt = false;
 // Live Call (Live Assist, Rebuttals, Q&A Rebuttals, Client Profiler) is
 // hidden from agents as of Oct 2026. Set to false to bring it back.
 var CHA_LIVE_CALL_HIDDEN = true;
+// Scripts tab is Plan Scripts + DocuSign only (Oct 2026); closing lines
+// and rebuttals are no longer shown, so search skips them.
+var CHA_SCRIPTS_EXTRAS_HIDDEN = true;
 
 function buildSearchIndex() {
   if (_searchIndexBuilt) return;
@@ -1030,7 +1033,7 @@ function buildSearchIndex() {
   }
 
   // Index CLOSES
-  if (typeof CLOSES !== 'undefined') {
+  if (typeof CLOSES !== 'undefined' && !CHA_SCRIPTS_EXTRAS_HIDDEN) {
     CLOSES.forEach(function (c, i) {
       SEARCH_INDEX.push({
         type: 'Closing Lines',
@@ -1058,7 +1061,7 @@ function buildSearchIndex() {
   }
 
   // Index RECOVERY
-  if (typeof RECOVERY !== 'undefined') {
+  if (typeof RECOVERY !== 'undefined' && !CHA_SCRIPTS_EXTRAS_HIDDEN) {
     RECOVERY.forEach(function (r, i) {
       SEARCH_INDEX.push({
         type: 'Control the Call',
@@ -1110,7 +1113,7 @@ function buildSearchIndex() {
   }
 
   SEARCH_INDEX.push({
-    type: 'Training',
+    type: 'Plans',
     title: 'Quick Reference',
     preview: 'Every current plan with network, underwriter and association',
     searchText:
@@ -1118,17 +1121,6 @@ function buildSearchIndex() {
     action: function () {
       closeSearch();
       showPage('quickref');
-    }
-  });
-  SEARCH_INDEX.push({
-    type: 'Compliance',
-    title: 'Every Call',
-    preview: 'What every call must include',
-    searchText:
-      'compliance disclosures non aca not major medical waiting period pre existing exclusions',
-    action: function () {
-      closeSearch();
-      showPage('everycall');
     }
   });
 
