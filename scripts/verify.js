@@ -255,10 +255,10 @@ step('Data: plan-registry loads (if present)', () => {
 
 // ---------------------------------------------------------------
 // STEP 3b — plan lineup guard: discontinued plans must not appear in
-//            agent-facing JS. Warning-only until the lineup cleanup is
-//            finished; set LINEUP_GUARD_BLOCKS = true to make it block.
+//            agent-facing JS. Blocking since the Oct 2026 lineup
+//            cleanup finished.
 // ---------------------------------------------------------------
-const LINEUP_GUARD_BLOCKS = false;
+const LINEUP_GUARD_BLOCKS = true;
 const DISCONTINUED_PLAN_PATTERNS = [
   /Everest Summit/i,
   /Everest Fixed Indemnity/i,
@@ -273,11 +273,16 @@ const DISCONTINUED_PLAN_PATTERNS = [
 ];
 // Exempt: plan scripts stay verbatim by decision (Oct 2026); Sales
 // Tracker keeps old names so past sales still reconcile; raw PDF text
-// is source material, not agent-facing copy.
+// is source material, not agent-facing copy; chat.js answer logic and
+// plan-data.js POLICY_DOCS values are never edited (CLAUDE.md hard
+// rules). A single line can opt out with a lineup-guard-ignore comment
+// (used for kept script names).
 const LINEUP_GUARD_EXEMPT = [
   'call-playbook.js',
   'sales-tracker.js',
-  'plan-data-pdf-raw.js'
+  'plan-data-pdf-raw.js',
+  'chat.js',
+  'plan-data.js'
 ];
 step('Plan lineup: no discontinued plans in agent-facing JS', () => {
   const hits = [];
@@ -285,6 +290,7 @@ step('Plan lineup: no discontinued plans in agent-facing JS', () => {
     if (LINEUP_GUARD_EXEMPT.includes(path.basename(f))) continue;
     const lines = fs.readFileSync(f, 'utf8').split('\n');
     lines.forEach((line, i) => {
+      if (line.includes('lineup-guard-ignore')) return;
       for (const re of DISCONTINUED_PLAN_PATTERNS) {
         if (re.test(line)) {
           hits.push(`${path.relative(ROOT, f)}:${i + 1} ${re.source}`);

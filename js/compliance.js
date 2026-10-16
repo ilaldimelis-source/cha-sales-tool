@@ -150,7 +150,7 @@ function renderComplianceCenter() {
   html +=
     '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#DC2626;margin-bottom:8px;">LIMITED BENEFIT PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(220,38,38,0.10);color:#DC2626;margin-left:6px;letter-spacing:0;">LIMITED</span></div>';
   html +=
-    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Everest, HarmonyCare, SigmaCare, BWA Paramount 1-6, BWA Americare 2/3/4, Health Choice Silver, Pinnacle Protect 1-4, Goodlife Partners WB Choice, Goodlife Partners WB Select</div>';
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: HarmonyCare, SigmaCare, BWA Paramount 1-6, BWA Americare 2/3/4, Health Choice Silver, Pinnacle Protect 2-4, Goodlife Partners WB Choice, Goodlife Partners WB Select</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
   html +=
@@ -172,7 +172,7 @@ function renderComplianceCenter() {
   html +=
     '&#8226; Pinnacle Protect Plans 2-4 and Health Choice Silver: verify exact limits in SOB before enrolling<br>';
   html +=
-    '&#8226; Billing: FirstEnroll = Everest, HarmonyCare, SigmaCare, BWA Paramount, BWA Americare, Health Choice Silver | NEO = Pinnacle Protect 1-4';
+    '&#8226; Billing: FirstEnroll = HarmonyCare, SigmaCare, BWA Paramount, BWA Americare, Health Choice Silver | NEO = Pinnacle Protect 2-4';
   html += '</div></div>';
 
   html +=

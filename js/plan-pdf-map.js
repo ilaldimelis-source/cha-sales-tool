@@ -99,21 +99,6 @@
       missingFiles: []
     },
     {
-      planId: 'everest',
-      planName: 'Everest Fixed Indemnity',
-      type: 'Limited',
-      group: 'Everest',
-      aliases: [
-        'Everest Fixed Indemnity',
-        'everest fixed indemnity',
-        'everest',
-        'Everest Fixed Indemnity (100–1000+)'
-      ],
-      pdfFiles: ['Everest_Brochure_REV (1).pdf'],
-      status: 'ready',
-      missingFiles: []
-    },
-    {
       planId: 'galena',
       planName: 'Galena STM Elite / Standard / Economy',
       type: 'STM',
@@ -285,39 +270,6 @@
       missingFiles: []
     },
     {
-      planId: 'mychoicehigh',
-      planName: 'MyChoice - Plan High',
-      type: 'Limited',
-      group: 'Limited',
-      aliases: ['MyChoice - Plan High', 'mychoice plan high', 'mychoicehigh'],
-      pdfFiles: ['MyChoice_High_Brochure_1.pdf'],
-      status: 'excluded',
-      missingFiles: [],
-      exclusionReason: 'missing_pdf_by_scope_decision'
-    },
-    {
-      planId: 'mychoicelow',
-      planName: 'MyChoice - Plan Low',
-      type: 'Limited',
-      group: 'Limited',
-      aliases: ['MyChoice - Plan Low', 'mychoice plan low', 'mychoicelow'],
-      pdfFiles: ['MyChoice_Low_Brochure_1.pdf'],
-      status: 'excluded',
-      missingFiles: [],
-      exclusionReason: 'missing_pdf_by_scope_decision'
-    },
-    {
-      planId: 'mychoicemid',
-      planName: 'MyChoice - Plan Mid',
-      type: 'Limited',
-      group: 'Limited',
-      aliases: ['MyChoice - Plan Mid', 'mychoice plan mid', 'mychoicemid'],
-      pdfFiles: ['MyChoice_Mid_Brochure_1.pdf'],
-      status: 'excluded',
-      missingFiles: [],
-      exclusionReason: 'missing_pdf_by_scope_decision'
-    },
-    {
       planId: 'healthchoicesilver',
       planName: 'NCE Health Choice Silver',
       type: 'Limited',
@@ -395,23 +347,6 @@
         'pinnacle critical care plan4'
       ],
       pdfFiles: ['Pinnacle_CriticalCare_Plan4_Brochure.pdf'],
-      status: 'excluded',
-      missingFiles: [],
-      exclusionReason: 'missing_pdf_by_scope_decision'
-    },
-    {
-      planId: 'pinnacleprotect1',
-      planName: 'Pinnacle Protect Plan 1',
-      type: 'Limited',
-      group: 'Limited',
-      aliases: [
-        'Pinnacle Protect Plan 1',
-        'pinnacle protect plan 1',
-        'pinnacleprotect1',
-        'Pinnacle Protect Plan1',
-        'pinnacle protect plan1'
-      ],
-      pdfFiles: ['Pinnacle_Protect_Plan1_Brochure.pdf'],
       status: 'excluded',
       missingFiles: [],
       exclusionReason: 'missing_pdf_by_scope_decision'
@@ -737,8 +672,6 @@
     bwaamericare: 'bwaamericare',
     'bwa paramount': 'bwapara',
     bwapara: 'bwapara',
-    'everest fixed indemnity': 'everest',
-    everest: 'everest',
     'galena stm elite standard economy': 'galena',
     galena: 'galena',
     'goodhealth 1': 'ghdp1',
@@ -768,12 +701,6 @@
     'harbor-stm-secure': 'harbor-stm-secure',
     'harmonycare plus': 'harmonycare',
     harmonycare: 'harmonycare',
-    'mychoice plan high': 'mychoicehigh',
-    mychoicehigh: 'mychoicehigh',
-    'mychoice plan low': 'mychoicelow',
-    mychoicelow: 'mychoicelow',
-    'mychoice plan mid': 'mychoicemid',
-    mychoicemid: 'mychoicemid',
     'nce health choice silver': 'healthchoicesilver',
     healthchoicesilver: 'healthchoicesilver',
     'pinnacle critical care plan 1': 'pinnaclecriticalcare1',
@@ -788,9 +715,6 @@
     'pinnacle critical care plan 4': 'pinnaclecriticalcare4',
     pinnaclecriticalcare4: 'pinnaclecriticalcare4',
     'pinnacle critical care plan4': 'pinnaclecriticalcare4',
-    'pinnacle protect plan 1': 'pinnacleprotect1',
-    pinnacleprotect1: 'pinnacleprotect1',
-    'pinnacle protect plan1': 'pinnacleprotect1',
     'pinnacle protect plan 2': 'pinnacleprotect2',
     pinnacleprotect2: 'pinnacleprotect2',
     'pinnacle protect plan2': 'pinnacleprotect2',
