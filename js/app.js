@@ -301,19 +301,19 @@ var PAGE_CONFIG = {
   },
   plans: {
     label: 'Plans',
+    subs: [{ id: 'policydocs', label: 'Plans', render: renderPolicydocs }]
+  },
+  quickreference: {
+    label: 'Quick Reference',
     subs: [
-      { id: 'policydocs', label: 'Plans', render: renderPolicydocs },
       { id: 'quickref', label: 'Quick Reference', render: renderQuickReference }
     ]
   },
   scripts: {
     label: 'Scripts',
     subs: [
-      { id: 'everycall', label: 'Every Call', render: renderEveryCall },
       { id: 'planscripts', label: 'Plan Scripts', render: renderPlanScripts },
-      { id: 'closes', label: 'Closing Lines', render: renderCloses },
-      { id: 'recovery', label: 'Rebuttals', render: renderRecovery },
-      { id: 'docusign', label: 'DocuSign' }
+      { id: 'docusign', label: 'SmartChoice DocuSign' }
     ]
   },
   networkguide: {
@@ -721,6 +721,9 @@ function chaDashWidgetsHtml() {
     '<button type="button" class="dash-cc-action" onclick="chaDashFocusLookup()">' +
     ic('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>') +
     '<span>Find a Plan</span></button>' +
+    '<button type="button" class="dash-cc-action" onclick="showPage(\'quickreference\')">' +
+    ic('<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>') +
+    '<span>Quick Reference</span></button>' +
     '<button type="button" class="dash-cc-action" onclick="_showComboPage(\'scripts\',\'planscripts\')">' +
     ic(
       '<path d="M8 21h12a2 2 0 0 0 2-2v-2H10v2a2 2 0 1 1-4 0V5a2 2 0 1 0-4 0v3h4"/><path d="M19 17V5a2 2 0 0 0-2-2H4"/>'
@@ -736,7 +739,7 @@ function chaDashWidgetsHtml() {
     ic(
       '<path d="M3 4h13a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2z"/><path d="M7 8h7M7 12h7"/>'
     ) +
-    '<span>DocuSign Walkthrough</span></button>' +
+    '<span>SmartChoice DocuSign</span></button>' +
     '</div></div>' +
     '</div>'
   );
@@ -1992,6 +1995,7 @@ document.addEventListener('keydown', function (e) {
   // Number keys 1-8 for page navigation
   var numMap = {
     1: 'dashboard',
+    2: 'quickreference',
     3: 'plans',
     4: 'scripts',
     5: 'networkguide',

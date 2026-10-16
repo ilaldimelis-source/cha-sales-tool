@@ -2249,6 +2249,24 @@
             <span class="nb-label">Plans</span>
             <span class="nb-dot" aria-hidden="true"></span>
           </button>
+          <button class="nb" onclick="showPage('quickreference')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" /></svg
+            ></span>
+            <span class="nb-label">Quick Reference</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
           <button class="nb" onclick="showPage('addons')">
             <span class="nb-icon"
               ><svg
@@ -2582,9 +2600,15 @@
           <div class="page-subtabs" id="subtabs-plans"></div>
           <div id="subcontent-plans"></div>
           <div id="page-policydocs" class="page" style="display: none"></div>
-          <div id="page-quickref" class="page" style="display: none"></div>
           <div id="page-allplans" class="page" style="display: none"></div>
           <div id="page-benefits" class="page" style="display: none"></div>
+        </div>
+
+        <!-- QUICK REFERENCE — own sidebar tab (Oct 2026) -->
+        <div id="page-quickreference" class="combo-page">
+          <div class="page-subtabs" id="subtabs-quickreference"></div>
+          <div id="subcontent-quickreference"></div>
+          <div id="page-quickref" class="page" style="display: none"></div>
         </div>
 
         <!-- SCRIPTS — Closes, Call Flow, Plan Scripts, Control the Call -->
@@ -3128,7 +3152,7 @@
     <script src="js/auth.js"></script>
     <script src="js/speed-insights.js"></script>
     <script src="js/plan-registry.js?v=1792163611848"></script>
-    <script src="js/utils.js?v=1792164488818"></script>
+    <script src="js/utils.js?v=1792171229555"></script>
     <script src="js/recovery-data.js?v=1779700000000"></script>
     <script src="js/objections.js?v=1779700000000"></script>
     <script src="js/knowledge_base.js?v=1792165216661"></script>
@@ -3149,7 +3173,7 @@
     <script src="js/sales-tracker.js?v=1792165216661"></script>
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1792165948486"></script>
-    <script src="js/app.js?v=1792164488818"></script>
+    <script src="js/app.js?v=1792171229555"></script>
     <script>
       (function () {
         var data = window.docusignWalkthroughData;
