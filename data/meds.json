@@ -1,0 +1,5368 @@
+{
+  "version": "2026-10-16",
+  "checked": "Oct 16 2026",
+  "fpl": {
+    "year": 2026,
+    "published": "Jan 15 2026",
+    "source": "https://aspe.hhs.gov/topics/poverty-economic-mobility/poverty-guidelines",
+    "table": { "48": [15960, 5680], "AK": [19950, 7100], "HI": [18360, 6530] }
+  },
+  "programs": {
+    "otsuka-patient-assistance-foundation-opa": {
+      "name": "Otsuka Patient Assistance Foundation (OPAF)",
+      "url": "https://www.otsukapatientassistance.com/faqs"
+    },
+    "bristol-myers-squibb-patient-assistance-": {
+      "name": "Bristol Myers Squibb Patient Assistance Foundation (BMSPAF)",
+      "url": "https://www.bmspaf.org/"
+    },
+    "genentech-patient-foundation": {
+      "name": "Genentech Patient Foundation",
+      "url": "https://www.gene.com/patients/patient-foundation"
+    },
+    "horizon-therapeutics-amgen-flag": {
+      "name": "Horizon Therapeutics / Amgen - FLAG",
+      "url": "https://www.amgensafetynetfoundation.com/eligibility.html"
+    },
+    "sanofi-patient-connection": {
+      "name": "Sanofi Patient Connection",
+      "url": "https://www.sanofipatientconnection.com/financial-eligibility"
+    },
+    "bayer-us-patient-assistance-foundation": {
+      "name": "Bayer US Patient Assistance Foundation",
+      "url": "https://www.patientassistance.bayer.us/en/faqs"
+    },
+    "amgen-safety-net-foundation": {
+      "name": "Amgen Safety Net Foundation",
+      "url": "https://www.amgensafetynetfoundation.com/eligibility.html"
+    },
+    "teva-cares-foundation": {
+      "name": "Teva Cares Foundation",
+      "url": "https://www.tevacares.org/faq/"
+    },
+    "allergan-patient-assistance-program-abbv": {
+      "name": "Allergan Patient Assistance Program (AbbVie)",
+      "url": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+    },
+    "gsk-for-you-pap": {
+      "name": "GSK For You PAP",
+      "url": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+    },
+    "viiv-healthcare-pap-gsk-patient-access-p": {
+      "name": "ViiV Healthcare PAP (GSK Patient Access Programs Foundation)",
+      "url": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+    },
+    "boehringer-ingelheim-cares-foundation-bi": {
+      "name": "Boehringer Ingelheim Cares Foundation (BI Cares)",
+      "url": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+    },
+    "mylan-viatris-originally-gsk-flag": {
+      "name": "Mylan/Viatris (originally GSK) - FLAG",
+      "url": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+    },
+    "merck-patient-assistance-program-merck-h": {
+      "name": "Merck Patient Assistance Program (Merck Helps)",
+      "url": "https://www.merckhelps.com/"
+    },
+    "ucb-patient-assistance-program": {
+      "name": "UCB Patient Assistance Program",
+      "url": "https://www.ucb-usa.com/patient-support"
+    },
+    "gsk-for-you-vaccines-pap": {
+      "name": "GSK For You (Vaccines) PAP",
+      "url": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+    },
+    "botox-patient-assistance-program-abbvie-": {
+      "name": "BOTOX Patient Assistance Program (AbbVie/Allergan)",
+      "url": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+    },
+    "takeda-help-at-hand": {
+      "name": "Takeda Help At Hand",
+      "url": "https://www.helpathandpap.com/Eligibility.aspx"
+    },
+    "meda-viatris-flag": { "name": "Meda/Viatris - FLAG", "url": "" },
+    "myabbvie-assist": {
+      "name": "myAbbVie Assist",
+      "url": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+    },
+    "lilly-cares-foundation": {
+      "name": "Lilly Cares Foundation",
+      "url": "https://www.lillycares.com/how-to-apply"
+    },
+    "merck-vaccine-patient-assistance-program": {
+      "name": "Merck Vaccine Patient Assistance Program",
+      "url": "https://www.merckhelps.com/"
+    },
+    "organon-patient-assistance-program": {
+      "name": "Organon Patient Assistance Program",
+      "url": "https://organon.com/our-focus/patient-support-programs/"
+    },
+    "merck-patient-assistance-program-referra": {
+      "name": "Merck Patient Assistance Program (referral via Merck Access Program)",
+      "url": "https://www.merckhelps.com/"
+    },
+    "bausch-lomb-patient-assistance-program": {
+      "name": "Bausch + Lomb Patient Assistance Program",
+      "url": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+    },
+    "genentech-patient-foundation-free-drug-p": {
+      "name": "Genentech Patient Foundation (free-drug program)",
+      "url": "https://www.gene.com/patients/patient-foundation"
+    }
+  },
+  "drugs": [
+    { "n": "(aka", "k": "g", "gh": 1 },
+    { "n": "1x To 6x Daily Testing - Meter, Test", "k": "g", "gh": 1 },
+    { "n": "1x To 6x Daily Testing - Test", "k": "g", "gh": 1 },
+    { "n": "Abacavir", "k": "g", "sc": 1 },
+    { "n": "Abacavir Sulfate", "k": "b" },
+    { "n": "Abacavir Sulfate-lamivudine", "k": "g", "sc": 1 },
+    {
+      "n": "Abilify Asimtufi XR",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/faqs"
+      }
+    },
+    {
+      "n": "Abilify Asimtufii XR",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/"
+      }
+    },
+    {
+      "n": "Abilify Maintena",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/"
+      }
+    },
+    {
+      "n": "Abraxane",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Abrysvo", "k": "g", "sc": 1 },
+    {
+      "n": "Acarbose",
+      "k": "g",
+      "a": ["Precose"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Acebutolol", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Acetaminophen", "k": "g", "gh": 1 },
+    { "n": "Acetaminophen W/ Codeine", "k": "g", "sc": 1 },
+    { "n": "Acetazolamide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Acitretin", "k": "g", "sc": 1 },
+    {
+      "n": "Actemra",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Acthib", "k": "g", "sc": 1 },
+    {
+      "n": "Actimmune",
+      "k": "b",
+      "pap": {
+        "p": "horizon-therapeutics-amgen-flag",
+        "o": "likely",
+        "s": "call",
+        "r": "Not on the 2026 Amgen tier lists",
+        "q": "You have no insurance coverage",
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    {
+      "n": "Activase",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    {
+      "n": "Acyclovir",
+      "k": "g",
+      "a": ["Zovirax"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Adacel",
+      "k": "b",
+      "sc": 1,
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Adakveo", "k": "b" },
+    { "n": "Adalene", "k": "g", "sc": 1 },
+    { "n": "Adalene-benzoyl Peroxide", "k": "g", "sc": 1 },
+    { "n": "Adefovir Dipivoxil", "k": "b" },
+    {
+      "n": "Adempas",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Admelog",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Afinitor", "k": "b" },
+    { "n": "Afinitor Disperz", "k": "b" },
+    {
+      "n": "Afluria Quad Inj; Fluarix Quad Inj; Fluzone Quad Inj; Flulaval Qua",
+      "k": "g",
+      "sc": 1
+    },
+    { "n": "Afrin (oxymetazoline", "k": "g", "gh": 1 },
+    { "n": "Afrin Sinus (oxymetazoline", "k": "g", "gh": 1 },
+    {
+      "n": "Aimovig",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "No coverage for the drug; some Medicare cases",
+        "q": "You have no insurance coverage",
+        "f": 300,
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    { "n": "Airsupra", "k": "b" },
+    {
+      "n": "Ajovy",
+      "k": "b",
+      "pap": {
+        "p": "teva-cares-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Must meet insurance criteria",
+        "q": "If you do not have insurance or prescription drug coverage, please indicate that on your application",
+        "f": 300,
+        "u": "https://www.tevacares.org/faq/"
+      }
+    },
+    { "n": "Akeega", "k": "b" },
+    { "n": "Albendazole", "k": "b" },
+    { "n": "Albuterol", "k": "g", "qs": "Allergy Inhalers" },
+    { "n": "Albuterol HFA", "k": "g", "a": ["Proventil HFA"], "tdk": "c" },
+    { "n": "Albuterol MDI", "k": "g", "a": ["Proventil HFA"], "tdk": "u" },
+    { "n": "Albuterol Sulfate", "k": "g", "gh": 1 },
+    { "n": "Albuterol Sulfate Hfa", "k": "g", "sc": 1 },
+    { "n": "Alclometasone Dipropionate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Alcohol Prep Pads", "k": "g", "gh": 1 },
+    {
+      "n": "Alecensa",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Alendronate", "k": "g", "a": ["Fosamax"], "sc": 1, "tdk": "c" },
+    { "n": "Alendronate Sodium", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Alfuzosin Er", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Aliskiren Fumarate", "k": "b" },
+    { "n": "All Formulations - Fenofibrate", "k": "g", "gh": 1 },
+    { "n": "Allergy Eye (ketotifen Fumarate", "k": "g", "gh": 1 },
+    {
+      "n": "Allopurinol",
+      "k": "g",
+      "a": ["Zyloprim"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Almotrip Mal", "k": "g", "sc": 1 },
+    { "n": "Alogliptin", "k": "b" },
+    { "n": "Alogliptin-metformin", "k": "b" },
+    { "n": "Alogliptin-pioglitazone", "k": "b" },
+    { "n": "Alosetron", "k": "g", "sc": 1 },
+    {
+      "n": "Alphagan P",
+      "k": "b",
+      "pap": {
+        "p": "allergan-patient-assistance-program-abbv",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Alprazolam", "k": "g", "sc": 1 },
+    { "n": "Alrex", "k": "b" },
+    {
+      "n": "Amantadine",
+      "k": "g",
+      "a": ["Gocovri"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Amethy", "k": "g", "sc": 1 },
+    { "n": "Amiloride", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Amiloride & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Amiloride/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Aminocaproic", "k": "b" },
+    { "n": "Aminocaproic Acid", "k": "b" },
+    { "n": "Amiodarone", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Amitriptyline",
+      "k": "g",
+      "a": ["Elavil"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Amlodipine",
+      "k": "g",
+      "a": ["Norvasc"],
+      "tdk": "c",
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Amlodipine Bes/olmesartan Med", "k": "g", "gh": 1 },
+    { "n": "Amlodipine Besylate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Amlodipine Besylate-atorvaatin Calcium", "k": "g", "sc": 1 },
+    { "n": "Amlodipine Besylate-benazepril", "k": "g", "sc": 1 },
+    { "n": "Amlodipine Besylate-olmesartan Medoxomil", "k": "g", "sc": 1 },
+    { "n": "Amlodipine Besylate-valsartan", "k": "g", "sc": 1 },
+    { "n": "Amlodipine Besylate/benazepril", "k": "g", "gh": 1 },
+    { "n": "Amlodipine-valsartan-hydrochlorothiazide", "k": "b" },
+    { "n": "Amlodipine/valsartan", "k": "g", "gh": 1 },
+    { "n": "Amlodipine/valsartan/hcthiazid", "k": "g", "gh": 1 },
+    { "n": "Ammonium Lactate", "k": "g", "gh": 1 },
+    { "n": "Amoxapine", "k": "b", "gh": 1 },
+    {
+      "n": "Amoxicillin",
+      "k": "g",
+      "a": ["Amoxil"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Amoxicillin & K Clavulanate", "k": "g", "sc": 1 },
+    {
+      "n": "Amoxicillin/Clavulanic Acid",
+      "k": "g",
+      "a": ["Augmentin"],
+      "tdk": "u"
+    },
+    { "n": "Amoxicillin/potassium Clav", "k": "g", "gh": 1 },
+    { "n": "Amphetamine Sulfate", "k": "g", "sc": 1 },
+    { "n": "Amphetamine-dextroamphetamine", "k": "g", "sc": 1 },
+    { "n": "Amphetamine-dextroamphetamine 3-bead", "k": "b" },
+    { "n": "Ampicillin", "k": "b", "a": ["Omnipen"], "tdk": "c" },
+    { "n": "Anagrelide", "k": "g", "sc": 1 },
+    { "n": "Analpram HC", "k": "b" },
+    { "n": "Anarozole", "k": "g", "sc": 1 },
+    { "n": "Anastrozole", "k": "g", "gh": 1 },
+    {
+      "n": "Anoro Ellipta",
+      "k": "b",
+      "qs": "COPD",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Apidra",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Apidra Soloar Subcutaneous", "k": "b" },
+    { "n": "Aprepitant", "k": "b" },
+    {
+      "n": "Apretude",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "call",
+        "r": "Call the program (limits not shown)",
+        "q": "You are uninsured",
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    {
+      "n": "Aptivus",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Aranelle", "k": "g", "sc": 1 },
+    { "n": "Arazlo", "k": "b" },
+    { "n": "Arexvy", "k": "g", "sc": 1 },
+    {
+      "n": "Aripiprazole",
+      "k": "b",
+      "a": ["Abilify"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Aristada", "k": "b" },
+    {
+      "n": "Arixtra",
+      "k": "b",
+      "pap": {
+        "p": "mylan-viatris-originally-gsk-flag",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Armodafinil", "k": "g", "sc": 1 },
+    {
+      "n": "Armour Thyroid",
+      "k": "b",
+      "pap": {
+        "p": "allergan-patient-assistance-program-abbv",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    {
+      "n": "Arnuity Ellipta",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Ascorbic Acid", "k": "g", "gh": 1 },
+    { "n": "Asenapine Maleate", "k": "g", "sc": 1 },
+    { "n": "Asenapine Sub", "k": "g", "sc": 1 },
+    { "n": "Aspirin", "k": "g", "sc": 1, "gh": 1, "tdk": "c" },
+    { "n": "Aspirin And Dipyridamole", "k": "g", "sc": 1 },
+    { "n": "Aspirin/acetaminophen/caffeine", "k": "g", "gh": 1 },
+    { "n": "Atazanavir Sulfate", "k": "g", "sc": 1 },
+    {
+      "n": "Atenolol",
+      "k": "g",
+      "a": ["Tenormin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c",
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Atenolol & Chlorthalidone", "k": "g", "sc": 1 },
+    { "n": "Atenolol/chlorthalidone", "k": "g", "gh": 1 },
+    {
+      "n": "Atomoxetine",
+      "k": "g",
+      "a": ["Strattera"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Atorvaatin", "k": "g", "sc": 1 },
+    {
+      "n": "Atorvastatin",
+      "k": "g",
+      "a": ["Lipitor"],
+      "tdk": "c",
+      "qs": "Cholesterol"
+    },
+    { "n": "Atorvastatin Calcium", "k": "g", "gh": 1 },
+    { "n": "Atovaquone-proguanil", "k": "g", "sc": 1 },
+    { "n": "Atropine Sul", "k": "g", "sc": 1 },
+    { "n": "Atropine Sulfate", "k": "g", "gh": 1 },
+    {
+      "n": "Atrovent",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    {
+      "n": "Atrovent HFA",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Aubra Eq", "k": "g", "sc": 1 },
+    { "n": "Audenz", "k": "g", "sc": 1 },
+    {
+      "n": "Austedo",
+      "k": "b",
+      "pap": {
+        "p": "teva-cares-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Must meet insurance criteria",
+        "q": "If you do not have insurance or prescription drug coverage, please indicate that on your application",
+        "f": 300,
+        "u": "https://www.tevacares.org/faq/"
+      }
+    },
+    {
+      "n": "Avastin",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    {
+      "n": "Avsola",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "call",
+        "r": "Not on the 2026 Amgen tier lists",
+        "q": "You have no insurance coverage",
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    {
+      "n": "Avycaz",
+      "k": "b",
+      "pap": {
+        "p": "allergan-patient-assistance-program-abbv",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Azathioprine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Azelaic Acid", "k": "g", "sc": 1 },
+    { "n": "Azelaine", "k": "g", "sc": 1 },
+    { "n": "Azelaine-fluticasone Prop", "k": "b" },
+    { "n": "Azelastine", "k": "g", "gh": 1 },
+    { "n": "Azithromycin", "k": "g", "a": ["Zithromax"], "gh": 1, "tdk": "u" },
+    { "n": "B Complex & C No.20/folic Acid", "k": "g", "gh": 1 },
+    { "n": "Bacitracin", "k": "g", "gh": 1 },
+    { "n": "Bacitracin Zinc", "k": "g", "gh": 1 },
+    { "n": "Bacitracin/polymyxin B Sulfate", "k": "g", "gh": 1 },
+    {
+      "n": "Baclofen",
+      "k": "g",
+      "a": ["Lioresal"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Balsalazide", "k": "g", "sc": 1 },
+    { "n": "Balsalazide Disodium", "k": "g", "gh": 1 },
+    { "n": "Basaglar", "k": "b", "qs": "Diabetes" },
+    { "n": "BD Brand Only Home Delivery Only", "k": "g", "gh": 1 },
+    {
+      "n": "Belsomra",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 400,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    {
+      "n": "Benazepril",
+      "k": "g",
+      "sc": 1,
+      "gh": 1,
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Benazepril & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Benazepril/hydrochlorothiazide", "k": "g", "gh": 1 },
+    {
+      "n": "Benlysta",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "call",
+        "r": "Separate GSK process; limits not shown",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Benzonatate",
+      "k": "g",
+      "a": ["Tessalon Perles"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Benzoyl Peroxide", "k": "g", "gh": 1 },
+    { "n": "Benzoyl Peroxide-erythromycin", "k": "g", "sc": 1 },
+    { "n": "Benztropine", "k": "g", "sc": 1 },
+    { "n": "Benztropine Mesylate", "k": "g", "gh": 1 },
+    { "n": "Beovu", "k": "b" },
+    { "n": "Besivance", "k": "b" },
+    { "n": "Betamethasone Dipropionate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Betamethasone Dipropionate Augmented", "k": "g", "sc": 1 },
+    { "n": "Betamethasone DP", "k": "g", "gh": 1 },
+    { "n": "Betamethasone Valerate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Betamethasone/propylene Glyc", "k": "g", "gh": 1 },
+    {
+      "n": "Betaseron",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    { "n": "Betaxolol", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Bethanechol", "k": "g", "sc": 1 },
+    { "n": "Bethanechol Chloride", "k": "g", "gh": 1 },
+    { "n": "Bevespi Aerosphere", "k": "b" },
+    { "n": "Bexsero", "k": "g", "sc": 1 },
+    { "n": "Bicalutamide", "k": "g", "sc": 1 },
+    { "n": "Bijuva", "k": "b" },
+    { "n": "Biktarvy", "k": "b" },
+    { "n": "Bimatopro", "k": "g", "sc": 1 },
+    {
+      "n": "Bimzelx",
+      "k": "b",
+      "pap": {
+        "p": "ucb-patient-assistance-program",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "Uninsured or underinsured",
+        "q": "Patient must be uninsured, underinsured, or, if insured, have significant financial hardship despite insurance coverage",
+        "f": 500,
+        "u": "https://www.ucb-usa.com/patient-support"
+      }
+    },
+    { "n": "Bisacodyl", "k": "g", "gh": 1 },
+    { "n": "Bismuth Subsalicylate", "k": "g", "gh": 1 },
+    { "n": "Bisoprolol & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Bisoprolol Fumarate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Bisoprolol Fumarate/hctz", "k": "g", "gh": 1 },
+    {
+      "n": "Blincyto",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No coverage for the drug; some Medicare cases",
+        "q": "You have no insurance coverage",
+        "f": 500,
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    { "n": "Blood Glucose Testing", "k": "g", "gh": 1 },
+    { "n": "Boorix", "k": "g", "sc": 1 },
+    {
+      "n": "Boostrix",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-vaccines-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Botox",
+      "k": "b",
+      "pap": {
+        "p": "botox-patient-assistance-program-abbvie-",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Brand Name Only - Home Delivery Only", "k": "g", "gh": 1 },
+    { "n": "Brenzavvy", "k": "b" },
+    {
+      "n": "Breo Ellipta",
+      "k": "b",
+      "qs": "COPD",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Breztri", "k": "b" },
+    { "n": "Briellyn", "k": "g", "sc": 1 },
+    { "n": "Brilinta", "k": "b" },
+    { "n": "Brimonidine Tartrate", "k": "g", "gh": 1 },
+    {
+      "n": "Briviact",
+      "k": "b",
+      "pap": {
+        "p": "ucb-patient-assistance-program",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "Uninsured or underinsured",
+        "q": "Patient must be uninsured, underinsured, or, if insured, have significant financial hardship despite insurance coverage",
+        "f": 500,
+        "u": "https://www.ucb-usa.com/patient-support"
+      }
+    },
+    { "n": "Bromfenac Sodium Opht", "k": "g", "sc": 1 },
+    { "n": "Bromocriptine Mesylate", "k": "g", "gh": 1 },
+    { "n": "Bryhali", "k": "b" },
+    { "n": "Budesonide", "k": "b", "sc": 1, "gh": 1 },
+    { "n": "Bumetanide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Buphenyl", "k": "b" },
+    { "n": "Buprenorphine Sl", "k": "g", "sc": 1 },
+    { "n": "Buprenorphine-naloxone Sl", "k": "g", "sc": 1 },
+    {
+      "n": "Bupropion",
+      "k": "g",
+      "a": ["Wellbutrin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Bupropion SR",
+      "k": "g",
+      "a": ["Wellbutrin SR"],
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Bupropion XL",
+      "k": "g",
+      "a": ["Wellbutrin XL"],
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Buproprion ER", "k": "g", "gh": 1 },
+    {
+      "n": "Buspirone",
+      "k": "g",
+      "a": ["Buspar"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Butalbital-acetaminophen", "k": "g", "sc": 1 },
+    { "n": "Butalbital-acetaminophen-caff W/ Cod", "k": "g", "sc": 1 },
+    { "n": "Butalbital-acetaminophen-caffeine", "k": "g", "sc": 1 },
+    { "n": "Butalbital-aspirin-caffeine", "k": "g", "sc": 1 },
+    { "n": "Byetta", "k": "b" },
+    {
+      "n": "Cabenuva",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "call",
+        "r": "Call the program (limits not shown)",
+        "q": "You are uninsured",
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    { "n": "Cabergoline", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Calcipotriene-betamethasone Dipropionate", "k": "b" },
+    { "n": "Calcitriol", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Calcium Acetate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Calcium Carbonate", "k": "g", "gh": 1 },
+    { "n": "Calcium Carbonate/mag Carb/fa", "k": "g", "gh": 1 },
+    { "n": "Calcium Carbonate/vitamin D2", "k": "g", "gh": 1 },
+    { "n": "Calcium Carbonate/vitamin D3", "k": "g", "gh": 1 },
+    { "n": "Calcium Citrate", "k": "g", "gh": 1 },
+    { "n": "Calcium Citrate/vitamin D3", "k": "g", "gh": 1 },
+    { "n": "Calcium Polycarbophil", "k": "g", "gh": 1 },
+    { "n": "Calquence", "k": "b" },
+    { "n": "Camila", "k": "g", "sc": 1 },
+    { "n": "Camrese", "k": "g", "sc": 1 },
+    { "n": "Camrese Lo", "k": "g", "sc": 1 },
+    {
+      "n": "Camzyos",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Candesartan Cilexetil", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Candesartan Cilexetil-hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Candesartan/hydrochlorothiazid", "k": "g", "gh": 1 },
+    { "n": "Capecitabine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Caplyta", "k": "b" },
+    { "n": "Caprelsa", "k": "b" },
+    { "n": "Capsaicin", "k": "g", "gh": 1 },
+    { "n": "Captopril", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Carbamazepin", "k": "g", "sc": 1 },
+    {
+      "n": "Carbamazepine",
+      "k": "g",
+      "a": ["Tegretol"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Carbamide Peroxide", "k": "g", "gh": 1 },
+    {
+      "n": "Carbatrol",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Carbido & Levodo", "k": "g", "sc": 1 },
+    { "n": "Carbido & Levodo Orally Disintegrating", "k": "b" },
+    { "n": "Carbidopa/levodopa", "k": "g", "gh": 1 },
+    { "n": "Carbinoxamin", "k": "g", "sc": 1 },
+    { "n": "Carboxymethylcellulose Sodium", "k": "g", "gh": 1 },
+    { "n": "Carisoprodol", "k": "g", "sc": 1 },
+    {
+      "n": "Carvedilol",
+      "k": "g",
+      "a": ["Coreg"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c",
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Carvedilol Cr", "k": "g", "sc": 1 },
+    {
+      "n": "Cathflo",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Cefaclor", "k": "g", "sc": 1 },
+    { "n": "Cefadroxil", "k": "g", "a": ["Duricef"], "sc": 1, "tdk": "c" },
+    { "n": "Cefazolin Sodium", "k": "g", "gh": 1 },
+    {
+      "n": "Cefdinir",
+      "k": "g",
+      "a": ["Omnicef"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Cefixime", "k": "g", "sc": 1 },
+    { "n": "Cefpodoxime", "k": "g", "sc": 1 },
+    { "n": "Cefpodoxime Proxetil", "k": "g", "gh": 1 },
+    {
+      "n": "Cefprozil",
+      "k": "g",
+      "a": ["Cefzil"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Cefuroxime Axetil",
+      "k": "g",
+      "a": ["Ceftin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Celecoxib",
+      "k": "g",
+      "a": ["Celebrex"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Cephalexin",
+      "k": "g",
+      "a": ["Keflex"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Cetirizine", "k": "g", "a": ["Zyrtec"], "gh": 1, "tdk": "u" },
+    { "n": "Chlordiazepoxide", "k": "g", "sc": 1 },
+    { "n": "Chlordiazepoxide-clidinium Bromide", "k": "g", "sc": 1 },
+    { "n": "Chloroquine", "k": "g", "sc": 1 },
+    { "n": "Chloroquine Phosphate", "k": "g", "gh": 1 },
+    { "n": "Chloroxylenol", "k": "g", "gh": 1 },
+    { "n": "Chlorpromazine", "k": "g", "sc": 1 },
+    { "n": "Chlorpropamide", "k": "g", "gh": 1 },
+    { "n": "Chlorthalidone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Chlorzoxazone", "k": "g", "sc": 1 },
+    { "n": "Cholecalciferol", "k": "g", "a": ["Vitamin D3"], "tdk": "c" },
+    { "n": "Cholecalciferol (vitamin D3)", "k": "g", "gh": 1 },
+    { "n": "Choleyramine", "k": "g", "sc": 1 },
+    { "n": "Choleyramine Light", "k": "g", "sc": 1 },
+    { "n": "Choline Fenofibrate", "k": "g", "sc": 1 },
+    { "n": "Cialis", "k": "b" },
+    { "n": "Ciclopirox", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Ciclopirox Olamine", "k": "g", "sc": 1 },
+    { "n": "Ciloazol", "k": "g", "sc": 1 },
+    { "n": "Cilostazol", "k": "g", "gh": 1 },
+    { "n": "Cimetidine", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Cimzia",
+      "k": "b",
+      "pap": {
+        "p": "ucb-patient-assistance-program",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (no government insurance)",
+        "i": "Uninsured or underinsured",
+        "q": "Patient must be uninsured, underinsured, or, if insured, have significant financial hardship despite insurance coverage",
+        "f": 500,
+        "u": "https://www.ucb-usa.com/patient-support"
+      }
+    },
+    { "n": "Cinacalcet", "k": "g", "sc": 1 },
+    {
+      "n": "Ciprofloxacin",
+      "k": "b",
+      "a": ["Cipro"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Ciprofloxacin Eye Preparations", "k": "g", "gh": 1 },
+    { "n": "Ciprofloxacn", "k": "g", "sc": 1 },
+    { "n": "Citalopram", "k": "g", "a": ["Celexa"], "tdk": "c" },
+    { "n": "Citalopram Hydrobromide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Citric Acid/sodium Citrate", "k": "g", "gh": 1 },
+    {
+      "n": "Clarithromycin",
+      "k": "g",
+      "a": ["Biaxin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Clemastine Fumarate", "k": "g", "gh": 1 },
+    {
+      "n": "Climara Pro",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Clindamycin",
+      "k": "g",
+      "a": ["Cleocin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Clindamycin Palmitate", "k": "g", "gh": 1 },
+    { "n": "Clindamycin Phos-benzoyl Perox External", "k": "g", "sc": 1 },
+    { "n": "Clindamycin Phosph-benzoyl Peroxide (refrig)", "k": "g", "sc": 1 },
+    { "n": "Clindamycin Phosphate", "k": "g", "gh": 1 },
+    { "n": "Clindamycin Phosphate External", "k": "g", "sc": 1 },
+    { "n": "Clindamycin Phosphate-benzoyl Peroxide", "k": "g", "sc": 1 },
+    { "n": "Clobetasol", "k": "g", "sc": 1 },
+    { "n": "Clobetasol Propionate", "k": "g", "gh": 1 },
+    { "n": "Clobetasol Propionate/emoll", "k": "g", "gh": 1 },
+    { "n": "Clomiphene Citrate", "k": "g", "gh": 1 },
+    { "n": "Clonazm", "k": "g", "sc": 1 },
+    { "n": "Clonazm Odt", "k": "g", "sc": 1 },
+    { "n": "Clonidine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Clonidine Er", "k": "g", "sc": 1 },
+    { "n": "Clopidogrel", "k": "g", "a": ["Plavix"], "tdk": "c" },
+    { "n": "Clopidogrel Bi-sulfate", "k": "g", "gh": 1 },
+    { "n": "Clopidogrel Bisulfate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Clotrimazole", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Clotrimazole W/ Betamethasone", "k": "g", "sc": 1 },
+    { "n": "Clotrimazole/betamethasone Dip", "k": "g", "gh": 1 },
+    { "n": "Clozapine", "k": "g", "sc": 1 },
+    { "n": "Coartem", "k": "b" },
+    { "n": "Codeine Sulfate", "k": "b" },
+    {
+      "n": "Colchicine",
+      "k": "g",
+      "a": ["Colcrys"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Colchicine W/ Probenecid", "k": "g", "sc": 1 },
+    { "n": "Coleipol", "k": "g", "sc": 1 },
+    { "n": "Colesevelam", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Colestipol", "k": "g", "gh": 1 },
+    {
+      "n": "Combivent Respimat",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Comirnaty", "k": "g", "sc": 1 },
+    { "n": "Conjugated Erogen", "k": "b" },
+    {
+      "n": "Corlanor",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "call",
+        "r": "Not on the 2026 Amgen tier lists",
+        "q": "You have no insurance coverage",
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    {
+      "n": "Cortifoam",
+      "k": "b",
+      "pap": {
+        "p": "meda-viatris-flag",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Applicants must be fully Uninsured, or if Insured, have no prescription drug insurance"
+      }
+    },
+    { "n": "Cosentyx", "k": "b" },
+    {
+      "n": "Cotellic",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Cream,", "k": "g", "gh": 1 },
+    {
+      "n": "Creon",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Cresemba", "k": "b" },
+    { "n": "Crestor", "k": "b", "qs": "Cholesterol" },
+    { "n": "Cromolyn", "k": "g", "sc": 1 },
+    { "n": "Cromolyn Sodium", "k": "g", "gh": 1 },
+    { "n": "Cryselle-28", "k": "g", "sc": 1 },
+    { "n": "Cuprimine", "k": "b" },
+    { "n": "Cyanocobalamin", "k": "g", "sc": 1 },
+    { "n": "Cyanocobalamin (vitamin B-12)", "k": "g", "gh": 1 },
+    { "n": "Cyanocobalamin/fa/pyridoxine", "k": "g", "gh": 1 },
+    {
+      "n": "Cyclobenzaprine",
+      "k": "g",
+      "a": ["Flexeril"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Cyclophosphamide", "k": "b" },
+    { "n": "Cycloserine", "k": "b" },
+    { "n": "Cyclosporine", "k": "g", "sc": 1 },
+    { "n": "Cyclosporine Modified", "k": "g", "sc": 1 },
+    {
+      "n": "Cyltezo",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Cyproheptadine", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Cyramza",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL (Groups 3-4)",
+        "i": "Medicare Part B without supplemental, or insurance does not cover the drug",
+        "q": "if your insurance does not cover the medication, you may still qualify",
+        "f": 500,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    { "n": "Cystagon", "k": "b" },
+    { "n": "Dabigatran", "k": "b" },
+    { "n": "Dabigatran Etexilate Mesylate", "k": "b" },
+    { "n": "Dalfampridine", "k": "g", "sc": 1 },
+    {
+      "n": "Dalvance",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Dantrolene Sodium", "k": "g", "gh": 1 },
+    { "n": "Dapsone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Daptacel", "k": "g", "sc": 1 },
+    { "n": "Darifenacin", "k": "g", "sc": 1 },
+    { "n": "Darunavir", "k": "g", "sc": 1 },
+    { "n": "Darzalex", "k": "b" },
+    { "n": "Dasatinib", "k": "b" },
+    { "n": "Dayvigo", "k": "b" },
+    { "n": "Deferasirox", "k": "b" },
+    {
+      "n": "Delstrigo",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Denavir", "k": "b" },
+    {
+      "n": "Depakote",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Depo-sq Prov", "k": "g", "sc": 1 },
+    { "n": "Depo-teoerone", "k": "g", "sc": 1 },
+    { "n": "Descovy", "k": "b" },
+    { "n": "Desipramine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Desloratadine", "k": "g", "gh": 1 },
+    { "n": "Desmopressin", "k": "g", "sc": 1 },
+    { "n": "Desog-e.estradiol/e.estradiol", "k": "g", "gh": 1 },
+    { "n": "Desogestrel-ethinyl Estradiol", "k": "g", "gh": 1 },
+    { "n": "Desogestrel-ethinyl Estradiol 7 Days X3", "k": "g", "gh": 1 },
+    { "n": "Desonide", "k": "b", "sc": 1, "gh": 1 },
+    { "n": "Desoximetasone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Desvenlafaxine Succinate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Dexamethasone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Dexamethasone 6 Day", "k": "b" },
+    { "n": "Dexamethasone Sod Phosphate", "k": "g", "gh": 1 },
+    {
+      "n": "Dexilant",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Dexlansoprazole Cap", "k": "b" },
+    { "n": "Dexmethylphenidate", "k": "g", "sc": 1 },
+    { "n": "Dextroamphet", "k": "g", "sc": 1 },
+    { "n": "Dextroamphetamine", "k": "b" },
+    { "n": "Dextroamphetamine Sulfate", "k": "g", "sc": 1 },
+    { "n": "Dextroamphetamine Sulfate Er", "k": "g", "sc": 1 },
+    { "n": "Dextrose", "k": "g", "gh": 1 },
+    { "n": "Diabetic Testing Supplies", "k": "g", "gh": 1 },
+    { "n": "Diazm", "k": "g", "sc": 1 },
+    { "n": "Diazm Rectal", "k": "b" },
+    { "n": "Diclofenac", "k": "g", "a": ["Voltaren"], "sc": 1, "tdk": "c" },
+    { "n": "Diclofenac Potassium", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Diclofenac Sodium", "k": "g", "gh": 1 },
+    { "n": "Diclofenac Sodium Tab", "k": "g", "sc": 1 },
+    { "n": "Dicloxacillin Sodium", "k": "g", "sc": 1 },
+    {
+      "n": "Dicyclomine",
+      "k": "g",
+      "a": ["Bentyl"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Didanosine Fnl", "k": "g", "gh": 1 },
+    { "n": "Diflorasone Diacetate External", "k": "g", "sc": 1 },
+    { "n": "Diflunisal", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Digoxin",
+      "k": "g",
+      "a": ["Lanoxin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Dihydroergotamine Mesylate", "k": "b" },
+    {
+      "n": "Diltiazem",
+      "k": "g",
+      "a": ["Cardizem"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Diltiazem Coated Beads", "k": "g", "sc": 1 },
+    {
+      "n": "Diltiazem ER",
+      "k": "g",
+      "a": ["Cardizem CD"],
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Diltiazem Extended Release Beads", "k": "g", "sc": 1 },
+    { "n": "Diltiazem La", "k": "g", "sc": 1 },
+    { "n": "Dimethyl Fumarate", "k": "g", "sc": 1 },
+    { "n": "Dipentum", "k": "b" },
+    { "n": "Diphenhydramine", "k": "g", "gh": 1 },
+    { "n": "Diphenhydramine/zinc Acet", "k": "g", "gh": 1 },
+    { "n": "Diphenoxylate W/ Atropine", "k": "g", "sc": 1 },
+    { "n": "Dipyridamole", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Disulfiram", "k": "g", "sc": 1 },
+    { "n": "Divalproex", "k": "g", "a": ["Depakote"], "sc": 1, "tdk": "c" },
+    { "n": "Divalproex Sodium", "k": "g", "gh": 1 },
+    { "n": "Docusate Calcium", "k": "g", "gh": 1 },
+    { "n": "Docusate Sodium", "k": "g", "gh": 1 },
+    { "n": "Dofetilide", "k": "g", "sc": 1 },
+    {
+      "n": "Donepezil",
+      "k": "g",
+      "a": ["Aricept"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Dorzolamide", "k": "g", "gh": 1 },
+    { "n": "Dorzolamide-timolol Mal Pf", "k": "b" },
+    { "n": "Dorzolamide/timolol Maleat", "k": "g", "gh": 1 },
+    {
+      "n": "Dovato",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    { "n": "Doxazosin Mesylate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Doxepin", "k": "b", "sc": 1, "gh": 1 },
+    { "n": "Doxercalcif", "k": "b" },
+    { "n": "Doxycycline", "k": "g", "sc": 1 },
+    { "n": "Doxycycline Calcium", "k": "g", "gh": 1 },
+    {
+      "n": "Doxycycline Hyclate",
+      "k": "g",
+      "a": ["Vibramycin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Doxycycline Monohydrate", "k": "g", "gh": 1 },
+    { "n": "Drospirenone-ethinyl Erad-levomefolate", "k": "g", "sc": 1 },
+    { "n": "Droxia", "k": "b" },
+    { "n": "Droxido", "k": "g", "sc": 1 },
+    { "n": "Drysol", "k": "b" },
+    { "n": "Duavee", "k": "b" },
+    {
+      "n": "Duloxetine",
+      "k": "g",
+      "a": ["Cymbalta"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Duloxetine Enteric Coated Pellets", "k": "g", "sc": 1 },
+    { "n": "Duobrii", "k": "b" },
+    { "n": "Durolane", "k": "b" },
+    {
+      "n": "Durysta",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Dutaeride", "k": "g", "sc": 1 },
+    { "n": "Dutaeride-tamsulosin", "k": "g", "sc": 1 },
+    { "n": "Dutasteride", "k": "g", "a": ["Avodart"], "gh": 1, "tdk": "c" },
+    { "n": "Dymista", "k": "b" },
+    { "n": "Eazolam", "k": "g", "sc": 1 },
+    { "n": "Ebglyss", "k": "b" },
+    { "n": "Econazole Nitrate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Edurant", "k": "b" },
+    { "n": "Eerified Erogens & Methylteoerone", "k": "g", "sc": 1 },
+    { "n": "Efavirenz", "k": "g", "sc": 1 },
+    { "n": "Efavirenz-emtricitabine-tenofovir Df", "k": "g", "sc": 1 },
+    { "n": "Efavirenz-lamivudine-tenofovir Df", "k": "b" },
+    { "n": "Eglatro", "k": "b" },
+    { "n": "Eglujan", "k": "b" },
+    { "n": "Eletriptan", "k": "g", "sc": 1 },
+    {
+      "n": "Eliquis",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "f": 300,
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Eliquis Arter Ck", "k": "b" },
+    {
+      "n": "Elitek",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Ella", "k": "g", "sc": 1 },
+    { "n": "Elmiron", "k": "b" },
+    { "n": "Emgality", "k": "b" },
+    { "n": "Empaglifloz/linaglip/metformin", "k": "g", "gh": 1 },
+    {
+      "n": "Empliciti",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "EMSAM", "k": "b" },
+    { "n": "Emtricitabin", "k": "b" },
+    { "n": "Emtricitabine-tenofovir Disoproxil Fumarate", "k": "b" },
+    { "n": "Emverm", "k": "b" },
+    { "n": "Enalapril", "k": "g", "a": ["Vasotec"], "tdk": "c" },
+    { "n": "Enalapril Maleate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Enalapril Maleate & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Enalapril/hydrochlorothiazide", "k": "g", "gh": 1 },
+    {
+      "n": "Enbrel",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "No coverage for the drug; some Medicare cases",
+        "q": "You have no insurance coverage",
+        "f": 300,
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    { "n": "Endra", "k": "b" },
+    {
+      "n": "Engerix-b",
+      "k": "b",
+      "sc": 1,
+      "pap": {
+        "p": "gsk-for-you-vaccines-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Enoxarin", "k": "g", "sc": 1 },
+    {
+      "n": "Enspryng",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Entacapone", "k": "g", "sc": 1 },
+    { "n": "Entecavir", "k": "g", "sc": 1 },
+    { "n": "Entreo", "k": "b" },
+    {
+      "n": "Entyvio",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Epclusa", "k": "b" },
+    { "n": "Epinephrine", "k": "b", "sc": 1 },
+    { "n": "EpiPen", "k": "b" },
+    {
+      "n": "Epivir",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    { "n": "Eplerenone", "k": "g", "gh": 1 },
+    { "n": "Equetro", "k": "b" },
+    { "n": "Eradiol", "k": "g", "sc": 1 },
+    { "n": "Eradiol Transdermal", "k": "g", "sc": 1 },
+    {
+      "n": "Erbitux",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL (Groups 3-4)",
+        "i": "Medicare Part B without supplemental, or insurance does not cover the drug",
+        "q": "if your insurance does not cover the medication, you may still qualify",
+        "f": 500,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    { "n": "Ergocalciferol", "k": "g", "sc": 1 },
+    { "n": "Ergocalciferol (vitamin D2)", "k": "g", "gh": 1 },
+    { "n": "Ergotamine And Caffeine", "k": "b" },
+    {
+      "n": "Erivedge",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Erleada", "k": "b" },
+    { "n": "Ermeza", "k": "b" },
+    { "n": "Erythromycin", "k": "g", "sc": 1 },
+    { "n": "Erythromycin Base", "k": "b", "sc": 1, "gh": 1 },
+    { "n": "Erythromycin Ethylsuccinate", "k": "g", "gh": 1 },
+    { "n": "Erythromycin Eye", "k": "g", "gh": 1 },
+    { "n": "Erythromycin Tab", "k": "g", "sc": 1 },
+    { "n": "Erythromycintab", "k": "g", "sc": 1 },
+    { "n": "Escitalopram", "k": "g", "a": ["Lexapro"], "sc": 1, "tdk": "c" },
+    { "n": "Escitalopram Oxalate", "k": "g", "gh": 1 },
+    { "n": "Eslicarbazepine", "k": "g", "sc": 1 },
+    { "n": "Esomeprazole", "k": "g", "a": ["Nexium"], "tdk": "c" },
+    { "n": "Esomeprazole Magnesium", "k": "b", "gh": 1 },
+    { "n": "Esomeprazole Magnesium Cap", "k": "g", "sc": 1 },
+    { "n": "Estradiol", "k": "g", "a": ["Estrace"], "gh": 1, "tdk": "c" },
+    { "n": "Estradiol/norethindrone Acet", "k": "g", "gh": 1 },
+    { "n": "Estrogens,esterified", "k": "g", "gh": 1 },
+    { "n": "Estropipate", "k": "g", "gh": 1 },
+    { "n": "Eszopiclone", "k": "g", "sc": 1 },
+    { "n": "Ethacrynic Acid", "k": "g", "sc": 1 },
+    { "n": "Ethambutol", "k": "g", "sc": 1 },
+    { "n": "Ethinyl Estradiol/drospirenone", "k": "g", "gh": 1 },
+    { "n": "Ethynodiol D-ethinyl Estradiol", "k": "g", "gh": 1 },
+    { "n": "Etodolac", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Etravirine", "k": "b" },
+    { "n": "Euflexxa", "k": "b" },
+    {
+      "n": "Evenity",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "No coverage for the drug; some Medicare cases",
+        "q": "You have no insurance coverage",
+        "f": 300,
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    { "n": "Everolimus", "k": "b" },
+    { "n": "Evotaz", "k": "b" },
+    { "n": "Exemeane", "k": "g", "sc": 1 },
+    {
+      "n": "Ezetimibe",
+      "k": "g",
+      "a": ["Zetia"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c",
+      "qs": "Cholesterol"
+    },
+    { "n": "Fabhalta", "k": "b" },
+    {
+      "n": "Famciclovir",
+      "k": "g",
+      "a": ["Famvir"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Famotidine", "k": "g", "a": ["Pepcid"], "gh": 1, "tdk": "c" },
+    { "n": "Farxiga", "k": "b" },
+    { "n": "Fasenra", "k": "b" },
+    { "n": "FE Fumarate/fa/mv, Min Comb#15", "k": "g", "gh": 1 },
+    { "n": "Febuxoat", "k": "g", "sc": 1 },
+    { "n": "Felbatol", "k": "b" },
+    { "n": "Felodipine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Femlyv", "k": "g", "sc": 1 },
+    { "n": "Fenofibrate", "k": "g", "sc": 1 },
+    { "n": "Fenoprofen", "k": "b" },
+    { "n": "Fenoprofen Calcium", "k": "b" },
+    { "n": "Ferrous Fumarate", "k": "g", "gh": 1 },
+    { "n": "Ferrous Fumarate/iron PS Cplx", "k": "g", "gh": 1 },
+    { "n": "Ferrous Gluconate", "k": "g", "gh": 1 },
+    { "n": "Ferrous Sulf", "k": "g", "gh": 1 },
+    { "n": "Ferrous Sulfate", "k": "g", "gh": 1, "tdk": "c" },
+    { "n": "Fesoterodine", "k": "g", "sc": 1 },
+    { "n": "Fetzima Er", "k": "b" },
+    { "n": "Fetzima Titration Er", "k": "b" },
+    { "n": "Fexofenadine", "k": "g", "gh": 1 },
+    { "n": "Fiasp", "k": "b" },
+    { "n": "Fidaxomicin", "k": "b" },
+    { "n": "Finaeride", "k": "g", "sc": 1 },
+    {
+      "n": "Finasteride",
+      "k": "g",
+      "a": ["Propecia", "Proscar"],
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Fingolimod", "k": "g", "sc": 1 },
+    { "n": "Flavoxate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Flecainide", "k": "g", "sc": 1 },
+    { "n": "Flecainide Acetate", "k": "g", "gh": 1 },
+    { "n": "Fluad Quadri", "k": "g", "sc": 1 },
+    { "n": "Fluarix , Flulaval, Fluzone Quad", "k": "g", "sc": 1 },
+    { "n": "Flublok", "k": "g", "sc": 1 },
+    { "n": "Flublok Quadrivalent Intramuscular", "k": "g", "sc": 1 },
+    { "n": "Flucelvax", "k": "g", "sc": 1 },
+    { "n": "Flucelvax Quadrivalent Intramuscular", "k": "g", "sc": 1 },
+    {
+      "n": "Fluconazole",
+      "k": "g",
+      "a": ["Diflucan"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Fludrocortisone Acetate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Flulaval Quadrivalent Intramuscular", "k": "g", "sc": 1 },
+    { "n": "Flulaval, Fluzone Quad", "k": "g", "sc": 1 },
+    { "n": "Fluocinolone Acetonide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Fluocinonide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Fluocinonide Emulsified Base", "k": "g", "sc": 1 },
+    { "n": "Fluorouracil", "k": "g", "sc": 1 },
+    {
+      "n": "Fluoxetine",
+      "k": "g",
+      "a": ["Prozac"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Fluphenazine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Fluphenazine Decanoate", "k": "g", "sc": 1 },
+    { "n": "Flurandrenolide", "k": "g", "sc": 1 },
+    { "n": "Flurbiprofen", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Fluticasone", "k": "g", "a": ["Flonase"], "tdk": "c" },
+    { "n": "Fluticasone Propionate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Fluticasone-salmeterol", "k": "g", "sc": 1 },
+    { "n": "Fluvaatin", "k": "g", "sc": 1 },
+    { "n": "Fluvaatin Sodium Er", "k": "g", "sc": 1 },
+    { "n": "Fluvoxamine", "k": "g", "sc": 1 },
+    { "n": "Fluvoxamine Maleate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Fluzone", "k": "g", "sc": 1 },
+    { "n": "Fluzone Hd", "k": "g", "sc": 1 },
+    { "n": "Fluzone Quadrivalent Intramuscular", "k": "g", "sc": 1 },
+    { "n": "Folic Acid", "k": "g", "sc": 1, "gh": 1, "tdk": "c" },
+    { "n": "Fondarinux Sodium Subcutaneous", "k": "b" },
+    { "n": "Forteo", "k": "b" },
+    { "n": "Fosinopril Sodium", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Fosinopril Sodium & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Freeyle Control", "k": "b" },
+    { "n": "Frovatriptan", "k": "g", "sc": 1 },
+    { "n": "Fulphila", "k": "b" },
+    {
+      "n": "Furosemide",
+      "k": "g",
+      "a": ["Lasix"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Gabapentin",
+      "k": "g",
+      "a": ["Neurontin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Gabapentin (once Daily)", "k": "g", "sc": 1 },
+    { "n": "Gabapentin Daily", "k": "b", "sc": 1 },
+    { "n": "Gabapentin Dly", "k": "b" },
+    { "n": "Galantamine Hydrobromide", "k": "g", "sc": 1 },
+    { "n": "Gamunex-C", "k": "b" },
+    {
+      "n": "Gardasil 9",
+      "k": "b",
+      "sc": 1,
+      "pap": {
+        "p": "merck-vaccine-patient-assistance-program",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 400,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Gastrocrom", "k": "b" },
+    {
+      "n": "Gazyva",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Gemfibrozil", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Generic", "k": "g", "gh": 1 },
+    {
+      "n": "Gengraf",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Gentamicin", "k": "g", "sc": 1 },
+    { "n": "Gentamicin Sulfate", "k": "g", "gh": 1 },
+    { "n": "Genvoya", "k": "b" },
+    {
+      "n": "Gilotrif",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Glatiramer", "k": "b" },
+    {
+      "n": "Glimepiride",
+      "k": "g",
+      "a": ["Amaryl"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c",
+      "qs": "Diabetes"
+    },
+    {
+      "n": "Glipizide",
+      "k": "g",
+      "a": ["Glucotrol"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Glipizide Er",
+      "k": "g",
+      "a": ["Glucotrol XL"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Glipizide-metformin", "k": "g", "sc": 1 },
+    { "n": "Glipizide/metformin", "k": "g", "gh": 1 },
+    { "n": "Glucagen", "k": "b" },
+    {
+      "n": "Glyburide",
+      "k": "g",
+      "a": ["Glynase"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Glyburide,micronized", "k": "g", "gh": 1 },
+    { "n": "Glyburide-metformin", "k": "g", "sc": 1 },
+    { "n": "Glyburide/metformin", "k": "g", "gh": 1 },
+    { "n": "Glycopyrrolate", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Glyxambi",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Griseofulvin", "k": "b" },
+    { "n": "Guaifenesin", "k": "g", "gh": 1 },
+    { "n": "Guanfacine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Guanfacine Er", "k": "g", "a": ["Intuniv"], "sc": 1, "tdk": "c" },
+    {
+      "n": "Hadlima",
+      "k": "b",
+      "pap": {
+        "p": "organon-patient-assistance-program",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides certain medicines free of charge to eligible individuals who do not have insurance or whose insurance does not cover their prescription Organon products",
+        "u": "https://organon.com/our-focus/patient-support-programs/"
+      }
+    },
+    { "n": "Halaven", "k": "b" },
+    { "n": "Halobetasol Propionate", "k": "g", "sc": 1 },
+    { "n": "Haloperidol", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Haloperidol Lactate", "k": "g", "gh": 1 },
+    { "n": "Harvoni", "k": "b" },
+    { "n": "Havrix, Vaqta", "k": "g", "sc": 1 },
+    { "n": "HCTZ", "k": "g", "a": ["HydroDiuril"], "tdk": "c" },
+    {
+      "n": "Hemlibra",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Heparin Sodium,porcine 10,", "k": "g", "gh": 1 },
+    { "n": "Heplisav-b Intramuscular", "k": "g", "sc": 1 },
+    {
+      "n": "Herceptin",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Hiberix", "k": "g", "sc": 1 },
+    { "n": "Humalog", "k": "b", "qs": "Diabetes" },
+    { "n": "Humalog Junior Kwikpen", "k": "b" },
+    { "n": "Humalog Kwikpen", "k": "b" },
+    { "n": "Humalog Kwikpen Subcutaneous", "k": "b" },
+    { "n": "Humalog Mix", "k": "b" },
+    { "n": "Humalog Mix 50-50", "k": "b" },
+    { "n": "Humalog Mix 75-25", "k": "b" },
+    { "n": "Humalog Mix 75/25 Subcutaneous", "k": "b" },
+    { "n": "Humalog Subcutaneous", "k": "b" },
+    {
+      "n": "Humira",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Humulin", "k": "b" },
+    { "n": "Humulin 70-30", "k": "b" },
+    { "n": "Humulin N", "k": "b" },
+    { "n": "Humulin N Subcutaneous", "k": "b" },
+    { "n": "Humulin R", "k": "b" },
+    { "n": "Humulin R U-500", "k": "b" },
+    { "n": "Hydralazine", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Hydrochlorothiazide",
+      "k": "g",
+      "sc": 1,
+      "gh": 1,
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Hydrocodone Bitartrate", "k": "b" },
+    { "n": "Hydrocodone W/ Homatropine", "k": "g", "sc": 1 },
+    { "n": "Hydrocodone-acetaminophen", "k": "g", "sc": 1 },
+    { "n": "Hydrocortisone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Hydrocortisone Acetate", "k": "g", "gh": 1 },
+    { "n": "Hydrocortisone Butyrate", "k": "g", "gh": 1 },
+    { "n": "Hydrocortisone Perianal", "k": "g", "sc": 1 },
+    { "n": "Hydrocortisone Valerate", "k": "g", "gh": 1 },
+    { "n": "Hydromorphone", "k": "g", "sc": 1 },
+    { "n": "Hydroxychloroquine", "k": "g", "a": ["Plaquenil"], "tdk": "c" },
+    { "n": "Hydroxychloroquine Sulfate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Hydroxyurea", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Hydroxyzine",
+      "k": "g",
+      "a": ["Atarax"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Hydroxyzine Moate", "k": "g", "sc": 1 },
+    { "n": "Hydroxyzine Pamoate", "k": "g", "gh": 1 },
+    { "n": "Hyoscyamine", "k": "g", "sc": 1 },
+    { "n": "Hyoscyamine Sulfate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Hyoscyamine Sulfate Sl", "k": "g", "sc": 1 },
+    {
+      "n": "Hyoscyamine, Atropine, Scopolamine, And Phenobarbital",
+      "k": "g",
+      "sc": 1
+    },
+    { "n": "Ibandronate", "k": "g", "sc": 1 },
+    { "n": "Ibandronate Sodium", "k": "g", "gh": 1 },
+    { "n": "Ibrance", "k": "b" },
+    {
+      "n": "Ibuprofen",
+      "k": "g",
+      "a": ["Motrin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Icosapent", "k": "g", "sc": 1 },
+    { "n": "Icosapent Ethyl", "k": "b" },
+    {
+      "n": "Idhifa",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Ilaris", "k": "b" },
+    { "n": "Imatinib Mes", "k": "g", "sc": 1 },
+    {
+      "n": "Imbruvica",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Imfinzi", "k": "b" },
+    { "n": "Imipramine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Imiquimod", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Imjudo", "k": "b" },
+    {
+      "n": "Imovax",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    {
+      "n": "Incruse Ellipta",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Indamide", "k": "g", "sc": 1 },
+    { "n": "Indapamide", "k": "g", "gh": 1 },
+    { "n": "Indomethacin", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Infanrix", "k": "g", "sc": 1 },
+    { "n": "Infliximab", "k": "b" },
+    { "n": "Injectafer", "k": "b" },
+    {
+      "n": "Inrebic",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Insulin Asrt Flexpen Subcutaneous", "k": "b" },
+    { "n": "Insulin Asrt Penfill Subcutaneous", "k": "b" },
+    { "n": "Insulin Asrt Prot & Asrt Subcutaneous", "k": "b" },
+    { "n": "Insulin Asrt Subcutaneous", "k": "b" },
+    { "n": "Insulin Glargine-yfgn", "k": "b" },
+    { "n": "Insulin Lispro", "k": "b", "a": ["Humalog"], "sc": 1, "tdk": "u" },
+    { "n": "Insulin Lispro Subcutaneous", "k": "g", "sc": 1 },
+    { "n": "Intelence", "k": "b" },
+    {
+      "n": "Intuniv Extended Release",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Invega Hafyera", "k": "b" },
+    { "n": "Invega Sustenna", "k": "b" },
+    { "n": "Invega Trinza", "k": "b" },
+    { "n": "Invokamet", "k": "b", "qs": "Diabetes" },
+    { "n": "Invokamet XR", "k": "b" },
+    { "n": "Invokana", "k": "b" },
+    { "n": "Iodoquinol And Hydrocortisone", "k": "b" },
+    { "n": "Ipol", "k": "g", "sc": 1 },
+    { "n": "Ipratropium Bromide", "k": "g", "gh": 1 },
+    { "n": "Ipratropium Nas Sp .06/", "k": "g", "gh": 1 },
+    { "n": "Ipratropium/albuterol Sulfate", "k": "g", "gh": 1 },
+    {
+      "n": "Irbesartan",
+      "k": "g",
+      "a": ["Avapro"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Irbesartan-hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Irbesartan/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Iron Dextran Complex", "k": "g", "gh": 1 },
+    { "n": "Iron Fum & PS Cmp/fa/vit C/b3", "k": "g", "gh": 1 },
+    { "n": "Iron Fum&amp;polysac#1/fa/mv No.18", "k": "g", "gh": 1 },
+    { "n": "Iron Polysaccharide Complex", "k": "g", "gh": 1 },
+    { "n": "Iron PS Cmplx/vit B12/fa", "k": "g", "gh": 1 },
+    { "n": "Iron,carbonyl/ascorbic Acid", "k": "g", "gh": 1 },
+    { "n": "Iron,carbonyl/vit C/vit B12/fa", "k": "g", "gh": 1 },
+    { "n": "Iron/fa/vit Bcomp,c/minerals", "k": "g", "gh": 1 },
+    {
+      "n": "Isentress",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    {
+      "n": "Isentress HD",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Isoniazid", "k": "g", "sc": 1 },
+    { "n": "Isopto Atrop", "k": "b" },
+    { "n": "Isosorbide Dinitrate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Isosorbide Dinitrate-hydralazine", "k": "g", "sc": 1 },
+    { "n": "Isosorbide Mono-nitrate", "k": "g", "gh": 1 },
+    { "n": "Isosorbide Mononitrate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Isosorbide Mononitrate Er", "k": "g", "sc": 1 },
+    { "n": "Isotretinoin", "k": "b" },
+    { "n": "Isradipine", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Istodax",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Itraconazole", "k": "b", "sc": 1, "gh": 1 },
+    { "n": "Ivabradine", "k": "g", "sc": 1 },
+    { "n": "Ivermectin", "k": "g", "sc": 1 },
+    { "n": "Jadenu", "k": "b" },
+    { "n": "Jadenu Sprinkle", "k": "b" },
+    {
+      "n": "JanuMet",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 400,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    {
+      "n": "Janumet Xr",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 400,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    {
+      "n": "Januvia",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 400,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    {
+      "n": "Jardiance",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    {
+      "n": "Jaypirca",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL (Groups 3-4)",
+        "i": "Medicare Part B without supplemental, or insurance does not cover the drug",
+        "q": "if your insurance does not cover the medication, you may still qualify",
+        "f": 500,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    {
+      "n": "Jentadueto",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    {
+      "n": "Jentadueto XR",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    {
+      "n": "Jivi",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    { "n": "Joyeaux", "k": "g", "sc": 1 },
+    { "n": "Jublia", "k": "b" },
+    {
+      "n": "Juluca",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    { "n": "Junel FE 1/20 (brand Name Only)", "k": "g", "gh": 1 },
+    {
+      "n": "Jynarque",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/"
+      }
+    },
+    { "n": "Jynneos", "k": "g", "sc": 1 },
+    {
+      "n": "Kadcyla",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Kaitlib Fe", "k": "g", "sc": 1 },
+    {
+      "n": "Kaletra",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Kariva", "k": "g", "sc": 1 },
+    {
+      "n": "Kerendia",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    { "n": "Kesimpta", "k": "b" },
+    { "n": "Ketoconazole", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Ketoprofen", "k": "g", "gh": 1 },
+    { "n": "Ketorolac Tromethamine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Ketotifen Fumarate", "k": "g", "gh": 1 },
+    {
+      "n": "Keytruda",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-referra",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Kinrix, Quadracel", "k": "g", "sc": 1 },
+    { "n": "Kisqali", "k": "b" },
+    { "n": "Klor-m Cr", "k": "g", "sc": 1 },
+    {
+      "n": "Kovaltry",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Kyleena",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Kyprolis",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No coverage for the drug; some Medicare cases",
+        "q": "You have no insurance coverage",
+        "f": 500,
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    { "n": "Labetalol", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Lacosamide", "k": "g", "sc": 1 },
+    { "n": "Lactulose", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Lamictal",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Lamictal ODT",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Lamictal XR",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Lamivudine", "k": "g", "sc": 1 },
+    { "n": "Lamivudine-zidovudine", "k": "g", "sc": 1 },
+    {
+      "n": "Lamotrigine",
+      "k": "g",
+      "a": ["Lamictal"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Lamotrigine Orally Disintegrating", "k": "g", "sc": 1 },
+    { "n": "Lampit", "k": "b" },
+    { "n": "Lancets", "k": "g", "gh": 1 },
+    {
+      "n": "Lansoprazole",
+      "k": "g",
+      "a": ["Prevacid"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Lansoprazole Cap", "k": "g", "sc": 1 },
+    { "n": "Lanthanum Carbonate", "k": "b" },
+    {
+      "n": "Lantus",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    {
+      "n": "Lantus SoloSTAR",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Latanoprost", "k": "g", "gh": 1 },
+    { "n": "Leflunomide", "k": "g", "sc": 1 },
+    { "n": "Lenvima", "k": "b" },
+    { "n": "Leqvio", "k": "b" },
+    { "n": "Letrozole", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Leucovorin Calcium", "k": "g", "sc": 1 },
+    { "n": "Levamlodipin", "k": "b" },
+    { "n": "Levemir", "k": "b", "qs": "Diabetes" },
+    {
+      "n": "Levetiracetam",
+      "k": "g",
+      "a": ["Keppra"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Levobunolol", "k": "b", "gh": 1 },
+    { "n": "Levocarnitine", "k": "g", "gh": 1 },
+    { "n": "Levocetirizine Dihydrochloride", "k": "g", "gh": 1 },
+    {
+      "n": "Levofloxacin",
+      "k": "g",
+      "a": ["Levaquin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Levonorgerel", "k": "g", "sc": 1 },
+    { "n": "Levonorgestrel-ethin Estradiol", "k": "g", "gh": 1 },
+    { "n": "Levorphanol", "k": "b" },
+    { "n": "Levothyroxine", "k": "g", "a": ["Synthroid"], "sc": 1, "tdk": "c" },
+    { "n": "Levothyroxine Sodium", "k": "g", "gh": 1 },
+    {
+      "n": "Lialda",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Lidocaine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Lidocaine External", "k": "g", "sc": 1 },
+    { "n": "Lidocaine-prilocaine", "k": "g", "sc": 1 },
+    { "n": "Lidocaine/prilocaine", "k": "g", "gh": 1 },
+    { "n": "Linezolid", "k": "g", "sc": 1 },
+    {
+      "n": "Linzess",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Liothyronine", "k": "g", "a": ["Cytomel"], "tdk": "c" },
+    { "n": "Liothyronine Sodium", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Liotrix", "k": "g", "gh": 1 },
+    { "n": "Liperidone", "k": "g", "sc": 1 },
+    { "n": "Lipitor", "k": "b", "qs": "Cholesterol" },
+    { "n": "Liraglutide", "k": "b" },
+    { "n": "Lisdexamfetamine", "k": "b" },
+    { "n": "Lisdexamfetamine Dimesylate", "k": "b" },
+    {
+      "n": "Lisinopril",
+      "k": "g",
+      "a": ["Zestril"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c",
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Lisinopril & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Lisinopril/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Lithium", "k": "g", "a": ["Lithobid"], "tdk": "c" },
+    { "n": "Lithium Carbonate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Locoid External", "k": "g", "sc": 1 },
+    { "n": "Lofexidine", "k": "b" },
+    { "n": "Lokelma", "k": "b" },
+    { "n": "Lomedia 24", "k": "g", "sc": 1 },
+    { "n": "Loperamide", "k": "g", "gh": 1 },
+    { "n": "Lopinavir-ritonavir", "k": "b" },
+    { "n": "Loratadine", "k": "g", "a": ["Claritin"], "gh": 1, "tdk": "c" },
+    { "n": "Lorazm", "k": "g", "sc": 1 },
+    {
+      "n": "Losartan",
+      "k": "g",
+      "a": ["Cozaar"],
+      "tdk": "c",
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Losartan Potassium", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Losartan Potassium & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Losartan/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Loteprednol Etabonate", "k": "g", "sc": 1 },
+    { "n": "Lotronex", "k": "b" },
+    { "n": "Lovaatin", "k": "g", "sc": 1 },
+    {
+      "n": "Lovastatin",
+      "k": "g",
+      "a": ["Mevacor"],
+      "gh": 1,
+      "tdk": "c",
+      "qs": "Cholesterol"
+    },
+    {
+      "n": "Lovenox",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Loxapine Succinate", "k": "g", "sc": 1 },
+    { "n": "Lubiproone", "k": "g", "sc": 1 },
+    {
+      "n": "Lucentis",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    {
+      "n": "Lumigan",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    {
+      "n": "Lupron Depot",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    {
+      "n": "Lupron Depot-PED",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Lurasidone", "k": "b" },
+    { "n": "Lutathera", "k": "b" },
+    { "n": "Luzu", "k": "b" },
+    { "n": "Lynparza", "k": "b" },
+    { "n": "Lyumjev", "k": "b" },
+    { "n": "Lyumjev Kwpn", "k": "b" },
+    { "n": "Lyvispah", "k": "b" },
+    { "n": "M-m-r Ii", "k": "g", "sc": 1 },
+    { "n": "Magnesium", "k": "g", "tdk": "c" },
+    { "n": "Magnesium Chloride", "k": "g", "gh": 1 },
+    { "n": "Magnesium Gluconate", "k": "g", "gh": 1 },
+    { "n": "Magnesium Oxide", "k": "g", "gh": 1 },
+    {
+      "n": "Malarone",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Mavyret",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Mayzent", "k": "b" },
+    { "n": "Meclizine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Medroxyprogeerone Ac", "k": "g", "sc": 1 },
+    { "n": "Medroxyprogeerone Acetate", "k": "g", "sc": 1 },
+    { "n": "Medroxyprogesterone", "k": "g", "a": ["Provera"], "tdk": "c" },
+    { "n": "Medroxyprogesterone Acetate", "k": "g", "gh": 1 },
+    { "n": "Mefloquine", "k": "g", "sc": 1 },
+    { "n": "Megerol Acetate", "k": "g", "sc": 1 },
+    { "n": "Megestrol Acetate", "k": "g", "gh": 1 },
+    { "n": "Mekinist", "k": "b" },
+    { "n": "Melatonin", "k": "g", "gh": 1 },
+    {
+      "n": "Meloxicam",
+      "k": "g",
+      "a": ["Mobic"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Memantine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Menactra", "k": "g", "sc": 1 },
+    {
+      "n": "Menostar",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "MenQuadfi",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Menveo", "k": "g", "sc": 1 },
+    {
+      "n": "Mepron",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Mercaptopur", "k": "g", "sc": 1 },
+    { "n": "Mesalamine", "k": "g", "sc": 1 },
+    { "n": "Mesna", "k": "b" },
+    { "n": "Metaxalone", "k": "b" },
+    {
+      "n": "Metformin",
+      "k": "g",
+      "a": ["Glucophage"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c",
+      "qs": "Diabetes"
+    },
+    {
+      "n": "Metformin ER",
+      "k": "g",
+      "a": ["Glucophage XR"],
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Methadone", "k": "g", "sc": 1 },
+    { "n": "Methamphetamine", "k": "b", "sc": 1 },
+    { "n": "Methenam Man", "k": "g", "sc": 1 },
+    { "n": "Methenamine", "k": "g", "sc": 1 },
+    { "n": "Methenamine Hippurate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Methergine", "k": "b" },
+    {
+      "n": "Methimazole",
+      "k": "g",
+      "a": ["Tapazole"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Methocarbamol",
+      "k": "g",
+      "a": ["Robaxin"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Methotrexate", "k": "g", "a": ["Trexall"], "sc": 1, "tdk": "c" },
+    { "n": "Methotrexate Sodium", "k": "g", "gh": 1 },
+    { "n": "Methscopolam", "k": "g", "sc": 1 },
+    { "n": "Methscopolamine Bromide", "k": "g", "gh": 1 },
+    { "n": "Methsuximide", "k": "g", "sc": 1 },
+    { "n": "Methyldo", "k": "b" },
+    { "n": "Methyldopa", "k": "g", "gh": 1 },
+    { "n": "Methylin", "k": "b" },
+    { "n": "Methylphenidate", "k": "b", "sc": 1 },
+    {
+      "n": "Methylprednisolone",
+      "k": "g",
+      "a": ["Medrol Dosepak"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Metoclopramide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Metolazone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Metoprolol", "k": "g", "sc": 1, "qs": "High Blood Pressure" },
+    { "n": "Metoprolol & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    {
+      "n": "Metoprolol Succinate",
+      "k": "g",
+      "a": ["Toprol XL"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Metoprolol Succinate ER", "k": "g", "gh": 1 },
+    {
+      "n": "Metoprolol Tartrate",
+      "k": "g",
+      "a": ["Lopressor"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Metoprolol-hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Metoprolol/hydrochlorothiazide", "k": "g", "gh": 1 },
+    {
+      "n": "Metronidazole",
+      "k": "g",
+      "a": ["Flagyl"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Metronidazole External", "k": "g", "sc": 1 },
+    { "n": "Metronidazole Vaginal", "k": "g", "sc": 1 },
+    { "n": "Mexiletine", "k": "g", "sc": 1 },
+    { "n": "Mibelas 24 Fe", "k": "g", "sc": 1 },
+    { "n": "Miconazole Nitrate", "k": "g", "gh": 1 },
+    { "n": "Midazolam", "k": "g", "sc": 1 },
+    { "n": "Midodrine", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Miebo",
+      "k": "b",
+      "pap": {
+        "p": "bausch-lomb-patient-assistance-program",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or denied coverage",
+        "q": "In terms of health insurance, you must: be uninsured; be denied coverage for Bausch + Lomb product by your commercial insurance provider and have exhausted all appeal options",
+        "f": 300,
+        "u": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+      }
+    },
+    { "n": "Mineral Oil/petrolatum,white", "k": "g", "gh": 1 },
+    { "n": "Minocycline", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Minoxidil", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Mirena",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Mirtazapine",
+      "k": "g",
+      "a": ["Remeron"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Mirtazapine Orally Disintegrating", "k": "g", "sc": 1 },
+    { "n": "Misoprool", "k": "g", "sc": 1 },
+    { "n": "Misoprostol", "k": "g", "gh": 1 },
+    { "n": "Mnexspike", "k": "g", "sc": 1 },
+    { "n": "Modafinil", "k": "g", "sc": 1 },
+    { "n": "Moderna", "k": "g", "sc": 1 },
+    { "n": "Moderna Biv", "k": "g", "sc": 1 },
+    { "n": "Moexipril", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Moexipril/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Molnupiravir", "k": "g", "sc": 1 },
+    { "n": "Mometasone Furoate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Monteluka Sodium", "k": "g", "sc": 1 },
+    { "n": "Montelukast", "k": "g", "a": ["Singulair"], "tdk": "c" },
+    { "n": "Montelukast Sodium", "k": "g", "gh": 1 },
+    { "n": "Morphine Sul", "k": "g", "sc": 1 },
+    { "n": "Morphine Sulfate", "k": "g", "sc": 1 },
+    {
+      "n": "Motegrity",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Moxifloxacin", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Mozobil", "k": "b" },
+    {
+      "n": "Multaq",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Multivit W/fluor Drops", "k": "g", "gh": 1 },
+    { "n": "Multivitamin W/ Folic Acid", "k": "g", "gh": 1 },
+    { "n": "Multivitamin With Folic Acid", "k": "g", "gh": 1 },
+    { "n": "Mupirocin", "k": "g", "gh": 1 },
+    { "n": "Mupirocin Calcium External", "k": "g", "sc": 1 },
+    { "n": "Mycophenolate Mofetil", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Na Phos,m-b/na Phos,di-ba", "k": "g", "gh": 1 },
+    { "n": "Nabumetone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Nadolol", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Naftifine", "k": "b" },
+    { "n": "Naloxone", "k": "g", "sc": 1 },
+    { "n": "Naltrexone", "k": "g", "sc": 1 },
+    {
+      "n": "Namzaric",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Naphazoline/pheniramine", "k": "g", "gh": 1 },
+    {
+      "n": "Naproxen",
+      "k": "g",
+      "a": ["Naprosyn"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Naproxen Dr", "k": "g", "sc": 1 },
+    { "n": "Naproxen Sodium", "k": "g", "gh": 1 },
+    {
+      "n": "Naratriptan",
+      "k": "g",
+      "a": ["Amerge"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Nasal", "k": "g", "gh": 1 },
+    {
+      "n": "Natazia",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    { "n": "Nateglinide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Nature-throid", "k": "b" },
+    {
+      "n": "Nayzilam",
+      "k": "b",
+      "pap": {
+        "p": "ucb-patient-assistance-program",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "Uninsured or underinsured",
+        "q": "Patient must be uninsured, underinsured, or, if insured, have significant financial hardship despite insurance coverage",
+        "f": 500,
+        "u": "https://www.ucb-usa.com/patient-support"
+      }
+    },
+    { "n": "Nebivolol", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Nefazodone", "k": "b" },
+    { "n": "Neo/polymyx B Sulf/dexameth", "k": "g", "gh": 1 },
+    { "n": "Neomycin", "k": "g", "sc": 1 },
+    { "n": "Neomycin/polymyx B Sulf/dexamethasone", "k": "g", "gh": 1 },
+    { "n": "Neomycin/polymyx B Sulf/dexamethasone Eye", "k": "g", "gh": 1 },
+    { "n": "Neomycin/polymyxi/hc Eye Eye", "k": "g", "gh": 1 },
+    { "n": "Nevirapine", "k": "g", "sc": 1 },
+    { "n": "Nextellis", "k": "g", "sc": 1 },
+    { "n": "Niacin", "k": "g", "gh": 1 },
+    { "n": "Niacin Er", "k": "g", "sc": 1 },
+    { "n": "Nicardipine", "k": "g", "sc": 1 },
+    { "n": "Nicotine", "k": "g", "gh": 1 },
+    { "n": "Nifediac Cc/er Generic", "k": "g", "gh": 1 },
+    { "n": "Nifedical XL Generic", "k": "g", "gh": 1 },
+    { "n": "Nifedipine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Nimodipine", "k": "g", "sc": 1 },
+    {
+      "n": "Ninlaro",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Nisoldipine", "k": "g", "sc": 1 },
+    { "n": "Nitazoxanide", "k": "b" },
+    {
+      "n": "Nitrofurantoin",
+      "k": "g",
+      "a": ["Macrodantin", "Macrobid"],
+      "tdk": "u"
+    },
+    { "n": "Nitrofurantoin Macro-crystal", "k": "g", "gh": 1 },
+    { "n": "Nitrofurantoin Macrocryalline", "k": "g", "sc": 1 },
+    { "n": "Nitrofurantoin Macrocrystal", "k": "g", "gh": 1 },
+    { "n": "Nitrofurantoin Monohyd/m-cryst", "k": "g", "gh": 1 },
+    { "n": "Nitrofurantoin Monohydrate Macrocryalline", "k": "g", "sc": 1 },
+    { "n": "Nitroglycerin", "k": "g", "a": ["Nitrostat"], "gh": 1, "tdk": "c" },
+    { "n": "Nitroglycerin Sublingual", "k": "g", "sc": 1 },
+    { "n": "Nizatidine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Norethin-eth Eradiol-fe", "k": "g", "sc": 1 },
+    { "n": "Norethindrone", "k": "g", "gh": 1 },
+    { "n": "Norethindrone Ac-eth Estradiol", "k": "g", "gh": 1 },
+    { "n": "Norethindrone Ace-ethinyl Eradiol-fe", "k": "g", "sc": 1 },
+    { "n": "Norethindrone Acetate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Norethindrone-e.estradiol-iron", "k": "g", "gh": 1 },
+    { "n": "Norethindrone-ethinyl Estrad", "k": "g", "gh": 1 },
+    { "n": "Norethindrone-ethinyl Estrad 7 Days X3", "k": "g", "gh": 1 },
+    { "n": "Norgestimate-ethinyl Estradiol", "k": "g", "gh": 1 },
+    {
+      "n": "Norgestimate-ethinyl Estradiol .18-.215-.25---.025 7daysx3 Lo",
+      "k": "g",
+      "gh": 1
+    },
+    {
+      "n": "Norgestimate-ethinyl Estradiol .18-.215-.25---.035 7daysx3 28",
+      "k": "g",
+      "gh": 1
+    },
+    { "n": "Norgestimate-ethinyl Estradiol 7daysx3 28", "k": "g", "gh": 1 },
+    { "n": "Norgestimate-ethinyl Estradiol 7daysx3 Lo", "k": "g", "gh": 1 },
+    { "n": "Norgestrel-ethinyl Estradiol", "k": "g", "gh": 1 },
+    { "n": "Noritate", "k": "b" },
+    { "n": "Nortrel (28)", "k": "g", "sc": 1 },
+    { "n": "Nortrel 28", "k": "g", "sc": 1 },
+    { "n": "Nortrel7/7/7", "k": "g", "sc": 1 },
+    { "n": "Nortriptyline", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Norvir",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Novavax", "k": "g", "sc": 1 },
+    { "n": "Novolin", "k": "b", "qs": "Diabetes" },
+    { "n": "Novolin 70-30", "k": "b" },
+    { "n": "Novolin N", "k": "b" },
+    { "n": "Novolin R", "k": "b" },
+    { "n": "NovoLog", "k": "b", "qs": "Diabetes" },
+    { "n": "Novolog Mix 70-30", "k": "b" },
+    { "n": "Novolog Penfill Subcutaneous", "k": "b" },
+    { "n": "Np Thyroid", "k": "g", "sc": 1 },
+    { "n": "Ntoprazole Sodium", "k": "b" },
+    { "n": "Ntoprazole Sodium Ec", "k": "g", "sc": 1 },
+    {
+      "n": "Nubeqa",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Nucala",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "call",
+        "r": "Separate GSK process; limits not shown",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Nuedexta",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/"
+      }
+    },
+    {
+      "n": "Nulojix",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Nyatin", "k": "g", "sc": 1 },
+    { "n": "Nyatin-triamcinolone", "k": "g", "sc": 1 },
+    { "n": "Nystatin", "k": "g", "gh": 1 },
+    { "n": "Nystatin/triamcin", "k": "g", "gh": 1 },
+    {
+      "n": "Ofev",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Ofloxacin", "k": "b", "gh": 1 },
+    {
+      "n": "Olanzapine",
+      "k": "g",
+      "a": ["Zyprexa"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Olanzapine Orally Disintegrating", "k": "g", "sc": 1 },
+    { "n": "Olanzapine-fluoxetine", "k": "g", "sc": 1 },
+    { "n": "Olmesartan", "k": "g", "a": ["Benicar"], "tdk": "c" },
+    { "n": "Olmesartan Medoxomil", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Olmesartan Medoxomil-hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Olmesartan-amlodipine-hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Olmesartan/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Olopatadine", "k": "g", "gh": 1 },
+    { "n": "Olotadine", "k": "g", "sc": 1 },
+    { "n": "Olumiant", "k": "b" },
+    { "n": "Omega-3 Acid Ethyl Esters", "k": "g", "gh": 1 },
+    { "n": "Omega-3-acid", "k": "g", "sc": 1 },
+    { "n": "Omeprazole", "k": "g", "a": ["Prilosec"], "gh": 1, "tdk": "c" },
+    { "n": "Omeprazole Cap", "k": "g", "sc": 1 },
+    { "n": "Omeprazole-sodium Bicarbonate", "k": "g", "sc": 1 },
+    { "n": "Once Daily Multivitamin", "k": "g", "gh": 1 },
+    {
+      "n": "Ondansetron",
+      "k": "g",
+      "a": ["Zofran"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Ondansetron ODT", "k": "g", "a": ["Zofran ODT"], "tdk": "u" },
+    { "n": "Ondansetron Orally Disintegrating", "k": "g", "gh": 1 },
+    { "n": "One Touch Verio Test Strips (50 Count", "k": "g", "gh": 1 },
+    {
+      "n": "Onureg",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    {
+      "n": "Opdivo",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    {
+      "n": "Opdivo Yervoy Regimen",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Opsumit", "k": "b" },
+    {
+      "n": "Orencia",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "f": 300,
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    {
+      "n": "Oriahnn",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    {
+      "n": "Orilissa",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Orphenadrine", "k": "g", "sc": 1 },
+    { "n": "Orphenadrine Citrate", "k": "g", "gh": 1 },
+    { "n": "Oseltamivir Phosphate", "k": "g", "sc": 1 },
+    {
+      "n": "Otezla",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "No coverage for the drug; some Medicare cases",
+        "q": "You have no insurance coverage",
+        "f": 300,
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    { "n": "Oxaprozin", "k": "g", "gh": 1 },
+    { "n": "Oxazm", "k": "g", "sc": 1 },
+    { "n": "Oxcarbazepine", "k": "b", "sc": 1, "gh": 1 },
+    { "n": "Oxybutynin", "k": "g", "a": ["Ditropan"], "sc": 1, "tdk": "c" },
+    { "n": "Oxybutynin Chloride", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Oxybutynin ER", "k": "g", "a": ["Ditropan XL"], "tdk": "c" },
+    { "n": "Oxycodone", "k": "g", "sc": 1 },
+    { "n": "Oxycodone W/ Acetaminophen", "k": "g", "sc": 1 },
+    { "n": "Oxymetazoline", "k": "g", "gh": 1 },
+    { "n": "Ozempic", "k": "b", "qs": "Diabetes" },
+    { "n": "Pantoprazole", "k": "g", "a": ["Protonix"], "tdk": "u" },
+    { "n": "Pantoprazole Sodium", "k": "g", "gh": 1 },
+    { "n": "Paricalcitol", "k": "g", "gh": 1 },
+    { "n": "Paroxetine", "k": "g", "a": ["Paxil"], "gh": 1, "tdk": "c" },
+    { "n": "Paroxetine ER", "k": "g", "gh": 1 },
+    { "n": "Pediarix", "k": "g", "sc": 1 },
+    { "n": "Pedvax Hib", "k": "g", "sc": 1 },
+    { "n": "Peg 3350/na Sulf,bicarb,cl/kcl", "k": "g", "gh": 1 },
+    { "n": "Peg-3350/kcl", "k": "g", "sc": 1 },
+    { "n": "Pen Needles 12mm", "k": "g", "gh": 1 },
+    { "n": "Pen Needles 4mm", "k": "g", "gh": 1 },
+    { "n": "Pen Needles 5mm", "k": "g", "gh": 1 },
+    { "n": "Pen Needles 6mm", "k": "g", "gh": 1 },
+    { "n": "Pen Needles 8mm", "k": "g", "gh": 1 },
+    { "n": "Penciclovir", "k": "b" },
+    { "n": "Penicillin V Potassium", "k": "g", "gh": 1 },
+    { "n": "Penicillin VK", "k": "g", "a": ["Veetids"], "tdk": "u" },
+    { "n": "Penicilln Vk", "k": "g", "sc": 1 },
+    { "n": "Penmenvy", "k": "g", "sc": 1 },
+    {
+      "n": "Pentacel",
+      "k": "b",
+      "sc": 1,
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    {
+      "n": "Pentasa",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Pentoxifylline", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Perforomist", "k": "b" },
+    { "n": "Perindopril", "k": "g", "sc": 1 },
+    { "n": "Perindopril Erbumine", "k": "g", "gh": 1 },
+    {
+      "n": "Perjeta",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Permethrin", "k": "g", "sc": 1 },
+    { "n": "Perphenazine", "k": "g", "sc": 1 },
+    { "n": "Pertzye", "k": "b" },
+    { "n": "Pfizer 5-11y", "k": "g", "sc": 1 },
+    { "n": "Pfizer 6m-4y", "k": "g", "sc": 1 },
+    { "n": "Pfizer Bival", "k": "g", "sc": 1 },
+    {
+      "n": "Phenazopyridine",
+      "k": "g",
+      "a": ["Pyridium"],
+      "sc": 1,
+      "tdk": "u"
+    },
+    { "n": "Phenobarbital", "k": "g", "sc": 1 },
+    { "n": "Phenytek", "k": "g", "sc": 1 },
+    { "n": "Phenytoin", "k": "g", "gh": 1 },
+    { "n": "Phenytoin Sodium Extended", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Phesgo",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Phospho-trin", "k": "g", "sc": 1 },
+    { "n": "Phosphorus #1", "k": "g", "gh": 1 },
+    { "n": "Phytonadione", "k": "b" },
+    {
+      "n": "Pifeltro",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Pimecrolimus", "k": "b" },
+    { "n": "Pindolol", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Pioglitazone",
+      "k": "g",
+      "a": ["Actos"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Pioglitazone-glimepiride", "k": "g", "sc": 1 },
+    { "n": "Pioglitazone-metformin", "k": "g", "sc": 1 },
+    { "n": "Piqray", "k": "b" },
+    { "n": "Pirfenidone", "k": "b" },
+    { "n": "Piroxicam", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Pitavaatin", "k": "g", "sc": 1 },
+    { "n": "Pitavaatin Calcium", "k": "g", "sc": 1 },
+    { "n": "Pluvicto", "k": "b" },
+    { "n": "Pneumovax 23", "k": "g", "sc": 1 },
+    { "n": "Pnv Prenatal Plus", "k": "g", "gh": 1 },
+    {
+      "n": "Polivy",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Polyethylene Glycol 3350", "k": "g", "gh": 1 },
+    { "n": "Polymyxin B Sulf/trimethoprim", "k": "g", "gh": 1 },
+    {
+      "n": "Pomalyst",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Pot Chloride", "k": "g", "sc": 1 },
+    { "n": "Pot Chloride/pot Bicarb/cit Ac", "k": "g", "gh": 1 },
+    { "n": "Pot Phos Monobasic W/sod Phos Di & Monobas", "k": "g", "sc": 1 },
+    { "n": "Potassium Bicarbonate Effer", "k": "g", "sc": 1 },
+    { "n": "Potassium Bicarbonate/cit AC", "k": "g", "gh": 1 },
+    { "n": "Potassium Chloride", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Potassium Chloride Microencapsulated Crys Er", "k": "g", "sc": 1 },
+    { "n": "Potassium Citrate", "k": "g", "gh": 1 },
+    { "n": "Potassium Iodide", "k": "g", "gh": 1 },
+    { "n": "Potassium Phosphate,monobasic", "k": "g", "gh": 1 },
+    { "n": "Povidone-iodine", "k": "g", "gh": 1 },
+    { "n": "Pramipexole", "k": "g", "sc": 1 },
+    { "n": "Pramipexole Di-hcl", "k": "g", "gh": 1 },
+    { "n": "Prasugrel", "k": "g", "gh": 1 },
+    { "n": "Pravaatin", "k": "g", "sc": 1 },
+    {
+      "n": "Pravastatin",
+      "k": "g",
+      "a": ["Pravachol"],
+      "tdk": "c",
+      "qs": "Cholesterol"
+    },
+    { "n": "Pravastatin Sodium", "k": "g", "gh": 1 },
+    { "n": "Praziquantel", "k": "b" },
+    { "n": "Prazosin", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Prednisolone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Prednisolone Acetate", "k": "g", "gh": 1 },
+    { "n": "Prednisolone Sodium Phosphate", "k": "b" },
+    {
+      "n": "Prednisone",
+      "k": "g",
+      "a": ["Deltasone"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Pregabalin", "k": "g", "sc": 1 },
+    { "n": "Premarin", "k": "b" },
+    { "n": "Premphase", "k": "b" },
+    { "n": "Prempro", "k": "b" },
+    { "n": "Pretomanid", "k": "b" },
+    {
+      "n": "Prevacid SoluTab",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    { "n": "Prevnar 13", "k": "g", "sc": 1 },
+    { "n": "Prevnar 20", "k": "g", "sc": 1 },
+    {
+      "n": "Prevymis",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Prezcobix", "k": "b" },
+    { "n": "Prezista", "k": "b" },
+    {
+      "n": "Priftin",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Primaquine Phosphate", "k": "b" },
+    { "n": "Primidone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Priorix", "k": "g", "sc": 1 },
+    { "n": "ProAir", "k": "g", "qs": "Allergy Inhalers" },
+    { "n": "Probenecid", "k": "g", "sc": 1 },
+    { "n": "Prochlorperazine", "k": "g", "gh": 1 },
+    { "n": "Prochlorperazine Maleate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Proctofoam", "k": "b" },
+    {
+      "n": "Prodigy Diabetic Test Strips",
+      "k": "g",
+      "a": ["Prodigy"],
+      "tdk": "c"
+    },
+    { "n": "Prodigy Glucose Meter", "k": "g", "a": ["Prodigy"], "tdk": "c" },
+    { "n": "Prodigy Lancets", "k": "g", "a": ["Prodigy"], "tdk": "c" },
+    { "n": "Profenone", "k": "g", "sc": 1 },
+    { "n": "Progeerone", "k": "g", "sc": 1 },
+    { "n": "Progeerone Micronized", "k": "g", "sc": 1 },
+    { "n": "Progesterone", "k": "g", "a": ["Prometrium"], "tdk": "c" },
+    { "n": "Progesterone,micronized", "k": "g", "gh": 1 },
+    { "n": "Proglycem", "k": "b" },
+    { "n": "Prolensa", "k": "b" },
+    { "n": "Promacta", "k": "b" },
+    { "n": "Prometh/cod", "k": "g", "sc": 1 },
+    {
+      "n": "Promethazine",
+      "k": "g",
+      "a": ["Phenergan"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Promethazine-phenyleph-codeine", "k": "g", "sc": 1 },
+    { "n": "Promethazine-phenylephrine", "k": "g", "sc": 1 },
+    { "n": "Propafenone", "k": "g", "gh": 1 },
+    {
+      "n": "Propranolol",
+      "k": "g",
+      "a": ["Inderal"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Propranolol LA", "k": "g", "gh": 1 },
+    { "n": "Propranolol/hydrochlorothiazid", "k": "g", "gh": 1 },
+    { "n": "Propylene Glycol", "k": "g", "gh": 1 },
+    { "n": "Propylene Glycol/peg 400", "k": "g", "gh": 1 },
+    { "n": "Propylthiouracil", "k": "g", "sc": 1 },
+    { "n": "Proquad", "k": "g", "sc": 1 },
+    { "n": "Prucalopride", "k": "g", "sc": 1 },
+    { "n": "Pseudoephed-bromphen-dm", "k": "g", "sc": 1 },
+    { "n": "Psyllium Husk", "k": "g", "gh": 1 },
+    {
+      "n": "Pulmozyme",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Pyrazinamide", "k": "b" },
+    { "n": "Pyridoigmine", "k": "b" },
+    { "n": "Pyridoigmine Bromide", "k": "g", "sc": 1 },
+    { "n": "Pyridostigmine Bromide", "k": "g", "gh": 1 },
+    { "n": "Pyridoxine", "k": "g", "gh": 1 },
+    { "n": "Qtern", "k": "b" },
+    { "n": "Quadracel", "k": "g", "sc": 1 },
+    { "n": "Quetiapine", "k": "g", "a": ["Seroquel"], "sc": 1, "tdk": "c" },
+    { "n": "Quetiapine Fumarate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Quetiapine Fumarate ER", "k": "g", "gh": 1 },
+    { "n": "Quinapril", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Quinapril/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Quinidine Sulfate", "k": "g", "gh": 1 },
+    {
+      "n": "Qulipta",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Rabeprazole", "k": "g", "a": ["Aciphex"], "tdk": "c" },
+    { "n": "Rabeprazole Sodium", "k": "g", "gh": 1 },
+    { "n": "Rabeprazole Sodium Ec", "k": "g", "sc": 1 },
+    { "n": "Raloxifene", "k": "g", "gh": 1 },
+    { "n": "Ramelteon", "k": "g", "sc": 1 },
+    {
+      "n": "Ramipril",
+      "k": "g",
+      "sc": 1,
+      "gh": 1,
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Ranolazine", "k": "g", "sc": 1 },
+    { "n": "Ranolazine ER", "k": "g", "gh": 1 },
+    { "n": "Rasagiline", "k": "g", "sc": 1 },
+    {
+      "n": "Rasuvo",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/"
+      }
+    },
+    {
+      "n": "Reblozyl",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    {
+      "n": "Recarbrio",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 400,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Recombivax Hb", "k": "g", "sc": 1 },
+    { "n": "Rectiv", "k": "b" },
+    {
+      "n": "Relenza",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Relistor", "k": "b" },
+    { "n": "Repaglinide", "k": "g", "gh": 1 },
+    {
+      "n": "Repatha",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "No coverage for the drug; some Medicare cases",
+        "q": "You have no insurance coverage",
+        "f": 300,
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    {
+      "n": "Restasis",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    {
+      "n": "Retevmo",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL (Groups 3-4)",
+        "i": "Medicare Part B without supplemental, or insurance does not cover the drug",
+        "q": "if your insurance does not cover the medication, you may still qualify",
+        "f": 500,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    {
+      "n": "Retisert",
+      "k": "b",
+      "pap": {
+        "p": "bausch-lomb-patient-assistance-program",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household income up to $100,000",
+        "i": "Uninsured or denied coverage",
+        "q": "In terms of health insurance, you must: be uninsured; be denied coverage for Bausch + Lomb product by your commercial insurance provider and have exhausted all appeal options",
+        "dol": [100000, 0],
+        "u": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+      }
+    },
+    {
+      "n": "Retrovir",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    {
+      "n": "Revlimid",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    {
+      "n": "Rexulti",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/faqs"
+      }
+    },
+    { "n": "Reyvow", "k": "b" },
+    { "n": "Rglinide", "k": "g", "sc": 1 },
+    {
+      "n": "Riabni",
+      "k": "b",
+      "pap": {
+        "p": "amgen-safety-net-foundation",
+        "o": "likely",
+        "s": "call",
+        "r": "Not on the 2026 Amgen tier lists",
+        "q": "You have no insurance coverage",
+        "u": "https://www.amgensafetynetfoundation.com/eligibility.html"
+      }
+    },
+    { "n": "Ridaura", "k": "b" },
+    { "n": "Rifampin", "k": "g", "sc": 1 },
+    { "n": "Rimantadine", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Rinvoq",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Risedronate", "k": "b" },
+    { "n": "Risedronate Sodium", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Risperdal Consta", "k": "b" },
+    {
+      "n": "Risperidone",
+      "k": "g",
+      "a": ["Risperdal"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Risperidone Orally Disintegrating", "k": "g", "sc": 1 },
+    { "n": "Ritonavir", "k": "g", "sc": 1 },
+    {
+      "n": "Rituxan Hycela",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Rivaroxaban", "k": "b" },
+    { "n": "Rivelsa", "k": "g", "sc": 1 },
+    { "n": "Riverdi Respimat", "k": "b" },
+    { "n": "Rizatriptan", "k": "g", "a": ["Maxalt"], "sc": 1, "tdk": "c" },
+    { "n": "Rizatriptan Benzoate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Roflumila", "k": "g", "sc": 1 },
+    { "n": "Romomycin", "k": "b" },
+    { "n": "Ropinirole", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Rosuvaatin", "k": "g", "sc": 1 },
+    {
+      "n": "Rosuvastatin",
+      "k": "g",
+      "a": ["Crestor"],
+      "tdk": "c",
+      "qs": "Cholesterol"
+    },
+    { "n": "Rosuvastatin Calcium", "k": "g", "gh": 1 },
+    { "n": "Rotateq", "k": "g", "sc": 1 },
+    {
+      "n": "Rowasa",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Roxetine", "k": "g", "sc": 1 },
+    { "n": "Roxetine Mesylate", "k": "g", "sc": 1 },
+    {
+      "n": "Rozerem",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    {
+      "n": "Rozlytrek",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Rufinamide", "k": "b" },
+    {
+      "n": "Rukobia",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    { "n": "Rybelsus", "k": "b" },
+    { "n": "Rybrevant", "k": "b" },
+    { "n": "Rydapt", "k": "b" },
+    { "n": "Rytary", "k": "b" },
+    { "n": "Sacubitril-valsartan", "k": "g", "sc": 1 },
+    { "n": "Salicylic Acid", "k": "b" },
+    { "n": "Salsalate", "k": "g", "sc": 1 },
+    {
+      "n": "Samsca",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/"
+      }
+    },
+    { "n": "SANDOSTATIN LAR", "k": "b" },
+    { "n": "Saphnelo", "k": "b" },
+    {
+      "n": "Saphris",
+      "k": "b",
+      "pap": {
+        "p": "otsuka-patient-assistance-foundation-opa",
+        "o": "likely",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "provides eligible uninsured or underinsured patients with prescribed Otsuka medication free of cost",
+        "u": "https://www.otsukapatientassistance.com/"
+      }
+    },
+    {
+      "n": "Savella",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Saxagliptin", "k": "g", "sc": 1 },
+    { "n": "Saxagliptin-metformin", "k": "g", "sc": 1 },
+    { "n": "Scemblix", "k": "b" },
+    { "n": "Segluromet", "k": "b" },
+    { "n": "Selegiline", "k": "g", "sc": 1 },
+    { "n": "Selenium Sulfide", "k": "g", "sc": 1 },
+    {
+      "n": "Selzentry",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    { "n": "Semglee", "k": "b" },
+    { "n": "Sennosides", "k": "g", "gh": 1 },
+    { "n": "Sennosides/docusate Sodium", "k": "g", "gh": 1 },
+    {
+      "n": "Serevent Diskus",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Sertraline",
+      "k": "g",
+      "a": ["Zoloft"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Sevelamer", "k": "b" },
+    { "n": "Sevelamer Carbonate", "k": "g", "sc": 1 },
+    {
+      "n": "SF Rowasa",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Shingrix Intramuscular", "k": "g", "sc": 1 },
+    {
+      "n": "Sildenafil",
+      "k": "g",
+      "a": ["Viagra"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Sildenafil Citrate", "k": "g", "gh": 1 },
+    { "n": "Siliq", "k": "b" },
+    { "n": "Silver Sulfadiazine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Simvaatin", "k": "g", "sc": 1 },
+    {
+      "n": "Simvastatin",
+      "k": "g",
+      "a": ["Zocor"],
+      "gh": 1,
+      "tdk": "c",
+      "qs": "Cholesterol"
+    },
+    { "n": "Sinus Relief Oxymetazoline", "k": "g", "gh": 1 },
+    { "n": "Sirolimus", "k": "b" },
+    { "n": "Sirturo", "k": "b" },
+    { "n": "Sitagliptin", "k": "b" },
+    { "n": "Sitagliptin Free Base-metformin", "k": "b" },
+    { "n": "Skarjel", "k": "g", "sc": 1 },
+    {
+      "n": "Skyla",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Skyrizi",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Slynd", "k": "g", "sc": 1 },
+    { "n": "SMZ/TMP", "k": "g", "a": ["Bactrim"], "tdk": "u" },
+    { "n": "SMZ/TMP DS", "k": "g", "a": ["Bactrim DS"], "tdk": "c" },
+    { "n": "Sod Sulfate-pot Sulf-mg Sulf", "k": "g", "sc": 1 },
+    { "n": "Sodium Chloride", "k": "g", "gh": 1 },
+    { "n": "Sodium Fluoride", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Sodium Polystyrene Sulfonate", "k": "g", "gh": 1 },
+    { "n": "Solia", "k": "g", "sc": 1 },
+    { "n": "Solifenacin", "k": "g", "sc": 1 },
+    { "n": "Solifenacin Succinate", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Soliqua",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Sotalol", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Sotyktu",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Spikevax", "k": "g", "sc": 1 },
+    { "n": "Spiriva", "k": "b", "qs": "COPD", "see": "Spiriva Respimat" },
+    {
+      "n": "Spiriva Respimat",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Spironolactone", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Spironolactone & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Spironolactone/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Spravato", "k": "b" },
+    { "n": "Sprintec 28", "k": "g", "sc": 1 },
+    {
+      "n": "Sprycel",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Stavudine", "k": "g", "gh": 1 },
+    {
+      "n": "Stiolto Respimat",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    {
+      "n": "Stivarga",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Striverdi Respimat",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    {
+      "n": "Stromectol",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 400,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Sucralfate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Sulfacetamide Sodium", "k": "g", "sc": 1 },
+    { "n": "Sulfadiazine", "k": "g", "sc": 1 },
+    { "n": "Sulfamethoxazole-trimethoprim", "k": "g", "sc": 1 },
+    { "n": "Sulfamethoxazole/trimethoprim", "k": "g", "gh": 1 },
+    { "n": "Sulfasalazine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Sulfasalazine Tab", "k": "g", "sc": 1 },
+    { "n": "Sulindac", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Sumatriptan",
+      "k": "g",
+      "a": ["Imitrex"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "u"
+    },
+    { "n": "Sumatriptan Succinate", "k": "g", "sc": 1 },
+    {
+      "n": "Susvimo",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Sutab", "k": "b" },
+    { "n": "Symtuza", "k": "b" },
+    {
+      "n": "Synjardy",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Synjardy Xr", "k": "b" },
+    {
+      "n": "Synthroid",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Synvisc", "k": "b" },
+    { "n": "Syprine", "k": "b" },
+    { "n": "Tacrolimus", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Tadalafil",
+      "k": "g",
+      "a": ["Cialis"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Tafinlar", "k": "b" },
+    { "n": "Taflupro", "k": "g", "sc": 1 },
+    { "n": "Tagrisso", "k": "b" },
+    { "n": "Taltz", "k": "b" },
+    { "n": "Tamoxifen", "k": "g", "a": ["Nolvadex"], "tdk": "c" },
+    { "n": "Tamoxifen Citrate", "k": "g", "gh": 1 },
+    {
+      "n": "Tamsulosin",
+      "k": "g",
+      "a": ["Flomax"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Targretin", "k": "b" },
+    { "n": "Tasigna", "k": "b" },
+    { "n": "Tasmar", "k": "b" },
+    { "n": "Tavaborole", "k": "b" },
+    { "n": "Tazarotene", "k": "b", "sc": 1 },
+    {
+      "n": "Tecentriq",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Tecvayli", "k": "b" },
+    { "n": "Teflaro", "k": "b" },
+    {
+      "n": "Telmisartan",
+      "k": "g",
+      "a": ["Micardis"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Telmisartan-hctz", "k": "g", "sc": 1 },
+    { "n": "Telmisartan-hydrochlorothiazide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Telmisartan/amlodipine", "k": "g", "gh": 1 },
+    { "n": "Temazm", "k": "g", "sc": 1 },
+    { "n": "Temozolomide", "k": "g", "sc": 1 },
+    {
+      "n": "Tenivac",
+      "k": "b",
+      "sc": 1,
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Tenofovir", "k": "g", "sc": 1 },
+    { "n": "Teoerone", "k": "g", "sc": 1 },
+    { "n": "Teoerone Cypionate Im", "k": "g", "sc": 1 },
+    { "n": "Teoerone Pump Transdermal", "k": "g", "sc": 1 },
+    { "n": "Teoerone Transdermal", "k": "b" },
+    { "n": "Terazosin", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Terbinafine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Terbutaline Sulfate", "k": "g", "sc": 1 },
+    { "n": "Terconazole", "k": "g", "gh": 1 },
+    { "n": "Terconazole Vaginal", "k": "g", "sc": 1 },
+    { "n": "Teriflunomid", "k": "g", "sc": 1 },
+    { "n": "Teriratide", "k": "b" },
+    { "n": "Tetrabenazine", "k": "b" },
+    { "n": "Tetracycline", "k": "g", "sc": 1 },
+    {
+      "n": "Thalomid",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Theophylline", "k": "g", "sc": 1 },
+    { "n": "Theophylline Anhydrous", "k": "g", "gh": 1 },
+    { "n": "Thiamine", "k": "g", "gh": 1 },
+    { "n": "Thioridazine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Thiothixene", "k": "g", "sc": 1 },
+    {
+      "n": "Thymoglobulin",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Thyroid, Pork", "k": "g", "gh": 1 },
+    { "n": "Tiagabine", "k": "b" },
+    { "n": "Ticagrelor", "k": "g", "sc": 1 },
+    { "n": "Timolol", "k": "g", "sc": 1 },
+    { "n": "Timolol Hemi", "k": "b" },
+    { "n": "Timolol Mal", "k": "g", "sc": 1 },
+    { "n": "Timolol Maleate", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Tinidazole", "k": "g", "sc": 1 },
+    { "n": "Tiotropium Bromide Monohydrate Inhal", "k": "b" },
+    { "n": "Tirosint", "k": "b" },
+    {
+      "n": "Tivicay",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    { "n": "Tizanidine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Tobi", "k": "b" },
+    { "n": "Tobramycin", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Tobramycin/dexamethasone", "k": "g", "gh": 1 },
+    { "n": "Tobrex", "k": "b" },
+    { "n": "Tolnaftate", "k": "g", "gh": 1 },
+    { "n": "Tolterodine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Tolterodine Tartrate", "k": "g", "sc": 1 },
+    {
+      "n": "Topiramate",
+      "k": "b",
+      "a": ["Topamax"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Topiramate Sprinkle", "k": "b", "sc": 1 },
+    { "n": "Toremifene", "k": "b" },
+    { "n": "Torsemide", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Toujeo",
+      "k": "b",
+      "qs": "Diabetes",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Toujeo Max Soloar Subcutaneous", "k": "b" },
+    { "n": "Toujeo Soloar Subcutaneous", "k": "b" },
+    {
+      "n": "Toujeo Solostar",
+      "k": "b",
+      "pap": {
+        "p": "sanofi-patient-connection",
+        "o": "yes",
+        "s": "ready",
+        "r": "400% FPL",
+        "i": "Uninsured or functionally uninsured",
+        "q": "You must have no insurance coverage or, for commercially insured patients, have no access to the prescribed product or treatment via your insurance",
+        "f": 400,
+        "u": "https://www.sanofipatientconnection.com/financial-eligibility"
+      }
+    },
+    { "n": "Tracleer", "k": "b" },
+    {
+      "n": "Tradjenta",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Tramadol", "k": "g", "a": ["Ultram"], "sc": 1, "tdk": "u" },
+    { "n": "Tramadol-acetaminophen", "k": "g", "sc": 1 },
+    { "n": "Trandolapril", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Tranexamic Acid", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Trazodone",
+      "k": "g",
+      "a": ["Oleptro"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    {
+      "n": "Trelegy",
+      "k": "b",
+      "qs": "COPD",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    {
+      "n": "Trelegy Ellipta",
+      "k": "b",
+      "pap": {
+        "p": "gsk-for-you-pap",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured, or Medicare Part D with $600 spent on Rx this year",
+        "q": "Have no prescription drug benefits through any insurer/payer/program",
+        "f": 300,
+        "u": "https://gskpaf.org/gsk/prescription-medicine-patient-assistance/uninsured/"
+      }
+    },
+    { "n": "Tremfya", "k": "b" },
+    { "n": "Tresiba", "k": "b", "qs": "Diabetes" },
+    { "n": "Tretinoin", "k": "g", "sc": 1 },
+    { "n": "Triamcinolone Acetonide", "k": "g", "sc": 1 },
+    { "n": "Triamcinolone Acetonide Inj", "k": "g", "gh": 1 },
+    { "n": "Triamterene", "k": "b" },
+    { "n": "Triamterene & Hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Triamterene/hydrochlorothiazid", "k": "g", "gh": 1 },
+    { "n": "Trifluoperazine", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Trihexyphenidyl", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Trijardy Xr",
+      "k": "b",
+      "pap": {
+        "p": "boehringer-ingelheim-cares-foundation-bi",
+        "o": "yes",
+        "s": "not_confirmed",
+        "r": "Income rule not published or not confirmed on the official site",
+        "q": "Have one of the insurance coverage circumstances outlined below: No health coverage; Not enough coverage to obtain the medication",
+        "u": "https://www.boehringer-ingelheim.com/us/about-us/sustainable-development/our-commitment"
+      }
+    },
+    { "n": "Trimethobenzamide", "k": "g", "gh": 1 },
+    { "n": "Trimethoprim", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Trinessa", "k": "g", "sc": 1 },
+    { "n": "Trinessa Lo", "k": "g", "sc": 1 },
+    {
+      "n": "Trintellix",
+      "k": "b",
+      "pap": {
+        "p": "takeda-help-at-hand",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL",
+        "i": "No or not enough insurance",
+        "q": "Not have health coverage, or not have enough coverage to obtain your Takeda medication",
+        "f": 500,
+        "u": "https://www.helpathandpap.com/Eligibility.aspx"
+      }
+    },
+    {
+      "n": "Triumeq",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    {
+      "n": "Trizivir",
+      "k": "b",
+      "pap": {
+        "p": "viiv-healthcare-pap-gsk-patient-access-p",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (oral HIV drugs)",
+        "i": "Uninsured or Medicare; not ADAP or Medicaid",
+        "q": "You are uninsured",
+        "f": 500,
+        "u": "https://gskpaf.org/viiv/prescription-medicine-patient-assistance/oral-medications/"
+      }
+    },
+    { "n": "Trolamine Salicylate", "k": "g", "gh": 1 },
+    { "n": "Tropicamide", "k": "g", "gh": 1 },
+    { "n": "Trospium Chloride", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "True Metrix", "k": "b" },
+    { "n": "Trulance", "k": "b" },
+    { "n": "Trulicity", "k": "b" },
+    { "n": "Trulicity Subcutaneous", "k": "b" },
+    { "n": "Trumenba", "k": "g", "sc": 1 },
+    { "n": "Turalio", "k": "b" },
+    { "n": "Twinrix", "k": "g", "sc": 1 },
+    { "n": "Tyblume", "k": "g", "sc": 1 },
+    { "n": "Tykerb", "k": "b" },
+    { "n": "Ubidecarenone", "k": "g", "gh": 1 },
+    {
+      "n": "Ubrelvy",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Uceris", "k": "b" },
+    { "n": "Uell", "k": "b" },
+    { "n": "Uptravi", "k": "b" },
+    { "n": "Urea", "k": "g", "sc": 1 },
+    { "n": "Urea 20 External", "k": "g", "sc": 1 },
+    { "n": "Ursodiol", "k": "g", "gh": 1 },
+    {
+      "n": "Uzedy",
+      "k": "b",
+      "pap": {
+        "p": "teva-cares-foundation",
+        "o": "likely",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Must meet insurance criteria",
+        "q": "If you do not have insurance or prescription drug coverage, please indicate that on your application",
+        "f": 300,
+        "u": "https://www.tevacares.org/faq/"
+      }
+    },
+    {
+      "n": "Vabysmo",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    {
+      "n": "Valacyclovir",
+      "k": "g",
+      "a": ["Valtrex"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Valganciclovir", "k": "g", "sc": 1 },
+    { "n": "Valproic Acid", "k": "g", "gh": 1 },
+    { "n": "Valproic Acid (as Sodium Salt)", "k": "g", "gh": 1 },
+    {
+      "n": "Valsartan",
+      "k": "g",
+      "a": ["Diovan"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c",
+      "qs": "High Blood Pressure"
+    },
+    { "n": "Valsartan-hydrochlorothiazide", "k": "g", "sc": 1 },
+    { "n": "Valsartan/hydrochlorothiazide", "k": "g", "gh": 1 },
+    { "n": "Vancomycin", "k": "g", "sc": 1 },
+    {
+      "n": "Vaqta",
+      "k": "b",
+      "sc": 1,
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 400,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Vardenafil", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Varenicline", "k": "g", "sc": 1 },
+    { "n": "Varivax", "k": "g", "sc": 1 },
+    { "n": "Vaxelis", "k": "g", "sc": 1 },
+    { "n": "Vaxneuvance", "k": "g", "sc": 1 },
+    { "n": "Veletri", "k": "b" },
+    { "n": "Velivet", "k": "g", "sc": 1 },
+    { "n": "Vemlidy", "k": "b" },
+    {
+      "n": "Venclexta",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation-free-drug-p",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    {
+      "n": "Venlafaxine",
+      "k": "g",
+      "a": ["Effexor"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Venlafaxine ER", "k": "g", "gh": 1 },
+    { "n": "Venlafaxine XR", "k": "g", "a": ["Effexor XR"], "tdk": "c" },
+    { "n": "Ventolin", "k": "g", "qs": "Allergy Inhalers" },
+    { "n": "Veramil", "k": "g", "sc": 1 },
+    { "n": "Verapamil", "k": "g", "gh": 1, "qs": "High Blood Pressure" },
+    {
+      "n": "Verquvo",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    {
+      "n": "Verzenio",
+      "k": "b",
+      "pap": {
+        "p": "lilly-cares-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "500% FPL (Groups 3-4)",
+        "i": "Medicare Part B without supplemental, or insurance does not cover the drug",
+        "q": "if your insurance does not cover the medication, you may still qualify",
+        "f": 500,
+        "u": "https://www.lillycares.com/how-to-apply"
+      }
+    },
+    {
+      "n": "Viberzi",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    {
+      "n": "Vidaza",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    {
+      "n": "Viibryd",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Vijoice", "k": "b" },
+    { "n": "Vilazodone", "k": "g", "sc": 1 },
+    { "n": "Viokace", "k": "b" },
+    { "n": "Viracept", "k": "b" },
+    {
+      "n": "Visudyne",
+      "k": "b",
+      "pap": {
+        "p": "bausch-lomb-patient-assistance-program",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household income up to $100,000",
+        "i": "Uninsured or denied coverage",
+        "q": "In terms of health insurance, you must: be uninsured; be denied coverage for Bausch + Lomb product by your commercial insurance provider and have exhausted all appeal options",
+        "dol": [100000, 0],
+        "u": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+      }
+    },
+    { "n": "Vit A,C & E/lutein/minerals", "k": "g", "gh": 1 },
+    { "n": "Vit B Comp No.3/folic/c/biotin", "k": "g", "gh": 1 },
+    { "n": "Vitamin D3", "k": "g", "sc": 1 },
+    { "n": "Vitamin E (dl,tocopheryl Acet)", "k": "g", "gh": 1 },
+    {
+      "n": "Vitrakvi",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    { "n": "Voriconazole", "k": "g", "sc": 1 },
+    { "n": "Votrient", "k": "b" },
+    {
+      "n": "Vraylar",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Vumerity", "k": "b" },
+    { "n": "Vyepti", "k": "b" },
+    {
+      "n": "Vyzulta",
+      "k": "b",
+      "pap": {
+        "p": "bausch-lomb-patient-assistance-program",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or denied coverage",
+        "q": "In terms of health insurance, you must: be uninsured; be denied coverage for Bausch + Lomb product by your commercial insurance provider and have exhausted all appeal options",
+        "f": 300,
+        "u": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+      }
+    },
+    { "n": "Warfarin", "k": "g", "a": ["Coumadin"], "tdk": "c" },
+    { "n": "Warfarin Sodium", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Welireg",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    { "n": "Wixela", "k": "b" },
+    { "n": "Wixela Inhub", "k": "g", "sc": 1 },
+    { "n": "Works W/ One Touch Ultra Meters", "k": "g", "gh": 1 },
+    { "n": "Works With One Touch Ultra Meters", "k": "g", "gh": 1 },
+    { "n": "Xarelto", "k": "b" },
+    { "n": "Xeljanz / Xeljanz", "k": "b" },
+    { "n": "Xen", "k": "b" },
+    { "n": "Xifaxan", "k": "b" },
+    { "n": "Xigduo", "k": "b", "qs": "Diabetes" },
+    { "n": "Xigduo Xr", "k": "b" },
+    {
+      "n": "Xiidra",
+      "k": "b",
+      "pap": {
+        "p": "bausch-lomb-patient-assistance-program",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or denied coverage",
+        "q": "In terms of health insurance, you must: be uninsured; be denied coverage for Bausch + Lomb product by your commercial insurance provider and have exhausted all appeal options",
+        "f": 300,
+        "u": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+      }
+    },
+    {
+      "n": "Xipere",
+      "k": "b",
+      "pap": {
+        "p": "bausch-lomb-patient-assistance-program",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household income up to $100,000",
+        "i": "Uninsured or denied coverage",
+        "q": "In terms of health insurance, you must: be uninsured; be denied coverage for Bausch + Lomb product by your commercial insurance provider and have exhausted all appeal options",
+        "dol": [100000, 0],
+        "u": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+      }
+    },
+    { "n": "Xlovid", "k": "b" },
+    {
+      "n": "Xofigo",
+      "k": "b",
+      "pap": {
+        "p": "bayer-us-patient-assistance-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL (most Bayer drugs)",
+        "i": "Uninsured or insurance does not cover it",
+        "q": "Don't have insurance, or if your Bayer prescription medicine is not covered",
+        "f": 300,
+        "u": "https://www.patientassistance.bayer.us/en/faqs"
+      }
+    },
+    {
+      "n": "Xolair",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    { "n": "Xospata", "k": "b" },
+    { "n": "Xtandi", "k": "b" },
+    { "n": "Xulane", "k": "b" },
+    { "n": "Xultophy", "k": "b" },
+    {
+      "n": "Yervoy",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Yeztugo", "k": "b" },
+    { "n": "Yondelis", "k": "b" },
+    { "n": "Yupelri", "k": "b" },
+    { "n": "Zafirluka", "k": "g", "sc": 1 },
+    { "n": "Zafirlukast", "k": "g", "gh": 1 },
+    { "n": "Zaleplon", "k": "g", "sc": 1 },
+    { "n": "Zelapar", "k": "b" },
+    {
+      "n": "Zelboraf",
+      "k": "b",
+      "pap": {
+        "p": "genentech-patient-foundation",
+        "o": "yes",
+        "s": "ready",
+        "r": "Household of 1 under $75,000; 2 under $100,000; 3 under $125,000; 4 under $150,000; +$25,000 each",
+        "i": "Uninsured, plan does not cover it, or out-of-pocket max over 7.5% of income",
+        "q": "I have insurance, but it doesn't cover my Genentech medicine",
+        "dol": [75000, 25000],
+        "u": "https://www.gene.com/patients/patient-foundation"
+      }
+    },
+    {
+      "n": "Zenpep",
+      "k": "b",
+      "pap": {
+        "p": "myabbvie-assist",
+        "o": "likely",
+        "s": "ready",
+        "r": "400% FPL (AbbVie prints the dollar table)",
+        "i": "Limited or no insurance; insured reviewed case by case",
+        "q": "Have limited or no health insurance coverage",
+        "f": 400,
+        "u": "https://www.abbvie.com/patients/patient-assistance/income-criteria.html"
+      }
+    },
+    { "n": "Zenzedi", "k": "g", "sc": 1 },
+    {
+      "n": "Zeposia",
+      "k": "b",
+      "pap": {
+        "p": "bristol-myers-squibb-patient-assistance-",
+        "o": "yes",
+        "s": "call",
+        "r": "May qualify even above the income limit (cancer, UC, MS, psoriasis, HCM, transplant)",
+        "i": "No coverage for the drug, or Medicare spending 3%+ of income on Rx",
+        "q": "You do not have insurance coverage for a medicine listed on this site, or you have Medicare and ... spent at least 3% of ... income",
+        "u": "https://www.bmspaf.org/"
+      }
+    },
+    { "n": "Zidovudine", "k": "g", "sc": 1 },
+    { "n": "Zinc Gluconate", "k": "g", "gh": 1 },
+    { "n": "Zinc Sulfate", "k": "g", "gh": 1 },
+    { "n": "Ziprasidone", "k": "g", "sc": 1, "gh": 1 },
+    {
+      "n": "Zirgan",
+      "k": "b",
+      "pap": {
+        "p": "bausch-lomb-patient-assistance-program",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or denied coverage",
+        "q": "In terms of health insurance, you must: be uninsured; be denied coverage for Bausch + Lomb product by your commercial insurance provider and have exhausted all appeal options",
+        "f": 300,
+        "u": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+      }
+    },
+    { "n": "Zocor", "k": "b", "qs": "Cholesterol" },
+    {
+      "n": "Zolinza",
+      "k": "b",
+      "pap": {
+        "p": "merck-patient-assistance-program-merck-h",
+        "o": "likely",
+        "s": "ready",
+        "r": "500% FPL (Merck prints the dollar table)",
+        "i": "Mainly uninsured; insured may ask for an exception",
+        "q": "You do not have insurance or other coverage for your prescription medicine",
+        "f": 500,
+        "u": "https://www.merckhelps.com/"
+      }
+    },
+    {
+      "n": "Zolmitriptan",
+      "k": "g",
+      "a": ["Zomig"],
+      "sc": 1,
+      "gh": 1,
+      "tdk": "c"
+    },
+    { "n": "Zolpidem Er", "k": "g", "sc": 1 },
+    { "n": "Zolpidem Tartrate", "k": "g", "sc": 1 },
+    { "n": "Zonisamide", "k": "g", "sc": 1, "gh": 1 },
+    { "n": "Zoryve", "k": "b" },
+    { "n": "Zykadia", "k": "b" },
+    {
+      "n": "Zylet",
+      "k": "b",
+      "pap": {
+        "p": "bausch-lomb-patient-assistance-program",
+        "o": "yes",
+        "s": "ready",
+        "r": "300% FPL",
+        "i": "Uninsured or denied coverage",
+        "q": "In terms of health insurance, you must: be uninsured; be denied coverage for Bausch + Lomb product by your commercial insurance provider and have exhausted all appeal options",
+        "f": 300,
+        "u": "https://patientassistance.bausch.com/eligibility-requirements-terms-and-conditions/"
+      }
+    }
+  ],
+  "sheet": [
+    {
+      "c": "High Blood Pressure",
+      "note": "all generic",
+      "g": [
+        {
+          "l": "Generic",
+          "d": [
+            "Lisinopril",
+            "Benazepril",
+            "Amlodipine",
+            "Losartan",
+            "Atenolol",
+            "Valsartan",
+            "Metoprolol",
+            "Verapamil",
+            "Hydrochlorothiazide",
+            "Carvedilol",
+            "Ramipril"
+          ]
+        }
+      ]
+    },
+    {
+      "c": "Cholesterol",
+      "note": "",
+      "g": [
+        {
+          "l": "Generic",
+          "d": [
+            "Atorvastatin",
+            "Rosuvastatin",
+            "Lovastatin",
+            "Simvastatin",
+            "Pravastatin",
+            "Ezetimibe"
+          ]
+        },
+        { "l": "Brand", "d": ["Lipitor", "Zocor", "Crestor"] }
+      ]
+    },
+    {
+      "c": "Allergy Inhalers",
+      "note": "generic",
+      "g": [{ "l": "Generic", "d": ["Albuterol", "Ventolin", "ProAir"] }]
+    },
+    {
+      "c": "COPD",
+      "note": "all brand",
+      "g": [
+        {
+          "l": "Brand",
+          "d": ["Spiriva", "Anoro Ellipta", "Breo Ellipta", "Trelegy"]
+        }
+      ]
+    },
+    {
+      "c": "Diabetes",
+      "note": "",
+      "g": [
+        {
+          "l": "Generic",
+          "d": ["Metformin", "Glimepiride", "Novolin (insulin)"]
+        },
+        {
+          "l": "Brand tablets",
+          "d": ["JanuMet", "Xigduo", "Invokamet", "Jardiance", "Synjardy"]
+        },
+        {
+          "l": "Brand insulin / injectables",
+          "d": [
+            "Humalog",
+            "Tresiba",
+            "Ozempic",
+            "NovoLog",
+            "Levemir",
+            "Basaglar",
+            "Lantus",
+            "Toujeo"
+          ]
+        }
+      ]
+    }
+  ]
+}
