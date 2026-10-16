@@ -334,6 +334,11 @@ var PD_PLAN_TIERS = {
     { id: 'allstate-essentials-stm-ppo', label: 'Essentials' }
   ],
   pinnacle: [{ id: 'pinnacle-stm-traditional', label: 'Pinnacle STM' }],
+  allstatehealthaccess: [
+    { id: 'allstate-health-access-value', label: 'Value' },
+    { id: 'allstate-health-access-core', label: 'Core' },
+    { id: 'allstate-health-access-plus', label: 'Plus' }
+  ],
   harmonycareseries: [
     { id: 'harmony-care-100', label: '100' },
     { id: 'harmony-care-100a', label: '100A' },
@@ -404,6 +409,1009 @@ var PD_PLAN_TIERS = {
     { id: 'american-financial-ci-10000', label: '$10,000' }
   ]
 };
+
+// Plan Vault short values (Oct 2026). One entry per tier id (or card id
+// for single-tier cards), read from the carrier brochures and approved by
+// the owner on Oct 16 2026. Values not printed in any brochure are left
+// out, so their tile does not show. Source sheet: CHA_Plan_Tier_Values.csv.
+var PD_SHORT_VALUES = {
+  'ghdp-wellness': {
+    primary_care: 'Not listed (only listed services covered)',
+    specialist: 'Not listed (only listed services covered)',
+    urgent_care: 'Not listed (only listed services covered)',
+    telehealth: '$0 consult, no max',
+    hospital: 'Not listed (only listed services covered)',
+    surgery: 'Not listed (only listed services covered)',
+    er: 'Not listed (only listed services covered)',
+    rx: 'Discount card only (BestChoiceRx)',
+    pre_existing: 'None stated (no hospital benefit)',
+    waiting_period: '30 days, sickness benefits'
+  },
+  'ghdp-1': {
+    primary_care: '$25 copay, $150 max, 3 visits/yr',
+    specialist: '$50 copay, $300 max, 1 visit/yr (shared w/ urgent care)',
+    urgent_care: '$50 copay, $300 max, 1 visit/yr (shared w/ specialist)',
+    telehealth: '$0 consult, no max',
+    hospital: '$1,000/day, max $5,000/yr',
+    surgery: 'Not listed (only listed services covered)',
+    er: 'Not listed (only listed services covered)',
+    rx: 'Discount card only (BestChoiceRx)',
+    pre_existing: '12/12, hospital benefits only',
+    waiting_period: '30 days, sickness benefits'
+  },
+  'ghdp-2': {
+    primary_care: '$25 copay, $150 max, 4 visits/yr',
+    specialist: '$50 copay, $300 max, 2 visits/yr (shared w/ urgent care)',
+    urgent_care: '$50 copay, $300 max, 2 visits/yr (shared w/ specialist)',
+    telehealth: '$0 consult, no max',
+    hospital: '$1,000/day, max $10,000/yr',
+    surgery: 'Not listed (only listed services covered)',
+    er: 'Not listed (only listed services covered)',
+    rx: 'Acute/preventive generic $0; 200 maint. generics $5 (retail 30 / mail 90); off-formulary discount; specialty not covered',
+    pre_existing: '12/12, hospital benefits only',
+    waiting_period: '30 days, sickness benefits'
+  },
+  'ghdp-3': {
+    primary_care: '$25 copay, $150 max, 4 visits/yr',
+    specialist: '$50 copay, $300 max, 4 visits/yr (shared w/ urgent care)',
+    urgent_care: '$50 copay, $300 max, 4 visits/yr (shared w/ specialist)',
+    telehealth: '$0 consult, no max',
+    hospital: '$1,000/day, max $15,000/yr',
+    surgery: 'Not listed (only listed services covered)',
+    er: 'Not listed (only listed services covered)',
+    rx: 'Generic $0; maint. generic $5; non-pref generic $5/$10; brand $40 retail w/ PA; $150/mo cap; specialty not covered',
+    pre_existing: '12/12, hospital benefits only',
+    waiting_period: '30 days, sickness benefits'
+  },
+  'ghdp-4': {
+    primary_care: '$50 copay, $150 max, 4 visits/yr',
+    specialist: '$75 copay, $300 max, 4 visits/yr (shared w/ urgent care)',
+    urgent_care: '$75 copay, $300 max, 4 visits/yr (shared w/ specialist)',
+    telehealth: '$0 consult, no max',
+    hospital: '$1,000/day, max $10,000/yr',
+    surgery: "IP/OP combined: $1,000 (printed '/ Year'), max $2,000/yr",
+    er: '$1,000/incident, if admitted',
+    rx: 'Generic $0; maint. generic $5; non-pref generic $5/$10; brand $40 retail w/ PA; $150/mo cap; specialty not covered',
+    pre_existing: '12/12, hospital benefits only',
+    waiting_period: '30 days, sickness benefits'
+  },
+  'ghdp-5': {
+    primary_care: '$50 copay, $150 max, 5 visits/yr',
+    specialist: '$75 copay, $300 max, 5 visits/yr (shared w/ urgent care)',
+    urgent_care: '$75 copay, $300 max, 5 visits/yr (shared w/ specialist)',
+    telehealth: '$0 consult, no max',
+    hospital: '$1,500/day, max $15,000/yr',
+    surgery: 'IP/OP combined: $1,500/day, max $4,500/yr',
+    er: '$1,000/incident, if admitted',
+    rx: 'Generic $0; maint. generic $5; non-pref generic $5/$10; brand $40 retail w/ PA; $150/mo cap; specialty not covered',
+    pre_existing: '12/12, hospital benefits only',
+    waiting_period: '30 days, sickness benefits'
+  },
+  'tdk-1': {
+    deductible: '$0 (none)',
+    primary_care: '$25 copay, $150 max, 3 visits/yr',
+    specialist: '$50 copay, $300 max, 1 visit/yr',
+    urgent_care: '$50 copay, $300 max, 1 visit/yr',
+    telehealth: '$0 consult, no max (MyLiveDoc)',
+    hospital: '$1,000/day, max $5,000/yr',
+    surgery: 'Not covered (outpatient); no IP surgery row',
+    er: 'Not covered',
+    rx: '70+ free Rx; discount card. Home delivery not covered; brand/specialty not covered',
+    pre_existing: '12/12, hospital-related benefits',
+    waiting_period: '30 days (not virtual care/Rx; not emergent care; 1st year)'
+  },
+  'tdk-2': {
+    deductible: '$0 (none)',
+    primary_care: '$25 copay, $150 max, 4 visits/yr',
+    specialist: '$50 copay, $300 max, 2 visits/yr',
+    urgent_care: '$50 copay, $300 max, 2 visits/yr',
+    telehealth: '$0 consult, no max (MyLiveDoc)',
+    hospital: '$1,000/day, max $10,000/yr',
+    surgery: 'Not covered (outpatient); no IP surgery row',
+    er: 'Not covered',
+    rx: '1,000+ free Rx; discount card. Brand/specialty not covered',
+    pre_existing: '12/12, hospital-related benefits',
+    waiting_period: '30 days (not virtual care/Rx; not emergent care; 1st year)'
+  },
+  'tdk-3': {
+    deductible: '$0 (none)',
+    primary_care: '$25 copay, $150 max, 4 visits/yr',
+    specialist: '$50 copay, $300 max, 4 visits/yr',
+    urgent_care: '$50 copay, $300 max, 4 visits/yr',
+    telehealth: '$0 consult, no max (MyLiveDoc)',
+    hospital: '$1,000/day, max $15,000/yr',
+    surgery: 'Not covered (outpatient); no IP surgery row',
+    er: 'Not covered',
+    rx: '70+ free Rx; discount card. Brand/specialty not covered',
+    pre_existing: '12/12, hospital-related benefits',
+    waiting_period: '30 days (not virtual care/Rx; not emergent care; 1st year)'
+  },
+  'tdk-4': {
+    deductible: '$0 (none)',
+    primary_care: '$50 copay, $150 max, 4 visits/yr',
+    specialist: '$75 copay, $300 max, 4 visits/yr',
+    urgent_care: '$75 copay, $300 max, 4 visits/yr',
+    telehealth: '$0 consult, no max (MyLiveDoc)',
+    hospital: '$1,000/day, max $10,000/yr',
+    surgery: 'IP/OP: $1,000/day, max $2,000/yr',
+    er: '$1,000/incident, if admitted',
+    rx: '1,000+ free Rx; discount card. Brand/specialty not covered',
+    pre_existing: '12/12, hospital-related benefits',
+    waiting_period: '30 days (not virtual care/Rx; not emergent care; 1st year)'
+  },
+  'tdk-5': {
+    deductible: '$0 (none)',
+    primary_care: '$50 copay, $150 max, 5 visits/yr',
+    specialist: '$75 copay, $300 max, 5 visits/yr',
+    urgent_care: '$75 copay, $300 max, 5 visits/yr',
+    telehealth: '$0 consult, no max (MyLiveDoc)',
+    hospital: '$1,500/day, max $15,000/yr',
+    surgery: 'IP/OP: $1,500/day, max $4,500/yr',
+    er: '$1,000/incident, if admitted',
+    rx: '1,000+ free Rx; discount card. Brand/specialty not covered',
+    pre_existing: '12/12, hospital-related benefits',
+    waiting_period: '30 days (not virtual care/Rx; not emergent care; 1st year)'
+  },
+  'smart-choice-1500': {
+    deductible: '$1,500 ind / $3,000 fam; OOP $9,200 / $18,400',
+    primary_care: '$40 copay, 12 visits/yr',
+    specialist: '$50 copay, 12 visits/yr',
+    urgent_care: '$60 copay, 5 visits/yr',
+    telehealth: '$0 copay (PCP, urgent, mental health)',
+    hospital: '$2,500 copay after ded, 1 admit/family/yr, up to 7 days',
+    surgery:
+      'OP facility $750 copay after ded, 4/family/yr, elective excluded; IP via hospital row',
+    er: '$250 copay after ded, 4/family/yr',
+    rx: 'Preferred generic $12 (30-day, Ventegra acute formulary); brand/specialty not covered'
+  },
+  'smart-choice-2500': {
+    deductible: '$2,500 ind / $5,000 fam; OOP $9,200 / $18,400',
+    primary_care: '$40 copay, 10 visits/yr',
+    specialist: '$50 copay, 10 visits/yr',
+    urgent_care: '$60 copay, 3 visits/yr',
+    telehealth: '$0 copay (PCP, urgent, mental health)',
+    hospital: '$2,500 copay after ded, 1 admit/family/yr, up to 5 days',
+    surgery:
+      'OP facility $750 copay after ded, 3/family/yr, elective excluded; IP via hospital row',
+    er: '$250 copay after ded, 3/family/yr',
+    rx: 'Preferred generic $12 (30-day, Ventegra acute formulary); brand/specialty not covered'
+  },
+  'smart-choice-3000': {
+    deductible: '$3,000 ind / $6,000 fam; OOP $9,200 / $18,400',
+    primary_care: '$40 copay, 7 visits/yr',
+    specialist: '$50 copay, 7 visits/yr',
+    urgent_care: '$60 copay, 3 visits/yr',
+    telehealth: '$0 copay (PCP, urgent, mental health)',
+    hospital: '$2,500 copay after ded, 1 admit/family/yr, up to 4 days',
+    surgery:
+      'OP facility $750 copay after ded, 2/family/yr, elective excluded; IP via hospital row',
+    er: '$250 copay after ded, 2/family/yr',
+    rx: 'Preferred generic $12 (30-day, Ventegra acute formulary); brand/specialty not covered'
+  },
+  'smart-choice-3500': {
+    deductible: '$3,500 ind / $7,000 fam; OOP $9,200 / $18,400',
+    primary_care: '$40 copay, 5 visits/yr',
+    specialist: '$50 copay, 5 visits/yr',
+    urgent_care: '$60 copay, 2 visits/yr',
+    telehealth: '$0 copay (PCP, urgent, mental health)',
+    hospital: '$2,500 copay after ded, 1 admit/family/yr, up to 3 days',
+    surgery:
+      'OP facility $750 copay after ded, 1/family/yr, elective excluded; IP via hospital row',
+    er: '$250 copay after ded, 1/family/yr',
+    rx: 'Preferred generic $12 (30-day, Ventegra acute formulary); brand/specialty not covered'
+  },
+  goodlifewbchoice: {
+    deductible: '$0 (none)',
+    primary_care: 'You pay $60, plan pays up to $100, 5 visits/yr',
+    specialist: 'You pay $75, plan pays up to $125, 3 visits/yr',
+    urgent_care: 'You pay $75, plan pays up to $75, 2 visits/yr',
+    telehealth: 'Not covered',
+    hospital: '$1,500/day, 10 days/yr',
+    surgery:
+      'Tiered schedule $250-$25,000 (7 tiers); asst surgeon 20%, anesthesia 30%',
+    er: '$750/visit, 1/yr',
+    rx: 'Not covered (all Rx excluded)',
+    pre_existing: '12/12, hospital and surgery only',
+    waiting_period: '30 days sickness; accidents day 1'
+  },
+  goodlifewbselect: {
+    deductible: '$0 (none)',
+    primary_care: 'You pay $50, plan pays up to $150, 8 visits/yr',
+    specialist: 'You pay $75, plan pays up to $150, 3 visits/yr',
+    urgent_care: 'You pay $75, plan pays up to $125, 3 visits/yr',
+    telehealth: 'Not covered',
+    hospital: '$2,500/day, 10 days/yr',
+    surgery:
+      'Tiered schedule $500-$50,000 (7 tiers); asst surgeon 20%, anesthesia 30%',
+    er: '$750/visit, 3/yr',
+    rx: 'Not covered (all Rx excluded)',
+    pre_existing: '12/12, hospital and surgery only',
+    waiting_period: '30 days sickness; accidents day 1'
+  },
+  harborstmessential: {
+    deductible:
+      'Ded $2,500/$5,000/$7,500/$10,000; coins 30/20/0%; coins OOP max $5,000; period max $750,000',
+    primary_care: '$50 copay, 3 visits (in-network only)',
+    specialist: '$50 copay, 3 visits (in-network only)',
+    urgent_care: '$50 copay, 3 visits (in-network only)',
+    surgery: 'IP ded/coins / OP $500 access fee then ded/coins',
+    er: '$500 access fee per admission, then ded/coins',
+    rx: 'Optional Rx rider: generic $25 copay; brand/specialty $500 Rx ded then coins; $5,000 max',
+    pre_existing:
+      'Not covered; limits reapply each new coverage period; optional Pre-Ex rider (not in OH)'
+  },
+  harborstmaccess: {
+    deductible:
+      'Ded $2,500/$5,000/$7,500/$10,000; coins 30/20/0%; coins OOP max $5,000; period max $1,000,000',
+    primary_care: '$40 copay, 3 visits (in-network only)',
+    specialist: '$40 copay, 3 visits (in-network only)',
+    urgent_care: '$40 copay, 3 visits (in-network only)',
+    surgery: 'IP ded/coins / OP No access fee; ded/coins',
+    er: 'No access fee; ded/coins',
+    rx: 'Optional Rx rider: generic $25 copay; brand/specialty $500 Rx ded then coins; $5,000 max',
+    pre_existing:
+      'Not covered; limits reapply each new coverage period; optional Pre-Ex rider (not in OH)'
+  },
+  harborstmsecure: {
+    deductible:
+      'Ded $2,500/$5,000/$7,500/$10,000; coins 30/20/0%; coins OOP max $5,000; period max $1,500,000',
+    primary_care: '$40 copay, unlimited (in-network only)',
+    specialist: '$40 copay, unlimited (in-network only)',
+    urgent_care: '$40 copay, unlimited (in-network only)',
+    surgery: 'IP ded/coins / OP No access fee; ded/coins',
+    er: 'No access fee; ded/coins',
+    rx: 'Optional Rx rider: generic $25 copay; brand/specialty $500 Rx ded then coins; $5,000 max',
+    pre_existing:
+      'Not covered; limits reapply each new coverage period; optional Pre-Ex rider (not in OH)'
+  },
+  'pinnacle-stm-traditional': {
+    deductible:
+      'Ded $500-$10,000; coins 50/50 or 80/20; OOP max $5,000; period max $1,000,000',
+    primary_care: '$50 copay',
+    hospital: 'Average standard room rate, ded/coins',
+    icu: 'Average standard room rate',
+    surgery: 'IP ded/coins / OP $500 deductible per surgery (max 3)',
+    er: '$500 ER deductible per visit (max 3), then ded/coins',
+    rx: 'Excluded except Dr-administered; AWA Rx discount (Clever Rx)',
+    pre_existing: 'Excluded first 12 mo, 60-mo lookback (may vary by state)',
+    waiting_period: 'Injury none; sickness 5 days; cancer 30 days'
+  },
+  'afrp-galena-stm-economy': {
+    deductible:
+      'Ded $5,000/$7,500/$10,000; plan pays 50/70/80%; coins max $5,000/$10,000; period max $500,000',
+    primary_care: '$40 copay (not marked copay-only)',
+    specialist: '$60 copay (not marked copay-only)',
+    urgent_care: '$60 copay (not marked copay-only)',
+    hospital: 'Up to $1,500/day (Standard Room & ICU row)',
+    icu: 'Up to $1,500/day (shared row with room)',
+    surgery:
+      'IP $2,000/surgery, 1/term / OP $2,000, 1/term / office $1,000, 1/term',
+    er: 'Accident $500 copay; sickness $750 copay',
+    rx: 'Outpatient Rx not insured; ReviveHealth membership: $0 urgent care meds, $0 maintenance meds home delivery, up to 80% discount card',
+    pre_existing: 'Excluded; 12-month lookback',
+    waiting_period: 'Injury next day; sickness 5 days; cancer 30 days'
+  },
+  'afrp-galena-stm-standard': {
+    deductible:
+      'Ded $2,500/$5,000/$7,500/$10,000; plan pays 50/70/80%; coins max $5,000/$10,000; period max $1,000,000',
+    primary_care: '$40 copay (copay-only, no ded)',
+    specialist: '$60 copay (copay-only, no ded)',
+    urgent_care: '$60 copay (not marked copay-only)',
+    hospital: 'Up to $2,500/day (Standard Room & ICU row)',
+    icu: 'Up to $2,500/day (shared row with room)',
+    surgery:
+      'IP $4,000/surgery, 2/term / OP $4,000, 1/term / office $1,000, 2/term',
+    er: 'Accident $500 copay; sickness $750 copay',
+    rx: 'Outpatient Rx not insured; ReviveHealth membership: $0 urgent care meds, $0 maintenance meds home delivery, up to 80% discount card',
+    pre_existing: 'Excluded; 12-month lookback',
+    waiting_period: 'Injury next day; sickness 5 days; cancer 30 days'
+  },
+  'afrp-galena-stm-elite': {
+    deductible:
+      'Ded $2,500/$5,000/$7,500/$10,000; plan pays 50/70/80%; coins max $2,500/$5,000/$10,000; period max $2,000,000',
+    primary_care: '$30 copay (copay-only, no ded)',
+    specialist: '$45 copay (copay-only, no ded)',
+    urgent_care: '$60 copay (copay-only, no ded)',
+    hospital: 'Up to $3,000/day (Standard Room & ICU row)',
+    icu: 'Up to $3,000/day (shared row with room)',
+    surgery:
+      'IP $8,000/surgery, 3/term / OP $8,000, 2/term / office $1,000, 3/term',
+    er: 'Accident $500 copay; sickness $750 copay',
+    rx: 'Outpatient Rx not insured; ReviveHealth membership: $0 urgent care meds, $0 maintenance meds home delivery, up to 80% discount card',
+    pre_existing: 'Excluded; 12-month lookback',
+    waiting_period: 'Injury next day; sickness 5 days; cancer 30 days'
+  },
+  'smarthealth-stm-limited': {
+    deductible:
+      'Ded $500-$10,000; coins 80/20; coins limit $2,000/$4,000; period max $250K/$500K/$1M',
+    primary_care: '$25 copay, max 2 (then ded/coins)',
+    specialist: '$40 copay, max 2',
+    urgent_care: '$25 copay, max 2 (shared with office)',
+    hospital: 'Up to $1,500/day',
+    icu: 'Up to $2,000/day',
+    surgery:
+      'Up to $5,000/surgery, $10,000/period; OP facility up to $1,500/day',
+    er: 'Ded/coins, up to $250/visit; no addl ER ded (waived if admitted 24h)',
+    rx: 'Outpatient Rx excluded; NCE Rx discount card',
+    pre_existing:
+      'Excluded; 36-month lookback; Pre-Ex Waiver Rider for later terms',
+    waiting_period: 'Injury none; sickness 5 days; cancer 30 days'
+  },
+  'smarthealth-stm-traditional': {
+    deductible:
+      'Ded $500-$10,000; coins 80/20; coins limit $2,000/$4,000; period max $250K/$500K/$1M',
+    primary_care: '$25 copay, max 2 (then ded/coins)',
+    specialist: '$40 copay, max 2',
+    urgent_care: '$25 copay, max 2 (shared with office)',
+    hospital: 'Ded/coins',
+    icu: 'Ded/coins',
+    surgery: 'IP and OP ded/coins',
+    er: 'Ded/coins; no addl ER ded',
+    rx: 'Outpatient Rx excluded; NCE Rx discount card',
+    pre_existing:
+      'Excluded; 36-month lookback; Pre-Ex Waiver Rider for later terms',
+    waiting_period: 'Injury none; sickness 5 days; cancer 30 days'
+  },
+  'access-health-stm-traditional': {
+    deductible:
+      'Ded $500-$10,000; coins 80/20; coins limit $2,000/$4,000; period max $250K/$500K/$1M',
+    primary_care: '$15 copay, unlimited',
+    specialist: '$25 copay, unlimited',
+    urgent_care: '$15 copay, unlimited (+$100 urgent care deductible, 1/yr)',
+    telehealth: 'MyTelemedicine via NCE membership (cost not printed)',
+    hospital: 'Subject to deductible + coinsurance',
+    icu: 'Subject to deductible + coinsurance',
+    surgery: 'Subject to deductible + coinsurance',
+    er: 'Deductible + coinsurance after $250 ER deductible (1/yr); waived if admitted in 24 hrs',
+    rx: 'Outpatient Rx excluded; NCE Rx discount card',
+    pre_existing:
+      'Excluded; 36-month lookback; Pre-Ex Waiver Rider for later terms',
+    waiting_period: 'Injury none; sickness 5 days; cancer 30 days'
+  },
+  'access-health-stm-lite': {
+    deductible:
+      'Ded $500-$10,000; coins 80/20; coins limit $2,000/$4,000; period max $250K/$500K/$1M',
+    primary_care: '$25 copay, max 2 visits',
+    specialist: '$40 copay, max 2 visits',
+    urgent_care: '$25 copay, max 2 visits',
+    telehealth: 'MyTelemedicine via NCE membership (cost not printed)',
+    rx: 'Outpatient Rx excluded; NCE Rx discount card',
+    pre_existing:
+      'Excluded; 36-month lookback; Pre-Ex Waiver Rider for later terms',
+    waiting_period: 'Injury none; sickness 5 days; cancer 30 days'
+  },
+  'allstate-enhanced-stm-ppo': {
+    deductible:
+      'Ded $2.5k-$25k (9 designs); coins 0/20/50%; coins OOP $0 or $5k; period max $1,000,000',
+    primary_care: 'Ded/coins (incl preventive)',
+    specialist: 'Ded/coins',
+    urgent_care: '$50 access fee, ded waived, then coins',
+    hospital: 'Ded/coins',
+    surgery: 'Ded/coins (OP surgeon/anesthesia in OP services)',
+    er: '$250 access fee (waived if admitted), then ded/coins'
+  },
+  'allstate-copay-enhanced-stm-ppo': {
+    deductible: 'Ded $6k or $8k; coins 0%; coins OOP $0; period max $5,000,000',
+    primary_care:
+      '$40 copay; visits: <=6 mo single 1/family 3, >6 mo single 2/family 4',
+    specialist: '$60 copay (same visit limits)',
+    urgent_care: '$50 access fee, ded waived, then coins',
+    hospital: 'Ded/coins',
+    surgery: 'Ded/coins (OP surgeon/anesthesia in OP services)',
+    er: '$250 access fee (waived if admitted), then ded/coins',
+    rx: '$10 generic copay; $3,000 max'
+  },
+  'allstate-essentials-stm-ppo': {
+    deductible:
+      'Ded $5k/$10k/$25k; coins 40%; coins OOP $7.5k; period max $250,000',
+    primary_care: 'Ded/coins (incl preventive)',
+    specialist: 'Ded/coins',
+    urgent_care: '$50 access fee, ded waived, then coins',
+    hospital: 'Ded/coins',
+    surgery: 'Ded/coins; OP services $15,000 limit',
+    er: '$250 access fee (waived if admitted), then ded/coins'
+  },
+  'harmony-care-plus-100a': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 3 days/yr',
+    hospital: '$100/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '- (dash as printed)',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-plus-100': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 3 days/yr',
+    hospital: '$100/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-plus-200': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$200/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$400/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-plus-200-plus': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$200/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$400/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-plus-300': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$300/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$750/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-plus-500': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$500/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$1,000/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-plus-750': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$750/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$1,500/day, max 3 days/yr',
+    er: '$75/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-plus-1000': {
+    primary_care: '$75/day, max 5 days/yr',
+    specialist: '$75/day, max 5 days/yr',
+    hospital: '$1,000/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '$100/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'sigma-care-plus-100a': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 3 days/yr',
+    hospital: '$100/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '- (dash as printed)',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'sigma-care-plus-100': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 3 days/yr',
+    hospital: '$100/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'sigma-care-plus-200': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$200/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'sigma-care-plus-200-plus': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$200/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$400/day, max 3 days/yr',
+    er: '$50/day, max 2 days/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'sigma-care-plus-300': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$300/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$400/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'sigma-care-plus-500': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$500/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$750/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'sigma-care-plus-750': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$750/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$1,000/day, max 3 days/yr',
+    er: '$75/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'sigma-care-plus-1000': {
+    primary_care: '$75/day, max 5 days/yr',
+    specialist: '$75/day, max 5 days/yr',
+    hospital: '$1,000/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '$1,500/day, max 3 days/yr',
+    er: '$100/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'health-choice-silver-100a': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 3 days/yr',
+    hospital: '$100/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '- (dash as printed)',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date (FirstEnroll Terms)',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'health-choice-silver-100': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 3 days/yr',
+    hospital: '$100/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date (FirstEnroll Terms)',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'health-choice-silver-200': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$200/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '- (dash as printed)',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date (FirstEnroll Terms)',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'health-choice-silver-200-plus': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$200/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '50%/day, max 3 days/yr',
+    er: '$50/day, max 2 days/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date (FirstEnroll Terms)',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'health-choice-silver-300': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$300/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '50%/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date (FirstEnroll Terms)',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'health-choice-silver-500': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$500/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '70%/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date (FirstEnroll Terms)',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'health-choice-silver-750': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    hospital: '$750/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '80%/day, max 3 days/yr',
+    er: '$75/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date (FirstEnroll Terms)',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'health-choice-silver-1000': {
+    primary_care: '$75/day, max 5 days/yr',
+    specialist: '$75/day, max 5 days/yr',
+    hospital: '$1,000/day, max 30 days/yr',
+    icu: '- (dash as printed)',
+    surgery: '100%/day, max 3 days/yr',
+    er: '$100/day, max 1 day/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)',
+    pre_existing: 'No coverage 12 mo after effective date (FirstEnroll Terms)',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-100a': {
+    primary_care: '$50/day; PCP+specialist combined max 3 days/yr',
+    specialist: '$50/day; PCP+specialist combined max 3 days/yr',
+    hospital: '$100/day, max 30 days/yr',
+    surgery: '- (dash on FirstEnroll Info page)',
+    er: '- (dash on FirstEnroll Info page)',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness; none for injury'
+  },
+  'harmony-care-100b': {
+    primary_care: '$50/day; PCP+specialist combined max 3 days/yr',
+    specialist: '$50/day; PCP+specialist combined max 3 days/yr',
+    hospital: '$100/day, max 30 days/yr',
+    surgery: '- (dash on FirstEnroll Info page)',
+    er: '- (dash on FirstEnroll Info page)'
+  },
+  'harmony-care-100': {
+    primary_care: '$50/day; PCP+specialist combined max 3 days/yr',
+    specialist: '$50/day; PCP+specialist combined max 3 days/yr',
+    hospital: '$100/day, max 31 days/yr',
+    surgery: '- (dash on FirstEnroll Info page)',
+    er: '$50/day, max 1 day/yr',
+    pre_existing: 'No coverage 12 mo after effective date',
+    waiting_period: '30 days for sickness'
+  },
+  'harmony-care-200': {
+    primary_care: '$50/day; PCP+specialist combined max 5 days/yr',
+    specialist: '$50/day; PCP+specialist combined max 5 days/yr',
+    hospital: '$200/day, max 30 days/yr',
+    surgery: '- (dash on FirstEnroll Info page)',
+    er: '$50/day, max 1 day/yr'
+  },
+  'harmony-care-200-plus': {
+    primary_care: '$50/day; PCP+specialist combined max 5 days/yr',
+    specialist: '$50/day; PCP+specialist combined max 5 days/yr',
+    hospital: '$200/day, max 30 days/yr',
+    surgery: '$400/day, max 3 days/yr',
+    er: '$50/day, max 2 days/yr'
+  },
+  'harmony-care-300': {
+    primary_care: '$50/day; PCP+specialist combined max 5 days/yr',
+    specialist: '$50/day; PCP+specialist combined max 5 days/yr',
+    hospital: '$300/day, max 30 days/yr',
+    surgery: '$400/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr'
+  },
+  'harmony-care-500': {
+    primary_care: '$50/day; PCP+specialist combined max 5 days/yr',
+    specialist: '$50/day; PCP+specialist combined max 5 days/yr',
+    hospital: '$500/day, max 30 days/yr',
+    surgery: '$750/day, max 3 days/yr',
+    er: '$50/day, max 1 day/yr'
+  },
+  'harmony-care-750': {
+    primary_care: '$50/day; PCP+specialist combined max 5 days/yr',
+    specialist: '$50/day; PCP+specialist combined max 5 days/yr',
+    hospital: '$750/day, max 30 days/yr',
+    surgery: '$1,000/day, max 3 days/yr',
+    er: '$75/day, max 1 day/yr'
+  },
+  'harmony-care-1000': {
+    primary_care: '$75/day; PCP+specialist combined max 5 days/yr',
+    specialist: '$75/day; PCP+specialist combined max 5 days/yr',
+    hospital: '$1,000/day, max 30 days/yr',
+    surgery: '$1.500 (as printed)/day, max 3 days/yr',
+    er: '$100/day, max 1 day/yr'
+  },
+  'advanced-wellness-plus-100a': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 3 days/yr',
+    surgery: '- (dash on FirstEnroll Info page)',
+    er: '- (dash on FirstEnroll Info page)',
+    rx: 'Discount card only (GapAfford Plus, not insurance)'
+  },
+  'advanced-wellness-plus-100': {
+    primary_care: '$50/day, max 3 days/yr',
+    specialist: '$50/day, max 3 days/yr',
+    surgery: '- (dash on FirstEnroll Info page)',
+    rx: 'Discount card only (GapAfford Plus, not insurance)'
+  },
+  'advanced-wellness-plus-200': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    surgery: '- (dash on FirstEnroll Info page)',
+    rx: 'Discount card only (GapAfford Plus, not insurance)'
+  },
+  'advanced-wellness-plus-200-plus': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    surgery: '$400/day, max 3 days/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)'
+  },
+  'advanced-wellness-plus-300': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    surgery: '$400/day, max 3 days/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)'
+  },
+  'advanced-wellness-plus-500': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    surgery: '$750/day, max 3 days/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)'
+  },
+  'advanced-wellness-plus-750': {
+    primary_care: '$50/day, max 5 days/yr',
+    specialist: '$50/day, max 5 days/yr',
+    surgery: '$1,000/day, max 3 days/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)'
+  },
+  'advanced-wellness-plus-1000': {
+    primary_care: '$75/day, max 5 days/yr',
+    specialist: '$75/day, max 5 days/yr',
+    surgery: '$1,500/day, max 3 days/yr',
+    rx: 'Discount card only (GapAfford Plus, not insurance)'
+  },
+  'paramount-1': {
+    primary_care: "MBR $25 pre-pay; Doctor's Office $50/day, 3 days/yr",
+    specialist: 'MBR $50 pre-pay',
+    urgent_care: '$125/day, 2 days/yr',
+    hospital: 'Day 1 $1,000 (1 day/yr); day 2+ $100/day, max 10 days/yr',
+    icu: 'Day 1 $200 (1 day/yr); day 2+ $200/day, max 10 days/yr',
+    er: '$200/day, 1 day/yr',
+    rx: 'Discount card only (Rx coupon card; HealthWarehouse 30-90% off)',
+    pre_existing: '12/12',
+    waiting_period: '0 days'
+  },
+  'paramount-2': {
+    primary_care: "MBR $25 pre-pay; Doctor's Office $50/day, 3 days/yr",
+    specialist: 'MBR $50 pre-pay',
+    urgent_care: '$125/day, 2 days/yr',
+    hospital: 'Day 1 $1,000 (1 day/yr); day 2+ $300/day, max 10 days/yr',
+    icu: 'Day 1 $200 (1 day/yr); day 2+ $500/day, max 10 days/yr',
+    er: '$200/day, 1 day/yr',
+    rx: 'Discount card only (Rx coupon card; HealthWarehouse 30-90% off)',
+    pre_existing: '12/12',
+    waiting_period: '0 days'
+  },
+  'paramount-3': {
+    primary_care: "MBR $25 pre-pay; Doctor's Office $75/day, 3 days/yr",
+    specialist: 'MBR $50 pre-pay',
+    urgent_care: '$150/day, 2 days/yr',
+    hospital: 'Day 1 $1,000 (1 day/yr); day 2+ $300/day, max 10 days/yr',
+    icu: 'Day 1 $200 (1 day/yr); day 2+ $300/day, max 10 days/yr',
+    surgery: 'IP $1,500 / OP $500 (hospital or ASC)',
+    er: '$200/day, 1 day/yr',
+    rx: 'Discount card only (Rx coupon card; HealthWarehouse 30-90% off)',
+    pre_existing: '12/12',
+    waiting_period: '0 days'
+  },
+  'bwa-americare-2': {
+    primary_care: "MBR $25 pre-pay; Physician's Office $50/day, max 3 days",
+    specialist: 'MBR $50 pre-pay',
+    urgent_care: 'MBR $25 pre-pay; $50/day, max 3 days',
+    hospital: 'Admission $750 (max 1 day); confinement $200/day, max 30 days',
+    icu: 'ICU admission $1,500 (max 1 day); ICU $350/day, max 30 days',
+    surgery: 'IP $500/day (1 day) / OP $300/day (1 day); anesthesia $125/day',
+    er: '$200/day, max 2 days',
+    rx: 'Discount card only (Rx coupon card; HealthWarehouse 30-90% off)',
+    pre_existing: '12/12 pre-existing clause'
+  },
+  'bwa-americare-3': {
+    primary_care: "MBR $25 pre-pay; Physician's Office $50/day, max 3 days",
+    specialist: 'MBR $50 pre-pay',
+    urgent_care: 'MBR $25 pre-pay; $50/day, max 3 days',
+    hospital: 'Admission $1,000 (max 1 day); confinement $300/day, max 30 days',
+    icu: 'ICU admission $2,000 (max 1 day); ICU $500/day, max 30 days',
+    surgery: 'IP $500/day (1 day) / OP $300/day (1 day); anesthesia $125/day',
+    er: '$300/day, max 2 days',
+    rx: 'Discount card only (Rx coupon card; HealthWarehouse 30-90% off)',
+    pre_existing: '12/12 pre-existing clause'
+  },
+  'bwa-americare-4': {
+    primary_care: "MBR $25 pre-pay; Physician's Office $75/day, max 5 days",
+    specialist: 'MBR $50 pre-pay',
+    urgent_care: 'MBR $25 pre-pay; $75/day, max 5 days',
+    hospital: 'Admission $2,000 (max 1 day); confinement $500/day, max 30 days',
+    icu: 'ICU admission $2,000 (max 1 day); ICU $500/day, max 30 days',
+    surgery: 'IP $750/day (1 day) / OP $400/day (1 day); anesthesia $300/day',
+    er: '$500/day, max 2 days',
+    rx: 'Discount card only (Rx coupon card; HealthWarehouse 30-90% off)',
+    pre_existing: '12/12 pre-existing clause'
+  },
+  'pinnacle-protect-2': {
+    primary_care: '$60, 2 visits/yr',
+    urgent_care: '$50, 2 days/yr',
+    hospital:
+      'Admission $400 (2/yr); $500/day, 10 days/confinement, 30 days/yr',
+    icu: '$500/day, 10 days/confinement, 30 days/yr',
+    surgery:
+      'IP or OP $500 (1 day/yr); OP surgery $500 (1 day/yr); anesthesia 25%',
+    er: '$300, 1 day/yr',
+    pre_existing: '12/12 pre-existing clause',
+    waiting_period:
+      'Critical illness 30 days; others per schedule (not on file)'
+  },
+  'pinnacle-protect-3': {
+    primary_care: '$60, 3 visits/yr',
+    urgent_care: '$50, 2 days/yr',
+    hospital:
+      'Admission $1,250 (2/yr); $1,500/day, 10 days/confinement, 30 days/yr',
+    icu: '$1,000/day, 10 days/confinement, 30 days/yr',
+    surgery:
+      'IP or OP $2,000 (1 day/yr); OP surgery $1,000 (1 day/yr); anesthesia 25%',
+    er: '$500, 1 day/yr',
+    pre_existing: 'May apply (no period stated)',
+    waiting_period: 'Critical illness 30 days'
+  },
+  'pinnacle-protect-4': {
+    primary_care: '$75, 3 visits/yr',
+    urgent_care: '$50, 2 days/yr',
+    hospital:
+      'Admission $2,000 (2/yr); $3,000/day, 10 days/confinement, 30 days/yr',
+    icu: '$1,500/day, 10 days/confinement, 30 days/yr',
+    surgery:
+      'IP or OP $3,000 (1 day/yr); OP surgery $1,500 (1 day/yr); anesthesia 25%',
+    er: '$1,000, 1 day/yr',
+    pre_existing: 'May apply (no period stated)',
+    waiting_period: 'Critical illness 30 days'
+  },
+  'allstate-health-access-value': {
+    deductible: '$0',
+    primary_care: 'Office visit $100, 4 days',
+    urgent_care: '$200, 2 days',
+    hospital: 'Admission $6,000 (1 day); confinement $100, unlimited days',
+    icu: '$100, 60 days (sickness or injury)',
+    surgery:
+      'Tier 1 $8,000 (2) / Tier 2 $3,000 (2) / OP $3,000 (2) / ASC $500 (2)',
+    er: '$250, 1 day',
+    pre_existing: '12 months after effective date (12-month lookback)',
+    waiting_period: '3 months (preventive)'
+  },
+  'allstate-health-access-core': {
+    deductible: '$0',
+    primary_care: 'Office visit $150, 7 days',
+    urgent_care: '$150, 3 days',
+    hospital:
+      'Admission $2,000 (2 days); sickness $3,000, unlimited; injury Yr1 $4,000 / Yr2 $6,000 / Yr3 $8,000, unlimited',
+    icu: '$5,000, 60 days (sickness or injury)',
+    surgery:
+      'Tier 1 $9,000 (3) / Tier 2 $4,000 (3) / OP $4,000 (2) / ASC $500 (2)',
+    er: '$300, 2 days',
+    pre_existing: '12 months after effective date (12-month lookback)',
+    waiting_period: '3 months (preventive)'
+  },
+  'allstate-health-access-plus': {
+    deductible: '$0',
+    primary_care: 'Office visit $175, 10 days',
+    urgent_care: '$200, 4 days',
+    hospital:
+      'Admission $2,000 (3 days); sickness $4,000, unlimited; injury Yr1 $6,000 / Yr2 $9,000 / Yr3 $12,000, unlimited',
+    icu: '$6,000, 60 days (sickness or injury)',
+    surgery:
+      'Tier 1 $10,000 (4) / Tier 2 $5,000 (4) / OP $5,000 (3) / ASC $500 (3)',
+    er: '$300, 3 days',
+    pre_existing: '12 months after effective date (12-month lookback)',
+    waiting_period: '3 months (preventive)'
+  }
+};
+
+// Tiers that have no profile file of their own load the shared one.
+var PD_TIER_PROFILE = {
+  'allstate-health-access-value': 'allstate-health-access',
+  'allstate-health-access-core': 'allstate-health-access',
+  'allstate-health-access-plus': 'allstate-health-access'
+};
+
+var PD_SHORT_SECTIONS = [
+  { title: 'Costs', keys: [['deductible', 'Deductible and cost sharing']] },
+  {
+    title: 'Doctor visits',
+    keys: [
+      ['primary_care', 'Primary care'],
+      ['specialist', 'Specialist'],
+      ['urgent_care', 'Urgent care'],
+      ['telehealth', 'Telemedicine']
+    ]
+  },
+  {
+    title: 'Hospital',
+    keys: [
+      ['hospital', 'Hospital stay'],
+      ['icu', 'ICU'],
+      ['surgery', 'Surgery'],
+      ['er', 'Emergency room']
+    ]
+  },
+  { title: 'Prescriptions', keys: [['rx', 'Prescriptions']] },
+  {
+    title: 'Disclose',
+    warn: true,
+    keys: [
+      ['pre_existing', 'Pre-existing'],
+      ['waiting_period', 'Waiting period']
+    ]
+  }
+];
+
+function _pdShortValues(plan) {
+  var tier = _pdSelectedTier(plan);
+  if (tier && PD_SHORT_VALUES[tier.id]) return PD_SHORT_VALUES[tier.id];
+  if (plan && PD_SHORT_VALUES[plan.id]) return PD_SHORT_VALUES[plan.id];
+  return null;
+}
+
+function _pdShortSectionsHtml(short) {
+  var html = '';
+  var s;
+  var i;
+  var tiles;
+  var text;
+  for (s = 0; s < PD_SHORT_SECTIONS.length; s++) {
+    tiles = '';
+    for (i = 0; i < PD_SHORT_SECTIONS[s].keys.length; i++) {
+      text = short[PD_SHORT_SECTIONS[s].keys[i][0]];
+      if (!text) continue;
+      tiles +=
+        '<div class="pv-tile' +
+        (text.length > 90 ? ' pv-tile-wide' : '') +
+        '"><div class="pv-tile-k">' +
+        escHTML(PD_SHORT_SECTIONS[s].keys[i][1]) +
+        '</div><div class="pv-tile-v">' +
+        escHTML(text) +
+        '</div></div>';
+    }
+    if (!tiles) continue;
+    html +=
+      '<section class="pv-sec' +
+      (PD_SHORT_SECTIONS[s].warn ? ' pv-sec-warn' : '') +
+      '"><h3 class="pv-sec-title">' +
+      escHTML(PD_SHORT_SECTIONS[s].title) +
+      '</h3><div class="pv-tiles">' +
+      tiles +
+      '</div></section>';
+  }
+  return html;
+}
 
 function _pdHasFact(value) {
   if (value == null) return false;
@@ -860,6 +1868,11 @@ function _pdFactsInner(plan, profile) {
   var text;
   var mark;
   var tiles;
+  var short = _pdShortValues(plan);
+  if (short) {
+    html = _pdShortSectionsHtml(short);
+    sections = sections.slice(5);
+  }
   for (s = 0; s < sections.length; s++) {
     tiles = '';
     for (i = 0; i < sections[s].slots.length; i++) {
@@ -991,7 +2004,7 @@ function _pdFetchProfile(plan, profileId) {
   var requestedTier = profileId;
   var req = ++_pdProfileReq;
   if (!profileId || typeof brLoadProfile !== 'function') return;
-  brLoadProfile(profileId)
+  brLoadProfile(PD_TIER_PROFILE[profileId] || profileId)
     .then(function (profile) {
       var current;
       if (req !== _pdProfileReq) return;
