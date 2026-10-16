@@ -1903,207 +1903,190 @@ function togglePlanVault(id) {
 // ══════════════════════════════════════════════════════
 // RENDER: NETWORK GUIDE
 // ══════════════════════════════════════════════════════
-function renderNetworkexplainer() {
-  var networks = [
-    {
-      name: 'First Health Network',
-      color: 'var(--charcoal3)',
-      bg: 'rgba(212,96,122,0.07)',
-      plans: [
-        'GoodHealth 1–5',
-        'TDK 1–5',
-        'SmartChoice (EPO — in-network only)',
-        'HarmonyCare / SigmaCare'
-      ],
-      website: 'providerlocator.firsthealth.com',
-      warning:
-        'SmartChoice is EPO — the member MUST use in-network providers. No out-of-network coverage at all. Always verify their doctor is in this network before enrolling.',
-      howto:
-        'Go to providerlocator.firsthealth.com → enter zip code → search by doctor name or specialty'
-    },
-    {
-      name: 'PHCS Network (MultiPlan)',
-      color: 'var(--sec)',
-      bg: 'rgba(123,104,184,0.07)',
-      plans: [
-        'Pinnacle STM',
-        'Access Health STM',
-        'Smart Health STM',
-        'BWA Americare 2–4'
-      ],
-      website: 'providersearch.multiplan.com',
-      warning: '',
-      howto:
-        'Go to providersearch.multiplan.com → select PHCS Practitioner & Ancillary → enter zip code'
-    },
-    {
-      name: 'MultiPlan Network',
-      color: '#29A26A',
-      bg: 'rgba(41,162,106,0.07)',
-      plans: [
-        'Galena STM Elite',
-        'Everest Summit Plans',
-        'HealthChoice Silver'
-      ],
-      website: 'providersearch.multiplan.com',
-      warning: '',
-      howto:
-        'Go to providersearch.multiplan.com → select MultiPlan → enter zip code'
-    },
-    {
-      name: 'Managed Care Network',
-      color: '#7a5f00',
-      bg: 'rgba(184,134,11,0.07)',
-      plans: ['BWA Paramount 1–6'],
-      website: 'Contact carrier for provider lookup',
-      warning: '',
-      howto:
-        "Contact the carrier directly to verify in-network providers in the member's area before enrolling"
-    },
-    {
-      name: 'Cigna Healthcare PPO for Shared Administration',
-      color: 'var(--cha-accent)',
-      bg: 'var(--cha-bg-muted)',
-      plans: ['Harbor STM Essential', 'Harbor STM Access', 'Harbor STM Secure'],
-      website: 'hcpdirectory.cigna.com/web/public/consumer/directory/search',
-      warning:
-        'Harbor STM is short-term medical. It is not on the First Health network and it is not on PHCS.',
-      howto:
-        'Enter address, state or zip code, then choose "Doctor by Type", "Doctor by Name", or "Health Facilities and Group Practices".'
-    },
-    {
-      name: 'First Health Network, a CVS Health company',
-      color: 'var(--cha-accent)',
-      bg: 'var(--cha-bg-muted)',
-      plans: ['Goodlife Partners WB Choice', 'Goodlife Partners WB Select'],
-      website: 'firsthealthlbp.com',
-      warning:
-        'Primary care, specialist and urgent care visits: in-network only, out-of-network pays nothing. Preventive and wellness: in-network only. Inpatient hospital: any hospital. Surgical benefit, all tiers: any facility. Emergency room: not network-restricted.',
-      howto: 'Phone (800) 226-5116. Search providers at firsthealthlbp.com.'
-    }
-  ];
+// Network Guide (Oct 2026 lineup). One card per network with the
+// current plans on it, how to search, and a Find a provider button.
+// A plan search filters the cards and highlights the matching plan.
+var CHA_NETWORK_GUIDE = [
+  {
+    name: 'First Health',
+    how: 'providerlocator.firsthealth.com: enter zip code, search by doctor name or specialty.',
+    notes: [
+      'SmartChoice is in-network only.',
+      'WB Select and WB Choice members can also search firsthealthlbp.com or call (800) 226-5116.'
+    ],
+    links: [
+      {
+        label: 'Find a provider',
+        url: 'https://providerlocator.firsthealth.com'
+      }
+    ],
+    plans: [
+      ['GoodHealth (GHDP)', 'FE'],
+      ['TDK', 'FE'],
+      ['Harmony Care PLUS', 'FE'],
+      ['Harmony Care', 'FE'],
+      ['Advanced Wellness PLUS', 'FE'],
+      ['Sigma Care PLUS', 'FE'],
+      ['Allstate Health Access', 'NEO'],
+      ['SmartChoice', 'NEO'],
+      ['WB Select', 'NEO'],
+      ['WB Choice', 'NEO']
+    ]
+  },
+  {
+    name: 'PHCS (MultiPlan)',
+    how: 'providersearch.multiplan.com: select PHCS Practitioner & Ancillary, enter zip code.',
+    notes: [],
+    links: [
+      { label: 'Find a provider', url: 'https://providersearch.multiplan.com' }
+    ],
+    plans: [
+      ['Pinnacle STM', 'NEO'],
+      ['SmartHealth STM', 'NEO'],
+      ['Access Health STM', 'FE'],
+      ['BWA Americare', 'FE']
+    ]
+  },
+  {
+    name: 'MultiPlan',
+    how: 'providersearch.multiplan.com: select MultiPlan, enter zip code.',
+    notes: [],
+    links: [
+      { label: 'Find a provider', url: 'https://providersearch.multiplan.com' }
+    ],
+    plans: [
+      ['Pinnacle Protect 2-4', 'NEO'],
+      ['Health Choice Silver', 'FE']
+    ]
+  },
+  {
+    name: 'First Health + MultiPlan (dual network)',
+    how: 'Check both: providerlocator.firsthealth.com and providersearch.multiplan.com.',
+    notes: [],
+    links: [
+      { label: 'First Health', url: 'https://providerlocator.firsthealth.com' },
+      { label: 'MultiPlan', url: 'https://providersearch.multiplan.com' }
+    ],
+    plans: [
+      ['AFRP Galena STM', 'NEO'],
+      ['AWA SimpleShield', 'NEO']
+    ]
+  },
+  {
+    name: 'Cigna Healthcare PPO (Shared Administration)',
+    how: 'hcpdirectory.cigna.com: enter address or zip, then search by doctor type or name.',
+    notes: [],
+    links: [
+      {
+        label: 'Find a provider',
+        url: 'https://hcpdirectory.cigna.com/web/public/consumer/directory/search'
+      }
+    ],
+    plans: [['Harbor STM', 'NEO']]
+  },
+  {
+    name: 'Aetna Open Choice PPO',
+    how: 'myallstatehealthsolutions.com/aetnaopenchoiceppo: search by name, specialty or zip.',
+    notes: [],
+    links: [
+      {
+        label: 'Find a provider',
+        url: 'https://myallstatehealthsolutions.com/aetnaopenchoiceppo'
+      }
+    ],
+    plans: [['Allstate STM PPO', 'NEO']]
+  },
+  {
+    name: 'Managed Care / Reference-Based Pricing',
+    how: 'No online search. Contact the carrier to verify providers before enrolling.',
+    notes: [],
+    links: [],
+    plans: [['BWA Paramount', 'FE']]
+  }
+];
 
-  var html = '<div class="ph"><div class="pt">Network <span>Guide</span></div>';
-  html +=
-    '<div class="pd">Which plans use which network, how to find providers, and what to watch out for.</div></div>';
+var ngQuery = '';
 
-  // Simple how billing works — no scripts
-  html +=
-    '<div style="background:var(--cha-bg-card);border:1px solid var(--cha-border-default);border-radius:12px;padding:20px;margin-bottom:20px;">';
-  html +=
-    '<div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--charcoal3);margin-bottom:14px;">How It Works — Simple Version</div>';
-  html += '<div style="display:flex;flex-direction:column;gap:10px;">';
-  var steps = [
-    {
-      n: '1',
-      label: 'Member visits an in-network doctor',
-      color: 'var(--charcoal3)',
-      bg: 'rgba(212,96,122,0.07)'
-    },
-    {
-      n: '2',
-      label: "Network reduces the doctor's bill to the contracted rate",
-      color: '#7a5f00',
-      bg: 'rgba(184,134,11,0.07)'
-    },
-    {
-      n: '3',
-      label: 'Plan benefit applies — member pays their copay',
-      color: '#29A26A',
-      bg: 'rgba(41,162,106,0.07)'
-    },
-    {
-      n: '4',
-      label: 'Member pays any remaining balance (if applicable)',
-      color: 'var(--sec)',
-      bg: 'rgba(123,104,184,0.07)'
-    }
-  ];
-  steps.forEach(function (s) {
-    html +=
-      '<div style="display:flex;align-items:center;gap:12px;background:' +
-      s.bg +
-      ';border-radius:12px;padding:12px 16px;">';
-    html +=
-      '<div style="width:28px;height:28px;border-radius:50%;background:' +
-      s.color +
-      '22;border:2px solid ' +
-      s.color +
-      '55;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;color:' +
-      s.color +
-      ';flex-shrink:0;">' +
-      s.n +
-      '</div>';
-    html +=
-      '<div style="font-size:13px;color:var(--charcoal3);font-weight:600;">' +
-      s.label +
-      '</div></div>';
-  });
-  html +=
-    '<div style="background:rgba(200,60,80,0.05);border:1px solid rgba(200,60,80,0.15);border-radius:12px;padding:12px 16px;font-size:12px;color:var(--charcoal3);margin-top:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg> <strong>Important:</strong> On indemnity/limited benefit plans, the plan pays a fixed daily or per-visit amount — not a percentage of the bill. The member is responsible for any difference between the benefit and the actual charge.</div>';
-  html += '</div></div>';
+function _ngEsc(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
-  // Network cards
-  networks.forEach(function (n) {
+function _ngCardsHtml() {
+  var q = ngQuery.toLowerCase().replace(/^\s+|\s+$/g, '');
+  var html = '';
+  var shown = 0;
+  CHA_NETWORK_GUIDE.forEach(function (n) {
+    var hit =
+      !q ||
+      n.name.toLowerCase().indexOf(q) !== -1 ||
+      n.plans.some(function (p) {
+        return p[0].toLowerCase().indexOf(q) !== -1;
+      });
+    if (!hit) return;
+    shown++;
     html +=
-      '<div style="background:' +
-      n.bg +
-      ';border:1.5px solid ' +
-      n.color +
-      '33;border-radius:12px;padding:20px;margin-bottom:12px;">';
-
-    // Name + plans
-    html +=
-      '<div style="font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--charcoal3);margin-bottom:10px;">' +
-      n.name +
-      '</div>';
-    html +=
-      '<div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--warmgray3);margin-bottom:6px;">PLANS ON THIS NETWORK</div>';
-    html +=
-      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">';
+      '<div class="ng-card"><h3 class="ng-name">' + _ngEsc(n.name) + '</h3>';
+    html += '<div class="ng-plans">';
     n.plans.forEach(function (p) {
+      var match = q && p[0].toLowerCase().indexOf(q) !== -1;
       html +=
-        '<span style="background:var(--cha-bg-card);border:1px solid ' +
-        n.color +
-        '44;border-radius:12px;padding:4px 12px;font-size:12px;color:' +
-        n.color +
-        ';font-weight:700;">' +
-        p +
-        '</span>';
+        '<span class="ng-plan' +
+        (match ? ' ng-plan-hit' : '') +
+        '">' +
+        _ngEsc(p[0]) +
+        ' <span class="ng-tag">' +
+        _ngEsc(p[1]) +
+        '</span></span>';
     });
-    html += '</div>';
-
-    // Provider search
-    html +=
-      '<div style="background:var(--cha-bg-muted);border-radius:12px;padding:12px 14px;margin-bottom:8px;">';
-    html +=
-      '<div style="font-size:11px;font-weight:800;letter-spacing:1.5px;color:var(--warmgray3);margin-bottom:4px;">HOW TO FIND A PROVIDER</div>';
-    html +=
-      '<div style="font-size:13px;color:var(--charcoal3);">' +
-      n.howto +
-      '</div>';
-    if (n.website !== 'Contact carrier for provider lookup') {
-      html +=
-        '<a href="https://' +
-        n.website +
-        '" target="_blank" style="display:inline-block;margin-top:8px;background:rgba(212,96,122,0.1);color:var(--charcoal3);border:1px solid rgba(212,96,122,0.25);border-radius:12px;padding:5px 14px;font-size:12px;font-weight:700;text-decoration:none;">Open ' +
-        n.website +
-        ' →</a>';
+    html += '</div><p class="ng-how">' + _ngEsc(n.how) + '</p>';
+    n.notes.forEach(function (note) {
+      html += '<p class="ng-note">' + _ngEsc(note) + '</p>';
+    });
+    html += '<div class="ng-links">';
+    if (n.links.length) {
+      n.links.forEach(function (l) {
+        html +=
+          '<a class="ng-btn" href="' +
+          _ngEsc(l.url) +
+          '" target="_blank" rel="noopener noreferrer">' +
+          _ngEsc(l.label) +
+          '</a>';
+      });
+    } else {
+      html += '<span class="ng-btn ng-btn-off">No provider search</span>';
     }
-    html += '</div>';
-
-    // Warning
-    if (n.warning)
-      html +=
-        '<div style="background:rgba(200,60,80,0.05);border:1px solid rgba(200,60,80,0.15);border-radius:12px;padding:10px 14px;font-size:12px;color:var(--charcoal3);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/></svg> ' +
-        n.warning +
-        '</div>';
-
-    html += '</div>';
+    html += '</div></div>';
   });
+  if (!shown) {
+    html = '<p class="ng-empty">No plan matches that name.</p>';
+  }
+  return html;
+}
 
-  var _page_networkexplainer = document.getElementById('page-networkexplainer');
-  if (_page_networkexplainer) _page_networkexplainer.innerHTML = html;
+function ngSearch(value) {
+  ngQuery = String(value || '');
+  var grid = document.getElementById('ng-grid');
+  if (grid) grid.innerHTML = _ngCardsHtml();
+}
+
+function renderNetworkexplainer() {
+  var page = document.getElementById('page-networkexplainer');
+  if (!page) return;
+  page.innerHTML =
+    '<div class="ng-page">' +
+    '<header class="ng-header"><h2 class="ng-title">Network Guide</h2>' +
+    '<p class="ng-lead">Find the plan, see its network, open the provider search.</p></header>' +
+    '<p class="ng-confirm">Always confirm provider participation before quoting in-network access.</p>' +
+    '<input id="ng-search" class="ng-search" type="search" placeholder="Search a plan" aria-label="Search a plan" oninput="ngSearch(this.value)" value="' +
+    _ngEsc(ngQuery) +
+    '">' +
+    '<div id="ng-grid" class="ng-grid">' +
+    _ngCardsHtml() +
+    '</div></div>';
 }
 
 // ══════════════════════════════════════════════════════
