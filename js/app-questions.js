@@ -361,17 +361,9 @@ function appqListHtml(plan, where) {
       (i + 1) +
       '</span><div class="appq-body"><p class="appq-text">' +
       appqEsc(q.q) +
-      '</p>' +
-      (help[i] ? '<div class="appq-help">' + appqEsc(q.ex) + '</div>' : '') +
-      '</div><button type="button" class="appq-q-help' +
-      (help[i] ? ' is-on' : '') +
-      '" title="Explain simply" aria-label="Explain simply" data-appq-help="' +
-      plan.id +
-      ':' +
-      i +
-      '"' +
-      w +
-      '>?</button></li>';
+      '</p><p class="appq-ex"><span>If confused:</span> ' +
+      appqEsc(q.ex) +
+      '</p></div></li>';
   });
   html += '</ol>';
   if (plan.talk && plan.talk.length) {
