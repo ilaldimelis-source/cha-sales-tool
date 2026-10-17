@@ -1710,6 +1710,12 @@ function renderPlanScripts() {
   html += _complianceBanner;
   html += '</div>';
   html += '<div class="ps-plan-card">';
+  if (typeof appqScriptBoxHtml === 'function') {
+    html += appqScriptBoxHtml(
+      activePlan.name,
+      (activePlan.sections[planScriptSection] || {}).title
+    );
+  }
 
   activePlan.sections.forEach(function (sec, si) {
     if (si !== planScriptSection) return;

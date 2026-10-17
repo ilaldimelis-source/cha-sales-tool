@@ -3153,6 +3153,268 @@
           display: none;
         }
       }
+      /* App Questions checklist (Oct 2026) */
+      .appq-page {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 8px 0 24px;
+      }
+      .appq-hero {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        color: #fff;
+        border-radius: 18px;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        box-shadow: 0 8px 20px rgb(37 59 85 / 18%);
+      }
+      .appq-hero-neo {
+        background: linear-gradient(135deg, #243b55, #3b5b86 55%, #5175f1);
+      }
+      .appq-hero-fe {
+        background: linear-gradient(135deg, #3b82f6, #6366f1 60%, #8b5cf6);
+      }
+      .appq-hero h2 {
+        margin: 0;
+        font-size: 22px;
+        color: #fff;
+      }
+      .appq-hero p {
+        margin: 2px 0 0;
+        font-size: 13px;
+        opacity: 0.9;
+      }
+      .appq-seg {
+        margin-left: auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        background: rgb(255 255 255 / 16%);
+        padding: 4px;
+        border-radius: 999px;
+      }
+      .appq-seg button {
+        border: 0;
+        border-radius: 999px;
+        padding: 7px 14px;
+        font: 600 13px inherit;
+        font-family: inherit;
+        background: transparent;
+        color: #fff;
+        cursor: pointer;
+      }
+      .appq-seg button.is-on {
+        background: #fff;
+        color: var(--cha-text-primary);
+      }
+      .appq-status {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-radius: 14px;
+        padding: 10px 14px;
+        font-size: 14px;
+        margin-bottom: 10px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+      }
+      .appq-status.appq-stop {
+        background: var(--cha-danger-bg);
+        color: var(--cha-danger-text);
+      }
+      .appq-status.appq-ok {
+        background: var(--cha-success-bg);
+        color: var(--cha-success-text);
+      }
+      .appq-reset {
+        margin-left: auto;
+        border: 0;
+        background: rgb(255 255 255 / 70%);
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .appq-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .appq-q {
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        background: var(--cha-bg-card);
+        border: 1px solid var(--cha-border-subtle);
+        border-radius: 16px;
+        padding: 12px 14px;
+      }
+      .appq-q.is-bad {
+        background: var(--cha-danger-bg);
+        border-color: #fca5a5;
+      }
+      .appq-num {
+        flex-shrink: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        background: var(--cha-bg-surface);
+        color: var(--cha-text-secondary);
+      }
+      .appq-q.is-good .appq-num {
+        background: #16a34a;
+        color: #fff;
+      }
+      .appq-q.is-bad .appq-num {
+        background: #dc2626;
+        color: #fff;
+      }
+      .appq-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .appq-text {
+        margin: 0;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--cha-text-primary);
+      }
+      .appq-help-btn {
+        margin-top: 6px;
+        border: 0;
+        background: none;
+        padding: 0;
+        color: var(--cha-accent);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .appq-help {
+        margin-top: 6px;
+        background: #eef2ff;
+        color: #312e81;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      .appq-help span {
+        display: block;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+      }
+      .appq-warn {
+        margin: 6px 0 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--cha-danger-text);
+      }
+      .appq-yn {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .appq-ans {
+        min-width: 56px;
+        height: 36px;
+        border-radius: 999px;
+        border: 1px solid var(--cha-border-default);
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .appq-q.is-good .appq-ans.is-on {
+        background: #16a34a;
+        border-color: #16a34a;
+        color: #fff;
+      }
+      .appq-q.is-bad .appq-ans.is-on {
+        background: #dc2626;
+        border-color: #dc2626;
+        color: #fff;
+      }
+      .appq-src {
+        font-size: 12px;
+        color: var(--cha-text-tertiary);
+        margin: 10px 2px 0;
+      }
+      .appq-box {
+        margin: 0 0 12px;
+        border-radius: 16px;
+        background: var(--cha-bg-muted);
+        border: 1px solid var(--cha-border-subtle);
+      }
+      .appq-box-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        border: 0;
+        background: none;
+        padding: 12px 14px;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 14px;
+        color: var(--cha-text-primary);
+        text-align: left;
+      }
+      .appq-pill {
+        font-size: 12px;
+        font-weight: 700;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-secondary);
+      }
+      .appq-pill.appq-stop {
+        background: var(--cha-danger-bg);
+        color: var(--cha-danger-text);
+      }
+      .appq-pill.appq-ok {
+        background: var(--cha-success-bg);
+        color: var(--cha-success-text);
+      }
+      .appq-chev {
+        margin-left: auto;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cha-accent);
+      }
+      .appq-box-body {
+        padding: 0 12px 12px;
+      }
+      @media (width <= 640px) {
+        .appq-q {
+          flex-wrap: wrap;
+        }
+        .appq-yn {
+          width: 100%;
+          padding-left: 40px;
+        }
+        .appq-seg {
+          margin-left: 0;
+          border-radius: 18px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -3290,6 +3552,27 @@
                 <path d="m8.5 8.5 7 7" /></svg
             ></span>
             <span class="nb-label">Meds</span>
+            <span class="nb-dot" aria-hidden="true"></span>
+          </button>
+          <button class="nb" onclick="showPage('appq')">
+            <span class="nb-icon"
+              ><svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 11l3 3L22 4" />
+                <path
+                  d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
+                /></svg
+            ></span>
+            <span class="nb-label">App Questions</span>
             <span class="nb-dot" aria-hidden="true"></span>
           </button>
           <button class="nb" onclick="showPage('salestracker')">
@@ -3591,6 +3874,7 @@
         <div id="page-dashboard" class="page"></div>
         <div id="page-addons" class="page"></div>
         <div id="page-meds" class="page"></div>
+        <div id="page-appq" class="page"></div>
 
         <!-- LIVE CALL -- Live Assist, Rebuttals, Q&A Rebuttals, Client Profiler -->
         <div id="page-livecall" class="combo-page">
@@ -4170,7 +4454,7 @@
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1792185391492"></script>
     <script src="js/plans-benefits.js?v=1792264175844"></script>
-    <script src="js/call-playbook.js?v=1792264175844"></script>
+    <script src="js/call-playbook.js?v=1792268068226"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>
     <script src="js/training.js?v=1792264175844"></script>
@@ -4181,7 +4465,8 @@
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1792186043707"></script>
     <script src="js/meds.js?v=1792193893195"></script>
-    <script src="js/app.js?v=1792191756954"></script>
+    <script src="js/app-questions.js?v=1792268068226"></script>
+    <script src="js/app.js?v=1792268068226"></script>
     <script>
       (function () {
         var data = window.docusignWalkthroughData;
