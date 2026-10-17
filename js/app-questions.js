@@ -224,7 +224,7 @@ var APPQ_PLANS = [
         qa: [
           [
             'So this is not real insurance?',
-            "It's a federally governed ERISA group health plan. It's not insurance and not major medical."
+            "It's a federally governed ERISA group health plan. It's not major medical."
           ]
         ]
       },
