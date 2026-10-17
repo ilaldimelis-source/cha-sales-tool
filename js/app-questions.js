@@ -465,6 +465,9 @@ function appqRefresh(where, planId) {
     }
   }
   if (document.getElementById('appq-root')) renderAppQuestions();
+  if (where === 'cw' && typeof renderCallWorkspace === 'function') {
+    renderCallWorkspace();
+  }
 }
 
 function appqOnClick(e) {

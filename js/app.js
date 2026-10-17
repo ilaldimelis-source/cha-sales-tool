@@ -472,7 +472,8 @@ function showPage(id) {
     dashboard: renderDashboard,
     addons: renderAddons,
     meds: renderMeds,
-    appq: renderAppQuestions
+    appq: renderAppQuestions,
+    oncall: renderCallWorkspace
   };
   if (renderMap[id]) {
     try {
