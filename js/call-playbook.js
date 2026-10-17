@@ -427,7 +427,7 @@ var PLAN_SCRIPTS = [
       {
         title: 'Prescription (RX)',
         content:
-          "You'll also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful.\n( GoodHealth 2 and 3 only ) Specialty drugs are not covered, but the prescription provider offers a Prescription Assistance Program if you qualify by income.\nThe plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You won't be needing coverage for those services, correct?\n✖ ( DO NOT WAIT GO RIGHT TO CLOSING STATEMENT )"
+          "You'll also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful. The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You won't be needing coverage for those services, correct?\n✖ ( DO NOT WAIT GO RIGHT TO CLOSING STATEMENT )"
       },
       {
         title: 'Closing Statement',
@@ -458,7 +458,7 @@ var PLAN_SCRIPTS = [
       {
         title: 'Prescription (RX)',
         content:
-          "You'll also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful.\nSpecialty drugs are not covered, but the prescription provider offers a Prescription Assistance Program if you qualify by income.\nThe plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You won't be needing coverage for those services, correct?\n✖ ( DO NOT WAIT - GO RIGHT TO CLOSING STATEMENT )"
+          "You'll also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful. The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You won't be needing coverage for those services, correct?\n✖ ( DO NOT WAIT - GO RIGHT TO CLOSING STATEMENT )"
       },
       {
         title: 'Closing Statement',
