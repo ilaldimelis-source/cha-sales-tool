@@ -1861,43 +1861,16 @@ function togglePlanVault(id) {
 var CHA_NETWORK_GUIDE = [
   {
     name: 'First Health',
-    how: 'Each group below uses its own First Health search site.',
+    how: 'First Health network. Search providerlocator.firsthealth.com, or the plan site on the buttons.',
     notes: [
       'SmartChoice is in-network only.',
       'WB Select and WB Choice members can also search firsthealthlbp.com or call (800) 226-5116.'
     ],
-    links: [],
-    groups: [
-      {
-        title: 'First Health',
-        url: 'https://providerlocator.firsthealth.com',
-        plans: [
-          ['Allstate Health Access', 'NEO'],
-          ['SmartChoice', 'NEO'],
-          ['WB Select', 'NEO'],
-          ['WB Choice', 'NEO']
-        ]
-      },
-      {
-        title: 'First Health Limited Benefit',
-        url: 'https://www.firsthealthlbp.com',
-        plans: [
-          ['Harmony Care PLUS', 'FE'],
-          ['Harmony Care', 'FE'],
-          ['Advanced Wellness PLUS', 'FE'],
-          ['Sigma Care PLUS', 'FE']
-        ]
-      },
-      {
-        title: 'GoodHealth',
-        url: 'https://www.locateprovidersnow.com',
-        plans: [['GoodHealth (GHDP)', 'FE']]
-      },
-      {
-        title: 'TDK',
-        url: 'https://docfind.health',
-        plans: [['TDK', 'FE']]
-      }
+    links: [
+      { label: 'First Health', url: 'https://providerlocator.firsthealth.com' },
+      { label: 'Limited Benefit', url: 'https://www.firsthealthlbp.com' },
+      { label: 'GoodHealth', url: 'https://www.locateprovidersnow.com' },
+      { label: 'TDK', url: 'https://docfind.health' }
     ],
     plans: [
       ['Allstate Health Access', 'NEO'],
@@ -2021,29 +1994,12 @@ function _ngCardsHtml() {
     if (!hit) return;
     shown++;
     html +=
-      '<div class="ng7-card' +
-      (n.groups ? ' ng7-card-wide' : '') +
-      '"><div class="ng7-top"><h3 class="ng7-name">' +
+      '<div class="ng7-card"><div class="ng7-top"><h3 class="ng7-name">' +
       _ngEsc(n.name) +
       '</h3><span class="ng7-count">' +
       n.plans.length +
       (n.plans.length === 1 ? ' plan' : ' plans') +
       '</span></div>';
-    if (n.groups) {
-      html += '<div class="ng7-groups">';
-      n.groups.forEach(function (g) {
-        html +=
-          '<div class="ng7-group"><div class="ng7-group-main"><span class="ng7-group-title">' +
-          _ngEsc(g.title) +
-          '</span><div class="ng7-pills">' +
-          _ngPillsHtml(g.plans, q) +
-          '</div></div><a class="ng7-btn" href="' +
-          _ngEsc(g.url) +
-          '" target="_blank" rel="noopener noreferrer">Find a provider</a></div>';
-      });
-      html += '</div></div>';
-      return;
-    }
     html += '<div class="ng7-pills">' + _ngPillsHtml(n.plans, q) + '</div>';
     html += '<div class="ng7-foot">';
     if (n.links.length) {
