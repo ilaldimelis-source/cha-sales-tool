@@ -489,7 +489,7 @@ var PLAN_SCRIPTS = [
       {
         title: 'Prescription (RX)',
         content:
-          "You'll also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful. This plan excludes all specialty medications, including human growth hormones. If you take or expect to take a specialty medication, this plan may not meet your needs. The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You won't be needing coverage for those services, correct?\n✖ ( DO NOT WAIT GO RIGHT TO CLOSING STATEMENT )"
+          "You'll also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful. The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You won't be needing coverage for those services, correct?\n✖ ( DO NOT WAIT GO RIGHT TO CLOSING STATEMENT )"
       },
       {
         title: 'Closing Statement',
@@ -520,7 +520,7 @@ var PLAN_SCRIPTS = [
       {
         title: 'Prescription (RX)',
         content:
-          "You'll also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful. This plan excludes all specialty medications, including human growth hormones. If you take or expect to take a specialty medication, this plan may not meet your needs. The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You won't be needing coverage for those services, correct?\n✖ ( DO NOT WAIT GO RIGHT TO CLOSING STATEMENT )"
+          "You'll also receive access to a prescription discount program you can use at major pharmacies. Discounts vary, but many members find it helpful. The plan does not include benefits for mental health, substance abuse, or pregnancy-related care. You won't be needing coverage for those services, correct?\n✖ ( DO NOT WAIT GO RIGHT TO CLOSING STATEMENT )"
       },
       {
         title: 'Closing Statement',
