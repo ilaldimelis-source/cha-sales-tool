@@ -7,7 +7,7 @@
 var CACHE_NAME = 'cha-command-center-v261';
 var URLS_TO_CACHE = [
   './',
-  './index.html?v=1792197972124',
+  './index.html?v=1792198116075',
   './logo.png?v=1779700000000',
   './manifest.json?v=1779700000000',
   './css/tokens.css?v=1790682000000',
@@ -18,7 +18,7 @@ var URLS_TO_CACHE = [
   './js/utils.js?v=1792171229555',
   './js/recovery-data.js?v=1779700000000',
   './js/objections.js?v=1779700000000',
-  './js/plans-benefits.js?v=1792197972124',
+  './js/plans-benefits.js?v=1792198116075',
   './js/call-playbook.js?v=1790642000000',
   './js/live-assist.js?v=1790272600000',
   './js/ai-tools.js?v=1789432300000',

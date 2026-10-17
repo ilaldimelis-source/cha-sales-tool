@@ -1861,16 +1861,16 @@ function togglePlanVault(id) {
 var CHA_NETWORK_GUIDE = [
   {
     name: 'First Health',
-    how: 'First Health network. Search providerlocator.firsthealth.com, or the plan site on the buttons.',
+    how: 'providerlocator.firsthealth.com: enter zip code, search by doctor name or specialty.',
     notes: [
       'SmartChoice is in-network only.',
       'WB Select and WB Choice members can also search firsthealthlbp.com or call (800) 226-5116.'
     ],
     links: [
-      { label: 'First Health', url: 'https://providerlocator.firsthealth.com' },
-      { label: 'Limited Benefit', url: 'https://www.firsthealthlbp.com' },
-      { label: 'GoodHealth', url: 'https://www.locateprovidersnow.com' },
-      { label: 'TDK', url: 'https://docfind.health' }
+      {
+        label: 'Find a provider',
+        url: 'https://providerlocator.firsthealth.com'
+      }
     ],
     plans: [
       ['Allstate Health Access', 'NEO'],
