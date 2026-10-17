@@ -2508,7 +2508,6 @@ function _qrRenderCards() {
   var p;
   var s;
   var open;
-  var tiers;
   _qrRenderHero();
   for (i = 0; i < CHA_QUICK_REF.length; i++) {
     p = CHA_QUICK_REF[i];
@@ -2522,7 +2521,6 @@ function _qrRenderCards() {
       continue;
     }
     s = QR_SHORT[p.vault] || [p.network, p.assoc, p.uw];
-    tiers = _qrTiersLine(p.tiers);
     open = qrOpenTile === p.vault;
     html +=
       '<button type="button" class="qr3-tile' +
@@ -2538,7 +2536,6 @@ function _qrRenderCards() {
       '">' +
       (p.platform === 'NEO' ? 'NEO' : 'FE') +
       '</span></span>' +
-      (tiers ? '<span class="qr3-tiers">' + escHTML(tiers) + '</span>' : '') +
       '<span class="qr3-lines">' +
       escHTML(s[0]) +
       '<br>' +
