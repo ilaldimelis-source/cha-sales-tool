@@ -256,7 +256,7 @@ var APPQ_PLANS = [
     platform: 'FirstEnroll',
     step: '',
     scripts: [],
-    note: 'These answers do not affect eligibility. Just record them.',
+    note: 'These answers do not affect eligibility.',
     qs: [
       {
         q: 'I understand that as a condition of my membership in HCDA, I will be required to provide insights through paid short surveys to better understand healthcare care costs and consumer preferences?',
@@ -348,59 +348,16 @@ function appqStatus(plan) {
 }
 
 function appqListHtml(plan, where) {
-  var ans = appqState.ans[plan.id] || {};
   var help = appqState.help[plan.id] || {};
-  var st = appqStatus(plan);
   var w = ' data-appq-where="' + where + '"';
-  var answeredNow = Object.keys(ans).filter(function (k) {
-    return ans[k];
-  }).length;
-  var stText = st.text;
-  if (st.tone === 'wait' && plan.note) stText = plan.note;
-  var html =
-    '<div class="appq-status appq-' +
-    st.tone +
-    '"><b>' +
-    appqEsc(st.title) +
-    '</b><span>' +
-    appqEsc(stText) +
-    '</span>' +
-    (answeredNow
-      ? '<button type="button" class="appq-reset" data-appq-reset="' +
-        plan.id +
-        '"' +
-        w +
-        '>Start over</button>'
-      : '') +
-    '</div>';
-  html += '<ol class="appq-list">';
+  var html = '';
+  if (plan.note) {
+    html += '<p class="appq-note-line">' + appqEsc(plan.note) + '</p>';
+  }
+  html += '<ol class="appq-list appq-plain">';
   plan.qs.forEach(function (q, i) {
-    var a = ans[i];
-    var bad = a && q.ok !== 'Any' && a !== q.ok;
-    var cls = a ? (bad ? ' is-bad' : ' is-good') : '';
-    var yn = (q.opts || ['Yes', 'No'])
-      .map(function (v) {
-        return (
-          '<button type="button" class="appq-ans' +
-          (a === v ? ' is-on' : '') +
-          '" data-appq-ans="' +
-          plan.id +
-          ':' +
-          i +
-          ':' +
-          v +
-          '"' +
-          w +
-          '>' +
-          v +
-          '</button>'
-        );
-      })
-      .join('');
     html +=
-      '<li class="appq-q' +
-      cls +
-      '"><span class="appq-num">' +
+      '<li class="appq-q"><span class="appq-num">' +
       (i + 1) +
       '</span><div class="appq-body"><p class="appq-text">' +
       appqEsc(q.q) +
@@ -414,15 +371,6 @@ function appqListHtml(plan, where) {
       (help[i] ? 'Hide' : 'Explain simply') +
       '</button>' +
       (help[i] ? '<div class="appq-help">' + appqEsc(q.ex) + '</div>' : '') +
-      (bad
-        ? '<p class="appq-warn">' +
-          (q.ok === 'Yes'
-            ? 'Needs Yes to enroll in ' + appqEsc(plan.name) + '.'
-            : 'Not eligible for ' + appqEsc(plan.name) + '.') +
-          '</p>'
-        : '') +
-      '</div><div class="appq-yn">' +
-      yn +
       '</div></li>';
   });
   html += '</ol>';
@@ -466,7 +414,7 @@ function appqListHtml(plan, where) {
     html += '</div>';
   }
   html +=
-    '<p class="appq-src">Read each question as written. Use "Explain simply" only if the client is confused. Answers are not saved.</p>';
+    '<p class="appq-src">Read each question in order, word for word. Use "Explain simply" only if the client is confused.</p>';
   return html;
 }
 
