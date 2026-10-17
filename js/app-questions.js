@@ -361,17 +361,17 @@ function appqListHtml(plan, where) {
       (i + 1) +
       '</span><div class="appq-body"><p class="appq-text">' +
       appqEsc(q.q) +
-      '</p><button type="button" class="appq-help-btn" data-appq-help="' +
+      '</p>' +
+      (help[i] ? '<div class="appq-help">' + appqEsc(q.ex) + '</div>' : '') +
+      '</div><button type="button" class="appq-q-help' +
+      (help[i] ? ' is-on' : '') +
+      '" title="Explain simply" aria-label="Explain simply" data-appq-help="' +
       plan.id +
       ':' +
       i +
       '"' +
       w +
-      '>' +
-      (help[i] ? 'Hide' : 'Explain simply') +
-      '</button>' +
-      (help[i] ? '<div class="appq-help">' + appqEsc(q.ex) + '</div>' : '') +
-      '</div></li>';
+      '>?</button></li>';
   });
   html += '</ol>';
   if (plan.talk && plan.talk.length) {
@@ -413,8 +413,6 @@ function appqListHtml(plan, where) {
     });
     html += '</div>';
   }
-  html +=
-    '<p class="appq-src">Read each question in order, word for word. Use "Explain simply" only if the client is confused.</p>';
   return html;
 }
 

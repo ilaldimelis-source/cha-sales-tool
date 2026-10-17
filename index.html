@@ -4162,6 +4162,47 @@
       .appq-plain .appq-num {
         color: var(--cha-text-tertiary);
       }
+      /* App questions - minimal (Oct 2026) */
+      .appq-plain {
+        border: 0;
+        box-shadow: none;
+      }
+      .appq-plain .appq-q {
+        padding: 12px 16px;
+        align-items: flex-start;
+      }
+      .appq-plain .appq-num {
+        font-size: 12px;
+        padding-top: 3px;
+        min-width: 14px;
+      }
+      .appq-plain .appq-text {
+        font-size: 14.5px;
+        color: var(--cha-text-primary);
+      }
+      .appq-q-help {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 1px solid var(--cha-border-default);
+        background: none;
+        color: var(--cha-text-tertiary);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+        margin-top: 1px;
+      }
+      .appq-q-help:hover,
+      .appq-q-help.is-on {
+        background: var(--cha-bg-surface);
+        color: var(--cha-text-primary);
+      }
+      .appq-note-line {
+        font-size: 12.5px;
+        margin: 0 2px 8px;
+      }
     </style>
   </head>
   <body>
@@ -5211,7 +5252,7 @@
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1792186043707"></script>
     <script src="js/meds.js?v=1792193893195"></script>
-    <script src="js/app-questions.js?v=1792278053376"></script>
+    <script src="js/app-questions.js?v=1792278153799"></script>
     <script src="js/call-workspace.js?v=1792277850945"></script>
     <script src="js/app.js?v=1792276461238"></script>
     <script>

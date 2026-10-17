@@ -7,7 +7,7 @@
 var CACHE_NAME = 'cha-command-center-v266';
 var URLS_TO_CACHE = [
   './',
-  './index.html?v=1792278053376',
+  './index.html?v=1792278153799',
   './logo.png?v=1779700000000',
   './manifest.json?v=1779700000000',
   './css/tokens.css?v=1790682000000',
@@ -34,7 +34,7 @@ var URLS_TO_CACHE = [
   './js/office.js?v=1787900000000',
   './js/addons.js?v=1792186043707',
   './js/meds.js?v=1792193893195',
-  './js/app-questions.js?v=1792278053376',
+  './js/app-questions.js?v=1792278153799',
   './js/call-workspace.js?v=1792277850945',
   './js/app.js?v=1792276461238',
   './js/chat.js?v=1790272800000',
