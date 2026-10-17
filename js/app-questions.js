@@ -256,7 +256,7 @@ var APPQ_PLANS = [
     platform: 'FirstEnroll',
     step: '',
     scripts: [],
-    note: 'These answers do not affect eligibility.',
+    note: 'Health questions on this application do not affect eligibility. Read each one word for word and record the answer.',
     qs: [
       {
         q: 'I understand that as a condition of my membership in HCDA, I will be required to provide insights through paid short surveys to better understand healthcare care costs and consumer preferences?',
@@ -348,22 +348,80 @@ function appqStatus(plan) {
 }
 
 function appqListHtml(plan, where) {
+  var ans = appqState.ans[plan.id] || {};
   var help = appqState.help[plan.id] || {};
+  var st = appqStatus(plan);
   var w = ' data-appq-where="' + where + '"';
-  var html = '';
+  var html =
+    '<div class="appq-status appq-' +
+    st.tone +
+    '"><b>' +
+    appqEsc(st.title) +
+    '</b><span>' +
+    appqEsc(st.text) +
+    '</span><button type="button" class="appq-reset" data-appq-reset="' +
+    plan.id +
+    '"' +
+    w +
+    '>Start over</button></div>';
   if (plan.note) {
-    html += '<p class="appq-note-line">' + appqEsc(plan.note) + '</p>';
+    html += '<p class="appq-note">' + appqEsc(plan.note) + '</p>';
   }
-  html += '<ol class="appq-list appq-plain">';
+  html += '<ol class="appq-list">';
   plan.qs.forEach(function (q, i) {
+    var a = ans[i];
+    var bad = a && q.ok !== 'Any' && a !== q.ok;
+    var cls = a ? (bad ? ' is-bad' : ' is-good') : '';
+    var yn = (q.opts || ['Yes', 'No'])
+      .map(function (v) {
+        return (
+          '<button type="button" class="appq-ans' +
+          (a === v ? ' is-on' : '') +
+          '" data-appq-ans="' +
+          plan.id +
+          ':' +
+          i +
+          ':' +
+          v +
+          '"' +
+          w +
+          '>' +
+          v +
+          '</button>'
+        );
+      })
+      .join('');
     html +=
-      '<li class="appq-q"><span class="appq-num">' +
+      '<li class="appq-q' +
+      cls +
+      '"><span class="appq-num">' +
       (i + 1) +
       '</span><div class="appq-body"><p class="appq-text">' +
       appqEsc(q.q) +
-      '</p><p class="appq-ex"><span>If confused:</span> ' +
-      appqEsc(q.ex) +
-      '</p></div></li>';
+      '</p><button type="button" class="appq-help-btn" data-appq-help="' +
+      plan.id +
+      ':' +
+      i +
+      '"' +
+      w +
+      '>' +
+      (help[i] ? 'Hide explanation' : 'Client confused?') +
+      '</button>' +
+      (help[i]
+        ? '<div class="appq-help"><span>Say it simply</span>' +
+          appqEsc(q.ex) +
+          '</div>'
+        : '') +
+      (bad
+        ? '<p class="appq-warn">' +
+          (q.ok === 'Yes'
+            ? 'Needs Yes to enroll in ' + appqEsc(plan.name) + '.'
+            : 'Not eligible for ' + appqEsc(plan.name) + '.') +
+          '</p>'
+        : '') +
+      '</div><div class="appq-yn">' +
+      yn +
+      '</div></li>';
   });
   html += '</ol>';
   if (plan.talk && plan.talk.length) {
@@ -405,6 +463,8 @@ function appqListHtml(plan, where) {
     });
     html += '</div>';
   }
+  html +=
+    '<p class="appq-src">Copied from the carrier application, Oct 17 2026. Read the question first; use the explanation only if the client is confused. Answers are not saved.</p>';
   return html;
 }
 
