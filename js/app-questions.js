@@ -168,7 +168,7 @@ var APPQ_PLANS = [
       },
       {
         q: 'Do you agree that the Company may assign projects to you at its discretion?',
-        ex: 'The company can give you projects when it chooses.',
+        ex: 'The company can send you projects, which are surveys, whenever it chooses.',
         ok: 'Yes'
       },
       {
