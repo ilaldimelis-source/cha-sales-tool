@@ -4042,6 +4042,118 @@
           border-radius: 18px;
         }
       }
+      /* App questions - cleaner list (Oct 2026) */
+      .appq-status {
+        padding: 10px 14px;
+        font-size: 13.5px;
+        gap: 8px;
+        border: 1px solid var(--cha-border-subtle);
+      }
+      .appq-status span {
+        color: inherit;
+        opacity: 0.8;
+      }
+      .appq-reset {
+        background: none;
+        padding: 0;
+        font-size: 13px;
+        color: var(--cha-accent);
+      }
+      .appq-note {
+        display: none;
+      }
+      .appq-list {
+        gap: 0;
+        background: var(--cha-bg-card);
+        border: 1px solid var(--cha-border-subtle);
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      .appq-q {
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        padding: 14px 16px;
+        gap: 12px;
+      }
+      .appq-q + .appq-q {
+        border-top: 1px solid var(--cha-border-subtle);
+      }
+      .appq-q.is-bad {
+        background: var(--cha-danger-bg);
+        border-color: transparent;
+      }
+      .appq-num {
+        width: auto;
+        height: auto;
+        background: none;
+        font-size: 13px;
+        color: var(--cha-text-tertiary);
+        min-width: 16px;
+        padding-top: 2px;
+      }
+      .appq-q.is-good .appq-num {
+        background: none;
+        color: #16a34a;
+      }
+      .appq-q.is-bad .appq-num {
+        background: none;
+        color: #dc2626;
+      }
+      .appq-text {
+        font-size: 14.5px;
+        line-height: 1.55;
+        max-width: 68ch;
+      }
+      .appq-help-btn {
+        margin-top: 4px;
+        font-size: 12.5px;
+        font-weight: 500;
+        color: var(--cha-text-tertiary);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .appq-help {
+        margin-top: 6px;
+        background: var(--cha-bg-surface);
+        color: var(--cha-text-secondary);
+        padding: 8px 12px;
+        font-size: 13.5px;
+      }
+      .appq-yn {
+        gap: 0;
+        background: var(--cha-bg-surface);
+        border-radius: 999px;
+        padding: 3px;
+        align-self: center;
+      }
+      .appq-ans {
+        border: 0;
+        background: transparent;
+        height: 32px;
+        min-width: 52px;
+        font-size: 13px;
+        color: var(--cha-text-secondary);
+      }
+      .appq-ans.is-on {
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        box-shadow: 0 1px 3px rgb(15 23 42 / 12%);
+      }
+      .appq-q.is-good .appq-ans.is-on {
+        background: #16a34a;
+        color: #fff;
+        border: 0;
+      }
+      .appq-q.is-bad .appq-ans.is-on {
+        background: #dc2626;
+        color: #fff;
+        border: 0;
+      }
+      .appq-src {
+        font-size: 12px;
+        margin-top: 8px;
+      }
     </style>
   </head>
   <body>
@@ -5091,7 +5203,7 @@
     <script src="js/office.js?v=1787900000000"></script>
     <script src="js/addons.js?v=1792186043707"></script>
     <script src="js/meds.js?v=1792193893195"></script>
-    <script src="js/app-questions.js?v=1792277850945"></script>
+    <script src="js/app-questions.js?v=1792277952756"></script>
     <script src="js/call-workspace.js?v=1792277850945"></script>
     <script src="js/app.js?v=1792276461238"></script>
     <script>

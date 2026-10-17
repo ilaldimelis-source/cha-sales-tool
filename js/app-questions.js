@@ -256,7 +256,7 @@ var APPQ_PLANS = [
     platform: 'FirstEnroll',
     step: '',
     scripts: [],
-    note: 'Health questions on this application do not affect eligibility. Read each one word for word and record the answer.',
+    note: 'These answers do not affect eligibility. Just record them.',
     qs: [
       {
         q: 'I understand that as a condition of my membership in HCDA, I will be required to provide insights through paid short surveys to better understand healthcare care costs and consumer preferences?',
@@ -352,21 +352,27 @@ function appqListHtml(plan, where) {
   var help = appqState.help[plan.id] || {};
   var st = appqStatus(plan);
   var w = ' data-appq-where="' + where + '"';
+  var answeredNow = Object.keys(ans).filter(function (k) {
+    return ans[k];
+  }).length;
+  var stText = st.text;
+  if (st.tone === 'wait' && plan.note) stText = plan.note;
   var html =
     '<div class="appq-status appq-' +
     st.tone +
     '"><b>' +
     appqEsc(st.title) +
     '</b><span>' +
-    appqEsc(st.text) +
-    '</span><button type="button" class="appq-reset" data-appq-reset="' +
-    plan.id +
-    '"' +
-    w +
-    '>Start over</button></div>';
-  if (plan.note) {
-    html += '<p class="appq-note">' + appqEsc(plan.note) + '</p>';
-  }
+    appqEsc(stText) +
+    '</span>' +
+    (answeredNow
+      ? '<button type="button" class="appq-reset" data-appq-reset="' +
+        plan.id +
+        '"' +
+        w +
+        '>Start over</button>'
+      : '') +
+    '</div>';
   html += '<ol class="appq-list">';
   plan.qs.forEach(function (q, i) {
     var a = ans[i];
@@ -405,13 +411,9 @@ function appqListHtml(plan, where) {
       '"' +
       w +
       '>' +
-      (help[i] ? 'Hide explanation' : 'Client confused?') +
+      (help[i] ? 'Hide' : 'Explain simply') +
       '</button>' +
-      (help[i]
-        ? '<div class="appq-help"><span>Say it simply</span>' +
-          appqEsc(q.ex) +
-          '</div>'
-        : '') +
+      (help[i] ? '<div class="appq-help">' + appqEsc(q.ex) + '</div>' : '') +
       (bad
         ? '<p class="appq-warn">' +
           (q.ok === 'Yes'
@@ -464,7 +466,7 @@ function appqListHtml(plan, where) {
     html += '</div>';
   }
   html +=
-    '<p class="appq-src">Copied from the carrier application, Oct 17 2026. Read the question first; use the explanation only if the client is confused. Answers are not saved.</p>';
+    '<p class="appq-src">Read each question as written. Use "Explain simply" only if the client is confused. Answers are not saved.</p>';
   return html;
 }
 
