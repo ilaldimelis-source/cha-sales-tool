@@ -7,7 +7,7 @@
 var CACHE_NAME = 'cha-command-center-v263';
 var URLS_TO_CACHE = [
   './',
-  './index.html?v=1792241772269',
+  './index.html?v=1792272656464',
   './logo.png?v=1779700000000',
   './manifest.json?v=1779700000000',
   './css/tokens.css?v=1790682000000',
@@ -18,7 +18,7 @@ var URLS_TO_CACHE = [
   './js/utils.js?v=1792171229555',
   './js/recovery-data.js?v=1779700000000',
   './js/objections.js?v=1779700000000',
-  './js/plans-benefits.js?v=1792198891902',
+  './js/plans-benefits.js?v=1792272656464',
   './js/call-playbook.js?v=1790642000000',
   './js/live-assist.js?v=1790272600000',
   './js/ai-tools.js?v=1789432300000',
@@ -27,7 +27,7 @@ var URLS_TO_CACHE = [
   './js/plan-data.js?v=1790833200000',
   './js/plan-data-extended.js?v=1792165216661',
   './js/plan-data-pdf-raw.js?v=1790272900000',
-  './js/policy-docs.js?v=1792241772269',
+  './js/policy-docs.js?v=1792272656464',
   './js/docusign-walkthrough.js?v=1780700000000',
   './js/myspace.js?v=1792164089398',
   './js/sales-tracker.js?v=1792165216661',

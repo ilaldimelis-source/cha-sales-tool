@@ -1964,8 +1964,8 @@ function _ngSegHtml() {
     ['FE', 'FirstEnroll', counts.FE, 'fe']
   ];
   var notes = {
-    All: 'NEO bills through NEO Insurance Solutions. FirstEnroll bills through FirstEnroll.',
-    NEO: 'Billing: NEO Insurance Solutions',
+    All: 'NEO bills through Neo Health Solutions. FirstEnroll bills through FirstEnroll.',
+    NEO: 'Billing: Neo Health Solutions',
     FE: 'Billing: FirstEnroll'
   };
   return (
@@ -2517,8 +2517,8 @@ function _qrRenderHero() {
     ['FirstEnroll', 'FirstEnroll', counts.FirstEnroll || 0, 'fe']
   ];
   var notes = {
-    All: 'NEO bills through NEO Insurance Solutions. FirstEnroll bills through FirstEnroll.',
-    NEO: 'Billing: NEO Insurance Solutions',
+    All: 'NEO bills through Neo Health Solutions. FirstEnroll bills through FirstEnroll.',
+    NEO: 'Billing: Neo Health Solutions',
     FirstEnroll: 'Billing: FirstEnroll'
   };
   host.innerHTML =
@@ -2601,7 +2601,7 @@ function _qrRenderCards() {
         ':</b> ' +
         escHTML(String(p.uw).replace(/\s*\/\s*Claims:.*$/, '')) +
         '<br><b>Billing:</b> ' +
-        (p.platform === 'NEO' ? 'NEO Insurance Solutions' : 'FirstEnroll') +
+        (p.platform === 'NEO' ? 'Neo Health Solutions' : 'FirstEnroll') +
         '</span><span class="qr3-open" onclick="event.stopPropagation();qrOpenInVault(\'' +
         p.vault +
         '\')">Open in Plans</span>';

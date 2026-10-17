@@ -2364,8 +2364,8 @@ function renderPolicydocs() {
 // NEO / FirstEnroll gradient switch, same look as Quick Reference.
 function _pdSegHtml() {
   var notes = {
-    All: 'NEO bills through NEO Insurance Solutions. FirstEnroll bills through FirstEnroll.',
-    NEO: 'Billing: NEO Insurance Solutions',
+    All: 'NEO bills through Neo Health Solutions. FirstEnroll bills through FirstEnroll.',
+    NEO: 'Billing: Neo Health Solutions',
     FE: 'Billing: FirstEnroll'
   };
   return (
