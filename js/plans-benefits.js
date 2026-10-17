@@ -1948,6 +1948,60 @@ var CHA_NETWORK_GUIDE = [
 ];
 
 var ngQuery = '';
+var ngPlatform = 'All';
+
+function _ngSegHtml() {
+  var counts = { All: 0, NEO: 0, FE: 0 };
+  CHA_NETWORK_GUIDE.forEach(function (n) {
+    n.plans.forEach(function (p) {
+      counts.All++;
+      counts[p[1]] = (counts[p[1]] || 0) + 1;
+    });
+  });
+  var segs = [
+    ['All', 'All plans', counts.All, 'all'],
+    ['NEO', 'NEO', counts.NEO, 'neo'],
+    ['FE', 'FirstEnroll', counts.FE, 'fe']
+  ];
+  var notes = {
+    All: 'NEO bills through NEO Insurance Solutions. FirstEnroll bills through FirstEnroll.',
+    NEO: 'Billing: NEO Insurance Solutions',
+    FE: 'Billing: FirstEnroll'
+  };
+  return (
+    '<div class="qr-seg" role="group" aria-label="Platform">' +
+    segs
+      .map(function (h) {
+        var on = ngPlatform === h[0];
+        return (
+          '<button type="button" class="qr-seg-btn qr-seg-' +
+          h[3] +
+          (on ? ' is-on' : '') +
+          '" aria-pressed="' +
+          (on ? 'true' : 'false') +
+          '" onclick="ngSetPlatform(\'' +
+          h[0] +
+          '\')">' +
+          h[1] +
+          ' <span class="qr-seg-count">' +
+          h[2] +
+          '</span></button>'
+        );
+      })
+      .join('') +
+    '</div><p class="qr-seg-note">' +
+    notes[ngPlatform] +
+    '</p>'
+  );
+}
+
+function ngSetPlatform(v) {
+  ngPlatform = v;
+  var seg = document.getElementById('ng-seg');
+  if (seg) seg.innerHTML = _ngSegHtml();
+  var grid = document.getElementById('ng-grid');
+  if (grid) grid.innerHTML = _ngCardsHtml();
+}
 
 function _ngEsc(s) {
   return String(s)
@@ -1984,7 +2038,17 @@ function _ngCardsHtml() {
   var q = ngQuery.toLowerCase().replace(/^\s+|\s+$/g, '');
   var html = '';
   var shown = 0;
-  CHA_NETWORK_GUIDE.forEach(function (n) {
+  CHA_NETWORK_GUIDE.forEach(function (n0) {
+    var plans = n0.plans.filter(function (p) {
+      return ngPlatform === 'All' || p[1] === ngPlatform;
+    });
+    if (!plans.length) return;
+    var n = {
+      name: n0.name,
+      how: n0.how,
+      links: n0.links,
+      plans: plans
+    };
     var hit =
       !q ||
       n.name.toLowerCase().indexOf(q) !== -1 ||
@@ -2034,6 +2098,9 @@ function renderNetworkexplainer() {
   page.innerHTML =
     '<div class="ng7-page">' +
     '<p class="ng7-confirm">Always confirm the doctor is in network before quoting.</p>' +
+    '<div id="ng-seg">' +
+    _ngSegHtml() +
+    '</div>' +
     '<input id="ng-search" class="ng7-search" type="search" placeholder="Search a plan" aria-label="Search a plan" oninput="ngSearch(this.value)" value="' +
     _ngEsc(ngQuery) +
     '">' +
