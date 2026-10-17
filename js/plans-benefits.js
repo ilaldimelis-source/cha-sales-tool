@@ -1861,54 +1861,60 @@ function togglePlanVault(id) {
 var CHA_NETWORK_GUIDE = [
   {
     name: 'First Health',
-    how: 'providerlocator.firsthealth.com: enter zip code, search by doctor name or specialty.',
+    how: 'Each group below uses its own First Health search site.',
     notes: [
       'SmartChoice is in-network only.',
       'WB Select and WB Choice members can also search firsthealthlbp.com or call (800) 226-5116.'
     ],
-    links: [
+    links: [],
+    groups: [
       {
-        label: 'Find a provider',
-        url: 'https://providerlocator.firsthealth.com'
+        title: 'First Health',
+        url: 'https://providerlocator.firsthealth.com',
+        plans: [
+          ['Allstate Health Access', 'NEO'],
+          ['SmartChoice', 'NEO'],
+          ['WB Select', 'NEO'],
+          ['WB Choice', 'NEO']
+        ]
+      },
+      {
+        title: 'First Health Limited Benefit',
+        url: 'https://www.firsthealthlbp.com',
+        plans: [
+          ['Harmony Care PLUS', 'FE'],
+          ['Harmony Care', 'FE'],
+          ['Advanced Wellness PLUS', 'FE'],
+          ['Sigma Care PLUS', 'FE']
+        ]
+      },
+      {
+        title: 'GoodHealth',
+        url: 'https://www.locateprovidersnow.com',
+        plans: [['GoodHealth (GHDP)', 'FE']]
+      },
+      {
+        title: 'TDK',
+        url: 'https://docfind.health',
+        plans: [['TDK', 'FE']]
       }
     ],
     plans: [
       ['Allstate Health Access', 'NEO'],
       ['SmartChoice', 'NEO'],
       ['WB Select', 'NEO'],
-      ['WB Choice', 'NEO']
-    ]
-  },
-  {
-    name: 'First Health Limited Benefit',
-    how: 'firsthealthlbp.com: First Health Limited Benefit Network (FirstEnroll quick reference, Oct 15 2026).',
-    notes: [],
-    links: [
-      { label: 'Find a provider', url: 'https://www.firsthealthlbp.com' }
-    ],
-    plans: [
+      ['WB Choice', 'NEO'],
       ['Harmony Care PLUS', 'FE'],
       ['Harmony Care', 'FE'],
       ['Advanced Wellness PLUS', 'FE'],
-      ['Sigma Care PLUS', 'FE']
-    ]
-  },
-  {
-    name: 'First Health (GoodHealth, TDK)',
-    how: 'GoodHealth: locateprovidersnow.com. TDK: docfind.health (FirstEnroll quick reference, Oct 15 2026).',
-    notes: [],
-    links: [
-      { label: 'GoodHealth', url: 'https://www.locateprovidersnow.com' },
-      { label: 'TDK', url: 'https://docfind.health' }
-    ],
-    plans: [
+      ['Sigma Care PLUS', 'FE'],
       ['GoodHealth (GHDP)', 'FE'],
       ['TDK', 'FE']
     ]
   },
   {
-    name: 'PHCS (MultiPlan)',
-    how: 'providersearch.multiplan.com: select PHCS Practitioner & Ancillary, enter zip code.',
+    name: 'PHCS / MultiPlan',
+    how: 'providersearch.multiplan.com: PHCS plans select PHCS Practitioner & Ancillary; MultiPlan plans select MultiPlan. Then enter zip code.',
     notes: [],
     links: [
       { label: 'Find a provider', url: 'https://providersearch.multiplan.com' }
@@ -1917,17 +1923,7 @@ var CHA_NETWORK_GUIDE = [
       ['Pinnacle STM', 'NEO'],
       ['SmartHealth STM', 'NEO'],
       ['Access Health STM', 'FE'],
-      ['BWA Americare', 'FE']
-    ]
-  },
-  {
-    name: 'MultiPlan',
-    how: 'providersearch.multiplan.com: select MultiPlan, enter zip code.',
-    notes: [],
-    links: [
-      { label: 'Find a provider', url: 'https://providersearch.multiplan.com' }
-    ],
-    plans: [
+      ['BWA Americare', 'FE'],
       ['Pinnacle Protect 2-4', 'NEO'],
       ['Health Choice Silver', 'FE']
     ]
@@ -1988,6 +1984,29 @@ function _ngEsc(s) {
     .replace(/"/g, '&quot;');
 }
 
+function _ngPillsHtml(plans, q) {
+  var out = '';
+  plans.forEach(function (p) {
+    var match = q && p[0].toLowerCase().indexOf(q) !== -1;
+    var label = p[0];
+    var tip = '';
+    if (label === 'SmartChoice') label = 'SmartChoice (in-network only)';
+    if (label === 'WB Select' || label === 'WB Choice') {
+      tip =
+        ' title="Members can also use firsthealthlbp.com or call (800) 226-5116"';
+    }
+    out +=
+      '<span class="ng7-pill' +
+      (match ? ' ng7-pill-hit' : '') +
+      '"' +
+      tip +
+      '>' +
+      _ngEsc(label) +
+      '</span>';
+  });
+  return out;
+}
+
 function _ngCardsHtml() {
   var q = ngQuery.toLowerCase().replace(/^\s+|\s+$/g, '');
   var html = '';
@@ -2002,31 +2021,31 @@ function _ngCardsHtml() {
     if (!hit) return;
     shown++;
     html +=
-      '<div class="ng7-card"><div class="ng7-top"><h3 class="ng7-name">' +
+      '<div class="ng7-card' +
+      (n.groups ? ' ng7-card-wide' : '') +
+      '"><div class="ng7-top"><h3 class="ng7-name">' +
       _ngEsc(n.name) +
       '</h3><span class="ng7-count">' +
       n.plans.length +
       (n.plans.length === 1 ? ' plan' : ' plans') +
-      '</span></div><div class="ng7-pills">';
-    n.plans.forEach(function (p) {
-      var match = q && p[0].toLowerCase().indexOf(q) !== -1;
-      var label = p[0];
-      var tip = '';
-      if (label === 'SmartChoice') label = 'SmartChoice (in-network only)';
-      if (label === 'WB Select' || label === 'WB Choice') {
-        tip =
-          ' title="Members can also use firsthealthlbp.com or call (800) 226-5116"';
-      }
-      html +=
-        '<span class="ng7-pill' +
-        (match ? ' ng7-pill-hit' : '') +
-        '"' +
-        tip +
-        '>' +
-        _ngEsc(label) +
-        '</span>';
-    });
-    html += '</div><div class="ng7-foot">';
+      '</span></div>';
+    if (n.groups) {
+      html += '<div class="ng7-groups">';
+      n.groups.forEach(function (g) {
+        html +=
+          '<div class="ng7-group"><div class="ng7-group-main"><span class="ng7-group-title">' +
+          _ngEsc(g.title) +
+          '</span><div class="ng7-pills">' +
+          _ngPillsHtml(g.plans, q) +
+          '</div></div><a class="ng7-btn" href="' +
+          _ngEsc(g.url) +
+          '" target="_blank" rel="noopener noreferrer">Find a provider</a></div>';
+      });
+      html += '</div></div>';
+      return;
+    }
+    html += '<div class="ng7-pills">' + _ngPillsHtml(n.plans, q) + '</div>';
+    html += '<div class="ng7-foot">';
     if (n.links.length) {
       n.links.forEach(function (l) {
         html +=
