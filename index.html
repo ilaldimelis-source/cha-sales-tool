@@ -3153,6 +3153,39 @@
           display: none;
         }
       }
+      /* Plans tab filters (Oct 2026): platform switch + type dropdown */
+      #page-policydocs #pv-seg {
+        margin-bottom: 12px;
+      }
+      #page-policydocs .pv-type-select {
+        flex: 0 0 auto;
+        height: 48px;
+        border-radius: 999px;
+        border: 1px solid var(--cha-border-subtle);
+        background: var(--cha-bg-card);
+        padding: 0 18px;
+        font: inherit;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--cha-text-primary);
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+        cursor: pointer;
+      }
+      #page-policydocs .pv-type-select:focus-visible {
+        outline: 2px solid var(--cha-accent);
+        outline-offset: 2px;
+      }
+      #page-policydocs .pv-toolbar {
+        flex-wrap: nowrap;
+      }
+      @media (width <= 640px) {
+        #page-policydocs .pv-toolbar {
+          flex-wrap: wrap;
+        }
+        #page-policydocs .pv-type-select {
+          flex: 1 1 100%;
+        }
+      }
     </style>
   </head>
   <body>
@@ -4168,8 +4201,8 @@
     <script src="js/plan-data-pdf-raw.js?v=1790272900000"></script>
     <script src="js/plan-pdf-map.js?v=1792165216661"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
-    <script src="js/policy-docs.js?v=1792185391492"></script>
-    <script src="js/plans-benefits.js?v=1792198891902"></script>
+    <script src="js/policy-docs.js?v=1792272656464"></script>
+    <script src="js/plans-benefits.js?v=1792272656464"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>
