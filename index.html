@@ -3068,6 +3068,42 @@
           grid-template-columns: 1fr;
         }
       }
+      /* Network Guide: one First Health card with a column per search site */
+      .ng7-grid > .ng7-card.ng7-card-wide {
+        grid-column: 1 / -1;
+      }
+      .ng7-groups {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+        gap: 12px;
+        flex: 1;
+      }
+      .ng7-group {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+        min-width: 0;
+        padding: 12px;
+        border-radius: 14px;
+        border: 1px solid var(--cha-border-subtle);
+      }
+      .ng7-grid {
+        grid-auto-rows: auto;
+      }
+      .ng7-group-main {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .ng7-group-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--cha-text-secondary);
+      }
+      .ng7-group .ng7-btn {
+        align-self: flex-start;
+      }
     </style>
   </head>
   <body>
@@ -4084,7 +4120,7 @@
     <script src="js/plan-pdf-map.js?v=1792165216661"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1792185391492"></script>
-    <script src="js/plans-benefits.js?v=1792196753795"></script>
+    <script src="js/plans-benefits.js?v=1792197782999"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>
