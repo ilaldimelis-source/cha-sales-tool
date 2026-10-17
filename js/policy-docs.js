@@ -1478,7 +1478,11 @@ function _pdHasFact(value) {
 function _pdFilteredPlans() {
   return _pdAllDocs().filter(function (p) {
     if (!_pdIsDisplayablePlan(p)) return false;
-    var groupOk = policyDocFilter === 'All' || p.group === policyDocFilter;
+    // Plans tab filter (Oct 2026): "Limited" also covers "Limited medical".
+    var groupOk =
+      policyDocFilter === 'All' ||
+      p.group === policyDocFilter ||
+      (policyDocFilter === 'Limited' && p.group === 'Limited medical');
     if (!groupOk) return false;
     if (
       policyDocPlatform !== 'All' &&
@@ -2357,8 +2361,45 @@ function renderPolicydocs() {
         '<div style="padding:24px;color:#B91C1C;">Plans failed to load. Please refresh the page (Ctrl+Shift+R).</div>';
   }
 }
+// NEO / FirstEnroll gradient switch, same look as Quick Reference.
+function _pdSegHtml() {
+  var notes = {
+    All: 'NEO bills through NEO Insurance Solutions. FirstEnroll bills through FirstEnroll.',
+    NEO: 'Billing: NEO Insurance Solutions',
+    FE: 'Billing: FirstEnroll'
+  };
+  return (
+    '<div class="qr-seg" role="group" aria-label="Platform">' +
+    [
+      ['All', 'All plans', 'all'],
+      ['NEO', 'NEO', 'neo'],
+      ['FE', 'FirstEnroll', 'fe']
+    ]
+      .map(function (f) {
+        var on = f[0] === policyDocPlatform;
+        return (
+          '<button type="button" class="qr-seg-btn qr-seg-' +
+          f[2] +
+          (on ? ' is-on' : '') +
+          '" aria-pressed="' +
+          (on ? 'true' : 'false') +
+          '" data-pv-plat="' +
+          f[0] +
+          '">' +
+          f[1] +
+          '</button>'
+        );
+      })
+      .join('') +
+    '</div><p class="qr-seg-note">' +
+    notes[policyDocPlatform] +
+    '</p>'
+  );
+}
+
 function _renderPolicydocsInner() {
   var html = '<div class="pv-page pv-page-list">';
+  html += '<div id="pv-seg">' + _pdSegHtml() + '</div>';
   html += '<div class="pv-toolbar">';
   html += '<div class="pv-search-wrap">';
   html +=
@@ -2370,34 +2411,24 @@ function _renderPolicydocsInner() {
     (policyDocSearch ? '' : ' style="display:none"') +
     '>&times;</button>';
   html += '</div>';
-  html += '<div class="stabs pv-filters">';
-  ['All', 'MEC', 'STM', 'Limited', 'Limited medical'].forEach(function (f) {
-    html +=
-      '<button type="button" class="stab' +
-      (f === policyDocFilter ? ' active' : '') +
-      '" data-pv-filter="' +
-      f +
-      '">' +
-      f +
-      '</button>';
-  });
-  html += '</div>';
-  html += '<div class="stabs pv-plat-filters">';
+  html +=
+    '<select id="pdTypeSelect" class="pv-type-select" aria-label="Plan type">';
   [
-    ['All', 'NEO + FE'],
-    ['NEO', 'NEO'],
-    ['FE', 'FirstEnroll']
+    ['All', 'All types'],
+    ['MEC', 'MEC'],
+    ['STM', 'STM'],
+    ['Limited', 'Limited']
   ].forEach(function (f) {
     html +=
-      '<button type="button" class="stab' +
-      (f[0] === policyDocPlatform ? ' active' : '') +
-      '" data-pv-plat="' +
+      '<option value="' +
       f[0] +
-      '">' +
+      '"' +
+      (f[0] === policyDocFilter ? ' selected' : '') +
+      '>' +
       f[1] +
-      '</button>';
+      '</option>';
   });
-  html += '</div></div>';
+  html += '</select></div>';
   html += '<div id="pv-list" class="pv-board" aria-label="Plans"></div>';
   html += '<div id="pdResultsContainer" class="pv-results-host"></div>';
   html += '</div>';
@@ -2436,6 +2467,8 @@ function clearPdSearch() {
 
 function policyDocFilterChanged() {
   policyDocOpen = null;
+  var seg = document.getElementById('pv-seg');
+  if (seg) seg.innerHTML = _pdSegHtml();
   var tabs = document.querySelectorAll(
     '#page-policydocs .pv-filters .stab, #page-allplans .pv-filters .stab'
   );
@@ -2528,6 +2561,12 @@ function _pdBindKeys() {
   root.addEventListener('input', function (event) {
     if (event.target && event.target.id === 'pdSearchInput') {
       policyDocSearchTyping(event.target.value);
+    }
+  });
+  root.addEventListener('change', function (event) {
+    if (event.target && event.target.id === 'pdTypeSelect') {
+      policyDocFilter = event.target.value;
+      policyDocFilterChanged();
     }
   });
 }
