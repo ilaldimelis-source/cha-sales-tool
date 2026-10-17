@@ -2444,35 +2444,40 @@ function _qrRenderHero() {
     counts[CHA_QUICK_REF[i].platform] =
       (counts[CHA_QUICK_REF[i].platform] || 0) + 1;
   }
-  host.innerHTML = [
-    ['NEO', 'NEO', 'Billing: NEO Insurance Solutions'],
-    ['FirstEnroll', 'FirstEnroll', 'Billing: FirstEnroll']
-  ]
-    .map(function (h) {
-      var on = qrPlatform === h[0];
-      return (
-        '<button type="button" class="qr3-hero-btn' +
-        (on ? ' qr3-hero-on' : '') +
-        '" aria-pressed="' +
-        (on ? 'true' : 'false') +
-        '" onclick="qrSetPlatform(qrPlatform === \'' +
-        h[0] +
-        "' ? 'All' : '" +
-        h[0] +
-        '\')"><span class="qr3-hero-name">' +
-        h[1] +
-        '</span><span class="qr3-hero-sub">' +
-        counts[h[0]] +
-        ' plan families. ' +
-        h[2] +
-        '</span><span class="qr3-hero-cta">' +
-        (on
-          ? 'Showing only ' + h[1] + '. Tap to show all'
-          : 'Tap to show only ' + h[1]) +
-        '</span></button>'
-      );
-    })
-    .join('');
+  var segs = [
+    ['All', 'All plans', CHA_QUICK_REF.length, 'all'],
+    ['NEO', 'NEO', counts.NEO || 0, 'neo'],
+    ['FirstEnroll', 'FirstEnroll', counts.FirstEnroll || 0, 'fe']
+  ];
+  var notes = {
+    All: 'NEO bills through NEO Insurance Solutions. FirstEnroll bills through FirstEnroll.',
+    NEO: 'Billing: NEO Insurance Solutions',
+    FirstEnroll: 'Billing: FirstEnroll'
+  };
+  host.innerHTML =
+    '<div class="qr-seg" role="group" aria-label="Platform">' +
+    segs
+      .map(function (h) {
+        var on = qrPlatform === h[0];
+        return (
+          '<button type="button" class="qr-seg-btn qr-seg-' +
+          h[3] +
+          (on ? ' is-on' : '') +
+          '" aria-pressed="' +
+          (on ? 'true' : 'false') +
+          '" onclick="qrSetPlatform(\'' +
+          h[0] +
+          '\')">' +
+          h[1] +
+          ' <span class="qr-seg-count">' +
+          h[2] +
+          '</span></button>'
+        );
+      })
+      .join('') +
+    '</div><p class="qr-seg-note">' +
+    (notes[qrPlatform] || notes.All) +
+    '</p>';
 }
 
 function _qrRenderCards() {
