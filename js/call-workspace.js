@@ -14,7 +14,7 @@ var CW_FAMS = [
     name: 'TDK',
     type: 'MEC',
     platform: 'FirstEnroll',
-    aq: '',
+    aq: 'tdk',
     facts: [
       ['Network', 'First Health'],
       ['Administrator', 'Detego Health'],

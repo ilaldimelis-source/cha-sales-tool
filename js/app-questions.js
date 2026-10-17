@@ -249,6 +249,42 @@ var APPQ_PLANS = [
         ]
       }
     ]
+  },
+  {
+    id: 'tdk',
+    name: 'TDK',
+    platform: 'FirstEnroll',
+    step: '',
+    scripts: [],
+    note: 'Health questions on this application do not affect eligibility. Read each one word for word and record the answer.',
+    qs: [
+      {
+        q: 'I understand that as a condition of my membership in HCDA, I will be required to provide insights through paid short surveys to better understand healthcare care costs and consumer preferences?',
+        ex: "To keep this plan, you'll answer short paid surveys about healthcare costs and what you like in healthcare.",
+        ok: 'I agree',
+        opts: ['I agree']
+      },
+      {
+        q: 'Have they seen a medical provider, treatment recommended, received care (including prescriptions) or been hospitalized for any of the following within the last 5 years.',
+        ex: "In the last 5 years, has anyone on the plan seen a doctor, been told they need treatment, gotten care or prescriptions, or been in the hospital for the conditions I'm about to read? Your answers don't change whether you can enroll.",
+        ok: 'Any'
+      },
+      {
+        q: 'Have you or any of your dependents applying for coverage, been under the care of a doctor currently or in the past 5 years for any of the following conditions: cancer, heart disease (including Bypass), Heart Attack, Heart Surgery, or Stroke?',
+        ex: 'Now or in the last 5 years, has anyone on the plan been treated by a doctor for cancer, heart disease or a bypass, a heart attack, heart surgery, or a stroke?',
+        ok: 'Any'
+      },
+      {
+        q: "Have you or any of your dependents applying for covered, been under the care of a doctor currently or in the past 5 years for Autoimmune or blood disease i.e., Lupus MS, Anemia, AIDS, HIV, Hemophilia, IBS, Crohn's?",
+        ex: "Now or in the last 5 years, has anyone on the plan been treated for an autoimmune or blood condition, like lupus, MS, anemia, HIV or AIDS, hemophilia, IBS or Crohn's?",
+        ok: 'Any'
+      },
+      {
+        q: 'Have you or any of your dependents applying for coverage, been under the care of a doctor currently or in the past 5 years for Organ Failure or Organ Transplant for Kidney, Liver, Lung, Heart and or any form of organ support i.e., dialysis?',
+        ex: 'Now or in the last 5 years, has anyone on the plan been treated for organ failure, an organ transplant (kidney, liver, lung or heart), or organ support like dialysis?',
+        ok: 'Any'
+      }
+    ]
   }
 ];
 
@@ -283,7 +319,7 @@ function appqStatus(plan) {
   plan.qs.forEach(function (q, i) {
     if (!ans[i]) return;
     answered++;
-    if (ans[i] !== q.ok) stops.push(i + 1);
+    if (q.ok !== 'Any' && ans[i] !== q.ok) stops.push(i + 1);
   });
   if (stops.length) {
     return {
@@ -328,12 +364,15 @@ function appqListHtml(plan, where) {
     '"' +
     w +
     '>Start over</button></div>';
+  if (plan.note) {
+    html += '<p class="appq-note">' + appqEsc(plan.note) + '</p>';
+  }
   html += '<ol class="appq-list">';
   plan.qs.forEach(function (q, i) {
     var a = ans[i];
-    var bad = a && a !== q.ok;
+    var bad = a && q.ok !== 'Any' && a !== q.ok;
     var cls = a ? (bad ? ' is-bad' : ' is-good') : '';
-    var yn = ['Yes', 'No']
+    var yn = (q.opts || ['Yes', 'No'])
       .map(function (v) {
         return (
           '<button type="button" class="appq-ans' +
