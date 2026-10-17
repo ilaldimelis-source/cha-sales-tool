@@ -465,8 +465,6 @@ const PLANS = [
       'NO maternity or pregnancy coverage',
       'NO drug or alcohol rehabilitation coverage',
       'NO mental health coverage',
-      '12-month pre-existing condition exclusion',
-      '30-day sickness waiting period',
       'NOT major medical insurance',
       'EPO — NO out-of-network coverage'
     ],
@@ -474,11 +472,10 @@ const PLANS = [
       '"SmartChoice is a structured MEC plan through Detego Health with an EPO network — meaning you stay in-network, get your preventive care, office visits, and telemedicine covered at an affordable price. The trade-off for the lower cost is no out-of-network coverage."',
     objections: [
       'EPO means in-network only — always confirm their doctor is in First Health EPO before enrolling',
-      'Pre-ex 12 months',
       'Not major medical'
     ],
     compliance:
-      'REQUIRED DISCLOSURES — say every enrollment: (1) This is NOT ACA-compliant major medical insurance. (2) Maternity and pregnancy are NOT covered. (3) Drug and alcohol rehabilitation is NOT covered. (4) Mental health is NOT covered. (5) Pre-existing conditions are excluded for 12 months. (6) There is a 30-day sickness waiting period. (7) Benefits are fixed amounts toward services, not full bill coverage. (8) EPO plan — NO out-of-network coverage. Confirm provider is in-network before enrolling.',
+      'REQUIRED DISCLOSURES — say every enrollment: (1) This is NOT ACA-compliant major medical insurance. (2) Maternity and pregnancy are NOT covered. (3) Drug and alcohol rehabilitation is NOT covered. (4) Mental health is NOT covered. (5) Benefits are fixed amounts toward services, not full bill coverage. (6) EPO plan — NO out-of-network coverage. Confirm provider is in-network before enrolling.',
     fitYes: [
       'Comfortable staying in-network',
       'Budget is primary concern',
@@ -762,7 +759,7 @@ const PLANS = [
     type: 'Short-Term Medical — Premium',
     tagline: 'Closest-to-major-medical STM with $2M policy max',
     network: 'MultiPlan',
-    admin: 'Southern Guarantee Insurance Company',
+    admin: 'Southern Guaranty Insurance Company',
     assoc: 'Association for Responsible Planners',
     bestFor:
       'Higher income professionals who want comprehensive-feel coverage temporarily',
