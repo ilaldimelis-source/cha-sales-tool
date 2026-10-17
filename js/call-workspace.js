@@ -1019,8 +1019,9 @@ var CW_ALIAS = {
 };
 
 var cwState = {
-  fam: 'SmartChoice',
-  tier: '1500',
+  fam: '',
+  tier: '',
+  startFam: '',
   type: 'MEC',
   q: '',
   browse: false,
@@ -1160,6 +1161,8 @@ function cwPick(famName, tier) {
   cwState.type = f.type;
   cwState.q = '';
   cwState.browse = false;
+  cwState.startFam = '';
+  cwState.tab = 'plan';
   renderCallWorkspace();
 }
 
@@ -1373,6 +1376,40 @@ function cwDiscTab(fam, tier) {
   );
 }
 
+function cwSugHtml() {
+  var h = '';
+  var groups = cwSearch(cwState.q);
+  if (!groups.length) {
+    h +=
+      '<p class="cw-muted">No plan matches. Try the plan name or tier number.</p>';
+  }
+  groups.forEach(function (g, gi) {
+    h +=
+      '<div class="cw-sug"><b>' +
+      cwEsc(g.fam.name) +
+      '</b><span class="cw-type">' +
+      cwEsc(g.fam.type) +
+      '</span>' +
+      g.tiers
+        .map(function (t) {
+          return (
+            '<button type="button" class="cw-chip' +
+            (gi === 0 && t === g.hit ? ' is-on' : '') +
+            '" data-cw-pick="' +
+            cwEsc(g.fam.name) +
+            '|' +
+            cwEsc(t) +
+            '">' +
+            cwEsc(t) +
+            '</button>'
+          );
+        })
+        .join('') +
+      '</div>';
+  });
+  return h;
+}
+
 function cwPickerHtml() {
   var h =
     '<div class="cw-card cw-picker"><div class="cw-row"><input id="cw-q" class="cw-search" type="text" autocomplete="off" spellcheck="false" placeholder="Find a plan: sc 1500, harbor access, tdk 3" value="' +
@@ -1381,35 +1418,7 @@ function cwPickerHtml() {
     (cwState.browse ? 'Close' : 'Browse') +
     '</button></div>';
   if (cwState.q) {
-    var groups = cwSearch(cwState.q);
-    if (!groups.length) {
-      h +=
-        '<p class="cw-muted">No plan matches. Try the plan name or tier number.</p>';
-    }
-    groups.forEach(function (g, gi) {
-      h +=
-        '<div class="cw-sug"><b>' +
-        cwEsc(g.fam.name) +
-        '</b><span class="cw-type">' +
-        cwEsc(g.fam.type) +
-        '</span>' +
-        g.tiers
-          .map(function (t) {
-            return (
-              '<button type="button" class="cw-chip' +
-              (gi === 0 && t === g.hit ? ' is-on' : '') +
-              '" data-cw-pick="' +
-              cwEsc(g.fam.name) +
-              '|' +
-              cwEsc(t) +
-              '">' +
-              cwEsc(t) +
-              '</button>'
-            );
-          })
-          .join('') +
-        '</div>';
-    });
+    h += cwSugHtml();
   } else if (cwState.browse) {
     h +=
       '<div class="cw-browse"><div>' +
@@ -1469,10 +1478,111 @@ function cwPickerHtml() {
   return h + '</div>';
 }
 
+var CW_ICON_MEC =
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg>';
+var CW_ICON_STM =
+  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>';
+
+function cwGreeting() {
+  var g = '';
+  try {
+    if (typeof _buildGreetingText === 'function') g = _buildGreetingText();
+  } catch (_e) {
+    g = '';
+  }
+  return g ? g.replace(' ! ', ', ') : 'Welcome';
+}
+
+function cwStartHtml() {
+  var tiles = function (type) {
+    return CW_FAMS.filter(function (f) {
+      return f.type === type;
+    })
+      .map(function (f) {
+        return (
+          '<button type="button" class="cw-tile' +
+          (cwState.startFam === f.name ? ' is-on' : '') +
+          '" data-cw-start="' +
+          cwEsc(f.name) +
+          '"><span class="cw-ico cw-ico-' +
+          (f.platform === 'FirstEnroll' ? 'fe' : 'neo') +
+          '">' +
+          (type === 'MEC' ? CW_ICON_MEC : CW_ICON_STM) +
+          '</span>' +
+          cwEsc(f.name.replace(/ (STM|STM PPO)$/, '')) +
+          '</button>'
+        );
+      })
+      .join('');
+  };
+  var tierRow = '';
+  if (cwState.startFam) {
+    var sf = cwFam(cwState.startFam);
+    tierRow =
+      '<div class="cw-start-tiers"><b>' +
+      cwEsc(sf.name) +
+      '</b>' +
+      sf.tiers
+        .map(function (x) {
+          return (
+            '<button type="button" class="cw-chip" data-cw-pick="' +
+            cwEsc(sf.name) +
+            '|' +
+            cwEsc(x.tier) +
+            '">' +
+            cwEsc(x.tier) +
+            '</button>'
+          );
+        })
+        .join('') +
+      '</div>';
+  }
+  return (
+    '<div class="cw-start"><img class="cw-start-logo" src="logo.png" alt="Central Health Advisors"><h2>' +
+    cwEsc(cwGreeting()) +
+    '</h2><p>Which plan are you selling?</p><div class="cw-start-search"><input id="cw-q" type="text" autocomplete="off" spellcheck="false" placeholder="sc 1500, harbor access, tdk 3" value="' +
+    cwEsc(cwState.q) +
+    '"></div>' +
+    (cwState.q
+      ? '<div class="cw-card cw-start-sug">' + cwSugHtml() + '</div>'
+      : '<div class="cw-start-groups"><span class="cw-label">MEC</span><div class="cw-tiles">' +
+        tiles('MEC') +
+        '</div><span class="cw-label">STM</span><div class="cw-tiles">' +
+        tiles('STM') +
+        '</div>' +
+        tierRow +
+        '</div>') +
+    '</div>'
+  );
+}
+
+function cwBind(root) {
+  if (root.getAttribute('data-cw-ready')) return;
+  root.setAttribute('data-cw-ready', '1');
+  root.addEventListener('click', cwOnClick);
+  root.addEventListener('input', cwOnInput);
+  root.addEventListener('change', cwOnInput);
+  root.addEventListener('keydown', cwOnKey);
+}
+
+function cwFocus(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.focus();
+  var v = el.value || '';
+  if (el.setSelectionRange) el.setSelectionRange(v.length, v.length);
+}
+
 function renderCallWorkspace(keepFocus) {
   var root = document.getElementById('page-oncall');
   if (!root) return;
   cwEnsureMeds();
+  if (!cwState.fam) {
+    root.innerHTML = cwStartHtml();
+    cwBind(root);
+    cwFocus('cw-q');
+    return;
+  }
   var fam = cwFam(cwState.fam);
   var tier = cwTier(fam, cwState.tier);
   var aqPlan =
@@ -1502,7 +1612,7 @@ function renderCallWorkspace(keepFocus) {
     cwEsc(name) +
     '</h2><p>' +
     cwEsc(fam.platform + ' - ' + fam.type) +
-    '</p></header>' +
+    '</p><button type="button" class="cw-change" data-cw-change="1">Change plan</button></header>' +
     cwPickerHtml() +
     '<div class="cw-facts">' +
     fam.facts
@@ -1534,27 +1644,14 @@ function renderCallWorkspace(keepFocus) {
     '</div><div class="cw-body">' +
     body +
     '</div></div>';
-  if (keepFocus) {
-    var el = document.getElementById(keepFocus);
-    if (el) {
-      el.focus();
-      var v = el.value || '';
-      if (el.setSelectionRange) el.setSelectionRange(v.length, v.length);
-    }
-  }
-  if (!root.getAttribute('data-cw-ready')) {
-    root.setAttribute('data-cw-ready', '1');
-    root.addEventListener('click', cwOnClick);
-    root.addEventListener('input', cwOnInput);
-    root.addEventListener('change', cwOnInput);
-    root.addEventListener('keydown', cwOnKey);
-  }
+  if (keepFocus) cwFocus(keepFocus);
+  cwBind(root);
 }
 
 function cwOnClick(e) {
   var t = e.target.closest
     ? e.target.closest(
-        '[data-cw-pick],[data-cw-browse],[data-cw-type],[data-cw-fam],[data-cw-tab],[data-cw-conf]'
+        '[data-cw-pick],[data-cw-browse],[data-cw-type],[data-cw-fam],[data-cw-tab],[data-cw-conf],[data-cw-start],[data-cw-change]'
       )
     : null;
   if (!t) return;
@@ -1562,6 +1659,26 @@ function cwOnClick(e) {
   if (v) {
     var p = v.split('|');
     cwPick(p[0], p[1]);
+    return;
+  }
+  v = t.getAttribute('data-cw-start');
+  if (v) {
+    var sf = cwFam(v);
+    if (sf.tiers.length === 1) {
+      cwPick(sf.name, sf.tiers[0].tier);
+      return;
+    }
+    cwState.startFam = cwState.startFam === v ? '' : v;
+    renderCallWorkspace();
+    return;
+  }
+  if (t.getAttribute('data-cw-change')) {
+    cwState.fam = '';
+    cwState.q = '';
+    cwState.startFam = '';
+    cwState.browse = false;
+    cwState.tab = 'plan';
+    renderCallWorkspace();
     return;
   }
   if (t.getAttribute('data-cw-browse')) {

@@ -3186,6 +3186,156 @@
           flex: 1 1 100%;
         }
       }
+      /* On Call start screen (Oct 2026) */
+      .cw-start {
+        max-width: 640px;
+        margin: 48px auto 32px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+      }
+      .cw-start-logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        box-shadow: 0 8px 24px rgb(37 59 85 / 18%);
+      }
+      .cw-start h2 {
+        margin: 6px 0 0;
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--cha-text-primary);
+      }
+      .cw-start > p {
+        margin: 0;
+        font-size: 15px;
+        color: var(--cha-text-tertiary);
+      }
+      .cw-start-search {
+        width: 100%;
+        margin-top: 8px;
+      }
+      .cw-start-search input {
+        width: 100%;
+        box-sizing: border-box;
+        height: 56px;
+        border-radius: 999px;
+        border: 1px solid var(--cha-border-default);
+        background: var(--cha-bg-card);
+        padding: 0 22px;
+        font-size: 16px;
+        font-weight: 500;
+        font-family: inherit;
+        color: var(--cha-text-primary);
+        outline: none;
+        box-shadow: 0 6px 20px rgb(15 23 42 / 6%);
+      }
+      .cw-start-search input:focus {
+        border-color: #5175f1;
+      }
+      .cw-start-sug {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .cw-start-groups {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 14px;
+        text-align: left;
+      }
+      .cw-tiles {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 6px;
+      }
+      .cw-tile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--cha-border-subtle);
+        border-radius: 16px;
+        background: var(--cha-bg-card);
+        padding: 10px 12px;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--cha-text-primary);
+        cursor: pointer;
+        font-family: inherit;
+        text-align: left;
+      }
+      .cw-tile:hover {
+        border-color: var(--cha-border-strong);
+      }
+      .cw-tile.is-on {
+        border-color: #5175f1;
+        box-shadow: 0 0 0 1px #5175f1;
+      }
+      .cw-ico {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .cw-ico-neo {
+        background: linear-gradient(135deg, #243b55, #5175f1);
+      }
+      .cw-ico-fe {
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      }
+      .cw-start-tiers {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        background: var(--cha-bg-card);
+        border-radius: 16px;
+        padding: 10px 12px;
+      }
+      .cw-start-tiers b {
+        font-size: 13.5px;
+        margin-right: 6px;
+        color: var(--cha-text-primary);
+      }
+      .cw-hero {
+        position: relative;
+      }
+      .cw-change {
+        position: absolute;
+        top: 16px;
+        right: 18px;
+        border: 0;
+        border-radius: 999px;
+        padding: 7px 14px;
+        font-size: 13px;
+        font-weight: 600;
+        background: rgb(255 255 255 / 18%);
+        color: #fff;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .cw-change:hover {
+        background: rgb(255 255 255 / 28%);
+      }
+      @media (width <= 640px) {
+        .cw-tiles {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .cw-start {
+          margin-top: 24px;
+        }
+      }
       /* App Questions checklist (Oct 2026) */
       .appq-page {
         max-width: 920px;
@@ -4932,7 +5082,7 @@
     <script src="js/addons.js?v=1792186043707"></script>
     <script src="js/meds.js?v=1792193893195"></script>
     <script src="js/app-questions.js?v=1792276461238"></script>
-    <script src="js/call-workspace.js?v=1792276461238"></script>
+    <script src="js/call-workspace.js?v=1792277324317"></script>
     <script src="js/app.js?v=1792276461238"></script>
     <script>
       (function () {

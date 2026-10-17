@@ -4,10 +4,10 @@
 // When changing js/sales-tracker.js or css/sales-tracker.css, bump
 // CACHE_NAME by +1 AND the matching ?v= query strings in index.html
 // and URLS_TO_CACHE below (keep those two files in sync).
-var CACHE_NAME = 'cha-command-center-v264';
+var CACHE_NAME = 'cha-command-center-v265';
 var URLS_TO_CACHE = [
   './',
-  './index.html?v=1792276461238',
+  './index.html?v=1792277324317',
   './logo.png?v=1779700000000',
   './manifest.json?v=1779700000000',
   './css/tokens.css?v=1790682000000',
@@ -35,7 +35,7 @@ var URLS_TO_CACHE = [
   './js/addons.js?v=1792186043707',
   './js/meds.js?v=1792193893195',
   './js/app-questions.js?v=1792276461238',
-  './js/call-workspace.js?v=1792276461238',
+  './js/call-workspace.js?v=1792277324317',
   './js/app.js?v=1792276461238',
   './js/chat.js?v=1790272800000',
   './js/br-plan-match.js?v=1790272800000',
