@@ -3068,41 +3068,90 @@
           grid-template-columns: 1fr;
         }
       }
-      /* Network Guide: one First Health card with a column per search site */
-      .ng7-grid > .ng7-card.ng7-card-wide {
-        grid-column: 1 / -1;
-      }
-      .ng7-groups {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
-        gap: 12px;
-        flex: 1;
-      }
-      .ng7-group {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 10px;
-        min-width: 0;
-        padding: 12px;
-        border-radius: 14px;
-        border: 1px solid var(--cha-border-subtle);
-      }
+      /* Network Guide: rows size to their content */
       .ng7-grid {
         grid-auto-rows: auto;
       }
-      .ng7-group-main {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
+      /* Quick Reference: NEO / FirstEnroll segmented switch with gradient */
+      #qr-hero.qr3-hero {
+        display: block;
       }
-      .ng7-group-title {
-        font-size: 12px;
-        font-weight: 700;
+      .qr-seg {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        padding: 6px;
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+        max-width: 760px;
+      }
+      .qr-seg-btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 10px;
+        background: transparent;
         color: var(--cha-text-secondary);
+        font: inherit;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.2s ease,
+          color 0.2s ease,
+          box-shadow 0.2s ease;
       }
-      .ng7-group .ng7-btn {
-        align-self: flex-start;
+      .qr-seg-btn:hover {
+        background: var(--cha-bg-muted);
+        color: var(--cha-text-primary);
+      }
+      .qr-seg-btn:focus-visible {
+        outline: 2px solid var(--cha-accent);
+        outline-offset: 2px;
+      }
+      .qr-seg-count {
+        font-weight: 500;
+        opacity: 0.7;
+      }
+      .qr-seg-btn.is-on {
+        color: var(--cha-bg-card);
+        font-weight: 700;
+      }
+      .qr-seg-all.is-on {
+        background: var(--cha-text-primary);
+      }
+      .qr-seg-neo.is-on {
+        background: linear-gradient(
+          135deg,
+          #243b55 0%,
+          #3b5b86 55%,
+          #5175f1 100%
+        );
+        box-shadow: 0 6px 16px rgba(36, 59, 85, 0.35);
+      }
+      .qr-seg-fe.is-on {
+        background: linear-gradient(
+          135deg,
+          #3b82f6 0%,
+          #6366f1 60%,
+          #8b5cf6 100%
+        );
+        box-shadow: 0 6px 16px rgba(99, 102, 241, 0.35);
+      }
+      .qr-seg-note {
+        margin: 8px 0 0 6px;
+        font-size: 13px;
+        color: var(--cha-text-tertiary);
+      }
+      @media (width <= 640px) {
+        .qr-seg-btn {
+          font-size: 12.5px;
+          padding: 10px 4px;
+          white-space: nowrap;
+        }
+        .qr-seg-count {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -4120,7 +4169,7 @@
     <script src="js/plan-pdf-map.js?v=1792165216661"></script>
     <script src="js/pdf-knowledge-runtime.js?v=1779700000000"></script>
     <script src="js/policy-docs.js?v=1792185391492"></script>
-    <script src="js/plans-benefits.js?v=1792197782999"></script>
+    <script src="js/plans-benefits.js?v=1792198372266"></script>
     <script src="js/call-playbook.js?v=1790642000000"></script>
     <script src="js/live-assist.js?v=1790272600000"></script>
     <script src="js/ai-tools.js?v=1789432300000"></script>

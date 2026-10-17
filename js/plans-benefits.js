@@ -1861,42 +1861,15 @@ function togglePlanVault(id) {
 var CHA_NETWORK_GUIDE = [
   {
     name: 'First Health',
-    how: 'Each group below uses its own First Health search site.',
+    how: 'providerlocator.firsthealth.com: enter zip code, search by doctor name or specialty.',
     notes: [
       'SmartChoice is in-network only.',
       'WB Select and WB Choice members can also search firsthealthlbp.com or call (800) 226-5116.'
     ],
-    links: [],
-    groups: [
+    links: [
       {
-        title: 'First Health',
-        url: 'https://providerlocator.firsthealth.com',
-        plans: [
-          ['Allstate Health Access', 'NEO'],
-          ['SmartChoice', 'NEO'],
-          ['WB Select', 'NEO'],
-          ['WB Choice', 'NEO']
-        ]
-      },
-      {
-        title: 'First Health Limited Benefit',
-        url: 'https://www.firsthealthlbp.com',
-        plans: [
-          ['Harmony Care PLUS', 'FE'],
-          ['Harmony Care', 'FE'],
-          ['Advanced Wellness PLUS', 'FE'],
-          ['Sigma Care PLUS', 'FE']
-        ]
-      },
-      {
-        title: 'GoodHealth',
-        url: 'https://www.locateprovidersnow.com',
-        plans: [['GoodHealth (GHDP)', 'FE']]
-      },
-      {
-        title: 'TDK',
-        url: 'https://docfind.health',
-        plans: [['TDK', 'FE']]
+        label: 'Find a provider',
+        url: 'https://providerlocator.firsthealth.com'
       }
     ],
     plans: [
@@ -2021,29 +1994,12 @@ function _ngCardsHtml() {
     if (!hit) return;
     shown++;
     html +=
-      '<div class="ng7-card' +
-      (n.groups ? ' ng7-card-wide' : '') +
-      '"><div class="ng7-top"><h3 class="ng7-name">' +
+      '<div class="ng7-card"><div class="ng7-top"><h3 class="ng7-name">' +
       _ngEsc(n.name) +
       '</h3><span class="ng7-count">' +
       n.plans.length +
       (n.plans.length === 1 ? ' plan' : ' plans') +
       '</span></div>';
-    if (n.groups) {
-      html += '<div class="ng7-groups">';
-      n.groups.forEach(function (g) {
-        html +=
-          '<div class="ng7-group"><div class="ng7-group-main"><span class="ng7-group-title">' +
-          _ngEsc(g.title) +
-          '</span><div class="ng7-pills">' +
-          _ngPillsHtml(g.plans, q) +
-          '</div></div><a class="ng7-btn" href="' +
-          _ngEsc(g.url) +
-          '" target="_blank" rel="noopener noreferrer">Find a provider</a></div>';
-      });
-      html += '</div></div>';
-      return;
-    }
     html += '<div class="ng7-pills">' + _ngPillsHtml(n.plans, q) + '</div>';
     html += '<div class="ng7-foot">';
     if (n.links.length) {
@@ -2488,35 +2444,40 @@ function _qrRenderHero() {
     counts[CHA_QUICK_REF[i].platform] =
       (counts[CHA_QUICK_REF[i].platform] || 0) + 1;
   }
-  host.innerHTML = [
-    ['NEO', 'NEO', 'Billing: NEO Insurance Solutions'],
-    ['FirstEnroll', 'FirstEnroll', 'Billing: FirstEnroll']
-  ]
-    .map(function (h) {
-      var on = qrPlatform === h[0];
-      return (
-        '<button type="button" class="qr3-hero-btn' +
-        (on ? ' qr3-hero-on' : '') +
-        '" aria-pressed="' +
-        (on ? 'true' : 'false') +
-        '" onclick="qrSetPlatform(qrPlatform === \'' +
-        h[0] +
-        "' ? 'All' : '" +
-        h[0] +
-        '\')"><span class="qr3-hero-name">' +
-        h[1] +
-        '</span><span class="qr3-hero-sub">' +
-        counts[h[0]] +
-        ' plan families. ' +
-        h[2] +
-        '</span><span class="qr3-hero-cta">' +
-        (on
-          ? 'Showing only ' + h[1] + '. Tap to show all'
-          : 'Tap to show only ' + h[1]) +
-        '</span></button>'
-      );
-    })
-    .join('');
+  var segs = [
+    ['All', 'All plans', CHA_QUICK_REF.length, 'all'],
+    ['NEO', 'NEO', counts.NEO || 0, 'neo'],
+    ['FirstEnroll', 'FirstEnroll', counts.FirstEnroll || 0, 'fe']
+  ];
+  var notes = {
+    All: 'NEO bills through NEO Insurance Solutions. FirstEnroll bills through FirstEnroll.',
+    NEO: 'Billing: NEO Insurance Solutions',
+    FirstEnroll: 'Billing: FirstEnroll'
+  };
+  host.innerHTML =
+    '<div class="qr-seg" role="group" aria-label="Platform">' +
+    segs
+      .map(function (h) {
+        var on = qrPlatform === h[0];
+        return (
+          '<button type="button" class="qr-seg-btn qr-seg-' +
+          h[3] +
+          (on ? ' is-on' : '') +
+          '" aria-pressed="' +
+          (on ? 'true' : 'false') +
+          '" onclick="qrSetPlatform(\'' +
+          h[0] +
+          '\')">' +
+          h[1] +
+          ' <span class="qr-seg-count">' +
+          h[2] +
+          '</span></button>'
+        );
+      })
+      .join('') +
+    '</div><p class="qr-seg-note">' +
+    (notes[qrPlatform] || notes.All) +
+    '</p>';
 }
 
 function _qrRenderCards() {
