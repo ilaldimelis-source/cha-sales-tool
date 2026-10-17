@@ -206,6 +206,48 @@ var APPQ_PLANS = [
         ex: 'You confirm you have read the terms and the agreement, and that nothing stops you from doing the Working Owner tasks, like a rule from a current or past employer.',
         ok: 'Yes'
       }
+    ],
+    talk: [
+      {
+        t: 'What is a Working Owner?',
+        say: 'A Working Owner is someone who owns a small part of a company and does some work for it. For this plan, becoming a Working Owner of Population Science Management USA is what makes you eligible for the group health plan.',
+        qa: [
+          [
+            'Do I have to do real work?',
+            'The activities are short surveys. Each takes a few minutes.'
+          ]
+        ]
+      },
+      {
+        t: 'Why am I becoming an owner of a company?',
+        say: "Self-employed people usually can't join a group health plan on their own. Becoming a Working Owner is how you qualify. You are not investing any money. The ownership units are given to you for your services.",
+        qa: [
+          [
+            'So this is not real insurance?',
+            "It's a federally governed ERISA group health plan. It's not insurance and not major medical."
+          ]
+        ]
+      },
+      {
+        t: 'Call Right',
+        say: "If you don't meet the Working Owner conditions, the company can buy back your ownership share, and your Working Owner status ends.",
+        qa: [
+          [
+            'So they can just kick me out?',
+            "Only if you don't meet the Working Owner conditions."
+          ]
+        ]
+      },
+      {
+        t: 'Prescriptions and specialty meds',
+        say: "The plan covers preferred generic medications for $12 for a 30-day supply, if they're on the Ventegra acute formulary. Brand-name and specialty drugs, like Humira, Ozempic and Enbrel, are not covered. For specialty drugs, the ScriptAide Patient Assistance Program may help, based on your income.",
+        qa: [
+          [
+            "I'm on Ozempic or Humira. What do I do?",
+            "It isn't covered by this plan. You can apply to the Patient Assistance Program; approval depends on your income."
+          ]
+        ]
+      }
     ]
   }
 ];
@@ -343,6 +385,45 @@ function appqListHtml(plan, where) {
       '</div></li>';
   });
   html += '</ol>';
+  if (plan.talk && plan.talk.length) {
+    html +=
+      '<h3 class="appq-talk-h">If the client asks</h3><div class="appq-talk">';
+    plan.talk.forEach(function (c, ci) {
+      var on = help['t' + ci];
+      var qa = c.qa
+        .map(function (x) {
+          return (
+            '<p class="appq-tq"><b>Q: ' +
+            appqEsc(x[0]) +
+            '</b><br>A: ' +
+            appqEsc(x[1]) +
+            '</p>'
+          );
+        })
+        .join('');
+      html +=
+        '<div class="appq-tcard"><button type="button" class="appq-thead" data-appq-help="' +
+        plan.id +
+        ':t' +
+        ci +
+        '"' +
+        w +
+        '>' +
+        appqEsc(c.t) +
+        '<span>' +
+        (on ? 'Hide' : 'Open') +
+        '</span></button>' +
+        (on
+          ? '<div class="appq-tbody"><div class="appq-help"><span>Say this</span>' +
+            appqEsc(c.say) +
+            '</div>' +
+            qa +
+            '</div>'
+          : '') +
+        '</div>';
+    });
+    html += '</div>';
+  }
   html +=
     '<p class="appq-src">Copied from the carrier application, Oct 17 2026. Read the question first; use the explanation only if the client is confused. Answers are not saved.</p>';
   return html;
