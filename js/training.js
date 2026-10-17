@@ -2330,7 +2330,7 @@ var planReferenceData = {
   galena: {
     name: 'AFRP Galena STM Elite',
     network: 'MultiPlan',
-    underwriter: 'SGIC (Southern Guaranty Insurance Company)',
+    underwriter: 'SGIC (Southern Guarantee Insurance Company)',
     association: 'Association for Responsible Planners',
     providerSearch: 'providersearch.multiplan.com',
     type: 'STM'
