@@ -827,7 +827,7 @@ function chaDashSuggestUpdate(q) {
   for (pi = 0; pi < all.length; pi++) {
     var p = all[pi];
     var nm = String(p.name || '').toLowerCase();
-    if (nm.indexOf(v) !== -1) {
+    if (_dashLookupWordsMatch(v, nm)) {
       scored.push({ p: p, sc: 0 });
       continue;
     }
@@ -1029,6 +1029,19 @@ function _dashLookupAllPlans() {
   return out;
 }
 
+function _dashLookupWordsMatch(q, name) {
+  var nm = String(name || '').toLowerCase();
+  if (nm.indexOf(q) !== -1) return true;
+  var words = String(q || '')
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!words.length) return false;
+  for (var i = 0; i < words.length; i++) {
+    if (nm.indexOf(words[i]) === -1) return false;
+  }
+  return true;
+}
+
 function _dashLookupFilteredPlans() {
   var all = _dashLookupAllPlans();
   var q = String(_dashLookupState.searchQuery || '')
@@ -1036,11 +1049,7 @@ function _dashLookupFilteredPlans() {
     .toLowerCase();
   if (!q) return all;
   return all.filter(function (p) {
-    return (
-      String(p.name || '')
-        .toLowerCase()
-        .indexOf(q) !== -1
-    );
+    return _dashLookupWordsMatch(q, p.name);
   });
 }
 
@@ -1087,17 +1096,29 @@ function _dashLookupSelectedPlan() {
 function _dashLookupGridInnerHtml(selected) {
   return (
     '<div class="dash-lookup-cell"><span>Network</span><strong>' +
-    escHTML((selected && selected.network) || '—') +
+    escHTML((selected && selected.network) || '-') +
     '</strong></div>' +
     '<div class="dash-lookup-cell"><span>Underwriter</span><strong>' +
-    escHTML((selected && selected.carrier) || '—') +
-    '</strong></div>' +
-    '<div class="dash-lookup-cell"><span>Type</span><strong>' +
-    escHTML(selected ? _dashLookupDisplayType(selected) : '—') +
+    escHTML((selected && selected.carrier) || '-') +
     '</strong></div>' +
     '<div class="dash-lookup-cell"><span>Association</span><strong>' +
-    escHTML((selected && selected.assoc) || '—') +
+    escHTML((selected && selected.assoc) || '-') +
     '</strong></div>'
+  );
+}
+
+function _dashLookupTitleHtml(selected) {
+  if (!selected) {
+    return '<span class="home-lk-empty">No plans match. Try another name.</span>';
+  }
+  var t = String(_dashLookupDisplayType(selected) || '');
+  var short = t.split(' ')[0] || t;
+  return (
+    '<b class="home-lk-name">' +
+    escHTML(selected.name) +
+    '</b><span class="home-lk-tag">' +
+    escHTML(short) +
+    '</span>'
   );
 }
 
@@ -1135,6 +1156,8 @@ function _dashLookupSyncSelectAndGrid() {
   if (grid) {
     grid.innerHTML = _dashLookupGridInnerHtml(selected);
   }
+  var titleEl = document.getElementById('dashLookupTitle');
+  if (titleEl) titleEl.innerHTML = _dashLookupTitleHtml(selected);
   if (provBtn) {
     provBtn.disabled = !providerUrl;
   }
@@ -1144,18 +1167,14 @@ function renderDashboardLookupCard() {
   var plans = _dashLookupFilteredPlans();
   var selected = _dashLookupSelectedPlan();
   var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
-  var html = '<div class="dash-lookup-card dash-lookup-card--option-d">';
-  html += '<div class="dash-lookup-head-option-d">';
+  var html = '<div class="home-card home-lookup">';
   html +=
-    '<div class="dash-lookup-head-icon-wrap" aria-hidden="true"><svg class="dash-lookup-head-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>';
-  html += '<div class="dash-lookup-head-titles">';
-  html += '<div class="dash-lookup-head-title-main">Plan lookup</div>';
+    '<div class="home-card-head"><span class="home-eb">Plan lookup</span><span class="home-card-hint">Network, underwriter, provider search</span></div>';
+  html += '<div class="dash-lookup-input-wrap home-srch">';
   html +=
-    '<div class="dash-lookup-head-sub-main">Network, underwriter, provider search</div>';
-  html += '</div></div>';
-  html += '<div class="dash-lookup-input-wrap">';
+    '<svg class="home-srch-ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
   html +=
-    '<input id="dashLookupSearch" type="text" placeholder="Quick plan lookup — start typing a plan name…" oninput="dashLookupFilter(this.value)" autocomplete="off">';
+    '<input id="dashLookupSearch" type="text" placeholder="Type a plan: tdk 3, harbor access, smart choice" oninput="dashLookupFilter(this.value)" autocomplete="off" aria-label="Plan lookup">';
   html += '<span class="dash-lookup-kbd">Ctrl + L</span>';
   html +=
     '<div id="dashLookupSuggest" class="dash-lookup-suggest" style="display:none" role="listbox" aria-label="Matching plans"></div>';
@@ -1163,7 +1182,7 @@ function renderDashboardLookupCard() {
   html +=
     '<div id="dashLookupRecentChips" class="dash-lookup-recent-chips" style="display:none"></div>';
   html +=
-    '<select id="dashPlanLookupSelect" class="dash-lookup-select" onchange="dashLookupSelectPlan(this.value)">';
+    '<select id="dashPlanLookupSelect" class="dash-lookup-select" onchange="dashLookupSelectPlan(this.value)" hidden>';
   plans.forEach(function (p) {
     html +=
       '<option value="' +
@@ -1175,16 +1194,20 @@ function renderDashboardLookupCard() {
       '</option>';
   });
   html += '</select>';
-  html += '<div class="dash-lookup-grid" id="dashLookupGrid">';
+  html +=
+    '<div class="home-lk-title" id="dashLookupTitle">' +
+    _dashLookupTitleHtml(selected) +
+    '</div>';
+  html += '<div class="dash-lookup-grid home-lk-grid" id="dashLookupGrid">';
   html += _dashLookupGridInnerHtml(selected);
   html += '</div>';
-  html += '<div class="dash-lookup-actions dash-lookup-actions-embedded">';
+  html += '<div class="home-lk-actions">';
   html +=
-    '<button type="button" class="dash-lookup-provider" onclick="dashLookupOpenProvider()"' +
+    '<button type="button" class="dash-lookup-provider home-btn-dark" onclick="dashLookupOpenProvider()"' +
     (providerUrl ? '' : ' disabled') +
-    '><svg class="dash-lookup-btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M4 20v-1a6 6 0 0 1 6-6"/><circle cx="18" cy="18" r="3"/><path d="m22 22-2.5-2.5"/></svg><span>Find a provider</span></button>';
+    '><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg><span>Find a provider</span></button>';
   html +=
-    '<button type="button" class="dash-lookup-copy" onclick="dashLookupCopy()"><svg class="dash-lookup-btn-icon dash-lookup-btn-icon-sm" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M4 16V6a2 2 0 0 1 2-2h10"/></svg><span>Copy info</span></button>';
+    '<button type="button" class="dash-lookup-copy home-btn-light" onclick="dashLookupCopy()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg><span>Copy info</span></button>';
   html += '</div>';
   html += '</div>';
   return html;
@@ -1248,17 +1271,7 @@ function dashLookupCopy() {
     .catch(function () {});
 }
 
-function renderDashboard() {
-  var pg = document.getElementById('page-dashboard');
-  if (!pg || pg.innerHTML.trim()) return;
-  var ic = function (d) {
-    return (
-      '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' +
-      d +
-      '</svg>'
-    );
-  };
-
+function _homeName() {
   var homeName = 'there';
   try {
     var dName = (
@@ -1271,20 +1284,206 @@ function renderDashboard() {
       homeName = window.CHA_USER.firstName || window.CHA_USER.name || 'there';
     }
   } catch (_e) {}
-  var now = new Date();
-  var day = now.toLocaleDateString('en-US', { weekday: 'long' });
-  var date = now.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-  var subtitle = day + ' · ' + date;
-  var html =
-    '<div class="ph"><div class="pt">Welcome back, ' +
-    escHTML(homeName) +
-    '</div><div class="pd">' +
-    escHTML(subtitle) +
-    '</div></div>';
-  html += '<div class="dashboard-home-stack">';
-  html += '<div id="dashPlanLookupMount"></div>';
-  html += chaDashWidgetsHtml();
+  return homeName;
+}
+
+function _homeInitials(name) {
+  var parts = String(name || '')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!parts.length || name === 'there') return 'CHA';
+  var a = parts[0].charAt(0);
+  var b = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+  return (a + b).toUpperCase();
+}
+
+function _homeWeekNumbers() {
+  var out = { paycheck: 0, deals: 0, addons: 0 };
+  try {
+    if (typeof chaAnalyticsReadBundle !== 'function') return out;
+    var bundle = chaAnalyticsReadBundle();
+    if (!bundle) return out;
+    if (typeof _stCalcWeekStatsFor === 'function') {
+      var w = _stCalcWeekStatsFor(bundle.sales || []);
+      out.paycheck = Number(w.paycheck) || 0;
+      out.deals = Number(w.deals) || 0;
+      out.addons = Number(w.addons) || 0;
+    } else if (bundle.stats) {
+      out.deals = Number(bundle.stats.weekDeals) || 0;
+      out.addons = Number(bundle.stats.weekAddons) || 0;
+    }
+  } catch (_e) {}
+  return out;
+}
+
+function _homeWeekPanelHtml() {
+  var w = _homeWeekNumbers();
+  var tiers = window.CHA_BONUS_TIERS_FOR_DASH || [];
+  var next = null;
+  for (var i = 0; i < tiers.length; i++) {
+    if (w.deals < tiers[i].deals || w.addons < tiers[i].addons) {
+      next = tiers[i];
+      break;
+    }
+  }
+  var pct = 100;
+  var msg = 'Top bonus reached this week';
+  if (next) {
+    pct = Math.round(
+      ((Math.min(w.deals, next.deals) + Math.min(w.addons, next.addons)) /
+        (next.deals + next.addons)) *
+        100
+    );
+    msg =
+      Math.max(0, next.deals - w.deals) +
+      ' + ' +
+      Math.max(0, next.addons - w.addons) +
+      ' to the $' +
+      Number(next.bonus).toLocaleString() +
+      ' bonus';
+  }
+  var pay =
+    '$' +
+    w.paycheck.toLocaleString('en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  return (
+    '<div class="home-glass-eb">This week</div>' +
+    '<div class="home-glass-num">' +
+    escHTML(pay) +
+    '</div>' +
+    '<div class="home-glass-sub">' +
+    w.deals +
+    ' deal' +
+    (w.deals === 1 ? '' : 's') +
+    ' - ' +
+    w.addons +
+    ' add-on' +
+    (w.addons === 1 ? '' : 's') +
+    '</div>' +
+    '<div class="home-glass-bar"><i style="width:' +
+    pct +
+    '%"></i></div>' +
+    '<div class="home-glass-msg">' +
+    escHTML(msg) +
+    '</div>'
+  );
+}
+
+function chaHomeRefreshWeek() {
+  var el = document.getElementById('homeWeekPanel');
+  if (el) el.innerHTML = _homeWeekPanelHtml();
+}
+
+function chaHomeOpenAddSale() {
+  _showComboPage('myspace', 'salestracker');
+  setTimeout(function () {
+    if (typeof _stSetAddSalePanelOpen === 'function') {
+      _stSetAddSalePanelOpen(true);
+    }
+  }, 120);
+}
+
+function _homeTilesHtml() {
+  var ic = function (paths) {
+    return (
+      '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      paths +
+      '</svg>'
+    );
+  };
+  var tiles = [
+    [
+      'chaHomeOpenAddSale()',
+      'home-ic-blue',
+      '<path d="M12 5v14M5 12h14"/>',
+      'Add sale',
+      'Paste the receipt'
+    ],
+    [
+      "showPage('meds')",
+      'home-ic-green',
+      '<path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/>',
+      'Meds',
+      'Check a drug'
+    ],
+    [
+      "_showComboPage('scripts','planscripts')",
+      'home-ic-purple',
+      '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 13h8M8 17h5"/>',
+      'Scripts',
+      'Every call'
+    ],
+    [
+      "showPage('networkguide')",
+      'home-ic-orange',
+      '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+      'Network',
+      'Find a provider'
+    ]
+  ];
+  var html = '<div class="home-tiles">';
+  tiles.forEach(function (t) {
+    html +=
+      '<button type="button" class="home-tile" onclick="' +
+      t[0] +
+      '"><span class="home-tile-ic ' +
+      t[1] +
+      '">' +
+      ic(t[2]) +
+      '</span><b>' +
+      t[3] +
+      '</b><span>' +
+      t[4] +
+      '</span></button>';
+  });
   html += '</div>';
+  return html;
+}
+
+function renderDashboard() {
+  var pg = document.getElementById('page-dashboard');
+  if (!pg) return;
+  if (pg.innerHTML.trim()) {
+    chaHomeRefreshWeek();
+    return;
+  }
+  var homeName = _homeName();
+  var hr = new Date().getHours();
+  var greet =
+    hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
+  var now = new Date();
+  var dateLine = now
+    .toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric'
+    })
+    .toUpperCase();
+  var html = '<div class="home-wrap">';
+  html += '<div class="home-hero">';
+  html +=
+    '<div class="home-brand"><img class="home-logo" src="logo.png" alt="Central Health Advisors"><div class="home-brand-txt"><b>Central Health Advisors</b><span>Sales Command Center</span></div><div class="home-av" aria-hidden="true">' +
+    escHTML(_homeInitials(homeName)) +
+    '</div></div>';
+  html += '<div class="home-hero-row">';
+  html +=
+    '<div class="home-greet"><span class="home-date">' +
+    escHTML(dateLine) +
+    '</span><h1 class="home-h1">' +
+    escHTML(greet + ', ' + homeName) +
+    '</h1><span class="home-lead">Here is your week so far.</span></div>';
+  html +=
+    '<button type="button" class="home-glass" id="homeWeekPanel" onclick="_showComboPage(\'myspace\',\'salestracker\')" aria-label="Open Sales Tracker">' +
+    _homeWeekPanelHtml() +
+    '</button>';
+  html += '</div></div>';
+  html += '<div class="home-body">';
+  html += '<div id="dashPlanLookupMount"></div>';
+  html += _homeTilesHtml();
+  html += '</div></div>';
   pg.innerHTML = html;
   dashLookupRefresh();
 }
