@@ -1093,16 +1093,53 @@ function _dashLookupSelectedPlan() {
   return plans[0];
 }
 
+// Fallbacks for plan cards that have no underwriter or association in
+// POLICY_DOCS. Underwriter comes from CHA_PLAN_REGISTRY; association
+// fills are confirmed by Mey (Oct 17: SmartChoice is offered through
+// Population Science Management).
+var _DASH_LOOKUP_REG_IDS = {
+  goodhealth13: 'ghdp1',
+  goodhealth45: 'ghdp1',
+  tdk13: 'tdk1',
+  tdk45: 'tdk1',
+  smartchoice: 'smartchoice2500'
+};
+var _DASH_LOOKUP_ASSOC_FILL = {
+  smartchoice: 'Population Science Management'
+};
+
+function _dashLookupFacts(plan) {
+  var out = { network: '', carrier: '', assoc: '' };
+  if (!plan) return out;
+  out.network = plan.network || '';
+  out.carrier = plan.carrier || '';
+  out.assoc = plan.assoc || '';
+  if (!out.carrier && typeof CHA_PLAN_REGISTRY !== 'undefined') {
+    var rid = _DASH_LOOKUP_REG_IDS[plan.id] || plan.id;
+    for (var i = 0; i < CHA_PLAN_REGISTRY.length; i++) {
+      if (CHA_PLAN_REGISTRY[i] && CHA_PLAN_REGISTRY[i].id === rid) {
+        out.carrier = CHA_PLAN_REGISTRY[i].carrier || '';
+        break;
+      }
+    }
+  }
+  if (!out.assoc && _DASH_LOOKUP_ASSOC_FILL[plan.id]) {
+    out.assoc = _DASH_LOOKUP_ASSOC_FILL[plan.id];
+  }
+  return out;
+}
+
 function _dashLookupGridInnerHtml(selected) {
+  var f = _dashLookupFacts(selected);
   return (
     '<div class="dash-lookup-cell"><span>Network</span><strong>' +
-    escHTML((selected && selected.network) || '-') +
+    escHTML(f.network || '-') +
     '</strong></div>' +
     '<div class="dash-lookup-cell"><span>Underwriter</span><strong>' +
-    escHTML((selected && selected.carrier) || '-') +
+    escHTML(f.carrier || '-') +
     '</strong></div>' +
     '<div class="dash-lookup-cell"><span>Association</span><strong>' +
-    escHTML((selected && selected.assoc) || '-') +
+    escHTML(f.assoc || '-') +
     '</strong></div>'
   );
 }
@@ -1258,12 +1295,13 @@ function dashLookupCopy() {
   var selected = _dashLookupSelectedPlan();
   if (!selected || typeof safeCopy !== 'function') return;
   var providerUrl = _dashLookupProviderUrl(selected.network);
+  var facts = _dashLookupFacts(selected);
   var text = [
     'Plan: ' + selected.name,
     'Network: ' + (selected.network || '—'),
-    'Underwriter: ' + (selected.carrier || '—'),
+    'Underwriter: ' + (facts.carrier || '—'),
     'Type: ' + _dashLookupDisplayType(selected),
-    'Association: ' + (selected.assoc || '—'),
+    'Association: ' + (facts.assoc || '—'),
     'Provider URL: ' + (providerUrl || '—')
   ].join('\n');
   safeCopy(text)
