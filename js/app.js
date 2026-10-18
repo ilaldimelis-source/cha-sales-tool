@@ -1097,7 +1097,8 @@ function _dashLookupSelectedPlan() {
 // POLICY_DOCS. Underwriter comes from CHA_PLAN_REGISTRY; association
 // fills are confirmed by Mey (Oct 17: SmartChoice is offered through
 // Population Science Management; Oct 18: GoodHealth plan and claims
-// administrator is Merchants Benefit Administration).
+// administrator is Merchants Benefit Administrators, and members join
+// GHD, LP per the GHDP enrollment terms).
 var _DASH_LOOKUP_REG_IDS = {
   goodhealth13: 'ghdp1',
   goodhealth45: 'ghdp1',
@@ -1107,12 +1108,14 @@ var _DASH_LOOKUP_REG_IDS = {
 };
 var _DASH_LOOKUP_CARRIER_FILL = {
   goodhealth13:
-    'Merchants Benefit Administration (MBA), plan and claims administrator',
+    'Merchants Benefit Administrators (MBA), plan and claims administrator',
   goodhealth45:
-    'Merchants Benefit Administration (MBA), plan and claims administrator'
+    'Merchants Benefit Administrators (MBA), plan and claims administrator'
 };
 var _DASH_LOOKUP_ASSOC_FILL = {
-  smartchoice: 'Population Science Management'
+  smartchoice: 'Population Science Management',
+  goodhealth13: 'GHD, LP (Good Health Distribution Limited Partnership)',
+  goodhealth45: 'GHD, LP (Good Health Distribution Limited Partnership)'
 };
 
 function _dashLookupFacts(plan) {
