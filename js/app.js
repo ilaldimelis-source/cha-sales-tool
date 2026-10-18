@@ -1101,7 +1101,7 @@ function _dashLookupSelectedPlan() {
 // POLICY_DOCS. Underwriter comes from CHA_PLAN_REGISTRY; association
 // fills are confirmed by Mey (Oct 17: SmartChoice is offered through
 // Population Science Management; Oct 18: GoodHealth plan and claims
-// administrator is Merchants Benefit Administrators, and members join
+// administrator is Merchants Benefit Administration (certificate 1.4.5), and members join
 // GHD, LP per the GHDP enrollment terms; Harmony Care 100+ certificate
 // names NCE as the policyholder; Oct 18: Advanced Wellness PLUS is NCE).
 var _DASH_LOOKUP_REG_IDS = {
@@ -1115,9 +1115,9 @@ var _DASH_LOOKUP_REG_IDS = {
 };
 var _DASH_LOOKUP_CARRIER_FILL = {
   goodhealth13:
-    'Merchants Benefit Administrators (MBA), plan and claims administrator',
+    'Merchants Benefit Administration (MBA), plan and claims administrator',
   goodhealth45:
-    'Merchants Benefit Administrators (MBA), plan and claims administrator'
+    'Merchants Benefit Administration (MBA), plan and claims administrator'
 };
 var _DASH_LOOKUP_ASSOC_FILL = {
   smartchoice: 'Population Science Management',
