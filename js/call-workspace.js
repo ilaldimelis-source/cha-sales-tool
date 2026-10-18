@@ -1028,7 +1028,10 @@ var cwState = {
   tab: 'plan',
   meds: '',
   hh: '1',
-  conf: {}
+  conf: {},
+  step: 0,
+  done: {},
+  note: false
 };
 var cwMedsTimer = null;
 
@@ -1162,7 +1165,10 @@ function cwPick(famName, tier) {
   cwState.q = '';
   cwState.browse = false;
   cwState.startFam = '';
-  cwState.tab = 'plan';
+  cwState.tab = 'call';
+  cwState.step = 0;
+  cwState.done = {};
+  cwState.note = false;
   renderCallWorkspace();
 }
 
@@ -1373,6 +1379,222 @@ function cwDiscTab(fam, tier) {
         cwEsc(blk.bill) +
         '</p></section>'
       : '')
+  );
+}
+
+// PROTOTYPE (preview only): step-by-step call with a compliance rail.
+var CW_STEPS = [
+  'Open',
+  'Discover',
+  'Present',
+  'Disclose',
+  'Enroll',
+  'Post-close'
+];
+
+var CW_NEVER_SAY = [
+  'It is major medical, or an ACA plan',
+  'Covers everything / full coverage / acts like regular insurance',
+  'Your doctor is covered (never guarantee a provider)',
+  'Price is only good today / you must enroll now',
+  'Locks in your rate / never goes up',
+  'You can write it off on your taxes'
+];
+
+function cwPlanScript(scriptName) {
+  if (typeof PLAN_SCRIPTS === 'undefined' || !scriptName) return null;
+  var i;
+  for (i = 0; i < PLAN_SCRIPTS.length; i++) {
+    if (PLAN_SCRIPTS[i].name === scriptName) return PLAN_SCRIPTS[i];
+  }
+  for (i = 0; i < PLAN_SCRIPTS.length; i++) {
+    if (String(PLAN_SCRIPTS[i].name).indexOf(scriptName) !== -1) {
+      return PLAN_SCRIPTS[i];
+    }
+  }
+  return null;
+}
+
+function cwDiscCounts() {
+  var fam = cwFam(cwState.fam);
+  var tier = cwTier(fam, cwState.tier);
+  var blk = cwScriptBlock(tier.script);
+  var conf = cwState.conf[fam.name + '|' + tier.tier] || {};
+  var total = 0;
+  var yes = 0;
+  if (blk) {
+    blk.paras.forEach(function (p, i) {
+      if (!p.confirm) return;
+      total++;
+      if (conf[i] === 'Yes') yes++;
+    });
+  }
+  return { total: total, yes: yes };
+}
+
+function cwDiscReady() {
+  var c = cwDiscCounts();
+  return c.total > 0 && c.yes === c.total;
+}
+
+function cwSayHtml(text) {
+  return String(text || '')
+    .split(/\n\n+/)
+    .map(function (p) {
+      var cue = /^[▶✖✔]/.test(p.replace(/^\s+/, ''));
+      return (
+        '<p class="' +
+        (cue ? 'cw-cue' : 'cw-say') +
+        '">' +
+        cwEsc(p).replace(/\n/g, '<br>') +
+        '</p>'
+      );
+    })
+    .join('');
+}
+
+function cwStepBody(fam, tier) {
+  var ps = cwPlanScript(tier.script);
+  var pre =
+    typeof PLAN_SCRIPTS !== 'undefined' && PLAN_SCRIPTS[0]
+      ? PLAN_SCRIPTS[0].sections[0].content
+      : '';
+  var cut = pre.indexOf('OK! GREAT!');
+  var secs = ps ? ps.sections : [];
+  var pick = function (names) {
+    return secs
+      .filter(function (x) {
+        return names(x.title);
+      })
+      .map(function (x) {
+        return (
+          '<span class="cw-label">' +
+          cwEsc(x.title) +
+          '</span>' +
+          cwSayHtml(x.content)
+        );
+      })
+      .join('');
+  };
+  var s = cwState.step;
+  if (s === 0) return cwSayHtml(cut > 0 ? pre.slice(0, cut) : pre);
+  if (s === 1) return cwSayHtml(cut > 0 ? pre.slice(cut) : '');
+  if (s === 2) {
+    return (
+      pick(function (t) {
+        return !/Closing|Verification|Post Close/.test(t);
+      }) || '<p class="cw-muted">No script on file for this plan.</p>'
+    );
+  }
+  if (s === 3) return cwDiscTab(fam, tier);
+  if (s === 4) {
+    return pick(function (t) {
+      return /Closing|Verification/.test(t);
+    });
+  }
+  return pick(function (t) {
+    return /Post Close/.test(t);
+  });
+}
+
+function cwCallTab(fam, tier) {
+  var c = cwDiscCounts();
+  var ready = c.total > 0 && c.yes === c.total;
+  var steps = CW_STEPS.map(function (label, i) {
+    var cls = 'cw-step';
+    if (i === cwState.step) cls += ' is-on';
+    else if (cwState.done[i]) cls += ' is-done';
+    if (i >= 4 && !ready) cls += ' is-lock';
+    return (
+      '<button type="button" class="' +
+      cls +
+      '" data-cw-step="' +
+      i +
+      '"><i>' +
+      (cwState.done[i] && i !== cwState.step ? '✓' : String(i + 1)) +
+      '</i>' +
+      label +
+      '</button>'
+    );
+  }).join('');
+  var lock =
+    cwState.step === 3 && !ready
+      ? '<div class="cw-lock">Enroll and payment unlock when every disclosure has a Yes.</div>'
+      : '';
+  var doneSteps = CW_STEPS.filter(function (x, i) {
+    return cwState.done[i];
+  });
+  var note =
+    'Plan quoted: ' +
+    fam.name +
+    (fam.tiers.length > 1 ? ' ' + tier.tier : '') +
+    ' (' +
+    fam.platform +
+    '). Steps done: ' +
+    (doneSteps.length ? doneSteps.join(', ') : 'none') +
+    '. Disclosures confirmed: ' +
+    c.yes +
+    ' of ' +
+    c.total +
+    '.';
+  var pct = c.total ? Math.round((c.yes / c.total) * 100) : 0;
+  var rail =
+    '<aside class="cw-rail">' +
+    '<section class="cw-card"><span class="cw-label">Disclosures before payment</span>' +
+    '<div class="cw-count"><b>' +
+    c.yes +
+    '</b><span>of ' +
+    c.total +
+    ' confirmed</span><em class="' +
+    (ready ? 'is-ok' : 'is-wait') +
+    '">' +
+    (ready ? 'Ready for payment' : 'Payment locked') +
+    '</em></div><div class="cw-meter"><i style="width:' +
+    pct +
+    '%" class="' +
+    (ready ? 'is-ok' : '') +
+    '"></i></div></section>' +
+    '<section class="cw-card"><span class="cw-label">Plan facts</span>' +
+    fam.facts
+      .map(function (f) {
+        return (
+          '<div class="cw-rfact"><span>' +
+          cwEsc(f[0]) +
+          '</span><b>' +
+          cwEsc(f[1]) +
+          '</b></div>'
+        );
+      })
+      .join('') +
+    '</section>' +
+    '<section class="cw-card"><span class="cw-label">Rx check</span><input id="cw-meds" class="cw-rmeds" placeholder="Type meds, separated by commas" value="' +
+    cwEsc(cwState.meds) +
+    '"><div id="cw-meds-out">' +
+    (cwState.meds ? cwMedsHtml() : '') +
+    '</div></section>' +
+    '<section class="cw-card cw-never"><span class="cw-label">Never say</span><ul>' +
+    CW_NEVER_SAY.map(function (x) {
+      return '<li>' + cwEsc(x) + '</li>';
+    }).join('') +
+    '</ul></section></aside>';
+  return (
+    '<div class="cw-call"><div class="cw-callmain"><div class="cw-steps">' +
+    steps +
+    '</div><section class="cw-card cw-script"><span class="cw-label">Step ' +
+    (cwState.step + 1) +
+    ' - ' +
+    CW_STEPS[cwState.step] +
+    ' - read word for word</span>' +
+    cwStepBody(fam, tier) +
+    '</section>' +
+    lock +
+    '<div class="cw-actions"><button type="button" class="cw-done" data-cw-done="1">' +
+    (cwState.done[cwState.step] ? 'Done ✓ Next step' : 'Mark done') +
+    '</button><button type="button" class="cw-notebtn" data-cw-note="1">Call note</button></div>' +
+    (cwState.note ? '<div class="cw-note">' + cwEsc(note) + '</div>' : '') +
+    '</div>' +
+    rail +
+    '</div>'
   );
 }
 
@@ -1595,16 +1817,19 @@ function renderCallWorkspace(keepFocus) {
     : 0;
   var name = fam.name + (fam.tiers.length > 1 ? ' ' + tier.tier : '');
   var tabs = [
+    ['call', 'Call steps', ''],
     ['plan', 'Plan & meds', ''],
     ['q', 'App questions', aqPlan ? String(aqPlan.qs.length) : 'none'],
     ['d', 'Before enrollment', confirmCount ? String(confirmCount) : 'none']
   ];
   var body =
-    cwState.tab === 'q'
-      ? cwQuestionsTab(fam)
-      : cwState.tab === 'd'
-        ? cwDiscTab(fam, tier)
-        : cwPlanTab(tier);
+    cwState.tab === 'call'
+      ? cwCallTab(fam, tier)
+      : cwState.tab === 'q'
+        ? cwQuestionsTab(fam)
+        : cwState.tab === 'd'
+          ? cwDiscTab(fam, tier)
+          : cwPlanTab(tier);
   root.innerHTML =
     '<div class="cw-page"><header class="cw-hero cw-hero-' +
     (fam.platform === 'FirstEnroll' ? 'fe' : 'neo') +
@@ -1651,7 +1876,7 @@ function renderCallWorkspace(keepFocus) {
 function cwOnClick(e) {
   var t = e.target.closest
     ? e.target.closest(
-        '[data-cw-pick],[data-cw-browse],[data-cw-type],[data-cw-fam],[data-cw-tab],[data-cw-conf],[data-cw-start],[data-cw-change]'
+        '[data-cw-pick],[data-cw-browse],[data-cw-type],[data-cw-fam],[data-cw-tab],[data-cw-conf],[data-cw-start],[data-cw-change],[data-cw-step],[data-cw-done],[data-cw-note]'
       )
     : null;
   if (!t) return;
@@ -1698,6 +1923,26 @@ function cwOnClick(e) {
   if (v) {
     cwState.fam = v;
     cwState.tier = cwFam(v).tiers[0].tier;
+    renderCallWorkspace();
+    return;
+  }
+  v = t.getAttribute('data-cw-step');
+  if (v) {
+    var sn = parseInt(v, 10);
+    if (sn >= 4 && !cwDiscReady()) return;
+    cwState.step = sn;
+    renderCallWorkspace();
+    return;
+  }
+  if (t.getAttribute('data-cw-done')) {
+    if (cwState.step === 3 && !cwDiscReady()) return;
+    cwState.done[cwState.step] = true;
+    if (cwState.step < 5) cwState.step++;
+    renderCallWorkspace();
+    return;
+  }
+  if (t.getAttribute('data-cw-note')) {
+    cwState.note = !cwState.note;
     renderCallWorkspace();
     return;
   }
