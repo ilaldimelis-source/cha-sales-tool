@@ -1096,13 +1096,20 @@ function _dashLookupSelectedPlan() {
 // Fallbacks for plan cards that have no underwriter or association in
 // POLICY_DOCS. Underwriter comes from CHA_PLAN_REGISTRY; association
 // fills are confirmed by Mey (Oct 17: SmartChoice is offered through
-// Population Science Management).
+// Population Science Management; Oct 18: GoodHealth plan and claims
+// administrator is Merchants Benefit Administration).
 var _DASH_LOOKUP_REG_IDS = {
   goodhealth13: 'ghdp1',
   goodhealth45: 'ghdp1',
   tdk13: 'tdk1',
   tdk45: 'tdk1',
   smartchoice: 'smartchoice2500'
+};
+var _DASH_LOOKUP_CARRIER_FILL = {
+  goodhealth13:
+    'Merchants Benefit Administration (MBA), plan and claims administrator',
+  goodhealth45:
+    'Merchants Benefit Administration (MBA), plan and claims administrator'
 };
 var _DASH_LOOKUP_ASSOC_FILL = {
   smartchoice: 'Population Science Management'
@@ -1114,6 +1121,9 @@ function _dashLookupFacts(plan) {
   out.network = plan.network || '';
   out.carrier = plan.carrier || '';
   out.assoc = plan.assoc || '';
+  if (!out.carrier && _DASH_LOOKUP_CARRIER_FILL[plan.id]) {
+    out.carrier = _DASH_LOOKUP_CARRIER_FILL[plan.id];
+  }
   if (!out.carrier && typeof CHA_PLAN_REGISTRY !== 'undefined') {
     var rid = _DASH_LOOKUP_REG_IDS[plan.id] || plan.id;
     for (var i = 0; i < CHA_PLAN_REGISTRY.length; i++) {
