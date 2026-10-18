@@ -1103,7 +1103,7 @@ function _dashLookupSelectedPlan() {
 // Population Science Management; Oct 18: GoodHealth plan and claims
 // administrator is Merchants Benefit Administrators, and members join
 // GHD, LP per the GHDP enrollment terms; Harmony Care 100+ certificate
-// names NCE as the policyholder).
+// names NCE as the policyholder; Oct 18: Advanced Wellness PLUS is NCE).
 var _DASH_LOOKUP_REG_IDS = {
   harmonycareseries: 'harmonycarebase',
   allstatestm: 'allstatestmenhanced',
@@ -1122,6 +1122,7 @@ var _DASH_LOOKUP_CARRIER_FILL = {
 var _DASH_LOOKUP_ASSOC_FILL = {
   smartchoice: 'Population Science Management',
   harmonycareseries: 'National Congress of Employers (NCE)',
+  advancedwellnessplus: 'National Congress of Employers (NCE)',
   goodhealth13: 'GHD, LP (Good Health Distribution Limited Partnership)',
   goodhealth45: 'GHD, LP (Good Health Distribution Limited Partnership)'
 };
