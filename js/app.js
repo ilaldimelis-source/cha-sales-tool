@@ -1021,6 +1021,10 @@ function _dashLookupAllPlans() {
     ) {
       return false;
     }
+    // Discontinued plans (Oct 2026 lineup) stay out of Home lookup too.
+    if (typeof PD_HIDDEN_IDS !== 'undefined' && PD_HIDDEN_IDS[p.id]) {
+      return false;
+    }
     return true;
   });
   out.sort(function (a, b) {
@@ -1098,8 +1102,11 @@ function _dashLookupSelectedPlan() {
 // fills are confirmed by Mey (Oct 17: SmartChoice is offered through
 // Population Science Management; Oct 18: GoodHealth plan and claims
 // administrator is Merchants Benefit Administrators, and members join
-// GHD, LP per the GHDP enrollment terms).
+// GHD, LP per the GHDP enrollment terms; Harmony Care 100+ certificate
+// names NCE as the policyholder).
 var _DASH_LOOKUP_REG_IDS = {
+  harmonycareseries: 'harmonycarebase',
+  allstatestm: 'allstatestmenhanced',
   goodhealth13: 'ghdp1',
   goodhealth45: 'ghdp1',
   tdk13: 'tdk1',
@@ -1114,6 +1121,7 @@ var _DASH_LOOKUP_CARRIER_FILL = {
 };
 var _DASH_LOOKUP_ASSOC_FILL = {
   smartchoice: 'Population Science Management',
+  harmonycareseries: 'National Congress of Employers (NCE)',
   goodhealth13: 'GHD, LP (Good Health Distribution Limited Partnership)',
   goodhealth45: 'GHD, LP (Good Health Distribution Limited Partnership)'
 };
@@ -1127,11 +1135,15 @@ function _dashLookupFacts(plan) {
   if (!out.carrier && _DASH_LOOKUP_CARRIER_FILL[plan.id]) {
     out.carrier = _DASH_LOOKUP_CARRIER_FILL[plan.id];
   }
-  if (!out.carrier && typeof CHA_PLAN_REGISTRY !== 'undefined') {
+  if (
+    (!out.carrier || !out.network) &&
+    typeof CHA_PLAN_REGISTRY !== 'undefined'
+  ) {
     var rid = _DASH_LOOKUP_REG_IDS[plan.id] || plan.id;
     for (var i = 0; i < CHA_PLAN_REGISTRY.length; i++) {
       if (CHA_PLAN_REGISTRY[i] && CHA_PLAN_REGISTRY[i].id === rid) {
-        out.carrier = CHA_PLAN_REGISTRY[i].carrier || '';
+        if (!out.carrier) out.carrier = CHA_PLAN_REGISTRY[i].carrier || '';
+        if (!out.network) out.network = CHA_PLAN_REGISTRY[i].network || '';
         break;
       }
     }
@@ -1183,7 +1195,7 @@ function _dashLookupSyncSelectAndGrid() {
     _dashLookupState.planId = '';
   }
   var selected = _dashLookupSelectedPlan();
-  var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
+  var providerUrl = _dashLookupProviderUrl(_dashLookupFacts(selected).network);
   if (sel) {
     if (!plans.length) {
       sel.innerHTML = '<option value="">No plans found</option>';
@@ -1216,7 +1228,7 @@ function _dashLookupSyncSelectAndGrid() {
 function renderDashboardLookupCard() {
   var plans = _dashLookupFilteredPlans();
   var selected = _dashLookupSelectedPlan();
-  var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
+  var providerUrl = _dashLookupProviderUrl(_dashLookupFacts(selected).network);
   var html = '<div class="home-card home-lookup">';
   html +=
     '<div class="home-card-head"><span class="home-eb">Plan lookup</span><span class="home-card-hint">Network, underwriter, provider search</span></div>';
@@ -1299,7 +1311,7 @@ function dashLookupSelectPlan(planId) {
 
 function dashLookupOpenProvider() {
   var selected = _dashLookupSelectedPlan();
-  var providerUrl = _dashLookupProviderUrl(selected ? selected.network : '');
+  var providerUrl = _dashLookupProviderUrl(_dashLookupFacts(selected).network);
   if (!providerUrl) return;
   window.open(providerUrl, '_blank', 'noopener');
 }
@@ -1307,7 +1319,7 @@ function dashLookupOpenProvider() {
 function dashLookupCopy() {
   var selected = _dashLookupSelectedPlan();
   if (!selected || typeof safeCopy !== 'function') return;
-  var providerUrl = _dashLookupProviderUrl(selected.network);
+  var providerUrl = _dashLookupProviderUrl(_dashLookupFacts(selected).network);
   var facts = _dashLookupFacts(selected);
   var text = [
     'Plan: ' + selected.name,
