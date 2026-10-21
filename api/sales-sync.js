@@ -31,7 +31,8 @@ var ALLOWED_KEYS = [
   'cha_paychecks_v1',
   'cha_paycheck_derive_v1',
   'cha_reconcile_history',
-  'cha_recon_ignored_v1'
+  'cha_recon_ignored_v1',
+  'cha_sync_deleted'
 ];
 
 var testHooks = { authenticate: null, storage: null };
@@ -157,20 +158,57 @@ function storageHeaders(cfg, extra) {
   return h;
 }
 
-function objectUrl(cfg, userId) {
+// path: 'user_x.json' or 'backups/user_x/2026-10-21.json'
+function objectUrl(cfg, path) {
   return (
     cfg.url +
     '/storage/v1/object/' +
     BUCKET +
     '/' +
-    encodeURIComponent(userId) +
+    String(path).split('/').map(encodeURIComponent).join('/')
+  );
+}
+
+function docPath(userId) {
+  return userId + '.json';
+}
+
+function backupPath(userId, ms) {
+  return (
+    'backups/' +
+    userId +
+    '/' +
+    new Date(ms).toISOString().slice(0, 10) +
     '.json'
   );
 }
 
+function salesCount(doc) {
+  try {
+    var arr = JSON.parse((doc && doc.data && doc.data.cha_sales) || '[]');
+    return Array.isArray(arr) ? arr.length : 0;
+  } catch (_e) {
+    return 0;
+  }
+}
+
+// Keep a restore point: the first save of each day copies the previous
+// version aside, and so does any save that would drop a lot of deals.
+function needsBackup(current, nextDoc, nowMs) {
+  if (!current || !current.data) return false;
+  var curAt = Number(current.updatedAt) || 0;
+  var sameDay =
+    new Date(curAt).toISOString().slice(0, 10) ===
+    new Date(nowMs).toISOString().slice(0, 10);
+  var before = salesCount(current);
+  var after = salesCount(nextDoc);
+  var bigDrop = before >= 10 && after < before * 0.8;
+  return !sameDay || bigDrop;
+}
+
 // Resolves to the stored doc, or null when the user has no file yet.
-function readDoc(cfg, userId) {
-  return fetch(objectUrl(cfg, userId), {
+function readDoc(cfg, path) {
+  return fetch(objectUrl(cfg, path), {
     method: 'GET',
     headers: storageHeaders(cfg)
   }).then(function (r) {
@@ -197,8 +235,8 @@ function createBucket(cfg) {
   });
 }
 
-function writeDoc(cfg, userId, doc, retried) {
-  return fetch(objectUrl(cfg, userId), {
+function writeDoc(cfg, path, doc, retried) {
+  return fetch(objectUrl(cfg, path), {
     method: 'POST',
     headers: storageHeaders(cfg, {
       'Content-Type': 'application/json',
@@ -211,7 +249,7 @@ function writeDoc(cfg, userId, doc, retried) {
     return r.text().then(function (t) {
       if (!retried && /bucket/i.test(t) && /not found/i.test(t)) {
         return createBucket(cfg).then(function () {
-          return writeDoc(cfg, userId, doc, true);
+          return writeDoc(cfg, path, doc, true);
         });
       }
       throw new Error('storage_write_' + r.status);
@@ -276,7 +314,7 @@ function handler(req, res) {
       }
 
       if (method === 'GET') {
-        return storage.read(cfg, userId).then(function (doc) {
+        return storage.read(cfg, docPath(userId)).then(function (doc) {
           if (!doc || !doc.data) {
             return sendJson(res, 200, { exists: false, updatedAt: 0 });
           }
@@ -293,7 +331,7 @@ function handler(req, res) {
       if (!data) return sendJson(res, 400, { error: 'Invalid body' });
       var base = Number(body.baseUpdatedAt) || 0;
 
-      return storage.read(cfg, userId).then(function (current) {
+      return storage.read(cfg, docPath(userId)).then(function (current) {
         var curAt = (current && Number(current.updatedAt)) || 0;
         // Another device saved since this one last synced: hand back
         // the newer copy so the browser can merge, never overwrite it.
@@ -310,9 +348,24 @@ function handler(req, res) {
         if (JSON.stringify(doc).length > MAX_BYTES) {
           return sendJson(res, 413, { error: 'Too large' });
         }
-        return storage.write(cfg, userId, doc).then(function () {
-          return sendJson(res, 200, { updatedAt: updatedAt });
-        });
+        var backup = needsBackup(current, doc, Date.now())
+          ? storage.write(
+              cfg,
+              backupPath(userId, Number(current.updatedAt) || Date.now()),
+              current
+            )
+          : Promise.resolve(true);
+        return backup
+          .catch(function () {
+            // Never lose a save because the restore point failed.
+            return true;
+          })
+          .then(function () {
+            return storage.write(cfg, docPath(userId), doc);
+          })
+          .then(function () {
+            return sendJson(res, 200, { updatedAt: updatedAt });
+          });
       });
     })
     .catch(function (err) {
@@ -325,4 +378,5 @@ function handler(req, res) {
 
 handler.config = { api: { bodyParser: { sizeLimit: '4mb' } } };
 handler._testHooks = testHooks;
+handler._needsBackup = needsBackup;
 module.exports = handler;

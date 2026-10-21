@@ -34,7 +34,7 @@ Live URL: https://cha-sales-tool.vercel.app/
 - Sales Tracker page has a page-level KPI strip above the internal tab bar.
 - Internal tabs: `This Week`, `All Sales`, `Reconcile`, `Paychecks`, `Chargebacks`, `History`.
 - Add Sale uses a fixed FAB + slide-over panel mounted as a body-level overlay root.
-- Any-device sync: `api/sales-sync.js` keeps one private JSON copy per Clerk user (Supabase Storage bucket `cha-sales-sync`). `_stSet` marks synced keys dirty and pushes a debounced snapshot; `_stRender` pulls at most once a minute and merges sales/post-dates by id when both sides changed. localStorage stays the working copy.
+- Any-device sync: `api/sales-sync.js` keeps one private JSON copy per Clerk user (Supabase Storage bucket `cha-sales-sync`). `_stSet` marks synced keys dirty and pushes a debounced snapshot; `_stRender` pulls at most once a minute and merges sales/post-dates by id when both sides changed; deleted ids are kept 180 days in `cha_sync_deleted` so merges never bring them back. The server writes a restore point to `backups/<userId>/<date>.json` on the first save each day and before any save that drops 20%+ of deals. localStorage stays the working copy.
 - Dark mode has been permanently removed from this app and should not be reintroduced.
 - Service worker cache: read `CACHE_NAME` from `sw2.js` and bump by exactly +1. Never assume the version.
 

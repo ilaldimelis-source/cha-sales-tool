@@ -1899,6 +1899,7 @@ function _stGet(key) {
 }
 
 function _stSet(key, value) {
+  _stSyncRecordDeletes(key, value);
   try {
     if (typeof safeSetItem === 'function') {
       safeSetItem(key, value);
@@ -1927,8 +1928,13 @@ var _ST_SYNC_BASES = [
   'cha_paychecks_v1',
   'cha_paycheck_derive_v1',
   'cha_reconcile_history',
-  'cha_recon_ignored_v1'
+  'cha_recon_ignored_v1',
+  'cha_sync_deleted'
 ];
+// Ids deleted on any device are kept here (synced) for 180 days so a
+// merge with an older copy never brings a deleted deal back.
+var _ST_SYNC_TOMBSTONE_BASES = ['cha_sales', 'cha_postdates'];
+var _ST_SYNC_TOMBSTONE_DAYS = 180;
 var _stSyncApplying = false;
 var _stSyncPushTimer = null;
 var _stSyncBusy = false;
@@ -1966,6 +1972,89 @@ function _stSyncBaseOfKey(key) {
   if (key.slice(-suffix.length) !== suffix) return '';
   var base = key.slice(0, -suffix.length);
   return _ST_SYNC_BASES.indexOf(base) === -1 ? '' : base;
+}
+
+function _stSyncIdsOf(raw) {
+  var ids = {};
+  var arr;
+  try {
+    arr = JSON.parse(raw || '[]');
+  } catch (_e) {
+    return ids;
+  }
+  if (!Array.isArray(arr)) return ids;
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] && arr[i].id != null) ids[String(arr[i].id)] = true;
+  }
+  return ids;
+}
+
+function _stSyncLoadDeleted(raw) {
+  var d;
+  try {
+    d =
+      raw === undefined
+        ? JSON.parse(_stGet(_stKey('cha_sync_deleted')) || '{}')
+        : JSON.parse(raw || '{}');
+  } catch (_e) {
+    d = {};
+  }
+  if (!d || typeof d !== 'object') d = {};
+  for (var i = 0; i < _ST_SYNC_TOMBSTONE_BASES.length; i++) {
+    var b = _ST_SYNC_TOMBSTONE_BASES[i];
+    if (!d[b] || typeof d[b] !== 'object') d[b] = {};
+  }
+  return d;
+}
+
+function _stSyncPruneDeleted(d) {
+  var cutoff = Date.now() - _ST_SYNC_TOMBSTONE_DAYS * 86400000;
+  for (var i = 0; i < _ST_SYNC_TOMBSTONE_BASES.length; i++) {
+    var m = d[_ST_SYNC_TOMBSTONE_BASES[i]];
+    var id;
+    for (id in m) {
+      if (Object.prototype.hasOwnProperty.call(m, id) && !(m[id] >= cutoff)) {
+        delete m[id];
+      }
+    }
+  }
+  return d;
+}
+
+// Called by _stSet BEFORE a write: any id that is in the old list but
+// not in the new one was deleted on this device -> remember it.
+function _stSyncRecordDeletes(key, value) {
+  if (_stSyncApplying) return;
+  var base = _stSyncBaseOfKey(key);
+  if (_ST_SYNC_TOMBSTONE_BASES.indexOf(base) === -1) return;
+  var before = _stSyncIdsOf(_stGet(key));
+  var after = _stSyncIdsOf(value);
+  var removed = [];
+  var id;
+  for (id in before) {
+    if (Object.prototype.hasOwnProperty.call(before, id) && !after[id]) {
+      removed.push(id);
+    }
+  }
+  if (!removed.length) return;
+  var d = _stSyncLoadDeleted();
+  var now = Date.now();
+  for (var i = 0; i < removed.length; i++) d[base][removed[i]] = now;
+  _stSet(_stKey('cha_sync_deleted'), JSON.stringify(_stSyncPruneDeleted(d)));
+}
+
+function _stSyncDropDeleted(raw, deletedMap) {
+  var arr;
+  try {
+    arr = JSON.parse(raw || '[]');
+  } catch (_e) {
+    return raw;
+  }
+  if (!Array.isArray(arr)) return raw;
+  var out = arr.filter(function (x) {
+    return !(x && x.id != null && deletedMap[String(x.id)]);
+  });
+  return out.length === arr.length ? raw : JSON.stringify(out);
 }
 
 function _stSyncNoteWrite(key) {
@@ -2107,6 +2196,8 @@ function _stSyncMerge(serverData, localData) {
       if (typeof s === 'string') out[k] = s;
     } else if (_stSyncIsEmptyRaw(s)) {
       out[k] = l;
+    } else if (k === 'cha_sync_deleted') {
+      out[k] = _stSyncMergeDeleted(s, l);
     } else if (k === 'cha_sales' || k === 'cha_postdates') {
       out[k] = _stSyncUnionById(s, l, 'id');
     } else if (k === 'cha_paychecks_v1') {
@@ -2115,7 +2206,29 @@ function _stSyncMerge(serverData, localData) {
       out[k] = l;
     }
   }
+  var deleted = _stSyncLoadDeleted(out.cha_sync_deleted || '{}');
+  for (var j = 0; j < _ST_SYNC_TOMBSTONE_BASES.length; j++) {
+    var tb = _ST_SYNC_TOMBSTONE_BASES[j];
+    if (typeof out[tb] === 'string') {
+      out[tb] = _stSyncDropDeleted(out[tb], deleted[tb]);
+    }
+  }
   return out;
+}
+
+function _stSyncMergeDeleted(serverRaw, localRaw) {
+  var a = _stSyncLoadDeleted(serverRaw);
+  var b = _stSyncLoadDeleted(localRaw);
+  for (var i = 0; i < _ST_SYNC_TOMBSTONE_BASES.length; i++) {
+    var base = _ST_SYNC_TOMBSTONE_BASES[i];
+    var id;
+    for (id in b[base]) {
+      if (Object.prototype.hasOwnProperty.call(b[base], id)) {
+        a[base][id] = Math.max(a[base][id] || 0, b[base][id] || 0);
+      }
+    }
+  }
+  return JSON.stringify(_stSyncPruneDeleted(a));
 }
 
 function _stSyncApply(data) {
