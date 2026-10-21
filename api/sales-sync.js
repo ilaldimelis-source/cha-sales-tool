@@ -213,7 +213,13 @@ function readDoc(cfg, path) {
     headers: storageHeaders(cfg)
   }).then(function (r) {
     if (r.status === 400 || r.status === 404) return null;
-    if (!r.ok) throw new Error('storage_read_' + r.status);
+    if (!r.ok) {
+      return r.text().then(function (t) {
+        throw new Error(
+          'storage_read_' + r.status + ' ' + String(t || '').slice(0, 40)
+        );
+      });
+    }
     return r.text().then(function (t) {
       try {
         return JSON.parse(t);
@@ -252,7 +258,9 @@ function writeDoc(cfg, path, doc, retried) {
           return writeDoc(cfg, path, doc, true);
         });
       }
-      throw new Error('storage_write_' + r.status);
+      throw new Error(
+        'storage_write_' + r.status + ' ' + String(t || '').slice(0, 40)
+      );
     });
   });
 }
@@ -372,7 +380,8 @@ function handler(req, res) {
       try {
         console.error('[sales-sync]', (err && err.message) || err);
       } catch (_e) {}
-      return sendJson(res, 502, { error: 'Storage error' });
+      var detail = String((err && err.message) || '').slice(0, 60);
+      return sendJson(res, 502, { error: 'Storage error', detail: detail });
     });
 }
 
