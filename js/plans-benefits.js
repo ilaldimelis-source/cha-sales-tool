@@ -2272,8 +2272,7 @@ var CHA_QUICK_REF = [
     network: 'PHCS Practitioner with Ancillary (MultiPlan)',
     assoc: 'NCE Association (National Congress of Employers)',
     uw: 'American Financial Security Life Ins. Co. / Standard Life & Casualty Ins. Co. (by state)',
-    claims:
-      'Not listed on NEO info page',
+    claims: 'Not listed on NEO info page',
     billing: 'Neo Health Solutions',
     vault: 'smarthealth',
     script: 'Smart Health STM Traditional'
