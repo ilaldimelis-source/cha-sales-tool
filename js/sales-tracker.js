@@ -1931,10 +1931,10 @@ var _ST_SYNC_BASES = [
   'cha_recon_ignored_v1',
   'cha_sync_deleted'
 ];
-// Ids deleted on any device are kept here (synced) for 180 days so a
+// Ids deleted on any device are kept here (synced) for 30 days so a
 // merge with an older copy never brings a deleted deal back.
 var _ST_SYNC_TOMBSTONE_BASES = ['cha_sales', 'cha_postdates'];
-var _ST_SYNC_TOMBSTONE_DAYS = 180;
+var _ST_SYNC_TOMBSTONE_DAYS = 30;
 var _stSyncApplying = false;
 var _stSyncPushTimer = null;
 var _stSyncBusy = false;
