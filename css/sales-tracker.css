@@ -7146,3 +7146,311 @@ body.st-pb-modal-open {
 .st-sync-status.st-sync-offline {
   color: var(--cha-warning-text);
 }
+
+/* ── This Week redesign (Oct 2026): hero + weekly bonus ───────── */
+#page-salestracker .st-wk-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 4px 0 14px;
+  padding: 22px 26px;
+  border-radius: 24px;
+  color: #fff;
+  background: radial-gradient(
+    circle at 18% 20%,
+    #60a5fa 0%,
+    var(--cha-accent) 35%,
+    var(--cha-accent-dark) 75%,
+    #172554 100%
+  );
+  box-shadow: 0 10px 26px rgb(30 64 175 / 28%);
+}
+
+#page-salestracker .st-wk-hero-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+#page-salestracker .st-wk-hero-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#page-salestracker .st-wk-hero-range {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(255 255 255 / 88%);
+}
+
+#page-salestracker .st-wk-hero-arrow {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgb(255 255 255 / 45%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 14%);
+  color: #fff;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#page-salestracker .st-wk-hero-arrow:hover {
+  background: rgb(255 255 255 / 26%);
+}
+
+#page-salestracker .st-wk-hero-label {
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: rgb(255 255 255 / 85%);
+}
+
+#page-salestracker .st-wk-hero-amount {
+  font-size: 46px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+#page-salestracker .st-wk-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+#page-salestracker .st-wk-day {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  min-width: 92px;
+  padding: 8px 12px;
+  border: 1px solid rgb(255 255 255 / 40%);
+  border-radius: 14px;
+  background: radial-gradient(
+    circle at 25% 15%,
+    rgb(255 255 255 / 42%) 0%,
+    rgb(255 255 255 / 16%) 55%,
+    rgb(255 255 255 / 6%) 100%
+  );
+  box-shadow: 0 4px 12px rgb(15 23 42 / 18%);
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.15s,
+    box-shadow 0.15s;
+}
+
+#page-salestracker .st-wk-day:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgb(15 23 42 / 25%);
+}
+
+#page-salestracker .st-wk-day:focus-visible,
+#page-salestracker .st-wk-hero-arrow:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+#page-salestracker .st-wk-day-name {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: rgb(255 255 255 / 88%);
+}
+
+#page-salestracker .st-wk-day-amt {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+#page-salestracker .st-wk-day-sub {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(255 255 255 / 90%);
+}
+
+#page-salestracker .st-wk-hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+#page-salestracker .st-wk-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 14%);
+}
+
+#page-salestracker .st-wk-stat-label {
+  font-size: 13px;
+  color: rgb(255 255 255 / 85%);
+}
+
+#page-salestracker .st-wk-stat-val {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+#page-salestracker .st-wk-bonus {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0 0 16px;
+  padding: 18px 22px;
+  border: 1px solid #bfdbfe;
+  border-radius: 22px;
+  background: radial-gradient(
+    circle at 85% 15%,
+    #c7d2fe 0%,
+    #dbeafe 40%,
+    #eff6ff 75%,
+    var(--cha-bg-card) 100%
+  );
+  box-shadow: 0 6px 18px rgb(59 130 246 / 14%);
+  color: var(--cha-text-primary);
+}
+
+#page-salestracker .st-wk-bonus-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+#page-salestracker .st-wk-bonus-title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+#page-salestracker .st-wk-bonus-sum {
+  font-size: 14px;
+  color: var(--cha-text-secondary);
+}
+
+#page-salestracker .st-wk-bonus-good {
+  color: var(--cha-success-text);
+}
+
+#page-salestracker .st-wk-bonus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+#page-salestracker .st-wk-bonus-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+#page-salestracker .st-wk-bonus-row-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+#page-salestracker .st-wk-bonus-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#page-salestracker .st-wk-bonus-count {
+  font-size: 14px;
+  color: var(--cha-text-secondary);
+}
+
+#page-salestracker .st-wk-bonus-count b {
+  font-size: 19px;
+  color: var(--cha-text-primary);
+}
+
+#page-salestracker .st-wk-bonus-track {
+  height: 12px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 90%);
+  box-shadow: inset 0 0 0 1px #bfdbfe;
+}
+
+#page-salestracker .st-wk-bonus-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #60a5fa, var(--cha-accent-dark));
+}
+
+/* Pay Sheet Check: switch between check / past pay sheets / history */
+#page-salestracker .st-pay-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 14px;
+}
+
+#page-salestracker .st-pay-link {
+  padding: 8px 14px;
+  border: 1px solid var(--cha-border-default);
+  border-radius: 999px;
+  background: var(--cha-bg-card);
+  color: var(--cha-text-primary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#page-salestracker .st-pay-link.is-active {
+  border-color: #111827;
+  background: #111827;
+  color: #fff;
+}
+
+@media (width <= 600px) {
+  #page-salestracker .st-wk-hero {
+    padding: 18px;
+  }
+
+  #page-salestracker .st-wk-hero-amount {
+    font-size: 36px;
+  }
+
+  #page-salestracker .st-internal-subtabs {
+    flex-wrap: wrap;
+    overflow: visible;
+  }
+
+  #page-salestracker .st-internal-subtabs .page-subtabs-inner {
+    flex: 1 1 100%;
+    overflow-x: auto;
+  }
+
+  #page-salestracker .st-internal-subtabs .stab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  #page-salestracker .st-nav-week {
+    margin-left: 0;
+  }
+
+  #page-salestracker .st-nav-week.is-parked {
+    display: none;
+  }
+}

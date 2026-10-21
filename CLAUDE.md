@@ -31,8 +31,8 @@ Live URL: https://cha-sales-tool.vercel.app/
 
 ## Sales Tracker architecture (current)
 
-- Sales Tracker page has a page-level KPI strip above the internal tab bar.
-- Internal tabs: `This Week`, `All Sales`, `Reconcile`, `Paychecks`, `Chargebacks`, `History`.
+- Redesign (Oct 2026): four main tabs, `This Week`, `Pay Sheet Check` (tab id `reconcile`), `Chargebacks & Cancels` (`chargebacks`) and `All Deals` (`allsales`). `paychecks` and `history` are still valid tab ids, opened from the switch at the top of Pay Sheet Check (`_stBuildPayGroupLinksHtml`), and keep Pay Sheet Check highlighted.
+- This Week shows a gradient hero (`_stBuildWeekHeroHtml`: weekly premium, clickable day cards that open and scroll to that day, core deals, add-ons, commission, prev/next week arrows) and a weekly bonus tracker (`_stBuildWeekBonusHtml`, from `ST_BONUS_TIERS`) above the day-grouped list. Every day opens by default. Range pills are `This week` and `Custom` only. The old KPI strip, paycheck hero and floating paycheck bar are no longer rendered on This Week (functions kept).
 - Add Sale uses a fixed FAB + slide-over panel mounted as a body-level overlay root.
 - Any-device sync: `api/sales-sync.js` keeps one private JSON copy per Clerk user (Supabase Storage bucket `cha-sales-sync`). `_stSet` marks synced keys dirty and pushes a debounced snapshot; `_stRender` pulls at most once a minute and merges sales/post-dates by id when both sides changed; deleted ids are kept 30 days in `cha_sync_deleted` so merges never bring them back. The server writes a restore point to `backups/<userId>/<date>.json` on the first save each day and before any save that drops 20%+ of deals. localStorage stays the working copy.
 - Dark mode has been permanently removed from this app and should not be reintroduced.
