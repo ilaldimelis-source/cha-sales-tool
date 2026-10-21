@@ -1899,6 +1899,7 @@ function _stGet(key) {
 }
 
 function _stSet(key, value) {
+  _stSyncRecordDeletes(key, value);
   try {
     if (typeof safeSetItem === 'function') {
       safeSetItem(key, value);
@@ -1908,6 +1909,440 @@ function _stSet(key, value) {
   } catch (_e) {
     /* incognito / quota — silently ignore */
   }
+  _stSyncNoteWrite(key);
+}
+
+// ── ANY-DEVICE SYNC ─────────────────────────────────────────
+// Keeps a copy of the Sales Tracker on the server (/api/sales-sync)
+// so the same deals show on every device the agent signs in on.
+// localStorage stays the working copy: every save still lands
+// locally first, then a debounced background push sends a snapshot.
+// On open, the tracker pulls the server copy; if this device has
+// unsynced changes too, the two copies are merged (sales and
+// post-dates by id) instead of one overwriting the other.
+// Offline / not configured -> everything keeps working locally.
+var _ST_SYNC_BASES = [
+  'cha_sales',
+  'cha_postdates',
+  'cha_commission_rates',
+  'cha_paychecks_v1',
+  'cha_paycheck_derive_v1',
+  'cha_reconcile_history',
+  'cha_recon_ignored_v1',
+  'cha_sync_deleted'
+];
+// Ids deleted on any device are kept here (synced) for 30 days so a
+// merge with an older copy never brings a deleted deal back.
+var _ST_SYNC_TOMBSTONE_BASES = ['cha_sales', 'cha_postdates'];
+var _ST_SYNC_TOMBSTONE_DAYS = 30;
+var _stSyncApplying = false;
+var _stSyncPushTimer = null;
+var _stSyncBusy = false;
+var _stSyncLastPullMs = 0;
+var _stSyncState = 'idle'; // idle | saving | synced | offline | off
+
+function _stSyncUserId() {
+  var u = _stGetCurrentUser();
+  return u && u.id && u.id !== 'anonymous' ? u.id : '';
+}
+
+function _stSyncMetaKey() {
+  return _stKey('cha_sync_meta');
+}
+
+function _stSyncLoadMeta() {
+  try {
+    var m = JSON.parse(localStorage.getItem(_stSyncMetaKey()) || '{}');
+    return m && typeof m === 'object' ? m : {};
+  } catch (_e) {
+    return {};
+  }
+}
+
+function _stSyncSaveMeta(meta) {
+  try {
+    localStorage.setItem(_stSyncMetaKey(), JSON.stringify(meta || {}));
+  } catch (_e) {}
+}
+
+function _stSyncBaseOfKey(key) {
+  var uid = _stSyncUserId();
+  if (!uid || typeof key !== 'string') return '';
+  var suffix = '__' + uid;
+  if (key.slice(-suffix.length) !== suffix) return '';
+  var base = key.slice(0, -suffix.length);
+  return _ST_SYNC_BASES.indexOf(base) === -1 ? '' : base;
+}
+
+function _stSyncIdsOf(raw) {
+  var ids = {};
+  var arr;
+  try {
+    arr = JSON.parse(raw || '[]');
+  } catch (_e) {
+    return ids;
+  }
+  if (!Array.isArray(arr)) return ids;
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] && arr[i].id != null) ids[String(arr[i].id)] = true;
+  }
+  return ids;
+}
+
+function _stSyncLoadDeleted(raw) {
+  var d;
+  try {
+    d =
+      raw === undefined
+        ? JSON.parse(_stGet(_stKey('cha_sync_deleted')) || '{}')
+        : JSON.parse(raw || '{}');
+  } catch (_e) {
+    d = {};
+  }
+  if (!d || typeof d !== 'object') d = {};
+  for (var i = 0; i < _ST_SYNC_TOMBSTONE_BASES.length; i++) {
+    var b = _ST_SYNC_TOMBSTONE_BASES[i];
+    if (!d[b] || typeof d[b] !== 'object') d[b] = {};
+  }
+  return d;
+}
+
+function _stSyncPruneDeleted(d) {
+  var cutoff = Date.now() - _ST_SYNC_TOMBSTONE_DAYS * 86400000;
+  for (var i = 0; i < _ST_SYNC_TOMBSTONE_BASES.length; i++) {
+    var m = d[_ST_SYNC_TOMBSTONE_BASES[i]];
+    var id;
+    for (id in m) {
+      if (Object.prototype.hasOwnProperty.call(m, id) && !(m[id] >= cutoff)) {
+        delete m[id];
+      }
+    }
+  }
+  return d;
+}
+
+// Called by _stSet BEFORE a write: any id that is in the old list but
+// not in the new one was deleted on this device -> remember it.
+function _stSyncRecordDeletes(key, value) {
+  if (_stSyncApplying) return;
+  var base = _stSyncBaseOfKey(key);
+  if (_ST_SYNC_TOMBSTONE_BASES.indexOf(base) === -1) return;
+  var before = _stSyncIdsOf(_stGet(key));
+  var after = _stSyncIdsOf(value);
+  var removed = [];
+  var id;
+  for (id in before) {
+    if (Object.prototype.hasOwnProperty.call(before, id) && !after[id]) {
+      removed.push(id);
+    }
+  }
+  if (!removed.length) return;
+  var d = _stSyncLoadDeleted();
+  var now = Date.now();
+  for (var i = 0; i < removed.length; i++) d[base][removed[i]] = now;
+  _stSet(_stKey('cha_sync_deleted'), JSON.stringify(_stSyncPruneDeleted(d)));
+}
+
+function _stSyncDropDeleted(raw, deletedMap) {
+  var arr;
+  try {
+    arr = JSON.parse(raw || '[]');
+  } catch (_e) {
+    return raw;
+  }
+  if (!Array.isArray(arr)) return raw;
+  var out = arr.filter(function (x) {
+    return !(x && x.id != null && deletedMap[String(x.id)]);
+  });
+  return out.length === arr.length ? raw : JSON.stringify(out);
+}
+
+function _stSyncNoteWrite(key) {
+  if (_stSyncApplying) return;
+  if (!_stSyncBaseOfKey(key)) return;
+  var meta = _stSyncLoadMeta();
+  meta.dirty = true;
+  _stSyncSaveMeta(meta);
+  _stSyncSchedulePush(2000);
+}
+
+function _stSyncSchedulePush(delayMs) {
+  if (_stSyncPushTimer) clearTimeout(_stSyncPushTimer);
+  _stSyncPushTimer = setTimeout(function () {
+    _stSyncPushTimer = null;
+    _stSyncPush();
+  }, delayMs);
+}
+
+function _stSyncSnapshot() {
+  var data = {};
+  for (var i = 0; i < _ST_SYNC_BASES.length; i++) {
+    var v = _stGet(_stKey(_ST_SYNC_BASES[i]));
+    if (typeof v === 'string') data[_ST_SYNC_BASES[i]] = v;
+  }
+  return data;
+}
+
+function _stSyncHasLocalData() {
+  var raw = _stGet(_stKey('cha_sales'));
+  if (!raw) return false;
+  try {
+    var arr = JSON.parse(raw);
+    return Array.isArray(arr) && arr.length > 0;
+  } catch (_e) {
+    return false;
+  }
+}
+
+function _stSyncRequest(method, body, cb) {
+  if (typeof XMLHttpRequest === 'undefined') return cb(0, null);
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, '/api/sales-sync', true);
+    xhr.withCredentials = true;
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    var tok = _stClerkBearerForExtract();
+    if (tok) xhr.setRequestHeader('Authorization', 'Bearer ' + tok);
+    xhr.timeout = 20000;
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
+      var parsed = null;
+      try {
+        parsed = JSON.parse(xhr.responseText);
+      } catch (_e) {}
+      cb(xhr.status, parsed);
+    };
+    xhr.send(body ? JSON.stringify(body) : null);
+  } catch (_e2) {
+    cb(0, null);
+  }
+}
+
+function _stSyncSetState(state) {
+  if (_stSyncState === state) return;
+  _stSyncState = state;
+  var el = document.getElementById('stSyncStatus');
+  if (el) {
+    el.className = 'st-sync-status st-sync-' + state;
+    el.textContent = _stSyncStatusText();
+  }
+}
+
+function _stSyncStatusText() {
+  if (_stSyncState === 'saving') return 'Saving to your account...';
+  if (_stSyncState === 'synced') return 'Saved to your account';
+  if (_stSyncState === 'offline') {
+    return 'Saved on this device - will sync when back online';
+  }
+  return '';
+}
+
+function _stSyncStatusHtml() {
+  return (
+    '<span id="stSyncStatus" class="st-sync-status st-sync-' +
+    _stSyncState +
+    '" role="status" aria-live="polite">' +
+    _stSyncStatusText() +
+    '</span>'
+  );
+}
+
+function _stSyncFailed(status) {
+  // 503 = server sync not set up: stay quiet and keep working locally.
+  _stSyncSetState(status === 503 || status === 404 ? 'off' : 'offline');
+}
+
+// Union two JSON arrays by id. Local wins for the same id.
+function _stSyncUnionById(serverRaw, localRaw, idField) {
+  var a = [];
+  var b = [];
+  try {
+    a = JSON.parse(serverRaw || '[]');
+  } catch (_e) {}
+  try {
+    b = JSON.parse(localRaw || '[]');
+  } catch (_e2) {}
+  if (!Array.isArray(a)) a = [];
+  if (!Array.isArray(b)) return JSON.stringify(a);
+  var seen = {};
+  var out = [];
+  var i;
+  var id;
+  for (i = 0; i < b.length; i++) {
+    id = b[i] && b[i][idField];
+    if (id != null) seen[String(id)] = true;
+    out.push(b[i]);
+  }
+  for (i = 0; i < a.length; i++) {
+    id = a[i] && a[i][idField];
+    if (id != null && seen[String(id)]) continue;
+    out.push(a[i]);
+  }
+  return JSON.stringify(out);
+}
+
+function _stSyncIsEmptyRaw(raw) {
+  if (raw == null || raw === '') return true;
+  return raw === '[]' || raw === '{}' || raw === 'null';
+}
+
+function _stSyncMerge(serverData, localData) {
+  var out = {};
+  for (var i = 0; i < _ST_SYNC_BASES.length; i++) {
+    var k = _ST_SYNC_BASES[i];
+    var s = serverData[k];
+    var l = localData[k];
+    if (_stSyncIsEmptyRaw(l)) {
+      if (typeof s === 'string') out[k] = s;
+    } else if (_stSyncIsEmptyRaw(s)) {
+      out[k] = l;
+    } else if (k === 'cha_sync_deleted') {
+      out[k] = _stSyncMergeDeleted(s, l);
+    } else if (k === 'cha_sales' || k === 'cha_postdates') {
+      out[k] = _stSyncUnionById(s, l, 'id');
+    } else if (k === 'cha_paychecks_v1') {
+      out[k] = _stSyncUnionById(s, l, 'weekStart');
+    } else {
+      out[k] = l;
+    }
+  }
+  var deleted = _stSyncLoadDeleted(out.cha_sync_deleted || '{}');
+  for (var j = 0; j < _ST_SYNC_TOMBSTONE_BASES.length; j++) {
+    var tb = _ST_SYNC_TOMBSTONE_BASES[j];
+    if (typeof out[tb] === 'string') {
+      out[tb] = _stSyncDropDeleted(out[tb], deleted[tb]);
+    }
+  }
+  return out;
+}
+
+function _stSyncMergeDeleted(serverRaw, localRaw) {
+  var a = _stSyncLoadDeleted(serverRaw);
+  var b = _stSyncLoadDeleted(localRaw);
+  for (var i = 0; i < _ST_SYNC_TOMBSTONE_BASES.length; i++) {
+    var base = _ST_SYNC_TOMBSTONE_BASES[i];
+    var id;
+    for (id in b[base]) {
+      if (Object.prototype.hasOwnProperty.call(b[base], id)) {
+        a[base][id] = Math.max(a[base][id] || 0, b[base][id] || 0);
+      }
+    }
+  }
+  return JSON.stringify(_stSyncPruneDeleted(a));
+}
+
+function _stSyncApply(data) {
+  _stSyncApplying = true;
+  try {
+    for (var i = 0; i < _ST_SYNC_BASES.length; i++) {
+      var k = _ST_SYNC_BASES[i];
+      if (typeof data[k] === 'string') _stSet(_stKey(k), data[k]);
+    }
+  } finally {
+    _stSyncApplying = false;
+  }
+}
+
+function _stSyncRerender() {
+  try {
+    var page = document.getElementById('page-salestracker');
+    if (!page || page.offsetParent === null) return;
+    if (_stReceiptReview && _stReceiptReview.active) return;
+    if (_stAddSalePanelOpen) return;
+    _stRender();
+  } catch (_e) {}
+}
+
+function _stSyncPush() {
+  if (!_stSyncUserId()) return;
+  if (_stSyncBusy) {
+    _stSyncSchedulePush(1500);
+    return;
+  }
+  var meta = _stSyncLoadMeta();
+  _stSyncBusy = true;
+  _stSyncSetState('saving');
+  _stSyncRequest(
+    'PUT',
+    { baseUpdatedAt: meta.serverAt || 0, data: _stSyncSnapshot() },
+    function (status, body) {
+      _stSyncBusy = false;
+      if (status === 200 && body && body.updatedAt) {
+        var m = _stSyncLoadMeta();
+        m.serverAt = body.updatedAt;
+        m.dirty = false;
+        _stSyncSaveMeta(m);
+        _stSyncSetState('synced');
+        return;
+      }
+      if (status === 409 && body && body.data) {
+        // Another device saved first: merge, then push the merged copy.
+        _stSyncApply(_stSyncMerge(body.data, _stSyncSnapshot()));
+        var m2 = _stSyncLoadMeta();
+        m2.serverAt = body.updatedAt;
+        m2.dirty = true;
+        _stSyncSaveMeta(m2);
+        _stSyncRerender();
+        _stSyncSchedulePush(300);
+        return;
+      }
+      _stSyncFailed(status);
+    }
+  );
+}
+
+// Pull the server copy (at most once a minute unless forced).
+function _stSyncPull(force) {
+  if (!_stSyncUserId()) return;
+  var now = Date.now();
+  if (!force && now - _stSyncLastPullMs < 60000) return;
+  if (_stSyncBusy) return;
+  _stSyncLastPullMs = now;
+  _stSyncBusy = true;
+  _stSyncRequest('GET', null, function (status, body) {
+    _stSyncBusy = false;
+    if (status !== 200 || !body) {
+      _stSyncFailed(status);
+      return;
+    }
+    var meta = _stSyncLoadMeta();
+    var localDirty = !!meta.dirty || (!meta.serverAt && _stSyncHasLocalData());
+    if (!body.exists) {
+      if (_stSyncHasLocalData() || meta.dirty) _stSyncPush();
+      else _stSyncSetState('synced');
+      return;
+    }
+    if (body.updatedAt === meta.serverAt) {
+      if (localDirty) _stSyncPush();
+      else _stSyncSetState('synced');
+      return;
+    }
+    if (localDirty) {
+      _stSyncApply(_stSyncMerge(body.data || {}, _stSyncSnapshot()));
+      meta.serverAt = body.updatedAt;
+      meta.dirty = true;
+      _stSyncSaveMeta(meta);
+      _stSyncRerender();
+      _stSyncPush();
+      return;
+    }
+    _stSyncApply(body.data || {});
+    meta.serverAt = body.updatedAt;
+    meta.dirty = false;
+    _stSyncSaveMeta(meta);
+    _stSyncSetState('synced');
+    _stSyncRerender();
+  });
+}
+
+if (typeof window !== 'undefined' && window.addEventListener) {
+  window.addEventListener('online', function () {
+    var meta = _stSyncLoadMeta();
+    if (meta.dirty) _stSyncSchedulePush(500);
+  });
+  window.addEventListener('focus', function () {
+    _stSyncPull(false);
+  });
 }
 
 // One-time migration: copy legacy global cha_sales to the current
@@ -15442,6 +15877,7 @@ function _stRender() {
   if (!stPreserveReceiptReview) {
     _stAddSalePanelOpen = false;
   }
+  _stSyncPull(false);
   var sales = _stLoadSales();
   _stRunPaycheckHistoryBackfill(sales);
   sales = _stValidateSalesIntegrity(sales);
@@ -15459,7 +15895,9 @@ function _stRender() {
   var html = '';
   html += _stBuildPostDateBanner(postdates);
   html +=
-    '<div class="ph ph-st-compact"><div class="pt">Sales <span>Tracker</span></div></div>';
+    '<div class="ph ph-st-compact"><div class="pt">Sales <span>Tracker</span></div>' +
+    _stSyncStatusHtml() +
+    '</div>';
   if (stTab === 'thisweek') {
     html += _stBuildKpiStrip(sales, stats);
   }

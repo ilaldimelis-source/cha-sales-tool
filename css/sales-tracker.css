@@ -7117,3 +7117,32 @@ body.st-pb-modal-open {
     min-width: 104px;
   }
 }
+
+/* ── Any-device sync status (next to the Sales Tracker title) ── */
+#page-salestracker .ph-st-compact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+
+.st-sync-status {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--cha-text-secondary);
+}
+
+.st-sync-status:empty,
+.st-sync-status.st-sync-off,
+.st-sync-status.st-sync-idle {
+  display: none;
+}
+
+.st-sync-status.st-sync-synced {
+  color: var(--cha-success-text);
+}
+
+.st-sync-status.st-sync-offline {
+  color: var(--cha-warning-text);
+}
