@@ -265,9 +265,10 @@ const DISCONTINUED_PLAN_PATTERNS = [
   /\bMyChoice\b/i,
   /\bMy Choice\b/,
   /Pinnacle Protect (Plan )?1\b/i,
-  /AdvantCare/i,
+  // AdvantCare and AWA TrueHealth are sold again through Premier (Oct 2026);
+  // only the old FirstEnroll TrueHealth is blocked.
   /MedFirst/i,
-  /TrueHealth/i,
+  /(?<!AWA[ -]?)TrueHealth/i,
   /TrueFirst/i,
   /MedValue/i
 ];

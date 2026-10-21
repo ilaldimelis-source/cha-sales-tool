@@ -762,7 +762,7 @@ const PLANS = [
     type: 'Short-Term Medical — Premium',
     tagline: 'Closest-to-major-medical STM with $2M policy max',
     network: 'MultiPlan',
-    admin: 'Southern Guarantee Insurance Company',
+    admin: 'Southern Guaranty Insurance Company',
     assoc: 'Association for Responsible Planners',
     bestFor:
       'Higher income professionals who want comprehensive-feel coverage temporarily',
@@ -2219,10 +2219,11 @@ function renderBenefitTalkTracks() {
   el.innerHTML = html;
 }
 
-// Plans > Quick Reference (Oct 2026). Who is behind every current NEO and
-// FirstEnroll plan. Values come from the NEO product Info pages (Oct 14),
-// the Allstate STM brochure (rev. 04/2026) and the owner-approved plan
-// reference table. Every card shows the same three rows.
+// Plans > Quick Reference. Who is behind every current NEO, FirstEnroll and
+// Premier plan. Network, association, underwriter and claims come from the
+// NEO, FirstEnroll and Premier plan details sheets (Oct 2026). Billing is
+// the name each plan's script tells the client (CHA Sales Script, Oct 21).
+// Premier plans have no Plan Vault card yet; their tile opens the script.
 var CHA_QUICK_REF = [
   {
     name: 'Harbor STM',
@@ -2231,8 +2232,11 @@ var CHA_QUICK_REF = [
     tiers: 'Essential / Access / Secure',
     network: 'Cigna Healthcare PPO (Shared Administration)',
     assoc: 'American Workers Association (AWA)',
-    uw: 'Everest Reinsurance Co. (or Everest Denali Ins. Co. by state) / Claims: Administrative Concepts, Inc.',
-    vault: 'harborstmessential'
+    uw: 'Everest Reinsurance Co. (or Everest Denali Ins. Co. by state), underwriter and plan administrator',
+    claims: 'Administrative Concepts, Inc.',
+    billing: 'Neo Health Solutions',
+    vault: 'harborstmessential',
+    script: 'Harbor STM Essential'
   },
   {
     name: 'Pinnacle STM',
@@ -2242,7 +2246,10 @@ var CHA_QUICK_REF = [
     network: 'PHCS Practitioner & Ancillary (MultiPlan)',
     assoc: 'American Workers Association (AWA)',
     uw: 'Everest Reinsurance Company',
-    vault: 'pinnacle'
+    claims: 'Not listed on NEO info page',
+    billing: 'Neo Health Solutions',
+    vault: 'pinnacle',
+    script: 'NEO Pinnacle STM Traditional'
   },
   {
     name: 'AFRP Galena STM',
@@ -2250,9 +2257,12 @@ var CHA_QUICK_REF = [
     type: 'STM',
     tiers: 'Economy / Standard / Elite',
     network: 'First Health + MultiPlan (SGIC dual-network lookup)',
-    assoc: 'AFRP (membership/billing)',
-    uw: 'SGIC',
-    vault: 'galena'
+    assoc: 'AFRP (membership and billing)',
+    uw: 'SGIC (Southern Guaranty Insurance Company)',
+    claims: 'Claims and eligibility 888-304-7442 / Pre-auth 888-275-7916',
+    billing: 'Neo Health Solutions (NEO info page: AFRP 866-870-7730)',
+    vault: 'galena',
+    script: 'AFRP Galena STM Elite'
   },
   {
     name: 'SmartHealth STM',
@@ -2262,7 +2272,10 @@ var CHA_QUICK_REF = [
     network: 'PHCS Practitioner with Ancillary (MultiPlan)',
     assoc: 'NCE Association (National Congress of Employers)',
     uw: 'American Financial Security Life Ins. Co. / Standard Life & Casualty Ins. Co. (by state)',
-    vault: 'smarthealth'
+    claims: 'Not listed on NEO info page',
+    billing: 'Neo Health Solutions',
+    vault: 'smarthealth',
+    script: 'Smart Health STM Traditional'
   },
   {
     name: 'Allstate STM PPO',
@@ -2272,6 +2285,7 @@ var CHA_QUICK_REF = [
     network: 'Aetna Open Choice PPO',
     assoc: 'LIFE Association',
     uw: 'National Health Insurance Co. / Integon National Insurance Co. / Integon Indemnity Corp. (by state)',
+    billing: 'Neo Health Solutions',
     vault: 'allstatestm'
   },
   {
@@ -2282,6 +2296,7 @@ var CHA_QUICK_REF = [
     network: 'First Health',
     assoc: 'LIFE Association',
     uw: 'National Health Insurance Co. / Integon National Insurance Co. / Integon Indemnity Corp. (by state)',
+    billing: 'Neo Health Solutions',
     vault: 'allstatehealthaccess'
   },
   {
@@ -2293,7 +2308,10 @@ var CHA_QUICK_REF = [
     assoc: 'Population Science Management',
     uw: 'Detego Health',
     uwLabel: 'Administrator',
-    vault: 'smartchoice'
+    claims: 'Not listed on NEO info page',
+    billing: 'Neo Health Solutions',
+    vault: 'smartchoice',
+    script: 'NEO Smart Choice'
   },
   {
     name: 'WB Select / WB Choice',
@@ -2303,7 +2321,11 @@ var CHA_QUICK_REF = [
     network: 'First Health PPO (CVS Health) + Healthcare Ninja advocacy',
     assoc: 'Good Life Partners, LP (member joins as Limited Partner)',
     uw: 'Sponsor: Wellness Brands Management LLC / Plan Admin/TPA: Merchants Benefit Administration (MBA)',
-    vault: 'goodlifewbchoice'
+    claims: 'MBA 480-550-6457, accountservices@mbaadmin.com',
+    billing: 'Neo Health Solutions',
+    vault: 'goodlifewbchoice',
+    script:
+      'Goodlife Partners WB CHOICE and WB SELECT (Match Doctor visits to Plan)'
   },
   {
     name: 'Pinnacle Protect',
@@ -2312,8 +2334,11 @@ var CHA_QUICK_REF = [
     tiers: 'Plans 2 / 3 / 4 (Limited Medical)',
     network: 'MultiPlan PPO (via Pinnacle network)',
     assoc: 'Association benefits included (not named on info page)',
-    uw: 'Everest RE',
-    vault: 'pinnacleprotect'
+    uw: 'Everest Reinsurance Co.',
+    claims: 'Not listed on NEO info page',
+    billing: 'Neo Health Solutions',
+    vault: 'pinnacleprotect',
+    script: 'Pinnacle Protect Plan 1 - 4' // lineup-guard-ignore: script name
   },
   {
     name: 'AWA SimpleShield',
@@ -2323,6 +2348,8 @@ var CHA_QUICK_REF = [
     network: 'First Health + MultiPlan (SGIC dual-network lookup)',
     assoc: 'American Workers Association (AWA)',
     uw: 'SGIC',
+    claims: 'Not listed on NEO info page',
+    billing: 'Neo Health Solutions',
     vault: 'simpleshield'
   },
   {
@@ -2334,7 +2361,11 @@ var CHA_QUICK_REF = [
     assoc:
       'NCE Association (National Congress of Employers), not required in all states',
     uw: 'American Financial Security Life Insurance Co.',
-    vault: 'accesshealth'
+    claims:
+      'WebTPA, PO Box 99906, Grapevine, TX 76099 / 878-208-1319 (existing claims)',
+    billing: 'FirstEnroll',
+    vault: 'accesshealth',
+    script: 'Access Health STM'
   },
   {
     name: 'GoodHealth (GHDP)',
@@ -2342,10 +2373,15 @@ var CHA_QUICK_REF = [
     type: 'MEC',
     tiers: 'Wellness / 1 / 2 / 3 / 4 / 5',
     network: 'First Health (locateprovidersnow.com)',
-    assoc: 'Good Health Distribution Partners',
-    uw: 'Merchants Benefit Administrators (MBA)',
+    assoc:
+      'Good Health Distribution Partners, LP (member joins as Limited Partner)',
+    uw: 'Self-funded plan / Admin/TPA: Merchants Benefit Administrators (MBA)',
     uwLabel: 'Administrator',
-    vault: 'goodhealth13'
+    claims:
+      'MBA, PO Box 35249, Phoenix, AZ 85021 / Payer ID IHS24 / 480-550-6452',
+    billing: 'FirstEnroll',
+    vault: 'goodhealth13',
+    script: 'MedFirst/GoodHealth 1,2,3' // lineup-guard-ignore: script name
   },
   {
     name: 'TDK',
@@ -2353,10 +2389,14 @@ var CHA_QUICK_REF = [
     type: 'MEC',
     tiers: '1 / 2 / 3 / 4 / 5',
     network: 'First Health (docfind.health)',
-    assoc: 'Health Care Data Analytics (HCDA)',
-    uw: 'Detego Health',
+    assoc: 'Healthcare Data Analytics LLC (HCDA), Working Owner program',
+    uw: 'Self-funded plan / Admin/TPA: Detego Health',
     uwLabel: 'Administrator',
-    vault: 'tdk13'
+    claims:
+      'Detego Health LLC, PO Box 211609, Eagan, MN 55121 / Payer EDI 62599 / 866-815-6001',
+    billing: 'First Enroll',
+    vault: 'tdk13',
+    script: 'TDK 1,2,3 (Need Primary SSN)'
   },
   {
     name: 'Harmony Care PLUS',
@@ -2366,7 +2406,12 @@ var CHA_QUICK_REF = [
     network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    vault: 'harmonycare'
+    claims:
+      'WebTPA, PO Box 99906, Grapevine, TX 76099-9706 / Payer ID 75261 / Members 878-208-1313 / Providers 878-208-1319 (the 06/25 Harmony Care+ brochure lists IBA, Payor ID 11329, 878-512-0177; confirm current TPA)',
+    billing: 'FirstEnroll',
+    vault: 'harmonycare',
+    script:
+      'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)'
   },
   {
     name: 'Harmony Care',
@@ -2376,7 +2421,12 @@ var CHA_QUICK_REF = [
     network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    vault: 'harmonycareseries'
+    claims:
+      'WebTPA, PO Box 99906, Grapevine, TX 76099-9706 / Payer ID 75261 / Members 878-208-1313 / Providers 878-208-1319',
+    billing: 'FirstEnroll',
+    vault: 'harmonycareseries',
+    script:
+      'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)'
   },
   {
     name: 'Advanced Wellness PLUS',
@@ -2386,7 +2436,12 @@ var CHA_QUICK_REF = [
     network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    vault: 'advancedwellnessplus'
+    claims:
+      'WebTPA / Payer ID 75261 / Members 878-208-1313 / Providers 878-208-1319',
+    billing: 'FirstEnroll',
+    vault: 'advancedwellnessplus',
+    script:
+      'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)'
   },
   {
     name: 'Sigma Care PLUS',
@@ -2396,17 +2451,26 @@ var CHA_QUICK_REF = [
     network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    vault: 'sigmacare'
+    claims:
+      'WebTPA / Payer ID 75261 / Members 878-208-1313 / Providers 878-208-1319',
+    billing: 'FirstEnroll',
+    vault: 'sigmacare',
+    script:
+      'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)'
   },
   {
     name: 'Health Choice Silver',
     platform: 'FirstEnroll',
     type: 'Limited',
     tiers: 'Over 65 / 100A / 100 / 200 / 200+ / 300 / 500 / 750 / 1000',
-    network: 'MultiPlan',
+    network: 'MultiPlan (PHCS) Limited Benefit Plan',
     assoc: 'National Congress of Employers (NCE)',
     uw: 'American Financial Security Life Insurance Co.',
-    vault: 'healthchoicesilver'
+    claims:
+      'WebTPA / Payer ID 75261 / Members 878-208-1313 / Providers 878-208-1319',
+    billing: 'FirstEnroll',
+    vault: 'healthchoicesilver',
+    script: 'Health Choice Silver'
   },
   {
     name: 'BWA Paramount',
@@ -2417,7 +2481,11 @@ var CHA_QUICK_REF = [
       'No network required. Bills repriced by Medical Bill Repricer (MBR)',
     assoc: 'Business Workers of America (BWA)',
     uw: 'BCS Insurance Company',
-    vault: 'bwapara'
+    claims:
+      'AdminOne, PO Box 21176, Eagan, MN 55121 / claims@AdminOne.com / 877-278-4668 / Fax 770-691-5234 / Rx BIN 610709 GRP BWAARX',
+    billing: 'FirstEnroll',
+    vault: 'bwapara',
+    script: 'BWA Paramount 1-6 (First Enroll)'
   },
   {
     name: 'BWA Americare',
@@ -2426,8 +2494,185 @@ var CHA_QUICK_REF = [
     tiers: 'Plan 2 / 3 / 4',
     network: 'PHCS Limited Medical Network (MedicalBillRepricer.com)',
     assoc: 'Business Workers of America (BWA)',
-    uw: 'American Public Life',
-    vault: 'bwaamericare'
+    uw: 'American Public Life Insurance Co.',
+    claims:
+      'Inova Care, PO Box 1298, Liberty, MO 64069 / MedicalBillRepricer@Inovacare.com / Fax 239-236-1720',
+    billing: 'FirstEnroll',
+    vault: 'bwaamericare',
+    script: 'BWA Americare 2,3,4 (First Enroll)'
+  },
+  {
+    name: 'NexusCare STM',
+    platform: 'Premier',
+    type: 'STM',
+    tiers: 'Base / PPO / Child Only versions',
+    network:
+      'Base: no network, any licensed provider / PPO: Cigna PPO (lookup 866-387-5645)',
+    assoc: 'Communicating for America Association',
+    uw: 'The North River Insurance Co.',
+    claims:
+      'Not listed. Premier (PHS) does not provide customer service for this plan',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-nexuscare',
+    script: 'NexusCare Base STM',
+    vault: ''
+  },
+  {
+    name: 'CrownPoint STM',
+    platform: 'Premier',
+    type: 'STM',
+    tiers: 'Standard / Child Only',
+    network: 'PHCS Practitioner & Ancillary (MultiPlan)',
+    assoc: 'Affiliated Workers Association (AWA)',
+    uw: 'Everest Reinsurance Co.',
+    claims: 'Not listed on Premier info page',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-crownpoint',
+    script: 'CrownPoint STM',
+    vault: ''
+  },
+  {
+    name: 'RiseHealth STM',
+    platform: 'Premier',
+    type: 'STM',
+    tiers: 'Traditional / Lite Plus / Lite',
+    network: 'First Health',
+    assoc: 'NCE Association (National Congress of Employers)',
+    uw: 'American Financial Security Life Ins. Co. or Standard Life & Casualty Ins. Co. (by state)',
+    claims: 'Not listed on Premier info page',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-risehealth',
+    script: 'RiseHealth STM Lite',
+    vault: ''
+  },
+  {
+    name: 'HD HealthAscent',
+    platform: 'Premier',
+    type: 'Limited',
+    tiers: 'Plans 1 / 2 / 3 (Limited Benefit)',
+    network: 'First Health Limited Benefit Plan Network (firsthealthlbp.com)',
+    assoc: 'The Health Depot Association',
+    uw: 'ManhattanLife Insurance and Annuity Co.',
+    claims: 'Not listed on Premier info page',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-hdhealthascent',
+    script: 'HD HealthAscent Plan 1',
+    vault: ''
+  },
+  {
+    name: 'HealthEssential',
+    platform: 'Premier',
+    type: 'Limited',
+    tiers: 'Plans 1 / 2 / 3 / 4 (Limited Benefit)',
+    network: 'First Health Limited Benefit Plan Network',
+    assoc: 'Association for Entrepreneurship USA (AFEUSA)',
+    uw: 'United States Fire Insurance Co.',
+    claims: 'Not listed on Premier info page',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-healthessential',
+    script: 'HealthEssential 1, 2, 3 (Match Visits to Plan)',
+    vault: ''
+  },
+  {
+    name: 'AWA TrueHealth',
+    platform: 'Premier',
+    type: 'Limited',
+    tiers: 'Value / 1 / 2 / 3 / 4 (Limited Benefit)',
+    network: 'MultiPlan Limited Medical Plan Network',
+    assoc: 'Affiliated Workers Association (AWA)',
+    uw: 'Unified Life Insurance Co.',
+    claims: 'Not listed on Premier info page',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-awatruehealth',
+    script: 'AWA TrueHealth Value',
+    vault: ''
+  },
+  {
+    name: 'PrimeProtect',
+    platform: 'Premier',
+    type: 'Fixed indemnity',
+    tiers: 'Basic / Plus / Preferred / Premium / Platinum',
+    network: 'FirstHealth + Hooray Health retail/urgent care ($25 visit)',
+    assoc: 'Not named on Premier info page',
+    uw: 'National Guardian Life Ins. Co.',
+    claims: 'Not listed on Premier info page',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-primeprotect',
+    script: 'PrimeProtect Basic, Plus, Preferred, Premium, Platinum',
+    vault: ''
+  },
+  {
+    name: 'HealthBoost',
+    platform: 'Premier',
+    type: 'Fixed indemnity',
+    tiers: 'HealthBoost / HealthBoost + DPC, Levels 1 to 4',
+    network: 'MultiPlan Limited Medical Plan Network',
+    assoc:
+      'Consumer Data Partners, LP (VistaWell), member joins as Limited Partner',
+    uw: 'Not named on Premier info page',
+    claims: 'Not listed on Premier info page',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-healthboost',
+    script: 'HealthBoost 1 and HealthBoost + DPC 1',
+    vault: ''
+  },
+  {
+    name: 'AdvantCare 50',
+    platform: 'Premier',
+    type: 'Fixed indemnity',
+    tiers: 'Levels 1 / 2 / 3 (hospital, ICU and surgery only)',
+    network: 'MultiPlan PPO',
+    assoc: 'Consumer Data Partners, LP (VistaWell), Limited Partner',
+    uw: 'Not named on Premier info page',
+    claims:
+      'Not listed. Members must use Copilot before submitting claims or may pay more',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-advantcare50',
+    vault: ''
+  },
+  {
+    name: 'AdvantCare (MEC)',
+    platform: 'Premier',
+    type: 'MEC',
+    tiers:
+      '2 / 3 / 3+ / 6 / 6+ / 9 / 9+ / 12 / 12+ / WellPremium / WellPremium+',
+    network: 'MultiPlan PPO (800-457-1403)',
+    assoc: 'Consumer Data Partners, LP (VistaWell), Limited Partner',
+    uw: 'Self-funded plan sponsored by VistaWell LP / Administered by Aither Health',
+    uwLabel: 'Sponsor / administrator',
+    claims:
+      'Aither Health / Provider help: Affordable Benefit Choices 800-509-6647',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-advantcare',
+    script: 'AdvantCare 2',
+    vault: ''
+  },
+  {
+    name: 'TVP Health',
+    platform: 'Premier',
+    type: 'MEC',
+    tiers: 'Plans 1 to 5 (MEC + hospital benefit)',
+    network: 'First Health',
+    assoc:
+      'The Vitamin Patch LP (VP LP), offered through NSBA, Limited Partner',
+    uw: 'Self-funded plan sponsored by TVP/VP LP / Hospital benefit underwritten by Amalgamated Life Ins. Co.',
+    uwLabel: 'Sponsor / underwriter',
+    claims: 'Merchants Benefit Administrators (MBA)',
+    billing:
+      'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
+    id: 'pr-tvphealth',
+    script: 'TVP Health Plan 1, 2, 3 (Match Visits to Plan)',
+    vault: ''
   }
 ];
 
@@ -2486,8 +2731,89 @@ var QR_SHORT = {
   ],
   healthchoicesilver: ['MultiPlan', 'NCE', 'American Financial Security Life'],
   bwapara: ['No network (MBR repricing)', 'BWA', 'BCS Insurance'],
-  bwaamericare: ['PHCS', 'BWA', 'American Public Life']
+  bwaamericare: ['PHCS', 'BWA', 'American Public Life'],
+  'pr-nexuscare': [
+    'No network (Base) / Cigna PPO',
+    'Communicating for America',
+    'North River Insurance'
+  ],
+  'pr-crownpoint': ['PHCS', 'AWA (Affiliated Workers)', 'Everest Reinsurance'],
+  'pr-risehealth': [
+    'First Health',
+    'NCE',
+    'AFSLIC or Standard Life (by state)'
+  ],
+  'pr-hdhealthascent': [
+    'First Health Limited Benefit',
+    'The Health Depot',
+    'ManhattanLife'
+  ],
+  'pr-healthessential': [
+    'First Health Limited Benefit',
+    'AFEUSA',
+    'United States Fire Insurance'
+  ],
+  'pr-awatruehealth': [
+    'MultiPlan Limited Medical',
+    'AWA (Affiliated Workers)',
+    'Unified Life'
+  ],
+  'pr-primeprotect': [
+    'FirstHealth + Hooray Health',
+    'Association not named',
+    'National Guardian Life'
+  ],
+  'pr-healthboost': [
+    'MultiPlan Limited Medical',
+    'Consumer Data Partners',
+    'Underwriter not named'
+  ],
+  'pr-advantcare50': [
+    'MultiPlan PPO',
+    'Consumer Data Partners',
+    'Underwriter not named'
+  ],
+  'pr-advantcare': [
+    'MultiPlan PPO',
+    'Consumer Data Partners',
+    'Aither Health (admin)'
+  ],
+  'pr-tvphealth': [
+    'First Health',
+    'The Vitamin Patch LP',
+    'MBA (admin) / Amalgamated Life'
+  ]
 };
+
+var QR_PLAT = {
+  NEO: ['neo', 'NEO', 'Neo Health Solutions'],
+  FirstEnroll: ['fe', 'FE', 'FirstEnroll'],
+  Premier: ['pr', 'PR', 'Premier Health Solutions']
+};
+
+function _qrKey(p) {
+  return p.vault || p.id || '';
+}
+
+function _qrScriptIndex(name) {
+  var i;
+  if (!name || typeof PLAN_SCRIPTS === 'undefined') return -1;
+  for (i = 0; i < PLAN_SCRIPTS.length; i++) {
+    if (PLAN_SCRIPTS[i].name === name) return i;
+  }
+  return -1;
+}
+
+function qrOpenScript(name) {
+  var index = _qrScriptIndex(name);
+  if (index < 0) return;
+  planScriptFilter = 'All';
+  planScriptActive = index;
+  planScriptSection = 0;
+  if (typeof _showComboPage === 'function') {
+    _showComboPage('scripts', 'planscripts');
+  }
+}
 
 var qrOpenTile = '';
 
@@ -2504,7 +2830,7 @@ function _qrTiersLine(tiers) {
 
 function _qrRenderHero() {
   var host = document.getElementById('qr-hero');
-  var counts = { NEO: 0, FirstEnroll: 0 };
+  var counts = { NEO: 0, FirstEnroll: 0, Premier: 0 };
   var i;
   if (!host) return;
   for (i = 0; i < CHA_QUICK_REF.length; i++) {
@@ -2514,12 +2840,15 @@ function _qrRenderHero() {
   var segs = [
     ['All', 'All plans', CHA_QUICK_REF.length, 'all'],
     ['NEO', 'NEO', counts.NEO || 0, 'neo'],
-    ['FirstEnroll', 'FirstEnroll', counts.FirstEnroll || 0, 'fe']
+    ['FirstEnroll', 'FirstEnroll', counts.FirstEnroll || 0, 'fe'],
+    ['Premier', 'Premier', counts.Premier || 0, 'pr']
   ];
   var notes = {
-    All: 'NEO bills through Neo Health Solutions. FirstEnroll bills through FirstEnroll.',
+    All: 'Billing follows each plan script. NEO: Neo Health Solutions. FirstEnroll: FirstEnroll. Premier: Premier Health Solutions.',
     NEO: 'Billing: Neo Health Solutions',
-    FirstEnroll: 'Billing: FirstEnroll'
+    FirstEnroll: 'Billing: FirstEnroll',
+    Premier:
+      'Billing: Premier Health Solutions. Bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
   };
   host.innerHTML =
     '<div class="qr-seg" role="group" aria-label="Platform">' +
@@ -2555,33 +2884,49 @@ function _qrRenderCards() {
   var p;
   var s;
   var open;
+  var key;
+  var plat;
   _qrRenderHero();
   for (i = 0; i < CHA_QUICK_REF.length; i++) {
     p = CHA_QUICK_REF[i];
     if (qrPlatform !== 'All' && p.platform !== qrPlatform) continue;
     if (
       q &&
-      (p.name + ' ' + p.tiers + ' ' + p.network + ' ' + p.assoc + ' ' + p.uw)
+      (
+        p.name +
+        ' ' +
+        p.platform +
+        ' ' +
+        p.tiers +
+        ' ' +
+        p.network +
+        ' ' +
+        p.assoc +
+        ' ' +
+        p.uw
+      )
         .toLowerCase()
         .indexOf(q) === -1
     ) {
       continue;
     }
-    s = QR_SHORT[p.vault] || [p.network, p.assoc, p.uw];
-    open = qrOpenTile === p.vault;
+    key = _qrKey(p);
+    plat = QR_PLAT[p.platform] || QR_PLAT.FirstEnroll;
+    s = QR_SHORT[key] || [p.network, p.assoc, p.uw];
+    open = qrOpenTile === key;
     html +=
       '<button type="button" class="qr3-tile' +
       (open ? ' qr3-tile-open' : '') +
       '" aria-expanded="' +
       (open ? 'true' : 'false') +
       '" onclick="qrToggle(\'' +
-      p.vault +
+      key +
       '\')"><span class="qr3-top"><span class="qr3-name">' +
       escHTML(p.name) +
       '</span><span class="qr-plat qr-plat-' +
-      (p.platform === 'NEO' ? 'neo' : 'fe') +
+      plat[0] +
       '">' +
-      (p.platform === 'NEO' ? 'NEO' : 'FE') +
+      plat[1] +
       '</span></span>' +
       '<span class="qr3-lines">' +
       escHTML(s[0]) +
@@ -2600,11 +2945,23 @@ function _qrRenderCards() {
         escHTML(p.uwLabel || 'Underwriter') +
         ':</b> ' +
         escHTML(String(p.uw).replace(/\s*\/\s*Claims:.*$/, '')) +
+        '<br><b>Claims:</b> ' +
+        escHTML(p.claims || 'Not listed') +
         '<br><b>Billing:</b> ' +
-        (p.platform === 'NEO' ? 'Neo Health Solutions' : 'FirstEnroll') +
-        '</span><span class="qr3-open" onclick="event.stopPropagation();qrOpenInVault(\'' +
-        p.vault +
-        '\')">Open in Plans</span>';
+        escHTML(p.billing || plat[2]) +
+        '</span>';
+      if (p.vault) {
+        html +=
+          '<span class="qr3-open" onclick="event.stopPropagation();qrOpenInVault(\'' +
+          p.vault +
+          '\')">Open in Plans</span>';
+      }
+      if (p.script && _qrScriptIndex(p.script) !== -1) {
+        html +=
+          '<span class="qr3-open" onclick="event.stopPropagation();qrOpenScript(\'' +
+          String(p.script).replace(/'/g, "\\'") +
+          '\')">Open script</span>';
+      }
     }
     html += '</button>';
   }

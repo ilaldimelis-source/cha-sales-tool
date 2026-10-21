@@ -182,7 +182,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: 'HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf',
     active: true
@@ -195,7 +195,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: '',
     active: true
@@ -208,7 +208,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: '',
     active: true
@@ -221,7 +221,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: 'AFSLIC20_SCP_Brochure_rev.pdf',
     active: true
@@ -234,7 +234,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'MultiPlan',
+    network: 'MultiPlan (PHCS) Limited Benefit Plan',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: 'HealthChoiceSilverBrochure2.pdf',
     active: true
@@ -247,7 +247,8 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'BCS Insurance Company',
-    network: 'Managed Care / Reference-Based Pricing',
+    network:
+      'No network required (bills repriced by Medical Bill Repricer, MBR)',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: 'BCS_Brochure_1.pdf',
     active: true
@@ -259,8 +260,8 @@ var CHA_PLAN_REGISTRY = [
     group: 'BWA',
     tier: 1,
     platform: 'FirstEnroll',
-    carrier: 'American Public Life',
-    network: 'PHCS',
+    carrier: 'American Public Life Insurance Co.',
+    network: 'PHCS Limited Medical Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: 'BWABrochurePlan2MBRAmericare2_REV.pdf',
     active: true
@@ -452,7 +453,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'NEO',
     carrier: 'Everest Reinsurance Company',
-    network: 'MultiPlan PPO',
+    network: 'MultiPlan PPO (via Pinnacle network)',
     enrollUrl: 'https://www.1enrollment.com/index.cfm?id=974021',
     pdfFile: '',
     active: true

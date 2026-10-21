@@ -7,7 +7,8 @@ var KNOWLEDGE_BASE = {
       type: 'MEC',
       network: 'First Health',
       underwriter: 'MBA',
-      association: 'Good Health Partners',
+      association:
+        'Good Health Distribution Partners, LP (member joins as Limited Partner)',
       deductible: 'NONE',
       primaryCopay: '$25',
       specialistCopay: '$50'
@@ -25,12 +26,13 @@ var KNOWLEDGE_BASE = {
       type: 'MEC',
       network: 'First Health',
       underwriter: 'Detego Health',
-      association: 'Health Care Data Analytics',
+      association:
+        'Healthcare Data Analytics LLC (HCDA), Working Owner program',
       deductible: 'NONE',
       primaryCopay: '$25',
       specialistCopay: '$50',
       requiresSSN: true,
-      billing: 'NEO Insurance Solutions'
+      billing: 'First Enroll'
     },
     'TDK 4-5': {
       type: 'MEC',
@@ -52,31 +54,32 @@ var KNOWLEDGE_BASE = {
     },
     HarmonyCare: {
       type: 'Indemnity',
-      network: 'First Health (GapAfford Plus)',
-      underwriter: 'Everest/AFSLIC',
+      network: 'First Health Limited Benefit Network (firsthealthlbp.com)',
+      underwriter: 'American Financial Security Life Ins. Co.',
       association: 'NCE',
       deductible: 'NONE',
       structure: 'Network repricing + indemnity cash benefits'
     },
     SigmaCare: {
       type: 'Indemnity',
-      network: 'MultiPlan',
-      underwriter: 'Everest',
+      network: 'First Health Limited Benefit Network',
+      underwriter: 'American Financial Security Life Ins. Co.',
       association: 'NCE',
       deductible: 'NONE',
-      providerSearch: 'providersearch.multiplan.com'
+      providerSearch: 'firsthealthlbp.com'
     },
     'Health Choice Silver': {
       type: 'Indemnity',
-      network: 'MultiPlan',
+      network: 'MultiPlan (PHCS) Limited Benefit Plan',
       underwriter: 'AFSLIC',
       association: 'NCE',
       deductible: 'NONE'
     },
     'BWA Paramount 1-6': {
       type: 'Indemnity',
-      network: 'Managed Care Network',
-      underwriter: 'BCS Insurance',
+      network:
+        'No network required (bills repriced by Medical Bill Repricer, MBR)',
+      underwriter: 'BCS Insurance Company',
       association: 'BWA',
       deductible: 'NONE',
       primaryPrepay: '$25',
@@ -84,8 +87,8 @@ var KNOWLEDGE_BASE = {
     },
     'BWA Americare 2-4': {
       type: 'Indemnity',
-      network: 'PHCS PPO',
-      underwriter: 'ERISA Group Benefits',
+      network: 'PHCS Limited Medical Network',
+      underwriter: 'American Public Life Ins. Co.',
       association: 'BWA',
       deductible: 'NONE',
       primaryPrepay: '$25',
@@ -93,8 +96,8 @@ var KNOWLEDGE_BASE = {
     },
     'Pinnacle Protect 2-4': {
       type: 'Indemnity',
-      network: 'PHCS',
-      underwriter: 'Everest',
+      network: 'MultiPlan PPO (via Pinnacle network)',
+      underwriter: 'Everest Reinsurance Co.',
       association: 'AWA',
       deductible: 'NONE'
     },
@@ -114,7 +117,8 @@ var KNOWLEDGE_BASE = {
         'Wellness Brands Management LLC, general partner of Good Life Partners LP',
       association: 'Good Life Partners',
       admin: 'Merchants Benefit Administration (MBA), (480) 550-6457',
-      billing: 'Neo Insurance Solutions, (866) 870-7730',
+      billing:
+        'Neo Health Solutions on statements (Neo Insurance Solutions, (866) 870-7730)',
       deductible: 'NONE',
       structure: 'Scheduled fixed indemnity. Same rate at every age.',
       enrollmentFee: '$49.99 one-time',
@@ -131,7 +135,8 @@ var KNOWLEDGE_BASE = {
         'Wellness Brands Management LLC, general partner of Good Life Partners LP',
       association: 'Good Life Partners',
       admin: 'Merchants Benefit Administration (MBA), (480) 550-6457',
-      billing: 'Neo Insurance Solutions, (866) 870-7730',
+      billing:
+        'Neo Health Solutions on statements (Neo Insurance Solutions, (866) 870-7730)',
       deductible: 'NONE',
       structure: 'Scheduled fixed indemnity. Same rate at every age.',
       enrollmentFee: '$49.99 one-time',
@@ -189,15 +194,16 @@ var KNOWLEDGE_BASE = {
     },
     'SmartHealth STM Traditional': {
       type: 'STM',
-      network: 'PHCS',
-      underwriter: 'Standard Life',
+      network: 'PHCS Practitioner with Ancillary (MultiPlan)',
+      underwriter:
+        'American Financial Security Life Ins. Co. or Standard Life & Casualty Ins. Co. (by state)',
       association: 'NCE',
       coinsurance: '80/20 or 50/50'
     },
     'Pinnacle STM Traditional': {
       type: 'STM',
-      network: 'PHCS (voluntary)',
-      underwriter: 'Everest',
+      network: 'PHCS Practitioner & Ancillary (MultiPlan)',
+      underwriter: 'Everest Reinsurance Co.',
       association: 'AWA',
       coinsurance: '80/20 or 50/50'
     },
@@ -205,32 +211,32 @@ var KNOWLEDGE_BASE = {
       type: 'STM',
       network: 'First Health + MultiPlan',
       underwriter: 'SGIC',
-      association: 'AFRP',
+      association: 'AFRP (membership and billing)',
       primaryCopay: '$40',
       specialistCopay: '$60'
     },
     'SmartChoice 1500': {
-      type: 'STM',
+      type: 'MEC',
       network: 'First Health EPO',
-      underwriter: 'Detego Health',
+      underwriter: 'Detego Health (administrator)',
       deductible: '$1,500'
     },
     'SmartChoice 2500': {
-      type: 'STM',
+      type: 'MEC',
       network: 'First Health EPO',
-      underwriter: 'Detego Health',
+      underwriter: 'Detego Health (administrator)',
       deductible: '$2,500'
     },
     'SmartChoice 3000': {
-      type: 'STM',
+      type: 'MEC',
       network: 'First Health EPO',
-      underwriter: 'Detego Health',
+      underwriter: 'Detego Health (administrator)',
       deductible: '$3,000'
     },
     'SmartChoice 3500': {
-      type: 'STM',
+      type: 'MEC',
       network: 'First Health EPO',
-      underwriter: 'Detego Health',
+      underwriter: 'Detego Health (administrator)',
       deductible: '$3,500'
     }
   },

@@ -26,7 +26,7 @@ function renderComplianceCenter() {
   html +=
     '&#8226; State the exact plan name verbally and the plan type (MEC group plan, short-term medical, or fixed indemnity limited benefit)<br>';
   html +=
-    '&#8226; Name the billing administrator by name -- FirstEnroll or NEO Insurance Solutions (both for TDK)<br>';
+    '&#8226; Name the billing administrator by name, as the plan script says it -- FirstEnroll, Neo Health Solutions or Premier Health Solutions<br>';
   html += '&#8226; State this is NOT ACA-compliant major medical insurance<br>';
   html +=
     '&#8226; State this is a limited benefit plan -- it does not cover everything<br>';
@@ -88,7 +88,7 @@ function renderComplianceCenter() {
   html +=
     '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#5B8DEF;margin-bottom:8px;">MEC PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(91,141,239,0.12);color:#5B8DEF;margin-left:6px;letter-spacing:0;">MEC</span></div>';
   html +=
-    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: GoodHealth 1-5, TDK 1-5, NEO Smart Choice</div>';
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: GoodHealth 1-5, TDK 1-5, NEO Smart Choice, AdvantCare (Premier), TVP Health 1-5 (Premier)</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
   html += '&#8226; This is a group plan -- not individual insurance<br>';
@@ -97,7 +97,7 @@ function renderComplianceCenter() {
   html +=
     '&#8226; Name the correct Benefits Administrator: TDK = Detego Health | GoodHealth = MBA | NEO Smart Choice = Population Science Management<br>';
   html +=
-    '&#8226; Name the billing admin: TDK = FirstEnroll AND NEO Insurance Solutions (both) | All others = FirstEnroll only<br>';
+    '&#8226; Name the billing admin: TDK, GoodHealth = FirstEnroll | SmartChoice = Neo Health Solutions | AdvantCare, TVP = Premier Health Solutions<br>';
   html +=
     '&#8226; State exact visit limits and dollar caps -- never overstate benefits<br>';
   html +=
@@ -114,7 +114,7 @@ function renderComplianceCenter() {
   html +=
     '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#C2410C;margin-bottom:8px;">STM PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(245,158,11,0.12);color:#C2410C;margin-left:6px;letter-spacing:0;">STM</span></div>';
   html +=
-    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Access Health STM, NEO Pinnacle STM, AFRP Galena Elite/Standard/Economy, Smart Health Traditional/Limited, Harbor STM Essential, Harbor STM Access, Harbor STM Secure</div>';
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: Access Health STM, NEO Pinnacle STM, AFRP Galena Elite/Standard/Economy, Smart Health Traditional/Limited, Harbor STM Essential, Harbor STM Access, Harbor STM Secure, CrownPoint STM, NexusCare Base/PPO STM, RiseHealth STM Traditional/Lite Plus/Lite (Premier)</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
   html +=
@@ -140,7 +140,7 @@ function renderComplianceCenter() {
   html +=
     '&#8226; NEO Pinnacle STM: deductible $500-$10K | MOOP $5K | coverage max $1M<br>';
   html +=
-    '&#8226; Billing: FirstEnroll = Access Health STM | NEO = Pinnacle STM, Galena (all tiers), Smart Health<br>';
+    '&#8226; Billing: FirstEnroll = Access Health STM | Neo Health Solutions = Pinnacle STM, Galena (all tiers), Smart Health, Harbor | Premier Health Solutions = CrownPoint, NexusCare, RiseHealth<br>';
   html +=
     '&#8226; Harbor STM Essential, Access and Secure: short-term medical, not MEC and not ACA. Cigna Healthcare PPO for Shared Administration. Underwritten by Everest Reinsurance Company, or Everest Denali Insurance Company depending on state. Everest is also plan administrator. Billing: Neo Insurance Solutions. Claims: Administrative Concepts, Inc. Association: AWA, American Workers Association. Deductible 2500 / 5000 / 7500 / 10000. Member coinsurance 30%, 20% or 0%. Coinsurance out-of-pocket max $5,000. Office visits have no out-of-network benefit. Coverage ends at the end of the month the member turns 65. Essential: 3/3/3 at $50, max $750,000, $500 access fee on emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics. Access: 3/3/3 at $40, max $1,000,000, no access fee. Secure: unlimited primary, specialist and urgent care at $40, max $1,500,000, no access fee. Pre-existing conditions are not covered.';
   html += '</div></div>';
@@ -150,13 +150,13 @@ function renderComplianceCenter() {
   html +=
     '<div style="font-size:.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#DC2626;margin-bottom:8px;">LIMITED BENEFIT PLANS <span style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(220,38,38,0.10);color:#DC2626;margin-left:6px;letter-spacing:0;">LIMITED</span></div>';
   html +=
-    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: HarmonyCare, SigmaCare, BWA Paramount 1-6, BWA Americare 2/3/4, Health Choice Silver, Pinnacle Protect 2-4, Goodlife Partners WB Choice, Goodlife Partners WB Select</div>';
+    '<div style="font-size:12px;color:#848A9C;margin-bottom:10px;">Applies to: HarmonyCare, SigmaCare, BWA Paramount 1-6, BWA Americare 2/3/4, Health Choice Silver, Pinnacle Protect 2-4, Goodlife Partners WB Choice, Goodlife Partners WB Select, HD HealthAscent 1-3, HealthEssential 1-4, AWA TrueHealth Value/1-4, PrimeProtect, HealthBoost 1-4 (Premier)</div>';
   html +=
     '<div style="font-size:13px;color:var(--text-primary);line-height:1.9;">';
   html +=
     '&#8226; State this is a fixed indemnity / limited benefit plan -- not major medical<br>';
   html +=
-    '&#8226; Goodlife Partners WB Choice and WB Select: scheduled fixed indemnity, not MEC and not STM. Plan sponsor Wellness Brands Management LLC, general partner of Good Life Partners LP. Administrator, claims and eligibility: Merchants Benefit Administration (MBA), (480) 550-6457. Billing and enrollment: Neo Insurance Solutions, (866) 870-7730. Network: First Health Network, a CVS Health company, (800) 226-5116, firsthealthlbp.com. No deductible, no coinsurance. Benefits reset January 1. 30-day waiting period for sickness. Accident coverage begins on the effective date. Pre-existing is a 12-month / 12-month limitation on hospital and surgery benefits only. 30-day free look. $10,000 group term life, primary member only. Office visits and preventive care are in-network only. Hospital, surgery and emergency room are not limited to the network. Choice: member $274.99, spouse $379.99, child(ren) $329.99, family $469.99, enrollment fee $49.99. Select: member $335.00, spouse $500.00, child(ren) $425.00, family $700.00, enrollment fee $49.99. Rates do not vary by age.<br>';
+    '&#8226; Goodlife Partners WB Choice and WB Select: scheduled fixed indemnity, not MEC and not STM. Plan sponsor Wellness Brands Management LLC, general partner of Good Life Partners LP. Administrator, claims and eligibility: Merchants Benefit Administration (MBA), (480) 550-6457. Billing: Neo Health Solutions on statements; enrollment and billing service Neo Insurance Solutions, (866) 870-7730. Network: First Health Network, a CVS Health company, (800) 226-5116, firsthealthlbp.com. No deductible, no coinsurance. Benefits reset January 1. 30-day waiting period for sickness. Accident coverage begins on the effective date. Pre-existing is a 12-month / 12-month limitation on hospital and surgery benefits only. 30-day free look. $10,000 group term life, primary member only. Office visits and preventive care are in-network only. Hospital, surgery and emergency room are not limited to the network. Choice: member $274.99, spouse $379.99, child(ren) $329.99, family $469.99, enrollment fee $49.99. Select: member $335.00, spouse $500.00, child(ren) $425.00, family $700.00, enrollment fee $49.99. Rates do not vary by age.<br>';
   html +=
     '&#8226; Plan pays a fixed cash benefit -- NOT a percentage of the bill -- member may owe significant balance<br>';
   html += '&#8226; No true out-of-pocket maximum on any of these plans<br>';
@@ -187,7 +187,7 @@ function renderComplianceCenter() {
   html +=
     '&#8226; Detego Health = Third-Party Administrator NOT the underwriter<br>';
   html +=
-    '&#8226; Billing: Name the billing admin -- either FirstEnroll OR NEO Insurance Solutions depending on which portal was used to enroll. Do not name both unless both apply.<br>';
+    '&#8226; Billing: Name the billing admin the plan script names -- FirstEnroll (FirstEnroll plans), Neo Health Solutions (NEO plans) or Premier Health Solutions (Premier plans; statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS). Do not name two unless the script does.<br>';
   html += '&#8226; Labs, X-rays, imaging: NOT COVERED on any tier<br>';
   html +=
     '&#8226; Outpatient surgery: NOT COVERED on TDK 1/2/3 -- covered on TDK 4/5 only<br>';
@@ -974,7 +974,7 @@ function runCallAudit() {
 var CHA_EVERY_CALL_RULES = [
   'State your full name and Central Health Advisors within the first 30 seconds',
   'State the exact plan name verbally and the plan type (MEC group plan, short-term medical, or fixed indemnity limited benefit)',
-  'Name the billing administrator by name -- FirstEnroll or NEO Insurance Solutions',
+  'Name the billing administrator by name -- FirstEnroll, Neo Health Solutions or Premier Health Solutions, as the plan script says',
   'State this is NOT ACA-compliant major medical insurance',
   'Tell member to verify providers are in-network themselves -- never guarantee a specific doctor',
   'Break down first month cost AND ongoing monthly cost separately including enrollment fee',
