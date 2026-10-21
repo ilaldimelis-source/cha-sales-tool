@@ -2322,7 +2322,7 @@ var CHA_QUICK_REF = [
     assoc: 'Good Life Partners, LP (member joins as Limited Partner)',
     uw: 'Sponsor: Wellness Brands Management LLC / Plan Admin/TPA: Merchants Benefit Administration (MBA)',
     claims: 'MBA 480-550-6457, accountservices@mbaadmin.com',
-    billing: 'NEO Insurance Solutions',
+    billing: 'Neo Health Solutions',
     vault: 'goodlifewbchoice',
     script:
       'Goodlife Partners WB CHOICE and WB SELECT (Match Doctor visits to Plan)'
@@ -2394,7 +2394,7 @@ var CHA_QUICK_REF = [
     uwLabel: 'Administrator',
     claims:
       'Detego Health LLC, PO Box 211609, Eagan, MN 55121 / Payer EDI 62599 / 866-815-6001',
-    billing: 'FirstEnroll / NEO Insurance Solutions',
+    billing: 'First Enroll',
     vault: 'tdk13',
     script: 'TDK 1,2,3 (Need Primary SSN)'
   },
@@ -2845,9 +2845,8 @@ function _qrRenderHero() {
   ];
   var notes = {
     All: 'Billing follows each plan script. NEO: Neo Health Solutions. FirstEnroll: FirstEnroll. Premier: Premier Health Solutions.',
-    NEO: 'Billing: Neo Health Solutions (WB Select / WB Choice script: NEO Insurance Solutions)',
-    FirstEnroll:
-      'Billing: FirstEnroll (TDK script: FirstEnroll / NEO Insurance Solutions)',
+    NEO: 'Billing: Neo Health Solutions',
+    FirstEnroll: 'Billing: FirstEnroll',
     Premier:
       'Billing: Premier Health Solutions. Bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
   };

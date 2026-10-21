@@ -32,7 +32,7 @@ var KNOWLEDGE_BASE = {
       primaryCopay: '$25',
       specialistCopay: '$50',
       requiresSSN: true,
-      billing: 'FirstEnroll / NEO Insurance Solutions'
+      billing: 'First Enroll'
     },
     'TDK 4-5': {
       type: 'MEC',
@@ -117,7 +117,8 @@ var KNOWLEDGE_BASE = {
         'Wellness Brands Management LLC, general partner of Good Life Partners LP',
       association: 'Good Life Partners',
       admin: 'Merchants Benefit Administration (MBA), (480) 550-6457',
-      billing: 'Neo Insurance Solutions, (866) 870-7730',
+      billing:
+        'Neo Health Solutions on statements (Neo Insurance Solutions, (866) 870-7730)',
       deductible: 'NONE',
       structure: 'Scheduled fixed indemnity. Same rate at every age.',
       enrollmentFee: '$49.99 one-time',
@@ -134,7 +135,8 @@ var KNOWLEDGE_BASE = {
         'Wellness Brands Management LLC, general partner of Good Life Partners LP',
       association: 'Good Life Partners',
       admin: 'Merchants Benefit Administration (MBA), (480) 550-6457',
-      billing: 'Neo Insurance Solutions, (866) 870-7730',
+      billing:
+        'Neo Health Solutions on statements (Neo Insurance Solutions, (866) 870-7730)',
       deductible: 'NONE',
       structure: 'Scheduled fixed indemnity. Same rate at every age.',
       enrollmentFee: '$49.99 one-time',
