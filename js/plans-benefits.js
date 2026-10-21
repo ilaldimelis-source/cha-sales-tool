@@ -2273,7 +2273,7 @@ var CHA_QUICK_REF = [
     assoc: 'NCE Association (National Congress of Employers)',
     uw: 'American Financial Security Life Ins. Co. / Standard Life & Casualty Ins. Co. (by state)',
     claims:
-      'Not listed on NEO info page / NEO 866-870-7730, csr@neoinsurancesolutions.com',
+      'Not listed on NEO info page',
     billing: 'Neo Health Solutions',
     vault: 'smarthealth',
     script: 'Smart Health STM Traditional'
@@ -2512,7 +2512,7 @@ var CHA_QUICK_REF = [
     assoc: 'Communicating for America Association',
     uw: 'The North River Insurance Co.',
     claims:
-      'Handled by the carrier; Premier (PHS) does not provide customer service for this plan',
+      'Not listed. Premier (PHS) does not provide customer service for this plan',
     billing:
       'Premier Health Solutions (bank statement shows PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS)',
     id: 'pr-nexuscare',

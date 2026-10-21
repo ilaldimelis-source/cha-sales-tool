@@ -182,7 +182,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: 'HarmonyCarePLUS_Brochure_8949272987_V3_0625.pdf',
     active: true
@@ -195,7 +195,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: '',
     active: true
@@ -208,7 +208,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: '',
     active: true
@@ -221,7 +221,7 @@ var CHA_PLAN_REGISTRY = [
     tier: 1,
     platform: 'FirstEnroll',
     carrier: 'American Financial Security Life Insurance Co.',
-    network: 'First Health',
+    network: 'First Health Limited Benefit Network',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: 'AFSLIC20_SCP_Brochure_rev.pdf',
     active: true
