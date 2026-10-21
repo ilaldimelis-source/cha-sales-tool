@@ -149,27 +149,34 @@ var policyDocTierId = '';
 var _pdProfileReq = 0;
 
 var PD_SCRIPT_BY_ID = {
-  goodhealth13: 'TrueHealth / MedFirst / GoodHealth 1,2,3', // lineup-guard-ignore: script name
-  goodhealth45: 'MedFirst / GoodHealth 4,5', // lineup-guard-ignore: script name
-  tdk13: 'TDK 1,2,3',
-  tdk45: 'TDK 4,5',
+  goodhealth13: 'MedFirst/GoodHealth 1,2,3', // lineup-guard-ignore: script name
+  goodhealth45: 'MedFirst/ GoodHealth 4, 5 (Need Primary SSN)', // lineup-guard-ignore: script name
+  tdk13: 'TDK 1,2,3 (Need Primary SSN)',
+  tdk45: 'TDK 4,5 (Need Primary SSN)',
   smartchoice: 'NEO Smart Choice',
   pinnacle: 'NEO Pinnacle STM Traditional',
   accesshealth: 'Access Health STM',
-  harmonycare: 'Everest / HarmonyCare / SigmaCare',
-  sigmacare: 'Everest / HarmonyCare / SigmaCare',
-  everest: 'Everest / HarmonyCare / SigmaCare',
-  bwapara: 'BWA Paramount 1-6',
-  bwaamericare: 'BWA Americare 2,3,4',
+  harmonycare:
+    'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)',
+  sigmacare:
+    'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)',
+  everest:
+    'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)',
+  harmonycarebase:
+    'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)',
+  advancedwellnessplus:
+    'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)',
+  bwapara: 'BWA Paramount 1-6 (First Enroll)',
+  bwaamericare: 'BWA Americare 2,3,4 (First Enroll)',
   healthchoicesilver: 'Health Choice Silver',
   harborstmessential: 'Harbor STM Essential',
   harborstmaccess: 'Harbor STM Access',
   harborstmsecure: 'Harbor STM Secure',
   goodlifewbchoice:
-    'Goodlife Partners WB Choice and WB Select (Match Doctor visits to Plan)',
+    'Goodlife Partners WB CHOICE and WB SELECT (Match Doctor visits to Plan)',
   goodlifewbselect:
-    'Goodlife Partners WB Choice and WB Select (Match Doctor visits to Plan)',
-  pinnacleprotect: 'Pinnacle Protect Plan 1-4' // lineup-guard-ignore: script name
+    'Goodlife Partners WB CHOICE and WB SELECT (Match Doctor visits to Plan)',
+  pinnacleprotect: 'Pinnacle Protect Plan 1 - 4' // lineup-guard-ignore: script name
 };
 
 var PD_GROUPS = [
