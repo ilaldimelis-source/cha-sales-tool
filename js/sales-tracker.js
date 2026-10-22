@@ -10186,6 +10186,19 @@ function _stParsePaySheet(text) {
     if (!line) continue;
     var summaryKind = _stPaySheetSummaryLineKind(line);
     if (summaryKind) {
+      // CHA Tools copies its summary cards as a label line ("NET PAY")
+      // followed by the amount on its own line ("$4,990.68").
+      if (!/\$\s*[0-9]/.test(line)) {
+        for (var la = i + 1; la < lines.length; la++) {
+          var nextLine = String(lines[la] || '').trim();
+          if (!nextLine) continue;
+          if (/^[-−–]?\s*\$\s*[0-9,]+(?:\.[0-9]{1,2})?$/.test(nextLine)) {
+            line = line + ' ' + nextLine;
+            i = la;
+          }
+          break;
+        }
+      }
       _stApplyPaySheetSummaryLine(summary, summaryKind, line);
       continue;
     }
@@ -12966,6 +12979,441 @@ function _stRefreshReconcileView() {
   }
 }
 
+// ── PAY SHEET CHECK (redesign part 3) ───────────────────────
+// Deal-by-deal view of a pasted CHA Tools pay sheet, checked against
+// the tracker: commission per deal, the $20 Enrollment Fee Bonus per
+// $125 enrollment fee, the $300 SPIFF minimum, the pay sheet math,
+// clients missing from the sheet and paid deals from other weeks.
+var _ST_EFB_PER_DEAL = 20;
+var _ST_SPIFF_MIN = 300;
+
+function _stPayCheckData(sales, view) {
+  var rows = _stPaySheetRows || [];
+  var sum = _stPaySheetSummary || _stEmptyPaySheetSummary(false);
+  var rates = _stLoadCommissionRates();
+  var weekSales = _stReconWeekSales(sales, view) || [];
+  var tracker = {};
+  var tOrder = [];
+  var i;
+  for (i = 0; i < weekSales.length; i++) {
+    var t = weekSales[i];
+    if (!t || _stIsFeeLine(t)) continue;
+    var tk = String(t.memberId || t.receiptId || t.id);
+    if (!tracker[tk]) {
+      tracker[tk] = {
+        key: tk,
+        customer: t.customer || '',
+        memberId: t.memberId || '',
+        plan: '',
+        addons: [],
+        expected: 0,
+        fee125: false,
+        reversed: false,
+        ts: t.ts
+      };
+      tOrder.push(tk);
+    }
+    var tr = tracker[tk];
+    if (t.type === 'deal' && !tr.plan) tr.plan = t.plan || '';
+    else tr.addons.push(t.plan || 'Add-on');
+    if (
+      t.type === 'deal' &&
+      Number(t.enrollmentAmount || t.enrollmentFee || 0) === 125
+    ) {
+      tr.fee125 = true;
+    }
+    if (_stIsReversalStatus(t)) tr.reversed = true;
+    else tr.expected += _stComputeLineCommission(t, rates);
+  }
+  var sheet = {};
+  var sOrder = [];
+  var sheetLineTotal = 0;
+  for (i = 0; i < rows.length; i++) {
+    var r = rows[i];
+    if (!r || !r.memberId) continue;
+    var amt = Number(r.amount) || 0;
+    sheetLineTotal += amt;
+    var sk = String(r.memberId);
+    if (!sheet[sk]) {
+      sheet[sk] = {
+        key: sk,
+        customer: r.customer || '',
+        plan: '',
+        addons: [],
+        core: 0,
+        anc: 0,
+        dateTs: r.dateTs || 0
+      };
+      sOrder.push(sk);
+    }
+    var sh = sheet[sk];
+    if (!sh.customer && r.customer) sh.customer = r.customer;
+    if (/^core$/i.test(String(r.typeRaw || '')) && !sh.plan) {
+      sh.plan = r.productName || '';
+      sh.core += amt;
+    } else {
+      sh.addons.push(r.productName || 'Add-on');
+      sh.anc += amt;
+    }
+  }
+  // Lines with no member ID ("10/14  Jason Collins  —  Core  RXSavers
+  // $10.00") are dropped by the row parser; credit them to the client
+  // with that name so the per-deal total matches what was paid.
+  var rawLines = String(_stPaySheetRawText || '').split(/\r?\n/);
+  for (i = 0; i < rawLines.length; i++) {
+    var rl = rawLines[i];
+    if (/\b\d{9}\b/.test(rl)) continue;
+    if (!/\b(Core|Ancillary)\b/i.test(rl)) continue;
+    if (!/^\s*\d{1,2}\/\d{1,2}/.test(rl)) continue;
+    var rm = _stPaySheetLineLastMoney(rl);
+    if (rm == null) continue;
+    for (var sj = 0; sj < sOrder.length; sj++) {
+      var cand = sheet[sOrder[sj]];
+      if (cand.customer && rl.indexOf(cand.customer) !== -1) {
+        var pm = rl.match(
+          /\b(?:Core|Ancillary)\b\s+(.+?)\s+[-\u2212\u2013]?\s*\$/i
+        );
+        cand.addons.push(pm ? pm[1].trim() : 'Other');
+        cand.anc += rm;
+        sheetLineTotal += rm;
+        break;
+      }
+    }
+  }
+  var deals = [];
+  var efbCount = 0;
+  var underpaid = 0;
+  var paidOnSheetN = 0;
+  var activeN = 0;
+  var missing = [];
+  for (i = 0; i < tOrder.length; i++) {
+    var tt = tracker[tOrder[i]];
+    if (tt.reversed) continue;
+    activeN++;
+    if (!sheet[tt.key]) {
+      missing.push(tt);
+      continue;
+    }
+    paidOnSheetN++;
+  }
+  var otherWeek = [];
+  for (i = 0; i < sOrder.length; i++) {
+    var ss = sheet[sOrder[i]];
+    var tm = tracker[ss.key] || null;
+    var paid = _stMoney2(ss.core + ss.anc);
+    var expected = tm && !tm.reversed ? _stMoney2(tm.expected) : null;
+    var efb = tm && tm.fee125 && !tm.reversed ? _ST_EFB_PER_DEAL : 0;
+    if (efb) efbCount++;
+    var short = 0;
+    if (expected != null && expected - paid > 0.5) {
+      short = _stMoney2(expected - paid);
+      underpaid += short;
+    }
+    var d = {
+      key: ss.key,
+      customer: ss.customer || (tm && tm.customer) || '',
+      plan: ss.plan || (tm && tm.plan) || '',
+      addons: ss.addons,
+      core: _stMoney2(ss.core),
+      anc: _stMoney2(ss.anc),
+      efb: efb,
+      paid: paid,
+      expected: expected,
+      short: short,
+      extra:
+        expected != null && paid - expected > 0.5
+          ? _stMoney2(paid - expected)
+          : 0
+    };
+    deals.push(d);
+    if (!tm) otherWeek.push(d);
+  }
+  var efbExpected = efbCount * _ST_EFB_PER_DEAL;
+  var efbPaid = Number(sum.enrollmentFeeBonus) || 0;
+  var efbShort = Math.max(0, _stMoney2(efbExpected - efbPaid));
+  var spiff = Number(sum.spiffBonus) || 0;
+  var spiffShort =
+    sum.found && spiff < _ST_SPIFF_MIN ? _stMoney2(_ST_SPIFF_MIN - spiff) : 0;
+  var commission = Number(sum.totalsCommission) || _stMoney2(sheetLineTotal);
+  var mathTotal = _stMoney2(
+    commission +
+      (Number(sum.tierBonus) || 0) +
+      efbPaid +
+      spiff -
+      (Number(sum.chargebackAmount) || 0)
+  );
+  var net = Number(sum.netPay) || 0;
+  var mathOk = !net || Math.abs(mathTotal - net) < 0.02;
+  var missingMoney = _stMoney2(underpaid + efbShort + spiffShort);
+  return {
+    sum: sum,
+    deals: deals,
+    missing: missing,
+    otherWeek: otherWeek,
+    otherLines: _stMoney2(commission - sheetLineTotal),
+    commission: commission,
+    net: net,
+    shouldBe: net ? _stMoney2(net + missingMoney) : null,
+    missingMoney: missingMoney,
+    underpaid: _stMoney2(underpaid),
+    efbCount: efbCount,
+    efbExpected: efbExpected,
+    efbPaid: efbPaid,
+    efbShort: efbShort,
+    spiff: spiff,
+    spiffShort: spiffShort,
+    mathTotal: mathTotal,
+    mathOk: mathOk,
+    paidOnSheetN: paidOnSheetN,
+    activeN: activeN
+  };
+}
+
+function _stBuildPayCheckHtml(sales, view) {
+  if (!_stPaySheetRows || !_stPaySheetRows.length) return '';
+  var c = _stPayCheckData(sales, view);
+  var money = _stFmtMoney;
+  var html = '<section class="st-pc2" aria-label="Pay sheet check">';
+  // 1. Banner
+  if (c.missingMoney > 0.004) {
+    var why = [];
+    if (c.efbShort) {
+      why.push(
+        'Enrollment Fee Bonus short ' +
+          money(c.efbShort) +
+          ' (' +
+          c.efbCount +
+          ' \u00D7 $20 = ' +
+          money(c.efbExpected) +
+          ', paid ' +
+          money(c.efbPaid) +
+          ')'
+      );
+    }
+    if (c.underpaid)
+      why.push('deals paid ' + money(c.underpaid) + ' less than expected');
+    if (c.spiffShort) why.push('SPIFF under $300 by ' + money(c.spiffShort));
+    html +=
+      '<div class="st-pc2-banner is-bad"><b>\u2717 ' +
+      money(c.missingMoney) +
+      ' may be missing</b><span>Ask payroll: ' +
+      _stEscape(why.join('; ')) +
+      '</span></div>';
+  } else {
+    html +=
+      '<div class="st-pc2-banner is-good"><b>\u2713 No missing money found</b><span>Commission, Enrollment Fee Bonus and SPIFF all check out.</span></div>';
+  }
+  // 2. Summary strip
+  html += '<div class="st-stat-strip st-pc2-strip">';
+  html +=
+    '<div class="st-stat-cell"><span class="st-stat-label">Net pay</span><span class="st-stat-val">' +
+    (c.net ? money(c.net) : '\u2014') +
+    '</span></div>';
+  html +=
+    '<div class="st-stat-cell"><span class="st-stat-label">Should be</span><span class="st-stat-val">' +
+    (c.shouldBe != null ? money(c.shouldBe) : '\u2014') +
+    '</span></div>';
+  html +=
+    '<div class="st-stat-cell"><span class="st-stat-label">Difference</span><span class="st-stat-val' +
+    (c.missingMoney > 0.004 ? ' st-stat-bad' : '') +
+    '">' +
+    (c.missingMoney > 0.004 ? '-' + money(c.missingMoney) : money(0)) +
+    '</span></div>';
+  html +=
+    '<div class="st-stat-cell"><span class="st-stat-label">Clients paid</span><span class="st-stat-val">' +
+    c.paidOnSheetN +
+    ' of ' +
+    c.activeN +
+    (c.paidOnSheetN >= c.activeN ? ' \u2713' : '') +
+    '</span></div>';
+  html += '</div>';
+  // 3. Deal by deal
+  html +=
+    '<div class="st-pc2-card"><h3 class="st-pc2-title">Deal by deal</h3><div class="st-pc2-scroll"><div class="st-pc2-table">';
+  html +=
+    '<div class="st-pc2-row st-pc2-head"><span>Client \u00B7 member ID</span><span>Plan + add-ons</span><span>Core comm.</span><span>Add-on comm.</span><span>Enrollment fee bonus</span><span>Total paid</span></div>';
+  var tCore = 0;
+  var tAnc = 0;
+  var tEfb = 0;
+  var tPaid = 0;
+  for (var i = 0; i < c.deals.length; i++) {
+    var d = c.deals[i];
+    tCore += d.core;
+    tAnc += d.anc;
+    tEfb += d.efb;
+    tPaid += d.paid;
+    var note = '';
+    if (d.short) {
+      note =
+        '<small class="st-pc2-bad">expected ' + money(d.expected) + '</small>';
+    } else if (d.extra) {
+      note =
+        '<small class="st-pc2-good">+' +
+        money(d.extra) +
+        ' over estimate</small>';
+    } else if (d.expected == null) {
+      note =
+        '<small class="st-pc2-muted">not in this week\u2019s deals</small>';
+    }
+    html +=
+      '<div class="st-pc2-row' +
+      (d.short ? ' is-bad' : '') +
+      '"><span><b>' +
+      _stEscape(d.customer || '\u2014') +
+      '</b><small>' +
+      _stEscape(d.key) +
+      '</small></span><span>' +
+      _stEscape(d.plan || '\u2014') +
+      (d.addons.length
+        ? '<small>+ ' + _stEscape(d.addons.join(', ')) + '</small>'
+        : '') +
+      '</span><span>' +
+      money(d.core) +
+      '</span><span>' +
+      money(d.anc) +
+      '</span><span>' +
+      (d.efb ? money(d.efb) : '\u2014') +
+      '</span><span><b>' +
+      money(d.paid) +
+      '</b>' +
+      note +
+      '</span></div>';
+  }
+  if (Math.abs(c.otherLines) > 0.004) {
+    html +=
+      '<div class="st-pc2-row"><span><b>Lines without a member ID</b><small>e.g. RXSavers bonus</small></span><span></span><span></span><span>' +
+      money(c.otherLines) +
+      '</span><span>\u2014</span><span><b>' +
+      money(c.otherLines) +
+      '</b></span></div>';
+    tAnc += c.otherLines;
+    tPaid += c.otherLines;
+  }
+  html +=
+    '<div class="st-pc2-row st-pc2-total"><span>Deals total</span><span></span><span>' +
+    money(tCore) +
+    '</span><span>' +
+    money(tAnc) +
+    '</span><span>' +
+    money(tEfb) +
+    '</span><span>' +
+    money(tPaid) +
+    '</span></div>';
+  html += '</div></div></div>';
+  // 4. Salary & extras
+  var extra = c.spiff > _ST_SPIFF_MIN ? c.spiff - _ST_SPIFF_MIN : 0;
+  html +=
+    '<div class="st-pc2-card"><h3 class="st-pc2-title">Salary &amp; extras</h3>';
+  html +=
+    '<div class="st-pc2-line"><span>SPIFF salary (guaranteed $300 every week)</span><b>' +
+    money(Math.min(c.spiff, _ST_SPIFF_MIN)) +
+    (c.spiffShort
+      ? ' <i class="st-pc2-bad">\u2717</i>'
+      : ' <i class="st-pc2-good">\u2713</i>') +
+    '</b></div>';
+  html +=
+    '<div class="st-pc2-line"><span>Extra SPIFF bonus <small>(recorded, not checked)</small></span><b>' +
+    money(extra) +
+    '</b></div>';
+  html +=
+    '<div class="st-pc2-line"><span>Tier bonus <small>(recorded, not checked)</small></span><b>' +
+    money(Number(c.sum.tierBonus) || 0) +
+    '</b></div>';
+  html +=
+    '<div class="st-pc2-line"><span>Enrollment Fee Bonus (' +
+    c.efbCount +
+    ' \u00D7 $20)</span><b>' +
+    money(c.efbPaid) +
+    (c.efbShort
+      ? ' <i class="st-pc2-bad">\u2717</i>'
+      : ' <i class="st-pc2-good">\u2713</i>') +
+    '</b></div>';
+  html +=
+    '<div class="st-pc2-line"><span>Chargebacks taken out</span><b class="st-pc2-bad">-' +
+    money(Number(c.sum.chargebackAmount) || 0) +
+    '</b></div>';
+  html += '</div>';
+  // 5. What was checked
+  var checks = [];
+  function chk(ok, text) {
+    checks.push(
+      '<li class="' +
+        (ok ? 'is-ok' : 'is-bad') +
+        '">' +
+        (ok ? '\u2713 ' : '\u2717 ') +
+        _stEscape(text) +
+        '</li>'
+    );
+  }
+  chk(
+    !c.missing.length,
+    c.missing.length
+      ? c.missing.length +
+          ' of this week\u2019s clients not on the pay sheet: ' +
+          c.missing
+            .map(function (m) {
+              return (
+                (m.customer || 'Client') +
+                (m.memberId ? ' (' + m.memberId + ')' : '')
+              );
+            })
+            .join(', ') +
+          '. ACH deals are paid next week; otherwise confirm a cancel or ask payroll.'
+      : 'Every client this week is on the pay sheet'
+  );
+  chk(
+    !c.underpaid,
+    c.underpaid
+      ? 'Some deals were paid less than the tracker estimate (rows in red)'
+      : 'Commission per deal matches or beats the tracker estimate'
+  );
+  chk(
+    !c.efbShort,
+    'Enrollment Fee Bonus: ' +
+      c.efbCount +
+      ' deal' +
+      (c.efbCount === 1 ? '' : 's') +
+      ' with a $125 fee \u00D7 $20 = ' +
+      money(c.efbExpected) +
+      ', paid ' +
+      money(c.efbPaid)
+  );
+  chk(!c.spiffShort, 'SPIFF is at least $300');
+  chk(
+    c.mathOk,
+    c.mathOk
+      ? 'Pay sheet math adds up (commission + bonuses + SPIFF - chargebacks = net pay)'
+      : 'Pay sheet math is off: commission + bonuses + SPIFF - chargebacks = ' +
+          money(c.mathTotal) +
+          ', net pay shows ' +
+          money(c.net)
+  );
+  if (c.otherWeek.length) {
+    checks.push(
+      '<li class="is-info">\u2022 ' +
+        _stEscape(
+          'Paid, not in this week\u2019s deals: ' +
+            c.otherWeek
+              .map(function (o) {
+                return (
+                  (o.customer || 'Client') + ' (' + o.key + ') ' + money(o.paid)
+                );
+              })
+              .join(', ') +
+            ' (often an earlier or post-dated deal)'
+        ) +
+        '</li>'
+    );
+  }
+  html +=
+    '<div class="st-pc2-card"><h3 class="st-pc2-title">What was checked</h3><ul class="st-pc2-checks">' +
+    checks.join('') +
+    '</ul></div>';
+  html += '</section>';
+  html += '<h3 class="st-pc2-details-title">Line-by-line details</h3>';
+  return html;
+}
+
 function _stBuildReconcilePane(sales, view) {
   var matchView = _stReconcileMatchView || view;
   if (_stPaySheetRows && _stPaySheetRows.length) {
@@ -12988,6 +13436,7 @@ function _stBuildReconcilePane(sales, view) {
 
   var html =
     '<section class="st-recon-pane st-recon-v2" aria-label="Reconcile">';
+  html += _stBuildPayCheckHtml(sales, state.matchView || matchView);
   html += '<div class="st-recon-v2-header">';
   html += '<div class="st-tab-hero">';
   html += '<div class="st-tab-hero-row">';
