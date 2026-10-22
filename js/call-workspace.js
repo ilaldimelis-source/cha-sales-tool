@@ -1086,16 +1086,8 @@ CW_FAMS.push(
     type: 'Limited',
     platform: 'NEO',
     aqNone: CW_NONE_NEO,
-    cq: [
-      [
-        'Who do I call with questions?',
-        'From the NEO enrollment confirmation: "For questions about billing or enrollment, contact Neo Insurance Solutions at (866) 870-7730. For questions about benefits, eligibility, or claims, contact Merchants Benefit Administration (MBA) at (480) 550-6457."'
-      ],
-      [
-        'Why am I a Limited Partner?',
-        'From the NEO enrollment confirmation: "Since you are now a Limited Partner or Affiliate in the Good Life Partners Limited Partnership (Wellness Brands Management Company, LLC is the General Partner), you can enroll in the WB Plan."'
-      ]
-    ],
+    partner:
+      'From the NEO enrollment confirmation: "Since you are now a Limited Partner or Affiliate in the Good Life Partners Limited Partnership (Wellness Brands Management Company, LLC is the General Partner), you can enroll in the WB Plan."',
     tiers: cwTiers(
       ['Choice', 'Select'],
       'Goodlife Partners WB CHOICE and WB SELECT (Match Doctor visits to Plan)'
@@ -1280,28 +1272,8 @@ CW_FAMS.push(
     type: 'MEC',
     platform: 'Premier',
     aqNone: CW_NONE_PR,
-    cq: [
-      [
-        'Why do I have to join a partnership?',
-        'From the Premier enrollment page: "The AdvantCare health plans are offered to eligible plan participants of qualified groups only. By agreeing to become a Limited Partner of Consumer Data Partners, LP (DBA VistaWell) and actively using the Ease Total Health App, you are eligible to enroll in AdvantCare 2, which includes the AdvantCare 2-MEC HP group health plan plus additional ancillary benefits."'
-      ],
-      [
-        'What do I have to do with the app?',
-        'From the Premier cart: "Participants MUST keep the app active for a minimum of 500 hours a year (about 42 hours each month) to remain a partner and maintain eligibility for their health plan. Their data will be kept entirely confidential . To stay active, participants need to download, sign in and allow geolocation tracking on the app." From the enrollment page: "All Limited Partners must confirm the download of the EASE Total Health Mobile App (IOS or Android) within 30 days after becoming a Limited Partner."'
-      ],
-      [
-        'Who do I call about the app?',
-        'From the Premier enrollment page: "Contact Limited Partnership Fulfillment Center at (800) 946-8713 if you have any questions regarding app."'
-      ],
-      [
-        'Can my kids stay on it?',
-        'From the Premier enrollment page: "AdvantCare 2-MEC HP allows dependent children to remain on their parents\' plan until they reach age 26."'
-      ],
-      [
-        'What states can it be sold in?',
-        'From the Premier enrollment page: "The AdvantCare 2 group plan cannot be marketed to MD, MI, SD, VT, and WA residents."'
-      ]
-    ],
+    partner:
+      'From the Premier enrollment page: "The AdvantCare health plans are offered to eligible plan participants of qualified groups only. By agreeing to become a Limited Partner of Consumer Data Partners, LP (DBA VistaWell) and actively using the Ease Total Health App, you are eligible to enroll in AdvantCare 2, which includes the AdvantCare 2-MEC HP group health plan plus additional ancillary benefits."',
     tiers: cwTiers(
       [
         '2',
@@ -1331,12 +1303,6 @@ CW_FAMS.push(
     type: 'MEC',
     platform: 'Premier',
     aqNone: CW_NONE_PR,
-    cq: [
-      [
-        'Can I see any doctor?',
-        'From the Premier cart: "Physician Services and Preventive & Wellness Services must be provided by an in-network provider."'
-      ]
-    ],
     tiers: cwTiers(['1', '2', '3', '4', '5'], function (t) {
       return Number(t) <= 3
         ? 'TVP Health Plan 1, 2, 3 (Match Visits to Plan)'
@@ -1377,9 +1343,6 @@ var CW_PS_NAME = {
   'TDK 1,2,3': 'TDK 1,2,3 (Need Primary SSN)',
   'TDK 4,5': 'TDK 4,5 (Need Primary SSN)'
 };
-
-var CW_NEO_CANCEL =
-  'From the NEO enrollment authorization (seen on the Galena application, Oct 22 2026): to cancel, notify Neo Insurance Solutions in writing at least three business days before the next payment, at csr@neoinsurancesolutions.com or Member Services (866) 870-7730. For a refund, contact Neo within 30 days of purchase; coverage is cancelled as of the effective date and the premium is returned less any claims paid.';
 
 function cwQr(fam) {
   if (typeof CHA_QUICK_REF === 'undefined' || !fam.qr) return null;
@@ -1483,69 +1446,27 @@ function cwScriptLine(name, re) {
 // script (say it word for word) or a fact from the plan data, the
 // carrier or the enrollment portal (say it in your own words).
 function cwClientQs(fam, tier) {
-  var q = cwQr(fam);
-  var facts = cwFacts(fam);
-  var name = tier.script;
-  var out = [];
-  var say = function (title, re) {
-    var line = cwScriptLine(name, re);
-    if (line) out.push({ q: title, a: line, kind: 'say' });
-    return !!line;
-  };
-  var fact = function (title, text) {
-    if (text) out.push({ q: title, a: text, kind: 'fact' });
-  };
-  var factOf = function (label) {
-    for (var i = 0; i < facts.length; i++) {
-      if (facts[i][0] === label) return facts[i][1];
+  var t = 'Why am I a member or partner?';
+  var line = cwScriptLine(tier.script, /Working Owner|Limited Partner/i);
+  if (line) return [{ q: t, a: line, kind: 'say' }];
+  // The approved On Call copy (CW_SCRIPTS), then the approved
+  // "If the client asks" card on the app questions (SmartChoice).
+  var cw = CW_SCRIPTS[tier.script];
+  var paras = cw ? cwParas(cw.text) : [];
+  for (var i = 0; i < paras.length; i++) {
+    if (/Working Owner|Limited Partner/i.test(paras[i])) {
+      return [{ q: t, a: paras[i], kind: 'say' }];
     }
-    return '';
-  };
-  say(
-    'Is this Obamacare or major medical?',
-    /not an ACA|NOT an ACA|not ACA|not a major medical/i
-  );
-  var who = [];
-  facts.forEach(function (f) {
-    if (f[0] !== 'Network' && f[0] !== 'Billing') {
-      who.push(f[0] + ': ' + String(f[1]).replace(/\.$/, ''));
+  }
+  var aq = fam.aq && typeof appqFind === 'function' ? appqFind(fam.aq) : null;
+  var talk = aq && aq.talk ? aq.talk : [];
+  for (var k = 0; k < talk.length; k++) {
+    if (/Working Owner/i.test(talk[k].t)) {
+      return [{ q: t, a: talk[k].say, kind: 'say' }];
     }
-  });
-  fact('Who is the insurance with?', who.join('. '));
-  if (!say('Can I see my own doctor?', /search providers/i)) {
-    fact('Can I see my own doctor?', factOf('Network'));
-  } else if (factOf('Network')) {
-    out[out.length - 1].extra = 'Network: ' + factOf('Network');
   }
-  say(
-    'When does it start, and when is my next payment?',
-    /become effective|policy will be effective|effective on/i
-  );
-  say(
-    'When do I get my cards?',
-    /receive your (physical |digital )?(insurance )?(ID )?cards|ID cards? (by|in the) mail/i
-  );
-  fact('What will I see on my bank statement?', factOf('Billing'));
-  say('Who do I call with questions?', /customer service number is/i);
-  if (q && q.claims && !/^Not listed/i.test(q.claims)) {
-    fact('Where do claims go?', q.claims);
-  }
-  if (fam.platform === 'NEO') {
-    fact('How do I cancel? Can I get a refund?', CW_NEO_CANCEL);
-  }
-  say('What about pre-existing conditions?', /pre-existing/i);
-  say('Is there a waiting period?', /waiting period/i);
-  say('Why am I a member or partner?', /Working Owner|Limited Partner/i);
-  (fam.cq || []).forEach(function (c) {
-    fact(c[0], c[1]);
-  });
-  // A script line can answer two questions; keep the first.
-  var seen = {};
-  return out.filter(function (x) {
-    if (seen[x.a]) return false;
-    seen[x.a] = 1;
-    return true;
-  });
+  if (fam.partner) return [{ q: t, a: fam.partner, kind: 'fact' }];
+  return [];
 }
 
 function cwClientTab(fam, tier) {
@@ -2252,9 +2173,10 @@ function renderCallWorkspace(keepFocus) {
       'd',
       'Before enrollment',
       confirmCount ? String(confirmCount) : block ? 'recap' : 'none'
-    ],
-    ['c', 'Client questions', String(cwClientQs(fam, tier).length)]
+    ]
   ];
+  if (cwClientQs(fam, tier).length) tabs.push(['c', 'Client questions', '1']);
+  else if (cwState.tab === 'c') cwState.tab = 'plan';
   var body =
     cwState.tab === 'q'
       ? cwQuestionsTab(fam)
