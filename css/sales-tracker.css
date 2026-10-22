@@ -7454,3 +7454,125 @@ body.st-pb-modal-open {
     display: none;
   }
 }
+
+/* ── Redesign part 2: stat strips, kept months, plan keep table ── */
+#page-salestracker .st-stat-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 36px;
+  margin: 0 0 14px;
+  padding: 20px 24px;
+  border-radius: 22px;
+  border: 1px solid #bfdbfe;
+  background: radial-gradient(
+    circle at 85% 15%,
+    #c7d2fe 0%,
+    #dbeafe 40%,
+    #eff6ff 75%,
+    var(--cha-bg-card) 100%
+  );
+  box-shadow: 0 6px 18px rgb(59 130 246 / 14%);
+}
+
+#page-salestracker .st-stat-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#page-salestracker .st-stat-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cha-text-secondary);
+}
+
+#page-salestracker .st-stat-val {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--cha-text-primary);
+}
+
+#page-salestracker .st-stat-val.st-stat-bad {
+  color: var(--cha-danger-text);
+}
+
+#page-salestracker .st-stat-val.st-stat-warn {
+  color: var(--cha-warning-text);
+}
+
+#page-salestracker .st-stat-period {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--cha-text-secondary);
+}
+
+#page-salestracker .st-kept {
+  font-weight: 600;
+  color: var(--cha-accent-dark);
+}
+
+#page-salestracker .st-chip-clear {
+  color: var(--cha-text-secondary);
+}
+
+#page-salestracker .st-cbc-week-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 14px 2px 6px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--cha-text-primary);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: var(--cha-text-primary);
+}
+
+#page-salestracker .st-cbc-week-head:first-child {
+  margin-top: 0;
+}
+
+#page-salestracker .st-keep-card {
+  margin: 16px 0 0;
+  padding: 20px 22px;
+  border: 1px solid var(--cha-border-subtle);
+  border-radius: 22px;
+  background: var(--cha-bg-card);
+}
+
+#page-salestracker .st-keep-title {
+  margin: 0 0 10px;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+#page-salestracker .st-keep-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.8fr) repeat(3, minmax(0, 0.8fr));
+  gap: 10px;
+  padding: 9px 2px;
+  border-bottom: 1px solid var(--cha-border-subtle);
+  font-size: 14px;
+}
+
+#page-salestracker .st-keep-row span:not(:first-child) {
+  text-align: right;
+}
+
+#page-salestracker .st-keep-row:last-child {
+  border-bottom: 0;
+}
+
+#page-salestracker .st-keep-head {
+  border-bottom: 2px solid var(--cha-text-primary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--cha-text-secondary);
+}
+
+#page-salestracker .st-keep-name {
+  font-weight: 700;
+}
