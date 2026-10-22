@@ -42,6 +42,13 @@ Live URL: https://cha-sales-tool.vercel.app/
 - Dark mode has been permanently removed from this app and should not be reintroduced.
 - Service worker cache: read `CACHE_NAME` from `sw2.js` and bump by exactly +1. Never assume the version.
 
+## On Call tab (js/call-workspace.js, Oct 22 2026)
+
+- `CW_FAMS` covers every Quick Reference family (31), grouped MEC / STM / Limited / Fixed indemnity, platforms NEO / FirstEnroll / Premier (teal).
+- The first nine families keep their own benefit tables and the approved `CW_SCRIPTS` before-enrollment text. The rest have no benefit table (Plan tab links to the plan card and script); facts come from `CHA_QUICK_REF` through `qr`, and Before enrollment reads the live Post Close recap from `PLAN_SCRIPTS`.
+- Client questions tab (`cwClientQs`): green = a line from the live plan script, word for word; grey = a fact from plan data or the enrollment portals. Never add answers that are not in a script or a source document.
+- App questions (`APPQ_PLANS` in js/app-questions.js) were copied from the portals Oct 22 2026 with a test client, never submitted. `soft: true` = the portal does not say which answer stops the application. `aqNone` = checked, no questions; `aqTodo` = not checked (SimpleShield, HealthBoost, AdvantCare 50).
+
 ## Protected Sales Tracker functions
 
 - Do not modify parser/storage/commission core paths without explicit approval:
