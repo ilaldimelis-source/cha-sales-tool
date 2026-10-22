@@ -1432,7 +1432,10 @@ var cwState = {
   tab: 'plan',
   meds: '',
   hh: '1',
-  conf: {}
+  conf: {},
+  homeType: '',
+  askQ: '',
+  askOpen: {}
 };
 var cwMedsTimer = null;
 
@@ -1566,7 +1569,10 @@ function cwPick(famName, tier) {
   cwState.q = '';
   cwState.browse = false;
   cwState.startFam = '';
+  cwState.homeType = '';
   cwState.tab = 'plan';
+  cwState.askQ = '';
+  cwRemember(f.name, tier);
   renderCallWorkspace();
 }
 
@@ -1808,7 +1814,7 @@ function cwDiscTab(fam, tier) {
           'The client said No. Explain that point again before payment.'
         ]
       : ready
-        ? ['ok', 'Ready for payment', 'The client confirmed every point.']
+        ? ['ok', 'Ready to send DocuSign', 'The client confirmed every point.']
         : [
             'wait',
             yes + ' of ' + total + ' confirmed',
@@ -1838,112 +1844,18 @@ function cwDiscTab(fam, tier) {
   );
 }
 
-function cwSugHtml() {
-  var h = '';
-  var groups = cwSearch(cwState.q);
-  if (!groups.length) {
-    h +=
-      '<p class="cw-muted">No plan matches. Try the plan name or tier number.</p>';
-  }
-  groups.forEach(function (g, gi) {
-    h +=
-      '<div class="cw-sug"><b>' +
-      cwEsc(g.fam.name) +
-      '</b><span class="cw-type">' +
-      cwEsc(g.fam.type) +
-      '</span>' +
-      g.tiers
-        .map(function (t) {
-          return (
-            '<button type="button" class="cw-chip' +
-            (gi === 0 && t === g.hit ? ' is-on' : '') +
-            '" data-cw-pick="' +
-            cwEsc(g.fam.name) +
-            '|' +
-            cwEsc(t) +
-            '">' +
-            cwEsc(t) +
-            '</button>'
-          );
-        })
-        .join('') +
-      '</div>';
-  });
-  return h;
-}
-
-function cwPickerHtml() {
-  var h =
-    '<div class="cw-card cw-picker"><div class="cw-row"><input id="cw-q" class="cw-search" type="text" autocomplete="off" spellcheck="false" placeholder="Find a plan: sc 1500, harbor access, tdk 3" value="' +
-    cwEsc(cwState.q) +
-    '"><button type="button" class="cw-link" data-cw-browse="1">' +
-    (cwState.browse ? 'Close' : 'Browse') +
-    '</button></div>';
-  if (cwState.q) {
-    h += cwSugHtml();
-  } else if (cwState.browse) {
-    h +=
-      '<div class="cw-browse"><div>' +
-      CW_TYPES.map(function (ty) {
-        return (
-          '<button type="button" class="cw-chip' +
-          (cwState.type === ty ? ' is-on' : '') +
-          '" data-cw-type="' +
-          ty +
-          '">' +
-          ty +
-          '</button>'
-        );
-      }).join('') +
-      '</div><div>' +
-      CW_FAMS.filter(function (f) {
-        return f.type === cwState.type;
-      })
-        .map(function (f) {
-          return (
-            '<button type="button" class="cw-chip' +
-            (f.name === cwState.fam ? ' is-on' : '') +
-            '" data-cw-fam="' +
-            cwEsc(f.name) +
-            '">' +
-            cwEsc(f.name) +
-            '</button>'
-          );
-        })
-        .join('') +
-      '</div>';
-    var cf = cwFam(cwState.fam);
-    if (cf.type === cwState.type) {
-      h +=
-        '<div>' +
-        cf.tiers
-          .map(function (t) {
-            return (
-              '<button type="button" class="cw-chip' +
-              (t.tier === cwState.tier ? ' is-on' : '') +
-              '" data-cw-pick="' +
-              cwEsc(cf.name) +
-              '|' +
-              cwEsc(t.tier) +
-              '">' +
-              cwEsc(t.tier) +
-              '</button>'
-            );
-          })
-          .join('') +
-        '</div>';
-    }
-    h += '</div>';
-  }
-  return h + '</div>';
-}
-
-var CW_ICON_MEC =
-  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.5-7-11a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 6.5-7 11-7 11z"/></svg>';
-var CW_ICON_LTD =
-  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>';
-var CW_ICON_STM =
-  '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg>';
+// ---------------------------------------------------------------
+// Live Call look (Oct 22 2026, approved by Mey on the design canvas):
+// a search-only home with Recent and Browse by type, a glass call
+// screen with four tabs: Plan, Disclosures, App questions, Client asks.
+// ---------------------------------------------------------------
+var CW_TYPE_LABEL = {
+  MEC: 'MEC',
+  STM: 'Short-term',
+  Limited: 'Limited',
+  'Fixed indemnity': 'Fixed indemnity'
+};
+var CW_RECENT_KEY = 'cha_oncall_recent';
 
 function cwGreeting() {
   var g = '';
@@ -1963,76 +1875,389 @@ function cwPlat(fam) {
       : 'neo';
 }
 
-function cwStartHtml() {
-  var tiles = function (type) {
-    return CW_FAMS.filter(function (f) {
-      return f.type === type;
-    })
-      .map(function (f) {
-        return (
-          '<button type="button" class="cw-tile' +
-          (cwState.startFam === f.name ? ' is-on' : '') +
-          '" data-cw-start="' +
-          cwEsc(f.name) +
-          '"><span class="cw-ico cw-ico-' +
-          cwPlat(f) +
-          '">' +
-          (type === 'MEC'
-            ? CW_ICON_MEC
-            : type === 'STM'
-              ? CW_ICON_STM
-              : CW_ICON_LTD) +
-          '</span>' +
-          cwEsc(f.name.replace(/ (STM|STM PPO)$/, '')) +
-          '</button>'
-        );
-      })
-      .join('');
-  };
-  var tierRow = '';
-  if (cwState.startFam) {
-    var sf = cwFam(cwState.startFam);
-    tierRow =
-      '<div class="cw-start-tiers"><b>' +
-      cwEsc(sf.name) +
-      '</b>' +
-      sf.tiers
-        .map(function (x) {
-          return (
-            '<button type="button" class="cw-chip" data-cw-pick="' +
-            cwEsc(sf.name) +
-            '|' +
-            cwEsc(x.tier) +
-            '">' +
-            cwEsc(x.tier) +
-            '</button>'
-          );
-        })
-        .join('') +
-      '</div>';
+function cwRecent() {
+  var r = typeof chaGet === 'function' ? chaGet(CW_RECENT_KEY, []) : [];
+  if (!Array.isArray(r)) return [];
+  return r.filter(function (x) {
+    return x && x.fam && cwFamExists(x.fam);
+  });
+}
+
+function cwFamExists(name) {
+  for (var i = 0; i < CW_FAMS.length; i++) {
+    if (CW_FAMS[i].name === name) return true;
   }
+  return false;
+}
+
+function cwRemember(famName, tier) {
+  if (typeof chaSet !== 'function') return;
+  var r = cwRecent().filter(function (x) {
+    return !(x.fam === famName && x.tier === tier);
+  });
+  r.unshift({ fam: famName, tier: tier });
+  chaSet(CW_RECENT_KEY, r.slice(0, 4));
+}
+
+function cwRowHtml(fam, tiers) {
+  var open = cwState.startFam === fam.name;
   return (
-    '<div class="cw-start"><img class="cw-start-logo" src="logo.png" alt="Central Health Advisors"><h2>' +
-    cwEsc(cwGreeting()) +
-    '</h2><p>Which plan are you selling?</p><div class="cw-start-search"><input id="cw-q" type="text" autocomplete="off" spellcheck="false" placeholder="sc 1500, harbor access, tdk 3" value="' +
-    cwEsc(cwState.q) +
-    '"></div>' +
-    (cwState.q
-      ? '<div class="cw-card cw-start-sug">' + cwSugHtml() + '</div>'
-      : '<div class="cw-start-groups">' +
-        CW_TYPES.map(function (ty) {
-          return (
-            '<span class="cw-label">' +
-            ty +
-            '</span><div class="cw-tiles">' +
-            tiles(ty) +
-            '</div>'
-          );
-        }).join('') +
-        tierRow +
-        '</div>') +
+    '<div class="cwg-row' +
+    (open ? ' is-open' : '') +
+    '"><button type="button" class="cwg-row-head" data-cw-start="' +
+    cwEsc(fam.name) +
+    '" aria-expanded="' +
+    (open ? 'true' : 'false') +
+    '"><span class="cwg-dot cwg-dot-' +
+    cwPlat(fam) +
+    '"></span><b>' +
+    cwEsc(fam.name) +
+    '</b><span class="cwg-meta">' +
+    cwEsc((CW_TYPE_LABEL[fam.type] || fam.type) + ' \u00b7 ' + fam.platform) +
+    '</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>' +
+    (open
+      ? '<div class="cwg-tiers">' +
+        tiers
+          .map(function (t) {
+            return (
+              '<button type="button" class="cwg-btn" data-cw-pick="' +
+              cwEsc(fam.name) +
+              '|' +
+              cwEsc(t) +
+              '">' +
+              cwEsc(t) +
+              '</button>'
+            );
+          })
+          .join('') +
+        '</div>'
+      : '') +
     '</div>'
   );
+}
+
+function cwHomeListHtml() {
+  var rows = [];
+  if (cwState.q) {
+    cwSearch(cwState.q).forEach(function (g) {
+      rows.push(cwRowHtml(g.fam, g.tiers));
+    });
+  } else {
+    CW_FAMS.forEach(function (f) {
+      if (f.type !== cwState.homeType) return;
+      rows.push(
+        cwRowHtml(
+          f,
+          f.tiers.map(function (t) {
+            return t.tier;
+          })
+        )
+      );
+    });
+  }
+  return (
+    (cwState.q
+      ? ''
+      : '<button type="button" class="cwg-back" data-cw-home-type="">\u2039 All types</button>') +
+    '<section class="cwg-panel cwg-list">' +
+    (rows.length
+      ? rows.join('')
+      : '<p class="cwg-empty">No plan matches. Try the plan name or tier.</p>') +
+    '</section>'
+  );
+}
+
+function cwHomeIdleHtml() {
+  var recent = cwRecent();
+  var counts = {};
+  CW_FAMS.forEach(function (f) {
+    counts[f.type] = (counts[f.type] || 0) + 1;
+  });
+  return (
+    (recent.length
+      ? '<span class="cwg-label">Recent</span><div class="cwg-chips">' +
+        recent
+          .map(function (r) {
+            var f = cwFam(r.fam);
+            var name = f.name + (f.tiers.length > 1 ? ' ' + r.tier : '');
+            return (
+              '<button type="button" class="cwg-btn cwg-chip" data-cw-pick="' +
+              cwEsc(r.fam) +
+              '|' +
+              cwEsc(r.tier) +
+              '"><span class="cwg-dot cwg-dot-' +
+              cwPlat(f) +
+              '"></span>' +
+              cwEsc(name) +
+              '</button>'
+            );
+          })
+          .join('') +
+        '</div>'
+      : '') +
+    '<span class="cwg-label">Browse by type</span><div class="cwg-types">' +
+    CW_TYPES.map(function (ty) {
+      return (
+        '<button type="button" class="cwg-btn cwg-type" data-cw-home-type="' +
+        cwEsc(ty) +
+        '"><b>' +
+        cwEsc(CW_TYPE_LABEL[ty] || ty) +
+        '</b><span>' +
+        (counts[ty] || 0) +
+        ' plans</span></button>'
+      );
+    }).join('') +
+    '</div>'
+  );
+}
+
+function cwStartHtml() {
+  return (
+    '<div class="cwg cwg-home"><div class="cwg-wrap">' +
+    '<section class="cwg-panel cwg-hero"><div class="cwg-logo"><img src="logo.png" alt="Central Health Advisors"></div><h2>' +
+    cwEsc(cwGreeting()) +
+    '</h2><p>Which plan are you selling?</p><label class="cwg-sr" for="cw-q">Find a plan</label><div class="cwg-search"><svg aria-hidden="true" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="cw-q" type="search" autocomplete="off" spellcheck="false" placeholder="sc 1500, harbor access, tdk 3" value="' +
+    cwEsc(cwState.q) +
+    '"></div></section>' +
+    (cwState.q || cwState.homeType ? cwHomeListHtml() : cwHomeIdleHtml()) +
+    '</div></div>'
+  );
+}
+
+// Client asks: safe answers from Mey's CHA Live Call Scripts draft
+// (cheat sheet) with this plan's network, insurer, association and
+// billing filled in from cwFacts. A [bracket] is a blank the agent fills.
+function cwAskCards(fam) {
+  var facts = cwFacts(fam);
+  var get = function (re) {
+    for (var i = 0; i < facts.length; i++) {
+      if (re.test(facts[i][0])) {
+        return String(facts[i][1])
+          .replace(/\s*\([^)]*\)/g, '')
+          .replace(/\s+$/, '');
+      }
+    }
+    return '';
+  };
+  var net = get(/^Network/) || '[network name]';
+  var uwLabel = '';
+  facts.forEach(function (f) {
+    if (/Underwriter|Administrator|Sponsor/.test(f[0]) && !uwLabel) {
+      uwLabel = f[0];
+    }
+  });
+  var group = /Administrator|Sponsor/.test(uwLabel);
+  var uw = get(/Underwriter|Administrator|Sponsor/) || '[insurer]';
+  var assoc = get(/Association|Sponsor/) || '[association]';
+  var bill = get(/^Billing/) || '[billing name]';
+  var stm = fam.type === 'STM';
+  var fixed = fam.type === 'Fixed indemnity';
+  var c = [];
+  c.push([
+    'Is my doctor in network?',
+    'The plan uses the ' +
+      net +
+      ' network. I can\u2019t confirm a provider for you, because networks change. Search them on [provider website] or call the office and ask if they take ' +
+      net +
+      ', before you go.'
+  ]);
+  c.push([
+    'Am I fully covered?',
+    'No plan like this covers everything. It pays the benefits listed in your schedule of benefits, up to the limits we went over. Anything not listed isn\u2019t covered, so keep your plan documents handy.'
+  ]);
+  c.push([
+    'Is this ' + net + ' insurance?',
+    group
+      ? 'No. ' +
+        net +
+        ' is the doctor network you use. There\u2019s no insurance company on this plan; ' +
+        uw +
+        ' processes the claims. The membership with ' +
+        assoc +
+        ' is separate from the insurance.'
+      : 'No. ' +
+        net +
+        ' is the doctor network you use. Your insurance is underwritten by ' +
+        uw +
+        '. The membership with ' +
+        assoc +
+        ' is separate from the insurance.'
+  ]);
+  c.push([
+    'Is this real insurance?',
+    group
+      ? 'It\u2019s a group health plan sponsored by ' +
+        assoc +
+        ', not an insurance policy; ' +
+        uw +
+        ' handles claims.'
+      : 'Yes, it\u2019s a ' +
+        (stm ? 'short-term medical' : fixed ? 'fixed indemnity' : 'limited') +
+        ' plan underwritten by ' +
+        uw +
+        ', a licensed insurance company. It\u2019s limited coverage, not major medical.'
+  ]);
+  c.push([
+    'Is this Obamacare?',
+    'No. It\u2019s a private plan, not an ACA or Marketplace plan, and it\u2019s not major medical. If you want ACA coverage, open enrollment or a qualifying life event is the way in.'
+  ]);
+  if (stm) {
+    c.push([
+      'Am I approved?',
+      'Not yet. The plan is medically underwritten, so it\u2019s issued only if the carrier approves your application. Answer the health questions accurately; wrong answers can void the coverage.'
+    ]);
+  }
+  c.push([
+    'Why is it so much cheaper?',
+    stm
+      ? 'Because it covers less. It has limits, waiting periods and exclusions that ACA plans don\u2019t, and it can turn people down for health reasons. That\u2019s the trade-off for the lower price.'
+      : 'Because it covers less. It has limits, waiting periods and exclusions that ACA plans don\u2019t. That\u2019s the trade-off for the lower price.'
+  ]);
+  if (stm) {
+    c.push([
+      'What if I go to the ER or need surgery?',
+      'Emergency, hospital and surgery go to your deductible and coinsurance, up to the coverage period maximum.'
+    ]);
+    c.push([
+      'So the most I\u2019ll ever pay is $[X]?',
+      'Not quite. $[X] is your coinsurance limit after the deductible. Your deductible, copays, access fees, penalties for skipping pre-authorization, and anything above a benefit maximum don\u2019t count toward it.'
+    ]);
+    c.push([
+      'What are the plan\u2019s limits?',
+      'It means the plan has caps. There\u2019s a total maximum it will pay during your coverage period. Some services also have their own caps, like a set number of visits or a dollar limit. Once a cap is reached, the plan stops paying for that, and anything over it is yours. It also pays only its allowed amount, so a provider can bill you for the difference.'
+    ]);
+    c.push([
+      'Can I keep this until Medicare?',
+      'It\u2019s temporary coverage for a set coverage period. It\u2019s not renewable; extra terms, if available, are new coverage, limits reset and new conditions may not be covered.'
+    ]);
+  }
+  if (fixed) {
+    c.push([
+      'What if I go to the ER or the hospital?',
+      'The plan pays a set amount, $[X] per day up to $[Y], and you owe the rest of the bill.'
+    ]);
+  }
+  c.push([
+    'Who charges me and how do I cancel?',
+    'You\u2019ll see ' +
+      bill +
+      ' on your statement. It\u2019s an automatic monthly draft. To cancel, call [number from the plan documents]; [notice period].'
+  ]);
+  c.push([
+    'Is this better than my job\u2019s plan or the Marketplace?',
+    'They\u2019re different. ACA and employer plans are major medical. This is limited coverage at a lower price. If you have access to major medical, compare both side by side before you decide.'
+  ]);
+  c.push([
+    'How do I know you\u2019re legit?',
+    'We\u2019re Central Health Advisors, a licensed private agency. I\u2019m licensed in your state. Your plan is through ' +
+      (group ? assoc : uw) +
+      ', and you\u2019ll get your documents by email to review before anything is final. Our confirmation number is CHA561337; anyone calling from us will have it.'
+  ]);
+  if (stm) {
+    c.push([
+      'What do deductible and coinsurance mean?',
+      'Deductible: what you pay first each coverage period before the plan pays its share. Coinsurance: after the deductible you split the bill, like 80/20 (plan 80%, you 20%). Max out-of-pocket: the cap on your coinsurance share for the coverage period; after that the plan pays 100% of covered costs up to its limits.'
+    ]);
+  }
+  return (CW_ASK_PLAN[fam.name] || []).concat(c);
+}
+
+// Plan-specific client questions (SmartChoice: Mey's Oct 2026 list,
+// the version that matches the app questions: 3 Preferred Units,
+// assigned projects, a payment for each survey response).
+var CW_ASK_PLAN = {
+  SmartChoice: [
+    [
+      'What does this have to do with health insurance?',
+      'Great question. This is a group health plan, not individual insurance. To join the group, you become a Working Owner of Population Science Management. That membership is what makes you eligible for the plan. Sharing your health data is part of being a member. Does that make sense?'
+    ],
+    [
+      'Share what info?',
+      'It\u2019s short surveys about your health and the products and services you use. You do them in the Covered365 app, and you get a payment for each survey you respond to. You need to keep doing them to stay eligible for the plan.'
+    ],
+    [
+      'Do I have to do the surveys?',
+      'Yes. Doing them regularly is part of staying eligible for the plan.'
+    ],
+    [
+      'Am I buying a company or stock?',
+      'No, you\u2019re not buying anything. As a Working Owner, you\u2019re given 3 Preferred Units for your services. They aren\u2019t publicly traded and can\u2019t be sold on a market. The full terms are in the agreement you\u2019ll sign.'
+    ],
+    [
+      'What are the assigned activities?',
+      'Mainly the surveys, any projects the company assigns you, and staying in touch when they reach out to you.'
+    ],
+    [
+      'Will this affect my taxes?',
+      'Your survey payments may count as income. For tax questions, please check with your tax preparer.'
+    ],
+    [
+      'Who sees my information?',
+      'How your information is used is explained in the Working Owner agreement you\u2019ll sign in DocuSign.'
+    ],
+    [
+      'Is this legit?',
+      'Yes. The plan is administered by Detego Health and offered through Population Science Management. You\u2019ll get all your documents to review and sign before anything is final.'
+    ]
+  ]
+};
+
+function cwBlankHtml(t) {
+  return cwEsc(t).replace(/\[[^\]]+\]/g, function (m) {
+    return '<mark class="cwg-blank">' + m + '</mark>';
+  });
+}
+
+function cwAskTab(fam) {
+  var q = String(cwState.askQ || '').toLowerCase();
+  var cards = cwAskCards(fam).filter(function (c) {
+    return !q || (c[0] + ' ' + c[1]).toLowerCase().indexOf(q) !== -1;
+  });
+  return (
+    '<label class="cwg-sr" for="cw-ask">Search client questions</label><div class="cwg-search cwg-search-sm"><svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="cw-ask" type="search" autocomplete="off" spellcheck="false" placeholder="Search: doctor, cancel, approved" value="' +
+    cwEsc(cwState.askQ) +
+    '"></div><div class="cwg-cards">' +
+    (cards.length
+      ? cards
+          .map(function (c) {
+            var on = !!cwState.askOpen[c[0]];
+            return (
+              '<button type="button" class="cwg-btn cwg-card' +
+              (on ? ' is-open' : '') +
+              '" data-cw-ask="' +
+              cwEsc(c[0]) +
+              '" aria-expanded="' +
+              (on ? 'true' : 'false') +
+              '"><span class="cwg-card-q">' +
+              cwEsc(c[0]) +
+              '<span aria-hidden="true">' +
+              (on ? '\u2212' : '+') +
+              '</span></span>' +
+              (on
+                ? '<span class="cwg-card-a">' + cwBlankHtml(c[1]) + '</span>'
+                : '') +
+              '</button>'
+            );
+          })
+          .join('')
+      : '<p class="cwg-empty">No question matches.</p>') +
+    '</div>'
+  );
+}
+
+function cwConfirmCounts(fam, tier) {
+  var blk = cwScriptBlock(tier.script);
+  var conf = cwState.conf[fam.name + '|' + tier.tier] || {};
+  var total = 0;
+  var yes = 0;
+  if (blk) {
+    blk.paras.forEach(function (p, i) {
+      if (!p.confirm) return;
+      total++;
+      if (conf[i] === 'Yes') yes++;
+    });
+  }
+  return { total: total, yes: yes };
 }
 
 function cwBind(root) {
@@ -2059,53 +2284,60 @@ function renderCallWorkspace(keepFocus) {
   if (!cwState.fam) {
     root.innerHTML = cwStartHtml();
     cwBind(root);
-    cwFocus('cw-q');
+    cwFocus(keepFocus || 'cw-q');
     return;
   }
   var fam = cwFam(cwState.fam);
   var tier = cwTier(fam, cwState.tier);
   var aqPlan =
     fam.aq && typeof appqFind === 'function' ? appqFind(fam.aq) : null;
-  var block = cwScriptBlock(tier.script);
-  var confirmCount = block
-    ? block.paras.filter(function (p) {
-        return p.confirm;
-      }).length
-    : 0;
+  var cc = cwConfirmCounts(fam, tier);
+  var aqBadge = '';
+  if (aqPlan) {
+    var st = appqStatus(aqPlan);
+    var ans = appqState.ans[aqPlan.id] || {};
+    var n = 0;
+    Object.keys(ans).forEach(function (k) {
+      if (ans[k]) n++;
+    });
+    aqBadge = st.tone === 'stop' ? '!' : n + '/' + String(aqPlan.qs.length);
+  } else if (fam.aqNone) {
+    aqBadge = '0';
+  }
   var name = fam.name + (fam.tiers.length > 1 ? ' ' + tier.tier : '');
   var tabs = [
-    ['plan', 'Plan & meds', ''],
-    [
-      'q',
-      'App questions',
-      aqPlan ? String(aqPlan.qs.length) : fam.aqNone ? '0' : 'none'
-    ],
-    [
-      'd',
-      'Before enrollment',
-      confirmCount ? String(confirmCount) : block ? 'recap' : 'none'
-    ]
+    ['plan', 'Plan', ''],
+    ['d', 'Disclosures', cc.total ? cc.yes + '/' + cc.total : ''],
+    ['q', 'App questions', aqBadge],
+    ['ask', 'Client asks', '']
   ];
   var body =
     cwState.tab === 'q'
       ? cwQuestionsTab(fam)
       : cwState.tab === 'd'
         ? cwDiscTab(fam, tier)
-        : cwPlanTab(tier, fam);
+        : cwState.tab === 'ask'
+          ? cwAskTab(fam)
+          : cwPlanTab(tier, fam);
+  var facts = cwFacts(fam).filter(function (f) {
+    return !/^Association|^Sponsor$/.test(f[0]);
+  });
   root.innerHTML =
-    '<div class="cw-page"><header class="cw-hero cw-hero-' +
-    cwPlat(fam) +
-    '"><span class="cw-kicker">ON CALL</span><h2>' +
+    '<div class="cwg cwg-call"><div class="cwg-wrap cwg-wrap-wide">' +
+    '<header class="cwg-panel cwg-head"><div class="cwg-head-top"><div class="cwg-logo cwg-logo-sm"><img src="logo.png" alt=""></div><div class="cwg-head-name"><span class="cwg-kicker">' +
+    cwEsc(
+      'ON CALL \u00b7 ' +
+        fam.platform +
+        ' \u00b7 ' +
+        (CW_TYPE_LABEL[fam.type] || fam.type)
+    ).toUpperCase() +
+    '</span><h2>' +
     cwEsc(name) +
-    '</h2><p>' +
-    cwEsc(fam.platform + ' - ' + fam.type) +
-    '</p><button type="button" class="cw-change" data-cw-change="1">Change plan</button></header>' +
-    cwPickerHtml() +
-    '<div class="cw-facts">' +
-    cwFacts(fam)
+    '</h2></div><button type="button" class="cwg-btn cwg-change" data-cw-change="1">Change plan</button></div><div class="cwg-facts">' +
+    facts
       .map(function (f) {
         return (
-          '<div class="cw-fact"><span>' +
+          '<div class="cwg-btn cwg-fact"><span>' +
           cwEsc(f[0]) +
           '</span><b>' +
           cwEsc(f[1]) +
@@ -2113,11 +2345,11 @@ function renderCallWorkspace(keepFocus) {
         );
       })
       .join('') +
-    '</div><div class="cw-tabs">' +
+    '</div></header><nav class="cwg-panel cwg-tabs" aria-label="Call steps">' +
     tabs
       .map(function (t) {
         return (
-          '<button type="button" class="cw-tab' +
+          '<button type="button" class="cwg-tab' +
           (cwState.tab === t[0] ? ' is-on' : '') +
           '" data-cw-tab="' +
           t[0] +
@@ -2128,9 +2360,9 @@ function renderCallWorkspace(keepFocus) {
         );
       })
       .join('') +
-    '</div><div class="cw-body">' +
+    '</nav><div class="cw-body cwg-body">' +
     body +
-    '</div></div>';
+    '</div></div></div>';
   if (keepFocus) cwFocus(keepFocus);
   cwBind(root);
 }
@@ -2138,11 +2370,23 @@ function renderCallWorkspace(keepFocus) {
 function cwOnClick(e) {
   var t = e.target.closest
     ? e.target.closest(
-        '[data-cw-pick],[data-cw-browse],[data-cw-type],[data-cw-fam],[data-cw-tab],[data-cw-conf],[data-cw-start],[data-cw-change],[data-cw-vault],[data-cw-script]'
+        '[data-cw-pick],[data-cw-browse],[data-cw-type],[data-cw-fam],[data-cw-tab],[data-cw-conf],[data-cw-start],[data-cw-change],[data-cw-vault],[data-cw-script],[data-cw-home-type],[data-cw-ask]'
       )
     : null;
   if (!t) return;
-  var v = t.getAttribute('data-cw-vault');
+  if (t.hasAttribute('data-cw-home-type')) {
+    cwState.homeType = t.getAttribute('data-cw-home-type');
+    cwState.startFam = '';
+    renderCallWorkspace();
+    return;
+  }
+  var v = t.getAttribute('data-cw-ask');
+  if (v) {
+    cwState.askOpen[v] = !cwState.askOpen[v];
+    renderCallWorkspace();
+    return;
+  }
+  v = t.getAttribute('data-cw-vault');
   if (v) {
     if (typeof qrOpenInVault === 'function') qrOpenInVault(v);
     return;
@@ -2173,6 +2417,7 @@ function cwOnClick(e) {
     cwState.fam = '';
     cwState.q = '';
     cwState.startFam = '';
+    cwState.homeType = '';
     cwState.browse = false;
     cwState.tab = 'plan';
     renderCallWorkspace();
@@ -2220,6 +2465,10 @@ function cwOnInput(e) {
     if (e.type !== 'input') return;
     cwState.q = t.value;
     renderCallWorkspace('cw-q');
+  } else if (t.id === 'cw-ask') {
+    if (e.type !== 'input') return;
+    cwState.askQ = t.value;
+    renderCallWorkspace('cw-ask');
   } else if (t.id === 'cw-meds') {
     if (e.type !== 'input') return;
     cwState.meds = t.value;

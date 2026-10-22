@@ -46,6 +46,8 @@ Live URL: https://cha-sales-tool.vercel.app/
 
 - `CW_FAMS` covers every Quick Reference family (31), grouped MEC / STM / Limited / Fixed indemnity, platforms NEO / FirstEnroll / Premier (teal).
 - The first nine families keep their own benefit tables and the approved `CW_SCRIPTS` before-enrollment text. The rest have no benefit table (Plan tab links to the plan card and script); facts come from `CHA_QUICK_REF` through `qr`, and Before enrollment reads the live Post Close recap from `PLAN_SCRIPTS`.
+- Live Call look (Oct 22 2026, approved on the design canvas): liquid glass, scoped to `.cwg` (CSS block "Live Call liquid glass" at the end of the inline style). Home (`cwStartHtml`) is search-only plus Recent (`cha_oncall_recent`, last 4 via chaGet/chaSet) and Browse by type. Call screen: glass header with facts, tabs Plan / Disclosures (`d`) / App questions (`q`) / Client asks (`ask`). App questions show `APPQ_SHORT` titles on On Call only, with a Short view toggle (`appqState.short`).
+- Client asks (`cwAskCards`): Mey's safe-answer cheat sheet from her CHA Live Call Scripts draft, filled with the plan's network / insurer / association / billing; `[brackets]` are blanks the agent fills (highlighted). SmartChoice adds her 8 Working Owner questions (`CW_ASK_PLAN`), the version that matches the app questions.
 - App questions (`APPQ_PLANS` in js/app-questions.js) were copied from the portals Oct 22 2026 with a test client, never submitted. `soft: true` = the portal does not say which answer stops the application. `aqNone` = checked, no questions; `aqTodo` = not checked (SimpleShield, HealthBoost, AdvantCare 50).
 
 ## Protected Sales Tracker functions

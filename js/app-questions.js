@@ -672,7 +672,137 @@ var APPQ_PLANS = [
   }
 ];
 
-var appqState = { plan: 'harbor', ans: {}, help: {}, open: {} };
+// Short titles for each question (Oct 22 2026), shown in bold above the
+// word-for-word text on the On Call tab. Short view shows only these.
+var APPQ_SHORT = {
+  harbor: [
+    'Medicare or Medicaid',
+    'Pregnant, adopting or fertility',
+    'Weight',
+    'Other major medical',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Non-citizen outside the U.S.',
+    'Consecutive terms'
+  ],
+  pinnacle: [
+    'Medicare or Medicaid',
+    'Pregnant, adopting or fertility',
+    'Weight',
+    'Other major medical',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Non-citizen outside the U.S.'
+  ],
+  access: [
+    'U.S. resident less than 12 months',
+    'Other health insurance',
+    'Pregnant, adopting or fertility',
+    'Ever declined for health',
+    'Medicaid',
+    'Conditions, last 5 years',
+    'Mental health',
+    'HIV or AIDS'
+  ],
+  smartchoice: [
+    'Admitted as a Working Owner',
+    'Assigned activities',
+    'Assigned projects',
+    'Payment for each response',
+    '3 Preferred Units',
+    'Units not registered',
+    'Benefit plan eligibility',
+    'Confidentiality',
+    'Call Right',
+    'Read the terms'
+  ],
+  tdk: [
+    'Paid surveys',
+    'Care in the last 5 years',
+    'Cancer, heart or stroke',
+    'Autoimmune or blood disease',
+    'Organ failure or transplant'
+  ],
+  galena: [
+    'U.S. resident 12 months',
+    'Other health insurance',
+    'Pregnant, adopting or fertility',
+    'Medicaid',
+    'Ever declined for health',
+    'Conditions, last 5 years',
+    'Weight',
+    'Mental health',
+    'HIV or AIDS'
+  ],
+  smarthealth: [
+    'U.S. resident less than 12 months',
+    'Other health insurance',
+    'Pregnant, adopting or fertility',
+    'Medicaid',
+    'Ever declined for health',
+    'Conditions or weight, last 5 years',
+    'Mental health',
+    'HIV or AIDS'
+  ],
+  allstatestm: [
+    'Pregnant, adopting or fertility',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Pending tests or diagnosis'
+  ],
+  allstateha: [
+    'Pregnant, adopting or fertility',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Pending tests or diagnosis'
+  ],
+  afslic20: ['Marital status', 'Email consent', 'Other health insurance'],
+  hdhealthascent: ['Working 20+ hours a week'],
+  nexuscare: [
+    'STM with this company in 12 months',
+    'Medicare',
+    'Another North River STM',
+    'Pregnancy, weight, pending care, hospitalized',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Non-citizen outside the U.S.'
+  ],
+  crownpoint: [
+    'Consecutive terms',
+    'Medicare or Medicaid',
+    'Pregnant, adopting or fertility',
+    'Weight',
+    'Other major medical',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Non-citizen outside the U.S.'
+  ],
+  risehealth: [
+    'Consecutive terms',
+    'U.S. resident less than 12 months',
+    'Other health insurance',
+    'Pregnant, adopting or fertility',
+    'Medicaid',
+    'Ever declined for health',
+    'Conditions or weight, last 5 years',
+    'Mental health',
+    'HIV or AIDS'
+  ]
+};
+APPQ_PLANS.forEach(function (p) {
+  var t = APPQ_SHORT[p.id] || [];
+  p.qs.forEach(function (q, i) {
+    if (t[i]) q.t = t[i];
+  });
+});
+
+var appqState = {
+  plan: 'harbor',
+  ans: {},
+  help: {},
+  open: {},
+  short: false
+};
 
 function appqEsc(t) {
   return String(t == null ? '' : t)
@@ -755,7 +885,15 @@ function appqListHtml(plan, where) {
     appqEsc(st.title) +
     '</b><span>' +
     appqEsc(st.text) +
-    '</span><button type="button" class="appq-reset" data-appq-reset="' +
+    '</span>' +
+    (where === 'cw'
+      ? '<button type="button" class="appq-short" data-appq-short="1"' +
+        w +
+        '>' +
+        (appqState.short ? 'Word for word' : 'Short view') +
+        '</button>'
+      : '') +
+    '<button type="button" class="appq-reset" data-appq-reset="' +
     plan.id +
     '"' +
     w +
@@ -792,9 +930,14 @@ function appqListHtml(plan, where) {
       cls +
       '"><span class="appq-num">' +
       (i + 1) +
-      '</span><div class="appq-body"><p class="appq-text">' +
-      appqEsc(q.q) +
-      '</p><button type="button" class="appq-help-btn" data-appq-help="' +
+      '</span><div class="appq-body">' +
+      (q.t && where === 'cw'
+        ? '<p class="appq-title">' + appqEsc(q.t) + '</p>'
+        : '') +
+      (where === 'cw' && appqState.short && q.t
+        ? ''
+        : '<p class="appq-text">' + appqEsc(q.q) + '</p>') +
+      '<button type="button" class="appq-help-btn" data-appq-help="' +
       plan.id +
       ':' +
       i +
@@ -915,7 +1058,7 @@ function appqOnClick(e) {
   var t =
     e.target && e.target.closest
       ? e.target.closest(
-          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan]'
+          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan],[data-appq-short]'
         )
       : null;
   if (!t) return;
@@ -934,6 +1077,11 @@ function appqOnClick(e) {
     var hs = appqState.help[h[0]] || (appqState.help[h[0]] = {});
     hs[h[1]] = !hs[h[1]];
     appqRefresh(where, h[0]);
+    return;
+  }
+  if (t.getAttribute('data-appq-short')) {
+    appqState.short = !appqState.short;
+    appqRefresh(where, '');
     return;
   }
   v = t.getAttribute('data-appq-reset');
