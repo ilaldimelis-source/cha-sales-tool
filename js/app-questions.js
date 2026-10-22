@@ -155,6 +155,8 @@ var APPQ_PLANS = [
     platform: 'NEO',
     step: 'Verification',
     scripts: ['NEO Smart Choice'],
+    intro:
+      "Next I'll read a few standard questions from your application. To get this group plan, you join as a Working Owner, which just means you answer short paid surveys. Please answer yes or no, and stop me if anything's unclear.",
     qs: [
       {
         q: 'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA?',
@@ -898,6 +900,12 @@ function appqListHtml(plan, where) {
     '"' +
     w +
     '>Start over</button></div>';
+  if (plan.intro) {
+    html +=
+      '<div class="appq-intro"><span>Say this first</span>' +
+      appqEsc(plan.intro) +
+      '</div>';
+  }
   if (plan.note) {
     html += '<p class="appq-note">' + appqEsc(plan.note) + '</p>';
   }
