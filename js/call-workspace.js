@@ -8,7 +8,7 @@
 //      confirm questions, read live from PLAN_SCRIPTS (call-playbook.js).
 // Benefit values come from the plan documents (tier table, Oct 16 2026).
 // Oct 22 2026: Limited, fixed indemnity and Premier plans added (see
-// "More plan families" below), plus a Client questions tab.
+// "More plan families" below), app questions from the portals.
 
 var CW_FAMS = [
   {
@@ -1086,8 +1086,6 @@ CW_FAMS.push(
     type: 'Limited',
     platform: 'NEO',
     aqNone: CW_NONE_NEO,
-    partner:
-      'From the NEO enrollment confirmation: "Since you are now a Limited Partner or Affiliate in the Good Life Partners Limited Partnership (Wellness Brands Management Company, LLC is the General Partner), you can enroll in the WB Plan."',
     tiers: cwTiers(
       ['Choice', 'Select'],
       'Goodlife Partners WB CHOICE and WB SELECT (Match Doctor visits to Plan)'
@@ -1272,8 +1270,6 @@ CW_FAMS.push(
     type: 'MEC',
     platform: 'Premier',
     aqNone: CW_NONE_PR,
-    partner:
-      'From the Premier enrollment page: "The AdvantCare health plans are offered to eligible plan participants of qualified groups only. By agreeing to become a Limited Partner of Consumer Data Partners, LP (DBA VistaWell) and actively using the Ease Total Health App, you are eligible to enroll in AdvantCare 2, which includes the AdvantCare 2-MEC HP group health plan plus additional ancillary benefits."',
     tiers: cwTiers(
       [
         '2',
@@ -1413,91 +1409,6 @@ function cwLiveRecap(name) {
     if (on) out.push(paras[i]);
   }
   return out;
-}
-
-// First paragraph of the live script that matches re. Post Close first.
-function cwScriptLine(name, re) {
-  var s = cwLiveScript(name);
-  if (!s) return '';
-  var secs = s.sections.slice().sort(function (a, b) {
-    return (b.title === 'Post Close') - (a.title === 'Post Close');
-  });
-  for (var i = 0; i < secs.length; i++) {
-    var paras = cwParas(secs[i].content);
-    for (var j = 0; j < paras.length; j++) {
-      if (re.test(paras[j])) {
-        var p = paras[j];
-        if (/search providers is:?$/i.test(p) && paras[j + 1]) {
-          p += ' ' + paras[j + 1];
-        }
-        var cut = p.search(/\s*Just for your records/i);
-        if (cut > 0) p = p.slice(0, cut);
-        return p
-          .replace(/\n?\u25b6 \( ?Wait for [Aa]nswer ?\)/g, '')
-          .replace(/^\s*-\s*/, '')
-          .replace(/\s+$/, '');
-      }
-    }
-  }
-  return '';
-}
-
-// Client questions: each answer is either a line from the live plan
-// script (say it word for word) or a fact from the plan data, the
-// carrier or the enrollment portal (say it in your own words).
-function cwClientQs(fam, tier) {
-  var t = 'Why am I a member or partner?';
-  var line = cwScriptLine(tier.script, /Working Owner|Limited Partner/i);
-  if (line) return [{ q: t, a: line, kind: 'say' }];
-  // The approved On Call copy (CW_SCRIPTS), then the approved
-  // "If the client asks" card on the app questions (SmartChoice).
-  var cw = CW_SCRIPTS[tier.script];
-  var paras = cw ? cwParas(cw.text) : [];
-  for (var i = 0; i < paras.length; i++) {
-    if (/Working Owner|Limited Partner/i.test(paras[i])) {
-      return [{ q: t, a: paras[i], kind: 'say' }];
-    }
-  }
-  var aq = fam.aq && typeof appqFind === 'function' ? appqFind(fam.aq) : null;
-  var talk = aq && aq.talk ? aq.talk : [];
-  for (var k = 0; k < talk.length; k++) {
-    if (/Working Owner/i.test(talk[k].t)) {
-      return [{ q: t, a: talk[k].say, kind: 'say' }];
-    }
-  }
-  if (fam.partner) return [{ q: t, a: fam.partner, kind: 'fact' }];
-  return [];
-}
-
-function cwClientTab(fam, tier) {
-  var list = cwClientQs(fam, tier);
-  var ls = cwLiveScript(tier.script);
-  if (!list.length) {
-    return '<div class="cw-status"><b>Nothing on file</b><span>No script or plan facts for this plan yet.</span></div>';
-  }
-  return (
-    '<div class="cw-status"><b>If the client asks</b><span>Green: say the line from the ' +
-    cwEsc(ls ? ls.name : 'plan') +
-    ' script word for word. Grey: a fact from the plan data or the enrollment portal - say it in your own words.</span></div><div class="cw-cq">' +
-    list
-      .map(function (x) {
-        return (
-          '<section class="cw-card cw-cq-item cw-cq-' +
-          x.kind +
-          '"><h3>' +
-          cwEsc(x.q) +
-          '</h3><span class="cw-label">' +
-          (x.kind === 'say' ? 'Say word for word' : 'Fact - your own words') +
-          '</span><p>' +
-          cwVerifyHtml(x.a) +
-          '</p>' +
-          (x.extra ? '<p class="cw-muted">' + cwEsc(x.extra) + '</p>' : '') +
-          '</section>'
-        );
-      })
-      .join('') +
-    '</div><p class="cw-foot">Script lines are read live from the Scripts tab. Facts come from the plan data, carrier documents and the enrollment portals (Oct 22 2026).</p>'
-  );
 }
 
 // Escapes text and marks [VERIFY ...] placeholders left in a script.
@@ -2175,16 +2086,12 @@ function renderCallWorkspace(keepFocus) {
       confirmCount ? String(confirmCount) : block ? 'recap' : 'none'
     ]
   ];
-  if (cwClientQs(fam, tier).length) tabs.push(['c', 'Client questions', '1']);
-  else if (cwState.tab === 'c') cwState.tab = 'plan';
   var body =
     cwState.tab === 'q'
       ? cwQuestionsTab(fam)
       : cwState.tab === 'd'
         ? cwDiscTab(fam, tier)
-        : cwState.tab === 'c'
-          ? cwClientTab(fam, tier)
-          : cwPlanTab(tier, fam);
+        : cwPlanTab(tier, fam);
   root.innerHTML =
     '<div class="cw-page"><header class="cw-hero cw-hero-' +
     cwPlat(fam) +

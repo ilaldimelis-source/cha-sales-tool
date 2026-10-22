@@ -46,7 +46,6 @@ Live URL: https://cha-sales-tool.vercel.app/
 
 - `CW_FAMS` covers every Quick Reference family (31), grouped MEC / STM / Limited / Fixed indemnity, platforms NEO / FirstEnroll / Premier (teal).
 - The first nine families keep their own benefit tables and the approved `CW_SCRIPTS` before-enrollment text. The rest have no benefit table (Plan tab links to the plan card and script); facts come from `CHA_QUICK_REF` through `qr`, and Before enrollment reads the live Post Close recap from `PLAN_SCRIPTS`.
-- Client questions tab (`cwClientQs`): only "Why am I a member or partner?" (Mey's choice, Oct 22 2026). Green = the Working Owner / Limited Partner line from the live plan script; grey = the portal text (`partner`) for WB and AdvantCare. Shown only for plans that have an answer.
 - App questions (`APPQ_PLANS` in js/app-questions.js) were copied from the portals Oct 22 2026 with a test client, never submitted. `soft: true` = the portal does not say which answer stops the application. `aqNone` = checked, no questions; `aqTodo` = not checked (SimpleShield, HealthBoost, AdvantCare 50).
 
 ## Protected Sales Tracker functions
