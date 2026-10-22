@@ -285,10 +285,524 @@ var APPQ_PLANS = [
         ok: 'Any'
       }
     ]
+  },
+  // Added Oct 22 2026 from the NEO, FirstEnroll and Premier enrollment
+  // portals (test client, never submitted). Questions are word for word;
+  // curly quotes and bullet marks were changed to plain text.
+  // soft: the portal page does not say which answer stops the
+  // application, so a flagged answer says "check" instead of "not eligible".
+  {
+    id: 'galena',
+    name: 'AFRP Galena STM',
+    platform: 'NEO',
+    src: 'Oct 22 2026',
+    soft: true,
+    step: 'Opening & Medical Underwriting',
+    scripts: [
+      'AFRP Galena STM Elite',
+      'AFRP Galena STM Standard',
+      'AFRP Galena STM Economy'
+    ],
+    qs: [
+      {
+        q: 'Have all persons proposed for coverage been a legal resident of the United States for the past 12 consecutive months?',
+        ex: 'This asks if everyone on the plan has lived in the U.S. legally for the whole last 12 months in a row.',
+        ok: 'Yes'
+      },
+      {
+        q: 'Will there be any other health insurance in force on the requested effective date of this coverage?',
+        ex: 'This asks if anyone will still have other health insurance on the day this plan starts.',
+        ok: 'No'
+      },
+      {
+        q: 'Is the proposed insured, spouse, or any dependent child now pregnant, undergoing infertility treatment, or in the process of adoption?',
+        ex: 'This asks if you, your spouse or a child on the plan is pregnant right now, getting fertility treatment, or adopting.',
+        ok: 'No'
+      },
+      {
+        q: 'Is any person proposed for coverage currently eligible for Medicaid?',
+        ex: 'This asks if anyone on the plan can get Medicaid right now. Medicaid is the state program based on income.',
+        ok: 'No'
+      },
+      {
+        q: 'Has any person proposed for coverage ever been declined for health insurance due to health reasons?',
+        ex: 'This asks if an insurance company has ever turned down anyone on the plan because of their health.',
+        ok: 'No'
+      },
+      {
+        q: "Within the past 5 years, have you or any other person to be insured been aware of, diagnosed, treated by a member of the medical profession, or taken medication for: cancer or a tumor; stroke, heart disorder, heart attack, coronary bypass or stent, peripheral vascular disease; carotid artery disease; COPD (Chronic Obstructive Pulmonary Disease) or emphysema; kidney disorder or disease (other than kidney stones); liver disorder or disease; neurological disorder; degenerative disc disease or herniation/bulge; rheumatoid arthritis; degenerative joint disease of the knee or hip; diabetes; Crohn's disease or ulcerative colitis; bipolar disorder or schizophrenia; any eating disorder; alcohol abuse or chemical dependency; multiple sclerosis; muscular dystrophy; fibromyalgia; systemic lupus; cystic fibrosis?",
+        ex: 'In the last 5 years, has anyone on the plan known about, been diagnosed with, been treated for, or taken medicine for anything on this list? If you are not sure about one, tell me which one and I will read it again.',
+        ok: 'No'
+      },
+      {
+        q: 'Does anyone listed on the application currently weigh over 250 pounds (women) or over 300 pounds (men)?',
+        ex: 'This asks if any woman on the plan weighs more than 250 pounds, or any man more than 300 pounds.',
+        ok: 'No'
+      },
+      {
+        q: 'Have you or any other person to be insured been hospitalized for a mental health condition in the past 5 years or been treated by a member of the medical profession for a mental health condition in the past 12 months?',
+        ex: 'This asks if anyone on the plan stayed in a hospital for mental health in the last 5 years, or was treated for mental health in the last 12 months.',
+        ok: 'No'
+      },
+      {
+        q: 'Have you or any other person to be insured ever been diagnosed or treated for Acquired Immune Deficiency Syndrome (AIDS), AIDS-related complex, or any other immune system disorder such as HIV?',
+        ex: 'This asks if anyone on the plan has ever been diagnosed or treated for HIV, AIDS, or another immune system disorder.',
+        ok: 'No'
+      }
+    ]
+  },
+  {
+    id: 'smarthealth',
+    name: 'SmartHealth STM',
+    platform: 'NEO',
+    src: 'Oct 22 2026',
+    soft: true,
+    step: 'Opening & Medical Underwriting',
+    scripts: ['Smart Health STM Traditional', 'Smart Health STM Limited'],
+    note: 'Question 1 asks "for less than" 12 months, so the qualifying answer is No.',
+    qs: [
+      {
+        q: 'Has any person proposed for coverage been a legal resident of the United States for less than the past 12 consecutive months?',
+        ex: 'This asks if anyone on the plan has lived in the U.S. legally for less than the last 12 months in a row. If everyone has been here legally the whole year, the answer is No.',
+        ok: 'No'
+      },
+      {
+        q: 'Will there be any other health insurance in force on the requested effective date of this coverage?',
+        ex: 'This asks if anyone will still have other health insurance on the day this plan starts.',
+        ok: 'No'
+      },
+      {
+        q: 'Is the proposed insured, spouse, or any dependent child now pregnant, undergoing infertility treatment, or in the process of adoption?',
+        ex: 'This asks if you, your spouse or a child on the plan is pregnant right now, getting fertility treatment, or adopting.',
+        ok: 'No'
+      },
+      {
+        q: 'Is any person proposed for coverage currently eligible for Medicaid?',
+        ex: 'This asks if anyone on the plan can get Medicaid right now. Medicaid is the state program based on income.',
+        ok: 'No'
+      },
+      {
+        q: 'Has any person proposed for coverage ever been declined for health insurance due to health reasons?',
+        ex: 'This asks if an insurance company has ever turned down anyone on the plan because of their health.',
+        ok: 'No'
+      },
+      {
+        q: "Within the past 5 years, have you or any other person to be insured been aware of, diagnosed, treated by a member of the medical profession, or taken mediation for cancer or a tumor, stroke, heart disorder, heart attack, coronary bypass or stent, peripheral vascular disease, carotid artery disease, COPD (Chronic Obstructive Pulmonary Disease) or emphysema, kidney disorder or disease (other than kidney stones), liver disorder or disease, neurological disorder, degenerative disc disease or herniation/bulge, rheumatoid arthritis, degenerative joint disease of the knee or hip, diabetes, Crohn's disease or ulcerative colitis, bipolar disorder or schizophrenia, any eating disorder, or alcohol abuse or chemical dependency, or does anyone listed on the application currently weigh over 250 pounds (women) or over 300 pounds (men)?",
+        ex: 'In the last 5 years, has anyone on the plan known about, been diagnosed with, been treated for, or taken medicine for anything on this list? This also asks if any woman on the plan weighs over 250 pounds or any man over 300 pounds.',
+        ok: 'No'
+      },
+      {
+        q: 'Have you or any other person to be insured been hospitalized for a mental health condition in the past 5 years or been treated by a member of the medical profession for a mental health condition in the past 12 months?',
+        ex: 'This asks if anyone on the plan stayed in a hospital for mental health in the last 5 years, or was treated for mental health in the last 12 months.',
+        ok: 'No'
+      },
+      {
+        q: 'Have you or any other person to be insured ever been diagnosed or treated for Acquired Immune Deficiency Syndrome (AIDS), AIDS-related complex, or any other immune system disorder such as HIV?',
+        ex: 'This asks if anyone on the plan has ever been diagnosed or treated for HIV, AIDS, or another immune system disorder.',
+        ok: 'No'
+      }
+    ]
+  },
+  {
+    id: 'allstatestm',
+    name: 'Allstate STM PPO',
+    platform: 'NEO',
+    src: 'Oct 22 2026',
+    soft: true,
+    step: '',
+    scripts: [],
+    note: "The NEO quote also asks each person's weight and whether they have prior coverage.",
+    qs: [
+      {
+        q: 'Is any applicant now pregnant, an expectant parent, in the process of adopting, in the process of surrogate pregnancy or undergoing infertility treatment?',
+        ex: 'This asks if anyone on the plan is pregnant right now, expecting a baby, adopting, using a surrogate, or getting fertility treatment.',
+        ok: 'No'
+      },
+      {
+        q: "Within the last 5 years, has any applicant received medical or surgical treatment, consulted a health care professional, or has medication been prescribed or recommended for the following: Heart disorder; Coronary Artery Disease (CAD), Heart Attack, or a heart procedure; Stroke, Transient Ischemic Attack (TIA) or Carotid Artery Disease; Crohn's Disease or Ulcerative Colitis; Liver disorders; Kidney disorders; Emphysema, Chronic Obstructive Pulmonary Disease (COPD); Diabetes or Prediabetes; Cancer, Tumor, Lump, or Mass; Alcoholism, Alcohol or Chemical Dependency, or Drug or Alcohol Abuse; Neck or Back Disorder, Joint Replacement; Bipolar Disorder or Schizophrenia; Systemic Lupus Erythematosus or Multiple Sclerosis (MS)",
+        ex: 'In the last 5 years, has anyone on the plan been treated, seen a doctor, or been prescribed or told to take medicine for anything on this list? If you are not sure about one, tell me which one and I will read it again.',
+        ok: 'No'
+      },
+      {
+        q: 'Within the last 5 years, has any applicant received medical or surgical treatment, consulted a health care professional, or has medication been prescribed or recommended for Acquired Immune Deficiency Syndrome (AIDS) or tested positive for Human Immunodeficiency Virus (HIV)?',
+        ex: 'In the last 5 years, has anyone on the plan been treated or prescribed medicine for AIDS, or tested positive for HIV?',
+        ok: 'No'
+      },
+      {
+        q: 'In the last 12 months, has any applicant: Been recommended or scheduled for testing (excluding routine), treatment, follow-up, or surgery that has not been completed? Consulted a health care professional for signs and symptoms of a medical condition for which a diagnosis has not been determined or a final diagnosis has not been communicated or determined?',
+        ex: 'In the last 12 months, has a doctor told anyone on the plan to get a test, treatment, follow-up or surgery that is not done yet? Or has anyone seen a doctor for symptoms and is still waiting on a diagnosis?',
+        ok: 'No'
+      }
+    ]
+  },
+  {
+    id: 'allstateha',
+    name: 'Allstate Health Access',
+    platform: 'NEO',
+    src: 'Oct 22 2026',
+    soft: true,
+    step: '',
+    scripts: [],
+    note: "The NEO quote also asks each person's weight.",
+    qs: [
+      {
+        q: 'Is any applicant now pregnant, an expectant parent, in the process of adopting, in the process of surrogate pregnancy or undergoing infertility treatment?',
+        ex: 'This asks if anyone on the plan is pregnant right now, expecting a baby, adopting, using a surrogate, or getting fertility treatment.',
+        ok: 'No'
+      },
+      {
+        q: "Within the last 5 years, has any applicant received medical or surgical treatment, consulted a health care professional, or has medication been prescribed or recommended for the following: Heart Disorder, excluding Mitral Valve Prolapse (MVP) or surgically corrected or closed Atrial Septal Defect (ASD)/Ventricular Septal Defect (VSD); Coronary Artery Disease (CAD), Heart Attack, or a heart procedure (including angioplasty, stent, or bypass); Stroke, Transient Ischemic Attack (TIA), or Carotid Artery Disease; Crohn's Disease or Ulcerative Colitis; Liver disorders or Hepatitis B or C, excluding fully recovered Hepatitis A; Kidney disorders; Emphysema, Chronic Obstructive Pulmonary Disease (COPD); Diabetes or Prediabetes; Cancer, Tumor, Lump, or Mass, excluding Basal Cell Skin Cancer; Alcoholism, Alcohol or Chemical Dependency, or Drug or Alcohol Abuse, or use disorder; Joint Replacement; Bipolar Disorder or Schizophrenia; Systemic Lupus Erythematosus, Cystic Fibrosis, or Multiple Sclerosis (MS)",
+        ex: 'In the last 5 years, has anyone on the plan been treated, seen a doctor, or been prescribed or told to take medicine for anything on this list? If you are not sure about one, tell me which one and I will read it again.',
+        ok: 'No'
+      },
+      {
+        q: 'Within the last 5 years, has any applicant received medical or surgical treatment, consulted a health care professional, or has medication been prescribed or recommended for Acquired Immune Deficiency Syndrome (AIDS) or tested positive for Human Immunodeficiency Virus (HIV)?',
+        ex: 'In the last 5 years, has anyone on the plan been treated or prescribed medicine for AIDS, or tested positive for HIV?',
+        ok: 'No'
+      },
+      {
+        q: 'In the last 12 months, has any applicant: Been recommended or scheduled for testing (excluding routine), treatment, follow-up, or surgery that has not been completed? Consulted a health care professional for signs and symptoms of a medical condition for which a diagnosis has not been determined or a final diagnosis has not been communicated or determined?',
+        ex: 'In the last 12 months, has a doctor told anyone on the plan to get a test, treatment, follow-up or surgery that is not done yet? Or has anyone seen a doctor for symptoms and is still waiting on a diagnosis?',
+        ok: 'No'
+      }
+    ]
+  },
+  {
+    id: 'afslic20',
+    name: 'Sigma Care PLUS / Advanced Wellness PLUS',
+    platform: 'FirstEnroll',
+    src: 'Oct 22 2026',
+    step: '',
+    scripts: [],
+    note: 'Section "AFSLIC20" on FirstEnroll. These answers do not decide eligibility. If the client has other health insurance, the portal then asks: 1. Health Insurance Company Name 2. Health Insurance Policy/Cert Number 3. Health Insurance Effective Date 4. Health Insurance End Date 5. Health Insurance Address.',
+    qs: [
+      {
+        q: 'Marital Status',
+        ex: 'Are you single, married, divorced or widowed?',
+        ok: 'Any',
+        opts: ['Single', 'Married', 'Divorced', 'Widowed']
+      },
+      {
+        q: 'I give my written consent to allow the Company to communicate with me by email to the address(es) listed below. I confirm that I have authorization to provide consent for email to the email address(es) that I provide below and further agree to indemnify and hold harmless the Company for any action or loss arising from any incorrect or false email address(es) provided below. I acknowledge that, should I desire to revoke this written authorization, I will inform the Company, in writing, of such revocation.',
+        ex: 'This asks if the insurance company can send you things by email. It also confirms the email you give is yours to use. You can take this back later in writing.',
+        ok: 'Any'
+      },
+      {
+        q: 'Are you covered by any other Health Insurance? If Yes, please answer questions 1. to 5.',
+        ex: 'Do you have any other health insurance right now? If yes, I will need the company name, policy number, start date, end date and address.',
+        ok: 'Any'
+      }
+    ]
+  },
+  {
+    id: 'hdhealthascent',
+    name: 'HD HealthAscent',
+    platform: 'Premier',
+    src: 'Oct 22 2026',
+    soft: true,
+    step: '',
+    scripts: [],
+    note: 'Section "Eligibility Questions" on Premier. The portal does not say what a No answer does. Portal note: "AGENT: YOU MUST CHANGE THE ACTIVE DATE FOR ALL ADD-ON PRODUCTS TO MATCH THE HD HEALTHASCENT PLAN."',
+    qs: [
+      {
+        q: 'Are you actively employed, working 20 hours or more per week?',
+        ex: 'Do you have a job right now where you work 20 hours or more a week?',
+        ok: 'Yes'
+      }
+    ]
+  },
+  {
+    id: 'nexuscare',
+    name: 'NexusCare STM',
+    platform: 'Premier',
+    src: 'Oct 22 2026',
+    soft: true,
+    step: 'Opening & Medical Underwriting',
+    scripts: ['NexusCare Base STM', 'NexusCare PPO STM'],
+    note: 'Section "Pivot STM Eligibility Questions" on Premier (checked on Base). Underwritten by The North River Insurance Company.',
+    qs: [
+      {
+        q: 'Effective 9/1/2024, Federal Regulations restrict Short-Term Medical insurance (also referred to as Short Term Limited Duration Insurance (STLDI) to no more than 4 months of coverage within a 12-month period with any one Insurance Company and/or its affiliated companies. As an example, if your Short-Term Medical coverage started 1/1/2025, you could not apply for coverage with the same Insurance Company. There are no restrictions on how often you can apply for up to 4 months of Short-Term Medical coverage if it is not with the same Insurance Company. After 8/31/2024, have you obtained Short-Term Medical coverage from the Insurance Company you are now applying for within the last 12 months?',
+        ex: 'Short term plans can only cover 4 months in a 12-month period with the same insurance company. This asks if you have had a short term plan from this same company in the last 12 months.',
+        ok: 'No'
+      },
+      {
+        q: 'Will any applicant be eligible for Medicare on the requested effective date?',
+        ex: 'This asks if anyone on the plan will be able to get Medicare on the day this plan starts. Medicare is usually for people 65 or older or with certain disabilities.',
+        ok: 'No'
+      },
+      {
+        q: 'Will any applicant have more than one short term medical insurance policy or certificate underwritten by The North River Insurance Company be in force at the same time as this coverage?',
+        ex: 'This asks if anyone will have another short term plan from The North River Insurance Company at the same time as this one.',
+        ok: 'No'
+      },
+      {
+        q: 'Have/Are you, or any applicant: a. An expectant parent, in process of adoption or undergoing infertility treatment? b. Over 300 pounds if male or over 250 pounds if female? c. In the past 12 months, been advised by a medical professional to have diagnostic testing, treatment, surgery, or cell or gene therapy that has not yet been completed? d. Currently hospitalized, bed bound, or confined in a medical facility for any medical reason?',
+        ex: 'Is anyone on the plan expecting a baby, adopting or getting fertility treatment? Is any man over 300 pounds or any woman over 250? Has a doctor told anyone in the last 12 months to get a test, treatment or surgery that is not done yet? Is anyone in the hospital or bed bound right now?',
+        ok: 'No'
+      },
+      {
+        q: "Within the last 5 years has any applicant had a diagnosis, symptoms, an abnormal test result or received treatment, medication or consultation by a member of the medical profession for: cancer, Hodgkin's or Non-Hodgkin's lymphoma or malignant melanoma (excluding localized non melanoma skin cancer); atrial fibrillation, abnormal heart rhythm, a heart disorder, angina, heart attack or congestive heart failure; stroke; transient ischemic attacks (TIAs); uncontrolled hypertension; blood pressure greater than (160/95); diabetes; Crohn's disease or ulcerative colitis; hepatitis C or liver or kidney disorders (excluding kidney stones); organ or bone marrow transplants; chronic obstructive pulmonary disease (COPD) or emphysema; inflammatory arthritis; Systemic Lupus Erythematosus (SLE) or degenerative spine or hip disorders; hemophilia, leukemia; muscular dystrophy or multiple sclerosis; Lou Gehrig disease (ALS); substance use disorder; mental illness requiring hospitalization; bipolar, schizophrenia; or eating disorders?",
+        ex: 'In the last 5 years, has anyone on the plan been diagnosed, had symptoms or an abnormal test, or been treated or given medicine for anything on this list? If you are not sure about one, tell me which one and I will read it again.',
+        ok: 'No'
+      },
+      {
+        q: 'Within the last 5 years has any applicant been diagnosed or treated by a physician or medical practitioner for Acquired Immune Deficiency Syndrome (AIDS) or tested positive for Human Immunodeficiency Virus (HIV)?',
+        ex: 'In the last 5 years, has anyone on the plan been diagnosed or treated for AIDS, or tested positive for HIV?',
+        ok: 'No'
+      },
+      {
+        q: 'If all persons to be insured are United States citizens, please answer "No" to this question. If any person to be insured is not a United States citizen, has that person resided outside the United States during the last 4 months?',
+        ex: 'If everyone on the plan is a U.S. citizen, the answer is No. If someone is not a citizen, this asks if they lived outside the U.S. at any time in the last 4 months.',
+        ok: 'No'
+      }
+    ]
+  },
+  {
+    id: 'crownpoint',
+    name: 'CrownPoint STM',
+    platform: 'Premier',
+    src: 'Oct 22 2026',
+    soft: true,
+    step: 'Opening & Medical Underwriting',
+    scripts: ['CrownPoint STM'],
+    note: 'Section "Everest STM" on Premier. The plan options (deductible, coinsurance, coverage period and so on) come first, then these questions.',
+    qs: [
+      {
+        q: "Would you like to enroll in consecutive terms to ensure you won't have a break in coverage?",
+        ex: 'This asks if you want a new coverage term to start right after this one ends, so there is no gap.',
+        ok: 'Any'
+      },
+      {
+        q: 'Is the Applicant or any Proposed Covered Person eligible for Medicaid or Medicare?',
+        ex: 'This asks if you or anyone on the plan can get Medicare or Medicaid right now. Medicare is usually for people 65 or older or with certain disabilities. Medicaid is the state program based on income.',
+        ok: 'No'
+      },
+      {
+        q: 'Is the Applicant or any Proposed Covered Person now pregnant, an expectant parent, in process of adoption or undergoing infertility treatment?',
+        ex: 'This asks if anyone on the plan is pregnant right now, expecting a baby, adopting, or getting fertility treatment.',
+        ok: 'No'
+      },
+      {
+        q: 'Is the Applicant or any Proposed Covered Person over 325 pounds if male, or over 275 pounds if female?',
+        ex: 'This asks if any woman on the plan weighs more than 275 pounds, or any man more than 325 pounds.',
+        ok: 'No'
+      },
+      {
+        q: 'Will the Applicant or any Proposed Covered Person have any other group major medical health insurance or individual major medical health insurance in force on the requested effective date?',
+        ex: 'This asks if anyone will still have other major medical insurance, like a job plan or a Marketplace plan, on the day this plan starts.',
+        ok: 'No'
+      },
+      {
+        q: "Within the last 5 years has any applicant been diagnosed with, received treatment, abnormal test results, medication, consultation for, or had symptoms of: Insulin or medication dependent diabetes except gestational (diabetes does not apply to residents of DC), stroke, transient ischemic attack (TIA), cancer or tumor except basal cell skin cancer, Crohn's disease, ulcerative colitis, rheumatoid arthritis, systemic lupus, chronic obstructive pulmonary disease (COPD), emphysema, cystic fibrosis, hepatitis C, multiple sclerosis, muscular dystrophy, alcohol or drug abuse; bipolar disorder or schizophrenia; hospitalization for mental disorder, an eating disorder; or any diseases or disorders of the following: liver, kidney, blood, pancreas, lung, brain, heart or circulatory including heart attack or catheterization?",
+        ex: 'In the last 5 years, has anyone on the plan been diagnosed, treated, taken medicine, seen a doctor, had abnormal test results, or had symptoms for anything on this list? If you are not sure about one, tell me which one and I will read it again.',
+        ok: 'No'
+      },
+      {
+        q: 'Within the past 5 years, has the Applicant or any Proposed Covered Person been diagnosed or treated by a physician or medical practitioner for Acquired Immune Deficiency Syndrome (AIDS), AIDS Related Complex (ARC) or tested positive for Human Immunodeficiency Virus (HIV)? (Residents of Wisconsin do not need to disclose HIV test results)',
+        ex: 'In the last 5 years, has anyone on the plan been diagnosed or treated for HIV or AIDS, or tested positive for HIV?',
+        ok: 'No'
+      },
+      {
+        q: 'If the Applicant and all Proposed Covered Person(s) are United States citizens, please answer "No" to this question. If the Applicant or any Proposed Covered Person is not a United States Citizen, has that person resided outside the United States for more than 4 weeks over the last 12 months?',
+        ex: 'If everyone on the plan is a U.S. citizen, the answer is No. If someone is not a citizen, this asks if they lived outside the U.S. for more than 4 weeks in the last 12 months.',
+        ok: 'No'
+      }
+    ]
+  },
+  {
+    id: 'risehealth',
+    name: 'RiseHealth STM',
+    platform: 'Premier',
+    src: 'Oct 22 2026',
+    step: 'Opening & Medical Underwriting',
+    scripts: [
+      'RiseHealth STM Traditional',
+      'RiseHealth STM Lite Plus',
+      'RiseHealth STM Lite'
+    ],
+    note: 'Checked on Traditional. The portal says: "If you have answered "yes" to any of the questions above, coverage cannot be issued." The first question (consecutive terms) is a choice, not a health question. Up to 36 months: AL, AZ, AR, FL, GA, KY, LA, MS, NE, SC, TN, WV, WY. No consecutive terms: MI, NV, TX, WI.',
+    qs: [
+      {
+        q: 'Would you like to enroll in consecutive policy terms?',
+        ex: 'This asks if you want a new policy term to start right after this one ends, so there is no gap. It depends on your state.',
+        ok: 'Any'
+      },
+      {
+        q: 'Has any person proposed for coverage been a legal resident of the United States for less than the past 12 consecutive months?',
+        ex: 'This asks if anyone on the plan has lived in the U.S. legally for less than the last 12 months in a row. If everyone has been here legally the whole year, the answer is No.',
+        ok: 'No'
+      },
+      {
+        q: 'Will there be any other health insurance in force on the requested effective date of this coverage?',
+        ex: 'This asks if anyone will still have other health insurance on the day this plan starts.',
+        ok: 'No'
+      },
+      {
+        q: 'Is the proposed insured, spouse, or any dependent child now pregnant, undergoing infertility treatment, or in the process of adoption?',
+        ex: 'This asks if you, your spouse or a child on the plan is pregnant right now, getting fertility treatment, or adopting.',
+        ok: 'No'
+      },
+      {
+        q: 'Is any person proposed for coverage currently eligible for Medicaid?',
+        ex: 'This asks if anyone on the plan can get Medicaid right now. Medicaid is the state program based on income.',
+        ok: 'No'
+      },
+      {
+        q: 'Has any person proposed for coverage ever been declined for health insurance due to health reasons?',
+        ex: 'This asks if an insurance company has ever turned down anyone on the plan because of their health.',
+        ok: 'No'
+      },
+      {
+        q: "Within the past 5 years, have you or any other person to be insured been aware of, diagnosed, treated by a member of the medical profession, or taken mediation for cancer or a tumor, stroke, heart disorder, heart attack, coronary bypass or stent, peripheral vascular disease, carotid artery disease, COPD (Chronic Obstructive Pulmonary Disease) or emphysema, kidney disorder or disease (other than kidney stones), liver disorder or disease, neurological disorder, degenerative disc disease or herniation/bulge, rheumatoid arthritis, degenerative joint disease of the knee or hip, diabetes, Crohn's disease or ulcerative colitis, bipolar disorder or schizophrenia, any eating disorder, or alcohol abuse or chemical dependency or does anyone listed on the application currently weigh over 250 pounds (women) or over 300 pounds (men)?",
+        ex: 'In the last 5 years, has anyone on the plan known about, been diagnosed with, been treated for, or taken medicine for anything on this list? This also asks if any woman on the plan weighs over 250 pounds or any man over 300 pounds.',
+        ok: 'No'
+      },
+      {
+        q: 'Have you or any other person to be insured been hospitalized for a mental health condition in the past 5 years or been treated by a member of the medical profession for a mental health condition in the past 12 months?',
+        ex: 'This asks if anyone on the plan stayed in a hospital for mental health in the last 5 years, or was treated for mental health in the last 12 months.',
+        ok: 'No'
+      },
+      {
+        q: 'Have you or any other person to be insured ever been diagnosed or treated for Acquired Immune Deficiency Syndrome (AIDS), AIDS-related complex, or any other immune system disorder such as HIV?',
+        ex: 'This asks if anyone on the plan has ever been diagnosed or treated for HIV, AIDS, or another immune system disorder.',
+        ok: 'No'
+      }
+    ]
   }
 ];
 
-var appqState = { plan: 'harbor', ans: {}, help: {}, open: {} };
+// Short titles for each question (Oct 22 2026), shown in bold above the
+// word-for-word text on the On Call tab. Short view shows only these.
+var APPQ_SHORT = {
+  harbor: [
+    'Medicare or Medicaid',
+    'Pregnant, adopting or fertility',
+    'Weight',
+    'Other major medical',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Non-citizen outside the U.S.',
+    'Consecutive terms'
+  ],
+  pinnacle: [
+    'Medicare or Medicaid',
+    'Pregnant, adopting or fertility',
+    'Weight',
+    'Other major medical',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Non-citizen outside the U.S.'
+  ],
+  access: [
+    'U.S. resident less than 12 months',
+    'Other health insurance',
+    'Pregnant, adopting or fertility',
+    'Ever declined for health',
+    'Medicaid',
+    'Conditions, last 5 years',
+    'Mental health',
+    'HIV or AIDS'
+  ],
+  smartchoice: [
+    'Admitted as a Working Owner',
+    'Assigned activities',
+    'Assigned projects',
+    'Payment for each response',
+    '3 Preferred Units',
+    'Units not registered',
+    'Benefit plan eligibility',
+    'Confidentiality',
+    'Call Right',
+    'Read the terms'
+  ],
+  tdk: [
+    'Paid surveys',
+    'Care in the last 5 years',
+    'Cancer, heart or stroke',
+    'Autoimmune or blood disease',
+    'Organ failure or transplant'
+  ],
+  galena: [
+    'U.S. resident 12 months',
+    'Other health insurance',
+    'Pregnant, adopting or fertility',
+    'Medicaid',
+    'Ever declined for health',
+    'Conditions, last 5 years',
+    'Weight',
+    'Mental health',
+    'HIV or AIDS'
+  ],
+  smarthealth: [
+    'U.S. resident less than 12 months',
+    'Other health insurance',
+    'Pregnant, adopting or fertility',
+    'Medicaid',
+    'Ever declined for health',
+    'Conditions or weight, last 5 years',
+    'Mental health',
+    'HIV or AIDS'
+  ],
+  allstatestm: [
+    'Pregnant, adopting or fertility',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Pending tests or diagnosis'
+  ],
+  allstateha: [
+    'Pregnant, adopting or fertility',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Pending tests or diagnosis'
+  ],
+  afslic20: ['Marital status', 'Email consent', 'Other health insurance'],
+  hdhealthascent: ['Working 20+ hours a week'],
+  nexuscare: [
+    'STM with this company in 12 months',
+    'Medicare',
+    'Another North River STM',
+    'Pregnancy, weight, pending care, hospitalized',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Non-citizen outside the U.S.'
+  ],
+  crownpoint: [
+    'Consecutive terms',
+    'Medicare or Medicaid',
+    'Pregnant, adopting or fertility',
+    'Weight',
+    'Other major medical',
+    'Conditions, last 5 years',
+    'HIV or AIDS, last 5 years',
+    'Non-citizen outside the U.S.'
+  ],
+  risehealth: [
+    'Consecutive terms',
+    'U.S. resident less than 12 months',
+    'Other health insurance',
+    'Pregnant, adopting or fertility',
+    'Medicaid',
+    'Ever declined for health',
+    'Conditions or weight, last 5 years',
+    'Mental health',
+    'HIV or AIDS'
+  ]
+};
+APPQ_PLANS.forEach(function (p) {
+  var t = APPQ_SHORT[p.id] || [];
+  p.qs.forEach(function (q, i) {
+    if (t[i]) q.t = t[i];
+  });
+});
+
+var appqState = {
+  plan: 'harbor',
+  ans: {},
+  help: {},
+  open: {},
+  short: false
+};
 
 function appqEsc(t) {
   return String(t == null ? '' : t)
@@ -321,6 +835,18 @@ function appqStatus(plan) {
     answered++;
     if (q.ok !== 'Any' && ans[i] !== q.ok) stops.push(i + 1);
   });
+  if (stops.length && plan.soft) {
+    return {
+      tone: 'stop',
+      title: 'Check',
+      text:
+        'Question ' +
+        stops.join(', ') +
+        ' may rule out ' +
+        plan.name +
+        '. The portal does not say; confirm before you submit.'
+    };
+  }
   if (stops.length) {
     return {
       tone: 'stop',
@@ -359,7 +885,15 @@ function appqListHtml(plan, where) {
     appqEsc(st.title) +
     '</b><span>' +
     appqEsc(st.text) +
-    '</span><button type="button" class="appq-reset" data-appq-reset="' +
+    '</span>' +
+    (where === 'cw'
+      ? '<button type="button" class="appq-short" data-appq-short="1"' +
+        w +
+        '>' +
+        (appqState.short ? 'Word for word' : 'Short view') +
+        '</button>'
+      : '') +
+    '<button type="button" class="appq-reset" data-appq-reset="' +
     plan.id +
     '"' +
     w +
@@ -396,9 +930,14 @@ function appqListHtml(plan, where) {
       cls +
       '"><span class="appq-num">' +
       (i + 1) +
-      '</span><div class="appq-body"><p class="appq-text">' +
-      appqEsc(q.q) +
-      '</p><button type="button" class="appq-help-btn" data-appq-help="' +
+      '</span><div class="appq-body">' +
+      (q.t && where === 'cw'
+        ? '<p class="appq-title">' + appqEsc(q.t) + '</p>'
+        : '') +
+      (where === 'cw' && appqState.short && q.t
+        ? ''
+        : '<p class="appq-text">' + appqEsc(q.q) + '</p>') +
+      '<button type="button" class="appq-help-btn" data-appq-help="' +
       plan.id +
       ':' +
       i +
@@ -414,9 +953,13 @@ function appqListHtml(plan, where) {
         : '') +
       (bad
         ? '<p class="appq-warn">' +
-          (q.ok === 'Yes'
-            ? 'Needs Yes to enroll in ' + appqEsc(plan.name) + '.'
-            : 'Not eligible for ' + appqEsc(plan.name) + '.') +
+          (plan.soft
+            ? 'This answer may rule out ' +
+              appqEsc(plan.name) +
+              '. Confirm before you submit.'
+            : q.ok === 'Yes'
+              ? 'Needs Yes to enroll in ' + appqEsc(plan.name) + '.'
+              : 'Not eligible for ' + appqEsc(plan.name) + '.') +
           '</p>'
         : '') +
       '</div><div class="appq-yn">' +
@@ -464,7 +1007,9 @@ function appqListHtml(plan, where) {
     html += '</div>';
   }
   html +=
-    '<p class="appq-src">Copied from the carrier application, Oct 17 2026. Read the question first; use the explanation only if the client is confused. Answers are not saved.</p>';
+    '<p class="appq-src">Copied from the carrier application, ' +
+    appqEsc(plan.src || 'Oct 17 2026') +
+    '. Read the question first; use the explanation only if the client is confused. Answers are not saved.</p>';
   return html;
 }
 
@@ -513,7 +1058,7 @@ function appqOnClick(e) {
   var t =
     e.target && e.target.closest
       ? e.target.closest(
-          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan]'
+          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan],[data-appq-short]'
         )
       : null;
   if (!t) return;
@@ -532,6 +1077,11 @@ function appqOnClick(e) {
     var hs = appqState.help[h[0]] || (appqState.help[h[0]] = {});
     hs[h[1]] = !hs[h[1]];
     appqRefresh(where, h[0]);
+    return;
+  }
+  if (t.getAttribute('data-appq-short')) {
+    appqState.short = !appqState.short;
+    appqRefresh(where, '');
     return;
   }
   v = t.getAttribute('data-appq-reset');
@@ -560,7 +1110,11 @@ function renderAppQuestions() {
   var plan = appqFind(appqState.plan) || APPQ_PLANS[0];
   root.innerHTML =
     '<div class="appq-page" id="appq-root"><header class="appq-hero appq-hero-' +
-    (plan.platform === 'FirstEnroll' ? 'fe' : 'neo') +
+    (plan.platform === 'FirstEnroll'
+      ? 'fe'
+      : plan.platform === 'Premier'
+        ? 'pr'
+        : 'neo') +
     '"><div><h2>' +
     appqEsc(plan.name) +
     '</h2><p>Application questions - read word for word</p></div><div class="appq-seg">' +
