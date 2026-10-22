@@ -6760,6 +6760,10 @@ function _stGroupMatchesDateChip(grp) {
   var mode = _stAllSalesRange || 'all';
   if (mode === 'all') return true;
   var now = new Date();
+  if (mode === 'week') {
+    var wkS = _stCurrentWeekStartMs();
+    return ts >= wkS && ts < wkS + 7 * 24 * 60 * 60 * 1000;
+  }
   if (mode === 'month') {
     var monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
     return ts >= monthStart;
@@ -7474,9 +7478,10 @@ function _stBuildAllSalesPane(sales) {
     if (Object.hasOwn(_stSelectedIds, sid) && _stSelectedIds[sid])
       selectedCount++;
   }
-  var html = '<div class="st-table-section st-sales-log st-all-sales-pane">';
+  var html = _stBuildDealsSummaryHtml(filteredAll);
+  html += '<div class="st-table-section st-sales-log st-all-sales-pane">';
   html +=
-    '<div class="st-split-col-head st-split-col-head-row2"><span class="st-split-title">All sales (' +
+    '<div class="st-split-col-head st-split-col-head-row2"><span class="st-split-title">All deals (' +
     totalFiltered +
     ')</span><button type="button" class="st-export-link" aria-label="Export all sales as CSV" onclick="_stExportAllSalesCsv()">↓ Export</button></div>';
 
@@ -7492,15 +7497,17 @@ function _stBuildAllSalesPane(sales) {
       '</button>'
     );
   }
+  // Redesign: This week + Custom only. No chip active = every deal.
   html += '<div class="st-date-chips">';
-  html += chip('all', 'All time');
-  html += chip('month', 'This month');
-  html += chip('lastMonth', 'Last month');
-  html += chip('last7', 'Last 7 days');
+  html += chip('week', 'This week');
   html +=
     '<button type="button" class="st-date-chip' +
     (_stAllSalesRange === 'custom' ? ' st-chip-active' : '') +
     '" onclick="_stSetAllSalesChip(\'custom\')"><svg class="st-chip-cal" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>Custom</button>';
+  if (_stAllSalesRange && _stAllSalesRange !== 'all') {
+    html +=
+      '<button type="button" class="st-date-chip st-chip-clear" onclick="_stSetAllSalesChip(\'all\')">\u00D7 Show all deals</button>';
+  }
   html += '</div>';
 
   var customVis = _stAllSalesRange === 'custom' ? 'block' : 'none';
@@ -7528,7 +7535,8 @@ function _stBuildAllSalesPane(sales) {
     ['all', 'All status'],
     ['cleared', 'Cleared'],
     ['pending', 'Pending'],
-    ['chargeback', 'Chargeback']
+    ['chargeback', 'Chargeback'],
+    ['samecancel', 'Same-week cancel']
   ];
   for (var si = 0; si < stOpts.length; si++) {
     html +=
@@ -7595,11 +7603,13 @@ function _stBuildAllSalesPane(sales) {
         '</span><span class="st-ccp-plan">' +
         _stEscape(lead2.plan || '—') +
         '</span>' +
+        '<span class="st-member-id" style="display:block;">' +
         (lead2.memberId
-          ? '<span class="st-member-id" style="display:block;">ID: ' +
-            _stEscape(lead2.memberId) +
-            '</span>'
+          ? 'ID: ' + _stEscape(lead2.memberId) + ' \u00B7 '
           : '') +
+        '<span class="st-kept">' +
+        _stEscape(_stKeptLabel(grp)) +
+        '</span></span>' +
         (lead2.isBackfill
           ? '<span class="st-backfill-badge">Backfill</span>'
           : '') +
@@ -7642,7 +7652,119 @@ function _stBuildAllSalesPane(sales) {
       '<p class="st-show-more-note">Showing first 50 matches. Narrow filters to see more.</p>';
   }
   html += '</div>';
+  html += _stBuildPlanKeepHtml(filteredAll);
   return html;
+}
+
+// ── All Deals: how long clients keep their plans ────────────
+var _ST_MS_MONTH = 30.44 * 24 * 60 * 60 * 1000;
+
+function _stGroupEndedTs(grp) {
+  var lead = grp && (grp.deal || grp.addons[0]);
+  if (!lead || !_stIsReversalStatus(lead)) return 0;
+  var ev = lead.reversal && Number(lead.reversal.eventTs);
+  return ev || _stSaleStatusChangedTs(lead) || _stGroupListTs(grp);
+}
+
+function _stGroupMonthsKept(grp) {
+  var start = _stGroupListTs(grp);
+  var end = _stGroupEndedTs(grp) || Date.now();
+  if (!start || end <= start) return 0;
+  return (end - start) / _ST_MS_MONTH;
+}
+
+function _stKeptLabel(grp) {
+  var lead = grp && (grp.deal || grp.addons[0]);
+  var st = lead ? _stNormalizeStatus(lead) : 'pending';
+  if (st === 'samecancel') return 'cancelled same week';
+  var m = Math.floor(_stGroupMonthsKept(grp));
+  if (st === 'chargeback') return 'kept ' + m + ' mo';
+  if (m < 1) return 'new';
+  return 'kept ' + m + ' mo';
+}
+
+function _stPlanFamily(name) {
+  var n = String(name || 'Other')
+    .replace(/\(.*?\)/g, '')
+    .replace(/\s+(plan\s*)?\d+[a-z]?$/i, '')
+    .replace(/\s+-\s+.*$/, '')
+    .trim();
+  return n || 'Other';
+}
+
+function _stBuildDealsSummaryHtml(groups) {
+  var written = groups.length;
+  var active = 0;
+  var sumMonths = 0;
+  var longest = 0;
+  for (var i = 0; i < groups.length; i++) {
+    var lead = groups[i].deal || groups[i].addons[0];
+    if (lead && !_stIsReversalStatus(lead)) active++;
+    var m = _stGroupMonthsKept(groups[i]);
+    sumMonths += m;
+    if (m > longest) longest = m;
+  }
+  var avg = written ? sumMonths / written : 0;
+  function cell(label, val) {
+    return (
+      '<div class="st-stat-cell"><span class="st-stat-label">' +
+      _stEscape(label) +
+      '</span><span class="st-stat-val">' +
+      _stEscape(val) +
+      '</span></div>'
+    );
+  }
+  return (
+    '<section class="st-stat-strip" aria-label="Deals summary">' +
+    cell('Deals written', String(written)) +
+    cell('Still active', String(active)) +
+    cell('Average months kept', avg.toFixed(1)) +
+    cell('Longest kept', Math.floor(longest) + ' mo') +
+    '</section>'
+  );
+}
+
+function _stBuildPlanKeepHtml(groups) {
+  var fam = {};
+  var order = [];
+  for (var i = 0; i < groups.length; i++) {
+    var g = groups[i];
+    var lead = g.deal || g.addons[0];
+    if (!lead) continue;
+    var f = _stPlanFamily(lead.plan);
+    if (!fam[f]) {
+      fam[f] = { name: f, sold: 0, active: 0, months: 0 };
+      order.push(f);
+    }
+    fam[f].sold++;
+    if (!_stIsReversalStatus(lead)) fam[f].active++;
+    fam[f].months += _stGroupMonthsKept(g);
+  }
+  if (!order.length) return '';
+  var rows = order.map(function (k) {
+    return fam[k];
+  });
+  rows.sort(function (a, b) {
+    return b.sold - a.sold;
+  });
+  rows = rows.slice(0, 10);
+  var html =
+    '<section class="st-keep-card" aria-label="How long clients keep each plan">' +
+    '<h3 class="st-keep-title">How long clients keep each plan</h3>' +
+    '<div class="st-keep-row st-keep-head"><span>Plan</span><span>Sold</span><span>Still active</span><span>Avg months</span></div>';
+  for (var r = 0; r < rows.length; r++) {
+    html +=
+      '<div class="st-keep-row"><span class="st-keep-name">' +
+      _stEscape(rows[r].name) +
+      '</span><span>' +
+      rows[r].sold +
+      '</span><span>' +
+      rows[r].active +
+      '</span><span>' +
+      (rows[r].months / rows[r].sold).toFixed(1) +
+      '</span></div>';
+  }
+  return html + '</section>';
 }
 
 function _stSetAllSalesRange(mode) {
@@ -13560,6 +13682,91 @@ function _stNavShiftWeek(delta) {
   _stRender();
 }
 
+// Fee lines (association, technology access, enrollment, payment fees)
+// are not premium on the Sales Board, so the This Week numbers skip them.
+function _stIsFeeLine(sale) {
+  return !!(sale && /\bfees?\b/i.test(String(sale.plan || '')));
+}
+
+// This Week numbers counted the way the CHA Tools Sales Board counts
+// them: premium without fees, one deal per member ID (a dental- or
+// vision-only sale is its own deal), add-ons = ancillary lines.
+// Returns a copy of stats with weekSales, weekDeals, weekAddons and
+// dayBuckets replaced; commission figures are left as calculated.
+function _stBoardWeekStats(sales, stats) {
+  var out = {};
+  var k;
+  for (k in stats) {
+    if (Object.prototype.hasOwnProperty.call(stats, k)) out[k] = stats[k];
+  }
+  var start = Number(stats.weekStart) || 0;
+  var end = Number(stats.weekEndExclusive) || start + 7 * 864e5;
+  var buckets = [];
+  var src = stats.dayBuckets || [];
+  var bi;
+  for (bi = 0; bi < src.length; bi++) {
+    var b = src[bi];
+    var bd = b.date instanceof Date ? b.date : new Date(b.date);
+    buckets.push({
+      amount: 0,
+      count: 0,
+      date: bd,
+      commission: b.commission,
+      dealCount: 0,
+      addonCount: 0,
+      addonCommission: b.addonCommission,
+      _keys: {},
+      _anchor: _stDayAnchorMs(bd.getTime())
+    });
+  }
+  var reversedReceipts = {};
+  var i;
+  var s;
+  for (i = 0; i < sales.length; i++) {
+    s = sales[i];
+    if (s && s.type === 'deal' && s.receiptId && _stIsReversalStatus(s)) {
+      reversedReceipts[s.receiptId] = true;
+    }
+  }
+  var premium = 0;
+  var dealKeys = {};
+  var deals = 0;
+  var addons = 0;
+  for (i = 0; i < sales.length; i++) {
+    s = sales[i];
+    if (!s || s.ts < start || s.ts >= end) continue;
+    if (_stIsReversalStatus(s) || _stIsFeeLine(s)) continue;
+    if (s.receiptId && reversedReceipts[s.receiptId]) continue;
+    var amt = Number(s.amount) || 0;
+    premium += amt;
+    var key = String(s.memberId || s.receiptId || s.id || i);
+    var isNewDeal = !dealKeys[key];
+    if (isNewDeal) {
+      dealKeys[key] = true;
+      deals++;
+    }
+    var isAddon = s.type === 'addon' || _stSaleCountsAsAddon(s);
+    if (isAddon) addons++;
+    var anchor = _stDayAnchorMs(s.ts);
+    for (bi = 0; bi < buckets.length; bi++) {
+      if (buckets[bi]._anchor !== anchor) continue;
+      buckets[bi].amount += amt;
+      buckets[bi].count += 1;
+      if (isAddon) buckets[bi].addonCount += 1;
+      if (!buckets[bi]._keys[key]) {
+        buckets[bi]._keys[key] = true;
+        buckets[bi].dealCount += 1;
+      }
+      break;
+    }
+  }
+  out.weekSales = premium;
+  out.weekDeals = deals;
+  out.weekAddons = addons;
+  out.dayBuckets = buckets;
+  return out;
+}
+
 function _stBuildWeekHeroHtml(stats, view) {
   var isWeek = view.mode === 'week';
   var html = '<section class="st-wk-hero" aria-label="Week summary">';
@@ -13622,7 +13829,7 @@ function _stBuildWeekHeroHtml(stats, view) {
   html += '</div>';
   html += '<div class="st-wk-hero-stats">';
   html +=
-    '<div class="st-wk-stat"><span class="st-wk-stat-label">Core deals</span><span class="st-wk-stat-val">' +
+    '<div class="st-wk-stat"><span class="st-wk-stat-label">Deals</span><span class="st-wk-stat-val">' +
     (Number(stats.weekDeals) || 0) +
     '</span></div>';
   html +=
@@ -13699,7 +13906,7 @@ function _stBuildWeekBonusHtml(stats, view) {
     summary +
     '</span></div>';
   html += '<div class="st-wk-bonus-grid">';
-  html += _stBuildWeekBonusBar('Core deals', deals, goal.deals);
+  html += _stBuildWeekBonusBar('Deals', deals, goal.deals);
   html += _stBuildWeekBonusBar('Add-ons', addons, goal.addons);
   html += '</div></section>';
   return html;
@@ -14419,32 +14626,48 @@ function _stBuildCbcSummaryHtml(sum) {
     all: 'All time',
     custom: 'Custom range'
   });
-  var cbWord = sum.cbN === 1 ? 'chargeback' : 'chargebacks';
-  var swWord = sum.swN === 1 ? 'same-week cancel' : 'same-week cancels';
-  var support =
-    'Lost to ' + sum.cbN + ' ' + cbWord + ' and ' + sum.swN + ' ' + swWord;
-  return _stBuildTabHeroHtml({
-    headline:
-      '<span class="st-cbc-lost">' +
-      _stEscape('-' + _stFmtMoney(sum.totalLost)) +
-      '</span>',
-    support: _stEscape(support),
-    period: period,
-    headlineId: 'st-cbc-summary',
-    supportId: 'st-cbc-support'
-  });
+  function cell(label, val, cls) {
+    return (
+      '<div class="st-stat-cell"><span class="st-stat-label">' +
+      _stEscape(label) +
+      '</span><span class="st-stat-val' +
+      (cls ? ' ' + cls : '') +
+      '">' +
+      _stEscape(val) +
+      '</span></div>'
+    );
+  }
+  var html =
+    '<section class="st-stat-strip" id="st-cbc-summary" aria-label="Chargebacks and cancels summary">';
+  html += cell(
+    'Chargebacks',
+    sum.cbN + ' \u00B7 -' + _stFmtMoney(sum.cbLost),
+    'st-stat-bad'
+  );
+  html += cell(
+    'Same-week cancels',
+    sum.swN + ' \u00B7 -' + _stFmtMoney(sum.swLost),
+    'st-stat-warn'
+  );
+  if (typeof sum.keptRate === 'number') {
+    html += cell('Kept rate', sum.keptRate + '%');
+  }
+  html +=
+    '<span class="st-stat-period" id="st-cbc-support">' +
+    _stEscape(period) +
+    '</span>';
+  return html + '</section>';
 }
 
 function _stBuildCbcTimeChipsHtml() {
+  // Redesign: This week + Custom only; "Show all" clears the range.
   var timeChips = [
     { id: 'week', label: 'This week' },
-    { id: 'last4', label: 'Last 4 weeks' },
-    { id: 'month', label: 'This month' },
-    { id: 'last3', label: 'Last 3 months' },
-    { id: 'ytd', label: 'YTD' },
-    { id: 'all', label: 'All time' },
     { id: 'custom', label: 'Custom' }
   ];
+  if (_stCbcTimeFilter && _stCbcTimeFilter !== 'all') {
+    timeChips.push({ id: 'all', label: '\u00D7 Show all' });
+  }
   var typeChips = [
     { id: 'all', label: 'All types' },
     { id: 'chargeback', label: 'Chargebacks' },
@@ -14564,10 +14787,36 @@ function _stBuildCbcTableBodyHtml(events) {
   if (!events || !events.length) {
     return '<div class="st-cbc-empty">No chargebacks or same-week cancels in this range.</div>';
   }
+  // Grouped by the week the chargeback or cancel happened.
   var html = '';
   var i;
+  var lastWs = null;
   for (i = 0; i < events.length; i++) {
-    html += _stBuildCbcTableRowHtml(events[i]);
+    var ev = events[i];
+    var ws = _stWeekStartFromTs(ev.eventTs || ev.saleTs || 0);
+    if (ws !== lastWs) {
+      var n = 0;
+      var lost = 0;
+      for (var j = i; j < events.length; j++) {
+        if (
+          _stWeekStartFromTs(events[j].eventTs || events[j].saleTs || 0) !== ws
+        ) {
+          break;
+        }
+        n++;
+        lost += Number(events[j].amountLost) || 0;
+      }
+      html +=
+        '<div class="st-cbc-week-head"><span>' +
+        _stEscape(ws ? _stFmtWeekLabel(ws) : 'Date unknown') +
+        '</span><span>' +
+        n +
+        ' \u00B7 -' +
+        _stEscape(_stFmtMoney(lost)) +
+        '</span></div>';
+      lastWs = ws;
+    }
+    html += _stBuildCbcTableRowHtml(ev);
   }
   return html;
 }
@@ -14606,9 +14855,23 @@ function _stCbcVisibleState(sales) {
   var timed = pinned ? filtered : _stCbcFilterByTime(_stCbcCachedEvents);
   var bounds = _stCbcTimeBounds();
   var salesN = pinned ? 0 : _stCbcCountSalesWritten(sales, bounds);
+  var sum = _stCbcSummarize(timed);
+  // Kept rate: share of deals written in the range not reversed.
+  if (!pinned && salesN > 0) {
+    var lostKeys = {};
+    var lostN = 0;
+    for (var ki = 0; ki < timed.length; ki++) {
+      var lk = String(timed[ki].memberId || timed[ki].saleId || ki);
+      if (!lostKeys[lk]) {
+        lostKeys[lk] = true;
+        lostN++;
+      }
+    }
+    sum.keptRate = Math.max(0, Math.round(100 * (1 - lostN / salesN)));
+  }
   return {
     filtered: filtered,
-    sum: _stCbcSummarize(timed),
+    sum: sum,
     analytics: _stCbcAnalytics(timed, salesN)
   };
 }
@@ -16101,9 +16364,10 @@ function _stRender() {
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
-  html += _stBuildWeekHeroHtml(stats, view);
-  html += _stBuildWeekBonusHtml(stats, view);
-  html += _stBuildTable(scopedSales, stTab, view, stats);
+  var boardStats = _stBoardWeekStats(sales, stats);
+  html += _stBuildWeekHeroHtml(boardStats, view);
+  html += _stBuildWeekBonusHtml(boardStats, view);
+  html += _stBuildTable(scopedSales, stTab, view, boardStats);
   html += _stBuildPostDatesSection(postdates);
   html +=
     '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
