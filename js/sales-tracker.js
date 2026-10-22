@@ -7129,6 +7129,14 @@ function _stHeroPaycheckDayClick(anchorMs) {
   _stToggleThisWeekDay(anchorMs);
 }
 
+// Redesigned This Week hero: a day card opens that day in the list
+// below (never collapses it) and scrolls to it.
+function _stWeekHeroJumpToDay(anchorMs) {
+  _stThisWeekExpandedDays[String(anchorMs)] = true;
+  _stScrollToDayAfterRender = anchorMs;
+  _stRender();
+}
+
 function _stHeroPaycheckDayKeyDown(e, anchorMs) {
   if (e.key !== 'Enter' && e.key !== ' ') return;
   e.preventDefault();
@@ -7340,7 +7348,10 @@ function _stBuildThisWeekDayGroupedHtml(weekGroups, stTab, stats) {
     dayAnchors.length &&
     !_stThisWeekExpandBootstrapped
   ) {
-    _stThisWeekExpandedDays[String(_stDayAnchorMs(Date.now()))] = true;
+    // Redesign: open every day of the week on first view.
+    for (var ex = 0; ex < dayAnchors.length; ex++) {
+      _stThisWeekExpandedDays[String(dayAnchors[ex])] = true;
+    }
     _stThisWeekExpandBootstrapped = true;
   }
   var parts = [];
@@ -13526,6 +13537,200 @@ function _stBuildWeekNavigator(_view) {
   return html;
 }
 
+// ── THIS WEEK REDESIGN (Oct 2026) ───────────────────────────
+// Gradient hero: weekly premium, clickable day cards, core deals,
+// add-ons and commission. Then a simple weekly bonus tracker.
+var _ST_DAY_SHORT = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+function _stNavShiftWeek(delta) {
+  var weekMs = 7 * 24 * 60 * 60 * 1000;
+  var nowWs = _stCurrentWeekStartMs();
+  var cur =
+    _stRangeMode === 'week' ? Number(_stSelectedWeekStart) || nowWs : nowWs;
+  var next = cur + (Number(delta) || 0) * weekMs;
+  if (next > nowWs) next = nowWs;
+  _stRangeMode = 'week';
+  _stRangeDraftOpen = false;
+  _stRangeError = '';
+  _stRangeAppliedStart = '';
+  _stRangeAppliedEnd = '';
+  _stRangeDraftStart = '';
+  _stRangeDraftEnd = '';
+  _stSelectedWeekStart = next;
+  _stRender();
+}
+
+function _stBuildWeekHeroHtml(stats, view) {
+  var isWeek = view.mode === 'week';
+  var html = '<section class="st-wk-hero" aria-label="Week summary">';
+  html += '<div class="st-wk-hero-main">';
+  html += '<div class="st-wk-hero-nav">';
+  if (isWeek) {
+    html +=
+      '<button type="button" class="st-wk-hero-arrow" onclick="_stNavShiftWeek(-1)" aria-label="Previous week">‹</button>';
+  }
+  html += '<span class="st-wk-hero-range">' + _stEscape(view.label) + '</span>';
+  if (isWeek && !view.isCurrentWeek) {
+    html +=
+      '<button type="button" class="st-wk-hero-arrow" onclick="_stNavShiftWeek(1)" aria-label="Next week">›</button>';
+  }
+  html += '</div>';
+  html +=
+    '<div class="st-wk-hero-label">' +
+    (isWeek ? 'WEEKLY PREMIUM' : 'PREMIUM') +
+    '</div>';
+  html +=
+    '<div class="st-wk-hero-amount">' + _stFmtMoney(stats.weekSales) + '</div>';
+  var chips = '';
+  var buckets = stats.dayBuckets || [];
+  for (var i = 0; i < buckets.length; i++) {
+    var b = buckets[i];
+    if (!b || !(b.amount > 0 || b.count > 0)) continue;
+    var d = b.date instanceof Date ? b.date : new Date(b.date);
+    var anchor = _stDayAnchorMs(d.getTime());
+    var n = Number(b.dealCount) || 0;
+    var sub = n === 1 ? '1 deal' : n + ' deals';
+    if (!n && b.addonCount) {
+      sub = b.addonCount === 1 ? '1 add-on' : b.addonCount + ' add-ons';
+    }
+    chips +=
+      '<button type="button" class="st-wk-day" onclick="_stWeekHeroJumpToDay(' +
+      anchor +
+      ')" aria-label="Show ' +
+      _stEscape(
+        _ST_DAY_SHORT[d.getDay()] + ' ' + (d.getMonth() + 1) + '/' + d.getDate()
+      ) +
+      ' deals">' +
+      '<span class="st-wk-day-name">' +
+      _ST_DAY_SHORT[d.getDay()] +
+      ' ' +
+      (d.getMonth() + 1) +
+      '/' +
+      d.getDate() +
+      '</span>' +
+      '<span class="st-wk-day-amt">' +
+      _stFmtMoney(b.amount) +
+      '</span>' +
+      '<span class="st-wk-day-sub">' +
+      _stEscape(sub) +
+      ' ›</span></button>';
+  }
+  if (chips) {
+    html +=
+      '<nav class="st-wk-days" aria-label="Jump to a day">' + chips + '</nav>';
+  }
+  html += '</div>';
+  html += '<div class="st-wk-hero-stats">';
+  html +=
+    '<div class="st-wk-stat"><span class="st-wk-stat-label">Core deals</span><span class="st-wk-stat-val">' +
+    (Number(stats.weekDeals) || 0) +
+    '</span></div>';
+  html +=
+    '<div class="st-wk-stat"><span class="st-wk-stat-label">Add-ons</span><span class="st-wk-stat-val">' +
+    (Number(stats.weekAddons) || 0) +
+    '</span></div>';
+  html +=
+    '<div class="st-wk-stat"><span class="st-wk-stat-label">Commission</span><span class="st-wk-stat-val">' +
+    _stFmtMoney(stats.weekCommissionValid) +
+    '</span></div>';
+  html += '</div></section>';
+  return html;
+}
+
+function _stBuildWeekBonusBar(label, have, goal) {
+  var pct = goal > 0 ? Math.min(100, Math.round((have * 100) / goal)) : 100;
+  return (
+    '<div class="st-wk-bonus-row">' +
+    '<div class="st-wk-bonus-row-head"><span class="st-wk-bonus-name">' +
+    _stEscape(label) +
+    '</span><span class="st-wk-bonus-count"><b>' +
+    have +
+    '</b> / ' +
+    goal +
+    '</span></div>' +
+    '<div class="st-wk-bonus-track" role="progressbar" aria-label="' +
+    _stEscape(label) +
+    '" aria-valuemin="0" aria-valuemax="' +
+    goal +
+    '" aria-valuenow="' +
+    have +
+    '"><div class="st-wk-bonus-fill" style="width:' +
+    pct +
+    '%"></div></div></div>'
+  );
+}
+
+function _stBuildWeekBonusHtml(stats, view) {
+  if (view.mode !== 'week' || !ST_BONUS_TIERS.length) return '';
+  var deals = Number(stats.weekDeals) || 0;
+  var addons = Number(stats.weekAddons) || 0;
+  var unlocked = _stCurrentTierBonus(stats);
+  var next = null;
+  for (var i = 0; i < ST_BONUS_TIERS.length; i++) {
+    if (ST_BONUS_TIERS[i].bonus > unlocked) {
+      next = ST_BONUS_TIERS[i];
+      break;
+    }
+  }
+  var summary;
+  if (!next) {
+    summary =
+      '<b class="st-wk-bonus-good">' +
+      _stFmtMoney(unlocked).replace('.00', '') +
+      ' unlocked</b> · top tier';
+  } else {
+    summary =
+      (unlocked > 0
+        ? '<b class="st-wk-bonus-good">' +
+          _stFmtMoney(unlocked).replace('.00', '') +
+          ' unlocked</b> · '
+        : '') +
+      'next <b>' +
+      _stFmtMoney(next.bonus).replace('.00', '') +
+      '</b> at ' +
+      next.deals +
+      ' + ' +
+      next.addons;
+  }
+  var goal = next || ST_BONUS_TIERS[ST_BONUS_TIERS.length - 1];
+  var html = '<section class="st-wk-bonus" aria-label="Weekly bonus">';
+  html +=
+    '<div class="st-wk-bonus-head"><h3 class="st-wk-bonus-title">Weekly bonus</h3><span class="st-wk-bonus-sum">' +
+    summary +
+    '</span></div>';
+  html += '<div class="st-wk-bonus-grid">';
+  html += _stBuildWeekBonusBar('Core deals', deals, goal.deals);
+  html += _stBuildWeekBonusBar('Add-ons', addons, goal.addons);
+  html += '</div></section>';
+  return html;
+}
+
+// Small switch inside Pay Sheet Check for the pages that used to be
+// their own tabs (Paychecks, History).
+function _stBuildPayGroupLinksHtml(active) {
+  var items = [
+    ['reconcile', 'Check a pay sheet'],
+    ['paychecks', 'Past pay sheets'],
+    ['history', 'Check history']
+  ];
+  var html =
+    '<div class="st-pay-links" role="group" aria-label="Pay sheet pages">';
+  for (var i = 0; i < items.length; i++) {
+    var on = items[i][0] === active;
+    html +=
+      '<button type="button" class="st-pay-link' +
+      (on ? ' is-active' : '') +
+      '" data-st-nav-action="tab" data-tab="' +
+      items[i][0] +
+      '"' +
+      (on ? ' aria-current="page"' : '') +
+      '>' +
+      _stEscape(items[i][1]) +
+      '</button>';
+  }
+  return html + '</div>';
+}
+
 function _stBuildKpiStrip(sales, stats) {
   var view = _stRangeInfo();
   var weekMs = 7 * 24 * 60 * 60 * 1000;
@@ -15633,9 +15838,9 @@ function _stNavApplyTab(tabId) {
     _stThisWeekExpandedDays = {};
     _stThisWeekExpandBootstrapped = false;
   } else if (tabId === 'thisweek' && prev !== 'thisweek') {
+    // Re-open every day on the next render (see day-grouped list).
     _stThisWeekExpandedDays = {};
-    _stThisWeekExpandedDays[String(_stDayAnchorMs(Date.now()))] = true;
-    _stThisWeekExpandBootstrapped = true;
+    _stThisWeekExpandBootstrapped = false;
   }
   _stActiveTab = tabId;
   _stSyncPaneFlagsFromTab();
@@ -15697,30 +15902,27 @@ function _stGetSavedTab() {
 }
 
 function _stBuildInternalSubtabs(activeTab) {
-  var nowWs = _stCurrentWeekStartMs();
-  var weekMs = 7 * 24 * 60 * 60 * 1000;
-  var lastWs = nowWs - weekMs;
-  var sel = Number(_stSelectedWeekStart) || nowWs;
-  var pillThis = _stRangeMode === 'week' && !_stRangeDraftOpen && sel === nowWs;
-  var pillLast =
-    _stRangeMode === 'week' && !_stRangeDraftOpen && sel === lastWs;
+  var pillThis = _stRangeMode === 'week' && !_stRangeDraftOpen;
   var pillCustom = _stRangeDraftOpen || _stRangeMode === 'custom';
   var showWeek = _stNavShowWeekSelector(activeTab);
   var html =
     '<div class="page-subtabs st-internal-subtabs" id="stInternalSubtabs">';
   html +=
     '<div class="page-subtabs-inner" role="tablist" aria-label="Sales Tracker">';
+  // Four main tabs. Paychecks and History open from links inside
+  // Pay Sheet Check, and stay highlighted under it.
+  var inPayGroup =
+    activeTab === 'reconcile' ||
+    activeTab === 'paychecks' ||
+    activeTab === 'history';
   html += _stNavTabBtnHtml('thisweek', activeTab, 'This Week');
-  html += _stNavTabBtnHtml('allsales', activeTab, 'All Sales');
-  html += _stNavTabBtnHtml('reconcile', activeTab, 'Reconcile');
-  html += _stNavTabBtnHtml('paychecks', activeTab, 'Paychecks');
   html += _stNavTabBtnHtml(
-    'chargebacks',
-    activeTab,
-    'Chargebacks',
-    'Chargebacks & Cancels'
+    'reconcile',
+    inPayGroup ? 'reconcile' : activeTab,
+    'Pay Sheet Check'
   );
-  html += _stNavTabBtnHtml('history', activeTab, 'History');
+  html += _stNavTabBtnHtml('chargebacks', activeTab, 'Chargebacks & Cancels');
+  html += _stNavTabBtnHtml('allsales', activeTab, 'All Deals');
   html += '</div>';
   html +=
     '<div class="st-nav-week' +
@@ -15735,12 +15937,6 @@ function _stBuildInternalSubtabs(activeTab) {
     '" data-st-nav-action="week-this"' +
     (showWeek ? '' : ' tabindex="-1"') +
     '>This week</button>';
-  html +=
-    '<button type="button" class="st-date-chip' +
-    (pillLast ? ' st-chip-active' : '') +
-    '" data-st-nav-action="week-last"' +
-    (showWeek ? '' : ' tabindex="-1"') +
-    '>Last week</button>';
   html +=
     '<button type="button" class="st-date-chip' +
     (pillCustom ? ' st-chip-active' : '') +
@@ -15898,9 +16094,6 @@ function _stRender() {
     '<div class="ph ph-st-compact"><div class="pt">Sales <span>Tracker</span></div>' +
     _stSyncStatusHtml() +
     '</div>';
-  if (stTab === 'thisweek') {
-    html += _stBuildKpiStrip(sales, stats);
-  }
   html += _stBuildInternalSubtabs(stTab);
   html += _stBuildWeekNavigator(view);
   html += _stBuildNavBackHtml();
@@ -15908,10 +16101,10 @@ function _stRender() {
     '<div id="stTabPanelThisWeek" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'thisweek' ? 'block' : 'none') +
     '">';
-  html += _stBuildPaycheckHeroSection(sales, stats, view);
+  html += _stBuildWeekHeroHtml(stats, view);
+  html += _stBuildWeekBonusHtml(stats, view);
   html += _stBuildTable(scopedSales, stTab, view, stats);
   html += _stBuildPostDatesSection(postdates);
-  html += _stBuildFloatingPaycheckBar(sales, stats);
   html +=
     '<div class="st-bottom-spacer st-bottom-spacer-sm" aria-hidden="true"></div>';
   html += '</div>';
@@ -15927,12 +16120,16 @@ function _stRender() {
     '<div id="stTabPanelReconcile" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'reconcile' ? 'block' : 'none') +
     '">';
-  if (stTab === 'reconcile') html += _stBuildReconcilePane(sales, view);
+  if (stTab === 'reconcile') {
+    html += _stBuildPayGroupLinksHtml('reconcile');
+    html += _stBuildReconcilePane(sales, view);
+  }
   html += '</div>';
   html +=
     '<div id="stTabPanelPaychecks" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'paychecks' ? 'block' : 'none') +
     '">';
+  if (stTab === 'paychecks') html += _stBuildPayGroupLinksHtml('paychecks');
   html += _stBuildPcPane(sales);
   html += '</div>';
   html +=
@@ -15945,7 +16142,10 @@ function _stRender() {
     '<div id="stTabPanelHistory" class="st-tab-panel" role="tabpanel" style="display:' +
     (stTab === 'history' ? 'block' : 'none') +
     '">';
-  if (stTab === 'history') html += _stBuildReconcileHistoryPane(sales);
+  if (stTab === 'history') {
+    html += _stBuildPayGroupLinksHtml('history');
+    html += _stBuildReconcileHistoryPane(sales);
+  }
   html += '</div>';
   page.innerHTML = html;
   _stMountAddSaleOverlay();
