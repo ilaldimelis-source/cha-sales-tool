@@ -1,7 +1,7 @@
 // Add-Ons page. Reads data/addons.json as published.
 // Does not register products as plans.
 
-var AO_JSON_URL = 'data/addons.json?v=1792200000000';
+var AO_JSON_URL = 'data/addons.json?v=1793044829365';
 
 var AO_STATE_NAMES = {
   AL: 'Alabama',
@@ -1010,6 +1010,44 @@ function aoIsListedAddon(product) {
   return true;
 }
 
+// Monthly price for each household size, shown when a row is opened
+// (Oct 26 2026). A tier with no published rate is left out.
+function aoPriceLineHtml(product) {
+  var t = product.tiers || {};
+  var bits = [];
+  var has = function (v) {
+    return v !== null && typeof v !== 'undefined';
+  };
+  if (!aoHasPrice(product)) {
+    return product.price_note
+      ? '<p class="ao-t-explain ao-t-prices">' +
+          aoEsc(product.price_note) +
+          '</p>'
+      : '';
+  }
+  bits.push('<span class="ao-t-per">Monthly</span>');
+  bits.push('<span><b>Member</b> ' + aoMoney(product.price_member) + '</span>');
+  if (product.plus_one && has(t.spouse)) {
+    bits.push(
+      '<span><b>+1 (spouse or one child)</b> ' + aoMoney(t.spouse) + '</span>'
+    );
+  } else if (has(t.spouse)) {
+    bits.push('<span><b>+ Spouse</b> ' + aoMoney(t.spouse) + '</span>');
+  }
+  if (!product.plus_one && has(t.children)) {
+    bits.push('<span><b>+ Child(ren)</b> ' + aoMoney(t.children) + '</span>');
+  }
+  if (has(t.family)) {
+    bits.push('<span><b>Family</b> ' + aoMoney(t.family) + '</span>');
+  }
+  if (has(product.enrollment_fee)) {
+    bits.push(
+      '<span><b>One-time fee</b> ' + aoMoney(product.enrollment_fee) + '</span>'
+    );
+  }
+  return '<p class="ao-t-explain ao-t-prices">' + bits.join('') + '</p>';
+}
+
 function aoColumnHtml(platform, label, stateCode, query) {
   var products = (aoData && aoData.products) || [];
   var list = [];
@@ -1048,6 +1086,7 @@ function aoColumnHtml(platform, label, stateCode, query) {
       (aoHasPrice(p) ? aoMoney(p.price_member) : 'See platform') +
       '</span></button>';
     if (open) {
+      html += aoPriceLineHtml(p);
       html += '<p class="ao-t-explain">' + aoEsc(aoExplain(p)) + '</p>';
       html += aoDetailsHtml(p);
     }
@@ -1337,7 +1376,8 @@ function aoRenderTChart() {
   }
   host.innerHTML =
     aoColumnHtml('NEO', 'NEO', stateCode, query) +
-    aoColumnHtml('FirstEnroll', 'FirstEnroll', stateCode, query);
+    aoColumnHtml('FirstEnroll', 'FirstEnroll', stateCode, query) +
+    aoColumnHtml('Premier', 'Premier', stateCode, query);
 }
 
 function aoOnTChartInput(event) {
