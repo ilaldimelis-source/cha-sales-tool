@@ -5,6 +5,8 @@
 // Wait for answer marker is a confirm question. hide: families
 // kept off On Call (no reviewed script). Edit wording only with
 // Mey's approval.
+// Oct 26 2026: discount / association "not insurance" lines and the
+// Harbor rider sentence removed (Mey).
 var CW_DISC = {
   map: {
     'AWA TrueHealth|Value': 'awatruehealth',
@@ -258,7 +260,6 @@ var CW_DISC = {
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "RiseHealth STM is private short-term medical group insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. All benefits are limited to usual, reasonable and customary amounts. Your $2,000 coinsurance limit caps only your coinsurance. It isn't an out-of-pocket maximum. Your deductible, copays, additional deductibles and anything over a benefit limit are on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions aren't covered. On a new policy for another term, anything from the earlier term counts as pre-existing.",
-        'It includes the NCE GapAfford Plus program. Its dental and vision discounts are discounts, not insurance.',
         "Anything not listed in your schedule of benefits isn't covered.",
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         "It isn't renewable or extendable. But while you keep paying, a new policy can be issued every 6 or 12 months, up to 36 months total. Rates can go up each term based on your age. Coverage ends at the end of the paid period in which you turn 65.",
@@ -312,7 +313,6 @@ var CW_DISC = {
         "Aither Health is the plan administrator. It's offered through Consumer Data Partners, LP, doing business as VistaWell. You join as a Limited Partner of Consumer Data Partners. The plan has the federal protections of ERISA.",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AdvantCare is a private group health plan. It's not an ACA plan and not major medical. It does not cover labor and delivery, or inpatient mental health and substance abuse treatment. Every benefit has the limits we went over; past a limit the plan pays nothing more. There's no deductible, and your out-of-pocket maximum is for in-network services only.",
-        "Your plan also comes with the AdvantCare Savings Program. It's made up of non-insured discounts, like chiropractic, podiatry and counseling. Those are not insurance; you pay the provider directly to get the discount.",
         "Anything not listed in your schedule of benefits isn't covered. Services at a hospital, including preventive care and doctor visits, aren't covered unless your schedule says so. Partial hospitalization isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -326,7 +326,6 @@ var CW_DISC = {
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AdvantCare is a private group health plan. It's not an ACA plan and not major medical. It does not cover labor and delivery, or inpatient mental health and substance abuse treatment. Every benefit has the limits we went over; past a limit the plan pays nothing more. There's no deductible, and your out-of-pocket maximum is for in-network services only.",
         'Pre-existing conditions: the hospital benefit never covers anything you got care or advice for, or had symptoms of, in the 12 months before you start.',
-        "Your plan also comes with the AdvantCare Savings Program. It's made up of non-insured discounts, like chiropractic, podiatry and counseling. Those are not insurance; you pay the provider directly to get the discount.",
         "Anything not listed in your schedule of benefits isn't covered. Services at a hospital, including preventive care and doctor visits, aren't covered unless your schedule says so. Partial hospitalization isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -379,7 +378,6 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Advanced Wellness PLUS is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical insurance and not a Medicare supplement. It does not provide coverage for maternity, substance abuse, or psychiatric services. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It's discounts, not insurance, and discounts vary.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.',
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
@@ -394,7 +392,6 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Advanced Wellness PLUS is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical insurance and not a Medicare supplement. It does not provide coverage for maternity, substance abuse, or psychiatric services. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It's discounts, not insurance, and discounts vary.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.',
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
@@ -409,7 +406,6 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "BWA AmeriCare is a private, limited-benefit hospital indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum. You pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services. It also doesn't replace workers' compensation insurance.",
         "Pre-existing conditions: there's no pre-existing exclusion period. For your first 6 months, the plan pays nothing for hernia, adenoids, tonsils, varicose veins, appendix or reproductive-organ disorders, except emergencies.",
-        "It isn't insurance, and discounts vary.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
@@ -423,7 +419,6 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "BWA AmeriCare is a private, limited-benefit hospital indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum. You pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services. It also doesn't replace workers' compensation insurance.",
         "Pre-existing conditions: there's no pre-existing exclusion period. For your first 6 months, the plan pays nothing for hernia, adenoids, tonsils, varicose veins, appendix or reproductive-organ disorders, except emergencies.",
-        "It isn't insurance, and discounts vary.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
@@ -463,7 +458,6 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "GoodHealth Wellness is a private, self-funded preventive care plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. The plan year runs 7/1 to 6/30. Benefits and visit counts reset every July 1. So your first year may be shorter. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         'Sickness has a 30-day wait.',
-        "It's discounts, not insurance.",
         "Anything not listed in your schedule of benefits isn't covered. There are no benefits for sick visits, specialists, urgent care, the emergency room or hospital stays. Preventive services at a hospital aren't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
@@ -606,8 +600,7 @@ var CW_DISC = {
         "It's underwritten by Everest Reinsurance Company or Everest Denali Insurance Company, depending on your state. Administrative Concepts, Inc. handles claims. It's offered through the American Workers Association, or AWA.",
         "Your monthly billing is handled through Neo Health Solutions, which is the name you'll see on your statement.",
         "HarborSTM Essential is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your coinsurance out-of-pocket maximum caps coinsurance only. Your deductible, copays, access fees, pre-authorization penalties and anything over a benefit maximum are on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Without the Pre-Existing Conditions Rider, that lasts your whole coverage period and every one after, and a condition that starts now can count next period. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
-        "AWA and its discounts aren't insurance.",
+        "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
@@ -621,8 +614,7 @@ var CW_DISC = {
         "It's underwritten by Everest Reinsurance Company or Everest Denali Insurance Company, depending on your state. Administrative Concepts, Inc. handles claims. It's offered through the American Workers Association, or AWA.",
         "Your monthly billing is handled through Neo Health Solutions, which is the name you'll see on your statement.",
         "HarborSTM Access is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your coinsurance out-of-pocket maximum caps coinsurance only. Your deductible, copays, access fees, pre-authorization penalties and anything over a benefit maximum are on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Without the Pre-Existing Conditions Rider, that lasts your whole coverage period and every one after, and a condition that starts now can count next period. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
-        "AWA and its discounts aren't insurance.",
+        "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
@@ -636,8 +628,7 @@ var CW_DISC = {
         "It's underwritten by Everest Reinsurance Company or Everest Denali Insurance Company, depending on your state. Administrative Concepts, Inc. handles claims. It's offered through the American Workers Association, or AWA.",
         "Your monthly billing is handled through Neo Health Solutions, which is the name you'll see on your statement.",
         "HarborSTM Secure is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your coinsurance out-of-pocket maximum caps coinsurance only. Your deductible, copays, access fees, pre-authorization penalties and anything over a benefit maximum are on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Without the Pre-Existing Conditions Rider, that lasts your whole coverage period and every one after, and a condition that starts now can count next period. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
-        "AWA and its discounts aren't insurance.",
+        "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
@@ -652,7 +643,6 @@ var CW_DISC = {
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "RiseHealth STM ___ is private short-term medical group insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Your coinsurance limit caps only your coinsurance. It isn't an out-of-pocket maximum. Your deductible, copays and anything over a benefit limit are on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions aren't covered. On a new policy for another term, anything from the earlier term counts as pre-existing.",
-        'It includes the NCE GapAfford Plus program. Its dental and vision discounts are discounts, not insurance.',
         "Anything not listed in your schedule of benefits isn't covered.",
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         "It isn't renewable or extendable. But while you keep paying, a new policy can be issued every 6 or 12 months, up to 36 months total. Rates can go up each term based on your age. Coverage ends at the end of the paid period in which you turn 65.",
@@ -710,7 +700,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care + 100A is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary. NCE's discount services aren't insurance. Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
+        "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
@@ -723,7 +713,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care + 100 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary. Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
+        "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
@@ -736,7 +726,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care + 200 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary. Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
+        "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
@@ -749,7 +739,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care + 200+ is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary. Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
+        "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
@@ -762,7 +752,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care + 300 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary. Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
+        "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
@@ -775,7 +765,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care + 500 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary. Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
+        "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
@@ -788,7 +778,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care + 750 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary. Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
+        "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
@@ -801,7 +791,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care + 1000 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary. Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
+        "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
@@ -813,8 +803,6 @@ var CW_DISC = {
         "It's underwritten by National Guardian Life Insurance Company.",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "PrimeProtect ___ is a private fixed indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum. You pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "It isn't insurance and isn't provided by National Guardian Life.",
-        'It includes Gallagher Affinity Insurance Services discount services at no extra cost. Those are discounts, not insurance. You pay the provider directly to get the discount.',
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -827,8 +815,6 @@ var CW_DISC = {
         "It's underwritten by National Guardian Life Insurance Company.",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "PrimeProtect ___ is a private fixed indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum. You pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "It isn't insurance and isn't provided by National Guardian Life.",
-        'It includes Gallagher Affinity Insurance Services discount services at no extra cost. Those are discounts, not insurance. You pay the provider directly to get the discount.',
         "Anything not listed in your schedule of benefits isn't covered. The critical illness benefit isn't paid for a condition first diagnosed in your first 30 days of coverage. It pays once per person. It doesn't pay for a recurring illness.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -842,7 +828,6 @@ var CW_DISC = {
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "CrownPoint STM is a private short-term medical group insurance plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It does not provide coverage for maternity.",
         "Pre-existing conditions aren't covered; your certificate has the definition and look-back.",
-        "Your AWA PreferPlus membership benefits, like gym and savings programs, aren't insurance.",
         "Anything not listed in your schedule of benefits isn't covered. Check your certificate for exclusions and limits on things like hospitalization, emergency services, maternity care, preventive care, prescription drugs, and mental health and substance use care. Also check it for any dollar limits.",
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         "This short-term coverage isn't renewable or extendable. It ends at the end of the paid period in which you turn 65.",
@@ -858,7 +843,6 @@ var CW_DISC = {
         "Your monthly billing is handled through Neo Health Solutions, which is the name you'll see on your statement. Your payment method on file is charged each month after today.",
         "Allstate Health Access is a private fixed indemnity limited medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not cover mental illness or substance abuse, weight-loss surgery, cosmetic services, eye exams and glasses, routine hearing care, sleep disorders, chronic pain disorders, experimental treatment, hazardous activities, or care outside the United States or Canada.",
         "Pre-existing conditions: anything you got care, advice, tests or a prescription for, or had symptoms of, in the year before you start isn't covered for your first 12 months. That includes a pregnancy that exists before you start. Preventive visits have a 3-month wait; injuries and sickness have none.",
-        '\u25b6 ( Only if the client added Recuro: )\nRecuro benefits are optional and are not insurance.',
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
@@ -900,7 +884,6 @@ var CW_DISC = {
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "HD HealthAscent is a private limited-benefit group hospital indemnity plan. It's not an ACA plan and not major medical. It does not provide coverage for maternity, substance abuse, or psychiatric services. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay what it doesn't.",
         "Pre-existing conditions: anything you got care, advice or a prescription for, or had symptoms of, in the 12 months before you start isn't covered, including complications, until you've had the plan 12 months in a row.",
-        "The membership's gym and savings benefits aren't insurance. ManhattanLife doesn't provide them or the network, and isn't affiliated with them or the network.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -979,7 +962,6 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care is a private limited-benefit fixed indemnity plan. It's not an ACA plan and not major medical. It's also not a Medicare supplement. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.',
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
@@ -994,7 +976,6 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Harmony Care is a private limited-benefit fixed indemnity plan. It's not an ACA plan and not major medical. It's also not a Medicare supplement. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "It isn't insurance, and discounts vary.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.',
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
