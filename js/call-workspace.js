@@ -2376,6 +2376,10 @@ var CW_ASK_PLAN = {
       'For some care, yes, but it costs more: a higher deductible, higher coinsurance and no $5,000 limit. You may also owe what\u2019s above the plan\u2019s allowed amount. Doctor and urgent care visits are in-network only. In an emergency, you pay in-network costs until you\u2019re stable.'
     ],
     [
+      'Is my pre-existing condition covered?',
+      'Not in your first term. An optional rider costs extra and helps only for back-to-back terms you buy together: a condition that starts in your first term won\u2019t count as pre-existing in the next. It isn\u2019t sold in Ohio.'
+    ],
+    [
       'Can you give me an example?',
       'In-network, $2,500 deductible, 20% coinsurance. A $10,000 bill: you pay $2,500 + $1,500 = $4,000. A $50,000 bill: you pay $2,500 + the $5,000 limit = $7,500. The plan pays the rest, up to its limits.'
     ]
