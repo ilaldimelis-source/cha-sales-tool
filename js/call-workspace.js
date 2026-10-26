@@ -2277,7 +2277,7 @@ function cwAskCards(fam) {
       'Deductible: what you pay first each coverage period before the plan pays its share. Coinsurance: after the deductible you split the bill, like 80/20 (plan 80%, you 20%). Max out-of-pocket: the cap on your coinsurance share for the coverage period; after that the plan pays 100% of covered costs up to its limits.'
     ]);
   }
-  var own = CW_ASK_PLAN[fam.name] || [];
+  var own = (CW_ASK_TERMS[fam.name] || []).concat(CW_ASK_PLAN[fam.name] || []);
   var ownQ = own.map(function (x) {
     return x[0].toLowerCase();
   });
@@ -2295,6 +2295,53 @@ function cwAskCards(fam) {
 // Plan-specific client questions (SmartChoice: Mey's Oct 2026 list,
 // the version that matches the app questions: 3 Preferred Units,
 // assigned projects, a payment for each survey response).
+// ERISA / Working Owner in plain words (Mey, Oct 26 2026). Shown
+// only for plans whose disclosures name them.
+var CW_ASK_TERMS = {
+  SmartChoice: [
+    [
+      'What\u2019s a Working Owner?',
+      'You own a small part of Population Science Management USA and do some work for it, like short surveys. That\u2019s how you qualify for its group health plan. Keep doing the tasks to stay eligible.'
+    ],
+    [
+      'What\u2019s ERISA?',
+      'A federal law for job-based health plans. It sets rules the plan has to follow, like giving you your plan info and a fair way to appeal a denied claim.'
+    ]
+  ],
+  TDK: [
+    [
+      'What\u2019s a Working Owner?',
+      'You own a small part of Healthcare Data Analytics (HCDA) and do some work for it, like short surveys. That\u2019s how you qualify for its group health plan. If you skip the tasks, coverage can end.'
+    ],
+    [
+      'What\u2019s ERISA?',
+      'A federal law for job-based health plans. It sets rules the plan has to follow, like giving you your plan info and a fair way to appeal a denied claim.'
+    ]
+  ],
+  GoodHealth: [
+    [
+      'What\u2019s a Working Owner?',
+      'You join Good Health Distribution Partners (GHDP) as a part-owner, called a Limited Partner. That\u2019s how you qualify for its group health plan.'
+    ],
+    [
+      'What\u2019s ERISA?',
+      'A federal law for job-based health plans. It sets rules the plan has to follow, like giving you your plan info and a fair way to appeal a denied claim.'
+    ]
+  ],
+  AdvantCare: [
+    [
+      'What\u2019s ERISA?',
+      'A federal law for job-based health plans. It sets rules the plan has to follow, like giving you your plan info and a fair way to appeal a denied claim.'
+    ]
+  ],
+  'BWA Americare': [
+    [
+      'What\u2019s ERISA?',
+      'A federal law for job-based health plans. It sets rules the plan has to follow, like giving you your plan info and a fair way to appeal a denied claim.'
+    ]
+  ]
+};
+
 // Harbor STM cost basics (Mey, Oct 26 2026): HarborSTM brochure 0827
 // figures; the $5,000 is a coinsurance-only max, so it is never
 // called the most the client will pay.
