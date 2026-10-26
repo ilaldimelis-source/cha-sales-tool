@@ -5138,6 +5138,22 @@
           border-right: 0;
         }
       }
+      /* Add-Ons: let the list scroll (Oct 26 2026) */
+      .ao-tchart {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        align-content: flex-start;
+      }
+      .ao-t-head {
+        position: sticky;
+        top: 0;
+      }
+      @media (max-width: 900px) {
+        .ao-tchart {
+          overflow: visible;
+        }
+      }
     </style>
   </head>
   <body>
@@ -6185,7 +6201,7 @@
     <script src="js/myspace.js?v=1792164089398"></script>
     <script src="js/sales-tracker.js?v=1792628100449"></script>
     <script src="js/office.js?v=1787900000000"></script>
-    <script src="js/addons.js?v=1793045528665"></script>
+    <script src="js/addons.js?v=1793045955139"></script>
     <script src="js/meds.js?v=1792193893195"></script>
     <script src="js/app-questions.js?v=1792699045062"></script>
     <script src="js/oncall-disclosures.js?v=1792700000000"></script>
