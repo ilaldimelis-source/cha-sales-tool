@@ -1793,9 +1793,85 @@ function cwDiscSayHtml(t) {
       if (/^▶ \(/.test(line)) {
         return '<span class="cw-disc-note">' + cwEsc(line) + '</span>';
       }
-      return cwVerifyHtml(line);
+      return cwDiscKeyHtml(line);
     })
     .join('\n');
+}
+
+// Disclosures: highlight key words so agents can scan (Oct 26 2026).
+// Red = limits and what is not covered, blue = numbers and time,
+// bold = network, company and statement names. Text is unchanged.
+var CW_KEY_RE = new RegExp(
+  '(' +
+    [
+      "isn't major medical or an ACA plan",
+      'not an ACA plan',
+      'not major medical',
+      "isn't major medical",
+      'not a Medicare supplement',
+      'does not provide coverage for [^.]+',
+      "isn't covered",
+      "aren't covered",
+      'not covered',
+      'pays nothing(?: more)?',
+      'no out-of-pocket maximum',
+      'not renewable(?: or extendable)?',
+      "isn't renewable",
+      'Pre-existing conditions',
+      "isn't insurance",
+      'not insurance',
+      "(?:can't|doesn't) guarantee payment",
+      'can decline it'
+    ].join('|') +
+    ')|(' +
+    [
+      '\\$[\\d,]+(?:\\.\\d+)?',
+      '\\b\\d[\\d,]*(?:\\.\\d+)?%',
+      '\\b\\d{3}-\\d{3}-\\d{4}\\b',
+      '\\b\\d+-(?:day|month|year)\\b',
+      '\\b\\d+ (?:days?|months?|years?|visits?)(?: in a row)?\\b',
+      '\\bturn 65\\b',
+      '\\bat 26\\b'
+    ].join('|') +
+    ')|(' +
+    [
+      'Neo Health Solutions',
+      'Premier Health Solutions',
+      'FirstEnroll',
+      'PHS-HEALTH-BILL',
+      'PHSHEALTH',
+      'HEALTHPHS',
+      '(?:[A-Z][\\w&.-]*\\s)+(?:PPO\\s)?[Nn]etwork\\b',
+      '(?:[A-Z][\\w&.-]*\\s)+Company\\b',
+      '(?:[A-Z][\\w&.-]*\\s)+Association\\b'
+    ].join('|') +
+    ')',
+  'g'
+);
+
+function cwDiscKeyHtml(t) {
+  t = String(t == null ? '' : t);
+  if (/\[VERIFY/.test(t)) return cwVerifyHtml(t);
+  var out = '';
+  var last = 0;
+  var m;
+  CW_KEY_RE.lastIndex = 0;
+  while ((m = CW_KEY_RE.exec(t))) {
+    if (!m[0]) {
+      CW_KEY_RE.lastIndex++;
+      continue;
+    }
+    var cls = m[1] ? 'cw-k-warn' : m[2] ? 'cw-k-num' : 'cw-k-name';
+    out +=
+      cwEsc(t.slice(last, m.index)) +
+      '<b class="' +
+      cls +
+      '">' +
+      cwEsc(m[0]) +
+      '</b>';
+    last = m.index + m[0].length;
+  }
+  return out + cwEsc(t.slice(last));
 }
 
 function cwDiscTab(fam, tier) {
@@ -1825,7 +1901,7 @@ function cwDiscTab(fam, tier) {
         '<div class="cw-confirm' +
         (a === 'No' ? ' is-no' : '') +
         '"><p>' +
-        cwEsc(p.t) +
+        cwDiscKeyHtml(p.t) +
         '</p><div class="cw-yn"><button type="button" class="cw-ans' +
         (a === 'Yes' ? ' is-yes' : '') +
         '" data-cw-conf="' +
@@ -1873,7 +1949,7 @@ function cwDiscTab(fam, tier) {
     (blk.live
       ? 'Say word for word - recap from the ' + cwEsc(blk.name) + ' script'
       : 'Say word for word - before enrollment') +
-    '</span>' +
+    '</span><span class="cw-k-legend"><b class="cw-k-warn">Red</b> limits and not covered <b class="cw-k-num">Blue</b> numbers <b class="cw-k-name">Bold</b> names</span>' +
     body +
     '</section>' +
     (blk.bill
