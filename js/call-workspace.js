@@ -1799,8 +1799,8 @@ function cwDiscSayHtml(t) {
 }
 
 // Disclosures: highlight key words so agents can scan (Oct 26 2026).
-// Red = limits and what is not covered, blue = numbers and time,
-// bold = network, company and statement names. Text is unchanged.
+// Red pill = limits and what is not covered, blue pill = numbers and
+// time, purple pill = network, company and statement names. Text is unchanged.
 var CW_KEY_RE = new RegExp(
   '(' +
     [
@@ -1949,7 +1949,7 @@ function cwDiscTab(fam, tier) {
     (blk.live
       ? 'Say word for word - recap from the ' + cwEsc(blk.name) + ' script'
       : 'Say word for word - before enrollment') +
-    '</span><span class="cw-k-legend"><b class="cw-k-warn">Red</b> limits and not covered <b class="cw-k-num">Blue</b> numbers <b class="cw-k-name">Bold</b> names</span>' +
+    '</span><span class="cw-k-legend"><b class="cw-k-warn">Limits / not covered</b><b class="cw-k-num">Numbers</b><b class="cw-k-name">Names</b></span>' +
     body +
     '</section>' +
     (blk.bill
