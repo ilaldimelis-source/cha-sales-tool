@@ -2343,7 +2343,7 @@ var CW_ASK_TERMS = {
 };
 
 // Harbor STM cost basics (Mey, Oct 26 2026): HarborSTM brochure 0827
-// figures; the $5,000 is a coinsurance-only max, so it is never
+// and the NEO HarborSTM training (Units 2-4); the $5,000 is a coinsurance-only max, so it is never
 // called the most the client will pay.
 var CW_ASK_PLAN = {
   'Harbor STM': [
@@ -2357,19 +2357,27 @@ var CW_ASK_PLAN = {
     ],
     [
       'What\u2019s a copay?',
-      'A set price per visit. Doctor and urgent care visits: $50 on Essential (3 visits), $40 on Access (3 visits), $40 on Secure (no limit). In-network only.'
+      'A set price per visit, with no deductible first. Doctor and urgent care visits: $50 on Essential (3 visits), $40 on Access (3 visits), $40 on Secure (no limit). In-network only.'
+    ],
+    [
+      'What\u2019s an access fee?',
+      'Essential only. ER visits, outpatient surgery and advanced imaging cost a flat $500 first, before your deductible. Access and Secure don\u2019t have it.'
     ],
     [
       'What\u2019s the max out-of-pocket?',
-      'The most you pay in coinsurance is $5,000. Then the plan pays 100% of covered costs, up to its limits. Your deductible is extra.'
+      'Your plan has a $5,000 in-network coinsurance limit. Once your in-network coinsurance hits $5,000, the plan pays 100% of covered in-network costs, up to its limits. Your deductible, copays and fees don\u2019t count toward it.'
     ],
     [
       'So the most I\u2019ll pay is $5,000?',
-      'No. That\u2019s only coinsurance. Your deductible is extra, and so is anything over a benefit limit.'
+      'No. That\u2019s only in-network coinsurance. Your deductible, copays, fees and anything over a plan limit are extra. Out-of-network care has no limit.'
+    ],
+    [
+      'Can I go out of network?',
+      'For some care, yes, but it costs more: a higher deductible, higher coinsurance and no $5,000 limit. You may also owe what\u2019s above the plan\u2019s allowed amount. Doctor and urgent care visits are in-network only. In an emergency, you pay in-network costs until you\u2019re stable.'
     ],
     [
       'Can you give me an example?',
-      '$2,500 deductible, 20% coinsurance. A $10,000 bill: you pay $2,500 + $1,500 = $4,000. A $50,000 bill: you pay $2,500 + the $5,000 max = $7,500. The plan pays the rest, up to its limits.'
+      'In-network, $2,500 deductible, 20% coinsurance. A $10,000 bill: you pay $2,500 + $1,500 = $4,000. A $50,000 bill: you pay $2,500 + the $5,000 limit = $7,500. The plan pays the rest, up to its limits.'
     ]
   ],
   SmartChoice: [
