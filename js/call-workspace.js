@@ -324,7 +324,7 @@ var CW_FAMS = [
   },
   {
     name: 'SmartChoice',
-    type: 'MEC',
+    type: 'Limited',
     platform: 'NEO',
     aq: 'smartchoice',
     facts: [
@@ -1330,6 +1330,14 @@ CW_FAMS.push(
   });
 })();
 
+// Plans with no reviewed script stay off On Call (Mey, Oct 26 2026).
+(function () {
+  if (typeof CW_DISC === 'undefined' || !CW_DISC.hide) return;
+  for (var i = CW_FAMS.length - 1; i >= 0; i--) {
+    if (CW_DISC.hide.indexOf(CW_FAMS[i].name) !== -1) CW_FAMS.splice(i, 1);
+  }
+})();
+
 var CW_TYPES = ['MEC', 'STM', 'Limited', 'Fixed indemnity'];
 
 // On Call script names that differ from the PLAN_SCRIPTS name.
@@ -1756,8 +1764,42 @@ function cwQuestionsTab(fam) {
   return appqListHtml(plan, 'cw');
 }
 
+// Disclosures block for one plan tier: the approved short template in
+// CW_DISC (js/oncall-disclosures.js) first, then the old script text.
+function cwDiscBlock(fam, tier) {
+  var id =
+    typeof CW_DISC !== 'undefined' && CW_DISC.map
+      ? CW_DISC.map[fam.name + '|' + tier.tier]
+      : '';
+  var d = id ? CW_DISC.blocks[id] : null;
+  if (!d) return cwScriptBlock(tier.script);
+  return {
+    paras: d.paras.map(function (p) {
+      var wait = /▶ \( Wait for answer \)\s*$/.test(p);
+      return {
+        t: p.replace(/\n?▶ \( Wait for answer \)\s*$/, ''),
+        confirm: wait
+      };
+    }),
+    bill: d.bill
+  };
+}
+
+// Agent-only note lines (start with the play arrow) are shown smaller.
+function cwDiscSayHtml(t) {
+  return t
+    .split('\n')
+    .map(function (line) {
+      if (/^▶ \(/.test(line)) {
+        return '<span class="cw-disc-note">' + cwEsc(line) + '</span>';
+      }
+      return cwVerifyHtml(line);
+    })
+    .join('\n');
+}
+
 function cwDiscTab(fam, tier) {
-  var blk = cwScriptBlock(tier.script);
+  var blk = cwDiscBlock(fam, tier);
   if (!blk) {
     return (
       '<div class="cw-status"><b>No script</b><span>No call script on file for ' +
@@ -1773,7 +1815,7 @@ function cwDiscTab(fam, tier) {
   var body = blk.paras
     .map(function (p, i) {
       if (!p.confirm) {
-        return '<p class="cw-say">' + cwVerifyHtml(p.t) + '</p>';
+        return '<p class="cw-say">' + cwDiscSayHtml(p.t) + '</p>';
       }
       total++;
       var a = conf[i];
@@ -2246,7 +2288,7 @@ function cwAskTab(fam) {
 }
 
 function cwConfirmCounts(fam, tier) {
-  var blk = cwScriptBlock(tier.script);
+  var blk = cwDiscBlock(fam, tier);
   var conf = cwState.conf[fam.name + '|' + tier.tier] || {};
   var total = 0;
   var yes = 0;
