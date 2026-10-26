@@ -2302,27 +2302,27 @@ var CW_ASK_PLAN = {
   'Harbor STM': [
     [
       'What\u2019s a deductible?',
-      'It\u2019s what you pay first. Your deductible is $[deductible]. You pay your covered bills up to that amount, then the plan starts sharing the cost.'
+      'What you pay first. Yours is $[deductible]. After that, the plan helps pay.'
     ],
     [
       'What\u2019s coinsurance?',
-      'After your deductible, you and the plan split the bill. Your coinsurance is [30% / 20% / 0%]. With 20%, you pay 20% and the plan pays 80%.'
+      'After your deductible, you split the bill. Yours is [30% / 20% / 0%]. At 20%, you pay 20% and the plan pays 80%.'
     ],
     [
       'What\u2019s a copay?',
-      'A set price for a visit. Office, specialist and urgent care visits are $50 on Essential (3 visits), $40 on Access (3 visits) and $40 on Secure (no visit limit). These visits are in-network only.'
+      'A set price per visit. Doctor and urgent care visits: $50 on Essential (3 visits), $40 on Access (3 visits), $40 on Secure (no limit). In-network only.'
     ],
     [
       'What\u2019s the max out-of-pocket?',
-      'Your plan has a $5,000 coinsurance max. Once the coinsurance you pay reaches $5,000, the plan pays 100% of covered costs, up to the plan\u2019s limits. It only counts coinsurance. Your deductible is on top of it.'
+      'The most you pay in coinsurance is $5,000. Then the plan pays 100% of covered costs, up to its limits. Your deductible is extra.'
     ],
     [
       'So the most I\u2019ll pay is $5,000?',
-      'No. The $5,000 only counts coinsurance. Your deductible is on top of it, and anything over a benefit\u2019s limit is yours too.'
+      'No. That\u2019s only coinsurance. Your deductible is extra, and so is anything over a benefit limit.'
     ],
     [
       'Can you give me an example?',
-      'Say your deductible is $2,500 and your coinsurance is 20%. A $10,000 covered bill: you pay the $2,500 deductible, then 20% of the other $7,500, which is $1,500. You pay $4,000; the plan pays $6,000. A $50,000 covered bill: you pay the $2,500 deductible, then your coinsurance stops at $5,000. You pay $7,500; the plan pays $42,500, up to its limits.'
+      '$2,500 deductible, 20% coinsurance. A $10,000 bill: you pay $2,500 + $1,500 = $4,000. A $50,000 bill: you pay $2,500 + the $5,000 max = $7,500. The plan pays the rest, up to its limits.'
     ]
   ],
   SmartChoice: [
