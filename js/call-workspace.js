@@ -2277,13 +2277,54 @@ function cwAskCards(fam) {
       'Deductible: what you pay first each coverage period before the plan pays its share. Coinsurance: after the deductible you split the bill, like 80/20 (plan 80%, you 20%). Max out-of-pocket: the cap on your coinsurance share for the coverage period; after that the plan pays 100% of covered costs up to its limits.'
     ]);
   }
-  return (CW_ASK_PLAN[fam.name] || []).concat(c);
+  var own = CW_ASK_PLAN[fam.name] || [];
+  var ownQ = own.map(function (x) {
+    return x[0].toLowerCase();
+  });
+  if (fam.name === 'Harbor STM') {
+    ownQ.push('so the most i\u2019ll ever pay is $[x]?');
+    ownQ.push('what do deductible and coinsurance mean?');
+  }
+  return own.concat(
+    c.filter(function (x) {
+      return ownQ.indexOf(x[0].toLowerCase()) < 0;
+    })
+  );
 }
 
 // Plan-specific client questions (SmartChoice: Mey's Oct 2026 list,
 // the version that matches the app questions: 3 Preferred Units,
 // assigned projects, a payment for each survey response).
+// Harbor STM cost basics (Mey, Oct 26 2026): HarborSTM brochure 0827
+// figures; the $5,000 is a coinsurance-only max, so it is never
+// called the most the client will pay.
 var CW_ASK_PLAN = {
+  'Harbor STM': [
+    [
+      'What\u2019s a deductible?',
+      'It\u2019s what you pay first. Your deductible is $[deductible]. You pay your covered bills up to that amount, then the plan starts sharing the cost.'
+    ],
+    [
+      'What\u2019s coinsurance?',
+      'After your deductible, you and the plan split the bill. Your coinsurance is [30% / 20% / 0%]. With 20%, you pay 20% and the plan pays 80%.'
+    ],
+    [
+      'What\u2019s a copay?',
+      'A set price for a visit. Office, specialist and urgent care visits are $50 on Essential (3 visits), $40 on Access (3 visits) and $40 on Secure (no visit limit). These visits are in-network only.'
+    ],
+    [
+      'What\u2019s the max out-of-pocket?',
+      'Your plan has a $5,000 coinsurance max. Once the coinsurance you pay reaches $5,000, the plan pays 100% of covered costs, up to the plan\u2019s limits. It only counts coinsurance. Your deductible is on top of it.'
+    ],
+    [
+      'So the most I\u2019ll pay is $5,000?',
+      'No. The $5,000 only counts coinsurance. Your deductible is on top of it, and anything over a benefit\u2019s limit is yours too.'
+    ],
+    [
+      'Can you give me an example?',
+      'Say your deductible is $2,500 and your coinsurance is 20%. A $10,000 covered bill: you pay the $2,500 deductible, then 20% of the other $7,500, which is $1,500. You pay $4,000; the plan pays $6,000. A $50,000 covered bill: you pay the $2,500 deductible, then your coinsurance stops at $5,000. You pay $7,500; the plan pays $42,500, up to its limits.'
+    ]
+  ],
   SmartChoice: [
     [
       'What does this have to do with health insurance?',
