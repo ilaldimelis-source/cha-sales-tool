@@ -1374,10 +1374,107 @@ function aoRenderTChart() {
     query = '';
     if (stateEl) stateEl.value = typedState;
   }
-  host.innerHTML =
-    aoColumnHtml('NEO', 'NEO', stateCode, query) +
-    aoColumnHtml('FirstEnroll', 'FirstEnroll', stateCode, query) +
-    aoColumnHtml('Premier', 'Premier', stateCode, query);
+  var cardsHost = document.getElementById('ao-portals');
+  if (cardsHost) cardsHost.innerHTML = aoPortalCardsHtml(stateCode, query);
+  var allBtn = document.getElementById('ao-portal-all');
+  if (allBtn) {
+    allBtn.setAttribute(
+      'aria-pressed',
+      aoPortalPick === 'all' ? 'true' : 'false'
+    );
+    aoSetToken(allBtn, 'ao-portal-all-on', aoPortalPick === 'all');
+  }
+  var html = '';
+  for (var i = 0; i < AO_PORTALS.length; i++) {
+    if (aoPortalPick !== 'all' && aoPortalPick !== AO_PORTALS[i].platform) {
+      continue;
+    }
+    html += aoColumnHtml(
+      AO_PORTALS[i].platform,
+      AO_PORTALS[i].platform,
+      stateCode,
+      query
+    );
+  }
+  host.innerHTML = html;
+}
+
+// Portal picker (Oct 26 2026, design B "Portal cards"): one card per
+// enrollment portal with its add-on count, agent id and a link to the
+// portal. Picking a card shows only that portal's add-ons.
+var AO_PORTALS = [
+  {
+    platform: 'NEO',
+    ini: 'N',
+    who: 'Agent 974021',
+    tone: 'ao-pc-neo',
+    url: 'https://www.1enrollment.com/index.cfm?id=974021'
+  },
+  {
+    platform: 'FirstEnroll',
+    ini: 'FE',
+    who: 'Agent 974358',
+    tone: 'ao-pc-fe',
+    url: 'https://manage.firstenroll.com/index.cfm?id=974358'
+  },
+  {
+    platform: 'Premier',
+    ini: 'P',
+    who: 'Store 745779',
+    tone: 'ao-pc-prem',
+    url: 'https://www.1enrollment.com/index.cfm?id=745779'
+  }
+];
+var aoPortalPick = 'all';
+
+function aoPortalCount(platform, stateCode, query) {
+  var products = (aoData && aoData.products) || [];
+  var n = 0;
+  for (var i = 0; i < products.length; i++) {
+    var p = products[i];
+    if (p.platform !== platform || !aoIsListedAddon(p)) continue;
+    if (stateCode && p.states && p.states.indexOf(stateCode) === -1) continue;
+    if (query && !aoTextMatch(p, query)) continue;
+    n++;
+  }
+  return n;
+}
+
+function aoPortalCardsHtml(stateCode, query) {
+  var html = '';
+  for (var i = 0; i < AO_PORTALS.length; i++) {
+    var p = AO_PORTALS[i];
+    var on = aoPortalPick === p.platform;
+    var n = aoPortalCount(p.platform, stateCode, query);
+    html +=
+      '<div class="ao-pc' +
+      (on ? ' ao-pc-on' : '') +
+      '"><button type="button" class="ao-pc-pick" data-ao-portal="' +
+      aoEsc(p.platform) +
+      '" aria-pressed="' +
+      (on ? 'true' : 'false') +
+      '"><span class="ao-pc-mark ' +
+      p.tone +
+      '" aria-hidden="true">' +
+      aoEsc(p.ini) +
+      '</span><span class="ao-pc-text"><span class="ao-pc-name">' +
+      aoEsc(p.platform) +
+      '</span><span class="ao-pc-count">' +
+      n +
+      ' add-on' +
+      (n === 1 ? '' : 's') +
+      (stateCode ? ' in ' + aoEsc(stateCode) : '') +
+      '</span></span>' +
+      (on
+        ? '<span class="ao-pc-check" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg></span>'
+        : '') +
+      '</button><div class="ao-pc-foot"><span>' +
+      aoEsc(p.who) +
+      '</span><a href="' +
+      aoEsc(p.url) +
+      '" target="_blank" rel="noopener">Open portal <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a></div></div>';
+  }
+  return html;
 }
 
 function aoOnTChartInput(event) {
@@ -1392,6 +1489,19 @@ function aoOnTChartInput(event) {
 function aoOnTChartClick(event) {
   var node = event.target;
   while (node && node !== event.currentTarget) {
+    if (node.id === 'ao-portal-all') {
+      aoPortalPick = 'all';
+      aoOpenName = '';
+      aoRenderTChart();
+      return;
+    }
+    if (node.getAttribute && node.getAttribute('data-ao-portal') !== null) {
+      var pick = node.getAttribute('data-ao-portal');
+      aoPortalPick = aoPortalPick === pick ? 'all' : pick;
+      aoOpenName = '';
+      aoRenderTChart();
+      return;
+    }
     if (node.getAttribute && node.getAttribute('data-ao-row') !== null) {
       var name = node.getAttribute('data-ao-row');
       aoOpenName = aoOpenName === name ? '' : name;
@@ -1409,12 +1519,14 @@ function renderAddons() {
     root.innerHTML =
       '<div class="ao-page">' +
       '<header class="ao-header"><h2 class="ao-title">Add-Ons</h2>' +
-      '<p class="ao-lead">Pick the client\'s state. Tap an add-on for a quick explanation.</p></header>' +
+      '<p class="ao-lead">Pick the client\'s state and the portal. Tap an add-on for prices and a quick explanation.</p></header>' +
       '<div class="ao-t-controls">' +
       '<label class="ao-t-state"><span>Client state</span>' +
       '<select id="ao-state" aria-label="Client state"><option value="">All states</option></select></label>' +
       '<input id="ao-search" class="ao-t-search" type="search" placeholder="Search an add-on or type a state" aria-label="Search an add-on or type a state">' +
+      '<button type="button" id="ao-portal-all" class="ao-portal-all ao-portal-all-on" aria-pressed="true">All portals</button>' +
       '</div>' +
+      '<div id="ao-portals" class="ao-portals" role="group" aria-label="Enrollment portal"></div>' +
       '<div id="ao-tchart" class="ao-tchart"><p class="ao-status">Loading add-ons...</p></div>' +
       '</div>';
     root.setAttribute('data-ao-ready', '1');

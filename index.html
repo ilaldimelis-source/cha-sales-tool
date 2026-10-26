@@ -5154,6 +5154,133 @@
           overflow: visible;
         }
       }
+      /* Add-Ons: portal cards (Oct 26 2026, design B) */
+      .ao-portals {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+      .ao-pc {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px 18px;
+        border-radius: 24px;
+        background: var(--cha-bg-card);
+        border: 2px solid transparent;
+        box-shadow: 0 6px 18px rgb(15 23 42 / 0.06);
+      }
+      .ao-pc-on {
+        border-color: var(--cha-text-primary);
+      }
+      .ao-pc-pick {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        font: inherit;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+      }
+      .ao-pc-mark {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 46px;
+        height: 46px;
+        border-radius: 16px;
+        font-size: 15px;
+        font-weight: 800;
+      }
+      .ao-pc-neo {
+        background: #e8ecfe;
+        color: #3b4fd8;
+      }
+      .ao-pc-fe {
+        background: #e5f5ea;
+        color: #15803d;
+      }
+      .ao-pc-prem {
+        background: #e0f3f1;
+        color: #0f766e;
+      }
+      .ao-pc-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        flex: 1;
+        min-width: 0;
+      }
+      .ao-pc-name {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--cha-text-primary);
+      }
+      .ao-pc-count {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--cha-text-secondary);
+      }
+      .ao-pc-check {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+      }
+      .ao-pc-foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding-top: 10px;
+        border-top: 1px solid var(--cha-border-subtle);
+        font-size: 13px;
+        color: var(--cha-text-secondary);
+      }
+      .ao-pc-foot a {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        min-height: 32px;
+        font-weight: 700;
+        text-decoration: none;
+        color: var(--cha-accent);
+      }
+      .ao-portal-all {
+        min-height: 44px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--cha-bg-card);
+        color: var(--cha-text-primary);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 6px 18px rgb(15 23 42 / 0.06);
+      }
+      .ao-portal-all-on {
+        background: var(--cha-text-primary);
+        color: var(--cha-bg-card);
+      }
+      .ao-t-col:last-child {
+        border-right: 0;
+      }
+      @media (max-width: 900px) {
+        .ao-portals {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
     </style>
   </head>
   <body>
@@ -6201,7 +6328,7 @@
     <script src="js/myspace.js?v=1792164089398"></script>
     <script src="js/sales-tracker.js?v=1792628100449"></script>
     <script src="js/office.js?v=1787900000000"></script>
-    <script src="js/addons.js?v=1793045955139"></script>
+    <script src="js/addons.js?v=1793046517366"></script>
     <script src="js/meds.js?v=1792193893195"></script>
     <script src="js/app-questions.js?v=1792699045062"></script>
     <script src="js/oncall-disclosures.js?v=1792700000000"></script>
