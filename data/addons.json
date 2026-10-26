@@ -1,7 +1,7 @@
 {
  "_readme": {
   "purpose": "CHA add-on products for the Command Center Add-Ons page.",
-  "source": "FirstEnroll rate sheet and product catalog, NEO availability document, NEO storefront pricing. Verified product by product and state by state. Rechecked Oct 26 2026 against the live NEO (974021), FirstEnroll (974358) and Premier (745779) storefronts; Premier add-ons added from the Premier storefront and product STATES tabs.",
+  "source": "FirstEnroll rate sheet and product catalog, NEO availability document, NEO storefront pricing. Verified product by product and state by state. Rechecked Oct 26 2026 against the live NEO (974021), FirstEnroll (974358) and Premier (745779) storefronts; Premier add-ons added from the Premier storefront and product STATES tabs. FirstEnroll add-on household rates and state lists confirmed in the FirstEnroll enrollment checkout (Oct 26 2026).",
   "product_count": 86,
   "rules": [
    "states: null means the source document gave NO availability list. That is NOT the same as unavailable - it needs confirming on the platform before quoting.",
@@ -1212,7 +1212,11 @@
    "category": "Dental / Vision / Hearing",
    "description": "Aetna Dental, Vision Outlook and Start Hearing.",
    "price_member": 19.99,
-   "tiers": null,
+   "tiers": {
+    "spouse": 29.99,
+    "children": 29.99,
+    "family": 29.99
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": false,
@@ -1320,7 +1324,11 @@
    "category": "Telemedicine",
    "description": "24/7 telemedicine access for physician consultations, 365 days a year.",
    "price_member": 29.99,
-   "tiers": null,
+   "tiers": {
+    "spouse": 44.99,
+    "children": 44.99,
+    "family": 44.99
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": false,
@@ -1386,7 +1394,11 @@
    "category": "Rx discount",
    "description": "Walk-in pharmacy prescription discounts and international brand-name mail-order discounts. Provider search: www.ADCLookup.com",
    "price_member": 29.99,
-   "tiers": null,
+   "tiers": {
+    "spouse": 39.99,
+    "children": 39.99,
+    "family": 39.99
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": true,
@@ -1445,7 +1457,11 @@
    "category": "Rx discount",
    "description": "Walk-in pharmacy prescription discounts and international brand-name mail-order discounts. Provider search: www.ADCLookup.com",
    "price_member": 34.99,
-   "tiers": null,
+   "tiers": {
+    "spouse": 34.99,
+    "children": 34.99,
+    "family": 34.99
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": true,
@@ -1553,7 +1569,11 @@
    "category": "Telemedicine",
    "description": "24/7 telemedicine access for physician consultations, 365 days a year.",
    "price_member": 49.0,
-   "tiers": null,
+   "tiers": {
+    "spouse": 59,
+    "children": 59,
+    "family": 69
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": false,
@@ -1619,7 +1639,11 @@
    "category": "Bundle",
    "description": "Aetna Dental, Vision Outlook, Start Hearing.",
    "price_member": 54.98,
-   "tiers": null,
+   "tiers": {
+    "spouse": 54.98,
+    "children": 54.98,
+    "family": 54.98
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": false,
@@ -1676,7 +1700,11 @@
    "category": "Dental / Vision / Hearing",
    "description": "Aetna Dental, Vision Outlook and Start Hearing.",
    "price_member": 59.99,
-   "tiers": null,
+   "tiers": {
+    "spouse": 74.99,
+    "children": 74.99,
+    "family": 74.99
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": false,
@@ -1899,7 +1927,11 @@
    "category": "Bundle",
    "description": "MultiPlan discounts, $0 telemedicine, 24/7 nurse line, dental, vision, hearing, lab discounts, chiropractic savings and prescription discounts.",
    "price_member": 89.99,
-   "tiers": null,
+   "tiers": {
+    "spouse": 99.99,
+    "children": 99.99,
+    "family": 119.99
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": true,
@@ -1958,7 +1990,11 @@
    "category": "Discount program",
    "description": "Dental, vision and hearing discount program with access to over 500,000 providers.",
    "price_member": 89.99,
-   "tiers": null,
+   "tiers": {
+    "spouse": 89.99,
+    "children": 89.99,
+    "family": 89.99
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": true,
@@ -2016,7 +2052,11 @@
    "category": "Bundle",
    "description": "Aetna Dental, Vision Outlook, Start Hearing, plus walk-in and international mail-order Rx discounts.",
    "price_member": 96.98,
-   "tiers": null,
+   "tiers": {
+    "spouse": 96.98,
+    "children": 96.98,
+    "family": 96.98
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": true,
@@ -2277,7 +2317,11 @@
    "category": "Bundle",
    "description": "MultiPlan discounts, $0 telemedicine, 24/7 nurse line, dental, vision, hearing, lab discounts, chiropractic savings and prescription discounts.",
    "price_member": 119.99,
-   "tiers": null,
+   "tiers": {
+    "spouse": 134.99,
+    "children": 134.99,
+    "family": 149.99
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": true,
@@ -2418,7 +2462,11 @@
    "category": "Bundle",
    "description": "Aetna Dental, Vision Outlook, Start Hearing, plus walk-in and international mail-order Rx discounts.",
    "price_member": 127.98,
-   "tiers": null,
+   "tiers": {
+    "spouse": 127.98,
+    "children": 127.98,
+    "family": 127.98
+   },
    "enrollment_fee": null,
    "price_note": null,
    "is_discount_program": true,

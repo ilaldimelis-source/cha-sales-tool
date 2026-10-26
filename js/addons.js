@@ -1,7 +1,7 @@
 // Add-Ons page. Reads data/addons.json as published.
 // Does not register products as plans.
 
-var AO_JSON_URL = 'data/addons.json?v=1793044829365';
+var AO_JSON_URL = 'data/addons.json?v=1793045528665';
 
 var AO_STATE_NAMES = {
   AL: 'Alabama',
