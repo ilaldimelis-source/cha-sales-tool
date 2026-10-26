@@ -6,7 +6,8 @@
 // kept off On Call (no reviewed script). Edit wording only with
 // Mey's approval.
 // Oct 26 2026: discount / association "not insurance" lines and the
-// Harbor rider sentence removed (Mey).
+// Harbor rider sentence removed (Mey). Harbor $5,000 line per the NEO
+// HarborSTM training (Unit 2-3), Oct 26 2026.
 var CW_DISC = {
   map: {
     'AWA TrueHealth|Value': 'awatruehealth',
@@ -599,7 +600,7 @@ var CW_DISC = {
         'Your plan uses the Cigna Healthcare PPO network. Office visits are covered in-network only.',
         "It's underwritten by Everest Reinsurance Company or Everest Denali Insurance Company, depending on your state. Administrative Concepts, Inc. handles claims. It's offered through the American Workers Association, or AWA.",
         "Your monthly billing is handled through Neo Health Solutions, which is the name you'll see on your statement.",
-        "HarborSTM Essential is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your $5,000 max only counts coinsurance. Your deductible is on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
+        "HarborSTM Essential is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your plan has a $5,000 in-network coinsurance limit. Your deductible, copays, access fees and anything over a plan limit don't count toward it. Out-of-network care has no limit. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
@@ -613,7 +614,7 @@ var CW_DISC = {
         'Your plan uses the Cigna Healthcare PPO network. Office visits are covered in-network only.',
         "It's underwritten by Everest Reinsurance Company or Everest Denali Insurance Company, depending on your state. Administrative Concepts, Inc. handles claims. It's offered through the American Workers Association, or AWA.",
         "Your monthly billing is handled through Neo Health Solutions, which is the name you'll see on your statement.",
-        "HarborSTM Access is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your $5,000 max only counts coinsurance. Your deductible is on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
+        "HarborSTM Access is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your plan has a $5,000 in-network coinsurance limit. Your deductible, copays, access fees and anything over a plan limit don't count toward it. Out-of-network care has no limit. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
@@ -627,7 +628,7 @@ var CW_DISC = {
         'Your plan uses the Cigna Healthcare PPO network. Office visits are covered in-network only.',
         "It's underwritten by Everest Reinsurance Company or Everest Denali Insurance Company, depending on your state. Administrative Concepts, Inc. handles claims. It's offered through the American Workers Association, or AWA.",
         "Your monthly billing is handled through Neo Health Solutions, which is the name you'll see on your statement.",
-        "HarborSTM Secure is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your $5,000 max only counts coinsurance. Your deductible is on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
+        "HarborSTM Secure is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your plan has a $5,000 in-network coinsurance limit. Your deductible, copays, access fees and anything over a plan limit don't count toward it. Out-of-network care has no limit. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
