@@ -5106,6 +5106,38 @@
         font-style: italic;
         color: #94a3b8;
       }
+      /* Add-Ons: Premier column and price line (Oct 26 2026) */
+      .ao-t-col {
+        flex-basis: 320px;
+      }
+      .ao-t-col:nth-child(2) {
+        border-right: 2px solid var(--cha-text-primary);
+      }
+      .ao-t-prices {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        background: var(--cha-bg-card);
+        border: 1px solid var(--cha-border-subtle);
+        color: var(--cha-text-primary);
+      }
+      .ao-t-prices b {
+        font-weight: 600;
+        color: var(--cha-text-secondary);
+      }
+      .ao-t-per {
+        width: 100%;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--cha-text-secondary);
+      }
+      @media (max-width: 1000px) {
+        .ao-t-col:nth-child(2) {
+          border-right: 0;
+        }
+      }
     </style>
   </head>
   <body>
@@ -6153,7 +6185,7 @@
     <script src="js/myspace.js?v=1792164089398"></script>
     <script src="js/sales-tracker.js?v=1792628100449"></script>
     <script src="js/office.js?v=1787900000000"></script>
-    <script src="js/addons.js?v=1792186043707"></script>
+    <script src="js/addons.js?v=1793044829365"></script>
     <script src="js/meds.js?v=1792193893195"></script>
     <script src="js/app-questions.js?v=1792699045062"></script>
     <script src="js/oncall-disclosures.js?v=1792700000000"></script>
