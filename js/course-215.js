@@ -1082,7 +1082,8 @@ function c215RenderQuiz(container) {
     html += "<button type=\"button\" class=\"c215-filter" + (c215State.qz.filter === f.id ? " active" : "") + "\" onclick=\"c215QzFilter('" + f.id + "')\">" + f.label + "</button>";
   }
   html += "</div>";
-  html += "<label class=\"c215-missed-toggle\"><input type=\"checkbox\" " + (c215State.qz.missedOnly ? "checked" : "") + " onchange=\"c215QzMissedOnly(this.checked)\"> Missed only</label></div>";
+  html += "<span class=\"c215x-tools\"><label class=\"c215-missed-toggle\"><input type=\"checkbox\" " + (c215State.qz.missedOnly ? "checked" : "") + " onchange=\"c215QzMissedOnly(this.checked)\"> Missed only</label>";
+  html += "<button type=\"button\" class=\"c215x-btn-restart\" onclick=\"c215QzRestartAsk()\">Restart</button></span></div>";
   var n = c215State.qz.queue.length;
   if (c215State.qz.idx >= n && c215State.qz.total > 0) {
     var pct = Math.round(c215State.qz.correct / c215State.qz.total * 100);
@@ -1597,7 +1598,10 @@ function c215RenderRun(container) {
   var label = isFinal ? "Final practice exam" : "Module " + c215Course.mod + " check" + (mod ? " -- " + c215Esc(mod.title) : "");
   html += "<div class=\"c215x-focus\">";
   html += "<div class=\"c215x-toolbar\"><button type=\"button\" class=\"c215x-btn-soft\" onclick=\"c215CourseGo('home')\">Back to course</button>";
+  html += "<span class=\"c215x-tools\">";
   if (!isFinal && mod) { html += "<button type=\"button\" class=\"c215x-btn-ghost\" onclick=\"c215CourseGo('lesson'," + mod.n + ",0)\">Review lessons</button>"; }
+  if (r && r.qs.length) { html += "<button type=\"button\" class=\"c215x-btn-restart\" onclick=\"c215CourseRestart()\">Restart</button>"; }
+  html += "</span>";
   html += "</div>";
   if (!r || !r.qs.length) {
     html += "<div class=\"c215x-card\">No questions yet for this module.</div></div>";
@@ -1638,6 +1642,20 @@ function c215RenderRun(container) {
   if (r.answered) { html += "<button type=\"button\" class=\"c215-qz-next show\" onclick=\"c215CourseNextQ()\">" + (r.idx < r.qs.length - 1 ? "Next question" : "See my score") + "</button>"; }
   html += "</div>";
   container.innerHTML = html;
+}
+
+function c215CourseRestart() {
+  var r = c215Course.run;
+  if (!r) { return; }
+  var started = r.idx > 0 || r.answered;
+  if (started && r.idx < r.qs.length && !window.confirm("Start over? Your answers on this try will be cleared.")) { return; }
+  c215CourseGo(r.kind, c215Course.mod, 0);
+}
+
+function c215QzRestartAsk() {
+  var started = c215State.qz.total > 0 || c215State.qz.answered;
+  if (started && c215State.qz.idx < c215State.qz.queue.length && !window.confirm("Start over? Your answers on this try will be cleared.")) { return; }
+  c215QzRestart();
 }
 
 function c215RenderCert(container) {
@@ -1687,6 +1705,8 @@ window.c215CourseNextQ = c215CourseNextQ;
 window.c215CourseLessonNext = c215CourseLessonNext;
 window.c215CourseSetName = c215CourseSetName;
 window.c215CoursePrint = c215CoursePrint;
+window.c215CourseRestart = c215CourseRestart;
+window.c215QzRestartAsk = c215QzRestartAsk;
 
 (function hookCourse215ShowPage() {
   var origShowPage = window.showPage;

@@ -2789,3 +2789,27 @@
   align-self: flex-start;
   margin-top: 10px;
 }
+
+/* Restart button on checks, final exam and practice (Oct 2026) */
+#cha-course215-root .c215x-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#cha-course215-root .c215x-btn-restart {
+  border: 1.5px solid #c7d2fe;
+  border-radius: 999px;
+  padding: 9px 18px;
+  min-height: 40px;
+  background: #fff;
+  color: #4338ca;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#cha-course215-root .c215x-btn-restart:hover {
+  background: #eef0ff;
+}
