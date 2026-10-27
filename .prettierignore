@@ -4,6 +4,9 @@ playwright-report
 js/chat.js
 js/plan-data.js
 js/call-playbook.js
+js/course-215.js
+js/course-215-lessons.js
+css/course-215.css
 
 # Generated / CI artifacts / drafts (not canonical app source)
 ledger/
