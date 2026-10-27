@@ -2869,3 +2869,75 @@
   font-weight: 600;
   color: #fff;
 }
+
+/* ==========================================================
+   Ocean palette (Oct 2026, owner pick) -- overrides the
+   indigo-violet accents above
+   ========================================================== */
+#cha-course215-root {
+  --c215-grad: linear-gradient(135deg, #0369a1 0%, #0e7490 55%, #0d9488 100%);
+  --c215-ink: #0c4a6e;
+}
+
+#cha-course215-root .c215x-hero {
+  box-shadow: 0 14px 34px rgb(3 105 161 / 25%);
+}
+
+#cha-course215-root .c215x-eyebrow,
+#cha-course215-root .c215x-hero-sub {
+  color: #e0f2fe;
+}
+
+#cha-course215-root .c215-tab.active,
+#cha-course215-root .c215-filter.active,
+#cha-course215-root .c215x-subtab.active,
+#cha-course215-root .c215c-lnk.active,
+#cha-course215-root .c215x-btn-dark,
+#cha-course215-root .c215x-focus .c215-qz-next,
+#cha-course215-root .c215c-row.is-next .c215c-badge {
+  box-shadow: 0 6px 16px rgb(3 105 161 / 22%);
+}
+
+#cha-course215-root .c215c-row.is-next,
+#cha-course215-root .c215c-mod-l:hover,
+#cha-course215-root .c215x-btn-restart:hover {
+  background: #e0f2fe;
+}
+
+#cha-course215-root .c215c-qr-tile {
+  box-shadow: 0 10px 24px rgb(3 105 161 / 18%);
+}
+
+#cha-course215-root .c215c-qr-1 {
+  background: var(--c215-glow), linear-gradient(135deg, #0369a1 0%, #0284c7 100%);
+}
+
+#cha-course215-root .c215c-qr-2 {
+  background: var(--c215-glow), linear-gradient(135deg, #0f766e 0%, #0369a1 100%);
+}
+
+#cha-course215-root .c215c-qr-3 {
+  background: var(--c215-glow), linear-gradient(135deg, #155e75 0%, #0d9488 100%);
+}
+
+#cha-course215-root .c215c-qr-4 {
+  background: var(--c215-glow), linear-gradient(135deg, #1e40af 0%, #0369a1 100%);
+}
+
+#cha-course215-root .c215c-qr-s {
+  color: #fff;
+}
+
+#cha-course215-root .c215x-btn-restart {
+  border-color: #bae6fd;
+  color: #075985;
+}
+
+#cha-course215-root .c215c-lnk-ov,
+#cha-course215-root .c215c-cert-name {
+  color: #0369a1;
+}
+
+#cha-course215-root .c215c-tchip {
+  background: #e0f2fe;
+}
