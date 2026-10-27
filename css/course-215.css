@@ -1490,3 +1490,686 @@
     font-size: 0.72rem;
   }
 }
+
+/* ==========================================================
+   2-15 Study Guide redesign (Oct 2026) -- CHA Mondly look
+   Direction A (4-tab dashboard) + C (focus quiz).
+   Override block: everything above stays as-is.
+   ========================================================== */
+#cha-course215-root {
+  background: #eceef8;
+  border-radius: 24px;
+  padding: 28px 32px 36px;
+  color: #0f172a;
+}
+
+#cha-course215-root,
+#cha-course215-root * {
+  font-family: 'Plus Jakarta Sans', 'DM Sans', system-ui, sans-serif;
+}
+
+#cha-course215-root p,
+#cha-course215-root li,
+#cha-course215-root td,
+#cha-course215-root span {
+  color: inherit;
+}
+
+/* Header row: title left, black pill tabs right */
+#cha-course215-root .c215x-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+#cha-course215-root .c215-hdr {
+  margin: 0;
+  width: auto;
+}
+
+#cha-course215-root .c215-title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+#cha-course215-root .c215-subtitle {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+#cha-course215-root .c215-tabs {
+  display: flex;
+  gap: 6px;
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+  padding: 6px;
+  background: #fff;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: 0 2px 10px rgb(15 23 42 / 6%);
+  overflow-x: auto;
+}
+
+#cha-course215-root .c215-tab {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 18px;
+  min-height: 44px;
+  background: transparent;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+#cha-course215-root .c215-tab:hover {
+  color: #0f172a;
+}
+
+#cha-course215-root .c215-tab.active {
+  background: #0f172a;
+  color: #fff;
+  border: 0;
+}
+
+/* Shared building blocks */
+#cha-course215-root .c215x-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 22px 24px;
+  box-shadow: 0 2px 10px rgb(15 23 42 / 5%);
+}
+
+#cha-course215-root .c215x-card h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+#cha-course215-root .c215x-card-hd {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+#cha-course215-root .c215x-card-hd span {
+  font-size: 13px;
+  color: #475569;
+}
+
+#cha-course215-root .c215x-bar {
+  height: 8px;
+  background: #eef1f6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+#cha-course215-root .c215x-bar-lg {
+  height: 12px;
+}
+
+#cha-course215-root .c215x-bar-fill {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 999px;
+}
+
+#cha-course215-root .c215x-bar-dark {
+  background: #0f172a;
+}
+
+#cha-course215-root .c215x-btn-light,
+#cha-course215-root .c215x-btn-dark,
+#cha-course215-root .c215x-btn-soft,
+#cha-course215-root .c215x-btn-ghost {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 22px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#cha-course215-root .c215x-btn-light {
+  background: #fff;
+  color: #0f172a;
+}
+
+#cha-course215-root .c215x-btn-dark {
+  background: #0f172a;
+  color: #fff;
+}
+
+#cha-course215-root .c215x-btn-soft {
+  background: #eef1f6;
+  color: #0f172a;
+}
+
+#cha-course215-root .c215x-btn-ghost {
+  background: transparent;
+  color: #475569;
+}
+
+/* Overview */
+#cha-course215-root .c215x-ov {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+#cha-course215-root .c215x-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+#cha-course215-root .c215x-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  background: #0f172a;
+  color: #fff;
+  border-radius: 24px;
+  padding: 26px 28px;
+}
+
+#cha-course215-root .c215x-hero-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#cha-course215-root .c215x-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #cbd5e1;
+}
+
+#cha-course215-root .c215x-eyebrow-dark {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #475569;
+}
+
+#cha-course215-root .c215x-hero-title {
+  font-size: 21px;
+  font-weight: 700;
+  color: #fff;
+}
+
+#cha-course215-root .c215x-hero-sub {
+  font-size: 14px;
+  color: #cbd5e1;
+}
+
+#cha-course215-root .c215x-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+#cha-course215-root .c215x-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 10px rgb(15 23 42 / 5%);
+}
+
+#cha-course215-root .c215x-stat-n {
+  font-size: 26px;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+#cha-course215-root .c215x-stat-l {
+  font-size: 13px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+#cha-course215-root .c215x-mini {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #475569;
+}
+
+#cha-course215-root .c215x-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+#cha-course215-root .c215x-map h2 {
+  margin-bottom: 2px;
+}
+
+#cha-course215-root .c215x-map-sub {
+  margin: 0 0 10px;
+  font-size: 13px;
+  color: #475569;
+}
+
+#cha-course215-root .c215x-map-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 110px 40px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #eef1f6;
+}
+
+#cha-course215-root .c215x-map-row:last-child {
+  border-bottom: 0;
+}
+
+#cha-course215-root .c215x-map-name {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: #0f172a;
+}
+
+#cha-course215-root .c215x-map-pct {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+  color: #0f172a;
+}
+
+/* Filter pills (cards + quiz) */
+#cha-course215-root .c215-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 0;
+}
+
+#cha-course215-root .c215-filter {
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  min-height: 36px;
+  background: #fff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgb(15 23 42 / 5%);
+  cursor: pointer;
+}
+
+#cha-course215-root .c215-filter.active {
+  background: #0f172a;
+  color: #fff;
+}
+
+/* Study cards */
+#cha-course215-root .c215-cards-wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#cha-course215-root .c215-cards-wrap > .c215-prog {
+  height: 8px;
+  background: #fff;
+  border-radius: 999px;
+}
+
+#cha-course215-root .c215-cards-wrap .c215-prog-fill {
+  background: #0f172a;
+  border-radius: 999px;
+}
+
+#cha-course215-root .c215-fc-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+#cha-course215-root .c215-stack-1,
+#cha-course215-root .c215-stack-2 {
+  display: none;
+}
+
+#cha-course215-root .c215-study-front,
+#cha-course215-root .c215-study-back {
+  background: #fff;
+  border: 0;
+  border-radius: 28px;
+  min-height: 300px;
+  padding: 36px 40px;
+  box-shadow: 0 10px 30px rgb(15 23 42 / 8%);
+  color: #0f172a;
+  text-align: center;
+  gap: 14px;
+}
+
+#cha-course215-root .c215-study-front .c215-study-label,
+#cha-course215-root .c215-study-back .c215-study-label {
+  color: #475569;
+  font-size: 12px;
+}
+
+#cha-course215-root .c215-study-q,
+#cha-course215-root .c215-study-a {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #0f172a;
+}
+
+#cha-course215-root .c215-study-e,
+#cha-course215-root .c215-study-hint {
+  font-size: 14px;
+  color: #475569;
+  line-height: 1.55;
+}
+
+#cha-course215-root .c215-rate-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+#cha-course215-root .c215-rate {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 22px;
+  min-height: 46px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#cha-course215-root .c215-rate-got {
+  background: #dcfce7;
+  color: #166534;
+}
+
+#cha-course215-root .c215-rate-almost {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+#cha-course215-root .c215-rate-missed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Quiz -- focus mode */
+#cha-course215-root .c215x-focus {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+}
+
+#cha-course215-root .c215x-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+#cha-course215-root .c215-missed-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  min-height: 36px;
+}
+
+#cha-course215-root .c215x-qmeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+#cha-course215-root .c215x-qcard,
+#cha-course215-root .c215-qz-card.c215x-qcard {
+  background: #fff;
+  border: 0;
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgb(15 23 42 / 8%);
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-q {
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #0f172a;
+  margin-bottom: 20px;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-opts {
+  gap: 10px;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-opt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin: 0;
+  padding: 14px 16px;
+  min-height: 56px;
+  background: #fff;
+  border: 2px solid #e2e8f0;
+  border-radius: 18px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-opt:hover:not(:disabled) {
+  border-color: #0f172a;
+}
+
+#cha-course215-root .c215x-key {
+  flex: 0 0 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: #eef1f6;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-opt.correct {
+  background: #dcfce7;
+  border-color: #16a34a;
+  color: #166534;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-opt.correct .c215x-key {
+  background: #16a34a;
+  color: #fff;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-opt.wrong {
+  background: #fee2e2;
+  border-color: #dc2626;
+  color: #991b1b;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-opt.wrong .c215x-key {
+  background: #dc2626;
+  color: #fff;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-opt:disabled:not(.correct, .wrong) {
+  color: #64748b;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-explain {
+  margin-top: 18px;
+  border: 0;
+  border-radius: 16px;
+  padding: 14px 18px;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-explain.is-right {
+  background: #dcfce7;
+  color: #166534;
+}
+
+#cha-course215-root .c215x-qcard .c215-qz-explain.is-wrong {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+#cha-course215-root .c215x-focus .c215-qz-next {
+  align-self: center;
+  margin-top: 4px;
+  background: #0f172a;
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 32px;
+  min-height: 50px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#cha-course215-root .c215x-done {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+#cha-course215-root .c215x-done-sub {
+  margin: 0 0 8px;
+  font-size: 15px;
+  color: #475569;
+}
+
+/* Cheat sheets -- sub pills + one column */
+#cha-course215-root .c215x-subtabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+#cha-course215-root .c215x-subtab {
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 16px;
+  min-height: 40px;
+  background: #fff;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 1px 4px rgb(15 23 42 / 5%);
+  cursor: pointer;
+}
+
+#cha-course215-root .c215x-subtab.active {
+  background: #0f172a;
+  color: #fff;
+}
+
+#cha-course215-root .c215x-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#cha-course215-root .c215-subhd {
+  margin: 10px 4px 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+#cha-course215-root .c215-mnem-card,
+#cha-course215-root .c215-acc {
+  background: #fff;
+  border: 0;
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgb(15 23 42 / 5%);
+}
+
+#cha-course215-root .c215-table {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+#cha-course215-root .c215-brain-list li {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #0f172a;
+}
+
+/* Phone and narrow windows */
+@media (width <= 820px) {
+  #cha-course215-root {
+    padding: 18px 16px 24px;
+    border-radius: 18px;
+  }
+
+  #cha-course215-root .c215x-ov {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #cha-course215-root .c215x-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #cha-course215-root .c215x-qcard,
+  #cha-course215-root .c215-qz-card.c215x-qcard {
+    padding: 22px 18px;
+  }
+
+  #cha-course215-root .c215x-qcard .c215-qz-q {
+    font-size: 18px;
+  }
+}

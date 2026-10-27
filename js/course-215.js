@@ -433,12 +433,17 @@ var C215_BRAIN_DUMP = [
 ];
 
 var C215_TABS = [
-  { id: "exammap", label: "Exam Map", type: "exammap" },
-  { id: "cards", label: "Study Cards", type: "cards" },
+  { id: "exammap", label: "Overview", type: "exammap" },
+  { id: "cards", label: "Study cards", type: "cards" },
   { id: "quiz", label: "Quiz", type: "quiz" },
-  { id: "topics", label: "All Topics", type: "topics" },
-  { id: "cheats", label: "Cheat Sheets", type: "cheats" },
-  { id: "progress", label: "My Progress", type: "progress" }
+  { id: "cheats", label: "Cheat sheets", type: "cheats" }
+];
+
+var C215_CHEAT_VIEWS = [
+  { id: "sheets", label: "Cheat sheets" },
+  { id: "notes", label: "Study notes" },
+  { id: "mnem", label: "Mnemonics" },
+  { id: "brain", label: "Brain dump" }
 ];
 
 
@@ -469,9 +474,9 @@ var C215_STUDY_ORDER = [
 var C215_TOPIC_LABELS = {
   life: "Life",
   health: "Health",
-  fl: "FL",
+  fl: "Florida law",
   annuity: "Annuities",
-  trade: "Trade"
+  trade: "Trade practices"
 };
 
 var C215_TOPIC_FILTER_ORDER = ["life", "health", "fl", "annuity", "trade"];
@@ -545,6 +550,7 @@ var c215State = {
   mnemHide: {},
   numFlipped: {},
   topicsOpen: "",
+  cheatView: "sheets",
   brainOpen: false
 };
 
@@ -561,7 +567,10 @@ function c215LoadStore() {
       var saved = JSON.parse(raw);
       if (saved.activeTab) {
         c215State.activeTab = saved.activeTab === "quickref" ? "cheats" : saved.activeTab;
+        if (c215State.activeTab === "topics") { c215State.activeTab = "cheats"; c215State.cheatView = "notes"; }
+        if (c215State.activeTab === "progress") { c215State.activeTab = "exammap"; }
       }
+      if (saved.cheatView) { c215State.cheatView = saved.cheatView; }
       if (saved.fcRatings) { c215State.fc.ratings = saved.fcRatings; }
       if (saved.qzTopicScores) { c215State.qz.topicScores = saved.qzTopicScores; }
       if (saved.mastered) { c215State.mastered = saved.mastered; }
@@ -583,6 +592,7 @@ function c215SaveStore() {
       mastered: c215State.mastered,
       tabDots: c215State.tabDots,
       topicsOpen: c215State.topicsOpen,
+      cheatView: c215State.cheatView,
       mnemHide: c215State.mnemHide
     }));
   } catch (e) {}
@@ -638,27 +648,28 @@ function c215Render() {
   var root = document.getElementById("cha-course215-root");
   if (!root) { return; }
   root.innerHTML = "";
+  var top = c215El("div", "c215x-top");
   var hdr = c215El("div", "c215-hdr");
-  hdr.innerHTML = "<h1 class=\"c215-title\">2-15 Crash Course</h1>"
-    + "<p class=\"c215-subtitle\">Florida Life &amp; Health Insurance -- Official 2026 Exam</p>";
-  root.appendChild(hdr);
+  hdr.innerHTML = "<h1 class=\"c215-title\">2-15 Study Guide</h1>"
+    + "<p class=\"c215-subtitle\">Florida Health and Life (incl. Annuities and Variable) -- 2026 exam</p>";
+  top.appendChild(hdr);
   var tabBar = c215El("div", "c215-tabs");
-  var ti, tab, btn, dot;
+  tabBar.setAttribute("role", "tablist");
+  var ti, tab, btn;
   for (ti = 0; ti < C215_TABS.length; ti++) {
     tab = C215_TABS[ti];
     (function(t) {
       btn = c215El("button", "c215-tab" + (c215State.activeTab === t.id ? " active" : ""));
-      var dotColor = c215TabDotColor(t.id);
-      if (dotColor) {
-        dot = c215El("span", "c215-dot c215-dot-" + dotColor);
-        btn.appendChild(dot);
-      }
+      btn.type = "button";
+      btn.setAttribute("role", "tab");
+      btn.setAttribute("aria-selected", c215State.activeTab === t.id ? "true" : "false");
       btn.appendChild(document.createTextNode(t.label));
       btn.onclick = function() { c215SwitchTab(t.id); };
       tabBar.appendChild(btn);
     })(tab);
   }
-  root.appendChild(tabBar);
+  top.appendChild(tabBar);
+  root.appendChild(top);
   var body = c215El("div", "c215-body");
   body.id = "c215Body";
   root.appendChild(body);
@@ -678,9 +689,10 @@ function c215RenderTab(container) {
   if (id === "exammap") { c215RenderExamMap(container); return; }
   if (id === "cards") { c215RenderCards(container); return; }
   if (id === "quiz") { c215RenderQuiz(container); return; }
-  if (id === "topics") { c215RenderTopics(container); return; }
+  if (id === "topics") { c215State.cheatView = "notes"; c215RenderCheats(container); return; }
   if (id === "cheats") { c215RenderCheats(container); return; }
-  if (id === "progress") { c215RenderProgress(container); return; }
+  if (id === "progress") { c215RenderExamMap(container); return; }
+  c215RenderExamMap(container);
 }
 
 function c215FormatBrainDumpLine(text) {
@@ -692,7 +704,7 @@ function c215FormatBrainDumpLine(text) {
 }
 
 function c215FcTopicLabel(topicId) {
-  var labels = { life: "Life", health: "Health", fl: "FL", annuity: "Annuities", provisions: "Provisions", disability: "Disability", medicare: "Medicare", trade: "Trade" };
+  var labels = { life: "Life", health: "Health", fl: "Florida law", annuity: "Annuities", provisions: "Provisions", disability: "Disability", medicare: "Medicare", trade: "Trade practices" };
   return labels[topicId] || topicId;
 }
 
@@ -750,35 +762,39 @@ function c215BuildMnemonicsHtml() {
 }
 
 function c215RenderExamMap(container) {
-  var html = "", wi, so, mastered = c215MasteredCount();
-  html += "<div class=\"c215-exam-top\">";
-  html += "<div class=\"c215-stats\">";
-  html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">150</span><span class=\"c215-stat-l\">Scored questions</span></div>";
-  html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">2h 45m</span><span class=\"c215-stat-l\">Time limit</span></div>";
-  html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">70%</span><span class=\"c215-stat-l\">To pass</span></div>";
-  html += "<div class=\"c215-stat\"><span class=\"c215-stat-n\">105</span><span class=\"c215-stat-l\">Correct needed</span></div></div>";
-  html += "<div class=\"c215-prog-wrap\"><div class=\"c215-prog\"><div class=\"c215-prog-fill\" style=\"width:" + Math.round(mastered / QA200.length * 100) + "%\"></div></div>";
-  html += "<div class=\"c215-prog-lbl\">" + mastered + " of " + QA200.length + " mastered</div></div></div>";
-  html += "<div class=\"c215-card-block\"><h2 class=\"c215-card-hd\">2026 Official Exam Weights</h2>";
-  html += "<p class=\"c215-card-sub\">Spend your study time where the most questions are</p>";
+  var html = "", wi, mastered = c215MasteredCount();
+  var total = QA200.length;
+  var pct = total > 0 ? Math.round(mastered / total * 100) : 0;
+  var stats = c215FcStats();
+  html += "<div class=\"c215x-ov\">";
+  html += "<div class=\"c215x-col\">";
+  html += "<div class=\"c215x-hero\"><div class=\"c215x-hero-txt\">";
+  html += "<span class=\"c215x-eyebrow\">Start here</span>";
+  html += "<span class=\"c215x-hero-title\">FL Statutes -- Common to All Lines</span>";
+  html += "<span class=\"c215x-hero-sub\">Biggest section on the exam -- 13%. Florida law is one third of the test.</span></div>";
+  html += "<button type=\"button\" class=\"c215x-btn-light\" onclick=\"c215QzFilter('fl')\">Practice FL law</button></div>";
+  html += "<div class=\"c215x-stats\">";
+  html += "<div class=\"c215x-stat\"><span class=\"c215x-stat-n\">150</span><span class=\"c215x-stat-l\">scored questions (+15 unscored)</span></div>";
+  html += "<div class=\"c215x-stat\"><span class=\"c215x-stat-n\">2h 45m</span><span class=\"c215x-stat-l\">time limit</span></div>";
+  html += "<div class=\"c215x-stat\"><span class=\"c215x-stat-n\">70%</span><span class=\"c215x-stat-l\">to pass -- 105 correct</span></div></div>";
+  html += "<div class=\"c215x-card\"><div class=\"c215x-card-hd\"><h2>My progress</h2><span>" + mastered + " of " + total + " mastered</span></div>";
+  html += "<div class=\"c215x-bar c215x-bar-lg\"><div class=\"c215x-bar-fill\" style=\"width:" + pct + "%\"></div></div>";
+  html += "<div class=\"c215x-mini\">Study cards: " + stats.got + " got it, " + stats.almost + " almost, " + stats.missed + " missed</div>";
+  html += "<div class=\"c215x-actions\">";
+  html += "<button type=\"button\" class=\"c215x-btn-soft\" onclick=\"c215SwitchTab('cards')\">Study cards</button>";
+  html += "<button type=\"button\" class=\"c215x-btn-soft\" onclick=\"c215OpenBrain(true)\">Brain dump list</button>";
+  html += "<button type=\"button\" class=\"c215x-btn-ghost\" onclick=\"c215ResetProgress()\">Reset progress</button>";
+  html += "</div></div>";
+  html += "</div>";
+  html += "<div class=\"c215x-card c215x-map\"><h2>Exam map -- 2026 official weights</h2>";
+  html += "<p class=\"c215x-map-sub\">Pearson VUE outline effective January 1, 2026</p>";
   for (wi = 0; wi < C215_EXAM_WEIGHTS.length; wi++) {
     var w = C215_EXAM_WEIGHTS[wi];
-    html += "<div class=\"c215-weight-row\"><span class=\"c215-weight-n\">" + w.n + "</span>";
-    html += "<span class=\"c215-weight-name\">" + w.name + "</span>";
-    html += "<div class=\"c215-weight-track\"><div class=\"c215-weight-fill\" style=\"width:" + Math.round(w.pct / 13 * 100) + "%\"></div></div>";
-    html += "<span class=\"c215-weight-pct\">" + w.pct + "%</span>";
-    html += "<span class=\"c215-weight-q\">~" + w.q + "q</span></div>";
+    html += "<div class=\"c215x-map-row\"><span class=\"c215x-map-name\">" + w.name + "</span>";
+    html += "<div class=\"c215x-bar\"><div class=\"c215x-bar-fill\" style=\"width:" + Math.round(w.pct / 13 * 100) + "%\"></div></div>";
+    html += "<span class=\"c215x-map-pct\">" + w.pct + "%</span></div>";
   }
-  html += "</div>";
-  html += "<div class=\"c215-card-block\"><h2 class=\"c215-card-hd\">Recommended Study Order</h2>";
-  for (so = 0; so < C215_STUDY_ORDER.length; so++) {
-    var s = C215_STUDY_ORDER[so];
-    html += "<div class=\"c215-order-row\"><span class=\"c215-order-n\">" + s.n + "</span>";
-    html += "<div class=\"c215-order-body\"><div class=\"c215-order-title\">" + s.title + " -- " + s.pct + "%</div>";
-    html += "<div class=\"c215-order-desc\">" + s.desc + "</div></div></div>";
-  }
-  html += "</div>";
-  html += "<button type=\"button\" class=\"c215-brain-btn\" onclick=\"c215OpenBrain(true)\">Brain Dump -- Write These Before Question 1</button>";
+  html += "</div></div>";
   container.innerHTML = html;
 }
 
@@ -898,36 +914,37 @@ function c215QzApplyFilter(filter) {
 
 function c215RenderQuiz(container) {
   if (c215State.qz.queue.length === 0) { c215QzApplyFilter("all"); }
-  var html = "<div class=\"c215-quiz-wrap\">";
-  html += "<div class=\"c215-filters\">";
-  var fi, f, sc, badge;
+  var html = "<div class=\"c215-quiz-wrap c215x-focus\">";
+  html += "<div class=\"c215x-toolbar\"><div class=\"c215-filters\">";
+  var fi, f;
   for (fi = 0; fi < C215_QZ_FILTERS.length; fi++) {
     f = C215_QZ_FILTERS[fi];
-    badge = "";
-    sc = c215State.qz.topicScores[f.id];
-    if (sc && sc.total > 0) {
-      badge = " <span class=\"c215-filter-badge\">" + sc.correct + "/" + sc.total + "</span>";
-    }
-    html += "<button type=\"button\" class=\"c215-filter" + (c215State.qz.filter === f.id ? " active" : "") + "\" onclick=\"c215QzFilter('" + f.id + "')\">" + f.label + badge + "</button>";
+    html += "<button type=\"button\" class=\"c215-filter" + (c215State.qz.filter === f.id ? " active" : "") + "\" onclick=\"c215QzFilter('" + f.id + "')\">" + f.label + "</button>";
   }
   html += "</div>";
-  html += "<label class=\"c215-missed-toggle\"><input type=\"checkbox\" " + (c215State.qz.missedOnly ? "checked" : "") + " onchange=\"c215QzMissedOnly(this.checked)\"> Missed Only</label>";
-  if (c215State.qz.idx >= c215State.qz.queue.length && c215State.qz.total > 0) {
+  html += "<label class=\"c215-missed-toggle\"><input type=\"checkbox\" " + (c215State.qz.missedOnly ? "checked" : "") + " onchange=\"c215QzMissedOnly(this.checked)\"> Missed only</label></div>";
+  var n = c215State.qz.queue.length;
+  if (c215State.qz.idx >= n && c215State.qz.total > 0) {
     var pct = Math.round(c215State.qz.correct / c215State.qz.total * 100);
-    html += "<div class=\"c215-qz-done\"><div class=\"c215-qz-pct\">" + pct + "%</div>";
-    html += "<button type=\"button\" class=\"c215-btn-sm\" onclick=\"c215QzRestart()\">Try Again</button></div></div>";
+    html += "<div class=\"c215x-qcard c215x-done\"><span class=\"c215x-eyebrow-dark\">Round complete</span>";
+    html += "<div class=\"c215-qz-pct\">" + pct + "%</div>";
+    html += "<p class=\"c215x-done-sub\">" + c215State.qz.correct + " of " + c215State.qz.total + " correct. You need 70% on the real exam.</p>";
+    html += "<button type=\"button\" class=\"c215x-btn-dark\" onclick=\"c215QzRestart()\">Try again</button></div></div>";
     container.innerHTML = html; return;
   }
-  html += "<div class=\"c215-runbar\">" + c215State.qz.correct + " correct / " + c215State.qz.total + " answered</div>";
   var q = c215State.qz.queue[c215State.qz.idx];
+  var barPct = n > 0 ? Math.round(c215State.qz.idx / n * 100) : 0;
+  html += "<div class=\"c215x-qmeta\"><span>" + (q ? c215FcTopicLabel(q.t) : "") + "</span>";
+  html += "<span>Question " + Math.min(c215State.qz.idx + 1, n) + " of " + n + " -- " + c215State.qz.correct + " correct</span></div>";
+  html += "<div class=\"c215x-bar\"><div class=\"c215x-bar-fill c215x-bar-dark\" style=\"width:" + barPct + "%\"></div></div>";
   if (q) {
-    html += "<div class=\"c215-qz-card\"><div class=\"c215-qz-q\">" + q.q + "</div><div class=\"c215-qz-opts\" id=\"c215QzOpts\">";
+    html += "<div class=\"c215-qz-card c215x-qcard\"><div class=\"c215-qz-q\">" + q.q + "</div><div class=\"c215-qz-opts\" id=\"c215QzOpts\">";
     var oi;
     for (oi = 0; oi < q.opts.length; oi++) {
-      html += "<button type=\"button\" class=\"c215-qz-opt\" onclick=\"c215QzAnswer(" + oi + "," + q.a + ")\">" + String.fromCharCode(65 + oi) + ". " + q.opts[oi] + "</button>";
+      html += "<button type=\"button\" class=\"c215-qz-opt\" onclick=\"c215QzAnswer(" + oi + "," + q.a + ")\"><span class=\"c215x-key\">" + String.fromCharCode(65 + oi) + "</span><span class=\"c215x-opt-txt\">" + q.opts[oi] + "</span></button>";
     }
-    html += "</div><div class=\"c215-qz-explain\" id=\"c215QzExplain\"></div>";
-    html += "<button type=\"button\" class=\"c215-qz-next\" id=\"c215QzNext\" onclick=\"c215QzNext()\">Next</button></div>";
+    html += "</div><div class=\"c215-qz-explain\" id=\"c215QzExplain\"></div></div>";
+    html += "<button type=\"button\" class=\"c215-qz-next\" id=\"c215QzNext\" onclick=\"c215QzNext()\">Next question</button>";
   }
   html += "</div>";
   container.innerHTML = html;
@@ -961,7 +978,10 @@ function c215QzAnswer(selected, correct) {
     else if (i === selected && !isCorrect) { opts[i].className = "c215-qz-opt wrong"; }
   }
   var explainEl = document.getElementById("c215QzExplain");
-  if (explainEl) { explainEl.textContent = q.e; explainEl.className = "c215-qz-explain show"; }
+  if (explainEl) {
+    explainEl.textContent = (isCorrect ? "Correct. " : "Not quite. The answer is " + q.opts[correct] + ". ") + q.e;
+    explainEl.className = "c215-qz-explain show " + (isCorrect ? "is-right" : "is-wrong");
+  }
   var nextBtn = document.getElementById("c215QzNext");
   if (nextBtn) { nextBtn.className = "c215-qz-next show"; }
 }
@@ -1012,24 +1032,51 @@ function c215WireNumCards(container) {
   }
 }
 
+function c215CheatView(id) {
+  c215State.cheatView = id;
+  c215SaveStore();
+  var body = document.getElementById("c215Body");
+  if (body) { c215RenderTab(body); }
+}
+
 function c215RenderCheats(container) {
-  var html = "", gi, g, bi;
-  html += "<button type=\"button\" class=\"c215-brain-btn c215-brain-btn-top\" onclick=\"c215OpenBrain(true)\">Brain Dump -- Write These Before Question 1</button>";
-  html += "<div class=\"c215-card-block\"><h2 class=\"c215-card-hd\">Brain Dump -- Write These Before Question 1</h2>";
-  html += "<ul class=\"c215-brain-list\">";
-  for (bi = 0; bi < C215_BRAIN_DUMP.length; bi++) {
-    html += c215FormatBrainDumpLine(C215_BRAIN_DUMP[bi]);
+  var html = "", gi, g, bi, vi, v;
+  var view = c215State.cheatView || "sheets";
+  html += "<div class=\"c215x-subtabs\">";
+  for (vi = 0; vi < C215_CHEAT_VIEWS.length; vi++) {
+    v = C215_CHEAT_VIEWS[vi];
+    html += "<button type=\"button\" class=\"c215x-subtab" + (view === v.id ? " active" : "") + "\" onclick=\"c215CheatView('" + v.id + "')\">" + v.label + "</button>";
   }
-  html += "</ul></div>";
-  html += "<div class=\"c215-divider\">Mnemonics</div>";
-  html += c215BuildMnemonicsHtml();
+  html += "</div>";
+  if (view === "notes") {
+    container.innerHTML = html + "<div id=\"c215NotesBox\"></div>";
+    c215RenderTopics(document.getElementById("c215NotesBox"));
+    return;
+  }
+  if (view === "mnem") {
+    container.innerHTML = html + "<div class=\"c215x-stack\">" + c215BuildMnemonicsHtml() + "</div>";
+    return;
+  }
+  if (view === "brain") {
+    html += "<div class=\"c215x-card\"><div class=\"c215x-card-hd\"><h2>Brain dump</h2><span>Write these on scratch paper before Question 1</span></div>";
+    html += "<ul class=\"c215-brain-list\">";
+    for (bi = 0; bi < C215_BRAIN_DUMP.length; bi++) {
+      html += c215FormatBrainDumpLine(C215_BRAIN_DUMP[bi]);
+    }
+    html += "</ul></div>";
+    container.innerHTML = html;
+    return;
+  }
+  html += "<div class=\"c215x-stack\">";
   for (gi = 0; gi < C215_CHEAT_SHEETS.length; gi++) {
     g = C215_CHEAT_SHEETS[gi];
-    if (g.title && g.title !== "Overview" && g.html.indexOf("c215-table") < 0 && g.html.indexOf("c215-compare") < 0) {
+    if (!g.title || g.title === "Overview") { continue; }
+    if (g.html.indexOf("c215-table") < 0 && g.html.indexOf("c215-compare") < 0) {
       html += "<div class=\"c215-subhd\">" + g.title + "</div>";
     }
-    html += c215EnhanceCheatHtml(g.html, g.title && g.title !== "Overview" ? g.title : "");
+    html += c215EnhanceCheatHtml(g.html, g.title);
   }
+  html += "</div>";
   container.innerHTML = html;
 }
 
@@ -1073,7 +1120,7 @@ function c215ResetProgress() {
   c215SaveStore();
   try { localStorage.removeItem(c215StorageKey("state")); } catch (e) {}
   c215LoadStore();
-  c215SwitchTab("progress");
+  c215SwitchTab("exammap");
 }
 
 function c215RenderBrainModal(root) {
@@ -1117,6 +1164,7 @@ window.c215QzRestart = c215QzRestart;
 window.c215ToggleTopic = c215ToggleTopic;
 window.c215ResetProgress = c215ResetProgress;
 window.c215OpenBrain = c215OpenBrain;
+window.c215CheatView = c215CheatView;
 
 (function hookCourse215ShowPage() {
   var origShowPage = window.showPage;
