@@ -593,8 +593,7 @@ var C215_BRAIN_DUMP = [
 
 var C215_TABS = [
   { id: "course", label: "Course", type: "course" },
-  { id: "quiz", label: "Practice quiz", type: "quiz" },
-  { id: "cards", label: "Flashcards", type: "cards" },
+  { id: "quiz", label: "Practice", type: "quiz" },
   { id: "cheats", label: "Cheat sheets", type: "cheats" }
 ];
 
@@ -727,7 +726,7 @@ function c215LoadStore() {
       if (saved.activeTab) {
         c215State.activeTab = saved.activeTab === "quickref" ? "cheats" : saved.activeTab;
         if (c215State.activeTab === "topics") { c215State.activeTab = "cheats"; c215State.cheatView = "notes"; }
-        if (c215State.activeTab === "progress" || c215State.activeTab === "exammap") { c215State.activeTab = "course"; }
+        if (c215State.activeTab === "progress" || c215State.activeTab === "exammap" || c215State.activeTab === "cards") { c215State.activeTab = "course"; }
       }
       if (saved.cheatView) { c215State.cheatView = saved.cheatView; }
       if (saved.fcRatings) { c215State.fc.ratings = saved.fcRatings; }
@@ -810,7 +809,7 @@ function c215Render() {
   var top = c215El("div", "c215x-top");
   var hdr = c215El("div", "c215-hdr");
   hdr.innerHTML = "<h1 class=\"c215-title\">2-15 Study Guide</h1>"
-    + "<p class=\"c215-subtitle\">Florida Health and Life (incl. Annuities and Variable) -- 2026 exam. New to insurance? Start at Module 1.</p>";
+    + "<p class=\"c215-subtitle\">Florida Health and Life -- 2026 exam. New? Start at Module 1.</p>";
   top.appendChild(hdr);
   var tabBar = c215El("div", "c215-tabs");
   tabBar.setAttribute("role", "tablist");
@@ -1467,7 +1466,7 @@ function c215RenderCourseHome(container) {
   var mods = c215CourseData(), html = "", i, m, done, score, next = c215CourseNextModule();
   var total = mods.length + 1, doneN = c215CourseDoneCount() + (c215Course.best >= C215_PASS_FINAL ? 1 : 0);
   html += "<div class=\"c215x-ov c215c-home\"><div class=\"c215x-card c215c-list\">";
-  html += "<div class=\"c215x-card-hd\"><h2>Course</h2><span>" + doneN + " of " + total + " done -- go in order, or open any module</span></div>";
+  html += "<div class=\"c215x-card-hd\"><h2>Course</h2><span>" + doneN + " of " + total + " done</span></div>";
   html += "<div class=\"c215x-bar c215x-bar-lg\"><div class=\"c215x-bar-fill\" style=\"width:" + Math.round(doneN / total * 100) + "%\"></div></div>";
   html += "<div class=\"c215c-rows\">";
   for (i = 0; i < mods.length; i++) {
@@ -1477,14 +1476,16 @@ function c215RenderCourseHome(container) {
     html += "<button type=\"button\" class=\"c215c-row" + (next && next.n === m.n ? " is-next" : "") + "\" onclick=\"c215CourseGo('module'," + m.n + ",0)\">";
     html += "<span class=\"c215c-badge" + (done ? " is-done" : "") + "\">" + (done ? "&#10003;" : m.n) + "</span>";
     html += "<span class=\"c215c-row-txt\"><span class=\"c215c-row-title\">Module " + m.n + " -- " + c215Esc(m.title) + "</span>";
-    html += "<span class=\"c215c-row-sub\">" + c215Esc(m.sub) + " -- " + m.lessons.length + " lessons</span></span>";
-    html += "<span class=\"c215c-tag" + (done ? " is-done" : "") + "\">" + (done ? "Passed " + score + "%" : (score ? "Best " + score + "%" : "Open")) + "</span></button>";
+    html += "<span class=\"c215c-row-sub\">" + c215Esc(m.sub) + "</span></span>";
+    if (done || score) { html += "<span class=\"c215c-tag" + (done ? " is-done" : "") + "\">" + (done ? "Passed " + score + "%" : "Best " + score + "%") + "</span>"; }
+    html += "</button>";
   }
   html += "<button type=\"button\" class=\"c215c-row c215c-final\" onclick=\"c215CourseGo('final')\">";
   html += "<span class=\"c215c-badge" + (c215Course.best >= C215_PASS_FINAL ? " is-done" : "") + "\">F</span>";
   html += "<span class=\"c215c-row-txt\"><span class=\"c215c-row-title\">Final Practice Exam</span>";
-  html += "<span class=\"c215c-row-sub\">Up to " + C215_FINAL_SIZE + " questions -- 70% to pass, like the real test</span></span>";
-  html += "<span class=\"c215c-tag" + (c215Course.best >= C215_PASS_FINAL ? " is-done" : "") + "\">" + (c215Course.best ? "Best " + c215Course.best + "%" : "Start") + "</span></button>";
+  html += "<span class=\"c215c-row-sub\">150 questions -- 70% to pass, like the real test</span></span>";
+  if (c215Course.best) { html += "<span class=\"c215c-tag" + (c215Course.best >= C215_PASS_FINAL ? " is-done" : "") + "\">Best " + c215Course.best + "%</span>"; }
+  html += "</button>";
   html += "</div></div>";
   html += "<div class=\"c215x-col\">";
   html += "<div class=\"c215x-hero c215c-next\"><div class=\"c215x-hero-txt\"><span class=\"c215x-eyebrow\">Next up</span>";
@@ -1496,14 +1497,9 @@ function c215RenderCourseHome(container) {
     html += "<span class=\"c215x-hero-title\">Final Practice Exam</span><span class=\"c215x-hero-sub\">All modules passed. Score 70% to get your certificate.</span></div>";
     html += "<button type=\"button\" class=\"c215x-btn-light\" onclick=\"c215CourseGo('final')\">Start exam</button></div>";
   }
-  html += "<div class=\"c215x-card\"><h2>How this course works</h2><ol class=\"c215c-how\">";
-  html += "<li>Read the short lessons in order. Each one is a few minutes.</li>";
-  html += "<li>Take the 10-question check at the end of each module. 80% passes it.</li>";
-  html += "<li>Take the final practice exam. 70% passes, same as the state exam.</li>";
-  html += "<li>Get your CHA completion certificate.</li></ol></div>";
-  html += "<div class=\"c215x-card\"><h2>The real exam</h2><p class=\"c215c-facts\">150 scored questions + 15 unscored, 2 hours 45 minutes, 70% to pass (105 correct). Florida law is about one third of the test.</p>";
-  if (c215Course.certDate) { html += "<button type=\"button\" class=\"c215x-btn-dark\" onclick=\"c215CourseGo('cert')\">View my certificate</button>"; }
-  html += "</div></div></div>";
+  html += "<p class=\"c215c-tip\">Read the lessons, pass each 10-question check (80%), then pass the final (70%) to get your certificate.</p>";
+  if (c215Course.certDate) { html += "<button type=\"button\" class=\"c215x-btn-soft\" onclick=\"c215CourseGo('cert')\">View my certificate</button>"; }
+  html += "</div></div>";
   container.innerHTML = html;
 }
 
@@ -1543,8 +1539,7 @@ function c215RenderModule(container) {
   html += "<div class=\"c215x-toolbar\"><button type=\"button\" class=\"c215x-btn-soft\" onclick=\"c215CourseGo('home')\">Back to course</button></div>";
   html += "<div class=\"c215x-hero c215c-mod-hero\"><div class=\"c215x-hero-txt\"><span class=\"c215x-eyebrow\">Module " + mod.n + " of " + c215CourseData().length + "</span>";
   html += "<span class=\"c215x-hero-title\">" + c215Esc(mod.title) + "</span><span class=\"c215x-hero-sub\">" + c215Esc(mod.sub) + "</span>";
-  html += "<div class=\"c215c-chips\"><span class=\"c215c-chip\">" + mod.lessons.length + " lessons</span><span class=\"c215c-chip\">About " + mins + " min</span>";
-  html += "<span class=\"c215c-chip\">" + terms.length + " key terms</span><span class=\"c215c-chip\">" + Math.min(10, qn) + "-question check</span></div></div>";
+  html += "<span class=\"c215c-chip\">" + mod.lessons.length + " lessons -- about " + mins + " min -- " + Math.min(10, qn) + "-question check</span></div>";
   html += "<div class=\"c215c-mod-cta\"><button type=\"button\" class=\"c215x-btn-light\" onclick=\"c215CourseGo('lesson'," + mod.n + ",0)\">" + (read ? "Keep reading" : "Start lesson 1") + "</button>";
   html += "<button type=\"button\" class=\"c215x-btn-glass\" onclick=\"c215CourseGo('check'," + mod.n + ",0)\">Take the check</button></div></div>";
   html += "<div class=\"c215c-mod-grid\">";
@@ -1553,16 +1548,14 @@ function c215RenderModule(container) {
     l = mod.lessons[i];
     html += "<button type=\"button\" class=\"c215c-mod-l" + (c215Course.read["m" + mod.n + "l" + i] ? " is-read" : "") + "\" onclick=\"c215CourseGo('lesson'," + mod.n + "," + i + ")\">";
     html += "<span class=\"c215c-badge" + (c215Course.read["m" + mod.n + "l" + i] ? " is-done" : "") + "\">" + (i + 1) + "</span><span class=\"c215c-row-txt\"><span class=\"c215c-row-title\">" + c215Esc(l.title) + "</span>";
-    html += "<span class=\"c215c-row-sub\">" + (l.mins || 4) + " min -- " + (l.terms || []).length + " key terms</span></span></button>";
+    html += "<span class=\"c215c-row-sub\">" + (l.mins || 4) + " min</span></span></button>";
   }
   html += "</div><div class=\"c215c-mod-status\">" + (done ? "Check passed -- best score " + best + "%" : (best ? "Best check score " + best + "%. 80% passes." : "Check not taken yet. 80% passes.")) + "</div></div>";
   html += "<div class=\"c215x-col\">";
   html += "<div class=\"c215x-card\"><h2>Test traps in this module</h2><ul class=\"c215c-traps\">";
   for (i = 0; i < traps.length; i++) { html += "<li>" + c215Esc(traps[i]) + "</li>"; }
   html += "</ul></div>";
-  html += "<div class=\"c215x-card\"><h2>Key terms</h2><div class=\"c215c-tchips\">";
-  for (i = 0; i < terms.length; i++) { html += "<span class=\"c215c-tchip\" title=\"" + c215Esc(terms[i].def) + "\">" + c215Esc(terms[i].term) + "</span>"; }
-  html += "</div></div></div></div></div>";
+  html += "</div></div></div>";
   container.innerHTML = html;
 }
 

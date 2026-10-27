@@ -2776,3 +2776,16 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Simpler course home (Oct 2026) */
+#cha-course215-root .c215c-tip {
+  margin: 4px 6px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #475569;
+}
+
+#cha-course215-root .c215c-chip {
+  align-self: flex-start;
+  margin-top: 10px;
+}
