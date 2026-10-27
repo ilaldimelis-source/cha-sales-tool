@@ -1498,6 +1498,12 @@ function c215RenderCourseHome(container) {
     html += "<span class=\"c215x-hero-title\">Final Practice Exam</span><span class=\"c215x-hero-sub\">All modules passed. Score 70% to get your certificate.</span></div>";
     html += "<button type=\"button\" class=\"c215x-btn-light\" onclick=\"c215CourseGo('final')\">Start exam</button></div>";
   }
+  html += "<div class=\"c215c-qr\">";
+  html += "<button type=\"button\" class=\"c215c-qr-tile c215c-qr-1\" onclick=\"c215OpenCheat('sheets')\"><span class=\"c215c-qr-t\">Cheat sheets</span><span class=\"c215c-qr-s\">Side-by-side tables</span></button>";
+  html += "<button type=\"button\" class=\"c215c-qr-tile c215c-qr-2\" onclick=\"c215OpenCheat('notes')\"><span class=\"c215c-qr-t\">Study notes</span><span class=\"c215c-qr-s\">Notes by topic</span></button>";
+  html += "<button type=\"button\" class=\"c215c-qr-tile c215c-qr-3\" onclick=\"c215OpenCheat('mnem')\"><span class=\"c215c-qr-t\">Mnemonics</span><span class=\"c215c-qr-s\">Memory tricks</span></button>";
+  html += "<button type=\"button\" class=\"c215c-qr-tile c215c-qr-4\" onclick=\"c215OpenCheat('brain')\"><span class=\"c215c-qr-t\">Brain dump</span><span class=\"c215c-qr-s\">Write before Question 1</span></button>";
+  html += "</div>";
   html += "<p class=\"c215c-tip\">Read the lessons, pass each 10-question check (80%), then pass the final (70%) to get your certificate.</p>";
   if (c215Course.certDate) { html += "<button type=\"button\" class=\"c215x-btn-soft\" onclick=\"c215CourseGo('cert')\">View my certificate</button>"; }
   html += "</div></div>";
@@ -1644,6 +1650,12 @@ function c215RenderRun(container) {
   container.innerHTML = html;
 }
 
+function c215OpenCheat(view) {
+  c215State.cheatView = view;
+  c215SaveStore();
+  c215SwitchTab("cheats");
+}
+
 function c215CourseRestart() {
   var r = c215Course.run;
   if (!r) { return; }
@@ -1706,6 +1718,7 @@ window.c215CourseLessonNext = c215CourseLessonNext;
 window.c215CourseSetName = c215CourseSetName;
 window.c215CoursePrint = c215CoursePrint;
 window.c215CourseRestart = c215CourseRestart;
+window.c215OpenCheat = c215OpenCheat;
 window.c215QzRestartAsk = c215QzRestartAsk;
 
 (function hookCourse215ShowPage() {

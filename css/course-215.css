@@ -2813,3 +2813,59 @@
 #cha-course215-root .c215x-btn-restart:hover {
   background: #eef0ff;
 }
+
+/* Quick review tiles on the course home (Oct 2026) */
+#cha-course215-root .c215c-qr {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#cha-course215-root .c215c-qr-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 4px;
+  min-height: 104px;
+  padding: 18px;
+  border: 0;
+  border-radius: 22px;
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgb(79 70 229 / 18%);
+  transition: transform 0.15s ease;
+}
+
+#cha-course215-root .c215c-qr-tile:hover {
+  transform: translateY(-2px);
+}
+
+#cha-course215-root .c215c-qr-1 {
+  background: var(--c215-glow), linear-gradient(135deg, #2563eb 0%, #4f46e5 100%);
+}
+
+#cha-course215-root .c215c-qr-2 {
+  background: var(--c215-glow), linear-gradient(135deg, #0e7490 0%, #2563eb 100%);
+}
+
+#cha-course215-root .c215c-qr-3 {
+  background: var(--c215-glow), linear-gradient(135deg, #7c3aed 0%, #c026d3 100%);
+}
+
+#cha-course215-root .c215c-qr-4 {
+  background: var(--c215-glow), linear-gradient(135deg, #4338ca 0%, #7c3aed 100%);
+}
+
+#cha-course215-root .c215c-qr-t {
+  font-size: 16px;
+  font-weight: 800;
+  color: #fff;
+}
+
+#cha-course215-root .c215c-qr-s {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
