@@ -2062,11 +2062,17 @@ function _psTypeBg(t) {
 }
 
 // Plan Scripts, live-call layout (Oct 31 2026): plan picker grouped by
-// type with Recent, then one section at a time with every section tab
+// type with All / MEC / STM / Limited pills, then one section at a time with every section tab
 // clickable and a big Next button. Script text is read from PLAN_SCRIPTS
 // unchanged; only the layout is new.
 var planScriptRules = false;
-var PS_RECENT_KEY = 'cha_ps_recent';
+var planScriptType = 'All';
+var PS_TYPE_PILLS = [
+  ['All', 'All plans'],
+  ['MEC', 'MEC'],
+  ['STM', 'Short term (STM)'],
+  ['Limited', 'Limited benefit']
+];
 var PS_GROUPS = [
   { type: 'MEC', label: 'MEC' },
   { type: 'STM', label: 'Short term (STM)' },
@@ -2082,27 +2088,6 @@ function _psEsc(s) {
     .replace(/"/g, '&quot;');
 }
 
-function _psRecentNames() {
-  var list = [];
-  try {
-    if (typeof chaGet === 'function') list = chaGet(PS_RECENT_KEY, []) || [];
-  } catch (_e) {
-    list = [];
-  }
-  return Array.isArray(list) ? list : [];
-}
-
-function _psRemember(name) {
-  if (!name) return;
-  var list = _psRecentNames().filter(function (n) {
-    return n !== name;
-  });
-  list.unshift(name);
-  try {
-    if (typeof chaSet === 'function') chaSet(PS_RECENT_KEY, list.slice(0, 4));
-  } catch (_e) {}
-}
-
 function _psScrollTop() {
   var el = document.getElementById('page-planscripts');
   if (!el || !el.getBoundingClientRect) return;
@@ -2116,7 +2101,6 @@ function _psOpen(idx) {
   planScriptActive = idx;
   planScriptSection = 0;
   planScriptRules = false;
-  if (PLAN_SCRIPTS[idx]) _psRemember(PLAN_SCRIPTS[idx].name);
   renderPlanScripts();
   _psScrollTop();
 }
@@ -2156,8 +2140,6 @@ function _filterPsCards(query) {
     });
     g.style.display = shown ? '' : 'none';
   });
-  var recent = document.getElementById('psRecent');
-  if (recent) recent.style.display = q ? 'none' : '';
   var noMsg = document.getElementById('psNoResults');
   if (noMsg) noMsg.style.display = q && vis === 0 ? 'block' : 'none';
 }
@@ -2323,33 +2305,28 @@ function renderPlanScripts() {
       '<input type="text" id="psSearchInput" autocomplete="off" placeholder="Type a plan: tdk, goodhealth, smart choice, harbor..." oninput="_filterPsCards(this.value)" />' +
       '<button type="button" id="psSearchClear" class="psx-clear" aria-label="Clear search" onclick="var i=document.getElementById(\'psSearchInput\');if(i){i.value=\'\';_filterPsCards(\'\');i.focus();}">&times;</button></label>';
 
-    var recent = [];
-    _psRecentNames().forEach(function (name) {
-      for (var i = 0; i < PLAN_SCRIPTS.length; i++) {
-        if (PLAN_SCRIPTS[i].name === name) {
-          recent.push(i);
-          break;
-        }
-      }
+    html += '<div class="psx-types" role="group" aria-label="Plan type">';
+    PS_TYPE_PILLS.forEach(function (tp) {
+      var on = planScriptType === tp[0];
+      html +=
+        '<button type="button" class="psx-chip' +
+        (on ? ' is-on' : '') +
+        '" aria-pressed="' +
+        (on ? 'true' : 'false') +
+        '" onclick="planScriptType=\'' +
+        tp[0] +
+        '\';renderPlanScripts();_filterPsCards((document.getElementById(\'psSearchInput\')||{}).value)">' +
+        tp[1] +
+        '</button>';
     });
-    if (recent.length) {
-      html += '<div class="psx-recent" id="psRecent"><span class="psx-label">Recent</span>';
-      recent.forEach(function (i) {
-        html +=
-          '<button type="button" class="psx-chip" onclick="_psOpen(' +
-          i +
-          ')">' +
-          _psEsc(PLAN_SCRIPTS[i].name) +
-          '</button>';
-      });
-      html += '</div>';
-    }
+    html += '</div>';
 
     html += '<div id="psCardGrid" class="psx-groups">';
     PS_GROUPS.forEach(function (g) {
       var rows = '';
       PLAN_SCRIPTS.forEach(function (p, idx) {
         if (p.planType !== g.type) return;
+        if (planScriptType !== 'All' && p.planType !== planScriptType) return;
         rows +=
           '<button type="button" class="ps-card psx-row" data-ps-search="' +
           _psEsc((p.name + ' ' + p.planType).toLowerCase()) +
