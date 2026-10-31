@@ -1680,6 +1680,1314 @@ function cwEnsureMeds() {
     });
 }
 
+// Benefits and visit limits for plan families with no On Call table,
+// copied from the enrollment portal Info pages (Oct 31 2026). Each row is
+// [label, value, warn]. A dash on the portal is not a value, so it is left out.
+var CW_PORTAL_BEN = {
+  'AWA TrueHealth': {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      Value: [
+        ['Doctor', '$65 per visit, 3 visits/yr', 0],
+        ['Hospital', '$250/day, max 15 days/yr', 0],
+        ['ICU', 'Not included', 0],
+        ['Hospital admission', 'Not included', 0],
+        ['Surgery', 'Not included', 0],
+        ['Outpatient surgery facility', 'Not included', 0],
+        ['Labs, x-ray, MRI/CT', '$25/day, 2 days/yr combined', 0],
+        ['ER', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        ['Waiting period', '30 days for sickness (not ID or TX)', 1],
+        [
+          'Pre-existing',
+          '12-month wait for conditions treated in the 12 months before the effective date',
+          1
+        ]
+      ],
+      1: [
+        ['Doctor', '$60 per visit, 4 visits/yr', 0],
+        ['Hospital', '$250/day, max 15 days/yr', 0],
+        ['ICU', '$250/day, max 3 days/yr (on top of hospital)', 0],
+        ['Hospital admission', '$200 first day, 1/yr', 0],
+        ['Surgery', 'Not included', 0],
+        ['Outpatient surgery facility', '$200/day, 1/yr', 0],
+        ['Labs, x-ray, MRI/CT', '$50/day, 2 days/yr combined', 0],
+        ['ER', '$100/visit, 1/yr', 0],
+        ['Ambulance', '$100, 1/yr', 0],
+        ['Waiting period', '30 days for sickness (not ID or TX)', 1],
+        [
+          'Pre-existing',
+          '12-month wait for conditions treated in the 12 months before the effective date',
+          1
+        ]
+      ],
+      2: [
+        ['Doctor', '$70 per visit, 5 visits/yr', 0],
+        ['Hospital', '$500/day, max 30 days/yr', 0],
+        ['ICU', '$500/day, max 3 days/yr (on top of hospital)', 0],
+        ['Hospital admission', '$500 first day, 1/yr', 0],
+        [
+          'Surgery',
+          '100% of surgical fee schedule, 1 day/yr; anesthesia 25%',
+          0
+        ],
+        ['Outpatient surgery facility', '$300/day, 1/yr', 0],
+        ['Labs, x-ray, MRI/CT', '$75/day, 2 days/yr combined', 0],
+        ['ER', '$150/visit, 1/yr', 0],
+        ['Ambulance', '$150, 1/yr', 0],
+        ['Waiting period', '30 days for sickness (not ID or TX)', 1],
+        [
+          'Pre-existing',
+          '12-month wait for conditions treated in the 12 months before the effective date',
+          1
+        ]
+      ],
+      3: [
+        ['Doctor', '$75 per visit, 5 visits/yr', 0],
+        ['Hospital', '$750/day, max 30 days/yr', 0],
+        ['ICU', '$750/day, max 3 days/yr (on top of hospital)', 0],
+        ['Hospital admission', '$750 first day, 1/yr', 0],
+        [
+          'Surgery',
+          '100% of surgical fee schedule, 1 day/yr; anesthesia 25%',
+          0
+        ],
+        ['Outpatient surgery facility', '$400/day, 1/yr', 0],
+        ['Labs, x-ray, MRI/CT', '$85/day, 2 days/yr combined', 0],
+        ['ER', '$200/visit, 1/yr', 0],
+        ['Ambulance', '$200, 1/yr', 0],
+        ['Waiting period', '30 days for sickness (not ID or TX)', 1],
+        [
+          'Pre-existing',
+          '12-month wait for conditions treated in the 12 months before the effective date',
+          1
+        ]
+      ],
+      4: [
+        ['Doctor', '$85 per visit, 5 visits/yr', 0],
+        ['Hospital', '$1,000/day, max 30 days/yr', 0],
+        ['ICU', '$1,000/day, max 3 days/yr (on top of hospital)', 0],
+        ['Hospital admission', '$1,000 first day, 1/yr', 0],
+        [
+          'Surgery',
+          '100% of surgical fee schedule, 1 day/yr; anesthesia 25%',
+          0
+        ],
+        ['Outpatient surgery facility', '$500/day, 1/yr', 0],
+        ['Labs, x-ray, MRI/CT', '$100/day, 2 days/yr combined', 0],
+        ['ER', '$250/visit, 1/yr', 0],
+        ['Ambulance', '$250, 1/yr', 0],
+        ['Waiting period', '30 days for sickness (not ID or TX)', 1],
+        [
+          'Pre-existing',
+          '12-month wait for conditions treated in the 12 months before the effective date',
+          1
+        ]
+      ]
+    }
+  },
+  HealthEssential: {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      1: [
+        ['Doctor', '$75 per visit, 3 visits/yr', 0],
+        ['Hospital', '$200/day, max 10 days per stay', 0],
+        ['Hospital admission', '$500 first day, 1/yr', 0],
+        ['ICU', 'Not included', 0],
+        ['Inpatient surgery', '$500/day, 2 days/yr', 0],
+        ['Outpatient surgery', '$500/day, 1 day(s)/yr', 0],
+        ['Outpatient labs', 'Not included', 0],
+        ['Inpatient labs', 'Not included', 0],
+        ['ER (sickness only)', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        [
+          'Pre-existing',
+          'Not paid for the first 12 months; 12-month lookback (may vary by state)',
+          1
+        ]
+      ],
+      2: [
+        ['Doctor', '$75 per visit, 3 visits/yr', 0],
+        ['Hospital', '$200/day, max 10 days per stay', 0],
+        ['Hospital admission', '$500 first day, 1/yr', 0],
+        ['ICU', 'Not included', 0],
+        ['Inpatient surgery', '$500/day, 2 days/yr', 0],
+        ['Outpatient surgery', '$500/day, 1 day(s)/yr', 0],
+        [
+          'Outpatient labs',
+          '$50/day, 2 days/yr (plus wellness labs $50/day, 2 days/yr)',
+          0
+        ],
+        ['Inpatient labs', '$50/day, 1 day(s)/yr', 0],
+        ['ER (sickness only)', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        [
+          'Pre-existing',
+          'Not paid for the first 12 months; 12-month lookback (may vary by state)',
+          1
+        ]
+      ],
+      3: [
+        ['Doctor', '$75 per visit, 6 visits/yr', 0],
+        ['Hospital', '$1,000/day, max 10 days per stay', 0],
+        ['Hospital admission', '$500 first day, 1/yr', 0],
+        ['ICU', 'Not included', 0],
+        ['Inpatient surgery', '$1,000/day, 2 days/yr', 0],
+        ['Outpatient surgery', '$1,000/day, 1 day(s)/yr', 0],
+        [
+          'Outpatient labs',
+          '$200/day, 2 days/yr (plus wellness labs $200/day, 2 days/yr)',
+          0
+        ],
+        ['Inpatient labs', '$200/day, 1 day(s)/yr', 0],
+        ['ER (sickness only)', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        [
+          'Pre-existing',
+          'Not paid for the first 12 months; 12-month lookback (may vary by state)',
+          1
+        ]
+      ],
+      4: [
+        ['Doctor', '$100 per visit, 6 visits/yr', 0],
+        ['Hospital', '$1,500/day, max 90 days per stay', 0],
+        ['Hospital admission', '$500 first day, 1/yr', 0],
+        ['ICU', '$1,500/day, max 30 days/yr', 0],
+        ['Inpatient surgery', '$1,500/day, 2 days/yr', 0],
+        ['Outpatient surgery', '$1,500/day, 2 day(s)/yr', 0],
+        [
+          'Outpatient labs',
+          '$250/day, 2 days/yr (plus wellness labs $250/day, 2 days/yr)',
+          0
+        ],
+        ['Inpatient labs', '$250/day, 2 day(s)/yr', 0],
+        ['ER (sickness only)', '$250/visit, 1/yr', 0],
+        ['Ambulance', '$250, 1/yr', 0],
+        [
+          'Pre-existing',
+          'Not paid for the first 12 months; 12-month lookback (may vary by state)',
+          1
+        ]
+      ]
+    }
+  },
+  'HD HealthAscent': {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      1: [
+        ['Doctor', '$75 per visit, 4 visits/yr', 0],
+        ['Hospital', '$300/day, max 31 days per stay', 0],
+        [
+          'Observation unit',
+          '$75 / $150 / $225 (12-23 hrs / 24-47 hrs / 48+ hrs)',
+          0
+        ],
+        ['ICU', 'Not included', 0],
+        ['First day in hospital', 'Not included', 0],
+        ['Urgent care', 'Not included', 0],
+        ['ER', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        ['Surgery', 'Not included', 0],
+        ['Labs', 'Surgical pathology $50, PAP/PSA $50, other $25', 0],
+        ['Imaging', 'MRI/PET/CT $100, mammogram $50, other $50', 0],
+        ['Therapy (PT/OT/speech)', '$25', 0],
+        ['Outpatient max', '$4,000/yr for all outpatient benefits', 0],
+        [
+          'Pre-existing',
+          'Not paid until insured 12 months; 12-month lookback',
+          1
+        ]
+      ],
+      2: [
+        ['Doctor', '$75 per visit, 4 visits/yr', 0],
+        ['Hospital', '$500/day, max 31 days per stay', 0],
+        [
+          'Observation unit',
+          '$125 / $250 / $375 (12-23 hrs / 24-47 hrs / 48+ hrs)',
+          0
+        ],
+        ['ICU', '$500/day, max 31 days per stay', 0],
+        ['First day in hospital', '$500, 1/yr', 0],
+        ['Urgent care', '$150/visit, 2/yr', 0],
+        ['ER', '$150/visit, 1/yr', 0],
+        ['Ambulance', 'Ground $200, air $600, 2 trips/yr', 0],
+        [
+          'Surgery',
+          'Per surgical schedule; outpatient facility $500/day; max $50,000/yr',
+          0
+        ],
+        ['Labs', 'Surgical pathology $100, PAP/PSA $100, other $75', 0],
+        ['Imaging', 'MRI/PET/CT $200, mammogram $100, other $100', 0],
+        ['Therapy (PT/OT/speech)', '$75', 0],
+        ['Outpatient max', '$4,000/yr for all outpatient benefits', 0],
+        [
+          'Pre-existing',
+          'Not paid until insured 12 months; 12-month lookback',
+          1
+        ]
+      ],
+      3: [
+        ['Doctor', '$100 per visit, 4 visits/yr', 0],
+        ['Hospital', '$1,000/day, max 31 days per stay', 0],
+        [
+          'Observation unit',
+          '$250 / $500 / $750 (12-23 hrs / 24-47 hrs / 48+ hrs)',
+          0
+        ],
+        ['ICU', '$1,000/day, max 31 days per stay', 0],
+        ['First day in hospital', '$1,000, 1/yr', 0],
+        ['Urgent care', '$250/visit, 2/yr', 0],
+        ['ER', '$250/visit, 1/yr', 0],
+        ['Ambulance', 'Ground $300, air $900, 2 trips/yr', 0],
+        [
+          'Surgery',
+          'Per surgical schedule; outpatient facility $500/day; max $50,000/yr',
+          0
+        ],
+        ['Labs', 'Surgical pathology $150, PAP/PSA $150, other $100', 0],
+        ['Imaging', 'MRI/PET/CT $300, mammogram $150, other $150', 0],
+        ['Therapy (PT/OT/speech)', '$100', 0],
+        ['Outpatient max', '$4,000/yr for all outpatient benefits', 0],
+        [
+          'Pre-existing',
+          'Not paid until insured 12 months; 12-month lookback',
+          1
+        ]
+      ]
+    }
+  },
+  'TVP Health': {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      1: [
+        ['Preventive', '100% in-network (preventive services list)', 0],
+        ['Doctor', '$25 copay, $150 max per visit, 3 visits/yr', 0],
+        [
+          'Specialist / urgent care',
+          '$50 copay, $300 max per visit, 1 visit/yr',
+          0
+        ],
+        ['Hospital', '$1,000/day, max $5,000/yr (if admitted)', 0],
+        ['Surgery', 'Not included', 0],
+        ['ER', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        ['Rx', 'Discount prescriptions only (HarmonyRx)', 0],
+        ['Telehealth', '$0, unlimited', 0],
+        ['Group term life', '$5,000', 0],
+        ['Waiting period', '30 days for sickness', 1],
+        [
+          'Pre-existing',
+          'Hospital benefit does not cover pre-existing conditions',
+          1
+        ]
+      ],
+      2: [
+        ['Preventive', '100% in-network (preventive services list)', 0],
+        ['Doctor', '$25 copay, $150 max per visit, 4 visits/yr', 0],
+        [
+          'Specialist / urgent care',
+          '$50 copay, $300 max per visit, 2 visits/yr',
+          0
+        ],
+        ['Hospital', '$1,000/day, max $10,000/yr (if admitted)', 0],
+        ['Surgery', 'Not included', 0],
+        ['ER', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        [
+          'Rx',
+          'Acute and preventive generics $0; 200 maintenance generics $5',
+          0
+        ],
+        ['Telehealth', '$0, unlimited', 0],
+        ['Group term life', '$5,000', 0],
+        ['Waiting period', '30 days for sickness', 1],
+        [
+          'Pre-existing',
+          'Hospital benefit does not cover pre-existing conditions',
+          1
+        ]
+      ],
+      3: [
+        ['Preventive', '100% in-network (preventive services list)', 0],
+        ['Doctor', '$25 copay, $150 max per visit, 4 visits/yr', 0],
+        [
+          'Specialist / urgent care',
+          '$50 copay, $300 max per visit, 4 visits/yr',
+          0
+        ],
+        ['Hospital', '$1,000/day, max $15,000/yr (if admitted)', 0],
+        ['Surgery', 'Not included', 0],
+        ['ER', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        [
+          'Rx',
+          'Acute and preventive generics $0; 200 maintenance generics $10; non-preferred generic $20; $3,000/yr limit on non-preventive drugs',
+          0
+        ],
+        ['Telehealth', '$0, unlimited', 0],
+        ['Group term life', '$5,000', 0],
+        ['Waiting period', '30 days for sickness', 1],
+        [
+          'Pre-existing',
+          'Hospital benefit does not cover pre-existing conditions',
+          1
+        ]
+      ],
+      4: [
+        ['Preventive', '100% in-network (preventive services list)', 0],
+        ['Wellness exam', '$0 copay, $150 max, 1/yr', 0],
+        ['Doctor', '$50 copay, $150 max per visit, 4 visits/yr', 0],
+        [
+          'Specialist / urgent care',
+          '$75 copay, $300 max per visit, 4 visits/yr',
+          0
+        ],
+        ['Hospital', '$1,000/day, max $10,000/yr (if admitted)', 0],
+        ['Surgery', '$1,000/day, max $2,000/yr', 0],
+        ['ER', '$1,000 per incident (if admitted)', 0],
+        ['Ambulance', '$500 per incident (if admitted)', 0],
+        [
+          'Rx',
+          'Acute and preventive generics $0; 200 maintenance generics $10; non-preferred generic $20; $3,000/yr limit on non-preventive drugs',
+          0
+        ],
+        ['Telehealth', '$0, unlimited', 0],
+        ['Group term life', '$5,000', 0],
+        ['Waiting period', '30 days for sickness', 1],
+        [
+          'Pre-existing',
+          'Hospital benefit does not cover pre-existing conditions',
+          1
+        ]
+      ],
+      5: [
+        ['Preventive', '100% in-network (preventive services list)', 0],
+        ['Wellness exam', '$0 copay, $150 max, 1/yr', 0],
+        ['Doctor', '$50 copay, $150 max per visit, 5 visits/yr', 0],
+        [
+          'Specialist / urgent care',
+          '$75 copay, $300 max per visit, 5 visits/yr',
+          0
+        ],
+        ['Hospital', '$1,500/day, max $15,000/yr (if admitted)', 0],
+        ['Surgery', '$1,500/day, max $4,500/yr', 0],
+        ['ER', '$1,000 per incident (if admitted)', 0],
+        ['Ambulance', '$500 per incident (if admitted)', 0],
+        [
+          'Rx',
+          'Acute and preventive generics $0; 200 maintenance generics $10; non-preferred generic $20; $3,000/yr limit on non-preventive drugs',
+          0
+        ],
+        ['Telehealth', '$0, unlimited', 0],
+        ['Group term life', '$5,000', 0],
+        ['Waiting period', '30 days for sickness', 1],
+        [
+          'Pre-existing',
+          'Hospital benefit does not cover pre-existing conditions',
+          1
+        ]
+      ]
+    }
+  },
+  AdvantCare: {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      2: [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay, 2 visits/yr', 0],
+        ['Specialist', 'Not included', 0],
+        ['Labs', '$50 copay, 1 panel/yr', 0],
+        ['Mental health / SUD office', '$25 copay, 2 visits/yr combined', 0],
+        ['Hospital', 'Not included', 0],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      3: [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay', 0],
+        ['Specialist', '$50 copay', 0],
+        ['Visit limit', '3 visits/yr, doctor and specialist combined', 0],
+        ['Urgent care', 'Not included', 0],
+        ['Mental health / SUD outpatient', '$50 copay', 0],
+        [
+          'Hospital',
+          '$5,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      '3+': [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay', 0],
+        ['Specialist', '$50 copay', 0],
+        ['Visit limit', '3 visits/yr, doctor and specialist combined', 0],
+        ['Urgent care', '$50 copay, 1 visit(s)/yr', 0],
+        ['Mental health / SUD outpatient', '$50 copay', 0],
+        [
+          'Hospital',
+          '$5,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      6: [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay', 0],
+        ['Specialist', '$50 copay', 0],
+        ['Visit limit', '6 visits/yr, doctor and specialist combined', 0],
+        ['Urgent care', 'Not included', 0],
+        ['Mental health / SUD outpatient', '$50 copay', 0],
+        [
+          'Hospital',
+          '$10,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      '6+': [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay', 0],
+        ['Specialist', '$50 copay', 0],
+        ['Visit limit', '6 visits/yr, doctor and specialist combined', 0],
+        ['Urgent care', '$50 copay, 2 visit(s)/yr', 0],
+        ['Mental health / SUD outpatient', '$50 copay', 0],
+        [
+          'Hospital',
+          '$10,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      9: [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay', 0],
+        ['Specialist', '$50 copay', 0],
+        ['Visit limit', '9 visits/yr, doctor and specialist combined', 0],
+        ['Urgent care', 'Not included', 0],
+        ['Mental health / SUD outpatient', '$50 copay', 0],
+        [
+          'Hospital',
+          '$15,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      '9+': [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay', 0],
+        ['Specialist', '$50 copay', 0],
+        ['Visit limit', '9 visits/yr, doctor and specialist combined', 0],
+        ['Urgent care', '$50 copay, 3 visit(s)/yr', 0],
+        ['Mental health / SUD outpatient', '$50 copay', 0],
+        [
+          'Hospital',
+          '$15,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      12: [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay', 0],
+        ['Specialist', '$50 copay', 0],
+        ['Visit limit', '12 visits/yr, doctor and specialist combined', 0],
+        ['Urgent care', '$50 copay, 1 visit(s)/yr', 0],
+        ['Mental health / SUD outpatient', '$50 copay', 0],
+        [
+          'Hospital',
+          '$15,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      '12+': [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$25 copay', 0],
+        ['Specialist', '$50 copay', 0],
+        ['Visit limit', '12 visits/yr, doctor and specialist combined', 0],
+        ['Urgent care', '$50 copay, 4 visit(s)/yr', 0],
+        ['Mental health / SUD outpatient', '$50 copay', 0],
+        [
+          'Hospital',
+          '$20,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      WellPremium: [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$35 copay existing doctor, $70 new doctor', 0],
+        ['Specialist', '$75 copay existing doctor, $150 new doctor', 0],
+        ['Urgent care', '$75 copay', 0],
+        [
+          'Mental health / SUD outpatient',
+          '$75 existing doctor, $150 new doctor',
+          0
+        ],
+        ['Labs', '$50 copay per panel', 0],
+        ['X-ray / imaging', '$50 copay per image', 0],
+        ['CT / MRI / PET', '$500 copay per image', 0],
+        ['Pregnancy office visits', '$75 existing doctor, $150 new doctor', 0],
+        ['Hospital', 'Not listed on the portal', 0],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ],
+      'WellPremium+': [
+        ['Deductible', '$0 in-network', 0],
+        [
+          'Max out of pocket',
+          '$9,200 individual / $18,400 family (in-network)',
+          0
+        ],
+        ['Preventive', '$0 in-network', 0],
+        ['Doctor', '$35 copay existing doctor, $70 new doctor', 0],
+        ['Specialist', '$75 copay existing doctor, $150 new doctor', 0],
+        ['Urgent care', '$75 copay', 0],
+        [
+          'Mental health / SUD outpatient',
+          '$75 existing doctor, $150 new doctor',
+          0
+        ],
+        ['Labs', '$50 copay per panel', 0],
+        ['X-ray / imaging', '$50 copay per image', 0],
+        ['CT / MRI / PET', '$500 copay per image', 0],
+        ['Pregnancy office visits', '$75 existing doctor, $150 new doctor', 0],
+        [
+          'Hospital',
+          '$20,000 indemnity hospital benefit (incl. mental health/SUD)',
+          0
+        ],
+        ['Rx', 'Preventive generics only, $0', 0],
+        ['Where', 'In-network only; not covered at a hospital', 1]
+      ]
+    }
+  },
+  'AdvantCare 50': {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      1: [
+        ['Deductible', '$5,000/yr', 0],
+        ['Plan year limit', '$50,000', 0],
+        [
+          'Hospital, ICU, inpatient surgery',
+          'Per the inpatient payment schedule, 3 stays/yr',
+          0
+        ],
+        ['Outpatient surgery', 'Not included', 0],
+        ['ER', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        [
+          'Waiting period',
+          '1 month for sickness; 3 months for facilities (not ER, ambulance, diabetes, high blood pressure, accidents, unscheduled hospital stays)',
+          1
+        ],
+        [
+          'Pre-existing',
+          '12 months (does not apply to diabetes or high blood pressure)',
+          1
+        ]
+      ],
+      2: [
+        ['Deductible', '$5,000/yr', 0],
+        ['Plan year limit', '$50,000', 0],
+        [
+          'Hospital, ICU, inpatient surgery',
+          'Per the inpatient payment schedule, 3 stays/yr',
+          0
+        ],
+        ['Outpatient surgery', 'Per the outpatient payment schedule, 3/yr', 0],
+        ['ER', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        [
+          'Waiting period',
+          '1 month for sickness; 3 months for facilities (not ER, ambulance, diabetes, high blood pressure, accidents, unscheduled hospital stays)',
+          1
+        ],
+        [
+          'Pre-existing',
+          '12 months (does not apply to diabetes or high blood pressure)',
+          1
+        ]
+      ],
+      3: [
+        ['Deductible', '$5,000/yr', 0],
+        ['Plan year limit', '$50,000', 0],
+        [
+          'Hospital, ICU, inpatient surgery',
+          'Per the inpatient payment schedule, 3 stays/yr',
+          0
+        ],
+        ['Outpatient surgery', 'Per the outpatient payment schedule, 3/yr', 0],
+        ['ER', '$1,500, 1 visit/yr', 0],
+        ['Ambulance', '$500, 1 transport/yr', 0],
+        [
+          'Waiting period',
+          '1 month for sickness; 3 months for facilities (not ER, ambulance, diabetes, high blood pressure, accidents, unscheduled hospital stays)',
+          1
+        ],
+        [
+          'Pre-existing',
+          '12 months (does not apply to diabetes or high blood pressure)',
+          1
+        ]
+      ]
+    }
+  },
+  PrimeProtect: {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      Basic: [
+        ['Doctor', '$150 per visit, 2 visits/yr', 0],
+        ['Urgent care', '$175 per visit, 1 visit(s)/yr', 0],
+        [
+          'Wellness',
+          'Physical $150, mammogram $100, pap $150, colonoscopy $1,000, child shots $100 (1 each/yr)',
+          0
+        ],
+        ['Labs and x-ray', '$40/day, 2 days/yr', 0],
+        ['MRI / CT / other imaging', 'Not included', 0],
+        ['Hospital', 'Not included', 0],
+        ['Surgery', 'Not included', 0],
+        ['ER (sickness)', 'Not included', 0],
+        ['Critical illness', 'Not included', 0],
+        ['Accident', 'Up to $1,000 per accident, $0 deductible', 0]
+      ],
+      Plus: [
+        ['Doctor', '$150 per visit, 3 visits/yr', 0],
+        ['Urgent care', '$175 per visit, 1 visit(s)/yr', 0],
+        [
+          'Wellness',
+          'Physical $150, mammogram $100, pap $150, colonoscopy $1,000, child shots $100 (1 each/yr)',
+          0
+        ],
+        ['Labs and x-ray', '$40/day, 2 days/yr', 0],
+        ['MRI / CT / other imaging', 'Not included', 0],
+        ['Hospital', 'Not included', 0],
+        ['Surgery', 'Not included', 0],
+        ['ER (sickness)', 'Not included', 0],
+        ['Critical illness', 'Not included', 0],
+        ['Accident', 'Up to $1,000 per accident, $0 deductible', 0]
+      ],
+      Preferred: [
+        ['Doctor', '$150 per visit, 3 visits/yr', 0],
+        ['Urgent care', '$175 per visit, 2 visit(s)/yr', 0],
+        [
+          'Wellness',
+          'Physical $150, mammogram $100, pap $150, colonoscopy $1,000, child shots $100 (1 each/yr)',
+          0
+        ],
+        ['Labs and x-ray', '$40/day, 3 days/yr', 0],
+        [
+          'MRI / CT / other imaging',
+          'MRI $100, CT $50, other $40 (1 each/yr)',
+          0
+        ],
+        ['Hospital', '$200/day, max 30 days/yr', 0],
+        [
+          'Surgery',
+          '$500 inpatient and $500 outpatient, 1 each/yr; anesthesia 20%',
+          0
+        ],
+        ['ER (sickness)', '$50 per visit, 3/yr', 0],
+        [
+          'Critical illness',
+          '$2,000 for cancer, stroke or heart attack; 30-day wait',
+          0
+        ],
+        ['Accident', 'Up to $2,500 per accident, $0 deductible', 0]
+      ],
+      Premium: [
+        ['Doctor', '$150 per visit, 3 visits/yr', 0],
+        ['Urgent care', '$175 per visit, 2 visit(s)/yr', 0],
+        [
+          'Wellness',
+          'Physical $150, mammogram $100, pap $150, colonoscopy $1,000, child shots $100 (1 each/yr)',
+          0
+        ],
+        ['Labs and x-ray', '$50/day, 6 days/yr', 0],
+        [
+          'MRI / CT / other imaging',
+          'MRI $150, CT $75, other $50 (1 each/yr)',
+          0
+        ],
+        ['Hospital', '$500/day, max 30 days/yr', 0],
+        [
+          'Surgery',
+          '$1,000 inpatient and $1,000 outpatient, 1 each/yr; anesthesia 20%',
+          0
+        ],
+        ['ER (sickness)', '$50 per visit, 3/yr', 0],
+        [
+          'Critical illness',
+          '$4,000 for cancer, stroke or heart attack; 30-day wait',
+          0
+        ],
+        ['Accident', 'Up to $2,500 per accident, $0 deductible', 0]
+      ],
+      Platinum: [
+        ['Doctor', '$150 per visit, 4 visits/yr', 0],
+        ['Urgent care', '$175 per visit, 2 visit(s)/yr', 0],
+        [
+          'Wellness',
+          'Physical $150, mammogram $100, pap $150, colonoscopy $1,000, child shots $100 (1 each/yr)',
+          0
+        ],
+        ['Labs and x-ray', '$60/day, 6 days/yr', 0],
+        [
+          'MRI / CT / other imaging',
+          'MRI $200, CT $100, other $60 (1 each/yr)',
+          0
+        ],
+        ['Hospital', '$1,000/day, max 30 days/yr', 0],
+        [
+          'Surgery',
+          '$1,500 inpatient and $1,500 outpatient, 1 each/yr; anesthesia 20%',
+          0
+        ],
+        ['ER (sickness)', '$50 per visit, 3/yr', 0],
+        [
+          'Critical illness',
+          '$6,000 for cancer, stroke or heart attack; 30-day wait',
+          0
+        ],
+        ['Accident', 'Up to $5,000 per accident, $0 deductible', 0]
+      ]
+    }
+  },
+  HealthBoost: {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      1: [
+        ['Doctor', '$65 per visit, 2 visits/yr', 0],
+        ['Labs', '$25/day, 2 days/yr', 0],
+        ['Hospital', '$250/day, max 15 days per stay', 0],
+        ['ICU', 'Not included', 0],
+        ['Hospital admission', 'Not included', 0],
+        ['Outpatient surgery facility', 'Not included', 0],
+        ['Inpatient surgery', 'Not included', 0],
+        ['ER', 'Not included', 0],
+        ['Ambulance', 'Not included', 0],
+        [
+          'HealthBoost + DPC adds',
+          'Unlimited $0 virtual care; $25 primary care visits; $50 urgent care; $25 chronic care visits',
+          0
+        ],
+        [
+          'Waiting period',
+          '1 month for sickness; 3 months for facilities (not ER, ambulance, office visits, diabetes, high blood pressure, accidents, unscheduled hospital stays)',
+          1
+        ]
+      ],
+      2: [
+        ['Doctor', '$70 per visit, 4 visits/yr', 0],
+        ['Labs', '$50/day, 2 days/yr', 0],
+        ['Hospital', '$500/day, max 30 days per stay', 0],
+        ['ICU', '$500/day, max 30 days per stay', 0],
+        ['Hospital admission', '$250, 1 per stay', 0],
+        ['Outpatient surgery facility', '$200/day, 1/yr', 0],
+        ['Inpatient surgery', 'Not included', 0],
+        ['ER', '$150/visit, 1/yr', 0],
+        ['Ambulance', '$200, 1/yr', 0],
+        [
+          'HealthBoost + DPC adds',
+          'Unlimited $0 virtual care; $25 primary care visits; $50 urgent care; $25 chronic care visits',
+          0
+        ],
+        [
+          'Waiting period',
+          '1 month for sickness; 3 months for facilities (not ER, ambulance, office visits, diabetes, high blood pressure, accidents, unscheduled hospital stays)',
+          1
+        ]
+      ],
+      3: [
+        ['Doctor', '$75 per visit, 5 visits/yr', 0],
+        ['Labs', '$85/day, 2 days/yr', 0],
+        ['Hospital', '$750/day, max 30 days per stay', 0],
+        ['ICU', '$750/day, max 30 days per stay', 0],
+        ['Hospital admission', '$500, 1 per stay', 0],
+        ['Outpatient surgery facility', '$400/day, 1/yr', 0],
+        ['Inpatient surgery', '$500 surgeon, $125 anesthesia, 1/yr', 0],
+        ['ER', '$200/visit, 1/yr', 0],
+        ['Ambulance', '$200, 1/yr', 0],
+        [
+          'HealthBoost + DPC adds',
+          'Unlimited $0 virtual care; $25 primary care visits; $50 urgent care; $25 chronic care visits',
+          0
+        ],
+        [
+          'Waiting period',
+          '1 month for sickness; 3 months for facilities (not ER, ambulance, office visits, diabetes, high blood pressure, accidents, unscheduled hospital stays)',
+          1
+        ]
+      ],
+      4: [
+        ['Doctor', '$75 per visit, 6 visits/yr', 0],
+        ['Labs', '$125/day, 2 days/yr', 0],
+        ['Hospital', '$1,000/day, max 30 days per stay', 0],
+        ['ICU', '$1,000/day, max 30 days per stay', 0],
+        ['Hospital admission', '$750, 1 per stay', 0],
+        ['Outpatient surgery facility', '$600/day, 1/yr', 0],
+        ['Inpatient surgery', '$750 surgeon, $250 anesthesia, 1/yr', 0],
+        ['ER', '$250/visit, 1/yr', 0],
+        ['Ambulance', '$300, 1/yr', 0],
+        [
+          'HealthBoost + DPC adds',
+          'Unlimited $0 virtual care; $25 primary care visits; $50 urgent care; $25 chronic care visits',
+          0
+        ],
+        [
+          'Waiting period',
+          '1 month for sickness; 3 months for facilities (not ER, ambulance, office visits, diabetes, high blood pressure, accidents, unscheduled hospital stays)',
+          1
+        ]
+      ]
+    }
+  },
+  'NexusCare STM': {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      Base: [
+        ['Deductible', '$5,000 / $10,000 / $15,000 / $20,000 (family 2x)', 0],
+        ['Coinsurance', '0%', 0],
+        ['Max out of pocket', 'Met once the deductible is met', 0],
+        ['Coverage max', '$500,000 or $1,000,000', 0],
+        ['Doctor', '$30 copay, then plan pays 100%', 0],
+        ['Specialist', '$60 copay, then plan pays 100%', 0],
+        ['Urgent care', '$60 copay, then plan pays 100%', 0],
+        [
+          'Preventive exam',
+          '1 visit up to $100, no deductible (3-month wait)',
+          0
+        ],
+        ['ER', '$250 copay/day, then deductible', 0],
+        ['Hospital', 'After deductible, plan pays 100%', 0],
+        ['Mental health / SUD', 'Not covered', 0],
+        [
+          'Pre-existing',
+          'Pre-existing exclusion and sickness waiting periods apply (length not on the portal)',
+          1
+        ]
+      ],
+      PPO: [
+        [
+          'Deductible',
+          'In-network $5,000 / $8,000 / $10,000; out-of-network $6,600 / $10,600 / $13,300',
+          0
+        ],
+        ['Coinsurance', '0% in-network; 25% out-of-network', 0],
+        [
+          'Max out of pocket',
+          'In-network: met once the deductible is met; out-of-network: none',
+          0
+        ],
+        [
+          'Coverage max',
+          'In-network $500,000 or $1,000,000; out-of-network $375,000 or $750,000',
+          0
+        ],
+        [
+          'Doctor / specialist / urgent care',
+          'In-network: no charge after deductible',
+          0
+        ],
+        ['Preventive exam', '1 visit up to $100 in-network (3-month wait)', 0],
+        ['ER', '$250 copay, then deductible (copay waived if admitted)', 0],
+        ['Hospital', 'In-network: no charge after deductible', 0],
+        ['Mental health / SUD', 'In-network: no charge after deductible', 0],
+        [
+          'Pre-existing',
+          'Pre-existing exclusion and sickness waiting periods apply (length not on the portal)',
+          1
+        ]
+      ]
+    }
+  },
+  'CrownPoint STM': {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      Standard: [
+        ['Network', 'PHCS Practitioner & Ancillary', 0],
+        ['Deductible', '$2,500 / $5,000 / $10,000', 0],
+        ['Coinsurance', '50/50 or 80/20', 0],
+        ['Max out of pocket', '$5,000', 0],
+        ['Coverage max', '$1,000,000', 0],
+        ['Doctor', '$50 copay, unlimited visits', 0],
+        ['Wellness', '$50 copay, 1 visit', 0],
+        [
+          'Hospital',
+          'Average standard room rate, after deductible and coinsurance',
+          0
+        ],
+        ['Outpatient surgery', 'Extra $500 deductible per surgery (max 3)', 0],
+        ['ER', 'Extra $500 deductible per visit (max 3)', 0],
+        ['Advanced imaging', 'Extra $500 deductible per occurrence', 0],
+        ['Ambulance', '$250 per transport', 0],
+        [
+          'Mental health / SUD',
+          'Inpatient $100/day, 31 days; outpatient $50/day, 10 visits',
+          0
+        ],
+        ['Therapy (PT/OT/speech)', '$50/day, 20 visits', 0],
+        [
+          'Pre-existing',
+          'Pre-existing exclusion applies (length not on the portal)',
+          1
+        ]
+      ]
+    }
+  },
+  'RiseHealth STM': {
+    src: 'Premier portal Info page (1enrollment.com), checked Oct 31 2026',
+    tiers: {
+      Traditional: [
+        ['Deductible options', '$500 to $10,000', 0],
+        ['Coinsurance', '80/20, $2,000 coinsurance limit', 0],
+        ['Coverage max', '$250,000, $500,000 or $1,000,000', 0],
+        ['Wellness', '$50 copay, 1 visit, no deductible', 0],
+        ['Doctor', '$15 copay, unlimited', 0],
+        ['Specialist', '$25 copay, unlimited', 0],
+        ['Urgent care', '$15 copay, unlimited; extra $100 deductible', 0],
+        ['Hospital', 'After deductible and coinsurance', 0],
+        [
+          'ER',
+          'Extra $250 deductible (waived if admitted in 24 hrs), then deductible and coinsurance',
+          0
+        ],
+        ['Ambulance', 'Up to $500 ground, $1,000 air', 0],
+        [
+          'Pre-existing',
+          'Pre-existing exclusion applies (length not on the portal)',
+          1
+        ]
+      ],
+      'Lite Plus': [
+        ['Deductible options', '$500 to $10,000', 0],
+        ['Coinsurance', '80/20, $2,000 coinsurance limit', 0],
+        ['Coverage max', '$250,000, $500,000 or $1,000,000', 0],
+        ['Wellness', '$50 copay, 1 visit, no deductible', 0],
+        ['Doctor', '$25 copay, unlimited', 0],
+        ['Specialist', '$40 copay, unlimited', 0],
+        ['Urgent care', '$25 copay, unlimited', 0],
+        [
+          'Hospital',
+          'After deductible/coinsurance, up to $1,500/day (ICU up to $2,000/day)',
+          0
+        ],
+        [
+          'Surgery',
+          'After deductible/coinsurance, up to $5,000 per surgery, $10,000 per period',
+          0
+        ],
+        ['ER', 'No extra ER deductible; then deductible and coinsurance', 0],
+        ['Ambulance', 'Up to $500 ground, $1,000 air', 0],
+        [
+          'Office visit max',
+          '$2,000 per period for doctor and urgent care visits combined',
+          0
+        ],
+        [
+          'Pre-existing',
+          'Pre-existing exclusion applies (length not on the portal)',
+          1
+        ]
+      ],
+      Lite: [
+        ['Deductible options', '$500 to $10,000', 0],
+        ['Coinsurance', '80/20, $2,000 coinsurance limit', 0],
+        ['Coverage max', '$250,000, $500,000 or $1,000,000', 0],
+        ['Wellness', '$50 copay, 1 visit, no deductible', 0],
+        ['Doctor', '$25 copay, 2 visits per period', 0],
+        ['Specialist', '$40 copay, 2 visits per period', 0],
+        ['Urgent care', '$25 copay, 2 visits per period', 0],
+        [
+          'Hospital',
+          'After deductible/coinsurance, up to $1,500/day (ICU up to $2,000/day)',
+          0
+        ],
+        [
+          'Surgery',
+          'After deductible/coinsurance, up to $5,000 per surgery, $10,000 per period',
+          0
+        ],
+        ['ER', 'No extra ER deductible; then deductible and coinsurance', 0],
+        ['Ambulance', 'Up to $500 ground, $1,000 air', 0],
+        [
+          'Office visit max',
+          '$2,000 per period for doctor and urgent care visits combined',
+          0
+        ],
+        [
+          'Pre-existing',
+          'Pre-existing exclusion applies (length not on the portal)',
+          1
+        ]
+      ]
+    }
+  },
+  'Harmony Care': {
+    src: 'FirstEnroll portal Info page, checked Oct 31 2026',
+    tiers: {
+      '100A': [
+        ['Hospital', '$100/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 3 days/yr combined', 0]
+      ],
+      '100B': [
+        ['Hospital', '$100/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 3 days/yr combined', 0]
+      ],
+      100: [
+        ['Hospital', '$100/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 3 days/yr combined', 0],
+        ['ER', '$50/day, 1/yr', 0],
+        ['Accidental death', '$10,000', 0]
+      ],
+      200: [
+        ['Hospital', '$200/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$50/day, 1 day(s)/yr', 0],
+        ['ER', '$50/day, 1/yr', 0],
+        ['Accidental death', '$10,000', 0]
+      ],
+      '200+': [
+        ['Hospital', '$200/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$50/day, 3 day(s)/yr', 0],
+        ['ER', '$50/day, 2/yr', 0],
+        ['Surgery', '$400/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ],
+      300: [
+        ['Hospital', '$300/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['ER', '$50/day, 1/yr', 0],
+        ['Surgery', '$400/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        [
+          'Mental health',
+          'Inpatient $150/day, 60 days; outpatient $50/day, 20 days',
+          0
+        ],
+        ['Accident', 'Hospital admission $500, 1/yr; ER $250, 1/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ],
+      500: [
+        ['Hospital', '$500/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$50/day, 2 day(s)/yr', 0],
+        ['ER', '$50/day, 1/yr', 0],
+        ['Surgery', '$750/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        [
+          'Mental health',
+          'Inpatient $250/day, 60 days; outpatient $50/day, 20 days',
+          0
+        ],
+        ['Accident', 'Hospital admission $500, 1/yr; ER $250, 1/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ],
+      750: [
+        ['Hospital', '$750/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$50/day, 2 day(s)/yr', 0],
+        ['ER', '$75/day, 1/yr', 0],
+        ['Surgery', '$1,000/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        [
+          'Mental health',
+          'Inpatient $375/day, 60 days; outpatient $50/day, 20 days',
+          0
+        ],
+        ['Accident', 'Hospital admission $500, 2/yr; ER $250, 1/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ],
+      1000: [
+        ['Hospital', '$1,000/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$75/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$75/day, 3 day(s)/yr', 0],
+        ['ER', '$100/day, 1/yr', 0],
+        ['Surgery', '$1,500/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        [
+          'Mental health',
+          'Inpatient $500/day, 60 days; outpatient $50/day, 20 days',
+          0
+        ],
+        ['Accident', 'Hospital admission $500, 3/yr; ER $250, 1/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ]
+    }
+  },
+  'Advanced Wellness PLUS': {
+    src: 'FirstEnroll portal Info page, checked Oct 31 2026',
+    tiers: {
+      '100A': [
+        ['Hospital', '$100/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 3 days/yr combined', 0]
+      ],
+      100: [
+        ['Hospital', '$100/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 3 days/yr combined', 0],
+        ['ER', '$50/day, 1/yr', 0],
+        ['Accidental death', '$10,000', 0]
+      ],
+      200: [
+        ['Hospital', '$200/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$50/day, 1 day(s)/yr', 0],
+        ['ER', '$50/day, 1/yr', 0],
+        ['Accidental death', '$10,000', 0]
+      ],
+      '200+': [
+        ['Hospital', '$200/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$50/day, 3 day(s)/yr', 0],
+        ['ER', '$50/day, 2/yr', 0],
+        ['Surgery', '$400/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ],
+      300: [
+        ['Hospital', '$300/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['ER', '$50/day, 1/yr', 0],
+        ['Surgery', '$400/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        [
+          'Mental health',
+          'Inpatient $150/day, 60 days; outpatient $50/day, 20 days',
+          0
+        ],
+        ['Accident', 'Hospital admission $500, 1/yr; ER $250, 1/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ],
+      500: [
+        ['Hospital', '$500/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$50/day, 2 day(s)/yr', 0],
+        ['ER', '$50/day, 1/yr', 0],
+        ['Surgery', '$750/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        [
+          'Mental health',
+          'Inpatient $250/day, 60 days; outpatient $50/day, 20 days',
+          0
+        ],
+        ['Accident', 'Hospital admission $500, 1/yr; ER $250, 1/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ],
+      750: [
+        ['Hospital', '$750/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$50/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$50/day, 2 day(s)/yr', 0],
+        ['ER', '$75/day, 1/yr', 0],
+        ['Surgery', '$1,000/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        [
+          'Mental health',
+          'Inpatient $375/day, 60 days; outpatient $50/day, 20 days',
+          0
+        ],
+        ['Accident', 'Hospital admission $500, 2/yr; ER $250, 1/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ],
+      1000: [
+        ['Hospital', '$1,000/day, max 30 days', 0],
+        ['Doctor (primary or specialist)', '$75/day, 5 days/yr combined', 0],
+        ['Labs, x-ray, imaging', '$75/day, 3 day(s)/yr', 0],
+        ['ER', '$100/day, 1/yr', 0],
+        ['Surgery', '$1,500/day, 3 days/yr', 0],
+        ['Anesthesia', '20%, 3 days/yr', 0],
+        [
+          'Mental health',
+          'Inpatient $500/day, 60 days; outpatient $50/day, 20 days',
+          0
+        ],
+        ['Accident', 'Hospital admission $500, 3/yr; ER $250, 1/yr', 0],
+        ['Accidental death', '$10,000', 0],
+        ['Critical illness', '$1,000', 0]
+      ]
+    }
+  }
+};
+
 // Plan card benefits (POLICY_DOCS) for families with no On Call table,
 // so the Plan tab always shows benefits and visit limits when the plan
 // card has them. Read only: the card data is not changed.
@@ -1746,7 +3054,27 @@ function cwPlanTab(tier, fam) {
     '</div>';
   var links = '';
   var cardBen = '';
-  if (!tier.ben.length) {
+  var portal = fam && CW_PORTAL_BEN[fam.name];
+  var pRows = portal && portal.tiers[tier.tier];
+  if (!tier.ben.length && pRows) {
+    cardBen =
+      pRows
+        .map(function (b) {
+          return (
+            '<div class="cw-ben' +
+            (b[2] ? ' is-warn' : '') +
+            '"><span>' +
+            cwEsc(b[0]) +
+            '</span><b>' +
+            cwEsc(b[1]) +
+            '</b></div>'
+          );
+        })
+        .join('') +
+      '<p class="cw-foot">Source: ' +
+      cwEsc(portal.src) +
+      '.</p>';
+  } else if (!tier.ben.length) {
     var cats = cwCardBenefits(fam, tier);
     if (cats) {
       cardBen =
