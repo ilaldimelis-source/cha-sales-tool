@@ -1680,24 +1680,88 @@ function cwEnsureMeds() {
     });
 }
 
+// Plan card benefits (POLICY_DOCS) for families with no On Call table,
+// so the Plan tab always shows benefits and visit limits when the plan
+// card has them. Read only: the card data is not changed.
+// Tiers that have their own plan card (the family card covers the rest).
+var CW_TIER_VAULT = {
+  'WB Choice / Select': {
+    Choice: 'goodlifewbchoice',
+    Select: 'goodlifewbselect'
+  }
+};
+
+function cwCardBenefits(fam, tier) {
+  var q = fam ? cwQr(fam) : null;
+  var byTier = fam && CW_TIER_VAULT[fam.name];
+  var id = (byTier && tier && byTier[tier.tier]) || (q && q.vault);
+  if (!id || typeof POLICY_DOCS === 'undefined') return null;
+  for (var i = 0; i < POLICY_DOCS.length; i++) {
+    if (POLICY_DOCS[i].id === id) {
+      var b = POLICY_DOCS[i].benefits || [];
+      return b.length ? b : null;
+    }
+  }
+  return null;
+}
+
+function cwCardBenHtml(cats) {
+  return cats
+    .map(function (c) {
+      var rows = (c.items || [])
+        .map(function (item) {
+          var s = String(item || '');
+          var k = s.indexOf(': ');
+          if (k > 0 && k <= 34) {
+            return (
+              '<div class="cw-ben"><span>' +
+              cwEsc(s.slice(0, k)) +
+              '</span><b>' +
+              cwEsc(s.slice(k + 2)) +
+              '</b></div>'
+            );
+          }
+          return (
+            '<div class="cw-ben cw-ben-full"><b>' + cwEsc(s) + '</b></div>'
+          );
+        })
+        .join('');
+      return (
+        '<div class="cw-bcat">' + cwEsc(c.category || '') + '</div>' + rows
+      );
+    })
+    .join('');
+}
+
 function cwPlanTab(tier, fam) {
+  var q = fam ? cwQr(fam) : null;
+  var ls = cwLiveScript(tier.script);
+  var head =
+    '<div class="cw-row cw-ben-head"><h3>Benefits</h3>' +
+    (ls
+      ? '<button type="button" class="cw-link cw-goscript" data-cw-script="' +
+        cwEsc(ls.name) +
+        '">Go to script &#8594;</button>'
+      : '') +
+    '</div>';
   var links = '';
+  var cardBen = '';
   if (!tier.ben.length) {
-    var q = fam ? cwQr(fam) : null;
-    var ls = cwLiveScript(tier.script);
-    links =
-      '<p class="cw-muted">No benefit table on the On Call tab for this plan yet. Read the benefits from the plan card or the plan script.</p><div class="cw-row cw-links">' +
-      (q && q.vault
-        ? '<button type="button" class="cw-link" data-cw-vault="' +
-          cwEsc(q.vault) +
-          '">Open plan card</button>'
-        : '') +
-      (ls
-        ? '<button type="button" class="cw-link" data-cw-script="' +
-          cwEsc(ls.name) +
-          '">Open script</button>'
-        : '') +
-      '</div>';
+    var cats = cwCardBenefits(fam, tier);
+    if (cats) {
+      cardBen =
+        '<p class="cw-muted">From the plan card. Match the tier the client picked.</p>' +
+        cwCardBenHtml(cats);
+    } else {
+      links =
+        '<p class="cw-muted">No benefit sheet on file for this plan yet. Read the benefits from the plan script.</p>';
+    }
+    if (q && q.vault) {
+      links +=
+        '<div class="cw-row cw-links"><button type="button" class="cw-link" data-cw-vault="' +
+        cwEsc(q.vault) +
+        '">Open plan card</button></div>';
+    }
   }
   var ben = tier.ben
     .map(function (b) {
@@ -1725,8 +1789,10 @@ function cwPlanTab(tier, fam) {
       '</option>';
   }
   return (
-    '<div class="cw-two"><section class="cw-card"><h3>Benefits</h3>' +
+    '<div class="cw-two"><section class="cw-card">' +
+    head +
     ben +
+    cardBen +
     links +
     '</section><section class="cw-card"><div class="cw-row"><h3>Meds - PAP check</h3><select id="cw-hh" class="cw-select">' +
     hh +
