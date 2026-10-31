@@ -142,7 +142,7 @@ var CW_DISC = {
         "AWA TrueHealth Value is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Unified Life insurance premium, $___ AWA membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
     },
@@ -155,7 +155,7 @@ var CW_DISC = {
         "AWA TrueHealth 1 is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Unified Life insurance premium, $___ AWA membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
     },
@@ -168,7 +168,7 @@ var CW_DISC = {
         "AWA TrueHealth 2 is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Unified Life insurance premium, $___ AWA membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
     },
@@ -181,7 +181,7 @@ var CW_DISC = {
         "AWA TrueHealth 3 is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Unified Life insurance premium, $___ AWA membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
     },
@@ -194,7 +194,7 @@ var CW_DISC = {
         "AWA TrueHealth 4 is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Unified Life insurance premium, $___ AWA membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
     },
@@ -208,7 +208,7 @@ var CW_DISC = {
         'Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts, and anything above them is your cost. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months.',
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital, surgery, ER and ambulance benefits for your first 12 months. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered. NICU care and preventive services at a hospital aren't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ GoodHealth plan, $___ one-time enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -221,7 +221,7 @@ var CW_DISC = {
         "Sigma Care PLUS is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Sigma Care PLUS insurance premium, $___ NCE membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -234,7 +234,7 @@ var CW_DISC = {
         "Sigma Care PLUS is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Sigma Care PLUS insurance premium, $___ NCE membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -250,7 +250,7 @@ var CW_DISC = {
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         '( Nevada residents only, read word for word: ) YOU MAY BE ELIGIBLE FOR A SUBSIDY IF PURCHASING A "QUALIFIED HEALTH PLAN" WHICH PROVIDES MORE COVERAGE AT POSSIBLY A LOWER COST. FOR MORE INFORMATION, PLEASE CHECK: https://www.nevadahealthlink.com/',
         'Coverage lasts for the term you select and ends at the end of the paid period in which you turn 65.\n( MO and OK residents only, also say: ) This policy is not renewable or extendable.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ Communicating for America Association membership, $___ one-time enrollment fee, $___ for ___ add-on, if any. Then $___ a month; rates can change in later periods if you select multiple durations. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
     },
@@ -265,7 +265,7 @@ var CW_DISC = {
         "Anything not listed in your schedule of benefits isn't covered.",
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         "It isn't renewable or extendable. But while you keep paying, a new policy can be issued every 6 or 12 months, up to 36 months total. Rates can go up each term based on your age. Coverage ends at the end of the paid period in which you turn 65.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.'
     },
@@ -278,7 +278,7 @@ var CW_DISC = {
         "The Allstate Enhanced STM PPO Plan is private short-term medical insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. Your coinsurance out-of-pocket limit caps only your coinsurance. Your deductible, copays, access fees and anything over a benefit limit are on top of it.",
         "Pre-existing conditions: this plan is medically underwritten and doesn't cover them.",
         "Your certificate lists all exclusions and limitations and controls your benefits. Anything not in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ LIFE Association membership, $___ one-time association fee, if one applies, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -291,7 +291,7 @@ var CW_DISC = {
         "The Allstate Copay Enhanced STM PPO Plan is private short-term medical insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. Your coinsurance out-of-pocket limit caps only your coinsurance. Your deductible, copays, access fees and anything over a benefit limit are on top of it.",
         "Pre-existing conditions: this plan is medically underwritten and doesn't cover them.",
         "Your certificate lists all exclusions and limitations and controls your benefits. Anything not in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ LIFE Association membership, $___ one-time association fee, if one applies, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -304,7 +304,7 @@ var CW_DISC = {
         "The Allstate Essentials STM PPO Plan is private short-term medical insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. Your coinsurance out-of-pocket limit caps only your coinsurance. Your deductible, copays, access fees and anything over a benefit limit are on top of it.",
         "Pre-existing conditions: this plan is medically underwritten and doesn't cover them.",
         "Your certificate lists all exclusions and limitations and controls your benefits. Anything not in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ LIFE Association membership, $___ one-time association fee, if one applies, $___ for ___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -316,7 +316,7 @@ var CW_DISC = {
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AdvantCare is a private group health plan. It's not an ACA plan and not major medical. It does not cover labor and delivery, or inpatient mental health and substance abuse treatment. Every benefit has the limits we went over; past a limit the plan pays nothing more. There's no deductible, and your out-of-pocket maximum is for in-network services only.",
         "Anything not listed in your schedule of benefits isn't covered. Services at a hospital, including preventive care and doctor visits, aren't covered unless your schedule says so. Partial hospitalization isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover labor and delivery, or inpatient mental health and substance abuse treatment, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time, non-refundable enrollment fee (only if your quote shows one), $___ for ___ add-on, if any. Then $___ a month, drafted automatically from the card or bank account you give me. Billing is through Premier Health Solutions, LLC; your statement may show PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -329,7 +329,7 @@ var CW_DISC = {
         "AdvantCare is a private group health plan. It's not an ACA plan and not major medical. It does not cover labor and delivery, or inpatient mental health and substance abuse treatment. Every benefit has the limits we went over; past a limit the plan pays nothing more. There's no deductible, and your out-of-pocket maximum is for in-network services only.",
         'Pre-existing conditions: the hospital benefit never covers anything you got care or advice for, or had symptoms of, in the 12 months before you start.',
         "Anything not listed in your schedule of benefits isn't covered. Services at a hospital, including preventive care and doctor visits, aren't covered unless your schedule says so. Partial hospitalization isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover labor and delivery, or inpatient mental health and substance abuse treatment, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time, non-refundable enrollment fee (only if your quote shows one), $___ for ___ add-on, if any. Then $___ a month, drafted automatically from the card or bank account you give me. Billing is through Premier Health Solutions, LLC; your statement may show PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -343,7 +343,7 @@ var CW_DISC = {
         "Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months.",
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered. GoodHealth 1, 2 and 3 have no emergency room, ambulance or surgery benefit. NICU care and preventive services at a hospital aren't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -357,7 +357,7 @@ var CW_DISC = {
         "Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months.",
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered. GoodHealth 1, 2 and 3 have no emergency room, ambulance or surgery benefit. NICU care and preventive services at a hospital aren't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -371,7 +371,7 @@ var CW_DISC = {
         "Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months.",
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered. GoodHealth 1, 2 and 3 have no emergency room, ambulance or surgery benefit. NICU care and preventive services at a hospital aren't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -385,7 +385,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -399,7 +399,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -412,7 +412,7 @@ var CW_DISC = {
         "BWA AmeriCare is a private, limited-benefit hospital indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum. You pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services. It also doesn't replace workers' compensation insurance.",
         "Pre-existing conditions: there's no pre-existing exclusion period. For your first 6 months, the plan pays nothing for hernia, adenoids, tonsils, varicose veins, appendix or reproductive-organ disorders, except emergencies.",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ American Public Life hospital indemnity insurance, $___ Business Workers of America membership, $___ one-time, non-refundable enrollment fee, $___ for ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -425,7 +425,7 @@ var CW_DISC = {
         "BWA AmeriCare is a private, limited-benefit hospital indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum. You pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services. It also doesn't replace workers' compensation insurance.",
         "Pre-existing conditions: there's no pre-existing exclusion period. For your first 6 months, the plan pays nothing for hernia, adenoids, tonsils, varicose veins, appendix or reproductive-organ disorders, except emergencies.",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ American Public Life hospital indemnity insurance, $___ Business Workers of America membership, $___ one-time, non-refundable enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -438,7 +438,7 @@ var CW_DISC = {
         "WB Choice is a private, scheduled fixed indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. Because it pays fixed amounts, the federal No Surprises Act doesn't apply. So providers may bill you above what the plan pays, unless your state law says otherwise. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: hospital stays and surgeries aren't paid for your first 12 months for anything you got care or advice for in the 12 months before you start. Sickness has a 30-day wait; accidents are covered right away.",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ WB ___ monthly contribution, $___ one-time enrollment fee if one applies, $___ ___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -451,7 +451,7 @@ var CW_DISC = {
         "WB Select is a private, scheduled fixed indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. Because it pays fixed amounts, the federal No Surprises Act doesn't apply. So providers may bill you above what the plan pays, unless your state law says otherwise. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: hospital stays and surgeries aren't paid for your first 12 months for anything you got care or advice for in the 12 months before you start. Sickness has a 30-day wait; accidents are covered right away.",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ WB ___ monthly contribution, $___ one-time enrollment fee if one applies, $___ ___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -464,7 +464,7 @@ var CW_DISC = {
         "GoodHealth Wellness is a private, self-funded preventive care plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. The plan year runs 7/1 to 6/30. Benefits and visit counts reset every July 1. So your first year may be shorter. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         'Sickness has a 30-day wait.',
         "Anything not listed in your schedule of benefits isn't covered. There are no benefits for sick visits, specialists, urgent care, the emergency room or hospital stays. Preventive services at a hospital aren't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -478,7 +478,7 @@ var CW_DISC = {
         "Pre-existing conditions aren't covered by the hospital benefit. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Coverage ends at 65 for members and spouses, and at 26 for children.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ ___ if your quote includes another product. Then $___ a month. Premier Health Solutions, LLC bills you, and your statement may show PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -492,7 +492,7 @@ var CW_DISC = {
         "Pre-existing conditions aren't covered by the hospital benefit. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Coverage ends at 65 for members and spouses, and at 26 for children.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ ___ if your quote includes another product. Then $___ a month. Premier Health Solutions, LLC bills you, and your statement may show PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -506,7 +506,7 @@ var CW_DISC = {
         "Pre-existing conditions aren't covered by the hospital benefit. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Coverage ends at 65 for members and spouses, and at 26 for children.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ ___ if your quote includes another product. Then $___ a month. Premier Health Solutions, LLC bills you, and your statement may show PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -519,7 +519,7 @@ var CW_DISC = {
         "The Galena plan is a private short-term medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. Your coinsurance maximum caps coinsurance only. Your deductible, copays and anything over a benefit limit are on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered. Sickness has a 5-day wait and cancer 30 days; injuries are covered the next day. Some surgeries aren't covered your first 6 months; your certificate lists them.",
         "Anything not in your schedule of benefits isn't covered. Your term is 12 months. You can auto re-apply for up to 3 terms or 36 months.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Galena plan, $___ AFRP membership if a monthly fee applies, $___ one-time AFRP association fee, $___ ___ add-on if chosen. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -534,7 +534,7 @@ var CW_DISC = {
         "Anything not listed in your schedule of benefits isn't covered.",
         'Coverage can run up to 36 months.',
         'Your payment is collected on your bill date each month.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time association fee, $___ Pre-Existing Waiver Rider and $___ ___ if chosen. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -549,7 +549,7 @@ var CW_DISC = {
         "Anything not listed in your schedule of benefits isn't covered.",
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         'Coverage ends on the last day your premium is paid, at age 65, or when your Medicare starts.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ Pre-Existing Waiver Rider or ___ if chosen. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -565,7 +565,7 @@ var CW_DISC = {
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         '\u25b6 ( Nevada residents only: )\nYOU MAY BE ELIGIBLE FOR A SUBSIDY IF PURCHASING A "QUALIFIED HEALTH PLAN" WHICH PROVIDES MORE COVERAGE AT POSSIBLY A LOWER COST. FOR MORE INFORMATION, PLEASE CHECK: https://www.nevadahealthlink.com/',
         'Coverage ends at the end of the paid period in which you turn 65. Dependents come off at 26.\n\u25b6 ( MO, NC, OK, TX only: )\nThis policy is not renewable or extendable.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ association membership, $___ one-time enrollment fee, $___ ___ if your quote includes another product. Then $___ a month. Premier Health Solutions, LLC bills you, and your statement may show PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -579,7 +579,7 @@ var CW_DISC = {
         "Pre-existing conditions aren't covered for the number of months in your Schedule of Benefits. Critical illness has a 30-day wait, and other waits are in your Schedule. A condition diagnosed during a wait isn't covered.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It's renewable but ends at the end of the month you turn 65.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ AWA membership if a monthly fee applies, $___ one-time AWA association fee, $___ ___ add-on if chosen. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -594,7 +594,7 @@ var CW_DISC = {
         "Anything not listed in your schedule of benefits isn't covered.",
         'Coverage can run up to 36 months.',
         'Your payment is collected on your bill date each month.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time association fee, $___ Pre-Existing Waiver Rider and $___ ___ if chosen. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -608,7 +608,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ AWA membership, $___ one-time AWA enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -622,7 +622,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ AWA membership, $___ one-time AWA enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -636,7 +636,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care, tests or a prescription for, or had symptoms of, in the 5 years before you start isn't covered. Sickness has a 5-day wait, and cancer and wellness 30 days; injuries have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "It isn't renewable and ends at the end of the month you turn 65.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ AWA membership, $___ one-time AWA enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -651,7 +651,7 @@ var CW_DISC = {
         "Anything not listed in your schedule of benefits isn't covered.",
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         "It isn't renewable or extendable. But while you keep paying, a new policy can be issued every 6 or 12 months, up to 36 months total. Rates can go up each term based on your age. Coverage ends at the end of the paid period in which you turn 65.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -665,7 +665,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. All benefits have a 30-day wait, except MyLiveDoc virtual care, the pharmacy benefit and emergencies.",
         "Anything not listed in your schedule of benefits isn't covered. There's no emergency room, ambulance or outpatient surgery benefit. Lab work, X-rays and imaging aren't covered; you only get discounted pricing.",
         'Coverage can end if you skip the required Working Owner activities. There are about 8 to 10 short ones a year, like health surveys.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time, non-refundable enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows First Enroll.'
     },
@@ -679,7 +679,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. All benefits have a 30-day wait, except MyLiveDoc virtual care, the pharmacy benefit and emergencies.",
         "Anything not listed in your schedule of benefits isn't covered. There's no emergency room, ambulance or outpatient surgery benefit. Lab work, X-rays and imaging aren't covered; you only get discounted pricing.",
         'Coverage can end if you skip the required Working Owner activities. There are about 8 to 10 short ones a year, like health surveys.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time, non-refundable enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows First Enroll.'
     },
@@ -693,7 +693,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. All benefits have a 30-day wait, except MyLiveDoc virtual care, the pharmacy benefit and emergencies.",
         "Anything not listed in your schedule of benefits isn't covered. There's no emergency room, ambulance or outpatient surgery benefit. Lab work, X-rays and imaging aren't covered; you only get discounted pricing.",
         'Coverage can end if you skip the required Working Owner activities. There are about 8 to 10 short ones a year, like health surveys.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time, non-refundable enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows First Enroll.'
     },
@@ -706,7 +706,7 @@ var CW_DISC = {
         "Harmony Care + 100A is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ ___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -719,7 +719,7 @@ var CW_DISC = {
         "Harmony Care + 100 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -732,7 +732,7 @@ var CW_DISC = {
         "Harmony Care + 200 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -745,7 +745,7 @@ var CW_DISC = {
         "Harmony Care + 200+ is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -758,7 +758,7 @@ var CW_DISC = {
         "Harmony Care + 300 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -771,7 +771,7 @@ var CW_DISC = {
         "Harmony Care + 500 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -784,7 +784,7 @@ var CW_DISC = {
         "Harmony Care + 750 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -797,7 +797,7 @@ var CW_DISC = {
         "Harmony Care + 1000 is a private, limited-benefit fixed indemnity plan. It's not an ACA plan, not major medical and not a Medicare supplement. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered. Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -809,7 +809,7 @@ var CW_DISC = {
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "PrimeProtect ___ is a private fixed indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum. You pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -821,7 +821,7 @@ var CW_DISC = {
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "PrimeProtect ___ is a private fixed indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum. You pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Anything not listed in your schedule of benefits isn't covered. The critical illness benefit isn't paid for a condition first diagnosed in your first 30 days of coverage. It pays once per person. It doesn't pay for a recurring illness.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -836,7 +836,7 @@ var CW_DISC = {
         "Anything not listed in your schedule of benefits isn't covered. Check your certificate for exclusions and limits on things like hospitalization, emergency services, maternity care, preventive care, prescription drugs, and mental health and substance use care. Also check it for any dollar limits.",
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
         "This short-term coverage isn't renewable or extendable. It ends at the end of the paid period in which you turn 65.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ AWA membership dues, $___ one-time, non-refundable enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows Premier Health Solutions, as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS, depending on your bank.'
     },
@@ -849,7 +849,7 @@ var CW_DISC = {
         "Allstate Health Access is a private fixed indemnity limited medical plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not cover mental illness or substance abuse, weight-loss surgery, cosmetic services, eye exams and glasses, routine hearing care, sleep disorders, chronic pain disorders, experimental treatment, hazardous activities, or care outside the United States or Canada.",
         "Pre-existing conditions: anything you got care, advice, tests or a prescription for, or had symptoms of, in the year before you start isn't covered for your first 12 months. That includes a pregnancy that exists before you start. Preventive visits have a 3-month wait; injuries and sickness have none.",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover mental illness or substance abuse, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ LIFE Association membership, $___ one-time association fee, if one applies, $___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -863,7 +863,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital, surgery, ER and ambulance benefits for your first 12 months. All benefits have a 30-day wait, except MyLiveDoc virtual care, the pharmacy benefit and emergencies.",
         "Anything not listed in your schedule of benefits isn't covered. Lab work, X-rays and imaging aren't covered; you only get discounted pricing.",
         'Coverage can end if you skip the required Working Owner activities. There are about 8 to 10 short ones a year, like health surveys, most taking 5 to 15 minutes on your phone.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time, non-refundable enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows First Enroll.'
     },
@@ -877,7 +877,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital, surgery, ER and ambulance benefits for your first 12 months. All benefits have a 30-day wait, except MyLiveDoc virtual care, the pharmacy benefit and emergencies.",
         "Anything not listed in your schedule of benefits isn't covered. Lab work, X-rays and imaging aren't covered; you only get discounted pricing.",
         'Coverage can end if you skip the required Working Owner activities. There are about 8 to 10 short ones a year, like health surveys, most taking 5 to 15 minutes on your phone.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see First Enroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ one-time, non-refundable enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows First Enroll.'
     },
@@ -890,7 +890,7 @@ var CW_DISC = {
         "HD HealthAscent is a private limited-benefit group hospital indemnity plan. It's not an ACA plan and not major medical. It does not provide coverage for maternity, substance abuse, or psychiatric services. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay what it doesn't.",
         "Pre-existing conditions: anything you got care, advice or a prescription for, or had symptoms of, in the 12 months before you start isn't covered, including complications, until you've had the plan 12 months in a row.",
         "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ HD HealthAscent monthly membership, which includes the insurance and your Health Depot Association membership, $___ one-time, non-refundable enrollment fee, $___ add-on, if any. Then $___ a month. Premier Health Solutions, LLC bills you, and your statement may show "PHS-HEALTH-BILL," "PHSHEALTH" or "HEALTHPHS," depending on your bank.'
     },
@@ -902,7 +902,7 @@ var CW_DISC = {
         'I do want to clarify that this is a private, limited medical plan, not an ACA or major medical plan, and it does not provide coverage for maternity, or substance abuse for drugs and alcohol.',
         'Every benefit has limits; past a limit, you pay. Your out-of-pocket limit only counts in-network covered care.',
         "Your Schedule of Benefits lists what the plan pays for each service, and anything not listed there isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has limits, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity or substance abuse, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -916,7 +916,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care, advice, tests or medication for, or had symptoms of, in the 60 months before you start isn't covered for your first 12 months. Sickness has a 5-day wait and cancer 30 days; injuries have none. Some surgeries aren't covered your first 6 months; your certificate lists them.",
         "Anything not listed in your schedule of benefits isn't covered.",
         "This is temporary coverage for the term you choose, 6 months or 364 days. It isn't renewable and ends at the end of the month you turn 65.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity or substance abuse, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Pinnacle insurance premium, $___ one-time AWA (American Workers Association) association fee, $___ AWA monthly membership fee, if one applies, $___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
@@ -929,7 +929,7 @@ var CW_DISC = {
         "Health Choice Silver is a private limited-benefit fixed indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay what it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Health Choice Silver insurance premium, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll. The first month membership fee will be billed today and you agree to be automatically billed each month for the future monthly membership fees.'
     },
@@ -942,7 +942,7 @@ var CW_DISC = {
         "BWA Paramount is a private limited-benefit hospital indemnity plan. It's not an ACA plan, not major medical insurance and not a Medicare supplement. It does not provide coverage for maternity, substance abuse, or psychiatric services. Every benefit has the limits we went over; past a limit, the plan pays nothing more. The insurance pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. At age 70, all insurance benefit amounts drop to 75%.",
         "Pre-existing conditions: on the insurance, a condition from the 12 months before you start can be excluded for your first 12 months. There's no benefit waiting period.",
         "Anything not listed in your schedule of benefits isn't covered. If there's ever a difference between what I've told you and the written membership and product terms, the written terms govern.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ BCS hospital indemnity insurance, $___ Business Workers of America membership, $___ one-time, non-refundable enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -955,7 +955,7 @@ var CW_DISC = {
         "BWA Paramount is a private limited-benefit plan. It's not an ACA plan, not major medical insurance and not a Medicare supplement. It does not provide coverage for maternity, substance abuse, or psychiatric services. It's a BWA membership with three parts: BCS hospital indemnity insurance that pays fixed amounts, the Sharewell Health Share, and the MBR service. Every benefit has the limits we went over; past a limit, the plan pays nothing more. The insurance pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. At age 70, all insurance benefit amounts drop to 75%. With Sharewell, you pay the Unshared Amount of eligible expenses before sharing starts.",
         "Pre-existing conditions: on the insurance, a condition from the 12 months before you start can be excluded for your first 12 months. There's no benefit waiting period. For Sharewell, anything from the 24 months before you join isn't shared your first year. Then sharing for it is capped per need at $30,000 in year two, $60,000 in year three and $150,000 in year four, with no cap after that.",
         "Anything not listed in your schedule of benefits isn't covered. If there's ever a difference between what I've told you and the written membership and product terms, the written terms govern.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and FirstEnroll bills you, showing as Your Benefit Plan on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and FirstEnroll bills you, showing as Your Benefit Plan on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ BCS hospital indemnity insurance, $___ Sharewell Health Share, $___ Business Workers of America membership, $___ one-time, non-refundable enrollment fee, $___ add-on, if any. Then $___ a month. FirstEnroll bills you on behalf of the Business Workers of America, and your statement shows Your Benefit Plan.'
     },
@@ -969,7 +969,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Harmony Care insurance premium, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     },
@@ -983,7 +983,7 @@ var CW_DISC = {
         "Pre-existing conditions: anything you got care or advice for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Benefits run on a 12-month coverage year from your effective date. Premiums may go up at renewal.',
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity, substance abuse or psychiatric care, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Harmony Care insurance premium, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll.'
     }
