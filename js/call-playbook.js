@@ -2277,16 +2277,76 @@ function _psLinesHtml(content, isPostClose) {
   return out.join('');
 }
 
-function _psTileHtml(name) {
+// Short display names for the plan tiles and script header. Display
+// only: PLAN_SCRIPTS names (used for matching elsewhere) are unchanged,
+// and search still matches the full name.
+var PS_SHORT = {
+  'MedFirst/GoodHealth 1,2,3': 'GoodHealth 1-3',
+  'MedFirst/ GoodHealth 4, 5 (Need Primary SSN)': 'GoodHealth 4-5',
+  'TDK 1,2,3 (Need Primary SSN)': 'TDK 1-3',
+  'TDK 4,5 (Need Primary SSN)': 'TDK 4-5',
+  'NEO Smart Choice': 'Smart Choice',
+  'AdvantCare 3, 6, 9, 12 and 3+, 6+, 9+, 12+ (Match Visits to Plan)':
+    'AdvantCare 3-12',
+  'AdvantCare WellPremium and WellPremium+': 'AdvantCare WellPremium',
+  'TVP Health Plan 1, 2, 3 (Match Visits to Plan)': 'TVP Health 1-3',
+  'TVP Health Plan 4, 5 (Match Visits to Plan)': 'TVP Health 4-5',
+  'Access Health STM': 'Access Health',
+  'NEO Pinnacle STM Traditional': 'Pinnacle STM',
+  'AFRP Galena STM Elite': 'Galena Elite',
+  'AFRP Galena STM Standard': 'Galena Standard',
+  'AFRP Galena STM Economy': 'Galena Economy',
+  'Smart Health STM Traditional': 'SmartHealth Traditional',
+  'Smart Health STM Limited': 'SmartHealth Limited',
+  'Harbor STM Secure': 'Harbor Secure',
+  'Harbor STM Access': 'Harbor Access',
+  'Harbor STM Essential': 'Harbor Essential',
+  'CrownPoint STM': 'CrownPoint',
+  'NexusCare Base STM': 'NexusCare Base',
+  'NexusCare PPO STM': 'NexusCare PPO',
+  'RiseHealth STM Lite': 'RiseHealth Lite',
+  'RiseHealth STM Lite Plus': 'RiseHealth Lite Plus',
+  'RiseHealth STM Traditional': 'RiseHealth Traditional',
+  'Advanced Wellness or HarmonyCare and SigmaCare (Match Network to Plan)':
+    'HarmonyCare / SigmaCare / Adv. Wellness',
+  'BWA Paramount 1-6 (First Enroll)': 'BWA Paramount 1-6',
+  'BWA Americare 2,3,4 (First Enroll)': 'BWA Americare 2-4',
+  'Pinnacle Protect Plan 1 - 4': 'Pinnacle Protect',
+  'Goodlife Partners WB CHOICE and WB SELECT (Match Doctor visits to Plan)':
+    'WB Choice / WB Select',
+  'HD HealthAscent Plan 1': 'HealthAscent 1',
+  'HD HealthAscent Plan 2': 'HealthAscent 2',
+  'HD HealthAscent Plan 3': 'HealthAscent 3',
+  'HealthEssential 1, 2, 3 (Match Visits to Plan)': 'HealthEssential 1-3',
+  'AWA TrueHealth Value': 'TrueHealth Value',
+  'AWA TrueHealth 1': 'TrueHealth 1',
+  'AWA TrueHealth 2': 'TrueHealth 2',
+  'AWA TrueHealth 3': 'TrueHealth 3',
+  'AWA TrueHealth 4': 'TrueHealth 4',
+  'PrimeProtect Basic, Plus, Preferred, Premium, Platinum': 'PrimeProtect',
+  'HealthBoost 1 and HealthBoost + DPC 1': 'HealthBoost 1',
+  'HealthBoost 2 and HealthBoost + DPC 2': 'HealthBoost 2',
+  'HealthBoost 3 and 4 and HealthBoost + DPC 3 and 4': 'HealthBoost 3-4',
+  'Questions & Complaints - Limited Med Doctor Visit': 'Questions & Complaints'
+};
+
+function _psShort(name) {
   var n = String(name || '');
+  if (PS_SHORT[n]) return PS_SHORT[n];
   var cut = n.indexOf(' (');
-  var main = cut > 0 ? n.slice(0, cut) : n;
-  var sub = cut > 0 ? n.slice(cut + 1) : '';
+  return cut > 0 ? n.slice(0, cut) : n;
+}
+
+// The "(Need Primary SSN)" style note from the full name, if any.
+function _psNote(name) {
+  var m = String(name || '').match(/\(([^)]*)\)\s*$/);
+  return m ? m[1] : '';
+}
+
+function _psTileHtml(name) {
   return (
-    '<span class="psx-dot" aria-hidden="true"></span><span class="psx-row-text"><span class="psx-row-name">' +
-    _psEsc(main) +
-    '</span>' +
-    (sub ? '<span class="psx-row-sub">' + _psEsc(sub) + '</span>' : '') +
+    '<span class="psx-dot" aria-hidden="true"></span><span class="psx-row-name">' +
+    _psEsc(_psShort(name)) +
     '</span>'
   );
 }
@@ -2367,13 +2427,20 @@ function renderPlanScripts() {
   html += '<div class="psx-top">';
   html +=
     '<button type="button" class="psx-back" onclick="_psBack()">&#8592; Plans</button>';
-  html += '<h2 class="psx-name">' + _psEsc(plan.name) + '</h2>';
+  html +=
+    '<h2 class="psx-name" title="' +
+    _psEsc(plan.name) +
+    '">' +
+    _psEsc(_psShort(plan.name)) +
+    '</h2>';
   html +=
     '<span class="psx-type psx-type-' +
     _psEsc(plan.planType) +
     '">' +
     _psEsc(plan.planType) +
     '</span>';
+  var note = _psNote(plan.name);
+  if (note) html += '<span class="psx-note">' + _psEsc(note) + '</span>';
   html += '<span class="psx-grow"></span>';
   if (rules) {
     html +=
