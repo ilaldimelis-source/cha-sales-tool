@@ -896,13 +896,13 @@ var CW_DISC = {
     },
     smartchoice: {
       paras: [
-        "Just for your records, here's a quick recap of what you'll see in your paperwork.",
-        'Your plan uses the First Health network, in-network only. Out-of-network care is your full cost, except emergencies.',
-        'Detego Health is the plan administrator. You join Population Science Management USA as a Working Owner. A federal law called ERISA governs the plan.',
-        "Your monthly billing is handled through Neo Health Solutions, which is the name you'll see on your statement.",
-        "I do want to clarify that this is a private, limited medical plan, not an ACA or major medical plan, and it does not provide coverage for maternity, or substance abuse for drugs and alcohol. Every benefit has the limits we went over; past a limit the plan pays nothing more. Your out-of-pocket limit is for covered in-network services. Anything past the plan's limits, or not covered, doesn't count toward it.",
-        "Anything not listed in your schedule of benefits isn't covered.",
-        "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
+        "Just for your records: your plan uses the First Health network, in-network only. Out-of-network care isn't covered, except emergencies.",
+        'Detego Health is the plan administrator, and you join Population Science Management USA as a Working Owner. A federal law called ERISA governs the plan.',
+        'Your bill will show Neo Health Solutions.',
+        'I do want to clarify that this is a private, limited medical plan, not an ACA or major medical plan, and it does not provide coverage for maternity, or substance abuse for drugs and alcohol.',
+        'Every benefit has limits; past a limit, you pay. Your out-of-pocket limit only counts in-network covered care.',
+        "Your Schedule of Benefits lists what the plan pays for each service, and anything not listed there isn't covered.",
+        "Do you understand this isn't major medical or an ACA plan, it has limits, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
     },
