@@ -3254,11 +3254,13 @@ var CW_KEY_RE = new RegExp(
   '(' +
     [
       "isn't major medical or an ACA plan",
+      'not an ACA(?:, major medical or Medicare supplement| or major medical) plan',
       'not an ACA plan',
       'not major medical',
       "isn't major medical",
       'not a Medicare supplement',
       'does not provide coverage for [^.]+',
+      "doesn't cover [^.?]+?(?=, and |[.?]|$)",
       "isn't covered",
       "aren't covered",
       'not covered',
