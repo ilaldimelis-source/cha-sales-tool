@@ -901,6 +901,7 @@ var CW_DISC = {
         'Your bill will show Neo Health Solutions.',
         'I do want to clarify that this is a private, limited medical plan, not an ACA or major medical plan, and it does not provide coverage for maternity, or substance abuse for drugs and alcohol.',
         'Every benefit has limits; past a limit, you pay. Your out-of-pocket limit only counts in-network covered care.',
+        "Your Schedule of Benefits lists what the plan pays for each service, and anything not listed there isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has limits, and you'll see Neo Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ plan, $___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
