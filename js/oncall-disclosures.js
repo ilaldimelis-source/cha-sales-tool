@@ -897,7 +897,7 @@ var CW_DISC = {
     smartchoice: {
       paras: [
         "Just for your records: your plan uses the First Health network, in-network only. Out-of-network care isn't covered, except emergencies.",
-        'Detego Health is the plan administrator, and you join Population Science Management USA as a Working Owner.',
+        'Detego Health is the plan administrator, and you join Population Science Management USA as a Working Owner. A federal law called ERISA governs the plan.',
         'Your bill will show Neo Health Solutions.',
         'I do want to clarify that this is a private, limited medical plan, not an ACA or major medical plan, and it does not provide coverage for maternity, or substance abuse for drugs and alcohol.',
         'Every benefit has limits; past a limit, you pay. Your out-of-pocket limit only counts in-network covered care.',
