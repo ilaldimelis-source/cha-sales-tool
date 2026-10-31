@@ -2029,6 +2029,10 @@ function initApp() {
   _initTopbarExtras();
   // Clerk may set window.CHA_USER after initApp runs. Refresh
   // the greeting once it's available (poll up to ~6 seconds).
+  // Per-user settings (name, tour done) live under the signed-in user's
+  // key, so the Home name and the first-time tour wait for the user too.
+  // Before Oct 31 2026 they were read as 'anonymous', so Home said
+  // 'there' and the tour came back on every load.
   var _ghTries = 0;
   var _ghTimer = setInterval(function () {
     _ghTries++;
@@ -2036,19 +2040,27 @@ function initApp() {
       clearInterval(_ghTimer);
       if (window.CHA_USER) {
         _refreshTopbarGreeting();
+        var _h1 = document.querySelector('.home-h1');
+        if (
+          _h1 &&
+          / there$/.test(_h1.textContent || '') &&
+          typeof renderDashboard === 'function'
+        ) {
+          renderDashboard();
+        }
+      }
+      // Start onboarding tour for first-time users
+      var tourDone =
+        typeof chaGet === 'function'
+          ? chaGet('cha_tour_done', '')
+          : safeGetItem('cha_tour_done');
+      if (!tourDone) {
+        setTimeout(startTour, 600);
       }
     }
   }, 200);
   _initSidebar();
   showPage('dashboard');
-  // Start onboarding tour for first-time users
-  var tourDone =
-    typeof chaGet === 'function'
-      ? chaGet('cha_tour_done', '')
-      : safeGetItem('cha_tour_done');
-  if (!tourDone) {
-    setTimeout(startTour, 600);
-  }
   // Inject floating quick-action bar
   if (!document.getElementById('fab-bar')) {
     var fab = document.createElement('div');
