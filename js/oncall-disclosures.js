@@ -140,7 +140,7 @@ var CW_DISC = {
         "It's underwritten by Unified Life Insurance Company. It's offered through your membership in the Affiliated Workers Association (AWA).",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AWA TrueHealth Value is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait.",
+        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -153,7 +153,7 @@ var CW_DISC = {
         "It's underwritten by Unified Life Insurance Company. It's offered through your membership in the Affiliated Workers Association (AWA).",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AWA TrueHealth 1 is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait.",
+        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -166,7 +166,7 @@ var CW_DISC = {
         "It's underwritten by Unified Life Insurance Company. It's offered through your membership in the Affiliated Workers Association (AWA).",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AWA TrueHealth 2 is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait.",
+        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -179,7 +179,7 @@ var CW_DISC = {
         "It's underwritten by Unified Life Insurance Company. It's offered through your membership in the Affiliated Workers Association (AWA).",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AWA TrueHealth 3 is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait.",
+        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -192,7 +192,7 @@ var CW_DISC = {
         "It's underwritten by Unified Life Insurance Company. It's offered through your membership in the Affiliated Workers Association (AWA).",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AWA TrueHealth 4 is a private association membership with limited benefit hospital indemnity insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay whatever it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait.",
+        "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait (not in Idaho or Texas).",
         "Anything not listed in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and Premier Health Solutions will bill you, shown on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS?\n\u25b6 ( Wait for answer )"
       ],
@@ -204,7 +204,8 @@ var CW_DISC = {
         "Your plan uses the First Health Network for doctor and wellness visits. Those visits must be in-network. Out-of-network services aren't covered. Hospital benefits aren't limited to the network.",
         "Merchants Benefit Administration (MBA) administers the plan. It's offered through Good Health Distribution Partners (GHDP). You join GHDP as a Working Owner, as a Limited Partner or affiliate. The plan is governed by ERISA, a federal law.",
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
-        "GoodHealth is a private, self-funded group health plan with limited benefits. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts, and anything above them is your cost. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
+        "-MedFirst/GoodHealth/ (Say whatever plan you're selling) is a limited-benefit MEC. It is NOT an ACA plan nor a major-medical or comprehensive coverage. It has a $0 deductible and no out-of-pocket maximum and it does not provide coverage for maternity, substance abuse, or psychiatric services.", // lineup-guard-ignore: script name
+        'Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays set amounts, and anything above them is your cost. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months.',
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital, surgery, ER and ambulance benefits for your first 12 months. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered. NICU care and preventive services at a hospital aren't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
@@ -257,7 +258,7 @@ var CW_DISC = {
       paras: [
         "Just for your records, here's a quick recap of what you'll see in your paperwork.",
         'Your plan uses the First Health Limited Benefit Plan Network.',
-        "It's underwritten by American Financial Security Life Insurance Company or Standard Life and Casualty Insurance Company, depending on your state.",
+        "It's underwritten by American Financial Security Life Insurance Company or Standard Life and Casualty Insurance Company, depending on your state. It's offered through the National Congress of Employers, or NCE.",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "RiseHealth STM is private short-term medical group insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. All benefits are limited to usual, reasonable and customary amounts. Your $2,000 coinsurance limit caps only your coinsurance. It isn't an out-of-pocket maximum. Your deductible, copays, additional deductibles and anything over a benefit limit are on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions aren't covered. On a new policy for another term, anything from the earlier term counts as pre-existing.",
@@ -310,7 +311,7 @@ var CW_DISC = {
     advantcare: {
       paras: [
         "Just for your records, here's a quick recap of what you'll see in your paperwork.",
-        "Your plan uses the MultiPlan Limited Benefit Plan network for your covered care, and it's in-network only.",
+        "Your plan uses the MultiPlan PPO Network for your covered care, and it's in-network only.",
         "Aither Health is the plan administrator. It's offered through Consumer Data Partners, LP, doing business as VistaWell. You join as a Limited Partner of Consumer Data Partners. The plan has the federal protections of ERISA.",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AdvantCare is a private group health plan. It's not an ACA plan and not major medical. It does not cover labor and delivery, or inpatient mental health and substance abuse treatment. Every benefit has the limits we went over; past a limit the plan pays nothing more. There's no deductible, and your out-of-pocket maximum is for in-network services only.",
@@ -322,7 +323,7 @@ var CW_DISC = {
     advantcare_2: {
       paras: [
         "Just for your records, here's a quick recap of what you'll see in your paperwork.",
-        "Your plan uses the MultiPlan Limited Benefit Plan network for your covered care, and it's in-network only.",
+        "Your plan uses the MultiPlan PPO Network for your covered care, and it's in-network only.",
         "Aither Health is the plan administrator. It's offered through Consumer Data Partners, LP, doing business as VistaWell. You join as a Limited Partner of Consumer Data Partners. The plan has the federal protections of ERISA.",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "AdvantCare is a private group health plan. It's not an ACA plan and not major medical. It does not cover labor and delivery, or inpatient mental health and substance abuse treatment. Every benefit has the limits we went over; past a limit the plan pays nothing more. There's no deductible, and your out-of-pocket maximum is for in-network services only.",
@@ -338,7 +339,8 @@ var CW_DISC = {
         "Your plan uses the First Health Network for doctor and wellness visits. Those visits must be in-network. Out-of-network services aren't covered. Hospital benefits aren't limited to the network.",
         "Merchants Benefit Administration (MBA) is the plan and claims administrator. Benefits are paid from the plan sponsor's own assets. It's offered through Good Health Distribution Partners (GHDP). You join GHDP as a Working Owner, as a Limited Partner or affiliate. The plan is governed by ERISA, a federal law.",
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
-        "GoodHealth is a private, self-funded employee benefit plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
+        "-MedFirst/GoodHealth/ (Say whatever plan you're selling) is a limited-benefit MEC. It is NOT an ACA plan nor a major-medical or comprehensive coverage. It has a $0 deductible and no out-of-pocket maximum and it does not provide coverage for maternity, substance abuse, or psychiatric services.", // lineup-guard-ignore: script name
+        "Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months.",
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered. GoodHealth 1, 2 and 3 have no emergency room, ambulance or surgery benefit. NICU care and preventive services at a hospital aren't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
@@ -351,7 +353,8 @@ var CW_DISC = {
         "Your plan uses the First Health Network for doctor and wellness visits. Those visits must be in-network. Out-of-network services aren't covered. Hospital benefits aren't limited to the network.",
         "Merchants Benefit Administration (MBA) is the plan and claims administrator. Benefits are paid from the plan sponsor's own assets. It's offered through Good Health Distribution Partners (GHDP). You join GHDP as a Working Owner, as a Limited Partner or affiliate. The plan is governed by ERISA, a federal law.",
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
-        "GoodHealth is a private, self-funded employee benefit plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
+        "-MedFirst/GoodHealth/ (Say whatever plan you're selling) is a limited-benefit MEC. It is NOT an ACA plan nor a major-medical or comprehensive coverage. It has a $0 deductible and no out-of-pocket maximum and it does not provide coverage for maternity, substance abuse, or psychiatric services.", // lineup-guard-ignore: script name
+        "Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months.",
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered. GoodHealth 1, 2 and 3 have no emergency room, ambulance or surgery benefit. NICU care and preventive services at a hospital aren't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
@@ -364,7 +367,8 @@ var CW_DISC = {
         "Your plan uses the First Health Network for doctor and wellness visits. Those visits must be in-network. Out-of-network services aren't covered. Hospital benefits aren't limited to the network.",
         "Merchants Benefit Administration (MBA) is the plan and claims administrator. Benefits are paid from the plan sponsor's own assets. It's offered through Good Health Distribution Partners (GHDP). You join GHDP as a Working Owner, as a Limited Partner or affiliate. The plan is governed by ERISA, a federal law.",
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
-        "GoodHealth is a private, self-funded employee benefit plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
+        "-MedFirst/GoodHealth/ (Say whatever plan you're selling) is a limited-benefit MEC. It is NOT an ACA plan nor a major-medical or comprehensive coverage. It has a $0 deductible and no out-of-pocket maximum and it does not provide coverage for maternity, substance abuse, or psychiatric services.", // lineup-guard-ignore: script name
+        "Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Once you use your visits for the year, the rest is your cost. The same goes when a bill goes over the per-visit maximum. That's true even in-network, and the plan doesn't reprice or discount it. Benefits and visit counts reset every July 1. So your first plan year may be shorter than 12 months.",
         "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by the hospital benefit for your first 12 months. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered. GoodHealth 1, 2 and 3 have no emergency room, ambulance or surgery benefit. NICU care and preventive services at a hospital aren't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
@@ -468,10 +472,10 @@ var CW_DISC = {
       paras: [
         "Just for your records, here's a quick recap of what you'll see in your paperwork.",
         "Your plan uses the First Health network for preventive and doctor services. Out-of-network preventive and doctor services aren't covered. Search providerlocator.com with code FHMBA, or call (800) 226-5116.",
-        "Merchant's Benefit Administrators is the administrator of the health plan. Amalgamated Life Insurance Company underwrites only the $5,000 group term life benefit. You join the VP Limited Partnership as a Limited Partner. The Vitamin Patch, LLC is the general partner.",
+        'Merchants Benefit Administration (MBA) is the administrator of the health plan. Amalgamated Life Insurance Company underwrites only the $5,000 group term life benefit. You join the VP Limited Partnership as a Limited Partner. The Vitamin Patch, LLC is the general partner.',
         "Your monthly billing is handled through Premier Health Solutions, which is the name you'll see on your statement.",
         "TVP Health Plan is a private group health plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays only up to the per-visit maximum. Anything above that is yours to pay. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by hospital and facility benefits for your first 12 months. Sickness has a 30-day wait.",
+        "Pre-existing conditions aren't covered by the hospital benefit. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Coverage ends at 65 for members and spouses, and at 26 for children.',
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
@@ -482,10 +486,10 @@ var CW_DISC = {
       paras: [
         "Just for your records, here's a quick recap of what you'll see in your paperwork.",
         "Your plan uses the First Health network for preventive and doctor services. Out-of-network preventive and doctor services aren't covered. Search providerlocator.com with code FHMBA, or call (800) 226-5116.",
-        "Merchant's Benefit Administrators is the administrator of the health plan. Amalgamated Life Insurance Company underwrites only the $5,000 group term life benefit. You join the VP Limited Partnership as a Limited Partner. The Vitamin Patch, LLC is the general partner.",
+        'Merchants Benefit Administration (MBA) is the administrator of the health plan. Amalgamated Life Insurance Company underwrites only the $5,000 group term life benefit. You join the VP Limited Partnership as a Limited Partner. The Vitamin Patch, LLC is the general partner.',
         "Your monthly billing is handled through Premier Health Solutions, which is the name you'll see on your statement.",
         "TVP Health Plan is a private group health plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays only up to the per-visit maximum. Anything above that is yours to pay. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by hospital and facility benefits for your first 12 months. Sickness has a 30-day wait.",
+        "Pre-existing conditions aren't covered by the hospital benefit. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Coverage ends at 65 for members and spouses, and at 26 for children.',
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
@@ -496,10 +500,10 @@ var CW_DISC = {
       paras: [
         "Just for your records, here's a quick recap of what you'll see in your paperwork.",
         "Your plan uses the First Health network for preventive and doctor services. Out-of-network preventive and doctor services aren't covered. Search providerlocator.com with code FHMBA, or call (800) 226-5116.",
-        "Merchant's Benefit Administrators is the administrator of the health plan. Amalgamated Life Insurance Company underwrites only the $5,000 group term life benefit. You join the VP Limited Partnership as a Limited Partner. The Vitamin Patch, LLC is the general partner.",
+        'Merchants Benefit Administration (MBA) is the administrator of the health plan. Amalgamated Life Insurance Company underwrites only the $5,000 group term life benefit. You join the VP Limited Partnership as a Limited Partner. The Vitamin Patch, LLC is the general partner.',
         "Your monthly billing is handled through Premier Health Solutions, which is the name you'll see on your statement.",
         "TVP Health Plan is a private group health plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It pays only up to the per-visit maximum. Anything above that is yours to pay. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
-        "Pre-existing conditions: anything you got care or advice for, or had symptoms of, in the 12 months before you start isn't covered by hospital and facility benefits for your first 12 months. Sickness has a 30-day wait.",
+        "Pre-existing conditions aren't covered by the hospital benefit. Sickness has a 30-day wait.",
         "Anything not listed in your schedule of benefits isn't covered.",
         'Coverage ends at 65 for members and spouses, and at 26 for children.',
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see Premier Health Solutions on your statement?\n\u25b6 ( Wait for answer )"
@@ -640,7 +644,7 @@ var CW_DISC = {
       paras: [
         "Just for your records, here's a quick recap of what you'll see in your paperwork.",
         'Your plan uses the First Health Limited Benefit Plan Network.',
-        "It's underwritten by American Financial Security Life Insurance Company or Standard Life and Casualty Insurance Company, depending on your state.",
+        "It's underwritten by American Financial Security Life Insurance Company or Standard Life and Casualty Insurance Company, depending on your state. It's offered through the National Congress of Employers, or NCE.",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
         "RiseHealth STM ___ is private short-term medical group insurance. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. Your coinsurance limit caps only your coinsurance. It isn't an out-of-pocket maximum. Your deductible, copays and anything over a benefit limit are on top of it. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions aren't covered. On a new policy for another term, anything from the earlier term counts as pre-existing.",
@@ -827,7 +831,7 @@ var CW_DISC = {
         'Your plan uses the PHCS Practitioner & Ancillary Network from MultiPlan.',
         "It's underwritten by Everest Reinsurance Company. It's offered through the Affiliated Workers Association, or AWA.",
         'Your monthly billing comes from Premier Health Solutions, which may show on your statement as PHS-HEALTH-BILL, PHSHEALTH or HEALTHPHS.',
-        "CrownPoint STM is a private short-term medical group insurance plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It does not provide coverage for maternity.",
+        "CrownPoint STM is a private short-term medical group insurance plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over. Past a limit, the plan pays nothing more. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions aren't covered; your certificate has the definition and look-back.",
         "Anything not listed in your schedule of benefits isn't covered. Check your certificate for exclusions and limits on things like hospitalization, emergency services, maternity care, preventive care, prescription drugs, and mental health and substance use care. Also check it for any dollar limits.",
         "It doesn't have to follow ACA rules. If it ends or you lose eligibility, you may have to wait for open enrollment to get other coverage.",
@@ -924,7 +928,7 @@ var CW_DISC = {
         "Your monthly billing is handled through FirstEnroll, which is the name you'll see on your statement.",
         "Health Choice Silver is a private limited-benefit fixed indemnity plan. It's not an ACA plan and not major medical. Every benefit has the limits we went over; past a limit, the plan pays nothing more. It pays set amounts with no out-of-pocket maximum, so you pay what it doesn't. It does not provide coverage for maternity, substance abuse, or psychiatric services.",
         "Pre-existing conditions: anything a doctor treated or prescribed for in the 12 months before you start isn't covered for your first 12 months. Sickness has a 30-day wait; injuries don't.",
-        "Anything not in your schedule of benefits isn't covered. Also send it to FirstEnroll at least 15 days before that date.",
+        "Anything not in your schedule of benefits isn't covered.",
         "Do you understand this isn't major medical or an ACA plan, it has the limits we went over, and you'll see FirstEnroll on your statement?\n\u25b6 ( Wait for answer )"
       ],
       bill: 'Your first payment is $___: $___ Health Choice Silver insurance premium, $___ NCE membership, $___ one-time, non-refundable NCE enrollment fee, $___ add-on, if any. Then $___ a month. Your statement shows FirstEnroll. The first month membership fee will be billed today and you agree to be automatically billed each month for the future monthly membership fees.'

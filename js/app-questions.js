@@ -674,6 +674,17 @@ var APPQ_PLANS = [
   }
 ];
 
+// Quick version (Oct 31 2026, approved by Mey): two plain-word questions
+// that cover every portal question, said out loud first. The agent still
+// checks each portal box only after the client says yes; if the client
+// hesitates on any part, read that portal question word for word.
+var APPQ_QUICK = {
+  smartchoice: [
+    "With this plan, you join Population Science Management USA as a Working Owner. That means you'll complete the activities and projects they assign, respond to their requests, stay in contact with them, and keep their company information confidential. If you don't meet the Working Owner requirements, they can buy back your membership. Do you understand and agree?",
+    "As a Working Owner, you get 3 Preferred Units, which aren't registered or publicly traded, and a guaranteed payment for each information request you answer. Your benefits depend on meeting eligibility and paying your premiums on time. Have you read and understood the terms and the LLC agreement, and are you legally able to work as a Working Owner?"
+  ]
+};
+
 // Short titles for each question (Oct 22 2026), shown in bold above the
 // word-for-word text on the On Call tab. Short view shows only these.
 var APPQ_SHORT = {
@@ -908,6 +919,19 @@ function appqListHtml(plan, where) {
   }
   if (plan.note) {
     html += '<p class="appq-note">' + appqEsc(plan.note) + '</p>';
+  }
+  var quick = where === 'cw' && APPQ_QUICK[plan.id];
+  if (quick) {
+    html +=
+      '<div class="appq-intro appq-quick"><span>Quick version: say these ' +
+      quick.length +
+      ', then check each box below after the client says yes</span><ol>' +
+      quick
+        .map(function (s) {
+          return '<li>' + appqEsc(s) + '</li>';
+        })
+        .join('') +
+      '</ol></div>';
   }
   html += '<ol class="appq-list">';
   plan.qs.forEach(function (q, i) {
