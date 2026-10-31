@@ -75,7 +75,7 @@ Live URL: https://cha-sales-tool.vercel.app/
 - js/knowledge_base.js — knowledge base
 - js/plan-data.js — POLICY_DOCS array (plan benefit data objects)
 - js/plan-data-extended.js — extended plan data
-- js/plan-data-pdf-raw.js — extracted plan PDF text
+- js/plan-data-pdf-raw.js — extracted plan PDF text (not loaded by the app since Oct 31 2026; nothing reads it at runtime, kept for scripts/)
 - js/plan-pdf-map.js — plan-to-PDF map
 - js/pdf-knowledge-runtime.js — PDF knowledge runtime
 - js/policy-docs.js — plan card render functions
@@ -110,22 +110,21 @@ Live URL: https://cha-sales-tool.vercel.app/
 8. js/knowledge_base.js
 9. js/plan-data.js
 10. js/plan-data-extended.js
-11. js/plan-data-pdf-raw.js
-12. js/plan-pdf-map.js
-13. js/pdf-knowledge-runtime.js
-14. js/policy-docs.js
-15. js/plans-benefits.js
-16. js/call-playbook.js
-17. js/live-assist.js
-18. js/ai-tools.js
-19. js/training.js
-20. js/compliance.js
-21. js/docusign-walkthrough.js
-22. js/myspace.js
-23. js/sales-tracker.js
-24. js/office.js
-25. js/app.js
-26. js/chat.js (after app.js)
+11. js/plan-pdf-map.js
+12. js/pdf-knowledge-runtime.js
+13. js/policy-docs.js
+14. js/plans-benefits.js
+15. js/call-playbook.js
+16. js/live-assist.js
+17. js/ai-tools.js
+18. js/training.js
+19. js/compliance.js
+20. js/docusign-walkthrough.js
+21. js/myspace.js
+22. js/sales-tracker.js
+23. js/office.js
+24. js/app.js
+25. js/chat.js (after app.js)
 
 ## Color System
 
