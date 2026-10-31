@@ -2061,6 +2061,79 @@ function _psTypeBg(t) {
         : 'rgba(62,207,142,0.08)';
 }
 
+// Plan Scripts, live-call layout (Oct 31 2026): plan picker grouped by
+// type with Recent, then one section at a time with every section tab
+// clickable and a big Next button. Script text is read from PLAN_SCRIPTS
+// unchanged; only the layout is new.
+var planScriptRules = false;
+var PS_RECENT_KEY = 'cha_ps_recent';
+var PS_GROUPS = [
+  { type: 'MEC', label: 'MEC' },
+  { type: 'STM', label: 'Short term (STM)' },
+  { type: 'Limited', label: 'Limited benefit' },
+  { type: 'Shared', label: 'Every call' }
+];
+
+function _psEsc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function _psRecentNames() {
+  var list = [];
+  try {
+    if (typeof chaGet === 'function') list = chaGet(PS_RECENT_KEY, []) || [];
+  } catch (_e) {
+    list = [];
+  }
+  return Array.isArray(list) ? list : [];
+}
+
+function _psRemember(name) {
+  if (!name) return;
+  var list = _psRecentNames().filter(function (n) {
+    return n !== name;
+  });
+  list.unshift(name);
+  try {
+    if (typeof chaSet === 'function') chaSet(PS_RECENT_KEY, list.slice(0, 4));
+  } catch (_e) {}
+}
+
+function _psScrollTop() {
+  var el = document.getElementById('page-planscripts');
+  if (!el || !el.getBoundingClientRect) return;
+  if (el.getBoundingClientRect().top < 0 && el.scrollIntoView) {
+    el.scrollIntoView({ block: 'start' });
+  }
+}
+
+function _psOpen(idx) {
+  planScriptFilter = 'All';
+  planScriptActive = idx;
+  planScriptSection = 0;
+  planScriptRules = false;
+  if (PLAN_SCRIPTS[idx]) _psRemember(PLAN_SCRIPTS[idx].name);
+  renderPlanScripts();
+  _psScrollTop();
+}
+
+function _psGo(si) {
+  planScriptSection = si;
+  renderPlanScripts();
+  _psScrollTop();
+}
+
+function _psBack() {
+  planScriptActive = -1;
+  planScriptRules = false;
+  renderPlanScripts();
+  _psScrollTop();
+}
+
 function _filterPsCards(query) {
   var q = (query || '').toLowerCase().trim();
   var clearBtn = document.getElementById('psSearchClear');
@@ -2076,287 +2149,250 @@ function _filterPsCards(query) {
     c.style.display = match ? '' : 'none';
     if (match) vis++;
   });
-  // Show/hide no results message
+  document.querySelectorAll('.psx-group').forEach(function (g) {
+    var shown = 0;
+    g.querySelectorAll('.ps-card').forEach(function (c) {
+      if (c.style.display !== 'none') shown++;
+    });
+    g.style.display = shown ? '' : 'none';
+  });
+  var recent = document.getElementById('psRecent');
+  if (recent) recent.style.display = q ? 'none' : '';
   var noMsg = document.getElementById('psNoResults');
-  if (!noMsg) {
-    var grid = document.getElementById('psCardGrid');
-    if (grid) {
-      grid.insertAdjacentHTML(
-        'afterend',
-        '<div id="psNoResults" style="display:none;text-align:center;padding:24px 0;color:var(--text-secondary);font-size:14px;">No plans match your search.</div>'
-      );
-      noMsg = document.getElementById('psNoResults');
-    }
-  }
   if (noMsg) noMsg.style.display = q && vis === 0 ? 'block' : 'none';
 }
 
-function renderPlanScripts() {
-  var html = '<div class="ph"><div class="pt">Plan <span>Scripts</span></div>';
-  html +=
-    '<div class="pd">Complete sales scripts for every plan. Select a plan, then follow each section step by step during the call.</div></div>';
-  html += '<div class="stabs" style="margin-bottom:16px;">';
-  ['All', 'MEC', 'STM', 'Limited', 'Shared'].forEach(function (f) {
-    html +=
-      '<button class="stab' +
-      (f === planScriptFilter ? ' active' : '') +
-      '" onclick="planScriptFilter=\'' +
-      f +
-      '\';planScriptActive=-1;planScriptSection=0;renderPlanScripts()">' +
-      f +
-      '</button>';
-  });
-  html += '</div>';
-  var filtered = PLAN_SCRIPTS.filter(function (p) {
-    if (planScriptFilter === 'All') return true;
-    return p.planType === planScriptFilter;
-  });
-  if (filtered.length === 0) {
-    html +=
-      '<div style="text-align:center;padding:40px;color:var(--txt-muted)">No plans in this category</div>';
-    var _page_planscripts = document.getElementById('page-planscripts');
-    if (_page_planscripts) _page_planscripts.innerHTML = html;
-    return;
+function _psComplianceBanner(p) {
+  var n = String(p.name || '');
+  var kind = '';
+  if (n.indexOf('TDK') === 0) kind = 'tdk';
+  else if (p.planType === 'MEC') kind = 'mec';
+  else if (p.planType === 'STM') kind = 'stm';
+  else if (p.planType === 'Limited') kind = 'limited';
+  var text = '';
+  var link = '';
+  if (kind === 'tdk') {
+    text =
+      '<b>TDK Audit Requirements apply.</b> State plan name verbally (TDK 1/2/3/4/5), Working Owner of HCDA, Detego Health as Benefits Administrator, visit limits per tier. TDK 1/2/3: ER, outpatient surgery, ambulance NOT COVERED. Billing: First Enroll.';
+    link = 'View TDK Audit Guide';
+  } else if (kind === 'mec') {
+    text =
+      '<b>MEC plan:</b> State group plan type, Working Owner or Limited Partner disclosure, correct Benefits Administrator name, visit limits and dollar caps, full pre-ex legal definition required.';
+    link = 'View MEC Requirements';
+  } else if (kind === 'stm') {
+    text =
+      '<b>STM plan:</b> Read 15-condition underwriting list, state exact deductible/coinsurance/MOOP. Access Health: 5-day sickness wait, 36-month pre-ex lookback, out-of-network allowed. Galena Economy: doctor visits subject to deductible.';
+    link = 'View STM Requirements';
+  } else if (kind === 'limited') {
+    text =
+      '<b>Limited benefit plan:</b> Explain fixed indemnity structure - plan pays fixed cash amount, not % of bill. No true out-of-pocket maximum. Member may still owe significant balance above the benefit.';
+    link = 'View Limited Requirements';
   }
-  // ── DEFAULT VIEW: all plans as clickable cards ──
-  if (planScriptActive < 0 || planScriptActive >= filtered.length) {
-    // Search bar
-    html += '<div style="position:relative;margin-bottom:14px;">';
-    html +=
-      '<svg style="position:absolute;left:16px;top:50%;transform:translateY(-50%);pointer-events:none;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
-    html +=
-      '<input type="text" id="psSearchInput" placeholder="Search plans..." oninput="_filterPsCards(this.value)" style="width:100%;height:44px;border-radius:999px;border:1px solid var(--border-light, var(--border-default));padding:0 40px 0 44px;font-size:14px;font-family:var(--font-body);background:var(--cha-bg-card);color:var(--text-primary);outline:none;transition:border-color 0.15s;" onfocus="this.style.borderColor=\'#5B8DEF\'" onblur="this.style.borderColor=\'var(--cha-border-default)\'" />';
-    html +=
-      '<button id="psSearchClear" onclick="var i=document.getElementById(\'psSearchInput\');if(i){i.value=\'\';_filterPsCards(\'\');i.focus();}" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-tertiary);font-size:18px;line-height:1;padding:4px;">&times;</button>';
-    html += '</div>';
-    html +=
-      '<div id="psCardGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;">';
-    filtered.forEach(function (p, idx) {
-      var tc = _psTypeColor(p.planType);
-      var bg = _psTypeBg(p.planType);
-      html +=
-        '<div class="ps-card" data-ps-search="' +
-        (p.name + ' ' + p.planType).toLowerCase() +
-        '" onclick="planScriptActive=' +
-        idx +
-        ";planScriptSection=0;renderPlanScripts()\" style=\"background:var(--cha-bg-card);border:1px solid var(--border-light, var(--border-default));border-radius:16px;padding:16px 18px;cursor:pointer;transition:all 0.15s ease;min-height:90px;display:flex;flex-direction:column;justify-content:space-between;\" onmouseover=\"this.style.borderColor='#5175f1';this.style.boxShadow='0 0 0 2px rgba(81,117,241,0.15)';this.style.transform='translateY(-1px)'\" onmouseout=\"this.style.borderColor='var(--cha-border-default)';this.style.boxShadow='none';this.style.transform='none'\">";
-      html +=
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
-      html +=
-        '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' +
-        tc +
-        ';flex-shrink:0;"></span>';
-      html +=
-        '<span style="font-family:var(--font-ui);font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.3;">' +
-        p.name +
-        '</span>';
-      html += '</div>';
-      html +=
-        '<div style="display:flex;align-items:center;gap:4px;margin-bottom:6px;">';
-      html +=
-        '<span style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:' +
-        bg +
-        ';color:' +
-        tc +
-        ';">' +
-        p.planType +
-        '</span>';
-      html += '</div>';
-      html += '<div style="display:flex;flex-wrap:wrap;gap:3px;">';
-      var pillLabels = [
-        'Opening',
-        'RX',
-        'Closing',
-        'Verify',
-        'Post-Close',
-        'Benefits'
-      ];
-      p.sections.forEach(function (s, si) {
-        var pl = pillLabels[si] || s.title;
-        html +=
-          '<span style="font-size:9px;padding:2px 6px;border-radius:999px;background:var(--cha-bg-muted);color:var(--text-secondary);">' +
-          pl +
-          '</span>';
-      });
-      html += '</div></div>';
-    });
-    html += '</div>';
-    var _page_planscripts = document.getElementById('page-planscripts');
-    if (_page_planscripts) _page_planscripts.innerHTML = html;
-    return;
-  }
+  if (!text) return null;
+  return {
+    label: kind === 'tdk' ? 'TDK rules' : p.planType + ' rules',
+    html:
+      '<div class="psx-rules-panel"><div class="psx-rules-text">' +
+      text +
+      '</div><button type="button" class="psx-rules-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">' +
+      link +
+      ' &#8594;</button></div>'
+  };
+}
 
-  // ── SELECTED PLAN VIEW ──
-  var activePlan = filtered[planScriptActive];
-  var typeColor = _psTypeColor(activePlan.planType);
-
-  var currentTitle =
-    (activePlan.sections[planScriptSection] &&
-      activePlan.sections[planScriptSection].title) ||
-    'Section ' + (planScriptSection + 1);
-  var progressPct = Math.round(
-    ((planScriptSection + 1) / activePlan.sections.length) * 100
-  );
-
-  html += '<div class="ps-pin"><div class="ps-pin-nav">';
-  html +=
-    '<button type="button" class="ps-pin-btn" onclick="planScriptActive=-1;renderPlanScripts()">\u2190 All Plans</button>';
-  html += '<span class="ps-name">' + activePlan.name + '</span>';
-  html +=
-    '<span class="ps-type" style="background:' +
-    typeColor +
-    ';">' +
-    activePlan.planType +
-    '</span>';
-  if (planScriptSection < activePlan.sections.length - 1) {
-    html +=
-      '<button type="button" class="ps-pin-next" onclick="planScriptSection++;renderPlanScripts()">Next \u2192</button>';
-  } else {
-    html +=
-      '<button type="button" class="ps-pin-finish" onclick="planScriptActive=-1;renderPlanScripts()">Finish \u2713</button>';
-  }
-  html += '</div>';
-  html += '<div class="ps-progress" role="group" aria-label="Script sections">';
-  html += '<span class="ps-progress-now ps-step-on">' + currentTitle + '</span>';
-  html +=
-    '<span class="ps-progress-track" aria-hidden="true"><span class="ps-progress-fill" style="width:' +
-    progressPct +
-    '%;"></span></span>';
-  html += '<span class="ps-progress-rest">';
-  activePlan.sections.forEach(function (sec, si) {
-    if (si <= planScriptSection) return;
-    var laterTitle = sec.title || 'Section ' + (si + 1);
-    html +=
-      '<button type="button" class="ps-step-btn" onclick="planScriptSection=' +
-      si +
-      ';renderPlanScripts()">' +
-      laterTitle +
-      '</button>';
-  });
-  html += '</span></div>';
-
-  // Compliance banner — TDK by name, everything else by the script's planType
-  var _complianceBannerType = (function(p) {
-    var n = String(p.name || '');
-    if (n.indexOf('TDK') === 0) return 'tdk';
-    if (p.planType === 'MEC') return 'mec';
-    if (p.planType === 'STM') return 'stm';
-    if (p.planType === 'Limited') return 'limited';
-    return '';
-  })(activePlan);
-
-  var _complianceBanner = '';
-  if (_complianceBannerType === 'tdk') {
-    _complianceBanner = '<div class="ps-banner" style="background:#FFFBEB;border:1px solid #FCD34D;border-left:4px solid #F59E0B;">';
-    _complianceBanner += '<span class="ps-banner-ico">⚠️</span>';
-    _complianceBanner += '<span class="ps-banner-text" style="color:#92400E;"><b>TDK Audit Requirements apply.</b> State plan name verbally (TDK 1/2/3/4/5), Working Owner of HCDA, Detego Health as Benefits Administrator, visit limits per tier. TDK 1/2/3: ER, outpatient surgery, ambulance NOT COVERED. Billing: First Enroll.</span>';
-    _complianceBanner += '<button type="button" class="ps-banner-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View TDK Audit Guide &#8594;</button>';
-    _complianceBanner += '</div>';
-  } else if (_complianceBannerType === 'mec') {
-    _complianceBanner = '<div class="ps-banner" style="background:#EFF6FF;border:1px solid #BFDBFE;border-left:4px solid #5B8DEF;">';
-    _complianceBanner += '<span class="ps-banner-ico">ℹ️</span>';
-    _complianceBanner += '<span class="ps-banner-text" style="color:#1E40AF;"><b>MEC plan:</b> State group plan type, Working Owner or Limited Partner disclosure, correct Benefits Administrator name, visit limits and dollar caps, full pre-ex legal definition required.</span>';
-    _complianceBanner += '<button type="button" class="ps-banner-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View MEC Requirements &#8594;</button>';
-    _complianceBanner += '</div>';
-  } else if (_complianceBannerType === 'stm') {
-    _complianceBanner = '<div class="ps-banner" style="background:#FFFBEB;border:1px solid #FDE68A;border-left:4px solid #D97706;">';
-    _complianceBanner += '<span class="ps-banner-ico">ℹ️</span>';
-    _complianceBanner += '<span class="ps-banner-text" style="color:#92400E;"><b>STM plan:</b> Read 15-condition underwriting list, state exact deductible/coinsurance/MOOP. Access Health: 5-day sickness wait, 36-month pre-ex lookback, out-of-network allowed. Galena Economy: doctor visits subject to deductible.</span>';
-    _complianceBanner += '<button type="button" class="ps-banner-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View STM Requirements &#8594;</button>';
-    _complianceBanner += '</div>';
-  } else if (_complianceBannerType === 'limited') {
-    _complianceBanner = '<div class="ps-banner" style="background:#F9FAFB;border:1px solid #E5E7EB;border-left:4px solid #6B7280;">';
-    _complianceBanner += '<span class="ps-banner-ico">ℹ️</span>';
-    _complianceBanner += '<span class="ps-banner-text" style="color:#374151;"><b>Limited benefit plan:</b> Explain fixed indemnity structure — plan pays fixed cash amount, not % of bill. No true out-of-pocket maximum. Member may still owe significant balance above the benefit.</span>';
-    _complianceBanner += '<button type="button" class="ps-banner-link" onclick="_showComboPage(\'compliance\',\'compliancecenter\')">View Limited Requirements &#8594;</button>';
-    _complianceBanner += '</div>';
-  }
-
-  html += _complianceBanner;
-  html += '</div>';
-  html += '<div class="ps-plan-card">';
-
-  activePlan.sections.forEach(function (sec, si) {
-    if (si !== planScriptSection) return;
-    var c = sec.content || '';
-    c = c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    c = c.replace(/\n/g, '<br>');
-    // Line-by-line parsing handles all symbols — no pre-wrapping needed
-    var lines = c.split('<br>');
-    var parsedLines = [];
-    var beatNum = 0;
-    lines.forEach(function (line) {
-      var trimLine = line.trim();
-      if (!trimLine) return;
-      if (/\( *DO NOT|\( *do not|✖/.test(trimLine)) {
-        var cleanDo = trimLine.replace(/^✖\s*/, '');
-        parsedLines.push(
-          '<div class="ps-marker ps-marker-stop" style="background:var(--cha-danger-bg);border-left:3px solid #dc2626;">' +
-            '<span class="ps-beat-slot" style="color:#dc2626;">\u2716</span>' +
-            '<div class="ps-marker-copy" style="font-size:12px;font-weight:700;color:#dc2626;letter-spacing:0.5px;">' +
-            cleanDo +
-            '</div></div>'
-        );
-      } else if (/\( *[Ww]ait for/.test(trimLine)) {
-        var cleanWait = trimLine.replace(/^▶\s*/, '');
-        parsedLines.push(
-          '<div class="ps-marker ps-marker-wait" style="background:var(--cha-warning-bg);border-left:3px solid #f59e0b;">' +
-            '<span class="ps-beat-slot ps-pause" style="color:var(--cha-warning-text);" aria-hidden="true"><i></i><i></i></span>' +
-            '<div class="ps-marker-copy" style="font-size:13px;font-style:italic;color:var(--cha-warning-text);">' +
-            cleanWait +
-            '</div></div>'
-        );
-      } else if (/^✔/.test(trimLine)) {
-        var cleanOk = trimLine.replace(/^✔\s*/, '');
-        parsedLines.push(
-          '<div class="ps-marker ps-marker-ok" style="background:var(--cha-success-bg);border-left:3px solid #16a34a;">' +
-            '<span class="ps-beat-slot" style="color:var(--cha-success-text);">\u2714</span>' +
-            '<div class="ps-marker-copy" style="font-size:13px;font-weight:600;color:var(--cha-success-text);">' +
-            cleanOk +
-            '</div></div>'
-        );
-      } else {
-        var parsed = trimLine;
-        parsed = parsed.replace(
-          /(_{3,}|\$___)/g,
-          '<span class="ps-blank">$1</span>'
-        );
-        parsed = parsed.replace(
+function _psLinesHtml(content) {
+  var c = String(content || '');
+  c = c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  var out = [];
+  c.split('\n').forEach(function (line) {
+    var t = line.trim();
+    if (!t) return;
+    if (/\( *DO NOT|\( *do not|\u2716/.test(t)) {
+      out.push(
+        '<div class="psx-tag psx-tag-stop">' +
+          t.replace(/^\u2716\s*/, '') +
+          '</div>'
+      );
+    } else if (/\( *[Ww]ait for/.test(t)) {
+      out.push(
+        '<div class="psx-tag psx-tag-wait"><span class="psx-pause" aria-hidden="true"><i></i><i></i></span>' +
+          t.replace(/^\u25b6\s*/, '') +
+          '</div>'
+      );
+    } else if (/^\u2714/.test(t)) {
+      out.push(
+        '<div class="psx-tag psx-tag-ok">' +
+          t.replace(/^\u2714\s*/, '') +
+          '</div>'
+      );
+    } else {
+      var parsed = t
+        .replace(/(_{3,}|\$___)/g, '<span class="ps-blank">$1</span>')
+        .replace(
           /\[Customer Name\]/gi,
           '<span class="ps-blank">[Customer Name]</span>'
-        );
-        // Unfinished blanks in the script PDF: flag them so agents don't read them aloud
-        parsed = parsed.replace(
+        )
+        .replace(
           /\[(VERIFY[^\]]*|COUNT THE BOXES[^\]]*)\]/g,
           '<span class="ps-verify" title="Not confirmed yet. Do not read aloud.">[$1]</span>'
         );
-        beatNum += 1;
-        parsedLines.push(
-          '<div class="ps-beat"><span class="ps-beat-num">' +
-            beatNum +
-            '</span><div class="ps-beat-body"><div class="ps-script-p">' +
-            parsed +
-            '</div></div></div>'
-        );
+      out.push('<p class="psx-p">' + parsed + '</p>');
+    }
+  });
+  return out.join('');
+}
+
+function renderPlanScripts() {
+  var host = document.getElementById('page-planscripts');
+  planScriptFilter = 'All';
+  var html = '';
+
+  // -- PICKER: search, recent, plans grouped by type --
+  if (planScriptActive < 0 || planScriptActive >= PLAN_SCRIPTS.length) {
+    html += '<div class="psx psx-pick">';
+    html +=
+      '<label class="psx-search"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
+      '<span class="psx-sr">Search plans</span>' +
+      '<input type="text" id="psSearchInput" autocomplete="off" placeholder="Type a plan: tdk, goodhealth, smart choice, harbor..." oninput="_filterPsCards(this.value)" />' +
+      '<button type="button" id="psSearchClear" class="psx-clear" aria-label="Clear search" onclick="var i=document.getElementById(\'psSearchInput\');if(i){i.value=\'\';_filterPsCards(\'\');i.focus();}">&times;</button></label>';
+
+    var recent = [];
+    _psRecentNames().forEach(function (name) {
+      for (var i = 0; i < PLAN_SCRIPTS.length; i++) {
+        if (PLAN_SCRIPTS[i].name === name) {
+          recent.push(i);
+          break;
+        }
       }
     });
-    c = parsedLines.join('');
+    if (recent.length) {
+      html += '<div class="psx-recent" id="psRecent"><span class="psx-label">Recent</span>';
+      recent.forEach(function (i) {
+        html +=
+          '<button type="button" class="psx-chip" onclick="_psOpen(' +
+          i +
+          ')">' +
+          _psEsc(PLAN_SCRIPTS[i].name) +
+          '</button>';
+      });
+      html += '</div>';
+    }
 
-    var secId = 'ps-sec-' + si;
-
-    html += '<div id="' + secId + '" class="ps-script-col">';
-    html += '<div class="ps-script-body">';
-    html +=
-      '<div class="ps-bubble-text" style="color:var(--text-primary);font-family:var(--font-body);">' +
-      c +
-      '</div>';
+    html += '<div id="psCardGrid" class="psx-groups">';
+    PS_GROUPS.forEach(function (g) {
+      var rows = '';
+      PLAN_SCRIPTS.forEach(function (p, idx) {
+        if (p.planType !== g.type) return;
+        rows +=
+          '<button type="button" class="ps-card psx-row" data-ps-search="' +
+          _psEsc((p.name + ' ' + p.planType).toLowerCase()) +
+          '" onclick="_psOpen(' +
+          idx +
+          ')">' +
+          _psEsc(p.name) +
+          '</button>';
+      });
+      if (!rows) return;
+      html +=
+        '<section class="psx-group psx-g-' +
+        g.type +
+        '"><div class="psx-group-head"><span class="psx-dot" aria-hidden="true"></span>' +
+        _psEsc(g.label) +
+        '</div>' +
+        rows +
+        '</section>';
+    });
     html += '</div>';
     html +=
-      '<button type="button" class="ps-copy" onclick="copyScriptBubble(this)">TAP TO COPY</button>';
+      '<div id="psNoResults" class="psx-empty" style="display:none">No plans match your search.</div>';
     html += '</div>';
-  });
+    if (host) host.innerHTML = html;
+    return;
+  }
 
+  // -- LIVE SCRIPT: one section at a time --
+  var plan = PLAN_SCRIPTS[planScriptActive];
+  var total = plan.sections.length;
+  if (planScriptSection < 0 || planScriptSection >= total) planScriptSection = 0;
+  var sec = plan.sections[planScriptSection] || {};
+  var rules = _psComplianceBanner(plan);
+
+  html += '<div class="psx psx-live">';
+  html += '<div class="psx-top">';
+  html +=
+    '<button type="button" class="psx-back" onclick="_psBack()">&#8592; Plans</button>';
+  html += '<h2 class="psx-name">' + _psEsc(plan.name) + '</h2>';
+  html +=
+    '<span class="psx-type psx-type-' +
+    _psEsc(plan.planType) +
+    '">' +
+    _psEsc(plan.planType) +
+    '</span>';
+  html += '<span class="psx-grow"></span>';
+  if (rules) {
+    html +=
+      '<button type="button" class="psx-rules' +
+      (planScriptRules ? ' is-on' : '') +
+      '" aria-expanded="' +
+      (planScriptRules ? 'true' : 'false') +
+      '" onclick="planScriptRules=!planScriptRules;renderPlanScripts()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>' +
+      _psEsc(rules.label) +
+      '</button>';
+  }
   html += '</div>';
-  var _page_planscripts = document.getElementById('page-planscripts');
-  if (_page_planscripts) _page_planscripts.innerHTML = html;
+  if (rules && planScriptRules) html += rules.html;
+
+  if (total > 1) {
+    html +=
+      '<div class="psx-steps" role="tablist" aria-label="Script sections">';
+    plan.sections.forEach(function (s, si) {
+      var on = si === planScriptSection;
+      html +=
+        '<button type="button" role="tab" aria-selected="' +
+        (on ? 'true' : 'false') +
+        '" class="psx-step' +
+        (on ? ' is-on' : '') +
+        '" onclick="_psGo(' +
+        si +
+        ')"><span class="psx-step-n">' +
+        (si + 1) +
+        '</span>' +
+        _psEsc(s.title || 'Section ' + (si + 1)) +
+        '</button>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="ps-plan-card psx-card">';
+  html +=
+    '<div class="ps-bubble-text psx-body">' + _psLinesHtml(sec.content) + '</div>';
+  html += '<div class="psx-foot">';
+  html +=
+    '<span class="psx-count">Step ' + (planScriptSection + 1) + ' of ' + total + '</span>';
+  html +=
+    '<span class="psx-bar" aria-hidden="true"><span style="width:' +
+    Math.round(((planScriptSection + 1) / total) * 100) +
+    '%"></span></span>';
+  html +=
+    '<button type="button" class="psx-copy" onclick="copyScriptBubble(this)">Copy</button>';
+  if (planScriptSection > 0) {
+    html +=
+      '<button type="button" class="psx-prev" onclick="_psGo(' +
+      (planScriptSection - 1) +
+      ')">&#8592; Back</button>';
+  }
+  if (planScriptSection < total - 1) {
+    var nextTitle = plan.sections[planScriptSection + 1].title || 'next';
+    html +=
+      '<button type="button" class="psx-next" onclick="_psGo(' +
+      (planScriptSection + 1) +
+      ')">Next: ' +
+      _psEsc(nextTitle) +
+      ' &#8594;</button>';
+  } else {
+    html +=
+      '<button type="button" class="psx-next" onclick="_psBack()">Done &#10003;</button>';
+  }
+  html += '</div></div></div>';
+  if (host) host.innerHTML = html;
 }
