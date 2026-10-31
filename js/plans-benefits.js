@@ -1882,7 +1882,11 @@ var CHA_NETWORK_GUIDE = [
       ['Advanced Wellness PLUS', 'FE'],
       ['Sigma Care PLUS', 'FE'],
       ['GoodHealth (GHDP)', 'FE'],
-      ['TDK', 'FE']
+      ['TDK', 'FE'],
+      ['HD HealthAscent', 'PR'],
+      ['RiseHealth STM', 'PR'],
+      ['TVP Health', 'PR'],
+      ['PrimeProtect', 'PR']
     ]
   },
   {
@@ -1898,7 +1902,10 @@ var CHA_NETWORK_GUIDE = [
       ['Access Health STM', 'FE'],
       ['BWA Americare', 'FE'],
       ['Pinnacle Protect 2-4', 'NEO'],
-      ['Health Choice Silver', 'FE']
+      ['Health Choice Silver', 'FE'],
+      ['CrownPoint STM', 'PR'],
+      ['AWA TrueHealth', 'PR'],
+      ['AdvantCare', 'PR']
     ]
   },
   {
@@ -1909,10 +1916,7 @@ var CHA_NETWORK_GUIDE = [
       { label: 'First Health', url: 'https://providerlocator.firsthealth.com' },
       { label: 'MultiPlan', url: 'https://providersearch.multiplan.com' }
     ],
-    plans: [
-      ['AFRP Galena STM', 'NEO'],
-      ['AWA SimpleShield', 'NEO']
-    ]
+    plans: [['AFRP Galena STM', 'NEO']]
   },
   {
     name: 'Cigna PPO',
@@ -1924,7 +1928,10 @@ var CHA_NETWORK_GUIDE = [
         url: 'https://hcpdirectory.cigna.com/web/public/consumer/directory/search'
       }
     ],
-    plans: [['Harbor STM', 'NEO']]
+    plans: [
+      ['Harbor STM', 'NEO'],
+      ['NexusCare PPO STM', 'PR']
+    ]
   },
   {
     name: 'Aetna Open Choice PPO',
@@ -1940,10 +1947,13 @@ var CHA_NETWORK_GUIDE = [
   },
   {
     name: 'No network required',
-    how: 'Bills are repriced by Medical Bill Repricer (MBR). No provider search.',
+    how: 'No provider search. BWA Paramount: bills are repriced by Medical Bill Repricer (MBR). NexusCare Base STM: the plan pays its own eligible amounts (reference-based pricing).',
     notes: [],
     links: [],
-    plans: [['BWA Paramount', 'FE']]
+    plans: [
+      ['BWA Paramount', 'FE'],
+      ['NexusCare Base STM', 'PR']
+    ]
   }
 ];
 
@@ -1951,7 +1961,7 @@ var ngQuery = '';
 var ngPlatform = 'All';
 
 function _ngSegHtml() {
-  var counts = { All: 0, NEO: 0, FE: 0 };
+  var counts = { All: 0, NEO: 0, FE: 0, PR: 0 };
   CHA_NETWORK_GUIDE.forEach(function (n) {
     n.plans.forEach(function (p) {
       counts.All++;
@@ -1961,12 +1971,14 @@ function _ngSegHtml() {
   var segs = [
     ['All', 'All plans', counts.All, 'all'],
     ['NEO', 'NEO', counts.NEO, 'neo'],
-    ['FE', 'FirstEnroll', counts.FE, 'fe']
+    ['FE', 'FirstEnroll', counts.FE, 'fe'],
+    ['PR', 'Premier', counts.PR, 'pr']
   ];
   var notes = {
-    All: 'NEO bills through Neo Health Solutions. FirstEnroll bills through FirstEnroll.',
+    All: 'NEO bills through Neo Health Solutions. FirstEnroll bills through FirstEnroll. Premier bills through Premier Health Solutions.',
     NEO: 'Billing: Neo Health Solutions',
-    FE: 'Billing: FirstEnroll'
+    FE: 'Billing: FirstEnroll',
+    PR: 'Billing: Premier Health Solutions'
   };
   return (
     '<div class="qr-seg" role="group" aria-label="Platform">' +
@@ -2675,6 +2687,18 @@ var CHA_QUICK_REF = [
     vault: ''
   }
 ];
+
+// Plans pulled from the core lineup (Oct 20 and Oct 26 2026, Mey) stay
+// off Quick Reference, the same set hidden on On Call.
+var QR_HIDE = [
+  'AWA SimpleShield',
+  'HealthEssential',
+  'HealthBoost',
+  'AdvantCare 50'
+];
+CHA_QUICK_REF = CHA_QUICK_REF.filter(function (p) {
+  return QR_HIDE.indexOf(p.name) === -1;
+});
 
 var qrPlatform = 'All';
 var qrType = 'All';
