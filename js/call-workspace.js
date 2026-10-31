@@ -3013,32 +3013,112 @@ function cwCardBenefits(fam, tier) {
   return null;
 }
 
-function cwCardBenHtml(cats) {
-  return cats
-    .map(function (c) {
-      var rows = (c.items || [])
-        .map(function (item) {
-          var s = String(item || '');
-          var k = s.indexOf(': ');
-          if (k > 0 && k <= 34) {
-            return (
-              '<div class="cw-ben"><span>' +
-              cwEsc(s.slice(0, k)) +
-              '</span><b>' +
-              cwEsc(s.slice(k + 2)) +
-              '</b></div>'
-            );
-          }
+// Plan card categories that are not benefits (price, admin, eligibility
+// and so on) stay off the On Call Plan tab to keep it short.
+var CW_SKIP_CAT =
+  /price|cost|rates?\b|admin|eligib|enrol|billing|plan tier|structure|^network|^provider|contact|saving|additional|value-added|peer|association|discount|overview|plan notes/i;
+
+function cwCardRows(cats) {
+  var rows = [];
+  var more = [];
+  cats.forEach(function (c) {
+    if (CW_SKIP_CAT.test(c.category || '')) return;
+    (c.items || []).forEach(function (item) {
+      var s = String(item || '');
+      var k = s.indexOf(': ');
+      if (k > 0 && k <= 34) rows.push([s.slice(0, k), s.slice(k + 2), 0]);
+      else more.push(s);
+    });
+  });
+  return { rows: rows, more: more };
+}
+
+// Big tiles for doctor / specialist / urgent care / hospital, a short list
+// for the rest (extra rows folded under More), waiting and pre-ex last.
+var CW_KEYS = [
+  /^(doctor|primary|pcp|physician|office visit)/i,
+  /specialist/i,
+  /urgent/i,
+  /^(hospital|inpatient)/i
+];
+
+function cwBenLayout(rows, more, note) {
+  var used = {};
+  var keys = [];
+  CW_KEYS.forEach(function (re) {
+    for (var i = 0; i < rows.length; i++) {
+      if (!used[i] && !rows[i][2] && re.test(rows[i][0])) {
+        used[i] = 1;
+        keys.push(rows[i]);
+        return;
+      }
+    }
+  });
+  var rest = [];
+  var warns = [];
+  rows.forEach(function (r, i) {
+    if (used[i]) return;
+    if (r[2]) warns.push(r);
+    else rest.push(r);
+  });
+  var line = function (r) {
+    return (
+      '<div class="cw-ben"><span>' +
+      cwEsc(r[0]) +
+      '</span><b>' +
+      cwEsc(r[1]) +
+      '</b></div>'
+    );
+  };
+  var html = '';
+  if (keys.length) {
+    html +=
+      '<div class="cw-keys">' +
+      keys
+        .map(function (r) {
           return (
-            '<div class="cw-ben cw-ben-full"><b>' + cwEsc(s) + '</b></div>'
+            '<div class="cw-key"><span>' +
+            cwEsc(r[0]) +
+            '</span><b>' +
+            cwEsc(r[1]) +
+            '</b></div>'
           );
         })
-        .join('');
-      return (
-        '<div class="cw-bcat">' + cwEsc(c.category || '') + '</div>' + rows
-      );
-    })
-    .join('');
+        .join('') +
+      '</div>';
+  }
+  html += rest.slice(0, 6).map(line).join('');
+  var extra =
+    rest.slice(6).map(line).join('') +
+    more
+      .map(function (m) {
+        return '<div class="cw-ben cw-ben-full"><b>' + cwEsc(m) + '</b></div>';
+      })
+      .join('');
+  if (extra) {
+    html +=
+      '<details class="cw-more"><summary>More benefits</summary>' +
+      extra +
+      '</details>';
+  }
+  if (warns.length) {
+    html +=
+      '<div class="cw-warns">' +
+      warns
+        .map(function (r) {
+          return (
+            '<div class="cw-ben is-warn"><span>' +
+            cwEsc(r[0]) +
+            '</span><b>' +
+            cwEsc(r[1]) +
+            '</b></div>'
+          );
+        })
+        .join('') +
+      '</div>';
+  }
+  if (note) html += '<p class="cw-foot">' + cwEsc(note) + '</p>';
+  return html;
 }
 
 function cwPlanTab(tier, fam) {
@@ -3053,33 +3133,21 @@ function cwPlanTab(tier, fam) {
       : '') +
     '</div>';
   var links = '';
-  var cardBen = '';
+  var note = '';
+  var rows = tier.ben;
+  var more = [];
   var portal = fam && CW_PORTAL_BEN[fam.name];
   var pRows = portal && portal.tiers[tier.tier];
-  if (!tier.ben.length && pRows) {
-    cardBen =
-      pRows
-        .map(function (b) {
-          return (
-            '<div class="cw-ben' +
-            (b[2] ? ' is-warn' : '') +
-            '"><span>' +
-            cwEsc(b[0]) +
-            '</span><b>' +
-            cwEsc(b[1]) +
-            '</b></div>'
-          );
-        })
-        .join('') +
-      '<p class="cw-foot">Source: ' +
-      cwEsc(portal.src) +
-      '.</p>';
-  } else if (!tier.ben.length) {
+  if (!rows.length && pRows) {
+    rows = pRows;
+    note = 'Source: ' + portal.src + '.';
+  } else if (!rows.length) {
     var cats = cwCardBenefits(fam, tier);
     if (cats) {
-      cardBen =
-        '<p class="cw-muted">From the plan card. Match the tier the client picked.</p>' +
-        cwCardBenHtml(cats);
+      var flat = cwCardRows(cats);
+      rows = flat.rows;
+      more = flat.more;
+      note = 'From the plan card. Match the tier the client picked.';
     } else {
       links =
         '<p class="cw-muted">No benefit sheet on file for this plan yet. Read the benefits from the plan script.</p>';
@@ -3091,19 +3159,7 @@ function cwPlanTab(tier, fam) {
         '">Open plan card</button></div>';
     }
   }
-  var ben = tier.ben
-    .map(function (b) {
-      return (
-        '<div class="cw-ben' +
-        (b[2] ? ' is-warn' : '') +
-        '"><span>' +
-        cwEsc(b[0]) +
-        '</span><b>' +
-        cwEsc(b[1]) +
-        '</b></div>'
-      );
-    })
-    .join('');
+  var ben = rows.length ? cwBenLayout(rows, more, note) : '';
   var hh = '';
   for (var i = 1; i <= 10; i++) {
     hh +=
@@ -3120,7 +3176,6 @@ function cwPlanTab(tier, fam) {
     '<div class="cw-two"><section class="cw-card">' +
     head +
     ben +
-    cardBen +
     links +
     '</section><section class="cw-card"><div class="cw-row"><h3>Meds - PAP check</h3><select id="cw-hh" class="cw-select">' +
     hh +

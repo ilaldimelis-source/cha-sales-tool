@@ -5845,6 +5845,59 @@
       .cw-ben.cw-ben-full {
         grid-template-columns: 1fr;
       }
+      /* On Call Plan tab: key benefit tiles (Oct 31 2026) - override block */
+      .cw-keys {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin: 6px 0 10px;
+      }
+      .cw-key {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgb(255 255 255 / 72%);
+        box-shadow: 0 2px 8px rgb(15 23 42 / 6%);
+      }
+      .cw-key span {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--cha-text-tertiary);
+      }
+      .cw-key b {
+        font-size: 14.5px;
+        font-weight: 700;
+        line-height: 1.35;
+        color: var(--cha-text-primary);
+      }
+      .cw-more {
+        margin-top: 6px;
+      }
+      .cw-more summary {
+        cursor: pointer;
+        padding: 8px 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--cha-accent);
+      }
+      .cw-warns {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 10px;
+      }
+      .cw-warns .cw-ben.is-warn {
+        margin-top: 0;
+      }
+      @media (max-width: 520px) {
+        .cw-keys {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
     </style>
   </head>
   <body>
