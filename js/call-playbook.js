@@ -2200,33 +2200,85 @@ function _psComplianceBanner(p) {
   };
 }
 
-function _psLinesHtml(content) {
+// Color-codes the who's-who in the disclosures (network, underwriter,
+// association, administrator, billing) without changing any words.
+// Works on already-escaped text; only wraps matches in spans.
+var PS_HL = [
+  { cls: 'net', re: /(uses the )(.+?)(?= for )/g },
+  { cls: 'net', re: /(write down )(.+?)(?=\.(?:\s|$)|$)/g },
+  { cls: 'uw', re: /(underwritten by )(.+?)(?= and offered through|\.(?:\s|$)|$)/g },
+  { cls: 'assoc', re: /(offered through (?:the )?)(.+?)(?=,|\.(?:\s|$)|$)/g },
+  { cls: 'assoc', re: /(sponsored by )(.+?)(?= and offered through|,|\.(?:\s|$)|$)/g },
+  { cls: 'admin', re: /(Administrator: )(.+?)(?=\s*$)/g },
+  { cls: 'admin', re: /(administered by )(.+?)(?= and offered through|,|\.(?:\s|$)|$)/g },
+  { cls: 'admin', re: /(Claims are handled by )(.+?)(?=;|,|\.(?:\s|$)|$)/g },
+  { cls: 'bill', re: /(billing is handled through )(.+?)(?=,|\.(?:\s|$)|$)/g }
+];
+var PS_HL_LABELS = [
+  ['net', 'Network'],
+  ['uw', 'Underwriter'],
+  ['assoc', 'Association / sponsor'],
+  ['admin', 'Administrator'],
+  ['bill', 'Billing name']
+];
+
+function _psHighlight(t) {
+  PS_HL.forEach(function (h) {
+    t = t.replace(h.re, function (m, lead, name) {
+      return lead + '<span class="psx-hl psx-hl-' + h.cls + '">' + name + '</span>';
+    });
+  });
+  return t
+    .replace(/(NOT an ACA plan|not an ACA)/g, '<strong>$1</strong>')
+    .replace(/(pre-existing condition(?: clause)?)/gi, '<strong>$1</strong>')
+    .replace(/(\d+-day waiting period)/gi, '<strong>$1</strong>');
+}
+
+function _psLinesHtml(content, isPostClose) {
   var c = String(content || '');
   c = c.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   var out = [];
+  var inBox = false;
+  var closeBox = function () {
+    if (inBox) out.push('</div>');
+    inBox = false;
+  };
   c.split('\n').forEach(function (line) {
     var t = line.trim();
     if (!t) return;
-    if (/\( *DO NOT|\( *do not|\u2716/.test(t)) {
+    if (isPostClose && !inBox && /^Just for your records/i.test(t)) {
+      inBox = true;
+      var legend = PS_HL_LABELS.map(function (l) {
+        return '<span class="psx-hl psx-hl-' + l[0] + '">' + l[1] + '</span>';
+      }).join('');
+      out.push(
+        '<div class="psx-disc"><div class="psx-disc-head"><span>Disclosures: read word for word</span><span class="psx-legend">' +
+          legend +
+          '</span></div>'
+      );
+    } else if (inBox && /friends or family/i.test(t)) {
+      closeBox();
+    }
+    if (/\( *DO NOT|\( *do not|✖/.test(t)) {
       out.push(
         '<div class="psx-tag psx-tag-stop">' +
-          t.replace(/^\u2716\s*/, '') +
+          t.replace(/^✖\s*/, '') +
           '</div>'
       );
     } else if (/\( *[Ww]ait for/.test(t)) {
       out.push(
         '<div class="psx-tag psx-tag-wait"><span class="psx-pause" aria-hidden="true"><i></i><i></i></span>' +
-          t.replace(/^\u25b6\s*/, '') +
+          t.replace(/^▶\s*/, '') +
           '</div>'
       );
-    } else if (/^\u2714/.test(t)) {
+    } else if (/^✔/.test(t)) {
       out.push(
         '<div class="psx-tag psx-tag-ok">' +
-          t.replace(/^\u2714\s*/, '') +
+          t.replace(/^✔\s*/, '') +
           '</div>'
       );
     } else {
-      var parsed = t
+      var parsed = _psHighlight(t)
         .replace(/(_{3,}|\$___)/g, '<span class="ps-blank">$1</span>')
         .replace(
           /\[Customer Name\]/gi,
@@ -2239,7 +2291,22 @@ function _psLinesHtml(content) {
       out.push('<p class="psx-p">' + parsed + '</p>');
     }
   });
+  closeBox();
   return out.join('');
+}
+
+function _psTileHtml(name) {
+  var n = String(name || '');
+  var cut = n.indexOf(' (');
+  var main = cut > 0 ? n.slice(0, cut) : n;
+  var sub = cut > 0 ? n.slice(cut + 1) : '';
+  return (
+    '<span class="psx-dot" aria-hidden="true"></span><span class="psx-row-text"><span class="psx-row-name">' +
+    _psEsc(main) +
+    '</span>' +
+    (sub ? '<span class="psx-row-sub">' + _psEsc(sub) + '</span>' : '') +
+    '</span>'
+  );
 }
 
 function renderPlanScripts() {
@@ -2288,8 +2355,10 @@ function renderPlanScripts() {
           _psEsc((p.name + ' ' + p.planType).toLowerCase()) +
           '" onclick="_psOpen(' +
           idx +
-          ')">' +
+          ')" title="' +
           _psEsc(p.name) +
+          '">' +
+          _psTileHtml(p.name) +
           '</button>';
       });
       if (!rows) return;
@@ -2365,7 +2434,9 @@ function renderPlanScripts() {
 
   html += '<div class="ps-plan-card psx-card">';
   html +=
-    '<div class="ps-bubble-text psx-body">' + _psLinesHtml(sec.content) + '</div>';
+    '<div class="ps-bubble-text psx-body">' +
+    _psLinesHtml(sec.content, sec.title === 'Post Close') +
+    '</div>';
   html += '<div class="psx-foot">';
   html +=
     '<span class="psx-count">Step ' + (planScriptSection + 1) + ' of ' + total + '</span>';

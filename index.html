@@ -5397,30 +5397,26 @@
       }
       #page-planscripts .psx-groups {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 16px;
-        align-items: start;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 10px;
       }
       #page-planscripts .psx-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        padding: 18px;
-        border-radius: 26px;
-        background: var(--cha-bg-card);
-        box-shadow: 0 4px 18px rgb(20 24 60 / 0.06);
+        display: contents;
       }
       #page-planscripts .psx-group-head {
+        grid-column: 1 / -1;
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 0 6px 8px;
+        margin-top: 10px;
+        padding: 0 4px;
         font-size: 12px;
         font-weight: 800;
         letter-spacing: 0.06em;
         text-transform: uppercase;
       }
       #page-planscripts .psx-dot {
+        flex: 0 0 auto;
         width: 10px;
         height: 10px;
         border-radius: 50%;
@@ -5450,24 +5446,118 @@
         background: #8a8fa3;
       }
       #page-planscripts .psx-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 78px;
+        box-sizing: border-box;
         text-align: left;
         border: 0;
         cursor: pointer;
-        border-radius: 14px;
-        padding: 13px 14px;
-        font-size: 15px;
-        font-weight: 600;
-        line-height: 1.3;
-        background: #f4f5fb;
+        border-radius: 18px;
+        padding: 0 16px;
+        background: var(--cha-bg-card);
         color: #111318;
-        transition: background 0.12s ease;
+        box-shadow: 0 2px 10px rgb(20 24 60 / 0.06);
+        transition:
+          box-shadow 0.12s ease,
+          transform 0.12s ease;
       }
-      #page-planscripts .psx-row:hover,
+      #page-planscripts .psx-row:hover {
+        box-shadow: 0 6px 18px rgb(20 24 60 / 0.12);
+        transform: translateY(-1px);
+      }
+      #page-planscripts .psx-row-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+      }
+      #page-planscripts .psx-row-name {
+        font-size: 15px;
+        font-weight: 700;
+        line-height: 1.25;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      #page-planscripts .psx-row-sub {
+        font-size: 12px;
+        font-weight: 500;
+        color: #6b7085;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       #page-planscripts .psx-chip:hover {
         background: #e4e7f5;
       }
       #page-planscripts .psx-chip:first-of-type:hover {
         background: #2a2d36;
+      }
+      #page-planscripts .psx-disc {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 4px -18px;
+        padding: 16px 18px 18px;
+        border-radius: 20px;
+        background: #f4f6fd;
+        border: 1px solid #dfe3f3;
+      }
+      #page-planscripts .psx-disc-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #3b4160;
+      }
+      #page-planscripts .psx-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        text-transform: none;
+        letter-spacing: 0;
+      }
+      #page-planscripts .psx-legend .psx-hl {
+        font-size: 12px;
+        padding: 2px 8px;
+      }
+      #page-planscripts .psx-hl {
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 1px 5px;
+        box-decoration-break: clone;
+        -webkit-box-decoration-break: clone;
+      }
+      #page-planscripts .psx-hl-net {
+        background: #dbe7ff;
+        color: #1d4fb0;
+      }
+      #page-planscripts .psx-hl-uw {
+        background: #ebe2ff;
+        color: #5a35b8;
+      }
+      #page-planscripts .psx-hl-assoc {
+        background: #d8f3ee;
+        color: #0f6b5c;
+      }
+      #page-planscripts .psx-hl-admin {
+        background: #dff3e3;
+        color: #1a6a3c;
+      }
+      #page-planscripts .psx-hl-bill {
+        background: #ffe9d6;
+        color: #8a4300;
+      }
+      #page-planscripts .psx-p strong {
+        font-weight: 800;
       }
       #page-planscripts .psx-empty {
         text-align: center;
