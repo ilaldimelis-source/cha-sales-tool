@@ -1616,6 +1616,8 @@ function renderSubTabs(parentId, activeSubId) {
   }
   var html = '<div class="page-subtabs-inner">';
   config.subs.forEach(function (sub) {
+    // Sales Tracker has its own sidebar button, so My Space skips it.
+    if (parentId === 'myspace' && sub.id === 'salestracker') return;
     var isActive = sub.id === activeSubId ? ' active' : '';
     html +=
       '<button class="stab' +

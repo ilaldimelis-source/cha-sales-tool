@@ -246,7 +246,9 @@
 
       nav.parentNode.insertBefore(card, nav.nextSibling);
       document.getElementById('logout-btn').addEventListener('click', doLogout);
-      if (isManager) addManagerTab(nav);
+      // Office call tracker tab removed from the sidebar (Oct 31 2026, Mey).
+      // addManagerTab is kept so it can be turned back on.
+      if (isManager && window.CHA_SHOW_OFFICE) addManagerTab(nav);
     }
     inject();
   }

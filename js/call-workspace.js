@@ -3442,6 +3442,16 @@ function cwPlat(fam) {
       : 'neo';
 }
 
+// Display name for a family + tier. 'WB Choice / Select' + 'Choice'
+// reads 'WB Choice', not 'WB Choice / Select Choice'.
+var CW_TIER_NAME = { 'WB Choice / Select': 'WB ' };
+
+function cwPlanName(fam, tier) {
+  if (fam.tiers.length <= 1) return fam.name;
+  if (CW_TIER_NAME[fam.name]) return CW_TIER_NAME[fam.name] + tier;
+  return fam.name + ' ' + tier;
+}
+
 function cwRecent() {
   var r = typeof chaGet === 'function' ? chaGet(CW_RECENT_KEY, []) : [];
   if (!Array.isArray(r)) return [];
@@ -3546,7 +3556,7 @@ function cwHomeIdleHtml() {
         recent
           .map(function (r) {
             var f = cwFam(r.fam);
-            var name = f.name + (f.tiers.length > 1 ? ' ' + r.tier : '');
+            var name = cwPlanName(f, r.tier);
             return (
               '<button type="button" class="cwg-btn cwg-chip" data-cw-pick="' +
               cwEsc(r.fam) +
@@ -3971,7 +3981,7 @@ function renderCallWorkspace(keepFocus) {
   } else if (fam.aqNone) {
     aqBadge = '0';
   }
-  var name = fam.name + (fam.tiers.length > 1 ? ' ' + tier.tier : '');
+  var name = cwPlanName(fam, tier.tier);
   var tabs = [
     ['plan', 'Plan', ''],
     ['d', 'Disclosures', cc.total ? cc.yes + '/' + cc.total : ''],

@@ -3,12 +3,8 @@
 // Landing tab: opens first when navigating to My Space (not Sales Tracker).
 function renderMySpaceHub() {
   var html =
-    '<div class="ph"><div class="pt">My <span>Space</span></div><div class="pd">Your personal hub — jump to tracker, mindset, or notes.</div></div>';
+    '<div class="ph"><div class="pt">My <span>Space</span></div><div class="pd">Your personal hub: mindset and notes. Sales Tracker has its own spot in the sidebar.</div></div>';
   html += '<div class="msh-grid">';
-  html +=
-    '<button type="button" class="msh-card" onclick="_showComboPage(\'myspace\',\'salestracker\')">' +
-    '<div class="msh-card-k">Sales Tracker</div>' +
-    '<div class="msh-card-d">Log deals, add-ons, and weekly production.</div></button>';
   html +=
     '<button type="button" class="msh-card" onclick="_showComboPage(\'myspace\',\'mindset\')">' +
     '<div class="msh-card-k">Mindset</div>' +
