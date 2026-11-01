@@ -14137,9 +14137,12 @@ function _stIsFeeLine(sale) {
   return !!(sale && /\bfees?\b/i.test(String(sale.plan || '')));
 }
 
-// This Week numbers counted the way the CHA Tools Sales Board counts
-// them: premium without fees, one deal per member ID (a dental- or
-// vision-only sale is its own deal), add-ons = ancillary lines.
+// This Week numbers counted the way the CHA Tools leaderboard counts
+// them: deals = clients with a core plan (a dental- or vision-only sale
+// is add-ons only, not a deal), add-ons = ancillary lines, premium
+// without fees. When a row carries boardPremium (the Sales Board's
+// Total Premium without Enrollment for that member), that figure is
+// the client's premium, so fees the board counts are included.
 // Returns a copy of stats with weekSales, weekDeals, weekAddons and
 // dayBuckets replaced; commission figures are left as calculated.
 function _stBoardWeekStats(sales, stats) {
@@ -14177,32 +14180,60 @@ function _stBoardWeekStats(sales, stats) {
       reversedReceipts[s.receiptId] = true;
     }
   }
+  // First pass: which clients have a core plan this week, and which
+  // carry a Sales Board premium figure.
+  var hasCore = {};
+  var boardPrem = {};
+  for (i = 0; i < sales.length; i++) {
+    s = sales[i];
+    if (!s || s.ts < start || s.ts >= end) continue;
+    if (_stIsReversalStatus(s)) continue;
+    if (s.receiptId && reversedReceipts[s.receiptId]) continue;
+    var key0 = String(s.memberId || s.receiptId || s.id || i);
+    if (s.type === 'deal') hasCore[key0] = true;
+    var bp = Number(s.boardPremium);
+    if (s.boardPremium != null && s.boardPremium !== '' && !isNaN(bp)) {
+      boardPrem[key0] = bp;
+    }
+  }
   var premium = 0;
   var dealKeys = {};
+  var premKeys = {};
   var deals = 0;
   var addons = 0;
   for (i = 0; i < sales.length; i++) {
     s = sales[i];
     if (!s || s.ts < start || s.ts >= end) continue;
-    if (_stIsReversalStatus(s) || _stIsFeeLine(s)) continue;
+    if (_stIsReversalStatus(s)) continue;
     if (s.receiptId && reversedReceipts[s.receiptId]) continue;
-    var amt = Number(s.amount) || 0;
-    premium += amt;
     var key = String(s.memberId || s.receiptId || s.id || i);
-    var isNewDeal = !dealKeys[key];
+    var useBoard = Object.prototype.hasOwnProperty.call(boardPrem, key);
+    var isFee = _stIsFeeLine(s);
+    if (isFee && !useBoard) continue;
+    var amt = 0;
+    if (useBoard) {
+      if (!premKeys[key]) {
+        premKeys[key] = true;
+        amt = boardPrem[key];
+      }
+    } else {
+      amt = Number(s.amount) || 0;
+    }
+    premium += amt;
+    var isNewDeal = !!hasCore[key] && !dealKeys[key];
     if (isNewDeal) {
       dealKeys[key] = true;
       deals++;
     }
-    var isAddon = s.type === 'addon' || _stSaleCountsAsAddon(s);
+    var isAddon = !isFee && (s.type === 'addon' || _stSaleCountsAsAddon(s));
     if (isAddon) addons++;
     var anchor = _stDayAnchorMs(s.ts);
     for (bi = 0; bi < buckets.length; bi++) {
       if (buckets[bi]._anchor !== anchor) continue;
       buckets[bi].amount += amt;
-      buckets[bi].count += 1;
+      if (!isFee) buckets[bi].count += 1;
       if (isAddon) buckets[bi].addonCount += 1;
-      if (!buckets[bi]._keys[key]) {
+      if (hasCore[key] && !buckets[bi]._keys[key]) {
         buckets[bi]._keys[key] = true;
         buckets[bi].dealCount += 1;
       }
