@@ -1,6 +1,6 @@
 {
   "source": "pap-lookup.com (Ventec SW LLC)",
-  "asOf": "Oct 16 2026",
+  "asOf": "Nov 9 2026",
   "fpl": {
     "base": {
       "48": 15960,
@@ -315,6 +315,7 @@
     ["Revlimid", "Bristol", 300],
     ["Rexulti", "Otsuka", 400],
     ["Reyvow", "Lilly Cares", 300],
+    ["Rhapsido", "Novartis", 400],
     ["Riabni", "Amgen", 300],
     ["Ridaura", "Legacy", 300],
     ["Rinvoq", "Abbvie", 400],
