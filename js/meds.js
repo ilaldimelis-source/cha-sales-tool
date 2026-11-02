@@ -8,7 +8,7 @@
 // typos are matched to the closest med on the list.
 // Data: data/meds.json (synced from pap-lookup.com).
 
-var MEDS_JSON_URL = 'data/meds.json?v=1792193893000';
+var MEDS_JSON_URL = 'data/meds.json?v=1793623200000';
 var medsData = null;
 var medsLoadStarted = false;
 var medsList = [];
