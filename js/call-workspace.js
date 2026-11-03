@@ -83,7 +83,11 @@ var CW_FAMS = [
           ['ER', 'Not covered', 0],
           ['Hospital', '$1,000/day, max $15,000/yr', 0],
           ['Surgery', 'Not covered (outpatient); no IP surgery row', 0],
-          ['Rx', '70+ free Rx; discount card. Brand/specialty not covered', 0],
+          [
+            'Rx',
+            '1,000+ free Rx; discount card. Brand/specialty not covered',
+            0
+          ],
           ['Deductible', '$0 (none)', 0],
           [
             'Waiting period',

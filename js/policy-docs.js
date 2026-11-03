@@ -529,7 +529,7 @@ var PD_SHORT_VALUES = {
     hospital: '$1,000/day, max $15,000/yr',
     surgery: 'Not covered (outpatient); no IP surgery row',
     er: 'Not covered',
-    rx: '70+ free Rx; discount card. Brand/specialty not covered',
+    rx: '1,000+ free Rx; discount card. Brand/specialty not covered',
     pre_existing: '12/12, hospital-related benefits',
     waiting_period: '30 days (not virtual care/Rx; not emergent care; 1st year)'
   },
