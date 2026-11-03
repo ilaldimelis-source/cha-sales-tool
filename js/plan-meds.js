@@ -12,7 +12,7 @@
 // Used by the Meds tab (renderMeds in js/meds.js) and the On Call meds box
 // (cwMedsHtml in js/call-workspace.js).
 
-var PM_RULES_URL = 'data/formulary-plan-rules.json?v=1793720535338';
+var PM_RULES_URL = 'data/formulary-plan-rules.json?v=1793723980844';
 var pmRules = null;
 var pmRulesLoading = false;
 var pmIndex = {};

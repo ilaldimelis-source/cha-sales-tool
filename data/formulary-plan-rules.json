@@ -1,5 +1,5 @@
 {
-  "version": "2026-11-03",
+  "version": "2026-11-03b",
   "note": "Plan rules for the Plan meds check. The formulary files say which drugs are on a list; these rules say what each plan actually pays. Plan rules always win over copays printed in the formulary files. status: list = check meds against a list; not_on_file = plan has a list but CHA does not have it; no_list = no drug list exists for this plan.",
   "formularies": {
     "ventegra": "data/ventegra-formulary.json",
@@ -105,48 +105,30 @@
     },
     "ghdp-2": {
       "name": "GoodHealth 2",
-      "status": "list",
-      "formulary": "bestchoicerx",
-      "on_list": "Acute and preventive generic: $0 (retail 30-day). 200 generic maintenance drugs: $5 (retail 30-day or mail 90-day)",
-      "off_list": "Not on the formulary. Rx plan gives a discount",
-      "specialty": "Specialty: Not covered. PAP through the Rx provider if income qualifies",
-      "gap": "BestChoiceRx file does not list GoodHealth 2 on any row; same list as GoodHealth 3-5 not confirmed",
+      "status": "not_on_file",
+      "summary": "BestChoiceRx: acute and preventive generic $0 (retail 30-day); 200 generic maintenance drugs $5",
+      "gap": "The GoodHealth plan list is only in the BestChoiceRx member Formulary Lookup. data/bestchoicerx-formulary.json is the public BestChoiceRx $50 or Less discount list, not the plan list",
       "source": "MEC_GHDP2 Summary of Benefits PDF (FirstEnroll), Pharmacy section"
     },
     "ghdp-3": {
       "name": "GoodHealth 3",
-      "status": "list",
-      "formulary": "bestchoicerx",
-      "on_list": "Acute and preventive generic: $0 (retail 30-day). 200 generic maintenance drugs: $5 (retail 30-day or mail 90-day)",
-      "non_preferred_generic": "Non-preferred generic: $5 and $10 retail 30-day; $5 and $20 mail 90-day",
-      "brand": "Brand (prior authorization required): $40 retail 30-day; $80 mail 90-day",
-      "cap": "Non-preventive generic and brand: $150 benefit limit per person per month",
-      "specialty": "Specialty: Not covered. PAP through the Rx provider if income qualifies",
-      "off_list": "Not on the formulary. Rx plan gives a discount",
+      "status": "not_on_file",
+      "summary": "BestChoiceRx: acute and preventive generic $0 (retail 30-day); 200 generic maintenance drugs $5; brand $40 with prior auth; $150/mo limit on non-preventive drugs",
+      "gap": "The GoodHealth plan list is only in the BestChoiceRx member Formulary Lookup. data/bestchoicerx-formulary.json is the public BestChoiceRx $50 or Less discount list, not the plan list",
       "source": "MEC_GHDP3 Summary of Benefits PDF (FirstEnroll), Pharmacy section"
     },
     "ghdp-4": {
       "name": "GoodHealth 4",
-      "status": "list",
-      "formulary": "bestchoicerx",
-      "on_list": "Acute and preventive generic: $0 (retail 30-day). 200 generic maintenance drugs: $5 (retail 30-day or mail 90-day)",
-      "non_preferred_generic": "Non-preferred generic: $5 and $10 retail 30-day; $5 and $20 mail 90-day",
-      "brand": "Brand (prior authorization required): $40 retail 30-day; $80 mail 90-day",
-      "cap": "Non-preventive generic and brand: $150 benefit limit per person per month",
-      "specialty": "Specialty: Not covered. PAP through the Rx provider if income qualifies",
-      "off_list": "Not on the formulary. Rx plan gives a discount",
+      "status": "not_on_file",
+      "summary": "BestChoiceRx: acute and preventive generic $0 (retail 30-day); 200 generic maintenance drugs $5; brand $40 with prior auth; $150/mo limit on non-preventive drugs",
+      "gap": "The GoodHealth plan list is only in the BestChoiceRx member Formulary Lookup. data/bestchoicerx-formulary.json is the public BestChoiceRx $50 or Less discount list, not the plan list",
       "source": "MEC_GHDP4 Summary of Benefits PDF (FirstEnroll), Pharmacy section"
     },
     "ghdp-5": {
       "name": "GoodHealth 5",
-      "status": "list",
-      "formulary": "bestchoicerx",
-      "on_list": "Acute and preventive generic: $0 (retail 30-day). 200 generic maintenance drugs: $5 (retail 30-day or mail 90-day)",
-      "non_preferred_generic": "Non-preferred generic: $5 and $10 retail 30-day; $5 and $20 mail 90-day",
-      "brand": "Brand (prior authorization required): $40 retail 30-day; $80 mail 90-day",
-      "cap": "Non-preventive generic and brand: $150 benefit limit per person per month",
-      "specialty": "Specialty: Not covered. PAP through the Rx provider if income qualifies",
-      "off_list": "Not on the formulary. Rx plan gives a discount",
+      "status": "not_on_file",
+      "summary": "BestChoiceRx: acute and preventive generic $0 (retail 30-day); 200 generic maintenance drugs $5; brand $40 with prior auth; $150/mo limit on non-preventive drugs",
+      "gap": "The GoodHealth plan list is only in the BestChoiceRx member Formulary Lookup. data/bestchoicerx-formulary.json is the public BestChoiceRx $50 or Less discount list, not the plan list",
       "source": "MEC_GHDP5 Summary of Benefits PDF (FirstEnroll), Pharmacy section"
     },
     "harbor-stm-essential": {
