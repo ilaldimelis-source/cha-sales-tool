@@ -1,0 +1,482 @@
+{
+ "source": "$0 ACA MEC Formulary (sheet dated 2020)",
+ "plans": [
+  "PrimeProtect"
+ ],
+ "rows": [
+  {
+   "name": "Aspirin 81 MG Chewable Tablet",
+   "category": "Asprin",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Aspirin 81 MG Tablet DR/EC",
+   "category": "Asprin",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "BISAC/NACL/NaHCo3/KCL/Peg 3350 5 MG-210 G Kit",
+   "category": "Bowel Preparation",
+   "max_retail": "1 Kit"
+  },
+  {
+   "name": "Tamoxifen Citrate 10 MG Tablet",
+   "category": "Breast Cancer Prevention",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Tamoxifen Citrate 20 MG Tablet",
+   "category": "Breast Cancer Prevention",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Apri .15/.03 MG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norethindrone 0.35 MG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Desog-E.estradiol/E.estradiol 21-",
+   "category": "Contraceptives",
+   "max_retail": "5 Tablet"
+  },
+  {
+   "name": "Norethindrone Ac-Eth Estradiol 1 MG-20 MCG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Desogestrel-Ethinyl Estradiol 0.15-",
+   "category": "Contraceptives",
+   "max_retail": "0.03 Tablet"
+  },
+  {
+   "name": "Norethindrone Ac-Eth Estradiol 1.5-0.03 MG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Desogestrel-Ethinyl Estradiol 7 Days x",
+   "category": "Contraceptives",
+   "max_retail": "3 Tablet"
+  },
+  {
+   "name": "Norethindrone-E.estradiol-Iron 1 MG-20 (21) Tablet",
+   "category": "Contraceptives",
+   "max_retail": "21 Tablets"
+  },
+  {
+   "name": "Ethinyl Estradiol/Drospirenone 0.02-3 (24) Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norethindrone-E.estradiol-Iron 1 MG-20 (24) Tablet",
+   "category": "Contraceptives",
+   "max_retail": "24 Tablets"
+  },
+  {
+   "name": "Ethinyl Estradiol/Drospirenone 0.03 MG-3 MG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norethindrone-E.estradiol-Iron 1.5-30 (21) Tablet",
+   "category": "Contraceptives",
+   "max_retail": "21 Tablets"
+  },
+  {
+   "name": "Ethynodiol D-Ethinyl Estradiol 1 MG-35 MCG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norethindrone-E.estradiol-Iron 5-7-9-",
+   "category": "Contraceptives",
+   "max_retail": "7 Tablet"
+  },
+  {
+   "name": "Ethynodiol D-Ethinyl Estradiol 1 MG-50 MCG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norethindrone-Ethinyl Estrad 0.4-",
+   "category": "Contraceptives",
+   "max_retail": "0.035 Tablet"
+  },
+  {
+   "name": "Junel FE 1/20 1 MG-20 MCG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norethindrone-Ethinyl Estrad 0.5-",
+   "category": "Contraceptives",
+   "max_retail": "0.035 Tablet"
+  },
+  {
+   "name": "Levonorgestrel 1.5 MG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norethindrone-Ethinyl Estrad 1 MG-35 MCG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Levonorgestrel-Ethin Estradiol 0.1-",
+   "category": "Contraceptives",
+   "max_retail": "0.02 Tablet"
+  },
+  {
+   "name": "Norethindrone-Ethinyl Estrad 7 Days x",
+   "category": "Contraceptives",
+   "max_retail": "3 Tablet"
+  },
+  {
+   "name": "Levonorgestrel-Ethin Estradiol 0.15-0.03 3 Mo. Tablet Dose Pack",
+   "category": "Contraceptives",
+   "max_retail": "1 Pack"
+  },
+  {
+   "name": "Norethindrone-Ethinyl Estrad 7-9-",
+   "category": "Contraceptives",
+   "max_retail": "5 Tablet"
+  },
+  {
+   "name": "Levonorgestrel-Ethin Estradiol 0.15-",
+   "category": "Contraceptives",
+   "max_retail": "0.03 Tablet"
+  },
+  {
+   "name": "Norgestimate-Ethinyl Estradiol .18-.215-.25-.025 7 Days x3 LO Tab",
+   "category": "Contraceptives",
+   "max_retail": "21 Tablets"
+  },
+  {
+   "name": "Levonorgestrel-Ethin Estradiol 6-5-",
+   "category": "Contraceptives",
+   "max_retail": "10 Tablet"
+  },
+  {
+   "name": "Norgestimate-Ethinyl Estradiol .18-.215-.25-.035 7 Days x3 28 Tab",
+   "category": "Contraceptives",
+   "max_retail": "21 Tablets"
+  },
+  {
+   "name": "L-Norgest/E.estradiol-E.estrad 100-20 (84) 3 Mo. Tablet Dose Pack",
+   "category": "Contraceptives",
+   "max_retail": "1 Pack"
+  },
+  {
+   "name": "Norgestimate-Ethinyl Estradiol 0.25-",
+   "category": "Contraceptives",
+   "max_retail": "0.035 Tablet"
+  },
+  {
+   "name": "L-Norgest/E.estradiol-E.estrad 150-30 (84) 3 Mo. Tablet Dose Pack",
+   "category": "Contraceptives",
+   "max_retail": "1 Pack"
+  },
+  {
+   "name": "Norgestimate-Ethinyl Estradiol 7 Days x3",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablet"
+  },
+  {
+   "name": "Medroxyprogesterone Acetate 10 MG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norgestimate-Ethinyl Estradiol 7 Days x3 LO Tablet",
+   "category": "Contraceptives",
+   "max_retail": "21 Tablets"
+  },
+  {
+   "name": "Medroxyprogesterone Acetate 150 MG/ML Suspension",
+   "category": "Contraceptives",
+   "max_retail": "1 ML"
+  },
+  {
+   "name": "Norgestrel-Ethinyl Estradiol 0.3-0.03 MG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Medroxyprogesterone Acetate 2.5 MG Tablet",
+   "category": "Contraceptives",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Norgestrel-Ethinyl Estradiol 0.5 MG-",
+   "category": "Contraceptives",
+   "max_retail": "50 Tablet"
+  },
+  {
+   "name": "Nonoxynol 9 3% Gel",
+   "category": "Contraceptives",
+   "max_retail": "30 Grams"
+  },
+  {
+   "name": "Viorele .15/.02/.01 MG Blister Card",
+   "category": "Contraceptives",
+   "max_retail": "1 Pack"
+  },
+  {
+   "name": "Noreth-Ethinyl Estradiol/Iron 0.4-35 (21) Chewable Tablet",
+   "category": "Contraceptives",
+   "max_retail": "21 Tablets"
+  },
+  {
+   "name": "Multivitamins w/Fluoride Drops 0.25 MG/ML Drops",
+   "category": "Fluoride Supplements",
+   "max_retail": "10 ML"
+  },
+  {
+   "name": "Sodium Fluoride 0.25 (0.55) Chewable Tablet",
+   "category": "Fluoride Supplements",
+   "max_retail": "15 Tablets"
+  },
+  {
+   "name": "Pedi MVI No. 12/Sodium Fluoride 0.25 MG Chewable Tablet",
+   "category": "Fluoride Supplements",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Sodium Fluoride 0.25 MG/ML Drops",
+   "category": "Fluoride Supplements",
+   "max_retail": ""
+  },
+  {
+   "name": "Pedi MVI No. 12/Sodium Fluoride 0.5 MG Chewable Tablet",
+   "category": "Fluoride Supplements",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Sodium Fluoride 0.4% Gel",
+   "category": "Fluoride Supplements",
+   "max_retail": ""
+  },
+  {
+   "name": "Pedi MVI No. 16 with Fluoride 0.25 MG Chewable Tablet",
+   "category": "Fluoride Supplements",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Sodium Fluoride 0.5 (1.1) MG Chewable Tablet",
+   "category": "Fluoride Supplements",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Pedi MVI No. 16 with Fluoride 0.5 MG Chewable Tablet",
+   "category": "Fluoride Supplements",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Sodium Fluoride 0.5 MG/ML Drops",
+   "category": "Fluoride Supplements",
+   "max_retail": "50 ML"
+  },
+  {
+   "name": "Sodium Fluoride 0.125/Drop Drops",
+   "category": "Fluoride Supplements",
+   "max_retail": ""
+  },
+  {
+   "name": "Sodium Fluoride 1.1% Gel",
+   "category": "Fluoride Supplements",
+   "max_retail": "56 Grams"
+  },
+  {
+   "name": "Sodium Fluoride 0.2% Solution",
+   "category": "Fluoride Supplements",
+   "max_retail": "473 ML"
+  },
+  {
+   "name": "Folic Acid 0.8 MG Capsule",
+   "category": "Folic Acid Supplements",
+   "max_retail": "30 Capsules"
+  },
+  {
+   "name": "Folic Acid 0.8 MG Tablet",
+   "category": "Folic Acid Supplements",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Atorvastatin Calcium 10 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Pravastatin Sodium 80 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Atorvastatin Calcium 20 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Rosuvastatin Calcium 5 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Lovastatin 10 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Rosuvastatin Calcium 10 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Lovastatin 20 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Simvastatin 5 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Lovastatin 40 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Simvastatin 10 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Pravastatin Sodium 10 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Simvastatin 20 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Pravastatin Sodium 20 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Simvastatin 40 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Pravastatin Sodium 40 MG Tablet",
+   "category": "Statins",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Bupropion 75 MG Tablet",
+   "category": "Tobacco Cessation",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Nicotine 7 MG/24 Hr. Patches",
+   "category": "Tobacco Cessation",
+   "max_retail": "14 Patches"
+  },
+  {
+   "name": "Bupropion 100 MG Tablet",
+   "category": "Tobacco Cessation",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Nicotine 14 MG/24 Hr. Patches",
+   "category": "Tobacco Cessation",
+   "max_retail": "21 Patches"
+  },
+  {
+   "name": "Bupropion HCL SR 100 MG Tablet 12-Hr. SR",
+   "category": "Tobacco Cessation",
+   "max_retail": "60 Tablets"
+  },
+  {
+   "name": "Nicotine 21 MG/24 Hr. Patches",
+   "category": "Tobacco Cessation",
+   "max_retail": "7 Patches"
+  },
+  {
+   "name": "Bupropion HCL SR 150 MG Tablet 12-Hr. SR",
+   "category": "Tobacco Cessation",
+   "max_retail": "60 Tablets"
+  },
+  {
+   "name": "Nicotine Polacrilex 2 MG Gum",
+   "category": "Tobacco Cessation",
+   "max_retail": "100 Gum"
+  },
+  {
+   "name": "Bupropion HCL SR 200 MG Tablet 12-Hr. SR",
+   "category": "Tobacco Cessation",
+   "max_retail": "60 Tablets"
+  },
+  {
+   "name": "Nicotine Polacrilex 2 MG Lozenge",
+   "category": "Tobacco Cessation",
+   "max_retail": "72 Lozenge"
+  },
+  {
+   "name": "Bupropion XL 150 MG Tablet 24-Hr. ER",
+   "category": "Tobacco Cessation",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Nicotine Polacrilex 4 MG Gum",
+   "category": "Tobacco Cessation",
+   "max_retail": "100 Gum"
+  },
+  {
+   "name": "Bupropion XL 300 MG Tablet 24-Hr. ER",
+   "category": "Tobacco Cessation",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Nicotine Polacrilex 4 MG Lozenge",
+   "category": "Tobacco Cessation",
+   "max_retail": "72 Lozenge"
+  },
+  {
+   "name": "Bupropion ER 150 MG/12 Hr. Tablets",
+   "category": "Tobacco Cessation",
+   "max_retail": "60 Tablets"
+  },
+  {
+   "name": "Cholecalciferol (Vitamin D3) 400 Unit Tablet",
+   "category": "Vitamin D Supplements",
+   "max_retail": "28 Tablets"
+  },
+  {
+   "name": "Cholecalciferol (Vitamin D3) 1000 Unit Tablet",
+   "category": "Vitamin D Supplements",
+   "max_retail": "30 Tablets"
+  },
+  {
+   "name": "Cholecalciferol (Vitamin D3) 400/ML Drops",
+   "category": "Vitamin D Supplements",
+   "max_retail": "50 ML"
+  }
+ ],
+ "version": "2020 (as printed on sheet)",
+ "source_url": "https://www.1enrollment.com/media/1392/PreventionPlus/SS_ACA-MEC-Formulary.pdf",
+ "pulled": "2026-11-03",
+ "note": "Non-insured value-added Rx subscription (Medical Security Card Company). Sheet says it is NOT insurance and not available in MD, WA, ME. Sheet is dated 2020."
+}
