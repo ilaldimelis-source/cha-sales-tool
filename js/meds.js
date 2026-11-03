@@ -265,6 +265,27 @@ function medsOnInput(e) {
   medsTimer = setTimeout(medsRenderResults, 150);
 }
 
+// Meds tab has two checks (Nov 2026): Plan meds check (js/plan-meds.js)
+// and the PAP check above. med = a PAP med name to look up right away.
+function medsShowMode(mode, med) {
+  var plan = document.getElementById('pm-host');
+  var pap = document.getElementById('meds-pap');
+  if (!plan || !pap) return;
+  plan.classList.toggle('pm-hide', mode !== 'plan');
+  pap.classList.toggle('pm-hide', mode === 'plan');
+  document.querySelectorAll('[data-meds-mode]').forEach(function (b) {
+    b.classList.toggle('is-on', b.getAttribute('data-meds-mode') === mode);
+  });
+  if (mode === 'pap' && med) {
+    var box = document.getElementById('meds-text');
+    if (box) {
+      box.value = med;
+      medsState.text = med;
+      medsRenderResults();
+    }
+  }
+}
+
 function renderMeds() {
   var root = document.getElementById('page-meds');
   if (!root) return;
@@ -276,6 +297,12 @@ function renderMeds() {
       '<div class="med-page">' +
       '<header class="med-header"><h2>Meds check</h2>' +
       "<p>Type the client's meds as they say them, separated by commas. Typos are fine.</p></header>" +
+      '<div class="pm-modes" role="tablist">' +
+      '<button type="button" class="pm-mode is-on" data-meds-mode="plan">Plan meds check</button>' +
+      '<button type="button" class="pm-mode" data-meds-mode="pap">PAP check</button>' +
+      '</div>' +
+      '<div id="pm-host"></div>' +
+      '<div id="meds-pap" class="pm-hide">' +
       '<div class="med-form">' +
       '<label class="med-f-meds"><span>Client meds</span><textarea id="meds-text" rows="1" autocomplete="off" spellcheck="false" placeholder="eliquis, ozempic, trulicity"></textarea></label>' +
       '<label><span>Family unit size</span><select id="meds-hh">' +
@@ -283,10 +310,20 @@ function renderMeds() {
       '</select></label>' +
       '</div>' +
       '<div id="meds-results"><p class="med-empty">Loading meds...</p></div>' +
+      '</div>' +
       '</div>';
     root.setAttribute('data-meds-ready', '1');
     root.addEventListener('input', medsOnInput);
     root.addEventListener('change', medsOnInput);
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-meds-mode]') : null;
+      if (b) medsShowMode(b.getAttribute('data-meds-mode'));
+    });
+    if (typeof renderPlanMeds === 'function') {
+      renderPlanMeds(document.getElementById('pm-host'));
+    } else {
+      medsShowMode('pap');
+    }
   }
   if (medsData) {
     medsRenderResults();

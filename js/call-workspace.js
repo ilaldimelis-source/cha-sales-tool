@@ -1629,14 +1629,27 @@ function cwMedsHtml() {
     return '<p class="cw-muted">Type the meds the client takes, separated by commas.</p>';
   }
   var n = parseInt(cwState.hh, 10) || 1;
+  var planId =
+    typeof pmPlanIdForCall === 'function'
+      ? pmPlanIdForCall(cwState.fam, cwState.tier)
+      : null;
+  if (planId && typeof pmEnsure === 'function' && !pmReady(planId)) {
+    pmEnsure(planId, function () {
+      var box = document.getElementById('cw-meds-out');
+      if (box) box.innerHTML = cwMedsHtml();
+    });
+  }
   return rows
     .map(function (t) {
       var m = medsMatch(t);
+      var planTag = cwPlanMedTag(planId, t);
       if (!m) {
         return (
           '<div class="cw-med"><b>' +
           cwEsc(t) +
-          '</b><span class="cw-tag cw-tag-grey">Not on the PAP list</span></div>'
+          '</b>' +
+          planTag +
+          '<span class="cw-tag cw-tag-grey">Not on the PAP list</span></div>'
         );
       }
       var it = m.item;
@@ -1649,12 +1662,50 @@ function cwMedsHtml() {
         '</b><span class="cw-muted">' +
         (m.exact ? '' : 'you typed "' + cwEsc(t) + '" - ') +
         cwEsc(it.m) +
-        '</span><span class="cw-tag cw-tag-pap">PAP available - household income up to $' +
+        '</span>' +
+        planTag +
+        '<span class="cw-tag cw-tag-pap">PAP available - household income up to $' +
         Math.round(lim).toLocaleString('en-US') +
         '/yr</span></div>'
       );
     })
     .join('');
+}
+
+// Plan meds check on On Call (Nov 2026): what the plan on this call does
+// with the med, from js/plan-meds.js. Plans with no drug list show one
+// grey tag so the agent never guesses.
+function cwPlanMedTag(planId, typed) {
+  if (typeof pmVerdict !== 'function') return '';
+  if (!planId) {
+    var rx = pmNoListRx(cwState.fam, cwState.tier);
+    return (
+      '<span class="cw-tag cw-tag-grey">' +
+      cwEsc(rx ? 'Plan Rx: ' + rx : 'No drug list for this plan') +
+      '</span>'
+    );
+  }
+  if (!pmReady(planId)) {
+    return '<span class="cw-tag cw-tag-grey">Checking the plan list...</span>';
+  }
+  var v = pmVerdict(planId, typed);
+  var cls =
+    v.tone === 'ok'
+      ? 'cw-pm-ok'
+      : v.tone === 'no'
+        ? 'cw-pm-no'
+        : v.tone === 'check'
+          ? 'cw-pm-check'
+          : 'cw-tag-grey';
+  var mark =
+    v.tone === 'ok'
+      ? '✓ '
+      : v.tone === 'no'
+        ? '✗ '
+        : v.tone === 'check'
+          ? '? '
+          : '';
+  return '<span class="cw-tag ' + cls + '">' + mark + cwEsc(v.text) + '</span>';
 }
 
 function cwEnsureMeds() {
@@ -3177,13 +3228,13 @@ function cwPlanTab(tier, fam) {
     head +
     ben +
     links +
-    '</section><section class="cw-card"><div class="cw-row"><h3>Meds - PAP check</h3><select id="cw-hh" class="cw-select">' +
+    '</section><section class="cw-card"><div class="cw-row"><h3>Meds - plan list and PAP</h3><select id="cw-hh" class="cw-select">' +
     hh +
     '</select></div><input id="cw-meds" class="cw-input" type="text" autocomplete="off" spellcheck="false" placeholder="eliquis, ozempic, metformin" value="' +
     cwEsc(cwState.meds) +
     '"><div id="cw-meds-out">' +
     cwMedsHtml() +
-    '</div><p class="cw-foot">Source: pap-lookup.com. RxSavers: not insurance, approval not guaranteed.</p></section></div>'
+    '</div><p class="cw-foot">Plan list: from each plan formulary and plan document. Only say a med is covered when its plan tag is green. PAP: pap-lookup.com. RxSavers: not insurance, approval not guaranteed.</p></section></div>'
   );
 }
 
