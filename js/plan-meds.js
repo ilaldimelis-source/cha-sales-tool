@@ -441,7 +441,7 @@ function pmEnsure(planId, cb) {
     return;
   }
   pmLoading[fid] = [cb];
-  fetch(pmRules.formularies[fid] + '?v=1793720535338')
+  fetch(pmRules.formularies[fid] + '?v=1793722737532')
     .then(function (r) {
       if (!r.ok) throw new Error('load failed');
       return r.json();
