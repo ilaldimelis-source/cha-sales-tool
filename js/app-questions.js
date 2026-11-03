@@ -156,7 +156,7 @@ var APPQ_PLANS = [
     step: 'Verification',
     scripts: ['NEO Smart Choice'],
     intro:
-      "Next I'll read a few standard questions from your application. To get this group plan, you join as a Working Owner, which just means you answer short paid surveys. Please answer yes or no, and stop me if anything's unclear.",
+      "Next, I'll go through 10 standard questions for your application. This plan requires you to become a Working Owner, which includes completing short paid information requests and company activities. I just need a yes to confirm each statement if you agree. If you have any questions, I'll be happy to explain.",
     qs: [
       {
         q: 'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA?',
