@@ -1,0 +1,8982 @@
+{
+ "source": "Shield PBM SELECT Managed Formulary 2026",
+ "plans": [
+  "Harbor STM Essential",
+  "Harbor STM Access",
+  "Harbor STM Secure"
+ ],
+ "applies_when": "Outpatient Prescription Drug Rider purchased",
+ "rows": [
+  {
+   "name": "ABACAVIR SULFATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALENDRONATE SODIUM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMOXICILL-CLARITHRO-LANSOPRAZ THER PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AZATHIOPRINE SODIUM SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ABACAVIR SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALENDRONATE SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMOXICILLIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AZATHIOPRINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ABACAVIR SULFATE-LAMIVUDINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALFUZOSIN HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMOXICILLIN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AZELAIC ACID GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACAMPROSATE CALCIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALFUZOSIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMOXICILLIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AZELASTINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACARBOSE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALISKIREN FUMARATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMOXICILLIN-POT CLAVULANATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AZITHROMYCIN PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACEBUTOLOL HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALLOPURINOL SODIUM SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "AMOXICILLIN-POT CLAVULANATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AZITHROMYCIN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACETAMINOPHEN-CODEINE #2 TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALLOPURINOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMOXICILLIN-POT CLAVULANATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AZITHROMYCIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACETAMINOPHEN-CODEINE #3 TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALMOTRIPTAN MALATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMPHETAMINE- DEXTROAMPHETAMINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BACITRACIN OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACETAMINOPHEN-CODEINE #4 TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALOSETRON HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMPHETAMINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BACITRACIN ZINC PWDR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACETAMINOPHEN-CODEINE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALPRAZOLAM ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMPHETAMINE-DEXTROAMPHET ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BACITRACIN-POLYMYXIN B OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACETAMINOPHEN-CODEINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALPRAZOLAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMPICILLIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BACITRA-NEOMYCIN-POLYMYXIN-HC OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACETAZOLAMIDE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALVIMOPAN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ANAGRELIDE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BACLOFEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACETAZOLAMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALYQ",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ANASTROZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BALSALAZIDE DISODIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACETIC ACID SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMANTADINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "APAP-CAFF-DIHYDROCODEINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BELLADONNA ALKALOIDS-OPIUM SUPP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACITRETIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMANTADINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "APRACLONIDINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BENAZEPRIL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACYCLOVIR CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMANTADINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ARFORMOTEROL TARTRATE NEB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BENAZEPRIL-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACYCLOVIR CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMCINONIDE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ARIPIPRAZOLE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BENZNIDAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACYCLOVIR OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMILORIDE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ARIPIPRAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BENZOYL PEROXIDE FOAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACYCLOVIR SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMILORIDE-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ARMODAFINIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BENZOYL PEROXIDE-ERYTHROMYCIN GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ACYCLOVIR TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMINOCAPROIC ACID SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ASENAPINE MALEATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BENZPHETAMINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ADAPALENE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMINOCAPROIC ACID TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ASPIRIN-DIPYRIDAMOLE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BENZTROPINE MESYLATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ADAPALENE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMIODARONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATAZANAVIR SULFATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BEPOTASTINE BESILATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ADAPALENE PAD",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMITRIPTYLINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATENOLOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE DIPROPIONATE AUG CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ADAPALENE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMLODIPINE BESY-BENAZEPRIL HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATENOLOL-CHLORTHALIDONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE DIPROPIONATE AUG GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ADAPALENE-BENZOYL PEROXIDE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMLODIPINE BESYLATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATOMOXETINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE DIPROPIONATE AUG LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALBENDAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMLODIPINE BESYLATE-VALSARTAN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATORVASTATIN CALCIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE DIPROPIONATE AUG OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALBUTEROL SULFATE HFA AER",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMLODIPINE-ATORVASTATIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATOVAQUONE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE DIPROPIONATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALBUTEROL SULFATE NEB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMLODIPINE-OLMESARTAN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATOVAQUONE-PROGUANIL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE DIPROPIONATE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALBUTEROL SULFATE SYR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMLODIPINE-VALSARTAN-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATROPINE SULFATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE DIPROPIONATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ALBUTEROL SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AMOXAPINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ATROPINE SULFATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE VALERATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE VALERATE FOAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUTALBITAL-ASA-CAFF-CODEINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFADROXIL SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CIPROFLOXACIN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE VALERATE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUTORPHANOL TARTRATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFADROXIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CIPROFLOXACIN-DEXAMETHASONE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAMETHASONE VALERATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFDINIR CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CITALOPRAM HYDROBROMIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAXOLOL HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CABERGOLINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFDINIR SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CITALOPRAM HYDROBROMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETAXOLOL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCIPOTRIENE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFIXIME CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLARITHROMYCIN ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BETHANECHOL CHLORIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCIPOTRIENE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFIXIME SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLARITHROMYCIN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BICALUTAMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCIPOTRIENE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFPODOXIME PROXETIL SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLARITHROMYCIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BICARBONATE PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCIPOTRIENE-BETAMETH DIPROP OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFPODOXIME PROXETIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLEMASTINE FUMARATE SYR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BIMATOPROST SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCIPOTRIENE-BETAMETH DIPROP SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFPROZIL SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLEMASTINE FUMARATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BISOPROLOL FUMARATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCITONIN (SALMON) SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFPROZIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BISOPROLOL-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFUROXIME AXETIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN PALMITATE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BOOSTRIX",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "CALCITRIOL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CELECOXIB CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN PHOS-BENZOYL PEROX GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BRIMONIDINE TARTRATE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCITRIOL OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEPHALEXIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN PHOSPHATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BRIMONIDINE TARTRATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCITRIOL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEPHALEXIN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN PHOSPHATE FOAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BRIMONIDINE TARTRATE-TIMOLOL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCIUM ACETATE (PHOS BINDER) CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEPHALEXIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN PHOSPHATE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BRINZOLAMIDE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCIUM ACETATE (PHOS BINDER) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHLORDIAZEPOXIDE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN PHOSPHATE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BROMFENAC SODIUM (ONCE-DAILY) SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CALCIUM ACETATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHLORDIAZEPOXIDE-AMITRIPTYLINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN PHOSPHATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BROMOCRIPTINE MESYLATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CANDESARTAN CILEXETIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHLORDIAZEPOXIDE-CLIDINIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLINDAMYCIN-TRETINOIN GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BROMOCRIPTINE MESYLATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CANDESARTAN CILEXETIL-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHLORHEXIDINE GLUCONATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBAZAM SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUDESONIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CAPTOPRIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHLOROQUINE PHOSPHATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBAZAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUDESONIDE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CAPTOPRIL-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHLORPROMAZINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROP EMOLLIENT BASE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUDESONIDE FOAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARBAMAZEPINE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHLORTHALIDONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUDESONIDE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARBAMAZEPINE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHLORZOXAZONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE EMULSION FOAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUDESONIDE-FORMOTEROL FUMARATE AER",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARBAMAZEPINE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHOLESTYRAMINE LIGHT PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE FOAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUMETANIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARBAMAZEPINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHOLESTYRAMINE LIGHT PWDR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPRENORPHINE HCL SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "CARBIDOPA TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHOLESTYRAMINE PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE LIQUID",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPRENORPHINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARBIDOPA-LEVODOPA ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CHOLESTYRAMINE PWDR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPRENORPHINE HCL-NALOXONE HCL FILM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARBIDOPA-LEVODOPA TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CICLOPIROX GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPRENORPHINE HCL-NALOXONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARBINOXAMINE MALEATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CICLOPIROX OLAMINE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE SHAMP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPRENORPHINE PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARBINOXAMINE MALEATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CICLOPIROX OLAMINE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOBETASOL PROPIONATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPROPION HCL ER (SMOKING DET) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARDIOPLEGIC SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CICLOPIROX SHAMP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOMIPRAMINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPROPION HCL ER (SR) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARTEOLOL HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CICLOPIROX SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLONAZEPAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPROPION HCL ER (XL) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARVEDILOL PHOSPHATE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CIDOFOVIR SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "CLONIDINE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUPROPION HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CARVEDILOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CILOSTAZOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLONIDINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUSPIRONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFACLOR CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CIMETIDINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLONIDINE PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUTALBITAL-ACETAMINOPHEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFACLOR ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CIMETIDINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOPIDOGREL BISULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUTALBITAL-APAP-CAFF-COD CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFACLOR SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CIPROFLOXACIN HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLORAZEPATE DIPOTASSIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "BUTALBITAL-APAP-CAFFEINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CEFADROXIL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CIPROFLOXACIN HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOTRIMAZOLE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOTRIMAZOLE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESONIDE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DILTIAZEM HCL ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ELETRIPTAN HYDROBROMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOTRIMAZOLE-BETAMETHASONE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESOXIMETASONE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DILTIAZEM HCL ER COATED BEADS CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EMTRICITABINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOTRIMAZOLE-BETAMETHASONE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESOXIMETASONE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DILTIAZEM HCL ER COATED BEADS TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EMTRICITABINE-TENOFOVIR DF TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CLOZAPINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESOXIMETASONE LIQUID",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DILTIAZEM HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ENALAPRIL MALEATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CODEINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESOXIMETASONE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIPYRIDAMOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ENALAPRIL MALEATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "COLCHICINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESVENLAFAXINE SUCCINATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DISULFIRAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ENALAPRIL-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "COLCHICINE-PROBENECID TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEXAMETHASONE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIVALPROEX SODIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ENOXAPARIN SODIUM PREFILL SYR",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "COLESEVELAM HCL PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEXAMETHASONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIVALPROEX SODIUM ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ENOXAPARIN SODIUM SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "COLESEVELAM HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEXLANSOPRAZOLE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIVALPROEX SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ENTACAPONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "COLESTIPOL HCL PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEXMETHYLPHENIDATE HCL ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOFETILIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "COLESTIPOL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEXMETHYLPHENIDATE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DONEPEZIL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ENTECAVIR TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CORTISONE ACETATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEXTROAMPHETAMINE SULFATE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DONEPEZIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EPINASTINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CROMOLYN SODIUM NEB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEXTROAMPHETAMINE SULFATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DORZOLAMIDE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EPINEPHRINE (ANAPHYLAXIS) SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "CROMOLYN SODIUM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEXTROAMPHETAMINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DORZOLAMIDE HCL-TIMOLOL MAL PF SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EPINEPHRINE AUTO-INJ",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "CYCLOBENZAPRINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIAZEPAM GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DORZOLAMIDE HCL-TIMOLOL MAL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EPINEPHRINE HCL (NASAL) SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CYCLOPENTOLATE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIAZEPAM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXAZOSIN MESYLATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EPLERENONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CYCLOPHOSPHAMIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIAZEPAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXEPIN HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERGOCALCIFEROL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CYCLOSPORINE SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "DIAZOXIDE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXEPIN HCL CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERGOLOID MESYLATES TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CYPROHEPTADINE HCL SYR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICLOFENAC POTASSIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXEPIN HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERGOTAMINE-CAFFEINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "CYPROHEPTADINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICLOFENAC POTASSIUM(MIGRAINE) PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXERCALCIFEROL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERYTHROMYCIN BASE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DABIGATRAN ETEXILATE MESYLATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICLOFENAC SODIUM ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXERCALCIFEROL SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ERYTHROMYCIN BASE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DANAZOL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICLOFENAC SODIUM GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXYCYCLINE HYCLATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERYTHROMYCIN ETHYLSUCCINATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DANTROLENE SODIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICLOFENAC SODIUM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXYCYCLINE HYCLATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERYTHROMYCIN ETHYLSUCCINATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DAPSONE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXYCYCLINE MONOHYDRATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERYTHROMYCIN GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DAPSONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICLOFENAC SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXYCYCLINE MONOHYDRATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERYTHROMYCIN OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DARIFENACIN HYDROBROMIDE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXYCYCLINE MONOHYDRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERYTHROMYCIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DARUNAVIR TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICLOFENAC-MISOPROSTOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DOXYLAMINE-PYRIDOXINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ERYTHROMYCIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEMECLOCYCLINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICLOXACILLIN SODIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DRONABINOL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESCITALOPRAM OXALATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DEPO-ESTRADIOL",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "DICYCLOMINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DROSPIREN-ETH ESTRAD-LEVOMEFOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESCITALOPRAM OXALATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESIPRAMINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICYCLOMINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DROSPIRENONE-ETHINYL ESTRADIOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESOMEPRAZOLE MAGNESIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESMOPRESSIN ACE SPRAY REFRIG SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DICYCLOMINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DULOXETINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESOMEPRAZOLE MAGNESIUM PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESMOPRESSIN ACETATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIETHYLPROPION HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DUTASTERIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EST ESTROGENS-METHYLTEST TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESMOPRESSIN ACETATE SPRAY SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIETHYLPROPION HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DUTASTERIDE-TAMSULOSIN HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESTAZOLAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESMOPRESSIN ACETATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIFLORASONE DIACETATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ECONAZOLE NITRATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESTRADIOL CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESOGESTREL-ETHINYL ESTRADIOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIFLORASONE DIACETATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EFAVIRENZ CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESTRADIOL GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESONIDE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIGOXIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EFAVIRENZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESTRADIOL PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESONIDE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DIGOXIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EFAVIRENZ-EMTRICITAB-TENOFO DF TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESTRADIOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DESONIDE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "DILTIAZEM HCL ER BEADS CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EFAVIRENZ-LAMIVUDINE-TENOFOVIR TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESTRADIOL VALERATE OIL",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ESTRADIOL-NORETHINDRONE ACET TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUCONAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FOSCARNET SODIUM SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HALOBETASOL PROPIONATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ESZOPICLONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUCYTOSINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FOSFOMYCIN TROMETHAMINE PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HALOPERIDOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETHACRYNIC ACID TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUDROCORTISONE ACETATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FOSINOPRIL SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDRALAZINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETHAMBUTOL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINOLONE ACETONIDE BODY OIL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FOSINOPRIL SODIUM-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDRALAZINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETHOSUXIMIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINOLONE ACETONIDE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FROVATRIPTAN SUCCINATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCHLOROTHIAZIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETHOSUXIMIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINOLONE ACETONIDE OIL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FUROSEMIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETHYL CHLORIDE AER",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINOLONE ACETONIDE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FUROSEMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCODONE BITARTRATE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETHYNODIOL DIAC-ETH ESTRADIOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINOLONE ACETONIDE SCALP OIL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GABAPENTIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCODONE BITARTRATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETODOLAC CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINOLONE ACETONIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GABAPENTIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCODONE BIT-HOMATROP MBR SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETODOLAC ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINONIDE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GABAPENTIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCODONE BIT-HOMATROP MBR TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETODOLAC TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINONIDE EMULSIFIED BASE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GALANTAMINE HYDROBROMIDE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCODONE-ACETAMINOPHEN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETONOGESTREL-ETHINYL ESTRADIOL RING",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINONIDE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GALANTAMINE HYDROBROMIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCODONE-ACETAMINOPHEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETOPOSIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINONIDE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GALANTAMINE HYDROBROMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCODONE-IBUPROFEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ETRAVIRINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOCINONIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GATIFLOXACIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE (PERIANAL) CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EXEMESTANE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOROMETHOLONE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GEMFIBROZIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE BUTYR LIPO BASE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EZETIMIBE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOROURACIL CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GENTAMICIN SULFATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE BUTYRATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "EZETIMIBE-SIMVASTATIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOROURACIL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GENTAMICIN SULFATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE BUTYRATE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FAMCICLOVIR TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOXETINE HCL (PMDD) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GENTAMICIN SULFATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE BUTYRATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FAMOTIDINE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOXETINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLATIRAMER ACETATE PREFILL SYR",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HYDROCORTISONE BUTYRATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FAMOTIDINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOXETINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLATOPA",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HYDROCORTISONE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FELBAMATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUOXETINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLIMEPIRIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FELBAMATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLURANDRENOLIDE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLIPIZIDE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FELODIPINE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLURANDRENOLIDE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLIPIZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FENOFIBRATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLURBIPROFEN SODIUM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLIPIZIDE-METFORMIN HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE VALERATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FENOFIBRATE MICRONIZED CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLURBIPROFEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLUCAGON EMERGENCY KIT",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HYDROCORTISONE VALERATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FENOFIBRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUTICASONE PROPIONATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLYBURIDE MICRONIZED TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE-ACETIC ACID SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FENOFIBRIC ACID CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUTICASONE PROPIONATE HFA AER",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLYBURIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORTISONE-IODOQUINOL CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FENOFIBRIC ACID TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUTICASONE PROPIONATE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLYBURIDE-METFORMIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROCORT-PRAMOXINE (PERIANAL) CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FENOPROFEN CALCIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUTICASONE PROPIONATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLYCOPYRROLATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROMORPHONE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FENOPROFEN CALCIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUTICASONE PROPIONATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GLYCOPYRROLATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROMORPHONE HCL LIQUID",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FENTANYL PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUTICASONE-SALMETEROL AER",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GRANISETRON HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROQUINONE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FERUMOXYTOL SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "FLUVASTATIN SODIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GRISEOFULVIN MICROSIZE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROXYCHLOROQUINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FESOTERODINE FUMARATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUVASTATIN SODIUM ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GRISEOFULVIN MICROSIZE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROXYPROGESTERONE CAPROATE OIL",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "FINASTERIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUVOXAMINE MALEATE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GRISEOFULVIN ULTRAMICROSIZE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROXYPROGESTERONE CAPROATE SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "FLAVOXATE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUVOXAMINE MALEATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "GUANFACINE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROXYUREA CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLECAINIDE ACETATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FONDAPARINUX SODIUM SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "GUANFACINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROXYZINE HCL SYR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLECAINIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FORMOTEROL FUMARATE NEB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HALCINONIDE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROXYZINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FLUCONAZOLE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "FOSAMPRENAVIR CALCIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HALOBETASOL PROPIONATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYDROXYZINE PAMOATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYOSCYAMINE SULFATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "KETOPROFEN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVONORGESTREL-ETHINYL ESTRAD TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MALATHION LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYOSCYAMINE SULFATE SL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "KETOROLAC TROMETHAMINE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVONORG-ETH ESTRAD TRIPHASIC TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MARAVIROC TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYOSCYAMINE SULFATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "KETOROLAC TROMETHAMINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVORPHANOL TARTRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MECLIZINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "HYOSCYAMINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LABETALOL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVOTHYROXINE SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MECLIZINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IBANDRONATE SODIUM SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "LACOSAMIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "L-GLUTAMIC ACID HCL PWDR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MECLOFENAMATE SODIUM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IBANDRONATE SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LACOSAMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE HCL CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEDROXYPROGESTERONE ACETATE PREFILL SYR",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "IBUPROFEN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LACTULOSE PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEDROXYPROGESTERONE ACETATE SUSP",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "IBUPROFEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LACTULOSE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEDROXYPROGESTERONE ACETATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IBUPROFEN-FAMOTIDINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMIVUDINE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEFENAMIC ACID CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IMIPRAMINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMIVUDINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE VISCOUS HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEFLOQUINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IMIPRAMINE PAMOATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMIVUDINE-ZIDOVUDINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE-HYDROCORTISONE ACE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEGESTROL ACETATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IMIQUIMOD CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMOTRIGINE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE-HYDROCORTISONE ACE KIT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEGESTROL ACETATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "INDAPAMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMOTRIGINE KIT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE-PRILOCAINE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MELOXICAM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "INDOMETHACIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMOTRIGINE STARTER KIT-BLUE KIT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIDOCAINE-PRILOCAINE KIT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MELOXICAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "INDOMETHACIN ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMOTRIGINE STARTER KIT-GREEN KIT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LINDANE SHAMP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MELPHALAN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IODOQUINOL-HC-ALOE POLYSACCH GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMOTRIGINE STARTER KIT-ORANGE KIT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LINEZOLID SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEMANTINE HCL ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IODOQUINOL-HYDROCORTISONE-ALOE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LAMOTRIGINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LINEZOLID TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEMANTINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IPRATROPIUM BROMIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LANSOPRAZOLE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LIOTHYRONINE SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEMANTINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IPRATROPIUM-ALBUTEROL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LANSOPRAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LISDEXAMFETAMINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MERCAPTOPURINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IRBESARTAN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LANTHANUM CARBONATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LISDEXAMFETAMINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MESALAMINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IRBESARTAN-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LATANOPROST SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LISINOPRIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MESALAMINE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISOFLURANE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEFLUNOMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LISINOPRIL-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MESALAMINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISONIAZID SYR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LETROZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LITHIUM CARBONATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MESALAMINE-CLEANSER KIT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISONIAZID TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEUCOVORIN CALCIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LITHIUM CARBONATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METAXALONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISOSORB DINITRATE-HYDRALAZINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVALBUTEROL HCL NEB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LITHIUM CARBONATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METFORMIN HCL ER (MOD) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISOSORBIDE DINITRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVALBUTEROL TARTRATE AER",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "L-METHYLFOLATE CALCIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METFORMIN HCL ER (OSM) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISOSORBIDE MONONITRATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVETIRACETAM ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "L-METHYLFOLATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METFORMIN HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISOSORBIDE MONONITRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVETIRACETAM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LOPINAVIR-RITONAVIR SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METFORMIN HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISOTRETINOIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVETIRACETAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LOPINAVIR-RITONAVIR TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METFORMIN HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ISRADIPINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVOBUNOLOL HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LORAZEPAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHAMPHETAMINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ITRACONAZOLE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVOCARNITINE SF SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LOSARTAN POTASSIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHAZOLAMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ITRACONAZOLE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVOCARNITINE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LOSARTAN POTASSIUM-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHENAMINE HIPPURATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IVERMECTIN CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LOTEPREDNOL ETABONATE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHENAMINE MANDELATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "IVERMECTIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVOCARNITINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LOTEPREDNOL ETABONATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHIMAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "KETOCONAZOLE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVOFLOXACIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LOVASTATIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHOCARBAMOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "KETOCONAZOLE FOAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVOFLOXACIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LOXAPINE SUCCINATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHOTREXATE SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "KETOCONAZOLE SHAMP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVONORGEST-ETH EST & ETH EST TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LUBIPROSTONE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHOTREXATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "KETOCONAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LEVONORGEST-ETH ESTRAD 91-DAY TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "LURASIDONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHOXSALEN RAPID CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHSUXIMIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MOLINDONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEOMYCIN-POLYMYXIN-GRAMICIDIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NYSTATIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLDOPA TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MOMETASONE FUROATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEOMYCIN-POLYMYXIN-HC SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NYSTATIN-TRIAMCINOLONE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLERGONOVINE MALEATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MOMETASONE FUROATE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEOMYCIN-POLYMYXIN-HC SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NYSTATIN-TRIAMCINOLONE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLPHENIDATE HCL ER (CD) CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MOMETASONE FUROATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEVIRAPINE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OCTREOTIDE ACETATE PREFILL SYR",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "METHYLPHENIDATE HCL ER (LA) CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MONTELUKAST SODIUM PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEVIRAPINE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OCTREOTIDE ACETATE SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "METHYLPHENIDATE HCL ER (OSM) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MONTELUKAST SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEVIRAPINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OFLOXACIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLPHENIDATE HCL ER (XR) CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MORPHINE SULFATE (CONCENTRATE) SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NIACIN (ANTIHYPERLIPIDEMIC) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OFLOXACIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLPHENIDATE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MORPHINE SULFATE ER BEADS CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NIACIN ER (ANTIHYPERLIPIDEMIC) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OLANZAPINE SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "METHYLPHENIDATE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MORPHINE SULFATE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NICARDIPINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OLANZAPINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLPHENIDATE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MORPHINE SULFATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NICOTINAMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OLANZAPINE-FLUOXETINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLPHENIDATE PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MORPHINE SULFATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NIFEDIPINE ER OSMOTIC RELEASE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OLMESARTAN MEDOXOMIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MOXIFLOXACIN HCL (2X DAY) SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NIFEDIPINE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OLMESARTAN MEDOXOMIL-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLPREDNISOLONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MOXIFLOXACIN HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NIMODIPINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OLMESARTAN-AMLODIPINE-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METHYLTESTOSTERONE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MOXIFLOXACIN HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NISOLDIPINE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OLOPATADINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METOCLOPRAMIDE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MUPIROCIN CALCIUM CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NITAZOXANIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OMEPRAZOLE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METOCLOPRAMIDE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MUPIROCIN OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NITROFURANTOIN MACROCRYSTAL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ONDANSETRON HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METOLAZONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MYCOPHENOLATE MOFETIL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NITROFURANTOIN MONOHYD MACRO CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ONDANSETRON HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METOPROLOL SUCCINATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MYCOPHENOLATE MOFETIL HCL SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NITROFURANTOIN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ONDANSETRON TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METOPROLOL TARTRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MYCOPHENOLATE MOFETIL SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NITROGLYCERIN PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ORLISTAT CAP",
+   "tier": "tier1",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "METOPROLOL-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MYCOPHENOLATE MOFETIL SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NITROGLYCERIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ORPHENADRINE CITRATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METRONIDAZOLE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MYCOPHENOLATE MOFETIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NITROGLYCERIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OSELTAMIVIR PHOSPHATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METRONIDAZOLE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NA FERRIC GLUC CPLX IN SUCROSE SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NIZATIDINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OSELTAMIVIR PHOSPHATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METRONIDAZOLE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NABUMETONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORETHIN ACE-ETH ESTRAD-FE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OSELTAMIVIR SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METRONIDAZOLE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NADOLOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORETHIN ACE-ETH ESTRAD-FE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXANDROLONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METRONIDAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NAFTIFINE HCL CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORETHINDRONE ACETATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXAPROZIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "METYROSINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NALBUPHINE HCL SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NORETHINDRONE ACET-ETHINYL EST TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXCARBAZEPINE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MEXILETINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NAPROXEN SODIUM ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORETHINDRONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXCARBAZEPINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MIDODRINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NAPROXEN SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORETHINDRONE-ETH ESTRADIOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXERVATE",
+   "tier": "tier1",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "MIFEPRISTONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NAPROXEN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORETHINDRON-ETHINYL ESTRAD-FE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXICONAZOLE NITRATE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MIGLITOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NAPROXEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORETHIN-ETH ESTRADIOL-FE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYBUTYNIN CHLORIDE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MINOCYCLINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NAPROXEN-ESOMEPRAZOLE MG TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORGESTIMATE-ETH ESTRADIOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYBUTYNIN CHLORIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MINOCYCLINE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NARATRIPTAN HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORGESTIM-ETH ESTRAD TRIPHASIC TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYBUTYNIN CHLORIDE SYR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MINOCYCLINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NATEGLINIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORTRIPTYLINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYBUTYNIN CHLORIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MINOXIDIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEBIVOLOL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NORTRIPTYLINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYCODONE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MIRTAZAPINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEOMYCIN-BACITRACIN ZN-POLYMYX OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NYSTATIN CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYCODONE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MISOPROSTOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEOMYCIN-POLYMYXIN B GU SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NYSTATIN OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYCODONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MODAFINIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEOMYCIN-POLYMYXIN-DEXAMETH OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NYSTATIN PWDR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYCODONE-ACETAMINOPHEN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "MOEXIPRIL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NEOMYCIN-POLYMYXIN-DEXAMETH SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "NYSTATIN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYCODONE-ACETAMINOPHEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYMORPHONE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENYTOIN SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROCHLORPERAZINE MALEATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RISPERIDONE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "OXYMORPHONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENYTOIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROGESTERONE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RISPERIDONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PALIPERIDONE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHOSPHOROUS TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROGESTERONE OIL",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "RITONAVIR TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PAMIDRONATE DISODIUM SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PILOCARPINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROMETHAZINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RIVASTIGMINE PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PANTOPRAZOLE SODIUM PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PIMECROLIMUS CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROMETHAZINE HCL SYR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RIVASTIGMINE TARTRATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PANTOPRAZOLE SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PIMOZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROMETHAZINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RIZATRIPTAN BENZOATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PARICALCITOL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PINDOLOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROPAFENONE HCL ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ROFLUMILAST TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PARICALCITOL SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PIOGLITAZONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROPAFENONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ROPINIROLE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PAROMOMYCIN SULFATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PIOGLITAZONE HCL-GLIMEPIRIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROPARACAINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ROPINIROLE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PAROXETINE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PIOGLITAZONE HCL-METFORMIN HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROPRANOLOL HCL ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ROSUVASTATIN CALCIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PAROXETINE HCL SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PIRFENIDONE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROPRANOLOL HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RUFINAMIDE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PAROXETINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PIRFENIDONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROPRANOLOL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RUFINAMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PAROXETINE MESYLATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PIROXICAM CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROPYLTHIOURACIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SALICYLIC ACID ER SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PB-HYOSCY-ATROPINE- SCOPOLAMINE ELIX",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PODOFILOX SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROTRIPTYLINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SALICYLIC ACID FOAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PB-HYOSCY-ATROPINE- SCOPOLAMINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "POLYMYXIN B-TRIMETHOPRIM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PYRAZINAMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SALICYLIC ACID GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PEG-3350/ELECTROLYTES SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "POSACONAZOLE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PYRIDOSTIGMINE BROMIDE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SALICYLIC ACID OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PEGASYS",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "POSACONAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PYRIDOSTIGMINE BROMIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SALICYLIC ACID SHAMP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PEG-KCL-NACL-NASULF-NA ASC-C SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "POTASSIUM CHLORIDE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PYRIDOSTIGMINE BROMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SALICYLIC ACID SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PENCICLOVIR CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "POTASSIUM CHLORIDE PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PYRIMETHAMINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SALICYLIC ACID WART REMOVER LIQUID",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PENICILLAMINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PRAMIPEXOLE DIHYDROCHLORIDE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "QUETIAPINE FUMARATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SALICYLIC ACID-CLEANSER KIT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PENICILLAMINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PRAMIPEXOLE DIHYDROCHLORIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "QUETIAPINE FUMARATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SCOPOLAMINE PATCH",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PENICILLIN V POTASSIUM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PRASUGREL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "QUINAPRIL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SELEGILINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PENICILLIN V POTASSIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PRAVASTATIN SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "QUINAPRIL-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SELEGILINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PENTAMIDINE ISETHIONATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PRAZIQUANTEL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "QUINIDINE GLUCONATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SEMAGLUTIDE",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PERINDOPRIL ERBUMINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PRAZOSIN HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "QUINIDINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SERTRALINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PERMETHRIN CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREDNISOLONE ACETATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "QUININE SULFATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SEVELAMER CARBONATE PACK",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PERPHENAZINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREDNISOLONE SODIUM PHOSPHATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RABEPRAZOLE SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SEVELAMER CARBONATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PERPHENAZINE-AMITRIPTYLINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREDNISOLONE SODIUM PHOSPHATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RALOXIFENE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SEVELAMER HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENAZOPYRIDINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREDNISOLONE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RAMELTEON TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SILDENAFIL CITRATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENDIMETRAZINE TARTRATE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RAMIPRIL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SILDENAFIL CITRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENDIMETRAZINE TARTRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREDNISONE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RANOLAZINE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SILODOSIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENELZINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREDNISONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RASAGILINE MESYLATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SILVER SULFADIAZINE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENOBARBITAL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREGABALIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "REPAGLINIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SIMVASTATIN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENOXYBENZAMINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREGABALIN ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RIFABUTIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SIROLIMUS SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENTERMINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PREGABALIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RIFAMPIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SIROLIMUS TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENTERMINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PRIMAQUINE PHOSPHATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RILUZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SOD BENZ-SOD PHENYLACET SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PHENYLEPHRINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PRIMIDONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RIMANTADINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SODIUM CHLORIDE NEB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PHENYTOIN SODIUM EXTENDED CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "PROBENECID TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "RISEDRONATE SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SODIUM FLUORIDE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SODIUM FLUORIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TAFLUPROST (PF) SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOLCAPONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TROSPIUM CHLORIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SODIUM FLUORIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TAMOXIFEN CITRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOLTERODINE TARTRATE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "UREA CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SODIUM PHENYLBUTYRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TAMSULOSIN HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOLTERODINE TARTRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "URSODIOL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SODIUM SULFACETAMIDE SHAMP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TAVABOROLE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOPIRAMATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "URSODIOL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SOLIFENACIN SUCCINATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TAZAROTENE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOPIRAMATE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VALACYCLOVIR HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SOTALOL HCL (AF) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TAZAROTENE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOPIRAMATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VALGANCICLOVIR HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SOTALOL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TELMISARTAN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOREMIFENE CITRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VALGANCICLOVIR HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SPINOSAD SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TELMISARTAN-AMLODIPINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TORSEMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VALPROIC ACID CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SPIRONOLACTONE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TELMISARTAN-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRAMADOL HCL (ER BIPHASIC) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VALPROIC ACID SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SPIRONOLACTONE-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TENOFOVIR DISOPROXIL FUMARATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRAMADOL HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VALSARTAN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "STAVUDINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TERAZOSIN HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRAMADOL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VALSARTAN-HYDROCHLOROTHIAZIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SUCRALFATE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TERBINAFINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRAMADOL-ACETAMINOPHEN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VANCOMYCIN HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SUCRALFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TERBUTALINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRANDOLAPRIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VANCOMYCIN HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM (ACNE) LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TERCONAZOLE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRANDOLAPRIL-VERAPAMIL HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VARDENAFIL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM (CLEANS) GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TERIFLUNOMIDE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRANYLCYPROMINE SULFATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VARENICLINE TARTRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM LIQUID",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TESTOSTERONE CYPIONATE SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TRAVOPROST (BAK FREE) SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VENLAFAXINE HCL ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TESTOSTERONE ENANTHATE SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TRAZODONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VENLAFAXINE HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TESTOSTERONE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRETINOIN CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VENLAFAXINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM-SULFUR CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TESTOSTERONE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRETINOIN CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VERAPAMIL HCL ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM-SULFUR LIQUID",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TETANUS-DIPHTHERIA TOXOIDS TD SUSP",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TRETINOIN GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VERAPAMIL HCL ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM-SULFUR LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TETRACAINE HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRETINOIN MICROSPHERE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VERAPAMIL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM-SULFUR PAD",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TETRACYCLINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRETINOIN MICROSPHERE PUMP GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VILAZODONE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SODIUM-SULFUR SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "THEOPHYLLINE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAMCINOLONE ACETONIDE AER",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VITAMIN D (ERGOCALCIFEROL) CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE SOD-SULFUR WASH LIQUID",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "THEOPHYLLINE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAMCINOLONE ACETONIDE CREAM",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VORICONAZOLE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE-PREDNISOLONE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "THIORIDAZINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAMCINOLONE ACETONIDE LOT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "VORICONAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFACETAMIDE-SULFUR IN UREA EMUL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "THIOTHIXENE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAMCINOLONE ACETONIDE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "WARFARIN SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFADIAZINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "THYROID TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAMCINOLONE IN ABSORBASE OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZAFIRLUKAST TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFAMETHOXAZOLE-TRIMETHOPRIM SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TIAGABINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAMTERENE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZALEPLON CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFAMETHOXAZOLE-TRIMETHOPRIM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TIMOLOL MALEATE (ONCE-DAILY) SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAMTERENE-HCTZ CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZIDOVUDINE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULFASALAZINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TIMOLOL MALEATE GEL",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAMTERENE-HCTZ TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZIDOVUDINE SYR",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SULINDAC TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TIMOLOL MALEATE PF SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIAZOLAM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZIDOVUDINE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SUMATRIPTAN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TIMOLOL MALEATE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIFLUOPERAZINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZILEUTON ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SUMATRIPTAN SUCCINATE AUTO-INJ",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TIMOLOL MALEATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIFLURIDINE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZIPRASIDONE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SUMATRIPTAN SUCCINATE SOLN",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TINIDAZOLE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIHEXYPHENIDYL HCL SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZOLEDRONIC ACID CONC",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SUMATRIPTAN SUCCINATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TIRZEPATIDE",
+   "tier": "tier1",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TRIHEXYPHENIDYL HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZOLEDRONIC ACID SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "SUMATRIPTAN-NAPROXEN SODIUM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TIZANIDINE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIMETHOBENZAMIDE HCL CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZOLMITRIPTAN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TACROLIMUS CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TIZANIDINE HCL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIMETHOPRIM TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZOLMITRIPTAN TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TACROLIMUS OINT",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOBRAMYCIN NEB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TRIMIPRAMINE MALEATE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZOLPIDEM TARTRATE ER TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TADALAFIL (PAH) TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOBRAMYCIN SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TROPICAMIDE SOLN",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZOLPIDEM TARTRATE TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TADALAFIL TAB",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TOBRAMYCIN-DEXAMETHASONE SUSP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "TROSPIUM CHLORIDE ER CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "ZONISAMIDE CAP",
+   "tier": "tier1",
+   "flags": []
+  },
+  {
+   "name": "AIMOVIG",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMALOG KWIKPEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ORILISSA",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SUBVENITE STARTER KIT-",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "ALINIA SUSP",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "HUMALOG MIX 50/50",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "OTREXUP",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "SUBVENITE STARTER KIT-BLUE",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "ALOPRIM",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMALOG MIX 50/50 KWIKPEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "OZEMPIC (0.25 OR 0.5 MG/DOSE)",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SUBVENITE STARTER KIT-GREEN",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "AMABELZ",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "HUMALOG MIX 75/25",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "OZEMPIC (1 MG/DOSE)",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SUNLENCA",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ARISTADA",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMALOG MIX 75/25 KWIKPEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "OZEMPIC (2 MG/DOSE)",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SUPREP BOWEL PREP KIT",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "ARISTADA INITIO",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMALOG TEMPO PEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PARAGARD INTRAUTERINE COPPER",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "SYLVANT",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ATROVENT HFA",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "HUMULIN R U-500 (CONCENTRATED)",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PEDIARIX",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "SYMJEPI",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "BSS",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMULIN R U-500 KWIKPEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PENTACEL",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "SYMLINPEN 120",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "BYDUREON BCISE",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HYDROMORPHONE HCL TAB",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "PHOSPHATE SOLN",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "SYMLINPEN 60",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "BYETTA 10 MCG PEN",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HYPERHEP B",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PR CREAM",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "SYNJARDY XR",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "BYETTA 5 MCG PEN",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HYPERRAB",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PREMARIN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TDVAX",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "CAVERJECT",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HYPERTET",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PREVYMIS",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TENIVAC",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "CAVERJECT IMPULSE",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "IMOGAM RABIES-HT",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PROFILNINE",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "THYMOGLOBULIN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "DAPTACEL",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "INFANRIX",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PROLATE ORAL TABLET",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "TIADYLT ER",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "DYANAVEL XR",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "INFED",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "QUADRACEL",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TOUJEO MAX SOLOSTAR",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ELIQUIS DVT/PE STARTER PACK",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "INFLECTRA",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "QUILLICHEW ER",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "TOUJEO SOLOSTAR",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "EMGALITY (300 MG DOSE)",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "JANUMET XR",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "QUILLIVANT XR",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "TRESIBA",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "EMGALITY",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LEVEMIR",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "QULIPTA",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "TRESIBA FLEXTOUCH",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "EMTRIVA SOLN",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "LEVEMIR FLEXPEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "RAPIVAB",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TRIJARDY XR",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "EPIPEN 2-PAK",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "LEXIVA SUSP",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "RASUVO",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TROGARZO",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "EPIPEN JR 2-PAK",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "LUCEMYRA",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "REPATHA",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "TRULICITY",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "EPIVIR HBV SOLN",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "LYUMJEV",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "REPATHA PUSHTRONEX SYSTEM",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "UBRELVY",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "EUFLEXXA",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LYUMJEV KWIKPEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "REPATHA SURECLICK",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "VARIZIG",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "FASENRA",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LYUMJEV TEMPO PEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "RETROVIR",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "VARUBI (180 MG DOSE)",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "FASENRA PEN",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "MENOPUR",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "REXULTI",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "VEKLURY",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "FLUORESCITE",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "METHADONE HCL SOLN",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "REYVOW",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VENOFER",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "FRAGMIN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "METHADONE HCL TAB",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "RUKOBIA",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "WEGOVY",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ",
+    "BIO"
+   ]
+  },
+  {
+   "name": "FUZEON",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "MORPHINE SULFATE TAB",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "RYBELSUS",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "XARELTO STARTER PACK",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "GAMASTAN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "MOUNJARO",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SAVELLA TITRATION PACK",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "XCOPRI",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "GVOKE HYPOPEN 1-PACK",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NASCOBAL",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SAXENDA",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "XIGDUO XR",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "GVOKE HYPOPEN 2-PACK",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NEOMYCIN SULFATE TAB",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "SELZENTRY SOLN",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "XULTOPHY",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "GVOKE KIT",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NEXLETOL",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SELZENTRY TAB",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "XYREM",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "GVOKE PFS",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NEXLIZET",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SEMGLEE (YFGN)",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ZEGALOGUE",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HEPAGAM B",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NOXAFIL SUSP",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "SEREVENT DISKUS",
+   "tier": "tier2",
+   "flags": []
+  },
+  {
+   "name": "ZEPBOUND",
+   "tier": "tier2",
+   "flags": [
+    "PA",
+    "INJ",
+    "BIO"
+   ]
+  },
+  {
+   "name": "HUMALOG",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NURTEC",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SKYLA",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMALOG JUNIOR KWIKPEN",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ORIAHNN",
+   "tier": "tier2",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SOLIQUA",
+   "tier": "tier2",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ABILIFY ASIMTUFII",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "FULVESTRANT PREFILL SYR",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NALOXONE HCL PREFILL SYR",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "RISPERDAL CONSTA",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ABILIFY MAINTENA",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "KANUMA",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "NALOXONE HCL SOLN",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "VICTOZA",
+   "tier": "tier3",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ATGAM",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "KYNMOBI",
+   "tier": "tier3",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "PIQRAY",
+   "tier": "tier3",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VISUDYNE",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "FORTEO",
+   "tier": "tier3",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NALOXONE HCL CARTRIDGE",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "PRALUENT",
+   "tier": "tier3",
+   "flags": [
+    "INJ"
+   ]
+  },
+  {
+   "name": "ABIRATERONE ACETATE TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "CYLTEZO-CD/UC/HS",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "GANCICLOVIR SODIUM SOLN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LORBRENA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "AFSTYLA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CYLTEZO-PSORIASIS",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "GANIRELIX ACETATE PREFILL SYR",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LUMIZYME",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ALDURAZYME",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CYTOGAM",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "GATTEX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LUPRON DEPOT (1-MONTH)",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ALPHANATE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "DALFAMPRIDINE ER TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "GAVRETO",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "LUPRON DEPOT (3-MONTH)",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ALPHANINE SD",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "DIACOMIT",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "GEFITINIB TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "LUPRON DEPOT-PED (1-MONTH)",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ALPROLIX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "DIMETHYL FUMARATE CAP",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "GONAL-F",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LUPRON DEPOT-PED (3-MONTH)",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "AMBRISENTAN TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "DIMETHYL FUMARATE STARTER PACK MISC",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "GONAL-F RFF",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LUXTURNA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "AMJEVITA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "DUPIXENT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "GONAL-F RFF REDIJECT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LYNPARZA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "APOMORPHINE HCL CARTRIDGE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ELAPRASE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HARVONI",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "MAYZENT STARTER PACK",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "AUSTEDO",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ELIGARD",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HEMLIBRA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "MEPSEVII",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "AUSTEDO PATIENT TITRATION KIT",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ELOCTATE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HEMOFIL M",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "MYALEPT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "AUSTEDO XR",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ENBREL",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMATE-P",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "MYOBLOC",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "AVONEX PEN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ENBREL MINI",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMIRA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "BIO",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NAGLAZYME",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "AVONEX PREFILLED",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ENBREL SURECLICK",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMIRA PEDIATRIC CROHNS START",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "BIO",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NATPARA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BALVERSA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ENJAYMO",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMIRA PEN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "BIO",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NILUTAMIDE TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "BARACLUDE SOLN",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ENSPRYNG",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMIRA PEN-CD/UC/HS START",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "BIO",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NITISINONE CAP",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "BENEFIX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ENTYVIO",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HUMIRA PEN-PEDIATRIC UC START",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "BIO",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NIVESTYM",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BENLYSTA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "EPCLUSA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "HUMIRA PEN-PS/UV/ADOL HS START",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "BIO",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NORDITROPIN FLEXPRO",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BETAINE PWDR",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "EPIDIOLEX",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "HUMIRA PEN-PSOR/UVEIT STARTER",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ",
+    "BIO"
+   ]
+  },
+  {
+   "name": "NOVAREL",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BETASERON",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "EPOPROSTENOL SODIUM SOLN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "HYDROCORTISONE ACE-PRAMOXINE CREAM",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "NOVOEIGHT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BEXAROTENE CAP",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ERLOTINIB HCL TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "HYPERRHO S/D",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NPLATE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BEXAROTENE GEL",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ESPEROCT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ICATIBANT ACETATE PREFILL SYR",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NUCALA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BOSENTAN TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "EVEROLIMUS TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ILARIS",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "NULOJIX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BOTOX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "EYLEA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "IMATINIB MESYLATE TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "NYVEPRIA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "BRINEURA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "FABRAZYME",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "IXINITY",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "OCREVUS",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CAMZYOS",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "FEBUXOSTAT TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "JIVI",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "OTEZLA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "CAPECITABINE TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "FEIBA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "JYNARQUE",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "OVIDREL",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CARGLUMIC ACID TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "FERRIPROX SOLN",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "KESIMPTA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "OZURDEX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CEREZYME",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "FINGOLIMOD HCL CAP",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "KOGENATE FS",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "PALFORZIA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "CETROTIDE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "FIRDAPSE",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "KORLYM",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "PALYNZIQ",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CIBINQO",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "FIRMAGON",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "KOVALTRY",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "PEMAZYRE",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "CINACALCET HCL TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "FIRMAGON (240 MG DOSE)",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "KRYSTEXXA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "PLEGRIDY",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CINRYZE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "FLOLAN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "KYLEENA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "PLEGRIDY STARTER PACK",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "COAGADEX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "FLUPHENAZINE HCL TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "LAPATINIB DITOSYLATE TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "PLERIXAFOR SOLN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "COPAXONE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "GAMIFANT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LEUKINE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "PONVORY STARTER PACK",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "CORIFACT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "GAMMAGARD",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LEUPROLIDE ACETATE INJ",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "PROCRIT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CRYSVITA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "GAMMAGARD S/D LESS IGA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LEUPROLIDE ACETATE KIT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "PROLASTIN-C",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "CYLTEZO",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "GAMUNEX-C",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "LILETTA (52 MG)",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "PROMACTA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "RADICAVA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SKYRIZI PEN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TREMFYA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "WILATE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "RADICAVA ORS",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SODIUM OXYBATE SOLN",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "TREPROSTINIL SOLN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "XELJANZ",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "RADICAVA ORS STARTER KIT",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SOLIRIS",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TRETTEN",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "XELJANZ XR",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "REBIF",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SOMATULINE DEPOT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TRIPTODUR",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "XEMBIFY",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "REBIF REBIDOSE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SOMAVERT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TYMLOS",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "XGEVA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "REBIF TITRATION PACK",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SORAFENIB TOSYLATE TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "TYSABRI",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "XIAFLEX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "REMICADE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SPEVIGO",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TYVASO DPI MAINTENANCE KIT",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "XOLAIR",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "REMODULIN",
+   "tier": "specialty",
+   "flags": [
+    "INJ",
+    "PA"
+   ]
+  },
+  {
+   "name": "SPINRAZA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TYVASO DPI TITRATION KIT",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "XOSPATA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "RETACRIT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "STELARA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "BIO",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TYVASO REFILL",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "XYWAV",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "REVCOVI",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "STRENSIQ",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "VANFLYTA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ZEMAIRA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "RIASTAP",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SUBLOCADE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "VELETRI",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ZEPATIER",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "RIBAVIRIN CAP",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SUNITINIB MALATE CAP",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VENCLEXTA STARTING PACK",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ZEPOSIA 7-DAY STARTER PACK",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "RIBAVIRIN SOLN",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SYNAGIS",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "VIGABATRIN PACK",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ZEPOSIA STARTER KIT",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "RIBAVIRIN TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SYNVISC",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "VIGABATRIN TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ZOLADEX",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "RINVOQ",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SYNVISC ONE",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "VIJOICE",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ZOLGENSMA",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ROZLYTREK",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "TABRECTA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VIMIZIM",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ZTALMY",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "RUCONEST",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TAKHZYRO",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "VITRAKVI",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ZULRESSO",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SAJAZIR",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TALTZ",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "VIVITROL",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "ZYDELIG",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SAPROPTERIN DIHYDROCHLORIDE PACK",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "TALZENNA",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VIZIMPRO",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SAPROPTERIN DIHYDROCHLORIDE TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "TEGSEDI",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "VONJO",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SEVENFACT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TEMOZOLOMIDE CAP",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VONVENDI",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "SIGNIFOR",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TETRABENAZINE TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VOSEVI",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SIMULECT",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TIOPRONIN TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VYNDAMAX",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "SKYRIZI",
+   "tier": "specialty",
+   "flags": [
+    "PA",
+    "INJ"
+   ]
+  },
+  {
+   "name": "TOLVAPTAN TAB",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "VYNDAQEL",
+   "tier": "specialty",
+   "flags": [
+    "PA"
+   ]
+  },
+  {
+   "name": "ABRILADA (ADALIMUMAB-AFZB)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "HULIO (ADALIMUMAB-FKJP)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "YUFLYMA (ADALIMUMAB-AATY)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "AMJEVITA (ADALIMUMAB-ATTO)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "HYRIMOZ (ADALIMUMAB-ADAZ)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "YUSIMRY (ADALIMUMAB-AQVH)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "CYLTEZO (ADALIMUMAB-ADBM)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "IDACIO (ADALIMUMAB-AACF)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "SELARSDI ( USTEKINUMAB-AEKN)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  },
+  {
+   "name": "WEZLANA (USTEKINUMAB-AUUB)",
+   "tier": "specialty_biosimilar",
+   "flags": []
+  }
+ ],
+ "version": "2026",
+ "source_url": "https://sales.neoinsurancesolutions.com/media/1367/Formularies/Harbor%20STM%20Shield%20PBM%20SELECT%20Managed%20Formulary%202026.pdf",
+ "pulled": "2026-11-03",
+ "pbm": "Shield PBM (Rx Valet)",
+ "note": "Carrier sheet says inclusion does not guarantee coverage and the list is not complete. Flags: PA prior authorization, INJ injectable, BIO biosimilar."
+}

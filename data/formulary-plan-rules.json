@@ -1,0 +1,240 @@
+{
+  "version": "2026-11-03",
+  "note": "Plan rules for the Plan meds check. The formulary files say which drugs are on a list; these rules say what each plan actually pays. Plan rules always win over copays printed in the formulary files. status: list = check meds against a list; not_on_file = plan has a list but CHA does not have it; no_list = no drug list exists for this plan.",
+  "formularies": {
+    "ventegra": "data/ventegra-formulary.json",
+    "mylivedoc": "data/myliveDoc-formulary.json",
+    "bestchoicerx": "data/bestchoicerx-formulary.json",
+    "shieldpbm": "data/harbor-shieldpbm-formulary.json",
+    "primeprotect_aca": "data/primeprotect-aca-formulary.json"
+  },
+  "plans": {
+    "smart-choice-1500": {
+      "name": "SmartChoice 1500",
+      "status": "list",
+      "formulary": "ventegra",
+      "match_tiers": ["Generic"],
+      "on_list": "Preferred generic: $12 copay, 30-day retail (Ventegra acute formulary only)",
+      "brand": "Preferred and non-preferred brand: Not covered",
+      "specialty": "Specialty: Not covered. Patient assistance through ScriptAide",
+      "off_list": "Not on the Ventegra acute formulary",
+      "source": "Smart Choice 1500/2500/3000/3500 Plan Doc 2025, Prescription Benefits table"
+    },
+    "smart-choice-2500": {
+      "name": "SmartChoice 2500",
+      "status": "list",
+      "formulary": "ventegra",
+      "match_tiers": ["Generic"],
+      "on_list": "Preferred generic: $12 copay, 30-day retail (Ventegra acute formulary only)",
+      "brand": "Preferred and non-preferred brand: Not covered",
+      "specialty": "Specialty: Not covered. Patient assistance through ScriptAide",
+      "off_list": "Not on the Ventegra acute formulary",
+      "source": "Smart Choice 1500/2500/3000/3500 Plan Doc 2025, Prescription Benefits table"
+    },
+    "smart-choice-3000": {
+      "name": "SmartChoice 3000",
+      "status": "list",
+      "formulary": "ventegra",
+      "match_tiers": ["Generic"],
+      "on_list": "Preferred generic: $12 copay, 30-day retail (Ventegra acute formulary only)",
+      "brand": "Preferred and non-preferred brand: Not covered",
+      "specialty": "Specialty: Not covered. Patient assistance through ScriptAide",
+      "off_list": "Not on the Ventegra acute formulary",
+      "source": "Smart Choice 1500/2500/3000/3500 Plan Doc 2025, Prescription Benefits table"
+    },
+    "smart-choice-3500": {
+      "name": "SmartChoice 3500",
+      "status": "list",
+      "formulary": "ventegra",
+      "match_tiers": ["Generic"],
+      "on_list": "Preferred generic: $12 copay, 30-day retail (Ventegra acute formulary only)",
+      "brand": "Preferred and non-preferred brand: Not covered",
+      "specialty": "Specialty: Not covered. Patient assistance through ScriptAide",
+      "off_list": "Not on the Ventegra acute formulary",
+      "source": "Smart Choice 1500/2500/3000/3500 Plan Doc 2025, Prescription Benefits table"
+    },
+    "tdk-1": {
+      "name": "TDK 1",
+      "status": "list",
+      "formulary": "mylivedoc",
+      "sections": ["urgent_care"],
+      "on_list": "MyLiveDoc urgent care med: $0 at participating retail pharmacies",
+      "off_list": "Not on the MyLiveDoc 70+ list. Discount with prescription card",
+      "gap": "CHA file has 45 urgent care rows; MyLiveDoc 70 Meds PDF lists 52 and says 70+",
+      "source": "FirstEnroll TDK 1 Info page (2026-11-03): 70+ Free Prescriptions. Discount with Prescription Card"
+    },
+    "tdk-2": {
+      "name": "TDK 2",
+      "status": "list",
+      "formulary": "mylivedoc",
+      "sections": ["urgent_care", "chronic"],
+      "on_list": "MyLiveDoc med: $0 (urgent care at retail, chronic by free home delivery)",
+      "off_list": "Not on the MyLiveDoc rows CHA has. List not complete, check MyLiveDoc 855-226-6567",
+      "gap": "Plan says 1,000+ free Rx; CHA file has 362 chronic + 45 urgent care rows",
+      "source": "FirstEnroll TDK 2 Info page (2026-11-03): 1,000+ Free Prescriptions. Discount with Prescription Card"
+    },
+    "tdk-3": {
+      "name": "TDK 3",
+      "status": "list",
+      "formulary": "mylivedoc",
+      "sections": ["urgent_care", "chronic"],
+      "on_list": "MyLiveDoc med: $0 (urgent care at retail, chronic by free home delivery)",
+      "off_list": "Not on the MyLiveDoc rows CHA has. List not complete, check MyLiveDoc 855-226-6567",
+      "gap": "Plan says 1,000+ free Rx; CHA file has 362 chronic + 45 urgent care rows",
+      "source": "FirstEnroll TDK 3 Info page (2026-11-03): 1,000+ Free Prescriptions. Discount with Prescription Card"
+    },
+    "tdk-4": {
+      "name": "TDK 4",
+      "status": "list",
+      "formulary": "mylivedoc",
+      "sections": ["urgent_care", "chronic"],
+      "on_list": "MyLiveDoc med: $0 (urgent care at retail, chronic by free home delivery)",
+      "off_list": "Not on the MyLiveDoc rows CHA has. List not complete, check MyLiveDoc 855-226-6567",
+      "gap": "Plan says 1,000+ free Rx; CHA file has 362 chronic + 45 urgent care rows",
+      "source": "FirstEnroll TDK 4 Info page (2026-11-03): 1,000+ Free Prescriptions. Discount with Prescription Card"
+    },
+    "tdk-5": {
+      "name": "TDK 5",
+      "status": "list",
+      "formulary": "mylivedoc",
+      "sections": ["urgent_care", "chronic"],
+      "on_list": "MyLiveDoc med: $0 (urgent care at retail, chronic by free home delivery)",
+      "off_list": "Not on the MyLiveDoc rows CHA has. List not complete, check MyLiveDoc 855-226-6567",
+      "gap": "Plan says 1,000+ free Rx; CHA file has 362 chronic + 45 urgent care rows",
+      "source": "FirstEnroll TDK 5 Info page (2026-11-03): 1,000+ Free Prescriptions. Discount with Prescription Card"
+    },
+    "ghdp-2": {
+      "name": "GoodHealth 2",
+      "status": "list",
+      "formulary": "bestchoicerx",
+      "on_list": "Acute and preventive generic: $0 (retail 30-day). 200 generic maintenance drugs: $5 (retail 30-day or mail 90-day)",
+      "off_list": "Not on the formulary. Rx plan gives a discount",
+      "specialty": "Specialty: Not covered. PAP through the Rx provider if income qualifies",
+      "gap": "BestChoiceRx file does not list GoodHealth 2 on any row; same list as GoodHealth 3-5 not confirmed",
+      "source": "MEC_GHDP2 Summary of Benefits PDF (FirstEnroll), Pharmacy section"
+    },
+    "ghdp-3": {
+      "name": "GoodHealth 3",
+      "status": "list",
+      "formulary": "bestchoicerx",
+      "on_list": "Acute and preventive generic: $0 (retail 30-day). 200 generic maintenance drugs: $5 (retail 30-day or mail 90-day)",
+      "non_preferred_generic": "Non-preferred generic: $5 and $10 retail 30-day; $5 and $20 mail 90-day",
+      "brand": "Brand (prior authorization required): $40 retail 30-day; $80 mail 90-day",
+      "cap": "Non-preventive generic and brand: $150 benefit limit per person per month",
+      "specialty": "Specialty: Not covered. PAP through the Rx provider if income qualifies",
+      "off_list": "Not on the formulary. Rx plan gives a discount",
+      "source": "MEC_GHDP3 Summary of Benefits PDF (FirstEnroll), Pharmacy section"
+    },
+    "ghdp-4": {
+      "name": "GoodHealth 4",
+      "status": "list",
+      "formulary": "bestchoicerx",
+      "on_list": "Acute and preventive generic: $0 (retail 30-day). 200 generic maintenance drugs: $5 (retail 30-day or mail 90-day)",
+      "non_preferred_generic": "Non-preferred generic: $5 and $10 retail 30-day; $5 and $20 mail 90-day",
+      "brand": "Brand (prior authorization required): $40 retail 30-day; $80 mail 90-day",
+      "cap": "Non-preventive generic and brand: $150 benefit limit per person per month",
+      "specialty": "Specialty: Not covered. PAP through the Rx provider if income qualifies",
+      "off_list": "Not on the formulary. Rx plan gives a discount",
+      "source": "MEC_GHDP4 Summary of Benefits PDF (FirstEnroll), Pharmacy section"
+    },
+    "ghdp-5": {
+      "name": "GoodHealth 5",
+      "status": "list",
+      "formulary": "bestchoicerx",
+      "on_list": "Acute and preventive generic: $0 (retail 30-day). 200 generic maintenance drugs: $5 (retail 30-day or mail 90-day)",
+      "non_preferred_generic": "Non-preferred generic: $5 and $10 retail 30-day; $5 and $20 mail 90-day",
+      "brand": "Brand (prior authorization required): $40 retail 30-day; $80 mail 90-day",
+      "cap": "Non-preventive generic and brand: $150 benefit limit per person per month",
+      "specialty": "Specialty: Not covered. PAP through the Rx provider if income qualifies",
+      "off_list": "Not on the formulary. Rx plan gives a discount",
+      "source": "MEC_GHDP5 Summary of Benefits PDF (FirstEnroll), Pharmacy section"
+    },
+    "harbor-stm-essential": {
+      "name": "Harbor STM Essential",
+      "status": "list",
+      "formulary": "shieldpbm",
+      "requires": "Optional Outpatient Prescription Drug Rider",
+      "on_list": "Generic: $25 copay. Covered brand and specialty: $500 Rx deductible, then plan coinsurance. $5,000 Rx max per person",
+      "off_list": "Not on the Shield PBM SELECT list",
+      "no_rider": "No Rx rider: outpatient Rx not covered",
+      "source": "HarborSTM Brochure 08202026, Prescription Drugs; Shield PBM SELECT Managed Formulary 2026"
+    },
+    "harbor-stm-access": {
+      "name": "Harbor STM Access",
+      "status": "list",
+      "formulary": "shieldpbm",
+      "requires": "Optional Outpatient Prescription Drug Rider",
+      "on_list": "Generic: $25 copay. Covered brand and specialty: $500 Rx deductible, then plan coinsurance. $5,000 Rx max per person",
+      "off_list": "Not on the Shield PBM SELECT list",
+      "no_rider": "No Rx rider: outpatient Rx not covered",
+      "source": "HarborSTM Brochure 08202026, Prescription Drugs; Shield PBM SELECT Managed Formulary 2026"
+    },
+    "harbor-stm-secure": {
+      "name": "Harbor STM Secure",
+      "status": "list",
+      "formulary": "shieldpbm",
+      "requires": "Optional Outpatient Prescription Drug Rider",
+      "on_list": "Generic: $25 copay. Covered brand and specialty: $500 Rx deductible, then plan coinsurance. $5,000 Rx max per person",
+      "off_list": "Not on the Shield PBM SELECT list",
+      "no_rider": "No Rx rider: outpatient Rx not covered",
+      "source": "HarborSTM Brochure 08202026, Prescription Drugs; Shield PBM SELECT Managed Formulary 2026"
+    },
+    "primeprotect": {
+      "name": "PrimeProtect (all tiers)",
+      "status": "list",
+      "formulary": "primeprotect_aca",
+      "on_list": "$0 ACA preventive med (value-added Rx program, not insurance)",
+      "off_list": "Not on the $0 ACA list. Discount price only",
+      "gap": "Formulary sheet on Premier is dated 2020",
+      "source": "Premier storefront PrimeProtect Info page (2026-11-03); SS_ACA-MEC-Formulary.pdf"
+    },
+    "tvp-1": {
+      "name": "TVP Health 1",
+      "status": "no_list",
+      "summary": "HarmonyRx discount prescriptions only",
+      "source": "Premier storefront TVP Health Plan 1 Info page (2026-11-03)"
+    },
+    "tvp-2": {
+      "name": "TVP Health 2",
+      "status": "not_on_file",
+      "summary": "HarmonyRx: acute and preventive generic $0 (retail 30-day); 200 generic maintenance drugs $5",
+      "gap": "HarmonyRx list is behind the member portal",
+      "source": "Premier storefront TVP Health Plan 2 Info page (2026-11-03)"
+    },
+    "tvp-3": {
+      "name": "TVP Health 3",
+      "status": "not_on_file",
+      "summary": "HarmonyRx: acute and preventive generic $0 (retail 30-day); 200 generic maintenance drugs $10; non-preferred generic $20 retail 30-day",
+      "gap": "HarmonyRx list is behind the member portal",
+      "source": "Premier storefront TVP Health Plan 3 Info page (2026-11-03)"
+    },
+    "tvp-4": {
+      "name": "TVP Health 4",
+      "status": "not_on_file",
+      "summary": "HarmonyRx: acute and preventive generic $0 (retail 30-day); 200 generic maintenance drugs $10; non-preferred generic $20 retail 30-day",
+      "gap": "HarmonyRx list is behind the member portal",
+      "source": "Premier storefront TVP Health Plan 4 Info page (2026-11-03)"
+    },
+    "tvp-5": {
+      "name": "TVP Health 5",
+      "status": "not_on_file",
+      "summary": "HarmonyRx: acute and preventive generic $0 (retail 30-day); 200 generic maintenance drugs $10; non-preferred generic $20 retail 30-day",
+      "gap": "HarmonyRx list is behind the member portal",
+      "source": "Premier storefront TVP Health Plan 5 Info page (2026-11-03)"
+    },
+    "advantcare": {
+      "name": "AdvantCare (2 to 12+, WellPremium)",
+      "status": "not_on_file",
+      "summary": "Preventive generic $0, limited to ACA preventive drugs (subject to formulary)",
+      "gap": "No AdvantCare formulary found on Premier",
+      "source": "Premier storefront AdvantCare Info pages (2026-11-03)"
+    },
+    "allstate-copay-enhanced-stm-ppo": {
+      "name": "Allstate Copay Enhanced STM PPO",
+      "status": "not_on_file",
+      "summary": "$10 copay on generic drugs; $3,000 max",
+      "gap": "No drug list published",
+      "source": "Allstate Copay Enhanced STM PPO Plan PDF"
+    }
+  }
+}
