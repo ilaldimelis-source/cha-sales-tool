@@ -3794,6 +3794,12 @@ function cwAskCards(fam) {
     ]);
   }
   var own = (CW_ASK_TERMS[fam.name] || []).concat(CW_ASK_PLAN[fam.name] || []);
+  var tierAsk = (CW_ASK_TIER[fam.name] || {})[cwState.tier];
+  if (tierAsk) {
+    own = own.map(function (x) {
+      return tierAsk[x[0]] ? [x[0], tierAsk[x[0]]] : x;
+    });
+  }
   var ownQ = own.map(function (x) {
     return x[0].toLowerCase();
   });
@@ -3864,6 +3870,31 @@ var CW_ASK_TERMS = {
 // Harbor STM cost basics (Mey, Oct 26 2026): HarborSTM brochure 0827
 // and the NEO HarborSTM training (Units 2-4); the $5,000 is a coinsurance-only max, so it is never
 // called the most the client will pay.
+// Harbor tier versions (Nov 4 2026, Mey). Mey's Harbor cards in
+// CW_ASK_PLAN carry Essential's numbers; on Access and Secure calls
+// these answers replace them. Figures from the NEO Harbor Info page
+// and the HarborSTM brochure benefit grid.
+var CW_ASK_TIER = {
+  'Harbor STM': {
+    Access: {
+      'What do I pay for office visits?':
+        'The plan includes 3 office visits at a $40 copay. That applies to primary care, specialist, and urgent care visits.',
+      'What about the ER, surgery, or the hospital?':
+        'Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics have no access fee and go toward the deductible and coinsurance. Inpatient surgery and diagnostic/lab work are subject to the deductible and coinsurance.',
+      "What is the most I'll pay?":
+        'After your deductible, you pay 30% coinsurance until you reach the $5,000 coinsurance out-of-pocket maximum. The plan pays up to $1,000,000 per coverage period.'
+    },
+    Secure: {
+      'What do I pay for office visits?':
+        'The plan includes unlimited office visits at a $40 copay. That applies to primary care, specialist, and urgent care visits.',
+      'What about the ER, surgery, or the hospital?':
+        'Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics have no access fee and go toward the deductible and coinsurance. Inpatient surgery and diagnostic/lab work are subject to the deductible and coinsurance.',
+      "What is the most I'll pay?":
+        'After your deductible, you pay 30% coinsurance until you reach the $5,000 coinsurance out-of-pocket maximum. The plan pays up to $1,500,000 per coverage period.'
+    }
+  }
+};
+
 var CW_ASK_PLAN = {
   'Harbor STM': [
     [
