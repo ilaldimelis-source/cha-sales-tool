@@ -892,7 +892,7 @@ var CW_FAMS = [
             'Ded $2.5k-$25k (9 designs); coins 0/20/50%; coins OOP $0 or $5k; period max $1,000,000',
             0
           ],
-          ['Waiting period', 'Not on file', 1],
+          ['Waiting period', 'Sickness 7 days', 1],
           ['Pre-existing', 'Not on file', 1]
         ],
         script: ''
@@ -917,7 +917,7 @@ var CW_FAMS = [
             'Ded $6k or $8k; coins 0%; coins OOP $0; period max $5,000,000',
             0
           ],
-          ['Waiting period', 'Not on file', 1],
+          ['Waiting period', 'Sickness 7 days', 1],
           ['Pre-existing', 'Not on file', 1]
         ],
         script: ''
@@ -938,7 +938,7 @@ var CW_FAMS = [
             'Ded $5k/$10k/$25k; coins 40%; coins OOP $7.5k; period max $250,000',
             0
           ],
-          ['Waiting period', 'Not on file', 1],
+          ['Waiting period', 'Sickness 7 days', 1],
           ['Pre-existing', 'Not on file', 1]
         ],
         script: ''
