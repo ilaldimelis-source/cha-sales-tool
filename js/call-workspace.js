@@ -3922,8 +3922,28 @@ var CW_ASK_PLAN = {
       'Mainly the surveys, any projects the company assigns you, and staying in touch when they reach out to you.'
     ],
     [
-      'Will this affect my taxes?',
-      'Your survey payments may count as income. For tax questions, please check with your tax preparer.'
+      'Will I pay taxes on this?',
+      "You'll get a tax form called a K-1 because you're a part-owner. Give it to whoever does your taxes."
+    ],
+    [
+      'Do I have to be self-employed?',
+      "Yes. The application asks you to confirm you're self-employed and can show proof if asked. Only say yes if it's true, or you could lose the plan and have claims denied."
+    ],
+    [
+      'How will I be billed?',
+      "Your first payment is today. After that, it's drafted around the 20th of each month for the next month. Your statement shows Neo Health Solutions. A returned bank draft costs $35 each time."
+    ],
+    [
+      'How do I cancel?',
+      "Email csr@neoinsurancesolutions.com at least 15 days before you want to cancel. Without 15 days' notice, it's delayed at least 30 days and you still owe those payments. You also get a 30-day grace period if you miss a payment."
+    ],
+    [
+      'Does my spouse need to sign?',
+      "Yes, if you're married. Your spouse signs a short consent saying they've seen the company agreement."
+    ],
+    [
+      "What's AssistPro?",
+      'A discount program for $22.99 a month. You can cancel within 30 days for a refund, minus any claims paid. To stop it, contact Neo at least 3 business days before your next payment: csr@neoinsurancesolutions.com or (866) 870-7730.'
     ],
     [
       'Who sees my information?',

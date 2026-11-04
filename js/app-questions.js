@@ -160,52 +160,52 @@ var APPQ_PLANS = [
     qs: [
       {
         q: 'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA?',
-        ex: 'This plan is a group health plan offered through a company called Population Science Management (PSM). To get the plan, you join that company as a "Working Owner," which means you become a limited member (a small part-owner). Section 5.01(c) is just the part of the company\'s agreement that allows new members to join this way.',
+        ex: 'This health plan comes through a company called Population Science Management. To get it, you join the company as a small part-owner, called a Working Owner.',
         ok: 'Yes'
       },
       {
         q: 'Do you understand that, as a Working Owner, you are expected to complete assigned activities, respond to Company requests, and maintain regular communication regarding Working Owner matters?',
-        ex: "Your role is called a Consumer Data Respondent. Throughout the year, the company sends you short surveys and questionnaires about your health and how you use healthcare. You're expected to answer them truthfully and on time, and to respond when the company reaches out.",
+        ex: 'The company sends you short surveys about your health. You answer them on time and reply when they reach out.',
         ok: 'Yes'
       },
       {
         q: 'Do you agree that the Company may assign projects to you at its discretion?',
-        ex: 'So again, the company assigns you projects which remember, are short surveys and questionnaires about your health and how you use healthcare. You complete them at your own pace within the time they give you.',
+        ex: "The 'projects' are just those short surveys. You do them at your own pace before the due date.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that you will receive a Guaranteed Payment for each response to an information request, as defined under Internal Revenue Code Section 707(c)?',
-        ex: 'You get paid for each survey or information request you complete. The payment goes onto a debit/credit card. Section 707(c) is just the part of the tax code that covers payments a company makes to its owners for their services.',
+        ex: 'You get paid for each survey you finish. The money goes on a card. 707(c) is just the tax rule for that payment.',
         ok: 'Yes'
       },
       {
         q: 'Do you acknowledge that you have been granted three (3) Preferred Units in the Company as compensation for your personal services?',
-        ex: '"Units" are your ownership shares in the company. You\'re given 3 of them in exchange for doing the surveys. You don\'t buy them separately.',
+        ex: "Units are small ownership shares. You get 3 for doing the surveys, and you don't pay for them.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that the Preferred Units are not registered under the Securities Act of 1933 and that there is no public market for these units?',
-        ex: "These are not stocks you can sell on the stock market. They are private, you can't freely sell or transfer them, and you shouldn't expect to cash them in. Their purpose is to make you a member so you're eligible for the health plan.",
+        ex: "These aren't stocks. You can't sell or cash them in. They just make you a member so you can get the plan.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that you are eligible to participate in Company benefit plans subject to eligibility requirements and timely payment of any required premiums?',
-        ex: 'Being a Working Owner is what makes you eligible for the health plan. You keep the coverage as long as you stay eligible and pay your monthly payment on time.',
+        ex: 'Being a Working Owner gets you the plan. Pay on time each month to keep it.',
         ok: 'Yes'
       },
       {
         q: 'Do you agree to maintain the confidentiality of all Company information and to comply with Section 14.03 of the LLC Agreement?',
-        ex: 'You agree not to share, copy, or post any private company information you receive as an owner. Section 14.03 is the confidentiality section of the company agreement.',
+        ex: 'Keep any private company info to yourself. 14.03 is just the privacy section.',
         ok: 'Yes'
       },
       {
         q: 'Do you understand that if you fail to meet the conditions of Working Owner status, the Company may exercise its Call Right to repurchase your Membership Interest?',
-        ex: 'If you stop meeting the requirements, such as not completing the surveys or not paying your monthly payment, the company can buy back your units. That ends your Working Owner status, and with it, your eligibility for the health plan.',
+        ex: "If you stop doing the surveys or stop paying, the company can take back your units, and you'd lose the plan.",
         ok: 'Yes'
       },
       {
         q: 'Do you confirm that you have read and understood all the Terms and Conditions and the LLC Agreement, and that you are legally able to provide services as a Working Owner?',
-        ex: "You're confirming you've had the chance to review the terms, and that nothing stops you from doing this work, such as an agreement with a current or former employer. You're welcome to ask questions or talk to an attorney before you agree.",
+        ex: "You're confirming you've read the terms and nothing stops you from doing this, like a contract with an employer. You can ask questions first.",
         ok: 'Yes'
       }
     ],
