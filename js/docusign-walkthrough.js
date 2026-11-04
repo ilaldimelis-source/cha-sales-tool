@@ -141,15 +141,6 @@ window.docusignWalkthroughData = {
       ]
     }
   ],
-  redFlagsChecklist: [
-    'Client takes biologics, injectables, GLP-1s, or any specialty med -- flag specialty exclusion BEFORE submission',
-    'Client is on chronic medications -- set expectation: mail order only',
-    'Client works W-2 job -- plan requires self-employed; this is a big problem',
-    'Client is married -- spousal consent box must be checked',
-    'Client has work-related injury risk -- plan excludes work-related claims',
-    'Client wants flexibility to cancel -- 15-day notice rule + 30-day delay penalty',
-    'Client asks "is this real insurance?" -- clarify: ERISA group health plan via LLC structure, not ACA marketplace coverage'
-  ],
   attestations: [
     {
       number: 1,
