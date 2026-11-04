@@ -335,7 +335,7 @@ var CW_FAMS = [
       ['Network', 'First Health - in-network only'],
       ['Administrator', 'Detego Health'],
       ['Sponsor', 'Population Science Management'],
-      ['Billing', 'Neo Health Solutions']
+      ['Billing', 'NEOINS (Neo Insurance Solutions)']
     ],
     tiers: [
       {

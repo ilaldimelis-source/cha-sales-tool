@@ -2322,7 +2322,7 @@ var CHA_QUICK_REF = [
     uw: 'Detego Health',
     uwLabel: 'Administrator',
     claims: 'Not listed on NEO info page',
-    billing: 'Neo Health Solutions',
+    billing: 'NEOINS (Neo Insurance Solutions)',
     vault: 'smartchoice',
     script: 'NEO Smart Choice'
   },

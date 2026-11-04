@@ -906,13 +906,13 @@ var CW_DISC = {
       paras: [
         "Your plan uses the First Health network, in-network only. Out-of-network care isn't covered, except emergencies.",
         'Detego Health administers the plan, and you join Population Science Management USA as a Working Owner. A federal law called ERISA governs the plan.',
-        'Your bill will show Neo Health Solutions.',
+        'Your bill will show NEOINS.',
         'I do want to clarify that this is a private, limited medical plan, not an ACA or major medical plan, and it does not provide coverage for maternity, or substance abuse for drugs and alcohol.',
         'Every benefit has limits; past a limit, you pay. Your out-of-pocket limit only counts in-network covered care.',
         "Your Schedule of Benefits lists what the plan pays for each service, and anything not listed there isn't covered.",
-        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity or substance abuse, and your bill will show Neo Health Solutions?\n\u25b6 ( Wait for answer )"
+        "Do you understand that this isn't major medical or an ACA plan, it has limits, it doesn't cover maternity or substance abuse, and your bill will show NEOINS?\n\u25b6 ( Wait for answer )"
       ],
-      bill: 'Your first payment is $___: $___ plan, $___ add-on, if any. Then $___ a month. Your statement shows Neo Health Solutions.'
+      bill: 'Your first payment is $___: $___ plan, $___ add-on, if any. Then $___ a month. Your statement shows NEOINS.'
     },
     pinnacle_stm: {
       paras: [
