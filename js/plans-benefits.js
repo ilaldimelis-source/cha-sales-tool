@@ -557,7 +557,8 @@ const PLANS = [
     type: 'Short-Term Medical',
     tagline: 'PHCS-network STM through National Congress of Employers',
     network: 'PHCS',
-    admin: 'American Financial Security Life Insurance Company',
+    admin:
+      'American Financial Security Life Insurance Company or Standard Life and Casualty Insurance Company (by state)',
     assoc: 'National Congress of Employers',
     bestFor:
       'Individuals needing short-term bridge coverage with PHCS network access',
@@ -2372,7 +2373,7 @@ var CHA_QUICK_REF = [
     network: 'PHCS',
     assoc:
       'NCE Association (National Congress of Employers), not required in all states',
-    uw: 'American Financial Security Life Insurance Co.',
+    uw: 'American Financial Security Life Insurance Co. or Standard Life and Casualty Insurance Co. (by state)',
     claims:
       'WebTPA, PO Box 99906, Grapevine, TX 76099 / 878-208-1319 (existing claims)',
     billing: 'FirstEnroll',
@@ -2730,7 +2731,7 @@ var QR_SHORT = {
   goodlifewbchoice: ['First Health', 'Good Life Partners', 'MBA (admin)'],
   pinnacleprotect: ['MultiPlan', 'Association not named', 'Everest RE'],
   simpleshield: ['First Health + MultiPlan', 'AWA', 'SGIC'],
-  accesshealth: ['PHCS', 'NCE', 'American Financial Security Life'],
+  accesshealth: ['PHCS', 'NCE', 'AFSLIC or Standard Life (by state)'],
   goodhealth13: ['First Health', 'GHDP', 'MBA (admin)'],
   tdk13: ['First Health', 'HCDA', 'Detego Health (admin)'],
   harmonycare: [

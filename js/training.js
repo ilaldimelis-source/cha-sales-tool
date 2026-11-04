@@ -2306,7 +2306,8 @@ var planReferenceData = {
   'access-health': {
     name: 'Access Health Traditional STM',
     network: 'PHCS',
-    underwriter: 'AFSLIC (American Financial Security Life Insurance Company)',
+    underwriter:
+      'AFSLIC (American Financial Security Life Insurance Company) or SLACIC (Standard Life and Casualty Insurance Company), by state',
     association: 'NCE (National Congress of Employers)',
     providerSearch: 'providersearch.multiplan.com',
     type: 'STM'

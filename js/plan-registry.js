@@ -168,7 +168,8 @@ var CHA_PLAN_REGISTRY = [
     group: 'Access Health',
     tier: 1,
     platform: 'FirstEnroll',
-    carrier: 'American Financial Security Life Insurance Co.',
+    carrier:
+      'American Financial Security Life Insurance Co. or Standard Life and Casualty Insurance Co., by state',
     network: 'PHCS',
     enrollUrl: 'https://manage.firstenroll.com/index.cfm?id=974358',
     pdfFile: 'AccessHealthBrochure2.pdf',
