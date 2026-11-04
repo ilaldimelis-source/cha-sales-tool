@@ -3901,6 +3901,58 @@ var CW_ASK_PLAN = {
     [
       'Can you give me an example?',
       'In-network, $2,500 deductible, 20% coinsurance. A $10,000 bill: you pay $2,500 + $1,500 = $4,000. A $50,000 bill: you pay $2,500 + the $5,000 limit = $7,500. The plan pays the rest, up to its limits.'
+    ],
+    [
+      'Are pre-existing conditions covered?',
+      "No. The plan doesn't cover pre-existing conditions: anything you received medical advice, treatment, tests or prescriptions for, or had symptoms of, in the 5 years before your start date. There is an optional Pre-Existing Conditions Waiver rider, but it's only included if it was selected."
+    ],
+    [
+      'Is there a waiting period?',
+      'Yes. No benefits are paid for a sickness that starts in the first 5 days, for cancer that starts in the first 30 days, or for the wellness exam during the first 30 days after your start date.'
+    ],
+    [
+      'Which doctors can I see?',
+      "This plan is in-network only, using the Cigna Healthcare PPO network. Out-of-network care isn't covered, and you don't need a referral to see a specialist."
+    ],
+    [
+      'What do I pay for office visits?',
+      'The plan includes 3 office visits at a $50 copay. That applies to primary care, specialist, and urgent care visits.'
+    ],
+    [
+      'Is a wellness exam covered?',
+      "Yes. The deductible is waived for the wellness exam and coinsurance applies. It isn't available during the first 30 days."
+    ],
+    [
+      'What about the ER, surgery, or the hospital?',
+      'Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics have a $500 access fee per admission, then go toward the deductible and coinsurance. Inpatient surgery and diagnostic/lab work are subject to the deductible and coinsurance.'
+    ],
+    [
+      "What is the most I'll pay?",
+      'After your deductible, you pay 30% coinsurance until you reach the $5,000 coinsurance out-of-pocket maximum. The plan pays up to $750,000 per coverage period.'
+    ],
+    [
+      'Are my prescriptions covered?',
+      "Outpatient prescriptions aren't covered unless the optional Rx rider was added. You'll still have access to the prescription discount program we went over."
+    ],
+    [
+      'Do I need approval before some services?',
+      "Yes. Some services need pre-authorization from the carrier before they're done. Call the number on your card before any scheduled procedure."
+    ],
+    [
+      "What isn't covered?",
+      "Some key exclusions are: pregnancy and childbirth (except complications of pregnancy), joint replacement unless it's from an injury, allergy testing and shots, weight-loss treatment, routine dental and vision, and, during the first 6 months, surgery for ear tubes, tonsils, adenoids, hernia, sinuses or a deviated septum. The full list is in your certificate."
+    ],
+    [
+      'What are the other monthly charges?',
+      'AssistPro Discount: $22.99 per month. AWA association fee: $29.99 per month, plus a $19.99 one-time enrollment fee. Technology access fee: $3.69 per month. Rates include a 3.0% technology services fee.'
+    ],
+    [
+      'How do I cancel?',
+      'Email csr@neoinsurancesolutions.com or call Member Services at (866) 870-7730 at least 3 business days before your next payment date.'
+    ],
+    [
+      'Can I get a refund?',
+      'If you cancel within 30 days of purchase, coverage is cancelled back to the start date and your premium is refunded, minus any claims paid.'
     ]
   ],
   SmartChoice: [
