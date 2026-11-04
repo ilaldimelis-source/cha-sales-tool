@@ -1015,162 +1015,186 @@ window.docusignWalkthroughData = {
 var DOCUSIGN_ACK_BOXES = [
   {
     num: 1,
-    where:
-      "Page 1, just below the 'SmartChoice 1500' plan header, before the 'Health Plan Enrollment' section break.",
-    says: 'By checking the box, Applicant certifies you are not applying on behalf any other individuals other than those who are considered dependents.',
-    script:
-      "Scroll to the top of page 1. Right under the blue SmartChoice 1500 header you'll see one line of red text. Check the box right before that red sentence.",
-    context:
-      'Confirms the customer is signing up only themselves and dependents.'
+    section: 'Working Owner Application',
+    where: 'Working Owner Application, under General Questions',
+    says: 'By checking the box, Applicant certifies you are not applying on behalf any other individuals...',
+    script: "You're only signing up yourself and your dependents.",
+    context: 'Right after the 10 questions that already show Yes.'
   },
   {
     num: 2,
+    section: 'Health info (HIPAA)',
     where:
-      "End of the 'AUTHORIZATION TO USE AND DISCLOSE PROTECTED HEALTH INFORMATION' section, right after the 11-item numbered list.",
+      'At the end of the Authorization to Use and Disclose Protected Health Information',
     says: 'By checking the box, you agree to the terms of this Authorization.',
-    script:
-      "Scroll down past the 11-item HIPAA list. At the bottom you'll see one line of bold red text. The checkbox is right before it.",
-    context: 'HIPAA authorization to share health info with the underwriter.'
+    script: 'The plan can use your health info to run your coverage.',
+    context: 'After the 11-item numbered list.'
   },
   {
     num: 3,
-    where:
-      "End of the 'Plan Type and Participant Coverage' section, in centered red text.",
+    section: 'Plan Type and Participant Coverage',
+    where: 'At the end of Plan Type and Participant Coverage',
     says: 'Confirmation: I agree to the above disclosures',
     script:
-      "Look for the section titled 'Plan Type and Participant Coverage'. Scroll to the bottom of that section. You'll see centered red text that says 'Confirmation: I agree to the above disclosures' - the checkbox is right after it.",
-    context:
-      'Acknowledges MyLiveDoc pharmacy limitations and pre-existing condition coverage.'
+      'You read the plan type, the MyLiveDoc pharmacy and the medication rules.',
+    context: ''
   },
   {
     num: 4,
-    where: "Inside the 'Managed Care' section under PLAN TERMS AND CONDITIONS.",
-    says: 'I have read and understand the information set forth above:',
-    script:
-      "Scroll to the 'Managed Care' section. Inside it, in the middle of the paragraph, you'll see a line in bold red that says 'I have read and understand the information set forth above' - the checkbox is right after that red line.",
-    context: 'This one is in the middle of a paragraph, easy to miss.'
+    section: 'Managed Care',
+    where: 'Under Managed Care, in the middle of the paragraph',
+    says: 'I have read and understand the information set forth above',
+    script: 'You read how the managed care plan works.',
+    context: 'Easy to miss. It is inside the paragraph, not at the end.'
   },
   {
     num: 5,
-    where:
-      "End of the 'Working Owner Personal Services Terms and Conditions' section, after the 11 lettered items.",
+    section: 'Plan Participation',
+    where: 'At the end of Terms and Conditions of Plan Participation',
     says: 'Working Owner Confirmation: I agree to the terms above',
     script:
-      "Scroll down past the long Working Owner terms list (11 numbered items). At the very bottom you'll see centered red text 'Working Owner Confirmation: I agree to the terms above' - the checkbox is right after it.",
-    context: 'Locks in Working Owner status.'
+      'You agree to the Working Owner terms: surveys, 3 Preferred Units and a yearly K-1.',
+    context: ''
   },
   {
     num: 6,
-    where: "End of the 'Joinder Agreement' section.",
+    section: 'Joinder Agreement',
+    where: 'At the end of the Joinder Agreement',
     says: 'Working Owner Confirmation: I agree to the above joinder agreement',
     script:
-      "Scroll to the 'Joinder Agreement' section. At the bottom of that section you'll see red bold text 'Working Owner Confirmation: I agree to the above joinder agreement' - the checkbox is right after it.",
-    context: 'Joinder Agreement makes the customer a Member of the LLC.'
+      "You're joining the company as a Working Owner. That's what gives you the group plan.",
+    context: ''
   },
   {
     num: 7,
-    where: "End of the 'Spousal Consent' section.",
+    section: 'Spousal Consent',
+    where: 'At the end of Spousal Consent',
     says: 'Spouse Confirmation: I agree to the above joinder agreement (if applicable)',
-    script:
-      "Scroll to the 'Spousal Consent' section. At the bottom you'll see red bold 'Spouse Confirmation: I agree to the above joinder agreement (if applicable)' - the checkbox is right after it. Customer should still check this even if they are not married.",
-    context:
-      'Customers often skip this thinking it does not apply. They should still check it.'
+    script: 'Your spouse agrees, if this applies to you.',
+    context: 'Confirm with NEO: what unmarried clients should do here.'
   },
   {
     num: 8,
-    where:
-      "End of the Member attestation list (5 items), just before the 'Additional Member Attestations' header.",
+    section: 'Member Attestation',
+    where: 'At the end of Member Attestation',
     says: 'Working Owner Confirmation: I agree to the above attestation',
-    script:
-      "Scroll past the 5-item attestation list. Right before the next big header that says 'Additional Member Attestations' you'll see red text 'Working Owner Confirmation: I agree to the above attestation' - the checkbox is right after it.",
-    context: 'Confirms self-employed status and accuracy of info.'
+    script: "Your information is true and you're self-employed.",
+    context: 'Right before the Additional Member Attestations heading.'
   },
   {
     num: 9,
-    where: "Item 1 of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA?',
+    section: 'Working Owner question 1 of 10',
+    where: 'Under Additional Member Attestations, question 1 of 10',
+    says: 'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c)...',
     script:
-      "Scroll to the 'Additional Member Attestations' section. There are 10 numbered items here, each with its own checkbox at the start of the line. Check item number 1.",
-    context: 'Item 1 of 10 in the attestation list.'
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: 'One box per question, 10 in a row.'
   },
   {
     num: 10,
-    where: "Item 2 of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you understand that, as a Working Owner, you are expected to complete assigned activities, respond to Company requests, and maintain regular communication regarding Working Owner matters?',
-    script: 'Same Additional Member Attestations section. Check item number 2.',
-    context: 'Item 2 of 10.'
+    section: 'Working Owner question 2 of 10',
+    where: 'Under Additional Member Attestations, question 2 of 10',
+    says: 'Do you understand that, as a Working Owner, you are expected to complete assigned activities...',
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: ''
   },
   {
     num: 11,
-    where: "Item 3 of the 'Additional Member Attestations' numbered list.",
+    section: 'Working Owner question 3 of 10',
+    where: 'Under Additional Member Attestations, question 3 of 10',
     says: 'Do you agree that the Company may assign projects to you at its discretion?',
-    script: 'Same section. Check item number 3.',
-    context: 'Item 3 of 10.'
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: ''
   },
   {
     num: 12,
-    where: "Item 4 of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you understand that you will receive a Guaranteed Payment for each response to an information request, as defined under Internal Revenue Code Section 707(c)?',
-    script: 'Same section. Check item number 4.',
-    context: 'Item 4 of 10.'
+    section: 'Working Owner question 4 of 10',
+    where: 'Under Additional Member Attestations, question 4 of 10',
+    says: 'Do you understand that you will receive a Guaranteed Payment for each response...',
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: ''
   },
   {
     num: 13,
-    where: "Item 5 of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you acknowledge that you have been granted three (3) Preferred Units in the Company as compensation for your personal services?',
-    script: 'Same section. Check item number 5.',
-    context: 'Item 5 of 10.'
+    section: 'Working Owner question 5 of 10',
+    where: 'Under Additional Member Attestations, question 5 of 10',
+    says: 'Do you acknowledge that you have been granted three (3) Preferred Units...',
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: ''
   },
   {
     num: 14,
-    where: "Item 6 of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you understand that the Preferred Units are not registered under the Securities Act of 1933 and that there is no public market for these units?',
-    script: 'Same section. Check item number 6.',
-    context: 'Item 6 of 10.'
+    section: 'Working Owner question 6 of 10',
+    where: 'Under Additional Member Attestations, question 6 of 10',
+    says: 'Do you understand that the Preferred Units are not registered under the Securities Act...',
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: ''
   },
   {
     num: 15,
-    where: "Item 7 of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you understand that you are eligible to participate in Company benefit plans subject to eligibility requirements and timely payment of any required premiums?',
-    script: 'Same section. Check item number 7.',
-    context: 'Item 7 of 10.'
+    section: 'Working Owner question 7 of 10',
+    where: 'Under Additional Member Attestations, question 7 of 10',
+    says: 'Do you understand that you are eligible to participate in Company benefit plans...',
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: ''
   },
   {
     num: 16,
-    where: "Item 8 of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you agree to maintain the confidentiality of all Company information and to comply with Section 14.03 of the LLC Agreement?',
-    script: 'Same section. Check item number 8.',
-    context: 'Item 8 of 10.'
+    section: 'Working Owner question 8 of 10',
+    where: 'Under Additional Member Attestations, question 8 of 10',
+    says: 'Do you agree to maintain the confidentiality of all Company information...',
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: ''
   },
   {
     num: 17,
-    where: "Item 9 of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you understand that if you fail to meet the conditions of Working Owner status, the Company may exercise its Call Right to repurchase your Membership Interest?',
-    script: 'Same section. Check item number 9.',
-    context: 'Item 9 of 10.'
+    section: 'Working Owner question 9 of 10',
+    where: 'Under Additional Member Attestations, question 9 of 10',
+    says: 'Do you understand that if you fail to meet the conditions of Working Owner status...',
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: ''
   },
   {
     num: 18,
-    where:
-      "Item 10 (last) of the 'Additional Member Attestations' numbered list.",
-    says: 'Do you confirm that you have read and understood all the Terms and Conditions and the LLC Agreement, and that you are legally able to provide services as a Working Owner?',
-    script: 'Same section. Check item number 10 - the last one in this list.',
-    context: 'Item 10 of 10. Last attestation list item.'
+    section: 'Working Owner question 10 of 10',
+    where: 'Under Additional Member Attestations, question 10 of 10',
+    says: 'Do you confirm that you have read and understood all the Terms and Conditions...',
+    script:
+      'Same question you already said Yes to. Check the box at the start of the line.',
+    context: 'Last of the 10.'
   },
   {
     num: 19,
-    where:
-      "Final confirmation block at the bottom of the attestation page, in centered red text under 'penalty and perjury' language.",
+    section: 'Applicant Representations',
+    where: 'At the end of Applicant Representations and Warranties',
     says: 'Confirmation: I confirm that all of the above is true',
-    script:
-      "Scroll to the very bottom of the attestation page. You'll see bold red text saying 'By checking the boxes above and signing below, you certify under penalty and perjury of law...'. Right under that is the final checkbox labeled 'Confirmation: I confirm that all of the above is true'. This is the very last acknowledgment box.",
+    script: 'This covers the 7 items above it. Last box before you sign.',
     context:
-      'Final certification under penalty of perjury. After this they sign and submit.'
+      'The page says to initial each item, but there is no initials spot.'
+  },
+  {
+    num: 20,
+    section: 'Electronic Signature',
+    where: 'Under Electronic Signature',
+    says: 'Check here if signing as a Parent or Legal Guardian for the Primary Applicant',
+    script: "Leave this one blank unless you're signing for someone else.",
+    context: '',
+    skip: true
   }
 ];
 
 var __dsAckCoachIndex = 0;
 var __dsAckCoachDone = false;
+var __dsAckTier = '1500';
+var __dsAckAskOpen = -1;
 
 function __dsAckEsc(s) {
   if (s == null) return '';
@@ -1223,7 +1247,70 @@ setTimeout(function () {
       '.ds-ack-jump select{padding:8px 10px;border-radius:10px;border:1px solid #cbd5e1;font-size:12px;background:#fff}' +
       '.ds-ack-success{border:1px solid #bbf7d0;border-radius:14px;background:#ecfdf5;padding:16px;text-align:center}' +
       '.ds-ack-success-msg{font-size:15px;font-weight:600;color:#065f46;margin:0 0 12px}' +
-      '.ds-ack-success .ds-ack-btn{display:inline-block}';
+      '.ds-ack-success .ds-ack-btn{display:inline-block}' +
+      '.ds-ack2{display:flex;flex-direction:column;gap:20px;padding-bottom:8px;color:#1e293b}' +
+      '.ds-ack2-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}' +
+      '.ds-ack2-kicker{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--cha-text-secondary)}' +
+      '.ds-ack2-title{margin:2px 0 0;font-size:26px;font-weight:800;color:#1e293b}' +
+      '.ds-ack2-head-right{display:flex;flex-wrap:wrap;align-items:center;gap:10px}' +
+      '.ds-ack2-tiers{display:flex;gap:4px;background:#fff;padding:5px;border-radius:999px;box-shadow:0 4px 14px rgba(30,41,59,0.08)}' +
+      '.ds-ack2-tier{border:0;background:transparent;color:#1e293b;font:inherit;font-size:13px;font-weight:600;padding:0 16px;min-height:40px;border-radius:999px;cursor:pointer}' +
+      '.ds-ack2-tier.is-on{background:#111827;color:#fff;font-weight:700}' +
+      '.ds-ack2-count{background:#fff;border-radius:999px;padding:11px 16px;font-size:13px;font-weight:600;box-shadow:0 4px 14px rgba(30,41,59,0.08)}' +
+      '.ds-ack2-count-skip{color:var(--cha-warning-text)}' +
+      '.ds-ack2-cols{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}' +
+      '.ds-ack2-main{flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:20px}' +
+      '.ds-ack2-card{background:#fff;border-radius:28px;box-shadow:0 10px 30px rgba(30,41,59,0.08);box-sizing:border-box}' +
+      '.ds-ack2-step{padding:30px;display:flex;flex-direction:column;gap:20px}' +
+      '.ds-ack2-step-top{display:flex;flex-wrap:wrap;align-items:center;gap:14px}' +
+      '.ds-ack2-step-name{flex:1;min-width:0}' +
+      '.ds-ack2-badge{flex:none;width:60px;height:60px;border-radius:20px;background:#4060e8;color:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800}' +
+      '.ds-ack2-badge.is-skip{background:var(--cha-warning-bg);color:var(--cha-warning-text)}' +
+      '.ds-ack2-meta{font-size:13px;font-weight:600;color:var(--cha-text-secondary)}' +
+      '.ds-ack2-section{font-size:21px;font-weight:800}' +
+      '.ds-ack2-skip-pill{background:var(--cha-warning-bg);color:var(--cha-warning-text);font-weight:700;font-size:13px;padding:8px 14px;border-radius:999px}' +
+      '.ds-ack2-block{display:flex;flex-direction:column;gap:6px}' +
+      '.ds-ack2-lbl{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--cha-text-secondary);margin-bottom:4px}' +
+      '.ds-ack2-lbl-blue{color:#3047c9}' +
+      '.ds-ack2-where{font-size:24px;font-weight:800;line-height:1.3}' +
+      '.ds-ack2-next{background:#eef1ff;border-radius:20px;padding:16px 20px}' +
+      '.ds-ack2-next-text{font-size:18px;font-weight:700;color:#1e2f8f;line-height:1.45}' +
+      '.ds-ack2-say{background:#f5f6fc;border-radius:20px;padding:18px 20px}' +
+      '.ds-ack2-say-text{font-size:20px;font-weight:600;line-height:1.4}' +
+      '.ds-ack2-tip{font-size:14px;color:#374151;line-height:1.45;padding-left:14px;position:relative}' +
+      '.ds-ack2-tip:before{content:"";position:absolute;left:0;top:7px;width:7px;height:7px;border-radius:999px;background:#3047c9}' +
+      '.ds-ack2-track{height:10px;background:#eceef8;border-radius:999px;overflow:hidden}' +
+      '.ds-ack2-fill{height:10px;background:#4060e8;border-radius:999px}' +
+      '.ds-ack2-nav{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}' +
+      '.ds-ack2-btn{border:0;background:#eceef8;color:#1e293b;font:inherit;font-weight:700;font-size:15px;padding:0 26px;min-height:48px;border-radius:999px;cursor:pointer}' +
+      '.ds-ack2-btn:disabled{opacity:0.45;cursor:not-allowed}' +
+      '.ds-ack2-btn.ds-ack2-primary{background:#111827;color:#fff}' +
+      '.ds-ack2-done{padding:28px;display:flex;flex-direction:column;align-items:flex-start;gap:16px}' +
+      '.ds-ack2-done-msg{font-size:20px;font-weight:800;color:var(--cha-success-text);background:var(--cha-success-bg);border-radius:18px;padding:16px 20px}' +
+      '.ds-ack2-jump{padding:20px 22px;display:flex;flex-direction:column;gap:12px}' +
+      '.ds-ack2-jump-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px}' +
+      '.ds-ack2-jump-title{font-size:15px;font-weight:800}' +
+      '.ds-ack2-jump-note{font-size:13px;color:var(--cha-text-secondary)}' +
+      '.ds-ack2-jump-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:8px}' +
+      '.ds-ack2-jump-btn{border:0;background:#eceef8;color:#1e293b;font:inherit;font-weight:700;font-size:14px;min-height:44px;border-radius:14px;cursor:pointer}' +
+      '.ds-ack2-jump-btn.is-done{background:var(--cha-success-bg);color:var(--cha-success-text)}' +
+      '.ds-ack2-jump-btn.is-skip{background:var(--cha-warning-bg);color:var(--cha-warning-text)}' +
+      '.ds-ack2-jump-btn.is-current{background:#111827;color:#fff}' +
+      '.ds-ack2-asks{flex:1 1 320px;min-width:0;padding:22px;display:flex;flex-direction:column;gap:10px}' +
+      '.ds-ack2-ask{background:#f5f6fc;border-radius:18px}' +
+      '.ds-ack2-ask.is-open{box-shadow:inset 0 0 0 2px #111827}' +
+      '.ds-ack2-ask-btn{width:100%;border:0;background:transparent;font:inherit;color:inherit;text-align:left;display:flex;align-items:center;gap:12px;padding:14px 16px;min-height:48px;cursor:pointer}' +
+      '.ds-ack2-dot{flex:none;width:12px;height:12px;border-radius:999px;background:#d97706}' +
+      '.ds-ack2-dot-red{background:#dc2626}' +
+      '.ds-ack2-dot-green{background:#16a34a}' +
+      '.ds-ack2-ask-title{flex:1;min-width:0;font-size:14px;font-weight:700}' +
+      '.ds-ack2-ask-sign{font-size:18px;font-weight:700;color:var(--cha-text-secondary)}' +
+      '.ds-ack2-ask-body{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}' +
+      '.ds-ack2-ask-one{font-size:14px;font-weight:600;color:#374151;line-height:1.5}' +
+      '.ds-ack2-ask-say{background:#fff;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.55}' +
+      '.ds-ack2-pb-q{font-size:14px;font-weight:700}' +
+      '.ds-ack2-pb-a{font-size:14px;line-height:1.5;color:#374151}' +
+      '@media (max-width:640px){.ds-ack2-jump-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.ds-ack2-step{padding:22px}.ds-ack2-where{font-size:20px}}';
     document.head.appendChild(st);
   }
 
@@ -1254,154 +1341,214 @@ setTimeout(function () {
     __dsAckCoachIndex = idx;
     var pct = Math.round(((idx + 1) / total) * 100);
     var box = DOCUSIGN_ACK_BOXES[idx];
+    var i;
 
-    var jumpOpts = '';
-    for (var j = 0; j < total; j++) {
-      jumpOpts +=
-        '<option value="' +
-        j +
-        '"' +
-        (j === idx ? ' selected' : '') +
-        '>Box ' +
-        (j + 1) +
-        '</option>';
+    var tiers = ['1500', '2500', '3000', '3500'];
+    var tierHtml = '';
+    for (i = 0; i < tiers.length; i++) {
+      tierHtml +=
+        '<button type="button" class="ds-ack2-tier' +
+        (tiers[i] === __dsAckTier ? ' is-on' : '') +
+        '" data-ack-tier="' +
+        tiers[i] +
+        '">' +
+        tiers[i] +
+        '</button>';
     }
 
-    var navNextLabel = idx >= total - 1 ? 'Done' : 'Next >';
-    var prevDisabled = idx <= 0 ? ' disabled' : '';
-
-    var coachInner;
+    var stepHtml;
     if (__dsAckCoachDone) {
-      coachInner =
-        '<div class="ds-ack-success" role="status">' +
-        '<p class="ds-ack-success-msg">All 19 boxes covered. Customer can now sign and submit.</p>' +
-        '<button type="button" class="ds-ack-btn ds-ack-primary" id="dsAckStartOver">Start Over</button>' +
+      stepHtml =
+        '<div class="ds-ack2-card ds-ack2-done" role="status">' +
+        '<div class="ds-ack2-done-msg">All boxes covered. The client can sign and submit.</div>' +
+        '<button type="button" class="ds-ack2-btn ds-ack2-primary" id="dsAckStartOver">Start over</button>' +
         '</div>';
     } else {
-      coachInner =
-        '<div class="ds-ack-coach-shell" id="dsAckCoachCard">' +
-        '<div class="ds-ack-section">' +
-        '<div class="ds-ack-lbl">WHERE IT IS</div>' +
-        '<div class="ds-ack-body">' +
-        __dsAckEsc(box.where) +
-        '</div></div>' +
-        '<div class="ds-ack-section">' +
-        '<div class="ds-ack-lbl">WHAT IT SAYS (verbatim from the form)</div>' +
-        '<div class="ds-ack-says">' +
-        __dsAckEsc(box.says) +
-        '</div></div>' +
-        '<div class="ds-ack-section">' +
-        '<div class="ds-ack-lbl">WHAT TO TELL THE CUSTOMER (script line)</div>' +
-        '<div class="ds-ack-body">' +
-        __dsAckEsc(box.script) +
-        '</div></div>' +
-        '<div class="ds-ack-section">' +
-        '<div class="ds-ack-lbl">CONTEXT</div>' +
-        '<div class="ds-ack-context">' +
-        __dsAckEsc(box.context) +
-        '</div></div>' +
-        '</div>';
-    }
-
-    var progRowHtml = '';
-    var navHtml = '';
-    if (!__dsAckCoachDone) {
-      progRowHtml =
-        '<div class="ds-ack-progress-row">' +
-        '<span class="ds-ack-progress-label">Box ' +
-        (idx + 1) +
+      stepHtml =
+        '<div class="ds-ack2-card ds-ack2-step" id="dsAckCoachCard">' +
+        '<div class="ds-ack2-step-top">' +
+        '<div class="ds-ack2-badge' +
+        (box.skip ? ' is-skip' : '') +
+        '">' +
+        box.num +
+        '</div>' +
+        '<div class="ds-ack2-step-name">' +
+        '<div class="ds-ack2-meta">Box ' +
+        box.num +
         ' of ' +
         total +
-        '</span>' +
-        '<div class="ds-ack-progress-track"><div class="ds-ack-progress-fill" style="width:' +
+        ' - SmartChoice ' +
+        __dsAckTier +
+        '</div>' +
+        '<div class="ds-ack2-section">' +
+        __dsAckEsc(box.section) +
+        '</div></div>' +
+        (box.skip ? '<div class="ds-ack2-skip-pill">Leave blank</div>' : '') +
+        '</div>' +
+        '<div class="ds-ack2-block">' +
+        '<div class="ds-ack2-lbl">Where it is</div>' +
+        '<div class="ds-ack2-where">' +
+        __dsAckEsc(box.where) +
+        '</div></div>' +
+        '<div class="ds-ack2-next">' +
+        '<div class="ds-ack2-lbl ds-ack2-lbl-blue">The box is next to</div>' +
+        '<div class="ds-ack2-next-text">"' +
+        __dsAckEsc(box.says) +
+        '"</div></div>' +
+        '<div class="ds-ack2-say">' +
+        '<div class="ds-ack2-lbl">Say this</div>' +
+        '<div class="ds-ack2-say-text">' +
+        __dsAckEsc(box.script) +
+        '</div></div>' +
+        (box.context
+          ? '<div class="ds-ack2-tip">' + __dsAckEsc(box.context) + '</div>'
+          : '') +
+        '<div class="ds-ack2-track"><div class="ds-ack2-fill" style="width:' +
         pct +
         '%"></div></div>' +
-        '</div>';
-      navHtml =
-        '<div class="ds-ack-nav">' +
-        '<button type="button" class="ds-ack-btn" id="dsAckPrev"' +
-        prevDisabled +
-        '>&lt; Previous</button>' +
-        '<button type="button" class="ds-ack-btn" id="dsAckReset">Reset</button>' +
-        '<button type="button" class="ds-ack-btn ds-ack-primary" id="dsAckNext">' +
-        navNextLabel +
+        '<div class="ds-ack2-nav">' +
+        '<button type="button" class="ds-ack2-btn" id="dsAckPrev"' +
+        (idx <= 0 ? ' disabled' : '') +
+        '>Back</button>' +
+        '<button type="button" class="ds-ack2-btn ds-ack2-primary" id="dsAckNext">' +
+        (idx >= total - 1 ? 'Done' : 'Next box') +
         '</button>' +
-        '<div class="ds-ack-jump"><label for="dsAckJump">Jump to box #</label>' +
-        '<select id="dsAckJump" aria-label="Jump to box number">' +
-        jumpOpts +
-        '</select></div>' +
+        '</div></div>';
+    }
+
+    var jumpHtml = '';
+    for (i = 0; i < total; i++) {
+      var jb = DOCUSIGN_ACK_BOXES[i];
+      var jcls = 'ds-ack2-jump-btn';
+      if (!__dsAckCoachDone && i === idx) jcls += ' is-current';
+      else if (jb.skip) jcls += ' is-skip';
+      else if (__dsAckCoachDone || i < idx) jcls += ' is-done';
+      jumpHtml +=
+        '<button type="button" class="' +
+        jcls +
+        '" data-ack-jump="' +
+        i +
+        '" aria-label="Box ' +
+        jb.num +
+        '">' +
+        jb.num +
+        '</button>';
+    }
+
+    var asks =
+      (window.docusignWalkthroughData &&
+        window.docusignWalkthroughData.whatClientsAsk) ||
+      [];
+    var askHtml = '';
+    for (i = 0; i < asks.length; i++) {
+      var a = asks[i];
+      var open = i === __dsAckAskOpen;
+      var pb = '';
+      var pbs = a.pushback || [];
+      for (var p = 0; p < pbs.length; p++) {
+        pb +=
+          '<div class="ds-ack2-pb">' +
+          '<div class="ds-ack2-pb-q">"' +
+          __dsAckEsc(pbs[p].q) +
+          '"</div>' +
+          '<div class="ds-ack2-pb-a">' +
+          __dsAckEsc(pbs[p].a) +
+          '</div></div>';
+      }
+      askHtml +=
+        '<div class="ds-ack2-ask' +
+        (open ? ' is-open' : '') +
+        '">' +
+        '<button type="button" class="ds-ack2-ask-btn" data-ack-ask="' +
+        i +
+        '" aria-expanded="' +
+        (open ? 'true' : 'false') +
+        '">' +
+        '<span class="ds-ack2-dot ds-ack2-dot-' +
+        __dsAckEsc(a.severity || 'amber') +
+        '" aria-hidden="true"></span>' +
+        '<span class="ds-ack2-ask-title">' +
+        __dsAckEsc(a.title) +
+        '</span>' +
+        '<span class="ds-ack2-ask-sign" aria-hidden="true">' +
+        (open ? '-' : '+') +
+        '</span>' +
+        '</button>' +
+        (open
+          ? '<div class="ds-ack2-ask-body">' +
+            '<div class="ds-ack2-ask-one">' +
+            __dsAckEsc(a.oneLiner) +
+            '</div>' +
+            '<div class="ds-ack2-ask-say">' +
+            '<div class="ds-ack2-lbl">Say this</div>' +
+            '<div>' +
+            __dsAckEsc(a.sayThis) +
+            '</div></div>' +
+            pb +
+            '</div>'
+          : '') +
         '</div>';
     }
 
     root.innerHTML =
-      '<div class="ds-ack-wrap">' +
-      '<div class="ds-ack-header-strip">' +
-      '<h3 class="ds-ack-title">Acknowledgment Box Walk-Thru</h3>' +
-      '<p class="ds-ack-sub">Use this when the customer cannot find or is missing acknowledgment boxes. Walk them through one at a time.</p>' +
+      '<div class="ds-ack2">' +
+      '<div class="ds-ack2-head">' +
+      '<div>' +
+      '<div class="ds-ack2-kicker">SmartChoice e-sign</div>' +
+      '<h3 class="ds-ack2-title">Box guide</h3>' +
       '</div>' +
-      '<div class="ds-ack-summary">' +
-      '<div class="ds-ack-stat">' +
-      '<div class="ds-ack-stat-val">8 scattered boxes</div>' +
-      '<div style="font-size:12px;color:#64748b;margin-top:4px">(health/wellness sections)</div></div>' +
-      '<div class="ds-ack-stat">' +
-      '<div class="ds-ack-stat-val">10 attestation boxes</div>' +
-      '<div style="font-size:12px;color:#64748b;margin-top:4px">(Working Owner LLC list)</div></div>' +
-      '<div class="ds-ack-stat">' +
-      '<div class="ds-ack-stat-val">1 final confirmation</div>' +
-      '<div style="font-size:12px;color:#64748b;margin-top:4px">(penalty of perjury box)</div></div>' +
+      '<div class="ds-ack2-head-right">' +
+      '<div class="ds-ack2-tiers" role="group" aria-label="SmartChoice plan">' +
+      tierHtml +
       '</div>' +
-      '<p class="ds-ack-total-line">19 total required boxes for a standard adult applicant.</p>' +
-      progRowHtml +
-      coachInner +
-      navHtml +
-      '</div>';
+      '<div class="ds-ack2-count">19 to check - <span class="ds-ack2-count-skip">1 leave blank</span></div>' +
+      '</div></div>' +
+      '<div class="ds-ack2-cols">' +
+      '<div class="ds-ack2-main">' +
+      stepHtml +
+      '<div class="ds-ack2-card ds-ack2-jump">' +
+      '<div class="ds-ack2-jump-head">' +
+      '<div class="ds-ack2-jump-title">Jump to a box</div>' +
+      '<div class="ds-ack2-jump-note">9 to 18 are the 10 Working Owner questions. 20 stays blank.</div>' +
+      '</div>' +
+      '<div class="ds-ack2-jump-grid">' +
+      jumpHtml +
+      '</div></div>' +
+      '</div>' +
+      '<div class="ds-ack2-card ds-ack2-asks">' +
+      '<div class="ds-ack2-lbl">What clients ask most</div>' +
+      askHtml +
+      '</div>' +
+      '</div></div>';
 
-    var prevBtn = document.getElementById('dsAckPrev');
-    var nextBtn = document.getElementById('dsAckNext');
-    var resetBtn = document.getElementById('dsAckReset');
-    var jumpSel = document.getElementById('dsAckJump');
-    var startOverBtn = document.getElementById('dsAckStartOver');
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', function () {
-        if (__dsAckCoachDone) return;
-        if (__dsAckCoachIndex <= 0) return;
-        __dsAckCoachIndex--;
-        renderAckCoach();
-      });
-    }
-    if (resetBtn) {
-      resetBtn.addEventListener('click', function () {
-        __dsAckCoachIndex = 0;
-        __dsAckCoachDone = false;
-        renderAckCoach();
-      });
-    }
-    if (nextBtn) {
-      nextBtn.addEventListener('click', function () {
-        if (__dsAckCoachDone) return;
-        if (idx >= total - 1) {
-          __dsAckCoachDone = true;
-          renderAckCoach();
+    if (!root.__dsAck2Bound) {
+      root.__dsAck2Bound = true;
+      root.addEventListener('click', function (e) {
+        var t = e.target.closest('button');
+        if (!t || !root.contains(t)) return;
+        var n = DOCUSIGN_ACK_BOXES.length;
+        if (t.id === 'dsAckPrev') {
+          if (__dsAckCoachIndex > 0) __dsAckCoachIndex--;
+        } else if (t.id === 'dsAckNext') {
+          if (__dsAckCoachIndex >= n - 1) __dsAckCoachDone = true;
+          else __dsAckCoachIndex++;
+        } else if (t.id === 'dsAckStartOver') {
+          __dsAckCoachIndex = 0;
+          __dsAckCoachDone = false;
+        } else if (t.hasAttribute('data-ack-jump')) {
+          var v = parseInt(t.getAttribute('data-ack-jump'), 10);
+          if (isNaN(v)) return;
+          __dsAckCoachIndex = v;
+          __dsAckCoachDone = false;
+        } else if (t.hasAttribute('data-ack-ask')) {
+          var q = parseInt(t.getAttribute('data-ack-ask'), 10);
+          if (isNaN(q)) return;
+          __dsAckAskOpen = __dsAckAskOpen === q ? -1 : q;
+        } else if (t.hasAttribute('data-ack-tier')) {
+          __dsAckTier = t.getAttribute('data-ack-tier');
+        } else {
           return;
         }
-        __dsAckCoachIndex++;
-        renderAckCoach();
-      });
-    }
-    if (jumpSel) {
-      jumpSel.addEventListener('change', function () {
-        var v = parseInt(jumpSel.value, 10);
-        if (isNaN(v)) return;
-        __dsAckCoachIndex = v;
-        __dsAckCoachDone = false;
-        renderAckCoach();
-      });
-    }
-    if (startOverBtn) {
-      startOverBtn.addEventListener('click', function () {
-        __dsAckCoachIndex = 0;
-        __dsAckCoachDone = false;
         renderAckCoach();
       });
     }
