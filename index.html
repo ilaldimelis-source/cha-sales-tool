@@ -7119,7 +7119,7 @@
     <script src="js/ai-tools.js?v=1789432300000"></script>
     <script src="js/training.js?v=1793810000001"></script>
     <script src="js/compliance.js?v=1793810000002"></script>
-    <script src="js/docusign-walkthrough.js?v=1793822548010"></script>
+    <script src="js/docusign-walkthrough.js?v=1793822749216"></script>
     <script src="js/myspace.js?v=1792164089398"></script>
     <script src="js/sales-tracker.js?v=1793578000000"></script>
     <script src="js/office.js?v=1787900000000"></script>
@@ -7338,23 +7338,6 @@
             });
             p.appendChild(card);
           });
-          var rfWrap = el('div', 'ds-redflags');
-          rfWrap.appendChild(
-            el(
-              'div',
-              'ds-redflags-title',
-              'AGENT RED FLAGS -- CHECK BEFORE SUBMISSION'
-            )
-          );
-          var ul = el('ul', 'ds-redflags-list');
-          data.redFlagsChecklist.forEach(function (rf) {
-            var li = el('li', 'ds-redflags-item');
-            li.setAttribute('data-searchable', expandSearchableText(rf));
-            li.textContent = rf;
-            ul.appendChild(li);
-          });
-          rfWrap.appendChild(ul);
-          p.appendChild(rfWrap);
         }
         function renderAttestations() {
           var p = panels.att;
