@@ -1042,10 +1042,11 @@ var DOCUSIGN_ACK_BOXES = [
   {
     num: 4,
     section: 'Managed Care',
-    where: 'Under Managed Care, in the middle of the paragraph',
+    where: 'Under Managed Care, after the first 2 paragraphs',
     says: 'I have read and understand the information set forth above',
     script: 'You read how the managed care plan works.',
-    context: 'Easy to miss. It is inside the paragraph, not at the end.'
+    context:
+      'Easy to miss. It sits between paragraphs, right after the red bold line.'
   },
   {
     num: 5,
@@ -1192,9 +1193,10 @@ var DOCUSIGN_ACK_BOXES = [
 ];
 
 var __dsAckCoachIndex = 0;
-var __dsAckCoachDone = false;
-var __dsAckTier = '1500';
+var __dsAckChecks = [];
+var __dsAckSkipDone = false;
 var __dsAckAskOpen = -1;
+var __dsAckScrollTo = false;
 
 function __dsAckEsc(s) {
   if (s == null) return '';
@@ -1310,7 +1312,72 @@ setTimeout(function () {
       '.ds-ack2-ask-say{background:#fff;border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.55}' +
       '.ds-ack2-pb-q{font-size:14px;font-weight:700}' +
       '.ds-ack2-pb-a{font-size:14px;line-height:1.5;color:#374151}' +
-      '@media (max-width:640px){.ds-ack2-jump-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.ds-ack2-step{padding:22px}.ds-ack2-where{font-size:20px}}';
+      '@media (max-width:640px){.ds-ack2-jump-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.ds-ack2-step{padding:22px}.ds-ack2-where{font-size:20px}}' +
+      '.ds-ack3-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px}' +
+      '.ds-ack3-sub{font-size:14px;font-weight:600;color:var(--cha-text-secondary);margin-top:4px}' +
+      '.ds-ack3-head-right{display:flex;align-items:center;gap:10px}' +
+      '.ds-ack3-count{font-size:14px;font-weight:700}' +
+      '.ds-ack3-reset{border:0;background:#fff;color:#1e293b;font:inherit;font-weight:700;font-size:13px;padding:0 16px;min-height:44px;border-radius:999px;box-shadow:0 4px 14px rgba(30,41,59,0.06);cursor:pointer}' +
+      '.ds-ack3-list{flex:1 1 360px;min-width:0;display:flex;flex-direction:column;gap:10px}' +
+      '.ds-ack3-row{border-radius:22px;box-sizing:border-box;background:#fff}' +
+      '.ds-ack3-row.is-open{padding:20px;display:flex;flex-direction:column;gap:14px;border:2px solid #111827;box-shadow:0 14px 34px rgba(30,41,59,0.12)}' +
+      '.ds-ack3-row.is-open.is-skip{border-color:#f59e0b}' +
+      '.ds-ack3-closed{width:100%;border:0;font:inherit;color:inherit;text-align:left;display:flex;align-items:center;gap:14px;padding:9px 14px;min-height:62px;cursor:pointer}' +
+      '.ds-ack3-closed.is-done{opacity:0.75}' +
+      '.ds-ack3-closed.is-skip{background:#fffbeb;outline:2px dashed #f59e0b;outline-offset:-2px}' +
+      '.ds-ack3-open-top{display:flex;align-items:center;gap:14px}' +
+      '.ds-ack3-open-name{flex:1;min-width:0}' +
+      '.ds-ack3-open-where{font-size:19px;font-weight:800;line-height:1.3}' +
+      '.ds-ack3-mark{flex:none;min-width:46px;height:46px;padding:0 8px;box-sizing:border-box;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;background:#eceef8;color:#1e293b}' +
+      '.ds-ack3-mark.is-big{min-width:56px;height:56px;font-size:19px}' +
+      '.ds-ack3-mark.is-current{background:#4060e8;color:#fff}' +
+      '.ds-ack3-mark.is-done{background:var(--cha-success-bg);color:var(--cha-success-text)}' +
+      '.ds-ack3-mark.is-skip{background:var(--cha-warning-bg);color:var(--cha-warning-text)}' +
+      '.ds-ack3-short{flex:1;min-width:0;font-size:15px;font-weight:700}' +
+      '.ds-ack3-tag{font-size:13px;font-weight:600;color:var(--cha-text-secondary)}' +
+      '.ds-ack3-next{background:#f5f6fc;border-radius:16px;padding:12px 14px}' +
+      '.ds-ack3-next-lbl{font-size:12px;font-weight:700;color:var(--cha-text-secondary);margin-bottom:3px}' +
+      '.ds-ack3-next-text{font-size:15px;font-weight:700;color:#1e2f8f;line-height:1.4}' +
+      '.ds-ack3-say{font-size:17px;font-weight:600;line-height:1.45}' +
+      '.ds-ack3-check{align-self:flex-start;border:0;background:#111827;color:#fff;font:inherit;font-weight:800;font-size:15px;padding:0 24px;min-height:52px;border-radius:999px;cursor:pointer}' +
+      '.ds-ack3-check.is-skip{background:var(--cha-warning-bg);color:var(--cha-warning-text)}' +
+      '.ds-ack4-wrap{flex:none;width:400px;max-width:100%;display:flex;flex-direction:column;align-items:center;gap:10px}' +
+      '.ds-ack4-tagline{background:#111827;color:#fff;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:8px 14px;border-radius:999px}' +
+      '.ds-ack4-phone{width:390px;max-width:100%;height:720px;box-sizing:border-box;background:#111827;border-radius:48px;padding:14px;box-shadow:0 20px 50px rgba(17,24,39,0.25)}' +
+      '.ds-ack4-screen{height:100%;overflow-y:auto;background:#fff;border-radius:36px;padding:18px 14px;box-sizing:border-box;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:13px;color:#333;line-height:1.4}' +
+      '.ds-ack4-note{font-size:12px;color:var(--cha-text-secondary);text-align:center;max-width:380px}' +
+      '.ds-ack4-top{text-align:center;padding:6px 0 2px}' +
+      '.ds-ack4-top-t{font-size:17px;font-weight:700}' +
+      '.ds-ack4-ph{font-size:11px;color:#8a8f98;margin:6px 0}' +
+      '.ds-ack4-bar{background:#428bca;color:#fff;font-size:15px;font-weight:700;text-align:center;padding:8px;margin:14px 0 10px;border-radius:4px}' +
+      '.ds-ack4-title{color:#1a4692;font-size:17px;text-align:center;margin:18px 0 8px;line-height:1.25;padding-bottom:6px;border-bottom:1px solid #1a4692}' +
+      '.ds-ack4-title.is-left{text-align:left;font-size:15px}' +
+      '.ds-ack4-h4{font-size:14px;font-weight:500;margin:10px 0 6px}' +
+      '.ds-ack4-field{display:flex;justify-content:space-between;gap:8px;font-size:12px;padding:5px 0;border-bottom:1px solid #eef0f3}' +
+      '.ds-ack4-field span:last-child{color:#8a8f98}' +
+      '.ds-ack4-small{font-size:12px;color:#555}' +
+      '.ds-ack4-small.is-center{text-align:center;margin-bottom:8px}' +
+      '.ds-ack4-tiny{font-size:10px;font-style:italic;color:#555}' +
+      '.ds-ack4-lines{display:flex;flex-direction:column;gap:6px;margin:8px 0 12px}' +
+      '.ds-ack4-lines div{height:7px;background:#e3e6ec;border-radius:4px}' +
+      '.ds-ack4-yes{display:flex;justify-content:space-between;font-size:11px;color:#555;padding:3px 0}' +
+      '.ds-ack4-num-line{display:flex;gap:6px;align-items:center;font-size:11px;color:#8a8f98;margin:3px 0}' +
+      '.ds-ack4-num-line div{flex:1;height:7px;background:#e3e6ec;border-radius:4px}' +
+      '.ds-ack4-label{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0}' +
+      '.ds-ack4-label.is-center{justify-content:center;text-align:center}' +
+      '.ds-ack4-red{color:#c0392b;font-size:13px}' +
+      '.ds-ack4-red.is-bold{font-weight:700}' +
+      '.ds-ack4-box{flex:none;display:inline-flex;align-items:center;gap:4px;padding:3px;border-radius:6px}' +
+      '.ds-ack4-box input{width:18px;height:18px;margin:0;accent-color:#1a4692;cursor:pointer}' +
+      '.ds-ack4-box.is-on{background:#fef08a;box-shadow:0 0 0 3px #4060e8}' +
+      '.ds-ack4-box.is-skip{background:var(--cha-warning-bg);box-shadow:0 0 0 3px #f59e0b}' +
+      '.ds-ack4-num{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#111827;color:#fff;font-family:system-ui,sans-serif;font-size:11px;font-weight:700}' +
+      '.ds-ack4-big{color:#1a4692;font-size:17px;font-weight:700;text-align:center;margin:14px 0 4px}' +
+      '.ds-ack4-q{display:flex;gap:6px;align-items:flex-start;font-size:12px;line-height:1.4;margin:5px 0}' +
+      '.ds-ack4-qn{flex:none;width:18px}' +
+      '.ds-ack4-rep{font-size:11px;margin:6px 0}' +
+      '.ds-ack4-sigbox{border:1px solid #cfd4dc;border-radius:4px;padding:10px;font-size:12px;color:#8a8f98;margin:8px 0}' +
+      '.ds-ack4-sign{background:#5cb85c;color:#fff;text-align:center;font-weight:700;padding:10px;border-radius:4px;font-size:14px;opacity:0.6;margin-bottom:30px}';
     document.head.appendChild(st);
   }
 
@@ -1331,108 +1398,377 @@ setTimeout(function () {
   ackPanel.innerHTML = '<div class="ds-ack-root" id="dsAckCoachRoot"></div>';
   panelsWrap.appendChild(ackPanel);
 
+  var DS_ACK_CHECK_SVG =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+
+  function dsAckSteps() {
+    var steps = [];
+    var b;
+    for (var s = 0; s < DOCUSIGN_ACK_BOXES.length; s++) {
+      b = DOCUSIGN_ACK_BOXES[s];
+      if (b.num >= 9 && b.num <= 18) {
+        if (b.num === 9) {
+          steps.push({
+            num: '9-18',
+            boxes: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+            section: 'The 10 Working Owner questions',
+            where: 'Under Additional Member Attestations',
+            says: 'One box at the start of each of the 10 questions',
+            script:
+              'These are the same 10 questions you already said Yes to. Check all 10.',
+            context: ''
+          });
+        }
+        continue;
+      }
+      steps.push({
+        num: String(b.num),
+        boxes: [b.num],
+        section: b.section,
+        where: b.where,
+        says: b.says,
+        script: b.script,
+        context: b.context,
+        skip: !!b.skip
+      });
+    }
+    return steps;
+  }
+
+  function dsAckStepDone(st) {
+    if (st.skip) return __dsAckSkipDone;
+    for (var i = 0; i < st.boxes.length; i++) {
+      if (!__dsAckChecks[st.boxes[i]]) return false;
+    }
+    return true;
+  }
+
+  function dsAckPhoneHtml(curBoxes, curSkip) {
+    function lines(n) {
+      var w = [100, 96, 98, 88, 94, 72];
+      var s = '<div class="ds-ack4-lines" aria-hidden="true">';
+      for (var i = 0; i < n; i++) {
+        s += '<div style="width:' + w[i % w.length] + '%"></div>';
+      }
+      return s + '</div>';
+    }
+    function bar(t) {
+      return '<div class="ds-ack4-bar">' + t + '</div>';
+    }
+    function title(t, left) {
+      return (
+        '<div class="ds-ack4-title' +
+        (left ? ' is-left' : '') +
+        '">' +
+        t +
+        '</div>'
+      );
+    }
+    function h4(t) {
+      return '<div class="ds-ack4-h4">' + t + '</div>';
+    }
+    function field(a, b) {
+      return (
+        '<div class="ds-ack4-field"><span>' +
+        a +
+        '</span><span>' +
+        b +
+        '</span></div>'
+      );
+    }
+    function box(n) {
+      var on = curBoxes.indexOf(n) >= 0;
+      return (
+        '<span class="ds-ack4-box' +
+        (on ? (curSkip ? ' is-skip' : ' is-on') : '') +
+        '" id="dsAckPhoneBox' +
+        n +
+        '"><input type="checkbox" data-ack-box="' +
+        n +
+        '" aria-label="Box ' +
+        n +
+        '"' +
+        (__dsAckChecks[n] ? ' checked' : '') +
+        '>' +
+        (on ? '<span class="ds-ack4-num">' + n + '</span>' : '') +
+        '</span>'
+      );
+    }
+    function red(t, bold) {
+      return (
+        '<span class="ds-ack4-red' +
+        (bold ? ' is-bold' : '') +
+        '">' +
+        t +
+        '</span>'
+      );
+    }
+    function after(n, t, center) {
+      return (
+        '<div class="ds-ack4-label' +
+        (center ? ' is-center' : '') +
+        '">' +
+        box(n) +
+        red(t) +
+        '</div>'
+      );
+    }
+    function before(n, t, bold, left) {
+      return (
+        '<div class="ds-ack4-label' +
+        (left ? '' : ' is-center') +
+        '">' +
+        red(t, bold) +
+        box(n) +
+        '</div>'
+      );
+    }
+    var q10 = [
+      'Do you acknowledge that you will be admitted as a Working Owner under <b>Section 5.01(c)</b> ...',
+      'Do you understand that, as a Working Owner, you are expected to complete assigned activities ...',
+      'Do you agree that the Company may assign projects to you at its discretion?',
+      'Do you understand that you will receive a <b>Guaranteed Payment</b> for each response ...',
+      'Do you acknowledge that you have been granted <b>three (3) Preferred Units</b> ...',
+      'Do you understand that the Preferred Units are <b>not registered under the Securities Act of 1933</b> ...',
+      'Do you understand that you are eligible to participate in Company benefit plans ...',
+      'Do you agree to maintain the <b>confidentiality</b> of all Company information ...',
+      'Do you understand that if you fail to meet the conditions of Working Owner status, the Company may exercise its <b>Call Right</b> ...',
+      'Do you confirm that you have read and understood all the Terms and Conditions and the LLC Agreement ...'
+    ];
+    var h = '';
+    var i;
+    h +=
+      '<div class="ds-ack4-top"><div class="ds-ack4-top-t">Electronic Signature</div><div class="ds-ack4-ph">[Enrollment company header]</div></div>';
+    h += bar('Member Information');
+    h +=
+      field('Name', '[Client name]') +
+      field('Address', '[Address]') +
+      field('Phone', '[Phone]') +
+      field('Email', '[Email]') +
+      field('Date of birth', '[DOB]');
+    h += bar('Product Information');
+    h += h4('SmartChoice [1500 / 2500 / 3000 / 3500]');
+    h +=
+      field('Active date', '[MM/DD/YYYY]') +
+      field('Monthly premium', '[$000.00]');
+    h += h4('General Questions');
+    h +=
+      '<div class="ds-ack4-small">10 Working Owner questions, each answered <b>Yes</b></div>';
+    h +=
+      '<div class="ds-ack4-ph">[Add-on products show here only if sold]</div>';
+    h += title('Population Science Management Working Owner Application');
+    h += lines(4);
+    h += h4('SmartChoice [plan]');
+    h += h4('General Questions');
+    for (i = 0; i < 10; i++) {
+      h +=
+        '<div class="ds-ack4-yes"><span>Question ' +
+        (i + 1) +
+        '</span><b>Yes</b></div>';
+    }
+    h += after(
+      1,
+      'By checking the box, Applicant certifies you are not applying on behalf any other individuals other than those who are considered dependents.'
+    );
+    h += title('Health Plan Enrollment');
+    h += title(
+      'AUTHORIZATION TO USE AND DISCLOSE PROTECTED HEALTH INFORMATION',
+      true
+    );
+    for (i = 0; i < 11; i++) {
+      h +=
+        '<div class="ds-ack4-num-line"><span>' +
+        (i + 1) +
+        '.</span><div></div></div>';
+    }
+    h += lines(2);
+    h += after(
+      2,
+      'By checking the box, you agree to the terms of this Authorization.',
+      true
+    );
+    h += title('Medication Disclosures', true) + lines(5);
+    h += title('Plan Type and Participant Coverage', true);
+    h +=
+      field('Plan Name', 'SmartChoice [plan]') +
+      field('Pharmacy Plan', 'MyLiveDoc');
+    h += lines(3);
+    h += before(3, 'Confirmation: I agree to the above disclosures');
+    h += title('PLAN TERMS AND CONDITIONS') + h4('Managed Care');
+    h += lines(4) + lines(4);
+    h += before(
+      4,
+      'I have read and understand the information set forth above:',
+      true,
+      true
+    );
+    h += lines(5);
+    var mids = [
+      'Rates and Contract Terms',
+      'Billing and Collections',
+      'Termination and Cancellation',
+      'Summary of Benefits & Coverage',
+      'Underwriting Guidelines',
+      'Conditions of Plan Coordination'
+    ];
+    for (i = 0; i < mids.length; i++) {
+      h += title(mids[i]) + lines(3);
+    }
+    h +=
+      title('Terms and Conditions of Plan Participation') + lines(6) + lines(4);
+    h += before(
+      5,
+      'Working Owner Confirmation: I agree to the terms above',
+      true
+    );
+    h += title('Joinder Agreement') + lines(5);
+    h += before(
+      6,
+      'Working Owner Confirmation: I agree to the above joinder agreement'
+    );
+    h += title('Spousal Consent');
+    h +=
+      '<div class="ds-ack4-small">I, [Spouse name], spouse of [Client name], acknowledge ...</div>';
+    h += lines(4);
+    h += before(
+      7,
+      'Spouse Confirmation: I agree to the above joinder agreement (if applicable)'
+    );
+    h += title('Member Information');
+    h +=
+      field('Full Name', '[Client name]') +
+      field('SSN last 4', '[XXXX]') +
+      field('Tobacco', '[Y/N]');
+    h += title('Member Attestation') + lines(7);
+    h += before(
+      8,
+      'Working Owner Confirmation: I agree to the above attestation',
+      true
+    );
+    h += '<div class="ds-ack4-big">Additional Member Attestations</div>';
+    h +=
+      '<div class="ds-ack4-small is-center">Please check each of the following acknowledgements</div>';
+    for (i = 0; i < 10; i++) {
+      h +=
+        '<div class="ds-ack4-q"><span class="ds-ack4-qn">' +
+        (i + 1) +
+        '.</span>' +
+        box(9 + i) +
+        '<span>' +
+        q10[i] +
+        '</span></div>';
+    }
+    h += title('Applicant Representations and Warranties');
+    h +=
+      '<div class="ds-ack4-tiny">Please read all 7 items below carefully as you will be required to initial each one ...</div>';
+    for (i = 0; i < 7; i++) {
+      h +=
+        '<div class="ds-ack4-rep"><b>By Checking Below, I state that</b> <span class="ds-ack4-ph">[item ' +
+        (i + 1) +
+        ']</span></div>';
+    }
+    h += lines(2);
+    h += before(19, 'Confirmation: I confirm that all of the above is true');
+    h += '<div class="ds-ack4-ph">[Add-on terms show here only if sold]</div>';
+    h += title('Payment Method') + field('Account', '[XXXX]');
+    h += title('Electronic Signature');
+    h += after(
+      20,
+      'Check here if signing as a Parent or Legal Guardian for the Primary Applicant'
+    );
+    h += '<div class="ds-ack4-sigbox">[Client types full name here]</div>';
+    h += '<div class="ds-ack4-sign">Sign</div>';
+    return h;
+  }
+
   function renderAckCoach() {
     var root = document.getElementById('dsAckCoachRoot');
     if (!root) return;
-    var total = DOCUSIGN_ACK_BOXES.length;
-    var idx = __dsAckCoachIndex;
-    if (idx < 0) idx = 0;
-    if (idx >= total) idx = total - 1;
-    __dsAckCoachIndex = idx;
-    var pct = Math.round(((idx + 1) / total) * 100);
-    var box = DOCUSIGN_ACK_BOXES[idx];
+    var steps = dsAckSteps();
+    var total = steps.length;
     var i;
-
-    var tiers = ['1500', '2500', '3000', '3500'];
-    var tierHtml = '';
-    for (i = 0; i < tiers.length; i++) {
-      tierHtml +=
-        '<button type="button" class="ds-ack2-tier' +
-        (tiers[i] === __dsAckTier ? ' is-on' : '') +
-        '" data-ack-tier="' +
-        tiers[i] +
-        '">' +
-        tiers[i] +
-        '</button>';
-    }
-
-    var stepHtml;
-    if (__dsAckCoachDone) {
-      stepHtml =
-        '<div class="ds-ack2-card ds-ack2-done" role="status">' +
-        '<div class="ds-ack2-done-msg">All boxes covered. The client can sign and submit.</div>' +
-        '<button type="button" class="ds-ack2-btn ds-ack2-primary" id="dsAckStartOver">Start over</button>' +
-        '</div>';
-    } else {
-      stepHtml =
-        '<div class="ds-ack2-card ds-ack2-step" id="dsAckCoachCard">' +
-        '<div class="ds-ack2-step-top">' +
-        '<div class="ds-ack2-badge' +
-        (box.skip ? ' is-skip' : '') +
-        '">' +
-        box.num +
-        '</div>' +
-        '<div class="ds-ack2-step-name">' +
-        '<div class="ds-ack2-meta">Box ' +
-        box.num +
-        ' of ' +
-        total +
-        ' - SmartChoice ' +
-        __dsAckTier +
-        '</div>' +
-        '<div class="ds-ack2-section">' +
-        __dsAckEsc(box.section) +
-        '</div></div>' +
-        (box.skip ? '<div class="ds-ack2-skip-pill">Leave blank</div>' : '') +
-        '</div>' +
-        '<div class="ds-ack2-block">' +
-        '<div class="ds-ack2-lbl">Where it is</div>' +
-        '<div class="ds-ack2-where">' +
-        __dsAckEsc(box.where) +
-        '</div></div>' +
-        '<div class="ds-ack2-next">' +
-        '<div class="ds-ack2-lbl ds-ack2-lbl-blue">The box is next to</div>' +
-        '<div class="ds-ack2-next-text">"' +
-        __dsAckEsc(box.says) +
-        '"</div></div>' +
-        '<div class="ds-ack2-say">' +
-        '<div class="ds-ack2-lbl">Say this</div>' +
-        '<div class="ds-ack2-say-text">' +
-        __dsAckEsc(box.script) +
-        '</div></div>' +
-        (box.context
-          ? '<div class="ds-ack2-tip">' + __dsAckEsc(box.context) + '</div>'
-          : '') +
-        '<div class="ds-ack2-track"><div class="ds-ack2-fill" style="width:' +
-        pct +
-        '%"></div></div>' +
-        '<div class="ds-ack2-nav">' +
-        '<button type="button" class="ds-ack2-btn" id="dsAckPrev"' +
-        (idx <= 0 ? ' disabled' : '') +
-        '>Back</button>' +
-        '<button type="button" class="ds-ack2-btn ds-ack2-primary" id="dsAckNext">' +
-        (idx >= total - 1 ? 'Done' : 'Next box') +
-        '</button>' +
-        '</div></div>';
-    }
-
-    var jumpHtml = '';
+    var cur = __dsAckCoachIndex;
+    if (cur >= total) cur = -1;
+    var curBoxes = cur >= 0 ? steps[cur].boxes : [];
+    var curSkip = cur >= 0 && !!steps[cur].skip;
+    var doneCount = 0;
     for (i = 0; i < total; i++) {
-      var jb = DOCUSIGN_ACK_BOXES[i];
-      var jcls = 'ds-ack2-jump-btn';
-      if (!__dsAckCoachDone && i === idx) jcls += ' is-current';
-      else if (jb.skip) jcls += ' is-skip';
-      else if (__dsAckCoachDone || i < idx) jcls += ' is-done';
-      jumpHtml +=
-        '<button type="button" class="' +
-        jcls +
-        '" data-ack-jump="' +
-        i +
-        '" aria-label="Box ' +
-        jb.num +
-        '">' +
-        jb.num +
-        '</button>';
+      if (dsAckStepDone(steps[i])) doneCount++;
+    }
+
+    var rowsHtml = '';
+    for (i = 0; i < total; i++) {
+      var st = steps[i];
+      var isDone = dsAckStepDone(st);
+      if (i === cur) {
+        rowsHtml +=
+          '<div class="ds-ack3-row is-open' +
+          (st.skip ? ' is-skip' : '') +
+          '">' +
+          '<div class="ds-ack3-open-top">' +
+          '<div class="ds-ack3-mark is-big' +
+          (st.skip ? ' is-skip' : ' is-current') +
+          '">' +
+          __dsAckEsc(st.num) +
+          '</div>' +
+          '<div class="ds-ack3-open-name">' +
+          '<div class="ds-ack2-meta">' +
+          (st.skip ? 'Box 20 - leave blank' : 'Box ' + __dsAckEsc(st.num)) +
+          '</div>' +
+          '<div class="ds-ack3-open-where">' +
+          __dsAckEsc(st.where) +
+          '</div></div></div>' +
+          '<div class="ds-ack3-next">' +
+          '<div class="ds-ack3-next-lbl">The box is next to</div>' +
+          '<div class="ds-ack3-next-text">"' +
+          __dsAckEsc(st.says) +
+          '"</div></div>' +
+          '<div class="ds-ack3-say">' +
+          __dsAckEsc(st.script) +
+          '</div>' +
+          (st.context
+            ? '<div class="ds-ack2-tip">' + __dsAckEsc(st.context) + '</div>'
+            : '') +
+          '<button type="button" class="ds-ack3-check' +
+          (st.skip ? ' is-skip' : '') +
+          '" data-ack-check="' +
+          i +
+          '">' +
+          (st.skip ? 'Left blank, finish' : 'They checked it, next') +
+          '</button>' +
+          '</div>';
+      } else {
+        var cls = 'ds-ack3-row ds-ack3-closed';
+        var mcls = 'ds-ack3-mark';
+        var tag = '';
+        if (isDone) {
+          cls += ' is-done';
+          mcls += ' is-done';
+          tag = 'Done';
+        } else if (st.skip) {
+          cls += ' is-skip';
+          mcls += ' is-skip';
+          tag = 'Leave blank';
+        }
+        rowsHtml +=
+          '<button type="button" class="' +
+          cls +
+          '" data-ack-open="' +
+          i +
+          '">' +
+          '<span class="' +
+          mcls +
+          '">' +
+          (isDone ? DS_ACK_CHECK_SVG : __dsAckEsc(st.num)) +
+          '</span>' +
+          '<span class="ds-ack3-short">' +
+          __dsAckEsc(st.section) +
+          '</span>' +
+          '<span class="ds-ack3-tag">' +
+          tag +
+          '</span>' +
+          '</button>';
+      }
     }
 
     var asks =
@@ -1490,30 +1826,37 @@ setTimeout(function () {
         '</div>';
     }
 
+    var oldPhone = document.getElementById('dsAckPhone');
+    var keepScroll = oldPhone ? oldPhone.scrollTop : 0;
+
     root.innerHTML =
       '<div class="ds-ack2">' +
-      '<div class="ds-ack2-head">' +
+      '<div class="ds-ack3-head">' +
       '<div>' +
-      '<div class="ds-ack2-kicker">SmartChoice e-sign</div>' +
-      '<h3 class="ds-ack2-title">Box guide</h3>' +
+      '<h3 class="ds-ack2-title">SmartChoice e-sign boxes</h3>' +
+      '<div class="ds-ack3-sub">The phone shows what the client sees. The box you are on lights up.</div>' +
       '</div>' +
-      '<div class="ds-ack2-head-right">' +
-      '<div class="ds-ack2-tiers" role="group" aria-label="SmartChoice plan">' +
-      tierHtml +
-      '</div>' +
-      '<div class="ds-ack2-count">19 to check - <span class="ds-ack2-count-skip">1 leave blank</span></div>' +
+      '<div class="ds-ack3-head-right">' +
+      '<div class="ds-ack3-count">' +
+      doneCount +
+      ' of ' +
+      total +
+      ' done</div>' +
+      '<button type="button" class="ds-ack3-reset" id="dsAckStartOver">Start over</button>' +
       '</div></div>' +
       '<div class="ds-ack2-cols">' +
-      '<div class="ds-ack2-main">' +
-      stepHtml +
-      '<div class="ds-ack2-card ds-ack2-jump">' +
-      '<div class="ds-ack2-jump-head">' +
-      '<div class="ds-ack2-jump-title">Jump to a box</div>' +
-      '<div class="ds-ack2-jump-note">9 to 18 are the 10 Working Owner questions. 20 stays blank.</div>' +
+      '<div class="ds-ack3-list">' +
+      (doneCount === total
+        ? '<div class="ds-ack2-done-msg" role="status">All boxes done. The client can sign.</div>'
+        : '') +
+      rowsHtml +
       '</div>' +
-      '<div class="ds-ack2-jump-grid">' +
-      jumpHtml +
+      '<div class="ds-ack4-wrap">' +
+      '<div class="ds-ack4-tagline">Practice copy - no client info</div>' +
+      '<div class="ds-ack4-phone"><div class="ds-ack4-screen" id="dsAckPhone">' +
+      dsAckPhoneHtml(curBoxes, curSkip) +
       '</div></div>' +
+      '<div class="ds-ack4-note">Gray lines stand in for the legal text. Box labels and section names match the real e-sign.</div>' +
       '</div>' +
       '<div class="ds-ack2-card ds-ack2-asks">' +
       '<div class="ds-ack2-lbl">What clients ask most</div>' +
@@ -1521,31 +1864,85 @@ setTimeout(function () {
       '</div>' +
       '</div></div>';
 
-    if (!root.__dsAck2Bound) {
-      root.__dsAck2Bound = true;
+    var phone = document.getElementById('dsAckPhone');
+    if (phone) {
+      phone.scrollTop = keepScroll;
+      if (__dsAckScrollTo && curBoxes.length) {
+        var target = document.getElementById('dsAckPhoneBox' + curBoxes[0]);
+        if (target) {
+          var top =
+            target.getBoundingClientRect().top -
+            phone.getBoundingClientRect().top +
+            phone.scrollTop -
+            160;
+          if (phone.scrollTo) {
+            phone.scrollTo({ top: top, behavior: 'smooth' });
+          } else {
+            phone.scrollTop = top;
+          }
+        }
+      }
+    }
+    __dsAckScrollTo = false;
+
+    if (!root.__dsAck4Bound) {
+      root.__dsAck4Bound = true;
+      root.addEventListener('change', function (e) {
+        var t = e.target;
+        if (!t || !t.hasAttribute || !t.hasAttribute('data-ack-box')) return;
+        var bn = parseInt(t.getAttribute('data-ack-box'), 10);
+        if (isNaN(bn)) return;
+        __dsAckChecks[bn] = !!t.checked;
+        renderAckCoach();
+      });
       root.addEventListener('click', function (e) {
         var t = e.target.closest('button');
         if (!t || !root.contains(t)) return;
-        var n = DOCUSIGN_ACK_BOXES.length;
-        if (t.id === 'dsAckPrev') {
-          if (__dsAckCoachIndex > 0) __dsAckCoachIndex--;
-        } else if (t.id === 'dsAckNext') {
-          if (__dsAckCoachIndex >= n - 1) __dsAckCoachDone = true;
-          else __dsAckCoachIndex++;
-        } else if (t.id === 'dsAckStartOver') {
+        var all = dsAckSteps();
+        var v;
+        var j;
+        if (t.id === 'dsAckStartOver') {
+          __dsAckChecks = [];
+          __dsAckSkipDone = false;
           __dsAckCoachIndex = 0;
-          __dsAckCoachDone = false;
-        } else if (t.hasAttribute('data-ack-jump')) {
-          var v = parseInt(t.getAttribute('data-ack-jump'), 10);
+          __dsAckAskOpen = -1;
+          __dsAckScrollTo = true;
+        } else if (t.hasAttribute('data-ack-check')) {
+          v = parseInt(t.getAttribute('data-ack-check'), 10);
+          if (isNaN(v) || !all[v]) return;
+          if (all[v].skip) {
+            __dsAckSkipDone = true;
+          } else {
+            for (j = 0; j < all[v].boxes.length; j++) {
+              __dsAckChecks[all[v].boxes[j]] = true;
+            }
+          }
+          var nx = -1;
+          for (j = v + 1; j < all.length; j++) {
+            if (!dsAckStepDone(all[j])) {
+              nx = j;
+              break;
+            }
+          }
+          if (nx === -1) {
+            for (j = 0; j < all.length; j++) {
+              if (!dsAckStepDone(all[j])) {
+                nx = j;
+                break;
+              }
+            }
+          }
+          __dsAckCoachIndex = nx;
+          __dsAckScrollTo = true;
+        } else if (t.hasAttribute('data-ack-open')) {
+          v = parseInt(t.getAttribute('data-ack-open'), 10);
           if (isNaN(v)) return;
           __dsAckCoachIndex = v;
-          __dsAckCoachDone = false;
+          __dsAckScrollTo = true;
         } else if (t.hasAttribute('data-ack-ask')) {
-          var q = parseInt(t.getAttribute('data-ack-ask'), 10);
-          if (isNaN(q)) return;
-          __dsAckAskOpen = __dsAckAskOpen === q ? -1 : q;
-        } else if (t.hasAttribute('data-ack-tier')) {
-          __dsAckTier = t.getAttribute('data-ack-tier');
+          v = parseInt(t.getAttribute('data-ack-ask'), 10);
+          if (isNaN(v)) return;
+          __dsAckAskOpen = __dsAckAskOpen === v ? -1 : v;
         } else {
           return;
         }
