@@ -201,14 +201,15 @@ is the brochure on file. It states no waiting period and no
 12-month figure. Do not copy a 30-day wait or a 12/12 clause
 from another plan.
 
-Harbor STM scripts state a 12-and-12 pre-existing clause and
-a 30-day waiting period for hospital, sickness and scheduled
-doctor visits. Neither figure appears in the HarborSTM
-brochure, which states only that pre-existing conditions are
-not covered, with limitations reapplied to each new coverage
-period. The plan cards, compliance notes and knowledge base
-correctly omit both figures, so the spoken script and the
-reference data disagree. Kept verbatim by decision, Sept 2026. Resolve when the Neo certificate of coverage arrives.
+Harbor STM scripts (Scripts tab + On Call Before enrollment) were
+updated Nov 4 2026 with owner approval per line: pre-existing = 5-year
+look-back (diagnosed, treated, medication or symptoms), waits = 5 days
+sickness, 30 days cancer and wellness. Source: NEO Harbor Secure e-sign,
+seen 2026-11-04 (confirm on an Essential/Access e-sign). The same PR
+replaced the 12-and-12 / 30-day lines for Access Health and SmartHealth
+(36 months), Pinnacle STM (60 months), Galena (12 months) and BWA
+Americare (no pre-existing period). Paramount kept until Plans 2-6 are
+verified.
 
 `WB_Choice___Select_-_Member_Guide.pdf` is in the repo and
 the Goodlife chat profiles are built from it. The guide does
@@ -237,7 +238,8 @@ in-network only; it gives providerlocator.firsthealth.com
 when the guide gives firsthealthlbp.com; it states no annual
 visit limits when both plans have them; and it omits the
 30-day free look and the $10,000 group term life. Kept
-verbatim by decision, Sept 2026.
+verbatim by decision, Sept 2026, except the prescription line, which now
+says the plan has no prescription benefits (owner OK, Nov 4 2026).
 
 ## Plan lineup guard (Oct 2026)
 
