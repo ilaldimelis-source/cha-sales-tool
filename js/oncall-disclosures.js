@@ -281,6 +281,7 @@ var CW_DISC = {
         'This is private short-term medical, not an ACA or major medical plan.',
         'Every benefit has limits; past a limit, you pay. Your coinsurance limit caps only your coinsurance; your deductible, copays and access fees are on top.',
         "Pre-existing conditions aren't covered; this plan is medically underwritten.",
+        'Sickness has a 7-day waiting period, unless you applied more than 7 days before your start date.',
         "Your Schedule of Benefits lists what the plan pays for each service, and anything not listed there isn't covered. Your certificate lists all exclusions and limits.",
         "Do you understand that this isn't major medical or an ACA plan, it has limits, and your bill will show Neo Health Solutions?\n\u25b6 ( Wait for answer )"
       ],
@@ -316,6 +317,7 @@ var CW_DISC = {
       paras: [
         'Your plan uses the MultiPlan PPO Network, in-network only.',
         'Aither Health administers the plan, and you join Consumer Data Partners, LP (VistaWell) as a Limited Partner. A federal law called ERISA governs the plan.',
+        'To stay eligible, you need to use the Legend Browser app at least 500 hours a year, about 42 hours a month, signed in with your Partner ID from your Member Portal.',
         'Your bill will show Premier Health Solutions, or PHS-HEALTH-BILL.',
         "This is a private group health plan, not an ACA or major medical plan. It doesn't cover labor and delivery, or inpatient mental health and substance abuse treatment.",
         "Every benefit has limits; past a limit, you pay. There's no deductible, and your out-of-pocket maximum counts in-network care only.",
@@ -328,6 +330,7 @@ var CW_DISC = {
       paras: [
         'Your plan uses the MultiPlan PPO Network, in-network only.',
         'Aither Health administers the plan, and you join Consumer Data Partners, LP (VistaWell) as a Limited Partner. A federal law called ERISA governs the plan.',
+        'To stay eligible, you need to use the Legend Browser app at least 500 hours a year, about 42 hours a month, signed in with your Partner ID from your Member Portal.',
         'Your bill will show Premier Health Solutions, or PHS-HEALTH-BILL.',
         "This is a private group health plan, not an ACA or major medical plan. It doesn't cover labor and delivery, or inpatient mental health and substance abuse treatment.",
         "Every benefit has limits; past a limit, you pay. There's no deductible, and your out-of-pocket maximum counts in-network care only.",
