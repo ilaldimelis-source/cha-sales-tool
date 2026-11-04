@@ -3797,6 +3797,9 @@ function cwAskCards(fam) {
   var ownQ = own.map(function (x) {
     return x[0].toLowerCase();
   });
+  if (fam.name === 'SmartChoice') {
+    ownQ.push('how do i know you\u2019re legit?');
+  }
   if (fam.name === 'Harbor STM') {
     ownQ.push('so the most i\u2019ll ever pay is $[x]?');
     ownQ.push('what do deductible and coinsurance mean?');
@@ -3928,10 +3931,6 @@ var CW_ASK_PLAN = {
     [
       'Do I have to be self-employed?',
       "Yes. The application asks you to confirm you're self-employed and can show proof if asked. Only say yes if it's true, or you could lose the plan and have claims denied."
-    ],
-    [
-      'How will I be billed?',
-      "Your first payment is today. After that, it's drafted around the 20th of each month for the next month. Your statement shows Neo Health Solutions. A returned bank draft costs $35 each time."
     ],
     [
       'How do I cancel?',
