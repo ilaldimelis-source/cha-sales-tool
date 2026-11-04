@@ -3882,7 +3882,7 @@ var CW_ASK_TIER = {
       'What about the ER, surgery, or the hospital?':
         'Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics have no access fee and go toward the deductible and coinsurance. Inpatient surgery and diagnostic/lab work are subject to the deductible and coinsurance.',
       "What is the most I'll pay?":
-        'After your deductible, you pay 30% coinsurance until you reach the $5,000 coinsurance out-of-pocket maximum. The plan pays up to $1,000,000 per coverage period.'
+        "After your deductible, you pay [30% / 20% / 0%] coinsurance on covered in-network care until your coinsurance reaches the $5,000 coinsurance out-of-pocket maximum. After that, the plan pays 100% of covered in-network care for the rest of your coverage period, up to the $1,000,000 coverage period maximum and any benefit limits. On the 0% option, that $5,000 maximum is met once your deductible is met. This isn't a limit on everything you pay: your deductible, copays, out-of-network care, and anything not covered don't count toward it."
     },
     Secure: {
       'What do I pay for office visits?':
@@ -3890,7 +3890,7 @@ var CW_ASK_TIER = {
       'What about the ER, surgery, or the hospital?':
         'Emergency treatment, outpatient surgery and anesthesia, and advanced diagnostics have no access fee and go toward the deductible and coinsurance. Inpatient surgery and diagnostic/lab work are subject to the deductible and coinsurance.',
       "What is the most I'll pay?":
-        'After your deductible, you pay 30% coinsurance until you reach the $5,000 coinsurance out-of-pocket maximum. The plan pays up to $1,500,000 per coverage period.'
+        "After your deductible, you pay [30% / 20% / 0%] coinsurance on covered in-network care until your coinsurance reaches the $5,000 coinsurance out-of-pocket maximum. After that, the plan pays 100% of covered in-network care for the rest of your coverage period, up to the $1,500,000 coverage period maximum and any benefit limits. On the 0% option, that $5,000 maximum is met once your deductible is met. This isn't a limit on everything you pay: your deductible, copays, out-of-network care, and anything not covered don't count toward it."
     }
   }
 };
@@ -3951,7 +3951,7 @@ var CW_ASK_PLAN = {
     ],
     [
       "What is the most I'll pay?",
-      'After your deductible, you pay 30% coinsurance until you reach the $5,000 coinsurance out-of-pocket maximum. The plan pays up to $750,000 per coverage period.'
+      "After your deductible, you pay [30% / 20% / 0%] coinsurance on covered in-network care until your coinsurance reaches the $5,000 coinsurance out-of-pocket maximum. After that, the plan pays 100% of covered in-network care for the rest of your coverage period, up to the $750,000 coverage period maximum and any benefit limits. On the 0% option, that $5,000 maximum is met once your deductible is met. This isn't a limit on everything you pay: your deductible, copays, access fees, out-of-network care, and anything not covered don't count toward it."
     ],
     [
       'Are my prescriptions covered?',
