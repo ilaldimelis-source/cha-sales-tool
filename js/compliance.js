@@ -97,7 +97,7 @@ function renderComplianceCenter() {
   html +=
     '&#8226; Name the correct Benefits Administrator: TDK = Detego Health | GoodHealth = MBA | NEO Smart Choice = Population Science Management<br>';
   html +=
-    '&#8226; Name the billing admin: TDK, GoodHealth = FirstEnroll | SmartChoice = Neo Health Solutions | AdvantCare, TVP = Premier Health Solutions<br>';
+    '&#8226; Name the billing admin: TDK, GoodHealth = FirstEnroll | SmartChoice = NEOINS | AdvantCare, TVP = Premier Health Solutions<br>';
   html +=
     '&#8226; State exact visit limits and dollar caps -- never overstate benefits<br>';
   html +=
