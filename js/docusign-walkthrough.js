@@ -1197,6 +1197,7 @@ var __dsAckChecks = [];
 var __dsAckSkipDone = false;
 var __dsAckAskOpen = -1;
 var __dsAckScrollTo = false;
+var __dsAckSearchFromAck = false;
 
 function __dsAckEsc(s) {
   if (s == null) return '';
@@ -2008,10 +2009,19 @@ setTimeout(function () {
       var ackP = group.querySelector('[data-panel="ack"]');
       if (ackP) {
         if (v) {
+          if (ackTab.classList.contains('is-active'))
+            __dsAckSearchFromAck = true;
           ackP.setAttribute('hidden', '');
+        } else if (__dsAckSearchFromAck) {
+          __dsAckSearchFromAck = false;
+          setTimeout(function () {
+            activateDsTab('ack');
+          }, 0);
         }
       }
     },
     true
   );
+
+  activateDsTab('ack');
 }, 0);
