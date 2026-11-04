@@ -926,7 +926,7 @@ function appqListHtml(plan, where) {
     '</b><span>' +
     appqEsc(st.text) +
     '</span>' +
-    (where === 'cw'
+    (where === 'cw' && APPQ_SAY[plan.id]
       ? '<button type="button" class="appq-short" data-appq-short="1"' +
         w +
         '>' +
@@ -938,6 +938,9 @@ function appqListHtml(plan, where) {
     '"' +
     w +
     '>Start over</button></div>';
+  // Nov 4 2026 (Mey): Short view is offered only for plans with an
+  // APPQ_SAY entry (SmartChoice). Every other plan always shows the
+  // exact portal wording plus the Client confused? explanation.
   var sayView = where === 'cw' && appqState.short && APPQ_SAY[plan.id];
   var intro = sayView ? sayView.intro : plan.intro;
   if (intro) {
@@ -998,8 +1001,8 @@ function appqListHtml(plan, where) {
       (q.t && where === 'cw'
         ? '<p class="appq-title">' + appqEsc(q.t) + '</p>'
         : '') +
-      (where === 'cw' && appqState.short && q.t
-        ? sayView && q.say
+      (sayView && q.t
+        ? q.say
           ? '<p class="appq-text">' + appqEsc(q.say) + '</p>'
           : ''
         : '<p class="appq-text">' + appqEsc(q.q) + '</p>') +
