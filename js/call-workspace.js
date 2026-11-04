@@ -788,7 +788,10 @@ var CW_FAMS = [
     aq: 'access',
     facts: [
       ['Network', 'PHCS (MultiPlan)'],
-      ['Underwriter', 'American Financial Security Life Insurance Co.'],
+      [
+        'Underwriter',
+        'American Financial Security Life Insurance Co. or Standard Life and Casualty Insurance Co., by state'
+      ],
       ['Association', 'National Congress of Employers (NCE)'],
       ['Billing', 'FirstEnroll']
     ],

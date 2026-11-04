@@ -104,7 +104,7 @@ var KNOWLEDGE_BASE = {
     'Access Health STM': {
       type: 'STM',
       network: 'PHCS (MultiPlan)',
-      underwriter: 'AFSLIC',
+      underwriter: 'AFSLIC or Standard Life (by state)',
       association: 'NCE',
       coinsurance: '80/20',
       maxOOP: '$2,000 after deductible'

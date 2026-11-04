@@ -544,7 +544,7 @@ var CW_DISC = {
     access: {
       paras: [
         'Your plan uses the MultiPlan PHCS network, and you can go in or out of network.',
-        "It's underwritten by American Financial Security Life Insurance Company and offered through the National Congress of Employers (NCE).",
+        "It's underwritten by American Financial Security Life Insurance Company or Standard Life and Casualty Insurance Company, depending on your state, and offered through the National Congress of Employers (NCE).",
         'Your bill will show FirstEnroll.',
         "This is private short-term medical, not an ACA or major medical plan. It doesn't cover maternity, substance abuse or psychiatric care.",
         'Every benefit has limits; past a limit, you pay. Your coinsurance limit caps only your coinsurance; your deductible is on top.',
