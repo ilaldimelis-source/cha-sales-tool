@@ -160,52 +160,52 @@ var APPQ_PLANS = [
     qs: [
       {
         q: 'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA?',
-        ex: 'To join this plan, you become a Working Owner of the company, Population Science Management USA. This asks you to confirm that.',
+        ex: "This health plan is a group plan, so you join the company that offers it, Population Science Management USA, as a Working Owner. That's what makes you eligible. This just asks you to confirm you're joining. Section 5.01(c) is only where it's written in the company agreement.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that, as a Working Owner, you are expected to complete assigned activities, respond to Company requests, and maintain regular communication regarding Working Owner matters?',
-        ex: 'As a Working Owner, the company will send you some tasks, like surveys, and expects you to answer them and stay in touch.',
+        ex: 'As a Working Owner, the company sends you short tasks, like surveys. You agree to complete them, answer when they reach out, and keep your phone and email up to date so they can reach you.',
         ok: 'Yes'
       },
       {
         q: 'Do you agree that the Company may assign projects to you at its discretion?',
-        ex: 'The company can send you projects, which are surveys, whenever it chooses.',
+        ex: "The company picks which tasks or surveys to send you and when. You don't choose them, you just complete what they send.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that you will receive a Guaranteed Payment for each response to an information request, as defined under Internal Revenue Code Section 707(c)?',
-        ex: 'You get paid for each information request you answer. The tax law section is just how that payment is classified.',
+        ex: 'You get paid for each information request you answer, like a survey. Section 707(c) is just the tax code name for this kind of payment. If you have tax questions, your tax preparer can help.',
         ok: 'Yes'
       },
       {
         q: 'Do you acknowledge that you have been granted three (3) Preferred Units in the Company as compensation for your personal services?',
-        ex: 'You receive 3 Preferred Units, a small ownership share in the company, for your services.',
+        ex: "You get 3 Preferred Units, which are small ownership shares in the company. You don't buy them, they're given to you for the tasks you do. They're what make you a Working Owner.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that the Preferred Units are not registered under the Securities Act of 1933 and that there is no public market for these units?',
-        ex: 'Those units are not registered stock, and they cannot be sold on a market.',
+        ex: "These units aren't stock. They aren't registered like stock on the stock market, and there's nowhere to sell or trade them. They're only there to make you a Working Owner.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that you are eligible to participate in Company benefit plans subject to eligibility requirements and timely payment of any required premiums?',
-        ex: "Being a Working Owner lets you join the company's benefit plans, as long as you are eligible and pay on time.",
+        ex: "Being a Working Owner is what lets you join the company's health plan. To stay on it, you need to meet the plan's rules and pay your premium on time.",
         ok: 'Yes'
       },
       {
         q: 'Do you agree to maintain the confidentiality of all Company information and to comply with Section 14.03 of the LLC Agreement?',
-        ex: 'You agree to keep company information private.',
+        ex: "If the company shares any of its information with you, you agree to keep it private. Section 14.03 is only where that's written in the company agreement.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that if you fail to meet the conditions of Working Owner status, the Company may exercise its Call Right to repurchase your Membership Interest?',
-        ex: 'If you do not meet the Working Owner terms, the company can buy back your ownership share.',
+        ex: "If you don't keep up with the Working Owner terms, like doing your tasks, the company can buy back your units. That ends your Working Owner status, and with it your access to this plan. Doing your tasks and staying in touch keeps you in good standing.",
         ok: 'Yes'
       },
       {
         q: 'Do you confirm that you have read and understood all the Terms and Conditions and the LLC Agreement, and that you are legally able to provide services as a Working Owner?',
-        ex: 'You confirm you have read the terms and the agreement, and that nothing stops you from doing the Working Owner tasks, like a rule from a current or past employer.',
+        ex: "You confirm you've read the terms and the company agreement, and that you're legally allowed to do the Working Owner tasks.",
         ok: 'Yes'
       }
     ],
