@@ -90,9 +90,9 @@ window.docusignWalkthroughData = {
       severity: 'amber',
       title: 'Spousal Consent -- why does my spouse sign?',
       oneLiner:
-        'Legal protection so your spouse cannot claim the LLC ownership in case of divorce. Skip if unmarried.',
+        'Legal protection so your spouse cannot claim the LLC ownership in case of divorce. Check the box even if unmarried.',
       sayThis:
-        'It is a legal protection that says your spouse will not have a claim on the LLC ownership interest in case of divorce. It is for the company, not for you. If you are not married, this section is left blank.',
+        'It is a legal protection that says your spouse will not have a claim on the LLC ownership interest in case of divorce. It is for the company, not for you. If you are not married, you still check the box.',
       pushback: [
         {
           q: 'My spouse is not available right now.',
@@ -428,7 +428,7 @@ window.docusignWalkthroughData = {
     },
     {
       term: 'Spousal Consent',
-      def: 'A waiver where the spouse agrees they have no claim on the LLC ownership in case of divorce. Unmarried clients skip it.'
+      def: 'A waiver where the spouse agrees they have no claim on the LLC ownership in case of divorce. Unmarried clients still check the box.'
     },
     {
       term: 'Capital Contribution',
@@ -727,7 +727,7 @@ window.docusignWalkthroughData = {
         'Will not bequeath any interest by will',
         'Will not pledge or encumber any interest'
       ],
-      outro: 'Unmarried = section skipped/blank.'
+      outro: 'Unmarried: still check the box.'
     },
     {
       number: 18,
@@ -804,7 +804,7 @@ window.docusignWalkthroughData = {
     },
     {
       q: 'Why does my spouse need to sign?',
-      a: 'Legal protection that says your spouse will not have a claim on the LLC interest in case of divorce. Skip if unmarried.'
+      a: 'Legal protection that says your spouse will not have a claim on the LLC interest in case of divorce. Unmarried clients still check the box.'
     },
     {
       q: 'What about my prescriptions?',
