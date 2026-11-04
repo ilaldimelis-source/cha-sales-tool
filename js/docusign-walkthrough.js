@@ -1070,8 +1070,8 @@ var DOCUSIGN_ACK_BOXES = [
     section: 'Spousal Consent',
     where: 'At the end of Spousal Consent',
     says: 'Spouse Confirmation: I agree to the above joinder agreement (if applicable)',
-    script: 'Your spouse agrees, if this applies to you.',
-    context: 'Confirm with NEO: what unmarried clients should do here.'
+    script: "Please check this one too, even if you're not married.",
+    context: 'Always check box 7, married or not.'
   },
   {
     num: 8,
