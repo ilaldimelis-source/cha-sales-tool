@@ -281,7 +281,7 @@ var CW_DISC = {
         'This is private short-term medical, not an ACA or major medical plan.',
         'Every benefit has limits; past a limit, you pay. Your coinsurance limit caps only your coinsurance; your deductible, copays and access fees are on top.',
         "Pre-existing conditions aren't covered; this plan is medically underwritten.",
-        'Sickness has a 7-day waiting period.',
+        'Sickness has a 7-day waiting period, unless you applied more than 7 days before your start date.',
         "Your Schedule of Benefits lists what the plan pays for each service, and anything not listed there isn't covered. Your certificate lists all exclusions and limits.",
         "Do you understand that this isn't major medical or an ACA plan, it has limits, and your bill will show Neo Health Solutions?\n\u25b6 ( Wait for answer )"
       ],
