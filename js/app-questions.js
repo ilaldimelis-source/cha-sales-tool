@@ -160,52 +160,52 @@ var APPQ_PLANS = [
     qs: [
       {
         q: 'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA?',
-        ex: "This health plan is a group plan, so you join the company that offers it, Population Science Management USA, as a Working Owner. That's what makes you eligible. This just asks you to confirm you're joining. Section 5.01(c) is only where it's written in the company agreement.",
+        ex: 'This plan is a group health plan offered through a company called Population Science Management (PSM). To get the plan, you join that company as a "Working Owner," which means you become a limited member (a small part-owner). Section 5.01(c) is just the part of the company\'s agreement that allows new members to join this way.',
         ok: 'Yes'
       },
       {
         q: 'Do you understand that, as a Working Owner, you are expected to complete assigned activities, respond to Company requests, and maintain regular communication regarding Working Owner matters?',
-        ex: 'As a Working Owner, the company sends you short tasks, like surveys. You agree to complete them, answer when they reach out, and keep your phone and email up to date so they can reach you.',
+        ex: "Your role is called a Consumer Data Respondent. Throughout the year, the company sends you short surveys and questionnaires about your health and how you use healthcare. You're expected to answer them truthfully and on time, and to respond when the company reaches out.",
         ok: 'Yes'
       },
       {
         q: 'Do you agree that the Company may assign projects to you at its discretion?',
-        ex: "The company picks which tasks or surveys to send you and when. You don't choose them, you just complete what they send.",
+        ex: 'So again, the company assigns you projects which remember, are short surveys and questionnaires about your health and how you use healthcare. You complete them at your own pace within the time they give you.',
         ok: 'Yes'
       },
       {
         q: 'Do you understand that you will receive a Guaranteed Payment for each response to an information request, as defined under Internal Revenue Code Section 707(c)?',
-        ex: 'You get paid for each information request you answer, like a survey. Section 707(c) is just the tax code name for this kind of payment. If you have tax questions, your tax preparer can help.',
+        ex: 'You get paid for each survey or information request you complete. The payment goes onto a debit/credit card. Section 707(c) is just the part of the tax code that covers payments a company makes to its owners for their services.',
         ok: 'Yes'
       },
       {
         q: 'Do you acknowledge that you have been granted three (3) Preferred Units in the Company as compensation for your personal services?',
-        ex: "You get 3 Preferred Units, which are small ownership shares in the company. You don't buy them, they're given to you for the tasks you do. They're what make you a Working Owner.",
+        ex: '"Units" are your ownership shares in the company. You\'re given 3 of them in exchange for doing the surveys. You don\'t buy them separately.',
         ok: 'Yes'
       },
       {
         q: 'Do you understand that the Preferred Units are not registered under the Securities Act of 1933 and that there is no public market for these units?',
-        ex: "These units aren't stock. They aren't registered like stock on the stock market, and there's nowhere to sell or trade them. They're only there to make you a Working Owner.",
+        ex: "These are not stocks you can sell on the stock market. They are private, you can't freely sell or transfer them, and you shouldn't expect to cash them in. Their purpose is to make you a member so you're eligible for the health plan.",
         ok: 'Yes'
       },
       {
         q: 'Do you understand that you are eligible to participate in Company benefit plans subject to eligibility requirements and timely payment of any required premiums?',
-        ex: "Being a Working Owner is what lets you join the company's health plan. To stay on it, you need to meet the plan's rules and pay your premium on time.",
+        ex: 'Being a Working Owner is what makes you eligible for the health plan. You keep the coverage as long as you stay eligible and pay your monthly payment on time.',
         ok: 'Yes'
       },
       {
         q: 'Do you agree to maintain the confidentiality of all Company information and to comply with Section 14.03 of the LLC Agreement?',
-        ex: "If the company shares any of its information with you, you agree to keep it private. Section 14.03 is only where that's written in the company agreement.",
+        ex: 'You agree not to share, copy, or post any private company information you receive as an owner. Section 14.03 is the confidentiality section of the company agreement.',
         ok: 'Yes'
       },
       {
         q: 'Do you understand that if you fail to meet the conditions of Working Owner status, the Company may exercise its Call Right to repurchase your Membership Interest?',
-        ex: "If you don't keep up with the Working Owner terms, like doing your tasks, the company can buy back your units. That ends your Working Owner status, and with it your access to this plan. Doing your tasks and staying in touch keeps you in good standing.",
+        ex: 'If you stop meeting the requirements, such as not completing the surveys or not paying your monthly payment, the company can buy back your units. That ends your Working Owner status, and with it, your eligibility for the health plan.',
         ok: 'Yes'
       },
       {
         q: 'Do you confirm that you have read and understood all the Terms and Conditions and the LLC Agreement, and that you are legally able to provide services as a Working Owner?',
-        ex: "You confirm you've read the terms and the company agreement, and that you're legally allowed to do the Working Owner tasks.",
+        ex: "You're confirming you've had the chance to review the terms, and that nothing stops you from doing this work, such as an agreement with a current or former employer. You're welcome to ask questions or talk to an attorney before you agree.",
         ok: 'Yes'
       }
     ],
