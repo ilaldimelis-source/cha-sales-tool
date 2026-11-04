@@ -3810,12 +3810,24 @@ function cwAskCards(fam) {
     ownQ.push('so the most i\u2019ll ever pay is $[x]?');
     ownQ.push('what do deductible and coinsurance mean?');
   }
-  return own.concat(
-    c.filter(function (x) {
-      return ownQ.indexOf(x[0].toLowerCase()) < 0;
-    })
-  );
+  return own
+    .concat(
+      c.filter(function (x) {
+        return ownQ.indexOf(x[0].toLowerCase()) < 0;
+      })
+    )
+    .filter(function (x) {
+      return CW_ASK_HIDE.indexOf(x[0].toLowerCase()) < 0;
+    });
 }
+
+// Client asks cards hidden on every plan for now (Nov 4 2026, Mey).
+// The card text is kept; delete a line here to bring a card back.
+var CW_ASK_HIDE = [
+  'how do i know you’re legit?',
+  "what isn't covered?",
+  'is my pre-existing condition covered?'
+];
 
 // Plan-specific client questions (SmartChoice: Mey's Oct 2026 list,
 // the version that matches the app questions: 3 Preferred Units,
