@@ -3982,7 +3982,7 @@ var CW_ASK_PLAN = {
     ],
     [
       'What are the other monthly charges?',
-      'AssistPro Discount: $22.99 per month. AWA association fee: $29.99 per month, plus a $19.99 one-time enrollment fee. Technology access fee: $3.69 per month. Rates include a 3.0% technology services fee.'
+      'AssistPro Discount: $22.99 per month. AWA association fee: $29.99 per month, plus a $19.99 one-time enrollment fee. Technology access fee: the amount depends on your premium and is shown on your enrollment. Rates include a 3.5% payment services fee.'
     ],
     [
       'How do I cancel?',
