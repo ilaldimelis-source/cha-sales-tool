@@ -200,7 +200,8 @@ function _objEsc(s) {
 function renderObjections() {
   _objBattleIdx = -1;
   var html =
-    '<div class="ph"><div class="pt">Objection <span>Handler</span></div><div class="pd">Battle cards: tap an objection to read the primary rebuttal and diagnostic opener. Filter by category above.</div></div>';
+    '<div class="rbg"><div class="rbg-wrap">' +
+    '<div class="ph"><div class="pt">Rebuttals</div><div class="pd">Tap an objection to see what to ask and what to say.</div></div>';
   html += _objBuildExplainCard();
   html += '<div class="stabs">';
   OBJ_CATS.forEach(function (c) {
@@ -214,6 +215,7 @@ function renderObjections() {
       '</button>';
   });
   html += '</div><div id="objList"></div>';
+  html += '</div></div>';
   var _page_objections = document.getElementById('page-objections');
   if (_page_objections) _page_objections.innerHTML = html;
   renderObjList();
@@ -394,7 +396,12 @@ function renderObjList() {
   });
   html += '</div>';
 
-  html += _objBuildPlanFitSection();
+  var _pff = _objBuildPlanFitSection();
+  if (_pff)
+    html +=
+      '<details class="rbg-more"><summary class="rbg-more-sum">Plan fit and framing</summary>' +
+      _pff +
+      '</details>';
   var _objList = document.getElementById('objList');
   if (_objList) _objList.innerHTML = html;
   _objMountPlanFitUI();

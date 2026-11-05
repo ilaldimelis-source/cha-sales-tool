@@ -6138,6 +6138,212 @@
         color: var(--cha-text-tertiary);
         margin-top: 6px;
       }
+      /* === NOV 5 2026: Rebuttals redesign (cleaner + On Call liquid glass) === */
+      #page-livecall #page-objections {
+        padding: 0;
+        background: none;
+        border: 0;
+        box-shadow: none;
+      }
+      #page-objections .rbg {
+        position: relative;
+        border-radius: 28px;
+        padding: 36px 16px 48px;
+        min-height: 80vh;
+        font-family:
+          Inter,
+          -apple-system,
+          system-ui,
+          sans-serif;
+        color: #1e293b;
+        background:
+          radial-gradient(
+            520px 520px at -2% -6%,
+            rgb(148 163 184 / 45%),
+            transparent 70%
+          ),
+          radial-gradient(
+            460px 460px at 104% 18%,
+            rgb(129 140 248 / 24%),
+            transparent 70%
+          ),
+          radial-gradient(
+            560px 560px at 48% 108%,
+            rgb(134 239 172 / 22%),
+            transparent 70%
+          ),
+          linear-gradient(180deg, #e9ecf1 0%, #dfe3ea 100%);
+      }
+      #page-objections .rbg-wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      #page-objections .rbg .ph {
+        margin: 0 0 4px;
+        padding: 0;
+        background: none;
+        border: 0;
+        box-shadow: none;
+        text-align: center;
+      }
+      #page-objections .rbg .pt {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: #0f172a;
+      }
+      #page-objections .rbg .pd {
+        font-size: 15px;
+        color: #475569;
+        margin-top: 6px;
+      }
+      #page-objections .rbg .xp-card,
+      #page-objections .rbg .obj-battle-item,
+      #page-objections .rbg .rbg-more {
+        background: linear-gradient(
+          160deg,
+          rgb(255 255 255 / 55%) 0%,
+          rgb(255 255 255 / 22%) 100%
+        );
+        backdrop-filter: blur(22px) saturate(170%);
+        -webkit-backdrop-filter: blur(22px) saturate(170%);
+        border: 1px solid rgb(255 255 255 / 70%);
+        border-radius: 22px;
+        box-shadow:
+          inset 0 1px 1px rgb(255 255 255 / 95%),
+          inset 0 -1px 1px rgb(255 255 255 / 35%),
+          inset 0 0 24px rgb(255 255 255 / 28%),
+          0 12px 32px rgb(30 41 59 / 10%);
+        overflow: hidden;
+      }
+      #page-objections .rbg .xp-card {
+        margin: 0;
+      }
+      #page-objections .rbg .xp-sec {
+        background: rgb(255 255 255 / 55%);
+      }
+      #page-objections .rbg .stabs {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin: 4px 0;
+        background: none;
+        border: 0;
+        padding: 0;
+      }
+      #page-objections .rbg .stab {
+        border-radius: 999px;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        color: #1e293b;
+        background: linear-gradient(
+          180deg,
+          rgb(255 255 255 / 92%) 0%,
+          rgb(255 255 255 / 62%) 48%,
+          rgb(236 239 245 / 55%) 100%
+        );
+        border: 1px solid rgb(255 255 255 / 75%);
+        box-shadow:
+          inset 0 1.5px 0 #fff,
+          0 1px 1px rgb(15 23 42 / 6%),
+          0 4px 8px rgb(15 23 42 / 8%);
+      }
+      #page-objections .rbg .stab.active {
+        background: #0f172a;
+        border-color: #0f172a;
+        color: #fff;
+      }
+      #page-objections .rbg .obj-battle-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background: none;
+        border: 0;
+        box-shadow: none;
+        padding: 0;
+      }
+      #page-objections .rbg .obj-battle-row {
+        background: none;
+        border: 0;
+        padding: 16px 20px;
+        min-height: 56px;
+        gap: 12px;
+      }
+      #page-objections .rbg .obj-battle-row:hover,
+      #page-objections .rbg .obj-battle-row.is-active {
+        background: rgb(255 255 255 / 40%);
+      }
+      #page-objections .rbg .obj-battle-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #0f172a;
+      }
+      #page-objections .rbg .obj-battle-drawer {
+        background: none;
+        border: 0;
+        padding: 0 20px 18px;
+      }
+      #page-objections .rbg .obj-battle-drawer-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0;
+        background: none;
+        border: 0;
+      }
+      #page-objections .rbg .obj-battle-rebuttal {
+        margin: 0;
+        background: rgb(255 255 255 / 70%);
+        border-left: 4px solid var(--cha-accent);
+        border-radius: 14px;
+        padding: 12px 14px;
+        font-size: 15px;
+        line-height: 1.55;
+        color: #0f172a;
+      }
+      #page-objections .rbg .obj-battle-rebuttal strong {
+        display: block;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #475569;
+        margin-bottom: 4px;
+      }
+      #page-objections .rbg .rbg-more {
+        margin-top: 8px;
+      }
+      #page-objections .rbg .rbg-more-sum {
+        cursor: pointer;
+        list-style: none;
+        padding: 16px 20px;
+        font-size: 15px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      #page-objections .rbg .rbg-more-sum::-webkit-details-marker {
+        display: none;
+      }
+      #page-objections .rbg .rbg-more-sum::after {
+        content: ' +';
+        color: var(--cha-accent);
+      }
+      #page-objections .rbg .rbg-more[open] .rbg-more-sum::after {
+        content: ' -';
+      }
+      #page-objections .rbg .rbg-more .obj-planfit-section {
+        margin: 0;
+        padding: 0 20px 20px;
+        background: none;
+        border: 0;
+      }
+      #page-objections .rbg .rbg-more .obj-planfit-h {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -6339,6 +6545,26 @@
               <path d="M15 12h-5" /></svg
           ></span>
           <span class="nb-label">Scripts</span>
+          <span class="nb-dot" aria-hidden="true"></span>
+        </button>
+        <button class="nb" onclick="showPage('objections')">
+          <span class="nb-icon"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              /></svg
+          ></span>
+          <span class="nb-label">Rebuttals</span>
           <span class="nb-dot" aria-hidden="true"></span>
         </button>
         <button class="nb" onclick="showPage('networkguide')">
@@ -7193,7 +7419,7 @@
     <script src="js/plan-registry.js?v=1793810000001"></script>
     <script src="js/utils.js?v=1792171229555"></script>
     <script src="js/recovery-data.js?v=1779700000000"></script>
-    <script src="js/objections.js?v=1779700000001"></script>
+    <script src="js/objections.js?v=1779700000002"></script>
     <script src="js/knowledge_base.js?v=1793810000001"></script>
     <script src="js/plan-data.js?v=1790833200000"></script>
     <script src="js/plan-data-extended.js?v=1792165216661"></script>
@@ -7216,7 +7442,7 @@
     <script src="js/app-questions.js?v=1793800000012"></script>
     <script src="js/oncall-disclosures.js?v=1793810000008"></script>
     <script src="js/call-workspace.js?v=1793810000007"></script>
-    <script src="js/app.js?v=1792283390373"></script>
+    <script src="js/app.js?v=1792283390374"></script>
     <script>
       (function () {
         var data = window.docusignWalkthroughData;
