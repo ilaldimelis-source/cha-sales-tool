@@ -90,6 +90,27 @@ const OBJECTIONS = [
     when: 'Use when they ask for materials as an exit strategy.'
   },
   {
+    cat: 'Delay',
+    obj: "Just Email Me, I'll Add Payment After",
+    diag: 'Is it the card itself, or wanting to read everything first?',
+    real: "They want to read before they commit. The DocuSign is the email they are asking for, but it can't be sent until a payment method is on the application.",
+    best: "That's exactly what I'm sending you. The DocuSign is the email with all the plan details. The system just won't let me send it until a payment method is on the application. Putting it on doesn't bill you. You only get billed if you read it and sign. If you don't sign, nothing happens.",
+    soft: "You'll see the exact first payment amount in the DocuSign before you sign. If anything looks off, you just don't sign, and you can call me back with any questions.",
+    strong:
+      "I get it. It's how the carrier's system is built. The application and the documents go out together, so the card has to be on it first. You're still in full control, because billing only starts when you sign.",
+    bridge:
+      'No problem. What part are you unsure about, the plan or the card? I can go over it now so you are comfortable.',
+    close:
+      "Great, let's get the application in so the DocuSign comes right to your email.",
+    avoid: [
+      'Read the plan disclosures before asking for the card',
+      "Say billed only when you sign. Never say it's free or you'll never be charged",
+      "Don't use the free look to close them. It's covered in DocuSign, not said live",
+      'If it is still no, set a callback time. Do not keep pushing'
+    ],
+    when: 'Use when the client wants the email or DocuSign first and does not want to give payment yet.'
+  },
+  {
     cat: 'Trust',
     obj: "I Don't Trust This",
     diag: 'Is it the plan itself, or just not seeing something like this before?',
