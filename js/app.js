@@ -1563,6 +1563,8 @@ function _showComboPage(parentId, subId) {
     if (stNav) btn = stNav;
   } else if (parentId === 'myspace' && subId === 'myspacehub') {
     btn = document.querySelector('.nb[onclick="showPage(\'myspace\')"]');
+  } else if (parentId === 'livecall' && subId === 'objections') {
+    btn = document.querySelector('.nb[onclick="showPage(\'objections\')"]');
   }
   if (btn) {
     btn.classList.add('active');
@@ -1606,6 +1608,11 @@ function renderSubTabs(parentId, activeSubId) {
   var container = document.getElementById('subtabs-' + parentId);
   if (!container) return;
   if (parentId === 'myspace' && activeSubId === 'salestracker') {
+    container.innerHTML = '';
+    return;
+  }
+  // Rebuttals has its own sidebar button; Live Call stays off the sidebar.
+  if (parentId === 'livecall' && activeSubId === 'objections') {
     container.innerHTML = '';
     return;
   }
