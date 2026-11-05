@@ -724,9 +724,28 @@ function _stProductIsAncillary(name, rates) {
   return !!(key && / sa$/.test(key));
 }
 
+// Render-pass cache (Nov 2026 speed fix). Only lives for one _stRender
+// call, and any storage write through _stSet clears it, so reads always
+// match what is saved. Before this, one render re-read and re-parsed the
+// commission rates once per sale and the whole sales list once per lookup.
+var _stPass = null;
+
+function _stPassBegin() {
+  _stPass = { rates: null, byId: null };
+  setTimeout(function () {
+    _stPass = null;
+  }, 0);
+}
+
+function _stPassRates() {
+  if (!_stPass) return _stLoadCommissionRates();
+  if (!_stPass.rates) _stPass.rates = _stLoadCommissionRates();
+  return _stPass.rates;
+}
+
 function _stSaleCountsAsAddon(sale) {
   if (!sale) return false;
-  var rates = _stLoadCommissionRates();
+  var rates = _stPassRates();
   var rec = _stLookupNamedProduct(sale.plan, rates);
   if (rec && rec.nonCommissionable) return false;
   if (sale.type === 'addon') return true;
@@ -1899,6 +1918,7 @@ function _stGet(key) {
 }
 
 function _stSet(key, value) {
+  if (_stPass) _stPass = { rates: null, byId: null };
   _stSyncRecordDeletes(key, value);
   try {
     if (typeof safeSetItem === 'function') {
@@ -11482,6 +11502,18 @@ function _stFindChargebackProblemBySaleId(saleId) {
 function _stFindSaleById(saleId) {
   var sid = String(saleId || '');
   if (!sid) return null;
+  if (_stPass) {
+    if (!_stPass.byId) {
+      _stPass.byId = {};
+      var all = _stLoadSales() || [];
+      for (var pi = 0; pi < all.length; pi++) {
+        var ps = all[pi];
+        if (ps && !(String(ps.id) in _stPass.byId))
+          _stPass.byId[String(ps.id)] = ps;
+      }
+    }
+    return _stPass.byId[sid] || null;
+  }
   var sales = _stLoadSales() || [];
   var i;
   for (i = 0; i < sales.length; i++) {
@@ -16810,6 +16842,7 @@ function _stNavOpenSale(btn) {
 function _stRender() {
   var page = document.getElementById('page-salestracker');
   if (!page) return;
+  _stPassBegin();
   _stNavPaycheckExistCache = null;
   _stSyncPaneFlagsFromTab();
   var stPreserveReceiptReview = _stReceiptReview && _stReceiptReview.active;
@@ -16951,6 +16984,7 @@ function _stRender() {
       _stSetAddSalePanelOpen(false);
     });
   }
+  _stPass = null;
   _stUpdateFabVisibility();
   _stWireSalesBulkDelegation(page);
   _stWireReconcileActionDelegation();
