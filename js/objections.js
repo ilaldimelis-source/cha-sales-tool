@@ -201,6 +201,7 @@ function renderObjections() {
   _objBattleIdx = -1;
   var html =
     '<div class="ph"><div class="pt">Objection <span>Handler</span></div><div class="pd">Battle cards: tap an objection to read the primary rebuttal and diagnostic opener. Filter by category above.</div></div>';
+  html += _objBuildExplainCard();
   html += '<div class="stabs">';
   OBJ_CATS.forEach(function (c) {
     html +=
@@ -216,6 +217,94 @@ function renderObjections() {
   var _page_objections = document.getElementById('page-objections');
   if (_page_objections) _page_objections.innerHTML = html;
   renderObjList();
+}
+
+// --- Explain the Plan card (Nov 2026): coaching talk track, not a compliance script ---
+function _objBuildExplainCard() {
+  function sec(title, body) {
+    return (
+      '<div class="xp-sec"><div class="xp-sec-t">' +
+      title +
+      '</div>' +
+      body +
+      '</div>'
+    );
+  }
+  function say(t) {
+    return '<div class="xp-say">' + t + '</div>';
+  }
+  function list(items) {
+    return '<ul class="xp-list"><li>' + items.join('</li><li>') + '</li></ul>';
+  }
+  var h = '<details class="xp-card">';
+  h +=
+    '<summary class="xp-sum"><span class="xp-sum-t">Explain the Plan</span>' +
+    '<span class="xp-sum-d">Why limited medical or STM fits this client, in plain words</span></summary>';
+  h += '<div class="xp-body">';
+  h +=
+    '<div class="xp-note">Coaching talk track. Disclosures are always read from the plan script, word for word. Say "fits your situation", never "best plan".</div>';
+
+  h += sec(
+    'Step 1. Get their why first',
+    list([
+      'What made you start looking for coverage today?',
+      'What matters most: keeping the monthly cost down, or coverage for big emergencies?',
+      'How often do you go to the doctor in a normal year?',
+      'Are you between jobs, waiting on employer coverage, or did you miss open enrollment?'
+    ]) +
+      '<div class="xp-tip">Write down their exact words. You will use them in step 3.</div>'
+  );
+
+  h += sec(
+    'Step 2. Explain the plan in two sentences',
+    '<div class="xp-lbl">Limited medical</div>' +
+      say(
+        'This plan is built for everyday care, like doctor visits, urgent care and telemedicine. Instead of a big deductible you have to meet first, it pays set dollar amounts for each service. The tradeoff is that it has limits, and it is not major medical or an ACA plan.'
+      ) +
+      '<div class="xp-lbl">Short-term medical</div>' +
+      say(
+        'Think of this as a bridge. It gives you coverage for a set period while you are between plans. It costs less than an ACA plan because it is medically underwritten, but it does not pay for pre-existing conditions and it is not an ACA plan.'
+      )
+  );
+
+  h += sec(
+    'Step 3. Tie it back to their reason',
+    say(
+      'You told me you are healthy, you mostly need doctor visits, and you want to keep it under [budget] a month. That is exactly what this is designed for.'
+    ) +
+      say(
+        'You said your job coverage starts in a few months and you just do not want to be exposed until then. That is what a short-term plan is for.'
+      ) +
+      '<div class="xp-tip">The limits are part of the pitch. Saying them upfront builds trust and protects you on the recording.</div>'
+  );
+
+  h += sec(
+    'Extra objections',
+    '<div class="xp-lbl">"Why not just get Obamacare / an ACA plan?"</div>' +
+      say(
+        'That is a fair question, and ACA is a great fit for some people. The main difference is that ACA plans usually come with a deductible you pay before most benefits kick in. You told me you want [their reason], so I am showing you something that fits that. If comprehensive coverage matters more to you, I am happy to talk about that too.'
+      ) +
+      '<div class="xp-tip">Never put ACA down or talk them out of it. Steering away from comprehensive coverage is a compliance violation.</div>' +
+      '<div class="xp-lbl">"Will my doctor take it?"</div>' +
+      say(
+        'Let me look that up for you right now in the network so we know for sure.'
+      ) +
+      '<div class="xp-tip">Search the plan network. Never guess.</div>' +
+      '<div class="xp-tip">Price, think about it, trust, pre-existing and hospital objections are in the cards below.</div>'
+  );
+
+  h += sec(
+    'When NOT to sell it',
+    list([
+      '<b>Active Medicaid:</b> add-on only, never a replacement.',
+      '<b>Ongoing condition or treatment:</b> STM does not pay for pre-existing conditions. Say it clearly.',
+      '<b>Pregnant or planning to be:</b> these plans do not include maternity.',
+      '<b>Needs comprehensive coverage:</b> do not talk them out of it.'
+    ])
+  );
+
+  h += '</div></details>';
+  return h;
 }
 
 function setObjCat(c) {

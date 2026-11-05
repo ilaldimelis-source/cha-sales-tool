@@ -6051,6 +6051,93 @@
         background: var(--cha-warning-bg);
         color: var(--cha-warning-text);
       }
+      /* Explain the Plan card (Rebuttals tab, Nov 2026) */
+      .xp-card {
+        background: var(--cha-bg-card);
+        border: 1px solid var(--cha-border-subtle);
+        border-radius: 22px;
+        box-shadow: 0 6px 20px rgb(15, 23, 42, 0.06);
+        margin: 0 0 16px;
+        overflow: hidden;
+      }
+      .xp-sum {
+        cursor: pointer;
+        padding: 16px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        list-style: none;
+      }
+      .xp-sum::-webkit-details-marker {
+        display: none;
+      }
+      .xp-sum-t {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--cha-text-primary);
+      }
+      .xp-sum-t::after {
+        content: ' +';
+        color: var(--cha-accent);
+      }
+      .xp-card[open] .xp-sum-t::after {
+        content: ' -';
+      }
+      .xp-sum-d {
+        font-size: 13px;
+        color: var(--cha-text-tertiary);
+      }
+      .xp-body {
+        padding: 0 20px 18px;
+      }
+      .xp-note {
+        background: var(--cha-warning-bg);
+        color: var(--cha-warning-text);
+        border-radius: 14px;
+        padding: 10px 14px;
+        font-size: 13px;
+        margin-bottom: 14px;
+      }
+      .xp-sec {
+        background: var(--cha-bg-muted);
+        border-radius: 18px;
+        padding: 14px 16px;
+        margin-bottom: 12px;
+      }
+      .xp-sec-t {
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--cha-text-primary);
+        margin-bottom: 8px;
+      }
+      .xp-lbl {
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--cha-text-secondary);
+        margin: 10px 0 4px;
+      }
+      .xp-say {
+        background: var(--cha-bg-card);
+        border-left: 4px solid var(--cha-accent);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 14px;
+        line-height: 1.5;
+        color: var(--cha-text-primary);
+        margin-bottom: 6px;
+      }
+      .xp-list {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: var(--cha-text-primary);
+      }
+      .xp-tip {
+        font-size: 12.5px;
+        color: var(--cha-text-tertiary);
+        margin-top: 6px;
+      }
     </style>
   </head>
   <body>
@@ -7106,7 +7193,7 @@
     <script src="js/plan-registry.js?v=1793810000001"></script>
     <script src="js/utils.js?v=1792171229555"></script>
     <script src="js/recovery-data.js?v=1779700000000"></script>
-    <script src="js/objections.js?v=1779700000000"></script>
+    <script src="js/objections.js?v=1779700000001"></script>
     <script src="js/knowledge_base.js?v=1793810000001"></script>
     <script src="js/plan-data.js?v=1790833200000"></script>
     <script src="js/plan-data-extended.js?v=1792165216661"></script>
