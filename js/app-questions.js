@@ -674,15 +674,27 @@ var APPQ_PLANS = [
   }
 ];
 
-// Quick version (Oct 31 2026, approved by Mey): two plain-word questions
-// that cover every portal question, said out loud first. The agent still
-// checks each portal box only after the client says yes; if the client
-// hesitates on any part, read that portal question word for word.
+// Quick version (Nov 10 2026, approved by Mey; replaces the Oct 31
+// two-question paraphrase). Five questions that join the portal's
+// own wording word for word, said out loud after the intro below.
+// The agent still checks each portal box only after the client says
+// yes; if the client hesitates on any part, read that portal question
+// word for word.
 var APPQ_QUICK = {
   smartchoice: [
-    "With this plan, you join Population Science Management USA as a Working Owner. That means you'll complete the activities and projects they assign, respond to their requests, stay in contact with them, and keep their company information confidential. If you don't meet the Working Owner requirements, they can buy back your membership. Do you understand and agree?",
-    "As a Working Owner, you get 3 Preferred Units, which aren't registered or publicly traded, and a guaranteed payment for each information request you answer. Your benefits depend on meeting eligibility and paying your premiums on time. Have you read and understood the terms and the LLC agreement, and are you legally able to work as a Working Owner?"
+    'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA, understand that, as a Working Owner, you are expected to complete assigned activities, respond to Company requests, and maintain regular communication regarding Working Owner matters, and agree that the Company may assign projects to you at its discretion?',
+    'Do you understand that you will receive a Guaranteed Payment for each response to an information request, as defined under Internal Revenue Code Section 707(c), acknowledge that you have been granted three (3) Preferred Units in the Company as compensation for your personal services, understand that you are eligible to participate in Company benefit plans subject to eligibility requirements and timely payment of any required premiums, and agree to maintain the confidentiality of all Company information and to comply with Section 14.03 of the LLC Agreement?',
+    'Do you understand that the Preferred Units are not registered under the Securities Act of 1933 and that there is no public market for these units?',
+    'Do you understand that if you fail to meet the conditions of Working Owner status, the Company may exercise its Call Right to repurchase your Membership Interest?',
+    'Do you confirm that you have read and understood all the Terms and Conditions and the LLC Agreement, and that you are legally able to provide services as a Working Owner?'
   ]
+};
+
+// Intro said before the Quick version questions (Nov 10 2026, approved
+// by Mey). Shown in place of the plan intro when the Quick version shows.
+var APPQ_QUICK_INTRO = {
+  smartchoice:
+    "Next, I'll read 5 short questions from your application about how this plan works. To get this group health plan, you join Population Science Management USA as a Working Owner. That means you answer short paid information requests and help with company activities when they ask. You get 3 Preferred Units in the company. They aren't registered, and there's no public market for them. You can use the company's benefit plans as long as you meet eligibility and pay your premiums on time. You also agree to keep company information confidential. If you don't meet the Working Owner requirements, the company can buy back your membership. I just need a yes for each one, and stop me anytime if you have a question."
 };
 
 // Short titles for each question (Oct 22 2026), shown in bold above the
@@ -942,7 +954,8 @@ function appqListHtml(plan, where) {
   // APPQ_SAY entry (SmartChoice). Every other plan always shows the
   // exact portal wording plus the Client confused? explanation.
   var sayView = where === 'cw' && appqState.short && APPQ_SAY[plan.id];
-  var intro = sayView ? sayView.intro : plan.intro;
+  var quickIntro = where === 'cw' && !sayView && APPQ_QUICK_INTRO[plan.id];
+  var intro = sayView ? sayView.intro : quickIntro || plan.intro;
   if (intro) {
     html +=
       '<div class="appq-intro"><span>Say this first</span>' +
