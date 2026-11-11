@@ -690,12 +690,131 @@ var APPQ_QUICK = {
   ]
 };
 
-// Intro said before the Quick version questions (Nov 10 2026, approved
-// by Mey). Shown in place of the plan intro when the Quick version shows.
+// Intro said before the Quick version questions (Nov 11 2026, Mey's
+// own wording, verbatim). Option buttons show only if there is more
+// than one option. Edit button lets the agent change it.
+// Edits are saved in this browser only (localStorage) and can be
+// reset back to the original wording at any time.
 var APPQ_QUICK_INTRO = {
-  smartchoice:
-    "Next, I'll read 5 short questions from your application about how this plan works. To get this group health plan, you join Population Science Management USA as a Working Owner. That means you answer short paid information requests and help with company activities when they ask. You get 3 Preferred Units in the company. They aren't registered, and there's no public market for them. You can use the company's benefit plans as long as you meet eligibility and pay your premiums on time. You also agree to keep company information confidential. If you don't meet the Working Owner requirements, the company can buy back your membership. I just need a yes for each one, and stop me anytime if you have a question."
+  smartchoice: {
+    label: 'After you pull the card, say this',
+    options: [
+      {
+        name: 'Mey',
+        text: "Before I send you over the terms and conditions for applying, I'm going to read a few required questions. This plan isn't an Obamacare or ACA plan where they use your income to determine the monthly premium.\n\nTo be eligible, you join Population Science Management, which is a large group association, as what they call a Working Owner. That means you're agreeing to take an occasional quarterly survey also known as an information request from the company, and you'll get a payment of a $20 visa gift card for each one you complete.\n\nYou'll also receive a small ownership interest called Preferred Units, and you'll get a K-1 tax form for it each year instead of a 1095A form. These are yes or no questions. The answers needed to continue to get you eligible for the preferred rate we are going over is yes. If anything's unclear, stop me and I'll explain."
+      }
+    ]
+  }
 };
+
+var appqIntroEditing = false;
+
+function appqLsGet(k) {
+  try {
+    return localStorage.getItem(k);
+  } catch (e) {
+    return null;
+  }
+}
+function appqLsSet(k, v) {
+  try {
+    if (v === null) localStorage.removeItem(k);
+    else localStorage.setItem(k, v);
+  } catch (e) {
+    /* storage blocked: keep working without saving */
+  }
+}
+function appqIntroPick(planId) {
+  var n = parseInt(appqLsGet('cha_appq_intro_pick_' + planId), 10);
+  var opts = APPQ_QUICK_INTRO[planId].options;
+  return n >= 0 && n < opts.length ? n : 0;
+}
+function appqIntroText(planId, n) {
+  var saved = appqLsGet('cha_appq_intro_' + planId + '_' + n);
+  return saved !== null && saved !== ''
+    ? saved
+    : APPQ_QUICK_INTRO[planId].options[n].text;
+}
+function appqIntroHtml(planId, w) {
+  var cfg = APPQ_QUICK_INTRO[planId];
+  var n = appqIntroPick(planId);
+  var text = appqIntroText(planId, n);
+  var edited = appqLsGet('cha_appq_intro_' + planId + '_' + n) !== null;
+  var pills = (cfg.options.length > 1 ? cfg.options : [])
+    .map(function (o, i) {
+      return (
+        '<button type="button" class="appq-introbtn' +
+        (i === n ? ' is-on' : '') +
+        '" data-appq-intro="pick:' +
+        planId +
+        ':' +
+        i +
+        '"' +
+        w +
+        '>' +
+        appqEsc(o.name) +
+        '</button>'
+      );
+    })
+    .join('');
+  var body;
+  if (appqIntroEditing) {
+    body =
+      '<textarea id="appq-intro-edit" class="appq-introedit" rows="9">' +
+      appqEsc(text) +
+      '</textarea><div class="appq-introbar">' +
+      '<button type="button" class="appq-introbtn is-on" data-appq-intro="save:' +
+      planId +
+      ':' +
+      n +
+      '"' +
+      w +
+      '>Save</button>' +
+      '<button type="button" class="appq-introbtn" data-appq-intro="cancel:' +
+      planId +
+      ':' +
+      n +
+      '"' +
+      w +
+      '>Cancel</button>' +
+      '<button type="button" class="appq-introbtn" data-appq-intro="reset:' +
+      planId +
+      ':' +
+      n +
+      '"' +
+      w +
+      '>Reset to original</button></div>';
+  } else {
+    body =
+      '<div class="appq-introtext">' +
+      text
+        .split(/\n\s*\n/)
+        .map(function (para) {
+          return '<p>' + appqEsc(para) + '</p>';
+        })
+        .join('') +
+      '</div>' +
+      (edited ? '<p class="appq-introflag">Edited on this device</p>' : '');
+  }
+  return (
+    '<div class="appq-intro appq-introbox"><span>' +
+    appqEsc(cfg.label) +
+    '</span><div class="appq-introbar">' +
+    pills +
+    (appqIntroEditing
+      ? ''
+      : '<button type="button" class="appq-introbtn" data-appq-intro="edit:' +
+        planId +
+        ':' +
+        n +
+        '"' +
+        w +
+        '>Edit</button>') +
+    '</div>' +
+    body +
+    '</div>'
+  );
+}
 
 // Short titles for each question (Oct 22 2026), shown in bold above the
 // word-for-word text on the On Call tab. Short view shows only these.
@@ -814,37 +933,10 @@ var APPQ_SHORT = {
     'HIV or AIDS'
   ]
 };
-// Short view wording to say out loud (Nov 3 2026, Mey). Shown on the
-// On Call tab in Short view instead of the title-only list. Each line
-// keeps the legal reference the portal question names. The agent
-// checks each portal box only after a clear yes; if the client
-// hesitates or asks, read that portal question word for word.
-var APPQ_SAY = {
-  smartchoice: {
-    intro:
-      "Next, I'll go through 10 standard questions for your application. This plan requires you to become a Working Owner, which includes completing short paid information requests and company activities. I just need a yes to confirm each statement if you agree. If you have any questions, I'll be happy to explain.",
-    note: 'Check each box only after a clear yes. If the client hesitates or asks, switch to Word for word and read that question exactly as written.',
-    qs: [
-      "Do you understand you'll become a Working Owner with Population Science Management USA under Section 5.01(c) of the LLC Agreement?",
-      'Do you agree to complete assigned activities, respond to company requests, and stay in contact about Working Owner matters?',
-      'Do you agree that the company can assign you projects at its discretion?',
-      "Do you understand you'll receive a guaranteed payment for each information request you answer, as defined under Internal Revenue Code Section 707(c)?",
-      "Do you understand you'll receive 3 Preferred Units in the company as compensation for your services?",
-      "Do you understand these units aren't registered under the Securities Act of 1933 and there's no public market for them?",
-      'Do you understand your benefits depend on meeting eligibility requirements and paying any required premiums on time?',
-      'Do you agree to keep company information confidential under Section 14.03 of the LLC Agreement?',
-      "Do you understand that if you don't meet the Working Owner requirements, the company can use its Call Right to buy back your membership interest?",
-      'Have you read and understood the Terms and Conditions and the LLC Agreement, and are you legally able to provide services as a Working Owner?'
-    ]
-  }
-};
-
 APPQ_PLANS.forEach(function (p) {
   var t = APPQ_SHORT[p.id] || [];
-  var say = APPQ_SAY[p.id];
   p.qs.forEach(function (q, i) {
     if (t[i]) q.t = t[i];
-    if (say && say.qs[i]) q.say = say.qs[i];
   });
 });
 
@@ -852,8 +944,7 @@ var appqState = {
   plan: 'harbor',
   ans: {},
   help: {},
-  open: {},
-  short: false
+  open: {}
 };
 
 function appqEsc(t) {
@@ -938,24 +1029,18 @@ function appqListHtml(plan, where) {
     '</b><span>' +
     appqEsc(st.text) +
     '</span>' +
-    (where === 'cw' && APPQ_SAY[plan.id]
-      ? '<button type="button" class="appq-short" data-appq-short="1"' +
-        w +
-        '>' +
-        (appqState.short ? 'Word for word' : 'Short view') +
-        '</button>'
-      : '') +
     '<button type="button" class="appq-reset" data-appq-reset="' +
     plan.id +
     '"' +
     w +
     '>Start over</button></div>';
-  // Nov 4 2026 (Mey): Short view is offered only for plans with an
-  // APPQ_SAY entry (SmartChoice). Every other plan always shows the
-  // exact portal wording plus the Client confused? explanation.
-  var sayView = where === 'cw' && appqState.short && APPQ_SAY[plan.id];
-  var quickIntro = where === 'cw' && !sayView && APPQ_QUICK_INTRO[plan.id];
-  var intro = sayView ? sayView.intro : quickIntro || plan.intro;
+  // Nov 11 2026 (Mey): Short view removed completely. Every plan
+  // shows the exact portal wording plus the Client confused? explanation.
+  var quickIntro = where === 'cw' && APPQ_QUICK_INTRO[plan.id];
+  var intro = quickIntro ? '' : plan.intro;
+  if (quickIntro) {
+    html += appqIntroHtml(plan.id, w);
+  }
   if (intro) {
     html +=
       '<div class="appq-intro"><span>Say this first</span>' +
@@ -965,10 +1050,7 @@ function appqListHtml(plan, where) {
   if (plan.note) {
     html += '<p class="appq-note">' + appqEsc(plan.note) + '</p>';
   }
-  if (sayView && sayView.note) {
-    html += '<p class="appq-note">' + appqEsc(sayView.note) + '</p>';
-  }
-  var quick = where === 'cw' && !sayView && APPQ_QUICK[plan.id];
+  var quick = where === 'cw' && APPQ_QUICK[plan.id];
   if (quick) {
     html +=
       '<div class="appq-intro appq-quick"><span>Quick version: say these ' +
@@ -1014,11 +1096,9 @@ function appqListHtml(plan, where) {
       (q.t && where === 'cw'
         ? '<p class="appq-title">' + appqEsc(q.t) + '</p>'
         : '') +
-      (sayView && q.t
-        ? q.say
-          ? '<p class="appq-text">' + appqEsc(q.say) + '</p>'
-          : ''
-        : '<p class="appq-text">' + appqEsc(q.q) + '</p>') +
+      '<p class="appq-text">' +
+      appqEsc(q.q) +
+      '</p>' +
       '<button type="button" class="appq-help-btn" data-appq-help="' +
       plan.id +
       ':' +
@@ -1140,12 +1220,35 @@ function appqOnClick(e) {
   var t =
     e.target && e.target.closest
       ? e.target.closest(
-          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan],[data-appq-short]'
+          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan],[data-appq-intro]'
         )
       : null;
   if (!t) return;
   var where = t.getAttribute('data-appq-where');
-  var v = t.getAttribute('data-appq-ans');
+  var v = t.getAttribute('data-appq-intro');
+  if (v) {
+    var ip = v.split(':');
+    var key = 'cha_appq_intro_' + ip[1] + '_' + ip[2];
+    if (ip[0] === 'pick') {
+      appqLsSet('cha_appq_intro_pick_' + ip[1], ip[2]);
+      appqIntroEditing = false;
+    } else if (ip[0] === 'edit') {
+      appqIntroEditing = true;
+    } else if (ip[0] === 'save') {
+      var ta = document.getElementById('appq-intro-edit');
+      var val = ta ? ta.value.trim() : '';
+      appqLsSet(key, val ? val : null);
+      appqIntroEditing = false;
+    } else if (ip[0] === 'cancel') {
+      appqIntroEditing = false;
+    } else if (ip[0] === 'reset') {
+      appqLsSet(key, null);
+      appqIntroEditing = false;
+    }
+    appqRefresh(where, ip[1]);
+    return;
+  }
+  v = t.getAttribute('data-appq-ans');
   if (v) {
     var p = v.split(':');
     var cur = appqState.ans[p[0]] || (appqState.ans[p[0]] = {});
@@ -1159,11 +1262,6 @@ function appqOnClick(e) {
     var hs = appqState.help[h[0]] || (appqState.help[h[0]] = {});
     hs[h[1]] = !hs[h[1]];
     appqRefresh(where, h[0]);
-    return;
-  }
-  if (t.getAttribute('data-appq-short')) {
-    appqState.short = !appqState.short;
-    appqRefresh(where, '');
     return;
   }
   v = t.getAttribute('data-appq-reset');
