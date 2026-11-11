@@ -814,37 +814,10 @@ var APPQ_SHORT = {
     'HIV or AIDS'
   ]
 };
-// Short view wording to say out loud (Nov 3 2026, Mey). Shown on the
-// On Call tab in Short view instead of the title-only list. Each line
-// keeps the legal reference the portal question names. The agent
-// checks each portal box only after a clear yes; if the client
-// hesitates or asks, read that portal question word for word.
-var APPQ_SAY = {
-  smartchoice: {
-    intro:
-      "Next, I'll go through 10 standard questions for your application. This plan requires you to become a Working Owner, which includes completing short paid information requests and company activities. I just need a yes to confirm each statement if you agree. If you have any questions, I'll be happy to explain.",
-    note: 'Check each box only after a clear yes. If the client hesitates or asks, switch to Word for word and read that question exactly as written.',
-    qs: [
-      "Do you understand you'll become a Working Owner with Population Science Management USA under Section 5.01(c) of the LLC Agreement?",
-      'Do you agree to complete assigned activities, respond to company requests, and stay in contact about Working Owner matters?',
-      'Do you agree that the company can assign you projects at its discretion?',
-      "Do you understand you'll receive a guaranteed payment for each information request you answer, as defined under Internal Revenue Code Section 707(c)?",
-      "Do you understand you'll receive 3 Preferred Units in the company as compensation for your services?",
-      "Do you understand these units aren't registered under the Securities Act of 1933 and there's no public market for them?",
-      'Do you understand your benefits depend on meeting eligibility requirements and paying any required premiums on time?',
-      'Do you agree to keep company information confidential under Section 14.03 of the LLC Agreement?',
-      "Do you understand that if you don't meet the Working Owner requirements, the company can use its Call Right to buy back your membership interest?",
-      'Have you read and understood the Terms and Conditions and the LLC Agreement, and are you legally able to provide services as a Working Owner?'
-    ]
-  }
-};
-
 APPQ_PLANS.forEach(function (p) {
   var t = APPQ_SHORT[p.id] || [];
-  var say = APPQ_SAY[p.id];
   p.qs.forEach(function (q, i) {
     if (t[i]) q.t = t[i];
-    if (say && say.qs[i]) q.say = say.qs[i];
   });
 });
 
@@ -852,8 +825,7 @@ var appqState = {
   plan: 'harbor',
   ans: {},
   help: {},
-  open: {},
-  short: false
+  open: {}
 };
 
 function appqEsc(t) {
@@ -938,24 +910,15 @@ function appqListHtml(plan, where) {
     '</b><span>' +
     appqEsc(st.text) +
     '</span>' +
-    (where === 'cw' && APPQ_SAY[plan.id]
-      ? '<button type="button" class="appq-short" data-appq-short="1"' +
-        w +
-        '>' +
-        (appqState.short ? 'Word for word' : 'Short view') +
-        '</button>'
-      : '') +
     '<button type="button" class="appq-reset" data-appq-reset="' +
     plan.id +
     '"' +
     w +
     '>Start over</button></div>';
-  // Nov 4 2026 (Mey): Short view is offered only for plans with an
-  // APPQ_SAY entry (SmartChoice). Every other plan always shows the
-  // exact portal wording plus the Client confused? explanation.
-  var sayView = where === 'cw' && appqState.short && APPQ_SAY[plan.id];
-  var quickIntro = where === 'cw' && !sayView && APPQ_QUICK_INTRO[plan.id];
-  var intro = sayView ? sayView.intro : quickIntro || plan.intro;
+  // Nov 11 2026 (Mey): Short view removed completely. Every plan
+  // shows the exact portal wording plus the Client confused? explanation.
+  var quickIntro = where === 'cw' && APPQ_QUICK_INTRO[plan.id];
+  var intro = quickIntro || plan.intro;
   if (intro) {
     html +=
       '<div class="appq-intro"><span>Say this first</span>' +
@@ -965,10 +928,7 @@ function appqListHtml(plan, where) {
   if (plan.note) {
     html += '<p class="appq-note">' + appqEsc(plan.note) + '</p>';
   }
-  if (sayView && sayView.note) {
-    html += '<p class="appq-note">' + appqEsc(sayView.note) + '</p>';
-  }
-  var quick = where === 'cw' && !sayView && APPQ_QUICK[plan.id];
+  var quick = where === 'cw' && APPQ_QUICK[plan.id];
   if (quick) {
     html +=
       '<div class="appq-intro appq-quick"><span>Quick version: say these ' +
@@ -1014,11 +974,9 @@ function appqListHtml(plan, where) {
       (q.t && where === 'cw'
         ? '<p class="appq-title">' + appqEsc(q.t) + '</p>'
         : '') +
-      (sayView && q.t
-        ? q.say
-          ? '<p class="appq-text">' + appqEsc(q.say) + '</p>'
-          : ''
-        : '<p class="appq-text">' + appqEsc(q.q) + '</p>') +
+      '<p class="appq-text">' +
+      appqEsc(q.q) +
+      '</p>' +
       '<button type="button" class="appq-help-btn" data-appq-help="' +
       plan.id +
       ':' +
@@ -1140,7 +1098,7 @@ function appqOnClick(e) {
   var t =
     e.target && e.target.closest
       ? e.target.closest(
-          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan],[data-appq-short]'
+          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan]'
         )
       : null;
   if (!t) return;
@@ -1159,11 +1117,6 @@ function appqOnClick(e) {
     var hs = appqState.help[h[0]] || (appqState.help[h[0]] = {});
     hs[h[1]] = !hs[h[1]];
     appqRefresh(where, h[0]);
-    return;
-  }
-  if (t.getAttribute('data-appq-short')) {
-    appqState.short = !appqState.short;
-    appqRefresh(where, '');
     return;
   }
   v = t.getAttribute('data-appq-reset');
