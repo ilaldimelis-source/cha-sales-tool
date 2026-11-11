@@ -690,8 +690,9 @@ var APPQ_QUICK = {
   ]
 };
 
-// Intro said before the Quick version questions (Nov 11 2026, Mey).
-// Two options the agent can switch between, plus an Edit button.
+// Intro said before the Quick version questions (Nov 11 2026, Mey's
+// own wording, verbatim). Option buttons show only if there is more
+// than one option. Edit button lets the agent change it.
 // Edits are saved in this browser only (localStorage) and can be
 // reset back to the original wording at any time.
 var APPQ_QUICK_INTRO = {
@@ -699,12 +700,8 @@ var APPQ_QUICK_INTRO = {
     label: 'After you pull the card, say this',
     options: [
       {
-        name: 'Option 1',
-        text: "Before I send you the terms and conditions, I'm going to read a few required questions. This isn't an Obamacare or ACA plan, so your income isn't used to set your monthly premium.\n\nTo be eligible, you join Population Science Management as what they call a Working Owner. That means you agree to answer an occasional survey, called an information request, and you get a $20 Visa gift card for each one you complete.\n\nYou also get a small ownership share called Preferred Units, so you'll get a K-1 tax form for it each year. These are yes or no questions, and to qualify for this plan you'll need to answer yes to each one. If anything's unclear, stop me and I'll explain."
-      },
-      {
-        name: 'Option 2',
-        text: "Before I send you the terms, I have a few required questions. This isn't an ACA plan, so your income doesn't set your price. To qualify, you join Population Science Management as a Working Owner. That just means you answer an occasional survey and get a $20 Visa gift card for each one. You also get a small ownership share, so you'll get a K-1 tax form each year. You'll need a yes on each question to qualify. Stop me anytime if something's unclear."
+        name: 'Mey',
+        text: "Before I send you over the terms and conditions for applying, I'm going to read a few required questions. This plan isn't an Obamacare or ACA plan where they use your income to determine the monthly premium.\n\nTo be eligible, you join Population Science Management, which is a large group association, as what they call a Working Owner. That means you're agreeing to take an occasional quarterly survey also known as an information request from the company, and you'll get a payment of a $20 visa gift card for each one you complete.\n\nYou'll also receive a small ownership interest called Preferred Units, and you'll get a K-1 tax form for it each year instead of a 1095A form. These are yes or no questions. The answers needed to continue to get you eligible for the preferred rate we are going over is yes. If anything's unclear, stop me and I'll explain."
       }
     ]
   }
@@ -743,7 +740,7 @@ function appqIntroHtml(planId, w) {
   var n = appqIntroPick(planId);
   var text = appqIntroText(planId, n);
   var edited = appqLsGet('cha_appq_intro_' + planId + '_' + n) !== null;
-  var pills = cfg.options
+  var pills = (cfg.options.length > 1 ? cfg.options : [])
     .map(function (o, i) {
       return (
         '<button type="button" class="appq-introbtn' +
