@@ -690,11 +690,11 @@ var APPQ_QUICK = {
   ]
 };
 
-// Intro said before the Quick version questions (Nov 10 2026, approved
+// Intro said before the Quick version questions (Nov 11 2026, approved
 // by Mey). Shown in place of the plan intro when the Quick version shows.
 var APPQ_QUICK_INTRO = {
   smartchoice:
-    "Next, I'll read 5 short questions from your application about how this plan works. To get this group health plan, you join Population Science Management USA as a Working Owner. That means you answer short paid information requests and help with company activities when they ask. You get 3 Preferred Units in the company. They aren't registered, and there's no public market for them. You can use the company's benefit plans as long as you meet eligibility and pay your premiums on time. You also agree to keep company information confidential. If you don't meet the Working Owner requirements, the company can buy back your membership. I just need a yes for each one, and stop me anytime if you have a question."
+    "Alright, last part. These next 5 questions are standard for everyone on this plan. They're written in legal language, but all they're saying is you're joining the group as a member, you might get paid surveys, and you keep your plan paid. Just a yes for each one."
 };
 
 // Short titles for each question (Oct 22 2026), shown in bold above the
