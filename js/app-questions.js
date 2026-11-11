@@ -690,12 +690,134 @@ var APPQ_QUICK = {
   ]
 };
 
-// Intro said before the Quick version questions (Nov 11 2026, approved
-// by Mey). Shown in place of the plan intro when the Quick version shows.
+// Intro said before the Quick version questions (Nov 11 2026, Mey).
+// Two options the agent can switch between, plus an Edit button.
+// Edits are saved in this browser only (localStorage) and can be
+// reset back to the original wording at any time.
 var APPQ_QUICK_INTRO = {
-  smartchoice:
-    "Alright, last part. These next 5 questions are standard for everyone on this plan. They're written in legal language, but all they're saying is you're joining the group as a member, you might get paid surveys, and you keep your plan paid. Just a yes for each one."
+  smartchoice: {
+    label: 'After you pull the card, say this',
+    options: [
+      {
+        name: 'Option 1',
+        text: "Before I send you the terms and conditions, I'm going to read a few required questions. This isn't an Obamacare or ACA plan, so your income isn't used to set your monthly premium.\n\nTo be eligible, you join Population Science Management as what they call a Working Owner. That means you agree to answer an occasional survey, called an information request, and you get a $20 Visa gift card for each one you complete.\n\nYou also get a small ownership share called Preferred Units, so you'll get a K-1 tax form for it each year. These are yes or no questions, and to qualify for this plan you'll need to answer yes to each one. If anything's unclear, stop me and I'll explain."
+      },
+      {
+        name: 'Option 2',
+        text: "Before I send you the terms, I have a few required questions. This isn't an ACA plan, so your income doesn't set your price. To qualify, you join Population Science Management as a Working Owner. That just means you answer an occasional survey and get a $20 Visa gift card for each one. You also get a small ownership share, so you'll get a K-1 tax form each year. You'll need a yes on each question to qualify. Stop me anytime if something's unclear."
+      }
+    ]
+  }
 };
+
+var appqIntroEditing = false;
+
+function appqLsGet(k) {
+  try {
+    return localStorage.getItem(k);
+  } catch (e) {
+    return null;
+  }
+}
+function appqLsSet(k, v) {
+  try {
+    if (v === null) localStorage.removeItem(k);
+    else localStorage.setItem(k, v);
+  } catch (e) {
+    /* storage blocked: keep working without saving */
+  }
+}
+function appqIntroPick(planId) {
+  var n = parseInt(appqLsGet('cha_appq_intro_pick_' + planId), 10);
+  var opts = APPQ_QUICK_INTRO[planId].options;
+  return n >= 0 && n < opts.length ? n : 0;
+}
+function appqIntroText(planId, n) {
+  var saved = appqLsGet('cha_appq_intro_' + planId + '_' + n);
+  return saved !== null && saved !== ''
+    ? saved
+    : APPQ_QUICK_INTRO[planId].options[n].text;
+}
+function appqIntroHtml(planId, w) {
+  var cfg = APPQ_QUICK_INTRO[planId];
+  var n = appqIntroPick(planId);
+  var text = appqIntroText(planId, n);
+  var edited = appqLsGet('cha_appq_intro_' + planId + '_' + n) !== null;
+  var pills = cfg.options
+    .map(function (o, i) {
+      return (
+        '<button type="button" class="appq-introbtn' +
+        (i === n ? ' is-on' : '') +
+        '" data-appq-intro="pick:' +
+        planId +
+        ':' +
+        i +
+        '"' +
+        w +
+        '>' +
+        appqEsc(o.name) +
+        '</button>'
+      );
+    })
+    .join('');
+  var body;
+  if (appqIntroEditing) {
+    body =
+      '<textarea id="appq-intro-edit" class="appq-introedit" rows="9">' +
+      appqEsc(text) +
+      '</textarea><div class="appq-introbar">' +
+      '<button type="button" class="appq-introbtn is-on" data-appq-intro="save:' +
+      planId +
+      ':' +
+      n +
+      '"' +
+      w +
+      '>Save</button>' +
+      '<button type="button" class="appq-introbtn" data-appq-intro="cancel:' +
+      planId +
+      ':' +
+      n +
+      '"' +
+      w +
+      '>Cancel</button>' +
+      '<button type="button" class="appq-introbtn" data-appq-intro="reset:' +
+      planId +
+      ':' +
+      n +
+      '"' +
+      w +
+      '>Reset to original</button></div>';
+  } else {
+    body =
+      '<div class="appq-introtext">' +
+      text
+        .split(/\n\s*\n/)
+        .map(function (para) {
+          return '<p>' + appqEsc(para) + '</p>';
+        })
+        .join('') +
+      '</div>' +
+      (edited ? '<p class="appq-introflag">Edited on this device</p>' : '');
+  }
+  return (
+    '<div class="appq-intro appq-introbox"><span>' +
+    appqEsc(cfg.label) +
+    '</span><div class="appq-introbar">' +
+    pills +
+    (appqIntroEditing
+      ? ''
+      : '<button type="button" class="appq-introbtn" data-appq-intro="edit:' +
+        planId +
+        ':' +
+        n +
+        '"' +
+        w +
+        '>Edit</button>') +
+    '</div>' +
+    body +
+    '</div>'
+  );
+}
 
 // Short titles for each question (Oct 22 2026), shown in bold above the
 // word-for-word text on the On Call tab. Short view shows only these.
@@ -918,7 +1040,10 @@ function appqListHtml(plan, where) {
   // Nov 11 2026 (Mey): Short view removed completely. Every plan
   // shows the exact portal wording plus the Client confused? explanation.
   var quickIntro = where === 'cw' && APPQ_QUICK_INTRO[plan.id];
-  var intro = quickIntro || plan.intro;
+  var intro = quickIntro ? '' : plan.intro;
+  if (quickIntro) {
+    html += appqIntroHtml(plan.id, w);
+  }
   if (intro) {
     html +=
       '<div class="appq-intro"><span>Say this first</span>' +
@@ -1098,12 +1223,35 @@ function appqOnClick(e) {
   var t =
     e.target && e.target.closest
       ? e.target.closest(
-          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan]'
+          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan],[data-appq-intro]'
         )
       : null;
   if (!t) return;
   var where = t.getAttribute('data-appq-where');
-  var v = t.getAttribute('data-appq-ans');
+  var v = t.getAttribute('data-appq-intro');
+  if (v) {
+    var ip = v.split(':');
+    var key = 'cha_appq_intro_' + ip[1] + '_' + ip[2];
+    if (ip[0] === 'pick') {
+      appqLsSet('cha_appq_intro_pick_' + ip[1], ip[2]);
+      appqIntroEditing = false;
+    } else if (ip[0] === 'edit') {
+      appqIntroEditing = true;
+    } else if (ip[0] === 'save') {
+      var ta = document.getElementById('appq-intro-edit');
+      var val = ta ? ta.value.trim() : '';
+      appqLsSet(key, val ? val : null);
+      appqIntroEditing = false;
+    } else if (ip[0] === 'cancel') {
+      appqIntroEditing = false;
+    } else if (ip[0] === 'reset') {
+      appqLsSet(key, null);
+      appqIntroEditing = false;
+    }
+    appqRefresh(where, ip[1]);
+    return;
+  }
+  v = t.getAttribute('data-appq-ans');
   if (v) {
     var p = v.split(':');
     var cur = appqState.ans[p[0]] || (appqState.ans[p[0]] = {});

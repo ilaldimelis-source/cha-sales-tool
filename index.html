@@ -6344,6 +6344,51 @@
       #page-objections .rbg .rbg-more .obj-planfit-h {
         display: none;
       }
+      /* Nov 11 2026: SmartChoice "say this first" options + edit */
+      .appq-introbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 8px 0 10px;
+      }
+      .appq-introbtn {
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: #fff;
+        color: #111;
+        border-radius: 999px;
+        padding: 5px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .appq-introbtn.is-on {
+        background: #111;
+        color: #fff;
+        border-color: #111;
+      }
+      .appq-introtext p {
+        margin: 0 0 8px;
+      }
+      .appq-introtext p:last-child {
+        margin-bottom: 0;
+      }
+      .appq-introedit {
+        width: 100%;
+        box-sizing: border-box;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 12px;
+        padding: 10px 12px;
+        font: inherit;
+        font-size: 14px;
+        line-height: 1.5;
+        resize: vertical;
+        background: #fff;
+      }
+      .appq-introflag {
+        margin: 6px 0 0;
+        font-size: 11px;
+        opacity: 0.6;
+      }
     </style>
   </head>
   <body>
