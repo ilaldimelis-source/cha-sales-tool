@@ -680,6 +680,17 @@ var APPQ_PLANS = [
 // The agent still checks each portal box only after the client says
 // yes; if the client hesitates on any part, read that portal question
 // word for word.
+// Short titles for the Quick version cards (Nov 12 2026, Mey).
+var APPQ_QUICK_TITLES = {
+  smartchoice: [
+    'Working Owner status',
+    'Payment, units, benefits, confidentiality',
+    'Units not registered',
+    'Call Right',
+    'Read the terms'
+  ]
+};
+
 var APPQ_QUICK = {
   smartchoice: [
     'Do you acknowledge that you will be admitted as a Working Owner under Section 5.01(c) of the LLC Agreement for Population Science Management USA, understand that, as a Working Owner, you are expected to complete assigned activities, respond to Company requests, and maintain regular communication regarding Working Owner matters, and agree that the Company may assign projects to you at its discretion?',
@@ -944,7 +955,8 @@ var appqState = {
   plan: 'harbor',
   ans: {},
   help: {},
-  open: {}
+  open: {},
+  quick: {}
 };
 
 function appqEsc(t) {
@@ -1052,16 +1064,71 @@ function appqListHtml(plan, where) {
   }
   var quick = where === 'cw' && APPQ_QUICK[plan.id];
   if (quick) {
+    // Nov 12 2026 (Mey): Quick version shown as soft cushion cards with
+    // Yes/No, a progress bar, and a number bubble that turns into a
+    // green check on Yes. Answers are not saved.
+    var qa = appqState.quick[plan.id] || {};
+    var titles = APPQ_QUICK_TITLES[plan.id] || [];
+    var qDone = 0;
+    quick.forEach(function (s, i) {
+      if (qa[i] === 'Yes') qDone++;
+    });
     html +=
-      '<div class="appq-intro appq-quick"><span>Quick version: say these ' +
+      '<div class="appq-cush"><div class="appq-cush-head"><span>Quick version: say these ' +
       quick.length +
-      ', then check each box below after the client says yes</span><ol>' +
+      ', then check each box below after the client says yes</span>' +
+      '<div class="appq-cush-prog"><div class="appq-cush-bar"><i style="width:' +
+      Math.round((qDone / quick.length) * 100) +
+      '%"></i></div><b>' +
+      qDone +
+      ' of ' +
+      quick.length +
+      '</b></div></div>' +
       quick
-        .map(function (s) {
-          return '<li>' + appqEsc(s) + '</li>';
+        .map(function (s, i) {
+          var v = qa[i] || '';
+          var ok = v === 'Yes';
+          return (
+            '<div class="appq-cush-card' +
+            (ok ? ' is-yes' : v === 'No' ? ' is-no' : '') +
+            '"><div class="appq-cush-num">' +
+            (ok ? '' : i + 1) +
+            '</div><div class="appq-cush-body">' +
+            (titles[i]
+              ? '<p class="appq-cush-title">' + appqEsc(titles[i]) + '</p>'
+              : '') +
+            '<p class="appq-cush-text">' +
+            appqEsc(s) +
+            '</p><div class="appq-cush-yn">' +
+            ['Yes', 'No']
+              .map(function (o) {
+                return (
+                  '<button type="button" class="appq-cush-btn' +
+                  (v === o ? ' is-on' : '') +
+                  (o === 'No' ? ' is-nobtn' : '') +
+                  '" data-appq-quick="' +
+                  plan.id +
+                  ':' +
+                  i +
+                  ':' +
+                  o +
+                  '"' +
+                  w +
+                  '>' +
+                  o +
+                  '</button>'
+                );
+              })
+              .join('') +
+            '</div>' +
+            (v === 'No'
+              ? '<p class="appq-cush-warn">A no stops the enrollment. Read the portal question word for word and use Client confused?</p>'
+              : '') +
+            '</div></div>'
+          );
         })
         .join('') +
-      '</ol></div>';
+      '</div>';
   }
   html += '<ol class="appq-list">';
   plan.qs.forEach(function (q, i) {
@@ -1220,12 +1287,20 @@ function appqOnClick(e) {
   var t =
     e.target && e.target.closest
       ? e.target.closest(
-          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan],[data-appq-intro]'
+          '[data-appq-ans],[data-appq-help],[data-appq-reset],[data-appq-toggle],[data-appq-plan],[data-appq-intro],[data-appq-quick]'
         )
       : null;
   if (!t) return;
   var where = t.getAttribute('data-appq-where');
-  var v = t.getAttribute('data-appq-intro');
+  var v = t.getAttribute('data-appq-quick');
+  if (v) {
+    var qp = v.split(':');
+    var qs = appqState.quick[qp[0]] || (appqState.quick[qp[0]] = {});
+    qs[qp[1]] = qs[qp[1]] === qp[2] ? '' : qp[2];
+    appqRefresh(where, qp[0]);
+    return;
+  }
+  v = t.getAttribute('data-appq-intro');
   if (v) {
     var ip = v.split(':');
     var key = 'cha_appq_intro_' + ip[1] + '_' + ip[2];
@@ -1267,6 +1342,7 @@ function appqOnClick(e) {
   v = t.getAttribute('data-appq-reset');
   if (v) {
     appqState.ans[v] = {};
+    appqState.quick[v] = {};
     appqRefresh(where, v);
     return;
   }

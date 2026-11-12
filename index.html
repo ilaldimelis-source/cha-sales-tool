@@ -6389,6 +6389,128 @@
         font-size: 11px;
         opacity: 0.6;
       }
+      /* Nov 12 2026: SmartChoice Quick version soft cushion cards */
+      .appq-cush {
+        margin: 0 0 16px;
+      }
+      .appq-cush-head > span {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: #555;
+        margin: 0 0 8px;
+      }
+      .appq-cush-prog {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 14px;
+      }
+      .appq-cush-bar {
+        flex: 1;
+        height: 8px;
+        border-radius: 999px;
+        background: rgba(0, 0, 0, 0.07);
+        overflow: hidden;
+      }
+      .appq-cush-bar i {
+        display: block;
+        height: 100%;
+        background: #1d9e75;
+        border-radius: 999px;
+        transition: width 0.25s ease;
+      }
+      .appq-cush-prog b {
+        font-size: 12px;
+        font-weight: 600;
+        color: #555;
+      }
+      .appq-cush-card {
+        display: flex;
+        gap: 14px;
+        background: #fff;
+        border-radius: 24px;
+        padding: 18px 20px;
+        margin: 0 0 12px;
+        box-shadow:
+          0 6px 20px rgba(30, 35, 90, 0.08),
+          0 1px 3px rgba(30, 35, 90, 0.06);
+      }
+      .appq-cush-card.is-no {
+        box-shadow:
+          0 0 0 1px #f09595,
+          0 6px 20px rgba(30, 35, 90, 0.08);
+      }
+      .appq-cush-num {
+        width: 34px;
+        height: 34px;
+        flex: none;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 600;
+        background: #eceef8;
+        color: #444;
+        transition: background 0.2s ease;
+      }
+      .appq-cush-card.is-yes .appq-cush-num {
+        background: #e1f5ee;
+        color: #085041;
+      }
+      .appq-cush-card.is-yes .appq-cush-num::before {
+        content: '\2713';
+        font-size: 15px;
+      }
+      .appq-cush-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .appq-cush-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #777;
+        margin: 6px 0;
+      }
+      .appq-cush-text {
+        font-size: 14px;
+        line-height: 1.65;
+        color: #2a2a2a;
+        margin: 0;
+      }
+      .appq-cush-yn {
+        display: flex;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .appq-cush-btn {
+        border-radius: 999px;
+        padding: 7px 20px;
+        font-size: 13px;
+        font-weight: 600;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: #fff;
+        color: #111;
+        cursor: pointer;
+      }
+      .appq-cush-btn.is-on {
+        background: #111;
+        color: #fff;
+        border-color: #111;
+      }
+      .appq-cush-btn.is-nobtn.is-on {
+        background: #fcebeb;
+        color: #791f1f;
+        border-color: #f09595;
+      }
+      .appq-cush-warn {
+        font-size: 12px;
+        color: #a32d2d;
+        margin: 8px 0 0;
+      }
     </style>
   </head>
   <body>
