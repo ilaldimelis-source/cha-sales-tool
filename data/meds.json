@@ -1,6 +1,6 @@
 {
   "source": "pap-lookup.com (Ventec SW LLC)",
-  "asOf": "Oct 16 2026",
+  "asOf": "Nov 16 2026",
   "fpl": {
     "base": {
       "48": 15960,
@@ -315,6 +315,7 @@
     ["Revlimid", "Bristol", 300],
     ["Rexulti", "Otsuka", 400],
     ["Reyvow", "Lilly Cares", 300],
+    ["Rhapsido", "Novartis", 400],
     ["Riabni", "Amgen", 300],
     ["Ridaura", "Legacy", 300],
     ["Rinvoq", "Abbvie", 400],
@@ -383,7 +384,6 @@
     ["Trintellix", "Help At Hand / Takeda", 500],
     ["Triumeq", "Viiv", 500],
     ["Trizivir", "Viiv", 500],
-    ["Trulance", "Bausch Health", 300],
     ["Trulicity", "Lilly Cares", 300],
     ["Turalio", "Daiichi", 200],
     ["Tykerb", "Novartis", 300],
